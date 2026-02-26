@@ -6,14 +6,11 @@ draft: false
 date: 2026-02-27
 lastmod: 2026-02-27
 tags: ["studio", "workspace"]
-# === agent 관련 ===
 agent-readable: true
-# === === agent-readable이 true일 때만 의미가 있음 === ===
 agent-editable: true
 agent-moveable: false
 agent-deletable: false
 agent-friendly: true
-# ===
 ---
 
 # 🎨 Studio
@@ -24,13 +21,13 @@ This directory is the primary environment for agent-driven content generation, r
 
 ## 📂 Structure
 
-- **`drafts/`**: The creative phase. New files are drafted and improved here through iterative cycles.
-- **`evaluation/`**: The critique phase. Files are objectively assessed based on predefined metrics and agent rules.
-- **`outputs/`**: The delivery phase. **Finalized assets are categorized here** (e.g., `rules`, `workflows`) once they pass evaluation.
+- `**drafts/**`: The creative phase. New files are drafted and improved here through iterative cycles.
+- `**evaluation/**`: The critique phase. Files are objectively assessed based on predefined metrics and agent rules.
+- `**outputs/**`: The delivery phase. **Finalized assets are categorized here** (e.g., `rules`, `workflows`) once they pass evaluation.
 
 ## 🛠 Workflow
 
-1.  **Drafting**: Create initial low-fidelity content in `drafts/`.
-2.  **Iterating**: Refine content using `/test` or improvement protocols.
-3.  **Evaluating**: Run evaluation scripts to ensure high-density logic and adherence to `rules`.
-4.  **Exporting**: Move confirmed high-quality assets to the appropriate category in `outputs/` (e.g., `outputs/rules/`).
+1. **Drafting**: Create initial low-fidelity content in `drafts/`.
+2. **Iterating**: Refine content using `/test` or improvement protocols.
+3. **Evaluating**: Run evaluation scripts to ensure high-density logic and adherence to `rules`.
+4. **Exporting**: Move confirmed high-quality assets to the appropriate category in `outputs/` (e.g., `outputs/rules/`).

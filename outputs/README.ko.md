@@ -6,14 +6,11 @@ draft: false
 date: 2026-02-27
 lastmod: 2026-02-27
 tags: ["outputs", "assets"]
-# === agent 관련 ===
 agent-readable: true
-# === === agent-readable이 true일 때만 의미가 있음 === ===
 agent-editable: true
 agent-moveable: false
 agent-deletable: false
 agent-friendly: false
-# ===
 ---
 
 # 📦 최종 산출물 (Outputs)
@@ -26,9 +23,9 @@ agent-friendly: false
 - **분류된 보관**: 규칙, 워크플로우 등 성격에 따라 체계적으로 정리되어 있습니다.
 - **완성된 자산**: 이곳의 파일들은 즉각적인 실무 투입이나 배포가 가능한 완성도를 지닙니다.
 
-## 📂 주요 구조 (1st Level)
+## 📂 주요 구조
 
-- **`rules/`**: 확정된 에이전트 규칙 및 프로토콜.
-- **`workflows/`**: 확정된 실행 가능 워크플로우 가이드.
+- `**rules/**`: 확정된 에이전트 규칙 및 프로토콜.
+- `**workflows/**`: 확정된 실행 가능 워크플로우 가이드.
 
-_이곳의 결과물들은 프로젝트의 최종 자산이며, 다음 단계의 창작을 위한 토대가 됩니다._
+*이곳의 결과물들은 프로젝트의 최종 자산이며, 다음 단계의 창작을 위한 토대가 됩니다.*

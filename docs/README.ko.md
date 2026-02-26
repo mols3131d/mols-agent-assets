@@ -5,7 +5,7 @@ categories:
   - docs
 draft: false
 date: 2026-02-27
-lastmod: 2026-02-26T22:21:08.461Z
+lastmod: 2026-02-26T22:31:52.431Z
 tags:
   - docs
   - governance
@@ -27,10 +27,10 @@ agent-friendly: false
 - **방법론의 발전**: 작업을 수행하는 과정에서 얻은 통찰을 바탕으로 더 나은 로직과 효율적인 프로세스를 개발합니다.
 - **성능 최적화**: 에이전트의 결과물을 고밀도로 유지하고, 평가 지표를 정교화하기 위한 지식 베이스 역할을 수행합니다.
 
-## 📂 주요 구조 (1st Level)
+## 📂 주요 구조
 
-- **`/docs/standards/`**: 프로젝트의 기술적 명세 및 필수 준수 규칙(Hard Rules) 정의
-- **`/docs/convention/`**: 작업 습관, 관행(Practices), 및 스타일 선호도(Soft Rules) 정의
-- **`/docs/requirements/`**: 에이전트 작업에 대한 핵심 요구사항 및 명세(PRD/ORD) 정의
+- `**/docs/standards/**`: 프로젝트의 기술적 명세 및 필수 준수 규칙(Hard Rules) 정의
+- `**/docs/convention/**`: 작업 습관, 관행(Practices), 및 스타일 선호도(Soft Rules) 정의
+- `**/docs/requirements/**`: 에이전트 작업에 대한 핵심 요구사항 및 명세(PRD/ORD) 정의
 
-_이곳에 쌓이는 모든 문서는 에이전트의 'OS'인 `.agents`를 더 강력하게 만들고, `studio`에서의 창작 결과물을 더 가치 있게 만드는 밑거름이 됩니다._
+*이곳에 쌓이는 모든 문서는 에이전트의 'OS'인 `.agents`를 더 강력하게 만들고, `studio`에서의 창작 결과물을 더 가치 있게 만드는 밑거름이 됩니다.*
