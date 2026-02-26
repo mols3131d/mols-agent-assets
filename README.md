@@ -1,22 +1,36 @@
-# mols-agent
+---
+title: "mols-agent Root"
+type: "doc"
+description: "High-density workspace for agentic asset lifecycle"
+created: 2026-02-27
+updated: 2026-02-27
+tags: ["root", "workspace"]
+agent-readable: true
+agent-editable: true
+agent-moveable: false
+agent-deletable: false
+agent-friendly: true
+---
 
-> Private repository for **mols**.
+# SYNOPSIS
 
-This repository serves as a centralized hub for managing agent rules, workflows, and task-specific assets. It is designed not just for storage, but as a workspace for the continuous creation, improvement, and evaluation of agent-driven content.
+mols-agent ::= {Engine | Workspace} for {Asset_Management | Creation | Improvement | Evaluation}
 
-## 🚀 Purpose
+# PROTOCOL
 
-- **Asset Management**: Orchestrates and version-controls agent custom rules and specialized workflows.
-- **Creative Development**: A dedicated environment to develop (create), refine (improve), and objectively assess (evaluate) new files and logic.
-- **Protocol Governance**: Ensures consistency across agentic operations through shared rules and standards.
+- Beyond_Storage: Active lifecycle management for {rules | workflows | assets}
+- Asset_Sovereignty: Efficient orchestration of agent-centric protocols
 
-## 📂 Structure
+# TOPOLOGY
 
-- **`.agents/rules/`**: Collection of protocol-dense instructions and behavioral guidelines for AI agents.
-- **`.agents/workflows/`**: Executable step-by-step guides for complex multi-stage tasks.
-- **`.agents/brain/`**: Contextual memory and task-specific artifacts generated during agentic sessions.
-- **`docs/`**: Supplemental documentation and project-specific knowledge-base.
+- .agents/ :: {Brain | OS} | Control_Plane | NOT_FOR_RESULT
+- studio/ :: {Factory | Showroom} | Production_Plane | FINAL_OUTPUTS_HERE
+- docs/ :: Governance_Conventions
+- templates/ :: Blueprint_Standards
+- tests/ :: Logical_QA_Protocols
+- scripts/ :: Automation_Utilities
 
-## 🛠 Usage
+# CONSTRAINT
 
-This is a private development environment. Agents interacting with this repository should follow the established `rules` and `workflows` to maintain high-density logical alignment.
+- Adhere: .agents/rules/
+- Documentation: Dual-target (README.md [Ag] | README-KR.md [Hu])
