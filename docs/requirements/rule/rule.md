@@ -1,11 +1,11 @@
 ---
-title: Rule Lifecycle Management Guideline
+title: Rule Lifecycle Management Specification
 description: Standards for creating, improving, and evaluating agentic rules
 categories:
-  - guideline
+  - requirements
 draft: false
 date: 2026-02-27
-lastmod: 2026-02-26T21:34:41.203Z
+lastmod: 2026-02-26T22:05:40.179Z
 tags:
   - rule-management
   - lifecycle

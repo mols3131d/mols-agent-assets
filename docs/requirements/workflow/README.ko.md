@@ -1,11 +1,11 @@
 ---
-title: 워크플로우 관리 가이드라인 (Workflow Management)
-description: 효율적 실행을 위한 워크플로우 설계, 최적화 및 평가 체계
+title: 워크플로우 관리 요구사항 (Workflow Management)
+description: 효율적 실행을 위한 워크플로우 설계, 최적화 및 평가 명세
 categories:
-  - guideline
+  - requirements
 draft: false
 date: 2026-02-27
-lastmod: 2026-02-26T21:36:42.177Z
+lastmod: 2026-02-26T22:06:14.530Z
 tags:
   - workflow-management
   - lifecycle
@@ -26,7 +26,7 @@ agent-friendly: false
 - **최적화 중심**: 한번 작성된 워크플로우는 고정된 것이 아니며, 실행 데이터를 바탕으로 더 빠르고 정확하게 개선되어야 합니다.
 - **표준화된 흐름**: SCAN(탐색)-PLAN(계획)-EXEC(실행)-VERIFY(검증)의 표준 흐름을 통해 작업의 예측 가능성을 확보합니다.
 
-## 📜 가이드라인 구성 정보
+## 📜 문서 구성 정보
 
 - **[워크플로우 라이프사이클 관리 (workflow.md)](./workflow.md)**:
     - 고가치 워크플로우의 기준 (무엇이 효율적인 절차인가?)

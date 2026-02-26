@@ -1,11 +1,11 @@
 ---
-title: 규칙 관리 가이드라인 (Rule Management)
-description: 규칙의 생성, 개선, 평가를 아우르는 라이프사이클 관리 표준
+title: 규칙 관리 요구사항 (Rule Management)
+description: 규칙의 생성, 개선, 평가를 아우르는 라이프사이클 관리 명세
 categories:
-  - guideline
+  - requirements
 draft: false
 date: 2026-02-27
-lastmod: 2026-02-26T21:34:46.513Z
+lastmod: 2026-02-26T22:05:54.314Z
 tags:
   - rule-management
   - lifecycle
@@ -26,7 +26,7 @@ agent-friendly: false
 - **가치 중심**: 좋은 규칙은 에이전트의 판단력을 높이고, 예외 상황을 줄이며, 결과물의 밀도를 높입니다.
 - **수환 구조**: 생성(Creation) → 적용(Execution) → 개선(Improvement) → 평가(Evaluation)의 끊임없는 순환 과정을 지향합니다.
 
-## 📜 가이드라인 구성 정보
+## 📜 문서 구성 정보
 
 - **[핵심 관리 표준 (rule.md)](./rule.md)**:
     - 엘리트 규칙의 정의 (무엇이 좋은 규칙인가?)

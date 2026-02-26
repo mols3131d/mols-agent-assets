@@ -1,11 +1,11 @@
 ---
-title: Workflow Management Root
+title: Workflow Management Specification
 description: Control plane for agentic execution procedures
 categories:
-  - guideline
+  - requirements
 draft: false
 date: 2026-02-27
-lastmod: 2026-02-26T21:36:40.160Z
+lastmod: 2026-02-26T22:05:50.262Z
 tags:
   - workflow-management
   - lifecycle
@@ -27,7 +27,7 @@ workflow_management ::= {Engineering_Standards | Optimization_Cycles | Performan
 
 # TOPOLOGY
 
-- [Workflow Lifecycle Guideline](./workflow.md) :: The core standard for WLM.
+- [Workflow Lifecycle Specification](./workflow.md) :: The core standard for WLM.
 
 # CONSTRAINT
 

@@ -1,11 +1,11 @@
 ---
-title: Rule Management Root
+title: Rule Management Specification
 description: Lifecycle control plane for agentic rules
 categories:
-  - guideline
+  - requirements
 draft: false
 date: 2026-02-27
-lastmod: 2026-02-26T21:34:44.504Z
+lastmod: 2026-02-26T22:05:46.254Z
 tags:
   - rule-management
   - lifecycle
@@ -27,7 +27,7 @@ rule_management ::= {Lifecycle_Control | Quality_Engineering | Evaluation_Logic}
 
 # TOPOLOGY
 
-- [Rule Lifecycle Guideline](./rule.md) :: The core standard for RLM.
+- [Rule Lifecycle Specification](./rule.md) :: The core standard for RLM.
 
 # CONSTRAINT
 

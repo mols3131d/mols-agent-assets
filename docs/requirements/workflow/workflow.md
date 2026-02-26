@@ -1,11 +1,11 @@
 ---
-title: Workflow Lifecycle Management Guideline
+title: Workflow Lifecycle Management Specification
 description: Standards for engineering, optimizing, and evaluating agentic workflows
 categories:
-  - guideline
+  - requirements
 draft: false
 date: 2026-02-27
-lastmod: 2026-02-26T21:36:36.944Z
+lastmod: 2026-02-26T22:05:42.194Z
 tags:
   - workflow-management
   - optimization
