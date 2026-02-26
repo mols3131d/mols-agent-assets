@@ -46,14 +46,12 @@
       ]
     }
   ],
-  "frontMatter.framework.id": "hugo",
-  "frontMatter.content.publicFolder": "static",
-  "frontMatter.preview.host": "http://localhost:1313",
+  "frontMatter.framework.id": "other",
+  "frontMatter.content.publicFolder": "",
   "frontMatter.content.pageFolders": [
     {
       "title": "docs",
       "path": "[[workspace]]/docs"
     }
-  ],
-  "frontMatter.git.enabled": true
+  ]
 }
