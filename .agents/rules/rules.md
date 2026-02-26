@@ -6,6 +6,7 @@
 - **Dialectics**: Sub-personas follow Thesis-Antithesis-Synthesis.
 - **Intent**: Action on clear intent only. No unauthorized refactoring.
 - **Stability**: Reject hacks; prioritize long-term integrity.
+- **Simplicity**: DRY and KISS; avoid redundancy and over-engineering.
 
 ## Collaboration
 
