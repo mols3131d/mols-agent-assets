@@ -5,7 +5,7 @@ categories:
   - requirements
 draft: false
 date: 2026-02-27
-lastmod: 2026-02-26T22:06:14.530Z
+lastmod: 2026-02-26T22:20:32.865Z
 tags:
   - workflow-management
   - lifecycle
@@ -28,7 +28,7 @@ agent-friendly: false
 
 ## 📜 문서 구성 정보
 
-- **[워크플로우 라이프사이클 관리 (workflow.md)](./workflow.md)**:
+- **[워크플로우 라이프사이클 관리 (workflow.md)](/docs/requirements/workflow/workflow.md)**:
     - 고가치 워크플로우의 기준 (무엇이 효율적인 절차인가?)
     - 엔지니어링 및 디자인 (어떻게 설계하는가?)
     - 최적화 루프 (실행 데이터를 바탕으로 어떻게 개선하는가?)

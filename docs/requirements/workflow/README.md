@@ -5,7 +5,7 @@ categories:
   - requirements
 draft: false
 date: 2026-02-27
-lastmod: 2026-02-26T22:05:50.262Z
+lastmod: 2026-02-26T22:20:37.767Z
 tags:
   - workflow-management
   - lifecycle
@@ -27,7 +27,7 @@ workflow_management ::= {Engineering_Standards | Optimization_Cycles | Performan
 
 # TOPOLOGY
 
-- [Workflow Lifecycle Specification](./workflow.md) :: The core standard for WLM.
+- [Workflow Lifecycle Specification](/docs/requirements/workflow/workflow.md) :: The core standard for WLM.
 
 # CONSTRAINT
 

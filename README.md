@@ -27,14 +27,14 @@ ACE_Asset ::= {Rule | Workflow | Protocol}
 
 # TOPOLOGY
 
-- .agents/ :: {Brain | OS} | Control_Plane | NOT_FOR_RESULT
-- studio/ :: {Factory | Showroom} | Production_Plane | FINAL_OUTPUTS_HERE
-- docs/ :: Governance_Conventions
-- templates/ :: Blueprint_Standards
-- tests/ :: Logical_QA_Protocols
-- scripts/ :: Automation_Utilities
+- **`/.agents/`**: {Brain | OS} | Control_Plane | NOT_FOR_RESULT
+- **`/studio/`**: {Factory | Showroom} | Production_Plane | FINAL_OUTPUTS_HERE
+- **`/docs/`**: Governance_Conventions
+- **`/templates/`**: Blueprint_Standards
+- **`/tests/`**: Logical_QA_Protocols
+- **`/scripts/`**: Automation_Utilities
 
 # CONSTRAINT
 
-- Adhere: .agents/rules/
+- Adhere: /.agents/rules/
 - Documentation: Dual-target (README.md [Ag] | README.ko.md [Hu])

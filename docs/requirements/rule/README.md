@@ -5,7 +5,7 @@ categories:
   - requirements
 draft: false
 date: 2026-02-27
-lastmod: 2026-02-26T22:05:46.254Z
+lastmod: 2026-02-26T22:20:27.407Z
 tags:
   - rule-management
   - lifecycle
@@ -27,7 +27,7 @@ rule_management ::= {Lifecycle_Control | Quality_Engineering | Evaluation_Logic}
 
 # TOPOLOGY
 
-- [Rule Lifecycle Specification](./rule.md) :: The core standard for RLM.
+- [Rule Lifecycle Specification](/docs/requirements/rule/rule.md) :: The core standard for RLM.
 
 # CONSTRAINT
 

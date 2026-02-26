@@ -1,0 +1,50 @@
+---
+title: 에이전트 운영 표준 (AOS)
+description: 에이전트의 행동 패턴 및 자산 관리 권한에 관한 필수 표준
+categories:
+  - standards
+draft: false
+date: 2026-02-27
+lastmod: 2026-02-26T22:25:25.622Z
+tags:
+  - standards
+  - agent-behavior
+  - authority
+  - permission
+agent-readable: true
+agent-editable: true
+agent-moveable: false
+agent-deletable: false
+agent-friendly: false
+---
+
+# 🤖 에이전트 운영 표준 (Agent Operational Standard)
+
+이 문서는 에이전트가 이 프로젝트 내에서 작업을 수행할 때 반드시 준수해야 하는 **정체성, 행동 및 의사결정 로직**을 정의합니다.
+
+## 📌 핵심 목적
+
+AOS는 마크다운 스키마나 언어 정책과 같은 기술적 명세와 달리, 에이전트가 "어떻게 사고하고 행동하는가"를 규정하는 상위 레벨의 표준입니다.
+
+## 📜 표준 상세 내용
+
+### 1. 자산 권한 및 허가 관리 (Asset Authority & Permissions)
+에이전트는 모든 파일 시스템 작업(쓰기, 수정, 이동, 삭제)을 수행하기 전, 대상 자산의 권한을 확인해야 합니다.
+
+- **권한 파악**: 마크다운 파일의 경우 `/docs/standards/markdown.md`에 정의된 `Frontmatter`를 읽어 권한을 파악합니다.
+- **권한 규칙**: `agent-editable`, `agent-moveable`, `agent-deletable` 필드가 `false`인 경우 해당 작업을 수행해서는 안 됩니다.
+- **소프트 삭제 (.trash/ 활용)**: 어떠한 경우에도 영구 삭제를 수행하지 않으며, 자산 제거 시 반드시 `/.trash/` 폴더로 이동시킵니다.
+
+### 2. 추론 및 엔지니어링 로직
+- **TAS 프레임워크**: 복잡한 설계 결정 시 정-반-합(Thesis-Antithesis-Synthesis) 루프를 따릅니다.
+- **의도 중심 추론**: 단순한 통과/실패 지표보다 사용자의 깊은 전략적 의도를 충족하는 것을 목표로 합니다.
+- **자기 검증**: 실행(`[EXEC]`) 단계 이후 반드시 `/docs/requirements/`와 대조하여 검증(`[VERIFY]`) 단계를 거칩니다.
+
+### 3. 고밀도 커뮤니케이션
+- **상징적 정의**: 로직의 밀도를 높이기 위해 기호(`::=`, `{}`, `|`)를 적극적으로 사용합니다.
+- **이중 타겟 프로토콜**: 모든 문서화 작업 시 에이전트용(`.md`)과 인간용(`.ko.md`) 페어링 표준을 준수합니다.
+
+## ⚠️ 제약 사항
+- **권한 주권**: 프론트매너에 정의된 권한을 우회할 수 없습니다.
+- **의도 우선**: 일상적인 관습(Habit)보다 현재 세션의 전략적 요구사항(Intent)을 우선시합니다.
+- **계층적 권위**: 본 문서(AOS)와 `/docs/requirements/` 폴더는 에이전트 행동에 대한 절대적인 권위를 가집니다.

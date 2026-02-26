@@ -5,7 +5,7 @@ categories:
   - docs
 draft: false
 date: 2026-02-27
-lastmod: 2026-02-26T22:05:14.124Z
+lastmod: 2026-02-26T22:21:02.032Z
 tags:
   - docs
   - governance
@@ -27,8 +27,9 @@ docs ::= {Governance | Methodology | Optimization_Knowledge}
 
 # TOPOLOGY
 
-- convention/ :: {Standards | Branding | Protocol_Patterns}
-- requirements/ :: {PRD | ORD | Execution_Specifications}
+- /docs/standards/ :: {Hard_Rules | Technical_Specs | Mandatory_Protocols}
+- /docs/convention/ :: {Established_Practices | Collaboration_Habits | Styles}
+- /docs/requirements/ :: {PRD | ORD | Execution_Specifications}
 
 # CONSTRAINT
 

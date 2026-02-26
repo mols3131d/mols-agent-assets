@@ -5,7 +5,7 @@ categories:
   - requirements
 draft: false
 date: 2026-02-27
-lastmod: 2026-02-26T22:05:54.314Z
+lastmod: 2026-02-26T22:20:22.158Z
 tags:
   - rule-management
   - lifecycle
@@ -28,7 +28,7 @@ agent-friendly: false
 
 ## 📜 문서 구성 정보
 
-- **[핵심 관리 표준 (rule.md)](./rule.md)**:
+- **[핵심 관리 표준 (rule.md)](/docs/requirements/rule/rule.md)**:
     - 엘리트 규칙의 정의 (무엇이 좋은 규칙인가?)
     - 규칙 엔지니어링 프로토콜 (어떻게 만드는가?)
     - 개선 및 진화 루프 (어떻게 발전시키는가?)
