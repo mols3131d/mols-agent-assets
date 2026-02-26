@@ -1,14 +1,11 @@
 ---
-title: "Workflow Name"
-description: "Brief summary of the target artifact and procedure"
-categories:
-  - requirements
+title: "Flow_T"
+description: "Proc_Sync"
+categories: ["requirements"]
 draft: true
 date: 2026-02-27
-lastmod: 2026-02-27
-tags:
-  - workflow
-  - wlm
+lastmod: ISO-8601
+tags: ["workflow", "wlm"]
 agent-readable: true
 agent-editable: true
 agent-moveable: false
@@ -18,27 +15,21 @@ agent-friendly: true
 
 # SYNOPSIS
 
-Workflow_Process ::= {SCAN | PLAN | EXEC | VERIFY}
+Flow ::= SCAN -> PLAN -> EXEC -> VERIFY
 
-# STEPS (WLM)
+# FLOW (WLM)
 
-## 1. [SCAN]
-- Environment and state reconnaissance. Identify the current delta.
-
-## 2. [PLAN]
-- Strategy synthesis. Explicitly link to @rules and requirements.
-
-## 3. [EXEC]
-- Actual mutation or creation of assets. Focus on precision.
-
-## 4. [VERIFY]
-- Quality assurance. Check against requirements and standards.
+- **[SCAN]**: State_Detect {Delta | Env}
+- **[PLAN]**: Logic_Synth {Reference_Docs | Goal}
+- **[EXEC]**: Asset_Mutation {Precision | Atomicity}
+- **[VERIFY]**: Logic_Check {Requirements | Standards}
 
 # REFERENCE DOCUMENTS
 
-- [/docs/requirements/workflow/workflow.md](/docs/requirements/workflow/workflow.md) :: Workflow Lifecycle Management (WLM)
-- [/docs/standards/agent.md](/docs/standards/agent.md) :: Agent Operational Standard (AOS)
+- [/docs/requirements/workflow/workflow.md](/docs/requirements/workflow/workflow.md) :: WLM
+- [/docs/standards/agent.md](/docs/standards/agent.md) :: AOS
 
 # CONSTRAINT
 
-- Strict adherence to the operational protocols defined in the **REFERENCE DOCUMENTS**.
+- Adhere: **REFERENCE DOCUMENTS**
+- Sync: Maintain DPS pair

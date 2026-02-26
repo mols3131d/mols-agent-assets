@@ -1,13 +1,11 @@
 ---
-title: "Document Title"
-description: "Brief summary of the document (Mandatory)"
-categories:
-  - standards
+title: "Doc_T"
+description: "Intent_Sync"
+categories: ["standards"]
 draft: true
 date: 2026-02-27
-lastmod: 2026-02-27
-tags:
-  - template
+lastmod: ISO-8601
+tags: ["template"]
 agent-readable: true
 agent-editable: true
 agent-moveable: false
@@ -17,26 +15,21 @@ agent-friendly: true
 
 # SYNOPSIS
 
-Asset_Name ::= {Component_1 | Component_2 | Component_3}
+Asset ::= {Purpose | Specification}
 
-# OBJECTIVE
+# SPEC
 
-Describe the core purpose and intent of this document using logic-dense language.
-
-# STANDARDS / REQUIREMENTS
-
-## 1. Specification Alpha
-- Detail the technical or behavioral requirements here.
-
-## 2. Specification Beta
-- Use symbolic markers where appropriate to optimize for Agent cognition.
+- **Purpose**: {Strategic_Intent | Logic_Boundary}
+- **Rules**:
+  - `R0`: [Directive_A]
+  - `R1`: [Directive_B]
 
 # REFERENCE DOCUMENTS
 
-- [/docs/standards/agent.md](/docs/standards/agent.md) :: Agent Operational Standard (AOS)
-- [/docs/standards/markdown.md](/docs/standards/markdown.md) :: Markdown & Link Standard
-- [/docs/standards/document.md](/docs/standards/document.md) :: Documentation Pairing Standard (DPS)
+- [/docs/standards/agent.md](/docs/standards/agent.md) :: AOS
+- [/docs/standards/markdown.md](/docs/standards/markdown.md) :: MDS
+- [/docs/standards/document.md](/docs/standards/document.md) :: DPS
 
 # CONSTRAINT
 
-- Absolute compliance with all policies defined in the **REFERENCE DOCUMENTS** section.
+- Adhere: **REFERENCE DOCUMENTS**

@@ -1,14 +1,11 @@
 ---
-title: "Rule Name"
-description: "Brief summary of the rule's boundary and intent"
-categories:
-  - requirements
+title: "Rule_T"
+description: "Logic_Bound"
+categories: ["requirements"]
 draft: true
 date: 2026-02-27
-lastmod: 2026-02-27
-tags:
-  - rule
-  - rlm
+lastmod: ISO-8601
+tags: ["rule", "rlm"]
 agent-readable: true
 agent-editable: true
 agent-moveable: false
@@ -18,24 +15,21 @@ agent-friendly: true
 
 # SYNOPSIS
 
-Rule_Logic ::= {Trigger | Precision_Constraint | Actionable_Directive}
+Rule ::= {Context | Logic | Metric}
 
-# STANDARDS (RLM)
+# LOGIC (RLM)
 
-## 1. Trigger / Scope
-- Define when this rule becomes active.
-
-## 2. Core Constraints
-- List the mandatory boundaries the Agent must not cross.
-
-## 3. Evaluation Metrics
-- How will this rule's adherence be measured?
+- **Context**: [Status_Active_When]
+- **Directives**:
+  - `D0`: [Mandatory_Boundary]
+  - `D1`: [Forbidden_Action]
+- **Metric**: {Accuracy | Compliance}
 
 # REFERENCE DOCUMENTS
 
-- [/docs/requirements/rule/rule.md](/docs/requirements/rule/rule.md) :: Rule Lifecycle Management (RLM)
-- [/docs/standards/agent.md](/docs/standards/agent.md) :: Agent Operational Standard (AOS)
+- [/docs/requirements/rule/rule.md](/docs/requirements/rule/rule.md) :: RLM
+- [/docs/standards/agent.md](/docs/standards/agent.md) :: AOS
 
 # CONSTRAINT
 
-- Absolute compliance with all specifications and governance protocols defined in the **REFERENCE DOCUMENTS**.
+- Adhere: **REFERENCE DOCUMENTS**

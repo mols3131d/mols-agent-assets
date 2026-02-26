@@ -1,6 +1,6 @@
 ---
-title: "Templates Root"
-description: "Standard blueprints for consistent document and rule creation"
+title: "Templates_Root"
+description: "Blueprint_Hub"
 categories: ["templates"]
 draft: false
 date: 2026-02-27
@@ -15,15 +15,15 @@ agent-friendly: true
 
 # SYNOPSIS
 
-templates ::= {Markdown_Blueprints | Rule_Blueprints | Workflow_Blueprints}
+templates ::= {Doc | Rule | Flow}
 
 # TOPOLOGY
 
-- /templates/doc.md :: Standard knowledge/standard blueprint.
-- /templates/rule.md :: Agentic rule (RLM) blueprint.
-- /templates/workflow.md :: Agentic workflow (WLM) blueprint.
+- /templates/doc.md :: Knowledge/Standard
+- /templates/rule.md :: RLM_Asset
+- /templates/workflow.md :: WLM_Asset
 
 # CONSTRAINT
 
-- Compliance: All new ACE assets MUST derive from these templates.
-- Pairing: Adhere to DPS policy (/docs/standards/document.md).
+- Compliance: **Mandatory**
+- Pattern: Dual-Target (DPS)
