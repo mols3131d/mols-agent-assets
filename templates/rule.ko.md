@@ -34,8 +34,8 @@ agent-friendly: false
 
 ## 📚 참고 문서
 
-- [/docs/requirements/rule/rule.md](/docs/requirements/rule/rule.md) :: 규칙 라이프사이클 관리 (RLM)
-- [/docs/standards/agent.md](/docs/standards/agent.md) :: 에이전트 운영 표준 (AOS)
+- [규칙 라이프사이클 관리](/docs/requirements/rule/rule.md)
+- [에이전트 운영 표준](/docs/standards/agent.md)
 
 ## ⚠️ 제약 사항
 

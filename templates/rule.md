@@ -1,6 +1,6 @@
 ---
-title: "Rule_T"
-description: "Logic_Bound"
+title: "Rule-T"
+description: "Logic-Bound"
 categories: ["requirements"]
 draft: true
 date: 2026-02-27
@@ -19,16 +19,16 @@ Rule ::= {Context | Logic | Metric}
 
 # LOGIC (RLM)
 
-- **Context**: [Status_Active_When]
+- **Context-Trigger**: [Activate-When-Condition]
 - **Directives**:
-  - `D0`: [Mandatory_Boundary]
-  - `D1`: [Forbidden_Action]
+  - `D0`: [Mandatory-Boundary]
+  - `D1`: [Forbidden-Action]
 - **Metric**: {Accuracy | Compliance}
 
 # REFERENCE DOCUMENTS
 
-- [/docs/requirements/rule/rule.md](/docs/requirements/rule/rule.md) :: RLM
-- [/docs/standards/agent.md](/docs/standards/agent.md) :: AOS
+- [Rule-Lifecycle-Management](/docs/requirements/rule/rule.md)
+- [Agent-Operational-Standard](/docs/standards/agent.md)
 
 # CONSTRAINT
 

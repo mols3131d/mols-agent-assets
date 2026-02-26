@@ -32,9 +32,9 @@ agent-friendly: false
 
 ## 📚 참고 문서
 
-- [/docs/standards/agent.md](/docs/standards/agent.md) :: 에이전트 운영 표준 (AOS)
-- [/docs/standards/markdown.md](/docs/standards/markdown.md) :: 마크다운 및 링크 표준
-- [/docs/standards/document.md](/docs/standards/document.md) :: 문서 이중화 표준 (DPS)
+- [에이전트 운영 표준](/docs/standards/agent.md)
+- [마크다운 및 링크 표준](/docs/standards/markdown.md)
+- [문서 이중화 표준](/docs/standards/document.md)
 
 ## ⚠️ 제약 사항
 

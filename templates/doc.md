@@ -1,6 +1,6 @@
 ---
-title: "Doc_T"
-description: "Intent_Sync"
+title: "Doc-T"
+description: "Intent-Sync"
 categories: ["standards"]
 draft: true
 date: 2026-02-27
@@ -17,18 +17,18 @@ agent-friendly: true
 
 Asset ::= {Purpose | Specification}
 
-# SPEC
+# PROTOCOL
 
-- **Purpose**: {Strategic_Intent | Logic_Boundary}
-- **Rules**:
-  - `R0`: [Directive_A]
-  - `R1`: [Directive_B]
+- **Objective**: {Logic-First | Intent-Driven | Outcome-Oriented}
+- **Specifications**:
+  - `Prop-0`: [Constraint-Definition]
+  - `Prop-1`: [Behavioral-Expectation]
 
 # REFERENCE DOCUMENTS
 
-- [/docs/standards/agent.md](/docs/standards/agent.md) :: AOS
-- [/docs/standards/markdown.md](/docs/standards/markdown.md) :: MDS
-- [/docs/standards/document.md](/docs/standards/document.md) :: DPS
+- [Agent-Operational-Standard](/docs/standards/agent.md)
+- [Markdown-Link-Standard](/docs/standards/markdown.md)
+- [Documentation-Pairing-Standard](/docs/standards/document.md)
 
 # CONSTRAINT
 

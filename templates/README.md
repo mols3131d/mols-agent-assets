@@ -1,6 +1,6 @@
 ---
-title: "Templates_Root"
-description: "Blueprint_Hub"
+title: "Templates-Root"
+description: "Blueprint-Hub"
 categories: ["templates"]
 draft: false
 date: 2026-02-27
@@ -19,9 +19,9 @@ templates ::= {Doc | Rule | Flow}
 
 # TOPOLOGY
 
-- /templates/doc.md :: Knowledge/Standard
-- /templates/rule.md :: RLM_Asset
-- /templates/workflow.md :: WLM_Asset
+- /templates/doc.md :: Knowledge-Standard
+- /templates/rule.md :: RLM-Asset
+- /templates/workflow.md :: WLM-Asset
 
 # CONSTRAINT
 

@@ -1,6 +1,6 @@
 ---
-title: "Flow_T"
-description: "Proc_Sync"
+title: "Flow-T"
+description: "Proc-Sync"
 categories: ["requirements"]
 draft: true
 date: 2026-02-27
@@ -19,15 +19,15 @@ Flow ::= SCAN -> PLAN -> EXEC -> VERIFY
 
 # FLOW (WLM)
 
-- **[SCAN]**: State_Detect {Delta | Env}
-- **[PLAN]**: Logic_Synth {Reference_Docs | Goal}
-- **[EXEC]**: Asset_Mutation {Precision | Atomicity}
-- **[VERIFY]**: Logic_Check {Requirements | Standards}
+- **[SCAN]**: State-Detect {Delta | Env}
+- **[PLAN]**: Logic-Synth {Reference-Docs | Goal}
+- **[EXEC]**: Asset-Mutation {Precision | Atomicity}
+- **[VERIFY]**: Logic-Check {Requirements | Standards}
 
 # REFERENCE DOCUMENTS
 
-- [/docs/requirements/workflow/workflow.md](/docs/requirements/workflow/workflow.md) :: WLM
-- [/docs/standards/agent.md](/docs/standards/agent.md) :: AOS
+- [Workflow-Lifecycle-Management](/docs/requirements/workflow/workflow.md)
+- [Agent-Operational-Standard](/docs/standards/agent.md)
 
 # CONSTRAINT
 
