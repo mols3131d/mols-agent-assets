@@ -28,8 +28,9 @@ docs ::= {Governance | Methodology | Optimization_Knowledge}
 # TOPOLOGY
 
 - convention/ :: {Standards | Branding | Protocol_Patterns}
+- guideline/ :: {Implementation | Tactics | Execution_Standards}
 
 # CONSTRAINT
 
 - Reference: .agents/rules/
-- Format: Dual-target (README.md [Ag] | README-KR.md [Hu])
+- Format: Dual-target (README.md [Ag] | README.ko.md [Hu])

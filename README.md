@@ -15,12 +15,15 @@ agent-friendly: true
 
 # SYNOPSIS
 
-mols-agent ::= {Engine | Workspace} for {Asset_Management | Creation | Improvement | Evaluation}
+mols-agent ::= {Engine | Workspace} for **Agent_Context_Engineering (ACE)**
+
+ACE_Asset ::= {Rule | Workflow | Protocol}
 
 # PROTOCOL
 
-- Beyond_Storage: Active lifecycle management for {rules | workflows | assets}
-- Asset_Sovereignty: Efficient orchestration of agent-centric protocols
+- **Asset_Lifecycle**: Active {Creation | Management | Improvement | Evaluation} of ACE_Assets.
+- **Beyond_Storage**: We engineered the intelligence of agents, not just archiving their files.
+- **Context_Sovereignty**: Professional orchestration of high-density agentic protocols.
 
 # TOPOLOGY
 
@@ -34,4 +37,4 @@ mols-agent ::= {Engine | Workspace} for {Asset_Management | Creation | Improveme
 # CONSTRAINT
 
 - Adhere: .agents/rules/
-- Documentation: Dual-target (README.md [Ag] | README-KR.md [Hu])
+- Documentation: Dual-target (README.md [Ag] | README.ko.md [Hu])

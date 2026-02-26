@@ -53,5 +53,8 @@
       "title": "docs",
       "path": "[[workspace]]/docs"
     }
+  ],
+  "frontMatter.extends": [
+    "./.frontmatter/frontmatter.json"
   ]
 }

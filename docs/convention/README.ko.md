@@ -5,7 +5,7 @@ categories:
   - convention
 draft: false
 date: 2026-02-27
-lastmod: 2026-02-26T18:21:58.441Z
+lastmod: 2026-02-26T21:49:42.680Z
 tags:
   - convention
   - readme
@@ -24,10 +24,11 @@ agent-friendly: false
 ## 규칙
 
 - `README.md`는 에이전트가 읽기 쉽도록 영어로 작성.
-- `README-<ISO 639-1>.md`는 인간이 읽기 쉽도록 해당 언어로 작성.
-- `README.md`와 `README-<ISO 639-1>.md`는 반드시 쌍으로 존재.
+- `README.<lang>.md`는 인간이 읽기 쉽도록 해당 언어로 작성.
+- `README.md`와 `README.<lang>.md`는 반드시 쌍으로 존재.
+- `<lang>`은 `ISO 639-1`을 따른다. 소문자로 작성한다.
 
 ## 파일 이름
 
 - `README.md` : 에이전트 친화적 (영어, 토큰 최적화)
-- `README-<ISO 639-1>.md` : 인간 친화적
+- `README.<lang>.md` : 인간 친화적

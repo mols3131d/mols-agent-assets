@@ -32,4 +32,4 @@ outputs ::= {Final_Assets | Verified_Protocols}
 
 # CONSTRAINT
 
-- Format: Dual-target (README.md [Ag] | README-KR.md [Hu])
+- Format: Dual-target (README.md [Ag] | README.ko.md [Hu])

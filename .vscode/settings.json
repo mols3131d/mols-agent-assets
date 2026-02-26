@@ -1,5 +1,1 @@
-{
-    "frontMatter.extends": [
-        "./.frontmatter/frontmatter.json"
-    ]
-}
+{}

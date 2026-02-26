@@ -5,7 +5,7 @@ categories:
   - docs
 draft: false
 date: 2026-02-27
-lastmod: 2026-02-26T18:21:49.374Z
+lastmod: 2026-02-26T21:32:29.417Z
 tags:
   - docs
   - governance
@@ -30,5 +30,6 @@ agent-friendly: false
 ## 📂 주요 구조 (1st Level)
 
 - **`convention/`**: 네이밍 방식, 마크다운 형식 등 프로젝트의 기본 약속(표준) 정의
+- **`guideline/`**: 실제 작업을 위한 구체적인 지침 및 절차(Rule, Workflow) 정의
 
 _이곳에 쌓이는 모든 문서는 에이전트의 'OS'인 `.agents`를 더 강력하게 만들고, `studio`에서의 창작 결과물을 더 가치 있게 만드는 밑거름이 됩니다._

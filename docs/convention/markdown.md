@@ -5,7 +5,7 @@ categories:
   - convention
 draft: false
 date: 2026-02-26
-lastmod: 2026-02-26T18:26:27.664Z
+lastmod: 2026-02-26T21:08:43.161Z
 tags:
   - markdown
   - convention
@@ -18,7 +18,7 @@ agent-friendly: false
 
 # 마크다운 관행
 
-MOLS Agent 프로젝트의 마크다운 문서 작성 표준을 정의합니다.
+MOLS Agent 프로젝트의 마크다운 문서 작성 표준을 정의합니다.# 
 
 ## Frontmatter
 
@@ -60,3 +60,8 @@ agent-friendly: false
 - **`agent-moveable`**: 에이전트가 이 문서의 파일 위치를 변경할 수 있는지 여부입니다.
 - **`agent-deletable`**: 에이전트가 이 문서를 삭제할 수 있는지 여부입니다.
 - **`agent-friendly`**: 이 문서가 토큰 최적화 등 에이전트가 이해하기 특별히 좋은 구조로 작성되었는지 여부입니다.
+
+
+## Link
+
+- 링크는 워크스페이스의 루트를 기준으로 적는다. - `/<dir1>/.../<file>`
