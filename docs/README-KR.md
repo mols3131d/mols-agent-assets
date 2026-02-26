@@ -1,10 +1,15 @@
 ---
-title: "프로젝트 문서화"
-type: "doc"
-description: "더 나은 작업과 효율적인 운영을 위한 지식 베이스"
-created: 2026-02-27
-updated: 2026-02-27
-tags: ["docs", "governance", "methodology"]
+title: 프로젝트 문서화
+description: 더 나은 작업과 효율적인 운영을 위한 지식 베이스
+categories:
+  - docs
+draft: false
+date: 2026-02-27
+lastmod: 2026-02-26T18:21:49.374Z
+tags:
+  - docs
+  - governance
+  - methodology
 agent-readable: true
 agent-editable: true
 agent-moveable: false

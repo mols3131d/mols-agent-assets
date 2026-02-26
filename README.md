@@ -1,9 +1,10 @@
 ---
 title: "mols-agent Root"
-type: "doc"
 description: "High-density workspace for agentic asset lifecycle"
-created: 2026-02-27
-updated: 2026-02-27
+categories: ["workspace"]
+draft: false
+date: 2026-02-27
+lastmod: 2026-02-27
 tags: ["root", "workspace"]
 agent-readable: true
 agent-editable: true

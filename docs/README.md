@@ -1,10 +1,14 @@
 ---
-title: "Docs Root"
-type: "doc"
-description: "Governance and methodology knowledge base"
-created: 2026-02-27
-updated: 2026-02-27
-tags: ["docs", "governance"]
+title: Docs Root
+description: Governance and methodology knowledge base
+categories:
+  - docs
+draft: false
+date: 2026-02-27
+lastmod: 2026-02-26T18:21:47.367Z
+tags:
+  - docs
+  - governance
 agent-readable: true
 agent-editable: true
 agent-moveable: false

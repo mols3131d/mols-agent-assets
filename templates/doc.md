@@ -1,9 +1,10 @@
 ---
 title: "template"
-type: "doc" # ("doc", "readme", "agent-rule", "agent-workflow")
 description: ""
-created:
-updated:
+categories: ["category"]
+draft: false
+date: 2026-02-27
+lastmod: 2026-02-27
 tags: []
 agent-readable: true
 agent-editable: false

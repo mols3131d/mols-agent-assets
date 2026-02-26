@@ -1,14 +1,19 @@
 ---
 title: "Project Outputs Root"
-type: "doc"
 description: "Categorized final assets showroom"
-created: 2026-02-27
-updated: 2026-02-27
+categories: ["assets"]
+draft: false
+date: 2026-02-27
+lastmod: 2026-02-27
+tags: ["outputs", "assets"]
+# === agent 관련 ===
 agent-readable: true
+# === === agent-readable이 true일 때만 의미가 있음 === ===
 agent-editable: true
 agent-moveable: false
 agent-deletable: false
 agent-friendly: true
+# ===
 ---
 
 # SYNOPSIS

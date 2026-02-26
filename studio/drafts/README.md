@@ -1,15 +1,19 @@
 ---
 title: "Drafts Workspace"
-type: "doc"
 description: "Creation and improvement phase for new assets"
-created: 2026-02-27
-updated: 2026-02-27
+categories: ["studio"]
+draft: false
+date: 2026-02-27
+lastmod: 2026-02-27
 tags: ["studio", "drafts"]
+# === agent 관련 ===
 agent-readable: true
+# === === agent-readable이 true일 때만 의미가 있음 === ===
 agent-editable: true
 agent-moveable: false
 agent-deletable: false
 agent-friendly: true
+# ===
 ---
 
 # 📝 Drafts

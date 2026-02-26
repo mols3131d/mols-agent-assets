@@ -1,10 +1,14 @@
 ---
-title: "README 관행"
-type: "doc"
-description: "README 작성 관행을 설명하는 문서"
-created: 2026-02-27
-updated: 2026-02-27
-tags: ["convention", "readme"]
+title: README 관행
+description: README 작성 관행을 설명하는 문서
+categories:
+  - convention
+draft: false
+date: 2026-02-27
+lastmod: 2026-02-26T18:21:58.441Z
+tags:
+  - convention
+  - readme
 agent-readable: true
 agent-editable: true
 agent-moveable: false

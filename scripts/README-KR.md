@@ -1,15 +1,19 @@
 ---
 title: "유틸리티 스크립트"
-type: "doc"
 description: "자동화 및 환경 관리 스크립트"
-created: 2026-02-27
-updated: 2026-02-27
+categories: ["scripts"]
+draft: false
+date: 2026-02-27
+lastmod: 2026-02-27
 tags: ["scripts", "automation"]
+# === agent 관련 ===
 agent-readable: true
+# === === agent-readable이 true일 때만 의미가 있음 === ===
 agent-editable: true
 agent-moveable: false
 agent-deletable: false
 agent-friendly: false
+# ===
 ---
 
 # Scripts

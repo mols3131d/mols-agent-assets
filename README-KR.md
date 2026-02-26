@@ -1,9 +1,10 @@
 ---
 title: "mols-agent 루트 리드미"
-type: "doc"
 description: "에이전트 자산 관리 및 개발을 위한 능동적인 작업 공간"
-created: 2026-02-27
-updated: 2026-02-27
+categories: ["workspace"]
+draft: false
+date: 2026-02-27
+lastmod: 2026-02-27
 tags: ["root", "workspace"]
 agent-readable: true
 agent-editable: true

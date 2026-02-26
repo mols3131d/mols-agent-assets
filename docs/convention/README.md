@@ -1,10 +1,14 @@
 ---
-title: "README Protocol"
-type: "doc"
-description: "Dual-target README specification"
-created: 2026-02-27
-updated: 2026-02-27
-tags: ["convention", "readme"]
+title: README Protocol
+description: Dual-target README specification
+categories:
+  - convention
+draft: false
+date: 2026-02-27
+lastmod: 2026-02-26T18:21:56.425Z
+tags:
+  - convention
+  - readme
 agent-readable: true
 agent-editable: true
 agent-moveable: false
