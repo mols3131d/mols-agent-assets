@@ -22,7 +22,7 @@ agent-friendly: false
 
 ## 📌 핵심 목적
 
-이 규칙이 에이전트의 판단에 어떤 영향을 미치는지, 어떤 실패 사례를 방지하기 위해 존재하는지 설명합니다.
+이 규칙이 에이전트의 판단에 어떤 영향을 미치는지 구체적인 상황과 함께 설명합니다.
 
 ## 📜 상세 명세 (RLM)
 
@@ -35,11 +35,12 @@ agent-friendly: false
 ### 3. 성공 기준
 - 이 규칙이 준수되었을 때 나타나는 결과물의 품질을 정의합니다.
 
-## 📚 참고 문헌
+## 📚 참고 문서
 
-- **규칙 관리 명세 (RLM)**: [/docs/requirements/rule/rule.md](/docs/requirements/rule/rule.md)
-- **에이전트 운영 표준**: [/docs/standards/agent.md](/docs/standards/agent.md)
+- [/docs/requirements/rule/rule.md](/docs/requirements/rule/rule.md) :: 규칙 라이프사이클 관리 (RLM)
+- [/docs/standards/agent.md](/docs/standards/agent.md) :: 에이전트 운영 표준 (AOS)
 
 ## ⚠️ 제약 사항
 
+- 본 규칙은 **참고 문서**의 관리 체계와 운영 표준을 엄격히 준수합니다.
 - **최종 권위**: 논리적 상세 사항은 항상 대응되는 영어 명세(`.md`)를 따릅니다.

@@ -31,13 +31,13 @@ Describe the core purpose and intent of this document using logic-dense language
 ## 2. Specification Beta
 - Use symbolic markers where appropriate to optimize for Agent cognition.
 
-# REFERENCE
+# REFERENCE DOCUMENTS
 
-- **Behavior**: [/docs/standards/agent.md](/docs/standards/agent.md)
-- **Formatting**: [/docs/standards/markdown.md](/docs/standards/markdown.md)
-- **Pairing**: [/docs/standards/document.md](/docs/standards/document.md)
+- [/docs/standards/agent.md](/docs/standards/agent.md) :: Agent Operational Standard (AOS)
+- [/docs/standards/markdown.md](/docs/standards/markdown.md) :: Markdown & Link Standard
+- [/docs/standards/document.md](/docs/standards/document.md) :: Documentation Pairing Standard (DPS)
 
 # CONSTRAINT
 
-- Adhere: /docs/standards/agent.md
-- Pairing: Required (/docs/standards/document.md)
+- All operations must strictly adhere to the policies defined in the **REFERENCE DOCUMENTS** section above.
+- **Pairing**: Mandatory synchronization with `.ko.md` per DPS.

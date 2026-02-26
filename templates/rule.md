@@ -31,12 +31,12 @@ Rule_Logic ::= {Trigger | Precision_Constraint | Actionable_Directive}
 ## 3. Evaluation Metrics
 - How will this rule's adherence be measured?
 
-# REFERENCE
+# REFERENCE DOCUMENTS
 
-- **Rule Lifecycle (RLM)**: [/docs/requirements/rule/rule.md](/docs/requirements/rule/rule.md)
-- **Operational Standard**: [/docs/standards/agent.md](/docs/standards/agent.md)
+- [/docs/requirements/rule/rule.md](/docs/requirements/rule/rule.md) :: Rule Lifecycle Management (RLM)
+- [/docs/standards/agent.md](/docs/standards/agent.md) :: Agent Operational Standard (AOS)
 
 # CONSTRAINT
 
-- Logic_Density: Adhere to /docs/requirements/rule/rule.md
-- Base: /docs/standards/agent.md
+- **Integrity**: Adhere to all specifications defined in the **REFERENCE DOCUMENTS**.
+- **Density**: Maximize logic density as per RLM standard.

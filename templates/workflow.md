@@ -32,14 +32,14 @@ Workflow_Process ::= {SCAN | PLAN | EXEC | VERIFY}
 - Actual mutation or creation of assets. Focus on precision.
 
 ## 4. [VERIFY]
-- Quality assurance. Check against /docs/requirements/ and /docs/standards/.
+- Quality assurance. Check against requirements and standards.
 
-# REFERENCE
+# REFERENCE DOCUMENTS
 
-- **Workflow Lifecycle (WLM)**: [/docs/requirements/workflow/workflow.md](/docs/requirements/workflow/workflow.md)
-- **Operational Standard**: [/docs/standards/agent.md](/docs/standards/agent.md)
+- [/docs/requirements/workflow/workflow.md](/docs/requirements/workflow/workflow.md) :: Workflow Lifecycle Management (WLM)
+- [/docs/standards/agent.md](/docs/standards/agent.md) :: Agent Operational Standard (AOS)
 
 # CONSTRAINT
 
-- Standardization: Adhere to /docs/requirements/workflow/workflow.md
-- Turbo: Use // turbo sparingly for stable steps.
+- **Protocol**: Mandatorily follow the WLM protocol linked in **REFERENCE DOCUMENTS**.
+- **Turbo**: Use `// turbo` sparingly only for safe, routine steps.
