@@ -2,14 +2,14 @@
 title: 관행 가이드라인 (Convention)
 description: 프로젝트의 작업 습관, 관행 및 스타일 선호도
 categories:
-  - convention
+    - convention
 draft: false
 date: 2026-02-27
-lastmod: 2026-02-27
+lastmod: 2026-02-26T22:27:31.606Z
 tags:
-  - convention
-  - practice
-  - habit
+    - convention
+    - practice
+    - habit
 agent-readable: true
 agent-editable: true
 agent-moveable: false
