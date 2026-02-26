@@ -5,7 +5,7 @@ categories:
   - standards
 draft: false
 date: 2026-02-27
-lastmod: 2026-02-26T22:24:22.019Z
+lastmod: 2026-02-26T22:43:41.377Z
 tags:
   - standards
   - protocol
@@ -33,5 +33,9 @@ agent-friendly: false
 - **`/docs/standards/markdown.md`**: Frontmatter 스키마 및 링크 프로토콜 명세
 - **`/docs/standards/agent.md`**: 에이전트의 행동 및 응답 패턴 표준
 - **`/docs/standards/document.md`**: 모든 문서에 대한 에이전트/인간 이중 타겟 페어링 표준(DPS)
+
+## ⚠️ 제약 사항
+
+- **구성**: 모든 새로운 문서와 표준은 반드시 **[`/templates/`](/templates/README.ko.md)**의 설계도를 기반으로 작성되어야 합니다.
 
 _우리는 표준을 준수함으로써 협업의 마찰을 줄이고, 기계와 인간 모두가 신뢰할 수 있는 데이터를 생산합니다._

@@ -5,7 +5,7 @@ categories:
   - standards
 draft: false
 date: 2026-02-27
-lastmod: 2026-02-27
+lastmod: 2026-02-26T22:43:37.327Z
 tags:
   - standards
   - documentation
@@ -53,3 +53,4 @@ agent-friendly: false
 ## ⚠️ 제약 사항
 - **우선 순위**: 논리적 충돌이 발생할 경우, 에이전트 타겟 파일(`.md`)의 명세가 최종 권위를 가집니다.
 - **표준 준수**: 모든 페어 문서는 `/docs/standards/markdown.md`에 정의된 형식을 따라야 합니다.
+- **설계도 활용**: 새로운 문서를 생성할 때는 반드시 **[`/templates/`](/templates/README.ko.md)**에 정의된 표준 템플릿을 활용하십시오.

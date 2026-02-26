@@ -53,3 +53,4 @@ Every discrete knowledge or requirement document MUST exist as a synchronized pa
 # CONSTRAINT
 - **Primary Source**: In case of logical conflict, the Agent-Target (`.md`) is the final authority.
 - **Format Compliance**: All pairs must follow the layout defined in `/docs/standards/markdown.md`.
+- **Blueprints**: Use the standardized templates in **[`/templates/`](/templates/README.md)** for initializing new pairs.

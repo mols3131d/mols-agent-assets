@@ -5,7 +5,7 @@ categories:
   - standards
 draft: false
 date: 2026-02-27
-lastmod: 2026-02-26T22:20:43.568Z
+lastmod: 2026-02-26T22:43:39.350Z
 tags:
   - standards
   - protocol
@@ -36,3 +36,4 @@ standards ::= {Hard_Rules | Technical_Specs | Mandatory_Protocols}
 # CONSTRAINT
 
 - Type: Multi-target (README.md [Ag] | README.ko.md [Hu])
+- Implementation: Derive all new documents from **[`/templates/`](/templates/README.md)**.
