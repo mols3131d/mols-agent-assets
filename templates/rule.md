@@ -38,5 +38,4 @@ Rule_Logic ::= {Trigger | Precision_Constraint | Actionable_Directive}
 
 # CONSTRAINT
 
-- **Integrity**: Adhere to all specifications defined in the **REFERENCE DOCUMENTS**.
-- **Density**: Maximize logic density as per RLM standard.
+- Absolute compliance with all specifications and governance protocols defined in the **REFERENCE DOCUMENTS**.

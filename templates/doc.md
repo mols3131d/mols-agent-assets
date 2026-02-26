@@ -39,5 +39,4 @@ Describe the core purpose and intent of this document using logic-dense language
 
 # CONSTRAINT
 
-- All operations must strictly adhere to the policies defined in the **REFERENCE DOCUMENTS** section above.
-- **Pairing**: Mandatory synchronization with `.ko.md` per DPS.
+- Absolute compliance with all policies defined in the **REFERENCE DOCUMENTS** section.

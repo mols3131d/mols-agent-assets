@@ -41,5 +41,4 @@ Workflow_Process ::= {SCAN | PLAN | EXEC | VERIFY}
 
 # CONSTRAINT
 
-- **Protocol**: Mandatorily follow the WLM protocol linked in **REFERENCE DOCUMENTS**.
-- **Turbo**: Use `// turbo` sparingly only for safe, routine steps.
+- Strict adherence to the operational protocols defined in the **REFERENCE DOCUMENTS**.
