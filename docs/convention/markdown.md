@@ -1,10 +1,11 @@
 ---
-title: "마크다운 관행"
-type: "doc"
-description: "MOLS Agent의 마크다운 사용 규칙"
-created: 2026-02-27
-updated: 2026-02-27
-tags: ["convention", "markdown"]
+title: 마크다운 관행
+description: MOLS Agent의 마크다운 사용 규칙
+date: 2026-02-26
+lastmod: 2026-02-26T17:51:07.890Z
+tags:
+    - markdown
+    - convention
 agent-readable: true
 agent-editable: true
 agent-moveable: false
@@ -18,13 +19,16 @@ agent-friendly: false
 
 ## Frontmatter
 
+- Hugo의 Frontmatter를 따름.
+- 거기에, agent관련 필드를 추가.
+
 ```yaml
 ---
 title: "Title"
 type: "doc" # 문서의 종류 ("", "doc", "agent-rule", "agent-workflow")
 description: "문서의 설명" # 250자 이내
-created: YYYY-MM-DD # 문서의 생성일
-updated: YYYY-MM-DD # 문서의 수정일
+date: YYYY-MM-DD # 문서의 생성일
+lastmod: YYYY-MM-DD # 문서의 수정일
 tags: ["tag1", "tag2", ...]
 # === agent 관련 ===
 agent-readable: true # bool, 에이전트가 읽을 수 있는지 여부
