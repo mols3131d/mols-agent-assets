@@ -31,6 +31,12 @@ Describe the core purpose and intent of this document using logic-dense language
 ## 2. Specification Beta
 - Use symbolic markers where appropriate to optimize for Agent cognition.
 
+# REFERENCE
+
+- **Behavior**: [/docs/standards/agent.md](/docs/standards/agent.md)
+- **Formatting**: [/docs/standards/markdown.md](/docs/standards/markdown.md)
+- **Pairing**: [/docs/standards/document.md](/docs/standards/document.md)
+
 # CONSTRAINT
 
 - Adhere: /docs/standards/agent.md

@@ -35,6 +35,11 @@ agent-friendly: false
 ### 3. 성공 기준
 - 이 규칙이 준수되었을 때 나타나는 결과물의 품질을 정의합니다.
 
+## 📚 참고 문헌
+
+- **규칙 관리 명세 (RLM)**: [/docs/requirements/rule/rule.md](/docs/requirements/rule/rule.md)
+- **에이전트 운영 표준**: [/docs/standards/agent.md](/docs/standards/agent.md)
+
 ## ⚠️ 제약 사항
 
 - **최종 권위**: 논리적 상세 사항은 항상 대응되는 영어 명세(`.md`)를 따릅니다.

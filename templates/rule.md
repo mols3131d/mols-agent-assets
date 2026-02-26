@@ -31,6 +31,11 @@ Rule_Logic ::= {Trigger | Precision_Constraint | Actionable_Directive}
 ## 3. Evaluation Metrics
 - How will this rule's adherence be measured?
 
+# REFERENCE
+
+- **Rule Lifecycle (RLM)**: [/docs/requirements/rule/rule.md](/docs/requirements/rule/rule.md)
+- **Operational Standard**: [/docs/standards/agent.md](/docs/standards/agent.md)
+
 # CONSTRAINT
 
 - Logic_Density: Adhere to /docs/requirements/rule/rule.md

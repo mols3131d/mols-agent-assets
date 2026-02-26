@@ -31,6 +31,12 @@ agent-friendly: false
 ### 2. 주요 항목 B
 - 사용자나 다른 팀원이 이해하기 쉽게 맥락을 보충합니다.
 
+## 📚 참고 문헌
+
+- **에이전트 행동 표준**: [/docs/standards/agent.md](/docs/standards/agent.md)
+- **마크다운 서식 표준**: [/docs/standards/markdown.md](/docs/standards/markdown.md)
+- **문서 이중화 제약**: [/docs/standards/document.md](/docs/standards/document.md)
+
 ## ⚠️ 제약 사항
 
 - **우선순위**: 논리적 충돌 시 대응되는 영어 명세(`.md`)를 최종 권위로 삼습니다.

@@ -38,6 +38,11 @@ agent-friendly: false
 ### 4. 검증 [VERIFY]
 - 작업 결과물이 성공적인지 판단하는 기준을 제시합니다.
 
+## 📚 참고 문헌
+
+- **워크플로우 관리 명세 (WLM)**: [/docs/requirements/workflow/workflow.md](/docs/requirements/workflow/workflow.md)
+- **에이전트 운영 표준**: [/docs/standards/agent.md](/docs/standards/agent.md)
+
 ## ⚠️ 제약 사항
 
 - **절차의 자산화**: 실행 데이터에 기반하여 주기적으로 최적화 루프를 가집니다.

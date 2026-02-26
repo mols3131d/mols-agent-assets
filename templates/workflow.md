@@ -34,6 +34,11 @@ Workflow_Process ::= {SCAN | PLAN | EXEC | VERIFY}
 ## 4. [VERIFY]
 - Quality assurance. Check against /docs/requirements/ and /docs/standards/.
 
+# REFERENCE
+
+- **Workflow Lifecycle (WLM)**: [/docs/requirements/workflow/workflow.md](/docs/requirements/workflow/workflow.md)
+- **Operational Standard**: [/docs/standards/agent.md](/docs/standards/agent.md)
+
 # CONSTRAINT
 
 - Standardization: Adhere to /docs/requirements/workflow/workflow.md
