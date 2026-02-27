@@ -42,6 +42,62 @@
           "title": "Categories",
           "name": "categories",
           "type": "categories"
+        },
+        {
+          "title": "ID",
+          "name": "id",
+          "type": "string"
+        },
+        {
+          "title": "Last Modified",
+          "name": "lastmod",
+          "type": "datetime",
+          "default": "{{now}}"
+        },
+        {
+          "title": "Author",
+          "name": "author",
+          "type": "string"
+        },
+        {
+          "title": "Agent Readable",
+          "name": "agent-readable",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "title": "Agent Editable",
+          "name": "agent-editable",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "title": "Agent Moveable",
+          "name": "agent-moveable",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "title": "Agent Deletable",
+          "name": "agent-deletable",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "title": "Agent Friendly",
+          "name": "agent-friendly",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "title": "ADR Status",
+          "name": "adr-status",
+          "type": "string"
+        },
+        {
+          "title": "ADR Keyword",
+          "name": "adr-keyword",
+          "type": "string"
         }
       ]
     }
