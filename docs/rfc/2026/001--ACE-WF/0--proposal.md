@@ -1,12 +1,19 @@
 ---
 title: "ACE-WF: Agent Context Engineering Workflow"
-description: "High-density workflow for agentic asset lifecycle engineering"
-author: "mols--Rin"
-categories: ["proposal", "workflow"]
+description: High-density workflow for agentic asset lifecycle engineering
+author: mols--Leni
+categories:
+  - proposal
+  - workflow
 draft: false
+id: rfc-001
 date: 2026-02-27
-lastmod: 2026-02-27T11:13:00.000Z
-tags: ["ACE", "workflow", "PDD", "discussion"]
+lastmod: 2026-02-27T16:51:04.575Z
+tags:
+  - ACE
+  - workflow
+  - PDD
+  - discussion
 agent-readable: true
 agent-editable: true
 agent-moveable: false

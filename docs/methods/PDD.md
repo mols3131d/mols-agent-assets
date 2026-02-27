@@ -1,40 +1,31 @@
-# PDD (Proposal-Discussion-Debate-Decision) 방법론
-
-## 1. 개요 (Overview)
-PDD 방법론은 조직 내 의사결정의 투명성을 높이고, 집단지성을 정교한 논리로 필터링하기 위해 설계된 3단계 의사결정 프레임워크입니다. 단순한 합의를 넘어 비판적 검토(Debate)를 프로세스에 내재화하여 결정의 리스크를 최소화하는 데 목적이 있습니다.
-
+---
+title: "PDD Methodology"
+description: "Process for Proposal-Discussion-Debate-Decision"
+categories: ["method"]
+draft: false
+date: 2026-02-27
+lastmod: 2026-02-27
+tags: ["method", "en"]
+agent-readable: true
+agent-editable: true
+agent-moveable: false
+agent-deletable: false
+agent-friendly: true
 ---
 
-## 2. 단계별 상세 정의 (Process Steps)
+# PDD (Proposal-Discussion-Debate-Decision)
 
-### Phase 1: Proposal (제안)
-* **활동:** 문제 정의, 데이터 기반 해결책 제시, 기대 효과 및 초기 리스크 식별.
-* **목표:** 논의의 기준점이 되는 고품질의 입력물(Input) 생성.
-* **핵심:** 모호한 아이디어를 구체적인 '안건'으로 공식화합니다.
+## Values
 
-### Phase 2: Discussion & Debate (토의 및 토론)
-* **Discussion (토의):** 아이디어의 확장, 상호 보완, 실현 가능성 검토.
-* **Debate (토론):** 비판적 시각에서의 허점 탐색, 반대 의견 청취, 'Devil's Advocate' 역할 수행.
-* **목표:** '어떻게'와 '왜 안 되는가'를 동시에 검토하여 대안을 정교화합니다.
+- Universal | Simple | Easy | Flexible
 
-### Phase 3: Decision (결정)
-* **활동:** 최종안 확정, 실행 주체 선정, 결정 사유 및 기대 결과 공표.
-* **목표:** 논의를 종결하고 조직적 합의를 통해 행동(Action)으로 전환합니다.
+## Process
 
----
+1. **Proposal**: Document Why (Problem/Context) & What (Outcome).
+2. **Discussion/Debate**: Review and refine. Debate optional.
+3. **Decision**: Finalize, Document (Optional), Move to Next Step.
 
-## 3. PDD의 핵심 가치 (Core Values)
+## Constraints
 
-1. **건전한 충돌의 제도화**: 
-   비판을 개인에 대한 공격이 아닌 '프로세스의 필수 단계'로 규정하여 심리적 안전감을 확보합니다.
-2. **집단사고(Groupthink) 방지**: 
-   Debate 단계를 통해 무조건적인 찬성을 경계하고 숨겨진 리스크를 선제적으로 도출합니다.
-3. **결정의 견고함**: 
-   다각도의 검증을 거친 결론은 실행 단계에서의 시행착오와 매몰 비용을 획기적으로 줄입니다.
-
----
-
-## 4. 성공적인 운영을 위한 가이드 (Operational Tips)
-* **Time-boxing**: 토론이 길어지지 않도록 각 단계별 시간 제한을 설정하십시오.
-* **Exit Criteria**: 다음 단계로 넘어가기 위한 조건(예: 모든 주요 반론에 대한 답변 완료)을 명확히 하십시오.
-* **Documentation**: 제안부터 결정까지의 논리적 흐름을 기록하여 자산화하십시오.
+- Repeatable decisions -> Standardization preferred.
+- Excessive flexibility -> Compromises simplicity.

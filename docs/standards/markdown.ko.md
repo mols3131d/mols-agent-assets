@@ -5,7 +5,7 @@ categories:
   - standards
 draft: false
 date: 2026-02-26
-lastmod: 2026-02-26T23:12:19.565Z
+lastmod: 2026-02-27T16:50:16.843Z
 tags:
   - markdown
   - standards
@@ -26,7 +26,8 @@ agent-friendly: false
 
 모든 문서는 거버넌스와 메타데이터 관리를 위해 Hugo 호환 YAML 형식을 포함해야 합니다.
 
-- **기본 필드**: `title`, `description`, `categories`, `date`, `lastmod`, `tags`.
+- **기본 필드**: `title`, `description`, `categories`, `date`, `lastmod`, `tags`, `id` (선택 사항).
+- **ID 필드 (id)**: 관리형 문서(ADR, RFC 등)에서 사용하는 고유 식별자입니다. `접두사-번호` 형식을 권장합니다. (예: `adr-001`, `rfc-001`)
 - **에이전트 제어 필드**: 에이전트의 문서 접근 및 편집 권한을 결정하는 핵심 필드입니다.
 
 ### 2. 에이전트 제어 상세

@@ -5,7 +5,7 @@ categories:
   - standards
 draft: false
 date: 2026-02-26
-lastmod: 2026-02-27T11:49:34.805Z
+lastmod: 2026-02-27T16:50:27.315Z
 tags:
   - markdown
   - standards
@@ -35,6 +35,7 @@ draft: false
 date: YYYY-MM-DD
 lastmod: ISO-8601-Timestamp
 tags: ["tag1"]
+id: "prefix-001" # Optional. e.g., adr-001, rfc-001
 agent-readable: true|false
 agent-editable: true|false
 agent-moveable: true|false
