@@ -2,10 +2,11 @@
 title: ADR Operational Guide
 description: Management and naming conventions for Architecture Decision Records
 categories:
+  - ADR
   - guidance
 draft: false
 date: 2026-02-28
-lastmod: 2026-02-27T16:51:49.780Z
+lastmod: 2026-02-27T17:01:39.368Z
 agent-readable: true
 agent-editable: true
 agent-moveable: false

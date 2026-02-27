@@ -2,10 +2,11 @@
 title: ADR 운영 가이드
 description: 아키텍처 결정 기록(ADR) 관리 및 명명 규칙
 categories:
+  - ADR
   - guidance
 draft: false
 date: 2026-02-28
-lastmod: 2026-02-27T16:51:43.662Z
+lastmod: 2026-02-27T17:01:24.097Z
 agent-readable: true
 agent-editable: true
 agent-moveable: false

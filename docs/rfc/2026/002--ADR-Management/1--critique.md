@@ -1,12 +1,16 @@
 ---
-title: "Rigidity and Overhead in ADR Management"
+title: Rigidity and Overhead in ADR Management
 description: "Critique of Leni's proposal: Analysis of synchronization risks and management costs"
-author: "User--Kana"
-categories: ["critique"]
+author: User--Kana
+categories:
+  - RFC
 draft: false
 date: 2026-02-28
-lastmod: 2026-02-28
-tags: ["ADR", "critique", "en"]
+lastmod: 2026-02-27T17:06:48.335Z
+tags:
+  - ADR
+  - critique
+  - en
 agent-readable: true
 agent-editable: true
 agent-moveable: false

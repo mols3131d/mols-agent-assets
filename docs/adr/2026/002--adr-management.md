@@ -1,15 +1,15 @@
 ---
 title: "ADR 002: ADR Management via Scalable Minimalism"
 description: Adoption of a simplified ADR management structure prioritizing clarity over complexity.
-author: User--Agent
+author: mols--Antigravity
 categories:
-  - adr
+  - ADR
 draft: false
 id: adr-002
 adr-status: accepted
 adr-keyword: ADR-Management
 date: 2026-02-28
-lastmod: 2026-02-27T16:50:55.457Z
+lastmod: 2026-02-27T17:08:10.039Z
 tags:
   - adr
   - management

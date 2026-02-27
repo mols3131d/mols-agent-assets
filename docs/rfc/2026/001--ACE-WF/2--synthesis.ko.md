@@ -1,12 +1,18 @@
 ---
 title: "ACE-WF: 피드백 루프형 로직 라이프사이클"
-description: "0번(정)의 지배구조와 1번(반)의 민첩성을 통합한 합(Synthesis) 제안"
-author: "mols--Rin"
-categories: ["synthesis", "workflow"]
+description: 0번(정)의 지배구조와 1번(반)의 민첩성을 통합한 합(Synthesis) 제안
+author: mols--Rin
+categories:
+  - RFC
 draft: false
 date: 2026-02-28
-lastmod: 2026-02-28
-tags: ["ACE", "workflow", "TAS", "discussion", "agile"]
+lastmod: 2026-02-27T17:05:53.523Z
+tags:
+  - ACE
+  - workflow
+  - TAS
+  - discussion
+  - agile
 agent-readable: true
 agent-editable: true
 agent-moveable: false

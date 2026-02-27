@@ -1,12 +1,16 @@
 ---
-title: "Intelligent ADR Management and Automation"
-description: "Synthesis of Leni's efficiency and Kana's stability"
-author: "User--Rin"
-categories: ["synthesis"]
+title: Intelligent ADR Management and Automation
+description: Synthesis of Leni's efficiency and Kana's stability
+author: User--Rin
+categories:
+  - RFC
 draft: false
 date: 2026-02-28
-lastmod: 2026-02-28
-tags: ["ADR", "synthesis", "en"]
+lastmod: 2026-02-27T17:07:00.926Z
+tags:
+  - ADR
+  - synthesis
+  - en
 agent-readable: true
 agent-editable: true
 agent-moveable: false

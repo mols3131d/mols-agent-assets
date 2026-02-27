@@ -2,10 +2,11 @@
 title: RFC Operational Guide
 description: Guide for RFC directory structure and naming conventions
 categories:
+  - RFC
   - guidance
 draft: false
 date: 2026-02-28
-lastmod: 2026-02-27T16:52:03.355Z
+lastmod: 2026-02-27T17:02:39.908Z
 agent-readable: true
 agent-editable: true
 agent-moveable: false

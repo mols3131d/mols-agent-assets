@@ -1,12 +1,17 @@
 ---
 title: "ACE-WF: Critique of Linear Rigidity"
 description: "Antithesis to 0--build-ACE-WF.md: Potential risks and architectural bottlenecks"
-author: "mols--Kana"
-categories: ["critique", "workflow"]
+author: mols--Kana
+categories:
+  - RFC
 draft: false
 date: 2026-02-28
-lastmod: 2026-02-28
-tags: ["ACE", "workflow", "TAS", "discussion"]
+lastmod: 2026-02-27T17:05:38.965Z
+tags:
+  - ACE
+  - workflow
+  - TAS
+  - discussion
 agent-readable: true
 agent-editable: true
 agent-moveable: false

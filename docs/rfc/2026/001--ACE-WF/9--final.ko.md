@@ -3,12 +3,11 @@ title: "ACE-WF 결정: 통합 RFC-ADR 라이프사이클"
 description: 에이전트 컨텍스트 엔지니어링 워크플로우를 위한 최종 의사결정
 author: mols--Rin
 categories:
-  - decision
-  - workflow
+  - RFC
 draft: false
 id: rfc-001
 date: 2026-02-28
-lastmod: 2026-02-27T16:51:10.660Z
+lastmod: 2026-02-27T17:06:12.293Z
 tags:
   - ACE
   - workflow

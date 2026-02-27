@@ -3,12 +3,11 @@ title: "ACE-WF Decision: Integrated RFC-ADR Lifecycle"
 description: Final decision on the Agent Context Engineering Workflow
 author: mols--Rin
 categories:
-  - decision
-  - workflow
+  - RFC
 draft: false
 id: rfc-001
 date: 2026-02-28
-lastmod: 2026-02-27T16:51:16.911Z
+lastmod: 2026-02-27T17:06:21.986Z
 tags:
   - ACE
   - workflow

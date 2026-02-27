@@ -1,15 +1,15 @@
 ---
 title: "ADR 001: ACE 워크플로우 통합 라이프사이클 채택"
 description: 에이전트 지능 자산 개발을 위한 RFC-ADR 기반의 경험 중심 워크플로우를 공식 채택함
-author: "[UserName]--[AgentName]"
+author: mols--Antigravity
 categories:
-  - adr
+  - ADR
 draft: false
 id: adr-001
 adr-status: accepted
 adr-keyword: ACE-Workflow
 date: 2026-02-28
-lastmod: 2026-02-27T16:50:35.167Z
+lastmod: 2026-02-27T17:08:00.146Z
 tags:
   - adr
   - workflow

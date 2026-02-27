@@ -1,12 +1,18 @@
 ---
 title: "ACE-WF: Feedback-Driven Logic Lifecycle"
-description: "Synthesis of 0--build-ACE-WF (Thesis) and 1--critique-ACE-WF (Antithesis)"
-author: "mols--Rin"
-categories: ["synthesis", "workflow"]
+description: Synthesis of 0--build-ACE-WF (Thesis) and 1--critique-ACE-WF (Antithesis)
+author: mols--Rin
+categories:
+  - RFC
 draft: false
 date: 2026-02-28
-lastmod: 2026-02-28
-tags: ["ACE", "workflow", "TAS", "discussion", "agile"]
+lastmod: 2026-02-27T17:06:06.908Z
+tags:
+  - ACE
+  - workflow
+  - TAS
+  - discussion
+  - agile
 agent-readable: true
 agent-editable: true
 agent-moveable: false

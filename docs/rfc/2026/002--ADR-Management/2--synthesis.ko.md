@@ -1,12 +1,16 @@
 ---
-title: "ADR 지능적 관리 및 자동화 지형"
-description: "Leni(정)의 효율성과 Kana(반)의 안정성을 통합한 합(Synthesis) 제안"
-author: "User--Rin"
-categories: ["synthesis"]
+title: ADR 지능적 관리 및 자동화 지형
+description: Leni(정)의 효율성과 Kana(반)의 안정성을 통합한 합(Synthesis) 제안
+author: User--Rin
+categories:
+  - RFC
 draft: false
 date: 2026-02-28
-lastmod: 2026-02-28
-tags: ["ADR", "synthesis", "automation"]
+lastmod: 2026-02-27T17:06:53.997Z
+tags:
+  - ADR
+  - synthesis
+  - automation
 agent-readable: true
 agent-editable: true
 agent-moveable: false

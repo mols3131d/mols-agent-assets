@@ -1,15 +1,15 @@
 ---
 title: "ADR 001: Adoption of Integrated ACE Workflow"
 description: Formal adoption of the RFC-ADR and experience-driven workflow for agentic assets
-author: "[UserName]--[AgentName]"
+author: mols--Antigravity
 categories:
-  - adr
+  - ADR
 draft: false
 id: adr-001
 adr-status: accepted
 adr-keyword: ACE-Workflow
 date: 2026-02-28
-lastmod: 2026-02-27T16:50:43.541Z
+lastmod: 2026-02-27T17:08:28.042Z
 tags:
   - adr
   - workflow
@@ -45,3 +45,7 @@ Based on the consensus in [`/docs/rfc/2026/001--ACE-WF`](/docs/rfc/2026/001--ACE
 
 - **Positives**: Clear traceability, focus on practical utility, and maintained velocity through agile drafting.
 - **Trade-offs**: Reliance on subjective approval instead of objective metrics; documentation overhead for process compliance.
+
+```
+
+```

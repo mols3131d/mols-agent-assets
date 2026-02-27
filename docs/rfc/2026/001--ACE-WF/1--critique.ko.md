@@ -1,12 +1,17 @@
 ---
 title: "ACE-WF: 선형적 경직성에 대한 비판"
 description: "0--build-ACE-WF.md에 대한 반(Antithesis): 잠재적 리스크 및 아키텍처적 병목 분석"
-author: "mols--Kana"
-categories: ["critique", "workflow"]
+author: mols--Kana
+categories:
+  - RFC
 draft: false
 date: 2026-02-28
-lastmod: 2026-02-28
-tags: ["ACE", "workflow", "TAS", "discussion"]
+lastmod: 2026-02-27T17:05:29.268Z
+tags:
+  - ACE
+  - workflow
+  - TAS
+  - discussion
 agent-readable: true
 agent-editable: true
 agent-moveable: false

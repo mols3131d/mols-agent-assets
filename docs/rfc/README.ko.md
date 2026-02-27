@@ -2,10 +2,11 @@
 title: RFC 운영 가이드
 description: RFC 디렉토리 구조 및 파일 명명 규칙 가이드
 categories:
+  - RFC
   - guidance
 draft: false
 date: 2026-02-28
-lastmod: 2026-02-27T16:51:56.283Z
+lastmod: 2026-02-27T17:02:37.893Z
 agent-readable: true
 agent-editable: true
 agent-moveable: false

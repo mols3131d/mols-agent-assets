@@ -3,11 +3,11 @@ title: "ADR 관리 최종안: 확장 가능한 미니멀리즘"
 description: 불필요한 오버헤드를 배제하고 구조적 명확성을 우선시하는 운영 체계 확정
 author: User--Rin
 categories:
-  - decision
+  - RFC
 draft: false
 id: rfc-002
 date: 2026-02-28
-lastmod: 2026-02-27T16:52:10.887Z
+lastmod: 2026-02-27T17:07:10.301Z
 tags:
   - ADR
   - management

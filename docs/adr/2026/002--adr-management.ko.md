@@ -1,15 +1,15 @@
 ---
 title: "ADR 002: ADR 관리 체계 - 확장 가능한 미니멀리즘"
 description: 불필요한 오버헤드를 배제하고 구조적 명확성을 우선시하는 ADR 관리 체계 채택
-author: User--Agent
+author: mols--Antigravity
 categories:
-  - adr
+  - ADR
 draft: false
 id: adr-002
 adr-status: accepted
 adr-keyword: ADR-Management
 date: 2026-02-28
-lastmod: 2026-02-27T16:50:49.288Z
+lastmod: 2026-02-27T17:08:08.028Z
 tags:
   - adr
   - management
