@@ -16,7 +16,7 @@ agent-deletable: false
 agent-friendly: true
 ---
 
-# SYNOPSIS
+# OVERVIEW
 
 docs ::= {Governance | Methodology | Optimization_Knowledge}
 
@@ -25,7 +25,7 @@ docs ::= {Governance | Methodology | Optimization_Knowledge}
 - Beyond_Rule: Continuous improvement for {work_efficiency | logic_density}
 - Knowledge_Hub: Strategic assets for {better_creation | better_evaluation}
 
-# TOPOLOGY
+# DIRECTORY STRUCTURE
 
 - /docs/standards/ :: {Hard_Rules | Technical_Specs | Mandatory_Protocols}
 - /docs/convention/ :: {Established_Practices | Collaboration_Habits | Styles}

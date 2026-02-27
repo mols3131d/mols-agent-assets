@@ -5,7 +5,7 @@ categories:
   - convention
 draft: false
 date: 2026-02-27
-lastmod: 2026-02-26T22:10:54.632Z
+lastmod: 2026-02-27T11:49:30.756Z
 tags:
   - convention
   - practice
@@ -17,7 +17,7 @@ agent-deletable: false
 agent-friendly: true
 ---
 
-# SYNOPSIS
+# OVERVIEW
 
 convention ::= {Established_Practices | Collaboration_Habits | Stylistic_Preferences}
 

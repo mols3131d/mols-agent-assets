@@ -17,7 +17,7 @@ agent-deletable: false
 agent-friendly: true
 ---
 
-# SYNOPSIS
+# OVERVIEW
 
 standards ::= {Hard_Rules | Technical_Specs | Mandatory_Protocols}
 
@@ -26,7 +26,7 @@ standards ::= {Hard_Rules | Technical_Specs | Mandatory_Protocols}
 - **Absolute_Compliance**: Standards defined here are non-negotiable requirements for all assets.
 - **Structural_Integrity**: Every file must align with the schemas and naming conventions defined in this folder.
 
-# TOPOLOGY
+# DIRECTORY STRUCTURE
 
 - /docs/standards/language.md :: Mandatory language policy (Primary/Secondary).
 - /docs/standards/markdown.md :: Technical specification for Frontmatter and Links.

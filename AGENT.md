@@ -5,7 +5,7 @@ target: AI_Agent
 protocol: ACE (Agent_Context_Engineering)
 ---
 
-# SYNOPSYS
+# OVERVIEW
 
 `mols-agent` ::= High-density environment for {Rule | Workflow | Protocol} engineering.
 
@@ -13,10 +13,10 @@ protocol: ACE (Agent_Context_Engineering)
 
 1. **KERNEL**: Read `/.agents/rules/rules.md` [CRITICAL: Reasoning_Logic].
 2. **IDENTITY**: Read `/.agents/rules/constitution.md` [Role_Boundary].
-3. **SCOPE**: Read `/README.md` [Technical_Topology].
+3. **SCOPE**: Read `/README.md` [Technical_Structure].
 4. **INTENT**: Read `/README.ko.md` [Human_Context_Sync].
 
-# TOPOLOGY::MAP
+# DIRECTORY STRUCTURE
 
 - **Control_Plane**: `/.agents/` -> {Rules | Workflows | Brain}
 - **Production_Plane**: `/studio/` -> {Active_Assets | Outputs}
@@ -32,6 +32,6 @@ protocol: ACE (Agent_Context_Engineering)
 
 # EXECUTION::ENTRY
 
-START_STATE ::= {Identify_Task -> Read_AGENT.md -> Sync_Rules -> Execute}
----
-*EOF: Entry Point for Autonomous Operations*
+## START_STATE ::= {Identify_Task -> Read_AGENT.md -> Sync_Rules -> Execute}
+
+_EOF: Entry Point for Autonomous Operations_

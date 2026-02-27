@@ -13,7 +13,7 @@ agent-deletable: false
 agent-friendly: true
 ---
 
-# SYNOPSIS
+# OVERVIEW
 
 Rule ::= {Context | Logic | Metric}
 

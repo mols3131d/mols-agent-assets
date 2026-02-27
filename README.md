@@ -13,7 +13,7 @@ agent-deletable: false
 agent-friendly: true
 ---
 
-# SYNOPSIS
+# OVERVIEW
 
 mols-agent ::= {Engine | Workspace} for **Agent_Context_Engineering (ACE)**
 
@@ -25,7 +25,7 @@ ACE_Asset ::= {Rule | Workflow | Protocol}
 - **Beyond_Storage**: We engineered the intelligence of agents, not just archiving their files.
 - **Context_Sovereignty**: Professional orchestration of high-density agentic protocols.
 
-# TOPOLOGY
+# DIRECTORY STRUCTURE
 
 - **`/.agents/`**: {Brain | OS} | Control_Plane | NOT_FOR_RESULT
 - **`/studio/`**: {Factory | Showroom} | Production_Plane | FINAL_OUTPUTS_HERE

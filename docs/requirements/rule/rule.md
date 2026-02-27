@@ -5,7 +5,7 @@ categories:
   - requirements
 draft: false
 date: 2026-02-27
-lastmod: 2026-02-26T22:05:40.179Z
+lastmod: 2026-02-27T11:50:10.648Z
 tags:
   - rule-management
   - lifecycle
@@ -39,9 +39,9 @@ When initializing a new rule:
 
 1.  **Requirement Analysis**: Identify the gap in the current rule set. Avoid redundancy.
 2.  **Drafting (TAS Approach)**:
-    *   **Thesis**: Propose the initial rule structure.
-    *   **Antithesis**: Challenge the rule with edge cases and potential agent failures.
-    *   **Synthesis**: Refine the rule to balance flexibility and strictness.
+    - **Thesis**: Propose the initial rule structure.
+    - **Antithesis**: Challenge the rule with edge cases and potential agent failures.
+    - **Synthesis**: Refine the rule to balance flexibility and strictness.
 3.  **Validation**: Test the rule against specific scenarios in `studio/`.
 
 ## 3. Improvement & Evolution (The Loop)
@@ -64,7 +64,7 @@ How we measure the success of a rule:
 
 ---
 
-# SYNOPSIS
+# OVERVIEW
 
 RLM ::= {Design | Creation | Improvement | Evaluation}
 

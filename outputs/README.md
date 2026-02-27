@@ -16,7 +16,7 @@ agent-friendly: true
 # ===
 ---
 
-# SYNOPSIS
+# OVERVIEW
 
 outputs ::= {Final_Assets | Verified_Protocols}
 
@@ -25,7 +25,7 @@ outputs ::= {Final_Assets | Verified_Protocols}
 - Verified_Only: Assets must pass validation in studio/evaluation before export.
 - Transition: Move assets from studio/ to outputs/ upon stabilization.
 
-# TOPOLOGY
+# DIRECTORY STRUCTURE
 
 - rules/ :: Finalized Agent Protocols
 - workflows/ :: Finalized Executable Guides

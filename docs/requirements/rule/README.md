@@ -5,7 +5,7 @@ categories:
   - requirements
 draft: false
 date: 2026-02-27
-lastmod: 2026-02-26T22:20:27.407Z
+lastmod: 2026-02-27T11:50:12.686Z
 tags:
   - rule-management
   - lifecycle
@@ -16,7 +16,7 @@ agent-deletable: false
 agent-friendly: true
 ---
 
-# SYNOPSIS
+# OVERVIEW
 
 rule_management ::= {Lifecycle_Control | Quality_Engineering | Evaluation_Logic}
 

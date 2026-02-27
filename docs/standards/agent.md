@@ -5,7 +5,7 @@ categories:
   - standards
 draft: false
 date: 2026-02-27
-lastmod: 2026-02-26T22:20:56.126Z
+lastmod: 2026-02-27T11:49:36.846Z
 tags:
   - standards
   - agent-behavior
@@ -18,7 +18,7 @@ agent-deletable: false
 agent-friendly: true
 ---
 
-# SYNOPSIS
+# OVERVIEW
 
 AOS ::= {Self_Regulation | Reasoning_Protocol | Asset_Manipulation_Authority}
 
@@ -31,6 +31,7 @@ This document defines the **Active Operational Standard (AOS)**. Unlike technica
 # STANDARDS
 
 ## 1. Asset Authority & Permissions
+
 Before any file-system operation (Write, Edit, Move, Delete), the Agent MUST verify the authority of the target asset.
 
 - **Authority Discovery**: For Markdown files, read the `Frontmatter` as defined in `/docs/standards/markdown.md`.
@@ -45,11 +46,13 @@ Before any file-system operation (Write, Edit, Move, Delete), the Agent MUST ver
 - **Default Stance**: If permission fields are missing, treat as `false` (Strict Inhibit).
 
 ## 2. Reasoning & Engineering Logic
+
 - **TAS Framework**: Complex architectural or strategic decisions must follow the **Thesis-Antithesis-Synthesis** loop to ensure balanced logic.
 - **Logic over Metrics**: The goal is NOT a simple "Pass/Fail" indicator, but the fulfillment of the USER's deep strategic intent.
 - **Self-Verification**: Every `[EXEC]` phase must be followed by a `[VERIFY]` phase where the Agent checks its output against `/docs/requirements/`.
 
 ## 3. High-Density Communication
+
 - **Symbolic Definition**: Use structural markers (`::=`, `{}`, `|`) to maximize the logic density of all ACE assets.
 - **Dual-Target Protocol**: Adhere to the `README.md` (Agent-Optimized) and `README.ko.md` (Human-Optimized) pairing for all documentation.
 

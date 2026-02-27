@@ -13,11 +13,11 @@ agent-deletable: false
 agent-friendly: true
 ---
 
-# SYNOPSIS
+# OVERVIEW
 
 templates ::= {Doc | Rule | Flow}
 
-# TOPOLOGY
+# DIRECTORY STRUCTURE
 
 - /templates/doc.md :: Knowledge-Standard
 - /templates/rule.md :: RLM-Asset

@@ -38,10 +38,10 @@ A workflow must be engineered to meet these high-density criteria:
 1.  **Scope Definition**: Define the exact input, process, and expected output (Artifact).
 2.  **Modular Design**: Break complex tasks into atomic, reusable steps.
 3.  **Symbolic Mapping**: Use standard headers to signal task types:
-    *   **`[SCAN]`**: Environment and state reconnaissance.
-    *   **`[PLAN]`**: Strategy synthesis and mapping.
-    *   **`[EXEC]`**: Actual mutation or creation of assets.
-    *   **`[VERIFY]`**: Quality assurance and logic checking.
+    - **`[SCAN]`**: Environment and state reconnaissance.
+    - **`[PLAN]`**: Strategy synthesis and mapping.
+    - **`[EXEC]`**: Actual mutation or creation of assets.
+    - **`[VERIFY]`**: Quality assurance and logic checking.
 4.  **Reference Integration**: Explicitly link to `.agents/rules/` to enforce policy during execution.
 
 ## 3. Optimization Loop (Improvement)
@@ -62,7 +62,7 @@ Workflows must evolve based on execution telemetry and bottlenecks.
 
 ---
 
-# SYNOPSIS
+# OVERVIEW
 
 WLM ::= {Standardization | Execution | Optimization | Assessment}
 

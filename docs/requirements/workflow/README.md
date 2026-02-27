@@ -5,7 +5,7 @@ categories:
   - requirements
 draft: false
 date: 2026-02-27
-lastmod: 2026-02-26T22:20:37.767Z
+lastmod: 2026-02-27T11:50:08.637Z
 tags:
   - workflow-management
   - lifecycle
@@ -16,7 +16,7 @@ agent-deletable: false
 agent-friendly: true
 ---
 
-# SYNOPSIS
+# OVERVIEW
 
 workflow_management ::= {Engineering_Standards | Optimization_Cycles | Performance_Metrics}
 
