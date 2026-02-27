@@ -14,16 +14,14 @@ description: Formalize session handover and state summary before exit
 ### 2. Update
 
 - [handover]
-  - work: `.agent/workflows/handover.md`
-  - file: `~/.agent/brain/handover.md`
-
+  - work: `/.agent/workflows/brain/handover.md`
+  - file: `/.agent/brain/handover.md`
 - [Kanban]
-  - work: `.agent/workflows/kanban.md`
-  - dir: `~/docs/dev/features/**`
-
+  - work: `/.agent/workflows/brain/kanban.md`
+  - dir: `/.agent/brain/kanban.md`
 - [feedback]
-  - work: `.agent/workflows/feedback.md`
-  - file: `~/.agent/brain/feedback.md`
+  - work: `/.agent/workflows/brain/feedback.md`
+  - file: `/.agent/brain/feedback.md` 
 
 ### 3. Report
 
