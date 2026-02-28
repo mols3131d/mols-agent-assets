@@ -1,18 +1,3 @@
----
-title: "mols-agent 루트 리드미"
-description: "에이전트 자산 관리 및 개발을 위한 능동적인 작업 공간"
-categories: ["workspace"]
-draft: false
-date: 2026-02-27
-lastmod: 2026-02-27
-tags: ["root", "workspace"]
-agent-readable: true
-agent-editable: true
-agent-moveable: false
-agent-deletable: false
-agent-friendly: false
----
-
 # mols-agent
 
 > **에이전트 컨텍스트 엔지니어링 (Agent Context Engineering, ACE)**을 위한 전문 워크스페이스.
@@ -24,18 +9,3 @@ agent-friendly: false
 1. **컨텍스트 엔지니어링**: 단순한 프롬프트 작성을 넘어, 에이전트가 사고하고 행동하는 근간인 '룰즈'와 '워크플로우'를 알고리즘적 자산으로 설계합니다.
 2. **라이프사이클 관리**: 에이전트 자산의 탄생(Creation)부터 개선(Improvement), 그리고 엄격한 성능 평가(Evaluation)까지의 전 과정을 체계적으로 관리합니다.
 3. **지능의 고도화**: 반복적인 피드백 루프와 고밀도 문서화를 통해 에이전트의 페르소나와 작업 수행력을 지속적으로 진화시킵니다.
-
-## 디렉토리 구조
-
-- **`/.agents/`**: **에이전트의 뇌(Brain)와 OS**. 작업을 _수행하기 위한_ 규칙, 프로토콜, 워크플로우가 담긴 공간입니다. 결과물(Result)을 저장하는 곳이 아닌, **에이전트의 행동 지침**을 위한 '제어 평면'입니다.
-- **`/studio/`**: **제작소 및 전시장**. 새로운 결과물이 생성되고 개선되는 공간이며, 최종 산출물은 이곳의 `outputs/`에 정리됩니다.
-- **`/docs/`**: 프로젝트 전체 표준, 지식 베이스 및 운영 관행 관리.
-- **`/templates/`**: 모든 생성물의 일관성을 보장하기 위한 표준 설계도.
-- **`/tests/`**: 생성된 콘텐츠의 논리와 품질을 검증하기 위한 자동화 프로토콜.
-- **`/scripts/`**: 환경 관리 및 작업 자동화를 위한 유틸리티.
-
-_각 디렉토리의 상세 가이드는 해당 폴더 내의 리드미를 참조하세요._
-
-## 제약 사항
-
-- **문서화**: 한글 전용 (Korean Only)

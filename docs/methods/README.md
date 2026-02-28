@@ -1,37 +1,9 @@
----
-title: Methodology Repository README
-description: Core definitions of universal and portable methodologies
-categories:
-  - guidance
-draft: false
-date: 2026-02-28
-lastmod: 2026-02-27T16:18:52.190Z
-agent-readable: true
-agent-editable: true
-agent-moveable: false
-agent-deletable: false
-agent-friendly: true
----
+# `/docs/methods`
 
-# Universal Methodology Repository
+프로젝트와 독립적으로 어디서든 사용할 수 있는 **기본 방법론**들의 모음.
 
-This directory contains **universal and portable methodologies** that are independent of specific project operations. These frameworks are designed to be referenced and applied across any environment or context.
+## 특징
 
-## Core Values
-
-1.  **Universality**: Logical frameworks that transcend specific tools or workspaces.
-2.  **Portability**: High-density logic that can be imported as a standard reference for other projects or agents.
-3.  **Referability**: Serve as a reliable 'theoretical foundation' for complex decision-making and design.
-
-## Key Methodologies
-
-- **[WWH](/docs/methods/WWH.md)**: Why-What-How logical alignment.
-- **[TAS](/docs/methods/TAS.md)**: Dialectical thinking framework.
-- **[TAS-Debate](/docs/methods/TAS-Debate.md)**: Role-based structural discussion.
-- **[PDD](/docs/methods/PDD.md)**: Persona-Driven Decision making.
-- **[PRD-SRS](/docs/methods/PRD-SRS.md)**: Requirement definition and specification standards.
-- **[RFC-ADR](/docs/methods/RFC-ADR.md)**: Lifecycle model for proposals and decisions.
-
----
-
-_Documents here are intellectual assets that serve as 'standards of thought,' ensuring agents maintain optimal reasoning patterns in any situation._
+1. **보편성**: 도구와 환경에 구애받지 않는 논리 체계.
+2. **이식성**: 타 프로젝트나 에이전트에서도 표준으로 활용 가능한 로직.
+3. **참조성**: 복잡한 의사결정을 위한 신뢰할 수 있는 이론적 토대.
