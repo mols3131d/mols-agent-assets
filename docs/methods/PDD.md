@@ -1,31 +1,39 @@
----
-title: "PDD Methodology"
-description: "Process for Proposal-Discussion-Debate-Decision"
-categories: ["method"]
-draft: false
-date: 2026-02-27
-lastmod: 2026-02-27
-tags: ["method", "en"]
-agent-readable: true
-agent-editable: true
-agent-moveable: false
-agent-deletable: false
-agent-friendly: true
+# PDD 의사결정 절차
+
+일상적 의사결정 과정을 구체화한 보편적 프레임워크.
+
+## 핵심 가치
+
+1. **보편**: 어디에나 적용 가능한 일반적 흐름.
+2. **단순**: 복잡한 규칙 배제.
+3. **쉬움**: 낮은 참여 및 실행 문턱.
+4. **유연**: 확장·축소·변형 용이.
+
 ---
 
-# PDD (Proposal-Discussion-Debate-Decision)
+## 절차
 
-## Values
+### Phase 1: Proposal (제안)
 
-- Universal | Simple | Easy | Flexible
+- **목표**: 이유(Why)와 방법(What)의 문서화.
+- **내용**: 문제 정의, 맥락, 기대효과 등.
+- **핵심**: 모호한 관점의 공식적 기록물 전환.
 
-## Process
+### Phase 2: Discussion & Debate (토의 및 토론)
 
-1. **Proposal**: Document Why (Problem/Context) & What (Outcome).
-2. **Discussion/Debate**: Review and refine. Debate optional.
-3. **Decision**: Finalize, Document (Optional), Move to Next Step.
+- **목표**: 제안 검토 및 개선.
+- **토의**: 정보 공유 및 아이디어 확장.
+- **토론**: 비판적 시각에서의 보완. (생략 가능)
 
-## Constraints
+### Phase 3: Decision (결정)
 
-- Repeatable decisions -> Standardization preferred.
-- Excessive flexibility -> Compromises simplicity.
+- **결정**: 최종안 확정.
+- **기록**: 과정 및 결과 문서화. (생략 가능)
+- **실행**: 결정에 따른 후속 조치 진행. (생략 가능)
+
+---
+
+## 한계
+
+1. **반복성**: 반복되는 결정은 별도 규격화가 효율적임.
+2. **변형**: 과도한 유연성은 단순함과 쉬움이라는 본질을 훼손할 수 있음.
