@@ -84,12 +84,6 @@
           "default": false
         },
         {
-          "title": "Agent Friendly",
-          "name": "agent-friendly",
-          "type": "boolean",
-          "default": false
-        },
-        {
           "title": "ADR Status",
           "name": "adr-status",
           "type": "string"

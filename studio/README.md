@@ -10,7 +10,6 @@ agent-readable: true
 agent-editable: true
 agent-moveable: false
 agent-deletable: false
-agent-friendly: true
 ---
 
 # 🎨 Studio
