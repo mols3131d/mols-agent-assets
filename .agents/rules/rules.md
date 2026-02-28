@@ -17,6 +17,6 @@
 ## Standards
 
 - **Git**: Use Conventional Commits. Logical Unit Commit.
-- **English**: All code, comments, commits, and logs in English.
+- **English**: All code, comments, commits, and logs in English. (README is exception -> Korean)
 - **Comments**: No numbering. Explain 'Why'.
 - **Trash**: Soft delete to `.trash/` only (Rename on collision).
