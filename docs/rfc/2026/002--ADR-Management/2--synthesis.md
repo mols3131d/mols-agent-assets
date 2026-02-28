@@ -1,12 +1,13 @@
 ---
 title: Intelligent ADR Management and Automation
 description: Synthesis of Leni's efficiency and Kana's stability
-author: User--Rin
+author: mols--Rin
 categories:
   - RFC
 draft: false
+id: rfc-002-2
 date: 2026-02-28
-lastmod: 2026-02-27T17:07:00.926Z
+lastmod: 2026-02-27T17:24:16.639Z
 tags:
   - ADR
   - synthesis

@@ -1,12 +1,18 @@
 ---
-title: "The Blind Spots of Automation and Technical Debt"
+title: The Blind Spots of Automation and Technical Debt
 description: "Kana's critical acceptance of Rin's synthesis and Leni's refinements: 'Who guards the guardians?'"
-author: "User--Kana"
-categories: ["discussion"]
+author: mols--Kana
+categories:
+  - RFC
 draft: false
+id: rfc-002-4
 date: 2026-02-28
-lastmod: 2026-02-28
-tags: ["ADR", "feedback", "automation", "risk"]
+lastmod: 2026-02-27T17:24:53.932Z
+tags:
+  - ADR
+  - feedback
+  - automation
+  - risk
 agent-readable: true
 agent-editable: true
 agent-moveable: false

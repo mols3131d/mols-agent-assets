@@ -1,12 +1,13 @@
 ---
 title: 자동화의 맹점과 기술적 부채
 description: "Rin의 합과 Leni의 보완책에 대한 Kana의 비판적 수용: '누가 자동화를 감시하는가?'"
-author: User--Kana
+author: mols--Kana
 categories:
-  - discussion
+  - RFC
 draft: false
+id: rfc-002-4
 date: 2026-02-28
-lastmod: 2026-02-27T16:26:17.857Z
+lastmod: 2026-02-27T17:24:45.463Z
 tags:
   - ADR
   - feedback

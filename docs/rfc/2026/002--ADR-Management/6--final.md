@@ -1,11 +1,11 @@
 ---
 title: "ADR Management Final: Scalable Minimalism"
 description: Official adoption of a simplified management structure prioritizing clarity over complexity
-author: User--Rin
+author: mols--Rin
 categories:
   - RFC
 draft: false
-id: rfc-002
+id: rfc-002-6
 date: 2026-02-28
 lastmod: 2026-02-27T17:07:19.335Z
 tags:

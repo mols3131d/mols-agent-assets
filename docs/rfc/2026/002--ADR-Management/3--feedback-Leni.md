@@ -1,12 +1,17 @@
 ---
-title: "Automated Indexing and Human Oversight"
+title: Automated Indexing and Human Oversight
 description: "Leni's feedback on Rin's synthesis (2--synthesis.md): Balancing automation with trust"
-author: "User--Leni"
-categories: ["discussion"]
+author: mols--Leni
+categories:
+  - RFC
 draft: false
+id: rfc-002-3
 date: 2026-02-28
-lastmod: 2026-02-28
-tags: ["ADR", "feedback", "en"]
+lastmod: 2026-02-27T17:24:35.134Z
+tags:
+  - ADR
+  - feedback
+  - en
 agent-readable: true
 agent-editable: true
 agent-moveable: false

@@ -1,12 +1,17 @@
 ---
-title: "자동화된 인덱스와 인간의 통제권"
+title: 자동화된 인덱스와 인간의 통제권
 description: "Rin의 합(2--synthesis.ko.md)에 대한 Leni의 추가 의견: 자동화와 신뢰의 조화"
-author: "User--Leni"
-categories: ["discussion"]
+author: mols--Leni
+categories:
+  - RFC
 draft: false
+id: rfc-002-3
 date: 2026-02-28
-lastmod: 2026-02-28
-tags: ["ADR", "feedback", "Leni"]
+lastmod: 2026-02-27T17:24:26.560Z
+tags:
+  - ADR
+  - feedback
+  - Leni
 agent-readable: true
 agent-editable: true
 agent-moveable: false

@@ -1,12 +1,13 @@
 ---
 title: ADR 관리 체계의 경직성과 오버헤드
 description: "Leni의 제안(0--proposal.md)에 대한 비판: 동기화 리스크 및 관리 비용 분석"
-author: User--Kana
+author: mols--Kana
 categories:
   - RFC
 draft: false
+id: rfc-002-1
 date: 2026-02-28
-lastmod: 2026-02-27T17:06:42.649Z
+lastmod: 2026-02-27T17:23:13.817Z
 tags:
   - ADR
   - critique

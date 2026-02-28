@@ -1,7 +1,7 @@
 ---
 title: "ADR 001: Adoption of Integrated ACE Workflow"
 description: Formal adoption of the RFC-ADR and experience-driven workflow for agentic assets
-author: mols--Antigravity
+author: mols--Rin
 categories:
   - ADR
 draft: false
@@ -9,7 +9,7 @@ id: adr-001
 adr-status: accepted
 adr-keyword: ACE-Workflow
 date: 2026-02-28
-lastmod: 2026-02-27T17:08:28.042Z
+lastmod: 2026-02-27T17:14:20.746Z
 tags:
   - adr
   - workflow

@@ -1,13 +1,13 @@
 ---
 title: ADR 효율적 관리 체계 제안
 description: ADR의 검색성, 생명주기 관리 및 에이전트 구속력 강화를 위한 구조 제안
-author: User--Leni
+author: mols--Leni
 categories:
   - RFC
 draft: false
-id: rfc-002
+id: rfc-002-0
 date: 2026-02-28
-lastmod: 2026-02-27T17:06:30.305Z
+lastmod: 2026-02-27T17:23:00.314Z
 tags:
   - ADR
   - management

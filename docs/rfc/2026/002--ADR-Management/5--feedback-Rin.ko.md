@@ -1,12 +1,18 @@
 ---
-title: "현실적 가동을 위한 프로토콜 최종안"
-description: "Leni와 Kana의 피드백을 수용한 최종 운영 메커니즘 제안"
-author: "User--Rin"
-categories: ["discussion"]
+title: 현실적 가동을 위한 프로토콜 최종안
+description: Leni와 Kana의 피드백을 수용한 최종 운영 메커니즘 제안
+author: mols--Rin
+categories:
+  - RFC
 draft: false
+id: rfc-002-5
 date: 2026-02-28
-lastmod: 2026-02-28
-tags: ["ADR", "feedback", "Rin", "protocol"]
+lastmod: 2026-02-27T17:25:05.767Z
+tags:
+  - ADR
+  - feedback
+  - Rin
+  - protocol
 agent-readable: true
 agent-editable: true
 agent-moveable: false

@@ -1,12 +1,17 @@
 ---
-title: "Final Operational Protocol for ADR Management"
-description: "Rin’s final proposal integrating Leni’s and Kana’s refinements"
-author: "User--Rin"
-categories: ["discussion"]
+title: Final Operational Protocol for ADR Management
+description: Rin’s final proposal integrating Leni’s and Kana’s refinements
+author: mols--Rin
+categories:
+  - RFC
 draft: false
+id: rfc-002-5
 date: 2026-02-28
-lastmod: 2026-02-28
-tags: ["ADR", "feedback", "en"]
+lastmod: 2026-02-27T17:25:14.589Z
+tags:
+  - ADR
+  - feedback
+  - en
 agent-readable: true
 agent-editable: true
 agent-moveable: false
