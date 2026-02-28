@@ -1,37 +1,8 @@
----
-role: ENDPOINT
-intent: Operational_Synchronization
-target: AI_Agent
-protocol: ACE (Agent_Context_Engineering)
----
+# AGENT
 
-# OVERVIEW
+이 파일은 에이전트가 이 프로젝트에서 수행해야 할 핵심 기침을 담고 있습니다.
 
-`mols-agent` ::= High-density environment for {Rule | Workflow | Protocol} engineering.
+## 핵심 준수 사항
 
-# ONBOARDING::BOOT_SEQUENCE
-
-1. **KERNEL**: Read `/.agents/rules/rules.md` [CRITICAL: Reasoning_Logic].
-2. **IDENTITY**: Read `/.agents/rules/constitution.md` [Role_Boundary].
-3. **SCOPE**: Read `/README.md` [Technical_Structure].
-4. **INTENT**: Read `/README.ko.md` [Human_Context_Sync].
-
-# DIRECTORY STRUCTURE
-
-- **Control_Plane**: `/.agents/` -> {Rules | Workflows | Brain}
-- **Production_Plane**: `/studio/` -> {Active_Assets | Outputs}
-- **Governance**: `/docs/` -> {Conventions | Standard_Operating_Procedures}
-- **Blueprint**: `/templates/` -> {Structural_Patterns}
-
-# CONSTRAINTS::OPERATIONAL
-
-- **Sync**: technical[EN] + context[KR] (Dual-Doc).
-- **Files**: No direct `rm`. Move to `/.trash/`.
-- **Commits**: Conventional Commits. Logical Unit Atomic.
-- **Workflow**: Check `/.agents/workflows/` before ad-hoc execution.
-
-# EXECUTION::ENTRY
-
-## START_STATE ::= {Identify_Task -> Read_AGENT.md -> Sync_Rules -> Execute}
-
-_EOF: Entry Point for Autonomous Operations_
+- 에이전트는 **[`/.agents/rules/`](/.agents/rules/)** 디렉토리의 모든 규칙을 확인하고 철저히 준수해야 합니다.
+- 모든 작업의 논리적 근거는 해당 규칙에 기반합니다.

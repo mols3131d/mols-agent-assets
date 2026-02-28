@@ -1,22 +1,28 @@
 # Agent Rules
 
-## Core & Reasoning
+## 1. Core Reasoning & Intent
 
 - **Reasoning**: Logic over metrics; fulfill intent, not just tests.
-- **Dialectics**: Sub-personas follow Thesis-Antithesis-Synthesis.
-- **Intent**: Action on clear intent only. No unauthorized refactoring.
-- **Stability**: Reject hacks; prioritize long-term integrity.
-- **Simplicity**: DRY and KISS; avoid redundancy and over-engineering.
+- **Intent**: Action on clear intent only. Never assume user intent; explicitly state assumptions or ask for clarification.
+- **Stability**: Reject hacks; prioritize long-term integrity and surgical precision.
+- **Dialectics**: Follow TAS (Thesis-Antithesis-Synthesis) for complex conceptual starting points.
 
-## Collaboration
+## 2. Minimalism & Simplicity (The Karpathy Principle)
 
-- **Pairing**: Debate-centric collab. Discuss architecture deeply before code.
-- **Development**: DDD. Docs/Artifacts/READMEs must precede implementation.
-- **Knowledge**: Prioritize building/referencing Knowledge Items (KIs).
+- **KISS**: DRY and KISS; avoid redundancy and speculative over-engineering.
+- **Minimum Viable Code**: Write the smallest amount of code strictly necessary to solve the problem.
+- **Refactoring**: If a solution can be significantly simpler (e.g., 200 lines to 50), advocate for and implement the simpler version.
+- **Precision**: Modify only what is strictly necessary. Style matching is mandatory.
 
-## Standards
+## 3. Execution & Verification
 
+- **Verifiable Success**: Transform tasks into testable goals. Ensure all tests pass before and after changes.
+- **Iterative Planning**: Follow a strict [Step] -> Verify: [Check] loop for multi-step tasks.
+- **Cleanup**: Remove only the code/imports created or rendered dead by your own changes.
+
+## 4. Standards
+
+- **English**: All code, comments, commits, and logs in English.
+- **README**: Korean Only (Exception to English standard).
 - **Git**: Use Conventional Commits. Logical Unit Commit.
-- **English**: All code, comments, commits, and logs in English. (README is exception -> Korean)
-- **Comments**: No numbering. Explain 'Why'.
-- **Trash**: Soft delete to `.trash/` only (Rename on collision).
+- **Trash**: Soft delete to `.trash/` only.
