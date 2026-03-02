@@ -1,3 +1,6 @@
-- **PLANNING 모드**: User-facing Documents는 한국어 작성.
-- **커뮤니케이션**: 내부 추론은 자유, 사용자 대면 문서는 한국어 필수.
-- **범위 제한**: 코드 및 기술 문서 등 프로젝트 결과물은 한국어 적용 제외.
+---
+trigger: model_decision
+description: 1. 안티그래비티 에이전트가 준수해야하는 지시사항들.
+---
+
+- User-facing Documents(`implementation_plan.md`, `task.md`, `walkthrough.md` 등): 한국어로 작성.
