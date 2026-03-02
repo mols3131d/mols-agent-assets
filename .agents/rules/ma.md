@@ -1,5 +1,0 @@
----
-trigger: glob
-globs: asdasd
----
-
