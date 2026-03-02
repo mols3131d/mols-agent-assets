@@ -1,3 +1,3 @@
-- **PLANNING 모드**: `implementation_plan.md`, `task.md` 등 소통용 아티팩트는 한국어 작성.
+- **PLANNING 모드**: User-facing Documents는 한국어 작성.
 - **커뮤니케이션**: 내부 추론은 자유, 사용자 대면 문서는 한국어 필수.
 - **범위 제한**: 코드 및 기술 문서 등 프로젝트 결과물은 한국어 적용 제외.
