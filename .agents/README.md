@@ -1,3 +1,14 @@
-# `/.agents`
+# `.agents`
 
-`/.agents`는 프로젝트에서 에이전트를 제어할 수 있는 파일들의 모음
+> Agents Artifacts
+
+---
+
+## Directory
+
+| Name          | Contents                                                  |
+| :------------ | :-------------------------------------------------------- |
+| **brain**     | Persistent context, memory, and logs                      |
+| **rules**     | Behavioral protocols, language standards                  |
+| **skills**    | Functional extensions, scripts, and specialized resources |
+| **workflows** | Multi-step task definitions and automated procedures      |
