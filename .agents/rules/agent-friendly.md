@@ -1,3 +1,8 @@
+---
+trigger: model_decision
+description: Optimize tokens and density for Internal Thinking/Communication/Artifacts.
+---
+
 # Agent-Friendly Rules
 
 > 에이전트 대상의 **내부 사고, 소통, 아티팩트 등**에 준수.
