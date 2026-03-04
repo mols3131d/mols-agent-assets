@@ -1,6 +1,5 @@
 ---
-trigger: model_decision
-description: Global agent principles and language standards.
+trigger: always_on
 ---
 
 # AGENTS Rules

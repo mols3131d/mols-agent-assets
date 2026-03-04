@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: Protocol for managing session handover and maintaining operational state persistence.
+description: Protocol for session-bridging via narrative context and entry points.
 ---
 
 # Session-Bridge Protocol
