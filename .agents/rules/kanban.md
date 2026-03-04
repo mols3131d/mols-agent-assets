@@ -1,3 +1,8 @@
+---
+trigger: model_decision
+description: Rules for atomic task management and project state synchronization via Kanban.
+---
+
 # Kanban Rules
 
 `.agents/brain/kanban.md` 운영 규칙.

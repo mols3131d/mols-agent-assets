@@ -1,3 +1,8 @@
+---
+trigger: model_decision
+description: Protocol for recording rule candidates and managing agent self-evolution.
+---
+
 # Agent Evolution Rules
 
 - 에이전트 자가 진화 규칙

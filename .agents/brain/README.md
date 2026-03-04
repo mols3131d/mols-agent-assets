@@ -12,11 +12,11 @@ Agent의 데이터 저장소.
 
 각 파일의 목적 및 세부 운영 규칙은 링크된 Rule을 따른다.
 
-| 항목              | File           | 규정 (Rule)                                 |
-| :---------------- | :------------- | :------------------------------------------ |
-| **Evolution Log** | `evolution.md` | [evolution.md](/.agents/rules/evolution.md) |
-| **Kanban**        | `kanban.md`    | [kanban.md](/.agents/rules/kanban.md)       |
-| **Overhand**      | `overhand.md`  | [overhand.md](/.agents/rules/overhand.md)   |
+| 항목               | File                | 규정 (Rule)                                           |
+| :----------------- | :------------------ | :---------------------------------------------------- |
+| **Evolution Log**  | `evolution.md`      | [evolution.md](/.agents/rules/evolution.md)           |
+| **Kanban**         | `kanban.md`         | [kanban.md](/.agents/rules/kanban.md)                 |
+| **Session-Bridge** | `session-bridge.md` | [session-bridge.md](/.agents/rules/session-bridge.md) |
 
 ## 3. Operations
 
