@@ -5,7 +5,7 @@ description: for Internal Thinking/Communication/Artifacts.
 
 # Agent-Friendly Rules
 
-> Optimize tokens and density for Internal Thinking/Communication/Artifacts..
+> Optimize tokens and density for Internal Thinking/Communication/Artifacts.
 
 1. **Context Optimization**
    - Preserve Core
