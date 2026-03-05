@@ -25,16 +25,15 @@ Update `EVOLUTION_LOG` strictly following this structure. Treat these entries as
 
 ## Recommended for Official Rules
 
-_Statistically validated patterns proposed to the Human User for integration into core `.agents/rules/`._
-
-1. **[KEYWORD]**: [Directive / Constraint]
+1. **KEYWORD**: Directive / Constraint
 
 ## New Autonomous Hypotheses
 
-_Temporary soft-constraints cached for current and future sessions to heuristically align with user intent._
-
-1. **[KEYWORD]**: [Directive / Constraint]
+1. **KEYWORD**: Directive / Constraint
 ```
+
+- Recommended for Official Rules: Statistically validated patterns proposed to the Human User for integration into core `.agents/rules/`.
+- New Autonomous Hypotheses: Temporary soft-constraints cached for current and future sessions to heuristically align with user intent.
 
 ## 3. Lifecycle & Maintenance
 
