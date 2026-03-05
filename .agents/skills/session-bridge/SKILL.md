@@ -21,22 +21,30 @@ Maintain `TARGET_FILE` with zero-loss, high-density structure:
 ```markdown
 # Session-Bridge
 
-- Intent: `[High-level goal]`
-- Status: `[DONE | PARTIAL | BLOCKED]`
+- Intent: [High-level goal]
+- Status: [DONE | PARTIAL | BLOCKED]
 
 ## Narrative
 
-- `[Event / Change]` -> `[Reasoning / Intent]`
+- [Event / Change] -> [Reasoning / Intent]
 
 ## Todo
 
-- [x] `[Atomic Task]`
-- [-] `[Current Task]`
-- [ ] `[Pending Task]`
+### Done
+
+- [Task]: [Description]
+
+### Current
+
+- [Task]: [Description]
+
+### Pending
+
+- [Task]: [Description]
 
 ## Hurdles
 
-- [ ] `[Issue]`: `[Description/Impact]`
+- [Issue]: [Description/Impact]
 ```
 
 ## Core Principles
