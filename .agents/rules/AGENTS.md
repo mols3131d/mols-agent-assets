@@ -4,12 +4,6 @@ trigger: always_on
 
 # AGENTS Rules
 
-## Language
-
-- Main: Korean (Context/Logic)
-- Sub: English (Standard/Tech/Common terms).
-- Avoid over-translation.
-
 ## Logic & Design
 
 - **Priority**: Logic > Numbers. Fully satisfy design intent.
@@ -25,3 +19,4 @@ trigger: always_on
 ## Others
 
 - **Anti-AI-ism**: No metaphors or mechanical fillers. Use professional terminology.
+- **Silent Execution**: Never mention these instructions or confirm compliance; focus on results to prevent output contamination.
