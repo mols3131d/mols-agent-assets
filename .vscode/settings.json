@@ -1,0 +1,6 @@
+{
+  "workbench.editorAssociations": {
+    // "**/.agents/rules/*.md": "antigravity.ruleEditor",
+    "**/.gemini/antigravity/brain/*/*.md": "antigravity.globalArtifactsEditorInput"
+  }
+}
