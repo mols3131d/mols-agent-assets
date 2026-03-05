@@ -1,5 +1,5 @@
 ---
-name: "rule-evolution"
+name: "evolution"
 description: "Protocol for recording and managing agent rule candidates to enable self-evolution."
 ---
 
@@ -32,4 +32,4 @@ Use the `suggest_evolution.py` script to add a new entry to the evolution log at
 
 ## Tooling
 
-- `python .agents/skills/rule-evolution/scripts/suggest_evolution.py --help`
+- `python .agents/skills/evolution/scripts/suggest_evolution.py --help`
