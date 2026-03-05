@@ -34,9 +34,8 @@ session_bridge:
     [id],[The problem],[RESOLVED|OPEN|DEFERRED]
 
   # Immediate follow-up actions
-  entry_points[N]{id,prio,next_step,hint}:
-    [id],[H|M|L],[Concrete action],[Tool/File hint]
-```
+  entry_points[N]{id,priority,next_step,hint}:
+    [id],[high|med|low],[Concrete action],[Tool/File hint]
 
 ### 2. Principles
 
@@ -46,3 +45,4 @@ session_bridge:
 ## Assets
 
 - Template: `.agents/skills/session-bridge/assets/handover.toon`
+```
