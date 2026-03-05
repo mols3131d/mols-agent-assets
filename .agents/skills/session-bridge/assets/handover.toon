@@ -1,8 +1,8 @@
 session_bridge:
   meta:
     session_id: ""
-    timestamp: ""
+    intent: ""
     status: ""
   narrative[0]:
+  tasks[0]:
   hurdles[0]:
-  entry_points[0]:

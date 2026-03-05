@@ -1,48 +1,49 @@
 ---
 name: "session-bridge"
-description: "Protocol for session-bridging via narrative context and entry points using the Toon (.toon) format."
+description: "Consolidated protocol for session continuity and task management using the Toon (.toon) format."
 ---
 
-# Session-Bridge (Toon Edition)
+# Session-Bridge (Integrated Task & Narrative)
 
-This skill ensures continuity between agent sessions by capturing the logical delta, design intent, and immediate next steps in a structured `.toon` file.
+This skill manages the **logical state** of the session. It combines narrative delta reporting with atomic task management (KISS) to ensure seamless continuity between agent sessions.
 
 ## When to use this skill
 
-- **Session End**: Before finishing a task or being dismissed, to record the current state.
-- **Session Start**: To parse the previous session's bridge and resume work immediately.
+- **Session Start**: Read `.agents/brain/bridge.toon` to understand the current intent and pick up the next task.
+- **Session Progress/End**: Update `.agents/brain/bridge.toon` to reflect completed tasks, log new hurdles, and provide a logical narrative for the next agent.
 
 ## How to use it
 
-### 1. Generate the Bridge
+### 1. Update the Session State
 
-Create or update `.agents/brain/bridge.toon` using the following schema:
+Modify or create `.agents/brain/bridge.toon` based on the following unified schema:
 
 ```toon
 session_bridge:
   meta:
-    session_id: "[ID]"
-    timestamp: "[ISO-8601]"
+    session_id: "[ISO-TIMESTAMP-SHORT-HASH]"
+    intent: "[The high-level goal or 'Why' of this session]"
     status: "[DONE|PARTIAL|BLOCKED]"
 
-  # The logical flow and design decisions
+  # Log of significant events and their logical rationale
   narrative[N]{id,event,design_logic}:
-    [id],[What happened],[The reasoning/logic]
+    [id],[What happened],[The reasoning/logic applied]
 
-  # Blocks or difficulties encountered
-  hurdles[N]{id,issue,status}:
-    [id],[The problem],[RESOLVED|OPEN|DEFERRED]
+  # Atomic tasks (Merging Kanban functionality)
+  tasks[N]{id,status,priority,objective}:
+    [id],[BACKLOG|IN_PROGRESS|DONE|BLOCKED],[high|med|low],[Concrete task]
 
-  # Immediate follow-up actions
-  entry_points[N]{id,priority,next_step,hint}:
-    [id],[high|med|low],[Concrete action],[Tool/File hint]
+  # Blockers or technical debt
+  hurdles[N]{id,issue,impact}:
+    [id],[The problem],[How it affects progress]
+```
 
 ### 2. Principles
 
-- **Delta Only**: Don't repeat what's in the repo or long-term docs. Only record the "hot" logical context.
-- **Strict Toon**: Ensure the YAML header and CSV body are correctly formatted for machine parsing.
+- **KISS Tasks**: Keep tasks small enough to be completed in one session.
+- **Narrative Over Task List**: The `narrative` explains _how_ the tasks were achieved, providing deeper context than a status flag.
+- **Context Tax Policy**: Keep the lists concise. Focus on the 'Delta' (what changed) rather than the entire project history.
 
 ## Assets
 
 - Template: `.agents/skills/session-bridge/assets/handover.toon`
-```
