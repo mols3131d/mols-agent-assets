@@ -1,36 +1,44 @@
 ---
 name: "evolution"
-description: "Protocol for recording and managing agent rule candidates (Direct MD editing)."
+description: "Protocol for dynamic context caching and pattern logging (Temporary Soft-Constraints)."
 ---
 
 # Rule Evolution
 
+> High-density protocol for dynamic context caching and operational pattern logging.
+
 > **EVOLUTION_LOG**: `.agents/brain/evolution.md`
 
-High-density protocol for continuous agent self-improvement.
+## 1. Pattern Logging & Statistical Caching
 
-## Activation
+1. **Trigger**: The agent statistically recognizes a recurring error, a direct user correction, or a suboptimal operational loop.
+2. **Evaluation & Action**:
+   - **IF `[Existing Pattern]`**: Analyze Delta -> Refine cached constraint -> **Update Log**.
+   - **ELSE `[New Pattern]`**: Analyze trigger cause -> Draft Temporary Soft-Constraint -> **Append** to `New Autonomous Hypotheses` (or drop if irrelevant).
 
-- **Pattern Detected**: When a recurring operational pattern is identified.
-- **Rule Proposal**: When logic dictates replacing or adding to existing `.agents/rules/`.
-- **Lesson Learned**: To record a critical failure mechanism and its behavioral fix.
+## 2. Execution Protocol
 
-## Execution Protocol
-
-Do NOT use scripts. Append directly to `EVOLUTION_LOG` using the following HDS format:
+Update `EVOLUTION_LOG` strictly following this structure. Treat these entries as temporary behavioral weights, not absolute truths:
 
 ```markdown
-- `[H | M | L]` **`[Topic/Pattern]`**: `[Logic & Reasoning]`
+# Rule Evolution
+
+## Recommended for Official Rules
+
+_Statistically validated patterns proposed to the Human User for integration into core `.agents/rules/`._
+
+1. **[KEYWORD]**: [Directive / Constraint]
+
+## New Autonomous Hypotheses
+
+_Temporary soft-constraints cached for current and future sessions to heuristically align with user intent._
+
+1. **[KEYWORD]**: [Directive / Constraint]
 ```
 
-### Evaluation Levels
+## 3. Lifecycle & Maintenance
 
-- **H (High/상)**: Core architectural or integrity rules. Must be formalized.
-- **M (Medium/중)**: Useful patterns for specific modules.
-- **L (Low/하)**: Experimental or personal agent preference.
-
-## Maintenance
-
-1. **Promotion**: If a candidate is proven and moved to `AGENTS.md` (or explicit rule file), **delete** it from `EVOLUTION_LOG`.
-2. **Cleanup**: Maintain max **10 items**. FIFO (First-In, First-Out) if exceeded.
-3. **Relative Paths**: Always use paths relative to the project root (no leading slashes).
+1. **Creation (Caching)**: Newly identified patterns must be appended to `New Autonomous Hypotheses`.
+2. **Maturation**: If a hypothesis proves statistically effective (reduces errors/corrections) across sessions, move it up to `Recommended for Official Rules`.
+3. **Formalization**: When the Human User officially integrates a recommended rule into `.agents/rules/`, **delete** it from `EVOLUTION_LOG`.
+4. **Cleanup Trigger (FIFO)**: Upon appending a new constraint, verify the total count. **IF > 30**, delete the oldest or least relevant cache entry from `New Autonomous Hypotheses` to prevent context degradation.
