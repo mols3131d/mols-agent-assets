@@ -1,35 +1,36 @@
 ---
 name: "evolution"
-description: "Protocol for recording and managing agent rule candidates to enable self-evolution."
+description: "Protocol for recording and managing agent rule candidates (Direct MD editing)."
 ---
 
 # Rule Evolution
 
-This skill manages the lifecycle of agent instructions. Instead of keeping every evolving thought in the main rules, use this skill to log candidates, evaluate them, and eventually promote them to formal rules or discard them.
+> **EVOLUTION_LOG**: `.agents/brain/evolution.md`
 
-## When to use this skill
+High-density protocol for continuous agent self-improvement.
 
-- When you identify a recurring pattern or logic that should become a rule.
-- When you want to propose a change to existing rules in `.agents/rules/`.
-- When you need to record a 'lesson learned' during a session to inform future behavior.
+## Activation
 
-## How to use it
+- **Pattern Detected**: When a recurring operational pattern is identified.
+- **Rule Proposal**: When logic dictates replacing or adding to existing `.agents/rules/`.
+- **Lesson Learned**: To record a critical failure mechanism and its behavioral fix.
 
-### 1. Register a Candidate
+## Execution Protocol
 
-Use the `suggest_evolution.py` script to add a new entry to the evolution log at `.agents/brain/evolution.md`.
+Do NOT use scripts. Append directly to `EVOLUTION_LOG` using the following HDS format:
 
-### 2. Evaluation Levels
+```markdown
+- `[H | M | L]` **`[Topic/Pattern]`**: `[Logic & Reasoning]`
+```
 
-- **High (상)**: Core/Strongly recommended. Critical for system integrity.
-- **Medium (중)**: Useful in specific contexts. Good to have.
-- **Low (하)**: Experimental or personal preference.
+### Evaluation Levels
 
-### 3. Maintenance Protocols
+- **H (High/상)**: Core architectural or integrity rules. Must be formalized.
+- **M (Medium/중)**: Useful patterns for specific modules.
+- **L (Low/하)**: Experimental or personal agent preference.
 
-- **Promotion**: When a candidate is integrated into `AGENTS.md` or other formal rules, remove it from the log.
-- **Cleanup**: The log maintains a maximum of **10 items**. Older items are automatically removed (FIFO) to keep context lean.
+## Maintenance
 
-## Tooling
-
-- `python .agents/skills/evolution/scripts/suggest_evolution.py --help`
+1. **Promotion**: If a candidate is proven and moved to `AGENTS.md` (or explicit rule file), **delete** it from `EVOLUTION_LOG`.
+2. **Cleanup**: Maintain max **10 items**. FIFO (First-In, First-Out) if exceeded.
+3. **Relative Paths**: Always use paths relative to the project root (no leading slashes).

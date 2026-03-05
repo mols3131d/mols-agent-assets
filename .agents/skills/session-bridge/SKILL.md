@@ -3,47 +3,46 @@ name: "session-bridge"
 description: "Protocol for session-bridging and task management using Markdown (MD)."
 ---
 
-# Session-Bridge (Minimal)
+# Session-Bridge
 
-This skill ensures continuity between agent sessions using a simplified checkbox-driven Markdown file.
+> Ensures agent session continuity.
 
-## When to use
+> **TARGET_FILE**: `.agents/brain/session-bridge.md`
 
-- **Session End**: Summarize the current state and list the next steps.
-- **Session Start**: Read `.agents/brain/bridge.md` to restore context.
+## Activation
 
-## How to use
+- **Session End**: Summarize achieved deltas and define the pivot for the next agent.
+- **Session Start**: Load `TARGET_FILE` to restore the logical thread.
 
-### 1. Update the Bridge File
+## Execution Protocol
 
-Maintain `.agents/brain/bridge.md` with the following minimalist structure:
+Maintain `TARGET_FILE` with zero-loss, high-density structure:
 
-#### **Context**
+```markdown
+# Session-Bridge
 
-- [ ] ID: `[HASH]`
-- [ ] Intent: `[High-level goal]`
-- [ ] Status: `[DONE | PARTIAL | BLOCKED]`
+- Intent: `[High-level goal]`
+- Status: `[DONE | PARTIAL | BLOCKED]`
 
-#### **Narrative**
+## Narrative
 
-- [x] `[Event]` -> `[Reasoning]`
+- `[Event / Change]` -> `[Reasoning / Intent]`
 
-#### **Todo**
+## Todo
 
-- [x] `[Completed Task]`
-- [-] `[In Progress Task]`
+- [x] `[Atomic Task]`
+- [-] `[Current Task]`
 - [ ] `[Pending Task]`
 
-#### **Hurdles**
+## Hurdles
 
-- [ ] `[Issue]`: `[Description]`
+- [ ] `[Issue]`: `[Description/Impact]`
+```
 
-## Principles
+## Core Principles
 
-- **Minimalism**: No tables, no complex priorities. Just checkboxes.
-- **Delta Only**: Focus on the immediate logical delta.
-- **Single Source**: Combined narrative and todo in one file.
-
-## Assets
-
-- Template: `.agents/skills/session-bridge/assets/session-bridge.md`
+1. **Relative Paths**: Use paths relative to the project root (no leading slashes).
+2. **Delta-Only**: Record only what is hot or just changed. Zero-redundancy.
+3. **KISS/DRY**: Use concise bullets/checkboxes instead of prose. Be extremely minimal.
+4. **Intent-Centric**: Every change must have a `-> [Reason]`.
+5. **Single Source**: `TARGET_FILE` is the absolute state reference for the next session.
