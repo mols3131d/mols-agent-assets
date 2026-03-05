@@ -2,6 +2,6 @@ bridge:
   meta:
     timestamp: ""
     status: ""
-  narrative: >
+  narrative[0]:
   hurdles[0]:
   entry_points[0]:

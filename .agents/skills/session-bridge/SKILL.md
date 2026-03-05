@@ -24,9 +24,8 @@ bridge:
     timestamp: "[ISO-8601]"
     status: "[active|blocked|complete]"
 
-  narrative: >
-    [Direct, high-density description of what was achieved,
-    the design logic used, and any technical compromises made.]
+  narrative[N]{id,event,design_intent}:
+    [id],[High-level action/change],[The underlying logic or reasoning]
 
   hurdles[N]{id,description,impact}:
     [id],[A specific problem encountered],[Effect on progress]
