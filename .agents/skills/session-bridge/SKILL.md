@@ -19,19 +19,23 @@ This skill ensures continuity between agent sessions by capturing the logical de
 Create or update `.agents/brain/bridge.toon` using the following schema:
 
 ```toon
-bridge:
+session_bridge:
   meta:
+    session_id: "[ID]"
     timestamp: "[ISO-8601]"
-    status: "[active|blocked|complete]"
+    status: "[DONE|PARTIAL|BLOCKED]"
 
-  narrative[N]{id,event,design_intent}:
-    [id],[High-level action/change],[The underlying logic or reasoning]
+  # The logical flow and design decisions
+  narrative[N]{id,event,design_logic}:
+    [id],[What happened],[The reasoning/logic]
 
-  hurdles[N]{id,description,impact}:
-    [id],[A specific problem encountered],[Effect on progress]
+  # Blocks or difficulties encountered
+  hurdles[N]{id,issue,status}:
+    [id],[The problem],[RESOLVED|OPEN|DEFERRED]
 
-  entry_points[N]{id,priority,task,tool_hint}:
-    [id],[high|med|low],[Concrete next action],[Suggested tool]
+  # Immediate follow-up actions
+  entry_points[N]{id,prio,next_step,hint}:
+    [id],[H|M|L],[Concrete action],[Tool/File hint]
 ```
 
 ### 2. Principles

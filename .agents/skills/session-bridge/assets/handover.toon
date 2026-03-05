@@ -1,5 +1,6 @@
-bridge:
+session_bridge:
   meta:
+    session_id: ""
     timestamp: ""
     status: ""
   narrative[0]:
