@@ -1,49 +1,49 @@
 ---
 name: "session-bridge"
-description: "Consolidated protocol for session continuity and task management using the Toon (.toon) format."
+description: "Protocol for session-bridging and task management using Markdown (MD)."
 ---
 
-# Session-Bridge (Integrated Task & Narrative)
+# Session-Bridge (Minimal)
 
-This skill manages the **logical state** of the session. It combines narrative delta reporting with atomic task management (KISS) to ensure seamless continuity between agent sessions.
+This skill ensures continuity between agent sessions using a simplified checkbox-driven Markdown file.
 
-## When to use this skill
+## When to use
 
-- **Session Start**: Read `.agents/brain/bridge.toon` to understand the current intent and pick up the next task.
-- **Session Progress/End**: Update `.agents/brain/bridge.toon` to reflect completed tasks, log new hurdles, and provide a logical narrative for the next agent.
+- **Session End**: Summarize the current state and list the next steps.
+- **Session Start**: Read `.agents/brain/bridge.md` to restore context.
 
-## How to use it
+## How to use
 
-### 1. Update the Session State
+### 1. Update the Bridge File
 
-Modify or create `.agents/brain/bridge.toon` based on the following unified schema:
+Maintain `.agents/brain/bridge.md` with the following minimalist structure:
 
-```toon
-session_bridge:
-  meta:
-    session_id: "[ISO-TIMESTAMP-SHORT-HASH]"
-    intent: "[The high-level goal or 'Why' of this session]"
-    status: "[DONE|PARTIAL|BLOCKED]"
+#### **Context**
 
-  # Log of significant events and their logical rationale
-  narrative[N]{id,event,design_logic}:
-    [id],[What happened],[The reasoning/logic applied]
+- [ ] ID: `[HASH]`
+- [ ] Intent: `[High-level goal]`
+- [ ] Status: `[DONE | PARTIAL | BLOCKED]`
 
-  # Atomic tasks (Merging Kanban functionality)
-  tasks[N]{id,status,priority,objective}:
-    [id],[BACKLOG|IN_PROGRESS|DONE|BLOCKED],[high|med|low],[Concrete task]
+#### **Narrative**
 
-  # Blockers or technical debt
-  hurdles[N]{id,issue,impact}:
-    [id],[The problem],[How it affects progress]
-```
+- [x] `[Event]` -> `[Reasoning]`
 
-### 2. Principles
+#### **Todo**
 
-- **KISS Tasks**: Keep tasks small enough to be completed in one session.
-- **Narrative Over Task List**: The `narrative` explains _how_ the tasks were achieved, providing deeper context than a status flag.
-- **Context Tax Policy**: Keep the lists concise. Focus on the 'Delta' (what changed) rather than the entire project history.
+- [x] `[Completed Task]`
+- [-] `[In Progress Task]`
+- [ ] `[Pending Task]`
+
+#### **Hurdles**
+
+- [ ] `[Issue]`: `[Description]`
+
+## Principles
+
+- **Minimalism**: No tables, no complex priorities. Just checkboxes.
+- **Delta Only**: Focus on the immediate logical delta.
+- **Single Source**: Combined narrative and todo in one file.
 
 ## Assets
 
-- Template: `.agents/skills/session-bridge/assets/handover.toon`
+- Template: `.agents/skills/session-bridge/assets/session-bridge.md`

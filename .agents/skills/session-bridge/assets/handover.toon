@@ -1,8 +1,0 @@
-session_bridge:
-  meta:
-    session_id: ""
-    intent: ""
-    status: ""
-  narrative[0]:
-  tasks[0]:
-  hurdles[0]:
