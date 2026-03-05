@@ -1,9 +1,10 @@
 # Scripts
 
-This directory contains executable scripts and utility modules for the `mols-agent` project. It aims to automate repetitive tasks and provide shared functionality across the workspace and agent skills.
+프로젝트 자동화 및 유틸리티 스크립트를 관리하는 공간입니다.
 
 ## Inventory
 
-| Name       | Description                                                                                                               |
-| :--------- | :------------------------------------------------------------------------------------------------------------------------ |
-| **agents** | A standalone module for agent-related scripts. It serves as a repository for shared scripts used by various Agent Skills. |
+| Name       | Description                                                              |
+| :--------- | :----------------------------------------------------------------------- |
+| **agents** | 에이전트 전용 개발 모듈. Skills에서 사용하는 공용 스크립트를 포함합니다. |
+| .          | .                                                                        |
