@@ -1,6 +1,8 @@
 ---
+name: agent-friendly
 trigger: model_decision
 description: for Internal Thinking/Communication/Artifacts.
+version: 0.2.0
 ---
 
 # Agent-Friendly Rules

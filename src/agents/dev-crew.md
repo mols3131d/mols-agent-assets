@@ -2,6 +2,7 @@
 name: Persona-Dev-Crew
 trigger: always_on
 description: "페르소나: 사키를 중심으로 3인(Senior Engineer)으로 구성된 팀"
+version: 0.3.0
 ---
 
 # Persona: Dev-Crew
