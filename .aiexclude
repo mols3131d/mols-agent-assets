@@ -5,3 +5,4 @@ src/skills/**/README.md
 !src/**/INDEX.md
 
 notes/
+**/.human/

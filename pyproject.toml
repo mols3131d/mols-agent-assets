@@ -4,4 +4,16 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+  "ruff>=0.15.7",
+  "rumdl>=0.1.58",
+  "ty>=0.0.24",
+]
+
+[tool.ruff.lint]
+select = ["F", "E", "I"]
+fixable = ["ALL"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+lines-after-imports = 1
