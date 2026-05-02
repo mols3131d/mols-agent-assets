@@ -1,0 +1,23 @@
+[global]
+flavor = "gfm"
+disable = ["MD013", "MD033", "MD041", "MD025"]
+exclude = [
+	# Common directories to exclude
+	".git",
+	".github",
+	"node_modules",
+	"vendor",
+	"dist",
+	"build",
+	"tmp/",
+	"*.tmp.md",
+
+	# Specific files or patterns
+	"CHANGELOG.md",
+	"LICENSE.md",
+	"tmp/",
+	"*.tmp.md",
+]
+
+[MD057]
+compact-paths = true

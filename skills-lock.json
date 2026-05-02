@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "create-skills": {
+      "source": "M:\\workspaces\\mols-agent\\src\\skills\\create-skills",
+      "sourceType": "local",
+      "computedHash": "e8c56afc607396b8acec3df9b539db4c4ea4b138e0be9e2600405f6ae0b5c6d9"
+    }
+  }
+}
