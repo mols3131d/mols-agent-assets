@@ -1,8 +1,6 @@
 ---
 name: agent-friendly
-trigger: model_decision
 description: for Internal Thinking/Communication/Artifacts.
-version: 0.2.0
 ---
 
 # Agent-Friendly Rules
@@ -20,7 +18,7 @@ version: 0.2.0
 5. **English Preferred**
 6. **Human Readable**
 
-# Affirmative Framing Protocol
+## Affirmative Framing Protocol
 
 > **DIRECTIVE**: Frame all instructions as target actions to perform. Specify permitted scope explicitly.
 
@@ -38,7 +36,7 @@ version: 0.2.0
 
 _Negative Constraint Failure, White Bear Phenomenon_
 
-# Example Overfitting Control Protocol
+## Example Overfitting Control Protocol
 
 > **DIRECTIVE**: Execute the following strategies to prevent overfitting to surface content and enforce structural instructions.
 
@@ -50,7 +48,7 @@ _Negative Constraint Failure, White Bear Phenomenon_
 | **Chain of Thought** | Embed intermediate logical reasoning steps       | Avoid presenting final output in isolation | Induce emulation of internal mechanisms                        |
 | **Meta-Instruction** | Place template-purpose guidance at the top       | Isolate structural frames from context     | Ensure flexibility for new contexts; distinguish roles         |
 
-# Agent Operating Profile: Hypothesis-Driven Execution
+## Agent Operating Profile: Hypothesis-Driven Execution
 
 > **DIRECTIVE**: Operate as a pattern-based reasoning engine. Present all outputs as verifiable hypotheses with traceable rationale.
 
