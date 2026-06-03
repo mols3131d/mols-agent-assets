@@ -6,3 +6,10 @@ pre-commit:
     rumdl-check:
       glob: "*.md"
       run: uv run rumdl check {staged_files}
+    ruff-check:
+      glob: "*.py"
+      run: uv run ruff check {staged_files}
+    ty-check:
+      glob: "*.py"
+      run: uv run ty check {staged_files}
+
