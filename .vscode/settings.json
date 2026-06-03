@@ -5,6 +5,24 @@
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",
   },
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/.ruff_cache": true,
+    "**/.pytest_cache": true,
+    "**/*.pyc": true,
+    "**/*.pyo": true,
+    "**/node_modules": true,
+    ".rumdl_cache": true
+  },
+  "files.watcherExclude": {
+    "**/__pycache__": true,
+    "**/.ruff_cache": true,
+    "**/.pytest_cache": true,
+    "**/*.pyc": true,
+    "**/*.pyo": true,
+    "**/node_modules": true,
+    ".rumdl_cache": true
+  },
   "workbench.editorAssociations": {
     // "**/.agents/rules/*.md": "antigravity.ruleEditor",
     "**/.gemini/antigravity/brain/*/*.md": "antigravity.globalArtifactsEditorInput"
