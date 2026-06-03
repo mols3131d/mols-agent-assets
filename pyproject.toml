@@ -1,7 +1,7 @@
 [project]
 name = "mols-agent"
 version = "0.1.0"
-description = "Add your description here"
+description = "Agent asset management repository for mols"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = []
@@ -22,3 +22,7 @@ fixable = ["ALL"]
 [tool.ruff.lint.isort]
 combine-as-imports = true
 lines-after-imports = 1
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
