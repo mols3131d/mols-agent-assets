@@ -1,0 +1,8 @@
+# Lefthook configuration for mols-agent
+# For details, see: https://github.com/evilmartians/lefthook
+
+pre-commit:
+  commands:
+    rumdl-check:
+      glob: "*.md"
+      run: uv run rumdl check {staged_files}
