@@ -1,10 +1,10 @@
 {
-  "version": 1,
-  "skills": {
-    "create-skills": {
-      "source": "./src/skills/create-skills",
-      "sourceType": "local",
-      "computedHash": "ba94aa2aaa46b5226a29be8f966bed4fd91f86eedfed4e81916320afa8297fea"
-    }
-  }
+	"version": 1,
+	"skills": {
+		"create-skills": {
+			"source": "./src/skills/agent-asset/create-skills",
+			"sourceType": "local",
+			"computedHash": "ba94aa2aaa46b5226a29be8f966bed4fd91f86eedfed4e81916320afa8297fea"
+		}
+	}
 }
