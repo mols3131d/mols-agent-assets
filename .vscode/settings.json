@@ -1,4 +1,10 @@
 {
+  "[markdown]": {
+    "editor.defaultFormatter": "rvben.rumdl"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+  },
   "workbench.editorAssociations": {
     // "**/.agents/rules/*.md": "antigravity.ruleEditor",
     "**/.gemini/antigravity/brain/*/*.md": "antigravity.globalArtifactsEditorInput"

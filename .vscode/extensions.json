@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "rvben.rumdl",
+        "charliermarsh.ruff",
+        "astral-sh.ty",
+        "ms-python.python"
+    ]
+}
