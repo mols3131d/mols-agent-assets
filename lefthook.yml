@@ -1,15 +1,33 @@
 # Lefthook configuration for mols-agent
 # For details, see: https://github.com/evilmartians/lefthook
 
+glob_matcher: doublestar
+
 pre-commit:
   commands:
     rumdl-check:
       glob: "*.md"
+      exclude:
+        - "**/archive/**"
+        - "**/*cache*/**"
+        - "**/*tmp*/**"
       run: uv run rumdl check {staged_files}
     ruff-check:
       glob: "*.py"
+      exclude:
+        - "**/archive/**"
+        - "**/*cache*/**"
+        - "**/*tmp*/**"
       run: uv run ruff check {staged_files}
     ty-check:
       glob: "*.py"
+      exclude:
+        - "**/archive/**"
+        - "**/*cache*/**"
+        - "**/*tmp*/**"
       run: uv run ty check {staged_files}
+
+
+
+
 
