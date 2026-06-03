@@ -4,11 +4,15 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = [
+dependencies = []
+
+[dependency-groups]
+dev = [
+  "pytest>=9.0.3",
+  "ruff>=0.15.15",
+  "rumdl>=0.2.6",
+  "ty>=0.0.42",
   "lefthook>=2.1.9",
-  "ruff>=0.15.7",
-  "rumdl>=0.1.58",
-  "ty>=0.0.24",
 ]
 
 [tool.ruff.lint]
