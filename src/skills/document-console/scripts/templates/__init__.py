@@ -16,6 +16,9 @@ from .spec import (
     SPEC_INDEX_TEMPLATE,
     SPEC_README_TEMPLATE,
 )
+from .kanban import (
+    KANBAN_CARD_TEMPLATE,
+)
 
 __all__ = [
     "ADR_INDEX_TEMPLATE",
@@ -30,4 +33,5 @@ __all__ = [
     "SPEC_README_TEMPLATE",
     "SPEC_ARCHIVE_INDEX_TEMPLATE",
     "SPEC_DOCUMENT_TEMPLATE",
+    "KANBAN_CARD_TEMPLATE",
 ]

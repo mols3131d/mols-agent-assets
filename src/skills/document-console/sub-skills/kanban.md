@@ -40,7 +40,6 @@ Goal: show work state at glance.
 
 | Path | Description |
 | :--- | :--- |
-| `README.md` | Main kanban board document |
 | `INDEX.csv` | Index of active cards (`todo`, `in-progress`, `review`) in main folder |
 | `backlog/` | Folder for backlog (`backlog`) cards |
 | `backlog/INDEX.csv` | Index of backlog cards |

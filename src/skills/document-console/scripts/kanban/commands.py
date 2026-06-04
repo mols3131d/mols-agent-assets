@@ -5,13 +5,15 @@ from typing import Any
 
 from core import (
     DocStatus,
-    TaskPriority,
     Document,
     Frontmatter,
+    TaskPriority,
     normalize_kebab_case,
     title_case_name,
 )
+
 from kanban.board import KanbanBoard
+from templates import KANBAN_CARD_TEMPLATE
 
 class KanbanCommand(ABC):
     """모든 칸반 세부 명령들이 구현해야 할 공통 커맨드 인터페이스."""
@@ -31,38 +33,9 @@ class KanbanInitCommand(KanbanCommand):
         self.board.backlog_dir.mkdir(exist_ok=True)
         self.board.archive_dir.mkdir(exist_ok=True)
 
-        readme_path = self.board.base_dir / "README.md"
-        initial_readme = """# Kanban Board
-
-Goal: show work state at glance.
-
-## Use When
-
-- User needs board, not plain checklist.
-- Items move through states.
-- Status matters more than detailed prose.
-
-## Board
-
-| Backlog | Todo | In-Progress | Review | Done |
-| :--- | :--- | :--- | :--- | :--- |
-
-## Rules
-
-- One card = one markdown file.
-- Each card markdown file contains Frontmatter.
-- Keep card text short.
-- Link detailed docs, do not embed.
-- Archive done items when board noisy.
-"""
-        created = []
-        if not readme_path.exists():
-            readme_path.write_text(initial_readme, encoding="utf-8")
-            created.append("README.md")
-
         # 인덱스 초기화
         self.board.update_indices()
-        created.extend(["INDEX.csv", "backlog/INDEX.csv", "archive/INDEX.csv"])
+        created = ["INDEX.csv", "backlog/INDEX.csv", "archive/INDEX.csv"]
 
         return {
             "status": "initialized",
@@ -115,13 +88,12 @@ class KanbanCreateCommand(KanbanCommand):
             "assignee": self.assignee or "",
             "tags": self.tags,
         })
-        body = f"# {card_id}: {title}\n\n카드 설명을 입력하세요.\n"
+        body = KANBAN_CARD_TEMPLATE.format(card_id=card_id, title=title)
         doc = Document(path=dest_path, frontmatter=fm, body=body)
 
         if not self.dry_run:
             doc.save()
             self.board.update_indices()
-            self.board.render_board()
 
         return {
             "status": "created",
@@ -176,7 +148,6 @@ class KanbanMoveCommand(KanbanCommand):
             
             doc.save(dest_path)
             self.board.update_indices()
-            self.board.render_board()
 
         return {
             "status": "moved",
@@ -189,7 +160,6 @@ class KanbanMoveCommand(KanbanCommand):
 
 
 class KanbanUpdateCommand(KanbanCommand):
-    """인덱스 갱신 및 README.md를 빌드한다."""
     def __init__(self, board: KanbanBoard, dry_run: bool = False) -> None:
         self.board = board
         self.dry_run = dry_run
@@ -197,7 +167,6 @@ class KanbanUpdateCommand(KanbanCommand):
     def execute(self) -> dict[str, Any]:
         if not self.dry_run:
             self.board.update_indices()
-            self.board.render_board()
 
         # 각 폴더별 상태 요약 집계
         cards_count = {

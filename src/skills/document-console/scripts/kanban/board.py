@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import re
 from pathlib import Path
 from typing import Any
 
@@ -100,72 +99,3 @@ class KanbanBoard:
                     ])
                 except Exception:
                     pass
-
-    def render_board(self) -> None:
-        """README.md 파일 내 칸반 보드 테이블 레이아웃을 다시 렌더링한다."""
-        readme_path = self.base_dir / "README.md"
-        if not readme_path.exists():
-            return
-
-        cards_by_status: dict[str, list[dict[str, Any]]] = {
-            "backlog": [],
-            "todo": [],
-            "in-progress": [],
-            "review": [],
-            "done": [],
-        }
-
-        # 1. 모든 활성 상태 카드 스캔 및 분류
-        for folder in [self.base_dir, self.backlog_dir, self.archive_dir]:
-            if not folder.exists():
-                continue
-            for file_path in folder.glob("kbn-*.md"):
-                try:
-                    doc = Document.load(file_path)
-                    status = doc.frontmatter.status
-                    if status in cards_by_status:
-                        cards_by_status[status].append({
-                            "id": doc.frontmatter.id,
-                            "title": doc.frontmatter.title or file_path.stem,
-                            "file_path": file_path,
-                        })
-                except Exception:
-                    pass
-
-        # 2. 상태별 카드 정렬 (ID 순)
-        for k in cards_by_status:
-            cards_by_status[k].sort(key=lambda x: x["id"] or "")
-
-        # 3. 보드 테이블 생성
-        headers = ["Backlog", "Todo", "In-Progress", "Review", "Done"]
-        status_keys = ["backlog", "todo", "in-progress", "review", "done"]
-        max_rows = max(len(cards_by_status[k]) for k in status_keys) if any(cards_by_status[k] for k in status_keys) else 0
-
-        table_lines = [
-            "| " + " | ".join(headers) + " |",
-            "| " + " | ".join([":---"] * len(headers)) + " |",
-        ]
-
-        for i in range(max_rows):
-            row_cells = []
-            for key in status_keys:
-                cards = cards_by_status[key]
-                if i < len(cards):
-                    card = cards[i]
-                    rel_path = card["file_path"].relative_to(self.base_dir).as_posix()
-                    row_cells.append(f"[{card['id']}]({rel_path})")
-                else:
-                    row_cells.append("")
-            table_lines.append("| " + " | ".join(row_cells) + " |")
-
-        board_md = "\n".join(table_lines)
-        content = readme_path.read_text(encoding="utf-8")
-
-        pattern = r"(## Board\s*\n)(.*?)(?=\n## |\Z)"
-        replacement = f"## Board\n\n{board_md}\n"
-        
-        new_content, count = re.subn(pattern, replacement, content, flags=re.DOTALL)
-        if count == 0:
-            new_content = content + "\n\n## Board\n\n" + board_md + "\n"
-            
-        readme_path.write_text(new_content, encoding="utf-8")
