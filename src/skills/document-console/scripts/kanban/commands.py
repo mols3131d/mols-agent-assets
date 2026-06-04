@@ -10,10 +10,11 @@ from core import (
     TaskPriority,
     normalize_kebab_case,
     title_case_name,
+    format_yaml_list,
 )
 
 from kanban.board import KanbanBoard
-from templates import KANBAN_CARD_TEMPLATE
+from templates import KANBAN_DOCUMENT_TEMPLATE
 
 class KanbanCommand(ABC):
     """모든 칸반 세부 명령들이 구현해야 할 공통 커맨드 인터페이스."""
@@ -79,20 +80,20 @@ class KanbanCreateCommand(KanbanCommand):
             raise FileExistsError(f"카드 파일이 이미 존재합니다: {dest_path}")
 
         title = title_case_name(doc_name)
-        fm = Frontmatter({
-            "id": card_id,
-            "title": title,
-            "status": DocStatus.BACKLOG.value,
-            "priority": self.priority.value,
-            "description": self.description or "",
-            "assignee": self.assignee or "",
-            "tags": self.tags,
-        })
-        body = KANBAN_CARD_TEMPLATE.format(card_id=card_id, title=title)
-        doc = Document(path=dest_path, frontmatter=fm, body=body)
+        tags_yaml = format_yaml_list(self.tags)
+        doc_content = KANBAN_DOCUMENT_TEMPLATE.format(
+            card_id=card_id,
+            title=title,
+            status=DocStatus.BACKLOG.value,
+            priority=self.priority.value,
+            description=self.description or "",
+            assignee=self.assignee or "",
+            tags=tags_yaml,
+        )
 
         if not self.dry_run:
-            doc.save()
+            dest_path.parent.mkdir(parents=True, exist_ok=True)
+            dest_path.write_text(doc_content, encoding="utf-8")
             self.board.update_indices()
 
         return {
