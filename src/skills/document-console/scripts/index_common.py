@@ -6,6 +6,7 @@ import csv
 from pathlib import Path
 from typing import Sequence
 
+
 def split_csv_arg(value: str | None) -> list[str]:
     if not value:
         return []
