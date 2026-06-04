@@ -7,15 +7,38 @@ description: >
 
 # Specifications (SPEC)
 
-Goal: turn approved intent into implementation detail.
+## Overview
 
-## Use When
+- **Goal**: Turn approved requirements or architecture designs into buildable, low-level technical implementation specifications.
 
-- Plan implementation of a feature.
-- Design complex logic/component/API/data.
-- Expand accepted ADR into buildable detail.
+## Triggers
 
-## Frontmatter (Metadata)
+- Planning the technical implementation details of a feature.
+- Designing complex logic, component structures, APIs, or database schemas.
+- Expanding an accepted ADR into buildable steps.
+
+## Exclusions
+
+- High-level product requirement definition or user stories -> use `prd.md`.
+- High-level architecture decisions or tech stack trade-offs -> use `adr.md`.
+
+## Workflow
+
+1. Run the initialization script to scaffold the document automatically:
+   `python3 scripts/init_document.py <name> --type spec --path <dir>`
+2. Describe the problem rationale and business value.
+3. Design details: document schemas, API endpoints, logic flow, edge cases, and error states.
+4. Keep the spec synchronized when code implementation changes.
+5. Update `INDEX.csv` (via `update_index.py`) when the SPEC is created, archived, or updated.
+
+## Resources
+
+- `INDEX.csv`: Index of active specifications in the main folder.
+- `spec-*.md`: Individual specification markdown files.
+- `archive/`: Archive folder for deprecated, superseded, or rejected specifications.
+- `archive/INDEX.csv`: Index of archived specifications.
+
+### Frontmatter Metadata
 
 | Field | Type | Required | Description |
 | :--- | :--- | :---: | :--- |
@@ -26,18 +49,7 @@ Goal: turn approved intent into implementation detail.
 | `categories` | Array | N | Categories list |
 | `tags` | Array | N | Tags list for classification |
 
-## Structure
-
-| Path | Description |
-| :--- | :--- |
-| `INDEX.csv` | Index of active specifications in the main folder |
-| `spec-*.md` | Individual specification markdown files |
-| `archive/` | Archive folder for deprecated, superseded, or rejected specifications |
-| `archive/INDEX.csv` | Index of archived specifications |
-
-## Lifecycle Management
-
-### Status
+### SPEC Lifecycle Statuses
 
 | Status | Active | Description |
 | :--- | :--- | :--- |
@@ -49,15 +61,26 @@ Goal: turn approved intent into implementation detail.
 | `superseded` | ❌ | Specification has been replaced by a newer specification. |
 | `rejected` | ❌ | Specification was not approved. |
 
-Lifecycle: `draft -> proposed -> accepted|rejected -> implemented`.
+### Document Sections
 
-## Authoring Instructions
+| Section Title | Required? | Purpose & Description |
+| :--- | :---: | :--- |
+| `## 1. 개요 (Overview)` | **Y** | High-level summary and single goal of the spec. |
+| `## 2. 기획 의도 (Rationale)` | **Y** | Problem solved, user value, system contribution. |
+| `## 3. 기능 명세 (Functional Specs)` | **Y** | Core behavior, normal flows, exception scenarios. |
+| `## 4. 기술 설계 (Technical Design)` | **Y** | Data Flow (Mermaid), schemas, interface/classes. |
+| `## 5. 제약 사항 및 예외 처리 (Constraints)` | **Y** | Low-level constraints and error handling logic. |
+| `## 6. 품질 및 테스트 기준 (QA)` | N | Verification points, test cases, performance floors. |
 
-- **Initialization Script**: Run `python3 scripts/init_document.py <name> --type spec --path <dir>` to scaffold the document automatically.
-- **Rationale**: Describe the problem and business value.
-- **Design Detail**: Document schemas, APIs, logic flow, and error states.
-- **Source of Truth**: Update this document whenever code logic shifts.
-- **Cross-Reference**: Explicitly link originating ADRs or PRDs.
+Custom sections (e.g., `## Performance Impact`, `## Rollback Strategy`) can be added freely depending on complexity. Optional sections can be omitted or simplified if not applicable.
+
+---
+
+## Rules
+
+- Every SPEC must contain valid frontmatter metadata.
+- Follow the defined lifecycle progression path: `draft -> proposed -> accepted|rejected -> implemented`.
+- Cross-reference originating ADRs or PRDs.
 
 ## Constraints
 
