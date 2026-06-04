@@ -10,27 +10,33 @@ version: 1.0.0
 
 Goal: define product value, users, and requirements.
 
-## 1. When to use
+## Use When
 
 - Define product, service, or major feature.
 - Clarify what to build and why it matters.
 - Align Product, Design, Dev, QA.
 
-## 2. Initialization Script
+## Frontmatter (Metadata)
 
-- Script: `python3 scripts/init_document.py <name> --type prd --path <dir>`
-- Name: `prd-[ID]-[Title].md`, e.g. `prd-001-user-onboarding.md` (automatically formatted by the script)
+| Field | Type | Required | Description |
+| :--- | :--- | :---: | :--- |
+| `id` | String | Y | Unique ID (e.g. `001`, padded to 3 digits) |
+| `title` | String | Y | Document title |
+| `status` | Enum | Y | Current status (`draft`, `proposed`, `approved`, `developing`, `released`, `rejected`, `deprecated`, `superseded`) |
+| `description` | String | N | Detailed explanation or summary |
+| `categories` | Array | N | Categories list |
+| `tags` | Array | N | Tags list for classification |
 
-## 3. Authoring Instructions
+## Structure
 
-- Overview/goals: audience + objectives.
-- Scenarios/stories: user journey + user stories.
-- Requirements: prioritized table.
-- UI/UX flow: navigation + expectations.
-- Metrics: measurable success criteria.
-- Cross-reference: related SPEC/ADR docs.
+| Path | Description |
+| :--- | :--- |
+| `INDEX.csv` | Index of active PRDs in the main folder |
+| `prd-*.md` | Individual PRD markdown files |
+| `archive/` | Archive folder for deprecated, superseded, or rejected PRDs |
+| `archive/INDEX.csv` | Index of archived PRDs |
 
-## 4. Lifecycle Management
+## Lifecycle Management
 
 ### Status
 
@@ -46,3 +52,20 @@ Goal: define product value, users, and requirements.
 | `superseded` | ❌ | Requirement has been replaced by a newer PRD. |
 
 Lifecycle: `draft -> proposed -> approved|rejected -> developing -> released`.
+
+## Authoring Instructions
+
+- **Initialization Script**: Run `python3 scripts/init_document.py <name> --type prd --path <dir>` to scaffold the document automatically.
+- **Overview & Goals**: Clearly identify the target audience and business objectives.
+- **User Scenarios**: Document user journeys and structured user stories.
+- **Requirements**: Define functional and non-functional requirements in a prioritized table.
+- **UI/UX Flow**: Detail layout expectations and interaction navigation.
+- **Metrics**: Specify measurable KPIs and success criteria.
+- **Cross-Reference**: Link related SPEC or ADR documents.
+
+## Constraints
+
+- **No Implementation Specifics**: Do not specify architectural details, code libraries, database schemas, or low-level API responses. Use `spec.md` instead.
+- **Measurable Goals Only**: Avoid vague product success metrics (e.g. "make it fast"). Define clear, quantifiable KPIs.
+- **Cross-Reference Dependencies**: Ensure external team or system dependencies are called out and linked.
+- **Save Original on Rewrite**: Do not overwrite or delete existing specifications without preserving history. Save `<filename>.original.md` before making major changes.
