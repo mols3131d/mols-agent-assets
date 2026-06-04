@@ -1,11 +1,11 @@
 ---
-name: agent-asset-console
+name: agent-asset-studio
 description: >
-  Agent asset management console. Use when user asks to create, edit, validate,
+  Agent asset management studio. Use when user asks to create, edit, validate,
   route, compress, or improve agent skills, rules, agents, or related assets.
 ---
 
-# Agent Asset Console
+# Agent Asset Studio
 
 ## Overview
 

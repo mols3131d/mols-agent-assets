@@ -1,12 +1,12 @@
 ---
-name: document-console
+name: document-studio
 description: >
-  Document workspace console. Use when user asks to create, improve, index,
+  Document workspace studio. Use when user asks to create, improve, index,
   validate, or organize ADR, PRD, SPEC, design notes, tasks, kanban, or document
   collections.
 ---
 
-# Document Console
+# Document Studio
 
 Goal: create and maintain project docs with minimal context. Route by doc type.
 
