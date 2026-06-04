@@ -9,6 +9,7 @@ import sys
 from pathlib import Path
 from typing import Sequence
 
+from core import Document
 from index_common import (
     read_csv_header,
     resolve_output_path,
@@ -33,65 +34,15 @@ DEFAULT_FIELD_ORDER = (
 )
 
 
-def unquote(value: str) -> str:
-    value = value.strip()
-    if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
-        return value[1:-1]
-    return value
-
-
 def parse_frontmatter(path: Path) -> dict[str, str]:
-    content = path.read_text(encoding="utf-8")
-    if not content.startswith("---\n"):
-        return {}
-
-    end = content.find("\n---\n", 4)
-    if end == -1:
-        return {}
-
-    data: dict[str, str] = {}
-    current_key: str | None = None
-    list_items: list[str] = []
-
-    for raw_line in content[4:end].splitlines():
-        line = raw_line.rstrip()
-        stripped = line.strip()
-        if not stripped:
-            continue
-
-        if current_key and stripped.startswith("- "):
-            list_items.append(unquote(stripped[2:]))
-            continue
-
-        if current_key:
-            data[current_key] = "; ".join(list_items)
-            current_key = None
-            list_items = []
-
-        if ":" not in line:
-            continue
-
-        key, value = line.split(":", 1)
-        key = key.strip()
-        value = value.strip()
-        if not key:
-            continue
-
-        if value == "":
-            current_key = key
-            list_items = []
-        elif value == "[]":
-            data[key] = ""
-        elif value.startswith("[") and value.endswith("]"):
-            items = [unquote(item) for item in value[1:-1].split(",")]
-            data[key] = "; ".join(item for item in items if item)
+    doc = Document.load(path)
+    row = {}
+    for k, v in doc.frontmatter.to_dict().items():
+        if isinstance(v, list):
+            row[k] = "; ".join(v)
         else:
-            data[key] = unquote(value)
-
-    if current_key:
-        data[current_key] = "; ".join(list_items)
-
-    return data
+            row[k] = str(v)
+    return row
 
 
 def should_skip(path: Path, include_readme: bool) -> bool:
