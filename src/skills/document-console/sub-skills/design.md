@@ -8,15 +8,40 @@ description: >
 
 # Design Notes
 
-Goal: capture design intent and usable decisions.
+## Overview
 
-## Use When
+- **Goal**: Capture design intent, user/system flows, UI/UX structure, and usable decisions.
 
+## Triggers
+
+- User asks for design documentation, wireframe notes, screen flow, or design rationale.
 - UI/UX flow needs documentation.
 - Screen, component, or interaction behavior needs clarity.
-- Design tradeoff must be preserved before implementation.
+- Design trade-off must be preserved before implementation.
 
-## Frontmatter (Metadata)
+## Exclusions
+
+- Low-level implementation/API/data details -> use `spec.md`.
+- Product/user requirement only -> use `prd.md`.
+- Architecture decisions -> use `adr.md`.
+- Task tracking only -> use `tasks.md` or `kanban.md`.
+
+## Workflow
+
+1. Run the initialization script to scaffold the document automatically:
+   `python3 scripts/init_document.py <name> --type design --path <dir>`
+2. Fill out Context, Goals, Flow, Decisions, and Open Questions.
+3. Keep visual notes textual unless user provides assets.
+4. Update `INDEX.csv` (via `update_index.py`) when the design note is created, archived, or updated.
+
+## Resources
+
+- `INDEX.csv`: Index of active design notes in the main folder.
+- `design-*.md`: Individual design note markdown files.
+- `archive/`: Archive folder for deprecated or superseded design notes.
+- `archive/INDEX.csv`: Index of archived design notes.
+
+### Frontmatter Metadata
 
 | Field | Type | Required | Description |
 | :--- | :--- | :---: | :--- |
@@ -26,7 +51,7 @@ Goal: capture design intent and usable decisions.
 | `categories` | Array | N | Categories list |
 | `tags` | Array | N | Tags list for classification |
 
-## Structure
+### Directory Structure
 
 | Path | Description |
 | :--- | :--- |
@@ -35,17 +60,26 @@ Goal: capture design intent and usable decisions.
 | `archive/` | Archive folder for deprecated or superseded design notes |
 | `archive/INDEX.csv` | Index of archived design notes |
 
-## Write
+### Document Sections
 
-| Section | Content |
-| --- | --- |
-| Context | problem, users, constraints |
-| Goals | desired user/system outcome |
-| Flow | steps, states, navigation |
-| Decisions | chosen design + why |
-| Open Questions | unresolved choices |
+| Section Title | Required? | Purpose & Description |
+| :--- | :---: | :--- |
+| `## Context` | **Y** | Problem context, target users, and constraints. |
+| `## Goals` | **Y** | Desired user/system outcomes. |
+| `## Flow` | N | Screen steps, transitions, triggers, and states. |
+| `## Decisions` | **Y** | Selected design approach and rationale. |
+| `## Open Questions` | **Y** | Unresolved choices and design trade-offs. |
 
-Keep visual notes textual unless user provides assets.
+Custom sections (e.g., `## Interactive Prototyping`, `## Accessibility (a11y)`) can be added freely depending on complexity. Optional sections can be omitted or simplified if not applicable.
+
+---
+
+## Rules
+
+- Target is a folder, not the whole repo.
+- Markdown frontmatter is the absolute source of truth.
+- Fill in all required fields (`id`, `title`) in the frontmatter metadata.
+- Keep the metadata index synced after lifecycle state changes.
 
 ## Constraints
 
@@ -53,3 +87,4 @@ Keep visual notes textual unless user provides assets.
 - **Avoid Vague Flows**: Do not write abstract flows. Clearly specify concrete screen steps, navigation transitions, triggers, and states.
 - **Document Unresolved Choices**: Do not hide unresolved decisions. Document open questions and design trade-offs explicitly.
 - **Describe Visuals Textually**: Do not rely solely on visual assets (wireframes/images). Describe screen structures and interaction behavior textually.
+- Before editing an existing design note, save `<filename>.original.md`.
