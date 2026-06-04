@@ -121,3 +121,65 @@ class Document:
             else:
                 row[k] = str(v)
         return row
+
+    def validate(self, doc_type: DocType | str) -> list[str]:
+        """문서의 프론트매터 유효성을 검증하고, 에러 메시지 리스트를 반환한다."""
+        from core.enums import DocType, DocStatus, TaskPriority
+
+        errors = []
+        fm = self.frontmatter
+
+        # 1. 필수 필드 존재성 검증
+        if not fm.id:
+            errors.append("id 필드가 누락되었거나 비어 있습니다.")
+        if not fm.title:
+            errors.append("title 필드가 누락되었거나 비어 있습니다.")
+        
+        status_val = fm.status
+        if not status_val:
+            errors.append("status 필드가 누락되었거나 비어 있습니다.")
+        else:
+            try:
+                DocStatus(status_val)
+            except ValueError:
+                errors.append(f"유효하지 않은 status 값입니다: {status_val}")
+
+        # 2. 타입별 필드 검증
+        try:
+            dtype = DocType(doc_type)
+        except ValueError:
+            errors.append(f"유효하지 않은 문서 유형(doc_type)입니다: {doc_type}")
+            return errors
+
+        if dtype == DocType.KANBAN:
+            priority_val = fm.priority
+            if priority_val:
+                try:
+                    TaskPriority(priority_val)
+                except ValueError:
+                    errors.append(f"유효하지 않은 priority 값입니다: {priority_val}")
+            
+            tags_val = fm.get("tags")
+            if tags_val is not None and not isinstance(tags_val, list):
+                errors.append("tags 필드는 리스트 형식이어야 합니다.")
+                
+        elif dtype == DocType.ADR:
+            for field in ["categories", "tags", "related-files"]:
+                val = fm.get(field)
+                if val is not None and not isinstance(val, list):
+                    errors.append(f"{field} 필드는 리스트 형식이어야 합니다.")
+                    
+        elif dtype in (DocType.PRD, DocType.SPEC):
+            for field in ["categories", "tags"]:
+                val = fm.get(field)
+                if val is not None and not isinstance(val, list):
+                    errors.append(f"{field} 필드는 리스트 형식이어야 합니다.")
+
+        return errors
+
+
+def validate_frontmatter(content: str, doc_type: DocType | str) -> list[str]:
+    """마크다운 본문 문자열로부터 프론트매터를 추출하여 유효성을 검증한다."""
+    fm_data, body = parse_yaml_frontmatter(content)
+    doc = Document(frontmatter=Frontmatter(fm_data), body=body)
+    return doc.validate(doc_type)

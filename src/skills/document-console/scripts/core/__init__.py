@@ -7,7 +7,7 @@ from core.utils import (
     unquote,
     parse_yaml_frontmatter,
 )
-from core.models import Frontmatter, Document
+from core.models import Frontmatter, Document, validate_frontmatter
 
 __all__ = [
     "DocType",
@@ -21,4 +21,5 @@ __all__ = [
     "parse_yaml_frontmatter",
     "Frontmatter",
     "Document",
+    "validate_frontmatter",
 ]

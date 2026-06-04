@@ -12,6 +12,7 @@ from core import (
     parse_yaml_frontmatter,
     Frontmatter,
     Document,
+    validate_frontmatter,
 )
 
 __all__ = [
@@ -26,4 +27,5 @@ __all__ = [
     "parse_yaml_frontmatter",
     "Frontmatter",
     "Document",
+    "validate_frontmatter",
 ]
