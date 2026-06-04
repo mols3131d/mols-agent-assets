@@ -2,9 +2,11 @@
   "version": 1,
   "skills": {
     "agent-asset-console": {
-      "source": "M:\\workspaces\\mols-agent\\src\\skills\\agent-asset-console",
-      "sourceType": "local",
-      "computedHash": "0171dda52029db1887aadfda1df54b0290d88a8c9022f0336c68c066b5ee1eb9"
+      "source": "mols3131d/mols-agent-assets",
+      "ref": "main",
+      "sourceType": "github",
+      "skillPath": "src/skills/agent-asset-console/SKILL.md",
+      "computedHash": "62adfc3b24ca4d82c4dbebe60528bbf7b32379f1b46e4ec99870c379badd7d05"
     },
     "cavecrew": {
       "source": "JuliusBrussee/caveman",
@@ -49,9 +51,11 @@
       "computedHash": "b9091dbc51de0f3710ea818fd4d638539f8c1784f8fda931eb159c44861e702e"
     },
     "document-console": {
-      "source": "M:\\workspaces\\mols-agent\\src\\skills\\document-console",
-      "sourceType": "local",
-      "computedHash": "1ddaea26269952208fe73e7477d180c545e028fa8bf232d6df886940d93e0acc"
+      "source": "mols3131d/mols-agent-assets",
+      "ref": "main",
+      "sourceType": "github",
+      "skillPath": "src/skills/document-console/SKILL.md",
+      "computedHash": "404ba96466a3a72457eb34ef2a05bf9f1464fce93ade5072ad567de96fc72482"
     }
   }
 }
