@@ -1,6 +1,11 @@
 {
   "version": 1,
   "skills": {
+    "agent-asset-console": {
+      "source": "M:\\workspaces\\mols-agent\\src\\skills\\agent-asset-console",
+      "sourceType": "local",
+      "computedHash": "0171dda52029db1887aadfda1df54b0290d88a8c9022f0336c68c066b5ee1eb9"
+    },
     "cavecrew": {
       "source": "JuliusBrussee/caveman",
       "ref": "main",
@@ -43,10 +48,10 @@
       "skillPath": "skills/caveman-review/SKILL.md",
       "computedHash": "b9091dbc51de0f3710ea818fd4d638539f8c1784f8fda931eb159c44861e702e"
     },
-    "create-skills": {
-      "source": "./src/skills/agent-asset/create-skills",
+    "document-console": {
+      "source": "M:\\workspaces\\mols-agent\\src\\skills\\document-console",
       "sourceType": "local",
-      "computedHash": "ba94aa2aaa46b5226a29be8f966bed4fd91f86eedfed4e81916320afa8297fea"
+      "computedHash": "1ddaea26269952208fe73e7477d180c545e028fa8bf232d6df886940d93e0acc"
     }
   }
 }
