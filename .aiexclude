@@ -1,8 +1,0 @@
-src/
-!src/**/README.md
-src/skills/**/README.md
-!src/**/AGENTS.md
-!src/**/INDEX.md
-
-notes/
-**/.human/
