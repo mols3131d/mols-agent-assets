@@ -1,0 +1,3 @@
+name,overview,trigger,exclusion
+agent-skill.md,"Create/improve/evaluate/validate agent skills","create, edit, review, or validate agent skill","not agent-skill work"
+compress.md,"Compress one target agent asset","/agent-asset-console compress <file>; current/explicit asset too verbose","no target; broad compression"
