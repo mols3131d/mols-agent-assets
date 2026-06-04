@@ -1,5 +1,0 @@
-# [Skill Name]
-
-## Overview
-
-...
