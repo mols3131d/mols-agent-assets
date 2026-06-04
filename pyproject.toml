@@ -1,19 +1,23 @@
 [project]
-name = "mols-agent"
+name = "mols-agent-assets"
 version = "0.1.0"
-description = "Agent asset management repository for mols"
+description = "에이전트 자산 및 프로젝트 문서를 관리하는 워크스페이스 리포지토리"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = []
 
 [dependency-groups]
 dev = [
+  "lefthook>=2.1.9",
   "pytest>=9.0.3",
   "ruff>=0.15.15",
   "rumdl>=0.2.6",
   "ty>=0.0.42",
-  "lefthook>=2.1.9",
 ]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
 
 [tool.ruff.lint]
 select = ["F", "E", "I"]
@@ -22,7 +26,3 @@ fixable = ["ALL"]
 [tool.ruff.lint.isort]
 combine-as-imports = true
 lines-after-imports = 1
-
-[tool.pytest.ini_options]
-pythonpath = ["src"]
-testpaths = ["tests"]
