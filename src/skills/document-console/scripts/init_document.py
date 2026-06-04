@@ -71,6 +71,7 @@ def format_id(raw_id: str) -> str:
 
 class DocumentScaffolder:
     """문서 디렉터리 구조를 초기화하는 클래스."""
+
     def __init__(self, base_path: Path) -> None:
         self.base_path = base_path
 
@@ -97,7 +98,9 @@ class DocumentScaffolder:
             created_files.append(f"{doc_type.value}/INDEX.md")
         if write_if_not_exists(target_dir / "README.md", templates["readme"]):
             created_files.append(f"{doc_type.value}/README.md")
-        if write_if_not_exists(target_dir / "archive/INDEX.md", templates["archive_index"]):
+        if write_if_not_exists(
+            target_dir / "archive/INDEX.md", templates["archive_index"]
+        ):
             created_files.append(f"{doc_type.value}/archive/INDEX.md")
 
         return created_files
@@ -105,6 +108,7 @@ class DocumentScaffolder:
 
 class DocumentCreator:
     """새로운 개별 문서를 생성하는 클래스."""
+
     def __init__(self, base_path: Path, doc_type: DocType) -> None:
         self.base_path = base_path
         self.doc_type = doc_type
@@ -123,7 +127,7 @@ class DocumentCreator:
             prefix = f"{self.doc_type.value}-"
             if not name.startswith(prefix):
                 continue
-            rest = name[len(prefix):]
+            rest = name[len(prefix) :]
             parts = rest.split(".", 1)[0].split("-", 1)
             num_str = parts[0]
             if num_str.isdigit():
@@ -186,7 +190,9 @@ class DocumentCreator:
             description=description,
             categories=format_yaml_list(categories or []),
             tags=format_yaml_list(tags or []),
-            related_files=format_yaml_list(related_files or []) if self.doc_type == DocType.ADR else "[]",
+            related_files=format_yaml_list(related_files or [])
+            if self.doc_type == DocType.ADR
+            else "[]",
         )
 
         doc_path.write_text(doc_content, encoding="utf-8")
@@ -315,6 +321,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                     "created": created,
                 }
         else:
+
             def parse_list(val: str) -> list[str]:
                 if not val:
                     return []
@@ -322,7 +329,9 @@ def main(argv: Sequence[str] | None = None) -> int:
 
             categories = parse_list(args.categories)
             tags = parse_list(args.tags)
-            related_files = parse_list(args.related_files) if doc_type == DocType.ADR else []
+            related_files = (
+                parse_list(args.related_files) if doc_type == DocType.ADR else []
+            )
 
             status_enum = DocStatus(args.status) if args.status else None
 

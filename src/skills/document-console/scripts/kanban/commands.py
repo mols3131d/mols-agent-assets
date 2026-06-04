@@ -6,15 +6,14 @@ from typing import Any
 from core import (
     DocStatus,
     Document,
-    Frontmatter,
     TaskPriority,
+    format_yaml_list,
     normalize_kebab_case,
     title_case_name,
-    format_yaml_list,
 )
+from templates import KANBAN_DOCUMENT_TEMPLATE
 
 from kanban.board import KanbanBoard
-from templates import KANBAN_DOCUMENT_TEMPLATE
 
 class KanbanCommand(ABC):
     """모든 칸반 세부 명령들이 구현해야 할 공통 커맨드 인터페이스."""

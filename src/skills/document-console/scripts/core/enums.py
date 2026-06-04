@@ -6,6 +6,7 @@ class DocType(str, Enum):
     SPEC = "spec"
     KANBAN = "kanban"
 
+
 class DocStatus(str, Enum):
     DRAFT = "draft"
     PROPOSED = "proposed"
@@ -20,6 +21,7 @@ class DocStatus(str, Enum):
     BACKLOG = "backlog"
     TODO = "todo"
     APPROVED = "approved"
+
 
 class TaskPriority(str, Enum):
     LOW = "low"
