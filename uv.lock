@@ -34,7 +34,7 @@ wheels = [
 ]
 
 [[package]]
-name = "mols-agent"
+name = "mols-agent-assets"
 version = "0.1.0"
 source = { virtual = "." }
 
