@@ -26,6 +26,7 @@ Trigger search tools to retrieve verified facts; do not answer solely from memor
 
 ## Formatting
 
+- **Queries**: List all executed search queries as a YAML list inside a `yaml` code block.
 - **Overview**: Start with key summary and context.
 - **Structure**: Use strict markdown heading hierarchy.
 - **Visuals**: Use tables, lists, and Mermaid diagrams for complex data.
