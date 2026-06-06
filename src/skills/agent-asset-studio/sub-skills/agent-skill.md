@@ -77,6 +77,15 @@ Use `--routing-skill` when `sub-skills/` is needed from scaffold.
 
 `name`: lowercase letters, numbers, single hyphens. No edge/repeated hyphen.
 
+#### Description Field
+
+Critical for agent indexing. Keep short to minimize token and inference costs.
+Must include:
+1. **What:** Core capability of the skill.
+2. **When to use:** Triggers and specific scenarios.
+3. **When NOT to use:** Exclusions and boundaries.
+4. **Keywords:** Terms for easy search and routing.
+
 ### 6. Body
 
 - Goal + done criteria first.

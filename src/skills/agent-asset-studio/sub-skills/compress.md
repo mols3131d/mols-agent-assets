@@ -9,7 +9,7 @@ description: >
 
 Synopsis: `/agent-asset-console compress <file>`
 
-Goal: shrink target asset prose. Meaning stay. Token cost drop.
+Goal: shrink target asset prose while maintaining human readability. Balance token minimization with low LLM inference cost. Meaning stay.
 
 ## Scope Guard
 
@@ -61,10 +61,15 @@ Allowed when target explicit/current:
 - prose repeating table/tree/code
 - "you should", "make sure to", "remember to"
 
+## Trade-offs
+
+- **Balance Tokens vs Inference:** Do not over-compress. Extreme or cryptic abbreviations cause the LLM to struggle (spiking inference cost) and make human reading difficult.
+- Keep grammar structures if removing them causes ambiguity.
+
 ## Style
 
 - English preferred unless source/user uses Korean.
-- Caveman-lite: short, direct, fragments OK.
+- Caveman-lite: short, direct, fragments OK, but clarity is paramount.
 - Keep technical terms exact.
 - Tables for criteria.
 - Lists for procedure.

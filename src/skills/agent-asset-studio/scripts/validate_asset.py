@@ -11,7 +11,6 @@ from typing import Sequence
 
 from core.factory import AssetFactory
 
-
 def main(argv: Sequence[str]) -> int:
     """명령행 진입점."""
     parser = argparse.ArgumentParser(

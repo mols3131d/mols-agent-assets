@@ -65,7 +65,7 @@ description: {description}
 ## Routing Sub Skills
 
 1. Read `sub-skills/INDEX.csv`.
-2. Pick one sub-skill by `trigger` and `exclusion`.
+2. Pick one sub-skill by `keywords`, `trigger` and `exclusion`.
 3. Read only the selected sub-skill file.
 
 ## Resources

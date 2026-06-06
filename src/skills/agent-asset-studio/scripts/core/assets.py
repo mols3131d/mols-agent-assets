@@ -69,7 +69,7 @@ EXAMPLE_FILES = {
     "scripts": ("example.py", EXAMPLE_SCRIPT, True),
     "references": ("reference.md", EXAMPLE_REFERENCE, False),
     "assets": ("example.txt", EXAMPLE_ASSET, False),
-    "sub-skills": ("INDEX.csv", "name,overview,trigger,exclusion\n", False),
+    "sub-skills": ("INDEX.csv", "name,overview,keywords,trigger,exclusion\n", False),
 }
 
 
