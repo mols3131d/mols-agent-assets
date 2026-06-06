@@ -11,6 +11,7 @@
 
 ## Temporal Context
 
+- **Current Time**: Check current system time to evaluate recency.
 - **Recency**: Prioritize latest, highly reliable data.
 - **Timestamp**: Always include citation years (e.g., "2026 study").
 - **Timeline**: Segment past vs. current data; highlight paradigm shift drivers.
