@@ -1,5 +1,5 @@
 ---
-name: reviewer-implementation
+name: audit-implementation
 description: Reviews core code logic, readability, style, correctness, error handling, and formatting.
 ---
 

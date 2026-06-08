@@ -1,5 +1,5 @@
 ---
-name: reviewer-test
+name: audit-tests
 description: Reviews test coverage, test cases, mocking strategies, and unit/integration test code quality.
 ---
 

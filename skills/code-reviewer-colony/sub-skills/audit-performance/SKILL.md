@@ -1,5 +1,5 @@
 ---
-name: reviewer-performance
+name: audit-performance
 description: Reviews performance-sensitive code, execution complexity, resource management, database queries, and async patterns.
 ---
 
