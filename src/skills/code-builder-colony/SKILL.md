@@ -1,6 +1,8 @@
 ---
 name: code-builder-colony
-description: Code builder routing studio. Use when the user asks to write, modify, refactor, test, or validate Python code, data pipelines, big data queries, or database schemas.
+description: >
+  Read when the user asks to write, modify, refactor, test, or validate Python code, data pipelines, big data queries, or database schemas.
+  Do not read for code review requests with no modification requests, or non-Python code changes.
 ---
 
 # Code Builder Colony
@@ -26,4 +28,3 @@ See [INDEX.csv](sub-skills/INDEX.csv)
 
 - Route requests to the most specific sub-skill by evaluating `keywords`, `trigger`, and `exclusion` in [INDEX.csv](sub-skills/INDEX.csv).
 - Do not execute code modifications directly in this master skill; delegate all execution steps to the selected sub-skill.
-- Make the smallest focused change required (Minimal Diff).

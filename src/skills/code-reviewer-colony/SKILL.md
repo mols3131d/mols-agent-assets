@@ -1,6 +1,8 @@
 ---
 name: code-reviewer-colony
-description: Code reviewer routing studio. Use when the user asks to review code changes, PR diffs, or audit software quality (architecture, implementation, performance, security, tests).
+description: >
+  Read when the user requests a code review, PR audit, or software quality check.
+  Do not read for code writing, bug fixing, or structural code modifications.
 ---
 
 # Code Reviewer Colony
@@ -23,7 +25,5 @@ See [INDEX.csv](sub-skills/INDEX.csv)
 
 ## Constraints
 
-- Identify modified files by running `python scripts/analyze_diff.py` (relative to this skill).
 - Route tasks to the appropriate sub-skills by evaluating `keywords`, `trigger`, and `exclusion` in [INDEX.csv](sub-skills/INDEX.csv).
 - Do not perform review audits directly in this master skill; delegate all auditing steps to the selected sub-skills.
-- Consolidate findings from executed sub-skills into a unified final report.
