@@ -5,17 +5,25 @@ description: Code builder routing studio. Use when the user asks to write, modif
 
 # Code Builder Colony
 
-Goal: Generate, modify, refactor, and test Python code, data analysis scripts, database schemas, and ETL pipelines by routing tasks to specialized sub-skills.
+## Overview
 
-## Flow
+- Generate, modify, refactor, and test Python code, data analysis scripts, database schemas, and ETL pipelines by routing tasks to specialized sub-skills.
 
-1. **Analyze Request**: Understand the domain and scope of the user's request (e.g., Python backend, Pandas/Polars, ETL workflows, Spark/Big Data, database modeling, or writing tests).
-2. **Consult Index**: Read [INDEX.csv](sub-skills/INDEX.csv) to identify the appropriate sub-skill based on `keywords`, `trigger`, and `exclusion`.
-3. **Execute Sub-Skill**: View and execute only the selected sub-skill instruction.
-4. **Format & Verify**: Run linting, formatting, and test execution using the common utility sub-skills listed in the index to ensure code quality.
+## Triggers
 
-## Rules
+- User asks to create, modify, refactor, optimize, or write tests for Python code, data pipelines, or database schemas.
 
-- **Minimal Scope**: Route to the narrowest sub-skill that fits the request by evaluating `sub-skills/INDEX.csv`. Do not load multiple sub-skills into context.
-- **Reference Check**: Check the `Applicability` section of any loaded reference files before implementing code to avoid over-engineering.
-- **Minimal Diff**: Make the smallest correct change required to achieve the goal.
+## Exclusions
+
+- Non-Python code modifications (unless part of a configuration file).
+- Pure code review requests with no modification requests.
+
+## Sub Skills
+
+See [INDEX.csv](sub-skills/INDEX.csv)
+
+## Constraints
+
+- Route requests to the most specific sub-skill by evaluating `keywords`, `trigger`, and `exclusion` in [INDEX.csv](sub-skills/INDEX.csv).
+- Do not execute code modifications directly in this master skill; delegate all execution steps to the selected sub-skill.
+- Make the smallest focused change required (Minimal Diff).
