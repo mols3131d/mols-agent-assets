@@ -22,4 +22,3 @@ pre-commit:
     ty-check:
       glob: "**/*.py"
       run: uv run ty check
-
