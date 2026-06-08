@@ -10,11 +10,13 @@ Terse reference for designing and structuring routing skills.
 ## 2. Core Components
 
 ### `SKILL.md` (The Router)
+
 - Acts as the primary entry point.
 - Does NOT contain the actual execution workflows for individual tasks.
 - Guides the agent to read `INDEX.csv` and route the user's request to the appropriate sub-skill.
 
 ### `INDEX.csv` (The Registry)
+
 - A lightweight index containing minimal data needed for the LLM to make an accurate routing decision.
 - Format: `name,overview,keywords,trigger,exclusion`
 - The agent reads this first to locate the target sub-skill without loading all sub-skill instructions into context.

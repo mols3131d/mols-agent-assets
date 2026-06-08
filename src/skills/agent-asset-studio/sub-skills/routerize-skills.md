@@ -29,8 +29,10 @@ Refer to [routing-skill-structure.md](../references/routing-skill-structure.md) 
 
 1. **Invoke Script**:
    Use the Python script located at `scripts/routerize_skills.py` to perform the heavy lifting.
+
    ```bash
    python3 scripts/routerize_skills.py --mode <lite|full> --target <path/to/new-router-skill> <path/to/skill1> <path/to/skill2>
    ```
+
 2. **Verify Output**:
    Ensure the target routing skill was generated properly and the source skills were safely migrated.

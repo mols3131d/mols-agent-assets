@@ -14,7 +14,6 @@ Guidelines to ensure code stability, validation accuracy, error resilience, and 
 - **Apply When**: Writing production-grade code, exposing public APIs, processing untrusted external inputs, or handling critical business logic where security, data integrity, and failure recovery are essential.
 - **Do Not Apply To**: Internal helper utilities with trusted inputs, local test suites, or scratch files where lightweight inline checks or simple assertion statements are preferred over heavy validation schemas and custom exceptions.
 
-
 ## 1. Standard Error Handling
 
 - **Categorize Exceptions**: Distinguish clearly between *Business Exceptions* (expected client-side or rule validation failures) and *System Exceptions* (unexpected internal errors, network drops).

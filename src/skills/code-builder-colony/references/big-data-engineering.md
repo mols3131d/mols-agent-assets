@@ -14,7 +14,6 @@ High-density, technology-agnostic guidelines for processing, storage, and pipeli
 - **Apply When**: Processing datasets exceeding single-node memory capacity, building production ETL/ELT pipelines, or developing event-driven streaming applications.
 - **Do Not Apply To**: Small utility scripts, local file converters, or processing datasets under 10GB where simple in-memory operations (e.g., in-memory DataFrames, local file writes) are sufficient and more efficient.
 
-
 ## 1. Distributed Processing Optimization
 
 - **Shuffle Mitigation**: Shuffling is the primary network bottleneck. Filter early, aggregate locally before transfer, and leverage map-side combines.

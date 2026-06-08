@@ -14,7 +14,6 @@ Key standards for asynchronous efficiency, concurrency control, and database per
 - **Apply When**: Handling network operations, database queries (especially ORMs), file systems, multi-threaded/asynchronous operations, or loops that contain potentially slow calls.
 - **Do Not Apply To**: Strictly synchronous, local, compute-bound scripts with no I/O boundaries where async patterns or db optimizations would add redundant overhead.
 
-
 ## 1. Asynchronous & Concurrency Control
 
 - **Non-blocking I/O**: Use `async`/`await` or Promise-based mechanisms for network requests, database queries, and file system tasks to prevent blocking thread execution.

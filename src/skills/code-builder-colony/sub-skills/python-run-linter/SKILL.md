@@ -10,5 +10,6 @@ description: >
 Enforces style checks and auto-formats codebase files.
 
 ## Steps
+
 1. Run `ruff check . --fix` to clean unused imports and syntax errors.
 2. Run `black .` to standardize spacing and line formatting.

@@ -14,7 +14,6 @@ Essential guidelines for writing simple, clean, and maintainable code.
 - **Apply When**: Designing new systems, writing logic modules/classes, refactoring complex code blocks, or when deciding whether to introduce abstractions or patterns.
 - **Do Not Apply To**: Declarative configuration formats, static data lists, simple sequential procedural scripts, or duplicate code blocks with fewer than three occurrences (Rule of Three).
 
-
 ## 1. Core Development Philosophies
 
 | Philosophy | Rule & Action |

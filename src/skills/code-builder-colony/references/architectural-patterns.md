@@ -14,7 +14,6 @@ Standards for layout, layering, and decoupling in our systems.
 - **Apply When**: Developing complete services, domain modules, or applications that require explicit separation of concerns and clear logical layers.
 - **Do Not Apply To**: One-off scripts, simple utility functions, configurations, or tasks with no domain business logic where introducing layers or suffix rules adds unnecessary boilerplate.
 
-
 ## 1. Screaming Architecture (Domain-Centric Structuring)
 
 The directory structure and naming conventions must make the system's business domain and boundaries obvious.

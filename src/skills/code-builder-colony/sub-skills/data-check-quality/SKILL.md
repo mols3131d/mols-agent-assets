@@ -10,5 +10,6 @@ description: >
 Runs checks for null thresholds, schema drift, and data anomalies.
 
 ## Steps
+
 1. Write a helper script testing for schema expectations, null counts, and column types.
 2. Execute the verification and generate a data quality report.

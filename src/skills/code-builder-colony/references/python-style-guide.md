@@ -14,7 +14,6 @@ A consolidated guide to writing Pythonic, clean, and well-tested Python code.
 - **Apply When**: Developing, modifying, or testing Python codebase files (modules, classes, methods, and pytest suites) where execution correctness, testability, and standard Pythonic structure are required.
 - **Do Not Apply To**: Shell/bash scripts, SQL query scripts, configurations, or other languages where Python-specific idioms (like EAFP, wraps, or freezegun) are irrelevant.
 
-
 ## 1. Pythonic Code (Idioms & Features)
 
 - **No Wildcard Imports**: Avoid `from module import *`. Explicitly import required names.

@@ -15,16 +15,19 @@ Terse style guide for agent asset naming conventions.
 Based on the scope and design of the skill, choose one of the three naming structures:
 
 ### A. 동사형 (Verb Type)
+
 - **Scope**: Single-purpose, action-oriented procedural workflows.
 - **Format**: `<domain>-<verb>-<details>.md`
 - **Example**: `coder-generate-code.md`, `compress-file.md`
 
 ### B. 객체형 (Object Type)
+
 - **Scope**: Multi-purpose skills that manage multiple actions and rules grouped around a specific domain object.
 - **Format**: `<domain>-<object>.md`
 - **Example**: `task-manager.md`, `agent-reviewer.md`
 
 ### C. 장소형 (Place Type)
+
 - **Scope**: Interactive routing hubs, workspaces, or portals where multiple domain objects and capabilities are consolidated.
 - **Format**: `<domain>-<details>-<place>.md` (where `<place>` is a place-like word such as `studio`, `console`, `hub`, `portal`, `workspace`, etc.)
 - **Example**: `agent-asset-studio.md`, `reviewer-console.md`
