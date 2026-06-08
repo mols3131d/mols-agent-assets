@@ -1,5 +1,6 @@
-data/**
-tmp/**
+data/
+tmp/
+scratch/
 .agents/skills/*
 !.agents/skills/asset-doc-maker/
 
