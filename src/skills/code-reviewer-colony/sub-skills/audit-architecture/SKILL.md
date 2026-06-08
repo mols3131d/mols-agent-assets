@@ -1,5 +1,5 @@
 ---
-name: reviewer-architecture
+name: audit-architecture
 description: Audits code directory structure, screaming architecture, module/dependency rules, and naming conventions.
 ---
 

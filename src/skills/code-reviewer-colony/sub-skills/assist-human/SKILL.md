@@ -1,5 +1,5 @@
 ---
-name: reviewer-assistant
+name: assist-human
 description: Acts as an interactive assistant to help human developers perform code reviews.
 ---
 
@@ -23,5 +23,5 @@ Provide interactive assistance to developers conducting code reviews, answering 
 
 3. **Delegate Deep Tasks**:
    - For complex reviews, deep structural audits, or specialized checks, do not handle them inline.
-   - Delegate to other specialized sub-skills (e.g., `reviewer-architecture` for structure, `reviewer-performance` for efficiency, `reviewer-security` for security, or `reviewer-implementation` for logic) to handle the review depth.
+   - Delegate to other specialized sub-skills (e.g., `audit-architecture` for structure, `audit-performance` for efficiency, `audit-security` for security, or `audit-implementation` for logic) to handle the review depth.
    - Refer to guidelines in [principles.md](../../references/principles.md) for basic constraints.

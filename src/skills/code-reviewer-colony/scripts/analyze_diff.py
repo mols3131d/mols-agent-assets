@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-import sys
-import os
-import re
 import argparse
+import re
+import sys
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -19,6 +18,7 @@ def parse_args():
         help="Run 'git diff' on the specified ref (defaults to HEAD)."
     )
     return parser.parse_args()
+
 
 def get_diff_content(args):
     if args.git:
@@ -47,6 +47,7 @@ def get_diff_content(args):
             sys.exit(1)
         return sys.stdin.read()
 
+
 def analyze_diff(diff_text):
     # Regex to capture file paths in git diff
     # Format: a/path/to/file b/path/to/file or rename from/to
@@ -62,23 +63,23 @@ def analyze_diff(diff_text):
     deleted_files = re.findall(r"^deleted file mode \d+\nindex .*?\n--- a/(.*?)\n\+\+\+ /dev/null$", diff_text, re.MULTILINE)
 
     categories = {
-        "reviewer-architecture": {
+        "audit-architecture": {
             "files": [],
             "reasons": []
         },
-        "reviewer-implementation": {
+        "audit-implementation": {
             "files": [],
             "reasons": []
         },
-        "reviewer-performance": {
+        "audit-performance": {
             "files": [],
             "reasons": []
         },
-        "reviewer-security": {
+        "audit-security": {
             "files": [],
             "reasons": []
         },
-        "reviewer-test": {
+        "audit-tests": {
             "files": [],
             "reasons": []
         }
@@ -92,23 +93,23 @@ def analyze_diff(diff_text):
         
         # Test detection: test files or spec files
         if any(term in f_lower for term in ["test", "spec", "mock"]) or f_lower.endswith("_test.go"):
-            categories["reviewer-test"]["files"].append(f)
-            if "Test file modified/added" not in categories["reviewer-test"]["reasons"]:
-                categories["reviewer-test"]["reasons"].append("Test file modified/added")
+            categories["audit-tests"]["files"].append(f)
+            if "Test file modified/added" not in categories["audit-tests"]["reasons"]:
+                categories["audit-tests"]["reasons"].append("Test file modified/added")
             continue
 
         # Otherwise, classify implementation
-        categories["reviewer-implementation"]["files"].append(f)
-        if "Implementation file modified/added" not in categories["reviewer-implementation"]["reasons"]:
-            categories["reviewer-implementation"]["reasons"].append("Implementation file modified/added")
+        categories["audit-implementation"]["files"].append(f)
+        if "Implementation file modified/added" not in categories["audit-implementation"]["reasons"]:
+            categories["audit-implementation"]["reasons"].append("Implementation file modified/added")
 
         # Check path for architecture patterns
         if "/" not in f:
-            categories["reviewer-architecture"]["files"].append(f)
-            categories["reviewer-architecture"]["reasons"].append(f"Root file modified: {f}")
+            categories["audit-architecture"]["files"].append(f)
+            categories["audit-architecture"]["reasons"].append(f"Root file modified: {f}")
         elif any(part in f_lower.split("/") for part in ["router", "handler", "controller", "repository", "service", "infrastructure"]):
-            categories["reviewer-architecture"]["files"].append(f)
-            categories["reviewer-architecture"]["reasons"].append(f"Architectural component modified in path: {f}")
+            categories["audit-architecture"]["files"].append(f)
+            categories["audit-architecture"]["reasons"].append(f"Architectural component modified in path: {f}")
 
     # Parse individual diff lines for keywords
     current_file = None
@@ -147,14 +148,14 @@ def analyze_diff(diff_text):
             # Check security keywords
             for pattern, desc in sec_keywords:
                 if pattern.search(content):
-                    categories["reviewer-security"]["files"].append(current_file)
-                    categories["reviewer-security"]["reasons"].append(f"{desc} in {current_file}:{line_number}")
+                    categories["audit-security"]["files"].append(current_file)
+                    categories["audit-security"]["reasons"].append(f"{desc} in {current_file}:{line_number}")
             
             # Check performance keywords
             for pattern, desc in perf_keywords:
                 if pattern.search(content):
-                    categories["reviewer-performance"]["files"].append(current_file)
-                    categories["reviewer-performance"]["reasons"].append(f"{desc} in {current_file}:{line_number}")
+                    categories["audit-performance"]["files"].append(current_file)
+                    categories["audit-performance"]["reasons"].append(f"{desc} in {current_file}:{line_number}")
 
     # Post process duplicates
     for cat in categories:
@@ -162,6 +163,7 @@ def analyze_diff(diff_text):
         categories[cat]["reasons"] = sorted(list(set(categories[cat]["reasons"])))
 
     return categories, new_files, deleted_files
+
 
 def main():
     args = parse_args()
@@ -188,17 +190,18 @@ def main():
         if info["files"]:
             recommended_any = True
             print(f"\n### 🎯 `{cat}`")
-            print(f"**Reasons / Triggers detected**:")
+            print("**Reasons / Triggers detected**:")
             for r in info["reasons"]:
                 print(f"- {r}")
-            print(f"**Files to inspect**:")
+            print("**Files to inspect**:")
             for f in info["files"][:5]:  # Limit to top 5
                 print(f"- `{f}`")
             if len(info["files"]) > 5:
                 print(f"- ... and {len(info['files']) - 5} more files.")
                 
     if not recommended_any:
-        print("\nNo specific triggers matched. Standard `reviewer-implementation` suggested for general sanity check.")
+        print("\nNo specific triggers matched. Standard `audit-implementation` suggested for general sanity check.")
+
 
 if __name__ == "__main__":
     main()

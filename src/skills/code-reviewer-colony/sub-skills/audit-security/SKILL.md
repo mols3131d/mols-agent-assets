@@ -1,5 +1,5 @@
 ---
-name: reviewer-security
+name: audit-security
 description: Reviews security vulnerabilities, input validation, authentication/authorization checks, and prevents hardcoded secrets.
 ---
 

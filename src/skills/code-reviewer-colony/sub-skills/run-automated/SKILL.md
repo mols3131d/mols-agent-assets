@@ -1,5 +1,5 @@
 ---
-name: reviewer-automated
+name: run-automated
 description: Performs agent-led automated code reviews and generates structured code review reports.
 ---
 
