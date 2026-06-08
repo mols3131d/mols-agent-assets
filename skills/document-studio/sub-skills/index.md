@@ -28,13 +28,17 @@ description: >
 
 1. Confirm target folder.
 2. Generate/update index:
+
    ```bash
    python3 scripts/update_index.py <folder> --fields file,id,title,status --sort status,id,file
    ```
+
 3. Sort existing index when only order changes:
+
    ```bash
    python3 scripts/sort_index.py <folder>/INDEX.csv --fields status,id,file
    ```
+
 4. Report missing frontmatter fields instead of inventing values.
 5. Report the target folder, updated `INDEX.csv`, fields used, and missing fields or skipped files.
 

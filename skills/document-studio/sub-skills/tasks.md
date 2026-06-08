@@ -39,6 +39,7 @@ description: >
 - One task = one action.
 - Group by milestone only when list exceeds ~10 items.
 - Task item format:
+
   ```markdown
   - [ ] Action verb + object. Owner/date if known.
   ```

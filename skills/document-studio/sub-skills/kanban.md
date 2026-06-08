@@ -23,18 +23,25 @@ description: Create/update kanban boards for doc-backed work. Use for task statu
 ## Workflow
 
 1. Initialize kanban board:
+
    ```bash
    python3 scripts/kanban.py init <folder>
    ```
+
 2. Create card:
+
    ```bash
    python3 scripts/kanban.py create <folder> <title> [--priority low|medium|high] [--assignee x]
    ```
+
 3. Move card to next state:
+
    ```bash
    python3 scripts/kanban.py move <folder> <card_id> <status>
    ```
+
 4. Update card fields:
+
    ```bash
    python3 scripts/kanban.py update <folder> <card_id> [--status status] [--priority priority] [--assignee assignee] [--title title]
    ```

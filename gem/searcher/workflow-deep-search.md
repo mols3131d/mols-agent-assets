@@ -12,6 +12,7 @@
 - Extract new keywords from initial results and perform subsequent searches to drill down.
 
 ## 3. Query Best Practices (Complex Syntaxes)
+
 - **Authoritative Report Search**: `<query> site:[domain] filetype:[ext] -site:[unreliable_domain]`
 - **Precise Error / API Search**: `"<exact_phrase>" <context> -site:[spam/forum_domain]`
 - **Consensus & Date Search**: `("<term_A>" OR "<term_B>") site:[domain] after:[year]`
