@@ -1,6 +1,7 @@
 data/**
 tmp/**
-.agents/skills/
+.agents/skills/*
+!.agents/skills/asset-doc-maker/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
