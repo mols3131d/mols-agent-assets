@@ -22,9 +22,12 @@ Goal: create and maintain project docs with minimal context. Route by doc type.
 
 ## Flow
 
-1. Read `sub-skills/INDEX.csv`.
-2. Pick one sub-skill.
-3. Read only picked sub-skill.
+- Multi-skill routing: If the request spans multiple categories, select and execute matching sub-skills sequentially.
+- Workflow: Load instructions for all matched sub-skills → Plan a step-by-step sequence → Execute and report progress.
+
+1. Read `sub-skills/INDEX.csv` to identify all matching sub-skills for the request.
+2. If a single sub-skill matches, read only that sub-skill file.
+3. If multiple sub-skills match, load all matched sub-skill files, plan a sequential workflow, and execute each step while reporting progress.
 4. Use matching template when creating new ADR/PRD/SPEC.
 5. Update index/status when doc lifecycle changes.
 
@@ -37,6 +40,7 @@ Goal: create and maintain project docs with minimal context. Route by doc type.
 - Before editing existing file, save `<filename>.original.md`.
 - Prefer tables for status/index data.
 - Ask when doc type, target path, or status is unclear.
+- If a request matches multiple sub-skills, load and execute all relevant sub-skills in sequence.
 
 ## Output
 

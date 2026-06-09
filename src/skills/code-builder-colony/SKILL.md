@@ -22,9 +22,12 @@ description: >
 
 ## Sub Skills
 
-See [INDEX.csv](sub-skills/INDEX.csv)
+Read [INDEX.csv](sub-skills/INDEX.csv) to identify all matching sub-skills for the request.
+- Multi-skill routing: If the request spans multiple categories, select and execute matching sub-skills sequentially.
+- Workflow: Load instructions for all matched sub-skills → Plan a step-by-step sequence → Execute and report progress.
 
 ## Constraints
 
-- Route requests to the most specific sub-skill by evaluating `keywords`, `trigger`, and `exclusion` in [INDEX.csv](sub-skills/INDEX.csv).
-- Do not execute code modifications directly in this master skill; delegate all execution steps to the selected sub-skill.
+- Route requests to the most specific sub-skills by evaluating `keywords`, `trigger`, and `exclusion` in [INDEX.csv](sub-skills/INDEX.csv).
+- If a request matches multiple sub-skills, load and execute all relevant sub-skills in sequence.
+- Do not execute code modifications directly in this master skill; delegate all execution steps to the selected sub-skills.

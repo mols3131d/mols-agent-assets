@@ -64,9 +64,13 @@ description: {description}
 
 ## Routing Sub Skills
 
-1. Read `sub-skills/INDEX.csv`.
-2. Pick one sub-skill by `keywords`, `trigger` and `exclusion`.
-3. Read only the selected sub-skill file.
+- Multi-skill routing: If the request spans multiple categories, select and execute matching sub-skills sequentially.
+- Workflow: Load instructions for all matched sub-skills → Plan a step-by-step sequence → Execute and report progress.
+
+1. Read `sub-skills/INDEX.csv` to identify all matching sub-skills for the request.
+2. If a single sub-skill matches, read only that sub-skill file.
+3. If multiple sub-skills match, load all matched sub-skill files, plan a sequential workflow, and execute each step while reporting progress.
+
 
 ## Resources
 
