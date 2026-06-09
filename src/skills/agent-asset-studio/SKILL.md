@@ -23,7 +23,10 @@ description: >
 
 ## Sub Skills
 
-See `sub-skills/INDEX.csv`
+Read `sub-skills/INDEX.csv` to identify all matching sub-skills for the request.
+- Multi-skill routing: If the request spans multiple categories, select and execute matching sub-skills sequentially.
+- Workflow: Load instructions for all matched sub-skills → Plan a step-by-step sequence → Execute and report progress.
+
 
 ## Rules
 
@@ -37,3 +40,5 @@ See `sub-skills/INDEX.csv`
 
 - Before edit, save original as `<filename>.original.md`.
 - Route sub-skills by evaluating `keywords`, `trigger`, and `exclusion` in `sub-skills/INDEX.csv`.
+- If a request matches multiple sub-skills, load and execute all relevant sub-skills in sequence.
+
