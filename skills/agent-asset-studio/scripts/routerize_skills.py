@@ -23,6 +23,9 @@ This is a routing skill.
 ## Sub-Skills
 
 This skill acts as a router for multiple sub-skills.
+- Multi-skill routing: If the request spans multiple categories, select and execute matching sub-skills sequentially.
+- Workflow: Load instructions for all matched sub-skills → Plan a step-by-step sequence → Execute and report progress.
+
 Refer to `sub-skills/INDEX.csv` to find the appropriate sub-skill.
 """
 
