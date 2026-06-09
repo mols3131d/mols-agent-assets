@@ -1,8 +1,12 @@
 data/
 tmp/
 scratch/
-.agents/skills/*
-!.agents/skills/asset-doc-maker/
+.agents/skills/agent-asset-studio
+.agents/skills/document-studio
+.agents/skills/caveman*
+.agents/skills/cavecrew
+.agents/skills/openspec*
+.agents/workflows/opsx-*.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
