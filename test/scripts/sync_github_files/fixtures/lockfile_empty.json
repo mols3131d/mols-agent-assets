@@ -1,0 +1,10 @@
+{
+    "assets": {
+        "sample": {
+            "sourceUrl": "https://github.com/owner/repo/blob/main/src/rules/sample.md",
+            "destPath": ".agents/rules/",
+            "computedHash": ""
+        }
+    },
+    "version": 1
+}
