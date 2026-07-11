@@ -1,0 +1,12 @@
+{
+  "activate-skills": {
+    "enabled": true,
+    "PreInvocation": [
+      {
+        "type": "command",
+        "command": "echo '{\"injectSteps\": [{\"ephemeralMessage\": \"Activate agent skills `/caveman lite` and `/ponytail lite`\"}]}'",
+        "timeout": 5
+      }
+    ]
+  }
+}
