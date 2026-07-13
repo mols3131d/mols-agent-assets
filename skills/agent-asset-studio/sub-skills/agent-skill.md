@@ -89,11 +89,15 @@ Must include:
 
 ### 6. Body
 
-- Goal + done criteria first.
-- Ordered workflow for action.
-- Tables for criteria.
-- Ask/stop conditions explicit.
-- Frequent knowledge only.
+The following 7 core concepts should ideally be covered, but exact section titles are **flexible** and sections can be **omitted** if unnecessary. When editing an existing skill, **preserve its original structure and titles**.
+
+- **Goal**: Core purpose and scope of responsibility.
+- **Non-Goal**: Areas intentionally excluded to prevent scope creep.
+- **When to Use**: Exact conditions and user trigger phrases to activate.
+- **When NOT to Use**: Excluded scenarios or when to use another skill instead.
+- **Workflows**: Ordered sequence of steps or tasks to accomplish the goal.
+- **Instructions**: Positive rules or guidelines the agent must follow.
+- **Constraints**: Strict negative rules the agent must never violate.
 
 ### 7. Sub-skill index, if used
 
