@@ -12,9 +12,9 @@ pre-commit:
     - "**/node_modules/**"
 
   commands:
-    rumdl-fmt:
+    rumdl:
       glob: "**/*.md"
-      run: uv run rumdl fmt {staged_files}
+      run: uv run rumdl fmt {staged_files} && uv run rumdl check {staged_files}
       stage_fixed: true
     ruff:
       glob: "**/*.py"
