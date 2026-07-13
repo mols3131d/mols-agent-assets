@@ -23,8 +23,4 @@
     "**/node_modules": true,
     ".rumdl_cache": true
   },
-  "workbench.editorAssociations": {
-    // "**/.agents/rules/*.md": "antigravity.ruleEditor",
-    "**/.gemini/antigravity/brain/*/*.md": "antigravity.globalArtifactsEditorInput"
-  }
 }
