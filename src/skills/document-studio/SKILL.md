@@ -37,7 +37,7 @@ Goal: create and maintain project docs with minimal context. Route by doc type.
 - DRY: do not duplicate source of truth across docs.
 - Keep docs actionable: owner, status, date, decision/requirement/task.
 - Preserve existing docs unless user asks to rewrite.
-- Before editing existing file, save `<filename>.original.md`.
+- Do not create backups by default. If the user explicitly requests a backup (e.g., using terms like "backup", "save original", "keep original"), create one by inserting `.original` right before the first extension (e.g., `docs/arch.md` -> `docs/arch.original.md`, `src/app.ex.md` -> `src/app.original.ex.md`).
 - Prefer tables for status/index data.
 - Ask when doc type, target path, or status is unclear.
 - If a request matches multiple sub-skills, load and execute all relevant sub-skills in sequence.
