@@ -6,14 +6,14 @@
       "ref": "main",
       "sourceType": "github",
       "skillPath": "src/skills/agent-asset-studio/SKILL.md",
-      "computedHash": "3d7666f62d1fbd7c9a84cbb7ab48fff7c29312713e164d16ae01c41cf70bcfe2"
+      "computedHash": "34ef477f2b0d6b67c3983ed3f39505b6fa3a3831d776e12d8489b43d8710e7ca"
     },
     "document-studio": {
       "source": "mols3131d/mols-agent-assets",
       "ref": "main",
       "sourceType": "github",
       "skillPath": "src/skills/document-studio/SKILL.md",
-      "computedHash": "80b04cd099d0e90fe179504ae47d29173de9704f117c9099f08ee6fca195efa0"
+      "computedHash": "2ddbf40bddbab620e8ef1774a4f622dacb65fcdb2488c5d1e99afe8ac96b3de2"
     }
   }
 }
