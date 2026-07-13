@@ -1,3 +1,5 @@
+# AGENTS
+
 ## Language & Terminology
 
 - **Korean Priority**: Add/change user docs/comments/logs in Korean.
