@@ -23,7 +23,7 @@ uv run lefthook install
 # 3. Perform initial skill update
 echo "[3/3] Fetching initial agent skills..."
 if command -v npx &> /dev/null; then
-    npx skills update -y || echo "Warning: skills update encountered an issue."
+    npx skills update -p -y || echo "Warning: skills update encountered an issue."
 else
     echo "Warning: 'npx' command not found. Skipping initial skill updates."
 fi
