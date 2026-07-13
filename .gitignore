@@ -1,6 +1,5 @@
 data/
 tmp/
-scratch/
 .agents/skills/agent-asset-studio
 .agents/skills/document-studio
 .agents/skills/caveman*
