@@ -7,8 +7,10 @@ from core import (
     Document,
 )
 
+
 class KanbanBoard:
     """칸반 보드 디렉터리 및 카드 자산들을 총괄 관리하는 도메인 모델."""
+
     def __init__(self, base_dir: Path) -> None:
         self.base_dir = base_dir.resolve()
         self.backlog_dir = self.base_dir / "backlog"
@@ -39,7 +41,7 @@ class KanbanBoard:
                 prefix = "kbn-"
                 if not name.startswith(prefix):
                     continue
-                rest = name[len(prefix):]
+                rest = name[len(prefix) :]
                 parts = rest.split(".", 1)[0].split("-", 1)
                 num_str = parts[0]
                 if num_str.isdigit():
@@ -91,10 +93,14 @@ class KanbanBoard:
             f_io = io.StringIO()
             with contextlib.redirect_stdout(f_io):
                 try:
-                    update_index_main([
-                        str(folder),
-                        "--fields", "file,id,title,status,priority,assignee,tags",
-                        "--sort", "status,id,file"
-                    ])
+                    update_index_main(
+                        [
+                            str(folder),
+                            "--fields",
+                            "file,id,title,status,priority,assignee,tags",
+                            "--sort",
+                            "status,id,file",
+                        ]
+                    )
                 except Exception:
                     pass

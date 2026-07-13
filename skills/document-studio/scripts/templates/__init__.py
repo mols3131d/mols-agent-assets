@@ -1,23 +1,23 @@
-from .adr import (
+from .adr import (  # ty: ignore[unresolved-import]
     ADR_ARCHIVE_INDEX_TEMPLATE,
     ADR_DOCUMENT_TEMPLATE,
     ADR_INDEX_TEMPLATE,
     ADR_README_TEMPLATE,
 )
-from .prd import (
+from .kanban import (  # ty: ignore[unresolved-import]
+    KANBAN_DOCUMENT_TEMPLATE,
+)
+from .prd import (  # ty: ignore[unresolved-import]
     PRD_ARCHIVE_INDEX_TEMPLATE,
     PRD_DOCUMENT_TEMPLATE,
     PRD_INDEX_TEMPLATE,
     PRD_README_TEMPLATE,
 )
-from .spec import (
+from .spec import (  # ty: ignore[unresolved-import]
     SPEC_ARCHIVE_INDEX_TEMPLATE,
     SPEC_DOCUMENT_TEMPLATE,
     SPEC_INDEX_TEMPLATE,
     SPEC_README_TEMPLATE,
-)
-from .kanban import (
-    KANBAN_DOCUMENT_TEMPLATE,
 )
 
 __all__ = [

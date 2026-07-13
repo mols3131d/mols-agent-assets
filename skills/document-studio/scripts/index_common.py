@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import csv
 from pathlib import Path
-from typing import Sequence
+from typing import Literal, Sequence
 
 
 def split_csv_arg(value: str | None) -> list[str]:
@@ -21,7 +21,7 @@ def resolve_output_path(base_dir: Path, output: str | None, default_name: str) -
 def read_csv(path: Path) -> tuple[list[str], list[dict[str, str]]]:
     with path.open(newline="", encoding="utf-8") as file:
         reader = csv.DictReader(file)
-        return reader.fieldnames or [], list(reader)
+        return list(reader.fieldnames) if reader.fieldnames else [], list(reader)
 
 
 def read_csv_header(path: Path) -> list[str]:
@@ -37,7 +37,7 @@ def write_csv(
     fields: Sequence[str],
     rows: Sequence[dict[str, str]],
     *,
-    extrasaction: str = "ignore",
+    extrasaction: Literal["raise", "ignore"] = "ignore",
 ) -> None:
     with path.open("w", newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(

@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class DocType(str, Enum):
     ADR = "adr"
     PRD = "prd"

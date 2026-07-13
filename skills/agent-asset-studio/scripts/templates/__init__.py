@@ -1,8 +1,11 @@
-from .agent import AGENT_TEMPLATE
-from .reference import EXAMPLE_REFERENCE
-from .rule import RULE_TEMPLATE
-from .script import EXAMPLE_SCRIPT
-from .skill import ROUTING_SKILL_TEMPLATE, SKILL_TEMPLATE
+from .agent import AGENT_TEMPLATE  # ty: ignore[unresolved-import]
+from .reference import EXAMPLE_REFERENCE  # ty: ignore[unresolved-import]
+from .rule import RULE_TEMPLATE  # ty: ignore[unresolved-import]
+from .script import EXAMPLE_SCRIPT  # ty: ignore[unresolved-import]
+from .skill import (  # ty: ignore[unresolved-import]
+    ROUTING_SKILL_TEMPLATE,
+    SKILL_TEMPLATE,
+)
 
 __all__ = [
     "SKILL_TEMPLATE",

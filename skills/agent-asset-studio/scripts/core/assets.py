@@ -99,8 +99,7 @@ def build_resource_notes(resources: Sequence[str], include_examples: bool) -> st
             )
     if "prompts" in resources:
         lines.append(
-            "- `prompts/`: 에이전트 지시에 필요한 "
-            "세부 프롬프트 템플릿을 보관한다."
+            "- `prompts/`: 에이전트 지시에 필요한 세부 프롬프트 템플릿을 보관한다."
         )
     if "configs" in resources:
         lines.append("- `configs/`: 에이전트 기동 설정 및 환경 옵션을 둔다.")
@@ -155,7 +154,7 @@ def run_base_initialization(
     for resource in resources:
         planned_files.append(f"{resource}/")
         example = EXAMPLE_FILES.get(resource)
-        if resource == "sub-skills":
+        if resource == "sub-skills" and example is not None:
             planned_files.append(f"{resource}/{example[0]}")
         elif options.include_examples and example is not None:
             planned_files.append(f"{resource}/{example[0]}")
@@ -198,9 +197,7 @@ def run_base_initialization(
 
     write_text(asset_dir / filename, file_content)
     created = [filename]
-    created.extend(
-        create_resource_dirs(asset_dir, resources, options.include_examples)
-    )
+    created.extend(create_resource_dirs(asset_dir, resources, options.include_examples))
 
     return {
         "status": "created",

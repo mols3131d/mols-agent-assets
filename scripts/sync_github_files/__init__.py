@@ -1,5 +1,6 @@
 import urllib.parse
 import urllib.request
+
 from .cli import main
 from .core import classify_state, sha256_bytes
 from .github import (

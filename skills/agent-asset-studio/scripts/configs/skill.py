@@ -2,7 +2,7 @@ from typing import Final
 
 from core.schema import FrontmatterSchema
 
-from .common import (
+from .common import (  # ty: ignore[unresolved-import]
     COMMON_DESCRIPTION_FIELD,
     COMMON_NAME_FIELD,
     DEFAULT_SKILL_DESCRIPTION,
@@ -16,10 +16,12 @@ EXAMPLE_ASSET: Final[str] = """이 파일은 실제 템플릿, 이미지, 설정
 """
 
 # Configuration for validate_skill.py
-FRONTMATTER_SCHEMA: Final[FrontmatterSchema] = FrontmatterSchema([
-    COMMON_NAME_FIELD,
-    COMMON_DESCRIPTION_FIELD,
-])
+FRONTMATTER_SCHEMA: Final[FrontmatterSchema] = FrontmatterSchema(
+    [
+        COMMON_NAME_FIELD,
+        COMMON_DESCRIPTION_FIELD,
+    ]
+)
 TRIGGER_WORDS: Final[tuple[str, ...]] = (
     "trigger",
     "use when",
