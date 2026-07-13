@@ -7,6 +7,9 @@ scratch/
 .agents/skills/cavecrew
 .agents/skills/openspec*
 .agents/workflows/opsx-*.md
+*.tmp*
+*.origin*
+*.bk*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
