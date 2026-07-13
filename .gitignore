@@ -9,7 +9,7 @@ scratch/
 .agents/workflows/opsx-*.md
 *.tmp*
 *.origin*
-*.bk*
+*.backup*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
