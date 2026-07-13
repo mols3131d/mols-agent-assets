@@ -17,8 +17,11 @@ from index_common import (
     write_csv,
 )
 
+
 def main(argv: Sequence[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Sort INDEX.csv by prioritized fields.")
+    parser = argparse.ArgumentParser(
+        description="Sort INDEX.csv by prioritized fields."
+    )
     parser.add_argument("csv_path", help="INDEX.csv path.")
     parser.add_argument(
         "--fields",

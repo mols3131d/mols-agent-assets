@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 import re
 from pathlib import Path
+from typing import Any
+
 
 def normalize_kebab_case(s: str) -> str:
     """문자열을 kebab-case 형태로 정규화한다."""
@@ -40,7 +42,7 @@ def unquote(value: str) -> str:
     return value
 
 
-def parse_yaml_frontmatter(content: str) -> tuple[dict[str, any], str]:
+def parse_yaml_frontmatter(content: str) -> tuple[dict[str, Any], str]:
     """프론트매터 딕셔너리와 본문 텍스트를 읽어온다."""
     if not content.startswith("---\n"):
         return {}, content
@@ -50,9 +52,9 @@ def parse_yaml_frontmatter(content: str) -> tuple[dict[str, any], str]:
         return {}, content
 
     fm_text = content[4:end]
-    body = content[end + 5:]
+    body = content[end + 5 :]
 
-    data: dict[str, any] = {}
+    data: dict[str, Any] = {}
     current_key: str | None = None
     list_items: list[str] = []
 
@@ -86,7 +88,9 @@ def parse_yaml_frontmatter(content: str) -> tuple[dict[str, any], str]:
         elif value == "[]":
             data[key] = []
         elif value.startswith("[") and value.endswith("]"):
-            data[key] = [unquote(item) for item in value[1:-1].split(",") if item.strip()]
+            data[key] = [
+                unquote(item) for item in value[1:-1].split(",") if item.strip()
+            ]
         else:
             data[key] = unquote(value)
 

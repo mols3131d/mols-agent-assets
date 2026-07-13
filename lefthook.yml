@@ -5,6 +5,11 @@ pre-commit:
     - "**/archive/**"
     - "**/*cache*/**"
     - "**/*tmp*/**"
+    - "**/*.origin*"
+    - "**/*.backup*"
+    - "**/*.tmp*"
+    - "**/.venv/**"
+    - "**/node_modules/**"
 
   commands:
     rumdl-fmt:
@@ -21,4 +26,4 @@ pre-commit:
       stage_fixed: true
     ty-check:
       glob: "**/*.py"
-      run: uv run ty check
+      run: uv run ty check {staged_files}

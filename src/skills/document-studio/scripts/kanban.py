@@ -17,8 +17,8 @@ if str(scripts_dir) not in sys.path:
 from core import DocStatus, TaskPriority
 from kanban import (
     KanbanBoard,
-    KanbanInitCommand,
     KanbanCreateCommand,
+    KanbanInitCommand,
     KanbanMoveCommand,
     KanbanUpdateCommand,
 )
@@ -36,7 +36,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser_create = subparsers.add_parser("create", help="Create a new card")
     parser_create.add_argument("path", help="Kanban root directory")
     parser_create.add_argument("name", help="Kebab-case card name")
-    parser_create.add_argument("--priority", choices=["low", "medium", "high"], default="medium", help="Priority")
+    parser_create.add_argument(
+        "--priority",
+        choices=["low", "medium", "high"],
+        default="medium",
+        help="Priority",
+    )
     parser_create.add_argument("--assignee", help="Assignee")
     parser_create.add_argument("--description", help="Description")
     parser_create.add_argument("--tags", help="Comma-separated tags")
@@ -52,11 +57,15 @@ def main(argv: Sequence[str] | None = None) -> int:
         help="Target status",
     )
     parser_move.add_argument("--assignee", help="Update assignee")
-    parser_move.add_argument("--priority", choices=["low", "medium", "high"], help="Update priority")
+    parser_move.add_argument(
+        "--priority", choices=["low", "medium", "high"], help="Update priority"
+    )
     parser_move.add_argument("--dry-run", action="store_true", help="Dry run")
 
     # update
-    parser_update = subparsers.add_parser("update", help="Update index files and README.md board")
+    parser_update = subparsers.add_parser(
+        "update", help="Update index files and README.md board"
+    )
     parser_update.add_argument("path", help="Kanban root directory")
     parser_update.add_argument("--dry-run", action="store_true", help="Dry run")
 
@@ -67,7 +76,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         if args.command == "init":
             cmd = KanbanInitCommand(board)
         elif args.command == "create":
-            tags_list = [t.strip() for t in args.tags.split(",") if t.strip()] if args.tags else []
+            tags_list = (
+                [t.strip() for t in args.tags.split(",") if t.strip()]
+                if args.tags
+                else []
+            )
             cmd = KanbanCreateCommand(
                 board=board,
                 name=args.name,

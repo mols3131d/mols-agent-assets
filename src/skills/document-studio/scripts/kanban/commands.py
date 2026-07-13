@@ -15,8 +15,10 @@ from templates import KANBAN_DOCUMENT_TEMPLATE
 
 from kanban.board import KanbanBoard
 
+
 class KanbanCommand(ABC):
     """모든 칸반 세부 명령들이 구현해야 할 공통 커맨드 인터페이스."""
+
     @abstractmethod
     def execute(self) -> dict[str, Any]:
         """명령을 수행하고 결과를 반환한다."""
@@ -25,6 +27,7 @@ class KanbanCommand(ABC):
 
 class KanbanInitCommand(KanbanCommand):
     """칸반 보드 구조 및 문서를 초기화한다."""
+
     def __init__(self, board: KanbanBoard) -> None:
         self.board = board
 
@@ -46,6 +49,7 @@ class KanbanInitCommand(KanbanCommand):
 
 class KanbanCreateCommand(KanbanCommand):
     """새로운 백로그 카드를 생성한다."""
+
     def __init__(
         self,
         board: KanbanBoard,
@@ -66,13 +70,15 @@ class KanbanCreateCommand(KanbanCommand):
 
     def execute(self) -> dict[str, Any]:
         if not self.board.exists():
-            raise FileNotFoundError(f"칸반 디렉터리가 존재하지 않습니다. 먼저 init을 실행하세요: {self.board.base_dir}")
+            raise FileNotFoundError(
+                f"칸반 디렉터리가 존재하지 않습니다. 먼저 init을 실행하세요: {self.board.base_dir}"
+            )
 
         id_num = self.board.get_next_card_id()
         card_id = f"kbn-{id_num}"
         doc_name = normalize_kebab_case(self.name)
         filename = f"{card_id}-{doc_name}.md"
-        
+
         dest_path = self.board.backlog_dir / filename
 
         if dest_path.exists():
@@ -105,6 +111,7 @@ class KanbanCreateCommand(KanbanCommand):
 
 class KanbanMoveCommand(KanbanCommand):
     """카드를 이동시키고 상태 및 담당자, 우선순위를 변경한다."""
+
     def __init__(
         self,
         board: KanbanBoard,
@@ -124,7 +131,9 @@ class KanbanMoveCommand(KanbanCommand):
     def execute(self) -> dict[str, Any]:
         doc = self.board.locate_card(self.card_ident)
         if not doc or not doc.path:
-            raise FileNotFoundError(f"지정된 카드를 찾을 수 없습니다: {self.card_ident}")
+            raise FileNotFoundError(
+                f"지정된 카드를 찾을 수 없습니다: {self.card_ident}"
+            )
 
         old_status = doc.frontmatter.status
         old_path = doc.path
@@ -143,9 +152,11 @@ class KanbanMoveCommand(KanbanCommand):
         if not self.dry_run:
             if doc.path != dest_path:
                 if dest_path.exists():
-                    raise FileExistsError(f"이동하려는 위치에 파일이 이미 존재합니다: {dest_path}")
+                    raise FileExistsError(
+                        f"이동하려는 위치에 파일이 이미 존재합니다: {dest_path}"
+                    )
                 doc.path.unlink()
-            
+
             doc.save(dest_path)
             self.board.update_indices()
 
@@ -177,7 +188,11 @@ class KanbanUpdateCommand(KanbanCommand):
             "done": 0,
         }
 
-        for folder in [self.board.base_dir, self.board.backlog_dir, self.board.archive_dir]:
+        for folder in [
+            self.board.base_dir,
+            self.board.backlog_dir,
+            self.board.archive_dir,
+        ]:
             if not folder.exists():
                 continue
             for file_path in folder.glob("kbn-*.md"):

@@ -1,8 +1,8 @@
 from kanban.board import KanbanBoard
 from kanban.commands import (
     KanbanCommand,
-    KanbanInitCommand,
     KanbanCreateCommand,
+    KanbanInitCommand,
     KanbanMoveCommand,
     KanbanUpdateCommand,
 )

@@ -1,4 +1,4 @@
-from . import agent, rule, skill
+from . import agent, rule, skill  # ty: ignore[unresolved-import]
 
 __all__ = [
     "skill",

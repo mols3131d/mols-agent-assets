@@ -12,6 +12,7 @@ from typing import Sequence
 from core.base import AssetInitOptions
 from core.factory import AssetFactory
 
+
 def parse_metadata(raw_items: Sequence[str]) -> dict[str, str]:
     """key=value 형식 metadata 인자를 파싱한다."""
     metadata: dict[str, str] = {}
