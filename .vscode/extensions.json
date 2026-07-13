@@ -3,6 +3,7 @@
         "rvben.rumdl",
         "charliermarsh.ruff",
         "astral-sh.ty",
-        "ms-python.python"
+        "ms-python.python",
+        "ms-vscode.vscode-chat-customizations-evaluations"
     ]
 }
