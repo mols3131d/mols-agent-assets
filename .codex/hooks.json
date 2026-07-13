@@ -9,6 +9,12 @@
 						"command": "echo 'Activate agent skills `/caveman lite` and `/ponytail lite`'",
 						"timeout": 5,
 						"statusMessage": "Activating agent skills: `/caveman lite` and `/ponytail lite`"
+					},
+					{
+						"type": "command",
+						"command": "uv run python scripts/setup_session.py",
+						"timeout": 10,
+						"statusMessage": "Running session setup script"
 					}
 				]
 			}

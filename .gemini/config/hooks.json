@@ -6,6 +6,11 @@
         "type": "command",
         "command": "echo '{\"injectSteps\": [{\"ephemeralMessage\": \"Activate agent skills `/caveman lite` and `/ponytail lite`\"}]}'",
         "timeout": 5
+      },
+      {
+        "type": "command",
+        "command": "uv run python scripts/setup_session.py",
+        "timeout": 10
       }
     ]
   }
