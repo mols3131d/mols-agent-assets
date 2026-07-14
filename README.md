@@ -1,10 +1,10 @@
 # mols-agent-assets
 
-> 에이전트 자산 및 프로젝트 문서를 관리하는 워크스페이스 리포지토리
+> 에이전트 자산을 관리하는 리포지토리
 
 ## Directory Structure
 
 | Directory | Description |
 |-----------|-------------|
-| `.agents/` | 워크스페이스에서 활용할 에이전트 자산 및 가이드라인 |
-| `src/skills/` | 스킬 목록  |
+| `.agents/` | 실행 가능한 에이전트 자산 및 가이드라인 |
+| `src/` | 자산 소스 (agents, rules, skills, workflows) |
