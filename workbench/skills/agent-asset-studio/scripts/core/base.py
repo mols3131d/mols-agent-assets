@@ -31,6 +31,7 @@ class AssetInitOptions:
     allowed_tools: str | None
     dry_run: bool
     routing_skill: bool = False
+    index_path: str = "workflows/INDEX.csv"
 
 
 class Asset(ABC):

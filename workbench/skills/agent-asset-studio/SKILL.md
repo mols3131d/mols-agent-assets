@@ -10,11 +10,11 @@ description: >
 
 ## Routing
 
-1. Read `INDEX.csv` once.
+1. Read `workflows/INDEX.csv` once.
 2. Identify the requested outcome, asset type, target path, and constraints.
-3. Eliminate routes matching `avoid_when`.
+3. Eliminate routes matching `excludes`.
 4. Select the smallest route set matching `use_when`.
-5. Read only the selected `entrypoint` files.
+5. Resolve each selected `id` relative to that index and read the file.
 6. Load referenced resources only when a selected workflow requires them.
 7. Run every selected workflow's validation before completion.
 

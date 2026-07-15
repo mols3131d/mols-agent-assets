@@ -52,10 +52,10 @@ description: {description}
 
 ## Routing
 
-1. Read `INDEX.csv` once.
-2. Compare the request with each route's `use_when` and `avoid_when`.
+1. Read `{index_path}` once.
+2. Compare the request with each route's `use_when` and `excludes`.
 3. Select the smallest route set that covers the request.
-4. Read only the selected `entrypoint` files.
+4. Resolve each selected `id` relative to that index and read the file.
 5. Load additional resources only when a workflow requires them.
 
 Route by semantic intent, not keyword overlap. Do not scan `workflows/`.
@@ -70,12 +70,12 @@ Route by semantic intent, not keyword overlap. Do not scan `workflows/`.
 ## Rules
 
 - Keep global constraints here; keep task procedures in workflow modules.
-- Use exact entrypoints from `INDEX.csv`.
+- Use each `id` as the exact workflow path relative to `{index_path}`.
 - Keep routing depth to one layer.
 
 ## Resources
 
-- `INDEX.csv`: semantic route registry.
+- `{index_path}`: semantic route registry.
 {resource_notes}
 
 """

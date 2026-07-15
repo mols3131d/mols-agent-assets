@@ -3,7 +3,7 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 
-from configs import common, skill
+from configs import skill
 from core.base import Asset, ValidationResult, Validator
 
 
@@ -140,19 +140,30 @@ class AssetBodyLengthValidator(Validator):
 
 
 class RoutingSkillValidator(Validator):
-    """Routing Skill의 index, entrypoint, discovery 경계를 검증한다."""
+    """Routing Skill의 index, workflow path, discovery 경계를 검증한다."""
 
     def validate(self, asset: Asset) -> list[ValidationResult]:
-        index_path = asset.path / "INDEX.csv"
         workflows_path = asset.path / "workflows"
-        if not index_path.exists() and not workflows_path.exists():
+        index_paths = sorted(asset.path.rglob("INDEX.csv"))
+        if not index_paths and not workflows_path.exists():
             return []
 
         results: list[ValidationResult] = []
-        if not index_path.is_file():
+        if not index_paths:
             results.append(
                 ValidationResult(
                     "error", "missing_route_index", "INDEX.csv가 없습니다."
+                )
+            )
+        elif len(index_paths) > 1:
+            results.append(
+                ValidationResult(
+                    "error",
+                    "multiple_route_indexes",
+                    "Routing Skill에는 INDEX.csv가 하나만 있어야 합니다: "
+                    + ", ".join(
+                        path.relative_to(asset.path).as_posix() for path in index_paths
+                    ),
                 )
             )
         if not workflows_path.is_dir():
@@ -161,6 +172,8 @@ class RoutingSkillValidator(Validator):
             )
         if results:
             return results
+
+        index_path = index_paths[0]
 
         try:
             with index_path.open("r", encoding="utf-8", newline="") as file:
@@ -196,15 +209,22 @@ class RoutingSkillValidator(Validator):
         skill_root = asset.path.resolve()
         for line_number, route in enumerate(routes, start=2):
             route_id = (route.get("id") or "").strip()
-            if not common.NAME_PATTERN.fullmatch(route_id):
+            workflow_path = Path(route_id)
+            if (
+                not route_id
+                or workflow_path.is_absolute()
+                or ".." in workflow_path.parts
+                or not workflow_path.parts
+            ):
                 results.append(
                     ValidationResult(
                         "error",
                         "invalid_route_id",
-                        f"INDEX.csv:{line_number} id가 kebab-case가 아닙니다: "
-                        f"{route_id!r}",
+                        f"INDEX.csv:{line_number} id가 안전한 상대 경로가 "
+                        f"아닙니다: {route_id!r}",
                     )
                 )
+                continue
             elif route_id in seen_ids:
                 results.append(
                     ValidationResult(
@@ -215,7 +235,7 @@ class RoutingSkillValidator(Validator):
                 )
             seen_ids.add(route_id)
 
-            for field in ("use_when", "avoid_when"):
+            for field in ("use_when", "excludes"):
                 if not (route.get(field) or "").strip():
                     results.append(
                         ValidationResult(
@@ -225,45 +245,26 @@ class RoutingSkillValidator(Validator):
                         )
                     )
 
-            raw_entrypoint = (route.get("entrypoint") or "").strip()
-            entrypoint = Path(raw_entrypoint)
-            if (
-                not raw_entrypoint
-                or entrypoint.is_absolute()
-                or ".." in entrypoint.parts
-                or not entrypoint.parts
-                or entrypoint.parts[0] != "workflows"
-            ):
-                results.append(
-                    ValidationResult(
-                        "error",
-                        "unsafe_entrypoint",
-                        f"INDEX.csv:{line_number} entrypoint가 workflows/ 내부 "
-                        f"상대 경로가 아닙니다: {raw_entrypoint!r}",
-                    )
-                )
-                continue
-
-            resolved_entrypoint = (asset.path / entrypoint).resolve()
+            resolved_workflow = (index_path.parent / workflow_path).resolve()
             try:
-                resolved_entrypoint.relative_to(skill_root)
+                resolved_workflow.relative_to(skill_root)
             except ValueError:
                 results.append(
                     ValidationResult(
                         "error",
-                        "unsafe_entrypoint",
-                        f"INDEX.csv:{line_number} entrypoint가 Skill 밖을 "
-                        f"가리킵니다: {raw_entrypoint!r}",
+                        "invalid_route_id",
+                        f"INDEX.csv:{line_number} id가 Skill 밖을 "
+                        f"가리킵니다: {route_id!r}",
                     )
                 )
                 continue
-            if not resolved_entrypoint.is_file():
+            if not resolved_workflow.is_file():
                 results.append(
                     ValidationResult(
                         "error",
-                        "missing_entrypoint",
-                        f"INDEX.csv:{line_number} entrypoint가 없습니다: "
-                        f"{raw_entrypoint}",
+                        "missing_route_file",
+                        f"INDEX.csv:{line_number} id가 가리키는 파일이 없습니다: "
+                        f"{route_id}",
                     )
                 )
 
@@ -275,7 +276,7 @@ class RoutingSkillValidator(Validator):
             results.append(
                 ValidationResult(
                     "error",
-                    "nested_skill_entrypoint",
+                    "nested_skill_file",
                     "workflows/ 아래 discoverable SKILL.md가 있습니다: "
                     + ", ".join(nested_skills),
                 )

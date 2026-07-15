@@ -2,7 +2,7 @@
 
 ## Goal
 
-Consolidate related existing skills into one shallow routing skill with a semantic route index and exact workflow entrypoints.
+Consolidate related existing skills into one shallow routing skill whose route IDs are workflow paths relative to `INDEX.csv`.
 
 ## Required Inputs
 
@@ -25,14 +25,15 @@ Consolidate related existing skills into one shallow routing skill with a semant
    python3 scripts/routerize_skills.py --mode <lite|full> --target <path/to/router> <path/to/skill1> <path/to/skill2>
    ```
 
-5. Replace generated route conditions with semantic `use_when` and `avoid_when` values based on real user intent.
-6. Validate the target and confirm every exact entrypoint resolves.
+5. Replace generated route conditions with semantic `use_when` and `excludes` values based on real user intent.
+6. Validate the target and confirm every route `id` resolves relative to `INDEX.csv`.
 
 ## Validation
 
-- Target contains one `SKILL.md`, root `INDEX.csv`, and `workflows/`.
-- Index schema is `id,use_when,avoid_when,entrypoint` with unique IDs.
-- Every entrypoint exists inside the target skill.
+- Target contains one `SKILL.md`, default `workflows/INDEX.csv`, and workflow modules.
+- A different index location is used only when the user explicitly requests it.
+- Index schema is `id,use_when,excludes` with unique relative-path IDs.
+- Every `id` resolves to a workflow file inside the target skill.
 - No nested `SKILL.md` remains under `workflows/`.
 - A clear request loads one minimum workflow; near misses and ambiguous requests route correctly.
 

@@ -13,8 +13,7 @@ DEFAULT_DESCRIPTION: Final[str] = DEFAULT_SKILL_DESCRIPTION
 ROUTE_INDEX_FIELDS: Final[tuple[str, ...]] = (
     "id",
     "use_when",
-    "avoid_when",
-    "entrypoint",
+    "excludes",
 )
 
 # Configuration for init_skill.py

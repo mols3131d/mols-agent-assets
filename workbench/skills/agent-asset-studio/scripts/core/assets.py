@@ -143,7 +143,7 @@ def run_base_initialization(
     planned_files = [filename]
     resources = list(options.resources)
     if options.routing_skill:
-        planned_files.append("INDEX.csv")
+        planned_files.append(options.index_path)
         if "workflows" not in resources:
             resources.append("workflows")
 
@@ -187,14 +187,17 @@ def run_base_initialization(
         description=yaml_quote(options.description),
         optional_frontmatter=frontmatter,
         resource_notes=resource_notes,
+        index_path=options.index_path,
     )
 
     write_text(asset_dir / filename, file_content)
     created = [filename]
     if options.routing_skill:
         index_content = ",".join(skill.ROUTE_INDEX_FIELDS) + "\n"
-        write_text(asset_dir / "INDEX.csv", index_content)
-        created.append("INDEX.csv")
+        index_path = asset_dir / options.index_path
+        index_path.parent.mkdir(parents=True, exist_ok=True)
+        write_text(index_path, index_content)
+        created.append(options.index_path)
     created.extend(create_resource_dirs(asset_dir, resources, options.include_examples))
 
     return {

@@ -32,8 +32,8 @@ The main optimization target is model catalog and context usage, not filesystem 
 ```text
 routing-skill/
 ├── SKILL.md          # Activation metadata and router
-├── INDEX.csv         # Route registry
 ├── workflows/        # Routed workflow modules
+│   ├── INDEX.csv     # Route registry (default location)
 │   ├── ingest-data.md
 │   ├── transform-data.md
 │   └── validate-quality.md
@@ -74,10 +74,10 @@ description: Use this skill for data ingestion, transformation, quality validati
 
 ## Routing
 
-1. Read `INDEX.csv`.
-2. Compare the request with each route's `use_when` and `avoid_when`.
+1. Read `workflows/INDEX.csv`.
+2. Compare the request with each route's `use_when` and `excludes`.
 3. Select the smallest route set that covers the request.
-4. Read only the selected workflow entry points.
+4. Resolve each selected `id` relative to `INDEX.csv` and read that file.
 5. Load additional resources only when a workflow requires them.
 
 Do not route from keyword overlap alone.
@@ -96,36 +96,38 @@ Do not scan all files under `workflows/`.
 Use the minimum fields required for semantic routing:
 
 ```csv
-id,use_when,avoid_when,entrypoint
+id,use_when,excludes
 ```
 
 | Field | Purpose |
 | --- | --- |
-| `id` | Stable unique workflow identifier |
+| `id` | Workflow file path relative to the directory containing `INDEX.csv` |
 | `use_when` | Positive selection conditions |
-| `avoid_when` | Near-miss exclusions |
-| `entrypoint` | Exact workflow path |
+| `excludes` | Near misses and out-of-scope requests |
 
 Example:
 
 ```csv
-id,use_when,avoid_when,entrypoint
-ingest-data,"Extraction, source connectors, CDC, or incremental loading","Data already loaded and only transformation is needed","workflows/ingest-data.md"
-transform-data,"SQL modeling, joins, aggregation, normalization, or dbt","Source extraction or destination loading is primary","workflows/transform-data.md"
-validate-quality,"Quality checks, schema validation, anomaly detection, or reconciliation","Only scheduling or infrastructure health is requested","workflows/validate-quality.md"
+id,use_when,excludes
+ingest-data.md,"Extraction, source connectors, CDC, or incremental loading","Data already loaded and only transformation is needed"
+transform-data.md,"SQL modeling, joins, aggregation, normalization, or dbt","Source extraction or destination loading is primary"
+validate-quality.md,"Quality checks, schema validation, anomaly detection, or reconciliation","Only scheduling or infrastructure health is requested"
 ```
 
 Registry rules:
 
 - one workflow per row;
-- lowercase hyphen-case identifiers;
+- `id` is a relative file path resolved from the directory containing `INDEX.csv`;
+- `id` must not be absolute, contain `..`, or resolve outside the skill;
 - concise single-line fields;
 - quoted fields when commas are present;
-- exact entry points instead of directory search;
+- exact file paths instead of directory search;
 - semantic intent as the primary signal;
 - keywords only as an optional tie-breaker.
 
-Use `id` as both the stable routing key and readable internal name. Add `name` only when a separate human-facing label is required. Omit `type` while every row resolves to a workflow entry point; `entrypoint` already abstracts flat and nested layouts. Add `type` only when rows require different loading or execution semantics, and first consider splitting such heterogeneous entries into separate skills.
+Keep representative and implicit requests in `use_when`. Do not add a separate `includes` field; it duplicates the positive routing condition and increases index cost.
+
+Use `id` as both the stable routing key and workflow location. Default to `workflows/INDEX.csv`; sibling workflows then use IDs such as `ingest-data.md`. Use a root or different subdirectory only when the user requests it. Always resolve IDs from the directory containing that index. Add `name` only when a separate human-facing label is required. Add `type` only when rows require different loading semantics, and first consider splitting heterogeneous entries into separate skills.
 
 Use JSONL or YAML when fields require multiline or complex structured data.
 
@@ -161,10 +163,10 @@ Do not repeat global rules from `SKILL.md`. Put passive knowledge in `references
 
 1. Read `INDEX.csv` once.
 2. Identify the requested outcome, operation, object, and constraints.
-3. Eliminate routes matching `avoid_when`.
+3. Eliminate routes matching `excludes`.
 4. Select the minimum route set matching `use_when`.
 5. Resolve material ambiguity with one targeted question.
-6. Load only the selected entry points.
+6. Resolve selected IDs from the index directory and load only those files.
 7. Load referenced resources on demand.
 8. Run each workflow's validation before completion.
 
@@ -190,10 +192,11 @@ references/complex-task-spec.md
 assets/complex-task-template.yaml
 ```
 
-If migration requires an isolated directory, keep it under `workflows/`, use a non-discoverable entry point such as `WORKFLOW.md`, and reference its exact path in `INDEX.csv`:
+If migration requires an isolated directory, keep it under `workflows/`, use a non-discoverable file such as `WORKFLOW.md`, and use its exact relative path as `id` in `INDEX.csv`:
 
 ```text
 workflows/
+├── INDEX.csv
 └── complex-task/
     ├── WORKFLOW.md
     ├── scripts/
@@ -202,11 +205,11 @@ workflows/
 ```
 
 ```csv
-id,use_when,avoid_when,entrypoint
-complex-task,"Complex multi-step processing","Simple single-step requests","workflows/complex-task/WORKFLOW.md"
+id,use_when,excludes
+complex-task/WORKFLOW.md,"Complex multi-step processing","Simple single-step requests"
 ```
 
-The router reads the exact `entrypoint`, so a separate layout `type` is unnecessary. Verify that target clients can resolve the nested path.
+The router resolves the exact `id` path from `INDEX.csv`, so a separate layout `type` is unnecessary. Verify that target clients can resolve the nested path.
 
 Keep the original as a separate skill instead when it must remain independently installed or versioned.
 
@@ -234,7 +237,7 @@ If most workflows load together, consolidate them. If requests rarely match clea
 Structural checks:
 
 - workflow identifiers are unique;
-- every entry point exists and stays inside the skill directory;
+- every `id` is a safe relative path whose file exists inside the skill directory;
 - resource paths resolve from the skill root;
 - no workflow requires discovery scans; and
 - nested `SKILL.md` files are absent unless intentionally separate.
@@ -254,18 +257,18 @@ Measure correct-route rate, false-route rate, unnecessary workflow loads, clarif
 | Decision | Default |
 | --- | --- |
 | Module directory | `workflows/` |
-| Module entry point | `workflows/<id>.md` |
-| Registry | `INDEX.csv` |
-| Registry schema | `id,use_when,avoid_when,entrypoint` |
+| Workflow path | `workflows/<workflow-name>.md` |
+| Registry | `workflows/INDEX.csv`; custom location only when requested |
+| Registry schema | `id,use_when,excludes` |
 | Selection | Minimum route set |
 | Ambiguity | One targeted clarification question |
-| Embedded complex entry point | `WORKFLOW.md`, not `SKILL.md` |
+| Embedded complex workflow | `WORKFLOW.md`, not `SKILL.md` |
 | Resource loading | Explicit and on demand |
 | Routing depth | One layer |
 
 ## Summary
 
-An efficient routing skill uses one small router, one compact semantic index, exact workflow paths, and on-demand resources.
+An efficient routing skill uses one small router, one compact semantic index whose IDs are exact relative workflow paths, and on-demand resources.
 
 > Route from metadata, select from the index, load the minimum workflow set, and avoid recursive discovery.
 

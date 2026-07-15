@@ -22,10 +22,10 @@ description: >
 
 ## Routing
 
-1. Read `INDEX.csv` once.
-2. Eliminate routes matching `avoid_when`.
+1. Read `workflows/INDEX.csv` once.
+2. Eliminate routes matching `excludes`.
 3. Select the smallest route set matching `use_when`.
-4. Read only the selected `entrypoint` files.
+4. Resolve each selected `id` relative to that index and read the file.
 5. Load additional resources only when a workflow requires them.
 
 Route by semantic intent, not keyword overlap. Do not scan `workflows/`.
@@ -66,23 +66,21 @@ def setup_target(target: Path) -> None:
             ),
             encoding="utf-8",
         )
-    update_index.init_index(target / "INDEX.csv")
+    update_index.init_index(target / "workflows" / "INDEX.csv")
 
 
 def add_route(
     target: Path,
-    route_id: str,
     description: str,
-    entrypoint: str,
+    workflow_path: str,
 ) -> None:
     """Migrated workflow의 초기 route를 기록한다."""
     update_index.update_index(
-        target / "INDEX.csv",
+        target / "workflows" / "INDEX.csv",
         {
-            "id": route_id,
-            "use_when": description or f"Requests covered by {route_id}",
-            "avoid_when": "Requests outside this workflow's original scope",
-            "entrypoint": entrypoint,
+            "id": workflow_path,
+            "use_when": description or f"Requests covered by {workflow_path}",
+            "excludes": "Requests outside this workflow's original scope",
         },
     )
 
@@ -109,13 +107,15 @@ def process_lite(target: Path, source_paths: list[Path]) -> None:
             continue
 
         shutil.move(str(source), str(destination))
-        old_entrypoint = destination / "SKILL.md"
-        entrypoint = destination / "WORKFLOW.md"
-        old_entrypoint.unlink()
-        entrypoint.write_text(body, encoding="utf-8")
+        old_workflow_file = destination / "SKILL.md"
+        workflow_file = destination / "WORKFLOW.md"
+        old_workflow_file.unlink()
+        workflow_file.write_text(body, encoding="utf-8")
 
-        relative_entrypoint = entrypoint.relative_to(target).as_posix()
-        add_route(target, route_id, description, relative_entrypoint)
+        relative_workflow_path = workflow_file.relative_to(
+            target / "workflows"
+        ).as_posix()
+        add_route(target, description, relative_workflow_path)
         print(f"Routerized (lite): {route_id}")
 
 
@@ -129,9 +129,12 @@ def process_full(target: Path, source_paths: list[Path]) -> None:
             continue
 
         route_id = source.name
-        entrypoint = target / "workflows" / f"{route_id}.md"
-        if entrypoint.exists():
-            print(f"Warning: entrypoint가 이미 있습니다: {entrypoint}", file=sys.stderr)
+        workflow_file = target / "workflows" / f"{route_id}.md"
+        if workflow_file.exists():
+            print(
+                f"Warning: workflow file이 이미 있습니다: {workflow_file}",
+                file=sys.stderr,
+            )
             continue
 
         try:
@@ -162,11 +165,13 @@ def process_full(target: Path, source_paths: list[Path]) -> None:
         for old_path, new_path in path_replacements.items():
             body = body.replace(old_path, new_path)
 
-        entrypoint.write_text(body, encoding="utf-8")
+        workflow_file.write_text(body, encoding="utf-8")
         shutil.rmtree(source)
 
-        relative_entrypoint = entrypoint.relative_to(target).as_posix()
-        add_route(target, route_id, description, relative_entrypoint)
+        relative_workflow_path = workflow_file.relative_to(
+            target / "workflows"
+        ).as_posix()
+        add_route(target, description, relative_workflow_path)
         print(f"Routerized (full): {route_id}")
 
 
