@@ -30,12 +30,23 @@ Generate interactive sandbox scripts ("Micro World"). Expose inputs, hidden stat
 
 ## Workflows
 
-1. Parse intent to identify target logic ("black box").
+1. Parse intent to identify the target logic and understanding bottleneck. If the bottleneck or suitable sandbox experience is unclear, read `references/understanding-bottleneck.md`.
 2. Determine sandbox location (User path -> Existing `sandboxes/` -> Default `sandboxes/`).
-3. If Python: Route to `prompts/create-marimo-sandbox.md` and strictly follow its Marimo reactive notebook instructions.
+3. Select the required assets from **Asset Routing** and read them before writing code.
 4. Scaffold sandbox script, importing target logic directly.
-5. Inject observability: Read prompts/add-observability.md (Timeline Debugger) or prompts/use-mock-patch.md (Context-Aware Mocks).
+5. Apply the selected observability approach without changing production code.
 6. Output script path. Wait for user to tweak and execute.
+
+## Asset Routing
+
+| Asset | When to Use | When NOT to Use |
+| --- | --- | --- |
+| `prompts/write-marimo-sandbox.md` | Python sandbox | Non-Python or standard `.py` script |
+| `prompts/add-observability.md` | State transitions need visibility | Input/output alone is sufficient |
+| `prompts/use-mock-patch.md` | Internal calls need interception | Direct observation is sufficient |
+| `references/understanding-bottleneck.md` | Goal or bottleneck is unclear | Goal and sandbox experience are clear |
+
+Read all matching assets; skip the rest.
 
 ## Instructions
 
