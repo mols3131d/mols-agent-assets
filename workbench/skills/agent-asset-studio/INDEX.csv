@@ -1,0 +1,5 @@
+id,use_when,avoid_when,entrypoint
+agent-skill,"Create, edit, improve, evaluate, or validate one agent skill and its resources","Naming-only, compression-only, or consolidating multiple existing skills","workflows/agent-skill.md"
+asset-naming,"Suggest, validate, or apply an agent asset name when naming is the primary task","Content or structure changes where naming is incidental","workflows/asset-naming.md"
+compress,"Compress one explicitly named agent asset while preserving behavior and safety constraints","Broad directory compression, code formatting, or no explicit target","workflows/compress.md"
+routerize-skills,"Consolidate multiple related existing skills into one routing skill or migrate a routing skill structure","Creating one new regular skill, renaming assets, or unrelated skill edits","workflows/routerize-skills.md"

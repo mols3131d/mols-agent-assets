@@ -1,70 +1,128 @@
-# Agent Asset Studio - 스크립트 도구 (Scripts)
+# Agent Asset Studio 스크립트
 
-`agent-asset-studio`는 에이전트 자산의 기계적 검증 및 초기 구조 생성을 안전하게 자동화하기 위해, `scripts/` 디렉토리에 Python 기반 CLI 도구들을 포함하고 있습니다. 에이전트는 LLM의 임의 추론에 의존하기에 앞서 이 스크립트들을 우선 실행해야 합니다.
+`agent-asset-studio`는 자산 scaffold, 정적 검증, route index 관리, Routing Skill 변환을 `scripts/`의 Python 도구로 자동화한다. 명령은 Skill root에서 실행한다.
 
----
+## `init_asset.py`
 
-## 1. init_asset.py (자산 초기화)
+Agent, Rule, Skill 디렉터리를 표준 구조로 생성한다.
 
-새로운 에이전트 스킬이나 규칙 자산을 생성할 때, 규칙에 맞는 기본 템플릿과 디렉토리 구조(Scaffold)를 자동 생성해 줍니다.
+```bash
+python3 scripts/init_asset.py <name> \
+  --type <skill|rule|agent> \
+  --path <parent-directory>
+```
 
-- **사용법**:
+주요 option:
 
-  ```bash
-  python3 scripts/init_asset.py <자산이름> --type <skill|rule> --path <생성경로>
-  ```
+| Option | 역할 |
+| --- | --- |
+| `--description <text>` | Frontmatter `description` 지정 |
+| `--resources <list>` | `scripts,references,assets` 등 resource 디렉터리 생성 |
+| `--examples` | 선택한 resource에 교체용 예시 파일 생성 |
+| `--routing-skill` | root `INDEX.csv`와 `workflows/`를 사용하는 Routing Skill 생성 |
+| `--dry-run` | 파일을 만들지 않고 생성 계획만 JSON으로 출력 |
 
-- **라우팅 스킬 지원**:
-  하위 스킬을 가질 수 있는 라우팅 스킬 구조로 초기화하고자 하는 경우 `--routing-skill` 플래그를 추가합니다.
+Routing Skill 생성:
 
-  ```bash
-  python3 scripts/init_asset.py <자산이름> --type skill --path <생성경로> --routing-skill
-  ```
+```bash
+python3 scripts/init_asset.py data-engineering \
+  --type skill \
+  --path <parent-directory> \
+  --routing-skill \
+  --description "Use when handling data ingestion, transformation, or quality workflows."
+```
 
----
+생성 구조:
 
-## 2. validate_asset.py (자산 검증)
+```text
+data-engineering/
+├── SKILL.md
+├── INDEX.csv
+└── workflows/
+```
 
-생성되거나 수정된 에이전트 자산이 프로젝트 표준 규칙 및 마크다운 규격을 준수하는지 자동으로 정적 분석을 수행합니다.
+`INDEX.csv`는 빈 header로 시작한다.
 
-- **사용법**:
+```csv
+id,use_when,avoid_when,entrypoint
+```
 
-  ```bash
-  python3 scripts/validate_asset.py <자산디렉토리> --type <skill|rule>
-  ```
+## `validate_asset.py`
 
-- **검증 항목**:
-  - YAML Frontmatter 규격 및 필수 항목 (`name`, `description` 등)
-  - 파일 및 폴더 이름의 네이밍 컨벤션 준수 여부
-  - 스킬 파일 본문 라인 수 체크 (과도한 윈도우 점유 방지)
+기존 Agent, Rule, Skill의 구조와 기본 품질을 검사하고 JSON 결과를 출력한다.
 
----
+```bash
+python3 scripts/validate_asset.py <asset-directory> --type <skill|rule|agent>
+```
 
-## 3. update_index.py (인덱스 갱신)
+공통 검사:
 
-라우팅 스킬이 새로 추가되거나 하위 스킬 구조가 변경되었을 때, `INDEX.csv` 파일의 메타데이터를 수집하여 자동으로 인덱스 정보를 최신화합니다.
+- 필수 Frontmatter와 허용 field
+- 이름 형식과 폴더명 일치
+- Skill `description`의 activation signal
+- 본문 500 lines 초과 여부
 
-- **사용법**:
+Routing Skill 추가 검사:
 
-  ```bash
-  python3 scripts/update_index.py <라우팅스킬디렉토리>
-  ```
+- root `INDEX.csv`와 `workflows/` 존재
+- `id,use_when,avoid_when,entrypoint` schema 일치
+- route ID의 kebab-case 및 중복 여부
+- `use_when`, `avoid_when` 누락 여부
+- entrypoint가 `workflows/` 내부의 안전한 상대 경로인지 확인
+- entrypoint 파일 존재 여부
+- `workflows/` 아래 nested `SKILL.md` 금지
 
----
+종료 상태:
 
-## 4. routerize_skills.py (스킬 라우터 변환)
+- Error가 없으면 exit code `0`, JSON `status: pass`
+- Error가 있으면 exit code `1`, JSON `status: fail`
+- Warning은 결과에 포함되지만 실패로 처리하지 않음
 
-여러 개의 개별 스킬들을 하나의 마스터 라우팅 스킬 아래로 통합하고 `INDEX.csv`와 `sub-skills/` 구조로 변환하는 작업을 자동화합니다.
+## `update_index.py`
 
-- **사용법**:
+Routing Skill의 `INDEX.csv`를 생성하고 route를 `id` 기준으로 추가·갱신하는 내부 모듈이다. 현재 독립 CLI가 아니며 `init_asset.py`와 `routerize_skills.py`가 함수로 호출한다.
 
-  ```bash
-  python3 scripts/routerize_skills.py --source <스킬경로들> --target <타겟라우터경로>
-  ```
+핵심 동작:
 
----
+- index가 없으면 표준 header로 생성
+- 기존 index의 schema가 다르면 덮어쓰지 않고 실패
+- 동일한 `id`는 갱신하고 새 `id`는 추가
 
-### 관련 링크
+Route 조건은 keyword 목록이 아니라 실제 사용자 intent를 설명해야 한다.
 
-- [README로 돌아가기](README.md)
-- [하위 스킬 세부 설명](sub-skills.md)
+## `routerize_skills.py`
+
+여러 기존 Skill을 하나의 shallow Routing Skill로 이동한다.
+
+```bash
+python3 scripts/routerize_skills.py \
+  --mode <lite|full> \
+  --target <routing-skill-directory> \
+  <source-skill-1> <source-skill-2>
+```
+
+| Mode | 결과 |
+| --- | --- |
+| `lite` | Source 전체를 `workflows/<id>/`로 이동하고 `SKILL.md`를 `WORKFLOW.md`로 변환 |
+| `full` | 본문을 `workflows/<id>.md`로 평탄화하고 resource를 target에 병합 |
+
+`full` mode는 resource 이름이 충돌하면 source Skill ID를 붙이고 workflow의 상대 경로를 갱신한다.
+
+변환 결과:
+
+```text
+routing-skill/
+├── SKILL.md
+├── INDEX.csv
+├── workflows/
+├── references/   # 필요한 경우
+├── scripts/      # 필요한 경우
+└── assets/       # 필요한 경우
+```
+
+주의:
+
+- Source Skill을 복사하지 않고 이동한다. 버전 관리 또는 백업 상태에서 실행한다.
+- 생성된 `use_when`, `avoid_when`은 초기값이다. 실제 사용자 intent와 near-miss에 맞게 수정한다.
+- 관련 없는 trigger, permission, ownership, release lifecycle을 가진 Skill은 합치지 않는다.
+- 변환 후 `validate_asset.py`로 target을 검증한다.
