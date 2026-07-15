@@ -13,8 +13,7 @@ def test_github_blob_to_raw():
     url = "https://github.com/owner/repo/blob/main/src/rules/antigravity.md"
 
     assert github_blob_to_raw(url) == (
-        "https://raw.githubusercontent.com/"
-        "owner/repo/main/src/rules/antigravity.md"
+        "https://raw.githubusercontent.com/owner/repo/main/src/rules/antigravity.md"
     )
 
 
