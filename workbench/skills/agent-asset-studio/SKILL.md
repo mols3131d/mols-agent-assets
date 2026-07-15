@@ -44,7 +44,10 @@ Asset types:
 
 ## Shared Resources
 
-- For routing-skill architecture or migration, read `references/routing-skill-structure.md`.
+- For routing architecture, read `references/routing-skill-structure.md`.
+- For routing selection or loading behavior, read `references/routing-skill-algorithm.md`.
+- For routing migration, read `references/routing-skill-migration.md`.
+- For routing evaluation or validation, read `references/routing-skill-validation.md`.
 - For naming-only decisions, read `references/naming-convention.md`.
 
 ## Completion

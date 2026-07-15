@@ -24,7 +24,8 @@ Validate one skill's required fields and basic file structure without editing it
 
 ## Resources
 
-Use `scripts/validate_asset.py`. No reference is required.
+- Use `scripts/validate_asset.py` for structural validation.
+- Read `references/routing-skill-validation.md` only for a routing skill.
 
 ## Stop Conditions
 

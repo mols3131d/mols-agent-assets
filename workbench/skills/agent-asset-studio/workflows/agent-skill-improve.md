@@ -17,7 +17,7 @@ Improve one existing agent skill while preserving behavior outside the requested
 4. Define the affected triggers, outputs, exclusions, and constraints. Preserve all unrelated behavior.
 5. Prefer focused checks such as `rg "<term>" <skill-dir>` for duplication and `wc -l <files>` for context size.
 6. Make the smallest change that resolves the requested issue. Do not re-scaffold the existing skill.
-7. When changing `INDEX.csv`, workflow layout, or router behavior, read `references/routing-skill-structure.md` first.
+7. Read `references/routing-skill-structure.md` for index or layout changes. Read `references/routing-skill-algorithm.md` for selection, ambiguity, or loading changes.
 8. Re-run `python3 scripts/validate_asset.py <skill-dir> --type skill`. Fix only requested or failing areas until errors are gone and warnings are fixed or explicitly accepted.
 
 ## Validation
@@ -30,6 +30,7 @@ Improve one existing agent skill while preserving behavior outside the requested
 ## Resources
 
 - Read `references/routing-skill-structure.md` only for routing architecture changes.
+- Read `references/routing-skill-algorithm.md` only for router behavior changes.
 - Use `scripts/validate_asset.py` after every structural change.
 
 ## Stop Conditions

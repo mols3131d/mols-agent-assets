@@ -14,7 +14,7 @@ Evaluate one existing agent skill's effectiveness and report actionable findings
 1. List the target files with `rg --files <skill-dir>`.
 2. Read the frontmatter and only the files needed to assess the requested scope.
 3. Check trigger precision, near-miss exclusions, output contract, instruction clarity, context cost, and resource boundaries.
-4. For routing skills, read `references/routing-skill-structure.md` and assess whether requests select the minimum correct workflow.
+4. For routing skills, read `references/routing-skill-validation.md` and assess whether requests select the minimum correct workflow.
 5. Report findings by severity with file locations, evidence, and the smallest corrective action. State explicitly when no findings remain.
 
 ## Validation
@@ -25,7 +25,7 @@ Evaluate one existing agent skill's effectiveness and report actionable findings
 
 ## Resources
 
-- Read `references/routing-skill-structure.md` only when evaluating a routing skill.
+- Read `references/routing-skill-validation.md` only when evaluating a routing skill.
 
 ## Stop Conditions
 

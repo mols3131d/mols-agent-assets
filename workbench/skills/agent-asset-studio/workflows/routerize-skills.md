@@ -12,7 +12,7 @@ Consolidate related existing skills into one shallow routing skill whose route I
 
 ## Procedure
 
-1. Read `references/routing-skill-structure.md`.
+1. Read `references/routing-skill-migration.md`.
 2. Verify that source skills share one domain, top-level trigger, resources, and release lifecycle. Keep unrelated skills separate.
 3. Choose a mode.
 
@@ -39,7 +39,7 @@ Consolidate related existing skills into one shallow routing skill whose route I
 
 ## Resources
 
-- Read `references/routing-skill-structure.md` before migration.
+- Read `references/routing-skill-migration.md` before migration.
 - Use `scripts/routerize_skills.py` for the filesystem transformation.
 - Use `scripts/validate_asset.py` for structural validation.
 

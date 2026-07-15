@@ -1,4 +1,5 @@
 id,use_when,excludes
+asset-index-write.md,"Create or update INDEX.csv, INDEX.md, or an index table inside an existing Markdown asset","General Markdown editing, routing architecture design without index changes, or review-only index validation"
 agent-skill-create.md,"Create one new agent skill or scaffold a new skill package","Target skill already exists, or the request is evaluation, naming, compression, or routing migration"
 agent-skill-improve.md,"Edit or improve one existing agent skill and its resources","Creating a new skill, review-only evaluation, naming-only, compression-only, or consolidating multiple skills"
 agent-skill-evaluate.md,"Evaluate or review one existing agent skill's effectiveness without modifying it","Field or structural validation, requested fixes, creation, naming-only, or compression-only work"

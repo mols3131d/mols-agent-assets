@@ -38,7 +38,7 @@ Create one focused agent skill with the minimum structure and context cost requi
 
 ## Resources
 
-- Read `references/routing-skill-structure.md` before creating a routing skill.
+- Read `references/routing-skill-structure.md` and `references/routing-skill-algorithm.md` before creating a routing skill.
 - Keep `INDEX.csv` under `workflows/` unless the user requests another location.
 - Use `scripts/init_asset.py`; do not reconstruct scaffolding manually.
 
