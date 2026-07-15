@@ -102,13 +102,15 @@ The following 8 core concepts should ideally be covered, but exact section title
 | **Instructions** | Positive rules or guidelines the agent must follow. |
 | **Constraints** | Strict negative rules the agent must never violate. |
 
-### 7. Sub-skill index, if used
+### 7. Asset Index, if used
 
-```csv
-name,overview,trigger,exclusion
-```
+Include this section only if the skill relies on external assets (scripts, reference documents, etc.) other than sub-skills. Maintain a clear registry of these assets using a markdown table.
 
-One row = one line. Routing signal only, no full instructions.
+| Asset Path | Type | Description |
+| --- | --- | --- |
+| `path/to/asset` | script/doc | Brief summary of the asset's purpose and role. |
+
+*(Note: Do not list sub-skills here. Sub-skill routing must be handled in a separate `INDEX.csv`.)*
 
 ### 8. Validate
 
