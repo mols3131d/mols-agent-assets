@@ -36,7 +36,7 @@ Use this workflow to compress size, refactor structure, or clean up formatting o
    - **Size Reduction**: Apply rules in [references/agent-asset-compress.md](../references/agent-asset-compress.md) to prune filler words, hedging, and redundant prose.
    - **Structure Alignment**: Flatten deep directories, avoid empty scaffolds, and extract passive logic into shared references following `zen-of-agent-assets`.
    - **Formatting & Links**: Ensure all cross-references use explicit paths and links, and resolve any markdown lint warnings.
-3. Save backup of modified files as `<filename>.original.md` before making edits.
+3. Follow the backup protocol in `references/agent-asset-backup.md` before making edits.
 4. Apply minimal behavior-preserving changes. Avoid massive rewrites.
 5. Validate modified assets using `python3 scripts/validate_asset.py`.
 

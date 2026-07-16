@@ -13,7 +13,7 @@ Reduce one agent asset's token cost while preserving meaning, behavior, safety, 
 
 1. Confirm the target is one explicitly named or currently edited asset.
 2. Inspect size with `wc -l <file>` and search local duplication only when useful.
-3. Save the source as `<filename>.original.md` before editing.
+3. Follow the backup protocol in `agent-asset-backup.md` before editing.
 4. Protect frontmatter, headings, code blocks, inline code, commands, paths, URLs, API names, numbers, and ordered safety constraints.
 5. Remove filler, hedging, duplicate rules, redundant examples, and prose repeating a table or code block.
 6. Keep grammar where stronger compression would create ambiguity.

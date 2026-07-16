@@ -35,7 +35,7 @@ Use this workflow to apply fixes, modify behavior, or update content and structu
 
 1. Inspect the target with `rg --files <skill-dir>` and run baseline validation.
 2. Read the frontmatter and only the files tied to the request or failing checks.
-3. Save each existing Markdown file immediately before editing it as `<filename>.original.md`.
+3. Follow the backup protocol in `references/agent-asset-backup.md` before editing.
 4. Define the affected triggers, outputs, exclusions, and constraints. Preserve all unrelated behavior.
 5. Prefer focused checks such as `rg "<term>" <skill-dir>` for duplication and `wc -l <files>` for context size.
 6. Make the smallest change that resolves the requested issue. Do not re-scaffold the existing skill.
