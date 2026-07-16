@@ -17,6 +17,7 @@ Use this protocol whenever a workflow or rule requires modifying an existing Mar
 
 ### Arguments
 
+- Target file path (Required): The path of the source Markdown asset to be backed up.
 - `tmp-dir`: Directory path to save the backup file. Default is `.tmp`.
 - `extension`: Extension to inject into the filename. For files with multiple extensions, it is added at the leftmost extension position. Default is `backup`.
 
