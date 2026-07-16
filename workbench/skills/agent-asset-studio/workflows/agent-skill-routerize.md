@@ -1,16 +1,36 @@
+---
+name: agent-skill-routerize
+description: USE WHEN: the user wants to consolidate multiple related existing skills into one routing skill. EXCLUDES: merging skills with unrelated domains, permissions, or lifecycles.
+---
+
 # Routerize Skills
 
 ## Goal
 
 Consolidate related existing skills into one shallow routing skill whose route IDs are workflow paths relative to `INDEX.csv`.
 
-## Required Inputs
+## When to Use
+
+Use this workflow to migrate separate related skills into a single routing skill using either `lite` or `full` mode.
+
+## Instructions
+
+- Read `references/routing-skill-migration.md` before migration.
+- Use `scripts/routerize_skills.py` for the filesystem transformation.
+- Use `scripts/validate_asset.py` for structural validation.
+- Stop if source skills have unrelated permissions, ownership, triggers, or release lifecycles.
+- Stop before overwriting an existing target or workflow.
+- Ask one targeted question when migration mode materially changes the desired output.
+
+## Workflows
+
+### Arguments
 
 - Two or more source skill directories
 - Target routing skill directory
 - Migration mode: `lite` or `full`
 
-## Procedure
+### Procedure
 
 1. Read `references/routing-skill-migration.md`.
 2. Verify that source skills share one domain, top-level trigger, resources, and release lifecycle. Keep unrelated skills separate.
@@ -28,7 +48,7 @@ Consolidate related existing skills into one shallow routing skill whose route I
 5. Replace generated route conditions with semantic `use_when` and `excludes` values based on real user intent.
 6. Validate the target and confirm every route `id` resolves relative to `INDEX.csv`.
 
-## Validation
+### Validation
 
 - Target contains one `SKILL.md`, default `workflows/INDEX.csv`, and workflow modules.
 - A different index location is used only when the user explicitly requests it.
@@ -36,15 +56,3 @@ Consolidate related existing skills into one shallow routing skill whose route I
 - Every `id` resolves to a workflow file inside the target skill.
 - No nested `SKILL.md` remains under `workflows/`.
 - A clear request loads one minimum workflow; near misses and ambiguous requests route correctly.
-
-## Resources
-
-- Read `references/routing-skill-migration.md` before migration.
-- Use `scripts/routerize_skills.py` for the filesystem transformation.
-- Use `scripts/validate_asset.py` for structural validation.
-
-## Stop Conditions
-
-- Stop if source skills have unrelated permissions, ownership, triggers, or release lifecycles.
-- Stop before overwriting an existing target or workflow.
-- Ask one targeted question when migration mode materially changes the desired output.

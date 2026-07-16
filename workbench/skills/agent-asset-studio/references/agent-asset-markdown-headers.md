@@ -19,6 +19,6 @@ When `Workflows` is defined, structure it using the following sub-headers.
 
 | Header | Required | Description |
 | --- | --- | --- |
-| **Parameters** | ❌ | External inputs, target paths, variables required from user. Can include required/default values. Dynamic parameter discovery by agent is permitted (explicit search steps preferred, implicit allowed). |
+| **Arguments** | ❌ | External inputs, target paths, variables required from user. Can include required/default values. Dynamic argument discovery by agent is permitted (explicit search steps preferred, implicit allowed). |
 | **Procedure** | ✅ | Ordered sequential steps to accomplish goal. Can include conditional branching, termination steps. Explicit early termination on negative conditions is preferred to ensure safety. Can reference or delegate to other assets (rules, workflows) for efficient modular expansion. |
 | **Validation** | ❌ | Specific checks to verify the outcome is correct. |
