@@ -25,7 +25,7 @@ Use this workflow to optimize a repetitive, deterministic, or purely mechanical 
 - Refer to `references/scriptify-plan.md` for planning requirements.
 - Refer to `references/scriptify-apply.md` for execution steps.
 
-## Workflows
+## Workflow: Scriptify Agent Asset
 
 ### Arguments from Context
 

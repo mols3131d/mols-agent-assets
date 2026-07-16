@@ -23,7 +23,7 @@ Use this workflow to scaffold and initialize a new agent skill.
 - Stop before renaming an existing skill unless explicitly requested.
 - Stop before destructive or external actions requiring new authority.
 
-## Workflows
+## Workflow: Create Agent Skill
 
 ### Arguments from Context
 

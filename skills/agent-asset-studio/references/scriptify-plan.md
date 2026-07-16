@@ -27,7 +27,7 @@ Use this workflow after scriptification has been approved, to determine exactly 
 - Ensure the plan adheres to the `references/zen-of-agent-assets.md` principles.
 - Maintain a clear separation of Reasoning and Execution in the proposed design.
 
-## Workflows
+## Workflow: Plan Agent Asset Scriptification
 
 ### Arguments from Context
 
