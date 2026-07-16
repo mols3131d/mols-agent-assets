@@ -2,7 +2,7 @@
 name: agent-asset-studio
 description: >
   USE WHEN: managing, creating, improving, validating, naming, compressing, optimizing for agents, or routing agent assets (AGENTS.md, agent rules, workflows, skills, or bundled resources).
-  EXCLUDES: general code changes or merely invoking an existing skill.
+  EXCLUDES: general code changes, merely invoking an existing skill, or modifying human-facing documentation.
 ---
 
 # Agent Asset Studio
