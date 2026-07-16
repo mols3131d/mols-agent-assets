@@ -28,7 +28,7 @@ Use this workflow to write the actual code and modify the markdown file once an 
 - Ensure the modified markdown workflow invokes the script using explicit syntax (e.g., `run_command`).
 - Maintain the original intent and goal of the workflow.
 
-## Workflows
+## Workflow: Apply Agent Asset Scriptification
 
 ### Arguments from Context
 

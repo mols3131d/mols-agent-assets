@@ -22,7 +22,7 @@ Use this workflow to check structural conformance and frontmatter of a skill usi
 - Do not fix validation failures unless the user also requests changes.
 - Stop and report when the target directory or validator script is unavailable.
 
-## Workflows
+## Workflow: Validate Agent Skill
 
 ### Arguments from Context
 

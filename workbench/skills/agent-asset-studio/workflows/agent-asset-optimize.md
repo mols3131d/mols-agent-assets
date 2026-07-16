@@ -22,7 +22,7 @@ Use this workflow to compress size, refactor structure, or clean up formatting o
 - Stop if the target asset is not a valid markdown or natural-language file.
 - Do not compress or modify files that are not part of the active workspace without explicit authorization.
 
-## Workflows
+## Workflow: Optimize Agent Asset
 
 ### Arguments from Context
 

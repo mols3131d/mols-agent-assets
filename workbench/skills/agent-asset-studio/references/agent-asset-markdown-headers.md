@@ -9,13 +9,13 @@ Core body concepts, formatting rules for agent assets.
 | **Non-Goal** | ✅ | Areas excluded to prevent scope creep. |
 | **When to Use** | ❌ | Specific scenarios, activation contexts, user trigger conditions. |
 | **When NOT to Use** | ✅ | Excluded scenarios, conditions to delegate to other asset. |
-| **Workflows** | ✅ | Sequential steps, task execution flows. Omit if asset only has rules. |
 | **Instructions** | ❌ | Positive rules, guidelines agent must follow. |
 | **Constraints** | ✅ | Strict negative constraints agent must never violate. |
+| **`Workflow: <Workflow Name>`** | ✅ | Sequential steps, task execution flows. Omit if asset only has rules. |
 
-## Workflows Structure
+## Workflow Structure
 
-When defining workflows, use `## Workflows` for a single workflow, or `## Workflow: <Workflow Name>` to support multiple workflows in a single file. Structure each using the following sub-headers (Level 3).
+When defining workflows, use the `## Workflow: <Workflow Name>` header to separate each workflow. Structure each using the following sub-headers.
 
 | Header | Optional | Description |
 | --- | --- | --- |

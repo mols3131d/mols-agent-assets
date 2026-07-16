@@ -22,7 +22,7 @@ Use this workflow to migrate separate related skills into a single routing skill
 - Stop before overwriting an existing target or workflow.
 - Ask one targeted question when migration mode materially changes the desired output.
 
-## Workflows
+## Workflow: Routerize Skills
 
 ### Arguments from Context
 

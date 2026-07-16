@@ -48,7 +48,7 @@ Asset types:
 
 Report changed files, validation results, and any remaining risk or skipped check.
 
-## Workflows
+## Workflow: Agent Asset Studio
 
 ### Procedure
 

@@ -21,7 +21,7 @@ Use this workflow when you need to create or update an index of agent assets. Th
 - Stop before replacing an existing hand-written table whose ownership or boundary is unclear.
 - Do not invent route conditions or document descriptions when source content provides no evidence.
 
-## Workflows
+## Workflow: Write Asset Index
 
 ### Arguments from Context
 

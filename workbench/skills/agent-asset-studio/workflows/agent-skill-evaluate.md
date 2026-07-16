@@ -19,7 +19,7 @@ Use this workflow to perform a quality review or check the effectiveness of an e
 - Do not edit files during evaluation unless the user also requests fixes.
 - Stop and report any check requiring unavailable tools, permissions, or external state.
 
-## Workflows
+## Workflow: Evaluate Agent Skill
 
 ### Arguments from Context
 

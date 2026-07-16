@@ -18,7 +18,7 @@ Use this workflow to determine appropriate names for new agent assets or to vali
 - Read `references/naming-convention.md` for naming patterns and examples.
 - Never rename an existing asset unless the user explicitly requested it.
 
-## Workflows
+## Workflow: Asset Naming
 
 ### Arguments from Context
 

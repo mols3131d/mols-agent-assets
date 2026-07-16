@@ -25,7 +25,7 @@ Use this workflow to apply fixes, modify behavior, or update content and structu
 - Stop before changing behavior outside the requested scope.
 - Stop before destructive or external actions requiring new authority.
 
-## Workflows
+## Workflow: Improve Agent Skill
 
 ### Arguments from Context
 

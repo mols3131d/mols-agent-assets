@@ -30,7 +30,7 @@ Use this workflow to assess scriptification suitability when the user proposes c
 - Read `references/zen-of-agent-assets.md` to cleanly separate Reasoning from Execution.
 - Never force a script conversion if natural language is sufficient and efficient.
 
-## Workflows
+## Workflow: Evaluate Agent Asset Scriptification
 
 ### Arguments from Context
 
