@@ -11,22 +11,20 @@ Use this protocol whenever a workflow or rule requires modifying an existing Mar
 ## Instructions
 
 - Always save a copy of the source before making any edits.
-- Use one of the two backup modes based on the requested arguments.
+- The backup path is determined by the provided arguments or their defaults.
 
 ## Workflows
 
 ### Arguments
 
-- Target file path
-- Backup mode: `extension` (default) or `tmp-folder`
+- `tmp-dir`: Directory path to save the backup file. Default is `.tmp`.
+- `extension`: Extension to inject into the filename. For files with multiple extensions, it is added at the leftmost extension position. Default is `backup`.
 
 ### Procedure
 
-1. Determine the backup mode.
-2. If `extension`:
-   - Copy the target file to `<filename>.original.md` in the same directory.
-3. If `tmp-folder`:
-   - Copy the target file into a `.tmp/` directory, creating the directory if it does not exist.
+1. Resolve the destination directory using `tmp-dir`. Create the directory if it does not exist.
+2. Compute the backup filename by injecting `extension` into the original filename at the leftmost extension position (e.g., `file.spec.md` becomes `file.backup.spec.md`).
+3. Copy the source file to the computed destination path.
 
 ### Validation
 
