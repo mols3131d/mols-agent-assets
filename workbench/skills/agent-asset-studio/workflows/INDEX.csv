@@ -7,3 +7,6 @@ agent-skill-validate.md,"Validate one existing skill's required fields and basic
 agent-asset-naming.md,"Suggest, validate, or apply an agent asset name when naming is the primary task","Content or structure changes where naming is incidental"
 agent-asset-optimize.md,"Optimize one or more agent assets (e.g. compress, structure, formatting) for model efficiency","Broad directory optimization without clear targets, or review-only checks"
 agent-skill-routerize.md,"Consolidate multiple related existing skills into one routing skill or migrate a routing skill structure","Creating one new regular skill, renaming assets, or unrelated skill edits"
+agent-asset-scriptify-evaluate.md,"Evaluate whether a workflow or asset can and should be scriptified","Generating the script or modifying the original asset directly"
+agent-asset-scriptify-plan.md,"Create an implementation plan for scriptifying a workflow","Writing the actual code or evaluating feasibility from scratch"
+agent-asset-scriptify-apply.md,"Execute an approved scriptification plan","Planning, evaluation, or arbitrary script generation without a plan"
