@@ -1,5 +1,7 @@
 from typing import Final
 
+# ruff: noqa: E501
+
 SPEC_INDEX_TEMPLATE: Final[str] = """# SPEC Index
 
 | ID | Date | Status | Title | Message |

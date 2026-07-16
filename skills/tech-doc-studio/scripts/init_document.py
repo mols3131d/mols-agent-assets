@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """문서 디렉터리를 초기화하거나 새 문서를 생성한다."""
 
+# ruff: noqa: E402, E501
+
 from __future__ import annotations
 
 import argparse

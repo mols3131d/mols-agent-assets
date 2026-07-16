@@ -1,0 +1,6 @@
+id,use_when,excludes
+create.md,"create new document; scaffold; init; write from scratch","modify existing"
+update.md,"edit; update status; change content; modify; append","create new"
+improve.md,"refactor doc; improve readability; rewrite; enhance quality","simple edit; logic change"
+validate.md,"check doc against guidelines; review doc; audit","edit; write"
+format.md,"fix markdown; apply template structure; lint; fix whitespace","change meaning"

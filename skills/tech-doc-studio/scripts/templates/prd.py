@@ -1,5 +1,7 @@
 from typing import Final
 
+# ruff: noqa: E501
+
 PRD_INDEX_TEMPLATE: Final[str] = """# PRD Index
 
 | ID | Date | Status | Title | Priority |

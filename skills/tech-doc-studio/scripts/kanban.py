@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Unified Kanban board and card manager script entry point."""
 
+# ruff: noqa: E402
+
 from __future__ import annotations
 
 import argparse

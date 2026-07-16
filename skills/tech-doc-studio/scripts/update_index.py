@@ -85,7 +85,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         description="Create/update folder-local INDEX.csv from markdown frontmatter."
     )
     parser.add_argument("folder", help="Folder containing markdown documents.")
-    parser.add_argument("--output", default="INDEX.csv", help="Output CSV filename/path.")
+    parser.add_argument(
+        "--output", default="INDEX.csv", help="Output CSV filename/path."
+    )
     parser.add_argument("--fields", help="Comma-separated output fields.")
     parser.add_argument("--sort", help="Comma-separated sort priority fields.")
     parser.add_argument("--include-readme", action="store_true")
@@ -102,9 +104,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     rows = build_rows(folder, files)
 
     fields = (
-        split_csv_arg(args.fields)
-        or read_csv_header(index_path)
-        or derive_fields(rows)
+        split_csv_arg(args.fields) or read_csv_header(index_path) or derive_fields(rows)
     )
     sort_fields = split_csv_arg(args.sort) or [
         field for field in ("id", "name", "file") if field in fields
