@@ -15,7 +15,7 @@ Core body concepts, formatting rules for agent assets.
 
 ## Workflows Structure
 
-When `Workflows` is defined, structure it using the following sub-headers.
+When defining workflows, use `## Workflows` for a single workflow, or `## Workflow: <Workflow Name>` to support multiple workflows in a single file. Structure each using the following sub-headers (Level 3).
 
 | Header | Optional | Description |
 | --- | --- | --- |

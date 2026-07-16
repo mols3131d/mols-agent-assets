@@ -16,6 +16,7 @@ Use this workflow to apply fixes, modify behavior, or update content and structu
 ## Instructions
 
 - Read [references/agent-skill-frontmatter.md](../references/agent-skill-frontmatter.md) for frontmatter requirements.
+- Read [references/trigger-description-guide.md](../references/trigger-description-guide.md) when updating trigger descriptions or frontmatter.
 - Read [references/agent-skill-directories.md](../references/agent-skill-directories.md) for structural requirements.
 - Read `references/routing-skill-structure.md` only for routing architecture changes.
 - Read `references/routing-skill-algorithm.md` only for router behavior changes.
@@ -37,10 +38,11 @@ Use this workflow to apply fixes, modify behavior, or update content and structu
 2. Read the frontmatter and only the files tied to the request or failing checks.
 3. Follow the backup protocol in `references/agent-asset-backup.md` before editing.
 4. Define the affected triggers, outputs, exclusions, and constraints. Preserve all unrelated behavior.
-5. Prefer focused checks such as `rg "<term>" <skill-dir>` for duplication and `wc -l <files>` for context size.
-6. Make the smallest change that resolves the requested issue. Do not re-scaffold the existing skill.
-7. Read `references/routing-skill-structure.md` for index or layout changes. Read `references/routing-skill-algorithm.md` for selection, ambiguity, or loading changes.
-8. Re-run `python3 scripts/validate_asset.py <skill-dir> --type skill`. Fix only requested or failing areas until errors are gone and warnings are fixed or explicitly accepted.
+5. If modifying frontmatter or trigger conditions, follow `references/trigger-description-guide.md` to format `USE WHEN:` and `EXCLUDES:`.
+6. Prefer focused checks such as `rg "<term>" <skill-dir>` for duplication and `wc -l <files>` for context size.
+7. Make the smallest change that resolves the requested issue. Do not re-scaffold the existing skill.
+8. Read `references/routing-skill-structure.md` for index or layout changes. Read `references/routing-skill-algorithm.md` for selection, ambiguity, or loading changes.
+9. Re-run `python3 scripts/validate_asset.py <skill-dir> --type skill`. Fix only requested or failing areas until errors are gone and warnings are fixed or explicitly accepted.
 
 ### Validation
 

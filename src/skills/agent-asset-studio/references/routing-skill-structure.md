@@ -77,6 +77,11 @@ Use `workflows/agent-asset-index-write.md` to create or update the index. Keep s
 Each module acts as the entry point and orchestrator for a specific task, loading shared resources only when needed. It follows a consistent contract:
 
 ```markdown
+---
+name: workflow-name
+description: Brief summary of what this workflow does and when to use it.
+---
+
 # Workflow Name
 
 ## Goal
