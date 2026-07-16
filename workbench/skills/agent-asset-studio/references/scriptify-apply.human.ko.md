@@ -1,5 +1,5 @@
 ---
-name: agent-asset-scriptify-apply
+name: scriptify-apply
 description: 사용 시점: 사용자가 승인된 스크립트화 계획을 실행하고자 할 때. 제외 대상: 계획 수립, 평가, 또는 계획 없는 임의의 스크립트 생성 작업.
 ---
 

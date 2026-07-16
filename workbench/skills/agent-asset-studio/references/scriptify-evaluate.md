@@ -1,5 +1,5 @@
 ---
-name: agent-asset-scriptify-evaluate
+name: scriptify-evaluate
 description: USE WHEN: the user wants to evaluate whether a workflow or asset can and should be scriptified. EXCLUDES: generating the script or modifying the original asset directly.
 ---
 
@@ -43,7 +43,7 @@ Use this workflow to assess scriptification suitability when the user proposes c
 2. Check for reasoning dependencies: Do these steps require reading implicit context, extracting semantic meaning, or generating non-deterministic text?
 3. If reasoning is required, recommend against scriptification and provide specific reasons. Exit the workflow.
 4. If reasoning is not required, evaluate the ROI: Will a script be significantly faster, cheaper, or more reliable than natural language? If no, recommend against it.
-5. If scriptification is suitable and beneficial, output an affirmative evaluation and recommend moving to the `agent-asset-scriptify-plan` workflow.
+5. If scriptification is suitable and beneficial, output an affirmative evaluation and recommend moving to the `scriptify-plan` workflow.
 
 ### Validation
 

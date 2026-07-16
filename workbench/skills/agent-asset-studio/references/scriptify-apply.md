@@ -1,5 +1,5 @@
 ---
-name: agent-asset-scriptify-apply
+name: scriptify-apply
 description: USE WHEN: the user wants to execute an approved scriptification plan. EXCLUDES: planning, evaluation, or arbitrary script generation without a plan.
 ---
 

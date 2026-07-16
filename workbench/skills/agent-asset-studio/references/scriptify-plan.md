@@ -1,5 +1,5 @@
 ---
-name: agent-asset-scriptify-plan
+name: scriptify-plan
 description: USE WHEN: the user wants to create an implementation plan for scriptifying a workflow. EXCLUDES: writing the actual code or evaluating feasibility from scratch.
 ---
 
@@ -11,7 +11,7 @@ Create a detailed implementation plan outlining how a deterministic natural lang
 
 ## Non-Goal
 
-- Evaluating whether scriptification is appropriate (this should be done via `agent-asset-scriptify-evaluate.md` beforehand).
+- Evaluating whether scriptification is appropriate (this should be done via `scriptify-evaluate.md` beforehand).
 - Writing the actual script or executing the modifications.
 
 ## When to Use
