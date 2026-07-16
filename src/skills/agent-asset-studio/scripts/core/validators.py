@@ -1,7 +1,20 @@
 from __future__ import annotations
 
+import csv
+from pathlib import Path
+
 from configs import skill
 from core.base import Asset, ValidationResult, Validator
+
+
+def clean_scalar(value: str) -> str:
+    """단순 YAML scalar의 block marker와 외부 quote를 제거한다."""
+    cleaned = value.strip()
+    if cleaned in {">", "|"}:
+        return ""
+    if len(cleaned) >= 2 and cleaned[0] == cleaned[-1] and cleaned[0] in "\"'":
+        return cleaned[1:-1]
+    return cleaned
 
 
 def parse_frontmatter(content: str) -> tuple[dict[str, str], str]:
@@ -25,7 +38,7 @@ def parse_frontmatter(content: str) -> tuple[dict[str, str], str]:
             continue
 
         if current_key is not None:
-            fields[current_key] = " ".join(current_value).strip()
+            fields[current_key] = clean_scalar(" ".join(current_value))
             current_key = None
             current_value = []
 
@@ -34,10 +47,10 @@ def parse_frontmatter(content: str) -> tuple[dict[str, str], str]:
 
         key, value = line.split(":", 1)
         current_key = key.strip()
-        current_value = [value.strip().strip(">")]
+        current_value = [value]
 
     if current_key is not None:
-        fields[current_key] = " ".join(current_value).strip()
+        fields[current_key] = clean_scalar(" ".join(current_value))
 
     return fields, body
 
@@ -121,6 +134,151 @@ class AssetBodyLengthValidator(Validator):
                         f"{filename} 본문이 {body_line_count}줄입니다. "
                         "references/ 분리를 검토하세요."
                     ),
+                )
+            )
+        return results
+
+
+class RoutingSkillValidator(Validator):
+    """Routing Skill의 index, workflow path, discovery 경계를 검증한다."""
+
+    def validate(self, asset: Asset) -> list[ValidationResult]:
+        workflows_path = asset.path / "workflows"
+        index_paths = sorted(asset.path.rglob("INDEX.csv"))
+        if not index_paths and not workflows_path.exists():
+            return []
+
+        results: list[ValidationResult] = []
+        if not index_paths:
+            results.append(
+                ValidationResult(
+                    "error", "missing_route_index", "INDEX.csv가 없습니다."
+                )
+            )
+        elif len(index_paths) > 1:
+            results.append(
+                ValidationResult(
+                    "error",
+                    "multiple_route_indexes",
+                    "Routing Skill에는 INDEX.csv가 하나만 있어야 합니다: "
+                    + ", ".join(
+                        path.relative_to(asset.path).as_posix() for path in index_paths
+                    ),
+                )
+            )
+        if not workflows_path.is_dir():
+            results.append(
+                ValidationResult("error", "missing_workflows", "workflows/가 없습니다.")
+            )
+        if results:
+            return results
+
+        index_path = index_paths[0]
+
+        try:
+            with index_path.open("r", encoding="utf-8", newline="") as file:
+                reader = csv.DictReader(file)
+                if reader.fieldnames != list(skill.ROUTE_INDEX_FIELDS):
+                    return [
+                        ValidationResult(
+                            "error",
+                            "invalid_route_schema",
+                            "INDEX.csv schema는 "
+                            + ",".join(skill.ROUTE_INDEX_FIELDS)
+                            + " 이어야 합니다.",
+                        )
+                    ]
+                routes = list(reader)
+        except (csv.Error, OSError) as exc:
+            return [
+                ValidationResult(
+                    "error",
+                    "invalid_route_index",
+                    f"INDEX.csv를 읽을 수 없습니다: {exc}",
+                )
+            ]
+
+        if not routes:
+            results.append(
+                ValidationResult(
+                    "warning", "empty_route_index", "INDEX.csv에 route가 없습니다."
+                )
+            )
+
+        seen_ids: set[str] = set()
+        skill_root = asset.path.resolve()
+        for line_number, route in enumerate(routes, start=2):
+            route_id = (route.get("id") or "").strip()
+            workflow_path = Path(route_id)
+            if (
+                not route_id
+                or workflow_path.is_absolute()
+                or ".." in workflow_path.parts
+                or not workflow_path.parts
+            ):
+                results.append(
+                    ValidationResult(
+                        "error",
+                        "invalid_route_id",
+                        f"INDEX.csv:{line_number} id가 안전한 상대 경로가 "
+                        f"아닙니다: {route_id!r}",
+                    )
+                )
+                continue
+            elif route_id in seen_ids:
+                results.append(
+                    ValidationResult(
+                        "error",
+                        "duplicate_route_id",
+                        f"INDEX.csv:{line_number} id가 중복됩니다: {route_id}",
+                    )
+                )
+            seen_ids.add(route_id)
+
+            for field in ("use_when", "excludes"):
+                if not (route.get(field) or "").strip():
+                    results.append(
+                        ValidationResult(
+                            "error",
+                            f"missing_{field}",
+                            f"INDEX.csv:{line_number} {field}이 비어 있습니다.",
+                        )
+                    )
+
+            resolved_workflow = (index_path.parent / workflow_path).resolve()
+            try:
+                resolved_workflow.relative_to(skill_root)
+            except ValueError:
+                results.append(
+                    ValidationResult(
+                        "error",
+                        "invalid_route_id",
+                        f"INDEX.csv:{line_number} id가 Skill 밖을 "
+                        f"가리킵니다: {route_id!r}",
+                    )
+                )
+                continue
+            if not resolved_workflow.is_file():
+                results.append(
+                    ValidationResult(
+                        "error",
+                        "missing_route_file",
+                        f"INDEX.csv:{line_number} id가 가리키는 파일이 없습니다: "
+                        f"{route_id}",
+                    )
+                )
+
+        nested_skills = sorted(
+            path.relative_to(asset.path).as_posix()
+            for path in workflows_path.rglob("SKILL.md")
+        )
+        if nested_skills:
+            results.append(
+                ValidationResult(
+                    "error",
+                    "nested_skill_file",
+                    "workflows/ 아래 discoverable SKILL.md가 있습니다: "
+                    + ", ".join(nested_skills),
                 )
             )
         return results

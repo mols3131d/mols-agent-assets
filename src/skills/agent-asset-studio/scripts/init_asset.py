@@ -9,6 +9,7 @@ import sys
 from pathlib import Path
 from typing import Sequence
 
+from configs import common
 from core.base import AssetInitOptions
 from core.factory import AssetFactory
 
@@ -81,9 +82,14 @@ def main(argv: Sequence[str] | None = None) -> int:
         "--routing-skill",
         action="store_true",
         help=(
-            "스킬 생성 시 sub-skills/INDEX.csv로 라우팅하는 큰 규모 스킬 "
-            "템플릿을 사용한다."
+            "스킬 생성 시 workflows/INDEX.csv와 workflow module을 사용하는 라우팅 "
+            "스킬 템플릿을 적용한다."
         ),
+    )
+    parser.add_argument(
+        "--index-path",
+        default="workflows/INDEX.csv",
+        help=("라우팅 인덱스의 Skill 기준 상대 경로 (기본값: workflows/INDEX.csv)"),
     )
     parser.add_argument(
         "--dry-run",
@@ -107,11 +113,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         )
 
         # 리소스 적합성 교차 체크
-        invalid = sorted(
-            {r for r in resources if r not in asset.config.ALLOWED_RESOURCES}
-        )
+        invalid = sorted({r for r in resources if r not in common.ALLOWED_RESOURCES})
         if invalid:
-            allowed = ", ".join(sorted(asset.config.ALLOWED_RESOURCES))
+            allowed = ", ".join(sorted(common.ALLOWED_RESOURCES))
             raise ValueError(
                 f"알 수 없는 리소스 유형: {', '.join(invalid)}. 허용값: {allowed}"
             )
@@ -121,6 +125,18 @@ def main(argv: Sequence[str] | None = None) -> int:
 
         if args.routing_skill and args.type != "skill":
             raise ValueError("--routing-skill은 --type skill에서만 사용할 수 있습니다.")
+
+        index_path = Path(args.index_path)
+        if (
+            index_path.is_absolute()
+            or ".." in index_path.parts
+            or index_path.name != "INDEX.csv"
+        ):
+            raise ValueError(
+                "--index-path는 Skill 내부의 INDEX.csv 상대 경로여야 합니다."
+            )
+        if not args.routing_skill and args.index_path != "workflows/INDEX.csv":
+            raise ValueError("--index-path는 --routing-skill과 함께 사용해야 합니다.")
 
         # 자산별 생성 로직 위임 호출
         options = AssetInitOptions(
@@ -133,6 +149,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             allowed_tools=args.allowed_tools,
             dry_run=args.dry_run,
             routing_skill=args.routing_skill,
+            index_path=index_path.as_posix(),
         )
         payload = asset.initialize(options)
 

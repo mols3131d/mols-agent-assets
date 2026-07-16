@@ -50,42 +50,32 @@ description: {description}
 
 # {skill_title}
 
-## Overview
+## Routing
 
-- 목표: 이 스킬이 에이전트에게 제공하는 능력을 1-2문장으로 설명한다.
+1. Read `{index_path}` once.
+2. Compare the request with each route's `use_when` and `excludes`.
+3. Select the smallest route set that covers the request.
+4. Resolve each selected `id` relative to that index and read the file.
+5. Load additional resources only when a workflow requires them.
 
-## Triggers
+Route by semantic intent, not keyword overlap. Do not scan `workflows/`.
 
-- 이 스킬을 적용해야 하는 조건 및 상황을 기술한다.
+## Ambiguity
 
-## Exclusions
-
-- 이 스킬을 사용하지 말아야 하는 예외 조건 및 상황을 기술한다.
-
-## Routing Sub Skills
-
-- Multi-skill routing: If the request spans multiple categories, select and execute matching sub-skills sequentially.
-- Workflow: Load instructions for all matched sub-skills → Plan a step-by-step sequence → Execute and report progress.
-
-1. Read `sub-skills/INDEX.csv` to identify all matching sub-skills for the request.
-2. If a single sub-skill matches, read only that sub-skill file.
-3. If multiple sub-skills match, load all matched sub-skill files, plan a sequential workflow, and execute each step while reporting progress.
-
-
-## Resources
-
-{resource_notes}
+- Select one route when it fully covers the request.
+- Select multiple routes only when the request explicitly spans them.
+- Ask one targeted question when routes imply materially different actions.
+- State that the skill does not cover the request when no route matches.
 
 ## Rules
 
-- <규칙 1>
-- <규칙 2>
-...
+- Keep global constraints here; keep task procedures in workflow modules.
+- Use each `id` as the exact workflow path relative to `{index_path}`.
+- Keep routing depth to one layer.
 
-## Constraints
+## Resources
 
-- <제약 1>
-- <주의 2>
-...
+- `{index_path}`: semantic route registry.
+{resource_notes}
 
 """

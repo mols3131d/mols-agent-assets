@@ -1,68 +1,60 @@
 #!/usr/bin/env python3
-"""Routing Skill의 INDEX.csv 관리 스크립트."""
+"""Routing Skill의 semantic route index를 관리한다."""
+
+from __future__ import annotations
 
 import csv
 from pathlib import Path
 
-HEADERS = ["name", "overview", "keywords", "trigger", "exclusion"]
+from configs import skill
+
+HEADERS = list(skill.ROUTE_INDEX_FIELDS)
 
 
 def init_index(path: Path) -> None:
-    """INDEX.csv 파일이 없으면 헤더와 함께 초기화한다."""
-    if not path.exists():
-        with path.open("w", encoding="utf-8", newline="") as f:
-            writer = csv.writer(f)
-            writer.writerow(HEADERS)
+    """INDEX.csv가 없으면 표준 header로 생성한다."""
+    if path.exists():
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="") as file:
+        csv.writer(file).writerow(HEADERS)
 
 
 def valid_index(path: Path) -> bool:
-    """INDEX.csv 파일의 유효성(존재 여부 및 헤더 일치)을 검증한다."""
-    if not path.exists():
+    """INDEX.csv의 존재와 정확한 schema를 확인한다."""
+    if not path.is_file():
         return False
-    
     try:
-        with path.open("r", encoding="utf-8", newline="") as f:
-            reader = csv.reader(f)
-            headers = next(reader, None)
-            if headers != HEADERS:
-                return False
-    except (csv.Error, IOError):
+        with path.open("r", encoding="utf-8", newline="") as file:
+            return next(csv.reader(file), None) == HEADERS
+    except (csv.Error, OSError):
         return False
-        
-    return True
 
 
 def update_index(path: Path, data: dict[str, str]) -> None:
-    """INDEX.csv에 새로운 행을 추가하거나 기존 행(name 기준)을 업데이트한다."""
-    if not valid_index(path):
+    """Route를 id 기준으로 추가하거나 갱신한다."""
+    if not path.exists():
         init_index(path)
-        
-    rows = []
+    elif not valid_index(path):
+        raise ValueError(f"지원하지 않는 INDEX.csv schema입니다: {path}")
+
+    route_id = data.get("id", "").strip()
+    if not route_id:
+        raise ValueError("route id가 필요합니다.")
+
+    rows: list[dict[str, str]] = []
     updated = False
-    
-    # 기존 행 읽기
-    with path.open("r", encoding="utf-8", newline="") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            if row.get("name") == data.get("name"):
-                # 기존 행 업데이트
-                for key in HEADERS:
-                    if key in data:
-                        row[key] = data[key]
+    with path.open("r", encoding="utf-8", newline="") as file:
+        for row in csv.DictReader(file):
+            if row.get("id") == route_id:
+                row.update({key: data[key] for key in HEADERS if key in data})
                 updated = True
             rows.append(row)
-            
-    # 업데이트되지 않았다면 새로 추가
+
     if not updated:
-        new_row = {key: data.get(key, "") for key in HEADERS}
-        rows.append(new_row)
-        
-    # 변경사항 다시 쓰기
-    with path.open("w", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=HEADERS)
+        rows.append({key: data.get(key, "") for key in HEADERS})
+
+    with path.open("w", encoding="utf-8", newline="") as file:
+        writer = csv.DictWriter(file, fieldnames=HEADERS)
         writer.writeheader()
         writer.writerows(rows)
-
-
-if __name__ == "__main__":
-    pass

@@ -113,8 +113,7 @@ class FrontmatterSchema:
                     level="error",
                     code="name_mismatch",
                     message=(
-                        f"frontmatter name={actual_name!r}, "
-                        f"folder={expected_name!r}"
+                        f"frontmatter name={actual_name!r}, folder={expected_name!r}"
                     ),
                 )
             )
