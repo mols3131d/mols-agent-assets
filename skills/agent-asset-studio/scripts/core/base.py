@@ -9,6 +9,7 @@ from typing import Any, ClassVar
 @dataclass(frozen=True)
 class ValidationResult:
     """검증 결과를 나타내는 데이터 모델."""
+
     level: str
     code: str
     message: str
@@ -20,6 +21,7 @@ class ValidationResult:
 @dataclass(frozen=True)
 class AssetInitOptions:
     """자산 초기화에 필요한 CLI 옵션 묶음."""
+
     resources: list[str]
     include_examples: bool
     description: str
@@ -29,6 +31,7 @@ class AssetInitOptions:
     allowed_tools: str | None
     dry_run: bool
     routing_skill: bool = False
+    index_path: str = "workflows/INDEX.csv"
 
 
 class Asset(ABC):

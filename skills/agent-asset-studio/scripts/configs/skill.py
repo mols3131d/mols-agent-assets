@@ -10,6 +10,12 @@ from .common import (  # ty: ignore[unresolved-import]
 
 DEFAULT_DESCRIPTION: Final[str] = DEFAULT_SKILL_DESCRIPTION
 
+ROUTE_INDEX_FIELDS: Final[tuple[str, ...]] = (
+    "id",
+    "use_when",
+    "excludes",
+)
+
 # Configuration for init_skill.py
 EXAMPLE_ASSET: Final[str] = """이 파일은 실제 템플릿, 이미지, 설정 예시 같은
 정적 자산으로 교체한다. 사용하지 않으면 `assets/`와 함께 삭제한다.

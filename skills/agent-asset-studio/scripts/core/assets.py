@@ -8,6 +8,7 @@ from core.base import Asset, AssetInitOptions, Validator
 from core.validators import (
     AssetBodyLengthValidator,
     FrontmatterValidator,
+    RoutingSkillValidator,
     SkillTriggerValidator,
 )
 from templates import (
@@ -69,7 +70,6 @@ EXAMPLE_FILES = {
     "scripts": ("example.py", EXAMPLE_SCRIPT, True),
     "references": ("reference.md", EXAMPLE_REFERENCE, False),
     "assets": ("example.txt", EXAMPLE_ASSET, False),
-    "sub-skills": ("INDEX.csv", "name,overview,keywords,trigger,exclusion\n", False),
 }
 
 
@@ -103,8 +103,8 @@ def build_resource_notes(resources: Sequence[str], include_examples: bool) -> st
         )
     if "configs" in resources:
         lines.append("- `configs/`: 에이전트 기동 설정 및 환경 옵션을 둔다.")
-    if "sub-skills" in resources:
-        lines.append("- `sub-skills/`: INDEX.csv로 하위 스킬을 라우팅한다.")
+    if "workflows" in resources:
+        lines.append("- `workflows/`: INDEX.csv가 가리키는 workflow module을 둔다.")
     return "\n".join(lines)
 
 
@@ -117,12 +117,6 @@ def create_resource_dirs(
         resource_dir = asset_dir / resource
         resource_dir.mkdir(exist_ok=True)
         created.append(resource_dir.relative_to(asset_dir).as_posix() + "/")
-
-        if resource == "sub-skills":
-            index_path = resource_dir / "INDEX.csv"
-            write_text(index_path, EXAMPLE_FILES[resource][1])
-            created.append(index_path.relative_to(asset_dir).as_posix())
-            continue
 
         if not include_examples:
             continue
@@ -148,15 +142,15 @@ def run_base_initialization(
 
     planned_files = [filename]
     resources = list(options.resources)
-    if options.routing_skill and "sub-skills" not in resources:
-        resources.append("sub-skills")
+    if options.routing_skill:
+        planned_files.append(options.index_path)
+        if "workflows" not in resources:
+            resources.append("workflows")
 
     for resource in resources:
         planned_files.append(f"{resource}/")
         example = EXAMPLE_FILES.get(resource)
-        if resource == "sub-skills" and example is not None:
-            planned_files.append(f"{resource}/{example[0]}")
-        elif options.include_examples and example is not None:
+        if options.include_examples and example is not None:
             planned_files.append(f"{resource}/{example[0]}")
 
     if options.dry_run:
@@ -193,10 +187,17 @@ def run_base_initialization(
         description=yaml_quote(options.description),
         optional_frontmatter=frontmatter,
         resource_notes=resource_notes,
+        index_path=options.index_path,
     )
 
     write_text(asset_dir / filename, file_content)
     created = [filename]
+    if options.routing_skill:
+        index_content = ",".join(skill.ROUTE_INDEX_FIELDS) + "\n"
+        index_path = asset_dir / options.index_path
+        index_path.parent.mkdir(parents=True, exist_ok=True)
+        write_text(index_path, index_content)
+        created.append(options.index_path)
     created.extend(create_resource_dirs(asset_dir, resources, options.include_examples))
 
     return {
@@ -242,6 +243,7 @@ class SkillAsset(TemplateAsset):
         FrontmatterValidator,
         SkillTriggerValidator,
         AssetBodyLengthValidator,
+        RoutingSkillValidator,
     ]
 
     def select_template(self, options: AssetInitOptions) -> str:

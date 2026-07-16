@@ -1,5 +1,0 @@
-name,overview,keywords,trigger,exclusion
-agent-skill.md,Create/improve/evaluate/validate agent skills,"skill, create, improve, evaluate, validate","create, edit, review, or validate agent skill",not agent-skill work
-compress.md,Compress one target agent asset,"compress, verbose, asset",/agent-asset-console compress <file>; current/explicit asset too verbose,no target; broad compression
-asset-naming.md,"Suggest, validate, or apply agent asset names","naming, name, convention, rename","suggest, rename, name, or check asset naming",no name changes requested
-routerize-skills.md,Consolidate multiple skills into a routing skill.,"routerize, merge, group","merge, convert to routing skill",new skill creation

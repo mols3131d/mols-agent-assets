@@ -9,7 +9,7 @@ ALLOWED_RESOURCES: Final[set[str]] = {
     "assets",
     "prompts",
     "configs",
-    "sub-skills",
+    "workflows",
 }
 
 NAME_PATTERN: Final[re.Pattern[str]] = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
