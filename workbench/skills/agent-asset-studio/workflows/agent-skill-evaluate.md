@@ -21,7 +21,7 @@ Use this workflow to perform a quality review or check the effectiveness of an e
 
 ## Workflows
 
-### Arguments
+### Arguments from Context
 
 - Existing skill path
 - Evaluation scope, or full quality review when no narrower scope is given

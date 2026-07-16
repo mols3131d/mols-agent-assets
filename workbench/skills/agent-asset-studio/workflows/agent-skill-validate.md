@@ -24,7 +24,7 @@ Use this workflow to check structural conformance and frontmatter of a skill usi
 
 ## Workflows
 
-### Arguments
+### Arguments from Context
 
 - Existing skill directory
 

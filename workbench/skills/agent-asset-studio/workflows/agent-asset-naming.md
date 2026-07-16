@@ -20,7 +20,7 @@ Use this workflow to determine appropriate names for new agent assets or to vali
 
 ## Workflows
 
-### Arguments
+### Arguments from Context
 
 - Asset type and purpose
 - Existing or new asset status

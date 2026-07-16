@@ -24,7 +24,7 @@ Use this workflow to migrate separate related skills into a single routing skill
 
 ## Workflows
 
-### Arguments
+### Arguments from Context
 
 - Two or more source skill directories
 - Target routing skill directory

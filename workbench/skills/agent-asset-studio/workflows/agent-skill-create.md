@@ -25,7 +25,7 @@ Use this workflow to scaffold and initialize a new agent skill.
 
 ## Workflows
 
-### Arguments
+### Arguments from Context
 
 - Target path or destination
 - Intended job, triggering requests, outputs, and near-miss exclusions

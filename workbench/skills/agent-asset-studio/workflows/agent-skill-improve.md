@@ -26,7 +26,7 @@ Use this workflow to apply fixes, modify behavior, or update content and structu
 
 ## Workflows
 
-### Arguments
+### Arguments from Context
 
 - Existing skill path
 - Requested behavior, content, or structural change

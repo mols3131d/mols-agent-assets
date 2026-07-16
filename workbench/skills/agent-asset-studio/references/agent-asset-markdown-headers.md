@@ -19,6 +19,6 @@ When `Workflows` is defined, structure it using the following sub-headers.
 
 | Header | Required | Description |
 | --- | --- | --- |
-| **Arguments** | ❌ | External inputs. Must be designed as natural language concepts rather than strict CLI/function parameters, allowing LLMs to infer intent easily. Can include defaults. Dynamic discovery permitted. |
+| **Arguments from Context** | ❌ | External inputs dynamically extracted from conversational context. Must be designed as natural language concepts rather than strict CLI/function parameters to avoid LLM bias toward rigid structures. Can include defaults. |
 | **Procedure** | ✅ | Ordered sequential steps to accomplish goal. Can include conditional branching, termination steps. Explicit early termination on negative conditions is preferred to ensure safety. Can reference or delegate to other assets (rules, workflows) for efficient modular expansion. |
 | **Validation** | ❌ | Specific checks to verify the outcome is correct. |

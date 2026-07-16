@@ -24,7 +24,7 @@ Use this workflow to compress size, refactor structure, or clean up formatting o
 
 ## Workflows
 
-### Arguments
+### Arguments from Context
 
 - Target asset path(s)
 - Desired optimization outcome (compress size, refactor structure, format cleanup)

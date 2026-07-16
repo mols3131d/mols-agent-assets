@@ -23,7 +23,7 @@ Use this workflow when you need to create or update an index of agent assets. Th
 
 ## Workflows
 
-### Arguments
+### Arguments from Context
 
 - Mode: `csv`, `markdown-file`, or `markdown-table`
 - Target index or host Markdown path
