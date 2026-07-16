@@ -1,8 +1,0 @@
-name,overview,trigger,exclusion
-adr.md,"Architecture decisions","ADR; tech choice; architecture tradeoff","PRD/SPEC detail"
-prd.md,"Product requirements","PRD; product goal; user story; feature need","SPEC/ADR"
-spec.md,"Implementation specs","SPEC; API/data/logic plan","product goal only"
-design.md,"Design notes","UX/UI/system design note; flow; wireframe","not design work"
-tasks.md,"Task lists","todo; checklist; action items","status board or decision doc"
-kanban.md,"Kanban board","kanban; status board; work stages","simple task list"
-index.md,"Folder-local INDEX.csv from frontmatter","INDEX.csv; index folder; refresh metadata","single doc authoring"
