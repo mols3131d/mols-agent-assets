@@ -1,11 +1,8 @@
 data/
 tmp/
 .agents/skills/agent-asset-studio
-.agents/skills/document-studio
 .agents/skills/caveman*
 .agents/skills/cavecrew
-.agents/skills/openspec*
-.agents/workflows/opsx-*.md
 *.tmp*
 *.origin*
 *.backup*
