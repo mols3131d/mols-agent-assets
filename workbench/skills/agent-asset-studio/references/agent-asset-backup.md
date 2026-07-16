@@ -1,6 +1,13 @@
 # Agent Asset Backup Protocol
 
-When modifying an existing Markdown asset, you must preserve the original state.
+## Goal
+
+Preserve the original state of an existing Markdown asset before modification to allow for clean rollbacks and diff comparisons.
+
+## When to Use
+
+Use this protocol whenever a workflow or rule requires modifying an existing Markdown asset in the workspace.
+
+## Instructions
 
 - Before making any edits to an existing Markdown asset, save a copy of the source as `<filename>.original.md`.
-- This ensures a clean rollback state and allows the user to perform diff comparisons of the changes.
