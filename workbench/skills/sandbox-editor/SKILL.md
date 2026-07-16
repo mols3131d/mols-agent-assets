@@ -1,10 +1,8 @@
 ---
 name: sandbox-editor
 description: >
-  What: Create or edit interactive sandbox scripts to resolve understanding bottlenecks.
-  When: User asks to create, edit, modify, or update a sandbox file.
-  Not: General refactoring, test automation, or fixing production code.
-  Keywords: sandbox, experiment, interactive, create, edit, modify.
+  USE WHEN: Creating, editing, modifying, or updating interactive sandbox scripts to resolve understanding bottlenecks.
+  EXCLUDES: General refactoring, test automation, or fixing production code.
 ---
 
 # Sandbox Editor
@@ -28,26 +26,6 @@ Generate interactive sandbox scripts ("Micro World"). Expose inputs, hidden stat
 - Request to automatically test, explore, or fix code autonomously.
 - General refactoring or feature development.
 
-## Workflows
-
-1. Parse intent to identify the target logic and understanding bottleneck. If the bottleneck or suitable sandbox experience is unclear, read `references/understanding-bottleneck.md`.
-2. Determine sandbox location (User path -> Existing `sandboxes/` -> Default `sandboxes/`).
-3. Select the required assets from **Asset Routing** and read them before writing code.
-4. Scaffold sandbox script, importing target logic directly.
-5. Apply the selected observability approach without changing production code.
-6. Output script path. Wait for user to tweak and execute.
-
-## Asset Routing
-
-| Asset | When to Use | When NOT to Use |
-| --- | --- | --- |
-| `prompts/write-marimo-sandbox.md` | Python sandbox | Non-Python or standard `.py` script |
-| `prompts/add-observability.md` | State transitions need visibility | Input/output alone is sufficient |
-| `prompts/use-mock-patch.md` | Internal calls need interception | Direct observation is sufficient |
-| `references/understanding-bottleneck.md` | Goal or bottleneck is unclear | Goal and sandbox experience are clear |
-
-Read all matching assets; skip the rest.
-
 ## Instructions
 
 - **Observable Inputs**: Isolate input parameters at script top. Prompt user to tweak.
@@ -60,3 +38,28 @@ Read all matching assets; skip the rest.
 
 - **Zero Execution**: Never run the generated sandbox script yourself.
 - **Direct Import**: Never copy production logic. Import directly from source.
+
+## Workflow: Sandbox Editor
+
+### Arguments from Context
+
+- Target sandbox location (Default: `sandboxes/` or existing path)
+- Target logic and understanding bottleneck
+
+### Procedure
+
+1. Parse intent to identify the target logic and understanding bottleneck. If the bottleneck or suitable sandbox experience is unclear, read [references/understanding-bottleneck.md](references/understanding-bottleneck.md).
+2. Determine sandbox location (User path -> Existing `sandboxes/` -> Default `sandboxes/`).
+3. Select and read required assets from the route selection:
+   - [references/write-marimo-sandbox.md](references/write-marimo-sandbox.md) when building a Python sandbox.
+   - [references/add-observability.md](references/add-observability.md) when state transitions need visibility.
+   - [references/use-mock-patch.md](references/use-mock-patch.md) when internal calls need interception.
+   - [references/understanding-bottleneck.md](references/understanding-bottleneck.md) when the goal or bottleneck is unclear.
+4. Scaffold sandbox script, importing target logic directly.
+5. Apply the selected observability approach without changing production code.
+6. Output script path. Wait for user to tweak and execute.
+
+### Validation
+
+- The generated script path is displayed to the user.
+- Production code remains completely unmodified.
