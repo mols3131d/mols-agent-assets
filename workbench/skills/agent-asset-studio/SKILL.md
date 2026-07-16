@@ -45,14 +45,6 @@ Asset types:
 - **Skill**: Procedural workflow for completing a task.
 - **Rule**: Cross-cutting constraint or protocol.
 
-### Shared Resources
-
-- For routing architecture, read `references/routing-skill-structure.md`.
-- For routing selection or loading behavior, read `references/routing-skill-algorithm.md`.
-- For routing migration, read `references/routing-skill-migration.md`.
-- For routing evaluation or validation, read `references/routing-skill-validation.md`.
-- For naming-only decisions, read `references/naming-convention.md`.
-
 ### Completion
 
 Report changed files, validation results, and any remaining risk or skipped check.
