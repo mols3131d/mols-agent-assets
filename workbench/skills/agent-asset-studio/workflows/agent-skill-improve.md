@@ -23,12 +23,14 @@ Improve one existing agent skill while preserving behavior outside the requested
 ## Validation
 
 - Requested behavior works and unrelated triggers, exclusions, and safety constraints remain intact.
-- Frontmatter is valid; the directory and `name` match.
+- Frontmatter matches the specification in [references/agent-skill-frontmatter.md](../references/agent-skill-frontmatter.md).
+- File and directory structure complies with [references/agent-skill-directories.md](../references/agent-skill-directories.md).
 - Every referenced path and route `id` resolves relative to its `INDEX.csv`.
-- No duplicated rules, empty directories, unused examples, or nested discoverable `SKILL.md` files remain.
 
 ## Resources
 
+- Read [references/agent-skill-frontmatter.md](../references/agent-skill-frontmatter.md) for frontmatter requirements.
+- Read [references/agent-skill-directories.md](../references/agent-skill-directories.md) for structural requirements.
 - Read `references/routing-skill-structure.md` only for routing architecture changes.
 - Read `references/routing-skill-algorithm.md` only for router behavior changes.
 - Use `scripts/validate_asset.py` after every structural change.

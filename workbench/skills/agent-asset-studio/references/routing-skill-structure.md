@@ -70,7 +70,7 @@ Read `routing-skill-algorithm.md` when writing or changing router selection, amb
 
 A routing skill uses one `INDEX.csv`, defaulting to `workflows/INDEX.csv`. Its fields are `id,use_when,excludes`, and each `id` resolves from the directory containing the index.
 
-Use `workflows/asset-index-write.md` to create or update the index. Keep schema-writing rules out of the router architecture.
+Use `workflows/agent-asset-index-write.md` to create or update the index. Keep schema-writing rules out of the router architecture.
 
 ## 5. Workflow Modules
 

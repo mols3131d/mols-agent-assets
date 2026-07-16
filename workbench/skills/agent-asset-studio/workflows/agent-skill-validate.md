@@ -11,11 +11,9 @@ Validate one skill's required fields and basic file structure without editing it
 ## Procedure
 
 1. Run `python3 scripts/validate_asset.py <skill-dir> --type skill`.
-2. Confirm `SKILL.md` exists and its YAML frontmatter contains `name` and `description`.
-3. Confirm `name` matches the directory, uses lowercase hyphen-case, and is at most 64 characters.
-4. Confirm `description` is not empty and is at most 1024 characters.
-5. For a routing skill, find its single `INDEX.csv`, confirm route IDs are unique relative paths, and resolve each from the index directory to an existing file inside the skill.
-6. Report pass or fail. For each failure, include the field or path and the validator message.
+2. Confirm that the frontmatter matches the specification in [references/agent-skill-frontmatter.md](../references/agent-skill-frontmatter.md) and the file/directory structure follows [references/agent-skill-directories.md](../references/agent-skill-directories.md).
+3. For a routing skill, find its single `INDEX.csv`, confirm route IDs are unique relative paths, and resolve each from the index directory to an existing file inside the skill.
+4. Report pass or fail. For each failure, include the field or path and the validator message.
 
 ## Validation
 
@@ -24,6 +22,8 @@ Validate one skill's required fields and basic file structure without editing it
 
 ## Resources
 
+- Read [references/agent-skill-frontmatter.md](../references/agent-skill-frontmatter.md) for frontmatter requirements.
+- Read [references/agent-skill-directories.md](../references/agent-skill-directories.md) for structural requirements.
 - Use `scripts/validate_asset.py` for structural validation.
 - Read `references/routing-skill-validation.md` only for a routing skill.
 
