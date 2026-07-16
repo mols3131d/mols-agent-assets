@@ -36,6 +36,6 @@ Route by semantic intent, not keyword overlap. Do not scan `workflows/` to disco
 ## Loading Rules
 
 - Keep routing depth to one layer; workflows do not route recursively.
-- Load only selected workflows and their explicitly required resources.
+- The selected workflow acts as the entry point for its specific task; load only the resources it explicitly requires.
 - Do not replace exact IDs with directory scans.
 - Preserve workflow order only when the request or procedure requires it.

@@ -74,7 +74,7 @@ Use `workflows/agent-asset-index-write.md` to create or update the index. Keep s
 
 ## 5. Workflow Modules
 
-Each module contains one executable workflow and follows a consistent contract:
+Each module acts as the entry point and orchestrator for a specific task, loading shared resources only when needed. It follows a consistent contract:
 
 ```markdown
 # Workflow Name
