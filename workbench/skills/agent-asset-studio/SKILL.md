@@ -1,7 +1,7 @@
 ---
 name: agent-asset-studio
 description: >
-  USE WHEN: managing, creating, improving, validating, naming, compressing, or routing agent assets (AGENTS.md, agent rules, workflows, skills, or bundled resources).
+  USE WHEN: managing, creating, improving, validating, naming, compressing, optimizing for agents, or routing agent assets (AGENTS.md, agent rules, workflows, skills, or bundled resources).
   EXCLUDES: general code changes or merely invoking an existing skill.
 ---
 
@@ -13,7 +13,7 @@ Manage, create, improve, validate, name, compress, and route agent assets.
 
 ## When to Use
 
-Use this skill when modifying, creating, validating, or organizing agent configurations, rules, workflows, skills, or related assets in the workspace.
+Use this skill when modifying, creating, validating, organizing, or optimizing agent configurations, rules, workflows, skills, or related assets in the workspace to make them agent-friendly.
 
 ## Instructions
 
