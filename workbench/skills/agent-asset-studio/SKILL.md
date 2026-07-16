@@ -13,7 +13,20 @@ Manage, create, improve, validate, name, compress, and route agent assets.
 
 ## When to Use
 
-Use this skill when modifying, creating, validating, organizing, or optimizing agent configurations, rules, workflows, skills, or related assets in the workspace to make them agent-friendly.
+Use this skill when:
+
+- Creating, modifying, validating, or organizing agent configurations, rules, workflows, or skills.
+- Optimizing existing agent assets to be more agent-friendly (e.g., reducing context cost).
+- Structuring routing boundaries or standardizing agent asset formats.
+- Naming, compressing, or consolidating assets.
+
+## When NOT to Use
+
+Do not use this skill when:
+
+- Writing or refactoring general application code.
+- Merely invoking an existing agent skill to perform its intended job.
+- Creating or modifying human-facing documentation (e.g., `README.md`).
 
 ## Instructions
 
