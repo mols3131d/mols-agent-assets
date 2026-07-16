@@ -75,6 +75,11 @@ routing-skill/
 각 모듈은 특정 작업의 진입점(오케스트레이터) 역할을 하며, 단 하나의 실행 가능한 워크플로우를 담고 다음의 일관된 계약(Contract) 형식을 따릅니다:
 
 ```markdown
+---
+name: workflow-name
+description: Brief summary of what this workflow does and when to use it.
+---
+
 # 워크플로우 이름 (Workflow Name)
 
 ## Goal (목표)
