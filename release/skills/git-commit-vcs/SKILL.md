@@ -24,7 +24,7 @@ End-to-end git commit workflow: convention discovery, staging, message generatio
 - `briefing_format`: Chat response summary (default) vs briefing document file.
 - `execution_mode`: Stop and brief on hook failure (default) vs auto-fix or delegate.
 
-## Arguments
+### Arguments
 
 CLI flags and natural language requests map to `Parameters` as follows:
 
