@@ -17,11 +17,18 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-pythonpath = ["src", "src/skills/iceberg-code-review/scripts"]
+pythonpath = [
+  "src",
+  "src/skills/iceberg-code-report/scripts",
+  "src/skills/iceberg-code-review/scripts",
+]
 testpaths = ["tests"]
 
 [tool.ty.environment]
-extra-paths = ["src/skills/iceberg-code-review/scripts"]
+extra-paths = [
+  "src/skills/iceberg-code-report/scripts",
+  "src/skills/iceberg-code-review/scripts",
+]
 
 [tool.ruff.lint]
 select = ["F", "E", "I"]
