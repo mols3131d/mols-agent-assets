@@ -50,21 +50,31 @@ Report changed files, validation results, and any remaining risk or skipped chec
 
 ## Workflow: Agent Asset Studio
 
+### Context
+
+#### Parameters
+
+- **Target Path**: Target directory or asset path.
+- **Asset Type**: `skill`, `rule`, or `agent`.
+- **Selected Routes**: List of matching sub-workflow IDs selected from `workflows/INDEX.csv`.
+- **Working State**: Current repository state and asset structure.
+
 ### Procedure
 
 1. Read `workflows/INDEX.csv` once.
 2. Identify the requested outcome, asset type, target path, and constraints.
 3. Eliminate routes matching `excludes`.
-4. Select the smallest route set matching `use_when`.
+4. Select all matching routes covering the requested task phases (including multi-phase work like creation, validation, and indexing).
 5. Resolve each selected `id` relative to that index and read the file.
 6. Load referenced resources only when a selected workflow requires them.
-7. Run every selected workflow's validation before completion.
+7. Execute selected workflows in logical order (e.g., create/edit -> validate -> index update).
+8. Run every selected workflow's validation before completion.
 
 Route by semantic intent, not keyword overlap. Do not scan `workflows/` to discover routes.
 
 #### Ambiguity Handling
 
-- Select one route when it fully covers the request.
-- Select multiple routes only when the request explicitly spans them.
+- Select multiple routes and execute them sequentially when the request spans multiple asset lifecycle phases (e.g., create/edit -> validate -> update index).
+- Select one route when the request is strictly scoped to a single phase.
 - Ask one targeted question when remaining routes imply materially different actions.
 - If no route matches, state that this skill does not cover the request.
