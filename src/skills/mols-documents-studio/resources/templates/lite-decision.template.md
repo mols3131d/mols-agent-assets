@@ -4,32 +4,32 @@
 
 ## Proposed
 
-<!-- 제안 상태의 결정을 아래 테이블에 추가하세요. -->
+### {{decision_title}}
 
-| Decision | Reason | Impact |
-| :--- | :--- | :--- |
-| **{{decision_title}}** | {{reason}} | {{impact}} |
+- {{decision_details}}
+- **Reason:** {{reason}}
+- **Impact:** {{impact}}
 
 ## Accepted
 
-<!-- 승인 및 확정된 결정을 아래 테이블에 추가하세요. -->
+### {{decision_title}}
 
-| Decision | Reason | Impact |
-| :--- | :--- | :--- |
-| **{{decision_title}}** | {{reason}} | {{impact}} |
+- {{decision_details}}
+- **Reason:** {{reason}}
+- **Impact:** {{impact}}
 
 ## Superseded
 
-<!-- 다른 결정에 의해 대체된 결정을 아래 테이블에 추가하세요. -->
+### {{decision_title}}
 
-| Decision | Reason | Impact |
-| :--- | :--- | :--- |
-| **{{decision_title}}** | {{reason}} | {{impact}} |
+- {{decision_details}}
+- **Reason:** {{reason}}
+- **Impact:** {{impact}}
 
 ## Deprecated
 
-<!-- 더 이상 사용되지 않는 결정을 아래 테이블에 추가하세요. -->
+### {{decision_title}}
 
-| Decision | Reason | Impact |
-| :--- | :--- | :--- |
-| **{{decision_title}}** | {{reason}} | {{impact}} |
+- {{decision_details}}
+- **Reason:** {{reason}}
+- **Impact:** {{impact}}
