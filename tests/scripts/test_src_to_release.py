@@ -2,30 +2,30 @@ from pathlib import Path
 
 import pytest
 
-from scripts.workbench_to_src import promote, resolve_paths
+from scripts.src_to_release import promote, resolve_paths
 
 
 def make_repo(tmp_path: Path) -> Path:
-    (tmp_path / "workbench").mkdir()
     (tmp_path / "src").mkdir()
+    (tmp_path / "release").mkdir()
     return tmp_path
 
 
-def test_resolve_paths_maps_relative_path_to_src_and_archive(tmp_path: Path):
+def test_resolve_paths_maps_relative_path_to_release_and_archive(tmp_path: Path):
     root = make_repo(tmp_path)
-    source = root / "workbench" / "skills" / "demo"
+    source = root / "src" / "skills" / "demo"
     source.mkdir(parents=True)
 
     actual_source, destination, archive = resolve_paths("skills/demo", root)
 
     assert actual_source == source
-    assert destination == root / "src" / "skills" / "demo"
-    assert archive == root / ".tmp" / "src" / "skills" / "demo"
+    assert destination == root / "release" / "skills" / "demo"
+    assert archive == root / ".tmp" / "release" / "skills" / "demo"
 
 
 def test_promote_copies_new_directory_and_preserves_source(tmp_path: Path):
     root = make_repo(tmp_path)
-    source_file = root / "workbench" / "skills" / "demo" / "SKILL.md"
+    source_file = root / "src" / "skills" / "demo" / "SKILL.md"
     source_file.parent.mkdir(parents=True)
     source_file.write_text("demo", encoding="utf-8")
 
@@ -33,15 +33,15 @@ def test_promote_copies_new_directory_and_preserves_source(tmp_path: Path):
 
     assert result["archive"] is None
     assert source_file.read_text(encoding="utf-8") == "demo"
-    assert (root / "src" / "skills" / "demo" / "SKILL.md").read_text(
+    assert (root / "release" / "skills" / "demo" / "SKILL.md").read_text(
         encoding="utf-8"
     ) == "demo"
 
 
-def test_promote_moves_existing_src_to_archive_and_replaces_cleanly(tmp_path: Path):
+def test_promote_moves_existing_release_to_archive_and_replaces_cleanly(tmp_path: Path):
     root = make_repo(tmp_path)
-    source = root / "workbench" / "skills" / "demo"
-    destination = root / "src" / "skills" / "demo"
+    source = root / "src" / "skills" / "demo"
+    destination = root / "release" / "skills" / "demo"
     source.mkdir(parents=True)
     destination.mkdir(parents=True)
     (source / "SKILL.md").write_text("new", encoding="utf-8")
@@ -50,7 +50,7 @@ def test_promote_moves_existing_src_to_archive_and_replaces_cleanly(tmp_path: Pa
 
     result = promote("skills/demo", root)
 
-    archive = root / ".tmp" / "src" / "skills" / "demo"
+    archive = root / ".tmp" / "release" / "skills" / "demo"
     assert result["archive"] == str(archive)
     assert (destination / "SKILL.md").read_text(encoding="utf-8") == "new"
     assert not (destination / "deleted.md").exists()
@@ -61,9 +61,9 @@ def test_promote_moves_existing_src_to_archive_and_replaces_cleanly(tmp_path: Pa
 
 def test_promote_replaces_existing_archive(tmp_path: Path):
     root = make_repo(tmp_path)
-    source = root / "workbench" / "rules" / "demo.md"
-    destination = root / "src" / "rules" / "demo.md"
-    archive = root / ".tmp" / "src" / "rules" / "demo.md"
+    source = root / "src" / "rules" / "demo.md"
+    destination = root / "release" / "rules" / "demo.md"
+    archive = root / ".tmp" / "release" / "rules" / "demo.md"
     source.parent.mkdir(parents=True)
     destination.parent.mkdir(parents=True)
     archive.parent.mkdir(parents=True)
@@ -77,7 +77,7 @@ def test_promote_replaces_existing_archive(tmp_path: Path):
     assert archive.read_text(encoding="utf-8") == "current"
 
 
-def test_resolve_paths_rejects_path_outside_workbench(tmp_path: Path):
+def test_resolve_paths_rejects_path_outside_src(tmp_path: Path):
     root = make_repo(tmp_path)
     outside = root / "outside.md"
     outside.write_text("outside", encoding="utf-8")

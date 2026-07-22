@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""workbench 자산 하나를 동일한 상대 경로의 src로 승격한다.
+"""src 자산 하나를 동일한 상대 경로의 release로 승격한다.
 
-기존 src는 ``.tmp/src``로 이동하고 새 자산으로 완전히 교체한다. workbench 원본은
+기존 release는 ``.tmp/release``로 이동하고 새 자산으로 완전히 교체한다. src 원본은
 유지하며, 성공 결과 또는 오류를 JSON으로 출력한다.
 """
 
@@ -17,54 +17,54 @@ from typing import Any, Sequence
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
-DEFAULT_WORKBENCH_DIR = "workbench"
 DEFAULT_SRC_DIR = "src"
-DEFAULT_ARCHIVE_DIR = ".tmp/src"
+DEFAULT_RELEASE_DIR = "release"
+DEFAULT_ARCHIVE_DIR = ".tmp/release"
 IGNORE_EXTENSIONS = {"human", "hm"}
 
 
 def resolve_paths(
     source_arg: str,
     repo_root: Path,
-    workbench_dir: str = DEFAULT_WORKBENCH_DIR,
     src_dir: str = DEFAULT_SRC_DIR,
+    release_dir: str = DEFAULT_RELEASE_DIR,
     archive_dir: str = DEFAULT_ARCHIVE_DIR,
 ) -> tuple[Path, Path, Path]:
-    """입력 경로를 검증하고 source, src destination, archive 경로를 반환한다.
+    """입력 경로를 검증하고 source, release destination, archive 경로를 반환한다.
 
-    source는 workbench 내부의 파일 또는 디렉터리여야 한다.
+    source는 src 내부의 파일 또는 디렉터리여야 한다.
     """
     root = repo_root.resolve()
-    workbench = (root / workbench_dir).resolve()
     src = (root / src_dir).resolve()
+    release = (root / release_dir).resolve()
     archive_root = (root / archive_dir).resolve()
     raw_source = Path(source_arg)
 
     if raw_source.is_absolute():
         source = raw_source.resolve()
-    elif raw_source.parts and raw_source.parts[0] == Path(workbench_dir).parts[0]:
+    elif raw_source.parts and raw_source.parts[0] == Path(src_dir).parts[0]:
         source = (root / raw_source).resolve()
     else:
-        source = (workbench / raw_source).resolve()
+        source = (src / raw_source).resolve()
 
     try:
-        relative = source.relative_to(workbench)
+        relative = source.relative_to(src)
     except ValueError as exc:
-        raise ValueError(f"source는 {workbench_dir} 내부여야 합니다: {source}") from exc
+        raise ValueError(f"source는 {src_dir} 내부여야 합니다: {source}") from exc
 
     if relative == Path("."):
         raise ValueError(
-            f"{workbench_dir} 전체는 승격할 수 없습니다. 하위 경로를 지정하세요."
+            f"{src_dir} 전체는 승격할 수 없습니다. 하위 경로를 지정하세요."
         )
     if not source.exists():
         raise FileNotFoundError(f"source가 없습니다: {source}")
     if not source.is_file() and not source.is_dir():
         raise ValueError(f"source는 파일 또는 디렉터리여야 합니다: {source}")
 
-    destination = (src / relative).resolve()
+    destination = (release / relative).resolve()
     archive = (archive_root / relative).resolve()
     for path, parent, label in (
-        (destination, src, "destination"),
+        (destination, release, "destination"),
         (archive, archive_root, "archive"),
     ):
         try:
@@ -84,7 +84,7 @@ def ignore_files(dir_path: Any, contents: list[str]) -> list[str]:
 
 
 def copy_to_staging(source: Path, staging: Path) -> None:
-    """기존 src를 변경하기 전에 source 전체를 staging에 복사한다."""
+    """기존 release를 변경하기 전에 source 전체를 staging에 복사한다."""
     if source.is_dir():
         shutil.copytree(source, staging, ignore=ignore_files)
     else:
@@ -106,16 +106,16 @@ def remove_path(path: Path) -> None:
 def promote(
     source_arg: str,
     repo_root: Path = REPO_ROOT,
-    workbench_dir: str = DEFAULT_WORKBENCH_DIR,
     src_dir: str = DEFAULT_SRC_DIR,
+    release_dir: str = DEFAULT_RELEASE_DIR,
     archive_dir: str = DEFAULT_ARCHIVE_DIR,
 ) -> dict[str, Any]:
-    """기존 src를 archive로 이동하고 workbench 자산으로 완전히 교체한다.
+    """기존 release를 archive로 이동하고 src 자산으로 완전히 교체한다.
 
-    최종 교체 실패 시 가능한 경우 기존 src를 복구하고, 결과를 dict로 반환한다.
+    최종 교체 실패 시 가능한 경우 기존 release를 복구하고, 결과를 dict로 반환한다.
     """
     source, destination, archive = resolve_paths(
-        source_arg, repo_root, workbench_dir, src_dir, archive_dir
+        source_arg, repo_root, src_dir, release_dir, archive_dir
     )
     archived = destination.exists()
 
@@ -150,21 +150,21 @@ def promote(
 def build_parser() -> argparse.ArgumentParser:
     """필수 source 인자를 받는 CLI 파서를 생성한다."""
     parser = argparse.ArgumentParser(
-        description="workbench 자산을 src로 승격하고 기존 src는 archive로 이동합니다."
+        description="src 자산을 release로 승격하고 기존 release는 archive로 이동합니다."
     )
     parser.add_argument(
         "source",
-        help="workbench 기준 상대 경로 또는 workbench 내부 경로",
-    )
-    parser.add_argument(
-        "--workbench-dir",
-        default=DEFAULT_WORKBENCH_DIR,
-        help=f"workbench 디렉터리 이름 (기본값: {DEFAULT_WORKBENCH_DIR})",
+        help="src 기준 상대 경로 또는 src 내부 경로",
     )
     parser.add_argument(
         "--src-dir",
         default=DEFAULT_SRC_DIR,
         help=f"src 디렉터리 이름 (기본값: {DEFAULT_SRC_DIR})",
+    )
+    parser.add_argument(
+        "--release-dir",
+        default=DEFAULT_RELEASE_DIR,
+        help=f"release 디렉터리 이름 (기본값: {DEFAULT_RELEASE_DIR})",
     )
     parser.add_argument(
         "--archive-dir",
@@ -180,8 +180,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     try:
         result = promote(
             args.source,
-            workbench_dir=args.workbench_dir,
             src_dir=args.src_dir,
+            release_dir=args.release_dir,
             archive_dir=args.archive_dir,
         )
     except (FileNotFoundError, OSError, ValueError) as exc:

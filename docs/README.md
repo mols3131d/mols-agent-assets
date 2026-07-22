@@ -22,7 +22,7 @@ docs/<asset-type>/<asset-name>/
 - `README.md`: 목적, 사용법, 주요 제약
 - `<topic>.md`: 구조, 워크플로 등 필요한 상세 설명
 
-자산을 `workbench/`에서 `src/`로 승격해도 문서 경로는 유지합니다.
+자산을 `src/`에서 `release/`로 승격해도 문서 경로는 유지합니다.
 
 ## 참고 자료
 

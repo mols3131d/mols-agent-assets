@@ -10,14 +10,18 @@ dependencies = []
 dev = [
   "lefthook>=2.1.9",
   "pytest>=9.0.3",
+  "pyyaml>=6.0.2",
   "ruff>=0.15.15",
   "rumdl>=0.2.6",
   "ty>=0.0.42",
 ]
 
 [tool.pytest.ini_options]
-pythonpath = ["src"]
+pythonpath = ["src", "src/skills/iceberg-code-review/scripts"]
 testpaths = ["tests"]
+
+[tool.ty.environment]
+extra-paths = ["src/skills/iceberg-code-review/scripts"]
 
 [tool.ruff.lint]
 select = ["F", "E", "I"]

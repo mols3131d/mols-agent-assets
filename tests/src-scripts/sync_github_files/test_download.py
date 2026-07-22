@@ -19,7 +19,7 @@ def test_download_uses_raw_github_url(monkeypatch):
         captured["timeout"] = timeout
         return FakeResponse()
 
-    monkeypatch.setattr(sync_github_files.urllib.request, "urlopen", fake_urlopen)
+    monkeypatch.setattr("urllib.request.urlopen", fake_urlopen)
 
     content = sync_github_files.download(
         "https://github.com/owner/repo/blob/main/src/rules/sample.md"
