@@ -2,32 +2,32 @@
 
 ## Proposed
 
-### {{decision_title}}
+### **[{{category}}] {{title}}**
 
-- {{decision_details}}
-- **Reason:** {{reason}}
-- **Impact:** {{impact}}
+- DECISION | **{{key_decision}}** - {{details}}
+- REASON | **{{key_reason}}** - {{details}}
+- IMPACT | **{{key_impact}}** - {{details}}
 
 ## Accepted
 
-### {{decision_title}}
+### **[{{category}}] {{title}}**
 
-- {{decision_details}}
-- **Reason:** {{reason}}
-- **Impact:** {{impact}}
+- DECISION | **{{key_decision}}** - {{details}}
+- REASON | **{{key_reason}}** - {{details}}
+- IMPACT | **{{key_impact}}** - {{details}}
 
 ## Superseded
 
-### {{decision_title}}
+### **[{{category}}] {{title}}**
 
-- {{decision_details}}
-- **Reason:** {{reason}}
-- **Impact:** {{impact}}
+- DECISION | **{{key_decision}}** - {{details}}
+- REASON | **{{key_reason}}** - {{details}}
+- IMPACT | **{{key_impact}}** - {{details}}
 
 ## Deprecated
 
-### {{decision_title}}
+### **[{{category}}] {{title}}**
 
-- {{decision_details}}
-- **Reason:** {{reason}}
-- **Impact:** {{impact}}
+- DECISION | **{{key_decision}}** - {{details}}
+- REASON | **{{key_reason}}** - {{details}}
+- IMPACT | **{{key_impact}}** - {{details}}

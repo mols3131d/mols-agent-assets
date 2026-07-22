@@ -11,6 +11,7 @@ dev = [
   "lefthook>=2.1.9",
   "pytest>=9.0.3",
   "pyyaml>=6.0.2",
+  "pyromark>=0.9.13",
   "ruff>=0.15.15",
   "rumdl>=0.2.6",
   "ty>=0.0.42",
@@ -21,6 +22,7 @@ pythonpath = [
   "src",
   "src/skills/iceberg-code-report/scripts",
   "src/skills/iceberg-code-review/scripts",
+  "src/skills/mols-markdown-scripts/scripts",
 ]
 testpaths = ["tests"]
 
@@ -28,6 +30,7 @@ testpaths = ["tests"]
 extra-paths = [
   "src/skills/iceberg-code-report/scripts",
   "src/skills/iceberg-code-review/scripts",
+  "src/skills/mols-markdown-scripts/scripts",
 ]
 
 [tool.ruff.lint]

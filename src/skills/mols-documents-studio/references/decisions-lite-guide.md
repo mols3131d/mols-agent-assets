@@ -4,13 +4,13 @@
 
 - **Template Path**: Use `templates/decisions-lite.template.md`.
 - **Compliance**: Follow all placeholders (`{{a-A0-9_}}`) and instruction comments.
-- **BLUF**: Put key details first using `**[\[Domain | Scope | Category\]] Key Details**: explanation`.
+- **BLUF**: Put key details first using `### **[{{category}}] {{title}}**`. Keep `{{title}}` as a simple, core summary (max 50 chars).
 
 ## Body
 
-- `Decision`: Title and details of the decision.
-- `Reason`: Context and motivation.
-- `Impact`: Consequences on the system and workflow.
+- DECISION | **Key Decision** - Detailed explanation of the decision.
+- REASON | **Key Motivation** - Context and reason.
+- IMPACT | **Key Consequence** - Consequences on the system and workflow.
 
 ## Status
 
