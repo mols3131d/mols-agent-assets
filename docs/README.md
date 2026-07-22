@@ -1,36 +1,14 @@
-# `docs/`
+# Documentation (`docs/`)
 
-이 저장소와 에이전트 자산을 이해하고 사용하는 데 필요한 한국어 문서를 보관합니다.
+Human-readable guides, repository policies, and asset documentation.
 
-## 저장소 문서
+---
 
-저장소의 구조, 운영 방식과 공통 정책을 설명합니다. 특정 자산에 한정되지 않고 저장소
-전체에 적용되는 문서를 `docs/`에 둡니다.
+## Directory Layout
 
-## 자산 문서
-
-자산 문서는 자산과 분리하되 종류와 이름을 같은 경로에 둡니다.
-
-```text
-docs/<asset-type>/<asset-name>/
-├── README.md
-└── <topic>.md
-```
-
-예: `src/skills/example-skill/` → `docs/skills/example-skill/`
-
-- `README.md`: 목적, 사용법, 주요 제약
-- `<topic>.md`: 구조, 워크플로 등 필요한 상세 설명
-
-자산을 `src/`에서 `release/`로 승격해도 문서 경로는 유지합니다.
-
-## 참고 자료
-
-특정 자산에 속하지 않는 외부 자료, 조사 결과와 공통 참고 문서는
-`docs/references/`에 둡니다.
-
-## 관리 원칙
-
-문서는 코드나 자산을 복제하지 않고 사람이 이해하고 사용하는 데 필요한 맥락을
-설명합니다. 에이전트가 직접 사용하는 지침·스크립트·참조 자료는 해당 자산에 둡니다.
-관련 구현이나 정책이 바뀌면 문서도 함께 갱신합니다.
+| Directory / File | Description |
+| :--- | :--- |
+| `development.md` | Development pipeline and promotion guide |
+| `testing.md` | Automated testing, linting, and verification guide |
+| `skills/<skill-name>/` | Asset-specific human documentation and notes |
+| `references/` | Shared research materials and external reference docs |

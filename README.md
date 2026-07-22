@@ -1,22 +1,25 @@
-# `mols-agent-assets` `README.md`
+# mols-agent-assets
 
-> 에이전트 자산을 관리하는 리포지토리
+Repository for developing, validating, and managing AI agent assets (skills, prompts, rules, agents).
 
-## Agent Assets
+---
 
-에이전트의 동작과 역할을 정의하고 특정 작업을 일관되게 수행하도록 지원하는 에이전트 구성, 실행 지침 및 재사용 가능한 프롬프트 등의 자산 파일
+## Asset Types
 
 | Asset Type | Description |
-|-----------|-------------|
-| `agents` | 에이전트의 역할, 목표, 동작 방식 및 사용 가능한 도구 등을 정의하는 구성 파일 |
-| `skill` | 특정 작업을 반복 가능하고 일관된 방식으로 수행하기 위한 지침, 스크립트 및 참조 자료의 묶음 |
-| `prompt` | 에이전트에게 작업, 제약 조건, 출력 형식 또는 상호작용 방식을 전달하는 재사용 가능한 프롬프트 템플릿 |
+| :--- | :--- |
+| `agents` | Configurations defining agent roles, goals, and tool sets. |
+| `skills` | Procedural workflows, scripts, and guidelines for specific tasks. |
+| `rules` | Cross-cutting style guidelines and behavioral constraints. |
+| `prompts` | Reusable prompt templates for targeted tasks. |
 
-## Directory Structure
+## Repository Structure
 
 | Directory | Description |
-|-----------|-------------|
-| `.agents/` | 이 리포지토리에서 에이전트가 참조하거나 실행에 활용하는 에이전트 자산 및 관련 설정을 관리 |
-| `src/` | 에이전트 자산을 신규 생성하거나 수정·검토·실험·개발하는 기본 작업 공간 |
-| `release/` | `src/`에서 작성·검증을 완료하고 배포 또는 재사용 가능한 상태로 승격 정리된 확정 자산을 저장 |
-| `tests/` | 스크립트 및 자산 검증을 위한 자동화 테스트 모듈 보관 |
+| :--- | :--- |
+| `.agents/` | Internal runtime instructions for local agent tools. |
+| `src/` | Primary workspace for developing and testing draft assets. |
+| `release/` | Production-ready, validated distribution assets. |
+| `tests/` | Automated test suite for assets and scripts. |
+| `docs/` | Comprehensive documentation and guides. |
+| `scripts/` | Project automation tools. |

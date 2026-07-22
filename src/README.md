@@ -1,7 +1,15 @@
-# Workbench
+# Source Workspace (`src/`)
 
-에이전트 자산의 초안, 실험, 조립 중인 파일을 둔다.
+Primary workspace for developing, editing, and testing AI agent assets.
 
-- 작업 단위별 하위 폴더를 만든다.
-- 완성된 자산은 `src/`로 옮긴다.
-- 임시 산출물은 작업이 끝나면 삭제한다.
+---
+
+## Guidelines
+
+- **Structure**: Create task-specific subdirectories per asset or feature.
+- **Testing**: Add or update test fixtures in `tests/`.
+- **Promotion**: Promote validated assets to `release/`:
+
+  ```bash
+  uv run python scripts/src_to_release.py skills/<skill-name>
+  ```
