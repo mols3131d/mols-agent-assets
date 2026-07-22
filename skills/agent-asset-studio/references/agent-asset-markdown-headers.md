@@ -9,6 +9,7 @@ Core body concepts, formatting rules for agent assets. This specification define
 | **Non-Goal** | ✅ | Areas excluded to prevent scope creep. |
 | **When to Use** | ❌ | Specific scenarios, activation contexts, user trigger conditions. |
 | **When NOT to Use** | ✅ | Excluded scenarios, conditions to delegate to other asset. |
+| **When to STOP** | ✅ | Explicit termination conditions, exit criteria, or completion checks. |
 | **Instructions** | ❌ | Positive rules, guidelines agent must follow. |
 | **Constraints** | ✅ | Strict negative constraints agent must never violate. |
 | **References** | ✅ | References to external information, tools, or related assets that the asset relies on or uses in conjunction. |
@@ -20,9 +21,16 @@ When defining workflows, use the `## Workflow: <Workflow Name>` header to separa
 
 | Header | Optional | Description |
 | --- | --- | --- |
-| **Arguments from Context** | ✅ | Inputs extracted from context (e.g., chat, active files, environment). Describe them as semantic concepts or intents, not strict schemas or CLI flags. This helps the LLM parse context fluidly without forcing rigid data structures. Can include defaults. |
+| **Context** | ✅ | Execution context container. Groups invocation flags (`Arguments`) and working environment/state variables (`Parameters`) required for the workflow. |
 | **Procedure** | ❌ | Ordered sequential steps to accomplish goal. Can include conditional branching, termination steps. Explicit early termination on negative conditions is preferred to ensure safety. Can reference or delegate to other assets (rules, workflows) for efficient modular expansion. |
 | **Validation** | ✅ | Specific checks to verify the outcome is correct. |
+
+### Context
+
+| Header | Optional | Description |
+| --- | --- | --- |
+| **Arguments** | ✅ | Brief CLI-style flags or options (e.g., `-a`, `--flag`) passed upon invocation to quickly supply values to `Parameters`. |
+| **Parameters** | ❌ | Environment details, active working state, and contextual information required during workflow execution. Must be included under `Context`. |
 
 ## References
 

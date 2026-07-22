@@ -87,7 +87,6 @@ def sync_asset(
     )
 
     lock_changed = False
-    needs_action = False
 
     if state == "unchanged":
         print("  status: unchanged")
@@ -102,7 +101,6 @@ def sync_asset(
 
     if state == "missing":
         print("  status: missing")
-        needs_action = True
 
         if check or dry_run:
             print(f"  action: would install {final_path}")
@@ -115,7 +113,6 @@ def sync_asset(
 
     if state == "remote-changed":
         print("  status: remote-changed")
-        needs_action = True
 
         if check or dry_run:
             print(f"  action: would update {final_path}")
@@ -130,8 +127,6 @@ def sync_asset(
         print("  status: local-modified")
 
         if force:
-            needs_action = True
-
             if check or dry_run:
                 print(f"  action: would overwrite local changes {final_path}")
                 return True, False
@@ -149,8 +144,6 @@ def sync_asset(
         print("  status: untracked-local")
 
         if force:
-            needs_action = True
-
             if check or dry_run:
                 print(f"  action: would overwrite untracked local file {final_path}")
                 return True, False
@@ -161,15 +154,16 @@ def sync_asset(
             return True, True
 
         print("  action: skipped")
-        print("  hint:   computedHash is empty and local file differs; use --force to overwrite")
+        print(
+            "  hint:   computedHash is empty and local file differs;"
+            " use --force to overwrite"
+        )
         return True, False
 
     if state == "conflict":
         print("  status: conflict")
 
         if force:
-            needs_action = True
-
             if check or dry_run:
                 print(f"  action: would resolve by overwriting {final_path}")
                 return True, False
