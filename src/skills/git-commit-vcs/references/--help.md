@@ -1,60 +1,58 @@
 # Git Commit VCS Skill Help Guide (`--help`)
 
-`git-commit-vcs` 스킬을 효과적으로 사용하기 위한 프롬프트 작성법, 플래그 조합, 컨벤션 설정 및 상황별 사용 가이드입니다.
+Help guide for `git-commit-vcs` skill providing prompt patterns, option flag combinations, convention configuration, and practical scenarios.
 
 ---
 
-## 1. 기본 사용법 (Basic Usage)
+## 1. Basic Usage
 
-에이전트에게 자연어로 커밋 요청 시 스킬이 자동으로 트리거됩니다.
+Triggers automatically when requesting commit actions using natural language prompts.
 
-- **기본 커밋 요청**:
-  - `"커밋해줘"` / `"작업 내용 커밋 부탁해"`
-  - *동작*: 도메인/작업 단위별 선택적 스테이징 ➔ `.gitmessage` 컨벤션 적용 메시지 생성 ➔ 커밋 실행 ➔ 대화창 요약 보고
-
----
-
-## 2. 옵션 및 플래그 조합 (Flags & Options)
-
-필요에 따라 플래그나 자연어 표현을 조합하여 실행 방식을 제어할 수 있습니다:
-
-### 메시지만 생성 (`--message-only`)
-
-- **요청예시**: `"커밋 메시지만 작성해줘"`, `"커밋 메시지 생성해"`, `"커밋해줘 --message-only"`
-- **용도**: 커밋을 직접 실행하지 않고 컨벤션에 맞는 커밋 메시지만 코드 블록으로 생성받고자 할 때 사용 (Step 4 커밋 실행 건너뜀).
-
-### 전체 스테이징 (`--all`)
-
-- **요청예시**: `"전체 파일 다 커밋해줘"`, `"커밋 진행해줘 --all"`
-- **용도**: 선택적 스테이징 대신 변경된 모든 파일 및 추적되지 않은 새 파일을 한꺼번에 커밋할 때 사용.
-
-### 브리핑 문서 생성 (`--doc`)
-
-- **요청예시**: `"커밋하고 결과 문서로 만들어줘"`, `"커밋 진행해줘 --doc"`
-- **용도**: 대화창 요약 대신 formal 커밋 보고서 문서 생성이 필요할 때 사용.
-
-### 오토파일럿 훅 에러 자가치유 (`--autopilot`)
-
-- **요청예시**: `"오토파일럿으로 커밋 처리해줘"`, `"커밋 진행해줘 --autopilot"`
-- **용도**: pre-commit 훅 에러 발생 시 수동 확인 없이 에이전트가 직접 수정하거나 하위 에이전트에 위임하여 수정을 완성한 후 커밋을 마무리하고자 할 때 사용.
+- **Default Commit Request**:
+  - `"Commit my changes"` / `"Please commit current work"`
+  - *Behavior*: Selective logical staging ➔ Read `.gitmessage` convention ➔ Format & execute commit ➔ Report summary in chat
 
 ---
 
-## 3. 커밋 메시지 컨벤션 지정 및 수정 (Customizing Commit Conventions)
+## 2. Options and Flags
 
-- **동작 원리**: `git-commit-vcs` 스킬은 프로젝트 루트의 `.gitmessage` 파일에 정의된 템플릿과 주석 지침을 최우선으로 준수합니다.
-- **컨벤션 수정 방법**:
-  1. 프로젝트 루트의 `.gitmessage` 파일 내용(템플릿 구조, 타입 종류, 글자 수 규칙 및 주석 지침)을 수정합니다.
-  2. 커밋 요청 시 에이전트가 변경된 `.gitmessage` 규칙을 자동으로 감지하여 작성합니다.
-  3. 별도 설정이 없는 경우 스킬 내 기본 명세(`references/default-gitmessage.md`)로 동작합니다.
+Control skill execution by combining option flags or natural language expressions:
+
+### Stage All Changes (`--all`)
+
+- **Example**: `"Commit all files"`, `"Run commit --all"`
+- **Purpose**: Stage all modified and untracked files (`git add -A`) instead of selective domain staging.
+
+### Generate Briefing Document (`--doc`)
+
+- **Example**: `"Commit and create a summary document"`, `"Run commit --doc"`
+- **Purpose**: Output a formal briefing document instead of a chat summary.
+
+### Autopilot Hook Self-Fix (`--autopilot`)
+
+- **Example**: `"Run commit on autopilot"`, `"Commit --autopilot"`
+- **Purpose**: Automatically fix pre-commit hook errors or delegate to subagents instead of stopping for manual intervention.
+
+### Message Only (`--message-only`)
+
+- **Example**: `"Generate commit message only"`, `"Draft message --message-only"`
+- **Purpose**: Generate and display the formatted commit message in a code block without executing `git commit` (skips Step 4 Commit Execution).
 
 ---
 
-## 4. 상황별 활용 팁 (Practical Scenarios)
+## 3. Customizing Commit Conventions
 
-1. **커밋 실행 없이 메시지만 생성**:
-   - `"스테이징하고 커밋 메시지만 알려줘"` ➔ Step 3 메시지 생성 후 커밋 명령을 실행하지 않고 멈춤.
-2. **사용자 지정 커밋 메시지 직접 지정**:
-   - `"feat: 로그인 API 구현으로 커밋해줘"`와 같이 커밋 메시지를 직접 지정하면 템플릿 탐색 대신 해당 메시지를 우선 적용합니다.
-3. **Pre-commit 훅 에러 발생 시**:
-   - 일반 모드에서는 에러 원인을 대화창에 브리핑하고 멈춥니다. 원인 확인 후 `"에러 수정하고 다시 커밋해줘 --autopilot"`을 요청할 수 있습니다.
+- **Mechanism**: `git-commit-vcs` prioritizes template structure and comment rules defined in `.gitmessage` at the repository root.
+- **How to Customise**:
+  1. Edit `.gitmessage` in the repository root (template format, allowed commit types, line caps, or comment guidelines).
+  2. The agent automatically detects and applies updated `.gitmessage` rules on subsequent commit requests.
+  3. If `.gitmessage` does not exist, the fallback specification (`references/default-gitmessage.md`) applies.
+
+---
+
+## 4. Practical Scenarios
+
+1. **Custom Commit Message Override**:
+   - Prompt `"feat: implement login API"` overrides convention discovery and applies the custom message directly.
+2. **Handling Pre-commit Hook Failures**:
+   - Default mode stops and briefs hook error output. Request `"Fix hook error and re-commit --autopilot"` to auto-repair and complete commit.
