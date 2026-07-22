@@ -1,23 +1,29 @@
 [global]
 flavor = "gfm"
-disable = ["MD013", "MD033", "MD041", "MD025"]
+disable = ["MD013", "MD025", "MD033", "MD041"]
 exclude = [
-	# Common directories to exclude
-	".git",
-	".github",
-	"node_modules",
-	"vendor",
-	"dist",
-	"build",
-	"tmp/",
-	"*.tmp.md",
+	"**/.git/",
+	"**/.tmp/",
+	"**/tmp/",
+	"**/archive/",
+	"**/*.tmp.md",
 
-	# Specific files or patterns
-	"CHANGELOG.md",
-	"LICENSE.md",
-	"tmp/",
-	"*.tmp.md",
+	# --- --- --- ---  --- --- --- ---  --- --- --- ---  --- --- --- ---
+	".github/",
+	"node_modules/",
+	"vendor/",
+	"dist/",
+	"build/",
 ]
+
+[MD004]
+style = "dash"
+
+[MD029]
+style = "ordered"
+
+[MD048]
+style = "backtick"
 
 [MD057]
 compact-paths = true
