@@ -12,9 +12,9 @@
 기본 구조는 아래 헤더와 목록 형식을 따릅니다.
 
 ```markdown
-# Decisions (또는 결정 기록)
+# Decisions
 
-## 확정 (또는 Accepted)
+## Accepted
 
 ### [결정 주제/제목]
 
