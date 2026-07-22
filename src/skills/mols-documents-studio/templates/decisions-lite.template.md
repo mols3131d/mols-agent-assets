@@ -1,7 +1,5 @@
 # Decisions
 
-<!-- 의사결정 기록의 주제 또는 목적에 대해 간략히 설명하세요. -->
-
 ## Proposed
 
 ### {{decision_title}}
