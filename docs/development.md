@@ -11,8 +11,8 @@ Guide for creating, editing, optimizing, and deploying AI agent assets (skills, 
 
 ## Development Pipeline
 
-1. **Branching (`feat/<asset-name>`)**:
-   - Create a feature branch (`feat/<asset-name>`) to work on new or modified assets in `src/`.
+1. **Branching (`<lead-id>/<type>/<name>`)**:
+   - Create a feature branch using `<lead-id>/<type>/<name>` structure (e.g., `mols/feat/git-commit-vcs`) to work on new or modified assets in `src/`.
 
 2. **Authoring (`src/`)**:
    - Write and edit assets directly in markdown (`.md`) format within `src/`.
