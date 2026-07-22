@@ -27,10 +27,6 @@ class PlaceholderTest(unittest.TestCase):
     def test_all_template_placeholders_follow_the_rule(self) -> None:
         root = Path(__file__).resolve().parents[3]
         templates_dir = root / "src" / "skills" / "iceberg-code-review" / "templates"
-        if not templates_dir.exists():
-            templates_dir = (
-                root / "release" / "skills" / "iceberg-code-review" / "templates"
-            )
 
         for template in templates_dir.glob("*.md"):
             source = template.read_text()

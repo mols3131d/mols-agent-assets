@@ -1,27 +1,25 @@
 # Asset Development Guide
 
-Guide for creating, editing, optimizing, and promoting AI agent assets in `mols-agent-assets`.
+Guide for creating, editing, optimizing, and deploying AI agent assets (skills, prompts, rules, agents) in `mols-agent-assets`.
 
 ---
 
 ## Directory Roles
 
-- `src/`: Workspace for creating, editing, and experimenting on draft assets.
-- `release/`: Production-ready, validated distribution assets. Never edit directly.
-- `scripts/src_to_release.py`: Promotion script to move verified assets from `src/` to `release/`.
+- `src/`: Unified workspace for creating, editing, testing, and distributing agent assets.
+- `tests/`: Automated test suite for assets and tools.
 
 ## Development Pipeline
 
-1. **Drafting (`src/`)**:
-   - Create new asset drafts using `.human.ko.md` extension for initial human-readable notes.
-   - Remove `.human.ko` extension when converting into active markdown assets (`.md`).
+1. **Branching (`feat/<asset-name>`)**:
+   - Create a feature branch (`feat/<asset-name>`) to work on new or modified assets in `src/`.
 
-2. **Optimization (`agent-asset-studio`)**:
-   - Use the `agent-asset-studio` skill to compress, format, and structure asset files.
+2. **Authoring (`src/`)**:
+   - Write and edit assets directly in markdown (`.md`) format within `src/`.
 
-3. **Promotion to Release**:
-   - Promote validated assets from `src/` to `release/`:
+3. **Optimization & Validation (`agent-asset-studio`)**:
+   - Use the `agent-asset-studio` skill to validate structure and optimize context size.
+   - Verify changes using the test suite (`uv run pytest tests/`).
 
-     ```bash
-     uv run python scripts/src_to_release.py skills/<skill-name>
-     ```
+4. **Deployment (Branch Merge)**:
+   - Commit and merge the feature branch into `main` after validation passes.
