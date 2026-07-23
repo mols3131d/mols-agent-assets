@@ -1,8 +1,8 @@
 ---
 name: vcs-git-commit
 description: >
-  USE WHEN: detecting commit conventions, staging files, generating commit messages, performing git commits, or briefing commit results.
-  EXCLUDES: pushing to remote repos, merging branches, creating pull requests, resolving merge conflicts, or running git commit -a.
+  USE WHEN: detecting commit conventions, staging files, generating commit messages, performing git commits, or briefing commit results (e.g. natural language requests like "run commit", "git commit", "run commit", "create commit messages", "커밋해줘", "깃 메시지 만들어줘").
+  EXCLUDES: pushing to remote repos, merging branches, creating pull requests, resolving merge conflicts, running git commit -a, or performing commits in other VCS like jj (Jujutsu).
 ---
 
 # Git Commit Skill
