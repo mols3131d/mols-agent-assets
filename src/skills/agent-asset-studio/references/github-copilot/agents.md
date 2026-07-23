@@ -1,10 +1,12 @@
 # Copilot Custom Agents Spec
 
 ## Paths
+
 - **WS**: `.github/agents/*.agent.md`
 - **User**: `{{VSCODE_USER_PROMPTS_FOLDER}}/agents/*.agent.md`
 
 ## Frontmatter Schema
+
 ```yaml
 ---
 name: string
@@ -20,4 +22,3 @@ hooks:
       command: string
 ---
 ```
-
