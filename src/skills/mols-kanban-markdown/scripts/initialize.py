@@ -1,9 +1,14 @@
+#!/usr/bin/env python3
+"""Initialize Kanban workspace directory with configuration files and default guides."""
+
+from __future__ import annotations
+
 import shutil
 import sys
 from pathlib import Path
 
 
-def initialize_kanban(kanban_path: str) -> None:
+def initialize_kanban(kanban_path: str | Path) -> None:
     path = Path(kanban_path).resolve()
 
     # 1. Create Directories

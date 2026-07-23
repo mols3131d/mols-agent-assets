@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 
-def validate_directory_integrity(kanban_path: str) -> list[str]:
+def validate_directory_integrity(kanban_path: str | Path) -> list[str]:
     """Validate directory integrity of Kanban workspace."""
     errors = []
     path = Path(kanban_path).resolve()

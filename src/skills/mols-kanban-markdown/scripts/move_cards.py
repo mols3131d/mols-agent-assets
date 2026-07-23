@@ -14,37 +14,11 @@ from __future__ import annotations
 import re
 import sys
 from pathlib import Path
-from typing import Any
 
+# Allow standalone CLI execution without relative import error
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-# Re-use YAML frontmatter parser
-def parse_frontmatter(content: str) -> dict[str, Any] | None:
-    """Parse YAML frontmatter block from markdown content."""
-    try:
-        import yaml
-    except ImportError as error:
-        raise ImportError("dependency 'yaml' is missing") from error
-
-    lines = content.splitlines()
-    if not lines or lines[0] != "---":
-        return None
-
-    yaml_lines = []
-    found_end = False
-    for line in lines[1:]:
-        if line == "---":
-            found_end = True
-            break
-        yaml_lines.append(line)
-
-    if not found_end:
-        return None
-
-    try:
-        data = yaml.safe_load("\n".join(yaml_lines))
-        return data if isinstance(data, dict) else None
-    except Exception:
-        return None
+from shared import get_card_files, parse_frontmatter
 
 
 def update_links_in_content(
@@ -160,19 +134,12 @@ def move_cards_by_status(kanban_path: str) -> None:
         "done": path / "archive",
     }
 
-    # Locate all markdown files in backlog, active, archive
-    source_dirs = [path / "backlog", path / "active", path / "archive"]
-    cards: list[Path] = []
-    for sd in source_dirs:
-        if sd.exists():
-            cards.extend(sd.glob("**/*.md"))
+    # Locate all markdown card files using shared helper
+    cards = get_card_files(path)
 
     moves_performed = 0
 
     for card_path in cards:
-        if card_path.name in ["README.md", "AGENTS.md", "template.md"]:
-            continue
-
         try:
             content = card_path.read_text(encoding="utf-8")
         except Exception as e:

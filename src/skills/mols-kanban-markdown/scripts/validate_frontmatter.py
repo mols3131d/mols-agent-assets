@@ -2,88 +2,21 @@
 # /// script
 # dependencies = [
 #   "pyyaml>=6.0.2",
-#   "jstyleson>=0.0.2",
 # ]
 # ///
 """Validate kanban markdown cards YAML frontmatter against config schema."""
 
 from __future__ import annotations
 
-import json
 import re
 import sys
 from pathlib import Path
 from typing import Any
 
+# Allow standalone CLI execution without relative import error
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-# Since we want to parse JSONC (JSON with comments) without third-party tools,
-# we implement a simple parser to strip comments.
-def parse_jsonc(text: str) -> Any:
-    """Parse JSON with comments."""
-    # Simple parser to remove comments (not inside URLs)
-    lines = []
-    in_multiline_comment = False
-
-    for line in text.splitlines():
-        # Handle multi-line comments
-        if in_multiline_comment:
-            if "*/" in line:
-                line = line.split("*/", 1)[1]
-                in_multiline_comment = False
-            else:
-                continue
-
-        if "/*" in line:
-            if "*/" in line:
-                # Same line /* ... */
-                parts = line.split("/*", 1)
-                before = parts[0]
-                after = parts[1].split("*/", 1)[1]
-                line = before + after
-            else:
-                line = line.split("/*", 1)[0]
-                in_multiline_comment = True
-
-        # Remove single line comments starting with // but not part of URL
-        # Using negative lookbehind in regex
-        line = re.sub(r"(?<!http:)(?<!https:)//.*", "", line)
-
-        # Strip and collect
-        stripped = line.strip()
-        if stripped:
-            lines.append(stripped)
-
-    cleaned = "\n".join(lines)
-    return json.loads(cleaned)
-
-
-def parse_frontmatter(content: str) -> dict[str, Any] | None:
-    """Parse YAML frontmatter block from markdown content."""
-    try:
-        import yaml
-    except ImportError as error:
-        raise ImportError("dependency 'yaml' is missing") from error
-
-    lines = content.splitlines()
-    if not lines or lines[0] != "---":
-        return None
-
-    yaml_lines = []
-    found_end = False
-    for line in lines[1:]:
-        if line == "---":
-            found_end = True
-            break
-        yaml_lines.append(line)
-
-    if not found_end:
-        return None
-
-    try:
-        data = yaml.safe_load("\n".join(yaml_lines))
-        return data if isinstance(data, dict) else None
-    except Exception:
-        return None
+from shared import get_card_files, load_kanban_config, parse_frontmatter
 
 
 def validate_value(value: Any, spec: dict[str, Any], path_str: str) -> list[str]:
@@ -208,16 +141,10 @@ def main() -> None:
 
     kanban_path = Path(sys.argv[1]).resolve()
 
-    # 1. Load config.jsonc
-    config_file = kanban_path / ".configs" / "config.jsonc"
-    if not config_file.exists():
-        print(f"Error: Config file not found at {config_file}", file=sys.stderr)
-        sys.exit(1)
-
-    try:
-        config_data = parse_jsonc(config_file.read_text(encoding="utf-8"))
-    except Exception as e:
-        print(f"Error: Failed to parse config file: {e}", file=sys.stderr)
+    # 1. Load config.jsonc using shared helper
+    config_data = load_kanban_config(kanban_path)
+    if not config_data:
+        print(f"Error: Failed to load config at {kanban_path}", file=sys.stderr)
         sys.exit(1)
 
     schema = config_data.get("frontmatter_schema", {})
@@ -227,17 +154,8 @@ def main() -> None:
         )
         sys.exit(0)
 
-    # 2. Find all markdown files in active, backlog, archive
-    target_dirs = ["backlog", "active", "archive"]
-    markdown_files: list[Path] = []
-    for d in target_dirs:
-        dir_path = kanban_path / d
-        if dir_path.exists():
-            markdown_files.extend(dir_path.glob("**/*.md"))
-
-    # Also check if target_path itself is a single markdown file
-    if kanban_path.is_file() and kanban_path.suffix == ".md":
-        markdown_files = [kanban_path]
+    # 2. Find all markdown files using shared helper
+    markdown_files = get_card_files(kanban_path)
 
     if not markdown_files:
         print("No markdown files found to validate.")
