@@ -4,30 +4,14 @@
 
 ### **[{{category}}] {{title}}**
 
-- DECISION | **{{key_decision}}** - {{details}}
-- REASON | **{{key_reason}}** - {{details}}
-- IMPACT | **{{key_impact}}** - {{details}}
+- DECISION | **{{key_decision}}** - {{detailed_explanation_of_the_decision}}
+- REASON | **{{key_motivation}}** - {{context_and_reason}}
+- IMPACT | **{{key_consequence}}** - {{consequences_on_the_system_and_workflow}}
+- [RELATED]
+  - [{{related_decision}}]
 
 ## Accepted
 
-### **[{{category}}] {{title}}**
-
-- DECISION | **{{key_decision}}** - {{details}}
-- REASON | **{{key_reason}}** - {{details}}
-- IMPACT | **{{key_impact}}** - {{details}}
-
 ## Superseded
 
-### **[{{category}}] {{title}}**
-
-- DECISION | **{{key_decision}}** - {{details}}
-- REASON | **{{key_reason}}** - {{details}}
-- IMPACT | **{{key_impact}}** - {{details}}
-
 ## Deprecated
-
-### **[{{category}}] {{title}}**
-
-- DECISION | **{{key_decision}}** - {{details}}
-- REASON | **{{key_reason}}** - {{details}}
-- IMPACT | **{{key_impact}}** - {{details}}
