@@ -1,6 +1,6 @@
-# Git Commit VCS Skill Help Guide (`--help`)
+# Git Commit Skill Help Guide (`--help`)
 
-`git-commit-vcs` 스킬을 효과적으로 사용하기 위한 프롬프트 작성법, 플래그 조합, 컨벤션 설정 및 상황별 사용 가이드입니다.
+`vcs-git-commit` 스킬을 효과적으로 사용하기 위한 프롬프트 작성법, 플래그 조합, 컨벤션 설정 및 상황별 사용 가이드입니다.
 
 ---
 
@@ -42,7 +42,7 @@
 
 ## 3. 커밋 메시지 컨벤션 지정 및 수정 (Customizing Commit Conventions)
 
-- **동작 원리**: `git-commit-vcs` 스킬은 프로젝트 루트의 `.gitmessage` 파일에 정의된 템플릿과 주석 지침을 최우선으로 준수합니다.
+- **동작 원리**: `vcs-git-commit` 스킬은 프로젝트 루트의 `.gitmessage` 파일에 정의된 템플릿과 주석 지침을 최우선으로 준수합니다.
 - **컨벤션 수정 방법**:
   1. 프로젝트 루트의 `.gitmessage` 파일 내용(템플릿 구조, 타입 종류, 글자 수 규칙 및 주석 지침)을 수정합니다.
   2. 커밋 요청 시 에이전트가 변경된 `.gitmessage` 규칙을 자동으로 감지하여 작성합니다.

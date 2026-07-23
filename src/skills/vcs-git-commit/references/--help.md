@@ -1,6 +1,6 @@
-# Git Commit VCS Skill Help Guide (`--help`)
+# Git Commit Skill Help Guide (`--help`)
 
-Help guide for `git-commit-vcs` skill providing prompt patterns, option flag combinations, convention configuration, and practical scenarios.
+Help guide for `vcs-git-commit` skill providing prompt patterns, option flag combinations, convention configuration, and practical scenarios.
 
 ---
 
@@ -42,7 +42,7 @@ Control skill execution by combining option flags or natural language expression
 
 ## 3. Customizing Commit Conventions
 
-- **Mechanism**: `git-commit-vcs` prioritizes template structure and comment rules defined in `.gitmessage` at the repository root.
+- **Mechanism**: `vcs-git-commit` prioritizes template structure and comment rules defined in `.gitmessage` at the repository root.
 - **How to Customise**:
   1. Edit `.gitmessage` in the repository root (template format, allowed commit types, line caps, or comment guidelines).
   2. The agent automatically detects and applies updated `.gitmessage` rules on subsequent commit requests.

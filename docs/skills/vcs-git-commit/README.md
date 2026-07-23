@@ -1,6 +1,6 @@
-# Git Commit VCS Skill Document
+# Git Commit Skill Document
 
-`git-commit-vcs` 스킬 사용 가이드 문서입니다.
+`vcs-git-commit` 스킬 사용 가이드 문서입니다.
 
 ## 기능 개요
 
@@ -16,7 +16,7 @@
 ## 디렉터리 구조
 
 ```text
-src/skills/git-commit-vcs/
+src/skills/vcs-git-commit/
 ├── SKILL.md
 └── references/
     └── conventional-commits.md
