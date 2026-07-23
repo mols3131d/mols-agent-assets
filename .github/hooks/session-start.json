@@ -3,7 +3,7 @@
 		"SessionStart": [
 			{
 				"type": "command",
-				"command": "echo '{\"systemMessage\": \"Activate agent skill `/caveman full`\"}'"
+				"command": "echo '{\"systemMessage\": \"Activate agent skill `caveman` `full`\"}'"
 			}
 		]
 	}
