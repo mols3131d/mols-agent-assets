@@ -1,8 +1,12 @@
 ---
 name: mols-kanban-markdown
 description: >
-  USE WHEN: managing, creating, updating, or validating Kanban board items using markdown cards.
-  EXCLUDES: general software development, or non-Kanban documentation edits.
+  USE WHEN: managing, creating, initializing, updating, moving, or validating Kanban board items using markdown cards. Target directory initialization (.configs, backlog, active, archive), frontmatter schema validation, card status directory migration, and link correction.
+  EXCLUDES: general software development, non-Kanban documentation edits, or raw markdown formatting without Kanban context.
+argument-hint: "[<kanban_path>] [initialize | validate | validate-directory | move | --help]"
+user-invocable: true
+disable-model-invocation: false
+compatibility: "Python >=3.13, rumdl, pyromark, pyyaml"
 ---
 
 # Mols Kanban Markdown
@@ -30,10 +34,11 @@ Report verification status, updated card paths, and status transitions.
 #### Parameters
 
 - **Target Path**: Kanban board directory path.
-- **Workflow Route**: Sub-workflow route ID selected from `workflows/INDEX.csv`.
+- **Workflow Route**: Sub-workflow file ID selected from `workflows/INDEX.csv` (e.g., `help.md`, `validate.md`, `initialize.md`, `validate-directory.md`, `move.md`).
 
 ### Procedure
 
-1. Read `workflows/INDEX.csv` once.
-2. Resolve matching route IDs (e.g., `validate`).
-3. Load the resolved workflow from `workflows/<id>.md` and execute its procedure.
+1. If `--help` or `help` argument/trigger is provided, resolve to `help.md` and load `workflows/help.md`.
+2. Otherwise, read `workflows/INDEX.csv` once to evaluate `use_when` conditions.
+3. Select the matching workflow file (e.g., `validate.md`).
+4. Load `workflows/<id>` and execute its procedure.

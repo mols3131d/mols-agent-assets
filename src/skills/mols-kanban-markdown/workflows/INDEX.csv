@@ -1,6 +1,7 @@
-id,name,description,trigger,excludes
-validate,Validate Kanban,Run validation script for frontmatter validation and schema check,validate | check,general code changes
-initialize,Initialize Kanban,Initialize Kanban workspace directory with configuration files and default guides,initialize | setup | init,general code changes
-validate-directory,Validate Directory,Validate the directory structure and existence of configuration files,validate-dir | check-dir,general code changes
-move,Move Cards,Move cards to directories matching their status and fix links,move | sync-cards,general code changes
+id,use_when,excludes
+help.md,"Request help, overview, or usage instructions for this mols-kanban-markdown skill","Running specific board initializations, validations, or card movements directly"
+initialize.md,"Initialize Kanban workspace directory with configuration files and default guides","General code changes or validating/moving existing cards"
+validate-directory.md,"Validate the directory structure and existence of required configuration files","General code changes or card frontmatter validation"
+validate.md,"Run validation script for card YAML frontmatter validation and schema check","General code changes or initializing workspace"
+move.md,"Move cards to target directories matching their status frontmatter and fix links","General code changes or verifying directory setup"
 
