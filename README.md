@@ -1,12 +1,14 @@
 # Source Workspace (`src/`)
 
-Primary workspace for developing, editing, validating, and distributing AI agent assets (skills, prompts, rules, agents).
+This directory serves as the primary workspace for developing, editing, validating, and distributing AI agent assets. It contains the core components that define agent behaviors, procedural execution paths, constraints, and helper utilities.
 
----
+## Directory Structure
 
-## Guidelines
-
-- **Branching**: Develop features inside dedicated branches following `<lead-id>/<type>/<name>` format (e.g., `mols/feat/git-commit-vcs`).
-- **Structure**: Create task-specific subdirectories per asset type or feature.
-- **Testing & Validation**: Validate assets using `agent-asset-studio` and add test cases in `tests/`.
-- **Deployment**: Commit and merge feature branches into `main` after validation passes.
+| Directory | Aliases / Related Types | Description |
+| :--- | :--- | :--- |
+| **`agents/`** | persona, soul | Defines agent roles, combining skills and rules. |
+| **`skills/`** | | Contains executable procedural step workflows. |
+| **`rules/`** | instructions | Defines behavioral constraints and protocols. |
+| **`prompts/`** | workflows | Stores instructions for Copilot and Antigravity. |
+| **`scripts/`** | | Utility scripts for automation and validation. |
+| **`gem/`** | | Tailored custom Gem chat configurations. |

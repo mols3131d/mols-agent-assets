@@ -1,11 +1,11 @@
 ---
-name: git-commit-vcs
+name: vcs-git-commit
 description: >
   USE WHEN: detecting commit conventions, staging files, generating commit messages, performing git commits, or briefing commit results.
   EXCLUDES: pushing to remote repos, merging branches, creating pull requests, resolving merge conflicts, or running git commit -a.
 ---
 
-# Git Commit VCS Skill
+# Git Commit Skill
 
 End-to-end git commit workflow: convention discovery, staging, message generation, committing, and briefing.
 
@@ -75,9 +75,9 @@ Stop execution immediately and report to the user on:
 
 ## Boundaries
 
-- Never run `git push` (especially `--force`).
-- Never bypass hooks (`--no-verify` / `-n`).
-- Never overwrite history (`--amend`).
-- Never auto-stage all via `git commit -a`.
-- Never create empty commits (`--allow-empty`).
-- Never spoof commit metadata (`--author`, `--date`).
+- NEVER run `git push` (especially `--force`).
+- NEVER bypass hooks (`--no-verify` / `-n`).
+- NEVER overwrite history (`--amend`).
+- NEVER auto-stage all via `git commit -a`.
+- NEVER create empty commits (`--allow-empty`).
+- NEVER spoof commit metadata (`--author`, `--date`).
