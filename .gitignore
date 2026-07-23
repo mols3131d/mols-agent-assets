@@ -1,8 +1,5 @@
 data/
 tmp/
-.agents/skills/mols-agent-asset-studio
-.agents/skills/caveman*
-.agents/skills/cavecrew
 *.tmp*
 *.origin*
 *.backup*
