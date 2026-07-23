@@ -38,3 +38,4 @@ Color and shape emojis to improve scannability for human readers:
 
 - **Circles**: `🔴` `🟠` `🟡` `🟢` `🔵` `🟣` `⚫` `⚪` `🟤`
 - **Squares**: `🟥` `🟧` `🟨` `🟩` `🟦` `🟪` `⬛` `⬜` `🟫`
+- **Hearts**: `❤️` `🧡` `💛` `💚` `💙` `💜` `🖤` `🤍` `🤎`
