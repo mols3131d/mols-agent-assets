@@ -1,0 +1,79 @@
+{
+    "kanban_path": "{workspace_root}/.kanban/",
+    "frontmatter_schema": {
+        "id": {
+            "type": "string",
+            "description": "The ID of the Card.",
+            "required": true,
+            "default": "KBN-000",
+            "validate": {
+                "regex": "^KBN-\\d{3}$"
+            }
+        },
+        "title": {
+            "type": "string",
+            "description": "The title of the Card.",
+            "required": true,
+            "validate": {
+                "length_min": 0,
+                "length_max": 64
+            }
+        },
+        "description": {
+            "type": "string",
+            "description": "The description of the Card.",
+            "required": true,
+            "validate": {
+                "length_min": 0,
+                "length_max": 512
+            }
+        },
+        "status": {
+            "type": "string",
+            "description": "The status of the Card.",
+            "enum": [
+                "backlog",
+                "todo",
+                "in_progress",
+                "review",
+                "done"
+            ],
+            "required": true,
+            "default": "backlog"
+        },
+        "priority": {
+            "type": "string",
+            "description": "The priority of the Card.",
+            "enum": [
+                "low",
+                "medium",
+                "high",
+                "critical"
+            ],
+            "required": true,
+            "default": "medium"
+        },
+        "tags": {
+            "type": "array",
+            "description": "The tags for the Card.",
+            "instruction": "Recommended items number is 4-8.",
+            "required": false,
+            "validate": {
+                "items": {
+                    "type": "string",
+                    "length_min": 0,
+                    "length_max": 32,
+                    "regex": "^[a-z0-9_]+$"
+                },
+                "length_min": 0,
+                "length_max": 16
+            }
+        }
+    },
+    "validation_frontmatter": true,
+    "metadata": {
+        "version": "0.1.0",
+        "description": "Configuration for Agent Skill `mols-kanban-markdown`.",
+        "homepage": "https://github.com/mols3131d/mols-agent-assets/tree/main/src/skills/mols-kanban-markdown"
+    }
+}
