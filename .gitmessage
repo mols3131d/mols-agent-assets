@@ -3,6 +3,7 @@
 # [Body - optional]
 #
 # [Footer(s) - optional]
+#
 # ---------------------------------------------------------
 # Types:
 #   feat     : New feature
@@ -13,10 +14,11 @@
 #   test     : Add or fix tests
 #   style    : Code style only; no behavior change
 #   chore    : Build, dependencies, tooling, or non-src/non-test changes
+#
 # ---------------------------------------------------------
 # Rules:
 #   - Description: Imperative, lowercase, no period; target ≤50 chars, max 72
-#   - Body: Explain why, not what; omit if obvious; wrap at 72 chars; '-' bullets
-#   - Footer: Breaking changes or issue refs only (e.g. Closes #12)
+#   - Body: Omit by default. Write only if non-obvious (e.g. workarounds or complex refactors); wrap at 72 chars; '-' bullets
+#   - Footer: Strictly omit unless referencing issue tickets (e.g. Closes #12)
 #   - Never: AI attribution, I/we, or "This commit does"
 # ---------------------------------------------------------
