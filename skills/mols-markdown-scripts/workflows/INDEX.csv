@@ -1,0 +1,6 @@
+id,use_when,excludes
+validate-frontmatter.md,"Validate YAML frontmatter keys, values, types, lengths, lists, or nesting in markdown files","Reviewing markdown headers, links, formatting, or creating new files"
+validate-headers.md,"Validate markdown heading structure, ensuring only one H1 and sequential levels","Reviewing frontmatter, links, formatting, or creating new files"
+validate-links.md,"Validate markdown link syntax and targets, checking internal fragments/references","Reviewing frontmatter, headers, formatting, or creating new files"
+format-markdown.md,Format markdown files applying lint fixes and formatting rules via rumdl,"Only validating files without modifying them, or generating new templates"
+help.md,"Request help, overview, or usage instructions for this markdown skill","Running specific validations or formatting files directly"

@@ -1,0 +1,7 @@
+id,use_when,excludes
+help.md,"Progressively guide a Commander or Executor from available capabilities to one workflow and then specific inputs, defaults, outputs, or constraints like root and subcommand --help","Direct requests to initialize or change configuration, or create a report without asking for usage guidance"
+initialize.md,"Initialize or reset iceberg-code-report configuration before use","Inspecting or changing individual settings, or creating a code report"
+configurator.md,"Inspect or update iceberg-code-report output directory, path format, or timezone settings","Resetting all settings to defaults, or creating a code report"
+create-dir.md,"Create or resolve a directory for a new code report bundle, including the first phase of a full report request","Writing report content, modifying configuration, or using an existing report directory"
+write-summary.md,"Write the main __summary__.md for a code report, codebase tour, technical orientation, architecture explanation, or code reading guide","Creating only a directory, writing component detail documents, configuration management, code changes, or refactoring advice"
+write-detail.md,"Write requested component detail documents for an existing code report summary","Writing a summary or creating a directory, detailing unspecified components, configuration management, code changes, or refactoring advice"
