@@ -1,12 +1,54 @@
 {
   "version": 1,
   "skills": {
+    "clash-bang": {
+      "source": "mols3131d/mols-agent-assets",
+      "ref": "main",
+      "sourceType": "github",
+      "skillPath": "src/skills/clash-bang/SKILL.md",
+      "computedHash": "7c74d14d6813425ff1cfd36bd40b7f71e884fb3fe8f4cad8d1c00a6d77d3b981"
+    },
+    "iceberg": {
+      "source": "mols3131d/mols-agent-assets",
+      "ref": "main",
+      "sourceType": "github",
+      "skillPath": "src/skills/iceberg/SKILL.md",
+      "computedHash": "98a315d8821b3ce4a70bbc8fba53d4ab7b0fa5d3ab08bce83439d35460712980"
+    },
     "mols-agent-asset-studio": {
       "source": "mols3131d/mols-agent-assets",
       "ref": "main",
       "sourceType": "github",
       "skillPath": "src/skills/mols-agent-asset-studio/SKILL.md",
       "computedHash": "6dfb75124a4282969d4a0118df20cc6a159f573d8484c9d23596aa3173d4e0a1"
+    },
+    "mols-documents-studio": {
+      "source": "mols3131d/mols-agent-assets",
+      "ref": "main",
+      "sourceType": "github",
+      "skillPath": "src/skills/mols-documents-studio/SKILL.md",
+      "computedHash": "c6127f2da4c1707715dafedb1169c876888c74f31fc5840d571b00cebc9d28a7"
+    },
+    "mols-kanban-markdown": {
+      "source": "mols3131d/mols-agent-assets",
+      "ref": "main",
+      "sourceType": "github",
+      "skillPath": "src/skills/mols-kanban-markdown/SKILL.md",
+      "computedHash": "80138e0d49390cc18aa27ee4c3973f4e3374dbcc0250118b5f1c801b8852eda5"
+    },
+    "mols-markdown-scripts": {
+      "source": "mols3131d/mols-agent-assets",
+      "ref": "main",
+      "sourceType": "github",
+      "skillPath": "src/skills/mols-markdown-scripts/SKILL.md",
+      "computedHash": "3a9e7196cf4e814382549bbaa675be9410b9c34455453968636782b1780ac3a3"
+    },
+    "vcs-git-commit": {
+      "source": "mols3131d/mols-agent-assets",
+      "ref": "main",
+      "sourceType": "github",
+      "skillPath": "src/skills/vcs-git-commit/SKILL.md",
+      "computedHash": "8bff48b1daaf7ed4bcce1ef78bc97fb9b14d7d8d9a116d53820c0db72907f14c"
     }
   }
 }
