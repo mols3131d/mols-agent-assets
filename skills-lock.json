@@ -6,14 +6,7 @@
       "ref": "main",
       "sourceType": "github",
       "skillPath": "src/skills/agent-asset-studio/SKILL.md",
-      "computedHash": "bf8e5d549bcc611e6bea8d41ed9e1690f59614b3f27ecbfc0530e5f3c765c323"
-    },
-    "document-studio": {
-      "source": "mols3131d/mols-agent-assets",
-      "ref": "main",
-      "sourceType": "github",
-      "skillPath": "src/skills/document-studio/SKILL.md",
-      "computedHash": "ae26e9b2224efb982a67adef5caec5cc1f877a43bb83cb45f1e8958bd3b072dc"
+      "computedHash": "82a6be4033bc6f3f44d73393b10358a097f48ad65a16db5cde827d86ec771451"
     }
   }
 }
