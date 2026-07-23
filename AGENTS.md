@@ -11,5 +11,5 @@
 
 1. **Branching**: Create a feature branch (`<lead-id>/<type>/<name>`, e.g., `mols/feat/git-commit-vcs`) for developing or modifying assets in `src/`.
 2. **Authoring**: Develop and edit assets directly in markdown (`.md`) format within `src/`.
-3. **Optimization & Validation**: Optimize and validate assets using `.agents/skills/agent-asset-studio`.
+3. **Optimization & Validation**: Optimize and validate assets using `.agents/skills/mols-agent-asset-studio`.
 4. **Deployment**: Commit and merge the feature branch to `main` (or `dev`) for distribution.

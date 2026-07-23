@@ -1,9 +1,9 @@
-# Agent Asset Studio Workflow Modules
+# Mols Agent Asset Studio Workflow Modules
 
-`agent-asset-studio`는 root `INDEX.csv`에서 사용자 intent를 분류하고, 선택된 `workflows/*.md`만 읽는다. 이 파일은 기존 경로 호환을 위해 `sub-skills.md`라는 이름을 유지하지만, 현재 구조의 정확한 용어는 **Workflow Module**이다.
+`mols-agent-asset-studio`는 root `INDEX.csv`에서 사용자 intent를 분류하고, 선택된 `workflows/*.md`만 읽는다. 이 파일은 기존 경로 호환을 위해 `sub-skills.md`라는 이름을 유지하지만, 현재 구조의 정확한 용어는 **Workflow Module**이다.
 
 ```text
-agent-asset-studio/
+mols-agent-asset-studio/
 ├── SKILL.md
 ├── INDEX.csv
 └── workflows/

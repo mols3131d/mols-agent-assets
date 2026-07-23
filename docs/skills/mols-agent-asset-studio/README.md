@@ -1,8 +1,8 @@
-# Agent Asset Studio (agent-asset-studio)
+# Mols Agent Asset Studio (mols-agent-asset-studio)
 
-`agent-asset-studio`는 프로젝트 내의 에이전트 자산(Skills, Rules, Agents 등)을 효율적으로 생성, 검증, 관리, 압축 및 라우팅하기 위한 종합 관리 스킬입니다.
+`mols-agent-asset-studio`는 프로젝트 내의 에이전트 자산(Skills, Rules, Agents 등)을 효율적으로 생성, 검증, 관리, 압축 및 라우팅하기 위한 종합 관리 스킬입니다.
 
-이 문서는 개발자가 에이전트 자산을 설계하고 관리할 때 `agent-asset-studio` 스킬과 그 도구들을 어떻게 활용할 수 있는지 안내합니다.
+이 문서는 개발자가 에이전트 자산을 설계하고 관리할 때 `mols-agent-asset-studio` 스킬과 그 도구들을 어떻게 활용할 수 있는지 안내합니다.
 
 ---
 
@@ -17,19 +17,19 @@
 
 ## 개요 및 역할
 
-에이전트 스킬과 규칙이 늘어남에 따라 LLM의 컨텍스트 윈도우 크기와 검색 오버헤드가 증가하는 문제를 해결하기 위해, `agent-asset-studio`는 **라우팅 스킬(Routing Skill)** 구조를 채택하고 있습니다.
+에이전트 스킬과 규칙이 늘어남에 따라 LLM의 컨텍스트 윈도우 크기와 검색 오버헤드가 증가하는 문제를 해결하기 위해, `mols-agent-asset-studio`는 **라우팅 스킬(Routing Skill)** 구조를 채택하고 있습니다.
 
 이 스튜디오는 개별적인 자산 관리 프로세스를 직접 실행하기보다는, 들어온 요청에 따라 알맞은 하위 스킬(Sub-skill)로 제어를 넘겨주는 마스터 컨트롤러 역할을 합니다.
 
 ### 라우팅 규칙
 
-`agent-asset-studio`는 `INDEX.csv` 파일을 참조하여 사용자의 요청 키워드와 트리거 조건을 평가한 후, 적절한 자산 관리 도구 또는 하위 지침으로 연결합니다.
+`mols-agent-asset-studio`는 `INDEX.csv` 파일을 참조하여 사용자의 요청 키워드와 트리거 조건을 평가한 후, 적절한 자산 관리 도구 또는 하위 지침으로 연결합니다.
 
 ---
 
 ## 동작 흐름 (Workflow)
 
-에이전트가 `agent-asset-studio`를 활용하여 작업을 수행할 때 다음과 같은 단계적 절차를 따릅니다.
+에이전트가 `mols-agent-asset-studio`를 활용하여 작업을 수행할 때 다음과 같은 단계적 절차를 따릅니다.
 
 1. **요청 식별 및 라우팅**:
    - 사용자의 자산 관련 요청이 들어오면 `INDEX.csv`를 로드하여 알맞은 하위 자산 또는 스크립트를 탐색합니다.

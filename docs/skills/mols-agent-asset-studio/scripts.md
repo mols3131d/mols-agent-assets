@@ -1,6 +1,6 @@
-# Agent Asset Studio 스크립트
+# Mols Agent Asset Studio 스크립트
 
-`agent-asset-studio`는 자산 scaffold, 정적 검증, route index 관리, Routing Skill 변환을 `scripts/`의 Python 도구로 자동화한다. 명령은 Skill root에서 실행한다.
+`mols-agent-asset-studio`는 자산 scaffold, 정적 검증, route index 관리, Routing Skill 변환을 `scripts/`의 Python 도구로 자동화한다. 명령은 Skill root에서 실행한다.
 
 ## `init_asset.py`
 

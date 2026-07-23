@@ -17,8 +17,8 @@
 2. **자산 작성 (`src/`)**:
    - `src/` 디렉터리 내에서 마크다운(`.md`) 파일로 에셋을 직접 작성 및 수정합니다.
 
-3. **최적화 및 검증 (`agent-asset-studio`)**:
-   - `agent-asset-studio` 스킬을 활용하여 컨텍스트 용량 최적화 및 규격 검증을 수행합니다.
+3. **최적화 및 검증 (`mols-agent-asset-studio`)**:
+   - `mols-agent-asset-studio` 스킬을 활용하여 컨텍스트 용량 최적화 및 규격 검증을 수행합니다.
    - 테스트 스위트(`uv run pytest tests/`)를 실행하여 검증합니다.
 
 4. **배포 (브랜치 머지)**:

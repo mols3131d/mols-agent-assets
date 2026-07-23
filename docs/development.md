@@ -17,8 +17,8 @@ Guide for creating, editing, optimizing, and deploying AI agent assets (skills, 
 2. **Authoring (`src/`)**:
    - Write and edit assets directly in markdown (`.md`) format within `src/`.
 
-3. **Optimization & Validation (`agent-asset-studio`)**:
-   - Use the `agent-asset-studio` skill to validate structure and optimize context size.
+3. **Optimization & Validation (`mols-agent-asset-studio`)**:
+   - Use the `mols-agent-asset-studio` skill to validate structure and optimize context size.
    - Verify changes using the test suite (`uv run pytest tests/`).
 
 4. **Deployment (Branch Merge)**:
