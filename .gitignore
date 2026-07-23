@@ -1,6 +1,6 @@
 data/
 tmp/
-.agents/skills/agent-asset-studio
+.agents/skills/mols-agent-asset-studio
 .agents/skills/caveman*
 .agents/skills/cavecrew
 *.tmp*
