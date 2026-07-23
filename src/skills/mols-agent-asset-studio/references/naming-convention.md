@@ -5,7 +5,7 @@
 - **Purpose**: Categorization/tagging (since folders are not always nested).
 - **Rule**: Place 1-2 domain tokens at the front.
 - **Workflow Rule**: Inside a routing skill, omit domain tokens already clear from the routing skill name.
-- **Example**: `openspec-apply-change.md`, `agent-asset-studio.md`
+- **Example**: `openspec-apply-change.md`, `mols-agent-asset-studio.md`
 
 ## 2. Naming Types by Skill Complexity
 

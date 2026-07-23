@@ -1,11 +1,11 @@
 {
   "version": 1,
   "skills": {
-    "agent-asset-studio": {
+    "mols-agent-asset-studio": {
       "source": "mols3131d/mols-agent-assets",
       "ref": "main",
       "sourceType": "github",
-      "skillPath": "src/skills/agent-asset-studio/SKILL.md",
+      "skillPath": "src/skills/mols-agent-asset-studio/SKILL.md",
       "computedHash": "82a6be4033bc6f3f44d73393b10358a097f48ad65a16db5cde827d86ec771451"
     }
   }
