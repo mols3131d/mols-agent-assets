@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 def test_validate_directory_and_move_cards():
-    repo_root = Path(__file__).resolve().parents[2]
+    repo_root = Path(__file__).resolve().parents[3]
     init_script = (
         repo_root
         / "src"

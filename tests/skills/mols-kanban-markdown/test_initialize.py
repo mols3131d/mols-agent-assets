@@ -4,12 +4,12 @@ import tempfile
 from pathlib import Path
 
 # Add src to sys.path
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "src"))
 
 
 def test_initialize_kanban():
     # Find script path
-    repo_root = Path(__file__).resolve().parents[2]
+    repo_root = Path(__file__).resolve().parents[3]
     script_path = (
         repo_root
         / "src"
