@@ -1,4 +1,5 @@
 id,use_when,excludes
+generate-index.md,"Generate an index from Markdown YAML frontmatter as CSV, a Markdown table, or an extensible Markdown list","Validating or formatting Markdown without generating an index"
 validate-frontmatter.md,"Validate YAML frontmatter keys, values, types, lengths, lists, or nesting in markdown files","Reviewing markdown headers, links, formatting, or creating new files"
 validate-headers.md,"Validate markdown heading structure, ensuring only one H1 and sequential levels","Reviewing frontmatter, links, formatting, or creating new files"
 validate-links.md,"Validate markdown link syntax and targets, checking internal fragments/references","Reviewing frontmatter, headers, formatting, or creating new files"

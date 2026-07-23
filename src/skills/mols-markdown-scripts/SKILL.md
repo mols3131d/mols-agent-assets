@@ -1,7 +1,7 @@
 ---
 name: mols-markdown-scripts
 description: >
-  USE WHEN: Markdown quality check, validation, formatting. YAML frontmatter schema parsing (key, value, type, list, nesting), heading hierarchy (H1 count, sequential level), link fragment/reference check via rumdl, format syntax via rumdl fmt.
+  USE WHEN: Markdown quality check, validation, formatting, or generating an index from YAML frontmatter as CSV, Markdown table, or Markdown list. YAML frontmatter schema parsing (key, value, type, list, nesting), heading hierarchy (H1 count, sequential level), link fragment/reference check via rumdl, format syntax via rumdl fmt.
   EXCLUDES: Text gen/template compile without target validation.
 ---
 
