@@ -33,14 +33,36 @@ def _parse_frontmatter(content: str) -> dict[str, Any] | None:
     return data if isinstance(data, dict) else None
 
 
-def _collect_entries(directory: Path) -> list[dict[str, Any]]:
+def _collect_entries(
+    directory: Path,
+    globs: list[str] | None = None,
+    max_depth: int | None = 0,
+) -> list[dict[str, Any]]:
+    patterns = globs if globs else ["*.md", "**/*.md"]
+    found_paths: set[Path] = set()
+
+    for pattern in patterns:
+        for path in directory.glob(pattern):
+            if not path.is_file():
+                continue
+            if path.name.upper().startswith("INDEX") or path.name.startswith(
+                "__index__"
+            ):
+                continue
+
+            rel_parts = path.relative_to(directory).parts
+            # max_depth 계산: 하위 폴더 단계 수 (파일명 제외)
+            depth = len(rel_parts) - 1
+            if max_depth is not None and depth > max_depth:
+                continue
+
+            found_paths.add(path)
+
     entries = []
-    for path in sorted(directory.rglob("*.md")):
-        if path.name.upper().startswith("INDEX"):
-            continue
+    for path in sorted(found_paths):
         frontmatter = _parse_frontmatter(path.read_text(encoding="utf-8"))
         if frontmatter is None:
-            continue
+            frontmatter = {}
         entries.append({"file": path.relative_to(directory).as_posix(), **frontmatter})
     return entries
 
@@ -55,17 +77,19 @@ def _stringify(value: Any) -> str:
     return str(value)
 
 
-def _csv_output(entries: list[dict[str, Any]]) -> str:
+def _csv_output(
+    entries: list[dict[str, Any]], fields: tuple[str, ...] | list[str] = CSV_FIELDS
+) -> str:
     output = io.StringIO(newline="")
     writer = csv.DictWriter(
         output,
-        fieldnames=CSV_FIELDS,
+        fieldnames=fields,
         extrasaction="ignore",
         quoting=csv.QUOTE_ALL,
     )
     writer.writeheader()
     for entry in entries:
-        writer.writerow({field: _stringify(entry.get(field)) for field in CSV_FIELDS})
+        writer.writerow({field: _stringify(entry.get(field)) for field in fields})
     return output.getvalue()
 
 
@@ -171,6 +195,9 @@ def _list_output(
 def generate_index(
     directory: Path,
     format: str = "csv",
+    fields: list[str] | None = None,
+    globs: list[str] | None = None,
+    max_depth: int | None = 0,
     group_by: list[str] | None = None,
     group_label: bool = True,
     group_missing: str = "[unset]",
@@ -186,9 +213,10 @@ def generate_index(
     if group_sort not in GROUP_SORTS:
         raise ValueError(f"unsupported group sort: {group_sort}")
 
-    entries = _collect_entries(directory)
+    entries = _collect_entries(directory, globs=globs, max_depth=max_depth)
+    selected_fields = fields if fields else list(CSV_FIELDS)
     if format == "csv":
-        return _csv_output(entries)
+        return _csv_output(entries, fields=selected_fields)
     if format == "table":
         return _table_output(entries)
     return _list_output(entries, group_by, group_label, group_missing, group_sort)
@@ -198,6 +226,22 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("directory", type=Path)
     parser.add_argument("--format", choices=SUPPORTED_FORMATS, default="csv")
+    parser.add_argument(
+        "--fields",
+        nargs="+",
+        help="Custom fields/headers for CSV output (e.g. --fields file description)",
+    )
+    parser.add_argument(
+        "--globs",
+        nargs="+",
+        help="Glob patterns to search (e.g. --globs '*.md' 'workflows/**/*.md')",
+    )
+    parser.add_argument(
+        "--max-depth",
+        type=int,
+        default=0,
+        help="Maximum directory depth to scan (0 = directory root only)",
+    )
     parser.add_argument("--output", type=Path)
     parser.add_argument("--group-by", nargs="+", default=[])
     parser.add_argument(
@@ -207,12 +251,15 @@ def main() -> None:
     parser.add_argument("--group-sort", choices=GROUP_SORTS, default="alpha")
     args = parser.parse_args()
     result = generate_index(
-        args.directory,
-        args.format,
-        args.group_by,
-        args.group_label,
-        args.group_missing,
-        args.group_sort,
+        directory=args.directory,
+        format=args.format,
+        fields=args.fields,
+        globs=args.globs,
+        max_depth=args.max_depth,
+        group_by=args.group_by,
+        group_label=args.group_label,
+        group_missing=args.group_missing,
+        group_sort=args.group_sort,
     )
     if args.output:
         args.output.write_text(result, encoding="utf-8")
