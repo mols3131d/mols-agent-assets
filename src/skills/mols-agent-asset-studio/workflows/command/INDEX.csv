@@ -1,0 +1,6 @@
+id,use_when,excludes
+create-init.md,"Create --init.md workspace initialization flag workflow for a skill","General skill creation, help workflows, or config flags"
+create-config.md,"Create --config.md configuration management flag workflow for a skill","General skill creation, help workflows, or init flags"
+create-help.md,"Create root progressive disclosure --help.md workflow for a skill","Sub-help, init, or config flags"
+create-sub-help.md,"Create targeted sub-help (*--help.md) workflows for specific sub-workflows","Root --help, init, or config flags"
+create-action.md,"Create action-specific CLI entry-point flag (<action>.md) workflows for a skill","Init/config setup or progressive help workflows"

@@ -6,7 +6,7 @@ description: >
 argument-hint: "[<kanban_path>] [initialize | validate | validate-directory | move | --help]"
 user-invocable: true
 disable-model-invocation: false
-compatibility: "Python >=3.13, rumdl, pyromark, pyyaml"
+compatibility: "Requires Python >=3.13, rumdl, pyromark, pyyaml"
 ---
 
 # Mols Kanban Markdown

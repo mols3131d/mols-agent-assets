@@ -149,124 +149,113 @@ class RoutingSkillValidator(Validator):
             return []
 
         results: list[ValidationResult] = []
-        if not index_paths:
+        root_index = workflows_path / "INDEX.csv"
+        if not root_index.is_file():
             results.append(
                 ValidationResult(
-                    "error", "missing_route_index", "INDEX.csv가 없습니다."
-                )
-            )
-        elif len(index_paths) > 1:
-            results.append(
-                ValidationResult(
-                    "error",
-                    "multiple_route_indexes",
-                    "Routing Skill에는 INDEX.csv가 하나만 있어야 합니다: "
-                    + ", ".join(
-                        path.relative_to(asset.path).as_posix() for path in index_paths
-                    ),
+                    "error", "missing_route_index", "workflows/INDEX.csv가 없습니다."
                 )
             )
         if not workflows_path.is_dir():
             results.append(
                 ValidationResult("error", "missing_workflows", "workflows/가 없습니다.")
             )
-        if results:
-            return results
-
-        index_path = index_paths[0]
-
-        try:
-            with index_path.open("r", encoding="utf-8", newline="") as file:
-                reader = csv.DictReader(file)
-                if reader.fieldnames != list(skill.ROUTE_INDEX_FIELDS):
-                    return [
-                        ValidationResult(
-                            "error",
-                            "invalid_route_schema",
-                            "INDEX.csv schema는 "
-                            + ",".join(skill.ROUTE_INDEX_FIELDS)
-                            + " 이어야 합니다.",
-                        )
-                    ]
-                routes = list(reader)
-        except (csv.Error, OSError) as exc:
-            return [
-                ValidationResult(
-                    "error",
-                    "invalid_route_index",
-                    f"INDEX.csv를 읽을 수 없습니다: {exc}",
-                )
-            ]
-
-        if not routes:
-            results.append(
-                ValidationResult(
-                    "warning", "empty_route_index", "INDEX.csv에 route가 없습니다."
-                )
-            )
-
-        seen_ids: set[str] = set()
         skill_root = asset.path.resolve()
-        for line_number, route in enumerate(routes, start=2):
-            route_id = (route.get("id") or "").strip()
-            workflow_path = Path(route_id)
-            if (
-                not route_id
-                or workflow_path.is_absolute()
-                or ".." in workflow_path.parts
-                or not workflow_path.parts
-            ):
+        for index_path in index_paths:
+            try:
+                with index_path.open("r", encoding="utf-8", newline="") as file:
+                    reader = csv.DictReader(file)
+                    if reader.fieldnames != list(skill.ROUTE_INDEX_FIELDS):
+                        results.append(
+                            ValidationResult(
+                                "error",
+                                "invalid_route_schema",
+                                f"{index_path.relative_to(asset.path)} schema가 "
+                                + ",".join(skill.ROUTE_INDEX_FIELDS)
+                                + "와 다릅니다.",
+                            )
+                        )
+                        continue
+                    routes = list(reader)
+            except (csv.Error, OSError) as exc:
+                rel_path = index_path.relative_to(asset.path)
                 results.append(
                     ValidationResult(
                         "error",
-                        "invalid_route_id",
-                        f"INDEX.csv:{line_number} id가 안전한 상대 경로가 "
-                        f"아닙니다: {route_id!r}",
+                        "invalid_route_index",
+                        f"{rel_path}를 읽을 수 없습니다: {exc}",
                     )
                 )
                 continue
-            elif route_id in seen_ids:
+
+            if not routes:
                 results.append(
                     ValidationResult(
-                        "error",
-                        "duplicate_route_id",
-                        f"INDEX.csv:{line_number} id가 중복됩니다: {route_id}",
+                        "warning",
+                        "empty_route_index",
+                        f"{index_path.relative_to(asset.path)}에 route가 없습니다.",
                     )
                 )
-            seen_ids.add(route_id)
 
-            for field in ("use_when", "excludes"):
-                if not (route.get(field) or "").strip():
+            seen_ids: set[str] = set()
+            for line_number, route in enumerate(routes, start=2):
+                route_id = (route.get("id") or "").strip()
+                route_path = Path(route_id)
+                label = f"{index_path.relative_to(asset.path)}:{line_number}"
+                if (
+                    not route_id
+                    or route_path.is_absolute()
+                    or ".." in route_path.parts
+                    or not route_path.parts
+                ):
                     results.append(
                         ValidationResult(
                             "error",
-                            f"missing_{field}",
-                            f"INDEX.csv:{line_number} {field}이 비어 있습니다.",
+                            "invalid_route_id",
+                            f"{label} id가 안전한 상대 경로가 아닙니다: {route_id!r}",
                         )
                     )
+                    continue
+                if route_id in seen_ids:
+                    results.append(
+                        ValidationResult(
+                            "error",
+                            "duplicate_route_id",
+                            f"{label} id가 중복됩니다: {route_id}",
+                        )
+                    )
+                seen_ids.add(route_id)
 
-            resolved_workflow = (index_path.parent / workflow_path).resolve()
-            try:
-                resolved_workflow.relative_to(skill_root)
-            except ValueError:
-                results.append(
-                    ValidationResult(
-                        "error",
-                        "invalid_route_id",
-                        f"INDEX.csv:{line_number} id가 Skill 밖을 "
-                        f"가리킵니다: {route_id!r}",
+                for field in ("use_when", "excludes"):
+                    if not (route.get(field) or "").strip():
+                        results.append(
+                            ValidationResult(
+                                "error",
+                                f"missing_{field}",
+                                f"{label} {field}이 비어 있습니다.",
+                            )
+                        )
+
+                resolved_route = (index_path.parent / route_path).resolve()
+                try:
+                    resolved_route.relative_to(skill_root)
+                except ValueError:
+                    results.append(
+                        ValidationResult(
+                            "error",
+                            "invalid_route_id",
+                            f"{label} id가 Skill 밖을 가리킵니다: {route_id!r}",
+                        )
                     )
-                )
-                continue
-            if not resolved_workflow.is_file():
-                results.append(
-                    ValidationResult(
-                        "error",
-                        "missing_route_file",
-                        f"INDEX.csv:{line_number} id가 가리키는 파일이 없습니다: "
-                        f"{route_id}",
+                    continue
+                if not resolved_route.is_file():
+                    results.append(
+                        ValidationResult(
+                            "error",
+                            "missing_route_file",
+                            f"{label} id가 가리키는 파일이 없습니다: {route_id}",
+                        )
                     )
-                )
 
         nested_skills = sorted(
             path.relative_to(asset.path).as_posix()

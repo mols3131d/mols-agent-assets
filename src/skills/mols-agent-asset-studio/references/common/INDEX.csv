@@ -1,0 +1,6 @@
+id,use_when,excludes
+header-section.md,"Essential roles, semantic purpose, and structural concepts of sections and headers","Directory structure, naming conventions, or trigger details"
+naming-convention.md,"Naming conventions for agent assets","Content optimization or routing"
+trigger-guide.md,"General and flexible trigger description guidance","Strict boundary enforcement or file naming"
+trigger-guide-strict.md,"Strict trigger description guidance (USE WHEN / EXCLUDES)","Flexible/loose natural language triggers"
+zen-of-agent-assets.md,"General principles for efficient agent assets","Specific validation or scriptification steps"

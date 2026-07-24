@@ -1,0 +1,6 @@
+id,use_when,excludes
+command-flag-workflows.md,"Optional command-flag workflow patterns","General routing without flags"
+progressive-help-pattern.md,"Progressive disclosure and optional help design","Operational workflow execution"
+router-asset-pattern.md,"Dedicated router asset boundaries and contracts","Incidental routing in workflows"
+routing-skill-structure.md,"Routing skill package structure","Script implementation details"
+routing-skill-visualizations.md,"Mermaid routing architecture visualizations","Text-only architecture guidance"
