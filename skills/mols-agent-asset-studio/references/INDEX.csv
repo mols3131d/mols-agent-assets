@@ -1,0 +1,4 @@
+id,use_when,excludes
+asset/INDEX.csv,"Asset backup, compression, directory, and frontmatter guidance","Routing, scriptification, or platform-specific guidance"
+core/INDEX.csv,"Shared naming, trigger, agent-asset principles, and platform conventions","Asset procedures, routing architecture, or scriptification"
+router/INDEX.csv,"Routing architecture, route selection, and index design","Asset maintenance or script implementation"

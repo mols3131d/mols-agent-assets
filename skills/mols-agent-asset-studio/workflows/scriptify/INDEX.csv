@@ -1,0 +1,5 @@
+id,use_when,excludes
+scriptify.md,"Convert deterministic natural-language procedures into executable scripts","Tasks requiring LLM reasoning or ambiguity resolution"
+scriptify-evaluate.md,"Evaluate whether a procedure should become a deterministic script","Generating scripts or modifying the source asset"
+scriptify-plan.md,"Plan the language, path, and edits for approved scriptification","Evaluating feasibility or writing the script"
+scriptify-apply.md,"Apply an approved scriptification plan by writing and integrating the script","Planning, evaluation, or unapproved script generation"

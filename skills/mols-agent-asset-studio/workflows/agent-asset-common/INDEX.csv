@@ -1,0 +1,6 @@
+id,use_when,excludes
+agent-asset-backup.md,"Create and verify a backup before editing an agent asset","No mutation or backup needed"
+agent-asset-compress.md,"Compress an agent asset while preserving meaning and safety","General naming or route design"
+agent-asset-index-write.md,"Create or update an asset index","General Markdown editing or review-only validation"
+agent-asset-naming.md,"Name or rename an agent asset","Content or structure changes where naming is incidental"
+agent-asset-optimize.md,"Compress or optimize one or more agent assets","Review-only checks or unrelated edits"

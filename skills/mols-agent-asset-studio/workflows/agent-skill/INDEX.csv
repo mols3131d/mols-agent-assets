@@ -1,0 +1,10 @@
+id,use_when,excludes
+agent-skill-create.md,"Create one new agent skill or scaffold a skill package","Existing skill improvement, evaluation, validation, or router migration"
+agent-skill-create-help.md,"Create progressive-disclosure help for a skill","Regular workflow creation or routine edits"
+agent-skill-improve.md,"Edit or improve one existing agent skill and its resources","Creation, review-only evaluation, naming, or compression-only work"
+agent-skill-evaluate.md,"Evaluate one existing agent skill without modifying it","Requested fixes, creation, naming, or compression-only work"
+agent-skill-validate.md,"Validate a skill's required fields and route structure","Quality evaluation or requested modifications"
+agent-skill-routerize.md,"Consolidate related skills into one routing skill","Creating a regular skill, renaming, or unrelated edits"
+routing.md,"Select and load workflows for a routing skill","Routing architecture design or route-file validation"
+routing-skill-migration.md,"Migrate related skills into one routing skill","Unrelated skill changes or general asset editing"
+routing-skill-validation.md,"Validate routing correctness, structure, and context efficiency","Modifying routes or migrating skills"
