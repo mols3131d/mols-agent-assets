@@ -1,6 +1,9 @@
 ---
 name: scriptify-plan
-description: USE WHEN: the user wants to create an implementation plan for scriptifying a workflow. EXCLUDES: writing the actual code or evaluating feasibility from scratch.
+description: >-
+  Plan implementation of an evaluated scriptification, including language,
+  path, command, logic, and affected sections. Use after feasibility review and
+  before coding. Not for evaluation, code writing, or applying modifications.
 ---
 
 # Plan Agent Asset Scriptification
@@ -11,7 +14,7 @@ Create a detailed implementation plan outlining how a deterministic natural lang
 
 ## Non-Goal
 
-- Evaluating whether scriptification is appropriate (this should be done via `scriptify-evaluate.md` beforehand).
+- Evaluating whether scriptification is appropriate (this should be done via `evaluate.md` beforehand).
 - Writing the actual script or executing the modifications.
 
 ## When to Use
@@ -24,7 +27,7 @@ Use this workflow after scriptification has been approved, to determine exactly 
 
 ## Instructions
 
-- Ensure the plan adheres to the `references/zen-of-agent-assets.md` principles.
+- Ensure the plan adheres to the applicable asset-studio philosophy references.
 - Maintain a clear separation of Reasoning and Execution in the proposed design.
 
 ## Workflow: Plan Agent Asset Scriptification

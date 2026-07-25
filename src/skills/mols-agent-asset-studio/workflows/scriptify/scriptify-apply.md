@@ -1,6 +1,9 @@
 ---
 name: scriptify-apply
-description: USE WHEN: the user wants to execute an approved scriptification plan. EXCLUDES: planning, evaluation, or arbitrary script generation without a plan.
+description: >-
+  Apply an approved scriptification plan by writing and integrating a
+  deterministic script. Use after evaluation and planning are approved. Not
+  for evaluation, planning, or arbitrary script generation.
 ---
 
 # Apply Agent Asset Scriptification
@@ -43,7 +46,8 @@ Use this workflow to write the actual code and modify the markdown file once an 
 3. Update the target markdown workflow:
    - Insert the explicit command invocation for the script.
    - Remove the obsolete natural language instructions.
-4. Run standard validation (e.g., `validate_asset.py`) to ensure the updated markdown remains structurally sound.
+4. Run [frontmatter-validate.md](../frontmatter-validate.md) and relevant
+   `mols-markdown-scripts` checks.
 
 ### Validation
 

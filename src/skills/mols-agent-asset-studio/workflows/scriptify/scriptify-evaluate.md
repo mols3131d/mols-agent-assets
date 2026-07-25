@@ -1,6 +1,9 @@
 ---
 name: scriptify-evaluate
-description: USE WHEN: the user wants to evaluate whether a workflow or asset can and should be scriptified. EXCLUDES: generating the script or modifying the original asset directly.
+description: >-
+  Evaluate whether an agent workflow or asset should become a deterministic
+  script, including feasibility and return on investment. Use before planning
+  or implementation. Not for writing scripts, planning, or editing the source.
 ---
 
 # Evaluate Agent Asset Scriptification
@@ -18,16 +21,11 @@ Evaluate whether a target agent asset or workflow step can and should be convert
 
 Use this workflow to assess scriptification suitability when the user proposes converting natural language instructions into scripts, before any planning or coding begins.
 
-## When NOT to Use
-
-- When the user explicitly requests to skip evaluation and proceed directly to planning or application (though a quick mental check is still required).
-- When the task intrinsically requires flexible text generation or LLM reasoning.
-
 ## Instructions
 
 - Stop and reject scriptification if the task requires LLM reasoning, context comprehension, intent interpretation, or flexible text generation.
 - Stop if scripting introduces unnecessary engineering complexity without a clear return on investment (ROI).
-- Read `references/zen-of-agent-assets.md` to cleanly separate Reasoning from Execution.
+- Read the relevant asset-studio reference for separating Reasoning from Execution.
 - Never force a script conversion if natural language is sufficient and efficient.
 
 ## Workflow: Evaluate Agent Asset Scriptification
