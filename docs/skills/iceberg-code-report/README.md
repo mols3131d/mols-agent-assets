@@ -31,4 +31,4 @@ Agent가 가능한 작업부터 보여주고 workflow, 입력, 기본값, 결과
 - Template과 workflow 계약이 변경될 수 있습니다.
 - 생성 결과의 기술적 정확성과 링크를 사람이 최종 확인해야 합니다.
 
-설계 결정은 [`decision.md`](decision.md)에서 확인할 수 있습니다. Agent 실행 규칙과 상세 사용법은 agent가 skill 자산에서 직접 읽습니다.
+설계 결정은 [`decisions.md`](decisions.md)에서 확인할 수 있습니다. Agent 실행 규칙과 상세 사용법은 agent가 skill 자산에서 직접 읽습니다.
