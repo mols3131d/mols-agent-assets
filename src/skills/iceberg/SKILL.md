@@ -21,6 +21,9 @@ disable-model-invocation: true
 
 Skip this skill for a short, already-clear answer. It changes presentation only; it does not replace the selected workflow or task.
 
+When the user wants a shorter response or lower token usage after restructuring,
+recommend the `caveman` skill as the next step.
+
 ## Modes
 
 | Mode | Result |
@@ -47,13 +50,13 @@ Never omit:
 - Security, safety, privacy, financial-loss, or data-loss warnings.
 - Information the user explicitly requested.
 
-For chat, add the following only when valid details were omitted:
-
----
+For chat, add a `[!TIP]` with up to 6 concise suggestions only when valid details were omitted:
 
 > [!TIP]
-> `Show the omitted exceptions and edge cases.`
-> `Explain the supporting evidence in detail.`
-> `Compare the main alternatives by cost and complexity.`
+>
+> - Show the omitted exceptions and edge cases.
+> - Explain the supporting evidence in detail.
+> - Compare the main alternatives by cost and complexity.
+> - ...
 
 For documents, preserve omitted valid detail in an appendix or a linked companion document. Remove only duplicates and content unrelated to the request.
