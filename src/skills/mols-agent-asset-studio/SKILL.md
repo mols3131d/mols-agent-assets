@@ -1,8 +1,11 @@
 ---
 name: mols-agent-asset-studio
-description: >
-  USE WHEN: managing, creating, improving, validating, naming, compressing, optimizing for agents, or routing agent assets (AGENTS.md, agent rules, workflows, skills, or bundled resources).
-  EXCLUDES: general code changes, merely invoking an existing skill, or modifying human-facing documentation.
+description: >-
+  Manage agent assets across creation, improvement, validation, naming,
+  optimization, and routing. Use when requests involve agent skills, rules,
+  workflows, prompts, or bundled resources, including structuring or
+  consolidating them. Does not apply to general application code, merely
+  invoking an existing skill, or human-facing documentation.
 compatibility: "Requires Agent Skill `mols-markdown-scripts`, Python >=3.13, rumdl, pyromark, pyyaml"
 ---
 
@@ -10,21 +13,22 @@ compatibility: "Requires Agent Skill `mols-markdown-scripts`, Python >=3.13, rum
 
 Manage agent assets.
 
-## When to Use
+## Routing
 
-- Creating, modifying, validating, or organizing agent configurations, rules, workflows, or skills.
-- Optimizing existing agent assets to be more agent-friendly (e.g., reducing context cost).
-- Structuring routing boundaries or standardizing agent asset formats.
-- Naming, compressing, or consolidating assets.
+1. Read `workflows/INDEX.csv` once.
+2. Identify the requested outcome, operation, object, and constraints.
+3. Compare the request with each workflow `description`.
+4. Select the minimum workflow set covering the request.
+5. Resolve material ambiguity with one targeted question.
+6. Resolve each selected `name` as `workflows/<name>.md`.
+7. Load referenced resources only when a selected workflow requires them.
+8. Run each selected workflow's validation before completion.
 
-## When NOT to Use
+Route by semantic intent, not keyword overlap. Do not scan `workflows/` to discover routes.
 
-- Writing or refactoring general application code.
-- Merely invoking an existing agent skill to perform its intended job.
-- Creating or modifying human-facing documentation (e.g., `README.md`).
+## Ambiguity
 
-## How to Route
-
-1. Confirm that the request belongs to this skill's domain.
-2. If it does, load `command/--route.md`.
-3. Follow the route selected by `command/--route.md`.
+- Select one route when it fully covers the request.
+- Select multiple routes only when the request explicitly spans them.
+- Ask one targeted question when remaining routes imply materially different actions.
+- If no route matches, state that the skill does not cover the request.
