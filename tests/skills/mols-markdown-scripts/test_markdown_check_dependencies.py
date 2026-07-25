@@ -1,29 +1,39 @@
-import subprocess
-import sys
-from pathlib import Path
+import importlib.metadata
+
+import check_dependencies
 
 
-def test_check_dependencies():
-    repo_root = Path(__file__).resolve().parents[3]
-    script_path = (
-        repo_root
-        / "src"
-        / "skills"
-        / "mols-markdown-scripts"
-        / "scripts"
-        / "check_dependencies.py"
+def test_check_dependencies_passes_when_requirements_are_available(monkeypatch):
+    monkeypatch.setattr(
+        check_dependencies.tomllib,
+        "load",
+        lambda _: {
+            "project": {"requires-python": ">=3.0", "dependencies": ["demo>=1"]}
+        },
     )
+    monkeypatch.setattr(check_dependencies.importlib.metadata, "version", lambda _: "1")
+    monkeypatch.setattr(check_dependencies.shutil, "which", lambda _: "/bin/tool")
 
-    # Run the dependency check script
-    result = subprocess.run(
-        [sys.executable, str(script_path)], capture_output=True, text=True
+    assert check_dependencies.main() == 0
+
+
+def test_check_dependencies_reports_missing_package_and_tool(monkeypatch, capsys):
+    monkeypatch.setattr(
+        check_dependencies.tomllib,
+        "load",
+        lambda _: {
+            "project": {
+                "requires-python": ">=3.0",
+                "dependencies": ["missing>=1"],
+            }
+        },
     )
+    monkeypatch.setattr(
+        check_dependencies.importlib.metadata,
+        "version",
+        lambda _: (_ for _ in ()).throw(importlib.metadata.PackageNotFoundError),
+    )
+    monkeypatch.setattr(check_dependencies.shutil, "which", lambda _: None)
 
-    # Since we are running in tests inside a configured python environment,
-    # it should pass successfully or fail gracefully based on system requirements.
-    # We assert that we get a structured exit code (0 or 1) and output is printed.
-    assert result.returncode in (0, 1)
-    if result.returncode == 0:
-        assert "verified successfully" in result.stdout
-    else:
-        assert "Dependency Check Failed" in result.stderr
+    assert check_dependencies.main() == 1
+    assert "Missing dependency: missing" in capsys.readouterr().err

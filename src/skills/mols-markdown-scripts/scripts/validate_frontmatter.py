@@ -8,39 +8,24 @@
 
 from __future__ import annotations
 
+import argparse
 import datetime
+import json
 import re
+import sys
 from pathlib import Path
-from typing import Any
+from typing import Any, Sequence
 
+from frontmatter import read_frontmatter
 
-def _parse_frontmatter(content: str) -> dict | None:
-    """Parse YAML frontmatter block from markdown content."""
-    try:
-        import yaml
-    except ImportError as error:
-        raise ImportError("dependency 'yaml' is missing") from error
-
-    lines = content.splitlines()
-    if not lines or lines[0] != "---":
-        return None
-
-    yaml_lines = []
-    found_end = False
-    for line in lines[1:]:
-        if line == "---":
-            found_end = True
-            break
-        yaml_lines.append(line)
-
-    if not found_end:
-        return None
-
-    try:
-        data = yaml.safe_load("\n".join(yaml_lines))
-        return data if isinstance(data, dict) else None
-    except Exception:
-        return None
+TYPE_NAMES = {
+    "bool": bool,
+    "dict": dict,
+    "float": float,
+    "int": int,
+    "list": list,
+    "str": str,
+}
 
 
 def _validate_value(value: Any, spec: dict) -> bool:
@@ -93,7 +78,9 @@ def _validate_value(value: Any, spec: dict) -> bool:
             return False
 
     # 8. Nested schema validation
-    if "schema" in spec and isinstance(value, dict):
+    if "schema" in spec:
+        if not isinstance(value, dict):
+            return False
         nested_schema = spec["schema"]
         if spec.get("strict") and any(k not in nested_schema for k in value):
             return False
@@ -108,6 +95,7 @@ def validate_frontmatter(
     file_path: Path,
     required_fields: set[str] | None = None,
     schema: dict | None = None,
+    expected_values: dict[str, Any] | None = None,
 ) -> bool:
     """Validate YAML frontmatter against required fields or a schema.
 
@@ -133,10 +121,10 @@ def validate_frontmatter(
     if not file_path.is_file():
         return False
 
-    content = file_path.read_text(encoding="utf-8")
-    data = _parse_frontmatter(content)
-    if data is None:
+    parsed = read_frontmatter(file_path)
+    if parsed is None:
         return False
+    data, _ = parsed
 
     if required_fields is not None:
         if not required_fields.issubset(data.keys()):
@@ -154,12 +142,87 @@ def validate_frontmatter(
             if key not in data or not _validate_value(data[key], spec):
                 return False
 
+    if expected_values is not None:
+        for key, value in expected_values.items():
+            if data.get(key) != value:
+                return False
+
     return True
 
 
-def main() -> None:
-    pass
+def _load_schema(path: Path) -> dict[str, Any]:
+    """YAML schema를 읽고 type 이름을 Python type으로 변환한다."""
+    try:
+        import yaml
+    except ImportError as error:
+        raise ImportError("dependency 'yaml' is missing") from error
+
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise ValueError("schema root must be a mapping")
+
+    def convert(value: Any) -> Any:
+        if isinstance(value, list):
+            return [convert(item) for item in value]
+        if not isinstance(value, dict):
+            return value
+        converted = {key: convert(item) for key, item in value.items()}
+        for key in ("type", "item_type"):
+            type_name = converted.get(key)
+            if isinstance(type_name, str):
+                if type_name not in TYPE_NAMES:
+                    raise ValueError(f"unsupported {key}: {type_name}")
+                converted[key] = TYPE_NAMES[type_name]
+        return converted
+
+    return convert(data)
+
+
+def _parse_expected(items: Sequence[str]) -> dict[str, str]:
+    expected: dict[str, str] = {}
+    for item in items:
+        if "=" not in item:
+            raise ValueError(f"--expect must use key=value: {item}")
+        key, value = item.split("=", 1)
+        if not key:
+            raise ValueError(f"--expect key is empty: {item}")
+        expected[key] = value
+    return expected
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("files", nargs="+", type=Path)
+    parser.add_argument("--required", nargs="+", default=[])
+    parser.add_argument("--schema", type=Path)
+    parser.add_argument(
+        "--expect",
+        action="append",
+        default=[],
+        metavar="KEY=VALUE",
+        help="Require an exact scalar value; repeat for multiple fields",
+    )
+    args = parser.parse_args(argv)
+
+    try:
+        schema = _load_schema(args.schema) if args.schema else None
+        expected = _parse_expected(args.expect)
+        results = {
+            str(path): validate_frontmatter(
+                path,
+                required_fields=set(args.required),
+                schema=schema,
+                expected_values=expected,
+            )
+            for path in args.files
+        }
+    except (ImportError, OSError, ValueError) as exc:
+        print(str(exc), file=sys.stderr)
+        return 2
+
+    print(json.dumps(results, ensure_ascii=False, indent=2))
+    return 0 if all(results.values()) else 1
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

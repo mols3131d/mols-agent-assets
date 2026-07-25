@@ -6,7 +6,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
-from validate_frontmatter import validate_frontmatter
+from validate_frontmatter import main, validate_frontmatter
 
 
 def test_validate_frontmatter_success():
@@ -165,3 +165,54 @@ def test_validate_frontmatter_extra_rules():
         md_strict_bad = tmp_path / "strict_bad.md"
         md_strict_bad.write_text("---\ntitle: Hello\nunknown: field\n---")
         assert validate_frontmatter(md_strict_bad, schema=schema_strict) is False
+
+
+def test_validate_frontmatter_rejects_non_mapping_nested_schema_value(tmp_path):
+    document = tmp_path / "document.md"
+    document.write_text("---\nmetadata: text\n---\n", encoding="utf-8")
+
+    assert validate_frontmatter(document, schema={"metadata": {"schema": {}}}) is False
+
+
+def test_validate_frontmatter_cli_uses_schema_and_expected_value(tmp_path):
+    document = tmp_path / "SKILL.md"
+    document.write_text(
+        "---\nname: sample-skill\ndescription: Use when testing.\n---\n",
+        encoding="utf-8",
+    )
+    schema = tmp_path / "schema.yaml"
+    schema.write_text(
+        """__strict__: true
+name:
+  type: str
+  pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
+description:
+  type: str
+  max_length: 1024
+""",
+        encoding="utf-8",
+    )
+
+    assert (
+        main(
+            [
+                str(document),
+                "--schema",
+                str(schema),
+                "--expect",
+                "name=sample-skill",
+            ]
+        )
+        == 0
+    )
+    assert main([str(document), "--expect", "name=wrong-name"]) == 1
+
+
+def test_validate_frontmatter_cli_reports_schema_and_argument_errors(tmp_path):
+    document = tmp_path / "document.md"
+    document.write_text("---\nname: sample\n---\n", encoding="utf-8")
+    bad_schema = tmp_path / "schema.yaml"
+    bad_schema.write_text("name:\n  type: unknown\n", encoding="utf-8")
+
+    assert main([str(document), "--schema", str(bad_schema)]) == 2
+    assert main([str(document), "--expect", "invalid"]) == 2

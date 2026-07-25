@@ -9,7 +9,7 @@ import io
 from pathlib import Path
 from typing import Any
 
-import yaml
+from frontmatter import parse_frontmatter_document
 
 CORE_FIELDS = ("title", "description", "tags", "status")
 CSV_FIELDS = ("file", *CORE_FIELDS)
@@ -17,26 +17,12 @@ SUPPORTED_FORMATS = ("csv", "table", "list")
 GROUP_SORTS = ("alpha", "input")
 
 
-def _parse_frontmatter(content: str) -> dict[str, Any] | None:
-    lines = content.splitlines()
-    if not lines or lines[0].strip() != "---":
-        return None
-
-    end = next(
-        (index for index, line in enumerate(lines[1:], 1) if line.strip() == "---"),
-        None,
-    )
-    if end is None:
-        return None
-
-    data = yaml.safe_load("\n".join(lines[1:end]))
-    return data if isinstance(data, dict) else None
-
-
 def _collect_entries(
     directory: Path,
     globs: list[str] | None = None,
-    max_depth: int | None = 0,
+    max_depth: int | None = None,
+    required_fields: list[str] | None = None,
+    unique_fields: list[str] | None = None,
 ) -> list[dict[str, Any]]:
     patterns = globs if globs else ["*.md", "**/*.md"]
     found_paths: set[Path] = set()
@@ -60,10 +46,41 @@ def _collect_entries(
 
     entries = []
     for path in sorted(found_paths):
-        frontmatter = _parse_frontmatter(path.read_text(encoding="utf-8"))
-        if frontmatter is None:
-            frontmatter = {}
+        parsed = parse_frontmatter_document(path.read_text(encoding="utf-8"))
+        if parsed is None:
+            if required_fields:
+                relative_path = path.relative_to(directory).as_posix()
+                raise ValueError(
+                    f"{relative_path}: YAML frontmatter is required for fields: "
+                    + ", ".join(required_fields)
+                )
+            continue
+        frontmatter, _ = parsed
+        missing = [
+            field
+            for field in required_fields or []
+            if not _stringify(frontmatter.get(field)).strip()
+        ]
+        if missing:
+            relative_path = path.relative_to(directory).as_posix()
+            raise ValueError(
+                f"{relative_path}: required frontmatter fields missing: "
+                + ", ".join(missing)
+            )
         entries.append({"file": path.relative_to(directory).as_posix(), **frontmatter})
+
+    for field in unique_fields or []:
+        seen: dict[str, str] = {}
+        for entry in entries:
+            value = _stringify(entry.get(field)).strip()
+            if not value:
+                continue
+            if value in seen:
+                raise ValueError(
+                    f"duplicate frontmatter {field}={value!r}: "
+                    f"{seen[value]}, {entry['file']}"
+                )
+            seen[value] = entry["file"]
     return entries
 
 
@@ -86,6 +103,7 @@ def _csv_output(
         fieldnames=fields,
         extrasaction="ignore",
         quoting=csv.QUOTE_ALL,
+        lineterminator="\n",
     )
     writer.writeheader()
     for entry in entries:
@@ -197,11 +215,13 @@ def generate_index(
     format: str = "csv",
     fields: list[str] | None = None,
     globs: list[str] | None = None,
-    max_depth: int | None = 0,
+    max_depth: int | None = None,
     group_by: list[str] | None = None,
     group_label: bool = True,
     group_missing: str = "[unset]",
     group_sort: str = "alpha",
+    required_fields: list[str] | None = None,
+    unique_fields: list[str] | None = None,
 ) -> str:
     """Generate an index string from Markdown files below ``directory``."""
     if not directory.is_dir():
@@ -213,7 +233,13 @@ def generate_index(
     if group_sort not in GROUP_SORTS:
         raise ValueError(f"unsupported group sort: {group_sort}")
 
-    entries = _collect_entries(directory, globs=globs, max_depth=max_depth)
+    entries = _collect_entries(
+        directory,
+        globs=globs,
+        max_depth=max_depth,
+        required_fields=required_fields,
+        unique_fields=unique_fields,
+    )
     selected_fields = fields if fields else list(CSV_FIELDS)
     if format == "csv":
         return _csv_output(entries, fields=selected_fields)
@@ -222,7 +248,7 @@ def generate_index(
     return _list_output(entries, group_by, group_label, group_missing, group_sort)
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("directory", type=Path)
     parser.add_argument("--format", choices=SUPPORTED_FORMATS, default="csv")
@@ -249,7 +275,19 @@ def main() -> None:
     )
     parser.add_argument("--group-missing", default="[unset]")
     parser.add_argument("--group-sort", choices=GROUP_SORTS, default="alpha")
-    args = parser.parse_args()
+    parser.add_argument(
+        "--require-fields",
+        nargs="+",
+        default=[],
+        help="Fail when an indexed file lacks any listed frontmatter field",
+    )
+    parser.add_argument(
+        "--unique-fields",
+        nargs="+",
+        default=[],
+        help="Fail when any listed frontmatter field contains duplicate values",
+    )
+    args = parser.parse_args(argv)
     result = generate_index(
         directory=args.directory,
         format=args.format,
@@ -260,12 +298,15 @@ def main() -> None:
         group_label=args.group_label,
         group_missing=args.group_missing,
         group_sort=args.group_sort,
+        required_fields=args.require_fields,
+        unique_fields=args.unique_fields,
     )
     if args.output:
         args.output.write_text(result, encoding="utf-8")
     else:
         print(result, end="")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

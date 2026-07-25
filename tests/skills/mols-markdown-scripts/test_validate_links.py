@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import tempfile
 from pathlib import Path
+from subprocess import CalledProcessError
+from unittest.mock import patch
 
 from validate_links import validate_links
 
@@ -28,3 +30,27 @@ def test_validate_links_failure():
 
 def test_validate_links_non_existent():
     assert validate_links(Path("non_existent_file.md")) is False
+
+
+def test_validate_links_passes_selected_rules_and_handles_tool_failure(tmp_path):
+    document = tmp_path / "document.md"
+    document.write_text("# Title\n", encoding="utf-8")
+
+    with patch("validate_links.subprocess.run") as run:
+        assert validate_links([document], executable="tool --flag") is True
+        assert run.call_args.args[0] == [
+            "tool",
+            "--flag",
+            "check",
+            "--config",
+            "MD051.enabled = true",
+            "--config",
+            "MD052.enabled = true",
+            str(document),
+        ]
+
+    with patch(
+        "validate_links.subprocess.run",
+        side_effect=CalledProcessError(1, ["tool"]),
+    ):
+        assert validate_links(document, executable="tool") is False

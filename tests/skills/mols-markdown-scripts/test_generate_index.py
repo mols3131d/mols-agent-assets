@@ -4,7 +4,7 @@ import csv
 import io
 
 import pytest
-from generate_index import generate_index  # noqa: E402
+from generate_index import generate_index, main  # noqa: E402
 
 
 @pytest.fixture
@@ -161,3 +161,78 @@ def test_generate_index_rejects_non_directory(tmp_path):
 
     with pytest.raises(NotADirectoryError):
         generate_index(source, format="csv")
+
+
+def test_generate_index_requires_selected_frontmatter_fields(tmp_path):
+    (tmp_path / "workflow.md").write_text(
+        "---\nname: workflow\n---\n", encoding="utf-8"
+    )
+
+    with pytest.raises(ValueError, match="description"):
+        generate_index(
+            tmp_path,
+            format="csv",
+            fields=["name", "description"],
+            required_fields=["name", "description"],
+        )
+
+
+def test_generate_index_requires_frontmatter_when_fields_are_required(tmp_path):
+    (tmp_path / "workflow.md").write_text("# Missing frontmatter\n", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="YAML frontmatter is required"):
+        generate_index(tmp_path, required_fields=["name"])
+
+
+def test_generate_index_rejects_duplicate_selected_field(tmp_path):
+    for filename in ("one.md", "two.md"):
+        (tmp_path / filename).write_text(
+            "---\nname: duplicate\ndescription: Route.\n---\n",
+            encoding="utf-8",
+        )
+
+    with pytest.raises(ValueError, match="duplicate frontmatter name"):
+        generate_index(tmp_path, unique_fields=["name"])
+
+
+def test_generate_index_honors_globs_and_max_depth(markdown_directory):
+    result = generate_index(
+        markdown_directory,
+        fields=["file", "title"],
+        globs=["*.md"],
+        max_depth=0,
+    )
+
+    assert list(csv.DictReader(io.StringIO(result))) == [
+        {"file": "guide.md", "title": "Markdown Guide"}
+    ]
+
+
+def test_generate_index_cli_writes_requested_output(tmp_path):
+    (tmp_path / "workflow.md").write_text(
+        "---\nname: workflow\ndescription: Test workflow.\n---\n",
+        encoding="utf-8",
+    )
+    output = tmp_path / "custom-name.csv"
+
+    assert (
+        main(
+            [
+                str(tmp_path),
+                "--fields",
+                "name",
+                "description",
+                "--require-fields",
+                "name",
+                "description",
+                "--unique-fields",
+                "name",
+                "--output",
+                str(output),
+            ]
+        )
+        == 0
+    )
+    assert list(csv.DictReader(output.open(encoding="utf-8"))) == [
+        {"name": "workflow", "description": "Test workflow."}
+    ]

@@ -9,8 +9,10 @@
 
 from __future__ import annotations
 
+import argparse
+import json
 from pathlib import Path
-from typing import Any
+from typing import Any, Sequence
 
 
 def _extract_heading_levels(events: Any) -> list[int]:
@@ -41,7 +43,7 @@ def validate_headers(file_path: Path) -> bool:
         - Only one H1 heading exists.
         - No heading levels are skipped (e.g., H1 followed by H3).
     """
-    import pyromark  # type: ignore[import-not-found]  # ty: ignore[unresolved-import]
+    import pyromark  # type: ignore[import-not-found]
 
     if not file_path.is_file():
         return False
@@ -65,9 +67,16 @@ def validate_headers(file_path: Path) -> bool:
     return True
 
 
-def main() -> None:
-    pass
+def main(argv: Sequence[str] | None = None) -> int:
+    """CLI execution entrypoint."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("files", nargs="+", type=Path)
+    args = parser.parse_args(argv)
+
+    results = {str(path): validate_headers(path) for path in args.files}
+    print(json.dumps(results, ensure_ascii=False, indent=2))
+    return 0 if all(results.values()) else 1
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

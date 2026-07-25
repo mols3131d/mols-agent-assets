@@ -7,7 +7,7 @@ import tomllib
 from pathlib import Path
 
 
-def main():
+def main() -> int:
     toml_path = Path(__file__).resolve().parent.parent / "pyproject.toml"
     missing = []
 
@@ -23,7 +23,8 @@ def main():
             req_ver = tuple(map(int, py_ver_match.group(1).split(".")))
             if sys.version_info[:2] < req_ver:
                 missing.append(
-                    f"Python {req_python} required (Current: {sys.version_info[0]}.{sys.version_info[1]})"
+                    f"Python {req_python} required "
+                    f"(Current: {sys.version_info[0]}.{sys.version_info[1]})"
                 )
 
         # 2. Package dependencies check
@@ -39,18 +40,19 @@ def main():
     # 3. Check for rumdl/uv tool
     if not (shutil.which("rumdl") or shutil.which("uv")):
         missing.append(
-            "Formatting command 'rumdl' not found in PATH, and 'uv' is not installed to run it via 'uv tool run'."
+            "Formatting command 'rumdl' not found in PATH, and 'uv' is not "
+            "installed to run it via 'uv tool run'."
         )
 
     if missing:
         print("Dependency Check Failed for mols-markdown-scripts:", file=sys.stderr)
         for item in missing:
             print(f" - {item}", file=sys.stderr)
-        sys.exit(1)
+        return 1
 
     print("mols-markdown-scripts: All dependencies verified successfully.")
-    sys.exit(0)
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import tempfile
 from pathlib import Path
+from subprocess import CalledProcessError, CompletedProcess
+from unittest.mock import patch
 
 from format_markdown import format_markdown
 
@@ -52,3 +54,19 @@ def test_format_markdown_multiple_files():
         content2 = md2.read_text(encoding="utf-8")
         assert "\n\n\n" not in content1
         assert "\n\n\n" not in content2
+
+
+def test_format_markdown_builds_command_and_handles_formatter_failure(tmp_path):
+    document = tmp_path / "doc.md"
+    document.write_text("# Title\n", encoding="utf-8")
+
+    with patch("format_markdown.subprocess.run") as run:
+        run.return_value = CompletedProcess([], 0)
+        assert format_markdown(document, executable="tool --flag") is True
+        assert run.call_args.args[0] == ["tool", "--flag", "fmt", str(document)]
+
+    with patch(
+        "format_markdown.subprocess.run",
+        side_effect=CalledProcessError(1, ["tool"]),
+    ):
+        assert format_markdown(document, executable="tool") is False
