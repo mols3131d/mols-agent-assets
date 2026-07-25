@@ -1,8 +1,7 @@
 ---
 name: agent-skill-frontmatter
-description: >
-  USE WHEN: defining, validating, or modifying the frontmatter properties (name, description, user-invocable, etc.) of an agent skill.
-  EXCLUDES: directory structure specifications, naming conventions, or route table definitions.
+description: >-
+  Define or validate Agent Skill frontmatter properties such as name, description, and user-invocable. Use when creating or modifying skill metadata. Not for directory structure, naming, or route tables.
 ---
 
 # Skill Frontmatter

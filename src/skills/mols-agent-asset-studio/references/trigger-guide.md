@@ -1,8 +1,7 @@
 ---
 name: trigger-guide
-description: >
-  USE WHEN: writing or validating trigger/activation descriptions for agent assets.
-  EXCLUDES: strict validation templates or routing details.
+description: >-
+  Write or validate activation descriptions for agent assets. Use when defining invocation conditions, scope, or boundaries. Not for strict schemas or routing logic.
 ---
 
 # Agent Asset Trigger Guide

@@ -1,8 +1,7 @@
 ---
 name: section
-description: >
-  USE WHEN: understanding essential roles, semantic purpose, and structural concepts of agent asset sections and headers.
-  EXCLUDES: directory structure specifications, naming conventions, or trigger description details.
+description: >-
+  Define semantic roles and structural boundaries for agent-asset sections and headings. Use when designing or reviewing Markdown structure. Not for directory layout, naming, or trigger wording.
 ---
 
 # Agent Asset Structural Concepts & Essential Roles
@@ -35,7 +34,7 @@ Markdown headers in an agent asset are semantic boundaries that guide model reas
 - **Intent**: Break down execution into clear context, ordered steps, and outcome checks.
 - **Header Examples**: `Workflow`, `Context` (`Arguments`/`Parameters`), `Procedure` / `Steps`, `Validation` / `Checks`
 
-### 5. Context & Resource References
+### 5. Resource References
 
 - **Role**: Link to external knowledge, sub-workflows, or reference files loaded on demand.
 - **Intent**: Keep prompt lightweight by deferring deep context to dedicated reference files.

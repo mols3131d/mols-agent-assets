@@ -1,9 +1,7 @@
 ---
 name: modular
-description: >
-  Decompose a primary asset into independent, single-responsibility module assets to optimize context and maintainability.
-  Use when decomposing complex domain procedures or multi-step workflows into functional building blocks.
-  Does not apply to attaching simple auxiliary/optional sub-help or single-file assets.
+description: >-
+  Decompose a complex asset into independent, single-responsibility modules for context efficiency and maintainability. Use for multi-step procedures or workflows. Not for optional sub-help or single-file assets.
 ---
 
 # Modular Asset Pattern

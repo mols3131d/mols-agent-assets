@@ -1,9 +1,7 @@
 ---
 name: router-pattern
-description: >
-  Establish router asset boundaries, intent navigation, and routing instruction design for progressive disclosure.
-  Use when designing router assets or embedding routing instructions into workflows.
-  Does not apply to single-file skills or monolithic scripts.
+description: >-
+  Design router boundaries and intent navigation for progressive disclosure. Use when creating router assets or routing workflow instructions. Not for single-file skills or monolithic scripts.
 ---
 
 # Router Pattern

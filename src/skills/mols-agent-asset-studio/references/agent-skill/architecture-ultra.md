@@ -1,8 +1,7 @@
 ---
 name: architecture-ultra
-description: >
-  USE WHEN: structuring complex agent skill assets by segregating routing, workflows, and CLI commands out of references.
-  EXCLUDES: basic single-file or standard shared-reference skill structures.
+description: >-
+  Structure complex agent skills by separating routing, workflows, and CLI commands from references. Use when a skill needs dedicated command, route, or workflow layers. Not for single-file or standard shared-reference skills.
 ---
 
 # Agent Skill Architecture Ultra
@@ -16,7 +15,7 @@ Advanced directory partitioning strategy to prevent asset clutter in `references
 
 | Path | Required | Description |
 | :--- | :---: | :--- |
-| `references/` | ✅ | Passive knowledge, design specifications, and core principles. |
+| `references/` | ❌ | Passive knowledge, design specifications, and core principles. |
 | `workflows/` | ❌ | Actionable procedural guidelines and task execution modules. |
 | `router/` | ❌ | Dedicated routing logic and decision matrix assets. |
 | `command/` | ❌ | Command-line interface flag handlers (e.g. `--help.md`, `--init.md`, `--config.md`, `--route.md`). |

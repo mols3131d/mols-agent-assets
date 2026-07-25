@@ -1,9 +1,7 @@
 ---
 name: extension-pattern
-description: >
-  Attach auxiliary functionality (sub-help, edge cases, advanced options) to primary assets via progressive disclosure.
-  Use when defining secondary, optional extensions that enhance a primary asset without breaking its standalone completeness.
-  Does not apply to primary domain step decomposition or core router indices.
+description: >-
+  Attach optional help, edge cases, or advanced options to a complete primary asset through progressive disclosure. Use for secondary extensions. Not for domain decomposition or router indices.
 ---
 
 # Extension Pattern

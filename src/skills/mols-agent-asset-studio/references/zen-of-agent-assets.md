@@ -1,8 +1,7 @@
 ---
 name: zen-of-agent-assets
-description: >
-  USE WHEN: applying core philosophical principles or architectural heuristics when developing agent assets.
-  EXCLUDES: workflow implementation, markdown formatting specs, or file routing rules.
+description: >-
+  Apply core principles and architectural heuristics for agent assets. Use when designing or reviewing asset behavior and structure. Not for workflow implementation, Markdown formatting, or file routing.
 ---
 
 # The Zen of Agent Assets

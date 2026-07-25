@@ -1,6 +1,7 @@
 ---
 name: architecture
-description:
+description: >-
+  Define the standard directory and file structure for Agent Skills. Use when creating or reviewing a skill’s layout and component boundaries. Not for complex architecture variants or naming rules.
 ---
 
 # Agent Skill Architecture

@@ -1,8 +1,7 @@
 ---
 name: naming-convention
-description: >
-  USE WHEN: naming new agent assets, setting domain prefixes, or using skill complexity patterns.
-  EXCLUDES: trigger formatting or routing logic.
+description: >-
+  Name agent assets with domain prefixes and complexity patterns. Use when creating or renaming assets. Not for trigger wording or routing logic.
 ---
 
 # Naming Convention
