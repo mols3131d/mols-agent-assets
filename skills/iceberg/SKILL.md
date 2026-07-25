@@ -1,68 +1,62 @@
 ---
 name: iceberg
-description: >
-  USE WHEN: 에이전트가 iceberg 핵심 원칙(lite, full, ultra)을 준수해야 할 때.
-  EXCLUDES: 일반적인 워크플로우 실행.
+description: >-
+  Restructure dense answers and documents around the decision. Use when conclusions,
+  conditions, risks, or next actions are buried in detail. Preserve material facts
+  and warnings; do not replace the underlying task.
+argument-hint: "[lite|full|ultra]"
+user-invocable: true
+disable-model-invocation: true
 ---
 
 # Iceberg
 
-## Goal
+> Make dense information easy to scan without hiding what changes the decision.
 
-정보가 많을 때 핵심과 다음 탐색 경로를 제공해 사용자가 쉽게 이해하고 행동하도록 돕는다. 정보 쓰나미, 이해 부채, 이해 병목을 해소한다.
+## Use When
 
-## Arguments
+- The response or document is long, dense, repetitive, or hard to scan.
+- Conclusions, conditions, and evidence are mixed together.
+- The user asks for a concise, structured, or executive-style rewrite.
 
-- `lite`: 기본 모드. 핵심 결론과 다음 행동 또는 탐색 경로를 우선 제공한다.
-- `full`: 핵심 결론에 판단에 필요한 최소 근거, 전제, 위험을 추가한다.
-- `ultra`: 결론 1~2문장과 다음 탐색 경로만 우선 제공한다.
-- 인자가 없으면 `lite`를 사용한다.
+Skip this skill for a short, already-clear answer. It changes presentation only; it does not replace the selected workflow or task.
 
-## Instructions
+When the user wants a shorter response or lower token usage after restructuring,
+recommend the `caveman` skill as the next step.
 
-- 이미 선택된 작업의 목적과 사용자가 당장 필요한 결과를 먼저 파악한다.
-- 사용자의 직접 질문에 대한 결론을 응답 앞부분에 둔다.
-- 실행에 필요한 전제조건, 오류, 안전·보안·데이터 손실 위험을 먼저 확인한다.
-- 현재 목적에 필요한 정보만 제공하고, 배경 설명과 요청되지 않은 예시는 뒤로 미룬다.
-- 생략한 상세 정보에는 힌트, 링크, 관련 문서, 후속 질문 중 가능한 탐색 경로를 남긴다.
-- 사용자가 상세 설명, 근거, 전체 목록을 요청하면 핵심 요약을 유지한 채 응답을 단계적으로 확장한다.
-- 정보가 부족하면 추측으로 채우지 말고 필요한 질문이나 확인 경로를 제시한다.
+## Modes
 
-## Constraints
+| Mode | Result |
+| --- | --- |
+| `lite` | Reorder and clarify; retain all valid detail. |
+| `full` | Default. Remove only repetition or irrelevant content; move valid supporting detail out of the core flow. |
+| `ultra` | Return only the essential callout. Include a TIP or appendix when details were omitted. |
 
-- 일반적인 작업 실행이나 코드베이스 재구성을 대신 수행하지 않는다.
-- 다른 작업·출력 계약을 대체하지 않는다. Iceberg는 공개 방식만 조절한다.
-- 정보량을 기계적인 토큰 수로 제한하지 않는다.
-- 목적 달성, 안전, 검증에 필요한 정보는 모드와 관계없이 보존한다.
-- 다음 정보는 응답을 짧게 작성하더라도 숨기거나 생략하지 않는다.
-  - 테스트와 검증 결과
-  - 작업을 막는 오류나 차단 요인
-  - 안전, 보안, 데이터 손실과 관련된 위험
-  - 사용자가 즉시 실행해야 하는 전제조건
+## Workflow
 
-## Validation
+1. Identify the user's decision or immediate need.
+2. Lead with a GitHub callout of at most four lines: conclusion, required conditions, and material warnings only.
+3. Put actions and decisions before background. Use no more than four `##` sections and one `###` level unless clarity requires more.
+4. Merge duplicates; do not invent facts or flatten distinct conditions into a vague summary.
 
-- 선택한 모드가 `lite`, `full`, `ultra` 중 하나인지 확인한다.
-- 결론이 응답 앞부분에 있고 현재 목적에 필요한 정보가 포함되어 있는지 확인한다.
-- 검증 결과, 차단 요인, 실행 전제, 안전·보안·데이터 손실 위험이 누락되지 않았는지 확인한다.
-- 요청되지 않은 부연 설명이나 존재하지 않는 탐색 경로를 추가하지 않았는지 확인한다.
-- 참조 문서와 선택된 워크플로의 경로가 실제로 해석되는지 확인한다.
+Use `[!NOTE]` for a summary, `[!IMPORTANT]` for a must-know condition, and `[!WARNING]` for a material risk. Add section-level callouts only when the key point would otherwise be buried.
 
-## Information Priority
+## Guardrails
 
-다음 순서로 공개할 정보를 선택한다.
+Never omit:
 
-1. 사용자의 직접 질문에 대한 결론
-2. 실행에 필요한 전제조건
-3. 오류, 안전, 보안, 데이터 손실 위험
-4. 사용자가 취할 다음 행동
-5. 배경 설명, 부연, 요청되지 않은 예시
+- Conditions, assumptions, evidence, or numbers that could change the conclusion.
+- Required steps, constraints, blockers, test results, or validation results.
+- Security, safety, privacy, financial-loss, or data-loss warnings.
+- Information the user explicitly requested.
 
-## Output Contract
+For chat, add a `[!TIP]` with up to 6 concise suggestions only when valid details were omitted:
 
-- 핵심 결론을 응답 앞부분에 둔다.
-- 현재 목적에 필요한 정보만 먼저 제공한다.
-- 상세 정보 대신 힌트, 링크, 관련 문서, 후속 질문 등 탐색 경로를 남긴다.
-- 탐색 경로가 없으면 존재하지 않는 링크나 설명을 만들어내지 않는다.
-- 사용자가 상세 설명, 근거, 전체 목록을 명시적으로 요청하면 현재 모드의 제한을 단계적으로
-  완화한다. 확장된 응답에서도 핵심 요약을 먼저 제공한다.
+> [!TIP]
+>
+> - Show the omitted exceptions and edge cases.
+> - Explain the supporting evidence in detail.
+> - Compare the main alternatives by cost and complexity.
+> - ...
+
+For documents, preserve omitted valid detail in an appendix or a linked companion document. Remove only duplicates and content unrelated to the request.
