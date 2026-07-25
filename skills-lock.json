@@ -20,7 +20,7 @@
       "ref": "main",
       "sourceType": "github",
       "skillPath": "src/skills/mols-agent-asset-studio/SKILL.md",
-      "computedHash": "50b5e58fb1229a28604c7caabbefd9463ce08ec2e28c8cc335f188f807ea78ff"
+      "computedHash": "baacffd2288c2f86ce36ec68f1ea3f35e0104b2445dbdc43cf2b10f395f05a57"
     },
     "mols-documents-studio": {
       "source": "mols3131d/mols-agent-assets",
@@ -41,7 +41,7 @@
       "ref": "main",
       "sourceType": "github",
       "skillPath": "src/skills/mols-markdown-scripts/SKILL.md",
-      "computedHash": "3a9e7196cf4e814382549bbaa675be9410b9c34455453968636782b1780ac3a3"
+      "computedHash": "90e57ad63cc78481560ad2ce4fcb47836d120a0a75449c69c6b256c8f18b8ee7"
     },
     "vcs-git-commit": {
       "source": "mols3131d/mols-agent-assets",
