@@ -111,4 +111,4 @@ Skill 폴더와 Frontmatter `name`은 일치해야 하며 이름은 lowercase le
 - `workflows/` 아래 nested `SKILL.md` 없음
 - Clear, near-miss, multi-workflow, ambiguous 요청에 대한 route 검증
 
-Source Skill의 permission, ownership, trigger, release lifecycle이 다르면 통합하지 않는다. Filesystem 변환은 `scripts/routerize_skills.py`, 구조 검증은 `scripts/validate_asset.py`를 사용한다.
+Source Skill의 permission, ownership, trigger, release lifecycle이 다르면 통합하지 않는다. Workflow 이동은 수동으로 검토하고, frontmatter 검증은 `mols-markdown-scripts`의 공통 스크립트를 사용한다.
