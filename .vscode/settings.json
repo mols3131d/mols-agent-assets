@@ -23,5 +23,10 @@
 		"**/node_modules": true,
 		".rumdl_cache": true
 	},
-	"markdown.validate.enabled": true
+	"python.analysis.ignore": [
+		"**/scripts/**"
+	],
+	"python.analysis.diagnosticSeverityOverrides": {
+		"reportMissingImports": "none"
+	}
 }
