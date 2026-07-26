@@ -1,25 +1,25 @@
-# Asset Development Guide
+# 자산 개발 가이드
 
-Guide for creating, editing, optimizing, and deploying AI agent assets (skills, prompts, rules, agents) in `mols-agent-assets`.
+`mols-agent-assets` 저장소에서 AI 에이전트 자산(스킬, 프롬프트, 규칙, 에이전트)을 신규 생성하고 수정, 최적화 및 배포하는 가이드입니다.
 
----
+## 디렉터리 역할
 
-## Directory Roles
+- `src/`: 자산 생성, 수정, 검증 및 배포를 수행하는 통합 공간.
+- `tests/`: 자산 및 도구를 검증하는 자동화 테스트 공간.
 
-- `src/`: Unified workspace for creating, editing, testing, and distributing agent assets.
-- `tests/`: Automated test suite for assets and tools.
+## 개발 파이프라인
 
-## Development Pipeline
+2. **자산 작성 (`src/`)**:
+   - `src/` 디렉터리 내에서 마크다운(`.md`) 파일로 에셋을 직접 작성 및 수정합니다.
 
-1. **Branching (`<lead-id>/<type>/<name>`)**:
-   - Create a feature branch using `<lead-id>/<type>/<name>` structure (e.g., `mols/feat/git-commit-vcs`) to work on new or modified assets in `src/`.
+3. **최적화 및 검증 (`mols-agent-asset-studio`)**:
+   - `mols-agent-asset-studio` 스킬을 활용하여 컨텍스트 용량 최적화 및 규격 검증을 수행합니다.
+   - 테스트 스위트(`uv run pytest tests/`)를 실행하여 검증합니다.
 
-2. **Authoring (`src/`)**:
-   - Write and edit assets directly in markdown (`.md`) format within `src/`.
+4. **배포 (브랜치 머지)**:
+   - 검증이 완료된 피처 브랜치를 `main` 브랜치로 커밋 및 머지하여 배포합니다.
 
-3. **Optimization & Validation (`mols-agent-asset-studio`)**:
-   - Use the `mols-agent-asset-studio` skill to validate structure and optimize context size.
-   - Verify changes using the test suite (`uv run pytest tests/`).
+## 버전 관리
 
-4. **Deployment (Branch Merge)**:
-   - Commit and merge the feature branch into `main` after validation passes.
+1. **브랜치 생성 (`<책임자id>/<타입>/<이름>`)**:
+   - `src/` 내 자산 개발 및 수정을 위해 `<책임자id>/<타입>/<이름>` 구조의 브랜치(예: `mols/feat/git-commit-vcs` 또는 `mols3131d/feat/git-commit-vcs`)를 생성합니다.

@@ -1,14 +1,14 @@
-# Documentation (`docs/`)
+# 저장소 문서 (`docs/`)
 
-Human-readable guides, repository policies, and asset documentation.
+프로젝트 정책, 자산 설명서 및 가이드 문서 보관 공간입니다.
 
 ---
 
-## Directory Layout
+## 디렉터리 구조
 
-| Directory / File | Description |
+| 디렉터리 / 파일 | 설명 |
 | :--- | :--- |
-| `development.md` | Development pipeline and promotion guide |
-| `testing.md` | Automated testing, linting, and verification guide |
-| `skills/<skill-name>/` | Asset-specific human documentation and notes |
-| `references/` | Shared research materials and external reference docs |
+| `development.ko.md` | 자산 개발 파이프라인 및 승격 가이드 |
+| `testing.ko.md` | 자동화 테스트 및 코드 품질 검증 가이드 |
+| `skills/<skill-name>/` | 개별 자산별 사람용 가이드 및 문서 |
+| `references/` | 공통 조사 자료 및 외부 참고 문서 |
