@@ -8,20 +8,17 @@ description: Create and validate the summary review document.
 ```mermaid
 flowchart TD
     A[workflow-create-summary.md<br/># Inputs] --> B{review_target_path available?}
-    B -->|Yes| C[Review target]
+    B -->|Yes| C[Review target and run relevant tests]
     B -->|No, autopilot| D[Use working directory]
     B -->|No, interactive| E[Request review_target_path]
     D --> C
     E --> C
-    C --> F[Run relevant tests]
-    F --> G[create_summary.py]
-    G --> H[__summary__.md]
-    H --> I[Write summary and findings]
-    I --> J[validate_summary.py]
-    J --> K{Validation passed?}
-    K -->|No| L[Fix reported failures]
-    L --> J
-    K -->|Yes| M[Validated __summary__.md]
+    C --> F[Generate and write __summary__.md<br/>with create_summary.py]
+    F --> G[validate_summary.py]
+    G --> H{Validation passed?}
+    H -->|No| I[Fix reported failures]
+    I --> G
+    H -->|Yes| J[Validated __summary__.md]
 ```
 
 ## Inputs

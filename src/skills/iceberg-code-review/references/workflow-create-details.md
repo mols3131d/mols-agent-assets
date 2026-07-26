@@ -18,16 +18,14 @@ flowchart TD
       F -->|No| H[Select all summary findings]
       G --> I[Set domain and finding slugs]
       H --> I
-      I --> J[create_finding.py]
-      J --> K[domain-finding.md]
-      K --> L[Write finding details]
-      L --> M[validate_finding.py]
-      M --> N{Validation passed?}
-      N -->|No| O[Fix reported failures]
-      O --> M
-      N -->|Yes| P{More findings?}
-      P -->|Yes| I
-      P -->|No| Q[Validated finding documents]
+      I --> J[Generate and write domain-finding.md<br/>with create_finding.py]
+      J --> K[validate_finding.py]
+      K --> L{Validation passed?}
+      L -->|No| M[Fix reported failures]
+      M --> K
+      L -->|Yes| N{More findings?}
+      N -->|Yes| I
+      N -->|No| O[Validated finding documents]
 ```
 
 ## Inputs
