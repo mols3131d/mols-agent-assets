@@ -1,19 +1,29 @@
 [global]
 flavor = "gfm"
-disable = ["MD013", "MD025", "MD033", "MD041"]
+disable = ["MD013", "MD025", "MD041"]
 exclude = [
   "**/.git/",
   "**/.tmp/",
   "**/tmp/",
   "**/archive/",
   "**/*.tmp.md",
-
-  # --- --- --- ---  --- --- --- ---  --- --- --- ---  --- --- --- ---
-  ".github/",
+  # --- --- --- ---  --- ---
+  ".rumdl_cache/**",
   "node_modules/",
   "vendor/",
   "dist/",
   "build/",
+  "target/**",
+  "coverage/**",
+  "site/**",
+  "**/generated/**",
+]
+
+extend-enable = [
+  "MD060",
+  "MD070",
+  "MD073",
+  "MD080",
 ]
 
 [MD004]
@@ -21,6 +31,10 @@ style = "dash"
 
 [MD029]
 style = "ordered"
+
+[MD033]
+disallowed-elements = ["gfm"]
+fix = false
 
 [MD048]
 style = "backtick"
