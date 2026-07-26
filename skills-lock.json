@@ -13,7 +13,7 @@
       "ref": "main",
       "sourceType": "github",
       "skillPath": "src/skills/iceberg/SKILL.md",
-      "computedHash": "98a315d8821b3ce4a70bbc8fba53d4ab7b0fa5d3ab08bce83439d35460712980"
+      "computedHash": "b889b76d464045398ac9147cf0c1f84b5149689b000b70bc211f5c9af6e4b2b5"
     },
     "mols-agent-asset-studio": {
       "source": "mols3131d/mols-agent-assets",
