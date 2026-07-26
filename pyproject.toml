@@ -9,9 +9,9 @@ dependencies = []
 [dependency-groups]
 dev = [
   "lefthook>=2.1.9",
+  "pyromark>=0.9.13",
   "pytest>=9.0.3",
   "pyyaml>=6.0.2",
-  "pyromark>=0.9.13",
   "ruff>=0.15.15",
   "rumdl>=0.2.6",
   "ty>=0.0.42",
@@ -26,16 +26,16 @@ pythonpath = [
 ]
 testpaths = ["tests"]
 
-[tool.ty.environment]
-extra-paths = [
-  "src/skills/iceberg-code-report/scripts",
-  "src/skills/iceberg-code-review/scripts",
-  "src/skills/mols-markdown-scripts/scripts",
-]
-
 [tool.ruff.lint]
 select = ["F", "E", "I"]
 fixable = ["ALL"]
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
+
+[tool.ty.environment]
+extra-paths = [
+  "src/skills/iceberg-code-report/scripts",
+  "src/skills/iceberg-code-review/scripts",
+  "src/skills/mols-markdown-scripts/scripts",
+]
