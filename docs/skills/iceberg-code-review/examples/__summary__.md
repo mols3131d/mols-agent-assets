@@ -12,7 +12,7 @@ type: 'code-review-summary'
 
 Login with non-existent user causes `500 Internal Server Error`. Must fix before deploy.
 
-## Findings
+## Details
 
 | 🔴 `bug` | 🟡 `risk` | 🔵 `nit` | ❓ `question` |
 | :---: | :---: | :---: | :---: |

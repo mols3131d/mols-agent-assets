@@ -1,6 +1,6 @@
 ---
 title: ''
-type: 'code-review-finding'
+type: 'code-review-detail'
 description: ''
 priority: ''
 ---

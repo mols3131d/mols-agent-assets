@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validates a code review finding file."""
+"""Validates a code review detail file."""
 
 from __future__ import annotations
 
@@ -8,13 +8,13 @@ import logging
 from pathlib import Path
 
 from _checks import validate_no_comments, validate_review_file
-from _schema import FINDING_SCHEMA
+from _schema import DETAIL_SCHEMA
 
 LOGGER = logging.getLogger(__name__)
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Validate code review finding file")
+    parser = argparse.ArgumentParser(description="Validate code review detail file")
     parser.add_argument("review_file_path", type=Path)
     return parser.parse_args()
 
@@ -25,7 +25,7 @@ def main() -> int:
 
     errors = []
     errors.extend(validate_no_comments(args.review_file_path))
-    expected_type = FINDING_SCHEMA["frontmatter"]["type"]["default"]
+    expected_type = DETAIL_SCHEMA["frontmatter"]["type"]["default"]
     errors.extend(
         validate_review_file(args.review_file_path, expected_type=expected_type)
     )

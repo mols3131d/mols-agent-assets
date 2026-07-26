@@ -1,65 +1,44 @@
 ---
 name: iceberg-code-review-create-details
-description: Create and validate detailed finding documents.
+description: Create and validate detail documents.
 ---
 
 # Create Details Workflow
 
-```mermaid
-flowchart TD
-      A[workflow-create-details.md<br/># Inputs] --> B{summary_file_path available?}
-      B -->|Yes| C[Read __summary__.md]
-      B -->|No, autopilot| D[Use latest review summary]
-      B -->|No, interactive| E[Request summary_file_path]
-      D --> C
-      E --> C
-      C --> F{Finding specified?}
-      F -->|Yes| G[Select specified finding]
-      F -->|No| H[Select all summary findings]
-      G --> I[Set domain and finding slugs]
-      H --> I
-      I --> J[Generate and write domain-finding.md<br/>with create_finding.py]
-      J --> K[validate_finding.py]
-      K --> L{Validation passed?}
-      L -->|No| M[Fix reported failures]
-      M --> K
-      L -->|Yes| N{More findings?}
-      N -->|Yes| I
-      N -->|No| O[Validated finding documents]
-```
+Resolve context before creating details: read the supplied `summary_file_path`, use the latest review summary when it is omitted in autopilot mode, otherwise request it; then select `detail`, or every summary detail when it is omitted.
 
 ## Inputs
 
 - `summary_file_path`: **required**. Path to a validated `__summary__.md` file.
   - If omitted in autopilot mode, use the latest review summary.
   - Otherwise, request it from the user.
-- `finding`: Finding to detail. Default: every finding in `__summary__.md`.
-- `domain`: Slug naming the finding domain.
+- `detail`: Detail to create. Default: every detail in `__summary__.md`.
+- `domain`: Slug naming the detail's domain.
 - `<SKILL_DIR>`: Directory containing this skill's `scripts/` directory.
 - `<PYTHON_EXEC>`: Selected Python interpreter.
 
 ## Details
 
-### Select Findings
+### Select Details
 
-- Determine one `domain` and one `finding` slug for each finding document.
+- Determine a `domain` and `detail` slug for each detail document.
 - Use lowercase letters, digits, and hyphens only for both slugs.
-- Process every selected finding in sequence.
+- Process every selected detail in sequence.
 
-### Create `domain-finding.md`
+### Create `domain-detail.md`
 
 ```bash
-<PYTHON_EXEC> "<SKILL_DIR>/scripts/create_finding.py" --summary-file "<summary_file_path>" --domain "<domain>" --finding "<finding>"
+<PYTHON_EXEC> "<SKILL_DIR>/scripts/create_detail.py" --summary-file "<summary_file_path>" --domain "<domain>" --detail "<detail>"
 ```
 
-- Populate the generated `domain-finding.md` with the verified issue and location, impact, actionable recommendation, and verification method.
+- Populate the generated `domain-detail.md` with the verified issue and location, impact, actionable recommendation, and verification method.
 - Remove template comments and authoring instructions.
 
-### Validate `domain-finding.md`
+### Validate `domain-detail.md`
 
 ```bash
-<PYTHON_EXEC> "<SKILL_DIR>/scripts/validate_finding.py" "<finding_file_path>"
+<PYTHON_EXEC> "<SKILL_DIR>/scripts/validate_detail.py" "<detail_file_path>"
 ```
 
-- If validation reports `FAIL: ...`, fix the named issue and rerun `validate_finding.py`.
-- Continue with the next finding only after validation succeeds.
+- If validation reports `FAIL: ...`, fix the named issue and rerun `validate_detail.py`.
+- Continue with the next detail only after validation succeeds.

@@ -46,7 +46,7 @@ flowchart TD
 ```
 
 - Record the absolute path emitted for `__summary__.md`.
-- Populate all placeholders with the review findings and test results.
+- Populate all placeholders with the review details and test results.
 - Remove template comments and authoring instructions.
 
 ### Validate `__summary__.md`

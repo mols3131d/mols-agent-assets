@@ -1,6 +1,6 @@
 ---
 title: 'auth-missing-metadata'
-type: 'code-review-finding'
+type: 'code-review-detail'
 # description and priority are missing
 ---
 

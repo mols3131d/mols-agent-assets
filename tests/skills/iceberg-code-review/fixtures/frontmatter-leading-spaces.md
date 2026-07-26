@@ -3,7 +3,7 @@
 
 title: 'frontmatter-leading-spaces'
 
-## type: 'code-review-finding'
+## type: 'code-review-detail'
 
 ---
 

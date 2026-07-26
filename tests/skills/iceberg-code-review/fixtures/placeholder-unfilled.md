@@ -1,6 +1,6 @@
 ---
-title: '{{domain}}-{{finding}}'
-type: 'code-review-finding'
+title: '{{domain}}-{{detail}}'
+type: 'code-review-detail'
 ---
 
 ## Summary

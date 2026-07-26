@@ -3,21 +3,21 @@ import unittest
 from pathlib import Path
 
 from _shared import ReviewFileCreationError
-from create_finding import create_finding
+from create_detail import create_detail
 
 
-class CreateFindingTest(unittest.TestCase):
+class CreateDetailTest(unittest.TestCase):
     def test_create_and_reject_invalid_or_duplicate_output(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             summary_file = Path(directory) / "__summary__.md"
             summary_file.touch()
-            destination = create_finding(summary_file, "auth", "null-user")
+            destination = create_detail(summary_file, "auth", "null-user")
 
             self.assertEqual(destination.read_text(), _template().read_text())
             with self.assertRaises(ReviewFileCreationError):
-                create_finding(summary_file, "auth", "null-user")
+                create_detail(summary_file, "auth", "null-user")
             with self.assertRaises(ReviewFileCreationError):
-                create_finding(summary_file, "../auth", "null-user")
+                create_detail(summary_file, "../auth", "null-user")
 
 
 def _template() -> Path:
@@ -29,7 +29,7 @@ def _template() -> Path:
         / "iceberg-code-review"
         / "assets"
         / "templates"
-        / "{{domain}}-{{details}}.md"
+        / "{{domain}}-{{detail}}.md"
     )
     if src_template.exists():
         return src_template
@@ -40,7 +40,7 @@ def _template() -> Path:
         / "iceberg-code-review"
         / "assets"
         / "templates"
-        / "{{domain}}-{{details}}.md"
+        / "{{domain}}-{{detail}}.md"
     )
 
 

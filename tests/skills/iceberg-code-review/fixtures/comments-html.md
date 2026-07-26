@@ -1,6 +1,6 @@
 ---
 title: 'comments-html'
-type: 'code-review-finding'
+type: 'code-review-detail'
 ---
 
 ## Summary

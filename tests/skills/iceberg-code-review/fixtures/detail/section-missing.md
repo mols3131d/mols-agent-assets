@@ -1,6 +1,6 @@
 ---
 title: 'section-missing'
-type: 'code-review-finding'
+type: 'code-review-detail'
 description: 'Missing required section test'
 priority: 'p3'
 ---

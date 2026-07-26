@@ -17,7 +17,7 @@ Code review summary report template.
 
 <!-- Write Summary -->
 
-## Findings Details
+## Details
 
 | 🔴 `p0` | 🟠 `p1` | 🟡 `p2` | 🟢 `p3` | 🔵 `p4` |
 | :---: | :---: | :---: | :---: | :---: |
@@ -25,7 +25,7 @@ Code review summary report template.
 
 ---
 
-### {{priority_emoji}} [`{{domain}}-{{finding}}`]({{link}}) <!-- Link only if finding doc exists -->
+### {{priority_emoji}} [`{{domain}}-{{detail}}`]({{link}}) <!-- Link only if detail doc exists -->
 
 [`{{file}}:{{start_line}}[-{{end_line}}]`]({{link}})
 
@@ -35,7 +35,7 @@ Code review summary report template.
 
 ---
 
-### {{additional_finding_heading}}    <!-- Write Another Finding -->
+### {{additional_detail_heading}}    <!-- Write Another Detail -->
 
 [`{{file}}:{{start_line}}[-{{end_line}}]`]({{link}})
 

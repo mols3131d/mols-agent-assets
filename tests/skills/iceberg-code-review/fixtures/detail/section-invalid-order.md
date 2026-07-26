@@ -1,7 +1,7 @@
 ---
 title: 'auth-invalid-sections'
 description: 'Invalid section order'
-type: 'code-review-finding'
+type: 'code-review-detail'
 priority: 'p0'
 ---
 

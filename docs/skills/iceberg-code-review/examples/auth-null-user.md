@@ -1,7 +1,7 @@
 ---
 title: 'auth-null-user'
 description: 'None user dereference causes 500 error in login API.'
-type: 'code-review-finding'
+type: 'code-review-detail'
 severity: 'bug'
 status: 'open'
 ---

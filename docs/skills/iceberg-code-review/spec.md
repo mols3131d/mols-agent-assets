@@ -14,7 +14,7 @@
 | Review dir | `{reviews_dir}/{yyyy-MMdd-HHmm}-{title-slug}/` |
 | Timestamp | 로컬 시각, `strftime` `%Y-%m%d-%H%M` |
 | Summary file | `__summary__.md` |
-| Finding file | `{domain}-{finding}.md` (slug 규칙: skill scripts) |
+| Detail file | `{domain}-{detail}.md` (slug 규칙: skill scripts) |
 
 `reviews_dir`: config 키. 상대 경로면 workspace 루트 기준. 기본 `docs/reviews`.
 
@@ -30,9 +30,9 @@
 | Kind | Names |
 | :--- | :--- |
 | Frontmatter (required) | `title`, `date`, `type` |
-| Sections (required) | `Summary`, `Findings` |
+| Sections (required) | `Summary`, `Details` |
 
-### Finding (`type: code-review-finding`)
+### Detail (`type: code-review-detail`)
 
 | Kind | Names |
 | :--- | :--- |

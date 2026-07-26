@@ -1,6 +1,6 @@
 ---
 title: 'section-wrong-heading'
-type: 'code-review-finding'
+type: 'code-review-detail'
 description: 'Invalid heading level usage'
 priority: 'p3'
 ---

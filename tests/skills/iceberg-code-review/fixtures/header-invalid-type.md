@@ -7,6 +7,6 @@ type: 'unknown-review-type'
 
 Content
 
-## Findings Details
+## Details
 
 Content

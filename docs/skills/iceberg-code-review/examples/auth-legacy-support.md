@@ -1,7 +1,7 @@
 ---
 title: 'auth-legacy-support'
 description: 'Legacy MD5 hashing fallback remains active.'
-type: 'code-review-finding'
+type: 'code-review-detail'
 severity: 'q'
 status: 'open'
 ---

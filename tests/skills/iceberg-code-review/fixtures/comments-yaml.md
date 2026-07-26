@@ -1,6 +1,6 @@
 ---
 title: 'comments-yaml'
-type: 'code-review-finding'
+type: 'code-review-detail'
 # Do not delete this comment
 ---
 

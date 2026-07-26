@@ -1,6 +1,6 @@
 ---
 title "invalid-yaml-syntax"
-type: 'code-review-finding'
+type: 'code-review-detail'
 date '2026-07-20'
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: 'auth-timing-attack'
 description: 'Early return on missing user creates timing side-channel.'
-type: 'code-review-finding'
+type: 'code-review-detail'
 severity: 'risk'
 status: 'open'
 ---

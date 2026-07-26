@@ -1,12 +1,12 @@
 ---
-title: '{{domain}}-{{finding}}'
+title: '{{domain}}-{{detail}}'
 description: '{{description}}'
-type: 'code-review-finding'
+type: 'code-review-detail'
 priority: '{{priority}}'
 ---
 
 <!--
-Code review finding report template. Write description simply.
+Code review detail report template. Write description simply.
 -->
 - Location: [{{location}}](/{{location_link}})
 

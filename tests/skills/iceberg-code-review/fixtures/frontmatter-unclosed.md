@@ -1,7 +1,7 @@
 ---
 
 title: 'frontmatter-unclosed'
-type: 'code-review-finding'
+type: 'code-review-detail'
 
 ## Summary
 

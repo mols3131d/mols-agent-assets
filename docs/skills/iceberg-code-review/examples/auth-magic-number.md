@@ -1,7 +1,7 @@
 ---
 title: 'auth-magic-number'
 description: 'Hardcoded 86400 seconds used for token expiration.'
-type: 'code-review-finding'
+type: 'code-review-detail'
 severity: 'nit'
 status: 'open'
 ---

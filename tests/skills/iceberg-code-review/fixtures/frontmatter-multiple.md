@@ -1,6 +1,6 @@
 ---
 title: 'frontmatter-multiple'
-type: 'code-review-finding'
+type: 'code-review-detail'
 ---
 
 ## Summary

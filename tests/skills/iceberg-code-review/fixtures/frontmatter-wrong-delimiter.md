@@ -1,7 +1,7 @@
 ===
 title: 'frontmatter-wrong-delimiter'
 
-# type: 'code-review-finding'
+# type: 'code-review-detail'
 
 ===
 
