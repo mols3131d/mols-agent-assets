@@ -5,31 +5,24 @@ from __future__ import annotations
 
 import argparse
 import logging
-from datetime import datetime
 from pathlib import Path
 
-from _shared import (
-    ReviewFileCreationError,
-    copy_template,
-    get_reviews_dir,
-    validate_slug,
-)
+from _shared import ReviewFileCreationError, copy_template
 
 LOGGER = logging.getLogger(__name__)
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Create code review summary file")
-    parser.add_argument("--reviews-dir", type=Path)
-    parser.add_argument("--workspace-dir", type=Path)
-    parser.add_argument("--title-slug", required=True)
+    parser.add_argument("--review-dir", required=True, type=Path)
     return parser.parse_args()
 
 
-def create_summary(reviews_dir: Path, title_slug: str) -> Path:
-    validate_slug("title-slug", title_slug)
-    timestamp = datetime.now().strftime("%Y-%m%d-%H%M")
-    destination = reviews_dir / f"{timestamp}-{title_slug}" / "__summary__.md"
+def create_summary(review_dir: Path) -> Path:
+    if not review_dir.is_dir():
+        raise ReviewFileCreationError(f"REVIEW_DIR_NOT_FOUND: {review_dir}")
+
+    destination = review_dir / "__summary__.md"
     return copy_template("__summary__.md", destination)
 
 
@@ -37,10 +30,8 @@ def main() -> int:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     args = parse_args()
 
-    reviews_dir = args.reviews_dir or get_reviews_dir(args.workspace_dir)
-
     try:
-        destination = create_summary(reviews_dir, args.title_slug)
+        destination = create_summary(args.review_dir)
     except ReviewFileCreationError as error:
         LOGGER.error("Fail: %s", error, extra={"reason": str(error)})
         return 1

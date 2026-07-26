@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generates a code review finding file from a template."""
+"""Generates a code review detail file from a template."""
 
 from __future__ import annotations
 
@@ -13,22 +13,22 @@ LOGGER = logging.getLogger(__name__)
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Create code review finding file")
-    parser.add_argument("--summary-file", required=True, type=Path)
+    parser = argparse.ArgumentParser(description="Create code review detail file")
+    parser.add_argument("--review-dir", required=True, type=Path)
     parser.add_argument("--domain", required=True)
-    parser.add_argument("--finding", required=True)
+    parser.add_argument("--detail", required=True)
     return parser.parse_args()
 
 
-def create_finding(summary_file: Path, domain: str, finding: str) -> Path:
-    for name, value in (("domain", domain), ("finding", finding)):
+def create_detail(review_dir: Path, domain: str, detail: str) -> Path:
+    for name, value in (("domain", domain), ("detail", detail)):
         validate_slug(name, value)
 
-    if not summary_file.is_file():
-        raise ReviewFileCreationError(f"SUMMARY_FILE_NOT_FOUND: {summary_file}")
+    if review_dir.exists() and not review_dir.is_dir():
+        raise ReviewFileCreationError(f"REVIEW_DIR_NOT_DIRECTORY: {review_dir}")
 
-    destination = summary_file.parent / f"{domain}-{finding}.md"
-    return copy_template("{{domain}}-{{finding}}.md", destination)
+    destination = review_dir / f"{domain}-{detail}.md"
+    return copy_template("{{domain}}-{{detail}}.md", destination)
 
 
 def main() -> int:
@@ -36,7 +36,7 @@ def main() -> int:
     args = parse_args()
 
     try:
-        destination = create_finding(args.summary_file, args.domain, args.finding)
+        destination = create_detail(args.review_dir, args.domain, args.detail)
     except ReviewFileCreationError as error:
         LOGGER.error("Fail: %s", error, extra={"reason": str(error)})
         return 1

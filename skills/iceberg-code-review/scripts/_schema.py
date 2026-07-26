@@ -15,16 +15,18 @@ SUMMARY_SCHEMA: dict[str, Any] = {
         "date": req(),
         "type": req(default="code-review-summary"),
     },
-    "sections": ("Summary", "Findings"),
+    "sections": ("Summary", "Details"),
 }
 
-FINDING_SCHEMA: dict[str, Any] = {
+DETAIL_SCHEMA: dict[str, Any] = {
     "frontmatter": {
         "title": req(),
         "description": opt(),
-        "type": req(default="code-review-finding"),
-        "severity": opt(default="nit", allowed_values=("bug", "risk", "nit", "q")),
-        "status": opt(default="open", allowed_values=("open", "resolved", "dismissed")),
+        "type": req(default="code-review-detail"),
+        "priority": opt(
+            default="p4",
+            allowed_values=("p0", "p1", "p2", "p3", "p4"),
+        ),
     },
     "sections": (
         "Summary",
@@ -37,5 +39,5 @@ FINDING_SCHEMA: dict[str, Any] = {
 
 TEMPLATE_SCHEMAS: dict[str, dict[str, Any]] = {
     "code-review-summary": SUMMARY_SCHEMA,
-    "code-review-finding": FINDING_SCHEMA,
+    "code-review-detail": DETAIL_SCHEMA,
 }

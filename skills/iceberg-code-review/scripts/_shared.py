@@ -50,7 +50,7 @@ def validate_slug(name: str, value: str) -> None:
 
 
 def copy_template(template_name: str, destination: Path) -> Path:
-    template = SKILL_DIR / "templates" / template_name
+    template = SKILL_DIR / "assets" / "templates" / template_name
 
     if not template.is_file():
         raise ReviewFileCreationError(f"TEMPLATE_NOT_FOUND: {template}")
