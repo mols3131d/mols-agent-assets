@@ -2,8 +2,7 @@
 title: 'section-wrong-heading'
 type: 'code-review-finding'
 description: 'Invalid heading level usage'
-severity: 'nit'
-status: 'open'
+priority: 'p3'
 ---
 
 # Summary

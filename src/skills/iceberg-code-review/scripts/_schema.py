@@ -15,7 +15,7 @@ SUMMARY_SCHEMA: dict[str, Any] = {
         "date": req(),
         "type": req(default="code-review-summary"),
     },
-    "sections": ("Summary", "Findings"),
+    "sections": ("Summary", "Findings Details"),
 }
 
 FINDING_SCHEMA: dict[str, Any] = {
@@ -23,8 +23,10 @@ FINDING_SCHEMA: dict[str, Any] = {
         "title": req(),
         "description": opt(),
         "type": req(default="code-review-finding"),
-        "severity": opt(default="nit", allowed_values=("bug", "risk", "nit", "q")),
-        "status": opt(default="open", allowed_values=("open", "resolved", "dismissed")),
+        "priority": opt(
+            default="p4",
+            allowed_values=("p0", "p1", "p2", "p3", "p4"),
+        ),
     },
     "sections": (
         "Summary",

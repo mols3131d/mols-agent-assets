@@ -1,7 +1,7 @@
 ---
 title: 'auth-missing-metadata'
 type: 'code-review-finding'
-# description, severity, status are missing
+# description and priority are missing
 ---
 
 ## Summary

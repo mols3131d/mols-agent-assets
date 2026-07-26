@@ -6,6 +6,6 @@ type: 'code-review-summary'
 
 ## Summary
 
-## Findings
+## Findings Details
 
 이곳에는 Content이 있음

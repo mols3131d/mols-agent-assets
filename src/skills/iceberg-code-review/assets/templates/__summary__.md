@@ -17,15 +17,15 @@ Code review summary report template.
 
 <!-- Write Summary -->
 
-## Findings
+## Findings Details
 
-| 🔴 `bug` | 🟡 `risk` | 🔵 `nit` | ❓ `question` |
-| :---: | :---: | :---: | :---: |
-| {{bug_count}} | {{risk_count}} | {{nit_count}} | {{question_count}} |
+| 🔴 `p0` | 🟠 `p1` | 🟡 `p2` | 🟢 `p3` | 🔵 `p4` |
+| :---: | :---: | :---: | :---: | :---: |
+| {{p0_count}} | {{p1_count}} | {{p2_count}} | {{p3_count}} | {{p4_count}} |
 
 ---
 
-### {{severity_emoji}} [`{{domain}}-{{finding}}`]({{link}}) <!-- Link only if finding doc exists -->
+### {{priority_emoji}} [`{{domain}}-{{finding}}`]({{link}}) <!-- Link only if finding doc exists -->
 
 [`{{file}}:{{start_line}}[-{{end_line}}]`]({{link}})
 

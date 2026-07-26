@@ -28,7 +28,7 @@ def create_finding(summary_file: Path, domain: str, finding: str) -> Path:
         raise ReviewFileCreationError(f"SUMMARY_FILE_NOT_FOUND: {summary_file}")
 
     destination = summary_file.parent / f"{domain}-{finding}.md"
-    return copy_template("{{domain}}-{{finding}}.md", destination)
+    return copy_template("{{domain}}-{{details}}.md", destination)
 
 
 def main() -> int:

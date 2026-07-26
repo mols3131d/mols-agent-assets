@@ -2,8 +2,7 @@
 title: 'section-missing'
 type: 'code-review-finding'
 description: 'Missing required section test'
-severity: 'nit'
-status: 'open'
+priority: 'p3'
 ---
 
 ## Summary

@@ -2,8 +2,7 @@
 title: 'auth-invalid-sections'
 description: 'Invalid section order'
 type: 'code-review-finding'
-severity: 'bug'
-status: 'open'
+priority: 'p0'
 ---
 
 ## Impact

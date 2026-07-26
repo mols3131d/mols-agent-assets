@@ -34,7 +34,13 @@ class CreateSummaryTest(unittest.TestCase):
 def _template() -> Path:
     root = Path(__file__).resolve().parents[3]
     src_template = (
-        root / "src" / "skills" / "iceberg-code-review" / "templates" / "__summary__.md"
+        root
+        / "src"
+        / "skills"
+        / "iceberg-code-review"
+        / "assets"
+        / "templates"
+        / "__summary__.md"
     )
     if src_template.exists():
         return src_template
@@ -43,6 +49,7 @@ def _template() -> Path:
         / "release"
         / "skills"
         / "iceberg-code-review"
+        / "assets"
         / "templates"
         / "__summary__.md"
     )

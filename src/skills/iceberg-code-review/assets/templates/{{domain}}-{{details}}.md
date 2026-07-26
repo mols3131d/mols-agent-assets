@@ -2,8 +2,7 @@
 title: '{{domain}}-{{finding}}'
 description: '{{description}}'
 type: 'code-review-finding'
-severity: '{{severity}}'
-status: '{{status}}'
+priority: '{{priority}}'
 ---
 
 <!--

@@ -27,8 +27,9 @@ def _template() -> Path:
         / "src"
         / "skills"
         / "iceberg-code-review"
+        / "assets"
         / "templates"
-        / "{{domain}}-{{finding}}.md"
+        / "{{domain}}-{{details}}.md"
     )
     if src_template.exists():
         return src_template
@@ -37,8 +38,9 @@ def _template() -> Path:
         / "release"
         / "skills"
         / "iceberg-code-review"
+        / "assets"
         / "templates"
-        / "{{domain}}-{{finding}}.md"
+        / "{{domain}}-{{details}}.md"
     )
 
 

@@ -2,8 +2,7 @@
 title: ''
 type: 'code-review-finding'
 description: ''
-severity: ''
-status: ''
+priority: ''
 ---
 
 ## Summary

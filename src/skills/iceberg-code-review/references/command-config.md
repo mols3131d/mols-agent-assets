@@ -1,3 +1,8 @@
+---
+name: iceberg-code-review-config
+description: Configure code-review output and validation options.
+---
+
 ## Arguments from Context
 
 - `reviews_dir`: 리뷰 결과를 저장할 디렉터리 경로 (선택)
