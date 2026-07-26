@@ -6,7 +6,7 @@ exclude = [
   "**/.tmp/",
   "**/tmp/",
   "**/archive/",
-  "**/*.tmp.md",
+  "**/*.tmp.*",
   # --- --- --- ---  --- ---
   ".rumdl_cache/**",
   "node_modules/",
