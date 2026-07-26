@@ -11,7 +11,6 @@ class CreateSummaryTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             review_dir = Path(directory) / "review"
             review_dir.mkdir()
-            (review_dir / "auth-null-user.md").touch()
 
             destination = create_summary(review_dir)
 
@@ -23,10 +22,10 @@ class CreateSummaryTest(unittest.TestCase):
             with self.assertRaises(ReviewFileCreationError):
                 create_summary(review_dir)
 
-    def test_reject_missing_details(self) -> None:
+    def test_reject_missing_review_dir(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             with self.assertRaises(ReviewFileCreationError):
-                create_summary(Path(directory))
+                create_summary(Path(directory) / "review")
 
 
 def _template() -> Path:

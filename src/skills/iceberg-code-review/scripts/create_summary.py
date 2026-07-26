@@ -21,8 +21,6 @@ def parse_args() -> argparse.Namespace:
 def create_summary(review_dir: Path) -> Path:
     if not review_dir.is_dir():
         raise ReviewFileCreationError(f"REVIEW_DIR_NOT_FOUND: {review_dir}")
-    if not any(path.name != "__summary__.md" for path in review_dir.glob("*.md")):
-        raise ReviewFileCreationError(f"DETAIL_FILES_NOT_FOUND: {review_dir}")
 
     destination = review_dir / "__summary__.md"
     return copy_template("__summary__.md", destination)

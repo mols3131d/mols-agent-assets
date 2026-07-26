@@ -13,29 +13,24 @@ description: >
 
 ```mermaid
 flowchart LR
-    A[SKILL.md] --> B[built-in-engine-router.md]
-    B --> C[workflow-create-details.md]
-    C --> D[workflow-create-summary.md]
-    D --> E[Completion]
+    A[SKILL.md] --> B[Engine selection]
+    B --> C[Create details report]
+    C --> D[Create summary report]
+    D --> E[Validate summary report]
+    E --> F[Completion]
 ```
 
-### Engine Selection
+### Engine selection
 
 - Engine specified → use it.
-- No engine, purpose given → apply relevant external skill/instructions; none → matching built-in engine.
-- No engine, no purpose → default `implementation` + `quality`.
+- Otherwise:
+  - Apply relevant other skill/instructions when appropriate.
+  - If none -> [matching built-in engine](references/engine-router.md).
 - New review area found mid-review → no engine addition. Recommend follow-up in report.
-- Duplicate details across engines → merge; keep higher `priority`.
-
-### Report Creation
-
-1. 각 리뷰 결과마다 `create-details`를 실행해 대응하는 detail을 생성하고 검증한다.
-2. 검증된 모든 detail을 참고하여 `create-summary`를 실행한다.
-3. summary 검증이 통과하면 완료한다.
 
 ### Create details report
 
-One review result → one validated detail. Finish before next.
+> One review result → one validated detail. Finish before next.
 
 1. Review target with selected engine or skill. Run relevant tests. Keep `PASS`, `FAIL`, `ERROR`, `SKIP` counts.
 2. Set `domain` and `detail` slugs: lowercase letters, digits, hyphens.
@@ -53,10 +48,11 @@ One review result → one validated detail. Finish before next.
     ```
 
 6. `FAIL: ...` → fix, rerun. Pass → next review result.
+7. On the sixth validated detail in a review pass, stop and follow [overtime work](references/workflow-overtime-work.md). Do not begin another review area unless the commander explicitly asks to continue.
 
 ### Create summary report
 
-create `__summary__.md`
+> create `__summary__.md`
 
 1. Create in `<review_dir>`:
 
@@ -64,7 +60,7 @@ create `__summary__.md`
     <PYTHON_EXEC> "<SKILL_DIR>/scripts/create_summary.py" --review-dir "<review_dir>"
     ```
 
-2. Read all validated details. Fill links and test counts. Remove template comments and instructions.
+2. Read all validated details, if any. Fill reviewed scope, links, and test counts. When no details exist, state that the reviewed scope is clean. Remove template comments and instructions.
 3. Validate:
 
     ```bash
@@ -72,8 +68,6 @@ create `__summary__.md`
     ```
 
 4. `FAIL: ...` → fix, rerun. Pass → finish.
-
-### Vaildate summary
 
 ## Priority
 
@@ -84,6 +78,8 @@ create `__summary__.md`
 |  🟡   | `p2`     | 일반 우선순위. 계획된 검토·수정 과정에서 처리함                    |
 |  🟢   | `p3`     | 낮은 우선순위. 후속 작업이나 여유가 있을 때 처리함                 |
 |  🔵   | `p4`     | 참고 목적. 별도 조치 없이 기록을 유지함                            |
+
+When multiple engines, keep higher (`p3 & p1` -> `p1`)
 
 ## Suggestions
 
