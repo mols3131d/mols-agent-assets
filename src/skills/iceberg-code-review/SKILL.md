@@ -13,21 +13,67 @@ description: >
 
 ```mermaid
 flowchart LR
-    A[SKILL.md<br/># Workflow] --> B[workflow-engine-selection.md]
-    B --> C[workflow-create-summary.md]
-    C --> D[workflow-create-details.md]
-    D --> E[SKILL.md<br/># Completion]
+    A[SKILL.md] --> B[built-in-engine-router.md]
+    B --> C[workflow-create-details.md]
+    C --> D[workflow-create-summary.md]
+    D --> E[Completion]
 ```
 
 ### Engine Selection
 
-[engine-selection-workflow](references/workflow-engine-selection.md)를 따른다.
+- Engine specified → use it.
+- No engine, purpose given → apply relevant external skill/instructions; none → matching built-in engine.
+- No engine, no purpose → default `implementation` + `quality`.
+- New review area found mid-review → no engine addition. Recommend follow-up in report.
+- Duplicate details across engines → merge; keep higher `priority`.
 
 ### Report Creation
 
-1. [create-summary](references/workflow-create-summary.md)를 실행한다.
-2. 생성된 summary file을 입력으로 [create-details](references/workflow-create-details.md)를 실행한다.
-3. 각 생성 문서를 해당 워크플로의 검증 절차로 검증한다. 모든 생성 문서가 검증을 통과하면 완료한다.
+1. 각 리뷰 결과마다 `create-details`를 실행해 대응하는 detail을 생성하고 검증한다.
+2. 검증된 모든 detail을 참고하여 `create-summary`를 실행한다.
+3. summary 검증이 통과하면 완료한다.
+
+### Create details report
+
+One review result → one validated detail. Finish before next.
+
+1. Review target with selected engine or skill. Run relevant tests. Keep `PASS`, `FAIL`, `ERROR`, `SKIP` counts.
+2. Set `domain` and `detail` slugs: lowercase letters, digits, hyphens.
+3. Create detail in `<review_dir>`:
+
+    ```bash
+    <PYTHON_EXEC> "<SKILL_DIR>/scripts/create_detail.py" --review-dir "<review_dir>" --domain "<domain>" --detail "<detail>"
+    ```
+
+4. Fill verified issue, location, impact, recommendation, verification. Remove template comments and instructions.
+5. Validate:
+
+    ```bash
+    <PYTHON_EXEC> "<SKILL_DIR>/scripts/validate_detail.py" "<detail_file_path>"
+    ```
+
+6. `FAIL: ...` → fix, rerun. Pass → next review result.
+
+### Create summary report
+
+create `__summary__.md`
+
+1. Create in `<review_dir>`:
+
+    ```bash
+    <PYTHON_EXEC> "<SKILL_DIR>/scripts/create_summary.py" --review-dir "<review_dir>"
+    ```
+
+2. Read all validated details. Fill links and test counts. Remove template comments and instructions.
+3. Validate:
+
+    ```bash
+    <PYTHON_EXEC> "<SKILL_DIR>/scripts/validate_summary.py" "<summary_file_path>"
+    ```
+
+4. `FAIL: ...` → fix, rerun. Pass → finish.
+
+### Vaildate summary
 
 ## Priority
 
@@ -38,16 +84,6 @@ flowchart LR
 |  🟡   | `p2`     | 일반 우선순위. 계획된 검토·수정 과정에서 처리함                    |
 |  🟢   | `p3`     | 낮은 우선순위. 후속 작업이나 여유가 있을 때 처리함                 |
 |  🔵   | `p4`     | 참고 목적. 별도 조치 없이 기록을 유지함                            |
-
-## References
-
-| Review Engine | Trigger: When need Built-in engine |
-| :--- | :--- |
-| [code-understanding](references/engine-code-understanding.md) | 변경의 배경·의도·방향을 검토할 때 |
-| [code-implementation](references/engine-code-implementation.md) | 코드 구현을 검토할 때 |
-| [code-quality](references/engine-code-quality.md) | 코드 품질·정확성·변경 용이성을 검토할 때 |
-| [code-operations](references/engine-code-operations.md) | 운영 가능성과 신뢰성을 검토할 때 |
-| [code-risk](references/engine-code-risk.md) | 보안·성능·동시성 및 프로덕션 위험을 검토할 때 |
 
 ## Suggestions
 

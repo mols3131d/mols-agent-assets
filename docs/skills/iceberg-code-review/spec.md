@@ -11,12 +11,8 @@
 
 | Item | Contract |
 | :--- | :--- |
-| Review dir | `{reviews_dir}/{yyyy-MMdd-HHmm}-{title-slug}/` |
-| Timestamp | 로컬 시각, `strftime` `%Y-%m%d-%H%M` |
-| Summary file | `__summary__.md` |
-| Detail file | `{domain}-{detail}.md` (slug 규칙: skill scripts) |
-
-`reviews_dir`: config 키. 상대 경로면 workspace 루트 기준. 기본 `docs/reviews`.
+| Summary file | `<review_dir>/__summary__.md` |
+| Detail file | `<review_dir>/{domain}-{detail}.md` (slug 규칙: skill scripts) |
 
 ## Summary content
 

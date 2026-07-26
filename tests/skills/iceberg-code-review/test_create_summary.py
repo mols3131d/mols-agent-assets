@@ -1,8 +1,6 @@
 import tempfile
 import unittest
-from datetime import datetime
 from pathlib import Path
-from unittest.mock import patch
 
 from _shared import ReviewFileCreationError
 from create_summary import create_summary
@@ -11,24 +9,24 @@ from create_summary import create_summary
 class CreateSummaryTest(unittest.TestCase):
     def test_create_and_reject_invalid_or_duplicate_output(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            reviews_dir = Path(directory)
-            created_at = datetime(2026, 7, 21, 14, 35)
-            with patch("create_summary.datetime") as datetime_mock:
-                datetime_mock.now.return_value = created_at
-                destination = create_summary(reviews_dir, "auth-review")
+            review_dir = Path(directory) / "review"
+            review_dir.mkdir()
+            (review_dir / "auth-null-user.md").touch()
 
-                self.assertEqual(
-                    destination,
-                    reviews_dir / "2026-0721-1435-auth-review" / "__summary__.md",
-                )
-                self.assertEqual(
-                    destination.read_text(encoding="utf-8"),
-                    _template().read_text(encoding="utf-8"),
-                )
-                with self.assertRaises(ReviewFileCreationError):
-                    create_summary(reviews_dir, "auth-review")
+            destination = create_summary(review_dir)
+
+            self.assertEqual(destination, review_dir / "__summary__.md")
+            self.assertEqual(
+                destination.read_text(encoding="utf-8"),
+                _template().read_text(encoding="utf-8"),
+            )
             with self.assertRaises(ReviewFileCreationError):
-                create_summary(reviews_dir, "../bad")
+                create_summary(review_dir)
+
+    def test_reject_missing_details(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaises(ReviewFileCreationError):
+                create_summary(Path(directory))
 
 
 def _template() -> Path:

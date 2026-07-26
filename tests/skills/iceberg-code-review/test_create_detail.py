@@ -9,15 +9,15 @@ from create_detail import create_detail
 class CreateDetailTest(unittest.TestCase):
     def test_create_and_reject_invalid_or_duplicate_output(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            summary_file = Path(directory) / "__summary__.md"
-            summary_file.touch()
-            destination = create_detail(summary_file, "auth", "null-user")
+            review_dir = Path(directory) / "review"
+            destination = create_detail(review_dir, "auth", "null-user")
 
+            self.assertEqual(destination, review_dir / "auth-null-user.md")
             self.assertEqual(destination.read_text(), _template().read_text())
             with self.assertRaises(ReviewFileCreationError):
-                create_detail(summary_file, "auth", "null-user")
+                create_detail(review_dir, "auth", "null-user")
             with self.assertRaises(ReviewFileCreationError):
-                create_detail(summary_file, "../auth", "null-user")
+                create_detail(review_dir, "../auth", "null-user")
 
 
 def _template() -> Path:
