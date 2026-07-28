@@ -1,6 +1,6 @@
 [global]
 flavor = "gfm"
-disable = ["MD013", "MD025", "MD041"]
+disable = ["MD013", "MD025", "MD033", "MD041"]
 exclude = [
   "**/.git/",
   "**/.tmp/",
@@ -26,18 +26,34 @@ extend-enable = [
   "MD080",
 ]
 
-[MD004]
-style = "dash"
+[MD003]
+style = "atx"
 
 [MD029]
-style = "ordered"
+style = "one"
 
 [MD033]
 disallowed-elements = ["gfm"]
 fix = false
 
+[MD046]
+style = "fenced"
+
 [MD048]
 style = "backtick"
 
+[MD049]
+style = "asterisk"
+
+[MD050]
+style = "asterisk"
+
+[MD054]
+style = "inline"
+
 [MD057]
 compact-paths = true
+
+[MD060]
+style = "compact"
+loose-last-column = true
