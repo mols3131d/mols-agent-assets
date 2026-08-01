@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Asset Studio"
+  short_description: "Create, modernize, review, test, and package agent assets"
+  default_prompt: "Use $mols-agent-asset-studio to modernize this agent asset with evidence-backed reviews and validation."

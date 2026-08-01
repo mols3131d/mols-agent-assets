@@ -1,0 +1,9 @@
+id: "<case-id>"
+prompt: "<user request>"
+should_trigger: true
+configuration: "candidate"
+inputs: []
+assertions:
+  - text: "<observable expectation>"
+forbidden:
+  - "<forbidden side effect>"
