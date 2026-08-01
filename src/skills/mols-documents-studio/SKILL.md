@@ -51,7 +51,7 @@ Report changed documents, validation state, and links to generated files.
 ### Procedure
 
 1. Read `workflows/INDEX.csv` once.
-2. Match the requested action against the index definitions (trigger/description).
-3. If no route matches, state that this skill does not cover the request.
-4. Resolve the route ID, load the workflow markdown file from `workflows/<id>.md`, and strictly execute its procedure.
-5. Perform validation of the created/edited document before completing.
+1. Match the requested action against the index definitions (trigger/description).
+1. If no route matches, state that this skill does not cover the request.
+1. Resolve the route ID, load the workflow markdown file from `workflows/<id>.md`, and strictly execute its procedure.
+1. Perform validation of the created/edited document before completing.
