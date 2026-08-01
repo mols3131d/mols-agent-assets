@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "runtime": "github-copilot",
+  "runtime_version": null,
+  "configuration": "candidate",
+  "executed_at": null,
+  "cases": [
+    {
+      "id": "case-id",
+      "activated": null,
+      "completed": null,
+      "route": null,
+      "evidence": null,
+      "duration_ms": null,
+      "total_tokens": null
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+version: 1
+name: "example-agent-assets"
+runtime_targets:
+  - "vscode"
+  - "github-copilot"
+assets:
+  - id: "example-skill"
+    source: "src/skills/example-skill"
+    install_to: "src/skills/example-skill"
+    profile: "agent-skill"
+    required: true
+  - id: "example-agent"
+    source: ".github/agents/example.agent.md"
+    install_to: ".github/agents/example.agent.md"
+    profile: "vscode-agent"
+    required: true
+provenance: "provenance.yaml"
+metadata:
+  owner: "project-team"

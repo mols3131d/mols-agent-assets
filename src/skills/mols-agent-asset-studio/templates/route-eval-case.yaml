@@ -1,0 +1,6 @@
+id: "<case-id>"
+prompt: "<realistic request>"
+expected_route: "<workflow-id | none | clarify>"
+expected_assets: []
+forbidden_routes: []
+rationale: "<why this route is correct>"
