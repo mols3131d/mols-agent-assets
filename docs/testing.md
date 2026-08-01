@@ -17,7 +17,6 @@
 # 단위 테스트 실행
 uv run pytest
 
-# 정적 타입 검사 및 린트
-uv run ty check
+# 린트
 uv run ruff check .
 ```
