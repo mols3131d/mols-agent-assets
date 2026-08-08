@@ -10,5 +10,5 @@
 ## Asset Pipeline
 
 1. **Authoring**: Develop and edit assets directly in markdown (`.md`) format within `src/`.
-2. **Optimization & Validation**: Optimize and validate assets using `.agents/skills/mols-agent-asset-studio`.
-3. **Deployment**: Commit and merge the feature branch to `main` (or `dev`) for distribution.
+1. **Optimization & Validation**: Optimize and validate assets using `.agents/skills/mols-agent-asset-studio`.
+1. **Deployment**: Commit and merge the feature branch to `main` (or `dev`) for distribution.
