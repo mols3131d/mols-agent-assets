@@ -1,25 +1,16 @@
 # 자산 개발 가이드
 
-`mols-agent-assets` 저장소에서 AI 에이전트 자산(스킬, 프롬프트, 규칙, 에이전트)을 신규 생성하고 수정, 최적화 및 배포하는 가이드입니다.
+## Directory Roles
 
-## 디렉터리 역할
+- `src/agents/`: subagent 및 custom agent.
+- `src/skills/`: 재사용 가능한 agent skill.
+- `src/chatbot-skills/`: chatbot-specific skill.
+- `src/instructions/`: 재사용 가능한 instruction.
+- `tests/`: 자산 및 도구 검증.
 
-- `src/`: 자산 생성, 수정, 검증 및 배포를 수행하는 통합 공간.
-- `tests/`: 자산 및 도구를 검증하는 자동화 테스트 공간.
+## Workflow
 
-## 개발 파이프라인
-
-2. **자산 작성 (`src/`)**:
-   - `src/` 디렉터리 내에서 마크다운(`.md`) 파일로 에셋을 직접 작성 및 수정합니다.
-
-3. **최적화 및 검증 (`mols-agent-asset-studio`)**:
-   - `mols-agent-asset-studio` 스킬을 활용하여 컨텍스트 용량 최적화 및 규격 검증을 수행합니다.
-   - 테스트 스위트(`uv run pytest tests/`)를 실행하여 검증합니다.
-
-4. **배포 (브랜치 머지)**:
-   - 검증이 완료된 피처 브랜치를 `main` 브랜치로 커밋 및 머지하여 배포합니다.
-
-## 버전 관리
-
-1. **브랜치 생성 (`<책임자id>/<타입>/<이름>`)**:
-   - `src/` 내 자산 개발 및 수정을 위해 `<책임자id>/<타입>/<이름>` 구조의 브랜치(예: `mols/feat/git-commit-vcs` 또는 `mols3131d/feat/git-commit-vcs`)를 생성합니다.
+1. `<owner>/<type>/<topic>` 브랜치를 생성한다.
+1. `src/`에서 자산을 작성하거나 수정한다.
+1. 필요한 검증과 `uv run pytest`를 실행한다.
+1. 검증된 변경을 배포 브랜치에 병합한다.

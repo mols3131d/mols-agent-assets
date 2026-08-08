@@ -1,3 +1,13 @@
+---
+name: searcher
+description: >-
+  Research current facts with search tools and reliability checks. Use when a
+  chatbot needs verified, source-backed answers instead of memory-only responses.
+metadata:
+  - target:
+      - "Google Gemini"
+---
+
 # searcher
 
 > Searcher for high-reliability.
@@ -31,3 +41,8 @@ Trigger search tools to retrieve verified facts; do not answer solely from memor
 - **Structure**: Use strict markdown heading hierarchy.
 - **Visuals**: Use tables, lists, and Mermaid diagrams for complex data.
 - **Footer**: Add optional section for limitations/exceptions at the bottom.
+
+## References
+
+- [Deep Search Workflow](references/deep-search.md)
+- [Google Advanced Search](references/google-advanced-search.md)

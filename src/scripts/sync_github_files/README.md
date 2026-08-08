@@ -25,9 +25,9 @@ python -m src.scripts.sync_github_files --lockfile path/to/assets-lock.json
 {
     "version": 1,
     "assets": {
-        "sample-rule": {
-            "sourceUrl": "https://github.com/owner/repo/blob/main/rules/sample.md",
-            "destPath": ".agents/rules/",
+        "sample-instruction": {
+            "sourceUrl": "https://github.com/owner/repo/blob/main/src/instructions/sample.md",
+            "destPath": ".agents/instructions/",
             "computedHash": ""
         }
     }

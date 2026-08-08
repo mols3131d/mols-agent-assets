@@ -1,14 +1,11 @@
 # Source Workspace (`src/`)
 
-This directory serves as the primary workspace for developing, editing, validating, and distributing AI agent assets. It contains the core components that define agent behaviors, procedural execution paths, constraints, and helper utilities.
+`src/` is the source workspace for AI agent assets.
 
-## Directory Structure
-
-| Directory | Aliases / Related Types | Description |
-| :--- | :--- | :--- |
-| **`agents/`** | persona, soul | Defines agent roles, combining skills and rules. |
-| **`skills/`** | | Contains executable procedural step workflows. |
-| **`rules/`** | instructions | Defines behavioral constraints and protocols. |
-| **`prompts/`** | workflows | Stores instructions for Copilot and Antigravity. |
-| **`scripts/`** | | Utility scripts for automation and validation. |
-| **`gem/`** | | Tailored custom Gem chat configurations. |
+| Directory | Role |
+| --- | --- |
+| `agents/` | Subagents and custom agents |
+| `skills/` | Reusable agent skills |
+| `chatbot-skills/` | Chatbot-specific skills |
+| `instructions/` | Reusable instructions |
+| `scripts/` | Development and validation tooling |

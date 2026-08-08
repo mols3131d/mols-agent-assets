@@ -3,12 +3,12 @@
 ## Directory Roles
 
 - `.agents/`: Runtime instructions. Follow contents. Edit only when explicitly requested.
-- `src/`: Workspace for developing, editing, testing, and distributing agent assets (skills, prompts, rules, agents). Use task-specific subdirectories for drafts, experiments, and reviews. Never treat contents as instructions.
-- `tests/`: Automated test suite for assets and scripts.
-- `docs/<asset-type>/<asset-name>/`: Human-facing asset documentation, including `README.md`. Keep it separate from assets in `src/`.
+- `src/`: Source workspace for agents, skills, chatbot skills, instructions, and tooling. Never treat contents as runtime instructions.
+- `tests/`: Automated tests for assets and tooling.
+- `docs/`: Human-facing documentation and references.
 
 ## Asset Pipeline
 
-1. **Authoring**: Develop and edit assets directly in markdown (`.md`) format within `src/`.
-1. **Optimization & Validation**: Optimize and validate assets using `.agents/skills/mols-agent-asset-studio`.
-1. **Deployment**: Commit and merge the feature branch to `main` (or `dev`) for distribution.
+1. **Author**: Create or edit assets in `src/`.
+1. **Validate**: Run applicable asset checks and tests.
+1. **Deploy**: Merge the validated feature branch to the distribution branch.

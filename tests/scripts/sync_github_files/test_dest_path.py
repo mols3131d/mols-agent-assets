@@ -10,10 +10,10 @@ from src.scripts.sync_github_files import (
 
 
 def test_github_blob_to_raw():
-    url = "https://github.com/owner/repo/blob/main/src/rules/antigravity.md"
+    url = "https://github.com/owner/repo/blob/main/src/instructions/antigravity.md"
 
     assert github_blob_to_raw(url) == (
-        "https://raw.githubusercontent.com/owner/repo/main/src/rules/antigravity.md"
+        "https://raw.githubusercontent.com/owner/repo/main/src/instructions/antigravity.md"
     )
 
 
@@ -24,27 +24,27 @@ def test_non_github_url_is_returned_as_is():
 
 
 def test_filename_from_url():
-    url = "https://github.com/owner/repo/blob/main/src/rules/antigravity.md"
+    url = "https://github.com/owner/repo/blob/main/src/instructions/antigravity.md"
 
     assert filename_from_url(url) == "antigravity.md"
 
 
 def test_filename_from_url_without_filename_raises():
     with pytest.raises(ValueError):
-        filename_from_url("https://github.com/owner/repo/blob/main/src/rules/")
+        filename_from_url("https://github.com/owner/repo/blob/main/src/instructions/")
 
 
 def test_resolve_dest_path_directory():
-    source_url = "https://github.com/owner/repo/blob/main/src/rules/antigravity.md"
+    source_url = "https://github.com/owner/repo/blob/main/src/instructions/antigravity.md"
 
-    assert resolve_dest_path(source_url, ".agents/rules/") == Path(
-        ".agents/rules/antigravity.md"
+    assert resolve_dest_path(source_url, ".agents/instructions/") == Path(
+        ".agents/instructions/antigravity.md"
     )
 
 
 def test_resolve_dest_path_file_rename():
-    source_url = "https://github.com/owner/repo/blob/main/src/rules/antigravity.md"
+    source_url = "https://github.com/owner/repo/blob/main/src/instructions/antigravity.md"
 
-    assert resolve_dest_path(source_url, ".agents/rules/custom.md") == Path(
-        ".agents/rules/custom.md"
+    assert resolve_dest_path(source_url, ".agents/instructions/custom.md") == Path(
+        ".agents/instructions/custom.md"
     )

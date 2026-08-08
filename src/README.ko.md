@@ -1,14 +1,11 @@
 # 개발 워크스페이스 (`src/`)
 
-이 디렉토리는 AI 에이전트 자산을 신규 개발, 편집, 검증 및 배포하기 위한 주요 통합 작업 공간입니다. 에이전트의 페르소나, 실행 절차, 행동 규약 및 이를 보조하는 유틸리티의 핵심 구성 요소들을 포함하고 있습니다.
+`src/`는 AI 에이전트 자산의 source workspace입니다.
 
-## 디렉토리 구조 및 소개
-
-| 디렉토리 | 유사 자산 타입 (별칭) | 설명 |
-| :--- | :--- | :--- |
-| **`agents/`** | persona, soul | 에이전트 역할 및 설정 정의 (스킬 및 규칙 조합) |
-| **`skills/`** | | 실행 가능한 단계별 절차적 스킬 워크플로 정의 |
-| **`rules/`** | instructions | 에이전트 공통 행동 규약 및 제약 규칙 정의 |
-| **`prompts/`** | workflows | 코파일럿 및 안티그래비티용 프롬프트 지침 보관 |
-| **`scripts/`** | | 자동화 유틸리티 및 설정 검증용 스크립트 |
-| **`gem/`** | | 구글 제미나이(Gemini) 전용 맞춤 Gem 설정 정보 |
+| 디렉터리 | 역할 |
+| --- | --- |
+| `agents/` | subagent 및 custom agent |
+| `skills/` | 재사용 가능한 agent skill |
+| `chatbot-skills/` | chatbot-specific skill |
+| `instructions/` | 재사용 가능한 instruction |
+| `scripts/` | 개발 및 검증 도구 |
