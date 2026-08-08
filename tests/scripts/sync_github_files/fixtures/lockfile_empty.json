@@ -1,8 +1,8 @@
 {
     "assets": {
         "sample": {
-            "sourceUrl": "https://github.com/owner/repo/blob/main/src/rules/sample.md",
-            "destPath": ".agents/rules/",
+            "sourceUrl": "https://github.com/owner/repo/blob/main/src/instructions/sample.md",
+            "destPath": ".agents/instructions/",
             "computedHash": ""
         }
     },

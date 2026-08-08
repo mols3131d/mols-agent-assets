@@ -1,24 +1,22 @@
 # mols-agent-assets
 
-Repository for developing, validating, and managing AI agent assets (skills, prompts, rules, agents).
-
----
+Repository for developing, validating, and managing AI agent assets.
 
 ## Asset Types
 
-| Asset Type | Description |
-| :--- | :--- |
-| `agents` | Configurations defining agent roles, goals, and tool sets. |
-| `skills` | Procedural workflows, scripts, and guidelines for specific tasks. |
-| `rules` | Cross-cutting style guidelines and behavioral constraints. |
-| `prompts` | Reusable prompt templates for targeted tasks. |
+| Type | Purpose |
+| --- | --- |
+| `agents` | Subagent and custom agent definitions |
+| `skills` | Reusable agent workflows |
+| `chatbot-skills` | Chatbot-specific workflows for ChatGPT, Gemini, and similar hosts |
+| `instructions` | Reusable behavioral instructions |
 
 ## Repository Structure
 
-| Directory | Description |
-| :--- | :--- |
-| `.agents/` | Internal runtime instructions for local agent tools. |
-| `src/` | Primary workspace for developing, validating, and serving assets. |
-| `tests/` | Automated test suite for assets and scripts. |
-| `docs/` | Comprehensive documentation and guides. |
-| `scripts/` | Project automation tools. |
+| Directory | Purpose |
+| --- | --- |
+| `.agents/` | Local agent runtime instructions |
+| `src/` | Asset source workspace |
+| `tests/` | Automated tests |
+| `docs/` | Human-facing documentation and references |
+| `scripts/` | Repository automation tools |

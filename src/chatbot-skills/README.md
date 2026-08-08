@@ -1,1 +1,6 @@
-여기는 챗봇을 위한 스킬 자산. 챗봇은 에이전트와 다르게 맥락을 웹과 사용자에게 직접 주입받아야한다.
+# Chatbot Skills
+
+ChatGPT, Gemini 등 특정 chatbot runtime에 의존하는 skill을 둡니다.
+
+- 플랫폼 차이는 디렉터리가 아니라 metadata로 표시합니다.
+- 범용 workflow는 `../skills/`에 둡니다.
