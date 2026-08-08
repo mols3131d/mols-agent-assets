@@ -21,17 +21,17 @@ same analysis does not count as another workflow or loop.
 
 ```yaml
 max_loops: 10
-stop_condition: review_has_no_actionable_findings
+stop_condition: review_has_no_findings
 ```
 
 - If the user specifies a loop count, perform exactly that many loops unless blocked.
 - If the user specifies a different maximum or stop condition, use it.
-- Otherwise stop when Review returns no actionable findings or `max_loops` is reached.
+- Otherwise stop when Review returns no findings or `max_loops` is reached.
 - If the maximum is reached with findings remaining, report the unresolved findings.
 
 ## Loop
 
-Each loop contains four phases.
+Each loop always contains all four phases. A phase may be brief when little work is needed, but it is not skipped.
 
 ### 1. Research
 
@@ -61,7 +61,7 @@ Perform the actual task. Implementation may be code, writing, analysis, design, 
 
 1. **Execute** — perform the planned core work.
 1. **Integrate** — reconcile the work with existing context, artifacts, constraints, and prior results.
-1. **Refine** — improve correctness, clarity, KISS, DRY, and fitness for the requested use.
+1. **Refine** — improve correctness, clarity, simplicity, and fitness for use. Apply domain-specific quality principles when relevant.
 1. **Validate** — test or inspect the result against the plan, evidence, and acceptance conditions.
 
 Do not claim a validation was performed when the required tool, source, or execution was unavailable.
@@ -73,22 +73,34 @@ Independently search for remaining material problems.
 1. **Quality Review** — check correctness, completeness, consistency, and usability.
 1. **Adversarial Review** — attack assumptions, edge cases, failure modes, and alternative interpretations.
 1. **Evidence Review** — verify that claims, conclusions, and changes are supported by available evidence.
-1. **Decision Review** — deduplicate findings, determine which are actionable, and decide whether another loop is required.
+1. **Decision Review** — deduplicate findings and decide whether another loop is required.
 
 ## Finding Contract
 
-A Review finding must be:
+A Review finding is an actionable, material problem that is:
 
 - specific enough to act on;
-- material to the requested outcome;
+- relevant to the requested outcome;
 - supported by evidence or a clearly identified reasoning gap; and
 - not merely a repetition of an already resolved finding.
 
-Do not invent findings to keep the loop running. Cosmetic preferences and unsupported possibilities are not actionable findings unless the task explicitly makes them relevant.
+Do not invent findings to keep the loop running. Cosmetic preferences and unsupported possibilities are not findings unless the task explicitly makes them relevant.
+
+## Loop Delta
+
+Each loop after the first must be driven by at least one meaningful delta:
+
+- an unresolved finding;
+- new evidence;
+- a new perspective;
+- a different validation method; or
+- a changed assumption or plan.
+
+A repeated pass without a meaningful delta does not count as another loop.
 
 ## Loop Contract
 
-A loop counts only when all applicable phases are completed and the Review uses genuinely distinct checks.
+A loop counts only when all four phases are completed and the Review uses genuinely distinct checks.
 
 The following do not count as additional loops:
 
@@ -114,22 +126,13 @@ Choose validation appropriate to the task, such as:
 
 ## Output
 
-Keep loop reporting compact. For each completed loop, expose only what helps the user evaluate progress:
+Run the loops without exposing private reasoning or verbose phase-by-phase narration by default.
 
-```markdown
-## Loop <n>
+Default output should include:
 
-### Research
-<new evidence or changed understanding>
+- the improved final result;
+- the number of completed loops;
+- material changes or conclusions produced by the loops; and
+- unresolved findings or validation that could not be performed.
 
-### Plan
-<material plan decisions>
-
-### Implement
-<what changed>
-
-### Review
-- <actionable finding or `No actionable findings`>
-```
-
-After the final loop, provide the improved result and note any unresolved findings or validation that could not be performed.
+Show per-loop Research, Plan, Implement, and Review details only when the user requests them or when they are necessary to understand the result.
