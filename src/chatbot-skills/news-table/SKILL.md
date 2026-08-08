@@ -2,6 +2,9 @@
 name: news-table
 description: >
   This skill helps users quickly discover important and recent trends on multiple topics by researching news and information. Use it when you want curated, up-to-date insights on specific subjects, with the option to specify the number of articles and relevant sources.
+metadata:
+  - target:
+    - "OpenAI ChatGPT"
 ---
 
 ## Purpose
@@ -66,7 +69,7 @@ description: >
 ## 에이전트 활용 개발 효율성
 
 | <yyyy> | News | Score |
-|---|---|---:|
+| --- | --- | ---: |
 | 07-31 | **핵심 소식¹** — 무엇이 달라졌으며 왜 주목할 만한지 설명한다. | 5 |
 
 ## 데이터 엔지니어링·인공지능
