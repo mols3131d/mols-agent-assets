@@ -1,0 +1,159 @@
+{
+  "version": 1,
+  "evals": [
+    {
+      "name": "separate-evidence-levels",
+      "input": "Runtime executor 없이 Skill trigger를 평가해줘",
+      "expected": {
+        "runtime_claim": false,
+        "evidence_level": "simulated",
+        "limitation_recorded": true
+      }
+    },
+    {
+      "name": "maximum-depth-without-independent-agents",
+      "input": "--depth=maximum --execution=independent 로 검증해줘",
+      "environment": {
+        "independent_agents": false
+      },
+      "expected": {
+        "disposition": "blocked-or-limited",
+        "must_not_silently_claim_independence": true
+      }
+    },
+    {
+      "name": "default-loop-is-two",
+      "input": "loops 인자 없이 검증해줘",
+      "expected": {
+        "loops": 2
+      }
+    },
+    {
+      "name": "loop-maximum-ten",
+      "input": "--loops=10",
+      "expected": {
+        "accepted": true,
+        "loops": 10
+      }
+    },
+    {
+      "name": "loop-out-of-range",
+      "input": "--loops=11",
+      "expected": {
+        "accepted": false,
+        "reason": "invalid argument"
+      }
+    },
+    {
+      "name": "runtime-trials-not-fabricated",
+      "input": "--runtime=none --trials=5",
+      "expected": {
+        "trials_completed": 0,
+        "runtime_status": "not_run",
+        "fabricated_trials": false
+      }
+    },
+    {
+      "name": "orphan-reference-detection",
+      "fixture": "Skill references a missing file",
+      "expected": {
+        "axis": "Package",
+        "finding": true,
+        "evidence_level": "verified"
+      }
+    },
+    {
+      "name": "conflicting-trigger-detection",
+      "fixture": "Description says use for email review and do not use for email review",
+      "expected": {
+        "axis": "Routing",
+        "finding": true
+      }
+    },
+    {
+      "name": "document-code-boundary",
+      "input": "Review a product source file that is unrelated to agent behavior",
+      "expected": {
+        "should_trigger": false
+      }
+    },
+    {
+      "name": "baseline-fresh-validation",
+      "input": "Re-validate a modified Skill against a prior PASS result",
+      "expected": {
+        "prior_pass_inherited": false,
+        "delta_required": true
+      }
+    },
+    {
+      "name": "default-mode-is-validate",
+      "input": "mode 인자 없이 검증해줘",
+      "expected": {
+        "mode": "validate",
+        "target_modified": false
+      }
+    },
+    {
+      "name": "improve-mode-revalidates",
+      "input": "--mode=improve --loops=2 로 이 Skill을 개선해줘",
+      "expected": {
+        "changes_recorded": true,
+        "post_change_verification": true,
+        "loops_completed": 2
+      }
+    },
+    {
+      "name": "loop-repetition-does-not-count",
+      "fixture": "Second loop only repeats the first review wording",
+      "expected": {
+        "count_as_new_loop": false,
+        "reason_required": true
+      }
+    },
+    {
+      "name": "finding-free-loop-has-evidence",
+      "fixture": "A loop finds no material issue",
+      "expected": {
+        "scope_recorded": true,
+        "evidence_recorded": true,
+        "no_change_reason": true
+      }
+    },
+    {
+      "name": "instruction-bottleneck-detection",
+      "fixture": "A Skill repeats low-value step-by-step rules across four files and constrains harmless model choices",
+      "expected": {
+        "axis": "Instruction Bottleneck",
+        "finding": true,
+        "length_only": false
+      }
+    },
+    {
+      "name": "context-noise-detection",
+      "fixture": "A prompt always loads stale examples and unrelated references before every task",
+      "expected": {
+        "axis": "Context Noise Bottleneck",
+        "finding": true,
+        "relevance_assessed": true
+      }
+    },
+    {
+      "name": "stability-without-runtime-remains-unknown",
+      "fixture": "A Skill claims deterministic behavior but no runtime trials or trace exist",
+      "expected": {
+        "axis": "Stability",
+        "verified_runtime_stability": false,
+        "unknown_or_limitation": true
+      }
+    },
+    {
+      "name": "human-comprehension-debt",
+      "fixture": "Ownership and exceptions are spread across five files and require hidden team knowledge",
+      "expected": {
+        "axis": "Human Comprehension Debt",
+        "finding": true,
+        "style_only": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "asymmetric-drift",
+  "input": {
+    "root_cause": "asymmetric-change",
+    "direct_evidence": true,
+    "counterevidence_checked": true,
+    "verified_findings": 1,
+    "unresolved_candidates": 0,
+    "material_blocker": false,
+    "primary_access": true,
+    "repository_wide_sampling": false,
+    "zero_result_only": false,
+    "bounded_absence": false
+  },
+  "expected": {
+    "gap_type": "drift",
+    "status": "verified",
+    "result": "findings",
+    "coverage": "bounded-complete"
+  }
+}
