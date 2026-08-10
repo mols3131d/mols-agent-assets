@@ -4,7 +4,7 @@
 
 | 결정 | 이유 | 영향 |
 | --- | --- | --- |
-| `pivot-clarify-code` namespace 사용 | Project Pivot 전용 skill을 기존 `pivot-*` 계열과 맞춤 | `prj-clarify-code`를 rename |
+| `clarify-code` 스킬 정립 | 독립적이고 범용적인 code clarification skill로 구성 | 범용적인 `clarify-code` 식별자 사용 |
 | description은 사용자 intent와 near-miss boundary를 직접 표현 | discovery 단계에서는 `name`과 `description`이 주요 routing signal | clarify 요청은 넓게 포착하고 feature, review, performance, architecture 요청은 제외 |
 | 공통 guardrail은 repository instructions가 소유 | 항상 적용되는 규칙과 선택적 workflow를 분리 | skill은 diagnosis, intervention, validation에 집중 |
 | 오해 비용이 가장 큰 병목 하나를 먼저 해소 | 전면 정리와 cosmetic cleanup을 방지 | destructive side effect, gate, ordering, invariant를 단순 복잡성보다 우선 |
