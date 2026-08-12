@@ -18,7 +18,7 @@ CACHE_DIRS = {
     "build",
 }
 PLACEHOLDER_NAMES = {"example", "sample", "placeholder", "todo", "untitled"}
-RESOURCE_DIRS = ("references", "templates", "assets")
+RESOURCE_DIRS = ("workflows", "references", "templates", "assets")
 
 
 def _documentation_files(root: Path) -> list[Path]:

@@ -15,6 +15,13 @@ def metrics(path: Path) -> dict[str, int | str]:
     }
 
 
+def markdown_resources(root: Path, directory: str) -> list[dict[str, int | str]]:
+    target = root / directory
+    if not target.is_dir():
+        return []
+    return [metrics(path) for path in sorted(target.glob("*.md"))]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Report Agent Skill context-loading size."
@@ -30,18 +37,21 @@ def main() -> int:
         return 1
 
     entry = metrics(skill)
-    refs = (
-        [metrics(p) for p in sorted((root / "references").glob("*.md"))]
-        if (root / "references").is_dir()
-        else []
-    )
+    workflows = markdown_resources(root, "workflows")
+    references = markdown_resources(root, "references")
     report = {
         "entry": {**entry, "path": "SKILL.md"},
-        "references": [{**m, "path": Path(str(m["path"])).name} for m in refs],
+        "workflows": [
+            {**item, "path": Path(str(item["path"])).name} for item in workflows
+        ],
+        "references": [
+            {**item, "path": Path(str(item["path"])).name} for item in references
+        ],
         "warnings": [],
     }
     if int(entry["lines"]) > args.max_entry_lines:
         report["warnings"].append(f"SKILL.md exceeds {args.max_entry_lines} lines")
+
     if args.json:
         print(json.dumps(report, ensure_ascii=False, indent=2))
     else:
@@ -49,13 +59,15 @@ def main() -> int:
             f"SKILL.md: {entry['lines']} lines, {entry['words']} words, "
             f"{entry['bytes']} bytes"
         )
-        for item in sorted(
-            report["references"], key=lambda x: int(x["bytes"]), reverse=True
-        ):
-            print(
-                f"reference {item['path']}: {item['lines']} lines, "
-                f"{item['bytes']} bytes"
-            )
+        for group in ("workflows", "references"):
+            for item in sorted(
+                report[group], key=lambda row: int(row["bytes"]), reverse=True
+            ):
+                label = "workflow" if group == "workflows" else "reference"
+                print(
+                    f"{label} {item['path']}: {item['lines']} lines, "
+                    f"{item['bytes']} bytes"
+                )
         for warning in report["warnings"]:
             print(f"WARN: {warning}")
     return 0 if not report["warnings"] else 1

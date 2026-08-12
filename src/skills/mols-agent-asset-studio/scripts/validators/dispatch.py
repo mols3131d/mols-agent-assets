@@ -2,13 +2,11 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from .bundle import validate_bundle_descriptor
 from .github_agent import validate_agent
 from .github_hooks import validate_hooks_file
 from .github_mcp import validate_github_mcp
 from .model import ValidationResult
 from .openai_interface import validate_openai_interface
-from .project_profile import validate_project_profile
 from .skill import validate_skill
 from .vscode_instruction import validate_instruction
 from .vscode_prompt import validate_prompt
@@ -27,8 +25,6 @@ PROFILES = {
     "github-hooks",
     "vscode-hooks",
     "github-mcp",
-    "project-profile",
-    "asset-bundle",
 }
 
 
@@ -39,10 +35,6 @@ def detect_profile(path: Path) -> str:
     normalized = path.as_posix()
     if name == "openai.yaml" and path.parent.name == "agents":
         return "openai-interface"
-    if name in {"asset-bundle.yaml", "asset-bundle.yml"}:
-        return "asset-bundle"
-    if name in {"studio.yaml", "studio.yml", "agent-assets.yaml", "agent-assets.yml"}:
-        return "project-profile"
     if name == "AGENTS.md":
         return "agents-md"
     if name == "copilot-instructions.md":
@@ -97,10 +89,6 @@ def validate_target(
         return validate_hooks_file(path, strict=strict, profile=profile)
     if profile == "github-mcp":
         return validate_github_mcp(path, strict=strict)
-    if profile == "project-profile":
-        return validate_project_profile(path, strict=strict)
-    if profile == "asset-bundle":
-        return validate_bundle_descriptor(path, strict=strict)
     result = ValidationResult()
     result.error(f"unhandled profile: {profile}")
     return result

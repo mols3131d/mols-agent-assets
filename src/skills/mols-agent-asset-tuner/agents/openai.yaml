@@ -1,4 +1,0 @@
-interface:
-  display_name: "Agent Asset Tuner"
-  short_description: "Adapt external agent assets to a project's real context"
-  default_prompt: "Use $mols-agent-asset-tuner to adapt this asset to the current repository without blind copying."
