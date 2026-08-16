@@ -31,10 +31,10 @@ context loading before mutation or before making structural assumptions about th
 
 ## Core Contract
 
-1. **Resolve the live target** — identify the exact page/database/object and its parent or
-   containing structure when that relationship matters. Do not rely on remembered
-   workspace state.
-2. **Separate content from structure** — page body content, page/database properties,
+1. **Resolve the live target** — identify the exact page/database/data source/object and
+   its parent or containing structure when that relationship matters. Do not rely on
+   remembered workspace state.
+2. **Separate content from structure** — page body content, page properties, data-source
    schema, relations, templates, views, and layout are different kinds of context. Load
    only the kinds that can affect the requested operation.
 3. **Preserve existing semantics** — do not flatten structured properties, relations, or
@@ -42,21 +42,28 @@ context loading before mutation or before making structural assumptions about th
 4. **Respect workspace evidence** — use the current Notion object and its connected
    metadata as the source for names, property types, relation targets, and structure. Do
    not invent a workspace convention from generic Notion practice.
-5. **Load progressively** — start with the target object. Expand to its parent, database or
+5. **Treat partial reads as partial** — pagination, truncation, unsupported fields, API
+   version differences, or connection permissions can make visible context incomplete.
+   Do not turn an incomplete read into evidence that a property, relation, row, or object
+   does not exist.
+6. **Load progressively** — start with the target object. Expand to its parent, database,
    data-source schema, related objects, or template only when the current task depends on
    them.
-6. **Stop when sufficient** — context loading should not become a workspace crawl.
+7. **Stop when sufficient** — context loading should not become a workspace crawl.
 
 ## Notion Object Lens
 
 Preserve these distinctions when the active connector exposes them:
 
+- A **database** is a container and may contain one or more **data sources**. A data source
+  owns its table schema and rows/pages. Do not assume the database itself is the schema
+  owner when the active API or connector exposes the newer data-source model.
 - A database entry is also a page: structured properties and page body content can both
   matter, but they are not interchangeable.
-- Database/data-source properties define structured fields used for organization, search,
+- Data-source properties define structured fields used for organization, search,
   filtering, sorting, status, dates, people, relations, formulas, rollups, and similar
   semantics.
-- Relation properties connect pages or database items. Treat the relationship itself as
+- Relation properties connect pages or data-source items. Treat the relationship itself as
   structured data rather than replacing it with a copied title or URL unless the user
   explicitly asks for a textual projection.
 - Templates may encode repeated property defaults and page structure. Inspect the relevant
@@ -71,24 +78,28 @@ Load additional Notion context only when one of these conditions is present:
 
 - **Existing page edit** → read the current page content and any properties that constrain
   the edit.
-- **Database item work** → read the relevant property/schema definitions before assigning
-  or interpreting structured values.
+- **Database/data-source work** → resolve the specific data source when needed and read its
+  relevant property definitions before assigning or interpreting structured values.
 - **Relation or rollup work** → identify the relation target and only the connected fields
-  needed to understand the requested relationship.
+  needed to understand the requested relationship; if the connector reports truncation,
+  pagination, or incomplete access, retrieve enough additional context before concluding
+  that a relation/value is absent.
 - **Repeated page creation** → inspect an applicable database template when one is known and
   available.
 - **Restructuring** → inspect parent/child placement, existing navigation, and nearby
   canonical pages only when the requested move or information architecture depends on it.
 
-Do not load every relation target, database row, template, sibling page, or view by default.
+Do not load every relation target, database row, data source, template, sibling page, or
+view by default.
 
 ## Recheck Before Task Action
 
 Before handing off to a task-level mutation, confirm that:
 
-- the resolved Notion object is the intended target;
+- the resolved Notion object and, when relevant, data source are the intended targets;
 - property names and types used by the next action come from current workspace evidence;
 - relation targets and structured fields have not been reduced to guessed prose;
+- visible results are sufficiently complete for the conclusion being made;
 - existing structure that must be preserved is known;
 - unresolved ambiguity that could cause a destructive or structurally incorrect write is
   surfaced rather than guessed.
