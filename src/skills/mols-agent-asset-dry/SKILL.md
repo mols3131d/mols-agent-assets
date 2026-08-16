@@ -12,7 +12,7 @@ Remove avoidable repetition from skills, rules, prompts, and agents while preser
 
 This Skill handles four natural-language asset types: **skill**, **rule**, **prompt**, and **agent**. Embedded metadata or frontmatter is in scope when it controls discovery, activation, scope, permissions, tools, or other behavior of those assets. Standalone hooks, tools, executable configuration, and general documentation are out of scope.
 
-Classify an asset by responsibility, activation, load timing, and authority rather than filename, Markdown shape, or prompt-like text. If one file genuinely serves multiple asset roles and those roles cannot be separated safely, preserve it and report the ambiguity.
+Classify an asset by responsibility, activation, load timing, and authority rather than filename, Markdown shape, or prompt-like text. A support file inside a skill or agent package remains part of that asset unless the runtime exposes it as an independent rule, prompt, skill, or agent entrypoint. If one file genuinely serves multiple runtime roles and those roles cannot be separated safely, preserve it and report the ambiguity.
 
 Set the write boundary from the request. Read outside that boundary only when needed to establish inheritance, references, activation, source authority, or generated projections. Do not mutate outside the write boundary without explicit authority.
 
@@ -39,7 +39,7 @@ Load one matching reference for each asset type present in the requested work:
 | Prompt | Explicit reusable task entrypoint | [prompt.md](references/prompt.md) |
 | Agent | Specialist role, isolated context, or scoped tools | [agent.md](references/agent.md) |
 
-Read [duplication.md](references/duplication.md) when semantic equivalence, specialization, or repeated responsibility is unclear. Read [ownership.md](references/ownership.md) when source authority, generated copies, external ownership, competing owners, or harness-specific projections are involved.
+Read [duplication.md](references/duplication.md) when repeated content, semantic identity, specialization, or consolidation compatibility must be decided. Read [ownership.md](references/ownership.md) when source authority, generated copies, external ownership, competing owners, or harness-specific projections are involved.
 
 ## Workflow
 
@@ -51,9 +51,9 @@ Inspect the requested assets and enough surrounding context to find repeated req
 
 Classify each candidate by runtime role, then load every matching asset reference needed for the requested set. Capture the behavior that must remain unchanged. If an asset type is ambiguous, preserve the current structure and report the ambiguity.
 
-### 3. Decide Duplication
+### 3. Decide Repetition
 
-Compare the smallest independently meaningful units. Use the common duplication reference when equivalence or specialization is uncertain. Content shared across different asset types is not automatically duplication because activation and authority may differ.
+Compare the smallest independently meaningful units. First decide whether they express the same underlying requirement, responsibility, procedure, or context. Then decide separately whether the relevant asset boundaries are compatible enough to consolidate them. Use the duplication reference when either decision is non-trivial.
 
 ### 4. Resolve Ownership
 

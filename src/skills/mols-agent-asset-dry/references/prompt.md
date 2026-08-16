@@ -22,7 +22,7 @@ Do not automatically move instructions repeated across prompts into a rule, skil
 
 ## Thin Aliases
 
-A thin prompt alias is not necessarily duplication when it provides a distinct, useful invocation name or preset. Remove it only when the alias has no independent user-facing purpose.
+A thin prompt alias is not necessarily duplication when it provides a distinct invocation name, preset, or discovery path. Remove it only when the alias has no independent invocation purpose.
 
 ## Verify
 

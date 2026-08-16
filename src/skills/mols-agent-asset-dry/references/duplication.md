@@ -1,28 +1,34 @@
 # Duplication
 
-Use this reference only when deciding whether repeated natural-language asset content is actually redundant.
+Use this reference when repeated natural-language asset content must be classified or a consolidation decision is not obvious.
 
 ## Compare the Smallest Unit
 
-Compare the smallest requirement, responsibility, procedure, or context block that can stand on its own without changing meaning. Do not move or delete an entire paragraph, section, or asset because only part of it is duplicated.
+Compare the smallest requirement, responsibility, procedure, or context block that can stand on its own without changing meaning. Do not move or delete an entire paragraph, section, or asset because only part of it is repeated.
 
 ## Semantic Identity
 
-Textual similarity is only a discovery signal. Treat two units as the same only when their operational meaning and relevant specialization or exception intent are equivalent.
+Textual similarity is only a discovery signal. First decide whether two units express the same underlying requirement, responsibility, procedure, or context. Compare operational meaning and specialization or exception intent.
 
-Use the asset-type reference to determine which behavioral dimensions matter. The same text may mean different things when activation, scope, tools, permissions, output contracts, dependencies, or lifecycle differ.
+Do not make activation, scope, tools, permissions, or lifecycle part of semantic identity unless they are themselves part of what the unit means. Those dimensions usually decide whether consolidation is safe, not whether the repeated content is conceptually the same.
 
 ## Repetition Types
 
-Classify repeated content before removing it:
+For semantically identical or shared content, classify the relationship:
 
-- **Duplicate occurrence**: the same unit is repeated with no behavioral distinction.
-- **Inherited or referenced restatement**: a broader or canonical source already supplies the same unit unchanged.
-- **Shared responsibility**: multiple assets own the same responsibility and may be consolidation candidates.
-- **Specialization or exception**: a narrower asset intentionally changes or extends the common behavior.
-- **Required physical copy**: delivery or runtime requires repeated text but authority remains elsewhere.
+- **Duplicate occurrence**: the same unit appears more than once with no distinct behavior.
+- **Inherited or referenced restatement**: a broader or canonical source already supplies the unit unchanged.
+- **Shared responsibility**: multiple assets independently own the same responsibility or procedure.
+- **Specialization or exception**: one occurrence intentionally changes or extends the shared content.
+- **Required physical copy**: delivery or runtime requires repeated text while authority remains elsewhere.
 
-Only the first three are DRY candidates, and shared responsibility still requires compatible asset boundaries before consolidation.
+The first three are DRY candidates. Specializations and required physical copies are normally preserved.
+
+## Consolidation Compatibility
+
+Use the matching asset-type reference to decide whether a DRY candidate can actually share one owner. Preserve separate occurrences when consolidation would change discoverability, activation, scope, authority, tools or permissions, outputs, dependencies, context isolation, precedence, or lifecycle.
+
+A shared responsibility is not automatically a duplicate asset. Consolidate only when the relevant asset boundaries are compatible.
 
 ## Cross-Type Repetition
 
@@ -32,4 +38,4 @@ Moving content to a different asset type changes activation semantics and is a s
 
 ## Ambiguity
 
-If semantic equivalence, specialization intent, or canonical availability is unclear, preserve the current content and report unresolved duplication.
+If semantic identity, specialization intent, consolidation compatibility, or canonical availability is unclear, preserve the current content and report unresolved duplication.
