@@ -14,18 +14,42 @@ jobs:
   format:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout main
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v7
         with:
-          ref: main
+          fetch-depth: 0
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v8
+
+      - name: Collect changed Markdown
+        id: markdown
+        shell: bash
+        env:
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+        run: |
+          mapfile -d '' files < <(
+            git diff --name-only -z --diff-filter=ACMR "$BEFORE" "$AFTER" -- '*.md'
+          )
+
+          if ((${#files[@]} == 0)); then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          printf '%s\0' "${files[@]}" > /tmp/markdown-files
+          echo "changed=true" >> "$GITHUB_OUTPUT"
 
       - name: Format Markdown
-        run: uv run --frozen rumdl fmt .
+        if: steps.markdown.outputs.changed == 'true'
+        shell: bash
+        run: |
+          mapfile -d '' files < /tmp/markdown-files
+          uv run --frozen --group dev rumdl fmt "${files[@]}"
 
       - name: Commit fixes
+        if: steps.markdown.outputs.changed == 'true'
         run: |
           if git diff --quiet -- '*.md'; then
             exit 0
