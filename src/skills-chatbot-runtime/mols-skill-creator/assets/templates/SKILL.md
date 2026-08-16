@@ -8,9 +8,9 @@ description: {{description}}
 ## Authority
 
 1. 사용자의 현재 명시적 지시
-2. `docs/DIRECTIVE.md`
-3. `docs/WORKING.md`
-4. 현재 구현
+1. `docs/DIRECTIVE.md`
+1. `docs/WORKING.md`
+1. 현재 구현
 
 ## Workflow
 

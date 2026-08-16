@@ -6,9 +6,9 @@
 
 | Source | URL | Primary Value |
 | --- | --- | --- |
-| OpenAI Skill Creator | https://github.com/openai/skills/blob/main/skills/.system/skill-creator/SKILL.md | 간결성, 자유도 조절, progressive disclosure, 기본 생성·검증 흐름 |
-| Microsoft Skill Creator | https://github.com/microsoft/skills/tree/main/.github/skills/skill-creator | 최신 공식 근거 우선, token budget, hero workflow, 효율·보안 검증 |
-| Anthropic Skill Creator | https://github.com/anthropics/skills/tree/main/skills/skill-creator | 평가 사례, 정량·정성 비교, 반복 개선, trigger description 최적화 |
+| OpenAI Skill Creator | <https://github.com/openai/skills/blob/main/skills/.system/skill-creator/SKILL.md> | 간결성, 자유도 조절, progressive disclosure, 기본 생성·검증 흐름 |
+| Microsoft Skill Creator | <https://github.com/microsoft/skills/tree/main/.github/skills/skill-creator> | 최신 공식 근거 우선, token budget, hero workflow, 효율·보안 검증 |
+| Anthropic Skill Creator | <https://github.com/anthropics/skills/tree/main/skills/skill-creator> | 평가 사례, 정량·정성 비교, 반복 개선, trigger description 최적화 |
 
 ## Selection Rules
 

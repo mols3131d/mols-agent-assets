@@ -16,10 +16,10 @@
 ## Tuning Procedure
 
 1. 대상 런타임의 공식 스펙과 실제 저장소 구조를 확인한다.
-2. 현재 스킬의 공통 코어와 환경 종속 규칙을 표시한다.
-3. 환경 전용 규칙을 `references/platform-<name>.md`, script 옵션 또는 작은 metadata 파일로 격리한다.
-4. 다른 환경의 동작을 깨지 않는지 회귀 검증한다.
-5. `WORKING.md`에 현재 지원 범위와 알려진 차이를 남긴다.
+1. 현재 스킬의 공통 코어와 환경 종속 규칙을 표시한다.
+1. 환경 전용 규칙을 `references/platform-<name>.md`, script 옵션 또는 작은 metadata 파일로 격리한다.
+1. 다른 환경의 동작을 깨지 않는지 회귀 검증한다.
+1. `WORKING.md`에 현재 지원 범위와 알려진 차이를 남긴다.
 
 ## Compatibility Rule
 

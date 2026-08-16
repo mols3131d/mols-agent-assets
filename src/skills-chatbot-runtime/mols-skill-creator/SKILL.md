@@ -12,10 +12,10 @@ description: Create, review, directly improve, validate, and adapt AI agent skil
 작업 시작 시 대상 스킬의 파일을 확인하고 다음 우선순위를 적용한다.
 
 1. 사용자의 현재 명시적 지시
-2. `docs/DIRECTIVE.md`
-3. `docs/WORKING.md`
-4. 현재 `SKILL.md`와 부속 자산
-5. 외부 참고 구현과 일반 관례
+1. `docs/DIRECTIVE.md`
+1. `docs/WORKING.md`
+1. 현재 `SKILL.md`와 부속 자산
+1. 외부 참고 구현과 일반 관례
 
 모든 대상 스킬에 `docs/DIRECTIVE.md`와 `docs/WORKING.md`를 둔다.
 
@@ -33,9 +33,9 @@ description: Create, review, directly improve, validate, and adapt AI agent skil
 기존 스킬이면 먼저 다음을 읽는다.
 
 1. `docs/DIRECTIVE.md`
-2. `docs/WORKING.md`
-3. `SKILL.md`
-4. 직접 참조된 `references/`, `scripts/`, `assets/`, 평가 자산
+1. `docs/WORKING.md`
+1. `SKILL.md`
+1. 직접 참조된 `references/`, `scripts/`, `assets/`, 평가 자산
 
 그 후 현재 동작, 핵심 의도, 문제, 환경 의존성을 요약한다.
 
@@ -76,15 +76,15 @@ description: Create, review, directly improve, validate, and adapt AI agent skil
 수정 후 전체 품질을 검증한다.
 
 1. `DIRECTIVE.md`의 목적·요구사항·불변 조건 보존
-2. trigger 정확도와 누락·과활성 위험
-3. 실행 가능성, 도구·경로·명령의 현실성
-4. 구조와 progressive disclosure
-5. KISS, DRY, 불필요한 토큰 비용
-6. 파일 간 용어·규칙·링크 일관성
-7. 대상 환경 호환성과 벤더 종속성 격리
-8. 기존 유효 기능의 회귀 여부
-9. 보안과 사용자 기대의 일치
-10. 패키징 완전성 — `docs/` 포함
+1. trigger 정확도와 누락·과활성 위험
+1. 실행 가능성, 도구·경로·명령의 현실성
+1. 구조와 progressive disclosure
+1. KISS, DRY, 불필요한 토큰 비용
+1. 파일 간 용어·규칙·링크 일관성
+1. 대상 환경 호환성과 벤더 종속성 격리
+1. 기존 유효 기능의 회귀 여부
+1. 보안과 사용자 기대의 일치
+1. 패키징 완전성 — `docs/` 포함
 
 `python scripts/validate_skill.py <target-skill>`을 실행할 수 있으면 실행한다. 스크립트 검증은 의미 검증을 대체하지 않는다.
 
