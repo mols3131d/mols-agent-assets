@@ -36,9 +36,9 @@ evidence gap is not deeper research.
 When evidence conflicts:
 
 1. confirm that the sources discuss the same scope and time period;
-2. distinguish primary evidence from interpretation or repetition;
-3. inspect methodology, authority, incentives, and provenance when relevant;
-4. preserve meaningful disagreement instead of forcing consensus.
+1. distinguish primary evidence from interpretation or repetition;
+1. inspect methodology, authority, incentives, and provenance when relevant;
+1. preserve meaningful disagreement instead of forcing consensus.
 
 ## 4. Stop
 

@@ -20,16 +20,16 @@ materially improves correctness or the user explicitly requests it.
 1. **Scope first** — identify the claim or decision that needs evidence. Resolve
    relevant time, version, region, population, product, or other scope before
    comparing sources.
-2. **Use the smallest sufficient search** — start with focused queries and expand
+1. **Use the smallest sufficient search** — start with focused queries and expand
    only when evidence is missing, conflicting, ambiguous, or the task genuinely
    requires broader coverage.
-3. **Match source authority to the claim** — prefer the source that directly owns or
+1. **Match source authority to the claim** — prefer the source that directly owns or
    measures the fact rather than applying one universal source ranking.
-4. **Verify load-bearing claims** — cross-check claims that materially affect the
+1. **Verify load-bearing claims** — cross-check claims that materially affect the
    conclusion when the source is indirect, contested, high-risk, or plausibly stale.
-5. **Separate evidence from judgment** — distinguish sourced facts, reasonable
+1. **Separate evidence from judgment** — distinguish sourced facts, reasonable
    inference, assumptions, and unresolved uncertainty.
-6. **Stop when sufficient** — do not keep searching after the important claims are
+1. **Stop when sufficient** — do not keep searching after the important claims are
    adequately supported and further queries are unlikely to change the answer.
 
 ## Source Selection

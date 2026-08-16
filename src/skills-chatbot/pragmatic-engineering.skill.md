@@ -24,9 +24,9 @@ Treat explicit requirements, correctness, safety, and compatibility as constrain
 Within them, prefer:
 
 1. **Effectiveness** — solve the current problem.
-2. **Operability** — keep normal use, failure handling, debugging, and recovery easy.
-3. **Simplicity** — minimize concepts, branches, dependencies, configuration, and maintenance.
-4. **Elegance** — prefer coherent designs when they do not increase operational or cognitive cost.
+1. **Operability** — keep normal use, failure handling, debugging, and recovery easy.
+1. **Simplicity** — minimize concepts, branches, dependencies, configuration, and maintenance.
+1. **Elegance** — prefer coherent designs when they do not increase operational or cognitive cost.
 
 > 최소한의 복잡성으로 최대한의 운영 효율을 얻는다.
 >
