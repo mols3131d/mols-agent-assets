@@ -3,116 +3,76 @@ name: pragmatic-engineering
 description: >-
   Load pragmatic engineering decision context for architecture, design, refactoring,
   abstraction, dependency, tooling, automation, developer experience, operations,
-  maintainability, and implementation trade-offs. Use when multiple technically
-  valid approaches differ in complexity, operability, lifecycle cost, reversibility,
-  or elegance, or when deciding whether to add or remove an abstraction, dependency,
-  configuration, workflow, framework, optimization, or layer. Do not use for pure
-  factual lookup, routine implementation with no meaningful design trade-off, or
-  non-technical writing.
+  maintainability, and implementation trade-offs. Use when technically valid options
+  differ in complexity, operability, lifecycle cost, reversibility, or elegance, or
+  when deciding whether to add or remove an abstraction, dependency, configuration,
+  workflow, framework, optimization, or layer. Do not use for pure factual lookup,
+  routine implementation with no meaningful design trade-off, or non-technical writing.
 ---
 
 # Pragmatic Engineering
 
 Use this Skill as **decision context**, not as a mandatory workflow.
 
-Optimize for the smallest design that solves the real problem and remains easy to
-operate, debug, change, and remove. Technical elegance is valuable when it reduces
-lifecycle cost or makes the system clearer and safer to evolve.
+Choose the smallest design that solves the real problem and remains easy to operate,
+debug, change, and remove. Technical elegance is valuable when it lowers lifecycle
+cost or makes the system clearer and safer to evolve.
 
-## Decision Priority
+## Priority
 
 Treat explicit requirements, correctness, safety, and compatibility as constraints.
-Within those constraints, prefer:
+Within them, prefer:
 
 1. **Effectiveness** — solve the current problem.
-2. **Operability** — make normal use, failure handling, debugging, and recovery easy.
-3. **Simplicity** — minimize concepts, branches, dependencies, configuration, and
-   maintenance burden.
-4. **Elegance** — prefer coherent and expressive designs when they do not increase
-   operational or cognitive cost.
+2. **Operability** — keep normal use, failure handling, debugging, and recovery easy.
+3. **Simplicity** — minimize concepts, branches, dependencies, configuration, and maintenance.
+4. **Elegance** — prefer coherent designs when they do not increase operational or cognitive cost.
 
 > 최소한의 복잡성으로 최대한의 운영 효율을 얻는다.
 >
 > 기술적 우아함은 운영을 단순하게 만들 때 가치가 있다.
 
-## Engineering Lens
-
-Apply these principles as judgment aids rather than slogans.
+## Decision Lens
 
 - **KISS** — seek minimum sufficient complexity, not minimum line count.
-- **YAGNI** — add capability only for evidenced current needs or concrete irreversible
-  risks; do not pre-build speculative flexibility.
-- **DRY** — centralize authoritative knowledge, not every repeated line. Prefer a
-  small local duplication over a wrong abstraction or hidden coupling.
-- **SRP** — keep one cohesive responsibility and reason to change. Do not split by
-  file size, tool count, or workflow step alone.
-- **Evidence-first** — justify added complexity with current requirements, observed
-  failures, measured constraints, supported environments, or explicit contracts.
-- **Reversibility** — when value is similar, prefer the option that is easier to
-  change, remove, migrate, or recover from.
+- **YAGNI** — require current evidence or concrete irreversible risk before adding capability.
+- **DRY** — centralize authoritative knowledge, not every repeated line; small duplication
+  is better than a wrong abstraction or hidden coupling.
+- **SRP** — keep one cohesive responsibility and reason to change; do not split by size alone.
+- **Evidence-first** — justify complexity with requirements, observed failures, measured
+  constraints, supported environments, or explicit contracts.
+- **Reversibility** — when value is similar, prefer what is easier to change, remove,
+  migrate, or recover from.
 
-## Trade-off Rules
+## Trade-off Defaults
 
-When principles pull in different directions, use the following defaults.
+- Delay abstraction until repeated variation or a stable boundary is visible.
+- Automate repetitive deterministic work, while preserving inspectability and recovery.
+- Optimize for the supported scope; preserve changeability instead of speculative options.
+- Prefer a good convention/default before adding configuration.
+- Optimize performance after evidence of a meaningful bottleneck unless a hard constraint
+  makes delay materially expensive.
+- Accept less architectural purity when it materially reduces operational burden without
+  weakening important guarantees.
+- Add a dependency only when it removes more lifecycle complexity or risk than it adds.
 
-- **Abstraction vs clarity**: delay abstraction until repeated variation or a stable
-  boundary is visible. One implementation does not need a generic framework by
-  default.
-- **DRY vs coupling**: tolerate small duplication when centralization would create a
-  hidden dependency, awkward API, or broader change surface.
-- **Automation vs transparency**: automate repetitive and deterministic work, but
-  preserve inspectability, understandable failure modes, and a recovery path.
-- **Generality vs fit**: optimize for the supported scope. Preserve future changeability
-  instead of exposing unused options for hypothetical consumers.
-- **Configuration vs convention**: provide a good default first. Add configuration
-  only when real supported variation requires it.
-- **Performance vs simplicity**: optimize after evidence of a meaningful bottleneck,
-  except when a known hard constraint makes delay materially expensive.
-- **Architectural purity vs operation**: accept a less theoretically pure design when
-  it materially reduces operational burden without weakening important guarantees.
-- **New dependency vs local code**: add a dependency when it removes more complexity,
-  risk, or maintenance than it introduces across installation, upgrades, debugging,
-  security, and portability.
-
-## Cost Model
-
-Consider total engineering cost across the lifecycle, not implementation effort alone:
-
-- build and review;
-- setup and onboarding;
-- routine operation;
-- observability and debugging;
-- failure recovery;
-- testing and validation;
-- upgrades and migrations;
-- future change and deletion.
-
-A locally concise solution can still be expensive if it pushes complexity into
-operations or future maintenance.
+Consider total engineering cost across build, review, onboarding, operation, debugging,
+recovery, testing, upgrades, migration, future change, and deletion. Do not merely move
+complexity from implementation into operations.
 
 ## Challenge Assumptions
 
-Do not treat the user's proposal, an existing implementation, or a fashionable
-pattern as correct by default.
-
-When a materially simpler or safer alternative exists, surface it. Distinguish
-requirements from preferences, and current evidence from hypothetical future needs.
+Do not treat the user's proposal, the existing implementation, or a fashionable pattern
+as correct by default. Surface a materially simpler or safer alternative when one exists.
+Distinguish requirements from preferences and current evidence from hypothetical needs.
 Do not invent objections merely to appear critical.
 
-## Boundaries
+## Boundaries and Output
 
-This Skill may complement domain-specific implementation, research, review, or RPI
-Skills. It supplies a decision lens; it does not replace their procedures or
-validation contracts.
+This Skill complements domain-specific implementation, research, review, and RPI Skills;
+it does not replace their procedures or validation contracts. Do not force redesign when
+the current approach is already simple enough.
 
-Do not force a redesign when the current approach is already simple enough for the
-actual constraints. Do not introduce architecture, layers, configuration, plugins,
-frameworks, or multi-agent structure merely to satisfy these principles.
-
-## Output
-
-Do not recite the principles by default. Apply them internally to the task.
-
-When the user asks for a recommendation or comparison, return the preferred option
-first, then only the material trade-offs, evidence, assumptions, and important costs
-needed to understand the decision.
+Apply the principles without reciting them by default. For a recommendation or comparison,
+return the preferred option first, followed only by the material trade-offs, evidence,
+assumptions, and lifecycle costs needed to understand the decision.
