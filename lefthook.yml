@@ -20,5 +20,6 @@ commit-msg:
 
 pre-push:
   commands:
-    tests:
+    repository-tests:
+      # Root tests/ is the default correctness gate; skill-local .tests/ is tuning-only.
       run: uv run pytest
