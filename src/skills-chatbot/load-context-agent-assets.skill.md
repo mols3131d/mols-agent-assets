@@ -39,9 +39,12 @@ Agent context is an execution resource, not a documentation archive.
   discoverable before the agent needs them.
 - Do not explain general model capabilities the target model can already be expected to
   know unless a concrete failure or compatibility requirement justifies the instruction.
-- Do not duplicate large sibling instructions merely to make each file look self-contained
-  when the runtime already guarantees a reliable shared context boundary; equally, do not
-  create hidden dependencies when independent deployment is required.
+- Do not create hidden shared-context dependencies when an asset or target variant must
+  deploy independently.
+- Allow intentional semantic overlap between target-specific sibling variants when their
+  harness capabilities, authority, packaging, or loading strategies differ. Optimize each
+  projection for its target rather than deduplicating across incompatible deployment
+  boundaries.
 
 ## Activation and Responsibility
 
