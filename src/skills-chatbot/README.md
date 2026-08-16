@@ -19,6 +19,14 @@
 
 로컬/원격 workspace, filesystem, shell 같은 workspace authority가 필요하면 `../skills/` profile도 검토합니다.
 
+## Naming
+
+주책임이 작업 workflow 수행이 아니라 **특정 상황에 필요한 판단 기준·제약·지식을 context로 주입하는 것**이면 `load-context-<topic>` 이름을 사용합니다.
+
+- 예: `load-context-pragmatic-engineering`, `load-context-tech-doc-fidelity`
+- context를 활용해 실제 workflow나 산출물 생성을 주책임으로 수행하는 Skill에는 이 prefix를 붙이지 않습니다.
+- 이름은 packaging이 아니라 capability responsibility를 나타내므로 같은 규칙을 다른 target profile에도 적용할 수 있습니다.
+
 ## Target Variants
 
 같은 capability가 `../skills/`, `skills-chatbot/`, `../skills-chatbot-runtime/` 중 둘 이상에 함께 존재할 수 있습니다. target profile이 다르면 의미가 겹친다는 이유만으로 제거하지 않습니다.
