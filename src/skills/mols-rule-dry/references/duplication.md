@@ -1,29 +1,29 @@
 # Duplicate Rules
 
-Use this reference only when deciding whether two or more rules are redundant.
+Use this reference only when deciding whether two or more rule statements are redundant.
 
 ## Same Rule
 
-Treat rules as duplicates only when all of these match:
+Treat statements as the same rule only when all of these are equivalent:
 
 - operational requirement;
-- intended target scope; and
+- intended target set; and
 - exception or override intent.
 
 Similar wording is only a clue. Different wording may express the same rule, and similar wording may express different policy.
 
-## Inherited Duplication
+Use the resolved target sets from the scope decision; do not infer scope from wording similarity.
 
-If a parent `AGENTS.md` rule already applies unchanged to a child scope, repeating it in the child is duplication. Keep only the child-specific delta or exception.
+## Inherited Restatement
 
-Do not copy parent text into a child merely to make the child file self-contained.
+If a broader rule already applies unchanged to a narrower target set, repeating the same requirement in the narrower rule is redundant. Keep only a genuine narrower delta or exception.
 
-## Redundant Exceptions
+Do not repeat broader text merely to make a child rule file self-contained.
 
-A narrower rule is not an exception when it only restates what the broader rule already requires. Remove the restatement.
+## Genuine Exception
 
-Keep a narrower rule when it genuinely changes, limits, or overrides the broader rule for that scope.
+Keep a narrower rule when it changes, limits, or overrides the broader requirement for that target set. An exception is not duplication simply because it mentions the same subject.
 
 ## Ambiguity
 
-If rule equivalence or exception intent is unclear, preserve the existing rules and report unresolved duplication. Do not infer policy merely to remove repetition.
+If equivalence or exception intent is unclear, preserve the existing statements and report unresolved duplication. Do not infer policy merely to remove repetition.
