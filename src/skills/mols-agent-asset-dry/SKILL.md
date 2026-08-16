@@ -12,9 +12,11 @@ Remove avoidable repetition from skills, rules, prompts, and agents while preser
 
 This Skill handles four natural-language asset types: **skill**, **rule**, **prompt**, and **agent**. Treat reusable command or workflow prompts as prompts. Do not extend this workflow to hooks, tools, executable configuration, or general documentation.
 
+Classify an asset by its runtime role and activation model, not by filename, Markdown shape, or the fact that it contains prompt-like text. If one file genuinely serves multiple asset roles and those roles cannot be separated safely, preserve it and report the ambiguity.
+
 Set the write boundary from the request. Read outside that boundary only when needed to establish inheritance, references, activation, source authority, or generated projections. Do not mutate outside the write boundary without explicit authority.
 
-Preserve every behavior-relevant distinction that applies to the asset, including purpose, activation or load timing, scope, authority, permissions or tools, outputs, precedence, and release lifecycle.
+Preserve every behavior-relevant distinction that applies to the asset, including purpose, discoverability, activation or load timing, scope, authority, permissions or tools, outputs, precedence, dependencies, and release lifecycle.
 
 Apply DRY in this order:
 
@@ -47,7 +49,7 @@ Inspect the requested assets and enough surrounding context to find repeated req
 
 ### 2. Preserve Type Semantics
 
-Load the matching asset reference and capture the behavior that must remain unchanged. If the asset type is ambiguous, preserve the current structure and report the ambiguity.
+Classify each candidate by runtime role, then load the matching asset reference and capture the behavior that must remain unchanged. If the asset type is ambiguous, preserve the current structure and report the ambiguity.
 
 ### 3. Decide Duplication
 
@@ -63,7 +65,7 @@ Prefer deletion of redundant restatements, reuse of an existing canonical owner,
 
 ### 6. Verify
 
-Re-derive the affected assets' activation, loaded context, authority, permissions, outputs, and dependencies as applicable. Verify the complete affected set when feasible; otherwise test representative boundaries and report the check as sampled.
+Re-derive the affected assets' discoverability, activation, loaded context, authority, permissions, outputs, dependencies, and lifecycle as applicable. Verify the complete affected set when feasible; otherwise test representative boundaries and report the check as sampled.
 
 ## Guardrails
 

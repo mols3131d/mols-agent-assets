@@ -10,7 +10,7 @@ Compare the smallest requirement, responsibility, procedure, or context block th
 
 Textual similarity is only a discovery signal. Treat two units as the same only when their operational meaning and relevant specialization or exception intent are equivalent.
 
-Use the asset-type reference to determine which behavioral dimensions matter. The same text may mean different things when activation, scope, tools, permissions, output contracts, or lifecycle differ.
+Use the asset-type reference to determine which behavioral dimensions matter. The same text may mean different things when activation, scope, tools, permissions, output contracts, dependencies, or lifecycle differ.
 
 ## Repetition Types
 
@@ -26,8 +26,10 @@ Only the first three are DRY candidates, and shared responsibility still require
 
 ## Cross-Type Repetition
 
-Do not treat repetition across skill, rule, prompt, and agent assets as redundant by default. Different asset types imply different activation, load timing, or authority. Cross-type migration is a separate design change unless explicitly requested.
+Repetition across skill, rule, prompt, and agent assets is not redundant by default. A cross-type restatement may be removed only when an existing canonical source is guaranteed to apply in every context that needs the content and authority remains the same.
+
+Moving content to a different asset type changes activation semantics and is a separate design change unless explicitly requested.
 
 ## Ambiguity
 
-If semantic equivalence or specialization intent is unclear, preserve the current content and report unresolved duplication.
+If semantic equivalence, specialization intent, or canonical availability is unclear, preserve the current content and report unresolved duplication.
