@@ -8,5 +8,5 @@
 | `skills/` | workspace를 다루는 agent skill |
 | `skills-chatbot/` | 자연어 지침만 사용하는 flat chatbot skill |
 | `skills-chatbot-runtime/` | bundle/runtime 기능을 사용하는 hosted chatbot skill |
-| `instructions/` | 재사용 가능한 instruction |
+| `rules/` | 재사용 가능한 행동 규칙 |
 | `scripts/` | 개발 및 검증 도구 |
