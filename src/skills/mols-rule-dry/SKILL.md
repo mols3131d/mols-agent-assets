@@ -40,7 +40,7 @@ Compare candidates only after their target sets are known. Read [duplication.md]
 
 ### 4. Resolve Source of Truth
 
-Determine which source is authoritative for confirmed duplicate rules. Read [ownership.md](references/ownership.md) when authority is unclear, multiple sources claim ownership, or generated or derived copies are involved.
+Determine which source is authoritative for confirmed repeated requirements. Read [ownership.md](references/ownership.md) when authority is unclear, multiple sources claim ownership, or generated or derived copies are involved.
 
 ### 5. Choose Placement
 
