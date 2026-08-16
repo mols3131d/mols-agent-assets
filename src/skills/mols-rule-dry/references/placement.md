@@ -1,28 +1,31 @@
 # Rule Placement
 
-Use this reference only when mapping an already resolved scope and authoritative source to editable rule containers.
+Use this reference only when mapping an already resolved application and authoritative source to editable rule containers and metadata.
 
-## Direct Runtime Rules
+## Native Placement
 
-When the authoritative source is a directly loaded runtime rule, use the exact representation produced by the scope decision:
+Discover the project's supported rule mechanisms before moving anything. Preserve the accepted native format rather than assuming `AGENTS.md`, a particular rule directory, or one selector schema is universal.
 
-- Project-wide segment -> root `AGENTS.md`.
-- Directory-subtree segment -> the highest `AGENTS.md` whose subtree still matches that segment exactly.
-- Cross-cutting file, extension, path, or repeated-directory segment -> a matching pattern rule asset.
+When the authoritative source is a directly loaded runtime rule, map the resolved application to the smallest native representation that preserves it exactly. Examples include:
 
-If the scope decision requires multiple exact segments, place each segment in the smallest suitable editable container. Do not recompute or broaden the intended scope here.
+- a project-wide rule owner for always-applied project guidance;
+- the highest directory-scoped owner whose inherited subtree remains exact;
+- a path or glob rule whose selector matches the intended targets exactly;
+- a relevance-selected or manually invoked rule with its attachment metadata preserved.
 
-Do not introduce a new owner file when an existing editable owner already represents the same exact segment.
+If the application decision requires multiple native segments or mechanisms, keep the smallest correct set. Do not recompute, broaden, or narrow intended application here.
 
-## Precedence
+Do not introduce a new owner file when an existing editable owner already represents the same application exactly.
 
-Treat runtime precedence as part of effective behavior. Directory depth, selector specificity, file order, or source type may change how rules combine.
+## Precedence and Attachment
 
-Do not move a rule across a precedence boundary unless the effective rule set remains unchanged for both intended targets and nearby non-targets. If relevant precedence cannot be determined, preserve the current placement and report the uncertainty.
+Treat runtime precedence, attachment mode, directory depth, selector specificity, file order, or source type as behavior when the runtime uses them.
+
+Do not move a rule across a precedence or attachment boundary unless the effective guidance remains unchanged for intended and nearby non-intended situations. If the relevant behavior cannot be determined, preserve the current placement and report the uncertainty.
 
 ## Generated or Canonical Input Layers
 
-If the authoritative source is a generator input, canonical configuration, or another layer that produces runtime rule files, preserve that layer's native structure. Do not apply the root/nested/pattern mapping to generated outputs.
+If the authoritative source is a generator input, canonical configuration, or another layer that produces runtime rule files, preserve that layer's native structure. Do not apply direct-runtime placement rules to generated outputs.
 
 Do not relocate or hand-edit generated runtime copies merely to make their physical layout DRY.
 
