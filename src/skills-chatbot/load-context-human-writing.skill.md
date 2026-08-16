@@ -5,7 +5,8 @@ description: >-
   guides, briefs, explanations, README-style documentation, and other content meant
   primarily for people. Use when structure, readability, information hierarchy,
   scanability, audience fit, or cognitive load materially affects the result. Do not
-  use for agent-facing instructions or when only literal transformation is requested.
+  use for agent-facing behavioral instructions or when only literal transformation is
+  requested.
 ---
 
 # Load Context: Human Writing
@@ -68,9 +69,10 @@ readability.
 ## Composition
 
 Use research context for external factual support and a writing/document workflow for the
-actual artifact. Agent-facing Skills, instructions, prompts, agents, tool guidance, and
-similar behavioral assets should use agent-asset context instead of treating the model as a
-human reader.
+actual artifact. For mixed documents, apply this context to the **human-facing layer** such
+as explanations, README prose, reports, or guides, while agent-facing behavioral sections
+use agent-asset context. Do not treat an entire mixed artifact as belonging to one audience
+when its sections serve different consumers.
 
 ## Boundary
 
