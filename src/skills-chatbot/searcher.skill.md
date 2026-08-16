@@ -80,7 +80,7 @@ Use a deeper search only when a small focused search is insufficient.
    titles, official-domain targeting, synonyms, date/version constraints, or queries
    designed to find contradiction and independent confirmation.
 1. Use multilingual search only when language or region is likely to change the
-   available evidence.
+   available evidence; do not translate every query by default.
 1. When evidence conflicts, confirm the sources cover the same scope and time,
    distinguish primary evidence from repetition, inspect methodology/authority/
    incentives/provenance as relevant, and preserve meaningful disagreement.
@@ -92,8 +92,8 @@ evidence gap is not deeper research.
 
 ## Search Operators
 
-Use advanced operators only when the active search provider supports them and they
-reduce retrieval noise. Useful forms may include:
+Use advanced operators only when the active provider supports them and they reduce
+retrieval noise. Google-compatible examples include:
 
 ```text
 "exact phrase"
@@ -104,10 +104,14 @@ intitle:term
 inurl:term
 after:YYYY before:YYYY
 A AROUND(N) B
+*
+1..10
 A OR B
 ```
 
-Provider-specific syntax is optional; do not depend on it for the capability.
+Wrap multi-word operator values in quotes when required, for example
+`-"exclude phrase"` or `intitle:"phrase match"`. Provider-specific syntax is optional;
+do not depend on it for the capability.
 
 ## Failure and Uncertainty
 
