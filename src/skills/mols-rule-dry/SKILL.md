@@ -17,12 +17,12 @@ Set the write boundary from the request. Read outside that boundary only when ne
 Apply DRY in this order:
 
 1. **Application correctness**: the rule remains available or applied in every intended situation and no unintended situation gains it.
-2. **Source of truth**: preserve the authoritative rule source.
+2. **Source of truth**: preserve established authority and create one canonical owner only when peer copies can be consolidated safely.
 3. **Single ownership**: remove duplicate authority when the runtime and project structure allow it.
 4. **Minimum context**: avoid repeated rule context where the runtime already provides the same guidance.
 5. **Simple structure**: do not add abstraction merely to reduce repetition.
 
-Never trade policy, application correctness, or source authority for DRY.
+Never trade policy, application correctness, or established source authority for DRY.
 
 ## Workflow
 
@@ -38,13 +38,13 @@ Determine when each candidate currently applies and when it is intended to apply
 
 Compare candidates only after their application conditions are known. Read [duplication.md](references/duplication.md) when deciding semantic equivalence, inherited restatement, repeated requirements across scopes or attachment modes, or genuine exception intent.
 
-### 4. Resolve Source of Truth
+### 4. Resolve Ownership
 
-Determine which source is authoritative for confirmed repeated requirements. Read [ownership.md](references/ownership.md) when authority is unclear, multiple sources claim ownership, or generated or derived copies are involved.
+Determine whether an authoritative source is already established for confirmed repeated requirements. Preserve established authority; when only equivalent editable peer copies exist, decide whether they can be canonicalized safely. Read [ownership.md](references/ownership.md) when authority, peer canonicalization, or generated and derived copies are involved.
 
 ### 5. Choose Placement
 
-Choose where the authoritative editable rule should live after application and authority are known. Read [placement.md](references/placement.md) to map the resolved application to the project's supported rule containers and metadata while preserving precedence.
+Choose where the authoritative editable rule should live after application and ownership are known. Read [placement.md](references/placement.md) to map the resolved application to the project's supported rule containers and metadata while preserving precedence.
 
 ### 6. Apply and Verify
 
