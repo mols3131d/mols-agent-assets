@@ -47,6 +47,12 @@ dev = [
     { name = "ruff" },
     { name = "rumdl" },
 ]
+test = [
+    { name = "pyromark" },
+    { name = "pytest" },
+    { name = "pyyaml" },
+    { name = "rumdl" },
+]
 
 [package.metadata]
 
@@ -57,6 +63,12 @@ dev = [
     { name = "pytest", specifier = ">=9.0.3" },
     { name = "pyyaml", specifier = ">=6.0.2" },
     { name = "ruff", specifier = ">=0.15.15" },
+    { name = "rumdl", specifier = ">=0.2.6" },
+]
+test = [
+    { name = "pyromark", specifier = ">=0.9.13" },
+    { name = "pytest", specifier = ">=9.0.3" },
+    { name = "pyyaml", specifier = ">=6.0.2" },
     { name = "rumdl", specifier = ">=0.2.6" },
 ]
 
