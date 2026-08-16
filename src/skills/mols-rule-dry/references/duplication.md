@@ -12,19 +12,20 @@ Treat statements as the same underlying rule requirement only when their operati
 
 Similar wording is only a clue. Different wording may express the same requirement, and similar wording may express different policy.
 
-Do not make target scope part of semantic identity. Use the resolved target sets to classify how the same requirement is repeated.
+Do not make scope, selector, or attachment mode part of semantic identity unless it is itself part of the requirement. Use the resolved application conditions to classify how the same requirement is repeated.
 
 ## Repetition Types
 
 For statements with the same requirement:
 
-- Same target set -> duplicate occurrence.
-- Narrower target set fully covered by a broader unchanged rule -> inherited restatement.
-- Different or disjoint target sets -> repeated rule across scopes; a consolidation candidate, not automatically redundant.
+- Same application condition -> duplicate occurrence.
+- Narrower declarative scope already covered unchanged by a broader rule -> inherited or scoped restatement.
+- Different scopes or attachment modes -> repeated rule across applications; a consolidation candidate, not automatically redundant.
 - Narrower statement changes, limits, or overrides the broader requirement -> genuine exception, not duplication.
+- Required generated copy -> physical repetition, not independent ownership.
 
-Repeated rules across scopes may be consolidated only when the combined intended scope can be represented exactly and source authority remains valid.
+Repeated rules across applications may be consolidated only when the intended application remains exactly representable, source authority remains valid, and precedence or attachment behavior does not change.
 
 ## Ambiguity
 
-If requirement equivalence or exception intent is unclear, preserve the existing statements and report unresolved duplication. Do not infer policy merely to remove repetition.
+If requirement equivalence, exception intent, or application relationship is unclear, preserve the existing statements and report unresolved duplication. Do not infer policy merely to remove repetition.
