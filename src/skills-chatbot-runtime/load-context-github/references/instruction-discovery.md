@@ -9,12 +9,14 @@ For every target path, inspect the complete ancestor chain from repository root 
 target directory. For a file, use its parent directory; for a directory, include that
 directory itself.
 
-At each relevant level, look for:
+At each relevant level, look for instruction-bearing sources that can actually govern the
+current task:
 
 - `AGENTS.md` and repository-defined variants;
-- relevant `README.md`;
 - repository-defined path-specific instructions;
-- override files only when the repository or tooling defines their semantics.
+- override files only when the repository or tooling defines their semantics;
+- `README.md` only when an applicable instruction points to it or when component purpose,
+  local workflow, or navigation is materially needed to interpret the target.
 
 For multiple target paths, compute each chain separately and reuse shared ancestors.
 Do not leak scoped context from one unrelated path or repository into another.
@@ -37,15 +39,15 @@ Do not infer override semantics from a filename alone.
 
 ## README.md
 
-Treat `README.md` primarily as **context and navigation**, not as automatic normative
-instruction.
+Treat `README.md` primarily as **context and navigation**, not as an automatic instruction
+source and not as a file that must be loaded at every ancestor level.
 
-Read only task-relevant portions such as:
+Read only when it materially provides one of these:
 
-- component purpose and boundary;
-- local workflow or usage;
-- Git/GitHub rules;
-- links to more authoritative required guidance.
+- component purpose or boundary needed to interpret the target;
+- local workflow or usage needed for the requested operation;
+- explicit Git/GitHub rules whose normative intent and scope are clear;
+- links from an applicable instruction to more authoritative required guidance.
 
 Promote README text to an active rule only when its scope and normative intent clearly
 apply to the current task. Proximity alone is not precedence.
@@ -63,6 +65,9 @@ When relevant, inspect high-signal locations such as:
 
 Apply path selectors such as `applyTo` only when the current target actually matches.
 Do not promote tool-specific instructions into repository-wide policy without evidence.
+Instruction-file support and precedence can differ by GitHub/Copilot surface, so use the
+repository's declared semantics and the active tool context rather than assuming parity
+across clients.
 
 ## Resolve Scope and Precedence
 
