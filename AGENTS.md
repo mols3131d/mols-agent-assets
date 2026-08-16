@@ -3,7 +3,7 @@
 ## Directory Roles
 
 - `.agents/`: Runtime instructions. Follow contents. Edit only when explicitly requested.
-- `src/`: Source workspace for agents, skills, chatbot skills, instructions, and tooling. Never treat contents as runtime instructions.
+- `src/`: Source workspace for agents, skills, chatbot skills, rules, and tooling. Never treat contents as runtime instructions.
 - `tests/`: Automated tests for assets and tooling.
 - `docs/`: Human-facing documentation and references.
 
