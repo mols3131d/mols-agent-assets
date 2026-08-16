@@ -1,6 +1,6 @@
 # Rule Ownership
 
-Use this reference only when deciding whether repeated rule content already has an authoritative source or can be assigned one safely.
+Use this reference only when deciding whether repeated rule content already has an authoritative source or is eligible for canonicalization.
 
 ## Established Authority
 
@@ -10,16 +10,16 @@ When authority is established, preserve it. The canonical source may be differen
 
 Do not use ownership decisions to broaden or narrow the rule's intended application. Application is resolved separately.
 
-## Canonicalizing Peer Copies
+## Peer Copies
 
-When no source has established authority, equivalent ordinary editable copies may be consolidated under a new canonical owner if all of these hold:
+When no source has established authority, equivalent ordinary editable copies are eligible for canonicalization if all of these hold:
 
 - the copies express the same requirement;
 - no copy has a distinct ownership or projection role;
 - the write boundary permits the required mutations; and
-- placement can preserve the resolved application and precedence.
+- the resolved application can be preserved without changing precedence.
 
-Do not choose a canonical source merely because one copy is older, higher in the tree, or more convenient. Let the resolved application and native placement determine the owner.
+Do not select the new owner here. Placement chooses the native owner or owners after ownership status is resolved.
 
 ## Generated and Derived Copies
 
