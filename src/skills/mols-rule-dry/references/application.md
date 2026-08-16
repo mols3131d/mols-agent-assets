@@ -29,9 +29,9 @@ Overlap or similar attachment conditions do not by themselves prove duplication.
 
 ## Representability
 
-Determine whether the runtime can express the intended application exactly with one supported rule mechanism. If not, record the smallest correct combination of native mechanisms or owners.
+Determine whether the runtime can express the intended application exactly with one supported rule mechanism. If not, record the smallest correct combination of native application mechanisms. Leave owner and file selection to placement.
 
-Do not choose the canonical source, owner file, or attachment-mode migration in this reference.
+Do not choose the canonical source or attachment-mode migration in this reference.
 
 ## Verification Boundaries
 
