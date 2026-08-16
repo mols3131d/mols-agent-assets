@@ -21,7 +21,9 @@
 
 주책임이 **상황별 context 로딩**이면 `load-context-<topic>` 이름을 사용합니다. `load-context-github`처럼 runtime에서 references나 tools를 사용하더라도 핵심 responsibility가 context 주입이면 같은 prefix를 유지합니다.
 
-실제 workflow 수행, artifact 생성, validation, transformation이 주책임이면 `load-context-`를 사용하지 않습니다.
+- context-only Skill은 context discovery, selection, scoping, loading과 적용 경계까지만 소유할 수 있습니다.
+- context를 사용한 실제 구현, 작성, 검증, 리뷰, mutation과 최종 output은 downstream capability가 소유합니다.
+- 실제 workflow 수행, artifact 생성, validation, transformation이 주책임이면 `load-context-`를 사용하지 않습니다.
 
 ## Target Variants
 
