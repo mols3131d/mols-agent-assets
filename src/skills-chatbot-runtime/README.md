@@ -17,6 +17,12 @@
 
 사용자의 로컬/원격 workspace, filesystem, shell 같은 workspace authority가 필요하면 `../skills/` profile도 검토합니다.
 
+## Naming
+
+주책임이 **상황별 context 로딩**이면 `load-context-<topic>` 이름을 사용합니다. `load-context-github`처럼 runtime에서 references나 tools를 사용하더라도 핵심 responsibility가 context 주입이면 같은 prefix를 유지합니다.
+
+실제 workflow 수행, artifact 생성, validation, transformation이 주책임이면 `load-context-`를 사용하지 않습니다.
+
 ## Target Variants
 
 같은 capability가 `../skills/`, `../skills-chatbot/`, `skills-chatbot-runtime/` 중 둘 이상에 함께 존재할 수 있습니다. target profile이 다르면 의미가 겹친다는 이유만으로 제거하지 않습니다.
