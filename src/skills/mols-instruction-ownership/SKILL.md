@@ -18,8 +18,10 @@ Assume the target runtime correctly loads applicable directory-hierarchy
 instructions and path/glob rule assets. Treat that behavior as the
 context-injection contract; do not redesign or validate it.
 
-Respect existing project authority. A generated or derived instruction projection
-is not a canonical owner unless project authority explicitly makes it authoritative.
+Preserve project-declared or otherwise evidenced source authority. Do not treat a
+rule's current location as authority by itself. A generated or derived instruction
+projection is not a canonical owner unless project authority explicitly makes it
+authoritative.
 
 ## Priority
 
