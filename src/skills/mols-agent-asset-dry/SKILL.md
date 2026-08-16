@@ -1,7 +1,7 @@
 ---
 name: mols-agent-asset-dry
 description: >-
-  Make natural-language agent assets DRY without changing behavior. Use when skills, rules, prompts, or agent profiles repeat responsibilities, instructions, context, or authoritative content across files or scopes. Route through common DRY checks plus the matching asset-type reference. Do not use for executable assets such as hooks or tools, policy rewriting, cross-harness synchronization, or abstraction for its own sake.
+  Make natural-language agent assets DRY without changing behavior or authority. Use when skills, rules, prompts, or agent profiles repeat responsibilities, instructions, context, or authoritative content across files, packages, scopes, or entrypoints. Do not use for ordinary content editing, executable assets such as hooks or tools, policy redesign, or cross-harness synchronization.
 ---
 
 # Agent Asset DRY
