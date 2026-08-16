@@ -1,18 +1,25 @@
 # Rule Ownership
 
-Use this reference only when deciding which rule source is authoritative.
+Use this reference only when deciding whether repeated rule content already has an authoritative source or can be assigned one safely.
 
-## Source of Truth
+## Established Authority
 
-Determine authority from project rules, configuration, generation flow, explicit caller direction within project authority, or other concrete evidence. A rule's current file location, age, or similarity to another copy is not authority by itself.
+Determine established authority from project rules, configuration, generation flow, explicit caller direction within project authority, or other concrete evidence. A rule's current file location, age, or similarity to another copy is not authority by itself.
 
-When no authoritative source can be determined safely, preserve the current state and report unresolved ownership.
-
-## Canonical Source
-
-Prefer one authoritative source for each rule when the project and runtime allow it. The canonical source may be different from the runtime files that ultimately load or expose the rule.
+When authority is established, preserve it. The canonical source may be different from the runtime files that ultimately load or expose the rule.
 
 Do not use ownership decisions to broaden or narrow the rule's intended application. Application is resolved separately.
+
+## Canonicalizing Peer Copies
+
+When no source has established authority, equivalent ordinary editable copies may be consolidated under a new canonical owner if all of these hold:
+
+- the copies express the same requirement;
+- no copy has a distinct ownership or projection role;
+- the write boundary permits the required mutations; and
+- placement can preserve the resolved application and precedence.
+
+Do not choose a canonical source merely because one copy is older, higher in the tree, or more convenient. Let the resolved application and native placement determine the owner.
 
 ## Generated and Derived Copies
 
@@ -26,4 +33,4 @@ Do not perform generation, conversion, or cross-harness synchronization as part 
 
 ## Ownership Conflicts
 
-If multiple files claim authority and project evidence does not resolve the conflict, do not choose one by preference. Preserve the current state and report the conflict.
+If multiple sources have conflicting evidence of authority or a required ownership relationship cannot be resolved, do not choose one by preference. Preserve the current state and report the conflict.
