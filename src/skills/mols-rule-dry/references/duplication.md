@@ -2,6 +2,10 @@
 
 Use this reference only when deciding whether two or more rule statements are redundant.
 
+## Rule Unit
+
+Compare the smallest requirement that can stand on its own without changing meaning. If one paragraph, bullet, or block contains multiple independent requirements, separate only the parts needed to resolve duplication; do not move or delete the whole block by association.
+
 ## Same Rule
 
 Treat statements as the same rule only when all of these are equivalent:
