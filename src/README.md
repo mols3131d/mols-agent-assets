@@ -6,8 +6,8 @@
 | --- | --- |
 | `agents/` | Subagents and custom agents |
 | `skills/` | Workspace-capable agent skills |
-| `skills-chatbot/` | Flat natural-language chatbot skills |
-| `skills-chatbot-runtime/` | Hosted chatbot skills with bundled/runtime capabilities |
+| `skills-chatbot/` | Self-contained single-file chatbot skills under the 4,000-token flat budget |
+| `skills-chatbot-runtime/` | Bundled/runtime chatbot skills for larger or multi-resource capabilities |
 | `rules/` | Reusable behavioral rules |
 | `scripts/` | Development and validation tooling |
 
