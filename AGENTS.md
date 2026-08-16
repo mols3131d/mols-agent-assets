@@ -7,6 +7,8 @@
 - `tests/`: Automated tests for assets and tooling.
 - `docs/`: Human-facing documentation and references.
 
+For Skill placement, treat `skills/`, `skills-chatbot/`, and `skills-chatbot-runtime/` as target profiles. Cross-profile sibling variants may intentionally overlap. `skills-chatbot/` is reserved for self-contained single-file skills under 4,000 tokens; larger or multi-resource chatbot skills belong in `skills-chatbot-runtime/`.
+
 ## Asset Pipeline
 
 1. **Author**: Create or edit assets in `src/`.
