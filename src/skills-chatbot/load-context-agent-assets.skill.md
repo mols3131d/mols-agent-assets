@@ -35,6 +35,10 @@ Agent context is an execution resource, not a documentation archive.
 - Keep activated core instructions focused on behavior that materially changes execution.
 - Move conditional detail behind explicit load conditions when the runtime supports
   progressive disclosure.
+- When the target implements the Agent Skills specification, use its native disclosure
+  layers deliberately: discovery metadata first, `SKILL.md` on activation, and bundled
+  resources only when needed. Treat this as target-specific behavior, not a universal
+  loading model for every agent platform.
 - Keep important safety, permission, authority, routing, and non-obvious trigger rules
   discoverable before the agent needs them.
 - Do not explain general model capabilities the target model can already be expected to
