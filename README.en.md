@@ -7,9 +7,10 @@ Repository for developing, validating, and managing AI agent assets.
 | Type | Purpose |
 | --- | --- |
 | `agents` | Subagent and custom agent definitions |
-| `skills` | Reusable agent workflows |
-| `chatbot-skills` | Chatbot-specific workflows for ChatGPT, Gemini, and similar hosts |
-| `instructions` | Reusable behavioral instructions |
+| `skills` | Workspace-capable agent skills |
+| `skills-chatbot` | Flat natural-language chatbot skills |
+| `skills-chatbot-runtime` | Hosted chatbot skills with bundled/runtime capabilities |
+| `rules` | Reusable behavioral rules |
 
 ## Repository Structure
 
