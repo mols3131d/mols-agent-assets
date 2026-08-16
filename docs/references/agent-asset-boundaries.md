@@ -52,6 +52,19 @@ Skill에 고정 workflow가 반드시 필요한 것은 아니다. 명확한 acti
 
 Skill은 단순한 지식 저장소도, 무관한 capability들의 namespace도 아니다.
 
+## Target-specific Skill Variants
+
+같은 capability를 서로 다른 chatbot harness에 배포하기 위해 **flat variant와 runtime variant를 함께 유지할 수 있다.** 이는 배포 target이 다른 sibling asset이며, 내용이 겹친다는 이유만으로 DRY 위반이나 제거 대상으로 보지 않는다.
+
+- flat variant는 `SKILL.md` 하나만 전달되는 환경에서도 self-contained하게 동작한다.
+- runtime variant는 해당 host가 제공하는 references, scripts, tools, progressive loading을 활용할 수 있다.
+- 두 variant는 핵심 intent와 중요한 behavioral invariant를 공유할 수 있지만 구조와 세부 절차까지 동일할 필요는 없다.
+- 각 variant는 자신의 target에서 context 비용과 실행 신뢰성을 독립적으로 최적화한다.
+- 한 variant의 개선을 이유로 다른 target의 variant를 자동 삭제·병합하지 않는다.
+- 공통 내용을 억지로 shared runtime dependency로 추출해 flat 배포 가능성을 깨지 않는다.
+
+통합이나 제거는 target 자체가 사라졌거나, 두 자산이 실제로 동일한 배포 surface와 loading contract를 가질 때만 검토한다.
+
 ## Prompt
 
 Prompt는 **현재 invocation에서 원하는 결과**를 소유한다.
@@ -100,7 +113,7 @@ Reference에 적혀 있다는 사실만으로 runtime policy가 활성화되는 
 4. 역할, authority, tool, delegation을 정의하는가? → **Agent**
 5. 행동 자체보다 판단에 필요한 static knowledge인가? → **Reference**
 
-둘 이상의 답이 강하면 먼저 내용이 여러 책임을 섞고 있는지 확인한다. 하나의 내용이 여러 자산에 나타나야 한다면 [DRY Principle](./agent-asset-dry-principle.md)의 ownership 기준을 적용한다.
+둘 이상의 답이 강하면 먼저 내용이 여러 책임을 섞고 있는지 확인한다. 하나의 내용이 여러 자산에 나타나야 한다면 [DRY Principle](./agent-asset-dry-principle.md)의 ownership 기준을 적용하되, target-specific sibling variant는 배포 경계를 먼저 고려한다.
 
 ## Boundary Changes
 
@@ -119,6 +132,7 @@ Reference에 적혀 있다는 사실만으로 runtime policy가 활성화되는 
 - Rule 안에 하나의 task를 위한 전체 workflow를 넣는다.
 - Skill을 activation이나 행동 효과가 없는 단순 reference collection으로 사용한다.
 - 서로 독립적인 context를 하나의 broad Skill에 모아 항상 함께 로드한다.
+- target이 다른 sibling Skill을 단순한 내용 중복이라는 이유로 제거한다.
 - Agent를 instruction namespace처럼 늘린다.
 - `docs/references/`를 runtime dependency로 가정한다.
 - 파일명이나 디렉터리 이름만 보고 자산 유형을 결정한다.
@@ -126,7 +140,7 @@ Reference에 적혀 있다는 사실만으로 runtime policy가 활성화되는 
 
 ## Review Question
 
-> **이 내용의 scope, lifetime, authority를 기준으로 가장 자연스러운 canonical owner는 무엇인가?**
+> **이 내용의 scope, lifetime, authority와 deployment target을 기준으로 가장 자연스러운 owner와 variant는 무엇인가?**
 
 한 문장으로 답하기 어렵다면 boundary나 responsibility가 섞였는지 확인한다.
 
