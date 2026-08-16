@@ -4,83 +4,60 @@ description: >-
   Deduplicate and relocate existing agent instructions so each semantic rule has
   one canonical owner at the narrowest exact load scope. Use for DRY placement
   across root or nested AGENTS.md files and provider, harness, or vendor path/glob
-  rule assets, including promoting shared rules, demoting over-broad rules, and
-  removing inherited duplicates. Do not use to author new policy, review rule
-  wording, redesign runtime loading, or synchronize formats across harnesses.
+  rule assets. Do not use to author policy, review wording, redesign runtime
+  loading, or synchronize formats across harnesses.
 ---
 
 # Instruction Ownership
 
 Optimize only the ownership and placement of existing agent instructions.
 
-## Loading Contract
+## Contract
 
-Assume the target runtime correctly loads:
+Assume the target runtime correctly loads applicable directory-hierarchy
+instructions and path/glob rule assets. Treat that behavior as the
+context-injection contract; do not redesign or validate it.
 
-- applicable `AGENTS.md` instructions from the directory hierarchy; and
-- provider, harness, or vendor rule assets when their path or glob selector
-  matches the current work.
-
-Do not redesign or validate that loading mechanism. Treat it as the context
-injection contract to optimize against.
+Respect existing project authority. A generated or derived instruction projection
+is not a canonical owner unless project authority explicitly makes it authoritative.
 
 ## Priority
 
 Resolve ownership in this order:
 
-1. **Exact scope**: every intended target receives the rule and unrelated targets
-   do not.
-2. **Single ownership**: one semantic rule has one canonical owner.
-3. **Minimum context**: load the rule only where it is needed.
-4. **Simple topology**: use the fewest owners that preserve the first three goals.
+1. **Exact scope**: intended targets receive the rule; unrelated targets do not.
+2. **Source authority**: preserve the project's authoritative instruction source.
+3. **Single ownership**: one representable semantic rule has one canonical owner.
+4. **Minimum context**: load the rule only where needed.
+5. **Simple topology**: use the fewest owners that preserve the goals above.
 
-Never broaden a rule merely to reduce the number of instruction files.
+Never broaden scope or change policy merely to make the layout more DRY.
 
 ## Owners
 
-Choose the owner whose native scope most exactly represents the rule:
+- **Root `AGENTS.md`**: project-wide rules.
+- **Nested `AGENTS.md`**: one directory subtree; use the shallowest exact owner.
+- **Pattern rule asset**: cross-cutting path, glob, extension, file-class, or
+  repeated-directory scope.
 
-- **Root `AGENTS.md`** owns project-wide rules.
-- **Nested `AGENTS.md`** owns rules for one directory subtree. Place the rule at
-  the shallowest directory whose inherited scope is still exact.
-- **Pattern rule asset** owns cross-cutting rules naturally expressed by path,
-  glob, extension, file class, or repeated directory pattern.
-
-Treat concrete rule-asset paths and selector syntax as runtime-specific. Discover
-and preserve the project's supported format instead of assuming
-`.agents/rules/*` is universal.
-
-## Invariants
-
-- Child `AGENTS.md` files do not repeat inherited parent rules.
-- A parent does not own a rule that only some descendants need.
-- A pattern rule does not duplicate an equivalent directory-owned rule.
-- Precedence is not a substitute for DRY.
-- Keep a parent/child override only when the difference is an intentional
-  scope-specific rule.
-- Preserve rule meaning. Relocation may make only the minimal wording adjustment
-  needed to remove obsolete location references.
-- Create an instruction owner file only when the required exact scope has no
-  suitable existing owner.
-- Do not create new engineering policy, improve rule content, redesign project
-  structure, or perform cross-harness format synchronization.
-
-If the available runtime mechanisms cannot represent an intended scope exactly,
-preserve scope correctness even when unavoidable duplication remains and report
-that limitation.
+Treat concrete rule paths and selector syntax as runtime-specific. Preserve the
+project's supported format instead of assuming `.agents/rules/*` is universal.
 
 ## Workflow
 
-For each instruction:
-
 ### 1. Atomize
 
-Split a mixed block only when its statements have different scopes. Treat
-paraphrases with the same operational meaning as one semantic rule.
+Split a mixed block only when its statements have different scopes. Treat two
+statements as the same semantic rule only when their operational requirement,
+target scope, and exception or override intent are equivalent.
+
+If equivalence, scope, authority, or override intent is ambiguous, preserve the
+existing rules and report unresolved ownership. Do not infer policy to achieve
+DRYness.
 
 ### 2. Map Scope
 
-Identify where the rule is intended to load. Classify it as:
+Identify where each rule is intended to load:
 
 - project-wide;
 - one contiguous directory subtree; or
@@ -89,46 +66,49 @@ Identify where the rule is intended to load. Classify it as:
 ### 3. Assign Owner
 
 - Project-wide -> root `AGENTS.md`.
-- Exact subtree -> the shallowest exact nested `AGENTS.md`.
+- Exact subtree -> shallowest exact nested `AGENTS.md`.
 - Cross-cutting pattern -> one matching rule asset.
 
-Do not use a common ancestor when it would inject the rule into unrelated
-siblings.
+Do not choose a common ancestor when it would inject the rule into unrelated
+siblings. Do not assign canonical ownership to a derived projection.
 
 ### 4. Deduplicate
 
 - Remove inherited repetitions from descendants.
-- Promote identical child rules only when the promoted scope remains exact.
-- If promotion would cover unrelated siblings, prefer one exact pattern owner.
+- Promote identical child rules only when the promoted scope stays exact.
+- Prefer one exact pattern owner when promotion would cover unrelated siblings.
 - Demote an over-broad parent rule when only a narrower subtree needs it.
-- Keep genuinely different scoped exceptions at their narrower owner without
-  copying parent text.
+- Keep genuine scoped exceptions at their narrower owner without copying parent
+  text.
+
+If the runtime cannot represent an exact union scope, keep the smallest correct
+owners even when duplication is unavoidable.
 
 ### 5. Verify Projection
 
-For representative target and non-target files, derive the instructions the
-runtime would load from ancestor `AGENTS.md` files plus matching pattern rules.
+Derive the instructions loaded for affected target and non-target files from
+ancestor `AGENTS.md` files plus matching pattern rules.
+
+When available tools can enumerate the affected set, verify the complete set.
+Otherwise verify representative boundaries and report the result as sampled, not
+exact.
+
 Confirm that:
 
-- every intended rule is present;
-- each representable semantic rule comes from one canonical owner; and
-- unrelated work does not receive the rule.
+- intended targets retain every rule;
+- each representable semantic rule comes from one authoritative owner; and
+- unrelated targets do not gain the rule.
 
-## Boundary Cases
+## Guardrails
 
-- **Same rule in every child**: move upward only to the highest exact common
-  directory scope.
-- **Same rule in selected siblings**: use a pattern owner when their common
-  ancestor would also cover unrelated siblings.
-- **Same file-type rule across directories**: prefer a file-pattern owner over
-  repeated subtree rules.
-- **Subtree-specific exception**: keep the common rule at its common owner and the
-  different exception at the narrower owner.
-- **Unrepresentable exact union**: keep the smallest correct owners rather than
-  broadening context for artificial DRYness.
+- Preserve rule meaning; only remove obsolete location wording required by a move.
+- Precedence is not a substitute for DRY.
+- Create a new owner file only when no suitable exact owner exists.
+- Do not author new engineering policy, improve rule content, redesign project
+  structure, validate runtime behavior, or perform cross-harness synchronization.
 
 ## Completion
 
-Complete when ownership changes are applied and projection verifies the intended
-scope. Report only canonical owner changes, duplicates removed or scope-based
-splits, and any scope the runtime cannot represent exactly.
+Complete when ownership changes preserve authority and the strongest available
+projection check preserves intended scope. Report only owner changes, removed
+duplicates or scope splits, unresolved ownership, and verification limitations.
