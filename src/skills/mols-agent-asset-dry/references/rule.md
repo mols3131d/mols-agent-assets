@@ -1,10 +1,10 @@
 # Rule DRY
 
-Use this reference only for persistent or scoped agent rules such as `AGENTS.md`, repository instructions, or path/glob rule assets.
+Use this reference only for persistent or scoped policy that the runtime loads automatically, such as `AGENTS.md`, repository instructions, or path/glob rule assets.
 
 ## Preserve
 
-Preserve rule meaning, intended target set, source authority, load timing, and runtime precedence.
+Preserve rule meaning, discovery or selector metadata, intended target set, source authority, load timing, and runtime precedence.
 
 Derive both the **current scope** and the **intended scope**. Do not assume a rule's current location proves where it should apply.
 

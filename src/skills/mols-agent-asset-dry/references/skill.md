@@ -1,12 +1,12 @@
 # Skill DRY
 
-Use this reference only for Agent Skills or equivalent on-demand skill packages.
+Use this reference only for Agent Skills or equivalent repeatable workflows loaded on demand.
 
 ## Preserve
 
-Preserve the skill's user purpose, trigger or description, workflow behavior, tools or permissions, outputs, package boundary, and release lifecycle.
+Preserve the skill's user purpose, trigger or description, discovery metadata, workflow behavior, tools or permissions, outputs, package boundary, dependencies, and release lifecycle.
 
-Two skills are not duplicates merely because they share procedures or domain knowledge. Different triggers, permissions, outputs, or independent release ownership are meaningful boundaries.
+Two skills are not duplicates merely because they share procedures or domain knowledge. Different triggers, permissions, outputs, dependencies, or independent release ownership are meaningful boundaries.
 
 ## DRY Inside One Skill
 
@@ -18,7 +18,7 @@ Two skills are not duplicates merely because they share procedures or domain kno
 
 ## DRY Across Skills
 
-Treat two skills as consolidation candidates only when their user purpose, activation boundary, authority, permissions, outputs, and lifecycle are compatible.
+Treat two skills as consolidation candidates only when their user purpose, activation boundary, authority, permissions, outputs, dependencies, and lifecycle are compatible.
 
 If they should remain independently invocable, keep them separate. Prefer explicit routing or composition only when the project and runtime support that relationship and it does not create a hidden cross-package dependency.
 
@@ -26,4 +26,4 @@ Do not extract shared text into an external common file merely to make independe
 
 ## Verify
 
-After changes, confirm intended requests still select the correct skill, conditional resources still load only when needed, and no responsibility, permission, or output contract was lost.
+After changes, confirm intended requests still select the correct skill, conditional resources still load only when needed, discovery metadata remains valid, and no responsibility, permission, dependency, or output contract was lost.

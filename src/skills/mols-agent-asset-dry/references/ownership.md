@@ -26,6 +26,10 @@ If changing the authoritative source requires regeneration or synchronization ou
 
 An imported, vendored, or externally maintained asset may have external ownership rather than being a generated projection. Preserve its ownership model unless project evidence explicitly transfers authority.
 
+## Cross-Harness Copies
+
+When repeated content exists in harness-specific native assets, resolve only whether source authority is duplicated. If removing physical duplication requires native reuse, generation, conversion, or fan-out across harnesses, report that as a synchronization boundary rather than designing or executing it here.
+
 ## Independent Assets
 
 Physical repetition can be correct when assets intentionally have independent ownership or release lifecycles. Do not create hidden sibling dependencies solely to centralize text.

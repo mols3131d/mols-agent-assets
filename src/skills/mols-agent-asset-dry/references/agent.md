@@ -1,25 +1,25 @@
 # Agent DRY
 
-Use this reference for custom agent or subagent profiles defined primarily by natural-language role instructions.
+Use this reference for custom agent or subagent profiles whose runtime role is a specialist persona, isolated context, or scoped tool set.
 
 ## Preserve
 
-Preserve role or mission, delegation or invocation boundary, tools and permissions, model or host constraints, handoff behavior, expected outputs, and independent ownership or lifecycle.
+Preserve role or mission, discovery metadata, delegation or invocation boundary, context isolation, tools and permissions, model or host constraints, handoff behavior, expected outputs, dependencies, and independent ownership or lifecycle.
 
-Similar expertise does not make two agents duplicates when their authority, tools, delegation boundary, or output responsibility differs.
+Similar expertise does not make two agents duplicates when their authority, tools, context boundary, delegation boundary, or output responsibility differs.
 
 ## Repeated Agent Content
 
-- Treat two agent profiles as consolidation candidates only when role, delegation boundary, authority, tools or permissions, outputs, and lifecycle are compatible.
+- Treat two agent profiles as consolidation candidates only when role, delegation boundary, context model, authority, tools or permissions, outputs, dependencies, and lifecycle are compatible.
 - Remove repeated instructions inside one profile when one statement already governs the same behavior.
-- Keep specialized agents when they narrow responsibility, permissions, or expected outputs even if much of the surrounding guidance is shared.
+- Keep specialized agents when they narrow responsibility, permissions, context, or expected outputs even if much of the surrounding guidance is shared.
 - Use host-native composition or shared context only when the dependency is explicit and does not blur agent authority.
 
 ## Shared Policy
 
 Do not move common policy from several agents into a rule merely to reduce text unless that cross-type migration is explicitly requested and the rule would have the same intended activation and authority.
 
-Do not give an agent broader tools or permissions as a side effect of consolidation.
+Do not give an agent broader tools, permissions, or context as a side effect of consolidation.
 
 ## Handoffs
 
@@ -27,4 +27,4 @@ If two agents cooperate through delegation or handoff, repeated interface expect
 
 ## Verify
 
-After changes, confirm each intended task still reaches the correct agent, delegation boundaries remain clear, tools and permissions are unchanged, and handoff or output contracts still hold.
+After changes, confirm each intended task still reaches the correct agent, discovery metadata and delegation boundaries remain valid, context isolation and tools or permissions are unchanged, and handoff or output contracts still hold.

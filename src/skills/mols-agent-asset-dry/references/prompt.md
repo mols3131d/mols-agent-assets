@@ -1,10 +1,10 @@
 # Prompt DRY
 
-Use this reference for reusable prompt assets, command prompts, or prompt files that package an invocable task.
+Use this reference for explicit reusable task entrypoints such as prompt files, reusable prompts, or command prompts.
 
 ## Preserve
 
-Preserve invocation intent, discoverability, inputs or variables, referenced context, tool or permission assumptions, expected output, and interaction pattern.
+Preserve invocation intent, discovery metadata, discoverability, inputs or variables, referenced context, tool or permission assumptions, expected output, and interaction pattern.
 
 Two prompts are not duplicates merely because they contain the same policy or procedure. Distinct entrypoints can be intentional even when they share implementation detail.
 
@@ -18,7 +18,7 @@ Two prompts are not duplicates merely because they contain the same policy or pr
 
 ## Cross-Type Content
 
-Do not automatically move instructions repeated across prompts into a rule, skill, or agent. Persistent rules and on-demand skills have different activation semantics. Treat such migration as a separate design change unless explicitly requested.
+Do not automatically move instructions repeated across prompts into a rule, skill, or agent. Those asset types have different activation semantics. Treat such migration as a separate design change unless explicitly requested.
 
 ## Thin Aliases
 
@@ -26,4 +26,4 @@ A thin prompt alias is not necessarily duplication when it provides a distinct, 
 
 ## Verify
 
-After changes, confirm the same invocation intents remain discoverable, inputs still reach the prompt correctly, referenced context is available, and outputs or interaction steps have not changed unintentionally.
+After changes, confirm the same invocation intents remain discoverable, discovery metadata and inputs remain valid, referenced context is available, and outputs or interaction steps have not changed unintentionally.

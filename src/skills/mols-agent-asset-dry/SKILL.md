@@ -10,9 +10,9 @@ Remove avoidable repetition from skills, rules, prompts, and agents while preser
 
 ## Contract
 
-This Skill handles four natural-language asset types: **skill**, **rule**, **prompt**, and **agent**. Treat reusable command or workflow prompts as prompts. Do not extend this workflow to hooks, tools, executable configuration, or general documentation.
+This Skill handles four natural-language asset types: **skill**, **rule**, **prompt**, and **agent**. Embedded metadata or frontmatter is in scope when it controls discovery, activation, scope, permissions, tools, or other behavior of those assets. Standalone hooks, tools, executable configuration, and general documentation are out of scope.
 
-Classify an asset by its runtime role and activation model, not by filename, Markdown shape, or the fact that it contains prompt-like text. If one file genuinely serves multiple asset roles and those roles cannot be separated safely, preserve it and report the ambiguity.
+Classify an asset by responsibility, activation, load timing, and authority rather than filename, Markdown shape, or prompt-like text. If one file genuinely serves multiple asset roles and those roles cannot be separated safely, preserve it and report the ambiguity.
 
 Set the write boundary from the request. Read outside that boundary only when needed to establish inheritance, references, activation, source authority, or generated projections. Do not mutate outside the write boundary without explicit authority.
 
@@ -30,16 +30,16 @@ Never trade behavior or authority for textual DRYness.
 
 ## Routing
 
-Load the matching asset reference before changing structure:
+Load one matching reference for each asset type present in the requested work:
 
-| Asset | Reference |
-| --- | --- |
-| Skill | [skill.md](references/skill.md) |
-| Rule | [rule.md](references/rule.md) |
-| Prompt or reusable command prompt | [prompt.md](references/prompt.md) |
-| Agent or subagent profile | [agent.md](references/agent.md) |
+| Asset | Runtime role | Reference |
+| --- | --- | --- |
+| Skill | Repeatable workflow loaded on demand | [skill.md](references/skill.md) |
+| Rule | Persistent or scoped policy loaded automatically | [rule.md](references/rule.md) |
+| Prompt | Explicit reusable task entrypoint | [prompt.md](references/prompt.md) |
+| Agent | Specialist role, isolated context, or scoped tools | [agent.md](references/agent.md) |
 
-Read [duplication.md](references/duplication.md) when semantic equivalence, specialization, or repeated responsibility is unclear. Read [ownership.md](references/ownership.md) when source authority, generated copies, or competing owners are involved.
+Read [duplication.md](references/duplication.md) when semantic equivalence, specialization, or repeated responsibility is unclear. Read [ownership.md](references/ownership.md) when source authority, generated copies, external ownership, competing owners, or harness-specific projections are involved.
 
 ## Workflow
 
@@ -49,7 +49,7 @@ Inspect the requested assets and enough surrounding context to find repeated req
 
 ### 2. Preserve Type Semantics
 
-Classify each candidate by runtime role, then load the matching asset reference and capture the behavior that must remain unchanged. If the asset type is ambiguous, preserve the current structure and report the ambiguity.
+Classify each candidate by runtime role, then load every matching asset reference needed for the requested set. Capture the behavior that must remain unchanged. If an asset type is ambiguous, preserve the current structure and report the ambiguity.
 
 ### 3. Decide Duplication
 
@@ -75,7 +75,7 @@ Re-derive the affected assets' discoverability, activation, loaded context, auth
 - Do not create hidden cross-package dependencies, shared schemas, inheritance layers, or new frameworks merely to remove repetition.
 - Do not hand-edit generated or derived copies merely to make them physically DRY.
 - Preserve ambiguous cases and report them instead of guessing.
-- Do not perform cross-harness generation, conversion, or synchronization.
+- When deduplication across harnesses requires reuse, generation, conversion, or synchronization, report that boundary instead of implementing it here.
 
 ## Completion
 
