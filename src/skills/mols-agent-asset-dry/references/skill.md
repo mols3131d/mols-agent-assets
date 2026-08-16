@@ -22,7 +22,7 @@ Treat two skills as consolidation candidates only when their user purpose, activ
 
 If they should remain independently invocable, keep them separate. Prefer explicit routing or composition only when the project and runtime support that relationship and it does not create a hidden cross-package dependency.
 
-Do not extract shared text into an external common file merely to make independent skill capsules physically DRY.
+Do not extract shared text into an external common file merely to make independent skill capsules physically DRY. Do not retire a discoverable skill entrypoint unless its invocation responsibility is itself redundant and retirement is authorized.
 
 ## Verify
 

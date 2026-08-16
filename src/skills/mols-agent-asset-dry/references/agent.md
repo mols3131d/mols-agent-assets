@@ -15,6 +15,8 @@ Similar expertise does not make two agents duplicates when their authority, tool
 - Keep specialized agents when they narrow responsibility, permissions, context, or expected outputs even if much of the surrounding guidance is shared.
 - Use host-native composition or shared context only when the dependency is explicit and does not blur agent authority.
 
+Do not retire a discoverable agent entrypoint unless its delegated role is itself redundant and retirement is authorized.
+
 ## Shared Policy
 
 Do not move common policy from several agents into a rule merely to reduce text unless that cross-type migration is explicitly requested and the rule would have the same intended activation and authority.

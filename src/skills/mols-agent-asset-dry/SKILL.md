@@ -1,12 +1,12 @@
 ---
 name: mols-agent-asset-dry
 description: >-
-  Make natural-language agent assets DRY without changing behavior. Use when skills, rules, prompts, or agent profiles repeat responsibilities, instructions, context, or authoritative content across files or scopes. Route through common duplication and ownership checks plus the matching asset-type reference. Do not use for executable assets such as hooks or tools, policy rewriting, cross-harness synchronization, or abstraction for its own sake.
+  Make natural-language agent assets DRY without changing behavior. Use when skills, rules, prompts, or agent profiles repeat responsibilities, instructions, context, or authoritative content across files or scopes. Route through common DRY checks plus the matching asset-type reference. Do not use for executable assets such as hooks or tools, policy rewriting, cross-harness synchronization, or abstraction for its own sake.
 ---
 
 # Agent Asset DRY
 
-Remove avoidable repetition from skills, rules, prompts, and agents while preserving behavior and ownership.
+Remove avoidable repetition from skills, rules, prompts, and agents while preserving behavior, ownership, and useful context boundaries.
 
 ## Contract
 
@@ -23,10 +23,10 @@ Apply DRY in this order:
 1. **Behavior correctness**: the asset still activates, loads, delegates, and produces results as intended.
 2. **Source of truth**: preserve the authoritative source and keep projections derived.
 3. **Single ownership**: one responsibility or requirement has one owner when the asset model can represent that safely.
-4. **Minimum context**: avoid loading or repeating content where inheritance, references, or routing already provide it.
-5. **Simple structure**: do not add indirection merely to remove text.
+4. **Minimum context**: avoid both repeated context and new indirection that loads irrelevant context.
+5. **Simple structure**: do not add abstraction merely to remove text.
 
-Never trade behavior or authority for textual DRYness.
+Never trade behavior, authority, or context quality for textual DRYness.
 
 ## Routing
 
@@ -39,7 +39,7 @@ Load one matching reference for each asset type present in the requested work:
 | Prompt | Explicit reusable task entrypoint | [prompt.md](references/prompt.md) |
 | Agent | Specialist role, isolated context, or scoped tools | [agent.md](references/agent.md) |
 
-Read [duplication.md](references/duplication.md) when repeated content, semantic identity, specialization, or consolidation compatibility must be decided. Read [ownership.md](references/ownership.md) when source authority, generated copies, external ownership, competing owners, or harness-specific projections are involved.
+Read [duplication.md](references/duplication.md) when repeated content, semantic identity, specialization, or consolidation compatibility must be decided. Read [ownership.md](references/ownership.md) when source authority, generated copies, external ownership, competing owners, or harness-specific projections are involved. Read [context.md](references/context.md) when a DRY move changes references, inheritance, composition, or what context a consumer loads.
 
 ## Workflow
 
@@ -59,18 +59,19 @@ Compare the smallest independently meaningful units. First decide whether they e
 
 Identify the authoritative source for content that is safe to consolidate. Use the ownership reference when authority is not already explicit.
 
-### 5. Apply the Smallest DRY Move
+### 5. Choose the Smallest DRY Move
 
-Prefer deletion of redundant restatements, reuse of an existing canonical owner, or type-native composition. Keep intentional specialization, independent entrypoints, required projections, and physical repetition needed to preserve behavior.
+Prefer deletion of redundant restatements, reuse of an existing canonical owner, or type-native composition. Read the context reference before adding or changing references, inheritance, or composition. Keep intentional specialization, independent entrypoints, required projections, and physical repetition needed to preserve behavior or context quality.
 
-### 6. Verify
+### 6. Apply and Verify
 
-Re-derive the affected assets' discoverability, activation, loaded context, authority, permissions, outputs, dependencies, and lifecycle as applicable. Verify the complete affected set when feasible; otherwise test representative boundaries and report the check as sampled.
+Apply only inside the write boundary. Re-derive the affected assets' discoverability, activation, loaded context, authority, permissions, outputs, dependencies, and lifecycle as applicable. Verify the complete affected set when feasible; otherwise test representative boundaries and report the check as sampled.
 
 ## Guardrails
 
 - Preserve meaning; do not improve wording or invent policy as part of deduplication.
 - Do not merge assets solely because they share text.
+- Do not retire, delete, or rename a discoverable or invocable asset entrypoint solely to remove internal repetition. Whole-asset consolidation requires evidence that the entrypoint itself is redundant and authority to retire it.
 - Do not migrate content between asset types merely to make it DRY unless the request explicitly includes that migration and behavior remains equivalent.
 - Do not create hidden cross-package dependencies, shared schemas, inheritance layers, or new frameworks merely to remove repetition.
 - Do not hand-edit generated or derived copies merely to make them physically DRY.
@@ -79,4 +80,4 @@ Re-derive the affected assets' discoverability, activation, loaded context, auth
 
 ## Completion
 
-Complete when avoidable repetition is removed without changing behavior, authority, or intentional asset boundaries. Report consolidated responsibilities or requirements, preserved exceptions or projections, unresolved DRY issues, and verification limits.
+Complete when avoidable repetition is removed without changing behavior, authority, intentional asset boundaries, or context quality. Report consolidated responsibilities or requirements, preserved exceptions or projections, unresolved DRY issues, and verification limits.
