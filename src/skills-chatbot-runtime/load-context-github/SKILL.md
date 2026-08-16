@@ -42,9 +42,9 @@ relevant context loading before the first task-level action or repository mutati
    object, agent, or operation. Keep unrelated repositories and path scopes isolated.
 4. **Distinguish rules from context** — do not treat nearby README text, filenames, or
    tool-specific guidance as normative without evidence of scope and intent.
-5. **Load progressively** — start with root/high-signal context and expand only when a
-   target path, task object, unresolved rule, or required reference makes more context
-   material to the next action.
+5. **Load progressively** — start with explicit/high-signal instruction sources and live
+   task metadata; expand only when a target path, task object, unresolved rule, or required
+   reference makes more context material to the next action.
 6. **Stop when sufficient** — do not recursively read the repository after the governing
    context and task constraints are known.
 
@@ -60,9 +60,11 @@ Resolve only what the current request needs:
 - target paths when known;
 - operation class: read, review, edit, commit, PR, merge, release, etc.
 
-If target paths are not yet known, inspect root `AGENTS.md`, root `README.md`, and other
-obvious high-signal repository guidance only as needed. When changed files or concrete
-paths become known, add their scoped context.
+If target paths are not yet known, inspect only root instruction-bearing sources or live
+metadata that can govern the current task. Read a root `README.md` only when component
+purpose, navigation, workflow context, or a referenced required source is materially
+needed; do not preload it by default. When changed files or concrete paths become known,
+add their scoped context.
 
 ### 2. Load Conditional Context
 
@@ -102,7 +104,8 @@ Preserve these invariants even when the detailed reference is not loaded:
 - For PR/review work, use the actual head-ref instructions; compare base instructions
   when a difference can materially affect the judgment.
 - Nested `AGENTS.md` must not be lost by loading only the nearest file.
-- `README.md` is primarily context/navigation and is not automatically an override.
+- `README.md` is primarily context/navigation and is not automatically an override or a
+  mandatory context source.
 - `applyTo`, path selectors, override semantics, and agent/tool-specific instructions
   apply only when their declared scope matches.
 - If no repository rule is found, do not fabricate one. A safe default may be used, but
