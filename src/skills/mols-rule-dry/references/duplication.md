@@ -22,9 +22,8 @@ For statements with the same requirement:
 - Narrower declarative scope already covered unchanged by a broader rule -> inherited or scoped restatement.
 - Different scopes or attachment modes -> repeated rule across applications; a consolidation candidate, not automatically redundant.
 - Narrower statement changes, limits, or overrides the broader requirement -> genuine exception, not duplication.
-- Required generated copy -> physical repetition, not independent ownership.
 
-Repeated rules across applications may be consolidated only when the intended application remains exactly representable, source authority remains valid, and precedence or attachment behavior does not change.
+Repeated rules across applications may be consolidated only when the intended application remains exactly representable and precedence or attachment behavior does not change. Source authority and projection status are resolved separately in [ownership.md](ownership.md).
 
 ## Ambiguity
 
