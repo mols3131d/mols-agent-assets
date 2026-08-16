@@ -58,7 +58,9 @@ Skill은 단순한 지식 저장소도, 무관한 capability들의 namespace도 
 
 - `load-context-`는 packaging 방식이 아니라 capability responsibility를 나타낸다.
 - flat, runtime, workspace profile 모두 같은 naming을 사용할 수 있다.
-- context를 사용하더라도 실제 workflow 수행, transformation, validation, artifact 생성이 주책임이면 이 prefix를 붙이지 않는다.
+- context-only Skill은 context discovery, selection, scoping, loading과 적용 경계까지만 소유한다.
+- context를 사용한 실제 구현, 작성, 검증, 리뷰, transformation, mutation과 최종 output은 downstream capability가 소유한다.
+- context를 활용하더라도 실제 workflow 수행, transformation, validation, artifact 생성이 주책임이면 이 prefix를 붙이지 않는다.
 - context-only 여부가 불분명하면 이름보다 먼저 responsibility를 다시 분리한다.
 
 예:
@@ -183,6 +185,7 @@ Skill로 판단했다면 responsibility와 target profile을 별도로 고른다
 - Rule 안에 하나의 task를 위한 전체 workflow를 넣는다.
 - Skill을 activation이나 행동 효과가 없는 단순 reference collection으로 사용한다.
 - 서로 독립적인 context를 하나의 broad Skill에 모아 항상 함께 로드한다.
+- context-only Skill이 downstream workflow나 output까지 소유한다.
 - context-only Skill인데 responsibility가 드러나지 않는 broad name을 유지한다.
 - workflow Skill에 `load-context-`를 붙여 responsibility를 오해하게 만든다.
 - target profile이 다른 sibling Skill을 단순한 내용 중복이라는 이유로 제거한다.
