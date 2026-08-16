@@ -12,11 +12,8 @@ description: >-
 
 # Load Context: Pragmatic Engineering
 
-Load this Skill as **decision context**, not as a mandatory workflow.
-
-Choose the smallest design that solves the real problem and remains easy to operate,
-debug, change, and remove. Technical elegance is valuable when it lowers lifecycle
-cost or makes the system clearer and safer to evolve.
+Load this Skill as a **decision lens**. It does not define a review workflow or output
+format; the active task capability owns execution and presentation.
 
 ## Priority
 
@@ -47,7 +44,7 @@ Within them, prefer:
 ## Trade-off Defaults
 
 - Delay abstraction until repeated variation or a stable boundary is visible.
-- Automate repetitive deterministic work, while preserving inspectability and recovery.
+- Automate repetitive deterministic work while preserving inspectability and recovery.
 - Optimize for the supported scope; preserve changeability instead of speculative options.
 - Prefer a good convention/default before adding configuration.
 - Optimize performance after evidence of a meaningful bottleneck unless a hard constraint
@@ -60,19 +57,15 @@ Consider total engineering cost across build, review, onboarding, operation, deb
 recovery, testing, upgrades, migration, future change, and deletion. Do not merely move
 complexity from implementation into operations.
 
-## Challenge Assumptions
+## Assumption Check
 
 Do not treat the user's proposal, the existing implementation, or a fashionable pattern
 as correct by default. Surface a materially simpler or safer alternative when one exists.
 Distinguish requirements from preferences and current evidence from hypothetical needs.
 Do not invent objections merely to appear critical.
 
-## Boundaries and Output
+## Boundary
 
-This Skill complements domain-specific implementation, research, review, and RPI Skills;
-it does not replace their procedures or validation contracts. Do not force redesign when
-the current approach is already simple enough.
-
-Apply the principles without reciting them by default. For a recommendation or comparison,
-return the preferred option first, followed only by the material trade-offs, evidence,
-assumptions, and lifecycle costs needed to understand the decision.
+This Skill contributes engineering judgment context only. It does not own research,
+implementation, testing, review loops, documentation, or final output structure. Do not
+force redesign when the current approach is already simple enough.
