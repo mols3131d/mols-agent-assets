@@ -1,13 +1,13 @@
-# Temporary & Local State / 임시 및 로컬 상태 디렉터리
-data/
-tmp/
-.tmp/
-.trash/
-.archive/
-.gemini/
-.codex/
+# Repository-local state
+/data/
+/tmp/
+/.tmp/
+/.trash/
+/.archive/
+/.gemini/
+/.codex/
 
-# Backup & Temporary Files / 백업 및 임시 파일
+# Temporary and backup files
 *.tmp
 *.tmp.*
 *.origin
@@ -15,9 +15,8 @@ tmp/
 *.bak
 *.swp
 *~
-*.code-workspace
 
-# Python Bytecode & Build Artifacts / 파이썬 바이트코드 및 빌드 아티팩트
+# Python bytecode and build artifacts
 __pycache__/
 *.py[cod]
 *$py.class
@@ -27,16 +26,19 @@ dist/
 *.egg-info/
 .eggs/
 
-# Environments & Secrets / 가상환경 및 환경 변수
+# Environments and secrets
 .venv/
 venv/
-env/
+/env/
 .env
 .env.*
 !.env.example
 .envrc
 
-# Testing & Linter Caches / 테스트 및 린터·타입 체커 캐시
+# Dependency directories
+node_modules/
+
+# Test and tool output
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
@@ -45,8 +47,15 @@ env/
 .coverage.*
 htmlcov/
 
-# OS & Editor / 에디터 및 OS 시스템 파일
+# OS and IDE-local state
 .DS_Store
 Thumbs.db
-.vscode/
 .idea/
+
+# Shared VS Code project configuration
+/.vscode/*
+!/.vscode/settings.json
+!/.vscode/tasks.json
+!/.vscode/launch.json
+!/.vscode/extensions.json
+!/.vscode/*.code-snippets
