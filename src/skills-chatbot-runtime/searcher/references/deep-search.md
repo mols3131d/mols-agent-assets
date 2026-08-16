@@ -1,19 +1,53 @@
 # Deep Search Workflow
 
-## 1. Multi-Lingual Expansion
+Use this workflow only when a small focused search is not enough.
 
-- Search in the user's native language for localized context.
-- Translate query terms to English and execute parallel searches to capture global data, official documentation, and broad consensus.
+## 1. Expand the Question
 
-## 2. Iterative Query Refinement
+Identify the unresolved dimensions before adding queries:
 
-- Never conclude research after a single search query.
-- Generate and execute at least 3 query variations using synonyms, acronyms, or conceptual shifts.
-- Extract new keywords from initial results and perform subsequent searches to drill down.
+- terminology or aliases;
+- time, version, geography, or population;
+- primary source owner;
+- competing explanations or viewpoints;
+- local versus global context.
 
-## 3. Query Best Practices (Complex Syntaxes)
+Use multilingual search when language or region is likely to change the available
+evidence. Do not translate every query by default.
 
-- **Authoritative Report Search**: `<query> site:[domain] filetype:[ext] -site:[unreliable_domain]`
-- **Precise Error / API Search**: `"<exact_phrase>" <context> -site:[spam/forum_domain]`
-- **Consensus & Date Search**: `("<term_A>" OR "<term_B>") site:[domain] after:[year]`
-- **Proximity & Context Filter**: `"<term_A>" AROUND(<N>) "<term_B>" -"<noise_phrase>"`
+## 2. Refine by Evidence Gap
+
+Start from the highest-value unresolved question. After each search, use the result to
+decide whether another query can materially improve the answer.
+
+Useful refinements include:
+
+- exact phrases, identifiers, error messages, model numbers, or document titles;
+- official-domain or primary-source targeting;
+- synonyms, acronyms, older/newer terminology, and competing concepts;
+- date or version constraints;
+- queries designed to find contradiction, criticism, or independent confirmation.
+
+Do not require a fixed number of query variations. Repeating searches without a new
+evidence gap is not deeper research.
+
+## 3. Reconcile Sources
+
+When evidence conflicts:
+
+1. confirm that the sources discuss the same scope and time period;
+2. distinguish primary evidence from interpretation or repetition;
+3. inspect methodology, authority, incentives, and provenance when relevant;
+4. preserve meaningful disagreement instead of forcing consensus.
+
+## 4. Stop
+
+Stop expanding when the load-bearing claims are sufficiently supported, important
+uncertainty is represented, and another query is unlikely to change the decision or
+answer materially.
+
+## Search Syntax
+
+Use advanced operators only when the active search provider supports them and they
+reduce retrieval noise. Examples may include exact phrases, domain filters, file type
+filters, exclusions, title or URL constraints, and date ranges.
