@@ -19,9 +19,9 @@ Do not introduce a new owner file when an existing editable owner already repres
 
 ## Attachment Mode
 
-Preserve the existing attachment mode unless the resolved intended application itself requires a change. Do not convert always-applied, path-scoped, relevance-selected, agent-requested, or manual rules into another mode merely to reduce repeated text.
+Preserve the existing attachment mode. Do not convert always-applied, path-scoped, relevance-selected, agent-requested, or manual rules into another mode merely to reduce repeated text.
 
-If consolidation requires changing attachment mode, treat that as a separate application migration. Apply it only when the request authorizes the migration and the resulting behavior can be supported by evidence; otherwise preserve the current modes and report the DRY limit.
+If consolidation would require an attachment-mode change, preserve the current modes and report that candidate as blocked by an application-migration boundary. This Skill does not perform that migration.
 
 ## Precedence
 
