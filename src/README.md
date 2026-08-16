@@ -8,5 +8,5 @@
 | `skills/` | Workspace-capable agent skills |
 | `skills-chatbot/` | Flat natural-language chatbot skills |
 | `skills-chatbot-runtime/` | Hosted chatbot skills with bundled/runtime capabilities |
-| `instructions/` | Reusable instructions |
+| `rules/` | Reusable behavioral rules |
 | `scripts/` | Development and validation tooling |
