@@ -5,7 +5,8 @@
 | Directory | Role |
 | --- | --- |
 | `agents/` | Subagents and custom agents |
-| `skills/` | Reusable agent skills |
-| `chatbot-skills/` | Chatbot-specific skills |
+| `skills/` | Workspace-capable agent skills |
+| `skills-chatbot/` | Flat natural-language chatbot skills |
+| `skills-chatbot-runtime/` | Hosted chatbot skills with bundled/runtime capabilities |
 | `instructions/` | Reusable instructions |
 | `scripts/` | Development and validation tooling |
