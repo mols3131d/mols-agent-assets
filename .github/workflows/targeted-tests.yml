@@ -1,0 +1,108 @@
+name: Targeted PR Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "src/skills/**"
+      - "src/scripts/**"
+      - "tests/skills/**"
+      - "tests/scripts/**"
+      - ".github/workflows/targeted-tests.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-slim
+    timeout-minutes: 5
+    steps:
+      - name: Checkout PR merge
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+
+      - name: Select affected tests
+        id: scope
+        shell: bash
+        run: |
+          mapfile -d '' files < <(git diff --name-only -z HEAD^1 HEAD)
+          declare -A root_targets=()
+          declare -A projects=()
+
+          add_skill() {
+            local name="$1"
+            local skill="src/skills/$name"
+            [[ -d "tests/skills/$name" ]] && root_targets["tests/skills/$name"]=1
+            if [[ -d "$skill/tests" ]]; then
+              if [[ -f "$skill/pyproject.toml" ]]; then
+                projects["$skill"]=1
+              else
+                root_targets["$skill/tests"]=1
+              fi
+            fi
+          }
+
+          add_script() {
+            local name="$1"
+            [[ -d "tests/scripts/$name" ]] && root_targets["tests/scripts/$name"]=1
+          }
+
+          for path in "${files[@]}"; do
+            case "$path" in
+              tests/skills/conftest.py)
+                root_targets["tests/skills"]=1
+                ;;
+              tests/scripts/conftest.py)
+                root_targets["tests/scripts"]=1
+                ;;
+              src/skills/*|tests/skills/*)
+                name="${path#*/skills/}"
+                add_skill "${name%%/*}"
+                ;;
+              src/scripts/*|tests/scripts/*)
+                name="${path#*/scripts/}"
+                add_script "${name%%/*}"
+                ;;
+            esac
+          done
+
+          ((${#root_targets[@]})) && printf '%s\0' "${!root_targets[@]}" > /tmp/root-tests
+          ((${#projects[@]})) && printf '%s\0' "${!projects[@]}" > /tmp/project-tests
+
+          if ((${#root_targets[@]} == 0 && ${#projects[@]} == 0)); then
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set up uv
+        if: steps.scope.outputs.run == 'true'
+        uses: astral-sh/setup-uv@v9.0.0
+        with:
+          enable-cache: false
+
+      - name: Run central tests
+        if: steps.scope.outputs.run == 'true'
+        shell: bash
+        run: |
+          [[ -f /tmp/root-tests ]] || exit 0
+          mapfile -d '' targets < /tmp/root-tests
+          uv run --frozen pytest -q "${targets[@]}"
+
+      - name: Run colocated skill tests
+        if: steps.scope.outputs.run == 'true'
+        shell: bash
+        run: |
+          [[ -f /tmp/project-tests ]] || exit 0
+          mapfile -d '' projects < /tmp/project-tests
+          for project in "${projects[@]}"; do
+            (cd "$project" && uv run pytest)
+          done
