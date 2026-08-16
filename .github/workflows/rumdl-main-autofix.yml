@@ -10,17 +10,17 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: rumdl-main-autofix
+  cancel-in-progress: false
+
 jobs:
   format:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
+    timeout-minutes: 5
     steps:
       - name: Checkout
         uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-
-      - name: Set up uv
-        uses: astral-sh/setup-uv@v8
 
       - name: Collect changed Markdown
         id: markdown
@@ -29,6 +29,7 @@ jobs:
           BEFORE: ${{ github.event.before }}
           AFTER: ${{ github.sha }}
         run: |
+          git fetch --no-tags --depth=1 origin "$BEFORE"
           mapfile -d '' files < <(
             git diff --name-only -z --diff-filter=ACMR "$BEFORE" "$AFTER" -- '*.md'
           )
@@ -41,22 +42,29 @@ jobs:
           printf '%s\0' "${files[@]}" > /tmp/markdown-files
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
+      - name: Set up uv
+        if: steps.markdown.outputs.changed == 'true'
+        uses: astral-sh/setup-uv@v9.0.0
+
       - name: Format Markdown
         if: steps.markdown.outputs.changed == 'true'
         shell: bash
         run: |
           mapfile -d '' files < /tmp/markdown-files
-          uv run --frozen --group dev rumdl fmt "${files[@]}"
+          uvx rumdl@0.2.6 fmt "${files[@]}"
 
       - name: Commit fixes
         if: steps.markdown.outputs.changed == 'true'
+        shell: bash
         run: |
-          if git diff --quiet -- '*.md'; then
+          mapfile -d '' files < /tmp/markdown-files
+          if git diff --quiet -- "${files[@]}"; then
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- '*.md'
+          git add -- "${files[@]}"
           git commit -m "style(markdown): auto-fix with rumdl"
+          git pull --rebase origin main
           git push origin HEAD:main
