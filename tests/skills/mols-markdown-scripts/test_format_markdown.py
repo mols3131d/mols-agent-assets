@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-# Temporary CI smoke marker; reverted after the targeted run.
-
 import tempfile
 from pathlib import Path
 from subprocess import CalledProcessError, CompletedProcess
