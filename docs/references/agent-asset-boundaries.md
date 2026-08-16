@@ -52,6 +52,21 @@ Skill에 고정 workflow가 반드시 필요한 것은 아니다. 명확한 acti
 
 Skill은 단순한 지식 저장소도, 무관한 capability들의 namespace도 아니다.
 
+### Context-only Skill Naming
+
+주책임이 workflow 실행이나 artifact 생성이 아니라 **특정 상황에 필요한 판단 기준·제약·지식을 context로 주입하는 것**이면 `load-context-<topic>` 이름을 사용한다.
+
+- `load-context-`는 packaging 방식이 아니라 capability responsibility를 나타낸다.
+- flat, runtime, workspace profile 모두 같은 naming을 사용할 수 있다.
+- context를 사용하더라도 실제 workflow 수행, transformation, validation, artifact 생성이 주책임이면 이 prefix를 붙이지 않는다.
+- context-only 여부가 불분명하면 이름보다 먼저 responsibility를 다시 분리한다.
+
+예:
+
+- `load-context-pragmatic-engineering` — engineering trade-off 판단 context
+- `load-context-tech-doc-fidelity` — technical document 보존 context
+- `load-context-github` — GitHub 작업 전에 필요한 repository/task context
+
 ## Skill Target Profiles
 
 `skills/`, `skills-chatbot/`, `skills-chatbot-runtime/`은 capability의 우열이나 정규화 계층이 아니라 **서로 다른 harness/platform capability에 맞춘 배포 profile**이다.
@@ -141,8 +156,9 @@ Reference에 적혀 있다는 사실만으로 runtime policy가 활성화되는 
 1. 역할, authority, tool, delegation을 정의하는가? → **Agent**
 1. 행동 자체보다 판단에 필요한 static knowledge인가? → **Reference**
 
-Skill로 판단했다면 target profile을 별도로 고른다.
+Skill로 판단했다면 responsibility와 target profile을 별도로 고른다.
 
+1. 주책임이 context 주입인가? → `load-context-<topic>` naming
 1. workspace/filesystem/shell/repository authority가 핵심인가? → `skills/` variant 검토
 1. chatbot variant가 단일 Markdown 파일 + 4,000 tokens 미만으로 완결되는가? → `skills-chatbot/`
 1. 4,000 tokens 이상이거나 bundle/runtime capability가 필요한가? → `skills-chatbot-runtime/`
@@ -167,6 +183,8 @@ Skill로 판단했다면 target profile을 별도로 고른다.
 - Rule 안에 하나의 task를 위한 전체 workflow를 넣는다.
 - Skill을 activation이나 행동 효과가 없는 단순 reference collection으로 사용한다.
 - 서로 독립적인 context를 하나의 broad Skill에 모아 항상 함께 로드한다.
+- context-only Skill인데 responsibility가 드러나지 않는 broad name을 유지한다.
+- workflow Skill에 `load-context-`를 붙여 responsibility를 오해하게 만든다.
 - target profile이 다른 sibling Skill을 단순한 내용 중복이라는 이유로 제거한다.
 - 한 platform의 제약을 다른 profile에 강제로 전파한다.
 - 4,000 tokens를 넘는 flat skill을 계속 비대하게 유지하면서 runtime bundling을 피한다.
@@ -178,7 +196,7 @@ Skill로 판단했다면 target profile을 별도로 고른다.
 
 ## Review Question
 
-> **이 capability를 현재 harness에서 가장 효율적으로 제공하는 target profile과 packaging은 무엇인가?**
+> **이 capability의 실제 responsibility와 현재 harness에서 가장 효율적인 target profile·packaging은 무엇인가?**
 
 한 문장으로 답하기 어렵다면 boundary나 responsibility가 섞였는지 확인한다.
 
