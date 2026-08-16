@@ -74,6 +74,30 @@ GitHub currently exposes different instruction support across GitHub.com, IDEs, 
 review, cloud agent, and CLI. Resolve the active surface before applying support or
 precedence assumptions.
 
+## GitHub Copilot Precedence
+
+When the active surface follows GitHub Copilot's documented custom-instruction model,
+resolve conflicts using the precedence that GitHub documents for that surface rather than
+repository proximity alone.
+
+Current GitHub documentation orders relevant instruction classes as:
+
+1. personal instructions;
+1. repository custom instructions, internally ordered as:
+   1. matching path-specific `.github/instructions/**/*.instructions.md`;
+   1. repository-wide `.github/copilot-instructions.md`;
+   1. agent instructions such as `AGENTS.md`;
+1. organization instructions.
+
+Within agent instructions, use the active surface's documented nested-file semantics; on
+Copilot surfaces that support nested `AGENTS.md`, the nearest applicable file wins among
+agent-instruction candidates.
+
+Treat this hierarchy as **GitHub Copilot-specific and time-sensitive**. If the active
+surface documents different support or precedence, use that surface's current behavior.
+Repository conventions can narrow applicability but must not be used to fabricate a
+platform precedence rule.
+
 ## Resolve Scope and Precedence
 
 For each candidate instruction, confirm:
