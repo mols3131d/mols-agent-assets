@@ -18,7 +18,7 @@ snapshot: "4f8a1c2d96c0e40a8d77f51b326d9481ccbe129a"
 ## Summary
 
 | Item | Value |
-|---|---|
+| --- | --- |
 | Repository | `acme-example/refund-service` |
 | Target | `refund-processing-v2` |
 | Scope | API contract, refund handler, routes, integration tests, retry instrumentation |

@@ -41,9 +41,9 @@ Agent asset는 파일 형식이 아니라 행동 계약으로 검증한다. 동�
 일반적인 우선순위는 다음과 같다.
 
 1. 실제 runtime trace와 resulting state
-2. Deterministic parser, test, command와 script output
-3. Current source asset and explicit contract
-4. Independent semantic review와 behavior simulation
-5. Example, summary와 prior verdict
+1. Deterministic parser, test, command와 script output
+1. Current source asset and explicit contract
+1. Independent semantic review와 behavior simulation
+1. Example, summary와 prior verdict
 
 더 높은 evidence가 낮은 evidence와 충돌하면 원인을 조사하고 낮은 evidence를 사실로 유지하지 않는다.

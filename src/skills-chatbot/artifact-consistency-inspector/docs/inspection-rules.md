@@ -49,12 +49,12 @@ Expected는 resolved `rule_sources`, user-specified contract, and baseline에서
 중복 가능성이 있을 때 root cause 기준 분류 순서:
 
 1. `revision-mismatch`
-2. `stale-reference`
-3. `validation-gap`
-4. `handoff-gap`
-5. `omission`
-6. `drift`
-7. `contradiction`
+1. `stale-reference`
+1. `validation-gap`
+1. `handoff-gap`
+1. `omission`
+1. `drift`
+1. `contradiction`
 
 이 순서는 rule-source authority 순서가 아니라 gap classification tie-breaker입니다.
 

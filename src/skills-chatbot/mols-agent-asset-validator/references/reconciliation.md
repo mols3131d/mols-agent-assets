@@ -7,15 +7,15 @@
 ## Rules
 
 1. Root cause가 같은 Finding을 병합한다.
-2. Verified evidence를 simulated 또는 inferred claim보다 우선한다.
-3. Reviewer 다수결로 사실이나 Severity를 결정하지 않는다.
-4. Model grader 점수만으로 deterministic failure를 무시하지 않는다.
-5. Runtime 결과가 inconsistent하면 pass rate와 variance를 평균으로 숨기지 않는다.
-6. 적용되지 않는 축에는 `not_applicable`을 사용한다.
-7. 미실행 검사는 `unknown` 또는 `not_run`으로 남긴다.
-8. Final Disposition은 Lead가 소유한다.
-9. Instruction·Context 비용은 규칙 수나 파일 크기만으로 판정하지 않고 실제 행동·변경 영향과 연결한다.
-10. Human Comprehension Finding은 문체 취향이 아니라 운영·검토·변경 위험으로 정당화한다.
+1. Verified evidence를 simulated 또는 inferred claim보다 우선한다.
+1. Reviewer 다수결로 사실이나 Severity를 결정하지 않는다.
+1. Model grader 점수만으로 deterministic failure를 무시하지 않는다.
+1. Runtime 결과가 inconsistent하면 pass rate와 variance를 평균으로 숨기지 않는다.
+1. 적용되지 않는 축에는 `not_applicable`을 사용한다.
+1. 미실행 검사는 `unknown` 또는 `not_run`으로 남긴다.
+1. Final Disposition은 Lead가 소유한다.
+1. Instruction·Context 비용은 규칙 수나 파일 크기만으로 판정하지 않고 실제 행동·변경 영향과 연결한다.
+1. Human Comprehension Finding은 문체 취향이 아니라 운영·검토·변경 위험으로 정당화한다.
 
 ## Contradiction Handling
 
