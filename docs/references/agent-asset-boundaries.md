@@ -16,7 +16,7 @@ description: Rule, Skill, Prompt, Agent, Reference를 scope, lifetime, authority
 | 자산 | 핵심 책임 | 일반적 lifetime | 핵심 질문 |
 | --- | --- | --- | --- |
 | Rule | 반복 적용되는 policy와 constraint | 여러 task | 항상 또는 특정 scope에서 무엇을 지켜야 하는가? |
-| Skill | 재사용 가능한 task capability와 procedure | 관련 task마다 | 이 종류의 일을 어떻게 수행하는가? |
+| Skill | 재사용 가능한 task 또는 decision capability | 관련 task마다 | 이 상황에서 어떤 capability나 판단 context가 필요한가? |
 | Prompt | 현재 invocation의 goal과 context | 현재 task | 지금 무엇을 원하는가? |
 | Agent | 역할, authority, tools, delegation | runtime role | 누가 어떤 권한과 도구로 판단하는가? |
 | Reference | 판단을 돕는 knowledge와 source material | 필요할 때 | 정확히 판단하려면 무엇을 알아야 하는가? |
@@ -41,9 +41,14 @@ Skill은 **재사용 가능한 coherent capability**를 소유한다.
 
 - capability와 activation 조건
 - 반복 가능한 procedure 또는 workflow
+- 특정 상황에서만 필요한 decision lens와 행동 context
 - task-specific tool 사용법과 gotcha
 - validation과 성공 기준
 - 필요할 때 읽는 bundled reference와 script의 사용 조건
+
+Skill에 고정 workflow가 반드시 필요한 것은 아니다. 명확한 activation condition이 있고, 로드된 context가 실제 판단이나 행동을 의미 있게 바꾸며, 하나의 cohesive responsibility를 가진다면 **context capability**도 Skill이 될 수 있다.
+
+예를 들어 특정 engineering trade-off에서만 KISS/YAGNI/operability 판단 기준을 로드하는 Skill은 유효하다. 반대로 activation과 행동 효과 없이 지식만 모아둔 문서는 Reference가 더 자연스럽다.
 
 Skill은 단순한 지식 저장소도, 무관한 capability들의 namespace도 아니다.
 
@@ -90,10 +95,10 @@ Reference에 적혀 있다는 사실만으로 runtime policy가 활성화되는 
 새 내용을 둘 위치가 모호하면 다음 순서로 묻는다.
 
 1. 여러 task에서 지속적으로 지켜야 하는 policy인가? → **Rule**
-2. 반복 수행되는 하나의 task capability인가? → **Skill**
+2. 반복 수행되는 task capability이거나 특정 상황에서 조건부로 필요한 decision context인가? → **Skill**
 3. 현재 요청에서만 필요한 goal이나 constraint인가? → **Prompt**
 4. 역할, authority, tool, delegation을 정의하는가? → **Agent**
-5. 행동 자체보다 판단에 필요한 knowledge인가? → **Reference**
+5. 행동 자체보다 판단에 필요한 static knowledge인가? → **Reference**
 
 둘 이상의 답이 강하면 먼저 내용이 여러 책임을 섞고 있는지 확인한다. 하나의 내용이 여러 자산에 나타나야 한다면 [DRY Principle](./agent-asset-dry-principle.md)의 ownership 기준을 적용한다.
 
@@ -104,6 +109,7 @@ Reference에 적혀 있다는 사실만으로 runtime policy가 활성화되는 
 - 한 번의 prompt correction이 반복되면 Rule이나 Skill로 승격될 수 있다.
 - Skill의 일부가 독립 intent와 authority를 가지면 별도 Skill이나 Agent로 분리될 수 있다.
 - runtime에 항상 필요하지 않은 상세 설명은 Reference로 내려갈 수 있다.
+- 전역 instruction의 조건부 판단 기준은 명확한 activation boundary가 생기면 context Skill로 내려갈 수 있다.
 
 변경은 파일 크기가 아니라 **scope와 responsibility가 실제로 바뀌었을 때** 수행한다.
 
@@ -111,7 +117,8 @@ Reference에 적혀 있다는 사실만으로 runtime policy가 활성화되는 
 
 - Prompt에 영구 policy를 계속 복사한다.
 - Rule 안에 하나의 task를 위한 전체 workflow를 넣는다.
-- Skill을 단순한 reference collection으로 사용한다.
+- Skill을 activation이나 행동 효과가 없는 단순 reference collection으로 사용한다.
+- 서로 독립적인 context를 하나의 broad Skill에 모아 항상 함께 로드한다.
 - Agent를 instruction namespace처럼 늘린다.
 - `docs/references/`를 runtime dependency로 가정한다.
 - 파일명이나 디렉터리 이름만 보고 자산 유형을 결정한다.
