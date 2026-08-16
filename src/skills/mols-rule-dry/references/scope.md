@@ -1,29 +1,35 @@
 # Rule Scope
 
-Use this reference only when deciding where a rule should load or whether rule scopes overlap.
+Use this reference only when deciding which targets should receive a rule and whether multiple rule scopes overlap.
 
-## Exact Scope
+## Intended Scope
 
-Prefer the narrowest structure that gives the rule to every intended target and no unrelated target.
+Describe the target set independently of where the rule is currently stored. Classify it as one of:
 
-- Project-wide rule -> root `AGENTS.md`.
-- One contiguous directory subtree -> the highest `AGENTS.md` whose subtree still matches exactly.
-- Cross-cutting file, extension, path, or repeated-directory scope -> a matching pattern rule asset.
+- project-wide;
+- one contiguous directory subtree;
+- a cross-cutting file, extension, path, or repeated-directory pattern; or
+- a combined scope that may require more than one selector or owner.
 
-Do not move a rule to a common ancestor when that ancestor would also apply it to unrelated descendants.
+Do not infer intended scope from the current file location alone.
 
-## Overlapping Scopes
+## Overlap
 
-When multiple owners or selectors apply the same rule to overlapping targets, keep only the placement needed to preserve the intended total scope.
+Compare the actual target sets of repeated rules or selectors.
 
-A narrower placement is redundant when a broader owner already applies the same rule to all of its targets. A broader placement is wrong when it reaches targets that should not receive the rule.
+- Full overlap: both reach the same targets.
+- Containment: one target set is entirely inside another.
+- Partial overlap: only some targets are shared.
+- Disjoint: no targets are shared.
 
-## Unrepresentable Scope
+Overlap does not by itself prove duplication. Rule equivalence is decided separately.
 
-If the runtime cannot express the intended combined scope exactly with one owner, keep the smallest set of correct owners even when some physical duplication remains.
+## Representability
 
-Scope correctness outranks DRY.
+Determine whether the runtime can express the intended target set exactly with one supported scope mechanism. If not, record the smallest exact combination that can represent it.
+
+Do not choose the canonical source or owner file in this reference.
 
 ## Verification Boundaries
 
-Check intended targets and nearby non-targets around directory and pattern boundaries. When the complete affected set can be enumerated, verify it completely; otherwise report the check as sampled.
+Check intended targets and nearby non-targets around directory and pattern boundaries. When the complete affected set can be enumerated, verify it completely; otherwise report the scope check as sampled.
