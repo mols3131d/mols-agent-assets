@@ -1,7 +1,7 @@
 ---
 name: mols-rule-dry
 description: >-
-  Make existing agent rules DRY without changing their meaning, intended application, or source authority. Use when rule guidance is duplicated, restated through inheritance, applied by overlapping rule mechanisms, or repeated in generated or native rule files. Resolve duplication, applicability, ownership, and placement separately. Do not use to author policy, improve rule wording, redesign runtime loading, or synchronize formats across harnesses.
+  Make existing agent rules DRY without changing their meaning, intended application, or source authority. Use when rule guidance is duplicated, restated through inheritance, applied by overlapping rule mechanisms, or repeated in generated or native rule files. Resolve duplication, application, ownership, and placement separately. Do not use to author policy, improve rule wording, redesign runtime loading, or synchronize formats across harnesses.
 ---
 
 # Rule DRY
@@ -32,7 +32,7 @@ Inspect rule-bearing files in the write boundary and any external rule context n
 
 ### 2. Resolve Application
 
-Determine when each candidate currently applies and when it is intended to apply before comparing or moving it. Read [scope.md](references/scope.md) when target boundaries, attachment conditions, overlap, or runtime representability must be decided.
+Determine when each candidate currently applies and when it is intended to apply before comparing or moving it. Read [application.md](references/application.md) when target boundaries, attachment conditions, overlap, or runtime representability must be decided.
 
 ### 3. Decide Duplication
 
@@ -50,7 +50,7 @@ Choose where the authoritative editable rule should live after application and a
 
 Remove only avoidable duplication from authoritative editable rules inside the write boundary. Keep genuine exceptions, required derived copies, and physical repetition needed to preserve application behavior.
 
-Verify declared scope, attachment metadata, precedence, source authority, and generated relationships statically. When runtime selection or relevance behavior cannot be proven without an evaluation system, report it as unverified rather than claiming behavioral validation.
+Verify declared application, attachment metadata, precedence, source authority, and generated relationships statically. When runtime selection or relevance behavior cannot be proven without an evaluation system, report it as unverified rather than claiming behavioral validation.
 
 ## Guardrails
 
