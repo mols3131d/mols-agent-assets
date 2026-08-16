@@ -48,7 +48,7 @@ Skill은 **재사용 가능한 coherent capability**를 소유한다.
 
 Skill에 고정 workflow가 반드시 필요한 것은 아니다. 명확한 activation condition이 있고, 로드된 context가 실제 판단이나 행동을 의미 있게 바꾸며, 하나의 cohesive responsibility를 가진다면 **context capability**도 Skill이 될 수 있다.
 
-예를 들어 특정 engineering trade-off에서만 KISS/YAGNI/operability 판단 기준을 로드하는 Skill은 유효하다. 반대로 activation과 행동 효과 없이 지식만 모아둔 문서는 Reference가 더 자연스럽다.
+예를 들어 코드 작업에서만 code-health 판단 기준을 로드하거나, 사람이 읽는 문서를 만들 때만 human-centered writing context를 로드하는 Skill은 유효하다. 반대로 activation과 행동 효과 없이 지식만 모아둔 문서는 Reference가 더 자연스럽다.
 
 Skill은 단순한 지식 저장소도, 무관한 capability들의 namespace도 아니다.
 
@@ -65,9 +65,12 @@ Skill은 단순한 지식 저장소도, 무관한 capability들의 namespace도 
 
 예:
 
-- `load-context-pragmatic-engineering` — engineering trade-off 판단 context
+- `load-context-coding` — code health와 engineering decision context
+- `load-context-github` — concrete GitHub 작업 전에 필요한 live repository/task context
+- `load-context-notion` — concrete Notion 작업 전에 필요한 live workspace/object context
+- `load-context-human-writing` — 사람이 읽는 글의 audience, structure, readability context
+- `load-context-agent-assets` — agent-facing asset의 activation, authority, context-cost context
 - `load-context-tech-doc-fidelity` — technical document 보존 context
-- `load-context-github` — GitHub 작업 전에 필요한 repository/task context
 
 ## Skill Target Profiles
 
@@ -83,18 +86,21 @@ Skill은 단순한 지식 저장소도, 무관한 capability들의 namespace도 
 
 ### Flat vs Runtime Packaging Boundary
 
-chatbot profile을 고를 때 `skills-chatbot/`을 가장 단순한 packaging으로 보고 다음 두 조건을 모두 만족할 때만 flat variant를 둔다.
+chatbot profile을 고를 때 `skills-chatbot/`을 가장 단순한 packaging으로 보고 배포 capability가 다음 조건을 모두 만족할 때 flat variant를 둔다.
 
 1. capability가 `<skill-name>.skill.md` **한 파일**로 완결된다.
 1. 배포되는 단일 skill 파일이 **4,000 tokens 미만**이다.
+1. 실행에 runtime-required bundle이나 host-only runtime capability가 필요하지 않다.
 
 다음 중 하나라도 해당하면 `skills-chatbot-runtime/`을 사용한다.
 
 - 단일 skill 파일이 **4,000 tokens 이상**이라 상세 context를 여러 Markdown 파일로 분리해야 한다.
-- references, assets, schemas, scripts, images 등 Markdown 한 파일 밖의 bundled resource가 필요하다.
-- host가 제공하는 tools, scripts, progressive loading 또는 기타 runtime 기능을 활용해야 한다.
+- 실행에 references, assets, scripts, images 등 Markdown 한 파일 밖의 bundled resource가 필요하다.
+- host가 제공하는 tools, connectors, scripts, progressive loading 또는 기타 runtime 기능을 활용하는 것이 capability의 중요한 부분이다.
 
-이 경계는 capability의 중요도나 품질 차이가 아니라 **packaging과 harness capability 차이**다. runtime variant의 `SKILL.md`는 activation boundary와 공통 계약을 유지하고, 상세 context는 필요할 때만 bundled resource에서 로드하는 편을 우선한다.
+Maintainer-only `docs/`, `evals/`, `tests/`, 개발용 validator는 배포 Skill과 분리할 수 있다면 그 존재만으로 runtime placement를 강제하지 않는다. 작은 textual schema나 설정 예시는 명확성과 유지보수성을 해치지 않으면 fenced code로 flat file에 포함할 수 있다.
+
+이 경계는 capability의 중요도나 품질 차이가 아니라 **packaging과 harness capability 차이**다. runtime variant의 `SKILL.md`는 activation boundary와 공통 계약을 유지하고, 상세 context는 필요할 때만 bundled resource나 live runtime source에서 로드하는 편을 우선한다.
 
 flat sibling을 유지할 가치가 있다면 핵심 behavior를 보존하면서 4,000 tokens 미만의 self-contained variant로 최적화할 수 있다. 품질을 유지한 채 이 budget을 만족할 수 없다면 flat variant를 억지로 만들지 않는다.
 
@@ -103,7 +109,7 @@ flat sibling을 유지할 가치가 있다면 핵심 behavior를 보존하면서
 - 각 profile은 자신의 harness가 실제로 제공하는 기능을 최대한 활용한다.
 - workspace variant는 workspace authority와 repository tooling을 활용할 수 있다.
 - flat variant는 외부 bundle 없이 self-contained하게 동작해야 한다.
-- runtime variant는 references, assets, scripts, tools, progressive loading으로 초기 context와 실행 비용을 최적화할 수 있다.
+- runtime variant는 references, assets, scripts, tools, connectors, progressive loading으로 초기 context와 실행 비용을 최적화할 수 있다.
 - sibling variants는 핵심 intent와 중요한 behavioral invariant를 공유할 수 있지만 구조, 세부 절차, context 전략은 달라도 된다.
 - 한 profile의 최적화를 다른 profile에 억지로 맞추지 않는다.
 - 공통 코드를 추출한다는 이유로 target의 독립 배포나 harness-native 최적화를 훼손하지 않는다.
@@ -162,8 +168,8 @@ Skill로 판단했다면 responsibility와 target profile을 별도로 고른다
 
 1. 주책임이 context 주입인가? → `load-context-<topic>` naming
 1. workspace/filesystem/shell/repository authority가 핵심인가? → `skills/` variant 검토
-1. chatbot variant가 단일 Markdown 파일 + 4,000 tokens 미만으로 완결되는가? → `skills-chatbot/`
-1. 4,000 tokens 이상이거나 bundle/runtime capability가 필요한가? → `skills-chatbot-runtime/`
+1. chatbot variant가 단일 Markdown 파일 + 4,000 tokens 미만이고 runtime 기능이 본질이 아닌가? → `skills-chatbot/`
+1. 4,000 tokens 이상이거나 runtime-required bundle/tool/connector capability가 필요한가? → `skills-chatbot-runtime/`
 
 둘 이상의 답이 강하면 먼저 내용이 여러 책임을 섞고 있는지 확인한다. 하나의 capability가 여러 target에 필요하다면 sibling variant를 허용한다.
 
@@ -175,7 +181,7 @@ Skill로 판단했다면 responsibility와 target profile을 별도로 고른다
 - Skill의 일부가 독립 intent와 authority를 가지면 별도 Skill이나 Agent로 분리될 수 있다.
 - runtime에 항상 필요하지 않은 상세 설명은 Reference로 내려갈 수 있다.
 - 전역 instruction의 조건부 판단 기준은 명확한 activation boundary가 생기면 context Skill로 내려갈 수 있다.
-- flat skill이 4,000-token budget을 넘거나 bundled resource가 필요해지면 runtime variant로 승격할 수 있다.
+- flat skill이 4,000-token budget을 넘거나 runtime-required bundled resource가 필요해지면 runtime variant로 승격할 수 있다.
 
 변경은 파일 크기만이 아니라 **scope, responsibility, packaging contract가 실제로 바뀌었을 때** 수행한다.
 
@@ -191,7 +197,8 @@ Skill로 판단했다면 responsibility와 target profile을 별도로 고른다
 - target profile이 다른 sibling Skill을 단순한 내용 중복이라는 이유로 제거한다.
 - 한 platform의 제약을 다른 profile에 강제로 전파한다.
 - 4,000 tokens를 넘는 flat skill을 계속 비대하게 유지하면서 runtime bundling을 피한다.
-- bundled resource가 필요한 capability를 flat file에 억지로 인라인한다.
+- runtime-required resource나 tool capability를 flat file에 억지로 인라인한다.
+- Maintainer-only docs/evals/tests의 존재만으로 runtime placement를 강제한다.
 - Agent를 instruction namespace처럼 늘린다.
 - `docs/references/`를 runtime dependency로 가정한다.
 - 파일명이나 디렉터리 이름만 보고 자산 유형을 결정한다.
