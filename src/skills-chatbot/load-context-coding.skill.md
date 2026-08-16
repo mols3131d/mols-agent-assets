@@ -2,10 +2,11 @@
 name: load-context-coding
 description: >-
   Load code-quality and engineering decision context for software implementation,
-  modification, debugging, refactoring, review, API and data-model changes, dependency
-  choices, performance work, and maintainability trade-offs. Use when code or code-facing
-  design is the active work surface. Do not use for pure factual lookup, repository
-  administration, or non-code writing.
+  modification, debugging, refactoring, code review, API and data-model changes,
+  dependency choices, performance work, and maintainability trade-offs. Use when code
+  or code-facing design is the active work surface and engineering judgment can affect
+  the result. Do not use for pure factual lookup, repository administration, or
+  non-code writing.
 ---
 
 # Load Context: Coding
