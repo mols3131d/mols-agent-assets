@@ -25,4 +25,4 @@ Prefer the simpler local repetition when the abstraction has no clear loading or
 
 ## Verify
 
-After changing references or composition, confirm every dependency resolves, no cycle was introduced, conditional content still loads conditionally, and representative consumers receive the intended context without unrelated additions.
+Statically confirm that references resolve, no cycle was introduced, and conditional structure still reflects the intended load boundary. Claim actual loaded-context behavior only when deterministic host semantics or runtime trace supports it; otherwise report the context behavior as inferred or unverified.

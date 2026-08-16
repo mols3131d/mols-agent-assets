@@ -67,7 +67,9 @@ Prefer deletion of redundant restatements, reuse of an existing canonical owner,
 
 ### 6. Apply and Verify
 
-Apply only inside the write boundary. Re-derive the affected assets' discoverability, activation, loaded context, authority, permissions, outputs, dependencies, and lifecycle as applicable. Verify the complete affected set when feasible; otherwise test representative boundaries and report the check as sampled.
+Apply only inside the write boundary. Run the strongest available verification. Static checks may establish metadata, references, dependencies, authority, scope, permissions, and other deterministic structure. Runtime or evaluation evidence is required to claim trigger selection, relevance-based attachment, prompt invocation, agent delegation, or other dynamic behavior.
+
+Verify the complete affected set when feasible; otherwise test representative boundaries and report the check as sampled. Report dynamic behavior as unverified when the required runtime or evaluation is unavailable rather than converting static inference into a pass.
 
 ## Guardrails
 
@@ -83,4 +85,4 @@ Apply only inside the write boundary. Re-derive the affected assets' discoverabi
 
 ## Completion
 
-Complete when avoidable repetition is removed without changing behavior, authority, intentional asset boundaries, or context quality. Report consolidated responsibilities or requirements, preserved exceptions or projections, unresolved DRY issues, and verification limits.
+Complete when avoidable repetition is removed without changing behavior, authority, intentional asset boundaries, or context quality. Report consolidated responsibilities or requirements, preserved exceptions or projections, unresolved DRY issues, static and runtime verification obtained, and verification limits.

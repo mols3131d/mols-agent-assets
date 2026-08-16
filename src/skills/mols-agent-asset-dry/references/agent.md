@@ -29,4 +29,4 @@ If two agents cooperate through delegation or handoff, repeated interface expect
 
 ## Verify
 
-After changes, confirm each intended task still reaches the correct agent, discovery metadata and delegation boundaries remain valid, context isolation and tools or permissions are unchanged, and handoff or output contracts still hold.
+Statically confirm role metadata, tools or permissions, dependencies, and handoff or output contracts remain intact. When delegation evaluation is available, test representative tasks; otherwise report agent selection or delegation behavior as unverified.

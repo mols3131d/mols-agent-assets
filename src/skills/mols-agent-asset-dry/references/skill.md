@@ -26,4 +26,4 @@ Do not extract shared text into an external common file merely to make independe
 
 ## Verify
 
-After changes, confirm intended requests still select the correct skill, conditional resources still load only when needed, discovery metadata remains valid, and no responsibility, permission, dependency, or output contract was lost.
+Statically confirm discovery metadata, resource references, permissions, dependencies, and output contracts remain intact. When trigger evaluation is available, test intended requests and relevant near-misses; otherwise report trigger selection as unverified.

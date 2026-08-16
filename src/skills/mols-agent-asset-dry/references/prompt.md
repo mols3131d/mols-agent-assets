@@ -26,4 +26,4 @@ A thin prompt alias is not necessarily duplication when it provides a distinct i
 
 ## Verify
 
-After changes, confirm the same invocation intents remain discoverable, discovery metadata and inputs remain valid, referenced context is available, and outputs or interaction steps have not changed unintentionally.
+Statically confirm discovery metadata, inputs, references, and output contract remain intact. When host invocation testing is available, exercise representative prompts; otherwise report runtime discovery or invocation behavior as unverified.

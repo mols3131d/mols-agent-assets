@@ -43,4 +43,4 @@ If runtime rule files are generated from a canonical input layer, preserve that 
 
 ## Verify
 
-Check representative automatic, scoped, relevance-selected, or manual activation paths that the affected rules actually use. Verify the full affected target set when feasible; otherwise report sampled coverage.
+Statically verify known selectors, attachment metadata, ownership, and precedence rules where the host contract is deterministic. Test relevance-selected or agent-requested attachment only when runtime or evaluation evidence is available; otherwise report that behavior as unverified.
