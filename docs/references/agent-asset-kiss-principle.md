@@ -1,54 +1,69 @@
 ---
 title: Agent Asset KISS Principle
-description: 에이전트 자산의 불필요한 판단 복잡도를 줄이기 위한 설계 원칙
+description: 에이전트 자산에서 필요한 행동 신뢰성을 유지하면서 판단과 context 복잡도를 최소화하는 원칙
 ---
 
 # Agent Asset KISS Principle
 
-에이전트 자산에서 KISS의 목적은 **가장 짧은 문서를 만드는 것**이 아니라, 에이전트가 올바르게 행동하는 데 필요한 **판단 복잡도(decision surface)를 최소화하는 것**이다.
+에이전트 자산에서 KISS는 **가장 짧게 만드는 것**이 아니라, 원하는 행동을 안정적으로 만들기 위한 **최소 충분 지침(minimum sufficient guidance)**을 찾는 것이다.
 
-> 필요한 행동을 안정적으로 결정하는 데 필요한 최소한의 context, choices, rules, routing만 제공한다.
+> 같은 행동 신뢰성을 유지할 수 있다면 context, 선택지, 분기, 개념을 줄인다.
 
 ## Core Rules
 
-1. **필요한 것만 둔다.** 없애도 행동 품질이 변하지 않는 설명, 분기, 예시는 제거한다.
-2. **기본값을 하나 둔다.** 여러 선택이 실질적으로 동등하다면 에이전트에게 선택을 떠넘기지 않는다.
-3. **분기는 행동 차이가 있을 때만 만든다.** 결과, 권한, 도구, 검증 방식이 같다면 별도 경로로 나누지 않는다.
-4. **명확성을 위해 필요한 구조는 유지한다.** 짧게 만들기 위해 중요한 조건이나 경계를 암시적으로 만들지 않는다.
-5. **세부사항은 필요할 때만 노출한다.** 항상 필요한 핵심과 조건부 세부사항을 분리한다. 자세한 원칙은 [Progressive Disclosure](./progressive-disclosure-principle.md)를 따른다.
+1. **행동에 기여하는 내용만 둔다.** 에이전트가 없어도 올바르게 처리하는 설명은 제거 후보로 본다.
+2. **기본 경로를 하나 둔다.** 여러 접근이 동등하다면 기본값을 정하고 대안은 필요한 조건에서만 연다.
+3. **행동 차이가 있을 때만 분기한다.** 권한, 위험, 도구, 결과, 검증이 실질적으로 달라질 때 분기를 만든다.
+4. **작업의 취약성에 맞춰 자유도를 조절한다.** 열린 문제에는 판단 여지를 주고, 오류 비용이 큰 작업에는 정확한 순서와 guardrail을 둔다.
+5. **조건부 세부사항은 조건부로 노출한다.** 항상 필요한 핵심과 특정 상황에서만 필요한 지식을 분리한다. 자세한 구조는 [Progressive Disclosure](./progressive-disclosure-principle.md)를 따른다.
+6. **구조 자체의 비용을 계산한다.** router, taxonomy, abstraction, 추가 Agent가 줄이는 복잡성보다 새로 만드는 복잡성이 크면 도입하지 않는다.
+
+## Minimum Sufficient Guidance
+
+KISS는 instruction을 무조건 줄이는 원칙이 아니다. 중요한 기준은 **제거 후에도 행동 신뢰성이 유지되는가**다.
+
+- 일반 지식 설명 → 모델이 안정적으로 아는 내용이면 제거한다.
+- 선택지 → 실제 기본값이 있으면 하나를 기본으로 정한다.
+- 예외 → 빈번하거나 위험한 예외만 핵심 지침에 둔다.
+- 안전 절차 → 오류 비용이 크다면 길어져도 명시한다.
+- 상세 reference → 현재 task에서 필요할 때만 로드한다.
 
 ## Decision Test
 
 요소를 추가하거나 유지하기 전에 묻는다.
 
-> **이 요소가 없으면 에이전트가 실제로 더 자주 잘못 판단하거나 실패하는가?**
+> **이 요소를 제거했을 때 실제 task에서 잘못된 행동, 불필요한 탐색, 위험이 의미 있게 증가하는가?**
 
-- 그렇다 → 유지한다.
-- 아니다 → 제거한다.
-- 특정 상황에서만 그렇다 → 조건부 reference 또는 별도 경로로 내린다.
+- `Yes` → 유지한다.
+- `No` → 제거한다.
+- 특정 조건에서만 `Yes` → 그 조건과 함께 분리한다.
+- 불확실 → 실제 실행이나 eval로 확인한다.
 
 ## What KISS Is Not
 
-- 최소 글자 수 경쟁이 아니다.
-- 모든 예외를 삭제하는 것이 아니다.
-- 큰 자산을 무조건 여러 파일로 쪼개는 것이 아니다.
-- 명시적 규칙을 모델의 추론에 떠넘기는 것이 아니다.
-
-파일 수나 줄 수보다 **현재 작업에서 에이전트가 내려야 하는 불필요한 결정의 수**가 더 중요하다.
+- 최소 글자 수나 파일 수 경쟁이 아니다.
+- 중요한 제약을 모델 추론에 떠넘기는 것이 아니다.
+- 모든 예외나 분기를 없애는 것이 아니다.
+- 큰 자산을 무조건 여러 자산으로 나누는 것이 아니다.
+- 복잡한 문제를 단순한 문제인 것처럼 표현하는 것이 아니다.
 
 ## Anti-patterns
 
-- 같은 목적의 선택지를 여러 개 제공하고 에이전트에게 고르게 한다.
+- 동등한 도구와 접근을 메뉴처럼 나열한다.
 - 실제 행동 차이가 없는 workflow variant를 만든다.
-- 모든 edge case를 root instruction에 나열한다.
-- 설명을 이해시키기 위해 다시 설명하는 문장을 반복한다.
-- 단순한 작업에 router, taxonomy, abstraction layer를 추가한다.
-- 미래에 필요할 수 있다는 이유만으로 확장 지점을 만든다.
+- 모든 edge case를 root instruction에 적는다.
+- 모델이 이미 아는 일반론을 장황하게 설명한다.
+- 작은 문제에 router, framework, multi-agent 구조를 먼저 도입한다.
+- 짧게 만들기 위해 validation과 guardrail을 암시적으로 만든다.
 
 ## Review Question
 
-KISS 리뷰의 최종 질문은 하나다.
+> **더 적은 개념과 결정으로 같은 행동 신뢰성과 안전성을 유지할 수 있는가?**
 
-> **더 적은 개념과 결정으로 같은 행동 신뢰성을 유지할 수 있는가?**
+가능하면 단순화한다. 단순화가 신뢰성이나 안전성을 낮추면 유지한다.
 
-가능하다면 단순화한다.
+## Research Basis
+
+- [Agent Skills: Best practices for skill creators](https://agentskills.io/skill-creation/best-practices) — 모델이 이미 아는 내용 제거, coherent scope, defaults over menus, specificity와 fragility의 정합성.
+- [Anthropic: Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices) — context 비용과 task별 degree of freedom 조절.
+- [OpenAI: A practical guide to building agents](https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/) — 명확한 action, 필요한 branch, 복잡성의 점진적 증가.
