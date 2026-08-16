@@ -39,7 +39,8 @@ relevant context loading before the first task-level action or repository mutati
 2. **Repository is authority** — discover repository conventions from the target ref,
    repository files, and relevant live metadata. Do not invent them from common practice.
 3. **Scope by target** — load only instructions that actually apply to the current path,
-   object, agent, or operation. Keep unrelated repositories and path scopes isolated.
+   object, agent, operation, and active GitHub/Copilot surface. Keep unrelated repositories
+   and path scopes isolated, and apply the precedence semantics of the active surface.
 4. **Distinguish rules from context** — do not treat nearby README text, filenames, or
    tool-specific guidance as normative without evidence of scope and intent.
 5. **Load progressively** — start with explicit/high-signal instruction sources and live
@@ -92,7 +93,7 @@ into an unbounded crawl.
 Before task-level action, confirm that:
 
 - the target repository/ref/object is correct;
-- every known target path has the applicable root-to-target instruction context;
+- every known target path has the applicable instruction context for the active surface;
 - any path selector or tool/agent scope actually matches;
 - repository-specific conventions are evidenced rather than assumed;
 - unresolved instruction conflicts that affect a mutation are surfaced instead of guessed.
@@ -103,11 +104,14 @@ Preserve these invariants even when the detailed reference is not loaded:
 
 - For PR/review work, use the actual head-ref instructions; compare base instructions
   when a difference can materially affect the judgment.
-- Nested `AGENTS.md` must not be lost by loading only the nearest file.
+- Discover applicable nested `AGENTS.md` context instead of assuming only the repository
+  root matters. Apply the active surface's documented precedence; for GitHub Copilot
+  surfaces that support nested agent instructions, the nearest applicable `AGENTS.md`
+  takes precedence over other agent-instruction files.
 - `README.md` is primarily context/navigation and is not automatically an override or a
   mandatory context source.
 - `applyTo`, path selectors, override semantics, and agent/tool-specific instructions
-  apply only when their declared scope matches.
+  apply only when their declared scope matches and the active surface supports them.
 - If no repository rule is found, do not fabricate one. A safe default may be used, but
   do not present it as repository convention.
 
