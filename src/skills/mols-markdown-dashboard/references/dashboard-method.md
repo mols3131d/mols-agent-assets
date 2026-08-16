@@ -28,13 +28,15 @@ Project
 
 | Claim | Preferred evidence |
 | --- | --- |
-| Requirement exists | 승인된 spec, contract, task design |
+| Requirement exists | repository가 정의한 canonical spec 또는 contract |
 | Requirement implemented | source code, completed task, implementation artifact |
 | Target verified | current test result, execution artifact, review evidence |
 | Target failed | current failure output 또는 reproducible result |
 | Target blocked | 환경·의존성·결정 기록 |
 
-근거가 충돌하면 canonical source와 snapshot을 비교하고 `Unknown`, `Blocked`, `Failing` 또는 gap으로 보존한다.
+Requirement authority와 source hierarchy는 host repository의 documented policy를 따른다. Proposal, plan, task, design 같은 work artifact는 host policy가 authoritative 또는 normative로 정의하지 않는 한 current Requirement의 canonical source를 대체하지 않는다.
+
+근거가 충돌하면 host repository가 정의한 canonical source와 snapshot을 비교하고 `Unknown`, `Blocked`, `Failing` 또는 gap으로 보존한다.
 
 ## Status Vocabulary
 
