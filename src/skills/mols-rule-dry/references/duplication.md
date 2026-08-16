@@ -1,33 +1,30 @@
 # Duplicate Rules
 
-Use this reference only when deciding whether two or more rule statements are redundant.
+Use this reference only when deciding whether repeated rule statements express the same requirement and what kind of repetition they create.
 
 ## Rule Unit
 
 Compare the smallest requirement that can stand on its own without changing meaning. If one paragraph, bullet, or block contains multiple independent requirements, separate only the parts needed to resolve duplication; do not move or delete the whole block by association.
 
-## Same Rule
+## Same Requirement
 
-Treat statements as the same rule only when all of these are equivalent:
+Treat statements as the same underlying rule requirement only when their operational requirement and exception or override intent are equivalent.
 
-- operational requirement;
-- intended target set; and
-- exception or override intent.
+Similar wording is only a clue. Different wording may express the same requirement, and similar wording may express different policy.
 
-Similar wording is only a clue. Different wording may express the same rule, and similar wording may express different policy.
+Do not make target scope part of semantic identity. Use the resolved target sets to classify how the same requirement is repeated.
 
-Use the resolved target sets from the scope decision; do not infer scope from wording similarity.
+## Repetition Types
 
-## Inherited Restatement
+For statements with the same requirement:
 
-If a broader rule already applies unchanged to a narrower target set, repeating the same requirement in the narrower rule is redundant. Keep only a genuine narrower delta or exception.
+- Same target set -> duplicate occurrence.
+- Narrower target set fully covered by a broader unchanged rule -> inherited restatement.
+- Different or disjoint target sets -> repeated rule across scopes; a consolidation candidate, not automatically redundant.
+- Narrower statement changes, limits, or overrides the broader requirement -> genuine exception, not duplication.
 
-Do not repeat broader text merely to make a child rule file self-contained.
-
-## Genuine Exception
-
-Keep a narrower rule when it changes, limits, or overrides the broader requirement for that target set. An exception is not duplication simply because it mentions the same subject.
+Repeated rules across scopes may be consolidated only when the combined intended scope can be represented exactly and source authority remains valid.
 
 ## Ambiguity
 
-If equivalence or exception intent is unclear, preserve the existing statements and report unresolved duplication. Do not infer policy merely to remove repetition.
+If requirement equivalence or exception intent is unclear, preserve the existing statements and report unresolved duplication. Do not infer policy merely to remove repetition.
