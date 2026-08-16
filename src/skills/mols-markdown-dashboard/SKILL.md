@@ -32,7 +32,8 @@ Project dashboard는 `Domain`, domain dashboard는 `Capability`를 한 행으로
 - Requirement와 Verification Target을 의미 단위로 센다.
 - 프로젝트 합계는 분자·분모를 합산한다.
 - 완료된 항목은 Gap에서 제거한다.
-- YAML과 Markdown이 함께 있으면 YAML을 반복 생성의 정본으로 취급한다.
+- YAML과 Markdown이 함께 있으면 YAML을 dashboard 반복 생성의 local render source로 취급한다.
+- Dashboard YAML과 Markdown은 upstream evidence의 projection이며 project state, Requirement 또는 verification result의 canonical source가 아니다.
 
 ## References
 

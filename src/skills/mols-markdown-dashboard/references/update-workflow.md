@@ -4,9 +4,11 @@
 
 ## Source Order
 
-1. 현재 canonical spec, source code, tests와 실행 근거를 확인한다.
+1. host repository의 documented authority model에 따라 현재 canonical spec 또는 contract, source code, tests와 실행 근거를 확인한다.
 2. 기존 YAML을 이전 snapshot의 구조화된 주장으로 읽는다.
 3. 기존 Markdown은 렌더 결과로 취급한다. YAML과 충돌하면 현재 근거를 우선한다.
+
+Plan, change, task, design 같은 work artifact는 host policy가 authoritative로 정의하지 않는 한 current contract source로 자동 승격하지 않는다.
 
 ## Update
 
