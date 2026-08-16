@@ -23,19 +23,21 @@ Do not leak scoped context from one unrelated path or repository into another.
 
 ## AGENTS.md
 
-Treat `AGENTS.md` as an instruction candidate.
+Treat `AGENTS.md` as an instruction candidate whose effective scope and precedence depend
+on the active agent surface.
 
-- Root `AGENTS.md` is repository-wide unless another scope is declared.
-- Nested `AGENTS.md` applies to its directory and descendants unless declared otherwise.
-- Load every applicable ancestor instruction from root to target; do not read only the
-  nearest file.
-- Follow repository/tooling-declared precedence, scope, and override semantics exactly.
-- If no explicit precedence exists, only a genuinely conflicting rule on the same topic
-  may use the more specifically scoped instruction as the more specific rule.
-- Agent/service-specific instructions apply only when they actually govern the current
-  ChatGPT task.
+- Discover applicable `AGENTS.md` files along the root-to-target chain so nested context is
+  not missed during repository inspection.
+- Follow the active platform/tool's documented precedence instead of inventing a universal
+  merge rule. On GitHub Copilot surfaces that support nested agent instructions, the
+  nearest applicable `AGENTS.md` takes precedence over other agent-instruction files.
+- Support differs across GitHub/Copilot features and clients; do not assume a nested file
+  is active merely because it exists.
+- Repository-declared scope may further narrow an instruction file when that convention is
+  actually evidenced.
+- Agent/service-specific instructions apply only when they govern the current task.
 
-Do not infer override semantics from a filename alone.
+Do not infer override semantics from a filename or directory position alone.
 
 ## README.md
 
@@ -60,24 +62,29 @@ When relevant, inspect high-signal locations such as:
 - `.github/copilot-instructions.md`;
 - `.github/instructions/**/*.instructions.md`;
 - `.github/CONTRIBUTING.md`;
-- `.github/AGENTS.md` when its declared scope matches;
+- `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, or repository-defined agent instruction sources
+  when the active surface supports them;
 - repository-defined agent/bot instruction locations.
 
-Apply path selectors such as `applyTo` only when the current target actually matches.
-Do not promote tool-specific instructions into repository-wide policy without evidence.
-Instruction-file support and precedence can differ by GitHub/Copilot surface, so use the
-repository's declared semantics and the active tool context rather than assuming parity
-across clients.
+Apply path selectors such as `applyTo` only when the current target actually matches and
+the active GitHub/Copilot surface supports that instruction type. Do not promote
+tool-specific instructions into repository-wide policy without evidence.
+
+GitHub currently exposes different instruction support across GitHub.com, IDEs, code
+review, cloud agent, and CLI. Resolve the active surface before applying support or
+precedence assumptions.
 
 ## Resolve Scope and Precedence
 
 For each candidate instruction, confirm:
 
 1. it does not conflict with higher user/system/tool constraints;
-2. it actually applies to the current agent/task;
-3. the target path/object is inside its declared scope;
-4. it is normative instruction rather than context/reference;
-5. any precedence or override semantics are evidenced rather than guessed.
+2. the active GitHub/Copilot surface supports that instruction type;
+3. it actually applies to the current agent/task;
+4. the target path/object is inside its declared scope;
+5. it is normative instruction rather than context/reference;
+6. any precedence or override semantics come from the active surface or repository, not
+   from a generic assumption.
 
 If a mutation depends on an unresolved instruction conflict, stop the mutation and expose
 the conflict instead of choosing a convention from memory.
