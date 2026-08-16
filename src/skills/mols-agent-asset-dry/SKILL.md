@@ -35,9 +35,11 @@ Load one matching reference for each asset type present in the requested work:
 | Asset | Runtime role | Reference |
 | --- | --- | --- |
 | Skill | Repeatable workflow loaded on demand | [skill.md](references/skill.md) |
-| Rule | Persistent or scoped policy loaded automatically | [rule.md](references/rule.md) |
+| Rule | Reusable guidance attached persistently, by scope or relevance, or manually | [rule.md](references/rule.md) |
 | Prompt | Explicit reusable task entrypoint | [prompt.md](references/prompt.md) |
 | Agent | Specialist role, isolated context, or scoped tools | [agent.md](references/agent.md) |
+
+A rule contributes guidance to work; a prompt initiates a task. Use the host's actual activation model when an asset could resemble either.
 
 Read [duplication.md](references/duplication.md) when repeated content, semantic identity, specialization, or consolidation compatibility must be decided. Read [ownership.md](references/ownership.md) when source authority, generated copies, external ownership, competing owners, or harness-specific projections are involved. Read [context.md](references/context.md) when a DRY move changes references, inheritance, composition, or what context a consumer loads.
 
