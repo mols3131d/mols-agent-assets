@@ -1,11 +1,11 @@
 ---
 name: mols-instruction-ownership
 description: >-
-  Deduplicate and relocate existing agent instructions so each semantic rule has
-  one canonical owner at the narrowest exact load scope. Use for DRY placement
-  across root or nested AGENTS.md files and provider, harness, or vendor path/glob
-  rule assets. Do not use to author policy, review wording, redesign runtime
-  loading, or synchronize formats across harnesses.
+  Deduplicate and relocate existing agent instructions so each representable
+  semantic rule has one canonical owner at the narrowest exact load scope. Use
+  for DRY placement across root or nested AGENTS.md files and provider, harness,
+  or vendor path/glob rule assets. Do not use to author policy, review wording,
+  redesign runtime loading, or synchronize formats across harnesses.
 ---
 
 # Instruction Ownership
