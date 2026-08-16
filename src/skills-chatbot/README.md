@@ -4,18 +4,20 @@
 
 ## Placement
 
-`skills-chatbot/`은 다음 조건을 모두 만족할 때 사용합니다.
+`skills-chatbot/`은 배포되는 capability가 다음 조건을 모두 만족할 때 사용합니다.
 
-1. skill 전체를 `<skill-name>.skill.md` **한 파일**로 표현할 수 있습니다.
+1. `<skill-name>.skill.md` **한 파일**로 완결됩니다.
 1. 배포되는 단일 skill 파일이 **4,000 tokens 미만**입니다.
-1. references, assets, schemas, scripts 같은 bundled files가 필요하지 않습니다.
+1. 실행에 필요한 references, assets, scripts, images 같은 runtime-required bundle이나 host-only runtime capability가 없습니다.
 
 다음 중 하나라도 해당하면 `../skills-chatbot-runtime/` profile을 사용합니다.
 
 - 단일 skill 파일이 **4,000 tokens 이상**이라 내용을 여러 Markdown 파일로 나눠야 합니다.
-- Markdown 한 파일만으로 capability를 완결할 수 없습니다.
-- references, assets, schemas, scripts, images 또는 host runtime 기능이 필요합니다.
-- progressive loading으로 필요한 context만 선택적으로 읽는 편이 더 적합합니다.
+- Markdown 한 파일만으로 실행 capability를 완결할 수 없습니다.
+- 실행에 references, assets, scripts, images 또는 다른 bundled resource가 필요합니다.
+- host가 제공하는 tools, scripts, progressive loading 또는 기타 runtime 기능을 활용하는 것이 capability의 중요한 부분입니다.
+
+Maintainer-only `docs/`, `evals/`, `tests/`, 개발용 validator는 배포 Skill과 분리할 수 있다면 그 존재만으로 runtime placement를 강제하지 않습니다. 작은 textual schema나 설정 예시는 명확성과 유지보수성을 해치지 않는 범위에서 fenced code로 flat file에 포함할 수 있습니다.
 
 로컬/원격 workspace, filesystem, shell 같은 workspace authority가 필요하면 `../skills/` profile도 검토합니다.
 
@@ -23,7 +25,7 @@
 
 주책임이 작업 workflow 수행이 아니라 **특정 상황에 필요한 판단 기준·제약·지식을 context로 주입하는 것**이면 `load-context-<topic>` 이름을 사용합니다.
 
-- 예: `load-context-pragmatic-engineering`, `load-context-tech-doc-fidelity`
+- 예: `load-context-coding`, `load-context-human-writing`, `load-context-agent-assets`, `load-context-tech-doc-fidelity`
 - context-only Skill은 필요한 context의 선택·적용 경계까지만 소유합니다.
 - 그 context를 사용한 실제 작성, 구현, 검증, 리뷰, transformation과 최종 output은 downstream capability가 소유합니다.
 - context를 활용하더라도 실제 workflow나 산출물 생성이 주책임인 Skill에는 이 prefix를 붙이지 않습니다.
