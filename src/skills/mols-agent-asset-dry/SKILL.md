@@ -10,9 +10,9 @@ Remove avoidable repetition from skills, rules, prompts, and agents while preser
 
 ## Contract
 
-This Skill handles four natural-language asset types: **skill**, **rule**, **prompt**, and **agent**. Embedded metadata or frontmatter is in scope when it controls discovery, activation, scope, permissions, tools, or other behavior of those assets. Standalone hooks, tools, executable configuration, and general documentation are out of scope.
+This Skill handles four natural-language asset types: **skill**, **rule**, **prompt**, and **agent**. Embedded metadata or frontmatter is in scope as a behavior constraint when it controls discovery, activation, scope, permissions, tools, or other behavior. Do not invent metadata inheritance or configuration abstractions merely to deduplicate repeated fields. Standalone hooks, tools, executable configuration, and general documentation are out of scope.
 
-Classify an asset by responsibility, activation, load timing, and authority rather than filename, Markdown shape, or prompt-like text. A support file inside a skill or agent package remains part of that asset unless the runtime exposes it as an independent rule, prompt, skill, or agent entrypoint. If one file genuinely serves multiple runtime roles and those roles cannot be separated safely, preserve it and report the ambiguity.
+Project and host authority constrain every DRY move. Classify assets by responsibility, activation, load timing, and authority rather than filename, Markdown shape, or prompt-like text. A support file inside a skill or agent package remains part of that asset unless the runtime exposes it as an independent rule, prompt, skill, or agent entrypoint. If one file genuinely serves multiple runtime roles and those roles cannot be separated safely, preserve it and report the ambiguity.
 
 Set the write boundary from the request. Read outside that boundary only when needed to establish inheritance, references, activation, source authority, or generated projections. Do not mutate outside the write boundary without explicit authority.
 
@@ -43,9 +43,9 @@ Read [duplication.md](references/duplication.md) when repeated content, semantic
 
 ## Workflow
 
-### 1. Find Candidates
+### 1. Discover Candidates
 
-Inspect the requested assets and enough surrounding context to find repeated requirements, responsibilities, procedures, context, or projections. Do not classify similarity as duplication yet.
+Resolve the requested boundary and discover relevant assets from project and host conventions. Do not assume universal filenames, directories, metadata fields, or reference syntax. Inspect enough surrounding context to find repeated requirements, responsibilities, procedures, context, or projections, but do not classify similarity as duplication yet.
 
 ### 2. Preserve Type Semantics
 
@@ -70,6 +70,7 @@ Apply only inside the write boundary. Re-derive the affected assets' discoverabi
 ## Guardrails
 
 - Preserve meaning; do not improve wording or invent policy as part of deduplication.
+- Treat concrete paths, metadata, selector syntax, imports, and discovery behavior as host-specific unless project authority establishes them.
 - Do not merge assets solely because they share text.
 - Do not retire, delete, or rename a discoverable or invocable asset entrypoint solely to remove internal repetition. Whole-asset consolidation requires evidence that the entrypoint itself is redundant and authority to retire it.
 - Do not migrate content between asset types merely to make it DRY unless the request explicitly includes that migration and behavior remains equivalent.
