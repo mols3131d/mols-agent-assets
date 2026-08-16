@@ -1,18 +1,16 @@
 ---
 name: mols-rule-dry
 description: >-
-  Make existing agent rules DRY without changing their meaning. Use when rules are duplicated, repeated across parent and child AGENTS.md files, scattered across equivalent scopes, or copied into path/glob rule assets. Establish one authoritative rule source whenever the runtime can represent the intended scope exactly. Do not use to author policy, improve rule wording, redesign runtime loading, or synchronize formats across harnesses.
+  Make existing agent rules DRY without changing their meaning. Use when rules are duplicated, repeated across parent and child AGENTS.md files, scattered across overlapping scopes, or copied into path/glob rule assets. Consolidate rule ownership and placement while preserving exact scope and the authoritative source. Do not use to author policy, improve rule wording, redesign runtime loading, or synchronize formats across harnesses.
 ---
 
 # Rule DRY
 
-Make existing agent rules DRY. Optimize rule ownership, placement, and duplication without changing policy.
+Make existing agent rules DRY without changing policy.
 
 ## Assumption
 
 Assume the target runtime correctly loads rules from applicable `AGENTS.md` files and matching path/glob rule assets. Treat that behavior as the context-injection contract; do not redesign or validate it.
-
-Preserve a source of truth only when project rules or other evidence establish it. A rule's current location is not authority by itself. A generated or derived copy is not an independent source of truth unless the project explicitly makes it authoritative.
 
 ## Priority
 
@@ -20,75 +18,52 @@ Apply DRY in this order:
 
 1. **Scope correctness**: intended targets receive the rule; unrelated targets do not.
 2. **Source of truth**: preserve the authoritative rule source.
-3. **Single ownership**: one rule has one canonical owner when its scope can be represented exactly.
+3. **Single ownership**: use one canonical owner when the runtime can express the intended scope exactly.
 4. **Minimum context**: load the rule only where needed.
-5. **Simple structure**: use the fewest rule owners that preserve the goals above.
+5. **Simple structure**: use the fewest owners that preserve the goals above.
 
 Never broaden scope or change policy merely to remove duplication.
 
-## Scope Owners
+## References
 
-- **Root `AGENTS.md`**: project-wide rules.
-- **Nested `AGENTS.md`**: one directory subtree. Use the highest `AGENTS.md` whose subtree still matches the intended scope exactly.
-- **Pattern rule asset**: cross-cutting path, glob, extension, file-class, or repeated-directory scope.
+Read only the reference needed for the current decision:
 
-Treat concrete rule paths and selector syntax as runtime-specific. Preserve the project's supported format instead of assuming `.agents/rules/*` is universal.
+| Decision | Reference |
+| --- | --- |
+| Decide whether rules are actually duplicates, inherited restatements, or genuine exceptions | [duplication.md](references/duplication.md) |
+| Decide the exact directory or path/glob scope and resolve overlapping scopes | [scope.md](references/scope.md) |
+| Decide the authoritative source, canonical owner, or treatment of generated copies | [ownership.md](references/ownership.md) |
 
 ## Workflow
 
-### 1. Identify Duplicate Rules
+### 1. Find Repetition
 
-Treat two statements as the same rule only when their operational requirement, target scope, and exception or override intent are equivalent. Split a mixed block only when its statements need different scopes.
+Inspect the rule-bearing files inside the requested boundary and identify repeated or overlapping rules. Read [duplication.md](references/duplication.md) when equivalence or exception intent must be decided.
 
-If equivalence, scope, authority, or override intent is ambiguous, preserve the existing rules and report unresolved duplication. Do not infer policy to achieve DRYness.
+### 2. Resolve Scope
 
-### 2. Find the Correct Scope
+Determine where each repeated rule is intended to load. Read [scope.md](references/scope.md) when choosing between root `AGENTS.md`, nested `AGENTS.md`, or a path/glob rule asset, or when scopes overlap.
 
-Classify each rule as:
+### 3. Resolve Ownership
 
-- project-wide;
-- one contiguous directory subtree; or
-- a cross-cutting path/glob scope.
+Determine the authoritative source and canonical owner only after scope is known. Read [ownership.md](references/ownership.md) when authority is unclear, multiple owners exist, or generated or derived copies are involved.
 
-### 3. Choose the Canonical Owner
+### 4. Remove Avoidable Duplication
 
-- Project-wide -> root `AGENTS.md`.
-- Directory subtree -> the highest `AGENTS.md` whose subtree matches exactly.
-- Cross-cutting pattern -> one matching pattern rule asset.
-
-Do not choose a common ancestor when it would load the rule for unrelated siblings. Do not make a generated or derived copy the canonical owner.
-
-### 4. Remove Duplication
-
-- Remove inherited repetitions from descendants.
-- Move identical child rules upward only when the parent scope remains exact.
-- Prefer one exact pattern rule when moving upward would affect unrelated siblings.
-- Move an over-broad parent rule downward when only a narrower subtree needs it.
-- Keep genuine scoped exceptions at their narrower owner without copying parent text.
-- Keep derived copies only when the runtime requires them; they remain projections of the authoritative rule.
-
-If the runtime cannot express a combined scope exactly, keep the smallest correct owners even when some duplication is unavoidable.
+Keep one authoritative rule where the runtime can represent its scope exactly. Remove inherited restatements and redundant overlapping placements. Keep genuine exceptions and unavoidable physical duplication.
 
 ### 5. Verify Loaded Rules
 
-Derive the rules loaded for affected target and non-target files from ancestor `AGENTS.md` files plus matching pattern rules.
-
-When available tools can enumerate every affected file, verify the complete set. Otherwise verify representative boundary cases and report the result as sampled rather than exact.
-
-Confirm that:
-
-- intended targets retain every rule;
-- each rule with an exactly representable scope has one authoritative owner;
-- derived copies do not create independent ownership; and
-- unrelated targets do not gain the rule.
+Check that intended targets retain every rule, unrelated targets gain none, and generated copies do not become independent owners. Verify the complete affected set when possible; otherwise check representative boundaries and report the result as sampled.
 
 ## Guardrails
 
 - Preserve rule meaning; only remove obsolete location wording required by a move.
 - Do not use precedence to justify duplicated ownership.
 - Create a new owner file only when no suitable exact owner exists.
-- Do not author new engineering policy, improve rule content, redesign project structure, validate runtime behavior, or perform cross-harness synchronization.
+- Do not author new policy, improve rule content, redesign project structure or runtime loading, validate runtime behavior, or perform cross-harness synchronization.
+- If equivalence, scope, or authority remains ambiguous, preserve the existing rules and report the unresolved DRY issue.
 
 ## Completion
 
-Complete when avoidable duplication is removed, authoritative ownership is clear, and the strongest available loaded-rule check preserves the intended scope. Report only owner changes, duplicates removed, scope splits, unresolved duplication, and verification limits.
+Complete when avoidable rule duplication is removed, scope and authority are preserved, and the strongest available loaded-rule check passes. Report owner changes, duplicates removed, scope splits, unresolved DRY issues, and verification limits.
