@@ -50,7 +50,7 @@ Choose where the authoritative editable rule should live after application and a
 
 Remove only avoidable duplication from authoritative editable rules inside the write boundary. Keep genuine exceptions, required derived copies, and physical repetition needed to preserve application behavior.
 
-Verify declared application, attachment metadata, precedence, source authority, and generated relationships statically. When runtime selection or relevance behavior cannot be proven without an evaluation system, report it as unverified rather than claiming behavioral validation.
+Statically compare the before-and-after rule structure, declared application, attachment metadata, precedence relationships, and source authority. For declarative scopes, confirm intended targets remain covered and nearby non-targets do not gain the rule. Treat relevance-based or agent-requested runtime selection as unverified unless actual evaluation evidence is available.
 
 ## Guardrails
 
@@ -65,4 +65,4 @@ Verify declared application, attachment metadata, precedence, source authority, 
 
 ## Completion
 
-Complete when avoidable rule duplication is removed without changing policy, intended application, precedence, or source authority. Report changed owners or placements, removed duplication, preserved exceptions or required copies, unresolved DRY issues, and verification limits.
+Complete when no safely removable rule duplication remains inside the write boundary. Report changed owners or placements, removed duplication, preserved exceptions or required copies, blocked or ambiguous DRY candidates, and verification limits.
