@@ -18,7 +18,7 @@ Do not introduce a new owner file when an existing editable owner already repres
 
 Treat runtime precedence as part of effective behavior. Directory depth, selector specificity, file order, or source type may change how rules combine.
 
-Do not move a rule across a precedence boundary unless the effective rule set remains unchanged for both intended targets and nearby non-targets.
+Do not move a rule across a precedence boundary unless the effective rule set remains unchanged for both intended targets and nearby non-targets. If relevant precedence cannot be determined, preserve the current placement and report the uncertainty.
 
 ## Generated or Canonical Input Layers
 
