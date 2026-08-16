@@ -12,6 +12,8 @@ Make existing agent rules DRY without changing policy or intended scope.
 
 Assume the target runtime correctly loads rules from applicable `AGENTS.md` files and matching path/glob rule assets. Treat that loading behavior as a given; do not redesign or validate it.
 
+Set the write boundary from the request. Read outside that boundary only when needed to understand applicable ancestors, matching selectors, source authority, or generated projections. Do not mutate outside the write boundary without explicit authority.
+
 Apply DRY in this order:
 
 1. **Scope correctness**: intended targets receive the rule and unrelated targets do not.
@@ -26,7 +28,7 @@ Never trade policy or scope correctness for DRY.
 
 ### 1. Find Candidates
 
-Inspect rule-bearing files inside the requested boundary and collect repeated statements, inherited restatements, overlapping selectors, and repeated generated copies. Do not decide that they are duplicates yet.
+Inspect rule-bearing files in the write boundary and any external rule context needed to understand them. Collect repeated statements, inherited restatements, overlapping selectors, and repeated generated copies. Do not decide that they are duplicates yet.
 
 ### 2. Resolve Scope
 
@@ -34,7 +36,7 @@ Determine the intended target set for each candidate before comparing or moving 
 
 ### 3. Decide Duplication
 
-Compare candidates only after their target sets are known. Read [duplication.md](references/duplication.md) when deciding semantic equivalence, inherited restatement, or genuine exception intent.
+Compare candidates only after their target sets are known. Read [duplication.md](references/duplication.md) when deciding semantic equivalence, inherited restatement, repeated requirements across scopes, or genuine exception intent.
 
 ### 4. Resolve Source of Truth
 
@@ -42,13 +44,13 @@ Determine which source is authoritative for confirmed duplicate rules. Read [own
 
 ### 5. Choose Placement
 
-Choose where the authoritative editable rule should live after scope and authority are known. Read [placement.md](references/placement.md) when selecting root `AGENTS.md`, nested `AGENTS.md`, pattern rules, or multiple exact placements.
+Choose where the authoritative editable rule should live after scope and authority are known. Read [placement.md](references/placement.md) to map the resolved scope to root `AGENTS.md`, nested `AGENTS.md`, pattern rules, or multiple exact placements.
 
 ### 6. Apply and Verify
 
-Remove only avoidable duplication from authoritative editable rules. Keep genuine exceptions, required derived copies, and physical repetition needed for exact scope.
+Remove only avoidable duplication from authoritative editable rules inside the write boundary. Keep genuine exceptions, required derived copies, and physical repetition needed for exact scope.
 
-Verify that intended targets retain every rule, unrelated targets gain none, and required projections do not become independent sources of truth. Verify the complete affected set when possible; otherwise check representative boundaries and report the result as sampled.
+Verify that intended targets retain every rule, unrelated targets gain none, precedence-dependent behavior is preserved, and required projections do not become independent sources of truth. Verify the complete affected set when possible; otherwise check representative boundaries and report the result as sampled.
 
 ## Guardrails
 
@@ -62,4 +64,4 @@ Verify that intended targets retain every rule, unrelated targets gain none, and
 
 ## Completion
 
-Complete when avoidable rule duplication is removed without changing policy, scope, or source authority. Report changed owners or placements, removed duplication, preserved exceptions or required copies, unresolved DRY issues, and verification limits.
+Complete when avoidable rule duplication is removed without changing policy, scope, precedence, or source authority. Report changed owners or placements, removed duplication, preserved exceptions or required copies, unresolved DRY issues, and verification limits.
