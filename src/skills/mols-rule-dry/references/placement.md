@@ -17,11 +17,17 @@ If the application decision requires multiple native segments or mechanisms, kee
 
 Do not introduce a new owner file when an existing editable owner already represents the same application exactly.
 
-## Precedence and Attachment
+## Attachment Mode
 
-Treat runtime precedence, attachment mode, directory depth, selector specificity, file order, or source type as behavior when the runtime uses them.
+Preserve the existing attachment mode unless the resolved intended application itself requires a change. Do not convert always-applied, path-scoped, relevance-selected, agent-requested, or manual rules into another mode merely to reduce repeated text.
 
-Do not move a rule across a precedence or attachment boundary unless the effective guidance remains unchanged for intended and nearby non-intended situations. If the relevant behavior cannot be determined, preserve the current placement and report the uncertainty.
+If consolidation requires changing attachment mode, treat that as a separate application migration. Apply it only when the request authorizes the migration and the resulting behavior can be supported by evidence; otherwise preserve the current modes and report the DRY limit.
+
+## Precedence
+
+Treat runtime precedence, directory depth, selector specificity, file order, or source type as behavior when the runtime uses them.
+
+Do not move a rule across a precedence boundary unless the effective guidance remains unchanged for intended and nearby non-intended situations. If the relevant behavior cannot be determined, preserve the current placement and report the uncertainty.
 
 ## Generated or Canonical Input Layers
 
