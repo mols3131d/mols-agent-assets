@@ -59,15 +59,34 @@ Skill은 단순한 지식 저장소도, 무관한 capability들의 namespace도 
 | Profile | 최적화 대상 |
 | --- | --- |
 | `skills/` | workspace/filesystem/shell/repository authority를 사용할 수 있는 agent runtime |
-| `skills-chatbot/` | 단일 자연어 skill 파일 중심의 flat chatbot harness |
-| `skills-chatbot-runtime/` | bundled references/assets/scripts/tools와 progressive loading을 지원하는 hosted chatbot runtime |
+| `skills-chatbot/` | 단일 Markdown skill 파일로 완결되며 4,000 tokens 미만인 flat chatbot harness |
+| `skills-chatbot-runtime/` | 여러 bundled files 또는 runtime 기능과 progressive loading을 활용하는 hosted chatbot runtime |
 
 같은 capability가 둘 또는 세 profile에 함께 존재할 수 있다. 이 중복은 각 target에서 가장 효율적인 형태를 선택하기 위한 **의도적인 projection**일 수 있으며, 내용이 겹친다는 이유만으로 DRY 위반이나 제거 대상으로 보지 않는다.
+
+### Flat vs Runtime Packaging Boundary
+
+chatbot profile을 고를 때 `skills-chatbot/`을 가장 단순한 packaging으로 보고 다음 두 조건을 모두 만족할 때만 flat variant를 둔다.
+
+1. capability가 `<skill-name>.skill.md` **한 파일**로 완결된다.
+1. 배포되는 단일 skill 파일이 **4,000 tokens 미만**이다.
+
+다음 중 하나라도 해당하면 `skills-chatbot-runtime/`을 사용한다.
+
+- 단일 skill 파일이 **4,000 tokens 이상**이라 상세 context를 여러 Markdown 파일로 분리해야 한다.
+- references, assets, schemas, scripts, images 등 Markdown 한 파일 밖의 bundled resource가 필요하다.
+- host가 제공하는 tools, scripts, progressive loading 또는 기타 runtime 기능을 활용해야 한다.
+
+이 경계는 capability의 중요도나 품질 차이가 아니라 **packaging과 harness capability 차이**다. runtime variant의 `SKILL.md`는 activation boundary와 공통 계약을 유지하고, 상세 context는 필요할 때만 bundled resource에서 로드하는 편을 우선한다.
+
+flat sibling을 유지할 가치가 있다면 핵심 behavior를 보존하면서 4,000 tokens 미만의 self-contained variant로 최적화할 수 있다. 품질을 유지한 채 이 budget을 만족할 수 없다면 flat variant를 억지로 만들지 않는다.
+
+### Cross-profile Optimization
 
 - 각 profile은 자신의 harness가 실제로 제공하는 기능을 최대한 활용한다.
 - workspace variant는 workspace authority와 repository tooling을 활용할 수 있다.
 - flat variant는 외부 bundle 없이 self-contained하게 동작해야 한다.
-- runtime variant는 references, scripts, tools, progressive loading으로 context와 실행 비용을 최적화할 수 있다.
+- runtime variant는 references, assets, scripts, tools, progressive loading으로 초기 context와 실행 비용을 최적화할 수 있다.
 - sibling variants는 핵심 intent와 중요한 behavioral invariant를 공유할 수 있지만 구조, 세부 절차, context 전략은 달라도 된다.
 - 한 profile의 최적화를 다른 profile에 억지로 맞추지 않는다.
 - 공통 코드를 추출한다는 이유로 target의 독립 배포나 harness-native 최적화를 훼손하지 않는다.
@@ -117,12 +136,18 @@ Reference에 적혀 있다는 사실만으로 runtime policy가 활성화되는 
 새 내용을 둘 위치가 모호하면 다음 순서로 묻는다.
 
 1. 여러 task에서 지속적으로 지켜야 하는 policy인가? → **Rule**
-2. 반복 수행되는 task capability이거나 특정 상황에서 조건부로 필요한 decision context인가? → **Skill**
-3. 현재 요청에서만 필요한 goal이나 constraint인가? → **Prompt**
-4. 역할, authority, tool, delegation을 정의하는가? → **Agent**
-5. 행동 자체보다 판단에 필요한 static knowledge인가? → **Reference**
+1. 반복 수행되는 task capability이거나 특정 상황에서 조건부로 필요한 decision context인가? → **Skill**
+1. 현재 요청에서만 필요한 goal이나 constraint인가? → **Prompt**
+1. 역할, authority, tool, delegation을 정의하는가? → **Agent**
+1. 행동 자체보다 판단에 필요한 static knowledge인가? → **Reference**
 
-둘 이상의 답이 강하면 먼저 내용이 여러 책임을 섞고 있는지 확인한다. 하나의 내용이 여러 자산에 나타나야 한다면 [DRY Principle](./agent-asset-dry-principle.md)의 ownership 기준을 적용하되, target-profile variant는 배포 경계를 먼저 고려한다.
+Skill로 판단했다면 target profile을 별도로 고른다.
+
+1. workspace/filesystem/shell/repository authority가 핵심인가? → `skills/` variant 검토
+1. chatbot variant가 단일 Markdown 파일 + 4,000 tokens 미만으로 완결되는가? → `skills-chatbot/`
+1. 4,000 tokens 이상이거나 bundle/runtime capability가 필요한가? → `skills-chatbot-runtime/`
+
+둘 이상의 답이 강하면 먼저 내용이 여러 책임을 섞고 있는지 확인한다. 하나의 capability가 여러 target에 필요하다면 sibling variant를 허용한다.
 
 ## Boundary Changes
 
@@ -132,8 +157,9 @@ Reference에 적혀 있다는 사실만으로 runtime policy가 활성화되는 
 - Skill의 일부가 독립 intent와 authority를 가지면 별도 Skill이나 Agent로 분리될 수 있다.
 - runtime에 항상 필요하지 않은 상세 설명은 Reference로 내려갈 수 있다.
 - 전역 instruction의 조건부 판단 기준은 명확한 activation boundary가 생기면 context Skill로 내려갈 수 있다.
+- flat skill이 4,000-token budget을 넘거나 bundled resource가 필요해지면 runtime variant로 승격할 수 있다.
 
-변경은 파일 크기가 아니라 **scope와 responsibility가 실제로 바뀌었을 때** 수행한다.
+변경은 파일 크기만이 아니라 **scope, responsibility, packaging contract가 실제로 바뀌었을 때** 수행한다.
 
 ## Anti-patterns
 
@@ -143,6 +169,8 @@ Reference에 적혀 있다는 사실만으로 runtime policy가 활성화되는 
 - 서로 독립적인 context를 하나의 broad Skill에 모아 항상 함께 로드한다.
 - target profile이 다른 sibling Skill을 단순한 내용 중복이라는 이유로 제거한다.
 - 한 platform의 제약을 다른 profile에 강제로 전파한다.
+- 4,000 tokens를 넘는 flat skill을 계속 비대하게 유지하면서 runtime bundling을 피한다.
+- bundled resource가 필요한 capability를 flat file에 억지로 인라인한다.
 - Agent를 instruction namespace처럼 늘린다.
 - `docs/references/`를 runtime dependency로 가정한다.
 - 파일명이나 디렉터리 이름만 보고 자산 유형을 결정한다.
@@ -150,7 +178,7 @@ Reference에 적혀 있다는 사실만으로 runtime policy가 활성화되는 
 
 ## Review Question
 
-> **이 capability를 현재 harness에서 가장 효율적으로 제공하는 target profile과 variant는 무엇인가?**
+> **이 capability를 현재 harness에서 가장 효율적으로 제공하는 target profile과 packaging은 무엇인가?**
 
 한 문장으로 답하기 어렵다면 boundary나 responsibility가 섞였는지 확인한다.
 
