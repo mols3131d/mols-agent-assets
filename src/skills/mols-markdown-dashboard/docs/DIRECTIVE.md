@@ -36,7 +36,7 @@ description: "스킬이 후속 수정에서 훼손되지 않도록 핵심 요구
 
 | ID | Decision | Alternatives rejected | Reason |
 | --- | --- | --- | --- |
-| D-001 | YAML을 반복 생성의 정본으로 사용한다. | Markdown 직접 편집만 사용 | 구조화된 입력이 토큰과 formatting drift를 줄인다. |
+| D-001 | YAML을 dashboard 반복 생성의 local render source로 사용한다. | Markdown 직접 편집만 사용 | 구조화된 입력이 토큰과 formatting drift를 줄인다. |
 | D-002 | Jinja2를 Markdown template engine으로 사용한다. | f-string 전용 renderer, custom template syntax | 유지보수 가능한 template loader와 `StrictUndefined`를 제공한다. |
 | D-003 | PyYAML을 YAML parser로 사용한다. | custom parser | 간단하고 널리 사용되며 `safe_load`를 제공한다. |
 | D-004 | pyromark는 생성기가 아니라 결과 parser로 사용한다. | pyromark로 template 생성 | pyromark의 책임은 Markdown parsing이다. |
