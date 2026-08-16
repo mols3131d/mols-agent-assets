@@ -95,7 +95,7 @@ jobs:
         run: |
           [[ -f /tmp/root-tests ]] || exit 0
           mapfile -d '' targets < /tmp/root-tests
-          uv run --frozen pytest -q "${targets[@]}"
+          uv run --frozen --no-default-groups --group test pytest -q "${targets[@]}"
 
       - name: Run colocated skill tests
         if: steps.scope.outputs.run == 'true'
