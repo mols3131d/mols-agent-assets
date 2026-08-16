@@ -23,7 +23,7 @@ For declarative target sets, compare them as:
 - Partial overlap: only some targets are shared.
 - Disjoint: no targets are shared.
 
-For relevance-selected or manually invoked rules, compare their declared attachment conditions or invocation contract instead of pretending an exact target set can be enumerated.
+For manually invoked rules, compare their explicit invocation contract. For relevance-based or agent-requested rules, compare the declared selection signals but do not pretend their runtime-selected target set is statically enumerable.
 
 Overlap or similar attachment conditions do not by themselves prove duplication. Requirement equivalence is decided separately.
 
@@ -31,8 +31,8 @@ Overlap or similar attachment conditions do not by themselves prove duplication.
 
 Determine whether the runtime can express the intended application exactly with one supported rule mechanism. If not, record the smallest correct combination of native mechanisms or owners.
 
-Do not choose the canonical source or owner file in this reference.
+Do not choose the canonical source, owner file, or attachment-mode migration in this reference.
 
 ## Verification Boundaries
 
-Verify declarative application conditions and metadata completely when the affected set can be enumerated. For relevance-based or agent-selected attachment, static inspection can verify only the declared selection contract; runtime selection remains unverified unless an evaluation system is available.
+Verify declarative scopes, explicit invocation contracts, and metadata completely when the relevant set can be enumerated. For relevance-based or agent-requested attachment, static inspection can verify only the declared selection contract; actual runtime selection remains unverified unless an evaluation system is available.
