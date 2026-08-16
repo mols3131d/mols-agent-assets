@@ -1,116 +1,92 @@
 ---
 name: mols-instruction-ownership
 description: >-
-  Deduplicate and relocate existing agent instructions so each representable
-  semantic rule has one canonical owner at the narrowest exact load scope. Use
-  for DRY placement across root or nested AGENTS.md files and provider, harness,
-  or vendor path/glob rule assets. Do not use to author policy, review wording,
-  redesign runtime loading, or synchronize formats across harnesses.
+  Deduplicate and relocate existing agent instructions so each rule has one canonical owner whenever the runtime can express its scope exactly. Use for DRY placement across root or nested AGENTS.md files and provider, harness, or vendor path/glob rule assets. Do not use to author policy, review wording, redesign runtime loading, or synchronize formats across harnesses.
 ---
 
 # Instruction Ownership
 
 Optimize only the ownership and placement of existing agent instructions.
 
-## Contract
+## Assumption
 
-Assume the target runtime correctly loads applicable directory-hierarchy
-instructions and path/glob rule assets. Treat that behavior as the
-context-injection contract; do not redesign or validate it.
+Assume the target runtime correctly loads applicable directory-hierarchy instructions and path/glob rule assets. Treat that behavior as the context-injection contract; do not redesign or validate it.
 
-Preserve project-declared or otherwise evidenced source authority. Do not treat a
-rule's current location as authority by itself. A generated or derived instruction
-projection is not a canonical owner unless project authority explicitly makes it
-authoritative.
+Preserve a source of truth only when project rules or other evidence establish it. A rule's current location is not authority by itself. A generated or derived copy is not a canonical owner unless the project explicitly makes it authoritative.
 
 ## Priority
 
 Resolve ownership in this order:
 
-1. **Exact scope**: intended targets receive the rule; unrelated targets do not.
-2. **Source authority**: preserve the project's authoritative instruction source.
-3. **Single ownership**: one representable semantic rule has one canonical owner.
+1. **Scope correctness**: intended targets receive the rule; unrelated targets do not.
+2. **Source of truth**: preserve the authoritative instruction source.
+3. **Single ownership**: one rule has one canonical owner when its scope can be represented exactly.
 4. **Minimum context**: load the rule only where needed.
-5. **Simple topology**: use the fewest owners that preserve the goals above.
+5. **Simple structure**: use the fewest owners that preserve the goals above.
 
 Never broaden scope or change policy merely to make the layout more DRY.
 
-## Owners
+## Ownership Rules
 
-- **Root `AGENTS.md`**: project-wide rules.
-- **Nested `AGENTS.md`**: one directory subtree; use the shallowest exact owner.
-- **Pattern rule asset**: cross-cutting path, glob, extension, file-class, or
-  repeated-directory scope.
+- **Root `AGENTS.md`**: use for project-wide rules.
+- **Nested `AGENTS.md`**: use for one directory subtree. Place the rule in the highest `AGENTS.md` whose subtree still matches the intended scope exactly.
+- **Pattern rule asset**: use for cross-cutting path, glob, extension, file-class, or repeated-directory scope.
 
-Treat concrete rule paths and selector syntax as runtime-specific. Preserve the
-project's supported format instead of assuming `.agents/rules/*` is universal.
+Treat concrete rule paths and selector syntax as runtime-specific. Preserve the project's supported format instead of assuming `.agents/rules/*` is universal.
 
 ## Workflow
 
-### 1. Atomize
+### 1. Separate Rules
 
-Split a mixed block only when its statements have different scopes. Treat two
-statements as the same semantic rule only when their operational requirement,
-target scope, and exception or override intent are equivalent.
+Split a mixed block only when its statements have different scopes. Treat two statements as the same rule only when their operational requirement, target scope, and exception or override intent are equivalent.
 
-If equivalence, scope, authority, or override intent is ambiguous, preserve the
-existing rules and report unresolved ownership. Do not infer policy to achieve
-DRYness.
+If equivalence, scope, authority, or override intent is ambiguous, preserve the existing rules and report unresolved ownership. Do not infer policy to achieve DRYness.
 
-### 2. Map Scope
+### 2. Find Scope
 
 Identify where each rule is intended to load:
 
 - project-wide;
 - one contiguous directory subtree; or
-- cross-cutting path/glob scope.
+- a cross-cutting path/glob scope.
 
 ### 3. Assign Owner
 
 - Project-wide -> root `AGENTS.md`.
-- Exact subtree -> shallowest exact nested `AGENTS.md`.
-- Cross-cutting pattern -> one matching rule asset.
+- Directory subtree -> the highest `AGENTS.md` whose subtree matches the intended scope exactly.
+- Cross-cutting pattern -> one matching pattern rule asset.
 
-Do not choose a common ancestor when it would inject the rule into unrelated
-siblings. Do not assign canonical ownership to a derived projection.
+Do not choose a common ancestor when it would load the rule for unrelated siblings. Do not assign canonical ownership to a generated or derived copy.
 
-### 4. Deduplicate
+### 4. Remove Duplication
 
 - Remove inherited repetitions from descendants.
-- Promote identical child rules only when the promoted scope stays exact.
-- Prefer one exact pattern owner when promotion would cover unrelated siblings.
-- Demote an over-broad parent rule when only a narrower subtree needs it.
-- Keep genuine scoped exceptions at their narrower owner without copying parent
-  text.
+- Move identical child rules upward only when the parent scope remains exact.
+- Prefer one exact pattern rule when moving upward would affect unrelated siblings.
+- Move an over-broad parent rule downward when only a narrower subtree needs it.
+- Keep genuine scoped exceptions at their narrower owner without copying parent text.
 
-If the runtime cannot represent an exact union scope, keep the smallest correct
-owners even when duplication is unavoidable.
+If the runtime cannot express a combined scope exactly, keep the smallest correct owners even when some duplication is unavoidable.
 
-### 5. Verify Projection
+### 5. Verify Loaded Rules
 
-Derive the instructions loaded for affected target and non-target files from
-ancestor `AGENTS.md` files plus matching pattern rules.
+Derive the rules loaded for affected target and non-target files from ancestor `AGENTS.md` files plus matching pattern rules.
 
-When available tools can enumerate the affected set, verify the complete set.
-Otherwise verify representative boundaries and report the result as sampled, not
-exact.
+When available tools can enumerate every affected file, verify the complete set. Otherwise verify representative boundary cases and report the result as sampled rather than exact.
 
 Confirm that:
 
 - intended targets retain every rule;
-- each representable semantic rule comes from one authoritative owner; and
+- each rule with an exactly representable scope comes from one authoritative owner; and
 - unrelated targets do not gain the rule.
 
 ## Guardrails
 
 - Preserve rule meaning; only remove obsolete location wording required by a move.
-- Precedence is not a substitute for DRY.
+- Do not use precedence to justify duplicated ownership.
 - Create a new owner file only when no suitable exact owner exists.
-- Do not author new engineering policy, improve rule content, redesign project
-  structure, validate runtime behavior, or perform cross-harness synchronization.
+- Do not author new engineering policy, improve rule content, redesign project structure, validate runtime behavior, or perform cross-harness synchronization.
 
 ## Completion
 
-Complete when ownership changes preserve authority and the strongest available
-projection check preserves intended scope. Report only owner changes, removed
-duplicates or scope splits, unresolved ownership, and verification limitations.
+Complete when ownership changes preserve the source of truth and the strongest available loaded-rule check preserves the intended scope. Report only owner changes, removed duplicates or scope splits, unresolved ownership, and verification limits.
