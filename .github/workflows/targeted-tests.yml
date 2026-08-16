@@ -1,0 +1,84 @@
+name: Targeted PR Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "src/skills/**"
+      - "src/scripts/**"
+      - "tests/skills/**"
+      - "tests/scripts/**"
+      - "tests/conftest.py"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".github/workflows/targeted-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-slim
+    timeout-minutes: 10
+    steps:
+      - name: Checkout PR merge
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+
+      - name: Select affected tests
+        id: scope
+        shell: bash
+        run: |
+          mapfile -d '' files < <(git diff --name-only -z HEAD^1 HEAD)
+          declare -A targets=()
+          full=false
+
+          add_suite() {
+            [[ -d "$1" ]] && targets["$1"]=1
+          }
+
+          for path in "${files[@]}"; do
+            case "$path" in
+              pyproject.toml|uv.lock|tests/conftest.py|.github/workflows/targeted-tests.yml)
+                full=true
+                ;;
+              tests/skills/conftest.py)
+                add_suite tests/skills
+                ;;
+              tests/scripts/conftest.py)
+                add_suite tests/scripts
+                ;;
+              src/skills/*|tests/skills/*)
+                name="${path#*/skills/}"
+                add_suite "tests/skills/${name%%/*}"
+                ;;
+              src/scripts/*|tests/scripts/*)
+                name="${path#*/scripts/}"
+                add_suite "tests/scripts/${name%%/*}"
+                ;;
+            esac
+          done
+
+          if $full; then
+            printf 'tests\0' > /tmp/test-targets
+          elif ((${#targets[@]})); then
+            printf '%s\0' "${!targets[@]}" > /tmp/test-targets
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "run=true" >> "$GITHUB_OUTPUT"
+
+      - name: Set up uv
+        if: steps.scope.outputs.run == 'true'
+        uses: astral-sh/setup-uv@v9.0.0
+
+      - name: Run affected tests
+        if: steps.scope.outputs.run == 'true'
+        shell: bash
+        run: |
+          mapfile -d '' targets < /tmp/test-targets
+          uv run --frozen pytest -q "${targets[@]}"
