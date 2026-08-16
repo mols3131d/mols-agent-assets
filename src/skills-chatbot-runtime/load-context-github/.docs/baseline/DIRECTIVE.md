@@ -13,22 +13,22 @@ The skill must preserve these behaviors:
 1. **Trigger on concrete GitHub work.**
    Load for specific repositories, GitHub resources, PRs, issues, branches/refs, files/paths, Actions/checks, releases, repository changes, follow-up work, and GitHub tool/connector/plugin/integration use. Read-only work is included.
 
-2. **Load context before action.**
+1. **Load context before action.**
    GitHub tooling may be used to discover context, but repository-changing or task-level action must not begin until the relevant context is loaded.
 
-3. **Treat the repository as the source of truth.**
+1. **Treat the repository as the source of truth.**
    Do not invent repository conventions from memory or common practice. Determine applicable rules from the target ref/branch, repository files, and relevant live GitHub metadata.
 
-4. **Resolve instructions by target path.**
+1. **Resolve instructions by target path.**
    For each target path, inspect the complete ancestor chain from repository root to target directory. Load applicable `AGENTS.md`, relevant `README.md`, path-specific instructions, and required referenced guidance. Keep instruction chains isolated between repositories and unrelated paths.
 
-5. **Distinguish instruction from context.**
+1. **Distinguish instruction from context.**
    `AGENTS.md` is an instruction candidate with directory scope unless the repository defines otherwise. `README.md` is primarily context/navigation; treat it as normative only when it clearly states a rule applicable to the task. Do not infer precedence from filename or proximity alone.
 
-6. **Load only task-relevant Git/GitHub context.**
+1. **Load only task-relevant Git/GitHub context.**
    Add PR, issue, commit, branch, merge, CI, release, permission, protection, or validation context only when the task needs it. Follow required references, but do not recursively load the repository without purpose.
 
-7. **Preserve safe boundaries.**
+1. **Preserve safe boundaries.**
    Do not expand this skill into implementation, testing, naming, PR authoring, review methodology, or GitHub tool orchestration. Those belong to repository instructions or task-specific skills.
 
 ## Invariants
@@ -65,13 +65,13 @@ When the skill appears degraded, over-generalized, or partially rewritten, resto
 Use this recovery order:
 
 1. Re-establish the **context-loader boundary**.
-2. Restore the **concrete GitHub trigger surface**, including tools and read-only/follow-up tasks.
-3. Restore **live repository/ref identification** and repository-as-source-of-truth behavior.
-4. Restore **root-to-target ancestor instruction discovery** for every target path.
-5. Restore the distinction between **`AGENTS.md` instruction scope** and **`README.md` context/navigation**.
-6. Restore task-specific Git/GitHub context discovery and reference following without broad recursive loading.
-7. Restore instruction scope/precedence handling, path isolation, and safety constraints.
-8. Remove workflow logic that belongs to other skills.
+1. Restore the **concrete GitHub trigger surface**, including tools and read-only/follow-up tasks.
+1. Restore **live repository/ref identification** and repository-as-source-of-truth behavior.
+1. Restore **root-to-target ancestor instruction discovery** for every target path.
+1. Restore the distinction between **`AGENTS.md` instruction scope** and **`README.md` context/navigation**.
+1. Restore task-specific Git/GitHub context discovery and reference following without broad recursive loading.
+1. Restore instruction scope/precedence handling, path isolation, and safety constraints.
+1. Remove workflow logic that belongs to other skills.
 
 Exact headings, prose, ordering, and implementation details may change. The behaviors and boundaries above may not.
 
