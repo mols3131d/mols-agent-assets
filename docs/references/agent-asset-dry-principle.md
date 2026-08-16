@@ -12,7 +12,7 @@ description: 에이전트 자산에서 같은 지식의 독립적 복제와 drif
 ## Core Rules
 
 1. **문장이 아니라 지식의 중복을 찾는다.** 표현이 달라도 같은 정책, 계약, 판단 기준을 독립적으로 정의하면 semantic duplication이다.
-2. **정의와 적용을 구분한다.** canonical owner가 의미를 정의하고, 소비 자산은 현재 행동에 필요한 최소 제약만 적용할 수 있다.
+2. **정의와 로컬 적용을 구분한다.** canonical owner가 의미를 정의하고, 소비 자산은 현재 행동에 필요한 최소 제약만 적용할 수 있다.
 3. **변경 권한을 하나로 만든다.** 지식이 바뀔 때 어디를 수정해야 하는지가 명확해야 한다.
 4. **의도적 중복은 독립성을 위해서만 허용한다.** runtime context가 분리되어 원본을 읽을 수 없다면 핵심 제약을 로컬에 반복할 수 있다.
 5. **DRY를 위해 결합도를 높이지 않는다.** 짧은 반복을 없애려고 hidden dependency, 깊은 reference chain, 공용 abstraction을 만들지 않는다.
@@ -25,10 +25,10 @@ description: 에이전트 자산에서 같은 지식의 독립적 복제와 drif
 | 종류 | 의미 | 처리 |
 | --- | --- | --- |
 | Definition | 정책이나 지식의 authoritative 의미 | canonical owner 한 곳에서 관리 |
-| Projection | 다른 자산이 실제 행동에 필요한 부분 | 최소한으로 유지 |
-| Copy | 원본과 독립적으로 수정될 수 있는 복제 | 가능한 한 제거 |
+| Local application | 다른 자산이 실제 행동에 필요한 부분 | 최소한으로 유지 |
+| Independent copy | 원본과 독립적으로 수정될 수 있는 복제 | 가능한 한 제거 |
 
-`Projection`은 원본 전체의 복사가 아니다. 예를 들어 repository policy가 destructive action의 승인 원칙을 정의한다면, 삭제 Skill에는 그 workflow에 필요한 승인 행동만 남길 수 있다.
+`Local application`은 원본 전체의 복사가 아니다. 예를 들어 repository policy가 destructive action의 승인 원칙을 정의한다면, 삭제 Skill에는 그 workflow에 필요한 승인 행동만 남길 수 있다.
 
 ## Drift Test
 
@@ -39,7 +39,7 @@ description: 에이전트 자산에서 같은 지식의 독립적 복제와 drif
 3. authoritative owner를 한 곳으로 정할 수 있는가?
 4. 중앙화가 runtime 독립성이나 context 효율을 해치지 않는가?
 
-1~3이 `Yes`이고 4가 `No`라면 통합한다. 4가 `Yes`라면 **canonical ownership은 하나로 유지하되 최소한의 의도적 projection**을 허용한다.
+1~3이 `Yes`이고 4가 `No`라면 통합한다. 4가 `Yes`라면 **canonical ownership은 하나로 유지하되 최소한의 로컬 적용**을 허용한다.
 
 ## What DRY Is Not
 
@@ -62,7 +62,7 @@ description: 에이전트 자산에서 같은 지식의 독립적 복제와 drif
 
 > **이 지식의 의미가 바뀌면 authoritative하게 수정해야 할 곳이 하나로 명확한가?**
 
-아니라면 ownership을 정리한다. 다만 그 해결책이 자산의 self-contained behavior를 깨면 정의와 최소 projection을 분리한다.
+아니라면 ownership을 정리한다. 다만 그 해결책이 자산의 self-contained behavior를 깨면 정의와 최소 로컬 적용을 분리한다.
 
 ## Research Basis
 

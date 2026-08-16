@@ -15,7 +15,7 @@ description: 에이전트 자산에서 필요한 행동 신뢰성을 유지하�
 2. **기본 경로를 하나 둔다.** 여러 접근이 동등하다면 기본값을 정하고 대안은 필요한 조건에서만 연다.
 3. **행동 차이가 있을 때만 분기한다.** 권한, 위험, 도구, 결과, 검증이 실질적으로 달라질 때 분기를 만든다.
 4. **작업의 취약성에 맞춰 자유도를 조절한다.** 열린 문제에는 판단 여지를 주고, 오류 비용이 큰 작업에는 정확한 순서와 guardrail을 둔다.
-5. **조건부 세부사항은 조건부로 노출한다.** 항상 필요한 핵심과 특정 상황에서만 필요한 지식을 분리한다. 자세한 구조는 [Progressive Disclosure](./progressive-disclosure-principle.md)를 따른다.
+5. **조건부 세부사항은 조건부로 노출한다.** 항상 필요한 핵심과 특정 상황에서만 필요한 지식을 분리한다. 단, 에이전트가 그 조건 자체를 알아차리기 어려운 중요한 gotcha는 core instruction에 남긴다. 자세한 구조는 [Progressive Disclosure](./progressive-disclosure-principle.md)를 따른다.
 6. **구조 자체의 비용을 계산한다.** router, taxonomy, abstraction, 추가 Agent가 줄이는 복잡성보다 새로 만드는 복잡성이 크면 도입하지 않는다.
 
 ## Minimum Sufficient Guidance
@@ -27,6 +27,7 @@ KISS는 instruction을 무조건 줄이는 원칙이 아니다. 중요한 기준
 - 예외 → 빈번하거나 위험한 예외만 핵심 지침에 둔다.
 - 안전 절차 → 오류 비용이 크다면 길어져도 명시한다.
 - 상세 reference → 현재 task에서 필요할 때만 로드한다.
+- 비자명한 gotcha → reference를 읽어야 할 trigger 자체를 놓칠 수 있으면 core에 남긴다.
 
 ## Decision Test
 
@@ -55,6 +56,7 @@ KISS는 instruction을 무조건 줄이는 원칙이 아니다. 중요한 기준
 - 모델이 이미 아는 일반론을 장황하게 설명한다.
 - 작은 문제에 router, framework, multi-agent 구조를 먼저 도입한다.
 - 짧게 만들기 위해 validation과 guardrail을 암시적으로 만든다.
+- discoverability가 없는 중요한 gotcha를 reference 뒤에 숨긴다.
 
 ## Review Question
 
@@ -64,6 +66,6 @@ KISS는 instruction을 무조건 줄이는 원칙이 아니다. 중요한 기준
 
 ## Research Basis
 
-- [Agent Skills: Best practices for skill creators](https://agentskills.io/skill-creation/best-practices) — 모델이 이미 아는 내용 제거, coherent scope, defaults over menus, specificity와 fragility의 정합성.
+- [Agent Skills: Best practices for skill creators](https://agentskills.io/skill-creation/best-practices) — 모델이 이미 아는 내용 제거, coherent scope, defaults over menus, specificity와 fragility의 정합성, non-obvious gotcha의 discoverability.
 - [Anthropic: Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices) — context 비용과 task별 degree of freedom 조절.
 - [OpenAI: A practical guide to building agents](https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/) — 명확한 action, 필요한 branch, 복잡성의 점진적 증가.
