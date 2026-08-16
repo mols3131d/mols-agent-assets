@@ -24,7 +24,9 @@
 주책임이 작업 workflow 수행이 아니라 **특정 상황에 필요한 판단 기준·제약·지식을 context로 주입하는 것**이면 `load-context-<topic>` 이름을 사용합니다.
 
 - 예: `load-context-pragmatic-engineering`, `load-context-tech-doc-fidelity`
-- context를 활용해 실제 workflow나 산출물 생성을 주책임으로 수행하는 Skill에는 이 prefix를 붙이지 않습니다.
+- context-only Skill은 필요한 context의 선택·적용 경계까지만 소유합니다.
+- 그 context를 사용한 실제 작성, 구현, 검증, 리뷰, transformation과 최종 output은 downstream capability가 소유합니다.
+- context를 활용하더라도 실제 workflow나 산출물 생성이 주책임인 Skill에는 이 prefix를 붙이지 않습니다.
 - 이름은 packaging이 아니라 capability responsibility를 나타내므로 같은 규칙을 다른 target profile에도 적용할 수 있습니다.
 
 ## Target Variants
