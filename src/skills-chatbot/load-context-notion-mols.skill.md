@@ -11,7 +11,8 @@ description: >-
 
 # Load Mols Notion Context
 
-This Skill is a **personal overlay**. Apply it only with `load-context-notion`.
+This Skill contributes **personal mols conventions** for the Notion target. Live target
+context remains owned by `load-context-notion`.
 
 ## Personal Conventions
 

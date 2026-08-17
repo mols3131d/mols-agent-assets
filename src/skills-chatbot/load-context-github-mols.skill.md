@@ -12,7 +12,8 @@ description: >-
 
 # Load Mols GitHub Context
 
-This Skill is a **personal overlay**. Apply it only with `load-context-github`.
+This Skill contributes **personal mols conventions** for the GitHub target. Live target
+context remains owned by `load-context-github`.
 
 ## Personal Conventions
 

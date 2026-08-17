@@ -12,7 +12,7 @@ description: >-
 
 # Load GitHub Context
 
-Use this Skill only to resolve the **live GitHub context that governs the task**.
+This Skill resolves the **live GitHub context that governs the task**.
 Execution belongs to the downstream task capability.
 
 ## Contract
