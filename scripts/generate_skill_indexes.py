@@ -8,8 +8,14 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 GITHUB_BLOB_ROOT = "https://github.com/mols3131d/mols-agent-assets/blob/main"
 INSTRUCTION = (
-    "Match by name and description; substitute the matched name for {name} in metadata "
-    "and read the Skill through an available path before use."
+    "Before substantive work, use each entry's name and description to select only "
+    "applicable Skills; select multiple when their responsibilities independently apply. "
+    "For each match, substitute its name for {name} in metadata, use workspace_path when "
+    "the repository is directly accessible and otherwise use github_url, then read the "
+    "Skill before acting. If neither source is accessible, do not claim the Skill was "
+    "loaded. If no Skill matches, continue without loading one. Re-evaluate selection "
+    "when the task materially changes. Do not treat currently visible Skill, tool, or "
+    "plugin inventories as substitutes for this repository index."
 )
 TARGETS = {
     ROOT / "src/skills": ("*/SKILL.md", "src/skills/{name}/SKILL.md"),
