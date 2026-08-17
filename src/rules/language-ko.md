@@ -1,5 +1,3 @@
----
-description: 한국어 사용 규칙
----
+# language-ko
 
-기본 응답 언어는 한국어로 한다.
+- **Korean**: Natural Korean. Keep IT terms English or parallel.
