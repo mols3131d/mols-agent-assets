@@ -62,6 +62,8 @@ Flat Skill의 activation 정보는 **front matter `description`에 집중한다*
 
 본문은 이미 Skill이 선택·활성화되었다고 가정한다. 따라서 `Trigger`, `Activation`, `When to use` 같은 별도 activation 섹션을 두거나 front matter의 조건을 본문에서 반복하지 않는다. 본문에는 필요한 routing을 포함해 contract, procedure, constraints, boundary, output처럼 **활성화 이후의 행동**만 둔다.
 
+활성화 후 새로 얻은 evidence에 따라 적용 범위를 축소·중단·재평가해야 하는 runtime guardrail은 selection trigger가 아니다. 이런 규칙은 본문에 남긴다.
+
 Portable front matter field와 constraint는 [Agent Skills Specification](agent-skills-io/agent-skills-io-specification.md)을 따른다. 특정 target이 별도 discovery contract를 강제하면 그 target contract가 우선한다.
 
 형태 예시이며 고정 schema가 아니다.
