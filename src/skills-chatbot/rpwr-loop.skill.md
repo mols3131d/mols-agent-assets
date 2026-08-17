@@ -10,48 +10,54 @@ description: >-
 # RPWR Loop
 
 Use **Research → Plan → Work → Review (RPWR)** to improve a task through repeated,
-finding-driven loops. `RPI` is an alias for this workflow.
+finding-driven reasoning cycles. `RPI` is an alias for this workflow.
 
-RPWR has three phases:
+RPWR has three phases. Every phase uses the same RPWR spine, but for a different
+purpose:
 
-1. **Calibrate** — decide how Research and Review should behave.
-2. **Iterate** — perform the main work through repeated RPWR loops.
-3. **Converge** — finish with narrower, material-only RPWR loops.
+1. **Calibrate** — design how the work should be investigated and reviewed.
+2. **Iterate** — perform the main work and substantive improvement.
+3. **Converge** — finish, validate, and stop without manufacturing findings.
 
 Keep **Plan** and **Work** simple. Adapt **Research** and **Review** as understanding,
 risk, and confidence change.
 
-## Defaults
+## Phase Budgets
 
 ```yaml
-min_iteration_loops: 4
-min_convergence_loops: 2
-max_loops: 10
-stop_condition: minimums_met_and_no_material_findings
+phase_1_calibrate:
+  min_loops: 1
+  max_loops: 2
+phase_2_iterate:
+  min_loops: 4
+  max_loops: 8
+phase_3_converge:
+  min_loops: 2
+  max_loops: 4
 ```
 
-The phase minimums are mandatory unless the user explicitly overrides RPWR itself.
-Treat a user-specified loop count as a maximum when it is above the minimums unless
-they explicitly require exactly that many completed loops.
+Each phase owns its own loop budget. There is no separate global loop cap.
 
-Reserve at least the final two counted loops for Convergence. If Iterate still has
-material findings when only the Convergence minimum remains within the loop budget,
-carry those findings into Convergence instead of extending the main-work phase
-indefinitely.
+- Do not leave a phase before its minimum is satisfied.
+- After the minimum, advance when that phase's purpose is materially satisfied.
+- At the maximum, advance or stop even if findings remain; carry unresolved material
+  findings forward or report them at the end.
+- A user who explicitly changes a phase budget overrides these defaults.
 
-Never invent findings or split one action into multiple passes merely to satisfy a
-count.
+The default workflow therefore contains **7–14 counted loops**, but the count is a
+reasoning budget, not a target to inflate.
 
 ## What Counts as One Loop
 
-A counted RPWR loop is a **complete reasoning cycle**, not a unit of edits or tasks.
-It must substantively perform all four phases:
+A counted loop is a **complete, substantive RPWR reasoning cycle**, not a unit of
+edits, findings, files, or subtasks.
 
-1. **Research** changes or confirms the task understanding using relevant evidence,
-   context, assumptions, alternatives, or prior findings.
-2. **Plan** makes a task-specific decision about what should be done next and why.
-3. **Work** performs a meaningful batch of task-appropriate work against that plan.
-4. **Review** evaluates the resulting state and determines what materially remains.
+1. **Research** changes or materially confirms the understanding relevant to the
+   current phase.
+2. **Plan** makes a task-specific decision about what should happen next and why.
+3. **Work** performs a meaningful batch of phase-appropriate work against that plan.
+4. **Review** evaluates the resulting state and determines the next material delta or
+   establishes that the current concern is resolved.
 
 A loop does **not** count when it is only:
 
@@ -60,113 +66,127 @@ A loop does **not** count when it is only:
 - rereading or restating the same evidence;
 - repeating the same review from the same perspective;
 - cosmetic churn created to increase the loop number;
-- a phase label wrapped around work that would have happened identically without the
+- phase labels wrapped around work that would have happened identically without the
   loop.
 
-Several edits or findings may belong to one loop, and one complex objective may span
-several loops. Count the completed reasoning cycle, not the number of actions inside
-it.
+Several changes may belong to one loop, and one difficult objective may span several
+loops. A no-change result may count only when substantive investigation or validation
+materially increases confidence or closes an important uncertainty.
 
-Do not expose private chain-of-thought to prove a loop happened. Report only the loop
-count and material deltas.
+Never invent findings, split one action into artificial passes, or simulate reasoning
+to satisfy a minimum. Do not expose private chain-of-thought to prove a loop happened;
+report observable evidence, decisions, validation, and material deltas instead.
 
 ## Phase 1 — Calibrate
 
-Before Loop 1, choose a provisional strategy for Research and Review. Calibration is
-preparation and does not count as an RPWR loop.
-
-Consider the task's uncertainty, breadth, stakes, evidence quality, likely failure
-modes, and acceptance conditions. Decide only what materially guides the workflow:
-
-- how broad and deep Research should begin;
-- what evidence or context is worth investigating;
-- which Review perspectives matter most;
-- what signals should narrow Research;
-- what signals should move the workflow from Iterate to Converge.
-
-Treat this strategy as provisional. Change it when findings, evidence, or risk change.
-Do not expose this internal calibration unless useful to the user.
-
-## Phase 2 — Iterate
-
-This is the primary work phase. Complete **at least four counted RPWR loops** before
-moving to Converge.
-
-Each loop follows the same spine:
+Complete **1–2 RPWR loops** focused on designing the strategy for the later phases.
 
 ### Research
 
-Gather enough evidence to understand the current objective and unresolved findings.
-Research may inspect existing context, artifacts, repositories, data, prior results,
-domain knowledge, or external sources. It is not synonymous with web search.
+Orient on the task's objective, boundaries, uncertainty, evidence quality, stakes,
+constraints, likely failure modes, and acceptance conditions.
 
-Use a relatively broad scope in early loops to understand the problem boundary,
-important assumptions, plausible alternatives, and missing evidence. Be broad enough
-to orient the work, not exhaustive by default. As understanding improves, narrow
-toward unresolved findings and weak assumptions.
+### Plan
 
+Decide what the calibration must resolve, especially:
+
+- the initial breadth and depth of Research;
+- which evidence and context surfaces matter;
+- which Review perspectives and risks deserve attention;
+- what signals should narrow Research or trigger convergence.
+
+### Work
+
+Establish a provisional Research and Review strategy for the task. Keep it minimal;
+do not create a detailed ceremony or fixed loop-by-loop script.
+
+### Review
+
+Challenge whether that strategy is proportionate to the task and whether it misses a
+material uncertainty, risk, evidence surface, or review perspective.
+
+The first calibration loop is mandatory. Use the second only when the first leaves a
+material strategy uncertainty worth resolving. At two loops, proceed to Iterate with
+any remaining uncertainty made explicit.
+
+## Phase 2 — Iterate
+
+Complete **4–8 RPWR loops**. This is the primary work phase where most substantive
+changes should happen.
+
+### Research
+
+Use a relatively broad scope in early Iterate loops to understand the problem
+boundary, important assumptions, plausible alternatives, and missing evidence. Be
+broad enough to orient the work, not exhaustive by default.
+
+As understanding improves, narrow toward unresolved findings and weak assumptions.
 Adapt instead of repeating:
 
 - broaden when the problem boundary is unclear, evidence conflicts, or a core
   assumption fails;
 - deepen when material uncertainty or weak evidence remains;
-- narrow when findings become localized and the result is converging;
+- narrow when findings become localized;
 - change evidence, method, or perspective when the previous investigation saturates.
 
-Stop when the next Plan can be grounded well enough to act.
+Research may inspect existing context, artifacts, repositories, data, prior results,
+domain knowledge, or external sources. It is not synonymous with web search.
 
 ### Plan
 
 Translate current evidence and findings into the smallest plan that can materially
-improve the result.
-
-Set only the objective, scope, constraints, acceptance conditions, approach, work
-units, trade-offs, and validation points needed for the task.
+improve the result. Set only the objective, scope, constraints, approach, work units,
+trade-offs, acceptance conditions, and validation points needed for the next work.
 
 ### Work
 
-Perform the requested work against the current plan and evidence.
+Perform the requested work against the current plan and evidence. Work may include
+analysis, writing, editing, design, implementation, transformation, decision-making,
+or other task-appropriate actions.
 
-Work may include analysis, writing, editing, design, implementation, transformation,
-decision-making, or other task-appropriate actions. Preserve confirmed constraints
-and conclusions unless new evidence justifies changing them. Do not claim work or
-validation that was not performed.
+Preserve confirmed constraints and conclusions unless new evidence justifies changing
+them. Do not claim work or validation that was not performed.
 
 ### Review
 
-During Iterate, use this default cadence:
+Use this default cadence based on the **Phase 2 loop number**:
 
-- **odd-numbered loops — Quality Review:** improve correctness, completeness,
-  coherence, clarity, usability, evidence quality, and fit to the objective;
-- **even-numbered loops — Pessimistic Review:** look for serious failure modes,
-  edge cases, hidden assumptions, regressions, security or safety concerns,
-  operational risks, misuse, contradictions, and consequential side effects.
+- **odd loops — Quality Review:** improve correctness, completeness, coherence,
+  clarity, usability, evidence quality, and fit to the objective;
+- **even loops — Pessimistic Review:** look for consequential failure modes, edge
+  cases, hidden assumptions, regressions, security or safety concerns, operational
+  risks, misuse, contradictions, and side effects.
 
 This cadence is a default, not a ritual. Override it when current findings or risk
-clearly require the other perspective. Apply only review dimensions that materially
-fit the task; do not force security, safety, or other categories where they do not
-matter.
+clearly require the other perspective. Apply only dimensions that materially fit the
+task; do not force security, safety, or other categories where they do not matter.
 
-The Review must identify the next meaningful delta or establish that the result is
-ready to move toward convergence. A finding is useful only when it can materially
-change the result, validation, or confidence.
+After four loops, move to Converge when the main result is substantially shaped and
+remaining work is mainly finishing or validation. Otherwise continue only while a
+meaningful delta remains, up to eight loops. At eight, carry remaining material
+findings into Converge rather than extending Iterate indefinitely.
 
 ## Phase 3 — Converge
 
-After the main work is substantially shaped, switch from broad improvement to
-finishing. Complete **at least two counted RPWR loops** in this phase.
+Complete **2–4 RPWR loops** focused on finishing and trustworthy completion.
 
-Convergence loops still use **Research → Plan → Work → Review**, but each phase is
-narrower:
+### Research
 
-- **Research:** investigate only evidence or uncertainty that can still change the
-  outcome.
-- **Plan:** target unresolved material findings, validation gaps, or regression risk.
-- **Work:** make only changes needed to finish or validate the result.
-- **Review:** inspect only issues that can still materially undermine the task's core
-  purpose.
+Investigate only evidence or uncertainty that can still materially change the outcome
+or confidence in it.
 
-Convergence Review is limited to:
+### Plan
+
+Target unresolved material findings, acceptance gaps, validation gaps, or regression
+risk. Avoid new scope unless a core assumption has failed.
+
+### Work
+
+Make only changes needed to finish, correct, or validate the result.
+
+### Review
+
+Limit review to issues that can still materially undermine the task's core purpose:
 
 - unresolved material findings;
 - violated objectives or acceptance conditions;
@@ -177,14 +197,20 @@ Convergence Review is limited to:
 `No material finding` is a valid Review result. Do not manufacture another criticism
 merely because another pass exists.
 
-The two minimum Convergence loops must still be genuine counted loops. Use a distinct
-material validation question, evidence surface, or review perspective when needed;
-do not duplicate the same validation to satisfy the minimum.
+The two minimum Converge loops must still be genuine reasoning cycles. Use distinct,
+material validation questions, evidence surfaces, or residual-risk perspectives when
+needed; duplicating the same validation does not count.
+
+After two loops, stop when no meaningful completion delta remains. Otherwise continue
+up to four loops. At four, stop and report unresolved material findings rather than
+simulating additional loops.
 
 ## Phase Transition
 
-Move from Iterate to Converge only after at least four counted Iterate loops and when
-several of these signals appear:
+Use state, not a fixed global loop number, to decide transitions within each phase's
+budget.
+
+Signals for moving from Iterate to Converge include:
 
 - major requirements are substantially satisfied;
 - findings are fewer, smaller, or localized;
@@ -193,28 +219,9 @@ several of these signals appear:
 - Review increasingly repeats known issues or cosmetic preferences;
 - remaining work is mainly validation, regression control, or finishing.
 
-If new conflicting evidence, a failed core assumption, or a changed problem boundary
-appears before the loop budget is exhausted, broaden Research and strengthen Review
-again. Do not reset the loop count.
-
-## Repeat Gate
-
-After the phase minimums are satisfied, continue only when another loop has a concrete
-expected delta, such as:
-
-- an unresolved material finding;
-- new or conflicting evidence;
-- a changed assumption or problem boundary;
-- a useful counterexample or unexplored perspective;
-- a materially different validation method;
-- Work that can meaningfully improve the result.
-
-Repeating the same search, review perspective, argument, or cosmetic preference does
-not justify another loop. If the same finding repeatedly survives Work, reconsider
-the Plan or underlying assumption instead of reviewing it again.
-
-At `max_loops`, stop and report material unresolved findings rather than simulating
-additional loops.
+If conflicting evidence, a failed core assumption, or a changed problem boundary
+appears, adapt Research and Review within the current phase. Do not reset completed
+loop counts or exceed the phase maximum.
 
 ## Context and Validation
 
@@ -232,7 +239,7 @@ Do not expose private reasoning or verbose phase-by-phase narration by default.
 Return:
 
 - the improved result;
-- counted RPWR loops, separated into Iterate and Converge;
+- counted loops for Calibrate, Iterate, and Converge;
 - material changes or conclusions;
 - unresolved findings or checks that could not be performed.
 
