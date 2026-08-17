@@ -27,15 +27,13 @@ Before discovery, read the current canonical flat sources for both control Skill
 
 Use the repository default branch unless the user explicitly requests another prerequisite revision. These bootstrap sources are independent of the requested sync `source`.
 
-For this run, the canonical source content is the authority for `mols-skill-find` and `mols-skill-install`, even when installed copies already exist. Treat installed copies as target state to reconcile, not as authority for the current run. This prevents stale installed control Skills from governing a sync of newer repository content.
+For this run, apply both canonical sources as in-context instructions and treat them as the authority for `mols-skill-find` and `mols-skill-install`, even when installed copies already exist. Installed copies are target state to reconcile, not execution authority. In-context use is sufficient for this run but is not persistent installation.
 
-Apply both canonical Skills as in-context instructions for the current run. This is sufficient to execute the workflow but is not persistent installation.
+If the target can establish that either prerequisite is missing, let the canonical `mols-skill-install` instructions attempt its persistent installation before discovery. Use the installer's normal target-path selection; do not reproduce ChatGPT UI, `skill-creator`, package, or fallback policy here. If installation requires user action or cannot persist, record that state and continue using the canonical in-context instructions.
 
-When the current ChatGPT product exposes native Skill creation, update, review, or installation, also use that surface to bring missing or stale prerequisite Skills toward the canonical versions. If user approval is required, surface the native action and report it as pending; continue the current run using the canonical in-context instructions.
+Do not bootstrap-update an existing prerequisite before the main sync. Let the normal sync reconcile existing `mols-skill-find` and `mols-skill-install` copies under the installer's self-update rules. The current run always remains governed by the canonical in-context sources it started with.
 
-Do not switch the current run to a newly installed or updated control Skill. Reconcile `mols-skill-find` and `mols-skill-install` after the other selected capabilities and use their new persistent versions on the next invocation.
-
-Do not return a generated `SKILL.md`, ZIP, attachment, download, or pasted Skill body merely because native installation is unavailable. Manual import or package handoff is a fallback only when the target requires it or the user explicitly requests it.
+Do not return a generated `SKILL.md`, ZIP, attachment, download, or pasted Skill body merely because persistent installation is unavailable. Manual handoff belongs to `mols-skill-install` and is only a fallback when the target requires it or the user explicitly requests it.
 
 Report **Bootstrap Required** and stop only when either canonical prerequisite source cannot be obtained or cannot be applied safely as instructions for the current run.
 
@@ -78,11 +76,9 @@ target: <resolved target>
 on_conflict: <resolved on_conflict>
 ```
 
-Let `mols-skill-install` own target-path selection, installed-state reconciliation, and mutation decisions, including direct mutation, native interactive flows, scoped loading, conflicts, migrations, unsupported packages, and last-resort manual handoff.
+Let `mols-skill-install` own target-path selection, installed-state reconciliation, mutation, self-update ordering, conflicts, migrations, unsupported packages, and fallback delivery.
 
 For ChatGPT, prefer an actual installed or updated Skill when the product exposes that capability. If native review or confirmation is required, surface the shortest available action and report it as pending until completed. Do not treat generated, staged, approval-pending, or in-context content as installed.
-
-Process `mols-skill-find` and `mols-skill-install` after the other selected capabilities. Do not restart or reinterpret the current run after updating them.
 
 ## Sync Boundary
 
@@ -99,7 +95,7 @@ Return actual states only, omitting empty groups:
 
 ### Bootstrap Control
 
-Report whether the canonical prerequisite Skills were applied in context and whether persistent prerequisite installation/update completed or remains pending.
+Report whether the canonical prerequisite Skills were applied in context and whether any missing prerequisite persistence completed or remains pending.
 
 ### Installed
 
