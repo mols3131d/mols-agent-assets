@@ -67,6 +67,9 @@ Never invent findings or simulate reasoning. If a phase minimum cannot be satisf
 with genuine cycles, do not claim that it was; return the best result and report the
 budget shortfall.
 
+A confirmed blocker may end a phase or the workflow before its minimum. Do not perform
+fake loops after further execution has become impossible or unauthorized.
+
 Do not expose private chain-of-thought. Report observable evidence, decisions, work,
 validation, and outcomes only.
 
@@ -80,8 +83,9 @@ Build an evidence-based picture of:
 
 - **Task:** objective, scope, context, constraints, uncertainty, stakes, acceptance
   conditions, relevant evidence, likely failure modes, and natural work context.
-- **Environment:** agent capabilities, tools, connected resources, permissions, write
-  authority, validation surfaces, durable storage surfaces, and material limitations.
+- **Environment:** agent capabilities, tools, connected resources, permissions,
+  governing instructions, write authority, validation surfaces, durable storage
+  surfaces, and material limitations.
 
 Confirm capabilities and authority when they affect execution. Do not assume a tool,
 connection, permission, storage target, or write capability exists.
@@ -89,9 +93,17 @@ connection, permission, storage target, or write capability exists.
 ### Assess
 
 Match task requirements against the actual environment. Identify material gaps,
-uncertainties, dependencies, authority boundaries, useful evidence and tools, major
-risks, and the natural persistence context. Distinguish an unavailable capability from
-one that has merely not been checked yet.
+uncertainties, dependencies, useful evidence and tools, major risks, persistence
+context, and authority boundaries.
+
+Distinguish:
+
+- **available** — the environment can technically perform an action;
+- **authorized** — applicable system, user, workspace, and repository instructions
+  permit that action.
+
+Do not treat technical access as authorization. Also distinguish an unavailable
+capability from one that has merely not been checked yet.
 
 ### Configure
 
@@ -100,12 +112,13 @@ execution: useful tools and evidence surfaces, initial Research scope, assumptio
 acceptance conditions, Review emphasis, validation approach, transition signals, and
 report delivery or persistence when context justifies it.
 
-Keep the strategy adaptive. Do not script every future loop.
+Keep the strategy adaptive. Do not script every future loop or route around governing
+instructions merely because a tool makes it possible.
 
 ### Verify
 
-Verify that the strategy is executable, proportionate, within authority, and free of
-material unverified dependencies.
+Verify that the strategy is executable, proportionate, authorized, and free of material
+unverified dependencies.
 
 End each Prepare loop with a readiness result:
 
@@ -115,8 +128,8 @@ End each Prepare loop with a readiness result:
   trustworthy execution.
 
 The first loop is mandatory. Use the second when material preparation uncertainty
-remains. At two loops, enter Improve only if readiness is `READY` or
-`READY WITH LIMITS`; otherwise stop and report the blocker.
+remains. Enter Improve only if readiness is `READY` or `READY WITH LIMITS`; otherwise
+stop and report the blocker.
 
 ## Phase 2 — Improve
 
@@ -219,16 +232,20 @@ Finalize N — I: <inspection> | R: <resolution> | V: <validation> | G: <gate>
 Each field states only the material delta. Do not expand one action into multiple loop
 lines.
 
-For each completed phase, write **one paragraph** summarizing its objective, major
+For each phase reached, write **one paragraph** summarizing its objective, major
 decisions or changes, evidence or validation, and remaining material concerns.
 
-After all phases finish, produce a work report with:
+When the workflow ends for any reason, produce a work report with one final status:
 
-- final status and result;
-- loop summaries grouped by phase;
-- one paragraph summary per phase;
-- material changes, decisions, and validation performed;
-- unresolved findings, limitations, blockers, or checks not performed.
+- **COMPLETE** — Finalize passed its completion gate.
+- **INCOMPLETE** — a best-effort result exists, but required loop depth or validation
+  was not genuinely satisfied.
+- **BLOCKED** — a material capability, evidence, authority, or completion blocker
+  prevented trustworthy completion.
+
+Include the final result, loop summaries grouped by phase, one paragraph per phase
+reached, material decisions and validation, and unresolved findings, limitations,
+blockers, or checks not performed.
 
 Deliver or persist the report according to `output_policy`. Reporting happens after
-the phase loops and never counts as another loop.
+execution ends and never counts as another loop.
