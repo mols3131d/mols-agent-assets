@@ -1,0 +1,46 @@
+name: Generate Skill Indexes
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/skills/*/SKILL.md"
+      - "src/skills-chatbot/*.skill.md"
+      - "src/skills-chatbot-runtime/*/SKILL.md"
+      - "scripts/generate_skill_indexes.py"
+      - ".github/workflows/skill-indexes.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: skill-index-main
+  cancel-in-progress: true
+
+jobs:
+  generate:
+    runs-on: ubuntu-slim
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v9.0.0
+        with:
+          enable-cache: false
+      - name: Generate indexes
+        run: uv run --no-project --with "pyyaml>=6.0.2" python scripts/generate_skill_indexes.py
+      - name: Commit changed indexes
+        shell: bash
+        run: |
+          indexes=(
+            src/skills/INDEX.jsonl
+            src/skills-chatbot/INDEX.jsonl
+            src/skills-chatbot-runtime/INDEX.jsonl
+          )
+          [[ -z "$(git status --porcelain -- "${indexes[@]}")" ]] && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- "${indexes[@]}"
+          git commit -m "chore: update skill indexes"
+          git pull --rebase origin main
+          git push origin HEAD:main
