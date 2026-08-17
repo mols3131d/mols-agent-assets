@@ -52,7 +52,7 @@ or view relationships that can constrain the task.
 | --- | --- |
 | Page task | page body plus only constraining properties or parent context |
 | Database/data-source task | concrete data source and relevant property schema |
-| View-specific task | exact view and relevant filters, sorts, grouping, visibility, and view type; keep these distinct from schema |
+| View-specific task | view state only when the active surface exposes it; keep filters, sorts, grouping, visibility, and view type distinct from schema |
 | Relation/rollup task | relevant property definition and required target; verify returned values are complete enough |
 | Repeated creation | applicable template only when defaults or repeated structure matter |
 | Linked projection | authoritative source when the active surface distinguishes it |
@@ -66,6 +66,9 @@ fields and targets required by the current operation.
 When completeness matters and the result may be partial, retrieve only the missing
 context needed to decide the next action: for example the next page, a specific property,
 relation target, authoritative source, or page body.
+
+If the active surface does not expose required view or structural state, surface that
+limitation instead of reconstructing it from appearance or assumptions.
 
 Do not crawl every row, relation, view, template, sibling, or parent by default.
 
