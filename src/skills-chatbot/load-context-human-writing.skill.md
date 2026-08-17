@@ -11,71 +11,45 @@ description: >-
 
 # Load Context: Human Writing
 
-Load this Skill as **reader-centered context**. It does not draft, rewrite, summarize,
-research, format, or publish content; the active writing or document capability owns the
-work and final artifact.
+Use this Skill as **reader-centered writing context**. The active writing or document capability owns drafting, rewriting, research, rendering, publication, and final output.
 
-## Reader Model
+## Resolve the Reader
 
-Before making writing decisions, resolve only what materially changes the result:
+Resolve only what can change the writing:
 
-- who the intended reader is and what they are trying to learn, decide, or do;
+- who the intended reader is and what they need to learn, decide, or do;
 - what they can reasonably be expected to know already;
-- the document's purpose and expected next action;
-- the reading surface and constraints when they matter;
-- what information must be preserved exactly versus what may be reorganized.
+- the document's purpose and likely next action;
+- the reading surface and constraints when material;
+- what must be preserved exactly versus what may be reorganized.
 
-Do not invent a persona when the available context already supports a reasonable audience
-assumption.
+Do not invent a detailed persona when the available context already supports a reasonable audience assumption.
 
-## Information Architecture
+## Structure for Retrieval
 
-- Put the conclusion, decision, task, or most useful orientation where the reader can find
-  it early.
-- Organize around the reader's questions and decisions rather than the author's discovery
-  order or internal process.
-- Use headings as navigation. Add a heading only when it creates a real information
-  boundary; avoid decorative sectioning and label-only fragmentation.
-- Use lists, tables, callouts, or diagrams when they reduce search or comparison cost, not
-  as mandatory decoration.
-- For long material, use progressive disclosure: establish the core answer first and place
-  detail where the reader can reach it without carrying all of it at once.
+- Put the conclusion, decision, task, or most useful orientation early.
+- Organize around the reader's questions and decisions, not the author's discovery order.
+- Use headings as navigation. Add one only when it creates a real information boundary.
+- Use lists, tables, callouts, or diagrams when they reduce search or comparison cost, not as decoration.
+- For long material, establish the core answer first and disclose detail where it becomes useful.
 - Remove duplicate or stale explanations instead of adding another competing version.
 
-## Clarity and Cognitive Load
+## Reduce Cognitive Load
 
 - Prefer concrete, direct language over avoidable abstraction and ceremony.
-- Keep terminology consistent. Define specialized terms when the intended reader may not
-  know them; preserve standard domain terms when replacing them would reduce precision.
-- Make the actor, action, condition, exception, and consequence explicit when ambiguity
-  would matter.
-- Keep paragraphs and sections focused on one useful job, but do not enforce arbitrary
-  sentence or paragraph length limits.
-- Front-load distinguishing information in headings and important paragraphs when it
-  improves scanning.
-- Avoid preambles that explain that an explanation is coming; spend that space on the
-  information itself.
-- Preserve necessary uncertainty and nuance instead of simplifying a claim into something
-  easier to read but less accurate.
+- Keep terminology stable. Define specialized terms only when the intended reader may need it; preserve standard domain terms when substitution would reduce precision.
+- Make actor, action, condition, exception, and consequence explicit when ambiguity matters.
+- Keep paragraphs and sections focused on one useful job without enforcing arbitrary length limits.
+- Front-load distinguishing information in headings and important paragraphs when it improves scanning.
+- Remove preambles that only announce that an explanation is coming.
+- Preserve necessary uncertainty and nuance instead of simplifying a claim into something less accurate.
 
-## Fidelity and Voice
+## Preserve Fidelity and Voice
 
-The requested purpose and audience determine how much restructuring is appropriate.
-Preserve facts, required constraints, citations, quotations, identifiers, and user-specified
-voice. When technical or other preservation-critical material is being transformed, combine
-this context with the relevant fidelity context instead of weakening protected content for
-readability.
+The requested purpose and audience determine how much restructuring is appropriate. Preserve facts, required constraints, citations, quotations, identifiers, and user-specified voice.
 
-## Composition
-
-Use research context for external factual support and a writing/document workflow for the
-actual artifact. For mixed documents, apply this context to the **human-facing layer** such
-as explanations, README prose, reports, or guides, while agent-facing behavioral sections
-use agent-asset context. Do not treat an entire mixed artifact as belonging to one audience
-when its sections serve different consumers.
+When technical or other preservation-critical material is being transformed, combine this context with the relevant fidelity context. For mixed artifacts, apply this Skill only to the human-facing layer; use agent-asset context for behavioral instructions.
 
 ## Boundary
 
-This Skill contributes audience, structure, readability, and cognitive-load judgment only.
-It does not own factual verification, drafting workflow, document rendering, publication,
-style-guide enforcement, or final output format.
+This Skill contributes audience, information architecture, readability, and cognitive-load judgment. It does not own factual verification, style-guide enforcement, or the writing workflow itself.

@@ -12,9 +12,7 @@ metadata:
 
 # RPI Loop
 
-Use complete **Research → Plan → Implement → Review** loops to improve the current
-task. Repetition without a new finding, evidence gap, perspective, or validation method
-does not count as another loop.
+Improve the current task with complete **Research → Plan → Implement → Review** loops. A repeated pass counts only when new evidence, a material finding, a changed plan, a counterexample, or a different validation method can improve the result.
 
 ## Defaults
 
@@ -23,82 +21,47 @@ max_loops: 10
 stop_condition: review_has_no_material_findings
 ```
 
-- If the user specifies a loop count, follow it unless blocked.
-- Otherwise stop when Review has no material findings or `max_loops` is reached.
-- If the limit is reached with findings remaining, report them instead of hiding them.
+Follow a user-specified loop count unless blocked. Otherwise stop when Review has no material findings or `max_loops` is reached. If findings remain at the limit, report them.
 
 ## Loop
 
-Every completed loop contains all four phases. A phase may be brief when little work is
-needed, but it is not skipped.
+Every completed loop contains all four phases; a phase may be brief but is not skipped.
 
 ### Research
 
-Refresh only the evidence needed for the current problem or unresolved findings.
-Discover missing information, investigate high-impact questions, challenge weak
-assumptions or counterexamples, and synthesize conclusions that can drive the plan.
+Refresh only evidence needed for the current objective or unresolved findings. Investigate high-impact gaps, weak assumptions, contradictions, and counterexamples. Stop when the plan can be grounded well enough to act.
 
 ### Plan
 
-Define the current objective, scope, constraints, acceptance conditions, approach,
-trade-offs, work units, and validation points. Prefer the smallest plan that can resolve
-the current findings.
+Set the current objective, scope, constraints, acceptance conditions, approach, work units, trade-offs, and validation points. Prefer the smallest plan that can resolve the current findings.
 
 ### Implement
 
-Perform the actual requested work, integrate it with existing context and constraints,
-then validate it against the plan and available evidence. Do not claim checks that were
-not actually performed.
+Perform the requested work against the plan and current evidence. Preserve confirmed constraints and do not claim checks that were not performed.
 
 ### Review
 
-Search for remaining material problems in correctness, completeness, consistency,
-usability, assumptions, edge cases, evidence, and validation. Deduplicate findings and
-decide whether another loop is justified.
+Look for remaining material problems in correctness, completeness, consistency, usability, assumptions, edge cases, evidence, and validation. Deduplicate findings and decide whether another loop has a meaningful delta.
 
-## Context Composition
+## Repeat Gate
 
-RPI coordinates the loop; it does not need to own every domain rule.
-
-At each phase, activate a specialized Skill only when its context materially improves the
-current phase. Examples include external-research context for evidence gathering,
-engineering-decision context for design trade-offs, or writing context for a reader-facing
-deliverable.
-
-- Do not preload every possibly relevant Skill.
-- Do not restate a specialized Skill's rules inside RPI.
-- Let the specialized Skill remain the canonical owner of its domain procedure or lens.
-- Drop phase-specific context when it is no longer relevant instead of carrying it through
-  the whole loop by default.
-- If no specialized Skill is needed, use the model's normal capability rather than
-  inventing an extra routing layer.
-
-## Loop Discipline
-
-A Review finding must be actionable, material, relevant to the requested outcome, and
-supported by evidence or a clearly identified reasoning gap.
-
-A later loop requires at least one meaningful delta:
+Continue only when Review produces at least one actionable, material finding or another concrete reason to change the next pass:
 
 - unresolved finding;
 - new evidence;
 - changed assumption or plan;
-- new perspective or counterexample;
-- different validation method.
+- useful counterexample or perspective;
+- different validation method likely to change confidence.
 
-Do not invent findings to keep looping. Cosmetic preference, rereading, restating the
-same issue, or repeating the same search does not create a new loop.
+Do not invent findings to keep looping. Cosmetic preference, rereading, restating the same issue, or repeating the same search is not a new loop. Preserve confirmed conclusions unless new evidence justifies reopening them.
 
-Preserve confirmed conclusions unless new evidence justifies reopening them.
+## Context and Validation
 
-## Validation
+Activate specialized context only when it materially improves the current phase. Do not preload every possibly relevant Skill or copy another Skill's rules into RPI.
 
-Choose validation that fits the task: source cross-checking for research, tests or code
-inspection for implementation, source-to-output comparison for rewriting, requirement
-checks for design, or counterexample search for analytical claims.
+Choose validation that matches the work: source cross-checking for research, tests or code inspection for implementation, source-to-output comparison for transformations, requirement checks for design, or counterexample search for analytical claims.
 
-Increase reasoning quality through better evidence, alternatives, contradiction tests, and
-validation—not through longer narration.
+Improve quality through better evidence, alternatives, contradiction tests, and validation—not longer narration.
 
 ## Output
 
@@ -109,5 +72,4 @@ Do not expose private reasoning or verbose phase-by-phase narration by default. 
 - material changes or conclusions;
 - unresolved findings or checks that could not be performed.
 
-Show detailed per-phase work only when the user requests it or it is necessary to
-understand the result.
+Show detailed phase work only when the user asks for it or it is necessary to understand the result.

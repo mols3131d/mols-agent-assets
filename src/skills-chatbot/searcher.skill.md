@@ -12,122 +12,55 @@ description: >-
 
 # Searcher
 
-Use search as **evidence acquisition**, not as an output ritual. Search only when it
-materially improves correctness or the user explicitly requests it.
+Use search as **evidence acquisition**, not as an output ritual. Search only when the user requests it or external evidence materially improves correctness.
 
 ## Research Contract
 
-1. **Scope first** — identify the claim or decision that needs evidence. Resolve
-   relevant time, version, region, population, product, or other scope before
-   comparing sources.
-1. **Use the smallest sufficient search** — start focused and expand only when
-   evidence is missing, conflicting, ambiguous, or broader coverage is genuinely
-   required.
-1. **Match source authority to the claim** — prefer the source that directly owns or
-   measures the fact instead of applying one universal source ranking.
-1. **Verify load-bearing claims** — cross-check claims that materially affect the
-   conclusion when evidence is indirect, contested, high-risk, or plausibly stale.
-1. **Separate evidence from judgment** — distinguish sourced facts, reasonable
-   inference, assumptions, and unresolved uncertainty.
-1. **Stop when sufficient** — do not keep searching after important claims are
-   adequately supported and more queries are unlikely to change the answer.
+1. **Scope the claim** — identify what needs evidence and resolve material time, version, region, population, product, or other boundaries.
+1. **Start focused** — use the smallest search likely to answer the claim; expand only for a concrete evidence gap.
+1. **Match authority to the claim** — prefer sources that directly own, measure, or document the fact.
+1. **Verify load-bearing claims** — seek independent confirmation when a claim is high-risk, contested, surprising, plausibly stale, indirect, or expensive to act on.
+1. **Separate evidence from judgment** — distinguish sourced facts, inference, assumptions, and unresolved uncertainty.
+1. **Stop when sufficient** — stop when important claims are adequately supported and another search is unlikely to change the answer materially.
 
-## Source Selection
+## Source Fit
 
-Choose sources for the claim being tested.
+Choose sources by the claim being tested:
 
-- Product behavior, APIs, versions, policies, standards → official documentation,
-  specifications, changelogs, repositories, or primary maintainers.
-- Scientific claims → original research, systematic reviews, official datasets, and
-  major research institutions; judge methodology and scope rather than source count.
-- Laws, regulation, public statistics, official decisions → responsible public
-  authority or primary legal/statistical source.
-- Current events → primary announcements when available plus reputable independent
-  reporting when confirmation or context matters.
-- Community practice, user experience, adoption, sentiment → relevant community
-  evidence; label anecdotal evidence appropriately.
+- product behavior, APIs, versions, policies, standards → official docs, specifications, changelogs, repositories, or primary maintainers;
+- scientific claims → original research, systematic reviews, official datasets, or major research institutions;
+- laws, regulation, public statistics, official decisions → responsible public or primary legal/statistical sources;
+- current events → primary announcements when available, plus reputable independent reporting when confirmation or context matters;
+- community practice, user experience, adoption, sentiment → relevant community evidence, labeled as anecdotal when appropriate.
 
-Do not reject blogs, forums, social media, vendor material, or secondary reporting
-solely by category. Account for incentives, provenance, and verification needs.
+Do not reject blogs, forums, social media, vendor material, or secondary reporting solely by category. Judge provenance, incentives, scope, and verification needs.
 
 ## Freshness
 
 When freshness matters:
 
-- establish the current date or relevant cutoff;
+- establish the relevant date or cutoff;
 - distinguish publication date from event, release, or effective date;
 - verify current role holders, versions, prices, schedules, rules, and availability;
-- prefer the newest source only when it still has the required authority and scope;
-- make historical and current states explicit when they differ;
-- prefer a host-provided dedicated current-data tool when it is more authoritative
-  for that data type than general search.
+- prefer a dedicated current-data tool when it is more authoritative than general search;
+- make historical and current states explicit when they differ.
 
-## Cross-checking
+Newest is not automatically best: authority and scope still matter.
 
-Scale verification to error cost. Seek independent confirmation for high-stakes,
-contested, surprising, stale, indirect, or expensive-to-act-on claims. A source that
-merely repeats another source is not independent confirmation.
+## Deepen Only on a Gap
 
-## Deep Search
+Deepen the search only when focused evidence is insufficient because terminology is ambiguous, the primary source is missing, evidence conflicts, scope differs, or independent confirmation is needed.
 
-Use a deeper search only when a small focused search is insufficient.
+Refine with exact identifiers, phrases, error messages, model numbers, document titles, official-domain targeting, synonyms, date/version constraints, or contradiction-seeking queries as useful. Use multilingual search only when language or region can materially change the evidence.
 
-1. Identify unresolved dimensions: terminology or aliases, time/version/geography,
-   primary source owner, competing explanations, or local/global context.
-1. Search the highest-value evidence gap first. Expand only when another query can
-   materially improve the answer.
-1. Refine with exact phrases, identifiers, error messages, model numbers, document
-   titles, official-domain targeting, synonyms, date/version constraints, or queries
-   designed to find contradiction and independent confirmation.
-1. Use multilingual search only when language or region is likely to change the
-   available evidence; do not translate every query by default.
-1. When evidence conflicts, confirm the sources cover the same scope and time,
-   distinguish primary evidence from repetition, inspect methodology/authority/
-   incentives/provenance as relevant, and preserve meaningful disagreement.
-1. Stop when load-bearing claims are sufficiently supported, important uncertainty
-   is represented, and another query is unlikely to change the answer materially.
-
-Do not require a fixed number of query variations. Repeating searches without a new
-evidence gap is not deeper research.
-
-## Search Operators
-
-Use advanced operators only when the active provider supports them and they reduce
-retrieval noise. Google-compatible examples include:
-
-```text
-"exact phrase"
--term
-site:domain
-filetype:ext
-intitle:term
-inurl:term
-after:YYYY before:YYYY
-A AROUND(N) B
-*
-1..10
-A OR B
-```
-
-Wrap multi-word operator values in quotes when required, for example
-`-"exclude phrase"` or `intitle:"phrase match"`. Provider-specific syntax is optional;
-do not depend on it for the capability.
+When sources conflict, first check whether they describe the same scope and time. Distinguish primary evidence from repetition and preserve meaningful disagreement instead of manufacturing consensus.
 
 ## Failure and Uncertainty
 
-If reliable evidence is unavailable, state what remains unknown or weakly supported.
-Do not convert absence of evidence into certainty, fabricate citations, or fill a
-requested quota with low-quality material merely for completeness.
-
-When sources disagree, represent the important disagreement and explain which source
-is more applicable or authoritative for the specific claim instead of manufacturing
-false consensus.
+If reliable evidence is unavailable, state what remains unknown or weakly supported. Do not fabricate citations, convert absence of evidence into certainty, or fill a requested quota with low-quality material.
 
 ## Output
 
-Answer the user's question first. Attach citations or source attribution to the claims
-they support when the runtime supports it.
+Answer the user's question first. Attach citations or source attribution to the claims they support using the host's supported mechanism.
 
-Do not dump executed queries, a search log, a bibliography, or a fixed report format
-unless the user requests it or it is necessary to audit the result. Include
-limitations only when they materially affect interpretation or confidence.
+Do not dump queries, search logs, bibliographies, or a fixed report format unless the user requests them or auditability requires them. Include limitations only when they materially affect interpretation or confidence.
