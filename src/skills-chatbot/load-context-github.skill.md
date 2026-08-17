@@ -1,10 +1,11 @@
 ---
 name: load-context-github
 description: >-
-  Load the live repository instructions and GitHub metadata that govern concrete
-  work on a repository, path, ref, PR, issue, commit, check, workflow, release, or
-  other GitHub object. Use before task-level GitHub actions or GitHub tool calls;
-  skip generic Git/GitHub explanation with no concrete target.
+  Load live repository instructions and GitHub state for task-level work on a
+  concrete GitHub repository or object, including reads, reviews, changes, resolving
+  a named target, and follow-ups to an already established target. Use with GitHub
+  connector/tool calls scoped to such work. Skip generic Git/GitHub explanation and
+  broad discovery with no repository or object scope.
 ---
 
 # Load GitHub Context
@@ -14,9 +15,18 @@ Execution belongs to the downstream task capability.
 
 ## Trigger
 
-Activate when a concrete GitHub target is being read or changed, or when a GitHub
-connector/tool will be used for task-level work. A narrow read may be used first to
-identify the target; finish relevant context loading before task-level action.
+Activate when either condition holds:
+
+- the task reads, reviews, changes, or otherwise acts on a concrete GitHub repository,
+  path, ref, PR, issue, check, workflow, release, or other GitHub object;
+- a GitHub connector/tool is used for task-level work scoped to such a target.
+
+A named target that still needs ID/ref resolution counts as concrete. Follow-up requests
+continue to use the already established target even when the user does not repeat its name.
+
+Do not activate for generic Git/GitHub explanation or broad discovery/search with no
+repository or object scope. A narrow read may identify a target first; finish relevant
+context loading before task-level action on that target.
 
 ## Contract
 
