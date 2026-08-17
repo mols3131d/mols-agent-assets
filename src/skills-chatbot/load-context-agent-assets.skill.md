@@ -1,94 +1,65 @@
 ---
 name: load-context-agent-assets
 description: >-
-  Load agent-facing authoring and design context for Skills, Rules, Prompts, Agents,
-  subagents, tool guidance, guardrails, templates, and related behavioral assets
-  consumed primarily by AI agents. Use when activation, authority, context cost,
-  routing, tool boundaries, portability, packaging, or evaluability materially affects
-  the asset. Do not use for ordinary human-facing prose or product code that does not
-  define agent behavior.
+  Load source-first authoring context for agent-facing behavioral assets such as Skills,
+  Rules, Prompts, Agents, subagents, tool guidance, guardrails, and templates. Use when
+  creating, editing, simplifying, or reviewing an asset where activation, authority,
+  context cost, responsibility boundaries, or evaluability matters. Prefer current
+  authoritative sources over copied rules. Apply mols personal conventions only when
+  explicitly requested or when the current target is clearly managed under those
+  personal conventions.
 ---
 
-# Load Context: Agent Assets
+# Contract
 
-Use this Skill as **design context** for agent-facing behavioral assets. The active workflow owns creation, editing, validation, packaging, publication, and final output.
+Use this Skill as an **authority router**, not as the workflow that owns the artifact.
 
-## Resolve First
+Before materially designing or revising an agent asset:
 
-Resolve only dimensions that can change the asset:
+1. Identify the asset type, target model/harness/platform, and deployment surface.
+1. Read current authoritative target documentation when it can change the design.
+1. Read only the narrow authoring references relevant to the decision.
+1. Let the active workflow create, edit, validate, package, or publish the artifact.
 
-- target model, agent, harness, or platform;
-- asset type and primary consumer;
-- activation scope and lifetime;
-- authority relative to user, project, platform, and tool instructions;
-- tools, permissions, files, connectors, and runtime capabilities actually available;
-- required behavior, non-behavior, failure boundary, and deployment surface.
+Do not copy fast-changing platform behavior into this Skill and do not treat remembered vendor behavior as current authority when it can be checked.
 
-Do not import one platform's filenames, precedence, tools, or packaging rules as universal conventions.
+# Authoring Sources
 
-## Repository Doctrine
+For general agent-asset authoring, use the maintained references in:
 
-When this repository's doctrine matters, use:
+- [Common agent-asset principles](https://github.com/mols3131d/mols-agent-assets/tree/main/docs/references/common/principles)
+- [LLM-readable instructions](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/authoring/agent-assets-authoring-llm-readable-instructions.md)
+- [Human-readable documents](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/authoring/agent-assets-authoring-human-readable-documents.md)
 
-1. `docs/references/agent-asset-standard-baseline.md` for standards-adjacent external/common concepts.
-1. `docs/references/agent-asset-boundaries.md` as the **Personal Agent Asset Standard** and authority for repository-specific extensions.
+Read the specific reference only when its concern matters. Do not load every linked document by default.
 
-Do not project repository-specific decisions back into the external/common baseline.
+When the target platform publishes an authoritative specification or authoring guide for the asset type, that target source outranks these general authoring references for target-specific behavior.
 
-This repository uses these peer behavioral asset types:
+# Personal Overlay — mols
 
-- **Rule** — persistent policy or constraint for an applicable scope.
-- **Skill** — reusable capability or context activated when relevant.
-- **Prompt** — current invocation goal and one-off context.
-- **Agent** — distinct runtime role, authority, tools, delegation, and behavior surface.
+Do **not** apply personal conventions merely because this Skill or repository belongs to mols.
 
-Supporting resources are not peer asset types. If knowledge needs model-directed activation, let a Skill own that activation.
+Apply the personal overlay only when one of these is established:
 
-Repository-specific Rule projections may include root/nested `AGENTS.md`, glob-scoped instructions, and `CHATBOT.md`. Preserve evidenced local conventions without presenting them as universal standards.
+- the user explicitly requests mols personal conventions or standards;
+- project/repository instructions declare them;
+- the target is a mols personal project or personal asset that is being maintained under those conventions.
 
-## Skill Package Surfaces
+When the overlay applies, read the applicable authority before using the convention:
 
-For directory-based Skills in this repository:
+- [Personal Agent Asset Standard](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/standards/agent-assets-standard-personal.md)
+- [Agent Asset Naming Convention](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/standards/agent-assets-naming-convention.md)
 
-- non-dot directories such as `references/`, `scripts/`, and `assets/` may contain runtime resources;
-- dot-prefixed directories are maintainer-only, non-runtime surfaces;
-- use `.docs/` for maintainer documentation and `.docs/baseline/` for durable purpose, requirements, invariants, major decisions, and recovery directives;
-- never make runtime behavior depend on `.docs/`, `.evals/`, `.tests/`, or another dot directory;
-- exclude dot directories from deployment/package output by default.
+For Skill-specific work, also use `load-context-agent-skills` and its Skill-specific sources.
 
-If existing maintainer documentation contains runtime-required material, move that material to a runtime surface before changing the directory role. Flat single-file Skills do not gain an internal bundle merely to mirror directory-based packages.
+# Fallback
 
-## Design Rules
+If authoritative sources cannot be accessed, do not invent detailed platform or personal rules. Preserve only these stable defaults until verification is possible:
 
-### Activation and ownership
+- one coherent responsibility per asset;
+- one authoritative owner per durable rule;
+- explicit activation, action, authority, and observable validation where they matter;
+- no speculative structure or mechanism without a current need;
+- minimize context without removing behavior-critical boundaries.
 
-- Give every reusable asset a recognizable situation in which loading it changes behavior.
-- Discovery metadata should say **what** the asset contributes and **when** it should activate; add a negative boundary only when nearby capabilities are easy to confuse.
-- Keep one coherent responsibility and reason to change. Split only when activation, authority, permission, success criteria, or distribution materially diverges.
-- A context-only Skill loads judgment and stops; downstream workflows retain mutation, validation, and presentation ownership.
-
-### Context economy
-
-- Spend context on behavior the model would not reliably infer from the task, platform, or repository.
-- Put selection-critical information in metadata or discovery surfaces.
-- Keep stable policy in durable instructions; keep run-, user-, environment-, or time-varying state in task input, tools, retrieval, or another runtime context surface.
-- Distinguish model-visible context from runtime state. Data available to tools or application code is not automatically model context.
-- Prefer progressive disclosure when the target supports it, but keep non-obvious activation triggers discoverable before they are needed.
-- Preserve independent target variants when they cannot share runtime context. Do not create hidden dependencies merely to remove textual overlap.
-
-### Behavioral contract
-
-Expose observable boundaries:
-
-- when the asset should and should not activate;
-- which action or non-action matters;
-- which invariants must survive adaptation;
-- which failure, handoff, or validation state must remain visible.
-
-Match precision to task fragility: use principles when multiple approaches are valid and explicit constraints or deterministic mechanisms when errors are materially costly.
-
-When evaluating an asset, distinguish static inspection, model simulation, and actual runtime evidence. Prefer the smallest sufficient instruction set that remains discoverable and robust.
-
-## Boundary
-
-This Skill contributes agent-asset design judgment only. Repository rules and the active platform's real authority model outrank this general context.
+Expose any unresolved source-dependent assumption that can materially affect the result.
