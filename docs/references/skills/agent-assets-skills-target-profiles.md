@@ -58,7 +58,9 @@ Flat Skill의 activation 정보는 **front matter `description`에 집중한다*
 - 인접 capability와 혼동될 가능성이 있을 때의 핵심 negative boundary;
 - follow-up continuity나 target 전환처럼 selection을 바꾸는 조건이 실제로 중요할 때 그 조건.
 
-본문은 이미 Skill이 선택·활성화되었다고 가정한다. 따라서 `Trigger`, `Activation`, `When to use` 같은 별도 activation 섹션을 두거나 front matter의 조건을 본문에서 반복하지 않는다. 본문에는 contract, procedure, constraints, boundary, output처럼 **활성화 이후의 행동**만 둔다.
+`description`은 **selection contract**다. 다른 Skill을 먼저 또는 함께 사용해야 하는 조건, prerequisite, fallback, handoff, execution order 같은 routing/orchestration은 넣지 않고 본문에서 다룬다.
+
+본문은 이미 Skill이 선택·활성화되었다고 가정한다. 따라서 `Trigger`, `Activation`, `When to use` 같은 별도 activation 섹션을 두거나 front matter의 조건을 본문에서 반복하지 않는다. 본문에는 필요한 routing을 포함해 contract, procedure, constraints, boundary, output처럼 **활성화 이후의 행동**만 둔다.
 
 Portable front matter field와 constraint는 [Agent Skills Specification](agent-skills-io/agent-skills-io-specification.md)을 따른다. 특정 target이 별도 discovery contract를 강제하면 그 target contract가 우선한다.
 
