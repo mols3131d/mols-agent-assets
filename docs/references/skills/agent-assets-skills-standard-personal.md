@@ -24,6 +24,10 @@ Tier 1과 Tier 2의 authoritative source와 공식 링크 registry는
 [Agent Skills Specification](agent-skills-io/agent-skills-io-specification.md)이
 소유한다. Personal Standard에서 vendor 규격을 다시 요약하지 않는다.
 
+Tier 2는 Tier 1을 대체하는 별도 공통 표준이 아니다. Portable contract는 Tier 1을
+기준으로 하고, 실제 target runtime에서 필요한 추가·제약 사항만 Tier 2 원문에서
+확인한다.
+
 Target runtime의 mandatory contract가 repository-local convention보다 우선한다.
 Personal Standard를 외부 Agent Skills specification이나 vendor 규격의 일부처럼
 표현하지 않는다.
