@@ -39,6 +39,14 @@ Agent context is an execution resource, not a documentation archive.
   layers deliberately: discovery metadata first, `SKILL.md` on activation, and bundled
   resources only when needed. Treat this as target-specific behavior, not a universal
   loading model for every agent platform.
+- Keep stable behavioral policy in durable instructions; prefer task input, dynamic
+  instructions, tools, retrieval, or other runtime context surfaces for information that
+  changes by user, run, environment, or time when the target supports them. Do not copy
+  volatile live state into long-lived instruction assets merely to make it available.
+- When a runtime distinguishes model-visible context from local application state or
+  dependencies, preserve that boundary. Do not assume data available to tools, hooks, or
+  runtime code is automatically visible to the model; expose it through an intentional
+  model-visible surface only when the task requires it.
 - Keep important safety, permission, authority, routing, and non-obvious trigger rules
   discoverable before the agent needs them.
 - Do not explain general model capabilities the target model can already be expected to
