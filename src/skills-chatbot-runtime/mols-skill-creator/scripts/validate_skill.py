@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate a skill's portable structure without third-party dependencies."""
+"""Validate a directory-based skill source package without third-party dependencies."""
 
 from __future__ import annotations
 
@@ -36,12 +36,14 @@ def validate(root: Path) -> dict[str, list[str]]:
 
     required = [
         root / "SKILL.md",
-        root / "docs" / "DIRECTIVE.md",
-        root / "docs" / "WORKING.md",
+        root / ".docs" / "baseline" / "DIRECTIVE.md",
     ]
     for path in required:
         if not path.is_file():
             errors.append(f"missing required file: {path.relative_to(root)}")
+
+    if (root / "docs").exists():
+        errors.append("legacy docs/ present; use .docs/ for non-runtime maintainer docs")
 
     skill_path = root / "SKILL.md"
     if skill_path.is_file():
