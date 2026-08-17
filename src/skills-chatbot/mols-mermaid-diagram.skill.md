@@ -39,23 +39,24 @@ When web access is available, consult the relevant Mermaid official documentatio
 
 - Start from [Mermaid Open Source Documentation](https://mermaid.ai/open-source/) and open only the diagram type or feature needed for the task.
 - Prefer the official Mermaid documentation over memory, blogs, snippets, or third-party examples for Mermaid syntax and current features.
+- After selecting a type for a new diagram or structural redesign, check that type's official Mermaid documentation before relying on its syntax or support status.
 - If the target renderer or host is known, its actually supported Mermaid version and integration constraints control compatibility even when current Mermaid supports a feature.
 - Tiny edits that do not depend on syntax or compatibility may proceed without browsing.
 
 ## Canonical Skill references
 
-When web or GitHub access is available, consult the relevant canonical `mols-mermaid-diagram` reference for non-trivial type, layout, style, example, or verification decisions. Load only the responsibility needed for the current task.
+When web or GitHub access is available, use the canonical `mols-mermaid-diagram` references progressively. Open only the reference whose condition applies.
 
 Canonical source:
 <https://github.com/mols3131d/mols-agent-assets/tree/main/src/skills/mols-mermaid-diagram>
 
-- Type selection, grouping, splitting, compatibility policy:
+- New diagram, type selection, or structure/grouping/splitting change:
   <https://github.com/mols3131d/mols-agent-assets/blob/main/src/skills/mols-mermaid-diagram/references/mermaid-diagrams.md>
-- Styling or visual-language decisions:
+- Theme, emphasis, styling, or existing visual-language decision:
   <https://github.com/mols3131d/mols-agent-assets/blob/main/src/skills/mols-mermaid-diagram/references/style-policy.md>
-- Syntax patterns and examples: start from the index and open only the selected type:
+- Exact syntax or example needed: start from the index, then open only the selected type:
   <https://github.com/mols3131d/mols-agent-assets/blob/main/src/skills/mols-mermaid-diagram/references/examples/README.md>
-- Syntax errors, renderer validation, export, or compatibility verification:
+- Render, export, syntax error, or compatibility verification:
   <https://github.com/mols3131d/mols-agent-assets/blob/main/src/skills/mols-mermaid-diagram/references/mermaid-verification.md>
 
 Use Mermaid official documentation as the authority for Mermaid syntax and current feature support. Use canonical Skill references for this capability's design, readability, routing, and verification policy. If the user supplies a repository revision or the current task is pinned to another revision, use that revision instead of `main` when possible.
