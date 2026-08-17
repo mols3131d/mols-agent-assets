@@ -5,6 +5,7 @@
 | Directory | Role |
 | --- | --- |
 | `agents/` | Subagents and custom agents |
+| `prompts/` | Explicit invocation prompts and reusable prompt sources |
 | `skills/` | Workspace-capable agent skills |
 | `skills-chatbot/` | Self-contained single-file chatbot skills under the 4,000-token flat budget |
 | `skills-chatbot-runtime/` | Bundled/runtime chatbot skills for larger or runtime-dependent capabilities |
