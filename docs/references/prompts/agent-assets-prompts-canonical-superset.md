@@ -1,59 +1,136 @@
 ---
 title: Prompt Canonical Superset
-description: 여러 invocation surface에 투영할 Prompt의 repository-local canonical superset 기준
+description: Rulesync Command format을 Prompt transport로 사용하는 repository-local canonical Prompt spec
 ---
 
 # Prompt Canonical Superset
 
-여러 agent/chatbot invocation surface에 같은 Prompt를 배포할 때의 권장 Superset은 **Markdown body와 declarative front matter를 가진 `<name>.prompt.md` source**다.
+Canonical Prompt는 **`.rulesync/commands/<name>.md`** 로 작성한다.
 
-Prompt의 본질인 task intent와 input/output contract는 Markdown에 유지하고, 실행 surface가 지원하는 selector와 execution hint는 front matter에 보존한다.
+이 저장소의 Prompt는 reusable invocation instruction을 뜻한다. Rulesync에서는 이 cross-target surface를 `commands`라고 부른다.
 
-```text
-<name>.prompt.md
-├─ task intent / workflow
-├─ arguments and constraints
-├─ output contract
-└─ target-scoped execution metadata
-        ↓
-   target invocation surfaces
+## Schema
+
+```yaml
+---
+description: <string>
+targets: ["*"]
+
+copilot:
+  description: <string>
+  agent: <ask|agent|plan|custom-agent-name>
+
+antigravity:
+  trigger: </command>
+  turbo: <boolean>
+
+pi:
+  argument-hint: <string>
+
+codexcli:
+  argument-hint: <string>
+
+roo:
+  mode: <mode-slug>
+
+# 기타 target-specific block 허용
+<target>: <mapping>
+---
+
+<prompt body>
 ```
 
-## Superset Owns
+## Fields
 
-- invocation의 목적과 완료 조건
-- arguments, defaults와 input semantics
-- task-local constraint와 workflow
-- output semantics
-- agent/model/tool 선택이 Prompt 의미의 일부일 때 그 의도
-- target별 execution capability 차이
+| Field | Requirement | Meaning |
+| --- | --- | --- |
+| filename/path | **Required** | Prompt identity와 command name. Nested path는 namespace가 될 수 있음 |
+| `description` | **Required** | Prompt 목적/사용 맥락 |
+| `targets` | **Required** | `"*"` 또는 Rulesync target 목록 |
+| `<target>` | Optional | target-native invocation metadata |
+| body | **Required** | 실제 reusable prompt/workflow |
 
-현재 repository validator가 다루는 `.prompt.md` front matter surface는 `name`, `description`, `argument-hint`, `agent`, `model`, `tools`다. 모든 field를 항상 채우는 schema로 사용하지 않고 실제 의미가 있을 때만 둔다.
+`name`은 top-level front matter가 아니라 canonical file path에서 결정한다.
 
-## Projection
+## Arguments
 
-Projection은 canonical Prompt의 task contract를 target의 native invocation 방식으로 옮긴다.
+Canonical body는 Rulesync의 universal command syntax를 사용한다.
 
 ```text
-Prompt Superset
-├─ VS Code / Copilot prompt file
-├─ chatbot reusable prompt
-└─ other target-native invocation
+$ARGUMENTS   # 전체 arguments
+$1 ... $N   # positional arguments
 ```
 
-Target에 agent/model/tools 같은 selector가 없으면 그 차이를 숨기지 않는다. 해당 selector가 단순 실행 최적화인지, Prompt 성공에 필요한 behavioral requirement인지 구분한 뒤 omit, adapt 또는 unsupported로 처리한다.
+Target이 다른 placeholder syntax를 요구하면 Rulesync가 generation/import 과정에서 변환한다.
 
-문구를 문자 단위로 보존하는 것보다 task intent, arguments, constraints와 output contract를 보존하는 것이 우선이다.
+Arguments를 사용하는 Prompt는 body 초반에 의미와 default를 명시한다.
 
-## Source Placement
+```markdown
+target_pr = $1
 
-이 저장소의 canonical reusable Prompt source는 `src/prompts/<name>.prompt.md`에 둔다. Target이 같은 source를 직접 사용할 수 있으면 별도 projection을 만들지 않는다.
+If target_pr is omitted, use the pull request for the current branch.
+```
 
-Prompt는 일회성 user request 자체와 구분한다. 반복 가능한 invocation source로 관리할 가치가 있을 때만 repository asset으로 둔다.
+## Repository Constraints
 
-## Boundary
+1. Prompt의 task contract와 workflow는 body가 authority다.
+1. Target-independent argument semantics를 target block에 복제하지 않는다.
+1. Agent/model/mode 같은 execution selector는 실제 target에서 필요한 경우에만 target block에 둔다.
+1. Target selector가 없으면 Prompt의 의미가 깨지는 경우 projection을 unsupported로 판정한다. 조용히 selector를 삭제하지 않는다.
+1. Nested command path를 사용할 때는 flat-only target의 basename collision 가능성을 검증한다.
+1. Skill과 Prompt가 동일 target에서 같은 slash-command namespace를 공유하는 경우 이름 충돌을 피한다.
 
-- 이 문서는 Prompt 유형의 **최적 canonical Superset**을 소유한다.
-- Prompt를 persistent Rule이나 독립 Agent로 확장하지 않는다.
-- target-specific selector를 모든 target의 공통 capability라고 가정하지 않는다.
-- vendor schema가 바뀌면 target-native projection contract를 갱신하되 Prompt의 task authority를 임의로 이동하지 않는다.
+## Minimal
+
+```yaml
+---
+description: Review the requested pull request
+targets: ["*"]
+---
+
+pr = $1
+
+Review the pull request and report evidence-backed findings.
+```
+
+## Extended
+
+```yaml
+---
+description: Review the requested pull request
+targets: ["copilot", "antigravity-ide", "pi"]
+
+copilot:
+  agent: agent
+
+antigravity:
+  trigger: /review
+  turbo: false
+
+pi:
+  argument-hint: "[pr-number]"
+---
+
+pr = $1
+
+If pr is omitted, use the pull request for the current branch.
+Review it and report evidence-backed findings.
+```
+
+## Projection Contract
+
+- `.prompt.md`, slash command, saved prompt, Skill-backed command 등 target-native surface 차이는 projection concern이다.
+- Target이 Prompt surface 대신 Skill surface만 제공하면 Prompt semantics를 보존한 projection만 허용한다.
+- Target-specific execution metadata가 지원되지 않으면 loss를 명시한다.
+
+## Validation
+
+```bash
+rulesync generate --dry-run --features commands --targets <targets>
+rulesync generate --check --features commands --targets <targets>
+```
+
+## References
+
+- [Rulesync File Formats — commands](https://rulesync.dyoshikawa.com/reference/file-formats.html#rulesync-commands-md)
+- [Rulesync Command Syntax](https://rulesync.dyoshikawa.com/reference/command-syntax.html)
