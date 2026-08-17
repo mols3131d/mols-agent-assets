@@ -23,7 +23,8 @@ Activate when the base loader applies and either condition holds:
 - the user explicitly identifies the target as their own or personally governed.
 
 Keep the overlay active for follow-up requests that continue the same personal target,
-even when the user does not repeat its name.
+even when the user does not repeat its name. If a follow-up switches targets, re-evaluate
+personal scope before carrying this overlay forward.
 
 Do not infer personal scope from collaborator access, organization membership, admin
 permission, authorship, contribution history, or familiarity. If ownership/governance is
