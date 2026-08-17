@@ -7,6 +7,7 @@ on:
     paths:
       - "src/skills/**"
       - "src/scripts/**"
+      - "scripts/**"
       - "tests/skills/**"
       - "tests/scripts/**"
       - ".github/workflows/targeted-tests.yml"
@@ -69,6 +70,11 @@ jobs:
                 ;;
               src/scripts/*|tests/scripts/*)
                 name="${path#*/scripts/}"
+                add_script "${name%%/*}"
+                ;;
+              scripts/*)
+                name="${path#scripts/}"
+                name="${name%.py}"
                 add_script "${name%%/*}"
                 ;;
             esac
