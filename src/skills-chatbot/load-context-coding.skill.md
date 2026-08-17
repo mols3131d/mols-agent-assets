@@ -11,7 +11,7 @@ description: >-
 
 # Load Context: Coding
 
-Use this Skill as **coding judgment context**. The active task owns repository discovery, implementation, testing, review workflow, Git operations, tool calls, and final output.
+This Skill contributes **coding judgment context**. The active task owns repository discovery, implementation, testing, review workflow, Git operations, tool calls, and final output.
 
 ## Decision Order
 
