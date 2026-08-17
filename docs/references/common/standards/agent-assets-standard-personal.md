@@ -37,6 +37,8 @@ description: 외부 baseline을 확장한 repository-local Agent Asset taxonomy�
 재사용 가능하다는 이유만으로 Skill로 만들지 않는다. 반대로 별도 role이나 지속
 policy가 필요하지 않은 reusable capability/context는 Skill이 기본 후보다.
 
+특정 **work surface가 활성화된 동안에는 항상 필요하지만 다른 task에는 불필요한 baseline context**는 전역 Rule 대신 scope baseline Skill loader로 둘 수 있다. 이 경우 scope 내부의 넓은 activation은 의도된 coverage이며, 세부 activation과 review 규칙은 유형별 Skill reference가 소유한다.
+
 ## Type-Specific Standards
 
 공통 taxonomy와 유형별 repository-local extension을 분리한다.
