@@ -10,9 +10,9 @@ description: >-
   domain models, requirements, or database cardinality, even when Mermaid is not named.
   Also use for Mermaid syntax, rendering, layout, aspect ratio, readability, type selection,
   export, or compatibility. Do not use when the main question is quantitative comparison,
-  trend, proportion, quantified flow, or profile; whole-dashboard composition; simple
-  list/table output; generic image/illustration generation; or unrelated Mermaid
-  package/API integration.
+  trend, proportion, quantified flow, weighted hierarchy, profile, or normalized
+  positioning; whole-dashboard composition; simple list/table output; generic
+  image/illustration generation; or unrelated Mermaid package/API integration.
 ---
 
 # Contract
