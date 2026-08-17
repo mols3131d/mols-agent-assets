@@ -186,8 +186,8 @@ Finalize loop:
 ### Inspect
 
 Inspect acceptance conditions, unresolved material findings, recent changes,
-validation gaps, regressions, and residual risks. Look only where an issue could still
-materially affect completion.
+validation gaps, regressions, residual risks, and required phase-loop integrity. Look
+only where an issue could still materially affect completion.
 
 ### Resolve
 
@@ -199,14 +199,14 @@ otherwise be misleading.
 
 Perform the smallest task-appropriate checks that can materially change confidence in
 completion. Validate the result and final changes against important requirements,
-evidence, regression risk, and residual risk.
+evidence, regression risk, residual risk, and checks claimed by the work.
 
 ### Gate
 
 Return one gate result:
 
-- **PASS** — completion is trustworthy; any remaining limitations are non-blocking and
-  documented.
+- **PASS** — completion is trustworthy, required genuine-loop minima were satisfied,
+  and any remaining limitations are non-blocking and documented.
 - **RETRY** — an actionable material issue remains and another Finalize loop can
   meaningfully address it.
 - **BLOCKED** — trustworthy completion cannot be reached with the remaining loop
@@ -216,6 +216,9 @@ Do not pass the gate before the Finalize minimum is satisfied. After two genuine
 stop on `PASS`; continue on `RETRY` while a material delta remains, up to four loops.
 At four loops, unresolved completion-blocking issues produce `BLOCKED`, not a false
 success.
+
+A prior phase budget shortfall prevents `PASS` unless the user explicitly overrode that
+budget. Do not use Finalize to retroactively legitimize fake or missing loops.
 
 ## Reporting
 
@@ -237,7 +240,7 @@ decisions or changes, evidence or validation, and remaining material concerns.
 
 When the workflow ends for any reason, produce a work report with one final status:
 
-- **COMPLETE** — Finalize passed its completion gate.
+- **COMPLETE** — required phase budgets were genuinely satisfied and Finalize passed.
 - **INCOMPLETE** — a best-effort result exists, but required loop depth or validation
   was not genuinely satisfied.
 - **BLOCKED** — a material capability, evidence, authority, or completion blocker
