@@ -43,7 +43,7 @@ runtime에서는 해당 harness의 mandatory contract가 repository-local conven
 | Microsoft Agent Framework | [Agent Skills](https://learn.microsoft.com/en-us/agent-framework/agents/skills) | Microsoft Agent Framework의 Skill provider, loading, execution behavior |
 | GitHub Copilot | [About agent skills](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills) | Copilot의 discovery location, supported surfaces, installation behavior |
 | Google Gemini CLI | [Agent Skills](https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/skills.md) | Gemini CLI의 discovery tier, activation, consent, installation behavior |
-| OpenAI / Codex | [Skills](https://developers.openai.com/plugins/concepts/skills) | ChatGPT/Codex plugin Skill model과 host-specific packaging |
+| OpenAI / ChatGPT & Codex | [Build skills](https://developers.openai.com/codex/skills) | ChatGPT/Codex의 Skill structure, discovery, activation, host metadata와 built-in creator |
 | xAI / Grok | [Grok shell Skill reference](https://github.com/xai-org/grok-build/blob/main/crates/codegen/xai-grok-shell/README.md) | Grok shell의 Skill format, discovery와 invocation behavior |
 
 새 major harness가 Agent Skills를 공식 지원하고 실제로 이 저장소의 target이 되면
@@ -60,14 +60,14 @@ runtime에서는 해당 harness의 mandatory contract가 repository-local conven
 - Microsoft — [Microsoft Agent Skills repository](https://github.com/microsoft/skills)
 - GitHub Copilot — [Adding agent skills for GitHub Copilot CLI](https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-skills)
 - Google — [How to use AI Agent Skills with Gemini CLI](https://codelabs.developers.google.com/gemini-cli/how-to-create-agent-skills-for-gemini-cli)
-- OpenAI — [Build skills](https://developers.openai.com/plugins/build/skills)
+- OpenAI / ChatGPT & Codex — [Build skills](https://developers.openai.com/codex/skills)
 - OpenAI / Codex — [Save workflows as skills](https://learn.chatgpt.com/use-cases/reusable-codex-skills)
 - xAI / Grok — [Grok shell Skill reference](https://github.com/xai-org/grok-build/blob/main/crates/codegen/xai-grok-shell/README.md#skills), including its `Creating a Skill` section
 
 ### Official Skill-Creator Skills
 
 - Anthropic — [`skill-creator`](https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md)
-- Microsoft — [`skill-creator`](https://github.com/microsoft/skills/blob/main/.github/skills/skill-creator/SKILL.md)
+- Microsoft — [`skill-creator`](https://github.com/microsoft/skills/blob/main/.github/skills/skill-creator/SKILL.md) for Azure SDK and Foundry-oriented Skill authoring
 - Google Gemini CLI — built-in [`skill-creator`](https://github.com/google-gemini/gemini-cli/blob/main/packages/core/src/skills/builtin/skill-creator/SKILL.md)
 - OpenAI Codex — [`skill-creator`](https://github.com/openai/codex/blob/main/codex-rs/skills/src/assets/samples/skill-creator/SKILL.md)
 
