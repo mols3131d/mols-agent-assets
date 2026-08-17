@@ -6,9 +6,7 @@ description: >-
   creating, editing, simplifying, reviewing, or evaluating such an asset, including
   decisions about activation, authority, context cost, responsibility boundaries,
   portability, or evaluability. Do not use for ordinary human-facing prose or product
-  code that does not define agent behavior. Prefer current authoritative sources over
-  copied rules. Apply mols personal conventions only when explicitly requested or when
-  the current target is clearly managed under those personal conventions.
+  code that does not define agent behavior.
 ---
 
 # Contract
