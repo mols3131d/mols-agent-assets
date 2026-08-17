@@ -77,7 +77,7 @@ Do not claim to have consulted a source that was not actually accessible. If ext
 | What are the entities and database cardinalities? | `erDiagram` |
 | What are the system or domain boundaries and dependencies? | architecture/C4 when supported; otherwise grouped `flowchart` |
 | What steps does a user take and how is each step experienced? | `journey` |
-| What happens when over time without duration? | `timeline` when supported |
+| What happens over time without duration? | `timeline` when supported |
 | What lasts how long or depends on which milestone? | `gantt` |
 | What is the concept or scope hierarchy? | `mindmap` |
 | How do requirements trace to elements? | `requirementDiagram` |
