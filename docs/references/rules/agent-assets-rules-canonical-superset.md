@@ -1,6 +1,6 @@
 ---
 title: Rule Canonical Superset
-summary: Rulesync Rule을 기준으로 한 repository-local canonical Rule spec
+description: Rulesync Rule을 기준으로 한 repository-local canonical Rule spec
 ---
 
 # Rule Canonical Superset
