@@ -34,13 +34,13 @@ This Skill owns **target delivery and Skill-state mutation** for already selecte
 
 Use `mols-skill-find` first when the source is broad, the candidate is ambiguous, target-specific siblings must be selected, or a repository inventory is needed.
 
-Preserve the requested end state. When a target distinguishes a reusable/registered Skill from a temporary in-context load, do not report the temporary state as equivalent to installation or synchronization that requested the reusable state. Conversely, do not invent persistence requirements for a target whose native Skill model does not use them.
+Preserve the requested end state. If a target distinguishes a reusable/registered Skill from a temporary in-context load, do not report the temporary state as equivalent to a requested reusable state. If a target does not make that distinction, follow its native model instead of inventing one.
 
 Do not:
 
 - crawl unrelated Skill sources to find alternatives;
 - install multiple sibling projections of one capability;
-- overwrite, rename, delete, or merge an installed Skill when identity is uncertain;
+- overwrite, rename, delete, or merge an existing Skill when identity is uncertain;
 - export a file or package when the target can complete or stage the requested state through a more direct native surface;
 - claim a target state that the target did not actually reach.
 
