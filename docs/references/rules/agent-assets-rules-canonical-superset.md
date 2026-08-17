@@ -1,68 +1,110 @@
 ---
 title: Rule Canonical Superset
-description: 여러 coding-agent harness에 투영할 Rule의 repository-local canonical superset 기준
+summary: Rulesync Rule을 기준으로 한 repository-local canonical Rule spec
 ---
 
 # Rule Canonical Superset
 
-## Chosen Superset
+Canonical Rule은 **`.rulesync/rules/<name>.md`** 로 작성한다.
 
-여러 coding-agent harness에 같은 Rule을 배포할 때 이 저장소의 최적 Superset은 **Rulesync `.rulesync/rules/`의 unified Rule source**다.
+## Schema
 
-이 선택은 GitHub Copilot, Google Antigravity 같은 target-native Rule을 하나의 policy authority에서 생성할 수 있으면서도, target마다 다른 표현과 지원 범위를 projection으로 남길 수 있기 때문이다.
+```yaml
+---
+root: false
+localRoot: false
+targets: ["*"]
+description: <string>
+globs: ["<glob>"]
 
-```text
-.rulesync/rules/ canonical Rule
-├─ shared policy semantics
-├─ target-scoped policy semantics
-└─ scope / applicability intent
-        ↓
-   target-native Rules
+agentsmd:
+  subprojectPath: <path>
+
+copilot:
+  name: <string>
+  excludeAgent: <code-review|cloud-agent>
+
+antigravity:
+  trigger: <always_on|glob|manual|model_decision>
+  globs: ["<glob>"]
+  description: <string>
+
+# 기타 target-specific block 허용
+<target>: <mapping>
+---
+
+<rule instructions>
 ```
 
-Rulesync를 사용하지 않는 단일-target Rule까지 이 형식으로 강제하지 않는다. 이미 native Rule이 authoritative하면 그 source를 유지하는 bridge가 더 작고 적절할 수 있다.
+## Fields
 
-## Superset Owns
+| Field | Requirement | Meaning |
+| --- | --- | --- |
+| `root` | **Required** | `true`면 root/baseline Rule, `false`면 modular Rule |
+| `localRoot` | Optional, default `false` | 개인·project-local root Rule |
+| `targets` | **Required** | `"*"` 또는 Rulesync target 목록 |
+| `description` | Recommended | Rule 목적/적용 조건. model-decided target에서 activation hint로도 사용 가능 |
+| `globs` | Optional | file/path scoped Rule의 canonical glob |
+| `<target>` | Optional | canonical field로 표현되지 않는 target-native semantics |
+| body | **Required** | 실제 지속 적용 policy/constraint |
 
-- 공통 policy와 constraint
-- Rule의 적용 의도와 scope semantics
-- target마다 실제로 달라져야 하는 target-scoped semantics
-- projection에서 보존해야 할 authority와 precedence boundary
-- 표현 불가능하거나 근사가 필요한 의미의 compatibility expectation
+## Repository Constraints
 
-Target별 filename, directory, selector syntax, metadata와 harness-native encoding은 Superset의 본질이 아니라 projection concern이다.
+1. `root: true`는 repository baseline처럼 실제 root semantics가 필요한 Rule에만 사용한다.
+1. File scope는 target-specific selector보다 top-level `globs`로 표현 가능한 경우 `globs`를 authority로 둔다.
+1. Directory subtree scope는 `agentsmd.subprojectPath`처럼 target이 요구하는 별도 구조가 있을 때 target block에 둔다.
+1. 공통 의미를 target block에 복제하지 않는다. **공통 field → target override** 순서로 둔다.
+1. Target block은 다른 target에 전파하면 안 되는 native-only 의미만 소유한다.
+1. 여러 `root: true` fragment를 허용하더라도 동일 policy를 중복 정의하지 않는다.
 
-## Delivery Route
+## Minimal
 
-1. **Direct reuse** — target이 authoritative source를 직접 발견하고 필요한 semantics를 소비할 수 있으면 그대로 사용한다.
-1. **Canonical fan-out** — `.rulesync/rules/`가 authoritative하고 native payload가 필요하면 생성한다.
-1. **Native bridge** — 이미 한 harness의 native Rule이 authoritative하면 source를 유지한 채 필요한 target으로 변환한다.
+```yaml
+---
+root: true
+targets: ["*"]
+description: Repository-wide development rules
+---
 
-단순 bridge를 위해 source authority를 `.rulesync/`로 옮기지 않는다. Canonicalization 자체가 의도된 경우에만 ownership을 변경한다.
+# Development Rules
 
-## Projection
-
-```text
-Rule Superset
-├─ GitHub Copilot Rule
-├─ Google Antigravity IDE Rule
-└─ Google Antigravity CLI Rule
+- Follow repository-local instructions.
+- Do not commit generated secrets.
 ```
 
-Projection은 target의 실제 Rule contract에 맞춰 format, placement, selector와 지원 semantics를 조정한다. 생성 성공을 semantic parity로 보지 않는다.
+## Scoped
 
-Rule의 directory/glob/chatbot 배치 규칙은 [Rule Projections](agent-assets-rules-projections.md)가 소유한다.
+```yaml
+---
+root: false
+targets: ["copilot", "antigravity-ide"]
+description: Markdown authoring rules
+globs: ["**/*.md"]
 
-Rulesync 기반 source resolution, preview, generation, bridge와 validation 실행 계약은 [`rulesync-agent-assets`](../../../src/skills/rulesync-agent-assets/SKILL.md)가 소유한다. 설치된 Rulesync version의 실제 target/feature 지원이 runtime authority다.
+antigravity:
+  trigger: glob
+  globs: ["**/*.md"]
+---
 
-## Primary Reference
+Use repository Markdown conventions.
+```
 
-- [Rulesync](https://github.com/dyoshikawa/rulesync) — unified `.rulesync/` source, target generation과 conversion backend
+## Projection Contract
 
-## Boundary
+- GitHub Copilot, Antigravity 등 target-native Rule은 이 source에서 생성되는 **projection**이다.
+- Target이 지원하지 않는 field는 조용히 의미를 바꾸지 말고 omission/approximation으로 취급한다.
+- 이미 하나의 native Rule이 authoritative인 경우에는 canonical migration 없이 Rulesync bridge를 사용할 수 있다.
 
-- 이 문서는 Rule 유형의 **최적 canonical Superset과 ownership model**을 소유한다.
-- 모든 Rule에 multi-target canonicalization을 강제하지 않는다.
-- target-only policy를 공통분모 때문에 버리지 않는다.
-- generated target Rule은 명시적 ownership migration이 없는 한 derived artifact다.
-- platform/system/user authority와 target harness의 강제 규격이 이 convention보다 우선한다.
+## Validation
+
+```bash
+rulesync generate --dry-run --features rules --targets <targets>
+rulesync generate --check --features rules --targets <targets>
+```
+
+설치된 Rulesync의 schema와 target adapter가 runtime authority다.
+
+## References
+
+- [Rulesync File Formats — rules](https://rulesync.dyoshikawa.com/reference/file-formats.html#rulesync-rules-md)
+- [Rule Projections](agent-assets-rules-projections.md)
