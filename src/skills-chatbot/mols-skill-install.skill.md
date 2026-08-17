@@ -2,14 +2,9 @@
 name: mols-skill-install
 description: >-
   Install, update, sync, migrate, or load a selected or otherwise unambiguous Skill into
-  the active agent/chatbot target through the best supported target surface. Use when
-  the requested end state is target delivery or Skill-state mutation and the candidate
-  is already resolved enough to act on safely. If the source is broad, candidate identity
-  is ambiguous, or target-specific sibling selection remains unresolved, use
-  `mols-skill-find` first. Preserve the caller's requested end state and the target's own
-  semantics; prefer direct target actions, then native interactive flows, and use
-  manual/package handoff only as a fallback. Do not assume one chatbot service's UI,
-  package format, persistence model, or Skill implementation.
+  the active agent/chatbot target. Use when the requested end state is target delivery
+  or Skill-state mutation and the candidate is resolved enough to act on safely. Do not
+  use for broad Skill discovery, capability matching, or unresolved sibling selection.
 ---
 
 # Mols Skill Install
@@ -35,6 +30,8 @@ on_conflict: <auto>
 ## Contract
 
 This Skill owns **target delivery and Skill-state mutation** for already selected Skills.
+
+Use `mols-skill-find` first when the source is broad, the candidate is ambiguous, target-specific siblings must be selected, or a repository inventory is needed.
 
 Preserve the requested end state. If a target distinguishes a reusable/registered Skill from a temporary in-context load, do not report the temporary state as equivalent to a requested reusable state. If a target does not make that distinction, follow its native model instead of inventing one.
 
