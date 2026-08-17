@@ -46,7 +46,7 @@ Repository-local target profile과 package surface 상세는
 - flat chatbot payload budget
 - directory package의 runtime/non-runtime surface
 - `.docs/baseline/` preservation convention
-- `load-context-*` context-only naming convention
+- `load-context-*` context-only naming and activation convention
 
 상세 constraint는 이 문서에 복제하지 않는다.
 
