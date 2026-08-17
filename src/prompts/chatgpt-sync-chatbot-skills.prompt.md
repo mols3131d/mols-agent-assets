@@ -20,12 +20,14 @@ on_conflict: <auto>
 
 ## Bootstrap
 
-Before discovery, read the current canonical flat sources for both control Skills from `mols3131d/mols-agent-assets`:
+Before discovery, resolve one prerequisite revision for `mols3131d/mols-agent-assets`. Use an explicitly requested prerequisite revision when supplied; otherwise resolve the repository default branch head and pin its commit when the source allows it.
+
+Read both canonical flat control Skills from that same revision:
 
 - `src/skills-chatbot/mols-skill-find.skill.md`
 - `src/skills-chatbot/mols-skill-install.skill.md`
 
-Use the repository default branch unless the user explicitly requests another prerequisite revision. These bootstrap sources are independent of the requested sync `source`.
+These bootstrap sources are independent of the requested sync `source`.
 
 For this run, apply both canonical sources as in-context instructions and treat them as the authority for `mols-skill-find` and `mols-skill-install`, even when installed copies already exist. Installed copies are target state to reconcile, not execution authority. In-context use is sufficient for this run but is not persistent installation.
 
@@ -95,7 +97,7 @@ Return actual states only, omitting empty groups:
 
 ### Bootstrap Control
 
-Report whether the canonical prerequisite Skills were applied in context and whether any missing prerequisite persistence completed or remains pending.
+Report the pinned prerequisite revision, whether both canonical control Skills were applied in context, and whether any missing prerequisite persistence completed or remains pending.
 
 ### Installed
 
