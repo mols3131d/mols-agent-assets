@@ -32,9 +32,17 @@ Target projection은 canonical 의미를 해당 harness가 실행할 수 있는 
 
 Generated projection은 기본적으로 derived artifact다. target이 표현하지 못하는 의미는 생략·근사·대체 여부를 숨기지 않는다.
 
-이미 하나의 native target asset이 authoritative하면 별도 superset을 만들지 않고 그 source에서 다른 target으로 bridge할 수도 있다.
-
 Superset은 여러 target이 실제로 필요할 때만 사용한다. 하나의 target만 운용하는 자산에 중간 추상화를 만들 이유는 없다.
+
+## Delivery Route
+
+여러 target을 지원한다고 해서 항상 별도 projection 파일을 만들지는 않는다. 실제 target contract가 허용하는 가장 작은 route를 사용한다.
+
+1. **Direct reuse** — target이 canonical source를 직접 발견하고 필요한 semantics를 소비할 수 있으면 그대로 사용한다.
+1. **Canonical fan-out** — canonical superset이 authoritative하고 target-native payload가 따로 필요할 때 projection을 생성한다.
+1. **Native bridge** — 이미 하나의 native target asset이 authoritative하면 그 source를 유지하고 필요한 다른 target으로만 bridge한다.
+
+Format이 비슷하다는 이유만으로 direct reuse를 가정하지 않고, 단순 bridge를 위해 별도 canonical layer 채택을 강제하지 않는다.
 
 ## By Asset Type
 
