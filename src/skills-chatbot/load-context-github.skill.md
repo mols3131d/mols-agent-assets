@@ -23,6 +23,8 @@ Execution belongs to the downstream task capability.
 - Scope instructions per target path, object, operation, and active agent/chatbot surface.
 - Apply repository/platform selectors, fallback, and precedence only when evidenced.
 - Load progressively. Stop when more context is unlikely to change the next action.
+- When a narrow read establishes the concrete target, finish the context loading that can
+  affect the task before downstream action depends on that context.
 
 ## Procedure
 
