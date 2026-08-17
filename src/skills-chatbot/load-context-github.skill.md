@@ -23,6 +23,7 @@ Activate when either condition holds:
 
 A named target that still needs ID/ref resolution counts as concrete. Follow-up requests
 continue to use the already established target even when the user does not repeat its name.
+If a follow-up switches repository/object scope, resolve and load context for the new target.
 
 Do not activate for generic Git/GitHub explanation or broad discovery/search with no
 repository or object scope. A narrow read may identify a target first; finish relevant
