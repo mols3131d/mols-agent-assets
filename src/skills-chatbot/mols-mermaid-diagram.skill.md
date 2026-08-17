@@ -76,11 +76,14 @@ Do not claim to have consulted a source that was not actually accessible. If ext
 | What are the types, members, inheritance, or static domain relationships? | `classDiagram` |
 | What are the entities and database cardinalities? | `erDiagram` |
 | What are the system or domain boundaries and dependencies? | architecture/C4 when supported; otherwise grouped `flowchart` |
+| What steps does a user take and how is each step experienced? | `journey` |
 | What happens when over time without duration? | `timeline` when supported |
 | What lasts how long or depends on which milestone? | `gantt` |
 | What is the concept or scope hierarchy? | `mindmap` |
 | How do requirements trace to elements? | `requirementDiagram` |
 | What does branch/merge strategy look like? | `gitGraph` |
+| What work is currently grouped by workflow stage? | `kanban` |
+| How are packet or binary bit fields laid out? | `packet` |
 
 Use extended, beta, experimental, plugin-dependent, animation, icon-pack, C4, or other renderer-sensitive syntax only when the target renderer supports it or when a safe fallback is available.
 
