@@ -1,14 +1,19 @@
 ---
 name: mols-mermaid-diagram
 description: >-
-  Create or improve Mermaid diagrams when the main question is about relationships,
-  procedures, branching, handoffs, message order, lifecycle, chronology, dependencies,
-  boundaries, hierarchy, domain models, requirements, or database cardinality. Use for
-  flowchart, swimlane, sequence, state, class, ERD, architecture, C4, Gantt, timeline,
-  mindmap, requirement, Git graph, Kanban, packet, or similar structural diagrams.
-  Do not use when numeric magnitude, trend, proportion, quantified flow, weighted
-  hierarchy, profile, or normalized positioning is the main question, or when
-  whole-dashboard composition is the primary task.
+  Create, edit, review, simplify, or troubleshoot Mermaid structural diagrams.
+  Use when the user explicitly asks for Mermaid diagram/code, provides Mermaid
+  source with syntax/render/layout/readability problems, asks which Mermaid
+  diagram type fits, or needs a structural visual for relationships, procedures,
+  branching, handoffs, message order, lifecycle, chronology, dependencies,
+  boundaries, hierarchy, domain models, requirements, or database cardinality.
+  Covers flowchart, swimlane, sequence, state, class, ERD, architecture/C4,
+  Gantt, timeline, mindmap, requirement, Git graph, Kanban, packet, and similar
+  diagrams. Do not use when the primary question is numeric magnitude, trend,
+  proportion, quantified flow, weighted hierarchy, profile, normalized
+  positioning, whole-dashboard composition, a simple list/table, or Mermaid
+  package/API installation or integration unrelated to authoring or rendering a
+  diagram.
 ---
 
 # Contract
@@ -24,6 +29,39 @@ Create or edit Mermaid so the reader can answer one structural question quickly.
 - If a short list or table communicates the answer more clearly, use that instead of forcing a diagram.
 - If the task turns out to be primarily quantitative, use `mols-mermaid-chart` when available; otherwise use an appropriate chart representation.
 - If the task turns out to be whole-dashboard composition, use `mols-markdown-dashboard` when available rather than expanding this Skill into dashboard design.
+
+# Source Research
+
+Use web access as an authority aid, not as a hard runtime dependency. Do not block a diagram task merely because browsing is unavailable.
+
+## Mermaid official documentation
+
+When web access is available, consult the relevant Mermaid official documentation before relying on exact syntax, newer or renderer-sensitive diagram types, configuration behavior, feature availability, or compatibility claims.
+
+- Start from [Mermaid Open Source Documentation](https://mermaid.ai/open-source/) and navigate to only the diagram type or feature needed for the task.
+- Prefer the official Mermaid documentation over memory, blogs, snippets, or third-party examples for Mermaid syntax and current features.
+- If the target renderer or host is known, its actual supported Mermaid version and integration constraints control compatibility even when current Mermaid itself supports a feature.
+- Do not browse unrelated Mermaid pages for routine edits whose syntax and compatibility are not in question.
+
+## Canonical Skill references
+
+When web or GitHub access is available and the task needs deeper design guidance, consult the canonical `mols-mermaid-diagram` references selectively rather than loading the whole bundle.
+
+Canonical source:
+<https://github.com/mols3131d/mols-agent-assets/tree/main/src/skills/mols-mermaid-diagram>
+
+- Type selection, grouping, splitting, compatibility policy:
+  <https://github.com/mols3131d/mols-agent-assets/blob/main/src/skills/mols-mermaid-diagram/references/mermaid-diagrams.md>
+- Styling or visual-language decisions:
+  <https://github.com/mols3131d/mols-agent-assets/blob/main/src/skills/mols-mermaid-diagram/references/style-policy.md>
+- Syntax patterns and examples: start from the index and open only the selected type:
+  <https://github.com/mols3131d/mols-agent-assets/blob/main/src/skills/mols-mermaid-diagram/references/examples/README.md>
+- Syntax errors, renderer validation, export, or compatibility verification:
+  <https://github.com/mols3131d/mols-agent-assets/blob/main/src/skills/mols-mermaid-diagram/references/mermaid-verification.md>
+
+If the user supplies a repository revision or the current task is pinned to another revision, use that revision instead of `main` when possible.
+
+Do not claim to have consulted a source that was not actually accessible. If external sources are unavailable, continue from this Skill's embedded contract and state uncertainty only where it materially affects the result.
 
 # Diagram Design
 
