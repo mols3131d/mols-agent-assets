@@ -67,7 +67,7 @@ context separately.
 Look for instruction-bearing sources that the active surface or repository actually
 defines, for example:
 
-- `CHATBOT.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, or repository-defined variants;
+- `AGENTS.md` and repository-defined agent/chatbot instruction files;
 - `.github/copilot-instructions.md`;
 - matching `.github/instructions/**/*.instructions.md`;
 - `CONTRIBUTING.md`, `DEVELOPMENT.md`, `.github/CONTRIBUTING.md`, or governance docs;
@@ -77,14 +77,6 @@ defines, for example:
 
 Do not infer precedence or override semantics from filenames or proximity alone. Use the
 active platform/tool semantics or explicit repository convention.
-
-For `mols-agent-assets`, when its text-I/O chatbot convention governs the task, use the
-repository-local fallback:
-
-`CHATBOT.md` → if absent `AGENTS.md` → if absent `README.md`.
-
-This is not a universal GitHub or Agent standard. Higher-authority system, user, platform,
-tool, and permission constraints still apply.
 
 For nested `AGENTS.md`, discover all applicable files along the root-to-target chain and
 use the active surface's documented scope/precedence. On GitHub Copilot surfaces that
