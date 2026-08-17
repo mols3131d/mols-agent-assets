@@ -11,16 +11,39 @@
 
 - flat 단일 skill 파일이 **4,000 tokens 이상**이라 여러 Markdown 파일로 분리해야 합니다.
 - Markdown 한 파일만으로 실행 capability를 완결할 수 없습니다.
-- 실행에 references, assets, scripts, images 같은 bundled resources가 필요합니다.
+- 실행에 `references/`, `assets/`, `scripts/`, images 같은 bundled resources가 필요합니다.
 - host가 제공하는 tools, connectors, scripts, progressive loading 또는 기타 runtime 기능을 활용하는 것이 capability의 중요한 부분입니다.
 
 `SKILL.md`는 activation boundary와 공통 계약을 유지하고, 상세 context는 필요한 경우에만 bundled file이나 runtime source에서 로드하는 방식을 우선합니다.
 
 단일 Markdown 파일로 충분하고 4,000 tokens 미만이며 runtime 기능이 capability의 본질이 아니라면 `../skills-chatbot/`의 flat variant가 더 단순한 기본 선택입니다. 반대로 파일이 작더라도 `load-context-github`나 `load-context-notion`처럼 live connector/tool context를 읽는 것이 capability의 핵심이면 runtime placement가 자연스럽습니다.
 
-Maintainer-only `docs/`, `evals/`, `tests/`, 개발용 validator는 배포 Skill과 분리할 수 있다면 그 존재만으로 runtime placement를 강제하지 않습니다. 작은 textual schema나 설정 예시는 별도 runtime resource보다 fenced code가 더 명확하면 인라인할 수 있습니다.
-
 사용자의 로컬/원격 workspace, filesystem, shell 같은 workspace authority가 필요하면 `../skills/` profile도 검토합니다.
+
+## Package Surfaces
+
+Directory-based Skill package에서 **dot-prefixed directory(`.*`)는 non-runtime maintainer surface**로 사용합니다. 이 convention도 repository-local이며 외부 표준이 아닙니다.
+
+```text
+skill-name/
+├─ SKILL.md
+├─ references/          # runtime
+├─ scripts/             # runtime when required
+├─ assets/              # runtime when required
+└─ .docs/               # non-runtime
+   ├─ baseline/          # durable intent / requirements / decisions / directives
+   └─ ...                # maintenance or working docs
+```
+
+- runtime이 필요로 하는 resource는 dot directory 아래에 두지 않습니다.
+- 기존 Skill 내부 `docs/`는 `.docs/`로 사용합니다. repository root의 `docs/`는 별개입니다.
+- `.docs/baseline/`은 원래 purpose/essence, requirements, invariants, important decisions, recovery directive를 보존합니다.
+- `DIRECTIVE.md`, `intent.md`, `requirements.md`, `decisions.md`는 예시이며 고정 schema가 아닙니다.
+- working log나 임시 조사처럼 쉽게 폐기 가능한 정보는 baseline에 넣지 않습니다.
+- `.evals/`, `.tests/` 등 다른 dot directory도 non-runtime validation/development surface로 사용할 수 있습니다.
+- packaging/deployment는 dot directory를 runtime payload에서 제외하는 것을 기본으로 합니다.
+
+Maintainer-only 파일이 존재한다는 이유만으로 runtime placement를 강제하지 않습니다. 반대로 실행 중 읽어야 하는 문서를 `.docs/`로 옮겨 runtime dependency를 숨기지 않습니다. 그런 문서는 `references/` 같은 runtime surface에 둡니다.
 
 ## Naming
 
