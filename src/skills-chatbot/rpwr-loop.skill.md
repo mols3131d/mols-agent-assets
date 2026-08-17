@@ -151,8 +151,7 @@ materially change understanding or confidence. Favor internal evidence when corr
 depends on the actual artifact, repository, data, or established work context; increase
 external evidence when freshness, standards, vendor behavior, alternatives, or
 independent validation matter. Use both when local conclusions need external grounding
-or challenge. Do not target a fixed ratio, and shift away from an evidence mode once it
-stops producing material delta.
+or challenge. Do not target a fixed ratio.
 
 ### Plan
 
