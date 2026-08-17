@@ -24,6 +24,7 @@ Activate when either condition holds:
 
 A named target that still needs lookup counts as concrete. Follow-up requests continue to
 use the already established workspace/object even when the user does not repeat its name.
+If a follow-up switches workspace/object scope, resolve and load context for the new target.
 
 Do not activate for generic Notion explanation or broad product/public discovery with no
 workspace scope. A narrow read may identify a target first; finish relevant context loading
