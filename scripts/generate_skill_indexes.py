@@ -6,10 +6,21 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
+GITHUB_BLOB_ROOT = "https://github.com/mols3131d/mols-agent-assets/blob/main"
+INSTRUCTION = (
+    "Match by name and description; substitute the matched name for {name} in metadata "
+    "and read the Skill through an available path before use."
+)
 TARGETS = {
-    ROOT / "src/skills": "*/SKILL.md",
-    ROOT / "src/skills-chatbot": "*.skill.md",
-    ROOT / "src/skills-chatbot-runtime": "*/SKILL.md",
+    ROOT / "src/skills": ("*/SKILL.md", "src/skills/{name}/SKILL.md"),
+    ROOT / "src/skills-chatbot": (
+        "*.skill.md",
+        "src/skills-chatbot/{name}.skill.md",
+    ),
+    ROOT / "src/skills-chatbot-runtime": (
+        "*/SKILL.md",
+        "src/skills-chatbot-runtime/{name}/SKILL.md",
+    ),
 }
 
 
@@ -29,16 +40,29 @@ def read_frontmatter(path: Path) -> dict[str, str]:
     return {"name": name, "description": description}
 
 
-def main() -> None:
-    for directory, pattern in TARGETS.items():
-        rows = sorted(
+def render_index(directory: Path, pattern: str, workspace_path: str) -> str:
+    rows = [
+        {
+            "metadata": {
+                "workspace_path": workspace_path,
+                "github_url": f"{GITHUB_BLOB_ROOT}/{workspace_path}",
+            }
+        },
+        {"instruction": INSTRUCTION},
+        *sorted(
             (read_frontmatter(path) for path in directory.glob(pattern)),
             key=lambda row: row["name"],
-        )
-        content = "".join(
-            json.dumps(row, ensure_ascii=False, separators=(",", ":")) + "\n"
-            for row in rows
-        )
+        ),
+    ]
+    return "".join(
+        json.dumps(row, ensure_ascii=False, separators=(",", ":")) + "\n"
+        for row in rows
+    )
+
+
+def main() -> None:
+    for directory, (pattern, workspace_path) in TARGETS.items():
+        content = render_index(directory, pattern, workspace_path)
         (directory / "INDEX.jsonl").write_text(content, encoding="utf-8")
 
 
