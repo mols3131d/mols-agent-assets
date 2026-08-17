@@ -4,8 +4,7 @@ description: >-
   Curate recent news or developments into compact topic-grouped tables with
   deduplication, prioritization, dates, and a simple relevance score. Use when the
   user asks for a news roundup, trend brief, or topic-by-topic current-events table,
-  especially with requested item counts. Pair with an appropriate research Skill
-  when fresh external evidence is needed. Do not use for general research without a
+  especially with requested item counts. Do not use for general research without a
   news-curation output.
 ---
 
