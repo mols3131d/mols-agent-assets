@@ -22,8 +22,8 @@ on_conflict: <auto>
 
 This Prompt assumes the following Skills are available and uses them as the canonical owners of discovery and installation behavior:
 
-- `find-skills`
-- `install-skills`
+- `mols-skill-find`
+- `mols-skill-install`
 
 Do not reproduce their identity, sibling-selection, rename, collision, package, or mutation rules inside this Prompt.
 
@@ -37,7 +37,7 @@ The result should converge each repository capability to the single target-speci
 
 ## Find
 
-Invoke `find-skills` with the resolved `source`, `ref`, `target`, and `scope`.
+Invoke `mols-skill-find` with the resolved `source`, `ref`, `target`, and `scope`.
 
 For default sync intent:
 
@@ -46,7 +46,7 @@ query: <auto>
 profiles: <auto>
 ```
 
-Treat the request as an inventory/synchronization search so `find-skills` returns the complete in-scope capability selection set rather than only one match.
+Treat the request as an inventory/synchronization search so `mols-skill-find` returns the complete in-scope capability selection set rather than only one match.
 
 Require discovery to:
 
@@ -59,16 +59,16 @@ Do not install anything during this phase.
 
 ## Install
 
-Pass the complete discovery selection set to `install-skills`:
+Pass the complete discovery selection set to `mols-skill-install`:
 
 ```yaml
 action: sync
-selection: <find-skills result>
+selection: <mols-skill-find result>
 target: <resolved target>
 on_conflict: <resolved on_conflict>
 ```
 
-Let `install-skills` own installed-state inspection and all mutation decisions, including:
+Let `mols-skill-install` own installed-state inspection and all mutation decisions, including:
 
 - new installation;
 - update of the same Skill;
@@ -78,7 +78,7 @@ Let `install-skills` own installed-state inspection and all mutation decisions, 
 - orphan reporting;
 - unsupported target/package behavior.
 
-Do not directly mutate Skills outside `install-skills`.
+Do not directly mutate Skills outside `mols-skill-install`.
 
 ## Sync Boundary
 
@@ -90,7 +90,7 @@ Do not directly mutate Skills outside `install-skills`.
 
 ## Report
 
-Return the final states produced by `install-skills`, omitting empty groups:
+Return the final states produced by `mols-skill-install`, omitting empty groups:
 
 ### Installed
 
