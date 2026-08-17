@@ -61,7 +61,7 @@ Load only the context required by the current operation.
 
 | Condition | Load |
 | --- | --- |
-| PR or review | head-ref instructions, changed-path rules, relevant base differences, templates, `CODEOWNERS`, checks/protection when material |
+| PR or review | head-ref instructions, changed-path rules, relevant base-instruction differences, templates, `CODEOWNERS`, checks/protection when material |
 | Issue | templates or contribution guidance that changes classification, required fields, or workflow |
 | Commit, branch, merge, history | repository VCS guidance and live protection/rulesets when material |
 | CI, workflow, security, permissions | the named/failing surface plus relevant workflow, validation, permission, or security context |
