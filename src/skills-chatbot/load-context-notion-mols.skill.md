@@ -1,23 +1,34 @@
 ---
 name: load-context-notion-mols
 description: >-
-  Add mols-specific Notion conventions after load-context-notion when the target is
-  evidenced as the user's personal Notion space. Do not activate for another person,
-  team, company, or shared project merely because the user has access, authorship,
-  membership, or elevated permission.
+  Add mols-specific Notion conventions alongside load-context-notion when the current
+  workspace or target is explicitly the user's personal Notion or is unambiguously
+  evidenced as personally governed. Keep applying on follow-ups to that target. Do not
+  activate for team, company, shared-project, or another person's spaces, or from edit
+  access, membership, authorship, or elevated permission alone; in mixed-target tasks,
+  apply only to the personal targets.
 ---
 
 # Load Mols Notion Context
 
-This Skill is a **personal overlay**. Apply it only after `load-context-notion`.
+This Skill is a **personal overlay**. Apply it only with `load-context-notion`.
 
 ## Activation
 
-Activate only when the base loader applies and the target is explicitly identified or
+Evaluate personal scope **per Notion workspace/object**, not once for the whole conversation.
+Activate when the base loader applies and the current target is explicitly identified or
 unambiguously evidenced as the user's personally governed Notion space.
 
-Edit access, workspace membership, page authorship, shared access, familiarity, or
-permission level do not establish personal scope. Otherwise use only the base loader.
+Keep the overlay active for follow-up requests that continue the same personal target,
+even when the user does not repeat its name.
+
+Do not infer personal scope from edit access, workspace membership, page authorship,
+shared access, familiarity, or permission level. If ownership/governance is unclear, use
+only the base loader until evidence establishes personal scope.
+
+When one task spans multiple workspaces or objects, apply this overlay only to the
+personal targets. Never export its conventions to team, company, shared-project, or
+other people's Notion spaces.
 
 ## Personal Conventions
 
