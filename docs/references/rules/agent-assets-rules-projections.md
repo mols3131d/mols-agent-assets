@@ -7,8 +7,8 @@ description: 이 저장소에서 Rule을 directory, glob, chatbot surface에 배
 
 이 문서는 Personal Agent Asset Standard의 **Rule 유형에만 적용되는 비표준 projection**을 소유한다.
 
-여러 harness에 같은 Rule 의미를 배포하는 canonical superset 모델은 공통 개념인
-[Canonical Superset Agent Assets](../common/concepts/agent-assets-concepts-canonical-superset.md)를 따른다.
+여러 harness에 같은 Rule 의미를 배포하는 source authority와 fan-out 기준은
+[Rule Canonical Superset](agent-assets-rules-canonical-superset.md)을 따른다.
 Rule projection의 source resolution과 변환 실행 계약은
 [`rulesync-agent-assets`](../../../src/skills/rulesync-agent-assets/SKILL.md)가 소유한다.
 
