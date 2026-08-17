@@ -34,18 +34,16 @@ def validate(root: Path) -> dict[str, list[str]]:
     errors: list[str] = []
     warnings: list[str] = []
 
-    required = [
-        root / "SKILL.md",
-        root / ".docs" / "baseline" / "DIRECTIVE.md",
-    ]
-    for path in required:
-        if not path.is_file():
-            errors.append(f"missing required file: {path.relative_to(root)}")
-
-    if (root / "docs").exists():
-        errors.append("legacy docs/ present; use .docs/ for non-runtime maintainer docs")
-
     skill_path = root / "SKILL.md"
+    if not skill_path.is_file():
+        errors.append("missing required file: SKILL.md")
+
+    # Personal repository convention: maintainer-only docs belong in .docs/.
+    # A docs/ directory is not universally invalid because an external Skill may use it
+    # as a runtime resource, so require classification rather than assuming intent.
+    if (root / "docs").exists():
+        warnings.append("docs/ present; classify runtime-required material vs maintainer-only .docs/")
+
     if skill_path.is_file():
         text = skill_path.read_text(encoding="utf-8")
         fields, error = parse_frontmatter(text)
