@@ -25,7 +25,7 @@ Before discovery, verify that both prerequisite Skills are available in the curr
 - `mols-skill-find`
 - `mols-skill-install`
 
-If either Skill is unavailable, use ChatGPT's Skill Creator capability to synchronize only the missing prerequisite Skill from the canonical flat source in `mols3131d/mols-agent-assets`:
+If either Skill is unavailable, use ChatGPT's `skill-creator` Skill to synchronize each missing prerequisite from the canonical flat source in `mols3131d/mols-agent-assets`:
 
 - `src/skills-chatbot/mols-skill-find.skill.md`
 - `src/skills-chatbot/mols-skill-install.skill.md`
@@ -34,7 +34,7 @@ Bootstrap is independent of the requested `source`; these prerequisite Skills al
 
 After bootstrap, verify that both prerequisite Skills are available, then continue with the normal workflow. Do not use `mols-skill-find` or `mols-skill-install` to bootstrap themselves.
 
-If ChatGPT cannot inspect, create, or update Skills through its available Skill Creator surface, report **Bootstrap Required**, identify the missing prerequisite Skill, and stop before discovery or other mutation.
+If ChatGPT cannot inspect or create the missing Skills through `skill-creator`, report **Bootstrap Required**, identify the missing prerequisite Skill, and stop before discovery or other mutation.
 
 ## Prerequisites
 
