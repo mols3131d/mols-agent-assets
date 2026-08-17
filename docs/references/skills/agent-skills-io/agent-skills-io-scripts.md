@@ -1,4 +1,4 @@
-# 05. Using Scripts in Skills
+# Using Scripts in Skills
 
 ## Core Concept
 

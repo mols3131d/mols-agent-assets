@@ -1,4 +1,4 @@
-# 03. Skill Creation Best Practices
+# Skill Creation Best Practices
 
 ## Core Principle
 
