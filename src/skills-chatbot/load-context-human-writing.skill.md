@@ -11,7 +11,7 @@ description: >-
 
 # Load Context: Human Writing
 
-Use this Skill as **reader-centered writing context**. The active writing or document capability owns drafting, rewriting, research, rendering, publication, and final output.
+This Skill contributes **reader-centered writing context**. The active writing or document capability owns drafting, rewriting, research, rendering, publication, and final output.
 
 ## Resolve the Reader
 
