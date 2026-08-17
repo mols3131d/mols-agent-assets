@@ -7,7 +7,7 @@ description: 외부 baseline을 확장한 repository-local Agent Asset 운용 �
 
 이 문서는 [Agent Asset Standard Baseline](agent-asset-standard-baseline.md)을 바탕으로 이 저장소에서 실제 사용하는 **개인 표준(personal standard)**을 정의한다.
 
-> 이 문서의 `CHATBOT.md`, Rule projection, `load-context-*`, Skill 3-profile, flat 4,000-token budget 등은 의도적인 **비표준 repository-local extension**이다. 외부 표준이나 특정 플랫폼의 공식 규격으로 설명하지 않는다.
+> 이 문서의 `CHATBOT.md`, Rule projection, `load-context-*`, Skill 3-profile, flat 4,000-token budget, Skill package의 dot-directory convention 등은 의도적인 **비표준 repository-local extension**이다. 외부 표준이나 특정 플랫폼의 공식 규격으로 설명하지 않는다.
 
 ## Asset Types
 
@@ -20,7 +20,7 @@ description: 외부 baseline을 확장한 repository-local Agent Asset 운용 �
 | Prompt | 현재 invocation의 goal과 일회성 context | 지금 무엇을 원하는가? |
 | Agent | 독립 role, authority, tools, delegation | 누가 어떤 권한으로 행동하는가? |
 
-`references/`, `docs/`, `scripts/`, `assets/`, `evals/`, `tests/`는 동급 자산 유형이 아니라 **supporting resources**다.
+Supporting resource는 이 네 자산의 작성·실행·검증을 돕지만 동급 자산 유형은 아니다.
 
 ## Rule
 
@@ -142,12 +142,57 @@ Skill은 workflow에 한정하지 않는다. decision lens, domain context, tool
 다음 중 하나라도 해당하면 `skills-chatbot-runtime/`을 사용한다.
 
 - 4,000 tokens 이상이라 Markdown을 분리해야 함
-- references/assets/scripts/images 등 runtime-required bundle 필요
+- `references/`, `assets/`, `scripts/`, images 등 runtime-required bundle 필요
 - tools/connectors/scripts/progressive loading이 capability의 중요한 부분
 
 공식 Agent Skills의 `<5,000 tokens` 권장과 달리 `<4,000`은 이 저장소의 더 엄격한 **로컬 flat budget**이다.
 
-Maintainer-only docs/evals/tests/validator는 배포 payload와 분리할 수 있다면 runtime placement를 강제하지 않는다. 작은 textual schema는 명확성을 해치지 않으면 fenced code로 flat Skill에 포함할 수 있다.
+### Skill Package Surfaces
+
+Directory-based Skill source package에서는 **dot-prefixed directory(`.*`)를 non-runtime surface로 사용한다.** 이는 이 저장소의 개인 관행이며 Agent Skills 표준이 아니다.
+
+```text
+skill-name/
+├─ SKILL.md
+├─ references/          # runtime when needed
+├─ scripts/             # runtime when needed
+├─ assets/              # runtime when needed
+└─ .docs/               # non-runtime maintainer surface
+   ├─ baseline/          # durable preservation / recovery baseline
+   └─ ...                # working, maintenance, architecture notes, etc.
+```
+
+- runtime behavior가 필요로 하는 파일은 dot directory에 두지 않는다.
+- `.docs/`는 사람과 maintainer가 source package를 이해·유지·복구하기 위한 비런타임 문서를 둔다.
+- 기존 Skill 내부 `docs/`는 `.docs/`로 사용한다. repository root의 `docs/`는 이 convention의 대상이 아니다.
+- `.evals/`, `.tests/`처럼 다른 dot directory도 같은 non-runtime 의미로 사용할 수 있다.
+- packaging/deployment는 dot directory를 runtime payload에서 제외하는 것을 기본으로 한다.
+- runtime에 실제로 필요한 상세 지식은 `references/` 등 non-dot runtime resource로 둔다. 단순히 문서라는 이유로 `.docs/`에 넣지 않는다.
+
+#### `.docs/baseline/*`
+
+`.docs/baseline/`은 Skill의 **본래 목적과 요구사항, 중요한 결정, 불변조건을 보전하는 durable baseline**이다. 구현이 반복 개선되거나 문구가 크게 바뀌어도 무엇을 잃으면 안 되는지 복구할 수 있어야 한다.
+
+담기 좋은 내용:
+
+- 원래 의도와 purpose/essence
+- 필수 requirements와 success boundary
+- behavioral invariants와 non-goals
+- 사용자가 명시적으로 채택한 주요 design decisions와 중요한 rejected decisions
+- recovery directive와 변경 시 지켜야 할 compatibility contract
+
+예시 파일명은 `DIRECTIVE.md`, `intent.md`, `requirements.md`, `decisions.md`이며 고정 schema는 아니다.
+
+Baseline은 다음을 지킨다.
+
+- runtime이 읽어야만 정상 동작하는 dependency로 만들지 않는다.
+- 현재 작업 로그, 임시 조사, 쉽게 재생성되는 상태는 넣지 않는다.
+- 단순 refactor나 문구 정리로 의미를 바꾸지 않는다.
+- 본래 목적·요구사항·결정을 의도적으로 변경할 때만 함께 갱신한다.
+- 유지보수 또는 recovery review에서는 현재 `SKILL.md`가 baseline의 본질을 훼손했는지 비교 근거로 사용할 수 있다.
+- 사용자의 현재 명시적 지시가 baseline보다 우선한다.
+
+Flat `skills-chatbot/*.skill.md`처럼 directory package가 없는 projection에는 내부 `.docs/`를 강제하지 않는다. 필요하면 source-side maintainer 기록을 별도 위치에서 관리하고 배포 파일은 self-contained하게 유지한다.
 
 ## Prompt
 
@@ -169,15 +214,16 @@ instruction이 길거나 이름을 붙이고 싶다는 이유만으로 Agent를 
 
 ## Supporting Resources
 
-Supporting resource는 다른 자산이 필요할 때 읽거나 실행하는 재료다.
+Supporting resource는 다른 자산이 필요할 때 읽거나 실행하는 재료다. **runtime 여부는 파일 종류가 아니라 package surface로 구분한다.**
 
-- `references/`: 상세 knowledge/context
-- `scripts/`: deterministic helper
-- `assets/`: template/image/data resource
-- `docs/`: human/maintainer documentation
-- `evals/`, `tests/`: behavior/package validation
+- `references/`: runtime에서 조건부로 읽는 상세 knowledge/context
+- `scripts/`: runtime 또는 deterministic helper
+- `assets/`: runtime template/image/data resource
+- `.docs/`: non-runtime human/maintainer documentation
+- `.docs/baseline/`: non-runtime intent/requirements/decisions/recovery baseline
+- `.evals/`, `.tests/`: non-runtime validation/development resource로 사용할 수 있음
 
-Resource 자체가 model-directed activation을 소유하지 않는다. 특정 knowledge를 상황에 따라 자동으로 활성화해야 한다면 Skill이 activation boundary를 소유하고 resource를 조건부로 로드한다.
+Resource 자체가 model-directed activation을 소유하지 않는다. 특정 runtime knowledge를 상황에 따라 자동으로 활성화해야 한다면 Skill이 activation boundary를 소유하고 non-dot runtime resource를 조건부로 로드한다.
 
 ## Placement
 
@@ -202,6 +248,8 @@ Resource 자체가 model-directed activation을 소유하지 않는다. 특정 k
 - workspace authority가 capability 핵심 → `skills/`
 - single Markdown + `<4,000 tokens` + runtime dependency 없음 → `skills-chatbot/`
 - 그 외 bundle/runtime capability 필요 → `skills-chatbot-runtime/`
+- directory-based source package의 non-runtime 문서 → `.docs/`
+- 원래 목적·요구사항·결정·불변조건 보존 → `.docs/baseline/`
 
 ## Anti-patterns
 
@@ -215,6 +263,9 @@ Resource 자체가 model-directed activation을 소유하지 않는다. 특정 k
 - target profile이 다른 sibling Skill을 내용 중복만으로 제거
 - 4,000-token flat budget을 외부 표준으로 설명
 - 한 harness의 semantics를 다른 target에 강제
+- Skill package의 runtime-required resource를 `.docs/` 아래에 숨김
+- `.docs/baseline/`을 작업 로그나 임시 상태 저장소로 사용
+- baseline을 수정하지 않고 의도·요구사항·결정을 사실상 변경
 
 ## Review Questions
 
@@ -223,6 +274,10 @@ Resource 자체가 model-directed activation을 소유하지 않는다. 특정 k
 > Rule이라면 directory, glob, chatbot 중 어떤 projection이 실제 scope를 가장 정확히 표현하는가?
 
 > Skill이라면 현재 harness에서 어떤 target profile이 가장 효율적인가?
+
+> Skill package 파일이라면 runtime에 필요한가, 아니면 dot-prefixed non-runtime surface에 있어야 하는가?
+
+> `.docs/baseline/`만 보고도 이 Skill이 무엇을 위해 존재했고 무엇을 잃으면 안 되는지 복구할 수 있는가?
 
 ## Baseline
 
