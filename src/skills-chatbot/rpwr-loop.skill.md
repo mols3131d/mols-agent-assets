@@ -145,6 +145,14 @@ evidence, method, or perspective when the previous investigation saturates.
 Research may use current context, artifacts, repositories, data, prior results, domain
 knowledge, or external sources. It is not synonymous with web search.
 
+Allocate research effort adaptively across internal and external evidence according to
+current uncertainty, evidence gaps, task risk, and which source is most likely to
+materially change understanding or confidence. Favor internal evidence when correctness
+depends on the actual artifact, repository, data, or established work context; favor
+external evidence when freshness, standards, vendor behavior, alternatives, or
+independent validation matter. Use both when local conclusions need external grounding
+or challenge. Do not target a fixed ratio.
+
 ### Plan
 
 Turn current evidence and findings into the smallest plan that can materially improve
@@ -181,7 +189,7 @@ Complete **1–2 Finalize loops**. Finalize is the completion gate for the work.
 
 Finalize loop:
 
-## Inspect → Resolve → Validate → Gate
+`Inspect → Resolve → Validate → Gate`
 
 ### Inspect
 
@@ -227,7 +235,7 @@ For every counted loop, write one line using the phase's actual cycle:
 
 ```text
 Prepare N — D: <discovery> | A: <assessment> | C: <configuration> | V: <readiness>
-Improve N — R: <research> | P: <decision> | W: <work> | R: <review>
+Improve N — Research: <research> | Plan: <decision> | Work: <work> | Review: <review>
 Finalize N — I: <inspection> | R: <resolution> | V: <validation> | G: <gate>
 ```
 
