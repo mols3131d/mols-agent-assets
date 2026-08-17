@@ -43,14 +43,16 @@ policy가 필요하지 않은 reusable capability/context는 Skill이 기본 후
 
 공통 taxonomy와 유형별 repository-local extension을 분리한다.
 
-여러 target harness에 같은 자산 의미를 투영할 때의 공통 authority 모델은
+여러 target harness에 같은 자산 의미를 투영할 때의 공통 개념은
 [Canonical Superset Agent Assets](../concepts/agent-assets-concepts-canonical-superset.md)가
-소유한다. 유형별 문서는 해당 자산의 projection surface와 target contract만 정의한다.
+소유한다. **각 자산 유형의 최적 Superset과 projection boundary는 해당 유형 문서가 authority다.**
 
-- Rule projection과 chatbot fallback →
-  [Rule Projections](../../rules/agent-assets-rules-projections.md)
-- Skill-specific Personal Standard →
-  [Personal Skill Standard](../../skills/agent-assets-skills-standard-personal.md)
+- Rule Superset → [Rule Canonical Superset](../../rules/agent-assets-rules-canonical-superset.md)
+- Rule placement/fallback → [Rule Projections](../../rules/agent-assets-rules-projections.md)
+- Skill Superset → [Skill Canonical Superset](../../skills/agent-assets-skills-canonical-superset.md)
+- Skill-specific Personal Standard → [Personal Skill Standard](../../skills/agent-assets-skills-standard-personal.md)
+- Prompt Superset → [Prompt Canonical Superset](../../prompts/agent-assets-prompts-canonical-superset.md)
+- Agent Superset → [Agent Canonical Superset](../../agents/agent-assets-agents-canonical-superset.md)
 
 Skill의 Tier 1 open standard와 Tier 2 vendor/harness 공식 원문 registry는
 [Agent Skills Specification](../../skills/agent-skills-io/agent-skills-io-specification.md)이
@@ -59,16 +61,13 @@ Skill의 Tier 1 open standard와 Tier 2 vendor/harness 공식 원문 registry는
 Skill target profile과 package surface의 상세 규격은 Personal Skill Standard가
 연결하는 focused reference가 소유한다.
 
-Prompt와 Agent에 repository-local 규격이 실제로 생기기 전에는 별도 표준 문서를
-만들지 않는다.
-
 ## Local Extensions
 
 다음은 외부 범용 표준이 아니라 이 저장소의 의도적인 확장이다.
 
 - 공통 filesystem naming convention →
   [Agent Asset Naming Convention](agent-assets-naming-convention.md)
-- cross-harness canonical superset과 target projection authority model
+- cross-harness canonical Superset과 유형별 target projection model
 - `CHATBOT.md`와 repository-local fallback
 - directory/glob Rule projection convention
 - Skill-specific authoring/deployment convention
