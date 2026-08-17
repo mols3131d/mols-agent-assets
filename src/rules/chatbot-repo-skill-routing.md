@@ -1,6 +1,6 @@
-# skill-routing
+# chatbot-repo-skill-routing
 
-For substantive work, consult the canonical Skill indexes below and follow their instructions to load only matched Skills. Do not replace this routing with the currently visible Skill, tool, or plugin inventory.
+For substantive chatbot work, consult the canonical repository Skill indexes below and follow their instructions.
 
 - https://raw.githubusercontent.com/mols3131d/mols-agent-assets/refs/heads/main/src/skills/INDEX.jsonl
 - https://raw.githubusercontent.com/mols3131d/mols-agent-assets/refs/heads/main/src/skills-chatbot/INDEX.jsonl
