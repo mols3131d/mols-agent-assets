@@ -1,41 +1,26 @@
 ---
 name: load-context-github-mols
 description: >-
-  Use with load-context-github to apply mols-specific conventions when the current
-  GitHub target is personally governed by the user. Treat a personal `mols3131d`
-  repository as in scope unless task/context evidence marks it team, company, or
-  shared; an explicit statement that the target is the user's own also qualifies.
-  Continue on follow-ups. Do not trigger from access, admin rights, authorship, or
-  collaboration alone; in mixed-target tasks, apply only to personal targets.
+  Load mols-specific GitHub conventions for task-level work on targets governed by the
+  user's personal conventions. Treat a `mols3131d` repository as personal unless live
+  or task evidence marks it team, company, organization, or shared; an explicit statement
+  that the target is the user's own also qualifies. Continue on follow-ups to the same
+  target and re-evaluate when the target changes. Do not infer personal scope from access,
+  admin rights, authorship, or collaboration; in mixed-target tasks, apply only to
+  personal targets.
 ---
 
 # Load Mols GitHub Context
 
-This Skill is a **personal overlay**. Apply it only with `load-context-github`.
+This Skill contributes **personal mols conventions** for the GitHub target. Resolve live
+target context through `load-context-github`; this overlay does not replace the base loader.
 
-## Activation
+## Scope Discipline
 
-Evaluate personal scope **per GitHub target**, not once for the whole conversation.
-Activate when the base loader applies and either condition holds:
-
-- the target is under `mols3131d` and there is no evidence that it is a team, company,
-  organization, or shared-project repository;
-- the user explicitly identifies the target as their own or personally governed.
-
-Keep the overlay active for follow-up requests that continue the same personal target,
-even when the user does not repeat its name. If a follow-up switches targets, re-evaluate
-personal scope before carrying this overlay forward.
-
-Do not infer personal scope from collaborator access, organization membership, admin
-permission, authorship, contribution history, or familiarity. If ownership/governance is
-unclear, use only the base loader until evidence establishes personal scope.
-
-If later live context shows that the target is team, company, organization, or shared
-rather than personally governed, stop applying this overlay and do not carry its defaults
-into further action on that target.
-
-When one task spans multiple repositories or GitHub objects, apply this overlay only to
-the personal targets. Never export its defaults to external or shared targets.
+Keep personal conventions bound to targets that remain evidenced as personally governed.
+If newly loaded context shows that a target is team, company, organization, or shared,
+stop applying this overlay to that target. In mixed-target work, never carry personal
+defaults from an in-scope target into another target.
 
 ## Personal Conventions
 

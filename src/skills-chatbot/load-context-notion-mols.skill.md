@@ -1,39 +1,25 @@
 ---
 name: load-context-notion-mols
 description: >-
-  Use with load-context-notion to apply mols-specific conventions when the current
-  workspace or target is explicitly the user's personal Notion or is unambiguously
-  evidenced as personally governed. Continue on follow-ups to that target. Do not
-  trigger for team, company, shared-project, or another person's spaces, or from edit
-  access, membership, authorship, or elevated permission alone; in mixed-target tasks,
-  apply only to personal targets.
+  Load mols-specific Notion conventions for task-level work in the user's explicitly
+  personal or unambiguously personally governed workspace or object. Continue on
+  follow-ups to the same target and re-evaluate when the target changes. Do not use for
+  team, company, shared-project, or another person's spaces, and do not infer personal
+  scope from edit access, membership, authorship, familiarity, or elevated permission.
+  In mixed-target tasks, apply only to personal targets.
 ---
 
 # Load Mols Notion Context
 
-This Skill is a **personal overlay**. Apply it only with `load-context-notion`.
+This Skill contributes **personal mols conventions** for the Notion target. Resolve live
+target context through `load-context-notion`; this overlay does not replace the base loader.
 
-## Activation
+## Scope Discipline
 
-Evaluate personal scope **per Notion workspace/object**, not once for the whole conversation.
-Activate when the base loader applies and the current target is explicitly identified or
-unambiguously evidenced as the user's personally governed Notion space.
-
-Keep the overlay active for follow-up requests that continue the same personal target,
-even when the user does not repeat its name. If a follow-up switches targets, re-evaluate
-personal scope before carrying this overlay forward.
-
-Do not infer personal scope from edit access, workspace membership, page authorship,
-shared access, familiarity, or permission level. If ownership/governance is unclear, use
-only the base loader until evidence establishes personal scope.
-
-If later live context shows that the target belongs to a team, company, shared project,
-or another person rather than the user's personal governance, stop applying this overlay
-and do not carry its conventions into further action on that target.
-
-When one task spans multiple workspaces or objects, apply this overlay only to the
-personal targets. Never export its conventions to team, company, shared-project, or
-other people's Notion spaces.
+Keep personal conventions bound to targets that remain evidenced as personally governed.
+If newly loaded context shows that a target belongs to a team, company, shared project,
+or another person, stop applying this overlay to that target. In mixed-target work, never
+carry personal defaults from an in-scope target into another target.
 
 ## Personal Conventions
 

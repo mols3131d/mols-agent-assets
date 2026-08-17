@@ -1,11 +1,10 @@
 ---
 name: mols-skill-install
 description: >-
-  Install, update, sync, migrate, or load a selected Skill into the active agent/chatbot
-  target through the best supported target surface. Preserve the caller's requested end
-  state and the target's own semantics; prefer direct target actions, then native interactive
-  flows, and use manual/package handoff only as a fallback. Do not assume one chatbot
-  service's UI, package format, persistence model, or Skill implementation.
+  Install, update, sync, migrate, or load a selected or otherwise unambiguous Skill into
+  the active agent/chatbot target. Use when the requested end state is target delivery
+  or Skill-state mutation and the candidate is resolved enough to act on safely. Do not
+  use for broad Skill discovery, capability matching, or unresolved sibling selection.
 ---
 
 # Mols Skill Install

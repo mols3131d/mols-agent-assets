@@ -2,16 +2,15 @@
 name: load-context-agent-skills
 description: >-
   Load source-first standards and authoring context for Agent Skills. Use when creating,
-  modifying, reviewing, porting, or packaging a Skill. Read the current Agent Skills
-  open standard, the selected target's official Skill documentation, and any official
-  vendor skill-creator before making target-specific authoring decisions. Use the mols
-  repository as a maintained registry and apply its personal Skill conventions only
-  when explicitly requested or when the target is clearly managed under them.
+  modifying, reviewing, porting, packaging, or evaluating a Skill, or when discovery
+  metadata, portability, target compatibility, or Skill-authoring decisions are required.
+  Do not use merely to discover, install, run, or invoke an unchanged Skill when no
+  authoring or compatibility decision is needed.
 ---
 
 # Contract
 
-Use this Skill as an **authority router** for Agent Skill work. The active workflow owns creation, editing, validation, installation, packaging, publication, and final output.
+This Skill acts as an **authority router** for Agent Skill work. The active workflow owns creation, editing, validation, installation, packaging, publication, and final output.
 
 Resolve authority in this order:
 

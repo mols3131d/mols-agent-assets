@@ -10,7 +10,7 @@ description: >-
 
 # Load Context: Technical Document Fidelity
 
-Use this Skill as **preservation context** for transforming an existing technical document. The active writing or transformation capability owns execution and output.
+This Skill contributes **preservation context** for transforming an existing technical document. The active writing or transformation capability owns execution and output.
 
 ## Protected Content
 

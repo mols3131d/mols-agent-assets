@@ -3,16 +3,15 @@ name: load-context-agent-assets
 description: >-
   Load source-first authoring context for agent-facing behavioral assets such as Skills,
   Rules, Prompts, Agents, subagents, tool guidance, guardrails, and templates. Use when
-  creating, editing, simplifying, or reviewing an asset where activation, authority,
-  context cost, responsibility boundaries, or evaluability matters. Prefer current
-  authoritative sources over copied rules. Apply mols personal conventions only when
-  explicitly requested or when the current target is clearly managed under those
-  personal conventions.
+  creating, editing, simplifying, reviewing, or evaluating such an asset, including
+  decisions about activation, authority, context cost, responsibility boundaries,
+  portability, or evaluability. Do not use for ordinary human-facing prose or product
+  code that does not define agent behavior.
 ---
 
 # Contract
 
-Use this Skill as an **authority router**, not as the workflow that owns the artifact.
+This Skill acts as an **authority router**, not as the workflow that owns the artifact.
 
 Before materially designing or revising an agent asset:
 

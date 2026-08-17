@@ -26,6 +26,16 @@ Maintainer-only `docs/`, `evals/`, `tests/`, 개발용 validator도 배포 Skill
 
 로컬/원격 workspace, filesystem, shell 같은 workspace authority가 필요하면 `../skills/` profile도 검토합니다.
 
+## Triggering
+
+Agent Skills의 discovery contract에 따라 **front matter `description`이 activation을 소유**합니다. 무엇을 제공하는지와 어떤 user intent/task context에서 써야 하는지를 함께 적고, 인접 capability와 혼동될 때만 의미 있는 negative boundary를 추가합니다. Follow-up continuity나 target scope가 selection을 바꾸는 경우에도 `description`에서 해결합니다.
+
+`description`은 **selection contract**이지 orchestration surface가 아닙니다. 다른 Skill을 먼저/함께 사용해야 하는 조건, prerequisite, fallback, handoff, execution order 같은 routing은 본문에 둡니다.
+
+Skill 본문에는 `Trigger`, `Activation`, `When to use` 같은 별도 activation 섹션을 두지 않습니다. 본문은 이미 Skill이 활성화되었다고 가정하고 routing이 필요하면 routing을 포함해 contract, procedure, boundary, output 같은 post-activation behavior를 소유합니다.
+
+Portable front matter 규격의 authority는 [Agent Skills Specification](../../docs/references/skills/agent-skills-io/agent-skills-io-specification.md)에 둡니다.
+
 ## Naming
 
 주책임이 작업 workflow 수행이 아니라 **특정 상황에 필요한 판단 기준·제약·지식을 context로 주입하는 것**이면 `load-context-<topic>` 이름을 사용합니다.
