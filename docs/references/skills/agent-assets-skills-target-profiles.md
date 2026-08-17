@@ -5,7 +5,8 @@ description: 이 저장소의 Skill target profile, flat/runtime 경계와 packa
 
 # Skill Target Profiles
 
-이 문서는 Personal Agent Asset Standard의 **Skill 유형에만 적용되는 repository-local deployment convention**을 소유한다.
+이 문서는 [Personal Skill Standard](agent-assets-skills-standard-personal.md)가
+위임한 **repository-local target profile과 package surface 상세 규격**을 소유한다.
 
 > `skills/`, `skills-chatbot/`, `skills-chatbot-runtime/`은 Agent Skills specification의 공식 분류가 아니다.
 
@@ -68,6 +69,9 @@ skill-name/
 
 Baseline은 단순 refactor나 문구 변경으로 갱신하지 않는다. 의도·요구사항·불변조건이 실제로 바뀔 때만 함께 바꾼다.
 
+필요하면 [Baseline Directive Template](agent-assets-skills-baseline-directive-template.md)을
+초기 maintainer document로 사용할 수 있다. Template 자체는 mandatory schema가 아니다.
+
 ## Context-Only Naming
 
 주책임이 workflow가 아니라 상황별 context discovery/loading이면 `load-context-<topic>` naming을 검토한다.
@@ -75,5 +79,9 @@ Baseline은 단순 refactor나 문구 변경으로 갱신하지 않는다. 의�
 이 naming은 repository-local convention이다. 실제 구현·mutation·검증·최종 output까지 소유하는 Skill에는 사용하지 않는다.
 
 ## Boundary
+
+Portable `SKILL.md`와 front matter 규격은
+[Agent Skills Specification](agent-skills-io/agent-skills-io-specification.md)이
+소유한다. 이 문서는 target profile에 필요한 repository-local extension만 정의한다.
 
 Skill을 분리할지는 파일 길이가 아니라 activation intent와 responsibility로 판단한다. 세부 지식만 조건부로 달라진다면 별도 Skill보다 runtime `references/`를 먼저 검토한다.

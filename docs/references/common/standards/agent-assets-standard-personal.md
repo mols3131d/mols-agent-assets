@@ -5,9 +5,11 @@ description: 외부 baseline을 확장한 repository-local Agent Asset taxonomy�
 
 # Personal Agent Asset Standard
 
-이 문서는 [Agent Asset Standard Baseline](agent-assets-standard-baseline.md)을 바탕으로 이 저장소에서 사용하는 **공통 taxonomy와 placement 기준**을 정의한다.
+이 문서는 [Agent Asset Standard Baseline](agent-assets-standard-baseline.md)을
+바탕으로 이 저장소에서 사용하는 **공통 taxonomy와 placement 기준**을 정의한다.
 
-유형별 projection과 packaging 세부사항은 각 유형 reference가 소유한다. 이 문서는 이를 다시 정의하지 않는다.
+유형별 projection, authoring, packaging 세부사항은 각 유형 reference가 소유한다.
+이 문서는 이를 다시 정의하지 않는다.
 
 ## Asset Types
 
@@ -20,7 +22,8 @@ description: 외부 baseline을 확장한 repository-local Agent Asset taxonomy�
 | Prompt | 현재 invocation의 goal과 일회성 context | 지금 무엇을 원하는가? |
 | Agent | 독립 role, authority, tools, delegation | 누가 어떤 권한으로 행동하는가? |
 
-`references/`, `scripts/`, `assets/`, docs, evals, tests 같은 supporting resource는 이 네 유형을 지원하지만 동급 behavioral asset type은 아니다.
+`references/`, `scripts/`, `assets/`, docs, evals, tests 같은 supporting resource는
+이 네 유형을 지원하지만 동급 behavioral asset type은 아니다.
 
 ## Placement
 
@@ -31,16 +34,27 @@ description: 외부 baseline을 확장한 repository-local Agent Asset taxonomy�
 1. 현재 invocation에서만 필요한 goal이나 constraint인가? → **Prompt**
 1. 독립 role, authority, tool, delegation boundary가 필요한가? → **Agent**
 
-재사용 가능하다는 이유만으로 Skill로 만들지 않는다. 반대로 별도 role이나 지속 policy가 필요하지 않은 reusable capability/context는 Skill이 기본 후보다.
+재사용 가능하다는 이유만으로 Skill로 만들지 않는다. 반대로 별도 role이나 지속
+policy가 필요하지 않은 reusable capability/context는 Skill이 기본 후보다.
 
 ## Type-Specific Standards
 
-공통 taxonomy와 유형별 deployment convention을 분리한다.
+공통 taxonomy와 유형별 repository-local extension을 분리한다.
 
-- Rule projection과 chatbot fallback → [Rule Projections](../../rules/agent-assets-rules-projections.md)
-- Skill target profile과 package surface → [Skill Target Profiles](../../skills/agent-assets-skills-target-profiles.md)
+- Rule projection과 chatbot fallback →
+  [Rule Projections](../../rules/agent-assets-rules-projections.md)
+- Skill-specific Personal Standard →
+  [Personal Skill Standard](../../skills/agent-assets-skills-standard-personal.md)
 
-Prompt와 Agent에 repository-local 규격이 실제로 생기기 전에는 별도 표준 문서를 만들지 않는다.
+Skill의 Tier 1 open standard와 Tier 2 vendor/harness 공식 원문 registry는
+[Agent Skills Specification](../../skills/agent-skills-io/agent-skills-io-specification.md)이
+소유한다. 이 공통 Personal Standard에서 외부 Skill 규격을 다시 정의하지 않는다.
+
+Skill target profile과 package surface의 상세 규격은 Personal Skill Standard가
+연결하는 focused reference가 소유한다.
+
+Prompt와 Agent에 repository-local 규격이 실제로 생기기 전에는 별도 표준 문서를
+만들지 않는다.
 
 ## Local Extensions
 
@@ -48,19 +62,20 @@ Prompt와 Agent에 repository-local 규격이 실제로 생기기 전에는 별�
 
 - `CHATBOT.md`와 repository-local fallback
 - directory/glob Rule projection convention
-- `skills/`, `skills-chatbot/`, `skills-chatbot-runtime/` target profiles
-- flat chatbot Skill의 `<4,000 tokens` budget
-- Skill package의 dot-prefixed non-runtime surface
-- `.docs/baseline/` preservation convention
-- `load-context-*` naming convention
+- Skill-specific authoring/deployment convention
 
-세부 의미와 적용 조건은 해당 유형 reference가 소유한다.
+Skill 확장의 상세 목록과 경계는
+[Personal Skill Standard](../../skills/agent-assets-skills-standard-personal.md)가
+소유한다. 공통 표준에서는 이를 다시 나열하지 않는다.
 
 ## Authority
 
-외부 specification은 baseline의 근거이고, 이 저장소의 실제 운용에서는 이 Personal Standard와 유형별 reference가 repository-local authority다.
+외부 specification은 baseline의 근거이고, 이 저장소의 실제 운용에서는 이
+Personal Standard와 유형별 Personal Standard/reference가 repository-local
+authority다.
 
-단, platform/system/user instruction과 target harness의 강제 규격이 repository-local convention보다 우선한다.
+단, platform/system/user instruction과 target harness의 강제 규격이
+repository-local convention보다 우선한다.
 
 ## Review Test
 
