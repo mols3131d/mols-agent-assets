@@ -139,8 +139,7 @@ Scope baseline loader의 front matter는 가능한 한 다음을 분명히 한�
 
 - 어떤 work surface에서 항상 적용되는가;
 - 단순하거나 routine한 task도 포함되는가;
-- 어떤 인접 scope는 제외되는가;
-- loader가 judgment/context만 제공하고 downstream workflow를 소유하지 않는다는 점.
+- 어떤 인접 scope는 제외되는가.
 
 Review에서는 먼저 activation class를 확인한다.
 
