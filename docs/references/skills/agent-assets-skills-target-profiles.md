@@ -1,16 +1,12 @@
 ---
-title: Skill Target Profiles
-description: 이 저장소의 Skill target profile, flat/runtime 경계와 package surface convention
+type: reference
+title: Agent Assets Skill Target Profiles
+description: 이 저장소의 Skill target profile, flat/runtime 경계와 packaging 규칙을 정의한다.
 ---
 
-# Skill Target Profiles
+# Agent Assets Skill Target Profiles
 
-이 문서는 [Personal Skill Standard](agent-assets-skills-standard-personal.md)가
-위임한 **repository-local target profile과 package surface 상세 규격**을 소유한다.
-
-> `skills/`, `skills-chatbot/`, `skills-chatbot-runtime/`은 Agent Skills specification의 공식 분류가 아니다.
-
-## Profiles
+이 저장소는 동일한 Skill capability를 target harness에 맞춰 서로 다른 profile로 projection할 수 있다.
 
 | Profile | Target |
 | --- | --- |
@@ -20,11 +16,9 @@ description: 이 저장소의 Skill target profile, flat/runtime 경계와 packa
 
 같은 capability가 여러 profile에 존재할 수 있다. target harness가 서로 독립된 payload를 요구한다면 이 semantic overlap은 의도적인 projection이며 DRY 위반으로 보지 않는다.
 
-최적화 단위는 **`capability × target profile`**이다.
+## Flat Chatbot Profile
 
-## Flat vs Runtime
-
-`skills-chatbot/`은 다음을 모두 만족할 때 사용한다.
+`skills-chatbot/`은 다음 조건을 모두 만족하는 capability의 기본 target이다.
 
 1. `<skill-name>.skill.md` 한 파일로 완결된다.
 1. 배포 파일이 `<4,000 tokens`다.
@@ -38,51 +32,59 @@ Skill이 host가 이미 제공하는 tool이나 connector를 사용하도록 지
 
 ## Directory-Based Package
 
+`skills/`와 `skills-chatbot-runtime/`은 필요할 때 directory-based package를 사용한다.
+
+대표 구조:
+
 ```text
-skill-name/
-├─ SKILL.md
-├─ references/          # runtime when needed
-├─ scripts/             # runtime when needed
-├─ assets/              # runtime when needed
-└─ .docs/               # non-runtime maintainer surface
-   └─ baseline/          # durable intent / requirements / decisions
+<skill-name>/
+├── SKILL.md
+├── references/
+├── assets/
+├── scripts/
+└── ...
 ```
 
-- runtime behavior에 필요한 resource는 non-dot surface에 둔다.
-- dot-prefixed directory는 packaging/deployment에서 제외하는 non-runtime maintainer surface로 사용한다.
-- repository root `docs/`는 이 convention의 대상이 아니다.
-- `.evals/`, `.tests/` 같은 추가 non-runtime surface는 실제 필요가 있을 때만 둔다.
+모든 디렉터리가 필수는 아니다. 실제 capability에 필요한 resource만 둔다.
 
-## `.docs/baseline/`
+## Personal Overlays
 
-`.docs/baseline/`은 반복 개선 과정에서 잃으면 안 되는 **본래 purpose, requirements, invariants, major decisions와 recovery directives**를 보존한다.
+범용에 가까운 context loader와 개인 관행을 분리할 때는 base + personal overlay를 사용한다.
 
-넣는다:
+```text
+load-context-<topic>
+load-context-<topic>-<owner>
+```
 
-- durable purpose와 success boundary
-- behavioral invariants와 non-goals
-- 사용자가 채택한 중요한 design decision
-- 복구 시 필요한 compatibility contract
+개인 대상에서는 둘을 함께 적용한다. 타인·팀·회사·공유 프로젝트에는 base만 적용한다. 단순 접근 권한, 참여 이력, 관리자 권한은 personal overlay의 활성화 근거가 아니다.
 
-넣지 않는다:
+예:
 
-- 현재 작업 로그
-- 임시 조사
-- 쉽게 재생성되는 상태
-- runtime이 반드시 읽어야 하는 지식
+- `load-context-github` + `load-context-github-mols`
+- `load-context-notion` + `load-context-notion-mols`
 
-Baseline은 단순 refactor나 문구 변경으로 갱신하지 않는다. 의도·요구사항·불변조건이 실제로 바뀔 때만 함께 바꾼다.
+Personal overlay는 base의 범용 계약을 복제하거나 대체하지 않는다. 개인 관행과 개인 공간에서만 필요한 추가 discovery/precedence/default만 소유한다.
 
-필요하면 [Baseline Directive Template](agent-assets-skills-baseline-directive-template.md)을
-초기 maintainer document로 사용할 수 있다. Template 자체는 mandatory schema가 아니다.
+## Runtime Resources
 
-## Context-Only Naming
+Runtime profile의 bundled resource는 capability가 실제로 필요할 때만 둔다.
 
-주책임이 workflow가 아니라 상황별 context discovery/loading이면 `load-context-<topic>` naming을 검토한다.
+- `references/`: 조건부 상세 지식
+- `assets/`: templates, examples, images 등 실행/출력 resource
+- `scripts/`: deterministic helper나 validation
+- host integration resource: host-specific schema/configuration
 
-이 naming은 repository-local convention이다. 실제 구현·mutation·검증·최종 output까지 소유하는 Skill에는 사용하지 않는다.
+Maintainer-only docs/evals/tests는 배포 capability와 분리할 수 있다면 runtime placement를 강제하지 않는다.
 
-## Boundary
+## Naming
+
+Skill 이름은 packaging보다 responsibility를 나타낸다.
+
+- `load-context-<topic>`: 특정 작업 전에 필요한 context를 선택·주입하는 loader
+- `load-context-<topic>-<owner>`: base loader 위에 owner-specific personal convention을 추가하는 overlay
+- workflow나 artifact 생성이 주책임이면 `load-context-`를 사용하지 않는다.
+
+## Source of Truth
 
 Portable `SKILL.md`와 front matter 규격은
 [Agent Skills Specification](agent-skills-io/agent-skills-io-specification.md)이
