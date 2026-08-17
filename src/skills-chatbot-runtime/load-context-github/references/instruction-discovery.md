@@ -30,7 +30,7 @@ on the active agent surface.
   not missed during repository inspection.
 - Follow the active platform/tool's documented precedence instead of inventing a universal
   merge rule. On GitHub Copilot surfaces that support nested agent instructions, the
-  nearest applicable `AGENTS.md` takes precedence over other agent-instruction files.
+  nearest applicable `AGENTS.md` takes precedence among applicable `AGENTS.md` files.
 - Support differs across GitHub/Copilot features and clients; do not assume a nested file
   is active merely because it exists.
 - Repository-declared scope may further narrow an instruction file when that convention is
@@ -89,9 +89,12 @@ Current GitHub documentation orders relevant instruction classes as:
    1. agent instructions such as `AGENTS.md`;
 1. organization instructions.
 
-Within agent instructions, use the active surface's documented nested-file semantics; on
-Copilot surfaces that support nested `AGENTS.md`, the nearest applicable file wins among
-agent-instruction candidates.
+Within `AGENTS.md` files, use the active surface's documented nested-file semantics; on
+Copilot surfaces that support nested `AGENTS.md`, the nearest applicable `AGENTS.md`
+wins among applicable `AGENTS.md` files. Do not infer an undocumented precedence between
+different agent-instruction families such as `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md`.
+For example, Copilot CLI documents that it combines multiple applicable instruction files
+without defining a general precedence order between all of them.
 
 Treat this hierarchy as **GitHub Copilot-specific and time-sensitive**. If the active
 surface documents different support or precedence, use that surface's current behavior.
