@@ -11,7 +11,7 @@ AI 에이전트 자산을 개발, 검증 및 관리하는 저장소입니다.
 | Prompt | 현재 invocation의 goal과 일회성 context |
 | Agent | 독립 role, authority, tools, delegation |
 
-외부 기준에 가까운 개념은 `docs/references/agent-asset-standard-baseline.md`, 이 저장소의 비표준 확장과 실제 운용 규칙은 `docs/references/agent-asset-boundaries.md`의 **Personal Agent Asset Standard**가 소유합니다.
+외부 기준에 가까운 개념은 `docs/references/common/standards/agent-assets-standard-baseline.md`, 이 저장소의 비표준 확장과 실제 운용 기준은 `docs/references/common/standards/agent-assets-standard-personal.md`의 **Personal Agent Asset Standard**가 소유합니다.
 
 ## Source / Target Profiles
 
@@ -23,9 +23,7 @@ AI 에이전트 자산을 개발, 검증 및 관리하는 저장소입니다.
 | `src/skills-chatbot-runtime/` | bundled resources 또는 hosted runtime 기능을 사용하는 chatbot Skill profile |
 | `src/rules/` | Rule source |
 
-세 Skill profile은 **비표준 repository-local taxonomy**입니다. 같은 capability의 target별 variant가 함께 존재할 수 있으며, profile 간 의미 중복보다 각 harness/platform이 지원하는 규격에서의 효율과 독립 배포를 우선합니다.
-
-Directory-based Skill source package에서 dot-prefixed directory(`.*`)는 non-runtime maintainer surface로 사용합니다. `.docs/baseline/`은 본래 purpose, requirements, invariants, 주요 decisions와 recovery directives를 보존합니다.
+세 Skill profile의 세부 규격은 `docs/references/skills/agent-assets-skills-target-profiles.md`가 소유합니다. Rule projection과 chatbot fallback은 `docs/references/rules/agent-assets-rules-projections.md`를 따릅니다.
 
 ## Repository Structure
 

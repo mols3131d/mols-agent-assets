@@ -11,4 +11,7 @@
 | `development.ko.md` | 자산 개발 파이프라인 및 승격 가이드 |
 | `testing.ko.md` | 자동화 테스트 및 코드 품질 검증 가이드 |
 | `skills/<skill-name>/` | 개별 자산별 사람용 가이드 및 문서 |
-| `references/` | 공통 조사 자료 및 외부 참고 문서 |
+| `references/common/` | 자산 유형에 공통인 standard, principle, authoring, concept, tooling reference |
+| `references/<asset-type>/` | Rule, Skill 등 특정 자산 유형만의 reference |
+
+Reference 파일명은 `README.md` 같은 디렉터리 index를 제외하고 lowercase kebab-case의 `<domain>[-<subdomain>...]-<topic>.md`를 사용합니다.
