@@ -41,8 +41,9 @@ Flat chatbot Skill은 하나의 일반 문서보다 **여러 책임을 한 paylo
 특히 `#`은 일반 문서의 제목이 아니라 **Markdown 파일 하나에 대응할 정도의 top-level responsibility**로 취급한다. Flat 제약이 없다면 별도 Markdown 문서로 분리해도 자연스러운 수준의 응집된 책임에는 복수의 `#` 사용을 권장한다.
 
 - `#`은 file-level cohesion을 가진 하나의 top-level responsibility를 소유한다.
-- `##`는 해당 `#` 안의 major responsibility, 더 낮은 heading은 그 책임을 다시 분해한 하위 responsibility를 소유한다.
-- 같은 depth의 heading은 가능한 한 비슷한 추상화 수준을 유지한다.
+- `##`는 해당 `#` 안의 major responsibility를 소유한다.
+- 더 낮은 heading은 부모 responsibility를 점진적으로 분해한다.
+- 같은 depth의 heading은 가능한 한 비슷한 추상화 수준과 책임 규모를 유지한다.
 - 하나의 heading이 서로 독립적인 책임을 함께 소유하면 나누고, 분리하면 의미나 흐름이 깨지는 책임은 억지로 쪼개지 않는다.
 - 공통 invariant를 여러 책임에 반복하지 않는다. 가장 자연스러운 공통 상위 boundary에 둔다.
 - 문서 제목 하나를 만들기 위해 모든 top-level responsibility를 `##` 아래로 강제하지 않는다.
