@@ -2,9 +2,9 @@
 name: rpwr-loop
 description: >-
   Improve difficult or high-level work through adaptive multi-phase loops. Use when the
-  user asks for deep or high-quality iterative work, repeated improvement or review
-  loops, says to run loops, or explicitly asks for RPI, RPWR, an RPI loop, or an RPWR
-  loop rather than a single-pass result.
+  user asks for deep iterative work, repeated improvement or review loops, says to run
+  loops, or explicitly asks for RPI, RPWR, an RPI loop, or an RPWR loop instead of a
+  single-pass result.
 ---
 
 # RPWR Loop
@@ -12,308 +12,223 @@ description: >-
 Use **RPWR** as a three-phase workflow for difficult or high-level work. `RPI` is an
 alias for this workflow.
 
-Each phase has a loop designed for its own purpose:
+Each phase has its own loop:
 
 1. **Prepare** — `Discover → Assess → Configure → Verify`
 2. **Improve** — `Research → Plan → Work → Review`
-3. **Finalize** — `Inspect → Resolve → Validate → Close`
+3. **Finalize** — `Inspect → Resolve → Validate → Gate`
 
-Do not force every phase into the same reasoning shape. Preserve the phase purpose,
-adapt depth to the task, and count only genuine cycles.
+Do not force phases into the same reasoning shape. Count only genuine phase cycles.
 
 ## Arguments
 
 ```yaml
 output_policy: auto  # auto | chat | persist | both
+phase_1_prepare: {min_loops: 1, max_loops: 2}
+phase_2_improve: {min_loops: 4, max_loops: 8}
+phase_3_finalize: {min_loops: 2, max_loops: 4}
 ```
 
-`output_policy` controls delivery after all counted loops finish:
+An explicit user override takes precedence over these defaults.
 
-- `auto` — default. Deliver in chat unless Prepare identifies a clearly appropriate,
-  durable, writable destination that belongs to the current work context. When such a
-  destination exists, persist the report there and return a concise chat summary with
-  its location.
-- `chat` — return the full work report in chat.
-- `persist` — persist the work report to the most appropriate confirmed destination;
-  if no suitable destination or write authority exists, fall back to chat and state
-  the limitation.
-- `both` — persist the report and also return the full report in chat.
+### Output Policy
 
-A durable destination may be a repository, user Drive, Notion or another workspace,
-a chatbot service library, knowledge base, document store, or another persistent
-surface available to the agent. These are examples, not a priority order.
+- `auto` — default. Return the report in chat unless Prepare identifies a clearly
+  appropriate durable, writable destination that already belongs to the work context.
+  If so, persist it there and return a concise chat summary with its location.
+- `chat` — return the full report in chat.
+- `persist` — persist to the most appropriate confirmed destination; if none is clear
+  or writable, fall back to chat and state the limitation.
+- `both` — persist the report and also return it in chat.
 
-Choose the destination from the task context, existing workspace conventions, user
-intent, persistence needs, and confirmed write authority. Prefer the surface the work
-already belongs to. Do not move a report to another service merely because it is
-available.
+A destination may be a repository, Drive, workspace document system, chatbot library,
+knowledge base, or another persistent surface. Availability alone does not make a
+surface appropriate. Prefer where the work already belongs; if ambiguous, use chat.
+Never invent a storage convention or assume write access.
 
-Do not invent a storage convention, create an unrelated destination, or assume write
-access. If multiple destinations are plausible and context does not establish one,
-fall back to chat rather than guessing.
+## Loop Integrity
 
-## Phase Budgets
+A counted loop is one complete, substantive cycle of the **current phase's loop**. It
+is not an edit, finding, file, subtask, tool call, or label around mechanical work.
 
-```yaml
-phase_1_prepare:
-  min_loops: 1
-  max_loops: 2
-phase_2_improve:
-  min_loops: 4
-  max_loops: 8
-phase_3_finalize:
-  min_loops: 2
-  max_loops: 4
-```
+Count a loop only when its cycle produces a material understanding, decision, work,
+validation, risk, or confidence delta. A no-change loop may count when a distinct,
+substantive investigation or validation closes important uncertainty.
 
-Each phase owns its own loop budget. There is no separate global loop cap.
+Do not count:
 
-- Do not leave a phase before its minimum is satisfied.
-- After the minimum, advance when that phase's purpose is materially satisfied.
-- At the maximum, advance or stop even if findings remain; carry unresolved material
-  findings forward or report them at the end.
-- A user who explicitly changes a phase budget overrides these defaults.
-
-The default workflow therefore contains **7–14 counted phase loops**, but the count is
-a reasoning budget, not a target to inflate.
-
-## What Counts as One Loop
-
-A counted loop is one complete, substantive cycle of the **current phase's dedicated
-loop**. It is not a unit of edits, findings, files, subtasks, or tool calls.
-
-A loop counts only when its steps materially change or confirm the state needed for
-that phase and produce a meaningful decision, action, validation, or confidence delta.
-
-A loop does **not** count when it is only:
-
-- one edit, one fix, one file change, one finding, or one subtask;
-- mechanical execution without task-specific judgment;
+- one isolated edit, fix, finding, file change, or subtask;
 - rereading or restating the same evidence;
-- repeating the same review or validation from the same perspective;
-- cosmetic churn created to increase the loop number;
-- phase labels wrapped around work that would have happened identically without the
-  loop.
+- repeated review or validation from the same perspective;
+- mechanical execution without task-specific judgment;
+- cosmetic churn or artificial splitting used to satisfy a loop count.
 
-Several changes may belong to one loop, and one difficult objective may span several
-loops. A no-change result may count only when substantive investigation or validation
-materially increases confidence or closes an important uncertainty.
+Never invent findings or simulate reasoning. If a phase minimum cannot be satisfied
+with genuine cycles, do not claim that it was; return the best result and report the
+budget shortfall.
 
-Never invent findings, split one action into artificial passes, or simulate reasoning
-to satisfy a minimum. Do not expose private chain-of-thought to prove a loop happened;
-report observable evidence, decisions, validation, and material deltas instead.
+Do not expose private chain-of-thought. Report observable evidence, decisions, work,
+validation, and outcomes only.
 
 ## Phase 1 — Prepare
 
-Complete **1–2 Prepare loops** before the main work.
-
-Prepare loop:
-
-**Discover → Assess → Configure → Verify**
+Complete **1–2 Prepare loops** to establish a trustworthy execution strategy.
 
 ### Discover
 
-Build an evidence-based picture of both the task and the execution environment.
+Build an evidence-based picture of:
 
-Understand the task's objective, boundaries, context, uncertainty, stakes, constraints,
-acceptance conditions, likely failure modes, relevant evidence, and where the work
-naturally belongs.
+- **Task:** objective, scope, context, constraints, uncertainty, stakes, acceptance
+  conditions, relevant evidence, likely failure modes, and natural work context.
+- **Environment:** agent capabilities, tools, connected resources, permissions, write
+  authority, validation surfaces, durable storage surfaces, and material limitations.
 
-Inspect the execution environment for available agent capabilities, tools, connected
-resources, durable storage surfaces, permissions, write authority, validation
-surfaces, and material limitations. Confirm capabilities and authority when they
-matter; do not assume they exist.
+Confirm capabilities and authority when they affect execution. Do not assume a tool,
+connection, permission, storage target, or write capability exists.
 
 ### Assess
 
-Match what the task requires against what the agent can actually do.
-
-Identify material gaps, uncertainties, dependencies, authority boundaries, useful
-tools and evidence surfaces, major risks, and the work's natural persistence context.
-Distinguish a real capability gap from a capability that simply has not been checked
-yet.
+Match task requirements against the actual environment. Identify material gaps,
+uncertainties, dependencies, authority boundaries, useful evidence and tools, major
+risks, and the natural persistence context. Distinguish an unavailable capability from
+one that has merely not been checked yet.
 
 ### Configure
 
-Set the smallest viable strategy for Improve and Finalize.
+Set the smallest viable strategy for Improve and Finalize. Configure only what changes
+execution: useful tools and evidence surfaces, initial Research scope, assumptions,
+acceptance conditions, Review emphasis, validation approach, transition signals, and
+report delivery or persistence when context justifies it.
 
-Configure only what materially guides execution:
-
-- tools, capabilities, and evidence surfaces to use;
-- initial Research breadth and depth;
-- important assumptions and acceptance conditions;
-- Review perspectives and risk emphasis;
-- validation approach;
-- signals for narrowing Research or moving to Finalize;
-- report delivery and persistence target when context clearly justifies one.
-
-Keep the strategy adaptive. Do not script every future loop or plan around unavailable
-capabilities, storage, or permissions.
+Keep the strategy adaptive. Do not script every future loop.
 
 ### Verify
 
-Challenge whether the prepared strategy is executable and proportionate.
+Verify that the strategy is executable, proportionate, within authority, and free of
+material unverified dependencies.
 
-Check that it reflects the user's actual objective, uses available capabilities well,
-respects authority boundaries, avoids unverified dependencies, covers material risks,
-and chooses a persistence surface only when context and write authority support it.
+End each Prepare loop with a readiness result:
 
-The first Prepare loop is mandatory. Use the second only when material task,
-capability, tool, permission, storage, or strategy uncertainty remains. At two loops,
-proceed to Improve with remaining limitations explicit.
+- **READY** — execution can proceed.
+- **READY WITH LIMITS** — execution can proceed with explicit non-blocking limits.
+- **BLOCKED** — a critical dependency, capability, authority, or evidence gap prevents
+  trustworthy execution.
+
+The first loop is mandatory. Use the second when material preparation uncertainty
+remains. At two loops, enter Improve only if readiness is `READY` or
+`READY WITH LIMITS`; otherwise stop and report the blocker.
 
 ## Phase 2 — Improve
 
-Complete **4–8 Improve loops**. This is the primary work phase where most substantive
-changes should happen.
-
-Improve loop:
-
-**Research → Plan → Work → Review**
+Complete **4–8 Improve loops**. This is the primary work phase.
 
 ### Research
 
-Use a relatively broad scope in early Improve loops to understand the problem
-boundary, important assumptions, plausible alternatives, and missing evidence. Be
-broad enough to orient the work, not exhaustive by default.
+Gather evidence needed for the current objective and unresolved findings. Start broad
+enough to orient the work, then narrow as findings localize. Broaden again when the
+problem boundary is unclear, evidence conflicts, or a core assumption fails. Change
+evidence, method, or perspective when the previous investigation saturates.
 
-As understanding improves, narrow toward unresolved findings and weak assumptions.
-Adapt instead of repeating:
-
-- broaden when the problem boundary is unclear, evidence conflicts, or a core
-  assumption fails;
-- deepen when material uncertainty or weak evidence remains;
-- narrow when findings become localized;
-- change evidence, method, or perspective when the previous investigation saturates.
-
-Research may inspect existing context, artifacts, repositories, data, prior results,
-domain knowledge, or external sources. It is not synonymous with web search.
+Research may use current context, artifacts, repositories, data, prior results, domain
+knowledge, or external sources. It is not synonymous with web search.
 
 ### Plan
 
-Translate current evidence and findings into the smallest plan that can materially
-improve the result. Set only the objective, scope, constraints, approach, work units,
-trade-offs, acceptance conditions, and validation points needed for the next work.
+Turn current evidence and findings into the smallest plan that can materially improve
+the result. Set only the needed objective, scope, constraints, approach, work units,
+trade-offs, acceptance conditions, and validation points.
 
 ### Work
 
-Perform a meaningful batch of requested work against the current plan and evidence.
-Work may include analysis, writing, editing, design, implementation, transformation,
-decision-making, or other task-appropriate actions.
-
-Preserve confirmed constraints and conclusions unless new evidence justifies changing
-them. Do not claim work or validation that was not performed.
+Perform a meaningful batch of task-appropriate work against the plan and evidence.
+Preserve confirmed constraints unless new evidence justifies changing them. Do not
+claim work or validation that was not performed.
 
 ### Review
 
-Use this default cadence based on the **Improve loop number**:
+Use this default cadence by **Improve loop number**:
 
-- **odd loops — Quality Review:** improve correctness, completeness, coherence,
-  clarity, usability, evidence quality, and fit to the objective;
-- **even loops — Pessimistic Review:** look for consequential failure modes, edge
-  cases, hidden assumptions, regressions, security or safety concerns, operational
-  risks, misuse, contradictions, and side effects.
+- **odd — Quality Review:** correctness, completeness, coherence, clarity, usability,
+  evidence quality, and objective fit.
+- **even — Pessimistic Review:** consequential failure modes, edge cases, hidden
+  assumptions, regressions, misuse, operational risk, and security or safety when
+  relevant.
 
-This cadence is a default, not a ritual. Override it when current findings or risk
-clearly require the other perspective. Apply only dimensions that materially fit the
-task; do not force security, safety, or other categories where they do not matter.
+The cadence is a default, not a ritual. Override it when current risk clearly requires
+a different perspective; do not force irrelevant review dimensions.
 
-After four loops, move to Finalize when the main result is substantially shaped and
-remaining work is mainly finishing or validation. Otherwise continue only while a
-meaningful delta remains, up to eight loops. At eight, carry remaining material
-findings into Finalize rather than extending Improve indefinitely.
+After four genuine loops, move to Finalize when the result is substantially shaped and
+remaining work is mainly finishing or validation. Otherwise continue while a material
+delta remains, up to eight loops. At eight, carry unresolved material findings into
+Finalize.
 
 ## Phase 3 — Finalize
 
-Complete **2–4 Finalize loops** focused on trustworthy completion.
+Complete **2–4 Finalize loops**. Finalize is the completion gate for the work.
 
 Finalize loop:
 
-**Inspect → Resolve → Validate → Close**
+**Inspect → Resolve → Validate → Gate**
 
 ### Inspect
 
-Inspect the current result, unresolved material findings, acceptance conditions,
-recent changes, validation gaps, regression risk, and residual risk. Look only where a
-problem could still materially affect completion.
+Inspect acceptance conditions, unresolved material findings, recent changes,
+validation gaps, regressions, and residual risks. Look only where an issue could still
+materially affect completion.
 
 ### Resolve
 
-Decide what must still be corrected, completed, reverted, or explicitly accepted.
-Reject new scope unless a core assumption has failed or completion would otherwise be
-misleading.
+Correct, complete, revert, or explicitly accept what materially blocks trustworthy
+completion. Reject new scope unless a core assumption failed or completion would
+otherwise be misleading.
 
 ### Validate
 
-Perform the smallest set of task-appropriate checks that can materially change
-confidence in completion. Validate the result and any final changes against the
-important requirements, evidence, regressions, and residual risks.
+Perform the smallest task-appropriate checks that can materially change confidence in
+completion. Validate the result and final changes against important requirements,
+evidence, regression risk, and residual risk.
 
-### Close
+### Gate
 
-Decide whether the work can end. Record unresolved material findings, limitations, or
-checks not performed. `No material finding` is a valid close result.
+Return one gate result:
 
-Do not manufacture criticism merely because another pass exists. Distinct Finalize
-loops must address a materially different completion question, validation surface, or
-residual risk; duplicating the same validation does not count.
+- **PASS** — completion is trustworthy; any remaining limitations are non-blocking and
+  documented.
+- **RETRY** — an actionable material issue remains and another Finalize loop can
+  meaningfully address it.
+- **BLOCKED** — trustworthy completion cannot be reached with the remaining loop
+  budget, evidence, capability, or authority.
 
-After two loops, stop when no meaningful completion delta remains. Otherwise continue
-up to four loops. At four, stop and report unresolved material findings rather than
-simulating additional loops.
-
-## Phase Transition
-
-Use state, not a fixed global loop number, to decide transitions within each phase's
-budget.
-
-Signals for moving from Improve to Finalize include:
-
-- major requirements are substantially satisfied;
-- findings are fewer, smaller, or localized;
-- Research produces little new material evidence;
-- recent Work changes only narrow surfaces;
-- Review increasingly repeats known issues or cosmetic preferences;
-- remaining work is mainly validation, regression control, or finishing.
-
-If conflicting evidence, a failed core assumption, or a changed problem boundary
-appears, adapt within the current phase. Do not reset completed loop counts or exceed
-the phase maximum.
-
-## Context and Validation
-
-Activate specialized context only when it materially improves the current phase. Do
-not preload every possibly relevant Skill or carry phase-specific context longer than
-needed.
-
-Prefer better evidence, contradiction tests, counterexamples, alternatives, and
-phase-appropriate validation over longer narration.
+Do not pass the gate before the Finalize minimum is satisfied. After two genuine loops,
+stop on `PASS`; continue on `RETRY` while a material delta remains, up to four loops.
+At four loops, unresolved completion-blocking issues produce `BLOCKED`, not a false
+success.
 
 ## Reporting
 
-Keep a compact observable record while working. Do not expose private reasoning.
+Keep a compact observable record while working.
 
-For **every counted loop**, produce one line using that phase's actual cycle:
+For every counted loop, write one line using the phase's actual cycle:
 
 ```text
-Prepare N — D: <discovered> | A: <assessment> | C: <configuration> | V: <verification>
-Improve N — R: <research delta> | P: <decision> | W: <material work> | R: <review result>
-Finalize N — I: <inspection> | R: <resolution> | V: <validation> | C: <close result>
+Prepare N — D: <discovery> | A: <assessment> | C: <configuration> | V: <readiness>
+Improve N — R: <research> | P: <decision> | W: <work> | R: <review>
+Finalize N — I: <inspection> | R: <resolution> | V: <validation> | G: <gate>
 ```
 
-Each field states only the observable material delta. One action, edit, or finding
-must not be expanded into multiple lines to imitate multiple loops.
+Each field states only the material delta. Do not expand one action into multiple loop
+lines.
 
-For **each completed phase**, produce one paragraph summarizing its objective, major
+For each completed phase, write **one paragraph** summarizing its objective, major
 decisions or changes, evidence or validation, and remaining material concerns.
 
-After all phases finish, produce a **work report** containing:
+After all phases finish, produce a work report with:
 
-- final result or outcome;
-- loop summaries grouped by Prepare, Improve, and Finalize;
-- one paragraph summary for each phase;
+- final status and result;
+- loop summaries grouped by phase;
+- one paragraph summary per phase;
 - material changes, decisions, and validation performed;
-- unresolved findings, limitations, or checks not performed.
+- unresolved findings, limitations, blockers, or checks not performed.
 
-Deliver or persist this report according to `output_policy`. Report delivery happens
-after the phase loops and never counts as an additional loop.
+Deliver or persist the report according to `output_policy`. Reporting happens after
+the phase loops and never counts as another loop.
