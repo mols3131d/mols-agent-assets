@@ -23,7 +23,7 @@ Repository for developing, validating, and managing AI agent assets.
 | `src/skills-chatbot-runtime/` | Chatbot Skill profile using bundled resources or hosted runtime capabilities |
 | `src/rules/` | Rule sources |
 
-`docs/references/skills/agent-assets-skills-target-profiles.md` owns the Skill profile details. `docs/references/rules/agent-assets-rules-projections.md` owns Rule projections and chatbot fallback behavior.
+`docs/references/skills/agent-skills-io/agent-skills-io-specification.md` owns the portable Agent Skills format and front matter. `docs/references/skills/agent-assets-skills-standard-personal.md` owns this repository's Skill extensions, and `docs/references/skills/agent-assets-skills-target-profiles.md` owns target-profile details. `docs/references/rules/agent-assets-rules-projections.md` owns Rule projections and chatbot fallback behavior.
 
 ## Repository Structure
 
