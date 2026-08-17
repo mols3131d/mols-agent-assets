@@ -1,12 +1,12 @@
 ---
 name: load-context-notion-mols
 description: >-
-  Add mols-specific Notion conventions alongside load-context-notion when the current
+  Use with load-context-notion to apply mols-specific conventions when the current
   workspace or target is explicitly the user's personal Notion or is unambiguously
-  evidenced as personally governed. Keep applying on follow-ups to that target. Do not
-  activate for team, company, shared-project, or another person's spaces, or from edit
+  evidenced as personally governed. Continue on follow-ups to that target. Do not
+  trigger for team, company, shared-project, or another person's spaces, or from edit
   access, membership, authorship, or elevated permission alone; in mixed-target tasks,
-  apply only to the personal targets.
+  apply only to personal targets.
 ---
 
 # Load Mols Notion Context
@@ -25,6 +25,10 @@ even when the user does not repeat its name.
 Do not infer personal scope from edit access, workspace membership, page authorship,
 shared access, familiarity, or permission level. If ownership/governance is unclear, use
 only the base loader until evidence establishes personal scope.
+
+If later live context shows that the target belongs to a team, company, shared project,
+or another person rather than the user's personal governance, stop applying this overlay
+and do not carry its conventions into further action on that target.
 
 When one task spans multiple workspaces or objects, apply this overlay only to the
 personal targets. Never export its conventions to team, company, shared-project, or
