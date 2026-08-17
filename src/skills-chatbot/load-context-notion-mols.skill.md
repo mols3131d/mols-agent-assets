@@ -1,18 +1,18 @@
 ---
 name: load-context-notion-mols
 description: >-
-  Use with load-context-notion for task-level work in the user's explicitly personal or
-  unambiguously personally governed Notion workspace or object. Continue on follow-ups
-  to the same target and re-evaluate when the target changes. Do not use for team,
-  company, shared-project, or another person's spaces, and do not infer personal scope
-  from edit access, membership, authorship, familiarity, or elevated permission. In
-  mixed-target tasks, apply only to personal targets.
+  Load mols-specific Notion conventions for task-level work in the user's explicitly
+  personal or unambiguously personally governed workspace or object. Continue on
+  follow-ups to the same target and re-evaluate when the target changes. Do not use for
+  team, company, shared-project, or another person's spaces, and do not infer personal
+  scope from edit access, membership, authorship, familiarity, or elevated permission.
+  In mixed-target tasks, apply only to personal targets.
 ---
 
 # Load Mols Notion Context
 
-This Skill contributes **personal mols conventions** for the Notion target. Live target
-context remains owned by `load-context-notion`.
+This Skill contributes **personal mols conventions** for the Notion target. Resolve live
+target context through `load-context-notion`; this overlay does not replace the base loader.
 
 ## Personal Conventions
 
