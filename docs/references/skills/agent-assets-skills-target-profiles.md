@@ -34,42 +34,30 @@ description: 이 저장소의 Skill target profile, flat/runtime 경계와 packa
 
 ### Flat Markdown Structure
 
-Flat chatbot Skill은 하나의 일반 문서보다 **여러 책임을 한 payload에 평탄화한 Markdown**에 가깝게 작성한다.
+Flat chatbot Skill은 **여러 Markdown 문서의 책임을 한 파일에 평탄화한 payload**로 본다. Heading은 장식이 아니라 responsibility boundary다.
 
-모든 heading은 명확한 **responsibility boundary**를 가져야 하며, heading depth는 단순한 시각적 계층이 아니라 책임의 포함 관계와 규모를 나타낸다.
+**`# ≈ one Markdown file`**을 기본 heuristic으로 사용한다. Flat 제약이 없다면 별도 `.md` 파일로 분리해도 자연스러운 top-level responsibility가 둘 이상일 때 복수의 `#`을 권장한다.
 
-특히 `#`은 일반 문서의 제목이 아니라 **Markdown 파일 하나에 대응할 정도의 top-level responsibility**로 취급한다. Flat 제약이 없다면 별도 Markdown 문서로 분리해도 자연스러운 수준의 응집된 책임에는 복수의 `#` 사용을 권장한다.
+- 모든 heading은 하나의 명확한 책임을 가진다.
+- `##` 이하는 부모 책임을 점진적으로 분해한다.
+- 같은 depth는 가능한 한 비슷한 추상화 수준을 유지한다.
+- 독립 책임을 한 heading에 섞지 않고, 의미 없는 미세 분할도 하지 않는다.
+- 공통 invariant는 가장 가까운 공통 상위 boundary에 한 번만 둔다.
+- 단순한 Skill은 하나의 `#`으로 충분하다.
+- target harness의 mandatory heading contract가 있으면 그것을 우선한다.
 
-- `#`은 file-level cohesion을 가진 하나의 top-level responsibility를 소유한다.
-- `##`는 해당 `#` 안의 major responsibility를 소유한다.
-- 더 낮은 heading은 부모 responsibility를 점진적으로 분해한다.
-- 같은 depth의 heading은 가능한 한 비슷한 추상화 수준과 책임 규모를 유지한다.
-- 하나의 heading이 서로 독립적인 책임을 함께 소유하면 나누고, 분리하면 의미나 흐름이 깨지는 책임은 억지로 쪼개지 않는다.
-- 공통 invariant를 여러 책임에 반복하지 않는다. 가장 자연스러운 공통 상위 boundary에 둔다.
-- 문서 제목 하나를 만들기 위해 모든 top-level responsibility를 `##` 아래로 강제하지 않는다.
-- 단순한 Skill은 하나의 `#`만 사용해도 된다.
-- target harness가 heading 구조를 강제하면 해당 mandatory contract가 이 권장보다 우선한다.
-
-예:
+형태 예시이며 고정 schema가 아니다.
 
 ```markdown
 # Contract
-
-...
 
 # Procedure
 
 ## Resolve
 
-...
-
 ## Apply
 
-...
-
 # Output
-
-...
 ```
 
 ## Directory-Based Package
