@@ -23,7 +23,7 @@ AI 에이전트 자산을 개발, 검증 및 관리하는 저장소입니다.
 | `src/skills-chatbot-runtime/` | bundled resources 또는 hosted runtime 기능을 사용하는 chatbot Skill profile |
 | `src/rules/` | Rule source |
 
-Portable Agent Skills 형식과 front matter는 `docs/references/skills/agent-skills-io/agent-skills-io-specification.md`가 소유합니다. 이 저장소의 Skill 확장은 `docs/references/skills/agent-assets-skills-standard-personal.md`, target profile 상세는 `docs/references/skills/agent-assets-skills-target-profiles.md`가 소유합니다. Rule projection과 chatbot fallback은 `docs/references/rules/agent-assets-rules-projections.md`를 따릅니다.
+Skill 규격은 `agentskills.io`의 open standard를 Tier 1으로 사용합니다. 주요 vendor/harness의 Tier 2 규격은 `docs/references/skills/agent-skills-io/agent-skills-io-specification.md`에서 공식 원문만 연결하며 복제하지 않습니다. 이 저장소의 Skill 확장은 `docs/references/skills/agent-assets-skills-standard-personal.md`, target profile 상세는 `docs/references/skills/agent-assets-skills-target-profiles.md`가 소유합니다. Rule projection과 chatbot fallback은 `docs/references/rules/agent-assets-rules-projections.md`를 따릅니다.
 
 ## Repository Structure
 
