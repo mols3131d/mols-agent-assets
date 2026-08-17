@@ -2,6 +2,9 @@
 
 업체가 제공하는 hosted chatbot runtime에서 **bundle과 runtime 기능을 활용해야 하는 skill**을 둡니다.
 
+> [!NOTE]
+> `skills-chatbot-runtime/`은 Agent Skills 표준의 공식 분류가 아니라, bundle·connector·tool·progressive loading을 활용하는 hosted chatbot harness를 위해 이 저장소가 만든 **비표준 repository-local target profile**입니다. 표준 Skill format과 호환되는 구조를 활용할 수 있지만 이 directory/profile 자체는 표준이 아닙니다.
+
 ## Placement
 
 `skills-chatbot-runtime/`은 배포 capability가 다음 중 하나라도 해당할 때 사용합니다.
@@ -21,7 +24,7 @@ Maintainer-only `docs/`, `evals/`, `tests/`, 개발용 validator는 배포 Skill
 
 ## Naming
 
-주책임이 **상황별 context 로딩**이면 `load-context-<topic>` 이름을 사용합니다. runtime에서 references나 tools를 사용하더라도 핵심 responsibility가 context 주입이면 같은 prefix를 유지합니다.
+주책임이 **상황별 context 로딩**이면 `load-context-<topic>` 이름을 사용합니다. 이 naming은 repository-local convention이며 Agent Skills 표준 요구사항이 아닙니다.
 
 - 예: `load-context-github`, `load-context-notion`
 - context-only Skill은 context discovery, selection, scoping, loading과 적용 경계까지만 소유합니다.
@@ -32,4 +35,4 @@ Maintainer-only `docs/`, `evals/`, `tests/`, 개발용 validator는 배포 Skill
 
 같은 capability가 `../skills/`, `../skills-chatbot/`, `skills-chatbot-runtime/` 중 둘 이상에 함께 존재할 수 있습니다. target profile이 다르면 의미가 겹친다는 이유만으로 제거하지 않습니다.
 
-runtime variant는 해당 host가 실제로 지원하는 references, assets, scripts, tools, progressive loading을 최대한 활용해 **초기 context와 실행 비용을 줄이고 필요한 capability를 늦게 로드**하도록 최적화합니다. 다른 profile의 제약을 그대로 가져와 runtime 이점을 포기하지 않습니다.
+runtime variant는 해당 host가 실제로 지원하는 references, assets, scripts, tools, connectors, progressive loading을 최대한 활용해 **초기 context와 실행 비용을 줄이고 필요한 capability를 늦게 로드**하도록 최적화합니다. 다른 profile의 제약을 그대로 가져와 runtime 이점을 포기하지 않습니다.
