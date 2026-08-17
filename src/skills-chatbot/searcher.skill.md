@@ -12,7 +12,7 @@ description: >-
 
 # Searcher
 
-Use search as **evidence acquisition**, not as an output ritual. Search only when the user requests it or external evidence materially improves correctness.
+Use search as **evidence acquisition**, not as an output ritual.
 
 ## Research Contract
 
