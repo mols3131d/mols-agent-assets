@@ -6,7 +6,7 @@
 
 Do not interpret this as “read the Skill files into this chat.” The task is to turn the selected canonical repository Skills into reusable ChatGPT Skills through ChatGPT's Skill creation/modification flow.
 
-This is a ChatGPT-specific orchestration Prompt. `mols-skill-find` and `mols-skill-install` remain target-agnostic control Skills; do not push ChatGPT-specific UI or `skill-creator` policy into them.
+This is a ChatGPT-specific orchestration Prompt. `mols-skill-find` and `mols-skill-install` remain chatbot-service-agnostic control Skills. Keep ChatGPT-specific concepts such as `skill-creator`, Skill draft review, and the native Install action in this Prompt.
 
 ## Arguments
 
@@ -24,7 +24,7 @@ on_conflict: <auto>
 - `scope` — capabilities to synchronize. `<auto>` discovers the complete repository-declared chatbot Skill set that has a ChatGPT-compatible projection.
 - `on_conflict` — `override`, `separate`, `skip`, or `<auto>`. `<auto>` leaves destructive conflicts for user choice.
 
-`<auto>` is an inference sentinel. Do not duplicate discovery, identity, collision, rename, or generic installation policy owned by the control Skills.
+`<auto>` is an inference sentinel. Do not duplicate discovery, identity, collision, rename, or generic target-delivery policy owned by the control Skills.
 
 ## Bootstrap Control
 
@@ -82,7 +82,7 @@ target: ChatGPT
 on_conflict: <resolved on_conflict>
 ```
 
-Let `mols-skill-install` own identity matching, update-vs-create decisions, rename continuity, collision handling, customization conflicts, ordering, and reporting.
+Let `mols-skill-install` own identity matching, update-vs-create decisions, rename continuity, collision handling, customization conflicts, ordering, and generic target-delivery fallback.
 
 For this Prompt, the required ChatGPT end state is an installed reusable ChatGPT Skill. Do not let a temporary load satisfy `sync`.
 
