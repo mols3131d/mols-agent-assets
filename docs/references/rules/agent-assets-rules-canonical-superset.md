@@ -5,18 +5,22 @@ description: 여러 coding-agent harness에 투영할 Rule의 repository-local c
 
 # Rule Canonical Superset
 
-여러 coding-agent harness에 같은 Rule을 배포해야 할 때의 권장 Superset은 **하나의 authoritative Rule source에서 target-native Rule을 fan-out할 수 있는 canonical source model**이다.
+## Chosen Superset
 
-이 저장소에서 변환 backend를 사용할 때는 Rulesync의 canonical source surface를 우선 후보로 본다. GitHub Copilot, Google Antigravity 등은 canonical policy의 target projection이 된다.
+여러 coding-agent harness에 같은 Rule을 배포할 때 이 저장소의 최적 Superset은 **Rulesync `.rulesync/rules/`의 unified Rule source**다.
+
+이 선택은 GitHub Copilot, Google Antigravity 같은 target-native Rule을 하나의 policy authority에서 생성할 수 있으면서도, target마다 다른 표현과 지원 범위를 projection으로 남길 수 있기 때문이다.
 
 ```text
-canonical Rule source
+.rulesync/rules/ canonical Rule
 ├─ shared policy semantics
 ├─ target-scoped policy semantics
 └─ scope / applicability intent
         ↓
    target-native Rules
 ```
+
+Rulesync를 사용하지 않는 단일-target Rule까지 이 형식으로 강제하지 않는다. 이미 native Rule이 authoritative하면 그 source를 유지하는 bridge가 더 작고 적절할 수 있다.
 
 ## Superset Owns
 
@@ -28,22 +32,21 @@ canonical Rule source
 
 Target별 filename, directory, selector syntax, metadata와 harness-native encoding은 Superset의 본질이 아니라 projection concern이다.
 
-## Preferred Route
+## Delivery Route
 
-1. Target이 authoritative source를 직접 소비할 수 있으면 direct reuse한다.
-1. Canonical source가 authoritative하고 native payload가 필요하면 fan-out한다.
-1. 이미 한 harness의 native Rule이 authoritative하면 source를 유지한 채 필요한 target으로 bridge한다.
+1. **Direct reuse** — target이 authoritative source를 직접 발견하고 필요한 semantics를 소비할 수 있으면 그대로 사용한다.
+1. **Canonical fan-out** — `.rulesync/rules/`가 authoritative하고 native payload가 필요하면 생성한다.
+1. **Native bridge** — 이미 한 harness의 native Rule이 authoritative하면 source를 유지한 채 필요한 target으로 변환한다.
 
 단순 bridge를 위해 source authority를 `.rulesync/`로 옮기지 않는다. Canonicalization 자체가 의도된 경우에만 ownership을 변경한다.
 
-## Target Projection
-
-예:
+## Projection
 
 ```text
 Rule Superset
 ├─ GitHub Copilot Rule
-└─ Google Antigravity Rule
+├─ Google Antigravity IDE Rule
+└─ Google Antigravity CLI Rule
 ```
 
 Projection은 target의 실제 Rule contract에 맞춰 format, placement, selector와 지원 semantics를 조정한다. 생성 성공을 semantic parity로 보지 않는다.
@@ -51,6 +54,10 @@ Projection은 target의 실제 Rule contract에 맞춰 format, placement, select
 Rule의 directory/glob/chatbot 배치 규칙은 [Rule Projections](agent-assets-rules-projections.md)가 소유한다.
 
 Rulesync 기반 source resolution, preview, generation, bridge와 validation 실행 계약은 [`rulesync-agent-assets`](../../../src/skills/rulesync-agent-assets/SKILL.md)가 소유한다. 설치된 Rulesync version의 실제 target/feature 지원이 runtime authority다.
+
+## Primary Reference
+
+- [Rulesync](https://github.com/dyoshikawa/rulesync) — unified `.rulesync/` source, target generation과 conversion backend
 
 ## Boundary
 
