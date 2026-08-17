@@ -59,7 +59,9 @@ Do not reproduce their identity, sibling-selection, rename, collision, package, 
 
 Synchronize the selected repository Skill source with the current ChatGPT installation state.
 
-The result should converge each repository capability to the single target-specific Skill projection that best fits ChatGPT, then install, update, or migrate it as an actual ChatGPT Skill when safe. Ambiguous or destructive conflicts remain explicit user decisions.
+The result should converge each repository capability to the single target-specific Skill projection that best fits ChatGPT, then create, update, or migrate it as an actual ChatGPT Skill through ChatGPT's `skill-creator` and native Skill review/install surface when safe. Ambiguous or destructive conflicts remain explicit user decisions.
+
+For this Prompt, current-chat loading is not a successful substitute for persistent ChatGPT Skill synchronization.
 
 ## Find
 
@@ -94,19 +96,26 @@ target: <resolved target>
 on_conflict: <resolved on_conflict>
 ```
 
-Let `mols-skill-install` own installed-state inspection and all mutation decisions, including:
+Let `mols-skill-install` own installed-state inspection, identity reconciliation, conflict handling, package/resource preservation, and mutation ordering.
 
-- new installation;
-- update of the same Skill;
-- confirmed rename migration;
-- same-name identity collision;
-- user customization conflicts;
-- orphan reporting;
-- unsupported target/package behavior.
+For the current ChatGPT target, require `mols-skill-install` to use ChatGPT's `skill-creator` as the native creation/update path for every selected capability that needs mutation:
 
-For a ChatGPT target, a successful mutation means the capability is created, installed, updated, or migrated in the current ChatGPT Skill surface. A ZIP, generated file, attachment, or download link does not count as installation.
+1. Read the selected canonical projection and the runtime resources required by that projection.
+1. Ask `skill-creator` to create or modify the corresponding ChatGPT Skill while preserving the source capability's semantics, activation contract, boundaries, and required resources.
+1. Use the native Skill draft and Install/Update flow returned by ChatGPT.
+1. Pre-fill everything the native surface permits; leave only unavoidable user approval or conflict decisions.
+1. Treat the item as pending until the native installation/update completes.
+1. Verify the installed state when the current ChatGPT environment exposes it.
 
-When the ChatGPT product requires native review or user confirmation before installation, surface that native flow and treat the item as pending until installation completes. Do not replace the native flow with a downloadable package unless the user explicitly requests export or manual upload.
+Do not redesign or improve repository Skill semantics during synchronization. `skill-creator` is a target projection/install mechanism here, not an invitation to rewrite the capability.
+
+Process Skills that control the current sync run after the other selected capabilities. Updating a control Skill must not reinterpret the in-progress run against the newly installed version.
+
+A successful ChatGPT mutation means the capability is created, installed, updated, or migrated in the current ChatGPT Skill surface. A current-chat load, ZIP, generated file, attachment, pasted Skill body, or download link does not count as installation.
+
+If ChatGPT exposes `skill-creator` but requires native review or user confirmation, surface the shortest native Install/Update action and keep the item pending until the user completes it. Do not replace that flow with manual upload merely to avoid the confirmation step.
+
+If `skill-creator` or the native Skill creation/install surface is unavailable in the current ChatGPT environment, report that target capability as unavailable. Do not silently downgrade persistent sync to current-chat loading.
 
 Do not directly mutate Skills outside `mols-skill-install` after bootstrap.
 
@@ -116,7 +125,7 @@ Do not directly mutate Skills outside `mols-skill-install` after bootstrap.
 - Do not install multiple sibling projections of one capability.
 - Do not delete installed-only Skills merely because they are absent from the source.
 - Do not turn `<auto>` into permission for destructive conflict resolution.
-- Do not treat generated Skill artifacts as equivalent to installed ChatGPT Skills.
+- Do not treat generated Skill artifacts or current-chat loading as equivalent to installed ChatGPT Skills.
 - Do not claim inspection, installation, update, rename, or migration that the current ChatGPT environment could not actually perform.
 
 ## Report
@@ -131,6 +140,8 @@ If bootstrap ran, report only prerequisite Skills whose native ChatGPT installat
 
 ### Renamed / Migrated
 
+### Pending User Action
+
 ### Skipped
 
 ### Conflicts
@@ -141,6 +152,6 @@ If bootstrap ran, report only prerequisite Skills whose native ChatGPT installat
 
 ### Limitations
 
-Do not report a Skill as installed while its native Install action is still pending user confirmation.
+Do not report a Skill as installed while its native Install/Update action is still pending user confirmation.
 
 Keep the report concise. Do not include internal reasoning, repeated Skill rules, or file-by-file discovery logs unless a conflict requires evidence for a user decision.
