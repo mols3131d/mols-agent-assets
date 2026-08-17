@@ -1,69 +1,162 @@
 ---
 title: Skill Canonical Superset
-description: 여러 agent와 chatbot target에 투영할 Skill의 repository-local canonical superset 기준
+description: Rulesync Skill과 Agent Skills core를 결합한 repository-local canonical Skill spec
 ---
 
 # Skill Canonical Superset
 
-## Chosen Superset
+Canonical Skill은 **`.rulesync/skills/<name>/SKILL.md` + supporting files** 로 작성한다.
 
-여러 Skill runtime에 같은 capability를 배포할 때 이 저장소의 최적 Superset은 **Agent Skills open-standard directory package**다.
+Portable core는 Agent Skills Specification을 따르고, Rulesync의 `targets`와 target blocks를 Superset extension으로 사용한다.
+
+## Package
 
 ```text
-skill-name/
+.rulesync/skills/<name>/
 ├─ SKILL.md
 ├─ references/   # optional
 ├─ scripts/      # optional
 └─ assets/       # optional
 ```
 
-이 source shape는 activation metadata, instructions와 optional resources를 한 capability authority에 보존하면서, 더 제한적인 target에는 flat 또는 host-native projection을 만들 수 있다. 공개 규격이 존재하므로 vendor 하나의 private schema를 canonical layer로 삼는 것보다 portability가 높다.
+## Schema
 
-## Superset Owns
+```yaml
+---
+name: <kebab-case>
+description: <string>
+targets: ["*"]
 
-- capability identity와 responsibility
-- activation intent와 discovery semantics
-- 행동 contract와 invariant
-- portability에 필요한 environment/compatibility requirement
-- capability에 실제 필요한 references, scripts와 assets
-- target마다 달라져야 하는 semantics가 있을 때 그 차이의 authoritative intent
+disable-model-invocation: <boolean>
+user-invocable: <boolean>
 
-Repository-local `.docs/`와 `.docs/baseline/`은 maintainer surface이며 runtime Superset payload 자체는 아니다.
+agentsskills:
+  license: <string>
+  compatibility: <string>
+  metadata:
+    <key>: <string>
+  allowed-tools: <string-or-list>
 
-## Repository Projections
+copilot:
+  license: <string>
+  allowed-tools: <string-or-list>
+  argument-hint: <string>
+  user-invocable: <boolean>
+  disable-model-invocation: <boolean>
+  context: <fork>
 
-```text
-Agent Skills package
-├─ skills/                  # workspace-capable
-├─ skills-chatbot/          # flat single Markdown
-├─ skills-chatbot-runtime/  # hosted bundled/runtime
-└─ vendor-native Skill
+codexcli:
+  interface:
+    display_name: <string>
+    short_description: <string>
+    default_prompt: <string>
+  policy:
+    allow_implicit_invocation: <boolean>
+  dependencies:
+    tools: <list>
+
+# 기타 target-specific block 허용
+<target>: <mapping>
+---
+
+<skill instructions>
 ```
 
-- `skills/`는 workspace/filesystem/shell authority가 필요한 runtime에 최적화한다.
-- `skills-chatbot/`은 self-contained single Markdown payload로 평탄화한다.
-- `skills-chatbot-runtime/`은 bundled resources와 progressive loading이 필요한 hosted runtime에 최적화한다.
+## Core Fields
 
-같은 capability가 여러 profile에 존재하는 것은 target별 projection이다. 독립 payload에 필요한 semantic overlap 자체를 DRY 위반으로 보지 않는다.
+| Field | Requirement | Constraint |
+| --- | --- | --- |
+| `name` | **Required** | Agent Skills 규격: 1–64자, lowercase/digit/hyphen, directory name과 일치 |
+| `description` | **Required** | 1–1024자. capability + activation condition |
+| `targets` | **Required** | `"*"` 또는 Rulesync target 목록 |
+| `disable-model-invocation` | Optional | 지원 target의 shared invocation default |
+| `user-invocable` | Optional | 지원 target의 shared user-invocation default |
+| `agentsskills` | Optional | portable Agent Skills optional fields |
+| `<target>` | Optional | target-native extension/override |
+| body | **Required** | runtime instructions |
 
-## Projection Rule
+## Agent Skills Core
 
-Target projection은 canonical capability를 재설계하지 않고 해당 target이 실제로 소비할 수 있는 형태로 적응시킨다.
+`agentsskills` block은 portable optional fields의 canonical home이다.
 
-Flat projection은 required runtime semantics를 한 Markdown에 완결하되 capability의 본질을 token budget 때문에 임의로 삭제하지 않는다. Bundled resource가 capability에 필수라면 flat projection 대신 적절한 runtime profile을 선택한다.
+| Field | Constraint |
+| --- | --- |
+| `license` | license name 또는 bundled license reference |
+| `compatibility` | 1–500자 string |
+| `metadata` | string → string mapping |
+| `allowed-tools` | Agent Skills 출력에서는 space-separated scalar로 정규화됨 |
 
-Target이 canonical Agent Skills package를 직접 소비할 수 있으면 별도 sibling을 만들지 않고 direct reuse를 우선한다.
+`name`과 `description`은 항상 top-level canonical field다. Target block에서 별도 authority로 재정의하지 않는다.
 
-Portable format의 상세 규격은 [Agent Skills Specification](agent-skills-io/agent-skills-io-specification.md), repository-local profile과 package surface는 [Skill Target Profiles](agent-assets-skills-target-profiles.md)가 소유한다.
+## Repository Constraints
 
-## Primary Reference
+1. Capability identity와 activation은 `name` + `description`에 완결한다.
+1. Portable하게 표현 가능한 metadata는 `agentsskills`에 먼저 둔다.
+1. Target-specific capability만 `<target>` block에 둔다.
+1. `user-invocable` / `disable-model-invocation`은 여러 target에 동일한 의미라면 top-level shared default를 사용한다.
+1. Runtime에 필요한 supporting file은 package 안에 보존한다. Flat target으로 투영할 수 없으면 내용을 버리지 말고 unsupported profile로 판정한다.
+1. `.docs/` 같은 maintainer-only 자료는 runtime package Superset에 넣지 않는다.
 
-- [Agent Skills Specification](https://agentskills.io/specification) — portable `SKILL.md` package와 optional resource surface
+## Minimal
 
-## Boundary
+```yaml
+---
+name: pr-review
+description: Review a pull request for correctness and regressions. Use when asked to review PR changes.
+targets: ["*"]
+---
 
-- 이 문서는 Skill 유형의 **최적 canonical Superset**을 소유한다.
-- 모든 target이 Agent Skills package를 그대로 소비한다고 가정하지 않는다.
-- target-native metadata와 runtime feature를 Tier 1 portable field로 가장하지 않는다.
-- 하나의 target만 필요한 Skill에 불필요한 sibling projection을 만들지 않는다.
-- target projection은 canonical capability의 source authority를 암묵적으로 가져가지 않는다.
+# PR Review
+
+Inspect the requested change and report evidence-backed findings.
+```
+
+## Extended
+
+```yaml
+---
+name: pr-review
+description: Review a pull request for correctness and regressions. Use when asked to review PR changes.
+targets: ["agentsskills", "copilot", "codexcli"]
+user-invocable: true
+
+agentsskills:
+  license: MIT
+  compatibility: Requires git
+  metadata:
+    version: "1.0.0"
+  allowed-tools: "shell"
+
+copilot:
+  argument-hint: "[pr-number]"
+
+codexcli:
+  policy:
+    allow_implicit_invocation: true
+---
+
+# PR Review
+
+Inspect the requested change and report evidence-backed findings.
+```
+
+## Projection Contract
+
+- Agent Skills-compatible target에는 portable core를 우선 보존한다.
+- Target-specific field는 해당 target projection에만 반영한다.
+- Generated Skill이 portable 규격을 위반하는 경우 생성 성공을 호환성 성공으로 취급하지 않는다.
+- Target이 canonical Agent Skills package를 직접 읽을 수 있으면 별도 sibling projection을 만들지 않는다.
+
+## Validation
+
+```bash
+rulesync generate --dry-run --features skills --targets <targets>
+rulesync generate --check --features skills --targets <targets>
+skills-ref validate <generated-skill-directory>
+```
+
+## References
+
+- [Rulesync File Formats — skills](https://rulesync.dyoshikawa.com/reference/file-formats.html#rulesync-skills-skill-md)
+- [Agent Skills Specification](https://agentskills.io/specification)
+- [Skill Target Profiles](agent-assets-skills-target-profiles.md)
