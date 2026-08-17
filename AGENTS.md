@@ -7,7 +7,9 @@
 - `tests/`: Automated tests for assets and tooling.
 - `docs/`: Human-facing documentation and references.
 
-For Skill placement, treat `skills/`, `skills-chatbot/`, and `skills-chatbot-runtime/` as target profiles. Cross-profile sibling variants may intentionally overlap. `skills-chatbot/` is reserved for self-contained single-file skills under 4,000 tokens; larger or multi-resource chatbot skills belong in `skills-chatbot-runtime/`.
+Prefer Skill as the portable reusable unit when a capability or situation-specific context should be activated on demand by the model rather than loaded globally.
+
+For Skill placement, treat `skills/`, `skills-chatbot/`, and `skills-chatbot-runtime/` as **repository-local, non-standard target profiles**. They are not categories defined by the Agent Skills specification. Cross-profile sibling variants may intentionally overlap. `skills-chatbot/` is reserved for self-contained single-file skills under the repository's 4,000-token flat budget; larger or runtime-dependent chatbot skills belong in `skills-chatbot-runtime/`.
 
 ## Asset Pipeline
 
