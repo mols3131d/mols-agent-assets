@@ -22,17 +22,18 @@ max_loops: 10
 stop_condition: no_material_findings
 ```
 
-Follow a user-specified loop count unless blocked. Otherwise stop when another loop
-has no meaningful expected delta or `max_loops` is reached. Never invent findings to
-justify more loops.
+Treat a user-specified loop count as a maximum unless they explicitly require exactly
+that many completed loops. Otherwise stop when another loop has no meaningful expected
+delta or `max_loops` is reached. When an exact count is required, later loops may be
+brief validation passes; never invent findings to justify them.
 
 ## Calibrate Before Loop 1
 
 Before the first RPWR loop, choose a provisional strategy for Research and Review.
-Consider the task's uncertainty, breadth, stakes, evidence quality, likely failure
-modes, and acceptance conditions.
+Calibration is preparation and does not count as an RPWR loop.
 
-Decide only what materially guides the loop:
+Consider the task's uncertainty, breadth, stakes, evidence quality, likely failure
+modes, and acceptance conditions. Decide only what materially guides the loop:
 
 - how broad and deep Research should begin;
 - what evidence or context is worth investigating;
@@ -54,8 +55,9 @@ Research may inspect existing context, artifacts, repositories, data, prior resu
 domain knowledge, or external sources. It is not synonymous with web search.
 
 Use a broader scope in early loops to understand the problem boundary, important
-assumptions, plausible alternatives, and missing evidence. As understanding improves,
-narrow toward unresolved findings and weak assumptions.
+assumptions, plausible alternatives, and missing evidence. Be broad enough to orient
+the work, not exhaustive by default. As understanding improves, narrow toward
+unresolved findings and weak assumptions.
 
 Adapt instead of repeating:
 
