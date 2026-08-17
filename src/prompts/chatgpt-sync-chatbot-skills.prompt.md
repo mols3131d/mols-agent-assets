@@ -10,13 +10,13 @@ scope: <auto>
 on_conflict: <auto>
 ```
 
-- `source` — repository or Skill source to synchronize. `<auto>` resolves the repository/source already associated with the task.
+- `source` — repository or Skill source to synchronize. `<auto>` delegates source resolution to `mols-skill-find`, including its repository fallback.
 - `ref` — source revision. `<auto>` uses the live/current ref when known, otherwise the source default.
 - `target` — ChatGPT Skill installation target. `<auto>` uses the current ChatGPT environment.
 - `scope` — capabilities to synchronize. `<auto>` discovers repository-declared chatbot/ChatGPT Skill profiles and synchronizes their complete installable capability set.
 - `on_conflict` — `override`, `separate`, `skip`, or `<auto>`. `<auto>` leaves destructive conflicts for user choice.
 
-`<auto>` is an inference sentinel, not a hard-coded repository path. Resolve it from explicit user input, live task context, repository evidence, then current ChatGPT capabilities.
+`<auto>` is an inference sentinel. Do not duplicate source-discovery or installation policy that belongs to the prerequisite Skills.
 
 ## Prerequisites
 
@@ -27,7 +27,7 @@ This Prompt assumes the following Skills are available and uses them as the cano
 
 Do not reproduce their identity, sibling-selection, rename, collision, package, or mutation rules inside this Prompt.
 
-If either Skill is unavailable, report the missing prerequisite instead of silently implementing a second copy of its behavior.
+If either Skill is unavailable, report **Bootstrap Required**, identify the missing Skill, and stop before discovery or mutation. The prerequisite must be installed through the current ChatGPT Skill installation surface before rerunning this Prompt.
 
 ## Goal
 
