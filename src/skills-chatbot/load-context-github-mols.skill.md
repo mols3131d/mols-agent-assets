@@ -15,6 +15,13 @@ description: >-
 This Skill contributes **personal mols conventions** for the GitHub target. Resolve live
 target context through `load-context-github`; this overlay does not replace the base loader.
 
+## Scope Discipline
+
+Keep personal conventions bound to targets that remain evidenced as personally governed.
+If newly loaded context shows that a target is team, company, organization, or shared,
+stop applying this overlay to that target. In mixed-target work, never carry personal
+defaults from an in-scope target into another target.
+
 ## Personal Conventions
 
 ### Instruction Fallback
