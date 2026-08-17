@@ -38,10 +38,9 @@ Flat chatbot Skill은 **여러 Markdown 문서의 책임을 한 파일에 평탄
 
 **`# ≈ one Markdown file`**을 기본 heuristic으로 사용한다. Flat 제약이 없다면 별도 `.md` 파일로 분리해도 자연스러운 top-level responsibility가 둘 이상일 때 복수의 `#`을 권장한다.
 
-- 모든 heading은 하나의 명확한 책임을 가진다.
+- 모든 heading은 하나의 명확한 책임을 가진다. 독립 책임은 나누되 의미 없는 미세 분할은 하지 않는다.
 - `##` 이하는 부모 책임을 점진적으로 분해한다.
 - 같은 depth는 가능한 한 비슷한 추상화 수준을 유지한다.
-- 독립 책임을 한 heading에 섞지 않고, 의미 없는 미세 분할도 하지 않는다.
 - 공통 invariant는 가장 가까운 공통 상위 boundary에 한 번만 둔다.
 - 단순한 Skill은 하나의 `#`으로 충분하다.
 - target harness의 mandatory heading contract가 있으면 그것을 우선한다.
