@@ -38,6 +38,17 @@ Maintainer-only `docs/`, `evals/`, `tests/`, 개발용 validator도 배포 Skill
 - context를 활용하더라도 실제 workflow나 산출물 생성이 주책임인 Skill에는 이 prefix를 붙이지 않습니다.
 - 이름은 packaging이 아니라 capability responsibility를 나타내므로 같은 규칙을 다른 target profile에도 적용할 수 있습니다.
 
+### Personal Context Overlays
+
+범용에 가까운 context loader와 개인 관행을 분리해야 하면 **base + personal overlay**로 구성합니다.
+
+- base: `load-context-<topic>`
+- personal overlay: `load-context-<topic>-<owner>`
+
+예: `load-context-github` + `load-context-github-mols`, `load-context-notion` + `load-context-notion-mols`.
+
+개인 대상에서는 base와 overlay를 함께 적용합니다. 타인·팀·회사·공유 프로젝트처럼 개인 관행의 적용 대상이 아니면 base만 적용합니다. 단순 접근 권한이나 참여 이력만으로 personal overlay를 활성화하지 않습니다.
+
 ## Target Variants
 
 같은 capability가 `../skills/`, `skills-chatbot/`, `../skills-chatbot-runtime/` 중 둘 이상에 함께 존재할 수 있습니다. target profile이 다르면 의미가 겹친다는 이유만으로 제거하지 않습니다.
