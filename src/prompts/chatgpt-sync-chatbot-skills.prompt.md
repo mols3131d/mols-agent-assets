@@ -18,16 +18,32 @@ on_conflict: <auto>
 
 `<auto>` is an inference sentinel. Do not duplicate source-discovery or installation policy that belongs to the prerequisite Skills.
 
+## Bootstrap
+
+Before discovery, verify that both prerequisite Skills are available in the current ChatGPT environment:
+
+- `mols-skill-find`
+- `mols-skill-install`
+
+If either Skill is unavailable, use ChatGPT's Skill Creator capability to synchronize only the missing prerequisite Skill from the canonical flat source in `mols3131d/mols-agent-assets`:
+
+- `src/skills-chatbot/mols-skill-find.skill.md`
+- `src/skills-chatbot/mols-skill-install.skill.md`
+
+Bootstrap is independent of the requested `source`; these prerequisite Skills always come from this repository. Treat the repository files as canonical and do not semantically rewrite or improve them while creating the ChatGPT Skills.
+
+After bootstrap, verify that both prerequisite Skills are available, then continue with the normal workflow. Do not use `mols-skill-find` or `mols-skill-install` to bootstrap themselves.
+
+If ChatGPT cannot inspect, create, or update Skills through its available Skill Creator surface, report **Bootstrap Required**, identify the missing prerequisite Skill, and stop before discovery or other mutation.
+
 ## Prerequisites
 
-This Prompt assumes the following Skills are available and uses them as the canonical owners of discovery and installation behavior:
+After bootstrap, use the following Skills as the canonical owners of discovery and installation behavior:
 
 - `mols-skill-find`
 - `mols-skill-install`
 
 Do not reproduce their identity, sibling-selection, rename, collision, package, or mutation rules inside this Prompt.
-
-If either Skill is unavailable, report **Bootstrap Required**, identify the missing Skill, and stop before discovery or mutation. The prerequisite must be installed through the current ChatGPT Skill installation surface before rerunning this Prompt.
 
 ## Goal
 
@@ -78,7 +94,7 @@ Let `mols-skill-install` own installed-state inspection and all mutation decisio
 - orphan reporting;
 - unsupported target/package behavior.
 
-Do not directly mutate Skills outside `mols-skill-install`.
+Do not directly mutate Skills outside `mols-skill-install` after bootstrap.
 
 ## Sync Boundary
 
@@ -90,7 +106,9 @@ Do not directly mutate Skills outside `mols-skill-install`.
 
 ## Report
 
-Return the final states produced by `mols-skill-install`, omitting empty groups:
+If bootstrap ran, report the prerequisite Skills that were bootstrapped. Then return the final states produced by `mols-skill-install`, omitting empty groups:
+
+### Bootstrapped Prerequisites
 
 ### Installed
 
