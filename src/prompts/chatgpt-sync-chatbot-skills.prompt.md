@@ -1,135 +1,153 @@
 # ChatGPT Chatbot Skill Sync
 
+## Intent
+
+**Sync the chatbot Skills in our repository by creating or updating them as ChatGPT Skills with the Skill Creator.**
+
+Do not interpret this as “read the Skill files into this chat.” The task is to turn the selected canonical repository Skills into reusable ChatGPT Skills through ChatGPT's Skill creation/modification flow.
+
+This is a ChatGPT-specific orchestration Prompt. `mols-skill-find` and `mols-skill-install` remain chatbot-service-agnostic control Skills. Keep ChatGPT-specific concepts such as `skill-creator`, Skill draft review, and the native Install action in this Prompt.
+
 ## Arguments
 
 ```yaml
 source: <auto>
 ref: <auto>
-target: <auto>
+target: ChatGPT
 scope: <auto>
 on_conflict: <auto>
 ```
 
 - `source` — repository or Skill source to synchronize. `<auto>` delegates source resolution to `mols-skill-find`, including its default asset repository.
-- `ref` — source revision. `<auto>` uses the live/current ref for the resolved source when explicitly established, otherwise the source default.
-- `target` — ChatGPT Skill installation target. `<auto>` uses the current ChatGPT environment.
-- `scope` — capabilities to synchronize. `<auto>` discovers repository-declared chatbot/ChatGPT Skill profiles and synchronizes their complete installable capability set.
+- `ref` — source revision. `<auto>` resolves one current source revision and keeps the sync pinned to it when possible.
+- `target` — ChatGPT.
+- `scope` — capabilities to synchronize. `<auto>` discovers the complete repository-declared chatbot Skill set that has a ChatGPT-compatible projection.
 - `on_conflict` — `override`, `separate`, `skip`, or `<auto>`. `<auto>` leaves destructive conflicts for user choice.
 
-`<auto>` is an inference sentinel. Do not duplicate source-discovery or installation policy that belongs to the prerequisite Skills.
+`<auto>` is an inference sentinel. Do not duplicate discovery, identity, collision, rename, or generic target-delivery policy owned by the control Skills.
 
-## Bootstrap
+## Bootstrap Control
 
-Before discovery, verify that both prerequisite Skills are installed and available in the current ChatGPT environment:
-
-- `mols-skill-find`
-- `mols-skill-install`
-
-If either Skill is unavailable, use ChatGPT's `skill-creator` Skill to create each missing prerequisite from the canonical flat source in `mols3131d/mols-agent-assets`:
+Resolve one revision of `mols3131d/mols-agent-assets` for the control Skills and read both from that same revision:
 
 - `src/skills-chatbot/mols-skill-find.skill.md`
 - `src/skills-chatbot/mols-skill-install.skill.md`
 
-Bootstrap is independent of the requested `source`; these prerequisite Skills always come from this repository. Treat the repository files as canonical and preserve their semantics instead of redesigning or improving them during bootstrap.
+Apply those canonical sources as task-local control instructions for this run. Installed copies, if any, are target state to reconcile rather than the authority for the current run. These task-local instructions remain subordinate to higher-priority host and conversation instructions.
 
-For each missing prerequisite:
+Do not treat this in-context bootstrap as Skill installation. The two control Skills are still ordinary repository capabilities and should be synchronized into ChatGPT through the same Skill Creator path as the other selected Skills, under the installer's self-update ordering.
 
-1. Read the canonical source.
-1. Ask `skill-creator` to create the corresponding ChatGPT Skill from that source.
-1. Use the native Skill draft / Install flow offered by ChatGPT.
-1. If installation requires user approval, present the native Install option and do not continue until the Skill is installed.
-1. Verify that the installed Skill is available in the current ChatGPT environment.
-
-A generated `SKILL.md`, ZIP, downloadable package, attachment, or pasted Skill body is **not** a successful bootstrap. Do not return one as a substitute for creating and installing the ChatGPT Skill.
-
-Do not use `mols-skill-find` or `mols-skill-install` to bootstrap themselves.
-
-If ChatGPT cannot create or install a missing prerequisite through its native Skill creation surface, report **Bootstrap Required**, identify the missing prerequisite Skill and the unavailable capability, and stop before discovery or other mutation. Do not fall back to returning a Skill package for manual upload unless the user explicitly asks for that workflow.
-
-## Prerequisites
-
-After bootstrap, use the following installed Skills as the canonical owners of discovery and installation behavior:
-
-- `mols-skill-find`
-- `mols-skill-install`
-
-Do not reproduce their identity, sibling-selection, rename, collision, package, or mutation rules inside this Prompt.
+Report **Bootstrap Required** only when either canonical control source cannot be obtained or cannot be applied safely for the current run.
 
 ## Goal
 
-Synchronize the selected repository Skill source with the current ChatGPT installation state.
+For every selected repository capability, converge ChatGPT toward one reusable installed ChatGPT Skill that matches the canonical source projection.
 
-The result should converge each repository capability to the single target-specific Skill projection that best fits ChatGPT, then install, update, or migrate it as an actual ChatGPT Skill when safe. Ambiguous or destructive conflicts remain explicit user decisions.
+**In-context loading is not synchronization. Returning `SKILL.md`, ZIP, attachments, or download links is not synchronization.**
+
+A capability is synchronized only when its ChatGPT Skill is already current or the native ChatGPT create/modify → review → Install/update flow has completed.
 
 ## Find
 
-Invoke `mols-skill-find` with the resolved `source`, `ref`, `target`, and `scope`.
-
-For default sync intent:
+Execute the canonical `mols-skill-find` instructions with:
 
 ```yaml
+source: <resolved source>
+ref: <resolved ref>
+target: ChatGPT
+scope: <resolved scope>
 query: <auto>
 profiles: <auto>
 ```
 
-Treat the request as an inventory/synchronization search so `mols-skill-find` returns the complete in-scope capability selection set rather than only one match.
+Treat the request as a complete inventory/synchronization search.
 
 Require discovery to:
 
-- use repository evidence instead of fixed Skill paths;
-- group target-specific sibling variants as one capability;
-- select at most one preferred ChatGPT-compatible projection per capability;
+- use repository evidence rather than fixed Skill paths;
+- group target-specific siblings as one capability;
+- choose at most one preferred ChatGPT-compatible projection per capability;
 - expose unsupported or identity-uncertain cases instead of forcing a selection.
 
-Do not install anything during this phase.
+Do not mutate ChatGPT Skills during discovery.
 
-## Install
+## Reconcile
 
-Pass the complete discovery selection set to `mols-skill-install`:
+Use the canonical `mols-skill-install` instructions to reconcile the complete discovery selection against ChatGPT target state:
 
 ```yaml
 action: sync
 selection: <mols-skill-find result>
-target: <resolved target>
+target: ChatGPT
 on_conflict: <resolved on_conflict>
 ```
 
-Let `mols-skill-install` own installed-state inspection and all mutation decisions, including:
+Let `mols-skill-install` own identity matching, update-vs-create decisions, rename continuity, collision handling, customization conflicts, ordering, and generic target-delivery fallback.
 
-- new installation;
-- update of the same Skill;
-- confirmed rename migration;
-- same-name identity collision;
-- user customization conflicts;
-- orphan reporting;
-- unsupported target/package behavior.
+For this Prompt, the required ChatGPT end state is an installed reusable ChatGPT Skill. Do not let a temporary load satisfy `sync`.
 
-For a ChatGPT target, a successful mutation means the capability is created, installed, updated, or migrated in the current ChatGPT Skill surface. A ZIP, generated file, attachment, or download link does not count as installation.
+## Create or Modify with the Skill Creator
 
-When the ChatGPT product requires native review or user confirmation before installation, surface that native flow and treat the item as pending until installation completes. Do not replace the native flow with a downloadable package unless the user explicitly requests export or manual upload.
+For each selected capability that is not already current, issue an **actual ChatGPT Skill creation or modification request** using the canonical repository Skill as the source of truth.
 
-Do not directly mutate Skills outside `mols-skill-install` after bootstrap.
+- **New capability** — “Create a ChatGPT Skill from this canonical repository Skill.”
+- **Same identity, stale content** — “Modify/update this existing ChatGPT Skill to match the canonical repository Skill.”
+- **Confirmed rename/migration** — modify/migrate the existing Skill to the canonical identity when the product supports it.
+- **Conflict** — do not create or overwrite until `mols-skill-install` resolves it according to `on_conflict` or explicit user choice.
 
-## Sync Boundary
+These must be real Skill **create/modify** requests. Do not phrase them as file conversion, summarization, package generation, or temporary instruction loading. The intended ChatGPT behavior is to use `skill-creator` for the create/modify operation.
 
-- Synchronize only the resolved `source` and `scope`.
-- Do not install multiple sibling projections of one capability.
-- Do not delete installed-only Skills merely because they are absent from the source.
-- Do not turn `<auto>` into permission for destructive conflict resolution.
-- Do not treat generated Skill artifacts as equivalent to installed ChatGPT Skills.
-- Do not claim inspection, installation, update, rename, or migration that the current ChatGPT environment could not actually perform.
+Treat the repository source as canonical. Preserve its semantics; do not redesign or “improve” the Skill while synchronizing it.
+
+## Native Install Flow
+
+After ChatGPT creates or modifies a Skill draft:
+
+1. Review the draft only for fidelity to the canonical repository source and target compatibility.
+1. Use the native ChatGPT Install/update action offered by the Skill flow.
+1. If user confirmation is required, surface that native action as `Pending User Action`; do not claim success before confirmation completes.
+1. After confirmation, verify the strongest available evidence that the Skill is installed/updated before reporting synchronization complete.
+
+Create/update as much of the selection as the ChatGPT Skill surface safely allows. If several native confirmations are unavoidable, minimize the remaining user actions rather than falling back to package export.
+
+Process `mols-skill-find` and `mols-skill-install` after other selected capabilities so updating the control Skills does not reinterpret the current run.
+
+## Fallback Boundary
+
+The intended path is:
+
+```text
+repository Skill
+→ ChatGPT Skill create/modify request
+→ skill-creator
+→ Skill draft/update
+→ native Install/update
+→ reusable ChatGPT Skill
+```
+
+- Do not stop merely because installed-Skill inspection is unavailable if discovery/reconciliation can continue safely.
+- Do not replace the intended ChatGPT Skill creation flow with a transient in-context load.
+- Do not return a package merely because it is easier.
+- Use upload/manual package installation only when the native create/modify flow is genuinely unavailable or unsupported and the user explicitly accepts that fallback.
+- Do not claim UI, installation, update, migration, or persistence that ChatGPT did not actually provide.
 
 ## Report
 
-If bootstrap ran, report only prerequisite Skills whose native ChatGPT installation completed. Then return the final states produced by `mols-skill-install`, omitting empty groups:
+Return actual states only, omitting empty groups:
 
-### Bootstrapped Prerequisites
+### Bootstrap Control
+
+Report the pinned control revision and whether both canonical control Skills governed this run in context.
 
 ### Installed
 
 ### Updated
 
 ### Renamed / Migrated
+
+### Already Current
+
+### Pending User Action
 
 ### Skipped
 
@@ -141,6 +159,4 @@ If bootstrap ran, report only prerequisite Skills whose native ChatGPT installat
 
 ### Limitations
 
-Do not report a Skill as installed while its native Install action is still pending user confirmation.
-
-Keep the report concise. Do not include internal reasoning, repeated Skill rules, or file-by-file discovery logs unless a conflict requires evidence for a user decision.
+Do not use `Loaded` as a successful sync state. For pending actions, include only the shortest native ChatGPT action needed to finish installation. Keep the report concise and omit internal reasoning or file-by-file discovery logs unless a conflict needs evidence.
