@@ -1,34 +1,19 @@
 ---
 name: load-context-notion
 description: >-
-  Load live Notion structure and context for task-level work in a concrete workspace
-  or on a page, database, data source, view, property, relation, template, or connected
-  object. Use for reads, queries, changes, locating a named target, and follow-ups to an
-  established target when workspace structure can affect the result. Skip generic
-  Notion explanation and broad product/public discovery with no workspace scope.
+  Load live Notion structure and context for task-level work in a concrete workspace or
+  object: page, database, data source, view, property, relation, template, or connected
+  object. Use for reads, queries, changes, connector/tool actions, named-target lookup,
+  and follow-ups where live structure can affect the result. A named target that still
+  needs lookup counts as concrete; re-resolve context when a follow-up switches target.
+  Do not use for generic Notion explanation or broad product/public discovery with no
+  workspace or object scope.
 ---
 
 # Load Notion Context
 
 Use this Skill only to resolve the **live Notion context that governs the task**.
 Execution belongs to the downstream task capability.
-
-## Trigger
-
-Activate when either condition holds:
-
-- the task reads, queries, changes, or otherwise acts within a concrete Notion workspace
-  or on a concrete page, database, data source, view, property, relation, template, or
-  connected object;
-- a Notion connector/tool is used for task-level work scoped to such a workspace or object.
-
-A named target that still needs lookup counts as concrete. Follow-up requests continue to
-use the already established workspace/object even when the user does not repeat its name.
-If a follow-up switches workspace/object scope, resolve and load context for the new target.
-
-Do not activate for generic Notion explanation or broad product/public discovery with no
-workspace scope. A narrow read may identify a target first; finish relevant context loading
-before mutation or structural assumptions about that target.
 
 ## Contract
 
