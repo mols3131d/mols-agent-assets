@@ -1,12 +1,12 @@
 ---
 name: load-context-agent-assets
 description: >-
-  Load agent-facing authoring and design context for Skills, instructions, prompts,
-  agents, subagents, tool guidance, guardrails, templates, and related behavioral
-  assets consumed primarily by AI agents. Use when activation, authority, context
-  cost, routing, tool boundaries, portability, or evaluability materially affects the
-  asset. Do not use for ordinary human-facing prose or product code that does not
-  define agent behavior.
+  Load agent-facing authoring and design context for Skills, Rules, Prompts, Agents,
+  subagents, tool guidance, guardrails, templates, and related behavioral assets
+  consumed primarily by AI agents. Use when activation, authority, context cost,
+  routing, tool boundaries, portability, or evaluability materially affects the asset.
+  Do not use for ordinary human-facing prose or product code that does not define agent
+  behavior.
 ---
 
 # Load Context: Agent Assets
@@ -27,6 +27,24 @@ Resolve only dimensions that can change the asset:
 
 Do not import one platform's filenames, precedence, tool semantics, or packaging rules as
 universal conventions.
+
+## Asset Boundary
+
+Treat these as peer behavioral asset types when the repository uses this taxonomy:
+
+- **Rule** — persistent policy or constraint for an applicable scope;
+- **Skill** — reusable capability or context activated when relevant;
+- **Prompt** — current invocation goal and one-off context;
+- **Agent** — distinct runtime role, authority, tools, delegation, and behavior surface.
+
+`references/`, `docs/`, `scripts/`, `assets/`, `evals/`, and tests are supporting resources,
+not peer Agent Asset types. If supporting knowledge needs its own model-directed activation
+boundary, let a Skill own that activation and load the resource conditionally.
+
+Repository-specific projections may be intentionally non-standard. For example, this
+repository can project Rule semantics through root/nested `AGENTS.md`, glob-scoped files,
+or `CHATBOT.md` for chatbot surfaces. Preserve such conventions when evidenced; do not
+promote them into universal platform standards.
 
 ## Context Economy
 
@@ -60,8 +78,8 @@ Agent context is an execution resource, not a documentation archive.
 - Keep one coherent responsibility and reason to change. Split when activation, authority,
   permission, success criteria, or distribution genuinely diverges—not merely because a
   file is long.
-- Distinguish persistent policy, conditional capability, one-off task intent, runtime
-  actor, and reference knowledge according to the target platform's actual model.
+- Distinguish persistent Rule, conditional Skill, one-off Prompt, and runtime Agent using
+  the target platform and repository's actual authority model.
 - For a context-only Skill, load context and stop there; downstream workflows retain
   implementation, mutation, validation, and presentation ownership.
 
