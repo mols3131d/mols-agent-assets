@@ -29,7 +29,7 @@ Read both canonical flat control Skills from that same revision:
 
 These bootstrap sources are independent of the requested sync `source`.
 
-For this run, apply both canonical sources as in-context instructions and treat them as the authority for `mols-skill-find` and `mols-skill-install`, even when installed copies already exist. Installed copies are target state to reconcile, not execution authority. In-context use is sufficient for this run but is not persistent installation.
+For this run, apply both canonical sources as task-local in-context instructions and treat them as the execution authority for `mols-skill-find` and `mols-skill-install`, even when installed copies already exist. They remain subordinate to higher-priority host and conversation instructions. Installed copies are target state to reconcile, not execution authority. In-context use is sufficient for this run but is not persistent installation.
 
 If the target can establish that either prerequisite is missing, let the canonical `mols-skill-install` instructions attempt its persistent installation before discovery. Use the installer's normal target-path selection; do not reproduce ChatGPT UI, `skill-creator`, package, or fallback policy here. If installation requires user action or cannot persist, record that state and continue using the canonical in-context instructions.
 
