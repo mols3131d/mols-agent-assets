@@ -4,9 +4,9 @@ description: >-
   Load agent-facing authoring and design context for Skills, Rules, Prompts, Agents,
   subagents, tool guidance, guardrails, templates, and related behavioral assets
   consumed primarily by AI agents. Use when activation, authority, context cost,
-  routing, tool boundaries, portability, or evaluability materially affects the asset.
-  Do not use for ordinary human-facing prose or product code that does not define agent
-  behavior.
+  routing, tool boundaries, portability, packaging, or evaluability materially affects
+  the asset. Do not use for ordinary human-facing prose or product code that does not
+  define agent behavior.
 ---
 
 # Load Context: Agent Assets
@@ -23,7 +23,7 @@ Resolve only dimensions that can change the asset:
 - activation scope and lifetime;
 - authority relative to user, project, platform, and tool instructions;
 - tools, permissions, files, connectors, and runtime capabilities actually available;
-- expected behavior, non-behavior, and failure boundary.
+- expected behavior, non-behavior, failure boundary, and deployment surface.
 
 Do not import one platform's filenames, precedence, tool semantics, or packaging rules as
 universal conventions.
@@ -36,9 +36,9 @@ When this repository's asset doctrine matters, distinguish two layers:
 2. `docs/references/agent-asset-boundaries.md` — **Personal Agent Asset Standard**, which owns this repository's intentional non-standard extensions and operating decisions.
 
 Use the baseline to understand external/common concepts. Use the Personal Standard as the
-repository authority for local taxonomy, naming, projections, fallback, placement, and
-packaging. Do not copy personal extensions back into the baseline as if they were external
-standards.
+repository authority for local taxonomy, naming, projections, fallback, placement, packaging,
+and non-runtime package conventions. Do not copy personal extensions back into the baseline
+as if they were external standards.
 
 ## Asset Boundary
 
@@ -49,14 +49,41 @@ Treat these as peer behavioral asset types when the repository uses this taxonom
 - **Prompt** — current invocation goal and one-off context;
 - **Agent** — distinct runtime role, authority, tools, delegation, and behavior surface.
 
-`references/`, `docs/`, `scripts/`, `assets/`, `evals/`, and tests are supporting resources,
-not peer Agent Asset types. If supporting knowledge needs its own model-directed activation
-boundary, let a Skill own that activation and load the resource conditionally.
+Supporting resources are not peer Agent Asset types. If supporting knowledge needs its own
+model-directed activation boundary, let a Skill own that activation and load the resource
+conditionally.
 
 Repository-specific projections may be intentionally non-standard. In this repository,
 Rule can be projected through root/nested `AGENTS.md`, glob-scoped instructions, or
 `CHATBOT.md` for text I/O chatbot surfaces. Preserve evidenced repository conventions;
 do not promote them into universal platform standards.
+
+## Skill Package Surfaces
+
+For directory-based Skills in this repository, distinguish runtime and maintainer surfaces.
+
+- **non-dot directories** such as `references/`, `scripts/`, and `assets/` may be runtime
+  resources when the Skill actually needs them;
+- **dot-prefixed directories (`.*`) are non-runtime maintainer surfaces**;
+- use `.docs/` instead of Skill-internal `docs/` for maintainer documentation;
+- use `.docs/baseline/` to preserve original purpose/essence, requirements, invariants,
+  major decisions, and recovery directives;
+- do not make runtime behavior depend on `.docs/`, `.evals/`, `.tests/`, or another dot
+  directory;
+- deployment/package logic should exclude dot directories by default.
+
+A baseline may use `DIRECTIVE.md`, `intent.md`, `requirements.md`, `decisions.md`, or another
+clear file split. The filenames are not the contract; **preservation of original intent and
+requirements is**. Baseline material should be durable enough to detect semantic regression
+after repeated refactors, but it is not runtime context and does not outrank the user's
+current explicit instruction.
+
+When an existing `docs/` contains material that the runtime actually reads, do not hide it
+by renaming the directory. Move the runtime-required material to `references/` or another
+runtime surface, and move only maintainer material to `.docs/`.
+
+Flat single-file Skill projections do not gain an internal `.docs/` bundle merely to follow
+this convention.
 
 ## Context Economy
 
