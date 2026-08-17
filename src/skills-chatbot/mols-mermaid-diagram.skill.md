@@ -2,18 +2,18 @@
 name: mols-mermaid-diagram
 description: >-
   Create, edit, review, simplify, or troubleshoot Mermaid structural diagrams.
-  Use when the user explicitly asks for Mermaid diagram/code, provides Mermaid
-  source with syntax/render/layout/readability problems, asks which Mermaid
-  diagram type fits, or needs a structural visual for relationships, procedures,
-  branching, handoffs, message order, lifecycle, chronology, dependencies,
-  boundaries, hierarchy, domain models, requirements, or database cardinality.
-  Covers flowchart, swimlane, sequence, state, class, ERD, architecture/C4,
-  Gantt, timeline, mindmap, requirement, Git graph, Kanban, packet, and similar
-  diagrams. Do not use when the primary question is numeric magnitude, trend,
-  proportion, quantified flow, weighted hierarchy, profile, normalized
-  positioning, whole-dashboard composition, a simple list/table, or Mermaid
-  package/API installation or integration unrelated to authoring or rendering a
-  diagram.
+  Use when the user asks for Mermaid diagram/code; provides Mermaid source with
+  syntax, render, layout, width/height, or readability problems; asks which
+  Mermaid diagram type fits; requests a Mermaid/diagram-as-code flowchart,
+  sequence, state, class, ERD, architecture/C4, Gantt, timeline, mindmap,
+  requirement, Git graph, Kanban, packet, or similar structural diagram; or
+  needs relationships, procedures, branching, handoffs, message order,
+  lifecycle, chronology, dependencies, boundaries, hierarchy, domain models,
+  requirements, or cardinality visualized as Mermaid. Even when Mermaid is
+  named, do not use when the primary task is quantitative magnitude, trend,
+  proportion, flow, or profile, whole-dashboard composition, a simple
+  list/table, or Mermaid package/API installation or integration unrelated to
+  authoring or rendering a diagram.
 ---
 
 # Contract
