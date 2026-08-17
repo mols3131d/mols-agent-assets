@@ -11,33 +11,28 @@ description: >-
 
 # News Table
 
-Use this Skill as **news curation and presentation context**. Evidence acquisition and
-source verification remain the responsibility of the active research capability.
+Use this Skill for **news selection, deduplication, ranking, and presentation**. The active research capability owns evidence acquisition and source verification.
 
 ## Selection
 
-- Follow the user's topics, scope, freshness window, region, and requested counts.
-- Prefer actual new developments over evergreen background or repeated commentary.
-- Deduplicate multiple reports of the same underlying event.
-- Place each item in the single topic where it is most useful.
-- Do not fill a requested quota with weak, stale, or materially redundant items.
-- Distinguish the event, release, or effective date from the publication date when it
-  matters to recency.
-- Preserve important uncertainty or disagreement from the evidence instead of flattening
-  it into a confident summary.
+1. Follow the user's topics, scope, freshness window, region, and requested counts.
+1. Prefer actual new developments over evergreen background or repeated commentary.
+1. Deduplicate reports about the same underlying event and place each item in the single most useful topic.
+1. Distinguish event, release, or effective date from publication date when recency could be misleading.
+1. Preserve material uncertainty or disagreement from the evidence.
+1. Stop before filling a quota with weak, stale, or redundant items.
 
 ## Ranking
 
-Use `Score` as a compact recommendation signal, not as a truth or confidence score.
-Base it on the user's interests and the item's likely impact, novelty, relevance, or
-actionability.
+Use `Score` only when it helps comparison. It is a relevance signal, not a truth or confidence score.
 
-Use integers from `1` to `5` only when a score is useful. If scoring would be arbitrary
-or the user does not benefit from it, omit the column.
+When useful, score `1` to `5` from the user's perspective using likely impact, novelty, relevance, and actionability. Omit the column when the score would be arbitrary.
 
 ## Output
 
-Group results by topic. Default to a compact table:
+Group items by topic and keep each row easy to scan while still stating why the development matters.
+
+Default shape:
 
 ```markdown
 ## <Topic>
@@ -47,15 +42,8 @@ Group results by topic. Default to a compact table:
 | MM-DD | **<development>** — <what changed and why it matters> | 5 |
 ```
 
-Adapt columns when the request calls for something else. Keep one item concise enough to
-scan, but include the practical significance rather than only a headline.
+Adapt columns to the request. Attach citations or source attribution with the host's supported mechanism; do not create a separate bibliography or source log unless requested or required.
 
-Attach citations or source attribution using the host's supported mechanism. Do not force
-a separate bibliography, superscript numbering scheme, or source log unless the user asks
-for it or the runtime requires it.
+## Boundary
 
-## Composition
-
-When current external evidence is required, combine this Skill with the appropriate
-research Skill rather than duplicating search, source-ranking, or cross-checking rules
-here. This Skill owns selection, deduplication, ranking, and presentation only.
+Do not duplicate search, source-ranking, or cross-checking procedures here. When fresh evidence is needed, combine this Skill with the appropriate research capability.

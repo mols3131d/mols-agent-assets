@@ -11,144 +11,84 @@ description: >-
 
 # Load Context: Agent Assets
 
-Load this Skill as **agent-facing design context**. It does not create, refactor, validate,
-package, or publish assets; the active agent-asset workflow owns execution and output.
+Use this Skill as **design context** for agent-facing behavioral assets. The active workflow owns creation, editing, validation, packaging, publication, and final output.
 
-## Runtime Contract
+## Resolve First
 
 Resolve only dimensions that can change the asset:
 
-- target agent, model, harness, or platform;
+- target model, agent, harness, or platform;
 - asset type and primary consumer;
 - activation scope and lifetime;
 - authority relative to user, project, platform, and tool instructions;
 - tools, permissions, files, connectors, and runtime capabilities actually available;
-- expected behavior, non-behavior, failure boundary, and deployment surface.
+- required behavior, non-behavior, failure boundary, and deployment surface.
 
-Do not import one platform's filenames, precedence, tool semantics, or packaging rules as
-universal conventions.
+Do not import one platform's filenames, precedence, tools, or packaging rules as universal conventions.
 
-## Repository Standards
+## Repository Doctrine
 
-When this repository's asset doctrine matters, distinguish two layers:
+When this repository's doctrine matters, use:
 
-1. `docs/references/agent-asset-standard-baseline.md` — standards-adjacent external/common baseline.
-1. `docs/references/agent-asset-boundaries.md` — **Personal Agent Asset Standard**, which owns this repository's intentional non-standard extensions and operating decisions.
+1. `docs/references/agent-asset-standard-baseline.md` for standards-adjacent external/common concepts.
+1. `docs/references/agent-asset-boundaries.md` as the **Personal Agent Asset Standard** and authority for repository-specific extensions.
 
-Use the baseline to understand external/common concepts. Use the Personal Standard as the
-repository authority for local taxonomy, naming, projections, fallback, placement, packaging,
-and non-runtime package conventions. Do not copy personal extensions back into the baseline
-as if they were external standards.
+Do not project repository-specific decisions back into the external/common baseline.
 
-## Asset Boundary
+This repository uses these peer behavioral asset types:
 
-Treat these as peer behavioral asset types when the repository uses this taxonomy:
-
-- **Rule** — persistent policy or constraint for an applicable scope;
-- **Skill** — reusable capability or context activated when relevant;
-- **Prompt** — current invocation goal and one-off context;
+- **Rule** — persistent policy or constraint for an applicable scope.
+- **Skill** — reusable capability or context activated when relevant.
+- **Prompt** — current invocation goal and one-off context.
 - **Agent** — distinct runtime role, authority, tools, delegation, and behavior surface.
 
-Supporting resources are not peer Agent Asset types. If supporting knowledge needs its own
-model-directed activation boundary, let a Skill own that activation and load the resource
-conditionally.
+Supporting resources are not peer asset types. If knowledge needs model-directed activation, let a Skill own that activation.
 
-Repository-specific projections may be intentionally non-standard. In this repository,
-Rule can be projected through root/nested `AGENTS.md`, glob-scoped instructions, or
-`CHATBOT.md` for text I/O chatbot surfaces. Preserve evidenced repository conventions;
-do not promote them into universal platform standards.
+Repository-specific Rule projections may include root/nested `AGENTS.md`, glob-scoped instructions, and `CHATBOT.md`. Preserve evidenced local conventions without presenting them as universal standards.
 
 ## Skill Package Surfaces
 
-For directory-based Skills in this repository, distinguish runtime and maintainer surfaces.
+For directory-based Skills in this repository:
 
-- **non-dot directories** such as `references/`, `scripts/`, and `assets/` may be runtime
-  resources when the Skill actually needs them;
-- **dot-prefixed directories (`.*`) are non-runtime maintainer surfaces**;
-- use `.docs/` instead of Skill-internal `docs/` for maintainer documentation;
-- use `.docs/baseline/` to preserve original purpose/essence, requirements, invariants,
-  major decisions, and recovery directives;
-- do not make runtime behavior depend on `.docs/`, `.evals/`, `.tests/`, or another dot
-  directory;
-- deployment/package logic should exclude dot directories by default.
+- non-dot directories such as `references/`, `scripts/`, and `assets/` may contain runtime resources;
+- dot-prefixed directories are maintainer-only, non-runtime surfaces;
+- use `.docs/` for maintainer documentation and `.docs/baseline/` for durable purpose, requirements, invariants, major decisions, and recovery directives;
+- never make runtime behavior depend on `.docs/`, `.evals/`, `.tests/`, or another dot directory;
+- exclude dot directories from deployment/package output by default.
 
-A baseline may use `DIRECTIVE.md`, `intent.md`, `requirements.md`, `decisions.md`, or another
-clear file split. The filenames are not the contract; **preservation of original intent and
-requirements is**. Baseline material should be durable enough to detect semantic regression
-after repeated refactors, but it is not runtime context and does not outrank the user's
-current explicit instruction.
+If existing maintainer documentation contains runtime-required material, move that material to a runtime surface before changing the directory role. Flat single-file Skills do not gain an internal bundle merely to mirror directory-based packages.
 
-When an existing `docs/` contains material that the runtime actually reads, do not hide it
-by renaming the directory. Move the runtime-required material to `references/` or another
-runtime surface, and move only maintainer material to `.docs/`.
+## Design Rules
 
-Flat single-file Skill projections do not gain an internal `.docs/` bundle merely to follow
-this convention.
+### Activation and ownership
 
-## Context Economy
+- Give every reusable asset a recognizable situation in which loading it changes behavior.
+- Discovery metadata should say **what** the asset contributes and **when** it should activate; add a negative boundary only when nearby capabilities are easy to confuse.
+- Keep one coherent responsibility and reason to change. Split only when activation, authority, permission, success criteria, or distribution materially diverges.
+- A context-only Skill loads judgment and stops; downstream workflows retain mutation, validation, and presentation ownership.
 
-Agent context is an execution resource, not a documentation archive.
+### Context economy
 
+- Spend context on behavior the model would not reliably infer from the task, platform, or repository.
 - Put selection-critical information in metadata or discovery surfaces.
-- Keep activated instructions focused on behavior the agent would not reliably infer from
-  the task, platform, or surrounding project context.
-- Move conditional detail behind explicit load conditions when the runtime supports
-  progressive disclosure.
-- For Agent Skills-compatible targets, use the target's disclosure layers deliberately:
-  discovery metadata first, `SKILL.md` on activation, bundled resources only when needed.
-  Do not project this loading model onto platforms that implement a different contract.
-- Keep stable behavioral policy in durable instructions. Keep run-, user-, environment-,
-  or time-varying state in task input, dynamic instructions, tools, retrieval, or another
-  runtime context surface when the target supports one.
-- Preserve the distinction between model-visible context and local runtime state. Data
-  available to tools, hooks, or application code is not automatically model context.
-- Keep authority, permission, routing, and non-obvious activation boundaries discoverable
-  before the agent needs them.
-- Avoid hidden shared-context dependencies when a target variant must deploy independently.
-- Allow intentional semantic overlap between target-specific sibling variants when their
-  harness capabilities, authority, packaging, or loading strategies differ. Optimize each
-  projection for its target rather than deduplicating across incompatible boundaries.
+- Keep stable policy in durable instructions; keep run-, user-, environment-, or time-varying state in task input, tools, retrieval, or another runtime context surface.
+- Distinguish model-visible context from runtime state. Data available to tools or application code is not automatically model context.
+- Prefer progressive disclosure when the target supports it, but keep non-obvious activation triggers discoverable before they are needed.
+- Preserve independent target variants when they cannot share runtime context. Do not create hidden dependencies merely to remove textual overlap.
 
-## Activation and Ownership
+### Behavioral contract
 
-- A reusable asset needs a recognizable situation in which loading it changes behavior.
-- Discovery metadata should communicate both **what** the asset contributes and **when** it
-  should activate; add a negative boundary when nearby capabilities are easy to confuse.
-- Keep one coherent responsibility and reason to change. Split when activation, authority,
-  permission, success criteria, or distribution genuinely diverges—not merely because a
-  file is long.
-- Distinguish persistent Rule, conditional Skill, one-off Prompt, and runtime Agent using
-  the target platform and repository's actual authority model.
-- For a context-only Skill, load context and stop there; downstream workflows retain
-  implementation, mutation, validation, and presentation ownership.
-
-## Behavioral Contract
-
-Prefer asset instructions that expose observable boundaries:
+Expose observable boundaries:
 
 - when the asset should and should not activate;
 - which action or non-action matters;
 - which invariants must survive adaptation;
-- which failure or handoff state should be visible.
+- which failure, handoff, or validation state must remain visible.
 
-Match instruction precision to task fragility. Use principles where multiple approaches are
-valid; use explicit constraints or deterministic mechanisms where the runtime supports them
-and errors are materially costly.
+Match precision to task fragility: use principles when multiple approaches are valid and explicit constraints or deterministic mechanisms when errors are materially costly.
 
-Distinguish static inspection, model simulation, and actual runtime evidence when evaluating
-an asset. Optimize for the smallest sufficient instruction set that remains discoverable
-and robust; shorter is not better if the condition needed to load critical context becomes
-unclear.
-
-## Composition
-
-For concrete repository work, combine this context with repository/GitHub context so the
-project's own asset taxonomy and conventions remain authoritative. Add coding context when
-implementation code is part of the asset and human-writing context only for human-facing
-documentation around it.
+When evaluating an asset, distinguish static inspection, model simulation, and actual runtime evidence. Prefer the smallest sufficient instruction set that remains discoverable and robust.
 
 ## Boundary
 
-This Skill contributes agent-facing design judgment only. It does not own asset creation,
-editing, validation loops, runtime evaluation, packaging, deployment, or final output
-format.
+This Skill contributes agent-asset design judgment only. Repository rules and the active platform's real authority model outrank this general context.

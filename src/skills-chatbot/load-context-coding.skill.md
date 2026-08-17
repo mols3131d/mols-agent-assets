@@ -11,77 +11,52 @@ description: >-
 
 # Load Context: Coding
 
-Load this Skill as **coding judgment context**. It does not implement, debug, review,
-test, or format code; the active task capability owns execution and output.
+Use this Skill as **coding judgment context**. The active task owns repository discovery, implementation, testing, review workflow, Git operations, tool calls, and final output.
 
-## Priority
+## Decision Order
 
-Treat explicit requirements, behavioral contracts, correctness, safety, and required
-compatibility as constraints. Within them, prefer code that is:
+Treat explicit requirements, behavioral contracts, correctness, safety, and required compatibility as constraints. Within them, prefer code that is:
 
 1. clear about what it does and why;
 1. no more complex than the current problem requires;
 1. easy to change correctly;
 1. testable and diagnosable;
 1. consistent with the surrounding system;
-1. efficient where evidence or hard constraints make efficiency material.
+1. efficient where evidence or a hard constraint makes efficiency material.
 
-Do not optimize one property by silently degrading a higher-priority constraint.
+Do not improve a lower-priority property by silently degrading a higher-priority constraint.
 
-## Code-Health Lens
+## Engineering Lens
 
-- **Fit the system** — understand the existing boundary, conventions, callers, data flow,
-  and failure behavior before introducing a new local pattern.
-- **Smallest coherent change** — solve one real problem with the least conceptual surface
-  that remains complete and understandable. Minimum line count is not the goal.
-- **Avoid speculative generality** — add abstraction, configuration, extension points,
-  concurrency, caching, or dependencies when current evidence justifies their lifecycle
-  cost, not because they may be useful later.
-- **Make boundaries explicit** — keep responsibilities, inputs, outputs, state ownership,
-  side effects, invariants, and error behavior understandable at the appropriate level.
-- **Design for change** — prefer low coupling, reversible decisions, and interfaces that
-  match the problem domain rather than incidental implementation structure.
-- **Keep failures operable** — preserve enough context to diagnose, recover, and verify
-  failures without hiding them behind convenience abstractions.
-- **Treat tests as maintained code** — validate changed behavior at the cheapest useful
-  level and keep tests simple enough to fail for the right reason.
-- **Use comments for missing context** — prefer clear code for what happens; comments and
-  documentation are most valuable for rationale, constraints, non-obvious invariants,
-  compatibility, or externally visible contracts.
+- **Fit the system** — inspect existing boundaries, callers, data flow, failure behavior, and local conventions before adding a new pattern.
+- **Make the smallest coherent change** — minimize conceptual surface, not line count.
+- **Avoid speculative generality** — add abstraction, configuration, extension points, concurrency, caching, or dependencies only when current evidence justifies their lifecycle cost.
+- **Make boundaries explicit** — keep responsibility, inputs, outputs, state ownership, side effects, invariants, and error behavior understandable.
+- **Design for change** — prefer low coupling, reversible decisions, and interfaces that match the problem domain.
+- **Keep failures operable** — preserve enough context to diagnose, recover, and verify failures.
+- **Treat tests as maintained code** — validate changed behavior at the cheapest useful level and keep tests simple enough to fail for the right reason.
+- **Use comments for missing context** — explain rationale, constraints, non-obvious invariants, compatibility, or external contracts; prefer clear code for what happens.
 
 ## Change Discipline
 
 - Preserve existing behavior unless the requested change intentionally alters it.
-- Separate behavior change from substantial mechanical refactoring when combining them
-  would make correctness, review, rollback, or diagnosis materially harder.
-- Prefer local duplication over a premature shared abstraction; centralize when a stable
-  shared concept or authoritative rule is actually visible.
+- Separate functional change from substantial mechanical refactoring when combining them would materially hinder review, rollback, diagnosis, or correctness checks.
+- Prefer local duplication over premature shared abstraction. Centralize only when a stable shared concept or authoritative rule is visible.
 - Prefer a good existing convention over new configuration when both satisfy the need.
-- Add a dependency only when it removes more implementation, maintenance, operational,
-  or correctness burden than it introduces.
-- Treat measured bottlenecks and explicit performance budgets as stronger evidence than
-  intuition. Do not use performance work as a pretext for unnecessary architecture.
+- Add a dependency only when it removes more implementation, maintenance, operational, or correctness burden than it introduces.
+- Treat measured bottlenecks and explicit performance budgets as stronger evidence than intuition.
 
-## Evidence and Assumptions
+## Evidence Checks
 
-Repository and language-specific contracts outrank this general lens. Distinguish:
+Repository and language-specific contracts outrank this general lens. Keep these distinctions explicit:
 
-- required behavior from stylistic preference;
-- observed failure or measurement from hypothetical risk;
-- current requirement from possible future demand;
-- behavior-preserving refactoring from functional change.
+- required behavior vs. stylistic preference;
+- observed failure or measurement vs. hypothetical risk;
+- current requirement vs. possible future demand;
+- behavior-preserving refactor vs. functional change.
 
-Challenge an existing design or user proposal when a materially simpler, safer, or more
-operable alternative exists. Do not manufacture objections merely to appear rigorous.
-
-## Composition
-
-For work in a concrete repository, combine this context with the repository/GitHub context
-that governs the affected paths. Add domain-specific context only when the code actually
-crosses that domain boundary.
+Challenge an existing design or user proposal when a materially simpler, safer, or more operable alternative exists. Do not manufacture objections merely to appear rigorous.
 
 ## Boundary
 
-This Skill contributes coding judgment only. It does not own repository discovery,
-implementation steps, testing procedures, review workflow, Git operations, tool calls, or
-final output structure.
+Add domain-specific context only when the code crosses that domain boundary. This Skill contributes engineering judgment, not a separate coding workflow.

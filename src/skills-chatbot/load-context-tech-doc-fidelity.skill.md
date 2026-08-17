@@ -10,43 +10,32 @@ description: >-
 
 # Load Context: Technical Document Fidelity
 
-Load this Skill as **preservation context**. It does not perform the writing workflow;
-the active writing or transformation capability owns execution and output.
+Use this Skill as **preservation context** for transforming an existing technical document. The active writing or transformation capability owns execution and output.
 
-## Preserve
+## Protected Content
 
-Unless the user explicitly asks to change them, treat these as protected:
+Unless the user explicitly requests a change, preserve:
 
-- technical meaning, requirements, conditions, exceptions, and certainty;
+- technical meaning, requirements, conditions, exceptions, scope, and certainty;
 - facts, numbers, versions, identifiers, API names, commands, and URLs;
 - code and code-adjacent literal content;
-- headings, lists, tables, ordering, and links when they carry information;
-- reference relationships;
+- headings, lists, tables, ordering, links, and reference relationships when they carry information;
 - intended audience and technical register.
 
-Do not resolve ambiguity by inventing technical claims. Do not summarize away required
-detail merely to improve readability.
+Do not resolve ambiguity by inventing technical claims or remove required detail merely to improve readability.
 
-## Allowed Change Boundary
+## Transformation Rules
 
-The downstream transformation may restructure or reword content only as far as the
-requested outcome allows without violating protected information.
+- Prefer local edits when broad restructuring adds no material value.
+- Restructure only when it clearly improves the requested result without changing protected content.
+- Translate prose when requested; keep code and technical identifiers unchanged unless explicitly included in the transformation.
+- Do not translate code comments automatically unless the user requests it.
+- Preserve modality, uncertainty, conditions, exceptions, scope, and ordering when they affect meaning.
 
-- Prefer local edits when broad restructuring adds no value.
-- Restructure when it clearly improves the requested result and preserves meaning.
-- Translate prose when requested; keep code and technical identifiers unchanged unless
-  the user explicitly requests otherwise.
-- Do not translate code comments automatically unless they are part of the requested
-  transformation.
-- Preserve uncertainty, modality, conditions, exceptions, and scope.
+## Fidelity Check
 
-## Composition
-
-Combine this context with the relevant writing, translation, formatting, or document
-capability. Use repository-understanding capability when the task is to understand a
-codebase rather than transform an existing document.
+Before finalizing, compare the result against the source for the protected content above. If a requested style improvement conflicts with fidelity, preserve the protected content and expose the limitation rather than guessing.
 
 ## Boundary
 
-This Skill contributes fidelity constraints only. It does not own drafting, rewriting,
-translation, repository analysis, validation workflow, or final output structure.
+This Skill contributes fidelity constraints only. Use repository-understanding capability when the task is to understand a codebase rather than transform an existing document.
