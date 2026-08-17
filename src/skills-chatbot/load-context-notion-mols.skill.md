@@ -20,7 +20,8 @@ Activate when the base loader applies and the current target is explicitly ident
 unambiguously evidenced as the user's personally governed Notion space.
 
 Keep the overlay active for follow-up requests that continue the same personal target,
-even when the user does not repeat its name.
+even when the user does not repeat its name. If a follow-up switches targets, re-evaluate
+personal scope before carrying this overlay forward.
 
 Do not infer personal scope from edit access, workspace membership, page authorship,
 shared access, familiarity, or permission level. If ownership/governance is unclear, use
