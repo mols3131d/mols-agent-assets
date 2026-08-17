@@ -181,7 +181,7 @@ Complete **1–2 Finalize loops**. Finalize is the completion gate for the work.
 
 Finalize loop:
 
-## Inspect → Resolve → Validate → Gate
+`Inspect → Resolve → Validate → Gate`
 
 ### Inspect
 
@@ -227,7 +227,7 @@ For every counted loop, write one line using the phase's actual cycle:
 
 ```text
 Prepare N — D: <discovery> | A: <assessment> | C: <configuration> | V: <readiness>
-Improve N — R: <research> | P: <decision> | W: <work> | R: <review>
+Improve N — Research: <research> | Plan: <decision> | Work: <work> | Review: <review>
 Finalize N — I: <inspection> | R: <resolution> | V: <validation> | G: <gate>
 ```
 
