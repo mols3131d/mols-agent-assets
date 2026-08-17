@@ -69,6 +69,9 @@ skill-name/
 
 Baseline은 단순 refactor나 문구 변경으로 갱신하지 않는다. 의도·요구사항·불변조건이 실제로 바뀔 때만 함께 바꾼다.
 
+필요하면 [Baseline Directive Template](agent-assets-skills-baseline-directive-template.md)을
+초기 maintainer document로 사용할 수 있다. Template 자체는 mandatory schema가 아니다.
+
 ## Context-Only Naming
 
 주책임이 workflow가 아니라 상황별 context discovery/loading이면 `load-context-<topic>` naming을 검토한다.
