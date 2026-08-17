@@ -2,11 +2,9 @@
 
 ## Intent
 
-Synchronize the chatbot Skills in the repository by **creating or modifying the corresponding ChatGPT Skills through ChatGPT's `skill-creator` flow**.
+**Sync the chatbot Skills in our repository by creating or updating them as ChatGPT Skills with the Skill Creator.**
 
-Treat this request as equivalent to:
-
-> Sync our repository chatbot Skills by creating/updating them as ChatGPT Skills with the Skill Creator.
+Do not interpret this as “read the Skill files into this chat.” The task is to turn the selected canonical repository Skills into reusable ChatGPT Skills through ChatGPT's Skill creation/modification flow.
 
 This is a ChatGPT-specific orchestration Prompt. `mols-skill-find` and `mols-skill-install` remain target-agnostic control Skills; do not push ChatGPT-specific UI or `skill-creator` policy into them.
 
@@ -37,7 +35,7 @@ Resolve one revision of `mols3131d/mols-agent-assets` for the control Skills and
 
 Apply those canonical sources as task-local control instructions for this run. Installed copies, if any, are target state to reconcile rather than the authority for the current run. These task-local instructions remain subordinate to higher-priority host and conversation instructions.
 
-Do not treat this in-context bootstrap as Skill installation. The two control Skills are still ordinary repository capabilities and should be synchronized into ChatGPT through the same `skill-creator` path as the other selected Skills, under the installer's self-update ordering.
+Do not treat this in-context bootstrap as Skill installation. The two control Skills are still ordinary repository capabilities and should be synchronized into ChatGPT through the same Skill Creator path as the other selected Skills, under the installer's self-update ordering.
 
 Report **Bootstrap Required** only when either canonical control source cannot be obtained or cannot be applied safely for the current run.
 
@@ -45,7 +43,7 @@ Report **Bootstrap Required** only when either canonical control source cannot b
 
 For every selected repository capability, converge ChatGPT toward one reusable installed ChatGPT Skill that matches the canonical source projection.
 
-**Loading Skill instructions into the current chat is not synchronization. Returning `SKILL.md`, ZIP, attachments, or download links is not synchronization.**
+**In-context loading is not synchronization. Returning `SKILL.md`, ZIP, attachments, or download links is not synchronization.**
 
 A capability is synchronized only when its ChatGPT Skill is already current or the native ChatGPT create/modify → review → Install/update flow has completed.
 
@@ -88,18 +86,16 @@ Let `mols-skill-install` own identity matching, update-vs-create decisions, rena
 
 For this Prompt, the required ChatGPT end state is an installed reusable ChatGPT Skill. Do not let a temporary load satisfy `sync`.
 
-## Create or Modify with `skill-creator`
+## Create or Modify with the Skill Creator
 
-For each selected capability that is not already current, turn the reconciled operation into a **concrete ChatGPT Skill creation or modification request** using the canonical repository Skill as the source of truth.
+For each selected capability that is not already current, issue an **actual ChatGPT Skill creation or modification request** using the canonical repository Skill as the source of truth.
 
-Use the following target behavior:
+- **New capability** — “Create a ChatGPT Skill from this canonical repository Skill.”
+- **Same identity, stale content** — “Modify/update this existing ChatGPT Skill to match the canonical repository Skill.”
+- **Confirmed rename/migration** — modify/migrate the existing Skill to the canonical identity when the product supports it.
+- **Conflict** — do not create or overwrite until `mols-skill-install` resolves it according to `on_conflict` or explicit user choice.
 
-- **New capability** — ask ChatGPT to create a Skill from the canonical source.
-- **Same identity, stale content** — ask ChatGPT to modify/update the existing Skill to match the canonical source.
-- **Confirmed rename/migration** — ask ChatGPT to modify/migrate the existing Skill to the canonical identity when the product supports it.
-- **Conflict** — do not create or overwrite until the generic installer has resolved the conflict according to `on_conflict` or explicit user choice.
-
-Frame these as actual Skill **create/modify** operations, not as file conversion, summarization, or temporary instruction loading. ChatGPT should therefore use its `skill-creator` workflow for the Skill draft/update operation.
+These must be real Skill **create/modify** requests. Do not phrase them as file conversion, summarization, package generation, or temporary instruction loading. The intended ChatGPT behavior is to use `skill-creator` for the create/modify operation.
 
 Treat the repository source as canonical. Preserve its semantics; do not redesign or “improve” the Skill while synchronizing it.
 
@@ -118,7 +114,16 @@ Process `mols-skill-find` and `mols-skill-install` after other selected capabili
 
 ## Fallback Boundary
 
-The preferred and intended path is **repository Skill → ChatGPT create/modify request → `skill-creator` → native Install/update**.
+The intended path is:
+
+```text
+repository Skill
+→ ChatGPT Skill create/modify request
+→ skill-creator
+→ Skill draft/update
+→ native Install/update
+→ reusable ChatGPT Skill
+```
 
 - Do not stop merely because installed-Skill inspection is unavailable if discovery/reconciliation can continue safely.
 - Do not replace the intended ChatGPT Skill creation flow with a transient in-context load.
