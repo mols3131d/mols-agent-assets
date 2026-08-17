@@ -61,7 +61,7 @@ Canonical source:
 
 For a new diagram or structural redesign, use the canonical reference to choose the representation and the official Mermaid documentation to confirm the selected type's current syntax and support status when both sources are accessible.
 
-Use Mermaid official documentation as the authority for Mermaid syntax and current feature support. Use canonical Skill references for this capability's design, readability, routing, and verification policy. If the user supplies a repository revision or the current task is pinned to another revision, use that revision instead of `main` when possible.
+For conflicts, prefer the source that owns the disputed fact: Mermaid official documentation for Mermaid syntax and current feature support; canonical Skill references for this capability's design, readability, routing, and verification policy. If the user supplies a repository revision or the current task is pinned to another revision, use that revision instead of `main` when possible.
 
 Do not claim to have consulted a source that was not actually accessible. If external sources are unavailable, continue from this Skill's embedded contract and state uncertainty only where it materially affects the result.
 
