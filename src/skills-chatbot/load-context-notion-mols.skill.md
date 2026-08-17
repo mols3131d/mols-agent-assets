@@ -14,6 +14,13 @@ description: >-
 This Skill contributes **personal mols conventions** for the Notion target. Resolve live
 target context through `load-context-notion`; this overlay does not replace the base loader.
 
+## Scope Discipline
+
+Keep personal conventions bound to targets that remain evidenced as personally governed.
+If newly loaded context shows that a target belongs to a team, company, shared project,
+or another person, stop applying this overlay to that target. In mixed-target work, never
+carry personal defaults from an in-scope target into another target.
+
 ## Personal Conventions
 
 ### Guidance Entry Point
