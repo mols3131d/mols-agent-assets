@@ -29,21 +29,21 @@ Read both canonical flat control Skills from that same revision:
 
 These bootstrap sources are independent of the requested sync `source`.
 
-For this run, apply both canonical sources as task-local in-context instructions and treat them as the execution authority for `mols-skill-find` and `mols-skill-install`, even when installed copies already exist. They remain subordinate to higher-priority host and conversation instructions. Installed copies are target state to reconcile, not execution authority. In-context use is sufficient for this run but is not persistent installation.
+For this run, apply both canonical sources as task-local in-context instructions and treat them as the execution authority for `mols-skill-find` and `mols-skill-install`, even when installed copies already exist. They remain subordinate to higher-priority host and conversation instructions. Installed copies are target state to reconcile, not execution authority. In-context use is sufficient to run the controller logic, but it is **not** Skill installation.
 
-If the target can establish that either prerequisite is missing, let the canonical `mols-skill-install` instructions attempt its persistent installation before discovery. Use the installer's normal target-path selection; do not reproduce ChatGPT UI, `skill-creator`, package, or fallback policy here. If installation requires user action or cannot persist, record that state and continue using the canonical in-context instructions.
+If the target can establish that either prerequisite is missing, invoke the canonical `mols-skill-install` instructions with persistent `action: install` before discovery. If native review or user confirmation is required, surface the shortest available install action. The current run may continue using the canonical in-context controller while persistence is pending, but do not treat the prerequisite as installed until the target confirms persistent installation.
 
 Do not bootstrap-update an existing prerequisite before the main sync. Let the normal sync reconcile existing `mols-skill-find` and `mols-skill-install` copies under the installer's self-update rules. The current run always remains governed by the canonical in-context sources it started with.
-
-Do not return a generated `SKILL.md`, ZIP, attachment, download, or pasted Skill body merely because persistent installation is unavailable. Manual handoff belongs to `mols-skill-install` and is only a fallback when the target requires it or the user explicitly requests it.
 
 Report **Bootstrap Required** and stop only when either canonical prerequisite source cannot be obtained or cannot be applied safely as instructions for the current run.
 
 ## Goal
 
-Synchronize the selected repository Skill source with the current ChatGPT target.
+Synchronize the selected repository Skill source into **persistent ChatGPT Skills**.
 
-Converge each repository capability to one target-appropriate Skill projection, then install, update, migrate, load, or stage it through the best supported target path. Prefer persistent native installation when available. Leave ambiguous or destructive conflicts for explicit user choice.
+For this Prompt, `sync` means converging every selected capability toward a persistent installed, updated, or migrated ChatGPT Skill. In-context loading may support the current execution, but it never satisfies synchronization.
+
+Leave ambiguous or destructive conflicts for explicit user choice.
 
 ## Find
 
@@ -78,9 +78,19 @@ target: <resolved target>
 on_conflict: <resolved on_conflict>
 ```
 
-Let `mols-skill-install` own target-path selection, installed-state reconciliation, mutation, self-update ordering, conflicts, migrations, unsupported packages, and fallback delivery.
+`action: sync` is a **persistent intent**. Do not downgrade it to `load` merely because loading is easier or native installation needs user confirmation.
 
-For ChatGPT, prefer an actual installed or updated Skill when the product exposes that capability. If native review or confirmation is required, surface the shortest available action and report it as pending until completed. Do not treat generated, staged, approval-pending, or in-context content as installed.
+Let `mols-skill-install` own persistent target-path selection, installed-state reconciliation, self-update ordering, conflicts, migrations, unsupported packages, native install UI, assisted import, and package fallback.
+
+For ChatGPT:
+
+- use direct persistent install/update when available;
+- otherwise prepare and surface the native Skill creation/import/review/Install flow;
+- if persistent installation requires user confirmation, report `Pending User Action` and present the shortest native action;
+- use transient in-context loading only as an execution aid, never as the final sync result;
+- use manual import/package handoff only when the persistent target path genuinely requires it or the user explicitly asks for manual installation.
+
+A capability is synchronized only after its persistent target state is confirmed as installed, updated, migrated, or already current.
 
 ## Sync Boundary
 
@@ -88,8 +98,10 @@ For ChatGPT, prefer an actual installed or updated Skill when the product expose
 - Do not install multiple sibling projections of one capability.
 - Do not delete installed-only Skills merely because they are absent from the source.
 - Do not turn `<auto>` into permission for destructive conflict resolution.
-- Do not stop solely because installed-Skill inspection or native installation UI is unavailable when the capability can still be used safely in context.
-- Do not claim inspection, installation, update, migration, loading, or persistence that the current target did not actually perform.
+- Do not treat in-context loading, generated files, staged drafts, or approval-pending content as installed or synchronized.
+- Do not stop the controller merely because installed-Skill inspection is unavailable when the canonical prerequisite instructions can still run in context.
+- Do not silently replace persistent sync with non-persistent load.
+- Do not claim inspection, installation, update, migration, or persistence that the current target did not actually perform.
 
 ## Report
 
@@ -97,7 +109,7 @@ Return actual states only, omitting empty groups:
 
 ### Bootstrap Control
 
-Report the pinned prerequisite revision, whether both canonical control Skills were applied in context, and whether any missing prerequisite persistence completed or remains pending.
+Report the pinned prerequisite revision, whether both canonical control Skills were applied in context, and whether missing prerequisite persistence completed or remains pending.
 
 ### Installed
 
@@ -105,7 +117,7 @@ Report the pinned prerequisite revision, whether both canonical control Skills w
 
 ### Renamed / Migrated
 
-### Loaded
+### Already Current
 
 ### Pending User Action
 
@@ -119,4 +131,6 @@ Report the pinned prerequisite revision, whether both canonical control Skills w
 
 ### Limitations
 
-For loads, state scope and persistence. For pending actions, include only the shortest native action the user must take. Keep the report concise and omit internal reasoning or file-by-file discovery logs unless a conflict needs evidence.
+Do not use `Loaded` as a successful sync state. If a transient load was used only to keep the current run operational, mention it under `Bootstrap Control` or `Limitations` with its scope and non-persistent nature.
+
+For pending actions, include only the shortest native action the user must take to complete persistent installation. Keep the report concise and omit internal reasoning or file-by-file discovery logs unless a conflict needs evidence.
