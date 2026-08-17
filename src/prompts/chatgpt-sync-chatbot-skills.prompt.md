@@ -54,6 +54,8 @@ Before inventory or mutation, establish the smallest facts required to execute t
 1. ChatGPT can surface the native Install/update confirmation required to persist the Skill.
 1. The resolved canonical repository source is readable.
 
+`skill-creator` is a host-provided ChatGPT capability, not a repository dependency. Do not search the source repository for it or try to bootstrap it as one of the repository Skills. Trigger it through an actual Skill create/modify request.
+
 Do not infer that Skill creation is unavailable merely because installed-Skill listing or full target-state inspection is unavailable. Limited inspection may reduce reconciliation confidence without blocking a native create/modify flow that can surface collisions itself.
 
 If reusable Skill creation or native installation is genuinely unavailable on the active surface, stop before discovery-heavy work and report:
@@ -101,7 +103,9 @@ Use it to decide identity, current-vs-stale state, create-vs-update, rename cont
 
 For this Prompt, **the ChatGPT-specific execution path below owns delivery**. Do not let a generic installer fallback replace an available Work → Skill Creator → native Install/update flow.
 
-If target-state inspection is limited, state the limitation and proceed only where the native Skill flow can safely create, modify, reject, or surface a collision. Never invent reconciliation evidence.
+If full target-state inspection is unavailable, do not abort the whole synchronization. Reconcile each item using the strongest native evidence available. Let the native Skill flow update a confirmed same-identity Skill or create a missing one when it can do so safely; if it cannot distinguish a collision safely, mark only that item `Conflict` or `Unsupported` and continue with unrelated items.
+
+Never invent reconciliation evidence.
 
 ## Synchronize Each Capability
 
@@ -114,9 +118,16 @@ Process one selected capability at a time. Skip `Already Current` items without 
 - **Confirmed rename or migration** — modify/migrate the existing Skill when the product supports continuity.
 - **Conflict or uncertain destructive identity** — stop that item until `on_conflict` or explicit user choice resolves it.
 
+A blocked, unsupported, or conflicting item does not block unrelated selected capabilities.
+
 ### Invoke the Skill Creator
 
 For every create or modify item, issue an **actual ChatGPT Skill creation/modification request** through the product Skill flow. Do not merely describe what Skill Creator should do.
+
+Use the equivalent native intent:
+
+- **Create** — create a ChatGPT Skill from the pinned canonical repository Skill.
+- **Update** — modify the existing same-identity ChatGPT Skill to match the pinned canonical repository Skill.
 
 Treat the selected repository Skill as canonical. Preserve its:
 
@@ -146,7 +157,8 @@ After the draft or modification is ready, use the native ChatGPT Install/update 
 - If ChatGPT requires user confirmation, surface that native action immediately as `Pending User Action`.
 - **One confirmation per changed Skill is acceptable.** Do not optimize those clicks away by changing the requested end state.
 - Prefer completing one Skill's native flow before advancing to the next when the surface allows resumption after confirmation.
-- After confirmation, verify the strongest available evidence that the reusable Skill is installed or updated before reporting success.
+- After confirmation, resume the same synchronization run and continue with the next selected capability when the surface supports continuation. Do not require the user to restate the sync request.
+- Verify the strongest available evidence that the reusable Skill is installed or updated before reporting success.
 - If confirmation completion is not observable, keep the item pending rather than claiming installation.
 
 ## Ordering
