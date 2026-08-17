@@ -42,6 +42,8 @@ description: 파일시스템 탐색과 이름 충돌 방지를 위한 범용 Age
 - 사용자 범위: `user-*`
 - 제작자나 조직: `mols-*`, `acme-*`
 
+`source` 값은 고정 enum으로 만들지 않는다. 자산이 놓이는 범위에서 짧고 안정적으로 식별되는 이름을 사용한다.
+
 `prj`, `user` 같은 상대 표기는 그 scope가 이미 알려진 저장 위치에서 유용하다. 여러 프로젝트의 자산을 같은 namespace에 모으면 구체적인 프로젝트명이나 제작자 식별자를 선호한다.
 
 ## Family and Extension
@@ -90,7 +92,7 @@ tag
 
 외부 Skill은 이 컨벤션을 맞추기 위해 임의로 rename하지 않고 **upstream naming을 우선한다**.
 
-Agent Skills에서는 `name`이 디렉터리명과 결합된 identifier이므로 rename은 단순한 filesystem 정리가 아니라 upstream 자산 자체의 변경이 될 수 있다. 이름 충돌이 실제로 발생하면 target harness의 namespace, placement, precedence 또는 qualified invocation 같은 충돌 해결 수단을 먼저 사용한다.
+Agent Skills에서는 `name`이 디렉터리명과 결합된 identifier이므로 rename은 단순한 filesystem 정리가 아니라 upstream 자산 자체의 변경이 될 수 있다. 이름 충돌이 실제로 발생하면 target harness가 지원하는 namespace, placement, precedence 또는 qualified invocation 같은 충돌 해결 수단을 먼저 사용한다.
 
 통합을 위해 rename이 불가피하다면 upstream provenance는 별도로 보존한다.
 
@@ -104,8 +106,6 @@ liner-tag
 mols-liner-tag
 liner-tag-runtime
 ```
-
-구체적인 segment 경계는 문맥에 따라 달라질 수 있다. 이름만 보고 모든 metadata를 복원할 수 있어야 한다는 요구는 두지 않는다.
 
 ## Review Test
 
