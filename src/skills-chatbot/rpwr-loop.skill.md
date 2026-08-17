@@ -1,26 +1,25 @@
 ---
 name: rpwr-loop
 description: >-
-  Improve difficult or high-level work through adaptive Research → Plan → Work → Review
-  loops. Use when the user asks for deep or high-quality iterative work, repeated
-  improvement or review loops, says to run loops, or explicitly asks for RPI, RPWR,
-  an RPI loop, or an RPWR loop rather than a single-pass result.
+  Improve difficult or high-level work through adaptive multi-phase loops. Use when the
+  user asks for deep or high-quality iterative work, repeated improvement or review
+  loops, says to run loops, or explicitly asks for RPI, RPWR, an RPI loop, or an RPWR
+  loop rather than a single-pass result.
 ---
 
 # RPWR Loop
 
-Use **Research → Plan → Work → Review (RPWR)** to improve a task through repeated,
-finding-driven reasoning cycles. `RPI` is an alias for this workflow.
+Use **RPWR** as a three-phase workflow for difficult or high-level work. `RPI` is an
+alias for this workflow.
 
-RPWR has three phases. Every phase uses the same RPWR spine, but for a different
-purpose:
+Each phase has a loop designed for its own purpose:
 
-1. **Prepare** — understand the task and execution environment, then set the strategy.
-2. **Improve** — perform the main work and substantive improvement.
-3. **Finalize** — finish, validate, and stop without manufacturing findings.
+1. **Prepare** — `Discover → Assess → Configure → Verify`
+2. **Improve** — `Research → Plan → Work → Review`
+3. **Finalize** — `Inspect → Resolve → Validate → Close`
 
-Keep **Plan** and **Work** simple. Adapt **Research** and **Review** as understanding,
-risk, and confidence change.
+Do not force every phase into the same reasoning shape. Preserve the phase purpose,
+adapt depth to the task, and count only genuine cycles.
 
 ## Arguments
 
@@ -75,27 +74,23 @@ Each phase owns its own loop budget. There is no separate global loop cap.
   findings forward or report them at the end.
 - A user who explicitly changes a phase budget overrides these defaults.
 
-The default workflow therefore contains **7–14 counted loops**, but the count is a
-reasoning budget, not a target to inflate.
+The default workflow therefore contains **7–14 counted phase loops**, but the count is
+a reasoning budget, not a target to inflate.
 
 ## What Counts as One Loop
 
-A counted loop is a **complete, substantive RPWR reasoning cycle**, not a unit of
-edits, findings, files, or subtasks.
+A counted loop is one complete, substantive cycle of the **current phase's dedicated
+loop**. It is not a unit of edits, findings, files, subtasks, or tool calls.
 
-1. **Research** changes or materially confirms the understanding relevant to the
-   current phase.
-2. **Plan** makes a task-specific decision about what should happen next and why.
-3. **Work** performs a meaningful batch of phase-appropriate work against that plan.
-4. **Review** evaluates the resulting state and determines the next material delta or
-   establishes that the current concern is resolved.
+A loop counts only when its steps materially change or confirm the state needed for
+that phase and produce a meaningful decision, action, validation, or confidence delta.
 
 A loop does **not** count when it is only:
 
 - one edit, one fix, one file change, one finding, or one subtask;
 - mechanical execution without task-specific judgment;
 - rereading or restating the same evidence;
-- repeating the same review from the same perspective;
+- repeating the same review or validation from the same perspective;
 - cosmetic churn created to increase the loop number;
 - phase labels wrapped around work that would have happened identically without the
   loop.
@@ -110,67 +105,71 @@ report observable evidence, decisions, validation, and material deltas instead.
 
 ## Phase 1 — Prepare
 
-Complete **1–2 RPWR loops** focused on understanding both the task and the execution
-environment before the main work begins.
+Complete **1–2 Prepare loops** before the main work.
 
-### Research
+Prepare loop:
 
-Orient on two surfaces:
+**Discover → Assess → Configure → Verify**
 
-- **Task:** objective, boundaries, context, uncertainty, evidence quality, stakes,
-  constraints, likely failure modes, acceptance conditions, and where the work
-  naturally belongs.
-- **Execution environment:** available agent capabilities, tools, connected resources,
-  durable storage surfaces, permissions, write authority, validation surfaces, and
-  material limitations.
+### Discover
 
-Use available evidence to confirm capabilities and authority when they affect the
-workflow. Do not assume a tool, permission, connection, storage destination, or write
-capability exists.
+Build an evidence-based picture of both the task and the execution environment.
 
-### Plan
+Understand the task's objective, boundaries, context, uncertainty, stakes, constraints,
+acceptance conditions, likely failure modes, relevant evidence, and where the work
+naturally belongs.
 
-Decide what preparation must resolve, especially:
+Inspect the execution environment for available agent capabilities, tools, connected
+resources, durable storage surfaces, permissions, write authority, validation
+surfaces, and material limitations. Confirm capabilities and authority when they
+matter; do not assume they exist.
 
-- what the task actually requires;
-- what the agent can and cannot do in the current environment;
-- which tools, capabilities, permissions, and evidence surfaces should be used;
-- which durable destination, if any, naturally belongs to the work;
-- the initial breadth and depth of Research;
-- which Review perspectives and risks deserve attention;
-- what signals should narrow Research or trigger Finalize.
+### Assess
 
-Design the strategy around real capabilities and authority. Do not plan execution or
-report persistence that requires unavailable tools, storage, or permissions without
-making that limitation explicit.
+Match what the task requires against what the agent can actually do.
 
-### Work
+Identify material gaps, uncertainties, dependencies, authority boundaries, useful
+tools and evidence surfaces, major risks, and the work's natural persistence context.
+Distinguish a real capability gap from a capability that simply has not been checked
+yet.
 
-Establish the smallest viable execution strategy for Improve and Finalize. Select the
-useful capabilities, tools, evidence surfaces, Research posture, Review posture,
-validation approach, and report destination when one is contextually justified. Keep
-it adaptive rather than scripting every future loop.
+### Configure
 
-### Review
+Set the smallest viable strategy for Improve and Finalize.
 
-Challenge whether the strategy:
+Configure only what materially guides execution:
 
-- understands the user's actual objective and important constraints;
-- uses the available agent capabilities and tools effectively;
-- respects permission and authority boundaries;
-- depends on any unverified capability, resource, access, or storage destination;
-- places any persisted report in the surface where the work naturally belongs;
-- misses a material uncertainty, risk, evidence surface, or review perspective.
+- tools, capabilities, and evidence surfaces to use;
+- initial Research breadth and depth;
+- important assumptions and acceptance conditions;
+- Review perspectives and risk emphasis;
+- validation approach;
+- signals for narrowing Research or moving to Finalize;
+- report delivery and persistence target when context clearly justifies one.
 
-The first Prepare loop is mandatory. Use the second only when the first leaves a
-material task, capability, tool, permission, storage, or strategy uncertainty worth
-resolving. At two loops, proceed to Improve with any remaining limitation or
-uncertainty explicit.
+Keep the strategy adaptive. Do not script every future loop or plan around unavailable
+capabilities, storage, or permissions.
+
+### Verify
+
+Challenge whether the prepared strategy is executable and proportionate.
+
+Check that it reflects the user's actual objective, uses available capabilities well,
+respects authority boundaries, avoids unverified dependencies, covers material risks,
+and chooses a persistence surface only when context and write authority support it.
+
+The first Prepare loop is mandatory. Use the second only when material task,
+capability, tool, permission, storage, or strategy uncertainty remains. At two loops,
+proceed to Improve with remaining limitations explicit.
 
 ## Phase 2 — Improve
 
-Complete **4–8 RPWR loops**. This is the primary work phase where most substantive
+Complete **4–8 Improve loops**. This is the primary work phase where most substantive
 changes should happen.
+
+Improve loop:
+
+**Research → Plan → Work → Review**
 
 ### Research
 
@@ -198,16 +197,16 @@ trade-offs, acceptance conditions, and validation points needed for the next wor
 
 ### Work
 
-Perform the requested work against the current plan and evidence. Work may include
-analysis, writing, editing, design, implementation, transformation, decision-making,
-or other task-appropriate actions.
+Perform a meaningful batch of requested work against the current plan and evidence.
+Work may include analysis, writing, editing, design, implementation, transformation,
+decision-making, or other task-appropriate actions.
 
 Preserve confirmed constraints and conclusions unless new evidence justifies changing
 them. Do not claim work or validation that was not performed.
 
 ### Review
 
-Use this default cadence based on the **Phase 2 loop number**:
+Use this default cadence based on the **Improve loop number**:
 
 - **odd loops — Quality Review:** improve correctness, completeness, coherence,
   clarity, usability, evidence quality, and fit to the objective;
@@ -226,38 +225,38 @@ findings into Finalize rather than extending Improve indefinitely.
 
 ## Phase 3 — Finalize
 
-Complete **2–4 RPWR loops** focused on finishing and trustworthy completion.
+Complete **2–4 Finalize loops** focused on trustworthy completion.
 
-### Research
+Finalize loop:
 
-Investigate only evidence or uncertainty that can still materially change the outcome
-or confidence in it.
+**Inspect → Resolve → Validate → Close**
 
-### Plan
+### Inspect
 
-Target unresolved material findings, acceptance gaps, validation gaps, or regression
-risk. Avoid new scope unless a core assumption has failed.
+Inspect the current result, unresolved material findings, acceptance conditions,
+recent changes, validation gaps, regression risk, and residual risk. Look only where a
+problem could still materially affect completion.
 
-### Work
+### Resolve
 
-Make only changes needed to finish, correct, or validate the result.
+Decide what must still be corrected, completed, reverted, or explicitly accepted.
+Reject new scope unless a core assumption has failed or completion would otherwise be
+misleading.
 
-### Review
+### Validate
 
-Limit review to issues that can still materially undermine the task's core purpose:
+Perform the smallest set of task-appropriate checks that can materially change
+confidence in completion. Validate the result and any final changes against the
+important requirements, evidence, regressions, and residual risks.
 
-- unresolved material findings;
-- violated objectives or acceptance conditions;
-- regressions introduced by recent Work;
-- residual risks that materially weaken the result;
-- final validation that can change confidence in completion.
+### Close
 
-`No material finding` is a valid Review result. Do not manufacture another criticism
-merely because another pass exists.
+Decide whether the work can end. Record unresolved material findings, limitations, or
+checks not performed. `No material finding` is a valid close result.
 
-The two minimum Finalize loops must still be genuine reasoning cycles. Use distinct,
-material validation questions, evidence surfaces, or residual-risk perspectives when
-needed; duplicating the same validation does not count.
+Do not manufacture criticism merely because another pass exists. Distinct Finalize
+loops must address a materially different completion question, validation surface, or
+residual risk; duplicating the same validation does not count.
 
 After two loops, stop when no meaningful completion delta remains. Otherwise continue
 up to four loops. At four, stop and report unresolved material findings rather than
@@ -278,8 +277,8 @@ Signals for moving from Improve to Finalize include:
 - remaining work is mainly validation, regression control, or finishing.
 
 If conflicting evidence, a failed core assumption, or a changed problem boundary
-appears, adapt Research and Review within the current phase. Do not reset completed
-loop counts or exceed the phase maximum.
+appears, adapt within the current phase. Do not reset completed loop counts or exceed
+the phase maximum.
 
 ## Context and Validation
 
@@ -287,22 +286,23 @@ Activate specialized context only when it materially improves the current phase.
 not preload every possibly relevant Skill or carry phase-specific context longer than
 needed.
 
-Choose validation that matches the work and current risks. Prefer better evidence,
-contradiction tests, counterexamples, alternatives, and task-appropriate validation
-over longer narration.
+Prefer better evidence, contradiction tests, counterexamples, alternatives, and
+phase-appropriate validation over longer narration.
 
 ## Reporting
 
 Keep a compact observable record while working. Do not expose private reasoning.
 
-For **every counted loop**, produce one line that summarizes the whole RPWR cycle:
+For **every counted loop**, produce one line using that phase's actual cycle:
 
 ```text
-<Phase> <N> — R: <evidence/understanding> | P: <decision> | W: <material work> | R: <review result>
+Prepare N — D: <discovered> | A: <assessment> | C: <configuration> | V: <verification>
+Improve N — R: <research delta> | P: <decision> | W: <material work> | R: <review result>
+Finalize N — I: <inspection> | R: <resolution> | V: <validation> | C: <close result>
 ```
 
-Each field should state only the material delta. One action, edit, or finding must not
-be expanded into multiple lines to imitate multiple loops.
+Each field states only the observable material delta. One action, edit, or finding
+must not be expanded into multiple lines to imitate multiple loops.
 
 For **each completed phase**, produce one paragraph summarizing its objective, major
 decisions or changes, evidence or validation, and remaining material concerns.
@@ -316,4 +316,4 @@ After all phases finish, produce a **work report** containing:
 - unresolved findings, limitations, or checks not performed.
 
 Deliver or persist this report according to `output_policy`. Report delivery happens
-after the RPWR loops and never counts as an additional loop.
+after the phase loops and never counts as an additional loop.
