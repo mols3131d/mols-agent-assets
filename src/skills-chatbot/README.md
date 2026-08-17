@@ -11,16 +11,18 @@
 
 1. `<skill-name>.skill.md` **한 파일**로 완결됩니다.
 1. 배포되는 단일 skill 파일이 **4,000 tokens 미만**입니다.
-1. 실행에 필요한 references, assets, scripts, images 같은 runtime-required bundle이나 host-only runtime capability가 없습니다.
+1. 실행에 필요한 references, assets, scripts, images 같은 runtime-required bundle이나 host-specific package surface가 없습니다.
 
 다음 중 하나라도 해당하면 `../skills-chatbot-runtime/` profile을 사용합니다.
 
 - 단일 skill 파일이 **4,000 tokens 이상**이라 내용을 여러 Markdown 파일로 나눠야 합니다.
-- Markdown 한 파일만으로 실행 capability를 완결할 수 없습니다.
+- Markdown 한 파일만으로 배포 capability의 instruction surface를 완결할 수 없습니다.
 - 실행에 references, assets, scripts, images 또는 다른 bundled resource가 필요합니다.
-- host가 제공하는 tools, connectors, scripts, progressive loading 또는 기타 runtime 기능이 capability의 중요한 부분입니다.
+- host-specific tool schema, integration resource, progressive loading, script/runtime package처럼 **단일 Markdown 밖의 runtime surface**가 capability에 필요합니다.
 
-Maintainer-only `docs/`, `evals/`, `tests/`, 개발용 validator는 배포 Skill과 분리할 수 있다면 그 존재만으로 runtime placement를 강제하지 않습니다. 작은 textual schema나 설정 예시는 명확성과 유지보수성을 해치지 않는 범위에서 fenced code로 flat file에 포함할 수 있습니다.
+Skill 본문이 host가 이미 제공하는 tool이나 connector를 **사용하도록 지시한다는 사실만으로 runtime placement를 강제하지 않습니다**. 별도 bundled/runtime resource 없이 행동 계약이 한 Markdown 파일에 완결되면 flat profile을 우선합니다.
+
+Maintainer-only `docs/`, `evals/`, `tests/`, 개발용 validator도 배포 Skill과 분리할 수 있다면 그 존재만으로 runtime placement를 강제하지 않습니다. 작은 textual schema나 설정 예시는 명확성과 유지보수성을 해치지 않는 범위에서 fenced code로 flat file에 포함할 수 있습니다.
 
 로컬/원격 workspace, filesystem, shell 같은 workspace authority가 필요하면 `../skills/` profile도 검토합니다.
 

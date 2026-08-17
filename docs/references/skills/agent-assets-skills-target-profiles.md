@@ -16,7 +16,7 @@ description: 이 저장소의 Skill target profile, flat/runtime 경계와 packa
 | --- | --- |
 | `skills/` | workspace/filesystem/shell/repository authority가 있는 agent runtime |
 | `skills-chatbot/` | self-contained single Markdown만 받는 flat chatbot harness |
-| `skills-chatbot-runtime/` | bundle, tools, connectors, progressive loading을 활용하는 hosted chatbot runtime |
+| `skills-chatbot-runtime/` | bundle, progressive loading, host-specific runtime surface를 활용하는 hosted chatbot runtime |
 
 같은 capability가 여러 profile에 존재할 수 있다. target harness가 서로 독립된 payload를 요구한다면 이 semantic overlap은 의도적인 projection이며 DRY 위반으로 보지 않는다.
 
@@ -28,9 +28,13 @@ description: 이 저장소의 Skill target profile, flat/runtime 경계와 packa
 
 1. `<skill-name>.skill.md` 한 파일로 완결된다.
 1. 배포 파일이 `<4,000 tokens`다.
-1. runtime-required bundle이나 host-only capability가 필요하지 않다.
+1. 별도 runtime-required bundle이나 host-specific package surface가 필요하지 않다.
 
-그 외에는 `skills-chatbot-runtime/`을 사용한다. `<4,000 tokens`는 이 저장소의 로컬 budget이며 외부 표준이 아니다.
+Skill이 host가 이미 제공하는 tool이나 connector를 사용하도록 지시한다는 사실만으로 runtime profile이 되는 것은 아니다. 필요한 행동 계약이 한 Markdown 파일에 완결되면 flat profile을 우선한다.
+
+그 외에는 `skills-chatbot-runtime/`을 사용한다. 예를 들어 references/assets/scripts, host-specific tool schema나 integration resource, progressive loading 등 단일 Markdown 밖의 runtime surface가 실제 capability에 필요할 때다.
+
+`<4,000 tokens`는 이 저장소의 로컬 budget이며 외부 표준이 아니다.
 
 ## Directory-Based Package
 
@@ -84,4 +88,4 @@ Portable `SKILL.md`와 front matter 규격은
 [Agent Skills Specification](agent-skills-io/agent-skills-io-specification.md)이
 소유한다. 이 문서는 target profile에 필요한 repository-local extension만 정의한다.
 
-Skill을 분리할지는 파일 길이가 아니라 activation intent와 responsibility로 판단한다. 세부 지식만 조건부로 달라진다면 별도 Skill보다 runtime `references/`를 먼저 검토한다.
+Skill을 분리할지는 파일 길이가 아니라 activation intent와 responsibility로 판단한다. 세부 지식만 조건부로 달라지고 단일 파일 budget을 넘는다면 runtime `references/`를 검토한다.
