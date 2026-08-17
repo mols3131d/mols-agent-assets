@@ -46,6 +46,10 @@ policy가 필요하지 않은 reusable capability/context는 Skill이 기본 후
 - Skill-specific Personal Standard →
   [Personal Skill Standard](../../skills/agent-assets-skills-standard-personal.md)
 
+Skill의 Tier 1 open standard와 Tier 2 vendor/harness 공식 원문 registry는
+[Agent Skills Specification](../../skills/agent-skills-io/agent-skills-io-specification.md)이
+소유한다. 이 공통 Personal Standard에서 외부 Skill 규격을 다시 정의하지 않는다.
+
 Skill target profile과 package surface의 상세 규격은 Personal Skill Standard가
 연결하는 focused reference가 소유한다.
 
