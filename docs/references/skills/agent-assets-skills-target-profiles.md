@@ -32,6 +32,33 @@ description: 이 저장소의 Skill target profile, flat/runtime 경계와 packa
 
 그 외에는 `skills-chatbot-runtime/`을 사용한다. `<4,000 tokens`는 이 저장소의 로컬 budget이며 외부 표준이 아니다.
 
+### Flat Markdown Structure
+
+Flat chatbot Skill은 **여러 Markdown 문서의 책임을 한 파일에 평탄화한 payload**로 본다. Heading은 장식이 아니라 responsibility boundary다.
+
+**`# ≈ one Markdown file`**을 기본 heuristic으로 사용한다. Flat 제약이 없다면 별도 `.md` 파일로 분리해도 자연스러운 top-level responsibility가 둘 이상일 때 복수의 `#`을 권장한다.
+
+- 모든 heading은 하나의 명확한 책임을 가진다. 독립 책임은 나누되 의미 없는 미세 분할은 하지 않는다.
+- `##` 이하는 부모 책임을 점진적으로 분해한다.
+- 같은 depth는 가능한 한 비슷한 추상화 수준을 유지한다.
+- 공통 invariant는 가장 가까운 공통 상위 boundary에 한 번만 둔다.
+- 단순한 Skill은 하나의 `#`으로 충분하다.
+- target harness의 mandatory heading contract가 있으면 그것을 우선한다.
+
+형태 예시이며 고정 schema가 아니다.
+
+```markdown
+# Contract
+
+# Procedure
+
+## Resolve
+
+## Apply
+
+# Output
+```
+
 ## Directory-Based Package
 
 ```text
