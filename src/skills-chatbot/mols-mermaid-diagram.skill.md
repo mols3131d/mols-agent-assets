@@ -7,8 +7,8 @@ description: >-
   flowchart, swimlane, sequence, state, class, ERD, architecture, C4, Gantt, timeline,
   mindmap, requirement, Git graph, Kanban, packet, or similar structural diagrams.
   Do not use when numeric magnitude, trend, proportion, quantified flow, weighted
-  hierarchy, profile, or normalized positioning is the main question; use an
-  appropriate chart capability instead.
+  hierarchy, profile, or normalized positioning is the main question, or when
+  whole-dashboard composition is the primary task.
 ---
 
 # Contract
@@ -22,7 +22,8 @@ Create or edit Mermaid so the reader can answer one structural question quickly.
 - Prefer portable Mermaid syntax when the target renderer or embedded Mermaid version is unknown.
 - Do not claim render success or renderer compatibility unless it was actually verified.
 - If a short list or table communicates the answer more clearly, use that instead of forcing a diagram.
-- If the task turns out to be primarily quantitative, stop treating it as a diagram problem and route to an appropriate chart representation.
+- If the task turns out to be primarily quantitative, use `mols-mermaid-chart` when available; otherwise use an appropriate chart representation.
+- If the task turns out to be whole-dashboard composition, use `mols-markdown-dashboard` when available rather than expanding this Skill into dashboard design.
 
 # Diagram Design
 
