@@ -14,13 +14,18 @@ Portable format과 front matter 규격은 Specification이 소유한다. 이 문
 
 ## Extension Model
 
-Skill 규칙은 다음 두 층으로 구분한다.
+Skill 규칙은 다음 순서로 적용한다.
 
-1. **Specification** — portable `SKILL.md`, front matter, standard resource convention.
-1. **Personal Standard** — 이 저장소의 source/deployment profile과 추가 convention.
+1. **Tier 1 — Open Standard**: Agent Skills의 portable 공통 규격.
+1. **Tier 2 — Vendor / Harness Contract**: 실제 target runtime의 공식 규격.
+1. **Personal Standard**: 앞선 규격을 만족한 뒤 적용하는 repository-local extension.
 
-Target runtime의 mandatory contract가 있으면 repository-local convention보다
-우선한다. Personal Standard를 외부 Agent Skills specification의 일부처럼
+Tier 1과 Tier 2의 authoritative source와 공식 링크 registry는
+[Agent Skills Specification](agent-skills-io/agent-skills-io-specification.md)이
+소유한다. Personal Standard에서 vendor 규격을 다시 요약하지 않는다.
+
+Target runtime의 mandatory contract가 repository-local convention보다 우선한다.
+Personal Standard를 외부 Agent Skills specification이나 vendor 규격의 일부처럼
 표현하지 않는다.
 
 ## Front Matter
@@ -55,7 +60,8 @@ mapping을 우선한다. 특정 host가 별도 top-level field를 요구하면 �
 
 새 Skill rule을 추가할 때 먼저 확인한다.
 
-- 외부 Specification에 이미 정의된 규칙인가? → Specification reference가 소유한다.
+- Tier 1에 이미 정의된 규칙인가? → Specification reference가 소유한다.
+- 특정 vendor/harness에만 필요한가? → Tier 2 공식 원문을 링크하고 로컬에서 복제하지 않는다.
 - 이 저장소에서만 필요한 추가 규칙인가? → Personal Standard 또는 focused detail이 소유한다.
 - 특정 target profile에만 필요한가? → 해당 profile reference가 소유한다.
 - 특정 Skill 하나에만 필요한가? → 그 Skill 내부 contract로 둔다.
