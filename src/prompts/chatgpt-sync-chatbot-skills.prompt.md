@@ -10,8 +10,8 @@ scope: <auto>
 on_conflict: <auto>
 ```
 
-- `source` — repository or Skill source to synchronize. `<auto>` delegates source resolution to `mols-skill-find`, including its repository fallback.
-- `ref` — source revision. `<auto>` uses the live/current ref when known, otherwise the source default.
+- `source` — repository or Skill source to synchronize. `<auto>` delegates source resolution to `mols-skill-find`, including its default asset repository.
+- `ref` — source revision. `<auto>` uses the live/current ref for the resolved source when explicitly established, otherwise the source default.
 - `target` — ChatGPT Skill installation target. `<auto>` uses the current ChatGPT environment.
 - `scope` — capabilities to synchronize. `<auto>` discovers repository-declared chatbot/ChatGPT Skill profiles and synchronizes their complete installable capability set.
 - `on_conflict` — `override`, `separate`, `skip`, or `<auto>`. `<auto>` leaves destructive conflicts for user choice.
