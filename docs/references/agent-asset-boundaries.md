@@ -1,131 +1,284 @@
 ---
-title: Agent Asset Boundaries
-description: Rule, Skill, Prompt, Agent, Reference를 scope, lifetime, authority 기준으로 구분하는 자산 경계 원칙
+title: Personal Agent Asset Standard
+description: 외부 baseline을 확장한 repository-local Agent Asset 운용 표준
 ---
 
-# Agent Asset Boundaries
+# Personal Agent Asset Standard
 
-에이전트 자산은 파일 형식보다 **어떤 범위에서, 얼마나 오래, 어떤 권한으로 행동에 영향을 주는가**로 구분하는 편이 안정적이다.
+이 문서는 [Agent Asset Standard Baseline](agent-asset-standard-baseline.md)을 바탕으로 이 저장소에서 실제 사용하는 **개인 표준(personal standard)**을 정의한다.
 
-> 자산 유형은 내용의 모양이 아니라 scope, lifetime, authority, responsibility로 구분한다.
+> 이 문서의 `CHATBOT.md`, Rule projection, `load-context-*`, Skill 3-profile, flat 4,000-token budget, Skill package의 dot-directory convention 등은 의도적인 **비표준 repository-local extension**이다. 외부 표준이나 특정 플랫폼의 공식 규격으로 설명하지 않는다.
 
-이 문서의 `Rule`은 이 저장소에서 사용하는 설계 개념이다. 모든 agent platform이 동일한 이름이나 loading semantics를 표준화한 것은 아니다.
+## Asset Types
 
-## Core Boundaries
+이 저장소의 동급 Agent Asset 유형은 네 가지다.
 
-| 자산 | 핵심 책임 | 일반적 lifetime | 핵심 질문 |
-| --- | --- | --- | --- |
-| Rule | 반복 적용되는 policy와 constraint | 여러 task | 항상 또는 특정 scope에서 무엇을 지켜야 하는가? |
-| Skill | 재사용 가능한 task capability와 procedure | 관련 task마다 | 이 종류의 일을 어떻게 수행하는가? |
-| Prompt | 현재 invocation의 goal과 context | 현재 task | 지금 무엇을 원하는가? |
-| Agent | 역할, authority, tools, delegation | runtime role | 누가 어떤 권한과 도구로 판단하는가? |
-| Reference | 판단을 돕는 knowledge와 source material | 필요할 때 | 정확히 판단하려면 무엇을 알아야 하는가? |
+| 자산 | 책임 | 핵심 질문 |
+| --- | --- | --- |
+| Rule | 지속 적용되는 policy와 constraint | 이 scope에서 무엇을 계속 지켜야 하는가? |
+| Skill | 재사용 capability와 조건부 context | 지금 어떤 capability/context를 로드해야 하는가? |
+| Prompt | 현재 invocation의 goal과 일회성 context | 지금 무엇을 원하는가? |
+| Agent | 독립 role, authority, tools, delegation | 누가 어떤 권한으로 행동하는가? |
+
+Supporting resource는 이 네 자산의 작성·실행·검증을 돕지만 동급 자산 유형은 아니다.
 
 ## Rule
 
-Rule은 **반복되는 행동 경계**를 소유한다.
+Rule은 여러 task에서 지속 적용되는 policy와 constraint를 소유한다.
 
-적합한 내용:
+- repository/directory/path/file-type scope의 지속 규칙
+- 반드시 지켜야 하는 guardrail과 convention
+- 한 task의 긴 workflow나 상황별 판단 context는 소유하지 않음
 
-- 여러 task에 적용되는 policy와 convention
-- 반드시 지켜야 하는 constraint와 guardrail
-- 특정 repository, organization, path 같은 scope의 지속 규칙
+상황에 따라 모델이 선택적으로 로드해야 하는 판단 context라면 Rule보다 Skill을 우선 검토한다.
 
-Rule은 특정 한 task의 긴 procedure나 일회성 요구를 소유하지 않는다.
+### Rule Projections
+
+아래는 이 저장소의 비표준 projection이다.
+
+#### Directory — `AGENTS.md`
+
+루트와 하위 디렉터리의 `AGENTS.md`를 directory subtree Rule로 사용한다.
+
+- root `AGENTS.md`: repository-wide 기본 Rule
+- nested `AGENTS.md`: 해당 directory와 하위 경로의 더 좁은 Rule
+- target path를 다룰 때 root부터 target까지 applicable chain을 고려
+- nested file만 읽고 ancestor Rule을 버리지 않음
+
+실제 precedence/override semantics는 repository와 target harness가 명시한 규칙을 따른다.
+
+#### Glob
+
+공통 하위 디렉터리, 파일군, 확장자처럼 directory tree 하나로 표현하기 어려운 scope는 glob selector 기반 Rule로 운용한다.
+
+```text
+**/*.md
+**/*.py
+**/tests/**
+```
+
+- 현재 target path와 selector가 일치할 때만 적용
+- 여러 `AGENTS.md`에 같은 file-type Rule을 반복하는 대신 사용
+- 파일 형식, front matter, selector field, discovery path는 target harness에 맞춤
+- 특정 harness의 glob schema를 범용 Rule 표준으로 취급하지 않음
+
+#### Chatbot — `CHATBOT.md`
+
+`CHATBOT.md`는 **텍스트 입출력 중심 chatbot**을 위한 Rule projection이다. 웹 검색이나 서비스 plugin/tool을 사용할 수 있는 일반 chatbot도 포함한다.
+
+Repository instruction fallback은 다음과 같다.
+
+```text
+CHATBOT.md
+  ↓ 없으면
+AGENTS.md
+  ↓ 없으면
+README.md
+```
+
+- applicable `CHATBOT.md`가 있으면 chatbot Rule로 우선
+- 없으면 applicable `AGENTS.md`
+- 둘 다 없으면 applicable `README.md`를 마지막 fallback instruction source로 사용
+- 이 fallback 때문에 README 자체를 일반적인 Rule 형식으로 간주하지 않음
+- system/user/platform/tool authority는 이 repository-local chain보다 우선
+
+Directory, glob, chatbot projection은 함께 적용될 수 있다.
 
 ## Skill
 
-Skill은 **재사용 가능한 coherent capability**를 소유한다.
+Skill은 이 저장소에서 **가장 이식성이 높고 모델 판단에 따라 필요한 context를 조건부 주입하기 좋은 기본 재사용 단위**다.
 
-적합한 내용:
+재사용 가능한 내용이 Rule·Prompt·Agent여야 할 명확한 이유가 없다면 Skill을 우선 검토한다.
 
-- capability와 activation 조건
-- 반복 가능한 procedure 또는 workflow
-- task-specific tool 사용법과 gotcha
-- validation과 성공 기준
-- 필요할 때 읽는 bundled reference와 script의 사용 조건
+### Why Skill First
 
-Skill은 단순한 지식 저장소도, 무관한 capability들의 namespace도 아니다.
+- **Model-directed activation** — metadata/description으로 모델이 관련성을 판단
+- **Conditional loading** — 항상 context를 점유하지 않고 필요할 때만 로드
+- **Progressive disclosure** — core instructions와 optional resources 분리
+- **Portability** — 여러 Skills-compatible harness에 projection하기 쉬움
+- **Composition** — 현재 task에 필요한 작은 capability/context를 조합 가능
+
+Skill은 workflow에 한정하지 않는다. decision lens, domain context, tool guidance처럼 활성화되면 모델 판단이 달라지는 coherent context capability도 Skill이 될 수 있다.
+
+### Context-only Skills
+
+주책임이 workflow가 아니라 **상황별 context 주입**이면 `load-context-<topic>` 이름을 쓴다.
+
+예:
+
+- `load-context-coding`
+- `load-context-github`
+- `load-context-notion`
+- `load-context-human-writing`
+- `load-context-agent-assets`
+
+`load-context-*`는 context discovery/selection/scoping/loading까지만 소유한다. 실제 구현, 작성, 검증, 리뷰, mutation, 최종 output은 downstream capability가 소유한다.
+
+이 naming은 repository-local convention이다.
+
+### Skill Target Profiles
+
+> [!IMPORTANT]
+> `skills/`, `skills-chatbot/`, `skills-chatbot-runtime/`의 3분류는 **Agent Skills 표준이 아니라 이 저장소의 비표준 target profile taxonomy**다.
+
+| Profile | 최적화 대상 |
+| --- | --- |
+| `skills/` | workspace/filesystem/shell/repository authority가 있는 agent runtime |
+| `skills-chatbot/` | 단일 Markdown만 받는 flat chatbot harness |
+| `skills-chatbot-runtime/` | bundle/tools/connectors/progressive loading을 활용하는 hosted chatbot runtime |
+
+같은 capability가 둘 또는 세 profile에 동시에 존재할 수 있다. target별 harness capability가 다르면 semantic overlap은 의도적인 projection이며 DRY 위반으로 보지 않는다.
+
+최적화 단위는 **`capability × target profile`**이다.
+
+#### Flat vs Runtime
+
+`skills-chatbot/`은 다음을 모두 만족할 때 사용한다.
+
+1. `<skill-name>.skill.md` 한 파일로 완결
+2. 배포 파일이 **4,000 tokens 미만**
+3. runtime-required bundle이나 host-only capability가 필요하지 않음
+
+다음 중 하나라도 해당하면 `skills-chatbot-runtime/`을 사용한다.
+
+- 4,000 tokens 이상이라 Markdown을 분리해야 함
+- `references/`, `assets/`, `scripts/`, images 등 runtime-required bundle 필요
+- tools/connectors/scripts/progressive loading이 capability의 중요한 부분
+
+공식 Agent Skills의 `<5,000 tokens` 권장과 달리 `<4,000`은 이 저장소의 더 엄격한 **로컬 flat budget**이다.
+
+### Skill Package Surfaces
+
+Directory-based Skill source package에서는 **dot-prefixed directory(`.*`)를 non-runtime surface로 사용한다.** 이는 이 저장소의 개인 관행이며 Agent Skills 표준이 아니다.
+
+```text
+skill-name/
+├─ SKILL.md
+├─ references/          # runtime when needed
+├─ scripts/             # runtime when needed
+├─ assets/              # runtime when needed
+└─ .docs/               # non-runtime maintainer surface
+   ├─ baseline/          # durable preservation / recovery baseline
+   └─ ...                # working, maintenance, architecture notes, etc.
+```
+
+- runtime behavior가 필요로 하는 파일은 dot directory에 두지 않는다.
+- `.docs/`는 사람과 maintainer가 source package를 이해·유지·복구하기 위한 비런타임 문서를 둔다.
+- 기존 Skill 내부 `docs/`는 `.docs/`로 사용한다. repository root의 `docs/`는 이 convention의 대상이 아니다.
+- `.evals/`, `.tests/`처럼 다른 dot directory도 같은 non-runtime 의미로 사용할 수 있다.
+- packaging/deployment는 dot directory를 runtime payload에서 제외하는 것을 기본으로 한다.
+- runtime에 실제로 필요한 상세 지식은 `references/` 등 non-dot runtime resource로 둔다. 단순히 문서라는 이유로 `.docs/`에 넣지 않는다.
+
+#### `.docs/baseline/*`
+
+`.docs/baseline/`은 Skill의 **본래 목적과 요구사항, 중요한 결정, 불변조건을 보전하는 durable baseline**이다. 구현이 반복 개선되거나 문구가 크게 바뀌어도 무엇을 잃으면 안 되는지 복구할 수 있어야 한다.
+
+담기 좋은 내용:
+
+- 원래 의도와 purpose/essence
+- 필수 requirements와 success boundary
+- behavioral invariants와 non-goals
+- 사용자가 명시적으로 채택한 주요 design decisions와 중요한 rejected decisions
+- recovery directive와 변경 시 지켜야 할 compatibility contract
+
+예시 파일명은 `DIRECTIVE.md`, `intent.md`, `requirements.md`, `decisions.md`이며 고정 schema는 아니다.
+
+Baseline은 다음을 지킨다.
+
+- runtime이 읽어야만 정상 동작하는 dependency로 만들지 않는다.
+- 현재 작업 로그, 임시 조사, 쉽게 재생성되는 상태는 넣지 않는다.
+- 단순 refactor나 문구 정리로 의미를 바꾸지 않는다.
+- 본래 목적·요구사항·결정을 의도적으로 변경할 때만 함께 갱신한다.
+- 유지보수 또는 recovery review에서는 현재 `SKILL.md`가 baseline의 본질을 훼손했는지 비교 근거로 사용할 수 있다.
+- 사용자의 현재 명시적 지시가 baseline보다 우선한다.
+
+Flat `skills-chatbot/*.skill.md`처럼 directory package가 없는 projection에는 내부 `.docs/`를 강제하지 않는다. 필요하면 source-side maintainer 기록을 별도 위치에서 관리하고 배포 파일은 self-contained하게 유지한다.
 
 ## Prompt
 
-Prompt는 **현재 invocation에서 원하는 결과**를 소유한다.
+Prompt는 현재 invocation의 goal과 일회성 context를 소유한다.
 
-적합한 내용:
-
-- 현재 목표와 입력
-- 현재 task에 필요한 context
-- 이번 요청에만 적용되는 제약
-- 원하는 output이나 acceptance condition
-
-같은 지침을 여러 invocation에서 반복해서 넣어야 한다면 Rule이나 Skill이 더 자연스러운 owner인지 검토한다.
+반복해서 같은 capability나 policy를 Prompt에 복사해야 한다면 Skill이나 Rule로 승격할지 검토한다.
 
 ## Agent
 
-Agent는 **runtime actor의 책임과 행동 surface**를 소유한다.
+Agent는 독립 runtime actor의 책임을 소유한다.
 
-일반적으로 Agent는 다음의 조합으로 정의된다.
-
-- role과 instructions
-- 사용할 수 있는 tools
-- authority와 guardrails
-- handoff 또는 delegation 관계
+- role/instructions
+- tools
+- authority/permissions/guardrails
+- handoff/delegation
 - output responsibility
 
-Agent를 나누는 이유는 instruction 길이가 아니라 **역할, authority, specialization, delegation boundary가 실제로 달라질 때**다.
+instruction이 길거나 이름을 붙이고 싶다는 이유만으로 Agent를 만들지 않는다. 별도 role/authority가 필요하지 않은 reusable capability/context는 Skill을 우선한다.
 
-## Reference
+## Supporting Resources
 
-Reference는 **행동을 결정하는 데 필요한 지식과 근거**를 제공한다.
+Supporting resource는 다른 자산이 필요할 때 읽거나 실행하는 재료다. **runtime 여부는 파일 종류가 아니라 package surface로 구분한다.**
 
-두 종류를 구분한다.
+- `references/`: runtime에서 조건부로 읽는 상세 knowledge/context
+- `scripts/`: runtime 또는 deterministic helper
+- `assets/`: runtime template/image/data resource
+- `.docs/`: non-runtime human/maintainer documentation
+- `.docs/baseline/`: non-runtime intent/requirements/decisions/recovery baseline
+- `.evals/`, `.tests/`: non-runtime validation/development resource로 사용할 수 있음
 
-- repository-level `docs/references/`: 사람과 자산 작성자가 사용하는 설계 지식. runtime에 자동 적용된다고 가정하지 않는다.
-- Skill 내부 `references/`: 해당 Skill이 조건에 따라 읽는 실행 지식. Skill이 load condition을 명시적으로 소유한다.
+Resource 자체가 model-directed activation을 소유하지 않는다. 특정 runtime knowledge를 상황에 따라 자동으로 활성화해야 한다면 Skill이 activation boundary를 소유하고 non-dot runtime resource를 조건부로 로드한다.
 
-Reference에 적혀 있다는 사실만으로 runtime policy가 활성화되는 것은 아니다.
+## Placement
 
-## Placement Test
+새 자산은 다음 순서로 판단한다.
 
-새 내용을 둘 위치가 모호하면 다음 순서로 묻는다.
+1. 특정 scope에서 여러 task 동안 지속되는 policy인가? → **Rule**
+2. 반복 capability 또는 상황별로 모델이 로드해야 하는 context인가? → **Skill**
+3. 현재 invocation에서만 필요한 goal/constraint인가? → **Prompt**
+4. 독립 role/authority/tool/delegation boundary가 필요한가? → **Agent**
 
-1. 여러 task에서 지속적으로 지켜야 하는 policy인가? → **Rule**
-2. 반복 수행되는 하나의 task capability인가? → **Skill**
-3. 현재 요청에서만 필요한 goal이나 constraint인가? → **Prompt**
-4. 역할, authority, tool, delegation을 정의하는가? → **Agent**
-5. 행동 자체보다 판단에 필요한 knowledge인가? → **Reference**
+재사용 가능한 내용이고 1·3·4의 명확한 이유가 없다면 **Skill을 우선 후보**로 한다.
 
-둘 이상의 답이 강하면 먼저 내용이 여러 책임을 섞고 있는지 확인한다. 하나의 내용이 여러 자산에 나타나야 한다면 [DRY Principle](./agent-asset-dry-principle.md)의 ownership 기준을 적용한다.
+### Rule placement
 
-## Boundary Changes
+- directory subtree → root/nested `AGENTS.md`
+- 여러 위치의 공통 directory/file type/extension → glob Rule
+- text I/O chatbot → `CHATBOT.md`, 없으면 `AGENTS.md`, 그마저 없으면 `README.md`
 
-내용의 owner는 영구적이지 않다.
+### Skill placement
 
-- 한 번의 prompt correction이 반복되면 Rule이나 Skill로 승격될 수 있다.
-- Skill의 일부가 독립 intent와 authority를 가지면 별도 Skill이나 Agent로 분리될 수 있다.
-- runtime에 항상 필요하지 않은 상세 설명은 Reference로 내려갈 수 있다.
-
-변경은 파일 크기가 아니라 **scope와 responsibility가 실제로 바뀌었을 때** 수행한다.
+- context-only → `load-context-<topic>` naming 검토
+- workspace authority가 capability 핵심 → `skills/`
+- single Markdown + `<4,000 tokens` + runtime dependency 없음 → `skills-chatbot/`
+- 그 외 bundle/runtime capability 필요 → `skills-chatbot-runtime/`
+- directory-based source package의 non-runtime 문서 → `.docs/`
+- 원래 목적·요구사항·결정·불변조건 보존 → `.docs/baseline/`
 
 ## Anti-patterns
 
-- Prompt에 영구 policy를 계속 복사한다.
-- Rule 안에 하나의 task를 위한 전체 workflow를 넣는다.
-- Skill을 단순한 reference collection으로 사용한다.
-- Agent를 instruction namespace처럼 늘린다.
-- `docs/references/`를 runtime dependency로 가정한다.
-- 파일명이나 디렉터리 이름만 보고 자산 유형을 결정한다.
-- platform-specific loading behavior를 범용 표준처럼 가정한다.
+- 조건부 context를 global Rule/Agent instruction에 항상 로드
+- Prompt에 reusable capability 반복 복사
+- Rule 안에 한 task의 전체 workflow 작성
+- 같은 glob concern을 여러 `AGENTS.md`에 반복
+- `CHATBOT.md` fallback이나 Skill 3-profile을 외부 표준처럼 설명
+- supporting resource를 동급 Agent Asset으로 분류
+- workflow Skill에 `load-context-` naming 사용
+- target profile이 다른 sibling Skill을 내용 중복만으로 제거
+- 4,000-token flat budget을 외부 표준으로 설명
+- 한 harness의 semantics를 다른 target에 강제
+- Skill package의 runtime-required resource를 `.docs/` 아래에 숨김
+- `.docs/baseline/`을 작업 로그나 임시 상태 저장소로 사용
+- baseline을 수정하지 않고 의도·요구사항·결정을 사실상 변경
 
-## Review Question
+## Review Questions
 
-> **이 내용의 scope, lifetime, authority를 기준으로 가장 자연스러운 canonical owner는 무엇인가?**
+> 이 내용은 지속 Rule인가, 조건부 Skill인가?
 
-한 문장으로 답하기 어렵다면 boundary나 responsibility가 섞였는지 확인한다.
+> Rule이라면 directory, glob, chatbot 중 어떤 projection이 실제 scope를 가장 정확히 표현하는가?
 
-## Research Basis
+> Skill이라면 현재 harness에서 어떤 target profile이 가장 효율적인가?
 
-- [Agent Skills Specification](https://agentskills.io/specification) — Skill의 metadata, instructions, references, scripts와 progressive loading 경계를 정의한다.
-- [Anthropic: Agent Skills overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) — prompt를 one-off conversation instruction, Skill을 reusable on-demand capability로 구분한다.
-- [OpenAI Agents SDK: Agents](https://openai.github.io/openai-agents-python/agents/) — Agent를 instructions, tools, handoffs, guardrails, output behavior를 가진 runtime building block으로 정의한다.
-- [GitHub: About customizing Copilot responses](https://docs.github.com/en/copilot/concepts/prompting/response-customization) — persistent instruction의 scope를 personal, repository, organization 등으로 분리해 적용한다.
+> Skill package 파일이라면 runtime에 필요한가, 아니면 dot-prefixed non-runtime surface에 있어야 하는가?
+
+> `.docs/baseline/`만 보고도 이 Skill이 무엇을 위해 존재했고 무엇을 잃으면 안 되는지 복구할 수 있는가?
+
+## Baseline
+
+외부 표준과 생태계 공통 개념의 근거는 [Agent Asset Standard Baseline](agent-asset-standard-baseline.md)이 소유한다. 이 문서는 그 baseline을 반복 설명하지 않고 **이 저장소의 확장과 운용 결정만** 소유한다.

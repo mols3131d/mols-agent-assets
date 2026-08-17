@@ -1,7 +1,11 @@
 ---
 name: writing
 description: >
-  목적, 독자, 채널, 제약에 맞는 완성형 글을 기획하고 작성하며, 기존 글을 재작성하고 가독성을 개선하고 목적 적합성을 리뷰한다. 이메일, 메시지, 공지, 문서, 보고서, 제안서, 게시물, 설명문, 스크립트 등 독자가 읽을 글의 완성본이나 구조화된 글쓰기 계획이 필요할 때 사용한다. 단순 사실 질의, 요약만 하는 요청, 짧은 번역, 코드 작성, 문서 파일의 시각적 레이아웃·변환만 필요한 작업에는 사용하지 않는다. Keywords: writing plan, draft, rewrite, edit, readability, critique, review, audience, purpose, tone, structure.
+  Write, plan, rewrite, improve, or review reader-facing prose for a specific
+  purpose, audience, channel, tone, and constraint set. Use for emails, messages,
+  notices, reports, proposals, posts, explanations, scripts, and other finished
+  prose. Do not use when the main task is factual lookup, summarization only, short
+  translation, code, data analysis, or document-file layout conversion.
 metadata:
   - version: "1.0.0"
   - target:
@@ -10,184 +14,100 @@ metadata:
 
 # Writing
 
-목적에 맞는 글을 일관된 절차로 기획, 작성, 개선, 검토하는 범용 글쓰기 스킬이다. 이 스킬은 프롬프트 모음이 아니라 작업 라우터, 공용 원칙, 품질 기준, 중단 조건을 가진 실행 절차로 동작한다.
+Use this Skill as **writing task context with progressive loading**. Keep the common
+contract active, then load only the mode-specific detail that materially helps the
+current request.
 
-## 1. 활성화 경계
+## Common Contract
 
-다음 중 하나가 핵심 작업이면 사용한다.
+- Optimize for the user's purpose, audience, channel, format, length, tone, required
+  content, and explicit exclusions.
+- If enough information is available, write instead of interviewing the user.
+- Ask at most one question only when the missing information would materially change
+  the result and cannot be safely inferred or represented with a placeholder.
+- Do not invent facts, numbers, quotes, experience, achievements, or evidence.
+- Keep internal plans, rubrics, and scores out of the default output.
+- If the user asks only for review, do not silently replace the whole text. If the user
+  asks for a finished version, lead with the finished version.
+- Use external research only when fresh or external facts are materially required;
+  let the research capability own search and verification rules.
 
-- 목적과 독자에 맞는 글의 기획 또는 개요 작성
-- 이메일, 메시지, 공지, 문서, 보고서, 제안서, 게시물, 설명문, 연설문, 스크립트 등의 완성본 작성
-- 기존 글의 재작성, 구조 개선, 간결화, 확장, 말투 조정
-- 가독성 개선
-- 글이 목적, 독자, 형식, 사실, 논리에 맞는지 리뷰
+## Mode Router
 
-다음이 핵심 작업이면 다른 스킬을 우선한다.
+Choose the smallest mode that matches the request.
 
-- 사실 질문에 대한 답변 자체
-- 원문 내용의 요약만 필요한 작업
-- 단어, 구절, 짧은 문장의 번역
-- 코드 또는 데이터 분석
-- 문서 파일의 레이아웃, 변환, 서식 편집
-- 검색, 조사, 법률·의료·재무 판단이 주 작업인 경우
-
-다른 스킬이 조사나 분석을 완료한 뒤 독자용 글을 만드는 단계에서는 이 스킬을 함께 사용할 수 있다.
-
-## 2. 작업 계약
-
-1. 사용자의 목적, 독자, 형식, 길이, 말투, 필수 내용, 금지 사항을 가장 높은 우선순위로 둔다.
-1. 정보가 충분하면 바로 수행한다.
-1. 결과가 크게 달라지고 안전하게 가정할 수도 없는 정보가 빠졌을 때만 질문을 최대 1개 한다. 그 외에는 합리적 가정이나 표시된 placeholder로 진행한다.
-1. 사용자가 제공하지 않은 사실, 수치, 인용, 경험, 성과를 만들지 않는다.
-1. 최신 외부 사실이 필요할 때만 적절한 조사 도구나 별도 조사 스킬을 사용한다.
-1. 내부 계획, 점수, 체크리스트는 기본 출력에 노출하지 않는다. 사용자가 요청한 결과물을 먼저 제공한다.
-1. 사용자가 리뷰만 요청하면 임의로 전체 재작성하지 않는다. 사용자가 완성본을 요청하면 문제 설명보다 수정된 완성본을 우선한다.
-
-## 3. 워크플로우 라우터
-
-요청의 주된 동사와 입력 상태를 기준으로 하나를 선택한다.
-
-| 모드 | 선택 조건 | 기본 산출물 |
+| Mode | Use when | Default result |
 | --- | --- | --- |
-| `plan` | 기획, 개요, 구성, 메시지 전략이 필요함 | 글쓰기 브리프와 구조 |
-| `draft` | 목적과 재료가 있고 새 글을 작성해야 함 | 완성된 초안 |
-| `rewrite` | 기존 글을 목적에 맞게 바꿔야 함 | 수정된 완성본 |
-| `readability` | 의미는 대체로 맞고 읽기 쉽게 만들어야 함 | 가독성이 개선된 글 |
-| `review` | 목적 적합성이나 품질을 평가해야 함 | 판정과 우선 수정사항 |
-| `end-to-end` | 기획부터 작성과 검토까지 모두 필요함 | 검토를 마친 완성본 |
+| `plan` | outline, structure, message strategy | brief / structure |
+| `draft` | create new prose from available material | finished draft |
+| `rewrite` | change an existing text for a new purpose | revised text |
+| `readability` | preserve meaning while making text easier to read | improved text |
+| `review` | evaluate fitness, logic, clarity, or constraints | verdict + key findings |
+| `end-to-end` | plan, write, and internally review | reviewed final text |
 
-세부 절차는 [워크플로우](references/workflows.md)를 따른다.
+A short, straightforward message may be completed from this core context alone.
 
-## 4. 공용 원칙
+## Runtime Loading
 
-모든 모드에서 [공용 글쓰기 원칙](references/principles.md)을 적용한다. 특히 다음을 우선한다.
+Load detail only when its trigger is present.
 
-- 목적: 글이 독자에게 어떤 이해, 판단, 감정, 행동을 만들어야 하는지 먼저 정한다.
-- 독자: 독자가 이미 아는 것, 궁금한 것, 반대할 것, 다음에 해야 할 일을 기준으로 쓴다.
-- 핵심 우선: 결론이나 핵심 메시지를 불필요하게 늦추지 않는다.
-- 구조: 한 단락은 하나의 역할을 맡고, 정보의 순서는 독자의 판단 흐름을 따른다.
-- 명료성: 구체적인 명사와 동사를 사용하고, 추상어·중복·과도한 수식을 줄인다.
-- 사실성: 사실, 해석, 가정, 제안을 구분하고 근거 없는 확신을 만들지 않는다.
-- 형식 적합성: 이메일, 보고서, 게시물 등 채널의 관습과 사용자의 출력 형식을 따른다.
-- 제약 보존: 길이, 말투, 포함·제외 항목, 원문 보존 범위를 지킨다.
+- `plan`, complex `draft`, complex `rewrite`, `readability`, or `end-to-end` → read
+  `references/workflows.md` for the relevant mode only.
+- Long-form, high-stakes, externally published, or quality-sensitive prose → read
+  `references/principles.md`.
+- `review`, or strict final review in a high-stakes `end-to-end` task → read
+  `references/review-rubric.md`.
+- A structured writing brief is actually useful → use
+  `assets/writing-brief-template.md` selectively.
+- A structured review output is actually useful → use
+  `assets/review-output-template.md` selectively.
+- Ambiguous edge case or uncertainty about expected behavior → read
+  `references/examples.md`.
 
-## 5. 공통 실행 순서
+Do not preload all references, assets, or examples. Do not read a reference merely
+because it exists.
 
-### 5.1 요청 해석
+## Minimal Writing Lens
 
-다음 항목을 내부적으로 확정한다.
+Without loading extra detail, preserve these defaults:
 
-- 목적
-- 독자
-- 원하는 독자 반응 또는 다음 행동
-- 채널과 형식
-- 핵심 메시지
-- 필수 사실과 근거
-- 길이와 말투
-- 제약과 금지 사항
+- put the main message where the reader can find it quickly;
+- order information around the reader's questions and next action;
+- keep each paragraph doing a clear job;
+- prefer concrete wording over avoidable abstraction, repetition, and decoration;
+- separate fact, interpretation, assumption, and proposal when the distinction matters;
+- respect channel conventions without forcing one generic report style.
 
-정보가 없더라도 결과를 크게 왜곡하지 않는 항목은 추론해서 진행한다. 중요한 가정만 결과 앞이나 뒤에 짧게 표시한다.
+For rewriting, treat preservation as task-specific: lock what the user explicitly asks
+to preserve or what must remain invariant for correctness. Otherwise allow the degree
+of restructuring needed to achieve the stated purpose.
 
-### 5.2 최소 계획
+If a separate fidelity Skill is active for technical or otherwise preservation-critical
+text, let that Skill own the stricter preservation boundary.
 
-초안 전에 최소한 다음을 정한다.
+## Review and Stop
 
-- 첫 문장 또는 첫 단락의 역할
-- 핵심 메시지의 위치
-- 주요 단락의 순서
-- 필요한 근거, 예시, 행동 요청
-- 끝맺음의 역할
+Before returning the result, check only for material failures:
 
-단순한 짧은 메시지는 별도 개요를 출력하지 않고 내부 계획만 사용한다.
+- mismatch with purpose or audience;
+- missing or buried core message;
+- invented or contradictory content;
+- material logical gap;
+- violation of requested format, tone, length, or include/exclude constraints;
+- unclear next action where the text is action-oriented;
+- structure or wording that meaningfully obstructs understanding.
 
-### 5.3 작성 또는 수정
+Fix material defects with one focused revision. Use a second revision only for high-risk
+work or when the user explicitly asks for strict validation. Stop when another pass would
+mainly change taste rather than improve fitness for purpose.
 
-- 독자가 가장 빨리 이해해야 하는 내용부터 쓴다.
-- 각 문장과 단락에 명확한 역할을 부여한다.
-- 요청하지 않은 상투적 서론, 과장, 장식적 표현을 추가하지 않는다.
-- 정보가 빠진 부분은 사실처럼 채우지 말고 `[이름]`, `[날짜]`, `[근거]`처럼 표시한다.
+## Output
 
-### 5.4 품질 검토
+Return the requested artifact first.
 
-[리뷰 기준](references/review-rubric.md)으로 내부 검토한다. 다음 결함은 반드시 수정 대상이다.
+- `plan` → only the useful planning structure unless drafting was also requested.
+- `draft` / `rewrite` / `readability` / `end-to-end` → finished prose first.
+- `review` → verdict and the few highest-impact findings first.
 
-- 목적이나 독자와 불일치
-- 핵심 메시지 누락 또는 과도한 지연
-- 사실의 발명, 모순, 근거 없는 단정
-- 논리적 비약 또는 중요한 전제 누락
-- 요청된 형식, 길이, 말투, 포함·제외 조건 위반
-- 독자가 다음 행동을 알 수 없는 행동 중심 글
-- 의미를 방해하는 구조, 중복, 모호한 표현
-
-### 5.5 제한된 수정
-
-중대한 결함이 있으면 한 번의 집중 수정으로 고친다. 고위험 글이나 사용자가 엄격한 검증을 요청한 경우에만 두 번째 수정까지 허용한다.
-
-## 6. 비용과 중단 기준
-
-모델 출력은 비결정적이며 지침만으로 품질이 보장되지 않는다. 이를 완전히 제거하려고 반복하지 않는다.
-
-기본 예산은 다음과 같다.
-
-- 짧고 저위험인 글: 최소 계획 → 작성 → 빠른 검토
-- 일반 글: 간단한 구조 → 작성 → 리뷰 → 필요한 경우 1회 수정
-- 고위험 또는 대외 공개 글: 사실 확인 → 작성 → 엄격 리뷰 → 최대 2회 수정
-
-다음 조건을 모두 만족하면 종료한다.
-
-- 목적과 독자가 명확히 반영됨
-- 핵심 메시지가 쉽게 발견됨
-- 중요한 사실과 논리가 충돌하지 않음
-- 요청된 형식과 제약을 충족함
-- 독자가 무리 없이 읽고 다음 판단이나 행동을 할 수 있음
-
-추가 수정이 취향 차이만 만들고 목적 달성 가능성을 실질적으로 높이지 않으면 중단한다. 여러 버전, 긴 해설, 추가 조사, 점수 산정은 사용자가 요청하거나 의사결정에 실질적으로 필요할 때만 수행한다.
-
-## 7. 모드별 출력 원칙
-
-### `plan`
-
-[글쓰기 브리프 템플릿](assets/writing-brief-template.md)을 필요한 만큼 축약해서 사용한다. 계획만 요청받았으면 본문을 임의로 완성하지 않는다.
-
-### `draft`
-
-완성된 글을 먼저 제공한다. 설명은 필요한 가정이나 미확인 사실만 짧게 덧붙인다.
-
-### `rewrite`
-
-수정된 전체 글을 제공한다. 사용자가 의미 보존이나 최소 수정을 명시하지 않았다면 목적 달성을 위해 구조와 순서를 적극적으로 바꿀 수 있다.
-
-### `readability`
-
-의미와 핵심 사실을 보존하면서 문장, 단락, 정보 순서, 용어를 개선한다. 의미 변경이 필요하면 임의로 바꾸지 말고 표시한다.
-
-### `review`
-
-[리뷰 출력 템플릿](assets/review-output-template.md)을 사용한다. 치명적 또는 영향이 큰 문제부터 최대 3개를 제시한다. 요청이 없으면 사소한 취향 문제를 길게 나열하지 않는다.
-
-### `end-to-end`
-
-기획, 작성, 내부 리뷰를 수행하되 최종 출력은 완성본 중심으로 제공한다. 과정 설명은 요청받은 경우에만 제공한다.
-
-## 8. 최종 체크
-
-완료 전에 다음을 확인한다.
-
-- 사용자가 요청한 실제 산출물을 제공했는가?
-- 목적과 독자에게 맞는가?
-- 중요한 사실을 만들거나 왜곡하지 않았는가?
-- 핵심 메시지가 빠르게 드러나는가?
-- 구조와 문장이 독자의 이해를 돕는가?
-- 말투, 길이, 형식, 필수·금지 조건을 지켰는가?
-- 불필요한 버전, 설명, 반복을 추가하지 않았는가?
-- 더 고치는 비용보다 기대 효과가 큰가?
-
-하나라도 중대한 위반이면 한 번 수정한다. 그렇지 않으면 종료한다.
-
-## 9. 참조 파일
-
-- [공용 글쓰기 원칙](references/principles.md)
-- [하위 워크플로우](references/workflows.md)
-- [리뷰 기준](references/review-rubric.md)
-- [사용 예시](references/examples.md)
-- [트리거 평가셋](references/trigger-evals.json)
+Explain assumptions, limitations, or changes only when they materially affect use of the
+result or the user asks for them.

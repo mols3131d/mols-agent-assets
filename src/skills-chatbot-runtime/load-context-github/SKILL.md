@@ -1,151 +1,141 @@
 ---
 name: load-context-github
-description: Mandatory GitHub repository-context loader. Use before any @GitHub or GitHub tool/connector/plugin/integration call and for concrete work on a specific repository, GitHub URL, file/path, PR/review, issue, branch/ref, commit/push/merge, Actions/check/workflow, release, or repository change. Before task-level action, discover repository-wide and target-path instructions such as AGENTS.md, README.md, .github/copilot-instructions.md, path-specific instructions, and referenced Git/VCS docs. Include read-only and follow-up tasks.
+description: >-
+  Load repository-specific context before concrete GitHub work. Use before any
+  @GitHub or GitHub tool/connector/plugin/integration call and for work on a specific
+  repository, GitHub URL, file/path, PR/review, issue, branch/ref, commit, check,
+  workflow, release, or repository change, including read-only and follow-up tasks.
+  Discover only the repository instructions and live metadata that can affect the
+  current task before task-level action.
 metadata:
   - target:
-    - "OpenAI ChatGPT"
+      - "OpenAI ChatGPT"
 ---
 
 # Load GitHub Context
 
-## Purpose
+Use this Skill as a **context loader**, not as a Git/GitHub workflow. It discovers the
+repository/ref/path instructions and live GitHub context that govern the current task,
+then hands execution to the relevant task capability.
 
-GitHub 관련 작업 전에 ChatGPT가 필요한 repository-specific Git/GitHub context를 로드한다.
+## Trigger Boundary
 
-이 skill은 **context loader**다. 구현, 리뷰, commit, PR 등 실제 작업 절차는 repository 지침과 해당 task skill에 맡긴다.
+Activate for either condition:
 
-## Trigger
+- a concrete GitHub repository/resource/path/ref/object is being read or changed;
+- a GitHub tool, connector, plugin, or integration will be called.
 
-다음 중 하나라도 해당하면 적용한다.
+Read-only work and follow-up work on an already identified repository/PR/issue are
+included. General Git or GitHub explanation with no concrete target and no GitHub tool
+use does not require this Skill.
 
-- 특정 GitHub repository/resource/URL, file/path, commit/ref/branch를 읽거나 다룬다.
-- Issue, pull request, review, check/CI, workflow, release 등 GitHub repository object를 읽거나 다룬다.
-- 현재 conversation에서 이미 식별된 repository/PR/issue 등에 대한 follow-up 작업을 한다.
-- GitHub tool/connector/plugin/integration을 호출한다. read-only 호출도 포함한다.
+A GitHub integration may be used first to **identify or discover context**. Complete the
+relevant context loading before the first task-level action or repository mutation.
 
-구체적인 GitHub target도 없고 GitHub tool도 사용하지 않는 일반 Git/GitHub 설명에는 적용하지 않는다.
+## Core Contract
 
-GitHub integration을 context discovery에 먼저 사용할 수 있다. 단, **첫 task-level action 전에 필요한 context loading을 완료**한다.
+1. **Identify live target** — confirm the repository and the ref/branch/PR/issue or
+   other object relevant to the task. Do not rely on remembered repository state.
+2. **Repository is authority** — discover repository conventions from the target ref,
+   repository files, and relevant live metadata. Do not invent them from common practice.
+3. **Scope by target** — load only instructions that actually apply to the current path,
+   object, agent, operation, and active surface. Keep unrelated repositories and path
+   scopes isolated, and apply evidenced platform/repository precedence semantics.
+4. **Respect repository projections** — repository-defined instruction families and
+   fallback chains may be non-standard. Apply them when explicitly declared instead of
+   replacing them with generic assumptions.
+5. **Load progressively** — start with explicit/high-signal instruction sources and live
+   task metadata; expand only when a target path, task object, unresolved rule, or required
+   resource makes more context material to the next action.
+6. **Stop when sufficient** — do not recursively read the repository after the governing
+   context and task constraints are known.
 
-## Directives
-
-- 대상 repository와 필요한 ref/branch/PR/issue를 live context로 확인한다.
-- Repository-specific 규칙은 기억이나 관례가 아니라 repository 파일과 관련 GitHub metadata에서 확인한다.
-- 현재 task가 실제로 대상으로 하는 ref/branch의 instruction을 사용한다. PR/review에서는 head의 instruction 변경을 확인하고, 판단에 중요하면 base와 비교한다.
-- Repository별 context를 격리하고, 여러 target path의 scoped instruction을 서로 누출하지 않는다.
-- Branch, commit, PR, review, merge, release 규칙을 찾기 전에 관례를 추정하지 않는다.
-- 요청 범위 밖의 변경이나 side effect를 만들지 않는다.
-- 기존 작업, local change, commit history를 임의로 삭제하거나 덮어쓰지 않는다.
-- Secret, credential, token 등 민감 정보를 output, commit, issue, PR, log에 남기지 않는다.
-- Force push, history rewrite, destructive delete, permission/protection 변경은 명시적 요청 없이 수행하지 않는다.
-- Merge, release, repository deletion, bulk mutation 등 큰 side effect는 사용자의 명시적 의도를 요구한다.
-
-Repository 규칙을 찾지 못했다면 만들어내지 않는다. 안전 기본값을 사용할 수 있지만 repository 관례라고 표현하지 않는다. 상위 지침과 충돌하지 않는 범위에서 repository가 더 엄격한 규칙을 명시하면 그 규칙을 따른다.
-
-## Load Repository Context
-
-전체 repository를 무작정 읽지 않는다. **identify → path context → task context → search → references** 순으로 필요한 만큼만 탐색한다.
+## Loading Sequence
 
 ### 1. Identify
 
-현재 작업에 필요한 대상을 식별한다.
+Resolve only what the current request needs:
 
-- repository와 target ref/branch
-- PR/issue 등 task object
-- 변경 또는 검토 대상 path
-- 작업 종류: read, review, edit, commit, PR, merge, release 등
+- repository;
+- target ref/branch;
+- PR/issue/check/workflow/release or other task object;
+- target paths when known;
+- operation class: read, review, edit, commit, PR, merge, release, etc.;
+- active agent/chatbot surface when it changes instruction discovery.
 
-Target path가 처음에는 없다면 root `AGENTS.md`/`README.md`와 high-signal repository instruction부터 확인한다. PR changed files처럼 path가 드러나는 즉시 해당 path context를 추가한다.
+If target paths are not yet known, inspect only root instruction-bearing sources or live
+metadata that can govern the current task. Do not preload `README.md` by default, except
+when the repository explicitly declares README as a fallback instruction source for the
+active surface. When changed files or concrete paths become known, add their scoped
+context.
 
-### 2. Load Path Context
+### 2. Load Conditional Context
 
-Target path가 있으면 **repository root부터 target directory까지 ancestor chain 전체**를 확인한다. 파일이면 parent directory를 사용하고, directory면 그 directory 자체를 포함한다.
+Read `references/instruction-discovery.md` when:
 
-각 directory에서 다음을 확인한다.
+- concrete target paths or changed files exist;
+- nested/scoped instructions may apply;
+- repository-defined instruction families or fallback chains must be resolved;
+- instruction scope or precedence needs resolution;
+- repository-level instruction locations beyond the root must be interpreted.
 
-- `AGENTS.md`
-- 관련 `README.md`
-- repository가 지정한 local/path-specific instruction
-- `AGENTS.override.md`처럼 repository/tooling이 semantics를 명시한 override instruction
+Read only the relevant section of `references/task-context.md` when the task concerns a
+PR/review, issue, commit, branch/merge/history, CI/check/workflow, security/permission,
+or release surface.
 
-여러 target path는 각 chain을 따로 계산하되 shared ancestor context는 재사용한다.
+Do not load either reference merely because it exists.
 
-#### AGENTS.md
+### 3. Follow Required Resources
 
-`AGENTS.md` 계열은 agent instruction 후보로 취급한다.
+If an applicable repository instruction points to another required Git/VCS/governance
+source, follow it only as far as the current task requires. Do not turn navigation links
+into an unbounded crawl.
 
-- Root `AGENTS.md`: 별도 scope가 없으면 repository-wide.
-- Nested `AGENTS.md`: 별도 scope가 없으면 해당 directory와 descendants.
-- Target에 적용되는 ancestor `AGENTS.md`를 root → target 순으로 모두 로드한다.
-- Repository/tooling이 precedence, scope, override semantics를 선언하면 그대로 따른다. semantics가 없으면 파일명만으로 override를 추정하지 않는다.
-- 별도 규칙이 없다면 실제로 충돌하는 동일 주제에 한해 더 가까운 scoped instruction을 더 구체적인 규칙으로 취급한다.
-- Agent/service 전용 instruction은 현재 ChatGPT 작업에도 실제로 적용되는 경우에만 사용한다.
+### 4. Recheck Before Action
 
-#### README.md
+Before task-level action, confirm that:
 
-`README.md`는 기본적으로 **context와 navigation source**다. 가까이 있다는 이유만으로 normative instruction이나 override가 되지 않는다.
+- the target repository/ref/object is correct;
+- every known target path has the applicable instruction context for the active surface;
+- repository-declared instruction/fallback semantics were respected;
+- any path selector or tool/agent scope actually matches;
+- repository-specific conventions are evidenced rather than assumed;
+- unresolved instruction conflicts that affect a mutation are surfaced instead of guessed.
 
-Ancestor README에서는 현재 작업과 관련된 부분만 확인한다.
+## Important Instruction Semantics
 
-- directory/component의 목적과 경계
-- local workflow 또는 사용법
-- Git/GitHub 규칙
-- 더 권위 있는 instruction/document로 향하는 참조
+Preserve these invariants even when the detailed reference is not loaded:
 
-명시적 규칙은 현재 task에 직접 적용되는 범위가 분명할 때 규칙으로 적용한다. Scope가 불명확하면 proximity만으로 규범화하지 말고 context/reference로 유지한다. 참조된 필수 지침은 필요한 범위까지 따라간다.
+- For PR/review work, use the actual head-ref instructions; compare base instructions
+  when a difference can materially affect the judgment.
+- Discover applicable nested `AGENTS.md` context instead of assuming only the repository
+  root matters. Apply the active surface's documented precedence when available.
+- `README.md` is normally context/navigation, **unless the repository explicitly declares
+  it as a fallback instruction source for the active surface**.
+- Repository-local instruction files such as `CHATBOT.md` may be valid even when they are
+  not part of a platform standard; use them only with evidenced repository semantics.
+- `applyTo`, path selectors, override semantics, and agent/tool-specific instructions
+  apply only when their declared scope matches and the active surface supports or the
+  repository defines them.
+- If no repository rule is found, do not fabricate one. A safe default may be used, but
+  do not present it as repository convention.
 
-#### Repository-Level Instructions
+## Safety Boundary
 
-Task와 관련될 때 다음 high-signal 위치도 확인한다.
+Context loading must not silently widen the user's requested scope or create unrelated
+side effects.
 
-- Root: `CONTRIBUTING.md`, `DEVELOPMENT.md`, repository가 지정한 governance 문서
-- GitHub: `.github/copilot-instructions.md`, `.github/instructions/**/*.instructions.md`, `.github/CONTRIBUTING.md`
-- `.github/AGENTS.md`: target이 `.github/**`이거나 더 넓은 scope가 명시된 경우
-- Repository가 지정한 agent/bot instruction 위치
+Do not expose secrets or credentials. Without explicit user intent, do not force-push,
+rewrite history, perform destructive deletion, change permissions/protection, merge,
+release, delete repositories, or perform similarly high-impact mutations.
 
-Path selector 또는 `applyTo`가 있는 instruction은 target path가 실제로 match하는 경우에만 적용한다. 특정 agent/tool 전용 파일은 공통 repository convention인지 해당 tool 전용 동작인지 구분하며 ChatGPT 규칙으로 자동 승격하지 않는다.
-
-### 3. Load Task Context
-
-현재 작업에 필요한 surface만 추가로 확인한다.
-
-- PR/review: `.github/PULL_REQUEST_TEMPLATE*`, `.github/CODEOWNERS`, review guidance
-- Issue: `.github/ISSUE_TEMPLATE/`
-- Commit: `.gitmessage`, commit/Git hook 관련 문서
-- Branch/merge: branch, merge, VCS 문서와 필요한 protection/ruleset
-- CI/release/security/permission: 관련 workflow, 문서, checks, permissions 등 live GitHub metadata
-- Repository file change: target path instruction과 validation guidance
-
-GitHub metadata는 작업에 실제로 영향을 주는 경우에만 조회한다.
-
-### 4. Expand Only When Needed
-
-명시적 위치에서 충분한 지침을 찾지 못하면 의미를 검색한다.
-
-`git`, `github`, `vcs`, `branch`, `commit`, `push`, `pull request`, `merge`, `review`, `release`, `contributing`, `agent`, `bot`, `automation`
-
-Repository가 다른 용어를 사용하면 그 용어를 따른다. 발견한 instruction이나 README가 다른 필수 지침을 참조하면 현재 작업에 필요한 범위까지만 따라간다. 참고 링크 때문에 repository 전체를 재귀적으로 읽지 않는다.
-
-## Resolve Instructions
-
-Repository가 scope 또는 precedence를 명시하면 그것을 따른다. 그렇지 않으면 다음을 확인한다.
-
-1. 상위 user/system/tool 제약과 충돌하지 않는가
-1. 현재 ChatGPT/task에 실제로 적용되는가
-1. 현재 target path/task가 선언된 scope에 포함되는가
-1. normative instruction인지 context/reference인지 구분되는가
-1. 동일 주제의 충돌이라면 더 구체적으로 scoped된 instruction이 있는가
-
-파일명이나 위치만으로 precedence를 만들지 않는다. `AGENTS.md` ancestor scope처럼 repository/tooling이 의미를 부여한 경우에만 그 semantics를 적용한다.
-
-Mutation에 영향을 주는 instruction 충돌을 안전하게 해소할 수 없다면 mutation을 수행하지 않고 충돌을 드러낸다. Task-level action 전에 대상과 적용 지침이 확인됐는지 다시 확인하되, 불필요한 context는 미리 적재하지 않는다.
+This Skill does **not** own implementation, testing, naming, PR authoring, review
+methodology, branch naming, commit formatting, merge strategy, or GitHub tool-call
+orchestration. Those come from repository context and the relevant task Skill.
 
 ## Maintenance
 
-이 skill을 수정하거나 재구성할 때는 `docs/DIRECTIVE.md`의 본질과 불변 조건을 보존한다. 문서 구조보다 해당 directive의 의미를 우선한다.
-
-## Boundary
-
-이 skill은 code implementation, test/verification, naming convention, PR/review 내용, GitHub tool 호출 순서, repository 고유 workflow를 정의하지 않는다.
-
-이 항목들은 repository 지침, live GitHub context 또는 해당 task skill에서 결정한다.
+When modifying this Skill, preserve `.docs/baseline/DIRECTIVE.md`. Shorter wording or a
+cleaner structure is not an improvement if it weakens its trigger surface, root-to-target
+instruction discovery, repository-defined instruction families, path isolation, safety
+boundary, or context-loader responsibility.

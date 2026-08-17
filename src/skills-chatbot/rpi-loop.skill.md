@@ -2,10 +2,9 @@
 name: rpi-loop
 description: >-
   Improve a difficult task through repeated Research → Plan → Implement → Review
-  loops with distinct workflows and explicit validation. Use when the user asks
-  for higher-quality reasoning, deep research or review, multiple review passes,
-  iterative improvement, adversarial checks, or repeated loops rather than a
-  single-pass answer.
+  loops with explicit validation and finding-driven iteration. Use when the user asks
+  for deeper reasoning, iterative improvement, multiple review passes, adversarial
+  checks, or an RPI loop rather than a single-pass answer.
 metadata:
   - target:
       - "OpenAI ChatGPT"
@@ -13,126 +12,102 @@ metadata:
 
 # RPI Loop
 
-Improve the current task through complete Research → Plan → Implement → Review
-loops. Each workflow must perform a distinct cognitive function. Repeating the
-same analysis does not count as another workflow or loop.
+Use complete **Research → Plan → Implement → Review** loops to improve the current
+task. Repetition without a new finding, evidence gap, perspective, or validation method
+does not count as another loop.
 
 ## Defaults
 
 ```yaml
 max_loops: 10
-stop_condition: review_has_no_findings
+stop_condition: review_has_no_material_findings
 ```
 
-- If the user specifies a loop count, perform exactly that many loops unless blocked.
-- If the user specifies a different maximum or stop condition, use it.
-- Otherwise stop when Review returns no findings or `max_loops` is reached.
-- If the maximum is reached with findings remaining, report the unresolved findings.
+- If the user specifies a loop count, follow it unless blocked.
+- Otherwise stop when Review has no material findings or `max_loops` is reached.
+- If the limit is reached with findings remaining, report them instead of hiding them.
 
 ## Loop
 
-Each loop always contains all four phases. A phase may be brief when little work is needed, but it is not skipped.
+Every completed loop contains all four phases. A phase may be brief when little work is
+needed, but it is not skipped.
 
-### 1. Research
+### Research
 
-Build or refresh the evidence needed for the current loop.
+Refresh only the evidence needed for the current problem or unresolved findings.
+Discover missing information, investigate high-impact questions, challenge weak
+assumptions or counterexamples, and synthesize conclusions that can drive the plan.
 
-1. **Discover** — inspect the problem, context, relevant sources, and missing information.
-1. **Investigate** — examine the highest-impact questions in depth.
-1. **Challenge** — search for contradictions, counterexamples, weak assumptions, and missed perspectives.
-1. **Synthesize** — combine the evidence into conclusions that can drive planning.
+### Plan
 
-On later loops, start from unresolved Review findings and new evidence instead of repeating broad research without cause.
+Define the current objective, scope, constraints, acceptance conditions, approach,
+trade-offs, work units, and validation points. Prefer the smallest plan that can resolve
+the current findings.
 
-### 2. Plan
+### Implement
 
-Convert Research into a bounded execution plan.
+Perform the actual requested work, integrate it with existing context and constraints,
+then validate it against the plan and available evidence. Do not claim checks that were
+not actually performed.
 
-1. **Frame** — define the current objective, scope, constraints, and acceptance conditions.
-1. **Design** — choose the approach and important trade-offs.
-1. **Decompose** — turn the approach into concrete work units and validation points.
-1. **Verify Plan** — check for missing requirements, unsupported assumptions, unnecessary work, and weak validation.
+### Review
 
-Prefer the smallest plan that can resolve the current findings.
+Search for remaining material problems in correctness, completeness, consistency,
+usability, assumptions, edge cases, evidence, and validation. Deduplicate findings and
+decide whether another loop is justified.
 
-### 3. Implement
+## Context Composition
 
-Perform the actual task. Implementation may be code, writing, analysis, design, editing, or another requested output.
+RPI coordinates the loop; it does not need to own every domain rule.
 
-1. **Execute** — perform the planned core work.
-1. **Integrate** — reconcile the work with existing context, artifacts, constraints, and prior results.
-1. **Refine** — improve correctness, clarity, simplicity, and fitness for use. Apply domain-specific quality principles when relevant.
-1. **Validate** — test or inspect the result against the plan, evidence, and acceptance conditions.
+At each phase, activate a specialized Skill only when its context materially improves the
+current phase. Examples include external-research context for evidence gathering,
+engineering-decision context for design trade-offs, or writing context for a reader-facing
+deliverable.
 
-Do not claim a validation was performed when the required tool, source, or execution was unavailable.
+- Do not preload every possibly relevant Skill.
+- Do not restate a specialized Skill's rules inside RPI.
+- Let the specialized Skill remain the canonical owner of its domain procedure or lens.
+- Drop phase-specific context when it is no longer relevant instead of carrying it through
+  the whole loop by default.
+- If no specialized Skill is needed, use the model's normal capability rather than
+  inventing an extra routing layer.
 
-### 4. Review
+## Loop Discipline
 
-Independently search for remaining material problems.
+A Review finding must be actionable, material, relevant to the requested outcome, and
+supported by evidence or a clearly identified reasoning gap.
 
-1. **Quality Review** — check correctness, completeness, consistency, and usability.
-1. **Adversarial Review** — attack assumptions, edge cases, failure modes, and alternative interpretations.
-1. **Evidence Review** — verify that claims, conclusions, and changes are supported by available evidence.
-1. **Decision Review** — deduplicate findings and decide whether another loop is required.
+A later loop requires at least one meaningful delta:
 
-## Finding Contract
-
-A Review finding is an actionable, material problem that is:
-
-- specific enough to act on;
-- relevant to the requested outcome;
-- supported by evidence or a clearly identified reasoning gap; and
-- not merely a repetition of an already resolved finding.
-
-Do not invent findings to keep the loop running. Cosmetic preferences and unsupported possibilities are not findings unless the task explicitly makes them relevant.
-
-## Loop Delta
-
-Each loop after the first must be driven by at least one meaningful delta:
-
-- an unresolved finding;
+- unresolved finding;
 - new evidence;
-- a new perspective;
-- a different validation method; or
-- a changed assumption or plan.
+- changed assumption or plan;
+- new perspective or counterexample;
+- different validation method.
 
-A repeated pass without a meaningful delta does not count as another loop.
+Do not invent findings to keep looping. Cosmetic preference, rereading, restating the
+same issue, or repeating the same search does not create a new loop.
 
-## Loop Contract
+Preserve confirmed conclusions unless new evidence justifies reopening them.
 
-A loop counts only when all four phases are completed and the Review uses genuinely distinct checks.
+## Validation
 
-The following do not count as additional loops:
+Choose validation that fits the task: source cross-checking for research, tests or code
+inspection for implementation, source-to-output comparison for rewriting, requirement
+checks for design, or counterexample search for analytical claims.
 
-- rereading without a new question or lens;
-- restating the same findings;
-- rewriting the same review in different words;
-- repeating the same search or analysis without new evidence;
-- claiming validation without performing it.
-
-Review findings become the primary inputs to the next loop. Preserve confirmed conclusions and avoid reopening them without new evidence.
-
-## Reasoning and Validation
-
-Increase reasoning effort by testing alternatives, contradictions, assumptions, and evidence rather than by producing longer explanations. Keep private reasoning private; report conclusions, evidence, decisions, and validation results needed to understand the outcome.
-
-Choose validation appropriate to the task, such as:
-
-- source cross-checking for research;
-- implementation and test inspection for code;
-- source-to-output comparison for rewriting or documentation;
-- requirement and constraint checks for design;
-- counterexample search for analytical claims.
+Increase reasoning quality through better evidence, alternatives, contradiction tests, and
+validation—not through longer narration.
 
 ## Output
 
-Run the loops without exposing private reasoning or verbose phase-by-phase narration by default.
+Do not expose private reasoning or verbose phase-by-phase narration by default. Return:
 
-Default output should include:
+- the improved result;
+- completed loop count;
+- material changes or conclusions;
+- unresolved findings or checks that could not be performed.
 
-- the improved final result;
-- the number of completed loops;
-- material changes or conclusions produced by the loops; and
-- unresolved findings or validation that could not be performed.
-
-Show per-loop Research, Plan, Implement, and Review details only when the user requests them or when they are necessary to understand the result.
+Show detailed per-phase work only when the user requests it or it is necessary to
+understand the result.

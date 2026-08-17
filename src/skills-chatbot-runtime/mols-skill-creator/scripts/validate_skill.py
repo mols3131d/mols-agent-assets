@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate a skill's portable structure without third-party dependencies."""
+"""Validate a directory-based skill source package without third-party dependencies."""
 
 from __future__ import annotations
 
@@ -34,16 +34,16 @@ def validate(root: Path) -> dict[str, list[str]]:
     errors: list[str] = []
     warnings: list[str] = []
 
-    required = [
-        root / "SKILL.md",
-        root / "docs" / "DIRECTIVE.md",
-        root / "docs" / "WORKING.md",
-    ]
-    for path in required:
-        if not path.is_file():
-            errors.append(f"missing required file: {path.relative_to(root)}")
-
     skill_path = root / "SKILL.md"
+    if not skill_path.is_file():
+        errors.append("missing required file: SKILL.md")
+
+    # Personal repository convention: maintainer-only docs belong in .docs/.
+    # A docs/ directory is not universally invalid because an external Skill may use it
+    # as a runtime resource, so require classification rather than assuming intent.
+    if (root / "docs").exists():
+        warnings.append("docs/ present; classify runtime-required material vs maintainer-only .docs/")
+
     if skill_path.is_file():
         text = skill_path.read_text(encoding="utf-8")
         fields, error = parse_frontmatter(text)

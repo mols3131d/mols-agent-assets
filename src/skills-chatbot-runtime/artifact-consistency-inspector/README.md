@@ -22,18 +22,21 @@ intent, rule, or contract ↔ implementation ↔ validation
 artifact-consistency-inspector/
 ├── SKILL.md
 ├── README.md
-├── docs/
+├── references/
 │   ├── inspection-rules.md
 │   ├── rule-sources.md
 │   ├── report-format.md
-│   ├── customization.md
 │   └── example-report.md
+├── .docs/
+│   └── customization.md
 └── tests/
     ├── README.md
     ├── run_tests.py
     ├── scenarios/
     └── results/
 ```
+
+`references/`는 runtime에서 조건부로 읽는 resource이고, `.docs/`는 runtime payload가 아닌 maintainer 문서입니다.
 
 ChatGPT 설치 시 ZIP 내부의 `artifact-consistency-inspector/SKILL.md` 이름과 위치를 유지하는 것이 안전합니다. 외부 ZIP 파일명은 자유롭게 변경할 수 있습니다.
 
@@ -79,10 +82,13 @@ python tests/run_tests.py
 
 표준 라이브러리만 사용하며 network와 repository write 권한이 필요하지 않습니다. 테스트는 package contract와 deterministic scenario를 검증합니다. 실제 모델의 원격 저장소 탐색·추론 품질은 별도 live evaluation 대상입니다.
 
-## 문서
+## Runtime references
 
-- `docs/inspection-rules.md` — gap 분류와 adversarial verification
-- `docs/rule-sources.md` — ordered `rule_sources`, `auto` expansion, conflict handling
-- `docs/report-format.md` — filename, front matter, report body
-- `docs/customization.md` — 변경 가능한 항목과 유지할 계약
-- `docs/example-report.md` — 허구 evidence 기반 출력 예시
+- `references/inspection-rules.md` — gap 분류와 adversarial verification
+- `references/rule-sources.md` — ordered `rule_sources`, `auto` expansion, conflict handling
+- `references/report-format.md` — filename, front matter, report body
+- `references/example-report.md` — 허구 evidence 기반 출력 예시
+
+## Maintainer docs
+
+- `.docs/customization.md` — 변경 가능한 항목과 유지할 계약
