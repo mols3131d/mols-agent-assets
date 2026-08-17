@@ -87,7 +87,7 @@ Agent는 일반적으로 다음이 결합된 runtime actor다.
 
 `references/`, `scripts/`, `assets/`, docs, evals, tests 등은 독립적인 peer behavioral asset type이라기보다 **다른 자산을 지원하는 resource**로 보는 편이 자연스럽다.
 
-Agent Skills specification에서도 `references/`, `scripts/`, `assets/`는 Skill 내부 optional resources로 정의된다.
+Agent Skills specification에서도 `references/`, `scripts/`, `assets/`는 Skill 내부 optional resources로 정의된다. 어떤 directory를 runtime/non-runtime으로 분류하는지는 여기서 별도 범용 규격으로 정의하지 않는다.
 
 ## What This Baseline Does Not Define
 
@@ -100,6 +100,9 @@ Agent Skills specification에서도 `references/`, `scripts/`, `assets/`는 Skil
 - `<4,000 tokens` flat budget
 - 이 저장소의 Rule fallback chain
 - 이 저장소의 directory/glob Rule projection contract
+- Skill 내부 dot-prefixed directory를 non-runtime으로 보는 convention
+- `docs/ → .docs/` maintainer-document projection
+- `.docs/baseline/*` preservation/recovery baseline
 
 이들은 외부 표준에서 직접 가져온 규격이 아니라 **Personal Agent Asset Standard에서 정의하는 repository-local extensions**다.
 
