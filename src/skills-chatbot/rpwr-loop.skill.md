@@ -18,7 +18,7 @@ Each phase has its own loop:
 2. **Improve** — `Research → Plan → Work → Review`
 3. **Finalize** — `Inspect → Resolve → Validate → Gate`
 
-Do not force phases into the same reasoning shape. Count only genuine phase cycles.
+Count only genuine phase cycles. Do not force phases into the same reasoning shape.
 
 ## Arguments
 
