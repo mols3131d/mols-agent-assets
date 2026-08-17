@@ -2,17 +2,16 @@
 name: mols-mermaid-diagram
 description: >-
   Use this skill to create, edit, review, simplify, or troubleshoot Mermaid structural
-  diagrams. Trigger on explicit Mermaid requests or Mermaid source; Mermaid-supported
-  flowchart, sequence, state, class, ERD, architecture/C4, Gantt, timeline, mindmap,
-  requirement, Git graph, Kanban, packet, or similar diagram requests; and diagram-as-code
-  or Markdown documentation tasks where relationships, procedures, branching, handoffs,
-  message order, lifecycle, chronology, dependencies, boundaries, hierarchy, domain models,
-  requirements, or database cardinality are the main information. Also use for Mermaid
-  syntax, rendering, layout, width/height, readability, type-selection, or compatibility
-  issues. Do not use for primarily quantitative magnitude/trend/proportion/quantified-flow/
-  profile visualization, whole-dashboard composition, simple list/table output, generic
-  image/illustration requests, or Mermaid package/API integration unrelated to authoring or
-  rendering a diagram.
+  diagrams. Trigger on explicit Mermaid requests/source; flowchart, swimlane, sequence,
+  state, class, ERD, architecture/C4, Gantt, timeline, mindmap, journey, requirement, Git
+  graph, Kanban, packet, hierarchy, or similar diagram requests; and diagram-as-code/
+  Markdown tasks about relationships, branching, handoffs, message order, lifecycle,
+  chronology, dependencies, boundaries, domain models, requirements, or database
+  cardinality. Also use for Mermaid syntax, rendering, layout, width/height, readability,
+  type selection, or compatibility. Do not use for primarily quantitative magnitude/trend/
+  proportion/flow/profile visualization, whole-dashboard composition, simple list/table
+  output, explicit generic image/illustration requests, or Mermaid package/API integration
+  unrelated to diagram authoring/rendering.
 ---
 
 # Contract
