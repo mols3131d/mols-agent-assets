@@ -1,110 +1,99 @@
 ---
 title: Rule Canonical Superset
-description: Rulesync Rule을 기준으로 한 repository-local canonical Rule spec
+description: 여러 harness에 투영할 Rule의 repository-local canonical authoring spec
 ---
 
 # Rule Canonical Superset
 
-Canonical Rule은 **`.rulesync/rules/<name>.md`** 로 작성한다.
+Rule Superset은 지속 적용되는 policy와 constraint를 target-independent하게 보존한다.
 
 ## Schema
 
 ```yaml
 ---
-root: false
-localRoot: false
-targets: ["*"]
+name: <kebab-case>
 description: <string>
-globs: ["<glob>"]
+targets: [<target>]
 
-agentsmd:
-  subprojectPath: <path>
+scope:
+  level: <global|repository|directory|glob>
+  include: [<path-or-glob>]
+  exclude: [<path-or-glob>]
 
 copilot:
-  name: <string>
-  excludeAgent: <code-review|cloud-agent>
+  <copilot-only fields>
 
 antigravity:
-  trigger: <always_on|glob|manual|model_decision>
-  globs: ["<glob>"]
-  description: <string>
-
-# 기타 target-specific block 허용
-<target>: <mapping>
+  <antigravity-only fields>
 ---
 
-<rule instructions>
+<rule body>
 ```
 
 ## Fields
 
-| Field | Requirement | Meaning |
+| Field | Requirement | Contract |
 | --- | --- | --- |
-| `root` | **Required** | `true`면 root/baseline Rule, `false`면 modular Rule |
-| `localRoot` | Optional, default `false` | 개인·project-local root Rule |
-| `targets` | **Required** | `"*"` 또는 Rulesync target 목록 |
-| `description` | Recommended | Rule 목적/적용 조건. model-decided target에서 activation hint로도 사용 가능 |
-| `globs` | Optional | file/path scoped Rule의 canonical glob |
-| `<target>` | Optional | canonical field로 표현되지 않는 target-native semantics |
-| body | **Required** | 실제 지속 적용 policy/constraint |
+| `name` | Required | Rule identity. `kebab-case`. |
+| `description` | Required | 무엇을 지속적으로 강제하는지 요약한다. |
+| `targets` | Optional | 명시하면 지원 target을 제한한다. 생략하면 target-neutral로 취급한다. |
+| `scope.level` | Required | Rule 적용 범위의 종류. |
+| `scope.include` | Conditional | `directory` 또는 `glob` scope에서 적용 대상을 지정한다. |
+| `scope.exclude` | Optional | canonical scope에서 제외할 경로/패턴. |
+| `<target>` | Optional | 해당 harness에서만 필요한 scope/activation/metadata. |
+| body | Required | 실제 policy와 constraint. |
 
-## Repository Constraints
+## Scope
 
-1. `root: true`는 repository baseline처럼 실제 root semantics가 필요한 Rule에만 사용한다.
-1. File scope는 target-specific selector보다 top-level `globs`로 표현 가능한 경우 `globs`를 authority로 둔다.
-1. Directory subtree scope는 `agentsmd.subprojectPath`처럼 target이 요구하는 별도 구조가 있을 때 target block에 둔다.
-1. 공통 의미를 target block에 복제하지 않는다. **공통 field → target override** 순서로 둔다.
-1. Target block은 다른 target에 전파하면 안 되는 native-only 의미만 소유한다.
-1. 여러 `root: true` fragment를 허용하더라도 동일 policy를 중복 정의하지 않는다.
+- `global` — 사용자/환경 수준에서 지속 적용.
+- `repository` — repository 전체에 적용.
+- `directory` — 하나 이상의 directory subtree에 적용.
+- `glob` — path pattern에 일치하는 대상에 적용.
 
-## Minimal
+Target이 scope를 더 제한적으로만 표현할 수 있으면 target block에서 그 차이를 보존한다.
 
-```yaml
----
-root: true
-targets: ["*"]
-description: Repository-wide development rules
----
-
-# Development Rules
-
-- Follow repository-local instructions.
-- Do not commit generated secrets.
-```
-
-## Scoped
+## Target Extensions
 
 ```yaml
----
-root: false
-targets: ["copilot", "antigravity-ide"]
-description: Markdown authoring rules
-globs: ["**/*.md"]
+copilot:
+  applyTo: "**/*.md"
 
 antigravity:
   trigger: glob
   globs: ["**/*.md"]
+```
+
+위 필드는 target extension 예시다. Canonical authority는 `scope`와 body에 있고, target block은 공통 schema로 표현할 수 없는 native semantics만 둔다.
+
+## Body Contract
+
+Body는 지속 적용할 policy, 금지/필수 constraint, 필요한 예외와 precedence 조건만 소유한다.
+
+일회성 작업 절차는 Prompt, 재사용 capability는 Skill, 독립 role/authority는 Agent로 분리한다.
+
+## Minimal Example
+
+```yaml
+---
+name: markdown-style
+description: Repository Markdown authoring rules
+scope:
+  level: glob
+  include: ["**/*.md"]
 ---
 
 Use repository Markdown conventions.
+Run the configured Markdown auto-fixer before committing.
 ```
 
-## Projection Contract
+## Projection Requirements
 
-- GitHub Copilot, Antigravity 등 target-native Rule은 이 source에서 생성되는 **projection**이다.
-- Target이 지원하지 않는 field는 조용히 의미를 바꾸지 말고 omission/approximation으로 취급한다.
-- 이미 하나의 native Rule이 authoritative인 경우에는 canonical migration 없이 Rulesync bridge를 사용할 수 있다.
-
-## Validation
-
-```bash
-rulesync generate --dry-run --features rules --targets <targets>
-rulesync generate --check --features rules --targets <targets>
-```
-
-설치된 Rulesync의 schema와 target adapter가 runtime authority다.
+- Common fields와 body의 의미를 우선 보존한다.
+- Target-native path, filename, selector syntax는 projection 단계에서 결정한다.
+- Target이 표현하지 못하는 scope나 activation 차이는 명시적으로 기록한다.
 
 ## References
 
-- [Rulesync File Formats — rules](https://rulesync.dyoshikawa.com/reference/file-formats.html#rulesync-rules-md)
 - [Rule Projections](agent-assets-rules-projections.md)
+- [GitHub Copilot custom instructions](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions)
+- [Google Antigravity IDE](https://codelabs.developers.google.com/getting-started-agy-ide)
