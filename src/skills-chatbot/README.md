@@ -2,6 +2,9 @@
 
 단일 Markdown 파일만으로 완결되는 **flat chatbot skill**을 둡니다.
 
+> [!NOTE]
+> `skills-chatbot/`은 Agent Skills 표준의 공식 분류가 아니라, 단일 파일만 전달할 수 있는 chatbot harness를 위해 이 저장소가 만든 **비표준 repository-local target profile**입니다. `<skill-name>.skill.md` 형식과 `<4,000 tokens` budget도 이 profile의 로컬 배포 규칙입니다.
+
 ## Placement
 
 `skills-chatbot/`은 배포되는 capability가 다음 조건을 모두 만족할 때 사용합니다.
@@ -15,7 +18,7 @@
 - 단일 skill 파일이 **4,000 tokens 이상**이라 내용을 여러 Markdown 파일로 나눠야 합니다.
 - Markdown 한 파일만으로 실행 capability를 완결할 수 없습니다.
 - 실행에 references, assets, scripts, images 또는 다른 bundled resource가 필요합니다.
-- host가 제공하는 tools, scripts, progressive loading 또는 기타 runtime 기능을 활용하는 것이 capability의 중요한 부분입니다.
+- host가 제공하는 tools, connectors, scripts, progressive loading 또는 기타 runtime 기능이 capability의 중요한 부분입니다.
 
 Maintainer-only `docs/`, `evals/`, `tests/`, 개발용 validator는 배포 Skill과 분리할 수 있다면 그 존재만으로 runtime placement를 강제하지 않습니다. 작은 textual schema나 설정 예시는 명확성과 유지보수성을 해치지 않는 범위에서 fenced code로 flat file에 포함할 수 있습니다.
 
@@ -24,6 +27,8 @@ Maintainer-only `docs/`, `evals/`, `tests/`, 개발용 validator는 배포 Skill
 ## Naming
 
 주책임이 작업 workflow 수행이 아니라 **특정 상황에 필요한 판단 기준·제약·지식을 context로 주입하는 것**이면 `load-context-<topic>` 이름을 사용합니다.
+
+이 naming도 Agent Skills 표준이 아니라 repository-local convention입니다.
 
 - 예: `load-context-coding`, `load-context-human-writing`, `load-context-agent-assets`, `load-context-tech-doc-fidelity`
 - context-only Skill은 필요한 context의 선택·적용 경계까지만 소유합니다.
