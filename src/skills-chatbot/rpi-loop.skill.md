@@ -57,7 +57,7 @@ Do not invent findings to keep looping. Cosmetic preference, rereading, restatin
 
 ## Context and Validation
 
-Activate specialized context only when it materially improves the current phase. Do not preload every possibly relevant Skill or copy another Skill's rules into RPI.
+Activate specialized context only when it materially improves the current phase. Do not preload every possibly relevant Skill or copy another Skill's rules into RPI. Drop phase-specific context when it is no longer relevant instead of carrying it through the loop by default.
 
 Choose validation that matches the work: source cross-checking for research, tests or code inspection for implementation, source-to-output comparison for transformations, requirement checks for design, or counterexample search for analytical claims.
 
