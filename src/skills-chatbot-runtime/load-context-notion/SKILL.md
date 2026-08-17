@@ -37,27 +37,31 @@ context loading before mutation or before making structural assumptions about th
 2. **Separate content from structure** — page body content, page properties, data-source
    schema, relations, templates, views, and layout are different kinds of context. Load
    only the kinds that can affect the requested operation.
-3. **Preserve existing semantics** — do not flatten structured properties, relations, or
+3. **Resolve the schema owner** — when the task addresses database entries, properties,
+   schema, or queries, identify the concrete data source that owns that structure. A
+   database container alone is not enough when multiple data sources are present.
+4. **Preserve existing semantics** — do not flatten structured properties, relations, or
    repeated page structure into prose merely because prose is easier to generate.
-4. **Respect workspace evidence** — use the current Notion object and its connected
+5. **Respect workspace evidence** — use the current Notion object and its connected
    metadata as the source for names, property types, relation targets, and structure. Do
    not invent a workspace convention from generic Notion practice.
-5. **Treat partial reads as partial** — pagination, truncation, unsupported fields, API
+6. **Treat partial reads as partial** — pagination, truncation, unsupported fields, API
    version differences, or connection permissions can make visible context incomplete.
    Do not turn an incomplete read into evidence that a property, relation, row, or object
    does not exist.
-6. **Load progressively** — start with the target object. Expand to its parent, database,
+7. **Load progressively** — start with the target object. Expand to its parent, database,
    data-source schema, related objects, or template only when the current task depends on
    them.
-7. **Stop when sufficient** — context loading should not become a workspace crawl.
+8. **Stop when sufficient** — context loading should not become a workspace crawl.
 
 ## Notion Object Lens
 
 Preserve these distinctions when the active connector exposes them:
 
 - A **database** is a container and may contain one or more **data sources**. A data source
-  owns its table schema and rows/pages. Do not assume the database itself is the schema
-  owner when the active API or connector exposes the newer data-source model.
+  owns its table schema and rows/pages. When a database has multiple sources, resolve the
+  intended source instead of treating the database ID as an interchangeable schema or row
+  target.
 - A database entry is also a page: structured properties and page body content can both
   matter, but they are not interchangeable.
 - Data-source properties define structured fields used for organization, search,
@@ -78,8 +82,9 @@ Load additional Notion context only when one of these conditions is present:
 
 - **Existing page edit** → read the current page content and any properties that constrain
   the edit.
-- **Database/data-source work** → resolve the specific data source when needed and read its
-  relevant property definitions before assigning or interpreting structured values.
+- **Database/data-source work** → fetch or otherwise resolve the database's available data
+  sources, select the source relevant to the task, and read its relevant property
+  definitions before assigning, interpreting, querying, or changing structured values.
 - **Relation or rollup work** → identify the relation target and only the connected fields
   needed to understand the requested relationship; if the connector reports truncation,
   pagination, or incomplete access, retrieve enough additional context before concluding
@@ -96,7 +101,8 @@ view by default.
 
 Before handing off to a task-level mutation, confirm that:
 
-- the resolved Notion object and, when relevant, data source are the intended targets;
+- the resolved Notion object and, for structured database work, the concrete data source
+  are the intended targets;
 - property names and types used by the next action come from current workspace evidence;
 - relation targets and structured fields have not been reduced to guessed prose;
 - visible results are sufficiently complete for the conclusion being made;
