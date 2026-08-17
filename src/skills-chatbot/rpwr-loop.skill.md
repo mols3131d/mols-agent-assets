@@ -145,6 +145,15 @@ evidence, method, or perspective when the previous investigation saturates.
 Research may use current context, artifacts, repositories, data, prior results, domain
 knowledge, or external sources. It is not synonymous with web search.
 
+Allocate research effort adaptively across internal and external evidence according to
+current uncertainty, evidence gaps, task risk, and which source is most likely to
+materially change understanding or confidence. Favor internal evidence when correctness
+depends on the actual artifact, repository, data, or established work context; increase
+external evidence when freshness, standards, vendor behavior, alternatives, or
+independent validation matter. Use both when local conclusions need external grounding
+or challenge. Do not target a fixed ratio, and shift away from an evidence mode once it
+stops producing material delta.
+
 ### Plan
 
 Turn current evidence and findings into the smallest plan that can materially improve
