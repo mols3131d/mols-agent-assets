@@ -39,13 +39,14 @@ relevant context loading before the first task-level action or repository mutati
 2. **Repository is authority** — discover repository conventions from the target ref,
    repository files, and relevant live metadata. Do not invent them from common practice.
 3. **Scope by target** — load only instructions that actually apply to the current path,
-   object, agent, operation, and active GitHub/Copilot surface. Keep unrelated repositories
-   and path scopes isolated, and apply the precedence semantics of the active surface.
-4. **Distinguish rules from context** — do not treat nearby README text, filenames, or
-   tool-specific guidance as normative without evidence of scope and intent.
+   object, agent, operation, and active surface. Keep unrelated repositories and path
+   scopes isolated, and apply evidenced platform/repository precedence semantics.
+4. **Respect repository projections** — repository-defined instruction families and
+   fallback chains may be non-standard. Apply them when explicitly declared instead of
+   replacing them with generic assumptions.
 5. **Load progressively** — start with explicit/high-signal instruction sources and live
    task metadata; expand only when a target path, task object, unresolved rule, or required
-   reference makes more context material to the next action.
+   resource makes more context material to the next action.
 6. **Stop when sufficient** — do not recursively read the repository after the governing
    context and task constraints are known.
 
@@ -59,13 +60,14 @@ Resolve only what the current request needs:
 - target ref/branch;
 - PR/issue/check/workflow/release or other task object;
 - target paths when known;
-- operation class: read, review, edit, commit, PR, merge, release, etc.
+- operation class: read, review, edit, commit, PR, merge, release, etc.;
+- active agent/chatbot surface when it changes instruction discovery.
 
 If target paths are not yet known, inspect only root instruction-bearing sources or live
-metadata that can govern the current task. Read a root `README.md` only when component
-purpose, navigation, workflow context, or a referenced required source is materially
-needed; do not preload it by default. When changed files or concrete paths become known,
-add their scoped context.
+metadata that can govern the current task. Do not preload `README.md` by default, except
+when the repository explicitly declares README as a fallback instruction source for the
+active surface. When changed files or concrete paths become known, add their scoped
+context.
 
 ### 2. Load Conditional Context
 
@@ -73,6 +75,7 @@ Read `references/instruction-discovery.md` when:
 
 - concrete target paths or changed files exist;
 - nested/scoped instructions may apply;
+- repository-defined instruction families or fallback chains must be resolved;
 - instruction scope or precedence needs resolution;
 - repository-level instruction locations beyond the root must be interpreted.
 
@@ -82,7 +85,7 @@ or release surface.
 
 Do not load either reference merely because it exists.
 
-### 3. Follow Required References
+### 3. Follow Required Resources
 
 If an applicable repository instruction points to another required Git/VCS/governance
 source, follow it only as far as the current task requires. Do not turn navigation links
@@ -94,6 +97,7 @@ Before task-level action, confirm that:
 
 - the target repository/ref/object is correct;
 - every known target path has the applicable instruction context for the active surface;
+- repository-declared instruction/fallback semantics were respected;
 - any path selector or tool/agent scope actually matches;
 - repository-specific conventions are evidenced rather than assumed;
 - unresolved instruction conflicts that affect a mutation are surfaced instead of guessed.
@@ -105,13 +109,14 @@ Preserve these invariants even when the detailed reference is not loaded:
 - For PR/review work, use the actual head-ref instructions; compare base instructions
   when a difference can materially affect the judgment.
 - Discover applicable nested `AGENTS.md` context instead of assuming only the repository
-  root matters. Apply the active surface's documented precedence; for GitHub Copilot
-  surfaces that support nested agent instructions, the nearest applicable `AGENTS.md`
-  takes precedence among applicable `AGENTS.md` files.
-- `README.md` is primarily context/navigation and is not automatically an override or a
-  mandatory context source.
+  root matters. Apply the active surface's documented precedence when available.
+- `README.md` is normally context/navigation, **unless the repository explicitly declares
+  it as a fallback instruction source for the active surface**.
+- Repository-local instruction files such as `CHATBOT.md` may be valid even when they are
+  not part of a platform standard; use them only with evidenced repository semantics.
 - `applyTo`, path selectors, override semantics, and agent/tool-specific instructions
-  apply only when their declared scope matches and the active surface supports them.
+  apply only when their declared scope matches and the active surface supports or the
+  repository defines them.
 - If no repository rule is found, do not fabricate one. A safe default may be used, but
   do not present it as repository convention.
 
@@ -132,5 +137,5 @@ orchestration. Those come from repository context and the relevant task Skill.
 
 When modifying this Skill, preserve `.docs/baseline/DIRECTIVE.md`. Shorter wording or a
 cleaner structure is not an improvement if it weakens its trigger surface, root-to-target
-instruction discovery, instruction/context distinction, path isolation, safety boundary,
-or context-loader responsibility.
+instruction discovery, repository-defined instruction families, path isolation, safety
+boundary, or context-loader responsibility.
