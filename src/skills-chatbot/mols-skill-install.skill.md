@@ -56,7 +56,27 @@ A candidate must identify a concrete target-compatible projection. If multiple s
 
 Inspect the active target's actual Skill or equivalent capability before deciding how to deliver the candidate. Do not assume every chatbot uses files, ZIP packages, an install API, or the same UI.
 
-Use the highest available path in this order:
+### ChatGPT native Skill path
+
+When the resolved target is ChatGPT and persistent Skill installation is the intent, prefer ChatGPT's built-in `skill-creator` and native Skill review/install surface when that capability is available.
+
+Treat `skill-creator` as the target projection mechanism, not as a source-authoring pass. Preserve the selected repository capability instead of redesigning or improving it during installation.
+
+For each candidate that requires installation, update, or migration:
+
+1. Read the selected canonical projection and any runtime-required supporting resources.
+1. Ask `skill-creator` to create or modify the corresponding ChatGPT Skill from that source material.
+1. Preserve the source Skill's identity, activation intent, responsibility, outcome, negative boundaries, behavioral contract, and required resource relationships.
+1. Use the native draft plus Install/Update flow produced by ChatGPT.
+1. Pre-fill everything the native surface permits and leave only unavoidable approval or conflict decisions to the user.
+1. Keep the item in `Pending User Action` while native installation/update approval is outstanding.
+1. Verify installed state when the current ChatGPT environment exposes it before reporting `Installed`, `Updated`, or `Renamed / Migrated`.
+
+When the caller explicitly requests ChatGPT synchronization through `skill-creator`, do not choose current-chat loading, assisted manual import, or package handoff merely because those paths are easier to execute. If `skill-creator` or the native Skill creation/install surface is unavailable, report that capability as unavailable or limited instead of silently downgrading persistent installation intent.
+
+A generated `SKILL.md`, ZIP, attachment, pasted body, downloadable package, or current-chat load is not equivalent to a persistent ChatGPT Skill installation.
+
+For non-ChatGPT targets, or when the caller did not require the ChatGPT `skill-creator` path, use the highest available path in this order:
 
 1. **Direct mutation** — install, update, migrate, import, create, or load the Skill through an available target tool, API, connector, Skill manager, or equivalent native capability.
 1. **Native interactive flow** — when the target requires review or user approval, prepare the Skill in the target's native creation/import/install surface and surface the shortest available confirmation action. Pre-fill everything the target allows; ask the user only for unavoidable approval or conflict choices.
@@ -127,6 +147,7 @@ For `action: sync`, require a complete capability selection set from `mols-skill
 
 - Reconcile each selected repository capability against installed state.
 - Install/update/migrate only the preferred projection for each capability.
+- For ChatGPT synchronization through `skill-creator`, stage each selected mutation in the native Skill surface and surface the minimum remaining Install/Update confirmations.
 - Process any Skill actively controlling the current discovery/install run after other selected capabilities. Do not restart or reinterpret the current run against a just-updated control Skill; use the new version on the next invocation.
 - Report installed Skills with no corresponding source capability as orphan candidates; do not delete them automatically.
 - Do not expand sync scope beyond the supplied source/selection.
