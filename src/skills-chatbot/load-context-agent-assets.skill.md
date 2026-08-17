@@ -28,6 +28,18 @@ Resolve only dimensions that can change the asset:
 Do not import one platform's filenames, precedence, tool semantics, or packaging rules as
 universal conventions.
 
+## Repository Standards
+
+When this repository's asset doctrine matters, distinguish two layers:
+
+1. `docs/references/agent-asset-standard-baseline.md` — standards-adjacent external/common baseline.
+2. `docs/references/agent-asset-boundaries.md` — **Personal Agent Asset Standard**, which owns this repository's intentional non-standard extensions and operating decisions.
+
+Use the baseline to understand external/common concepts. Use the Personal Standard as the
+repository authority for local taxonomy, naming, projections, fallback, placement, and
+packaging. Do not copy personal extensions back into the baseline as if they were external
+standards.
+
 ## Asset Boundary
 
 Treat these as peer behavioral asset types when the repository uses this taxonomy:
@@ -41,10 +53,10 @@ Treat these as peer behavioral asset types when the repository uses this taxonom
 not peer Agent Asset types. If supporting knowledge needs its own model-directed activation
 boundary, let a Skill own that activation and load the resource conditionally.
 
-Repository-specific projections may be intentionally non-standard. For example, this
-repository can project Rule semantics through root/nested `AGENTS.md`, glob-scoped files,
-or `CHATBOT.md` for chatbot surfaces. Preserve such conventions when evidenced; do not
-promote them into universal platform standards.
+Repository-specific projections may be intentionally non-standard. In this repository,
+Rule can be projected through root/nested `AGENTS.md`, glob-scoped instructions, or
+`CHATBOT.md` for text I/O chatbot surfaces. Preserve evidenced repository conventions;
+do not promote them into universal platform standards.
 
 ## Context Economy
 
