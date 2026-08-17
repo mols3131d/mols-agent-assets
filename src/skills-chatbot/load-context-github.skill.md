@@ -1,138 +1,92 @@
 ---
 name: load-context-github
 description: >-
-  Load repository-specific context before concrete GitHub work. Use before any
-  @GitHub or GitHub tool/connector/plugin/integration call and for work on a specific
-  repository, GitHub URL, file/path, PR/review, issue, branch/ref, commit, check,
-  workflow, release, or repository change, including read-only and follow-up tasks.
-  Discover only the repository instructions and live metadata that can affect the
-  current task before task-level action.
+  Load the live repository instructions and GitHub metadata that govern concrete
+  work on a repository, path, ref, PR, issue, commit, check, workflow, release, or
+  other GitHub object. Use before task-level GitHub actions or GitHub tool calls;
+  skip generic Git/GitHub explanation with no concrete target.
 ---
 
 # Load GitHub Context
 
-Use this Skill as a **context loader**, not as a Git/GitHub workflow. Discover the
-repository/ref/path instructions and live GitHub state that govern the current task,
-then hand execution to the relevant task capability.
+Use this Skill only to resolve the **live GitHub context that governs the task**.
+Execution belongs to the downstream task capability.
 
-## Trigger Boundary
+## Trigger
 
-Activate when either condition is true:
+Activate when a concrete GitHub target is being read or changed, or when a GitHub
+connector/tool will be used for task-level work. A narrow read may be used first to
+identify the target; finish relevant context loading before task-level action.
 
-- a concrete GitHub repository, resource, path, ref, or object is being read or changed;
-- a GitHub tool, connector, plugin, or integration will be called.
+## Contract
 
-Read-only and follow-up work are included. General Git/GitHub explanation with no
-concrete target and no GitHub tool use does not require this Skill.
-
-A GitHub integration may be used first to identify the target or load context. Complete
-the relevant context loading before task-level action or repository mutation.
-
-## Core Contract
-
-1. **Identify live target** — confirm the repository and the ref/branch/PR/issue or other
-   object relevant to the task. Do not rely on remembered repository state.
-1. **Repository is authority** — discover conventions from the target ref, repository
-   files, and relevant live metadata. Do not invent repository rules from common practice.
-1. **Scope by target** — apply only instructions that govern the current path, object,
-   agent, operation, and active surface. Keep unrelated repositories and path scopes isolated.
-1. **Respect local semantics** — repository-defined instruction families, projections,
-   fallbacks, selectors, and overrides may be non-standard. Apply them only when evidenced.
-1. **Load progressively** — start with explicit/high-signal sources and task metadata;
-   expand only when more context can materially change the next action.
-1. **Stop when sufficient** — do not recursively read the repository after the governing
-   context and task constraints are known.
+- Resolve the live repository and relevant ref/object. Do not rely on remembered state.
+- Treat repository files, the target ref, and live GitHub metadata as authority for
+  repository-specific rules.
+- Scope instructions per target path, object, operation, and active agent/chatbot surface.
+- Apply repository/platform selectors, fallback, and precedence only when evidenced.
+- Load progressively. Stop when more context is unlikely to change the next action.
 
 ## Procedure
 
-### 1. Identify
+### 1. Identify the Target
 
-Resolve only what the request needs:
+Resolve only what the task needs: repository, ref/branch, GitHub object, target paths,
+operation class, and active surface when it affects instruction discovery.
 
-- repository and target ref/branch;
-- PR, issue, check, workflow, release, or other task object;
-- target paths when known;
-- operation class such as read, review, edit, commit, PR, merge, or release;
-- active agent/chatbot surface when it changes instruction discovery.
+If target paths are not known yet, inspect only root instruction sources or live metadata
+needed to identify them.
 
-If paths are not yet known, inspect only root instruction-bearing sources or live
-metadata that can govern the task. Add path-scoped context when concrete paths become known.
+### 2. Resolve Applicable Instructions
 
-### 2. Resolve Instructions
+For each target path, inspect the ancestor chain from repository root to the target
+directory. Reuse shared ancestors, but compute effective context per path.
 
-For every target path, inspect the ancestor chain from repository root to the target
-directory. Reuse shared ancestors for multiple paths, but compute each path's effective
-context separately.
+Use only instruction sources the repository or active surface actually defines, such as:
 
-Look for instruction-bearing sources that the active surface or repository actually
-defines, for example:
+- `AGENTS.md` or repository-defined agent/chatbot instruction files;
+- GitHub Copilot instruction files and matching path-scoped instructions;
+- contribution, development, governance, or repository-defined path/glob rules;
+- `README.md` only when explicitly required, materially needed, or declared as fallback.
 
-- `AGENTS.md` and repository-defined agent/chatbot instruction files;
-- `.github/copilot-instructions.md`;
-- matching `.github/instructions/**/*.instructions.md`;
-- `CONTRIBUTING.md`, `DEVELOPMENT.md`, `.github/CONTRIBUTING.md`, or governance docs;
-- repository-defined path/glob instructions and bot/agent instructions;
-- `README.md` only when explicitly referenced, materially needed for interpretation, or
-  declared as a fallback instruction source.
+Do not invent precedence from filenames or proximity. Apply declared selectors and the
+active surface's current scope/precedence semantics. Verify time-sensitive platform
+semantics when they can change the task.
 
-Do not infer precedence or override semantics from filenames or proximity alone. Use the
-active platform/tool semantics or explicit repository convention.
+If an instruction conflict blocks a safe mutation, surface the conflict instead of guessing.
 
-For nested `AGENTS.md`, discover all applicable files along the root-to-target chain and
-use the active surface's documented scope/precedence. On GitHub Copilot surfaces that
-support nested agent instructions, the nearest applicable `AGENTS.md` wins among
-applicable `AGENTS.md` files. Do not generalize that rule to unrelated instruction families.
+### 3. Load Task Context
 
-When the active surface follows GitHub Copilot custom-instruction semantics, apply its
-current documented precedence rather than a generic rule. Treat those semantics as
-platform-specific and time-sensitive; verify them when they can affect the task.
+Load only the context required by the current operation.
 
-Apply `applyTo`, path selectors, agent/tool scopes, and repository-defined overrides only
-when their declared scope matches. If a mutation depends on an unresolved instruction
-conflict, surface the conflict instead of guessing.
+| Condition | Load |
+| --- | --- |
+| PR or review | head-ref instructions, changed-path rules, relevant base differences, templates, `CODEOWNERS`, checks/protection when material |
+| Issue | templates or contribution guidance that changes classification, required fields, or workflow |
+| Commit, branch, merge, history | repository VCS guidance and live protection/rulesets when material |
+| CI, workflow, security, permissions | the named/failing surface plus relevant workflow, validation, permission, or security context |
+| Release | relevant versioning/release guidance, automation, and live release metadata |
 
-### 3. Load Task-Specific Context
+Follow instruction links only as far as the task requires. If high-signal sources are
+insufficient, search for the repository's own terminology around the unresolved rule
+instead of crawling broadly.
 
-Load only context that can constrain the current GitHub object or operation:
+### 4. Gate and Stop
 
-- **PR/review** — actual head-ref instructions, changed paths and their scoped rules,
-  base instructions when head/base differences matter, and relevant templates,
-  `CODEOWNERS`, checks, protection, or review guidance.
-- **Issue** — relevant issue templates or contribution guidance only when they affect
-  classification, required fields, workflow, or mutation.
-- **Commit** — repository-owned commit guidance such as `.gitmessage`, contribution
-  docs, or hook documentation. Do not assume Conventional Commits unless evidenced.
-- **Branch/merge/history** — repository VCS guidance and live protection/rulesets when
-  material. Do not invent branch names, merge strategies, or history policy.
-- **CI/check/workflow/security/permissions** — start from the named or failing surface;
-  load only the relevant workflow, validation docs, metadata, permissions, or security rules.
-- **Release** — relevant versioning/release guidance, automation, and live release
-  metadata only as needed.
-
-Follow links from applicable instructions only as far as the current task requires.
-If high-signal locations are insufficient, search for the repository's own terminology
-around the unresolved rule instead of crawling broadly.
-
-### 4. Recheck and Stop
-
-Before task-level action, confirm:
+Before handoff, confirm that:
 
 - the repository/ref/object is correct;
 - every known target path has its applicable instruction context;
-- local fallback, selector, and precedence semantics were respected;
-- repository-specific conventions are evidenced rather than assumed;
-- partial or unresolved context that blocks a safe mutation is surfaced.
+- repository-specific rules are evidenced rather than assumed;
+- any material incomplete or conflicting context is surfaced.
 
-Stop when additional context is unlikely to change the next action.
+Then stop loading context.
 
-## Safety Boundary
+## Boundary
 
-Context loading must not widen the requested scope or create unrelated side effects.
+This Skill is read-oriented context discovery. It does not own implementation, testing,
+review methodology, naming, branch/commit/PR policy, merge strategy, release workflow,
+or GitHub tool orchestration.
 
-Do not expose secrets or credentials. Without explicit user intent, do not force-push,
-rewrite history, perform destructive deletion, change permissions/protection, merge,
-release, delete repositories, or perform similarly high-impact mutations.
-
-This Skill does **not** own implementation, testing, naming, PR authoring, review
-methodology, branch naming, commit formatting, merge strategy, or GitHub tool-call
-orchestration. Those come from repository context and the relevant task capability.
+Do not expose secrets. Context loading must not widen task scope or perform destructive,
+privileged, history-rewriting, merge, release, or similarly finalizing mutations.
