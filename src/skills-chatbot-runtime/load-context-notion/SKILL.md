@@ -47,8 +47,9 @@ context loading before mutation or before making structural assumptions about th
    not invent a workspace convention from generic Notion practice.
 6. **Treat partial reads as partial** — pagination, truncation, unsupported fields, API
    version differences, or connection permissions can make visible context incomplete.
-   Do not turn an incomplete read into evidence that a property, relation, row, or object
-   does not exist.
+   A page metadata/property read is not necessarily its body content, and large reference
+   properties may require a property-specific follow-up read. Do not turn an incomplete
+   read into evidence that content, a property, relation, row, or object does not exist.
 7. **Load progressively** — start with the target object. Expand to its parent, database,
    data-source schema, related objects, or template only when the current task depends on
    them.
@@ -63,13 +64,17 @@ Preserve these distinctions when the active connector exposes them:
   intended source instead of treating the database ID as an interchangeable schema or row
   target.
 - A database entry is also a page: structured properties and page body content can both
-  matter, but they are not interchangeable.
+  matter, but they are not interchangeable. A page-object read may expose properties
+  without the page's block body, so retrieve the body separately when the task depends on
+  it and the active connector/API separates those surfaces.
 - Data-source properties define structured fields used for organization, search,
   filtering, sorting, status, dates, people, relations, formulas, rollups, and similar
   semantics.
 - Relation properties connect pages or data-source items. Treat the relationship itself as
   structured data rather than replacing it with a copied title or URL unless the user
-  explicitly asks for a textual projection.
+  explicitly asks for a textual projection. When a property read is truncated or bounded,
+  retrieve the specific property or additional pages before concluding the relation is
+  complete or absent.
 - Templates may encode repeated property defaults and page structure. Inspect the relevant
   template when creating or reshaping a repeated page type and when the connector exposes
   it.
@@ -80,15 +85,15 @@ Preserve these distinctions when the active connector exposes them:
 
 Load additional Notion context only when one of these conditions is present:
 
-- **Existing page edit** → read the current page content and any properties that constrain
-  the edit.
+- **Existing page edit** → read the current page body and any properties that constrain the
+  edit; do not assume one page read contains both when the active surface separates them.
 - **Database/data-source work** → fetch or otherwise resolve the database's available data
   sources, select the source relevant to the task, and read its relevant property
   definitions before assigning, interpreting, querying, or changing structured values.
 - **Relation or rollup work** → identify the relation target and only the connected fields
   needed to understand the requested relationship; if the connector reports truncation,
-  pagination, or incomplete access, retrieve enough additional context before concluding
-  that a relation/value is absent.
+  pagination, bounded references, or incomplete access, retrieve enough additional context
+  before concluding that a relation/value is absent or complete.
 - **Repeated page creation** → inspect an applicable database template when one is known and
   available.
 - **Restructuring** → inspect parent/child placement, existing navigation, and nearby
@@ -105,7 +110,8 @@ Before handing off to a task-level mutation, confirm that:
   are the intended targets;
 - property names and types used by the next action come from current workspace evidence;
 - relation targets and structured fields have not been reduced to guessed prose;
-- visible results are sufficiently complete for the conclusion being made;
+- visible body/property/relation results are sufficiently complete for the conclusion being
+  made;
 - existing structure that must be preserved is known;
 - unresolved ambiguity that could cause a destructive or structurally incorrect write is
   surfaced rather than guessed.
