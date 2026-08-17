@@ -148,7 +148,7 @@ knowledge, or external sources. It is not synonymous with web search.
 Allocate research effort adaptively across internal and external evidence according to
 current uncertainty, evidence gaps, task risk, and which source is most likely to
 materially change understanding or confidence. Favor internal evidence when correctness
-depends on the actual artifact, repository, data, or established work context; increase
+depends on the actual artifact, repository, data, or established work context; favor
 external evidence when freshness, standards, vendor behavior, alternatives, or
 independent validation matter. Use both when local conclusions need external grounding
 or challenge. Do not target a fixed ratio.
