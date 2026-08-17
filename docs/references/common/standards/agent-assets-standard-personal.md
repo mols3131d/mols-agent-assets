@@ -43,6 +43,10 @@ policy가 필요하지 않은 reusable capability/context는 Skill이 기본 후
 
 공통 taxonomy와 유형별 repository-local extension을 분리한다.
 
+여러 target harness에 같은 자산 의미를 투영할 때의 공통 authority 모델은
+[Canonical Superset Agent Assets](../concepts/agent-assets-concepts-canonical-superset.md)가
+소유한다. 유형별 문서는 해당 자산의 projection surface와 target contract만 정의한다.
+
 - Rule projection과 chatbot fallback →
   [Rule Projections](../../rules/agent-assets-rules-projections.md)
 - Skill-specific Personal Standard →
@@ -64,6 +68,7 @@ Prompt와 Agent에 repository-local 규격이 실제로 생기기 전에는 별�
 
 - 공통 filesystem naming convention →
   [Agent Asset Naming Convention](agent-assets-naming-convention.md)
+- cross-harness canonical superset과 target projection authority model
 - `CHATBOT.md`와 repository-local fallback
 - directory/glob Rule projection convention
 - Skill-specific authoring/deployment convention
