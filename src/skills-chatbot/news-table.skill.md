@@ -10,7 +10,7 @@ description: >-
 
 # News Table
 
-Use this Skill for **news selection, deduplication, ranking, and presentation**. The active research capability owns evidence acquisition and source verification.
+This Skill owns **news selection, deduplication, ranking, and presentation**. The active research capability owns evidence acquisition and source verification.
 
 ## Selection
 
