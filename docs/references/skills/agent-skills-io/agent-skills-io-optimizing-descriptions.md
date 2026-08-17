@@ -1,4 +1,4 @@
-# 04. Optimizing Skill Descriptions
+# Optimizing Skill Descriptions
 
 ## Core Concept
 

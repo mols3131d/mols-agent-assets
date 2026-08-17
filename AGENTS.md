@@ -16,7 +16,14 @@ Prefer Skill as the portable reusable unit when a capability or situation-specif
 
 For Rule deployment, follow `docs/references/rules/agent-assets-rules-projections.md`: this repository uses non-standard local conventions for root/nested `AGENTS.md`, harness-appropriate glob selectors, and `CHATBOT.md`. The chatbot fallback is `CHATBOT.md → AGENTS.md → README.md`.
 
-For Skill placement, follow `docs/references/skills/agent-assets-skills-target-profiles.md`. Treat `skills/`, `skills-chatbot/`, and `skills-chatbot-runtime/` as repository-local, non-standard target profiles rather than Agent Skills specification categories.
+For Skill authoring, separate external contracts from repository-local extensions:
+
+1. `docs/references/skills/agent-skills-io/agent-skills-io-specification.md` — Tier 1 `agentskills.io` portable specification plus links to official Tier 2 vendor/harness contracts.
+1. `docs/references/skills/agent-assets-skills-standard-personal.md` — repository-local **Personal Skill Standard** applied after external contracts.
+
+Do not copy Tier 2 vendor rules into repository-local standards. Read the official target-harness source linked by the specification reference when host-specific behavior matters.
+
+Target profile and package-surface details are delegated to `docs/references/skills/agent-assets-skills-target-profiles.md`. Treat `skills/`, `skills-chatbot/`, and `skills-chatbot-runtime/` as repository-local, non-standard target profiles rather than Agent Skills specification categories.
 
 Supporting resources are not peer Agent Asset types alongside Rule, Skill, Prompt, and Agent.
 
