@@ -126,18 +126,18 @@ Return only the output surface the user needs.
 
 Official Mermaid documentation:
 
-- Syntax index: https://mermaid.js.org/intro/syntax-reference.html
-- XY Chart: https://mermaid.js.org/syntax/xyChart.html
-- Pie: https://mermaid.js.org/syntax/pie.html
-- Sankey: https://mermaid.js.org/syntax/sankey.html
-- Treemap: https://mermaid.js.org/syntax/treemap.html
-- Radar: https://mermaid.js.org/syntax/radar.html
-- Quadrant Chart: https://mermaid.js.org/syntax/quadrantChart.html
+- Syntax index: <https://mermaid.js.org/intro/syntax-reference.html>
+- XY Chart: <https://mermaid.js.org/syntax/xyChart.html>
+- Pie: <https://mermaid.js.org/syntax/pie.html>
+- Sankey: <https://mermaid.js.org/syntax/sankey.html>
+- Treemap: <https://mermaid.js.org/syntax/treemap.html>
+- Radar: <https://mermaid.js.org/syntax/radar.html>
+- Quadrant Chart: <https://mermaid.js.org/syntax/quadrantChart.html>
 
 Canonical `mols-mermaid-chart` references:
 
-- Skill: https://github.com/mols3131d/mols-agent-assets/tree/main/src/skills/mols-mermaid-chart
-- Selection and data integrity: https://github.com/mols3131d/mols-agent-assets/blob/main/src/skills/mols-mermaid-chart/references/mermaid-charts.md
-- Style policy: https://github.com/mols3131d/mols-agent-assets/blob/main/src/skills/mols-mermaid-chart/references/style-policy.md
-- Verification: https://github.com/mols3131d/mols-agent-assets/blob/main/src/skills/mols-mermaid-chart/references/mermaid-chart-verification.md
-- Examples index: https://github.com/mols3131d/mols-agent-assets/blob/main/src/skills/mols-mermaid-chart/references/examples/README.md
+- Skill: <https://github.com/mols3131d/mols-agent-assets/tree/main/src/skills/mols-mermaid-chart>
+- Selection and data integrity: <https://github.com/mols3131d/mols-agent-assets/blob/main/src/skills/mols-mermaid-chart/references/mermaid-charts.md>
+- Style policy: <https://github.com/mols3131d/mols-agent-assets/blob/main/src/skills/mols-mermaid-chart/references/style-policy.md>
+- Verification: <https://github.com/mols3131d/mols-agent-assets/blob/main/src/skills/mols-mermaid-chart/references/mermaid-chart-verification.md>
+- Examples index: <https://github.com/mols3131d/mols-agent-assets/blob/main/src/skills/mols-mermaid-chart/references/examples/README.md>
