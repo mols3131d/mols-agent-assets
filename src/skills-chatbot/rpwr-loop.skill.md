@@ -15,8 +15,8 @@ alias for this workflow.
 Each phase has its own loop:
 
 1. **Prepare** — `Discover → Assess → Configure → Verify`
-2. **Improve** — `Research → Plan → Work → Review`
-3. **Finalize** — `Inspect → Resolve → Validate → Gate`
+1. **Improve** — `Research → Plan → Work → Review`
+1. **Finalize** — `Inspect → Resolve → Validate → Gate`
 
 Count only genuine phase cycles. Do not force phases into the same reasoning shape.
 
@@ -181,7 +181,7 @@ Complete **1–2 Finalize loops**. Finalize is the completion gate for the work.
 
 Finalize loop:
 
-**Inspect → Resolve → Validate → Gate**
+## Inspect → Resolve → Validate → Gate
 
 ### Inspect
 
