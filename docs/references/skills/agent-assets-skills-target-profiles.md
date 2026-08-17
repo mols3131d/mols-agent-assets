@@ -126,6 +126,28 @@ Baseline은 단순 refactor나 문구 변경으로 갱신하지 않는다. 의�
 
 이 naming은 repository-local convention이다. 실제 구현·mutation·검증·최종 output까지 소유하는 Skill에는 사용하지 않는다.
 
+### Activation Classes
+
+Context-only Skill은 activation intent에 따라 다음 두 종류로 운용할 수 있다.
+
+- **Scope baseline loader** — 선언한 work surface가 활성화되면 항상 로드한다. 전역 지침을 비대하게 만들지 않으면서 특정 scope에서 반복 적용할 판단 기준과 제약을 제공한다.
+- **Conditional loader** — 해당 topic 안에서도 추가 조건이 충족될 때만 로드한다.
+
+Scope baseline loader의 넓은 trigger는 그 scope 내부에서 **의도된 coverage**다. 일반적인 narrow capability Skill과 같은 기준으로 trigger를 축소하거나, scope 내부 activation이 넓다는 이유만으로 Rule로 이동하지 않는다. 전역 Rule로 올렸을 때 무관한 task까지 context cost를 부담한다면 scope baseline loader가 더 적절할 수 있다.
+
+Scope baseline loader의 front matter는 가능한 한 다음을 분명히 한다.
+
+- 어떤 work surface에서 항상 적용되는가;
+- 단순하거나 routine한 task도 포함되는가;
+- 어떤 인접 scope는 제외되는가;
+- loader가 judgment/context만 제공하고 downstream workflow를 소유하지 않는다는 점.
+
+Review에서는 먼저 activation class를 확인한다.
+
+- scope baseline loader → **narrowness가 아니라 coverage와 leakage**를 평가한다.
+- conditional loader → 조건의 precision과 불필요한 activation을 평가한다.
+- 두 유형 모두 downstream workflow, mutation, verification, final output을 가져오지 않는지 확인한다.
+
 개인 관행을 범용 loader와 분리할 때는 `load-context-<topic>-<owner>`를 personal overlay로 사용한다.
 
 Personal overlay activation은 conversation이나 connection 전체가 아니라 **현재 target별로** 판단한다.
