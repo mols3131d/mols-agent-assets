@@ -15,9 +15,9 @@ finding-driven reasoning cycles. `RPI` is an alias for this workflow.
 RPWR has three phases. Every phase uses the same RPWR spine, but for a different
 purpose:
 
-1. **Calibrate** — design how the work should be investigated and reviewed.
-2. **Iterate** — perform the main work and substantive improvement.
-3. **Converge** — finish, validate, and stop without manufacturing findings.
+1. **Prepare** — understand the task and set the Research and Review strategy.
+2. **Improve** — perform the main work and substantive improvement.
+3. **Finalize** — finish, validate, and stop without manufacturing findings.
 
 Keep **Plan** and **Work** simple. Adapt **Research** and **Review** as understanding,
 risk, and confidence change.
@@ -25,13 +25,13 @@ risk, and confidence change.
 ## Phase Budgets
 
 ```yaml
-phase_1_calibrate:
+phase_1_prepare:
   min_loops: 1
   max_loops: 2
-phase_2_iterate:
+phase_2_improve:
   min_loops: 4
   max_loops: 8
-phase_3_converge:
+phase_3_finalize:
   min_loops: 2
   max_loops: 4
 ```
@@ -77,9 +77,10 @@ Never invent findings, split one action into artificial passes, or simulate reas
 to satisfy a minimum. Do not expose private chain-of-thought to prove a loop happened;
 report observable evidence, decisions, validation, and material deltas instead.
 
-## Phase 1 — Calibrate
+## Phase 1 — Prepare
 
-Complete **1–2 RPWR loops** focused on designing the strategy for the later phases.
+Complete **1–2 RPWR loops** focused on understanding the task and preparing the
+strategy for the main work.
 
 ### Research
 
@@ -88,12 +89,12 @@ constraints, likely failure modes, and acceptance conditions.
 
 ### Plan
 
-Decide what the calibration must resolve, especially:
+Decide what preparation must resolve, especially:
 
 - the initial breadth and depth of Research;
 - which evidence and context surfaces matter;
 - which Review perspectives and risks deserve attention;
-- what signals should narrow Research or trigger convergence.
+- what signals should narrow Research or trigger finalization.
 
 ### Work
 
@@ -105,18 +106,18 @@ do not create a detailed ceremony or fixed loop-by-loop script.
 Challenge whether that strategy is proportionate to the task and whether it misses a
 material uncertainty, risk, evidence surface, or review perspective.
 
-The first calibration loop is mandatory. Use the second only when the first leaves a
-material strategy uncertainty worth resolving. At two loops, proceed to Iterate with
+The first Prepare loop is mandatory. Use the second only when the first leaves a
+material strategy uncertainty worth resolving. At two loops, proceed to Improve with
 any remaining uncertainty made explicit.
 
-## Phase 2 — Iterate
+## Phase 2 — Improve
 
 Complete **4–8 RPWR loops**. This is the primary work phase where most substantive
 changes should happen.
 
 ### Research
 
-Use a relatively broad scope in early Iterate loops to understand the problem
+Use a relatively broad scope in early Improve loops to understand the problem
 boundary, important assumptions, plausible alternatives, and missing evidence. Be
 broad enough to orient the work, not exhaustive by default.
 
@@ -161,12 +162,12 @@ This cadence is a default, not a ritual. Override it when current findings or ri
 clearly require the other perspective. Apply only dimensions that materially fit the
 task; do not force security, safety, or other categories where they do not matter.
 
-After four loops, move to Converge when the main result is substantially shaped and
+After four loops, move to Finalize when the main result is substantially shaped and
 remaining work is mainly finishing or validation. Otherwise continue only while a
 meaningful delta remains, up to eight loops. At eight, carry remaining material
-findings into Converge rather than extending Iterate indefinitely.
+findings into Finalize rather than extending Improve indefinitely.
 
-## Phase 3 — Converge
+## Phase 3 — Finalize
 
 Complete **2–4 RPWR loops** focused on finishing and trustworthy completion.
 
@@ -197,7 +198,7 @@ Limit review to issues that can still materially undermine the task's core purpo
 `No material finding` is a valid Review result. Do not manufacture another criticism
 merely because another pass exists.
 
-The two minimum Converge loops must still be genuine reasoning cycles. Use distinct,
+The two minimum Finalize loops must still be genuine reasoning cycles. Use distinct,
 material validation questions, evidence surfaces, or residual-risk perspectives when
 needed; duplicating the same validation does not count.
 
@@ -210,7 +211,7 @@ simulating additional loops.
 Use state, not a fixed global loop number, to decide transitions within each phase's
 budget.
 
-Signals for moving from Iterate to Converge include:
+Signals for moving from Improve to Finalize include:
 
 - major requirements are substantially satisfied;
 - findings are fewer, smaller, or localized;
@@ -239,7 +240,7 @@ Do not expose private reasoning or verbose phase-by-phase narration by default.
 Return:
 
 - the improved result;
-- counted loops for Calibrate, Iterate, and Converge;
+- counted loops for Prepare, Improve, and Finalize;
 - material changes or conclusions;
 - unresolved findings or checks that could not be performed.
 
