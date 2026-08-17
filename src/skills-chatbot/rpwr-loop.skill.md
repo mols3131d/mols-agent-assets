@@ -26,7 +26,7 @@ Count only genuine phase cycles. Do not force phases into the same reasoning sha
 output_policy: auto  # auto | chat | persist | both
 phase_1_prepare: {min_loops: 1, max_loops: 2}
 phase_2_improve: {min_loops: 4, max_loops: 8}
-phase_3_finalize: {min_loops: 2, max_loops: 4}
+phase_3_finalize: {min_loops: 1, max_loops: 2}
 ```
 
 An explicit user override takes precedence over these defaults.
@@ -177,7 +177,7 @@ Finalize.
 
 ## Phase 3 — Finalize
 
-Complete **2–4 Finalize loops**. Finalize is the completion gate for the work.
+Complete **1–2 Finalize loops**. Finalize is the completion gate for the work.
 
 Finalize loop:
 
@@ -207,15 +207,14 @@ Return one gate result:
 
 - **PASS** — completion is trustworthy, required genuine-loop minima were satisfied,
   and any remaining limitations are non-blocking and documented.
-- **RETRY** — an actionable material issue remains and another Finalize loop can
+- **RETRY** — an actionable material issue remains and a second Finalize loop can
   meaningfully address it.
 - **BLOCKED** — trustworthy completion cannot be reached with the remaining loop
   budget, evidence, capability, or authority.
 
-Do not pass the gate before the Finalize minimum is satisfied. After two genuine loops,
-stop on `PASS`; continue on `RETRY` while a material delta remains, up to four loops.
-At four loops, unresolved completion-blocking issues produce `BLOCKED`, not a false
-success.
+The first genuine Finalize loop is the normal completion gate. Stop on `PASS`. On
+`RETRY`, run one additional genuine Finalize loop. At the second loop, unresolved
+completion-blocking issues produce `BLOCKED`, not a false success.
 
 A prior phase budget shortfall prevents `PASS` unless the user explicitly overrode that
 budget. Do not use Finalize to retroactively legitimize fake or missing loops.
