@@ -15,7 +15,7 @@ finding-driven reasoning cycles. `RPI` is an alias for this workflow.
 RPWR has three phases. Every phase uses the same RPWR spine, but for a different
 purpose:
 
-1. **Prepare** — understand the task and set the Research and Review strategy.
+1. **Prepare** — understand the task and execution environment, then set the strategy.
 2. **Improve** — perform the main work and substantive improvement.
 3. **Finalize** — finish, validate, and stop without manufacturing findings.
 
@@ -79,36 +79,54 @@ report observable evidence, decisions, validation, and material deltas instead.
 
 ## Phase 1 — Prepare
 
-Complete **1–2 RPWR loops** focused on understanding the task and preparing the
-strategy for the main work.
+Complete **1–2 RPWR loops** focused on understanding both the task and the execution
+environment before the main work begins.
 
 ### Research
 
-Orient on the task's objective, boundaries, uncertainty, evidence quality, stakes,
-constraints, likely failure modes, and acceptance conditions.
+Orient on two surfaces:
+
+- **Task:** objective, boundaries, context, uncertainty, evidence quality, stakes,
+  constraints, likely failure modes, and acceptance conditions.
+- **Execution environment:** available agent capabilities, tools, connected resources,
+  permissions, write authority, validation surfaces, and material limitations.
+
+Use available evidence to confirm capabilities and authority when they affect the
+workflow. Do not assume a tool, permission, connection, or write capability exists.
 
 ### Plan
 
 Decide what preparation must resolve, especially:
 
+- what the task actually requires;
+- what the agent can and cannot do in the current environment;
+- which tools, capabilities, permissions, and evidence surfaces should be used;
 - the initial breadth and depth of Research;
-- which evidence and context surfaces matter;
 - which Review perspectives and risks deserve attention;
-- what signals should narrow Research or trigger finalization.
+- what signals should narrow Research or trigger Finalize.
+
+Design the strategy around real capabilities and authority. Do not plan execution that
+requires unavailable tools or permissions without making that limitation explicit.
 
 ### Work
 
-Establish a provisional Research and Review strategy for the task. Keep it minimal;
-do not create a detailed ceremony or fixed loop-by-loop script.
+Establish the smallest viable execution strategy for Improve and Finalize. Select the
+useful capabilities, tools, evidence surfaces, Research posture, Review posture, and
+validation approach. Keep it adaptive rather than scripting every future loop.
 
 ### Review
 
-Challenge whether that strategy is proportionate to the task and whether it misses a
-material uncertainty, risk, evidence surface, or review perspective.
+Challenge whether the strategy:
+
+- understands the user's actual objective and important constraints;
+- uses the available agent capabilities and tools effectively;
+- respects permission and authority boundaries;
+- depends on any unverified capability, resource, or access;
+- misses a material uncertainty, risk, evidence surface, or review perspective.
 
 The first Prepare loop is mandatory. Use the second only when the first leaves a
-material strategy uncertainty worth resolving. At two loops, proceed to Improve with
-any remaining uncertainty made explicit.
+material task, capability, tool, permission, or strategy uncertainty worth resolving.
+At two loops, proceed to Improve with any remaining limitation or uncertainty explicit.
 
 ## Phase 2 — Improve
 
