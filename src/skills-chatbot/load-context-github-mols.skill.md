@@ -1,12 +1,12 @@
 ---
 name: load-context-github-mols
 description: >-
-  Add mols-specific GitHub conventions alongside load-context-github when the current
-  GitHub target is personally governed by the user. Activate for a personal
-  `mols3131d` repository unless the task identifies it as team/company/shared, or when
-  the user explicitly says the target is their own. Keep applying on follow-ups to
-  that target. Do not activate from access, admin rights, authorship, or collaboration
-  alone; in mixed-target tasks, apply only to the personal targets.
+  Use with load-context-github to apply mols-specific conventions when the current
+  GitHub target is personally governed by the user. Treat a personal `mols3131d`
+  repository as in scope unless task/context evidence marks it team, company, or
+  shared; an explicit statement that the target is the user's own also qualifies.
+  Continue on follow-ups. Do not trigger from access, admin rights, authorship, or
+  collaboration alone; in mixed-target tasks, apply only to personal targets.
 ---
 
 # Load Mols GitHub Context
@@ -28,6 +28,10 @@ even when the user does not repeat its name.
 Do not infer personal scope from collaborator access, organization membership, admin
 permission, authorship, contribution history, or familiarity. If ownership/governance is
 unclear, use only the base loader until evidence establishes personal scope.
+
+If later live context shows that the target is team, company, organization, or shared
+rather than personally governed, stop applying this overlay and do not carry its defaults
+into further action on that target.
 
 When one task spans multiple repositories or GitHub objects, apply this overlay only to
 the personal targets. Never export its defaults to external or shared targets.
