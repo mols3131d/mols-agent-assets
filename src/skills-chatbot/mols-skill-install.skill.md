@@ -59,10 +59,10 @@ Inspect the active target's actual Skill or equivalent capability before decidin
 Use the highest available path in this order:
 
 1. **Direct mutation** — install, update, migrate, import, create, or load the Skill through an available target tool, API, connector, Skill manager, or equivalent native capability.
-2. **Native interactive flow** — when the target requires review or user approval, prepare the Skill in the target's native creation/import/install surface and surface the shortest available confirmation action. Pre-fill everything the target allows; ask the user only for unavoidable approval or conflict choices.
-3. **Native load** — when persistent installation is unsupported but the target can load the capability into the current chat, project, workspace, or equivalent scope, do so when it satisfies the user's intent. Clearly report the scope and persistence boundary.
-4. **Assisted manual import** — only when the target cannot perform or stage the operation itself, prepare the exact accepted payload and lead the user to the most direct available import/upload/editor interface. Minimize clicks, retyping, format conversion, and context switching.
-5. **Package handoff** — return a file, directory, archive, or pasted body only when that is genuinely the best supported target path or the user explicitly requests export/manual installation.
+1. **Native interactive flow** — when the target requires review or user approval, prepare the Skill in the target's native creation/import/install surface and surface the shortest available confirmation action. Pre-fill everything the target allows; ask the user only for unavoidable approval or conflict choices.
+1. **Native load** — when persistent installation is unsupported but the target can load the capability into the current chat, project, workspace, or equivalent scope, do so when it satisfies the user's intent. Clearly report the scope and persistence boundary.
+1. **Assisted manual import** — only when the target cannot perform or stage the operation itself, prepare the exact accepted payload and lead the user to the most direct available import/upload/editor interface. Minimize clicks, retyping, format conversion, and context switching.
+1. **Package handoff** — return a file, directory, archive, or pasted body only when that is genuinely the best supported target path or the user explicitly requests export/manual installation.
 
 Do not stop at generic instructions such as “download this and upload it” when a more direct target-specific surface is available. Do not invent a target UI or capability that cannot be established from the active environment or reliable target evidence.
 

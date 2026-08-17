@@ -35,10 +35,10 @@ Bootstrap is independent of the requested `source`; these prerequisite Skills al
 For each missing prerequisite:
 
 1. Read the canonical source.
-2. Ask `skill-creator` to create the corresponding ChatGPT Skill from that source.
-3. Use the native Skill draft / Install flow offered by ChatGPT.
-4. If installation requires user approval, present the native Install option and do not continue until the Skill is installed.
-5. Verify that the installed Skill is available in the current ChatGPT environment.
+1. Ask `skill-creator` to create the corresponding ChatGPT Skill from that source.
+1. Use the native Skill draft / Install flow offered by ChatGPT.
+1. If installation requires user approval, present the native Install option and do not continue until the Skill is installed.
+1. Verify that the installed Skill is available in the current ChatGPT environment.
 
 A generated `SKILL.md`, ZIP, downloadable package, attachment, or pasted Skill body is **not** a successful bootstrap. Do not return one as a substitute for creating and installing the ChatGPT Skill.
 
