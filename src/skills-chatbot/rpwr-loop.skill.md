@@ -25,23 +25,33 @@ risk, and confidence change.
 ## Arguments
 
 ```yaml
-output_policy: auto  # auto | chat | document | both
+output_policy: auto  # auto | chat | persist | both
 ```
 
 `output_policy` controls delivery after all counted loops finish:
 
-- `auto` — default. Use chat in a normal chatbot context. When the work is performed
-  in a durable writable workspace such as a repository or Notion, save the report in
-  the appropriate existing location and return only a concise chat summary and link
-  or location.
+- `auto` — default. Deliver in chat unless Prepare identifies a clearly appropriate,
+  durable, writable destination that belongs to the current work context. When such a
+  destination exists, persist the report there and return a concise chat summary with
+  its location.
 - `chat` — return the full work report in chat.
-- `document` — persist the work report when a suitable target and write authority are
-  available; otherwise fall back to chat and state the limitation.
+- `persist` — persist the work report to the most appropriate confirmed destination;
+  if no suitable destination or write authority exists, fall back to chat and state
+  the limitation.
 - `both` — persist the report and also return the full report in chat.
 
-Honor an explicit user choice. Under `auto`, choose the report location from the
-workspace conventions and authority discovered in Prepare; do not invent a new
-storage convention or assume write access.
+A durable destination may be a repository, user Drive, Notion or another workspace,
+a chatbot service library, knowledge base, document store, or another persistent
+surface available to the agent. These are examples, not a priority order.
+
+Choose the destination from the task context, existing workspace conventions, user
+intent, persistence needs, and confirmed write authority. Prefer the surface the work
+already belongs to. Do not move a report to another service merely because it is
+available.
+
+Do not invent a storage convention, create an unrelated destination, or assume write
+access. If multiple destinations are plausible and context does not establish one,
+fall back to chat rather than guessing.
 
 ## Phase Budgets
 
@@ -108,12 +118,15 @@ environment before the main work begins.
 Orient on two surfaces:
 
 - **Task:** objective, boundaries, context, uncertainty, evidence quality, stakes,
-  constraints, likely failure modes, and acceptance conditions.
+  constraints, likely failure modes, acceptance conditions, and where the work
+  naturally belongs.
 - **Execution environment:** available agent capabilities, tools, connected resources,
-  permissions, write authority, validation surfaces, and material limitations.
+  durable storage surfaces, permissions, write authority, validation surfaces, and
+  material limitations.
 
 Use available evidence to confirm capabilities and authority when they affect the
-workflow. Do not assume a tool, permission, connection, or write capability exists.
+workflow. Do not assume a tool, permission, connection, storage destination, or write
+capability exists.
 
 ### Plan
 
@@ -122,18 +135,21 @@ Decide what preparation must resolve, especially:
 - what the task actually requires;
 - what the agent can and cannot do in the current environment;
 - which tools, capabilities, permissions, and evidence surfaces should be used;
+- which durable destination, if any, naturally belongs to the work;
 - the initial breadth and depth of Research;
 - which Review perspectives and risks deserve attention;
 - what signals should narrow Research or trigger Finalize.
 
-Design the strategy around real capabilities and authority. Do not plan execution that
-requires unavailable tools or permissions without making that limitation explicit.
+Design the strategy around real capabilities and authority. Do not plan execution or
+report persistence that requires unavailable tools, storage, or permissions without
+making that limitation explicit.
 
 ### Work
 
 Establish the smallest viable execution strategy for Improve and Finalize. Select the
-useful capabilities, tools, evidence surfaces, Research posture, Review posture, and
-validation approach. Keep it adaptive rather than scripting every future loop.
+useful capabilities, tools, evidence surfaces, Research posture, Review posture,
+validation approach, and report destination when one is contextually justified. Keep
+it adaptive rather than scripting every future loop.
 
 ### Review
 
@@ -142,12 +158,14 @@ Challenge whether the strategy:
 - understands the user's actual objective and important constraints;
 - uses the available agent capabilities and tools effectively;
 - respects permission and authority boundaries;
-- depends on any unverified capability, resource, or access;
+- depends on any unverified capability, resource, access, or storage destination;
+- places any persisted report in the surface where the work naturally belongs;
 - misses a material uncertainty, risk, evidence surface, or review perspective.
 
 The first Prepare loop is mandatory. Use the second only when the first leaves a
-material task, capability, tool, permission, or strategy uncertainty worth resolving.
-At two loops, proceed to Improve with any remaining limitation or uncertainty explicit.
+material task, capability, tool, permission, storage, or strategy uncertainty worth
+resolving. At two loops, proceed to Improve with any remaining limitation or
+uncertainty explicit.
 
 ## Phase 2 — Improve
 
