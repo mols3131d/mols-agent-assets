@@ -1,6 +1,11 @@
 ---
 name: guide-technical-docs-repo
-description: Explain a technical system from provided documentation and source code. Use for repository onboarding, architecture orientation, execution-flow tracing, document-to-code comparison, or preparation for a code change.
+description: >-
+  Explain a technical system from provided documentation and source code. Use for
+  repository onboarding, architecture orientation, execution-flow tracing,
+  document-to-code comparison, or preparation for a code change. Do not use when the
+  primary task is code review, security audit, refactoring, implementation, or unrelated
+  factual lookup.
 ---
 
 # Technical Docs & Repository Guide
@@ -15,7 +20,6 @@ Build a concise understanding guide from the supplied documentation and source c
 - Write `확인 불가` when the available evidence cannot support a conclusion.
 - Do not invent architecture, dependencies, data flow, runtime behavior, execution, or test results.
 - Ignore generated, vendored, and unrelated material unless it changes the requested scope.
-- Do not expand into code review, security audit, refactoring, or implementation unless requested.
 
 ## Procedure
 
