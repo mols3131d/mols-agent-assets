@@ -30,7 +30,7 @@ description: Extract/merge PDFs. Use when handling PDFs.
 ### Frontmatter
 
 | Field | Req | Rules |
-|---|---|---|
+| --- | --- | --- |
 | `name` | Yes | 1-64 chars, a-z0-9-, no edge/double hyphens, matches parent dir. |
 | `description` | Yes | 1-1024 chars, states purpose and trigger contexts. |
 | `license` | No | License name or path. |

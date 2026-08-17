@@ -151,13 +151,13 @@ For destructive migrations, read `references/migration-safety.md` and produce a 
 ### Trigger 검증
 
 1. 실제 사용자 문장으로 `query`, `should_trigger` 쌍을 만든다.
-2. Positive에는 keyword 없는 간접 요청을 넣는다.
-3. Negative에는 단어는 겹치지만 목적이 다른 near-miss를 넣는다.
-4. typo, 실제 경로, 구어체, 긴 맥락을 포함한다.
-5. 고정된 60% train / 40% validation으로 나눈다.
-6. 비결정성을 고려해 query당 3회 이상 실행한다.
-7. 약 5회 이내 개선 후 validation이 가장 좋은 버전을 고른다.
-8. 새로운 holdout query로 최종 확인한다.
+1. Positive에는 keyword 없는 간접 요청을 넣는다.
+1. Negative에는 단어는 겹치지만 목적이 다른 near-miss를 넣는다.
+1. typo, 실제 경로, 구어체, 긴 맥락을 포함한다.
+1. 고정된 60% train / 40% validation으로 나눈다.
+1. 비결정성을 고려해 query당 3회 이상 실행한다.
+1. 약 5회 이내 개선 후 validation이 가장 좋은 버전을 고른다.
+1. 새로운 holdout query로 최종 확인한다.
 
 ```text
 trigger_rate = 활성화 횟수 / 전체 실행 횟수

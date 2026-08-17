@@ -27,9 +27,9 @@ description: 외부 baseline을 확장한 repository-local Agent Asset taxonomy�
 새 자산은 다음 질문으로 분류한다.
 
 1. 여러 task에서 특정 scope에 지속되는 policy인가? → **Rule**
-2. 반복 capability 또는 상황에 따라 로드할 context인가? → **Skill**
-3. 현재 invocation에서만 필요한 goal이나 constraint인가? → **Prompt**
-4. 독립 role, authority, tool, delegation boundary가 필요한가? → **Agent**
+1. 반복 capability 또는 상황에 따라 로드할 context인가? → **Skill**
+1. 현재 invocation에서만 필요한 goal이나 constraint인가? → **Prompt**
+1. 독립 role, authority, tool, delegation boundary가 필요한가? → **Agent**
 
 재사용 가능하다는 이유만으로 Skill로 만들지 않는다. 반대로 별도 role이나 지속 policy가 필요하지 않은 reusable capability/context는 Skill이 기본 후보다.
 

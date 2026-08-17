@@ -12,10 +12,10 @@ description: 에이전트 자산을 추가, 분리, 중복 제거, 단순화할 
 새 자산·규칙·분기·추상화를 만들거나 기존 구조를 손볼 때 다음 순서로 본다.
 
 1. **YAGNI** — 지금 필요한가?
-2. **SRP** — 하나의 책임인가?
-3. **DRY** — 같은 지식을 누가 authoritative하게 소유하는가?
-4. **KISS** — 같은 신뢰성을 더 적은 복잡도로 만들 수 있는가?
-5. **Progressive Disclosure** — 필요한 context만 필요한 시점에 노출되는가?
+1. **SRP** — 하나의 책임인가?
+1. **DRY** — 같은 지식을 누가 authoritative하게 소유하는가?
+1. **KISS** — 같은 신뢰성을 더 적은 복잡도로 만들 수 있는가?
+1. **Progressive Disclosure** — 필요한 context만 필요한 시점에 노출되는가?
 
 앞 단계에서 제거할 수 있는 것을 뒤 단계의 abstraction으로 해결하지 않는다.
 

@@ -25,8 +25,8 @@ my-skill/
 ## Progressive Disclosure
 
 1. **Discovery**: Load `name`, `description`.
-2. **Activation**: Load `SKILL.md` on match.
-3. **Execution**: Follow instructions. Load scripts/assets on demand.
+1. **Activation**: Load `SKILL.md` on match.
+1. **Execution**: Follow instructions. Load scripts/assets on demand.
 Benefit: Saves tokens, avoids instruction bloat.
 
 ## When To Use

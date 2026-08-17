@@ -26,8 +26,8 @@ description: 이 저장소의 Skill target profile, flat/runtime 경계와 packa
 `skills-chatbot/`은 다음을 모두 만족할 때 사용한다.
 
 1. `<skill-name>.skill.md` 한 파일로 완결된다.
-2. 배포 파일이 `<4,000 tokens`다.
-3. runtime-required bundle이나 host-only capability가 필요하지 않다.
+1. 배포 파일이 `<4,000 tokens`다.
+1. runtime-required bundle이나 host-only capability가 필요하지 않다.
 
 그 외에는 `skills-chatbot-runtime/`을 사용한다. `<4,000 tokens`는 이 저장소의 로컬 budget이며 외부 표준이 아니다.
 

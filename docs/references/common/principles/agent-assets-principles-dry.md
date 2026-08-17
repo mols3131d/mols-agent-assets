@@ -22,9 +22,9 @@ description: 에이전트 자산에서 같은 지식의 authoritative owner를 �
 다음이 모두 참이면 통합을 우선한다.
 
 1. 두 위치가 같은 지식을 정의한다.
-2. 하나가 바뀌면 다른 하나도 의미상 함께 바뀌어야 한다.
-3. authoritative owner를 하나로 정할 수 있다.
-4. 중앙화가 runtime 독립성이나 context 효율을 해치지 않는다.
+1. 하나가 바뀌면 다른 하나도 의미상 함께 바뀌어야 한다.
+1. authoritative owner를 하나로 정할 수 있다.
+1. 중앙화가 runtime 독립성이나 context 효율을 해치지 않는다.
 
 4가 실패하면 **owner는 하나로 유지하고 최소 로컬 적용만 허용**한다.
 
