@@ -1,97 +1,53 @@
 ---
 title: Canonical Superset Agent Assets
-description: 여러 target harness로 투영되는 Agent Asset의 canonical superset과 projection 관계
+description: Agent Asset 유형에 공통되는 canonical superset과 target projection 관계
 ---
 
 # Canonical Superset Agent Assets
 
-같은 Agent Asset을 여러 target harness에 배포해야 할 때 하나의 **canonical superset**을 source authority로 두고 target-native asset을 projection으로 만들 수 있다.
+**Canonical Superset**은 같은 Agent Asset을 여러 target harness에 배포할 때 지원 대상 전체의 의도된 의미를 보존하는 source authority다.
 
-Superset은 지원 대상 전체의 의도된 의미를 포괄하는 authoritative source model이다. **모든 target의 최소 공통분모가 아니다.**
+Superset은 새 Agent Asset 유형도, 모든 target의 최소 공통분모도 아니다. Rule, Skill, Prompt, Agent 각각은 자기 유형에 맞는 최적 Superset을 별도로 정의한다.
 
 ```text
 canonical superset
 ├─ shared semantics
-├─ target A semantics
-└─ target B semantics
-        ↓ projection
-   target-native assets
+├─ target-scoped semantics
+└─ compatibility boundaries
+        ↓
+   target projections
 ```
 
-Superset은 새 Agent Asset 유형이 아니다. Rule, Skill, Prompt, Agent 중 하나의 자산에 적용되는 cross-target ownership model이다.
+## Common Doctrine
 
-## Core Model
+- **One authority** — 관리 대상 의미의 canonical authority는 하나만 둔다.
+- **Full intent** — target 차이를 삭제해 공통분모로 축소하지 않는다.
+- **Native projection** — target payload는 해당 harness의 native schema와 idiom에 맞춘다.
+- **Visible loss** — unsupported, omitted, approximated semantics를 숨기지 않는다.
+- **Derived output** — generated projection은 명시적 ownership migration이 없는 한 source authority가 아니다.
+- **Target validation** — projection은 실제 target contract에 대해 검증한다.
 
-Canonical superset은 다음을 함께 소유할 수 있다.
-
-- 여러 target이 공유하는 semantic contract와 invariant
-- target별 capability 차이 때문에 의도적으로 달라지는 target-scoped semantics
-- projection에서 보존해야 할 중요한 behavioral boundary
-
-Target projection은 canonical 의미를 해당 harness가 실행할 수 있는 native form으로 표현한다. format, metadata, placement, package shape와 tool binding 같은 target encoding은 projection에 속한다.
-
-Generated projection은 기본적으로 derived artifact다. target이 표현하지 못하는 의미는 생략·근사·대체 여부를 숨기지 않는다.
-
-Superset은 여러 target이 실제로 필요할 때만 사용한다. 하나의 target만 운용하는 자산에 중간 추상화를 만들 이유는 없다.
+Canonical source와 target projection에 필요한 의미가 함께 존재하는 것 자체는 DRY 위반이 아니다. 문제는 같은 의미가 여러 독립 authority로 갈라져 서로 다르게 진화하는 경우다.
 
 ## Delivery Route
 
-여러 target을 지원한다고 해서 항상 별도 projection 파일을 만들지는 않는다. 실제 target contract가 허용하는 가장 작은 route를 사용한다.
+여러 target을 지원해도 항상 별도 projection을 만들지는 않는다.
 
-1. **Direct reuse** — target이 canonical source를 직접 발견하고 필요한 semantics를 소비할 수 있으면 그대로 사용한다.
-1. **Canonical fan-out** — canonical superset이 authoritative하고 target-native payload가 따로 필요할 때 projection을 생성한다.
-1. **Native bridge** — 이미 하나의 native target asset이 authoritative하면 그 source를 유지하고 필요한 다른 target으로만 bridge한다.
+1. **Direct reuse** — target이 canonical source를 그대로 소비할 수 있으면 재사용한다.
+1. **Canonical fan-out** — target-native payload가 필요하면 Superset에서 projection한다.
+1. **Native bridge** — 이미 native asset이 authoritative하면 source를 유지한 채 다른 target으로 bridge한다.
 
-Format이 비슷하다는 이유만으로 direct reuse를 가정하지 않고, 단순 bridge를 위해 별도 canonical layer 채택을 강제하지 않는다.
+## Type-Specific Supersets
 
-## By Asset Type
+각 유형 문서가 실제 Superset format, ownership과 projection boundary를 소유한다.
 
-| Asset | Canonical superset owns | Projection adapts |
-| --- | --- | --- |
-| Rule | policy, constraint, scope semantics | instruction format, placement, selector |
-| Skill | capability, activation intent, behavior contract | package shape, discovery metadata, runtime surface |
-| Prompt | task intent, inputs, constraints, output contract | invocation format, parameters, target metadata |
-| Agent | role, authority, tool/delegation boundary | agent schema, tool binding, handoff representation |
-
-### Rule
-
-Rule superset은 여러 harness에 같은 policy를 배포하면서 target별 scope나 표현 차이까지 한 source authority에서 관리할 때 사용한다. GitHub Copilot과 Google Antigravity 같은 target의 native Rule은 canonical Rule의 projection일 수 있다.
-
-### Skill
-
-Skill superset은 같은 capability와 행동 계약을 서로 다른 runtime profile에 맞게 배포할 때 사용한다. 이 저장소의 `skills/`, `skills-chatbot/`, `skills-chatbot-runtime/` 간 semantic overlap은 이 projection 모델로 설명할 수 있다.
-
-Target에 따라 package surface나 제공 가능한 runtime capability가 다르면 그 차이를 canonical target-scoped semantics로 보존하고 각 projection이 지원 범위에 맞게 표현한다.
-
-### Prompt
-
-Prompt superset은 같은 invocation intent와 input/output contract를 여러 harness의 prompt surface에 맞게 배포할 때 사용한다. target-specific parameter, invocation syntax 또는 지원 기능 차이는 target-scoped semantics나 projection encoding으로 구분한다.
-
-### Agent
-
-Agent superset은 동일한 role과 authority boundary를 여러 harness의 custom-agent 표현으로 배포할 때 사용한다. target별 tool, permission, delegation 차이는 명시적으로 보존하며 사용할 수 없는 기능을 지원되는 것처럼 가장하지 않는다.
-
-## Projection Rules
-
-1. **One authority** — 관리 대상 전체 의미의 source authority는 하나만 둔다.
-1. **Full intent** — 공통분모로 축소하지 말고 필요한 target-scoped 차이까지 canonical하게 표현한다.
-1. **Semantic fidelity** — projection은 문구 동일성보다 의미와 행동 계약 보존을 우선한다.
-1. **Native fit** — target이 요구하는 schema와 idiom에 맞게 표현한다.
-1. **Visible loss** — unsupported, omitted, approximated semantics를 숨기지 않는다.
-1. **Explicit locality** — canonical 밖에 남기는 target-only 의미는 local extension임을 명확히 한다.
-1. **Target validation** — 각 projection은 실제 target contract에 맞게 검증한다.
-
-## DRY Boundary
-
-Canonical source와 target projection에 관련 의미가 함께 존재하는 것은 그 자체로 DRY 위반이 아니다. 서로 다른 runtime surface가 독립 payload를 요구한다면 필요한 semantic overlap이다.
-
-문제는 같은 관리 대상 의미가 여러 파일에서 **독립 authority**로 진화하여 서로 다른 답을 가지게 되는 경우다.
+- [Rule Canonical Superset](../../rules/agent-assets-rules-canonical-superset.md)
+- [Skill Canonical Superset](../../skills/agent-assets-skills-canonical-superset.md)
+- [Prompt Canonical Superset](../../prompts/agent-assets-prompts-canonical-superset.md)
+- [Agent Canonical Superset](../../agents/agent-assets-agents-canonical-superset.md)
 
 ## Boundary
 
-- Superset은 Rule, Skill, Prompt, Agent에 공통 적용 가능한 repository-local authoring/deployment model이다.
-- 모든 자산에 superset을 강제하지 않는다.
-- 하나의 범용 중간 schema나 transpiler를 요구하지 않는다.
-- target-specific capability를 억지로 공통분모로 축소하지 않는다.
-- Prompt와 Agent에 별도 target profile 규격이 생기기 전까지 이 문서는 구체적인 vendor schema나 placement를 정의하지 않는다.
-- platform/system/user instruction과 target harness의 강제 규격이 이 convention보다 우선한다.
+이 문서는 네 유형에 공통되는 개념만 소유한다. 유형별 source format, field, package surface, placement와 vendor-specific capability는 각 유형 reference와 target의 공식 contract가 소유한다.
+
+Superset은 여러 target을 실제로 관리할 가치가 있을 때 사용한다. 하나의 target만 필요한 자산에 불필요한 canonical layer나 sibling projection을 만들지 않는다.
