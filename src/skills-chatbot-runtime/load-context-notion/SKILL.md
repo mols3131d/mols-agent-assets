@@ -14,9 +14,8 @@ metadata:
 # Load Context: Notion
 
 Use this Skill as a **Notion context loader**, not as a Notion editing workflow. Read the
-smallest current workspace state needed to understand the target and its structural
-constraints, then hand execution to the relevant writing, knowledge, planning, or Notion
-mutation capability.
+smallest live workspace state needed to understand the target and structural constraints,
+then hand execution to the relevant writing, knowledge, planning, or Notion capability.
 
 ## Trigger Boundary
 
@@ -26,116 +25,61 @@ Activate when either condition is true:
   workspace object is being read or changed;
 - a Notion connector, plugin, or tool will be called for task-level work.
 
-A Notion read used only to identify the target may happen first. Complete the relevant
-context loading before mutation or before making structural assumptions about the object.
+A narrow read used only to identify the target may happen first. Complete relevant context
+loading before mutation or before making structural assumptions about the object.
 
 ## Core Contract
 
-1. **Resolve the live target** — identify the exact page/database/data source/view/object
-   and its parent or containing structure when that relationship matters. Do not rely on
-   remembered workspace state.
-2. **Separate content from structure** — page body content, page properties, data-source
-   schema, relations, templates, views, and layout are different kinds of context. Load
-   only the kinds that can affect the requested operation.
-3. **Resolve the schema owner** — when the task addresses database entries, properties,
-   schema, or queries, identify the concrete data source that owns that structure. A
-   database container alone is not enough when multiple data sources are present. If the
-   visible object is a linked projection, resolve the original source when the active
-   connector/API requires it instead of treating the projection as the schema owner.
-4. **Preserve existing semantics** — do not flatten structured properties, relations, or
-   repeated page structure into prose merely because prose is easier to generate.
-5. **Respect workspace evidence** — use the current Notion object and its connected
-   metadata as the source for names, property types, relation targets, view configuration,
-   and structure. Do not invent a workspace convention from generic Notion practice.
-6. **Treat partial reads as partial** — pagination, truncation, unsupported fields, API
-   version differences, linked-source limitations, or connection permissions can make
-   visible context incomplete. A page metadata/property read is not necessarily its body
-   content, and large reference properties may require a property-specific follow-up read.
-   Do not turn an incomplete read into evidence that content, a property, relation, row,
-   data source, or object does not exist.
-7. **Load progressively** — start with the target object. Expand to its parent, database,
-   data-source schema, view configuration, original linked source, related objects, or
-   template only when the current task depends on them.
-8. **Stop when sufficient** — context loading should not become a workspace crawl.
+1. **Resolve the live target** — identify the exact object and the parent, container, data
+   source, or view only when that relationship can affect the task. Do not rely on remembered
+   workspace state.
+2. **Separate content from structure** — page body, properties/schema, relations, templates,
+   views, and layout are different context surfaces. Load only those the next action needs.
+3. **Preserve typed semantics** — do not flatten properties, relations, repeated structure,
+   or view configuration into prose merely because prose is easier to generate.
+4. **Use workspace evidence** — names, types, relation targets, schema, view state, and
+   structure come from current Notion evidence, not generic Notion conventions.
+5. **Treat incomplete reads as incomplete** — pagination, truncation, permissions, plan
+   limits, unsupported fields, or connector/API differences can hide relevant state. Do not
+   convert a partial read into evidence of absence.
+6. **Load progressively and stop** — expand from the target only when another object or
+   structural surface can materially change the next action. Do not crawl the workspace.
 
-## Notion Object Lens
+## Conditional Loading
 
-Preserve these distinctions when the active connector exposes them:
+For a straightforward existing-page task, read the current page content and only the
+properties or parent context that constrain the requested change.
 
-- A **database** is a container and may contain one or more **data sources**. A data source
-  owns its table schema and rows/pages. When a database has multiple sources, resolve the
-  intended source instead of treating the database ID as an interchangeable schema or row
-  target.
-- A linked database/data-source surface may be a projection of an original source rather
-  than an independently retrievable schema owner. When the active API cannot retrieve a
-  linked source directly, resolve and use the shared original source instead of inferring
-  schema from the projection.
-- A database entry is also a page: structured properties and page body content can both
-  matter, but they are not interchangeable. A page-object read may expose properties
-  without the page's block body, so retrieve the body separately when the task depends on
-  it and the active connector/API separates those surfaces.
-- Data-source properties define structured fields used for organization, search,
-  filtering, sorting, status, dates, people, relations, formulas, rollups, and similar
-  semantics.
-- Relation properties connect pages or data-source items. Treat the relationship itself as
-  structured data rather than replacing it with a copied title or URL unless the user
-  explicitly asks for a textual projection. When a property read is truncated or bounded,
-  retrieve the specific property or additional pages before concluding the relation is
-  complete or absent. Missing relation-backed schema may also reflect connection access to
-  the related source rather than actual absence.
-- Templates may encode repeated property defaults and page structure. Inspect the relevant
-  template when creating or reshaping a repeated page type and when the connector exposes
-  it.
-- A **view** is a presentation/query surface over a data source. Filters, sorts, grouping,
-  visible properties, and view type can materially change what the user is looking at
-  without changing the underlying schema. When a request names or links a specific view,
-  treat that configuration as context rather than inferring it from the data source alone.
+Read only the relevant section of `references/structured-context.md` when the task depends
+on any of these:
 
-## Load Conditions
+- database or data-source schema;
+- typed properties, relations, formulas, or rollups;
+- a specific database view or linked projection;
+- repeated page templates;
+- completeness of a potentially bounded or truncated structured read.
 
-Load additional Notion context only when one of these conditions is present:
+For restructuring or navigation work, inspect parent/child placement and nearby canonical
+pages only when the information architecture actually depends on them.
 
-- **Existing page edit** → read the current page body and any properties that constrain the
-  edit; do not assume one page read contains both when the active surface separates them.
-- **Database/data-source work** → fetch or otherwise resolve the database's available data
-  sources, select the source relevant to the task, resolve the original source when a linked
-  projection cannot provide authoritative schema, and read the relevant property
-  definitions before assigning, interpreting, querying, or changing structured values.
-- **View-specific work** → identify the exact view and load only the filter, sort, grouping,
-  visible-property, view-type, or other display/query settings that can affect the task.
-  Keep view configuration distinct from the underlying data-source schema.
-- **Relation or rollup work** → identify the relation target and only the connected fields
-  needed to understand the requested relationship; if the connector reports truncation,
-  pagination, bounded references, inaccessible related sources, or incomplete access,
-  retrieve enough additional context before concluding that a relation/value is absent or
-  complete.
-- **Repeated page creation** → inspect an applicable database template when one is known and
-  available.
-- **Restructuring** → inspect parent/child placement, existing navigation, and nearby
-  canonical pages only when the requested move or information architecture depends on it.
-
-Do not load every relation target, database row, data source, template, sibling page, or
-view by default.
+Do not load every row, relation target, data source, view, template, sibling page, or parent
+object by default.
 
 ## Recheck Before Task Action
 
-Before handing off to a task-level mutation, confirm that:
+Before handing off to a task-level mutation, confirm only the facts that could make the next
+action target the wrong object or damage existing structure:
 
-- the resolved Notion object and, for structured database work, the authoritative concrete
-  data source are the intended targets;
-- when a specific view governs the request, the relevant current view configuration is
-  known rather than inferred from the data source;
-- property names and types used by the next action come from current workspace evidence;
-- relation targets and structured fields have not been reduced to guessed prose;
-- visible body/property/relation results are sufficiently complete for the conclusion being
-  made;
-- existing structure that must be preserved is known;
-- unresolved ambiguity that could cause a destructive or structurally incorrect write is
-  surfaced rather than guessed.
+- the resolved object is the intended target;
+- any property names/types or relation targets used by the action come from current evidence;
+- view-specific behavior is not being mistaken for underlying schema;
+- the visible result is complete enough for the conclusion being made;
+- structure that must be preserved is known;
+- material ambiguity is surfaced instead of guessed.
 
 ## Boundary
 
 This Skill is read-oriented context discovery. It does not create, edit, move, archive,
 delete, comment on, or otherwise mutate Notion content. It does not own prose quality,
-document layout, knowledge-capture workflow, database design methodology, view design
-methodology, or final output format. Those belong to the relevant downstream capability.
+document layout, knowledge-capture workflow, database/view design methodology, or final
+output format. Those belong to the relevant downstream capability.
