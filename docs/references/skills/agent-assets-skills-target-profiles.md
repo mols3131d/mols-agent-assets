@@ -36,9 +36,15 @@ description: 이 저장소의 Skill target profile, flat/runtime 경계와 packa
 
 Flat chatbot Skill은 하나의 일반 문서보다 **동등한 instruction block들의 단일 payload**에 가깝게 작성한다.
 
-- 서로 독립적인 contract, procedure, output semantics 같은 주요 block에는 복수의 top-level `#` heading 사용을 권장한다.
-- 문서 제목 하나를 만들기 위해 모든 주요 block을 `##` 아래로 강제하지 않는다.
-- 단순한 Skill은 하나의 `#`만 사용해도 된다. 의미 없는 heading 분할은 만들지 않는다.
+`#`은 문서 계층의 최상위 제목보다 **responsibility boundary**로 취급한다. 서로 독립된 책임에는 복수의 `#` 사용을 권장한다.
+
+- 각 `#`은 하나의 명확한 책임만 소유한다.
+- 각 책임은 독립적으로 이해하고 적용할 수 있는 최소한의 coherent instruction unit으로 유지한다.
+- 하나의 `#`이 여러 독립 책임을 함께 소유하면 나누고, 분리하면 의미가 깨지는 책임은 억지로 쪼개지 않는다.
+- `##`와 그 아래 heading은 해당 `#` 책임 내부의 세부 구조에 사용한다.
+- 공통 invariant를 여러 `#`에 반복하지 않는다. 필요하면 별도의 공통 책임 block으로 올린다.
+- 문서 제목 하나를 만들기 위해 모든 주요 책임을 `##` 아래로 강제하지 않는다.
+- 단순한 Skill은 하나의 `#`만 사용해도 된다.
 - target harness가 heading 구조를 강제하면 해당 mandatory contract가 이 권장보다 우선한다.
 
 예:
@@ -49,6 +55,12 @@ Flat chatbot Skill은 하나의 일반 문서보다 **동등한 instruction bloc
 ...
 
 # Procedure
+
+## Resolve
+
+...
+
+## Apply
 
 ...
 
