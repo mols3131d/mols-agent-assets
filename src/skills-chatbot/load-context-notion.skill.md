@@ -23,6 +23,8 @@ Execution belongs to the downstream task capability.
 - Treat pagination, truncation, permissions, plan limits, and unsupported fields as
   possible incompleteness, not evidence of absence.
 - Load progressively. Stop when more context is unlikely to change the next action.
+- When a lookup establishes the concrete target, finish the context loading that can
+  affect the task before downstream mutation or structural assumptions depend on it.
 
 ## Object Semantics
 
