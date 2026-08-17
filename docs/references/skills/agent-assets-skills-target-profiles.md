@@ -82,7 +82,15 @@ Baseline은 단순 refactor나 문구 변경으로 갱신하지 않는다. 의�
 
 이 naming은 repository-local convention이다. 실제 구현·mutation·검증·최종 output까지 소유하는 Skill에는 사용하지 않는다.
 
-개인 관행을 범용 loader와 분리할 때는 `load-context-<topic>-<owner>`를 personal overlay로 사용한다. 개인 대상에서는 base와 overlay를 함께 적용하고, 타인·팀·회사·공유 프로젝트에는 base만 적용한다. 단순 접근 권한이나 참여 이력만으로 personal overlay를 활성화하지 않는다.
+개인 관행을 범용 loader와 분리할 때는 `load-context-<topic>-<owner>`를 personal overlay로 사용한다.
+
+Personal overlay activation은 conversation이나 connection 전체가 아니라 **현재 target별로** 판단한다.
+
+- base loader는 해당 topic의 context loading이 필요하면 적용한다.
+- personal overlay는 target이 해당 owner의 개인 관행으로 관리된다는 근거가 있을 때만 추가한다.
+- 단순 access, membership, admin permission, authorship, collaboration은 personal scope의 근거가 아니다.
+- 여러 target이 섞이면 personal target에만 overlay를 적용한다.
+- personal scope가 불명확하면 근거가 생길 때까지 base만 적용한다.
 
 예: `load-context-github` + `load-context-github-mols`, `load-context-notion` + `load-context-notion-mols`.
 
