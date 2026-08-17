@@ -43,7 +43,7 @@ description: 현재 evidence가 없는 capability와 abstraction을 에이전트
 
 ## Boundary
 
-현재 필요성이 확인된 뒤의 구조 단순화는 [KISS](kiss.md), 책임 분리는 [SRP](srp.md)가 맡는다.
+현재 필요성이 확인된 뒤의 구조 단순화는 [KISS](agent-assets-principles-kiss.md), 책임 분리는 [SRP](agent-assets-principles-srp.md)가 맡는다.
 
 ## Sources
 

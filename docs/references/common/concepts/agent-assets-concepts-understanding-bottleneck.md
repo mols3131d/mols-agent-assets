@@ -29,10 +29,10 @@ AI가 코드와 문서를 빠르게 생성할수록 병목은 생성 자체보�
 
 이 문제를 해결하기 위해 문서를 많이 만드는 것은 답이 아니다.
 
-- authoritative owner를 명확히 한다. → [DRY](../principles/dry.md)
-- 책임 경계를 작고 cohesive하게 유지한다. → [SRP](../principles/srp.md)
-- 행동과 구조에 기여하지 않는 설명을 줄인다. → [KISS](../principles/kiss.md)
-- 사람이 빠르게 탐색할 수 있는 문서 구조를 사용한다. → [Human-Readable Documents](../authoring/human-readable-documents.md)
+- authoritative owner를 명확히 한다. → [DRY](../principles/agent-assets-principles-dry.md)
+- 책임 경계를 작고 cohesive하게 유지한다. → [SRP](../principles/agent-assets-principles-srp.md)
+- 행동과 구조에 기여하지 않는 설명을 줄인다. → [KISS](../principles/agent-assets-principles-kiss.md)
+- 사람이 빠르게 탐색할 수 있는 문서 구조를 사용한다. → [Human-Readable Documents](../authoring/agent-assets-authoring-human-readable-documents.md)
 - 중요한 rationale과 invariant는 재생성 가능한 작업 로그와 구분해 보존한다.
 
 ## Boundary

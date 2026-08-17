@@ -30,9 +30,9 @@ description: 에이전트 자산에서 같은 지식의 authoritative owner를 �
 
 ## Boundary
 
-DRY는 책임이 다른 자산을 문장이 비슷하다는 이유로 합치지 않는다. 책임 경계는 [SRP](srp.md)가 결정한다.
+DRY는 책임이 다른 자산을 문장이 비슷하다는 이유로 합치지 않는다. 책임 경계는 [SRP](agent-assets-principles-srp.md)가 결정한다.
 
-아직 반복되지 않은 것을 공통 abstraction으로 만드는 문제는 [YAGNI](yagni.md)가 먼저 판단한다.
+아직 반복되지 않은 것을 공통 abstraction으로 만드는 문제는 [YAGNI](agent-assets-principles-yagni.md)가 먼저 판단한다.
 
 ## Anti-Patterns
 

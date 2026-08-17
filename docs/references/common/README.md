@@ -28,11 +28,11 @@ description: 에이전트 자산 전반에 공통으로 적용되는 표준, 설
 
 ## Start Here
 
-- 자산 유형이나 placement를 판단한다 → [Personal Agent Asset Standard](standards/personal-agent-asset-standard.md)
-- 외부 기준과 로컬 확장을 구분한다 → [Agent Asset Standard Baseline](standards/agent-asset-standard-baseline.md)
+- 자산 유형이나 placement를 판단한다 → [Personal Agent Asset Standard](standards/agent-assets-standard-personal.md)
+- 외부 기준과 로컬 확장을 구분한다 → [Agent Asset Standard Baseline](standards/agent-assets-standard-baseline.md)
 - 자산을 추가·분리·정리한다 → [Design Principles](principles/README.md)
-- LLM용 지침을 작성한다 → [LLM-Readable Instructions](authoring/llm-readable-instructions.md)
-- 사람용 문서를 작성한다 → [Human-Readable Documents](authoring/human-readable-documents.md)
+- LLM용 지침을 작성한다 → [LLM-Readable Instructions](authoring/agent-assets-authoring-llm-readable-instructions.md)
+- 사람용 문서를 작성한다 → [Human-Readable Documents](authoring/agent-assets-authoring-human-readable-documents.md)
 
 ## Boundary
 

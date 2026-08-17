@@ -11,7 +11,7 @@ Repository for developing, validating, and managing AI agent assets.
 | Prompt | Current invocation goal and one-off context |
 | Agent | Distinct role, authority, tools, and delegation |
 
-`docs/references/common/standards/agent-asset-standard-baseline.md` owns the standards-adjacent baseline. `docs/references/common/standards/personal-agent-asset-standard.md` owns this repository's intentional non-standard extensions and operating conventions.
+`docs/references/common/standards/agent-assets-standard-baseline.md` owns the standards-adjacent baseline. `docs/references/common/standards/agent-assets-standard-personal.md` owns this repository's intentional non-standard extensions and operating conventions.
 
 ## Source / Target Profiles
 
@@ -23,7 +23,7 @@ Repository for developing, validating, and managing AI agent assets.
 | `src/skills-chatbot-runtime/` | Chatbot Skill profile using bundled resources or hosted runtime capabilities |
 | `src/rules/` | Rule sources |
 
-`docs/references/skills/skill-target-profiles.md` owns the Skill profile details. `docs/references/rules/rule-projections.md` owns Rule projections and chatbot fallback behavior.
+`docs/references/skills/agent-assets-skills-target-profiles.md` owns the Skill profile details. `docs/references/rules/agent-assets-rules-projections.md` owns Rule projections and chatbot fallback behavior.
 
 ## Repository Structure
 

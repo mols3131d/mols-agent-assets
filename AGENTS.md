@@ -9,14 +9,14 @@
 
 For asset doctrine, distinguish:
 
-1. `docs/references/common/standards/agent-asset-standard-baseline.md` — standards-adjacent external/common baseline.
-1. `docs/references/common/standards/personal-agent-asset-standard.md` — **Personal Agent Asset Standard** and repository authority for non-standard extensions.
+1. `docs/references/common/standards/agent-assets-standard-baseline.md` — standards-adjacent external/common baseline.
+1. `docs/references/common/standards/agent-assets-standard-personal.md` — **Personal Agent Asset Standard** and repository authority for non-standard extensions.
 
 Prefer Skill as the portable reusable unit when a capability or situation-specific context should be activated on demand by the model rather than loaded globally.
 
-For Rule deployment, follow `docs/references/rules/rule-projections.md`: this repository uses non-standard local conventions for root/nested `AGENTS.md`, harness-appropriate glob selectors, and `CHATBOT.md`. The chatbot fallback is `CHATBOT.md → AGENTS.md → README.md`.
+For Rule deployment, follow `docs/references/rules/agent-assets-rules-projections.md`: this repository uses non-standard local conventions for root/nested `AGENTS.md`, harness-appropriate glob selectors, and `CHATBOT.md`. The chatbot fallback is `CHATBOT.md → AGENTS.md → README.md`.
 
-For Skill placement, follow `docs/references/skills/skill-target-profiles.md`. Treat `skills/`, `skills-chatbot/`, and `skills-chatbot-runtime/` as repository-local, non-standard target profiles rather than Agent Skills specification categories.
+For Skill placement, follow `docs/references/skills/agent-assets-skills-target-profiles.md`. Treat `skills/`, `skills-chatbot/`, and `skills-chatbot-runtime/` as repository-local, non-standard target profiles rather than Agent Skills specification categories.
 
 Supporting resources are not peer Agent Asset types alongside Rule, Skill, Prompt, and Agent.
 

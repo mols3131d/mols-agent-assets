@@ -52,4 +52,4 @@ description: ...
 
 구조를 위해 빈 section, 의미 없는 요약, 상투적인 탐색 제안을 추가하지 않는다.
 
-인간의 이해가 유지보수 병목이 되는 배경은 [Understanding Bottleneck](../concepts/understanding-bottleneck.md)을 참고한다.
+인간의 이해가 유지보수 병목이 되는 배경은 [Understanding Bottleneck](../concepts/agent-assets-concepts-understanding-bottleneck.md)을 참고한다.

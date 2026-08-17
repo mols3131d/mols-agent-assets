@@ -30,10 +30,10 @@ description: 에이전트 자산에서 같은 행동 신뢰성을 유지하는 �
 
 KISS는 다음 질문을 소유하지 않는다.
 
-- 아직 필요하지 않은가? → [YAGNI](yagni.md)
-- 책임을 분리해야 하는가? → [SRP](srp.md)
-- 중복 지식의 owner는 누구인가? → [DRY](dry.md)
-- 언제 세부 context를 로드하는가? → [Progressive Disclosure](progressive-disclosure.md)
+- 아직 필요하지 않은가? → [YAGNI](agent-assets-principles-yagni.md)
+- 책임을 분리해야 하는가? → [SRP](agent-assets-principles-srp.md)
+- 중복 지식의 owner는 누구인가? → [DRY](agent-assets-principles-dry.md)
+- 언제 세부 context를 로드하는가? → [Progressive Disclosure](agent-assets-principles-progressive-disclosure.md)
 
 ## Anti-Patterns
 

@@ -55,7 +55,7 @@ API가 non-200 response를 반환하면 references/api-errors.md를 읽는다.
 - 같은 개념을 다른 이름으로 부르고 있지 않은가?
 - 성공 또는 실패를 확인할 수 있는가?
 
-행동을 바꾸지 않는 설명은 [KISS](../principles/kiss.md)에 따라 제거 후보로 본다. 조건부 상세 context는 [Progressive Disclosure](../principles/progressive-disclosure.md)에 따라 분리한다.
+행동을 바꾸지 않는 설명은 [KISS](../principles/agent-assets-principles-kiss.md)에 따라 제거 후보로 본다. 조건부 상세 context는 [Progressive Disclosure](../principles/agent-assets-principles-progressive-disclosure.md)에 따라 분리한다.
 
 ## Sources
 

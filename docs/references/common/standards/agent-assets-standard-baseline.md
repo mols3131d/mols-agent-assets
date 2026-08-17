@@ -66,7 +66,7 @@ Agent는 일반적으로 role/instructions, tools, authority/permissions, handof
 - Skill package의 dot-prefixed non-runtime surface
 - `.docs/baseline/` preservation convention
 
-실제 운용 기준은 [Personal Agent Asset Standard](personal-agent-asset-standard.md)와 유형별 reference가 소유한다.
+실제 운용 기준은 [Personal Agent Asset Standard](agent-assets-standard-personal.md)와 유형별 reference가 소유한다.
 
 ## Primary Sources
 

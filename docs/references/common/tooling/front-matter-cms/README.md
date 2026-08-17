@@ -19,31 +19,31 @@
 
 | 문서 | 용도 |
 | --- | --- |
-| [01-configuration.md](01-configuration.md) | 설정 파일, 우선순위, 분리 구성 |
-| [02-content-types.md](02-content-types.md) | 타입 선택, 속성, `fmContentType` |
-| [03-fields.md](03-fields.md) | field 종류와 주요 옵션 |
-| [04-validation.md](04-validation.md) | 내장 검증 범위와 한계 |
-| [05-folders-templates-placeholders.md](05-folders-templates-placeholders.md) | 폴더, template, placeholder |
-| [06-scripts.md](06-scripts.md) | custom action, post-script, 자동화 |
-| [07-recipes.md](07-recipes.md) | 복사 가능한 실무 패턴 |
+| [front-matter-cms-configuration.md](front-matter-cms-configuration.md) | 설정 파일, 우선순위, 분리 구성 |
+| [front-matter-cms-content-types.md](front-matter-cms-content-types.md) | 타입 선택, 속성, `fmContentType` |
+| [front-matter-cms-fields.md](front-matter-cms-fields.md) | field 종류와 주요 옵션 |
+| [front-matter-cms-validation.md](front-matter-cms-validation.md) | 내장 검증 범위와 한계 |
+| [front-matter-cms-folders-templates-placeholders.md](front-matter-cms-folders-templates-placeholders.md) | 폴더, template, placeholder |
+| [front-matter-cms-scripts.md](front-matter-cms-scripts.md) | custom action, post-script, 자동화 |
+| [front-matter-cms-recipes.md](front-matter-cms-recipes.md) | 복사 가능한 실무 패턴 |
 
 ## 권장 읽기 순서
 
 ```text
 처음 설정
-  → 01 Configuration
-  → 02 Content Types
-  → 03 Fields
+  → Configuration
+  → Content Types
+  → Fields
 
 오류·검증
-  → 04 Validation
+  → Validation
 
 생성 흐름·자동화
-  → 05 Folders/Templates
-  → 06 Scripts
+  → Folders/Templates
+  → Scripts
 
 바로 적용
-  → 07 Recipes
+  → Recipes
 ```
 
 ## SKILL.md에서 연결할 때
@@ -53,11 +53,11 @@
 ```markdown
 ## References
 
-- 설정 구조를 변경하기 전 `references/01-configuration.md`를 읽는다.
-- content type을 추가·수정할 때 `references/02-content-types.md`를 읽는다.
-- field 옵션이 필요할 때 `references/03-fields.md`를 읽는다.
-- 검증 가능 여부를 판단할 때 `references/04-validation.md`를 읽는다.
-- 복사 가능한 패턴은 `references/07-recipes.md`를 사용한다.
+- 설정 구조를 변경하기 전 `references/front-matter-cms-configuration.md`를 읽는다.
+- content type을 추가·수정할 때 `references/front-matter-cms-content-types.md`를 읽는다.
+- field 옵션이 필요할 때 `references/front-matter-cms-fields.md`를 읽는다.
+- 검증 가능 여부를 판단할 때 `references/front-matter-cms-validation.md`를 읽는다.
+- 복사 가능한 패턴은 `references/front-matter-cms-recipes.md`를 사용한다.
 ```
 
 ## 업데이트 기준

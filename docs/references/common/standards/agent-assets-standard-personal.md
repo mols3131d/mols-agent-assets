@@ -5,7 +5,7 @@ description: 외부 baseline을 확장한 repository-local Agent Asset taxonomy�
 
 # Personal Agent Asset Standard
 
-이 문서는 [Agent Asset Standard Baseline](agent-asset-standard-baseline.md)을 바탕으로 이 저장소에서 사용하는 **공통 taxonomy와 placement 기준**을 정의한다.
+이 문서는 [Agent Asset Standard Baseline](agent-assets-standard-baseline.md)을 바탕으로 이 저장소에서 사용하는 **공통 taxonomy와 placement 기준**을 정의한다.
 
 유형별 projection과 packaging 세부사항은 각 유형 reference가 소유한다. 이 문서는 이를 다시 정의하지 않는다.
 
@@ -37,8 +37,8 @@ description: 외부 baseline을 확장한 repository-local Agent Asset taxonomy�
 
 공통 taxonomy와 유형별 deployment convention을 분리한다.
 
-- Rule projection과 chatbot fallback → [Rule Projections](../../rules/rule-projections.md)
-- Skill target profile과 package surface → [Skill Target Profiles](../../skills/skill-target-profiles.md)
+- Rule projection과 chatbot fallback → [Rule Projections](../../rules/agent-assets-rules-projections.md)
+- Skill target profile과 package surface → [Skill Target Profiles](../../skills/agent-assets-skills-target-profiles.md)
 
 Prompt와 Agent에 repository-local 규격이 실제로 생기기 전에는 별도 표준 문서를 만들지 않는다.
 

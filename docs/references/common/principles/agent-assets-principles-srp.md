@@ -36,9 +36,9 @@ description: 에이전트 자산을 하나의 cohesive responsibility와 주된 
 
 ## Boundary
 
-파일이 길지만 책임은 하나라면 먼저 [Progressive Disclosure](progressive-disclosure.md)를 검토한다.
+파일이 길지만 책임은 하나라면 먼저 [Progressive Disclosure](agent-assets-principles-progressive-disclosure.md)를 검토한다.
 
-중복 제거를 위해 책임이 다른 자산을 합치지 않는다. knowledge ownership은 [DRY](dry.md)가 다룬다.
+중복 제거를 위해 책임이 다른 자산을 합치지 않는다. knowledge ownership은 [DRY](agent-assets-principles-dry.md)가 다룬다.
 
 ## Sources
 

@@ -11,7 +11,7 @@ AI 에이전트 자산을 개발, 검증 및 관리하는 저장소입니다.
 | Prompt | 현재 invocation의 goal과 일회성 context |
 | Agent | 독립 role, authority, tools, delegation |
 
-외부 기준에 가까운 개념은 `docs/references/common/standards/agent-asset-standard-baseline.md`, 이 저장소의 비표준 확장과 실제 운용 기준은 `docs/references/common/standards/personal-agent-asset-standard.md`의 **Personal Agent Asset Standard**가 소유합니다.
+외부 기준에 가까운 개념은 `docs/references/common/standards/agent-assets-standard-baseline.md`, 이 저장소의 비표준 확장과 실제 운용 기준은 `docs/references/common/standards/agent-assets-standard-personal.md`의 **Personal Agent Asset Standard**가 소유합니다.
 
 ## Source / Target Profiles
 
@@ -23,7 +23,7 @@ AI 에이전트 자산을 개발, 검증 및 관리하는 저장소입니다.
 | `src/skills-chatbot-runtime/` | bundled resources 또는 hosted runtime 기능을 사용하는 chatbot Skill profile |
 | `src/rules/` | Rule source |
 
-세 Skill profile의 세부 규격은 `docs/references/skills/skill-target-profiles.md`가 소유합니다. Rule projection과 chatbot fallback은 `docs/references/rules/rule-projections.md`를 따릅니다.
+세 Skill profile의 세부 규격은 `docs/references/skills/agent-assets-skills-target-profiles.md`가 소유합니다. Rule projection과 chatbot fallback은 `docs/references/rules/agent-assets-rules-projections.md`를 따릅니다.
 
 ## Repository Structure
 

@@ -48,7 +48,7 @@ API가 non-200 response를 반환하면 references/api-errors.md를 읽는다.
 
 ## Boundary
 
-별도 Skill/Agent로 나눌지는 progressive disclosure가 아니라 [SRP](srp.md)가 결정한다. activation intent와 responsibility가 같다면 먼저 같은 자산 안의 resource 분리를 검토한다.
+별도 Skill/Agent로 나눌지는 progressive disclosure가 아니라 [SRP](agent-assets-principles-srp.md)가 결정한다. activation intent와 responsibility가 같다면 먼저 같은 자산 안의 resource 분리를 검토한다.
 
 ## Sources
 

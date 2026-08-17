@@ -23,11 +23,11 @@ description: 에이전트 자산을 추가, 분리, 중복 제거, 단순화할 
 
 | Principle | Owns | Does not own |
 | --- | --- | --- |
-| [YAGNI](yagni.md) | 현재 필요성, premature capability | 책임 분리 방식 |
-| [SRP](srp.md) | responsibility, reason to change | 중복 제거 자체 |
-| [DRY](dry.md) | knowledge ownership, drift | 무조건적인 중앙화 |
-| [KISS](kiss.md) | minimum sufficient complexity | 미래 요구 판단 |
-| [Progressive Disclosure](progressive-disclosure.md) | context loading boundary | capability 책임 분리 |
+| [YAGNI](agent-assets-principles-yagni.md) | 현재 필요성, premature capability | 책임 분리 방식 |
+| [SRP](agent-assets-principles-srp.md) | responsibility, reason to change | 중복 제거 자체 |
+| [DRY](agent-assets-principles-dry.md) | knowledge ownership, drift | 무조건적인 중앙화 |
+| [KISS](agent-assets-principles-kiss.md) | minimum sufficient complexity | 미래 요구 판단 |
+| [Progressive Disclosure](agent-assets-principles-progressive-disclosure.md) | context loading boundary | capability 책임 분리 |
 
 ## Conflict Rule
 
