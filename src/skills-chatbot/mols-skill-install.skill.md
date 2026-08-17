@@ -107,6 +107,7 @@ For `action: sync`, require a complete capability selection set from `mols-skill
 
 - Reconcile each selected repository capability against installed state.
 - Install/update/migrate only the preferred projection for each capability.
+- Process any Skill actively controlling the current discovery/install run after other selected capabilities. Do not restart or reinterpret the current run against a just-updated control Skill; use the new version on the next invocation.
 - Report installed Skills with no corresponding source capability as orphan candidates; do not delete them automatically.
 - Do not expand sync scope beyond the supplied source/selection.
 
