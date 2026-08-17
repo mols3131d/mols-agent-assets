@@ -118,5 +118,6 @@ Before handing off to a task-level mutation, confirm:
 
 This Skill is read-oriented context discovery. It does not create, edit, move, archive,
 delete, comment on, or otherwise mutate Notion content. It does not own prose quality,
-document layout, knowledge-capture workflow, database/view design methodology, or final
-output format. Those belong to the relevant downstream capability.
+document layout, knowledge-capture workflow, database/view design methodology, personal
+workspace conventions, or final output format. Those belong to the relevant downstream
+capability or an explicitly applicable personal overlay.
