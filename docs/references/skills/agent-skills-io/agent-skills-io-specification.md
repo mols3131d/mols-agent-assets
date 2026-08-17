@@ -36,9 +36,8 @@ Agent Skills open standard 채택을 명시하지 않았다면 harness-local Ski
 | Ecosystem | Official reference | Scope |
 | --- | --- | --- |
 | Anthropic / Claude | [Claude Platform Agent Skills](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview), [Claude Code Skills](https://code.claude.com/docs/en/skills) | Claude API, claude.ai, Claude Code의 Skill 동작 |
-| Microsoft Agent Framework | [Agent Skills](https://learn.microsoft.com/en-us/agent-framework/agents/skills) | Skill provider, loading, execution |
-| GitHub Copilot | [About agent skills](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills) | 지원 surface, discovery, installation |
-| Google Gemini CLI | [Agent Skills](https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/skills.md) | discovery tier, activation, consent, installation |
+| Microsoft / GitHub | [Microsoft Agent Framework — Agent Skills](https://learn.microsoft.com/en-us/agent-framework/agents/skills), [GitHub Copilot — About agent skills](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills) | Microsoft Agent Framework와 GitHub Copilot의 target-specific Skill 동작 |
+| Google | [Gemini CLI — Agent Skills](https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/skills.md), [Antigravity — Authoring Google Antigravity Skills](https://codelabs.developers.google.com/getting-started-with-antigravity-skills) | Gemini CLI와 Google Antigravity의 discovery, authoring, installation/runtime behavior |
 | OpenAI / ChatGPT & Codex | [Build skills](https://developers.openai.com/codex/skills) | Skill structure, discovery, activation, host metadata |
 | xAI / Grok | [Grok shell Skill reference](https://github.com/xai-org/grok-build/blob/main/crates/codegen/xai-grok-shell/README.md#skills) | Grok shell의 Skill format, discovery, invocation |
 
@@ -52,18 +51,17 @@ Host-specific convention을 Tier 1 규칙으로 승격하지 않는다.
 ### Authoring Guides
 
 - Anthropic — [Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices)
-- Microsoft — [Agent Skills](https://learn.microsoft.com/en-us/agent-framework/agents/skills), [Microsoft Skills repository](https://github.com/microsoft/skills)
-- GitHub Copilot — [Adding agent skills](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills)
-- Google Gemini CLI — [Creating skills](https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/creating-skills.md), [Skills best practices](https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/skills-best-practices.md)
+- Microsoft / GitHub — [Microsoft Agent Skills](https://learn.microsoft.com/en-us/agent-framework/agents/skills), [GitHub Copilot — Adding agent skills](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills)
+- Google — [Gemini CLI — Creating skills](https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/creating-skills.md), [Gemini CLI — Skills best practices](https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/skills-best-practices.md), [Antigravity — Authoring Google Antigravity Skills](https://codelabs.developers.google.com/getting-started-with-antigravity-skills)
 - OpenAI / ChatGPT & Codex — [Build skills](https://developers.openai.com/codex/skills)
 - xAI / Grok — [Grok shell Skill reference](https://github.com/xai-org/grok-build/blob/main/crates/codegen/xai-grok-shell/README.md#skills), including `Creating a Skill`
 
 ### Official Skill-Creator Skills
 
 - Anthropic — [`skill-creator`](https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md)
-- Microsoft — [`skill-creator`](https://github.com/microsoft/skills/blob/main/.github/skills/skill-creator/SKILL.md)
-- Google Gemini CLI — built-in [`skill-creator`](https://github.com/google-gemini/gemini-cli/blob/main/packages/core/src/skills/builtin/skill-creator/SKILL.md)
-- OpenAI Codex — [`skill-creator`](https://github.com/openai/codex/blob/main/codex-rs/skills/src/assets/samples/skill-creator/SKILL.md)
+- Microsoft / GitHub — Microsoft [`skill-creator`](https://github.com/microsoft/skills/blob/main/.github/skills/skill-creator/SKILL.md) for its Microsoft/Azure scope; do not treat it as a GitHub Copilot creator
+- Google — Gemini CLI built-in [`skill-creator`](https://github.com/google-gemini/gemini-cli/blob/main/packages/core/src/skills/builtin/skill-creator/SKILL.md); no verified Antigravity-specific official creator is listed, so use the official Antigravity authoring guide instead
+- OpenAI — [`skill-creator`](https://github.com/openai/skills/blob/main/skills/.system/skill-creator/SKILL.md)
 
 공식 creator Skill은 구현 사례와 authoring guidance다. Portable specification의
 authority가 아니며, creator가 요구하는 추가 metadata, eval, file 또는 packaging은
