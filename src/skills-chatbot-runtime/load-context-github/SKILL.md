@@ -107,7 +107,7 @@ Preserve these invariants even when the detailed reference is not loaded:
 - Discover applicable nested `AGENTS.md` context instead of assuming only the repository
   root matters. Apply the active surface's documented precedence; for GitHub Copilot
   surfaces that support nested agent instructions, the nearest applicable `AGENTS.md`
-  takes precedence over other agent-instruction files.
+  takes precedence among applicable `AGENTS.md` files.
 - `README.md` is primarily context/navigation and is not automatically an override or a
   mandatory context source.
 - `applyTo`, path selectors, override semantics, and agent/tool-specific instructions
