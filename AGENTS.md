@@ -9,8 +9,8 @@
 
 For asset doctrine, distinguish:
 
-1. `docs/references/agent-asset-standard-baseline.md` — standards-adjacent external/common baseline.
-1. `docs/references/agent-asset-boundaries.md` — **Personal Agent Asset Standard** and repository authority for non-standard extensions.
+1. `docs/references/common/agent-asset-standard-baseline.md` — standards-adjacent external/common baseline.
+1. `docs/references/common/agent-asset-boundaries.md` — **Personal Agent Asset Standard** and repository authority for non-standard extensions.
 
 Prefer Skill as the portable reusable unit when a capability or situation-specific context should be activated on demand by the model rather than loaded globally.
 

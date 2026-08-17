@@ -11,7 +11,7 @@ Repository for developing, validating, and managing AI agent assets.
 | Prompt | Current invocation goal and one-off context |
 | Agent | Distinct role, authority, tools, and delegation |
 
-`docs/references/agent-asset-standard-baseline.md` owns the standards-adjacent baseline. `docs/references/agent-asset-boundaries.md` is the **Personal Agent Asset Standard** and owns this repository's intentional non-standard extensions and operating conventions.
+`docs/references/common/agent-asset-standard-baseline.md` owns the standards-adjacent baseline. `docs/references/common/agent-asset-boundaries.md` is the **Personal Agent Asset Standard** and owns this repository's intentional non-standard extensions and operating conventions.
 
 ## Source / Target Profiles
 

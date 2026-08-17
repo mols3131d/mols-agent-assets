@@ -11,7 +11,7 @@ AI 에이전트 자산을 개발, 검증 및 관리하는 저장소입니다.
 | Prompt | 현재 invocation의 goal과 일회성 context |
 | Agent | 독립 role, authority, tools, delegation |
 
-외부 기준에 가까운 개념은 `docs/references/agent-asset-standard-baseline.md`, 이 저장소의 비표준 확장과 실제 운용 규칙은 `docs/references/agent-asset-boundaries.md`의 **Personal Agent Asset Standard**가 소유합니다.
+외부 기준에 가까운 개념은 `docs/references/common/agent-asset-standard-baseline.md`, 이 저장소의 비표준 확장과 실제 운용 규칙은 `docs/references/common/agent-asset-boundaries.md`의 **Personal Agent Asset Standard**가 소유합니다.
 
 ## Source / Target Profiles
 

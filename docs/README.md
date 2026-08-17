@@ -11,4 +11,5 @@
 | `development.ko.md` | 자산 개발 파이프라인 및 승격 가이드 |
 | `testing.ko.md` | 자동화 테스트 및 코드 품질 검증 가이드 |
 | `skills/<skill-name>/` | 개별 자산별 사람용 가이드 및 문서 |
-| `references/` | 공통 조사 자료 및 외부 참고 문서 |
+| `references/common/` | 에이전트 자산 유형 공통 reference |
+| `references/<asset-type>/` | 에이전트 자산 유형별 reference |
