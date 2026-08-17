@@ -1,14 +1,13 @@
 ---
 name: load-context-coding
 description: >-
-  Mandatory coding-scope baseline context. Always load for any task whose active work
-  surface includes code or code-facing software design, including code analysis or
-  explanation, implementation, modification, debugging, testing, refactoring, code
-  review, API or data-model changes, dependency decisions, performance work, and
-  maintainability work. Do not skip for simple or routine coding tasks. Provides
-  engineering judgment only; the active task owns workflow, tools, and output. Do not
-  use for pure factual lookup, repository administration with no code-facing work, or
-  non-code writing where code is only incidental.
+  Mandatory coding-scope baseline context for engineering judgment. Always load for any
+  task whose active work surface includes code or code-facing software design,
+  including code analysis or explanation, implementation, modification, debugging,
+  testing, refactoring, code review, API or data-model changes, dependency decisions,
+  performance work, and maintainability work. Do not skip for simple or routine coding
+  tasks. Do not use for pure factual lookup, repository administration with no
+  code-facing work, or non-code writing where code is only incidental.
 ---
 
 # Contract
