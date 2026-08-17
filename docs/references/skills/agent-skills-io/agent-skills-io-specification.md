@@ -62,6 +62,7 @@ runtime에서는 해당 harness의 mandatory contract가 repository-local conven
 - Google — [How to use AI Agent Skills with Gemini CLI](https://codelabs.developers.google.com/gemini-cli/how-to-create-agent-skills-for-gemini-cli)
 - OpenAI — [Build skills](https://developers.openai.com/plugins/build/skills)
 - OpenAI / Codex — [Save workflows as skills](https://learn.chatgpt.com/use-cases/reusable-codex-skills)
+- xAI / Grok — [Grok shell Skill reference](https://github.com/xai-org/grok-build/blob/main/crates/codegen/xai-grok-shell/README.md#skills), including its `Creating a Skill` section
 
 ### Official Skill-Creator Skills
 
@@ -73,6 +74,8 @@ runtime에서는 해당 harness의 mandatory contract가 repository-local conven
 공식 creator Skill은 좋은 비교 자료지만 portable specification의 authority는 아니다.
 특정 creator가 요구하는 추가 파일, metadata, eval 또는 packaging convention은 그
 creator와 target harness의 scope로 해석한다.
+
+공식 creator Skill을 확인하지 못한 ecosystem에는 추정 링크를 추가하지 않는다.
 
 ## Directory Structure
 
