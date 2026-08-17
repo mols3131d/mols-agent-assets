@@ -3,11 +3,11 @@ title: "MOLS Markdown Dashboard Directive"
 description: "스킬이 후속 수정에서 훼손되지 않도록 핵심 요구사항과 결정사항을 보존한다."
 ---
 
-# Directive
+## Directive
 
 이 문서는 스킬 수정 시 가장 먼저 확인해야 하는 정본이다. 요구사항이나 결정사항을 바꾸려면 해당 행을 명시적으로 수정하고 이유를 남긴다.
 
-## Requirements
+### Requirements
 
 | ID | Requirement | Rationale |
 | --- | --- | --- |
@@ -32,7 +32,7 @@ description: "스킬이 후속 수정에서 훼손되지 않도록 핵심 요구
 | R-019 | 예제 Markdown은 예제 YAML에서 생성되며 품질 검사에서 drift를 확인한다. | 문서 예제와 실제 renderer의 차이를 방지한다. |
 | R-020 | release 품질 게이트는 `uv`, `ruff`, `ty`, `rumdl`, `pytest`와 예제 drift 검사를 사용한다. | 실행·형식·타입·Markdown 품질을 하나의 재현 가능한 절차로 고정한다. |
 
-## Decisions
+### Decisions
 
 | ID | Decision | Alternatives rejected | Reason |
 | --- | --- | --- | --- |
@@ -49,7 +49,7 @@ description: "스킬이 후속 수정에서 훼손되지 않도록 핵심 요구
 | D-011 | loader boundary 이후에는 raw dictionary 대신 immutable slot dataclass를 사용한다. | 전 구간 `dict[str, Any]` 사용 | 타입 경계를 명확히 하고 renderer와 validation의 계약을 단순화한다. |
 | D-012 | 단일 `scripts/check_quality.py`가 모든 release 검사를 조정한다. | 도구별 명령을 사람 기억에 의존 | 에이전트와 사람이 동일한 품질 절차를 반복할 수 있게 한다. |
 
-## Protected Invariants
+### Protected Invariants
 
 - `Development Progress`, `Implementation Gaps`, `Verification Gaps`의 의미를 서로 섞지 않는다.
 - `Implementation Status`와 `Verification Status`를 하나의 generic status로 합치지 않는다.
@@ -60,7 +60,7 @@ description: "스킬이 후속 수정에서 훼손되지 않도록 핵심 요구
 - schema, examples, template, tests와 directive를 서로 독립적으로 변경하지 않는다.
 - 품질 도구를 사용할 수 없으면 통과했다고 기록하지 않고 제한을 review 문서에 남긴다.
 
-## Non-Goals
+### Non-Goals
 
 - live monitoring UI
 - BI dashboard 또는 interactive web application

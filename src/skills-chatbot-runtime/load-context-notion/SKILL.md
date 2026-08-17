@@ -33,16 +33,16 @@ loading before mutation or before making structural assumptions about the object
 1. **Resolve the live target** — identify the exact object and the parent, container, data
    source, or view only when that relationship can affect the task. Do not rely on remembered
    workspace state.
-2. **Separate content from structure** — page body, properties/schema, relations, templates,
+1. **Separate content from structure** — page body, properties/schema, relations, templates,
    views, and layout are different context surfaces. Load only those the next action needs.
-3. **Preserve typed semantics** — do not flatten properties, relations, repeated structure,
+1. **Preserve typed semantics** — do not flatten properties, relations, repeated structure,
    or view configuration into prose merely because prose is easier to generate.
-4. **Use workspace evidence** — names, types, relation targets, schema, view state, and
+1. **Use workspace evidence** — names, types, relation targets, schema, view state, and
    structure come from current Notion evidence, not generic Notion conventions.
-5. **Treat incomplete reads as incomplete** — pagination, truncation, permissions, plan
+1. **Treat incomplete reads as incomplete** — pagination, truncation, permissions, plan
    limits, unsupported fields, or connector/API differences can hide relevant state. Do not
    convert a partial read into evidence of absence.
-6. **Load progressively and stop** — expand from the target only when another object or
+1. **Load progressively and stop** — expand from the target only when another object or
    structural surface can materially change the next action. Do not crawl the workspace.
 
 ## Conditional Loading

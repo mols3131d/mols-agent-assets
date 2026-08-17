@@ -36,18 +36,18 @@ relevant context loading before the first task-level action or repository mutati
 
 1. **Identify live target** — confirm the repository and the ref/branch/PR/issue or
    other object relevant to the task. Do not rely on remembered repository state.
-2. **Repository is authority** — discover repository conventions from the target ref,
+1. **Repository is authority** — discover repository conventions from the target ref,
    repository files, and relevant live metadata. Do not invent them from common practice.
-3. **Scope by target** — load only instructions that actually apply to the current path,
+1. **Scope by target** — load only instructions that actually apply to the current path,
    object, agent, operation, and active surface. Keep unrelated repositories and path
    scopes isolated, and apply evidenced platform/repository precedence semantics.
-4. **Respect repository projections** — repository-defined instruction families and
+1. **Respect repository projections** — repository-defined instruction families and
    fallback chains may be non-standard. Apply them when explicitly declared instead of
    replacing them with generic assumptions.
-5. **Load progressively** — start with explicit/high-signal instruction sources and live
+1. **Load progressively** — start with explicit/high-signal instruction sources and live
    task metadata; expand only when a target path, task object, unresolved rule, or required
    resource makes more context material to the next action.
-6. **Stop when sufficient** — do not recursively read the repository after the governing
+1. **Stop when sufficient** — do not recursively read the repository after the governing
    context and task constraints are known.
 
 ## Loading Sequence

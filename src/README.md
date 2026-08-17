@@ -16,7 +16,7 @@ The peer Agent Asset types used by this repository are **Rule, Skill, Prompt, an
 Asset doctrine is intentionally split into two documents:
 
 1. [`agent-asset-standard-baseline.md`](../docs/references/agent-asset-standard-baseline.md) — standards-adjacent external/common baseline.
-2. [`agent-asset-boundaries.md`](../docs/references/agent-asset-boundaries.md) — **Personal Agent Asset Standard**, authoritative for this repository's non-standard extensions.
+1. [`agent-asset-boundaries.md`](../docs/references/agent-asset-boundaries.md) — **Personal Agent Asset Standard**, authoritative for this repository's non-standard extensions.
 
 Skills are the preferred portable unit for reusable capabilities and situation-specific context that a model can activate on demand.
 

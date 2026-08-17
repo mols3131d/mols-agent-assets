@@ -131,12 +131,12 @@ must not be misrepresented as GitHub Copilot precedence.
 For each candidate instruction, confirm:
 
 1. it does not conflict with higher user/system/tool constraints;
-2. the active surface supports the instruction type or the repository defines the local
+1. the active surface supports the instruction type or the repository defines the local
    projection/fallback being used;
-3. it actually applies to the current agent/task;
-4. the target path/object is inside its declared scope;
-5. it is normative instruction, or an explicitly declared fallback source;
-6. any precedence or override semantics come from the active surface or repository, not
+1. it actually applies to the current agent/task;
+1. the target path/object is inside its declared scope;
+1. it is normative instruction, or an explicitly declared fallback source;
+1. any precedence or override semantics come from the active surface or repository, not
    from a generic assumption.
 
 If a mutation depends on an unresolved instruction conflict, stop the mutation and expose

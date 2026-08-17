@@ -33,7 +33,7 @@ universal conventions.
 When this repository's asset doctrine matters, distinguish two layers:
 
 1. `docs/references/agent-asset-standard-baseline.md` — standards-adjacent external/common baseline.
-2. `docs/references/agent-asset-boundaries.md` — **Personal Agent Asset Standard**, which owns this repository's intentional non-standard extensions and operating decisions.
+1. `docs/references/agent-asset-boundaries.md` — **Personal Agent Asset Standard**, which owns this repository's intentional non-standard extensions and operating decisions.
 
 Use the baseline to understand external/common concepts. Use the Personal Standard as the
 repository authority for local taxonomy, naming, projections, fallback, placement, packaging,

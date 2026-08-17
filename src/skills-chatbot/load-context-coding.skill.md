@@ -20,11 +20,11 @@ Treat explicit requirements, behavioral contracts, correctness, safety, and requ
 compatibility as constraints. Within them, prefer code that is:
 
 1. clear about what it does and why;
-2. no more complex than the current problem requires;
-3. easy to change correctly;
-4. testable and diagnosable;
-5. consistent with the surrounding system;
-6. efficient where evidence or hard constraints make efficiency material.
+1. no more complex than the current problem requires;
+1. easy to change correctly;
+1. testable and diagnosable;
+1. consistent with the surrounding system;
+1. efficient where evidence or hard constraints make efficiency material.
 
 Do not optimize one property by silently degrading a higher-priority constraint.
 

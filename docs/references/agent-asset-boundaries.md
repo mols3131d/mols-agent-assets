@@ -136,8 +136,8 @@ Skill은 workflow에 한정하지 않는다. decision lens, domain context, tool
 `skills-chatbot/`은 다음을 모두 만족할 때 사용한다.
 
 1. `<skill-name>.skill.md` 한 파일로 완결
-2. 배포 파일이 **4,000 tokens 미만**
-3. runtime-required bundle이나 host-only capability가 필요하지 않음
+1. 배포 파일이 **4,000 tokens 미만**
+1. runtime-required bundle이나 host-only capability가 필요하지 않음
 
 다음 중 하나라도 해당하면 `skills-chatbot-runtime/`을 사용한다.
 
@@ -230,9 +230,9 @@ Resource 자체가 model-directed activation을 소유하지 않는다. 특정 r
 새 자산은 다음 순서로 판단한다.
 
 1. 특정 scope에서 여러 task 동안 지속되는 policy인가? → **Rule**
-2. 반복 capability 또는 상황별로 모델이 로드해야 하는 context인가? → **Skill**
-3. 현재 invocation에서만 필요한 goal/constraint인가? → **Prompt**
-4. 독립 role/authority/tool/delegation boundary가 필요한가? → **Agent**
+1. 반복 capability 또는 상황별로 모델이 로드해야 하는 context인가? → **Skill**
+1. 현재 invocation에서만 필요한 goal/constraint인가? → **Prompt**
+1. 독립 role/authority/tool/delegation boundary가 필요한가? → **Agent**
 
 재사용 가능한 내용이고 1·3·4의 명확한 이유가 없다면 **Skill을 우선 후보**로 한다.
 
@@ -270,13 +270,13 @@ Resource 자체가 model-directed activation을 소유하지 않는다. 특정 r
 ## Review Questions
 
 > 이 내용은 지속 Rule인가, 조건부 Skill인가?
-
+>
 > Rule이라면 directory, glob, chatbot 중 어떤 projection이 실제 scope를 가장 정확히 표현하는가?
-
+>
 > Skill이라면 현재 harness에서 어떤 target profile이 가장 효율적인가?
-
+>
 > Skill package 파일이라면 runtime에 필요한가, 아니면 dot-prefixed non-runtime surface에 있어야 하는가?
-
+>
 > `.docs/baseline/`만 보고도 이 Skill이 무엇을 위해 존재했고 무엇을 잃으면 안 되는지 복구할 수 있는가?
 
 ## Baseline
