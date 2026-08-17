@@ -13,7 +13,7 @@ description: 에이전트 자산 전반에 공통으로 적용되는 표준, 설
 
 | Directory | Responsibility |
 | --- | --- |
-| `standards/` | 자산 유형의 공통 baseline과 repository-local taxonomy |
+| `standards/` | 자산 유형의 공통 baseline, repository-local taxonomy와 naming convention |
 | `principles/` | 자산을 추가·분리·중복 제거·단순화할 때 쓰는 설계 원칙 |
 | `authoring/` | 사람과 LLM이 지침·문서를 읽고 행동하기 쉽게 만드는 작성 원칙 |
 | `concepts/` | 설계 판단의 배경이 되는 문제와 개념 |
@@ -29,6 +29,7 @@ description: 에이전트 자산 전반에 공통으로 적용되는 표준, 설
 ## Start Here
 
 - 자산 유형이나 placement를 판단한다 → [Personal Agent Asset Standard](standards/agent-assets-standard-personal.md)
+- 자산 이름과 접두사를 정한다 → [Agent Asset Naming Convention](standards/agent-assets-naming-convention.md)
 - 외부 기준과 로컬 확장을 구분한다 → [Agent Asset Standard Baseline](standards/agent-assets-standard-baseline.md)
 - 자산을 추가·분리·정리한다 → [Design Principles](principles/README.md)
 - LLM용 지침을 작성한다 → [LLM-Readable Instructions](authoring/agent-assets-authoring-llm-readable-instructions.md)

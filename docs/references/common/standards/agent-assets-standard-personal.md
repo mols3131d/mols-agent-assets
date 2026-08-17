@@ -60,6 +60,8 @@ Prompt와 Agent에 repository-local 규격이 실제로 생기기 전에는 별�
 
 다음은 외부 범용 표준이 아니라 이 저장소의 의도적인 확장이다.
 
+- 공통 filesystem naming convention →
+  [Agent Asset Naming Convention](agent-assets-naming-convention.md)
 - `CHATBOT.md`와 repository-local fallback
 - directory/glob Rule projection convention
 - Skill-specific authoring/deployment convention
