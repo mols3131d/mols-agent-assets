@@ -49,6 +49,19 @@ Flat chatbot Skill은 **여러 Markdown 문서의 책임을 한 파일에 평탄
 - 단순한 Skill은 하나의 `#`으로 충분하다.
 - target harness의 mandatory heading contract가 있으면 그것을 우선한다.
 
+#### Front Matter Triggering
+
+Flat Skill의 activation 정보는 **front matter `description`에 집중한다**. Discovery 단계에서 body보다 먼저 선택에 쓰이는 정보이므로, `description`만으로 다음을 구분할 수 있게 작성한다.
+
+- Skill이 제공하는 capability;
+- 어떤 user intent/task context에서 사용해야 하는지;
+- 인접 capability와 혼동될 가능성이 있을 때의 핵심 negative boundary;
+- follow-up continuity나 target 전환처럼 selection을 바꾸는 조건이 실제로 중요할 때 그 조건.
+
+본문은 이미 Skill이 선택·활성화되었다고 가정한다. 따라서 `Trigger`, `Activation`, `When to use` 같은 별도 activation 섹션을 두거나 front matter의 조건을 본문에서 반복하지 않는다. 본문에는 contract, procedure, constraints, boundary, output처럼 **활성화 이후의 행동**만 둔다.
+
+Portable front matter field와 constraint는 [Agent Skills Specification](agent-skills-io/agent-skills-io-specification.md)을 따른다. 특정 target이 별도 discovery contract를 강제하면 그 target contract가 우선한다.
+
 형태 예시이며 고정 schema가 아니다.
 
 ```markdown
