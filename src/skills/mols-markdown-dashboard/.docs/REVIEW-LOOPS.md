@@ -32,11 +32,11 @@
 | --- | --- | --- |
 | Schema durability | 에이전트가 오타 필드를 추가해도 값이 조용히 무시될 수 있었다. | 모든 schema level에서 unknown field를 경로와 함께 거부한다. |
 | Internal model | Positional tuple과 mutable-looking boundary가 장기 수정에 취약했다. | Immutable slot dataclass와 이름 있는 `GapRow`를 사용한다. |
-| Output safety | 직접 파일 쓰기는 중간 실패 시 파일을 손상할 수 있다. | Temporary file 후 `os.replace`하는 atomic write를 적용했다. |
+| Output safety | 직접 파일 쓰기는 중간 실패 시 파일을 손상시킬 수 있다. | Temporary file 후 `os.replace`하는 atomic write를 적용했다. |
 | Aggregate severity | Blocked가 실제 failing 결과보다 먼저 보일 수 있었다. | Verification aggregate에서 Failing을 Blocked보다 높은 우선순위로 둔다. |
 | Example drift | 예제 Markdown이 renderer 변경을 따라가지 못하거나 중복 사본이 생길 수 있었다. | YAML을 재렌더링해 checked-in Markdown과 비교하고 reference 중복본을 제거했다. |
 | Quality reproducibility | 검증 명령이 사람 기억에 흩어져 있었다. | `uv`, `ruff`, `ty`, `rumdl`, compile, pytest를 단일 스크립트에 고정했다. |
-| Recovery | 후속 에이전트가 핵심 구조를 훼손해도 복구 기준이 분산됐다. | `docs/DIRECTIVE.md`를 요구사항·결정사항의 정본으로 강화했다. |
+| Recovery | 후속 에이전트가 핵심 구조를 훼손해도 복구 기준이 분산됐다. | `.docs/baseline/DIRECTIVE.md`를 요구사항·결정사항의 정본으로 강화했다. |
 
 **Result:** `uv`를 통한 test 실행에서 40개 테스트가 통과했다. Python line-length와 compile 검증도 통과했다.
 
