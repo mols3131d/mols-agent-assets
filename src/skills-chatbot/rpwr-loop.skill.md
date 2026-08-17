@@ -22,6 +22,27 @@ purpose:
 Keep **Plan** and **Work** simple. Adapt **Research** and **Review** as understanding,
 risk, and confidence change.
 
+## Arguments
+
+```yaml
+output_policy: auto  # auto | chat | document | both
+```
+
+`output_policy` controls delivery after all counted loops finish:
+
+- `auto` — default. Use chat in a normal chatbot context. When the work is performed
+  in a durable writable workspace such as a repository or Notion, save the report in
+  the appropriate existing location and return only a concise chat summary and link
+  or location.
+- `chat` — return the full work report in chat.
+- `document` — persist the work report when a suitable target and write authority are
+  available; otherwise fall back to chat and state the limitation.
+- `both` — persist the report and also return the full report in chat.
+
+Honor an explicit user choice. Under `auto`, choose the report location from the
+workspace conventions and authority discovered in Prepare; do not invent a new
+storage convention or assume write access.
+
 ## Phase Budgets
 
 ```yaml
@@ -252,15 +273,29 @@ Choose validation that matches the work and current risks. Prefer better evidenc
 contradiction tests, counterexamples, alternatives, and task-appropriate validation
 over longer narration.
 
-## Output
+## Reporting
 
-Do not expose private reasoning or verbose phase-by-phase narration by default.
-Return:
+Keep a compact observable record while working. Do not expose private reasoning.
 
-- the improved result;
-- counted loops for Prepare, Improve, and Finalize;
-- material changes or conclusions;
-- unresolved findings or checks that could not be performed.
+For **every counted loop**, produce one line that summarizes the whole RPWR cycle:
 
-Show detailed phase work only when the user asks for it or it is necessary to
-understand the result.
+```text
+<Phase> <N> — R: <evidence/understanding> | P: <decision> | W: <material work> | R: <review result>
+```
+
+Each field should state only the material delta. One action, edit, or finding must not
+be expanded into multiple lines to imitate multiple loops.
+
+For **each completed phase**, produce one paragraph summarizing its objective, major
+decisions or changes, evidence or validation, and remaining material concerns.
+
+After all phases finish, produce a **work report** containing:
+
+- final result or outcome;
+- loop summaries grouped by Prepare, Improve, and Finalize;
+- one paragraph summary for each phase;
+- material changes, decisions, and validation performed;
+- unresolved findings, limitations, or checks not performed.
+
+Deliver or persist this report according to `output_policy`. Report delivery happens
+after the RPWR loops and never counts as an additional loop.
