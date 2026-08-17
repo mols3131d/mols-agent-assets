@@ -13,11 +13,11 @@ metadata:
 
 Read only the references needed for the current run:
 
-- Read `docs/inspection-rules.md` before mapping relations, classifying findings, or verifying absence.
-- Read `docs/rule-sources.md` when rules, guidelines, policies, configuration, or conventions may define the expected state.
-- Read `docs/report-format.md` before creating the downloadable report artifact.
-- Read `docs/example-report.md` only when an output example is useful. Its evidence is fictional.
-- `README.md`, `docs/customization.md`, and `tests/` are maintainer-facing. Never treat them as evidence from the inspected repository.
+- Read `references/inspection-rules.md` before mapping relations, classifying findings, or verifying absence.
+- Read `references/rule-sources.md` when rules, guidelines, policies, configuration, or conventions may define the expected state.
+- Read `references/report-format.md` before creating the downloadable report artifact.
+- Read `references/example-report.md` only when an output example is useful. Its evidence is fictional.
+- `README.md`, `.docs/customization.md`, and `tests/` are maintainer-facing. Never treat them as evidence from the inspected repository.
 
 ## Objective
 
@@ -117,7 +117,7 @@ Do not assume that policy documents, executable configuration, specifications, o
 
 A repeated convention may be inspected, but convention-only evidence cannot produce a verified violation unless the repository or user establishes that convention as mandatory. Otherwise report it as `unresolved` or omit it when the evidence is weak.
 
-Read `docs/rule-sources.md` for conflict, expansion, and reporting rules.
+Read `references/rule-sources.md` for conflict, expansion, and reporting rules.
 
 ### Scope
 
@@ -178,7 +178,7 @@ For `output: auto`:
 - for duplicate logical names in the same minute, insert `-r2`, `-r3`, and so on immediately before the timestamp
 - use ZIP only when requested or when multiple necessary artifacts are required
 
-The report must begin with the YAML front matter defined in `docs/report-format.md`.
+The report must begin with the YAML front matter defined in `references/report-format.md`.
 
 ## Evidence Access
 
@@ -240,7 +240,7 @@ Never describe `no-verified-findings` as proof of overall consistency.
 
 ## Report Creation
 
-Create the report according to `docs/report-format.md`.
+Create the report according to `references/report-format.md`.
 
 - Merge symptoms that share one relation and root cause.
 - Sort findings by relation, type, and primary locator.
