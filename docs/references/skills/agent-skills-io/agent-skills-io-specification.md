@@ -58,6 +58,7 @@ runtime에서는 해당 harness의 mandatory contract가 repository-local conven
 
 - Anthropic — [Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices)
 - Microsoft — [Microsoft Agent Skills repository](https://github.com/microsoft/skills)
+- GitHub Copilot — [Adding agent skills for GitHub Copilot CLI](https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-skills)
 - Google — [How to use AI Agent Skills with Gemini CLI](https://codelabs.developers.google.com/gemini-cli/how-to-create-agent-skills-for-gemini-cli)
 - OpenAI — [Build skills](https://developers.openai.com/plugins/build/skills)
 - OpenAI / Codex — [Save workflows as skills](https://learn.chatgpt.com/use-cases/reusable-codex-skills)
