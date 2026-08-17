@@ -23,14 +23,14 @@ target: <auto>
 profiles: <auto>
 ```
 
-- `source` — repository, directory, URL, or other explicit Skill source. `<auto>` uses an explicit or live task source when available, otherwise defaults to `mols3131d/mols-agent-assets`.
-- `ref` — branch, tag, commit, or equivalent source revision. `<auto>` uses the live/current ref when known, otherwise the source default.
+- `source` — repository, directory, URL, or other explicit Skill source. `<auto>` defaults to `mols3131d/mols-agent-assets`; use another source only when the user or caller explicitly supplies one.
+- `ref` — branch, tag, commit, or equivalent source revision. `<auto>` uses the live/current ref for the resolved source when explicitly established, otherwise the source default.
 - `scope` — repository area or capability set allowed for discovery. `<auto>` follows the caller's intent and repository-declared Skill surfaces without widening beyond the source.
 - `query` — capability need. `<auto>` infers it from the user or caller; for inventory/sync intent, enumerate all in-scope candidates.
 - `target` — intended agent/chatbot harness. `<auto>` uses the active harness and its actual capabilities.
 - `profiles` — Skill locations or target profiles to inspect. `<auto>` discovers them from repository instructions, documentation, and structure instead of assuming fixed paths.
 
-`<auto>` is an inference sentinel. Resolve values from explicit user input, live task context, repository evidence, then current harness capabilities. The `source` fallback exists for dogfooding and is not a scope lock: an explicit source always overrides it. Do not expand to unrelated public sources automatically.
+`<auto>` is an inference sentinel. For `source`, it means the dogfooding default above, not the repository of an unrelated current task. Explicit arguments override defaults. Resolve other values from explicit user input, source/repository evidence, live task context when relevant, then current harness capabilities. Do not expand to unrelated public sources automatically.
 
 ## Contract
 
@@ -47,7 +47,7 @@ It does not:
 
 ### Resolve the source
 
-Confirm `source`, `ref`, and `scope` from live evidence. For a repository source, read only enough governing context to discover Skill placement and semantics, such as applicable instructions, README material, or asset-profile documentation.
+Confirm `source`, `ref`, and `scope` from the arguments and source evidence. For a repository source, read only enough governing context to discover Skill placement and semantics, such as applicable instructions, README material, or asset-profile documentation.
 
 Do not assume that `skills/`, `skills-chatbot/`, `SKILL.md`, or `*.skill.md` are universal conventions. Use them when the source or active platform establishes them.
 
