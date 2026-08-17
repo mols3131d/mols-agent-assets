@@ -1,25 +1,36 @@
 ---
 name: load-context-github-mols
 description: >-
-  Add mols-specific GitHub conventions after load-context-github when the target is
-  evidenced as the user's personal GitHub space. Do not activate for another person,
-  team, company, organization, or shared project merely because the user has access,
-  authorship, membership, or admin permission.
+  Add mols-specific GitHub conventions alongside load-context-github when the current
+  GitHub target is personally governed by the user. Activate for a personal
+  `mols3131d` repository unless the task identifies it as team/company/shared, or when
+  the user explicitly says the target is their own. Keep applying on follow-ups to
+  that target. Do not activate from access, admin rights, authorship, or collaboration
+  alone; in mixed-target tasks, apply only to the personal targets.
 ---
 
 # Load Mols GitHub Context
 
-This Skill is a **personal overlay**. Apply it only after `load-context-github`.
+This Skill is a **personal overlay**. Apply it only with `load-context-github`.
 
 ## Activation
 
-Activate only when the base loader applies and personal scope is evidenced by either:
+Evaluate personal scope **per GitHub target**, not once for the whole conversation.
+Activate when the base loader applies and either condition holds:
 
-- repository ownership by `mols3131d`; or
-- an explicit user statement that the target is personally owned/governed.
+- the target is under `mols3131d` and there is no evidence that it is a team, company,
+  organization, or shared-project repository;
+- the user explicitly identifies the target as their own or personally governed.
 
-Access, collaboration, organization membership, admin permission, authorship, contribution
-history, or familiarity do not establish personal scope. Otherwise use only the base loader.
+Keep the overlay active for follow-up requests that continue the same personal target,
+even when the user does not repeat its name.
+
+Do not infer personal scope from collaborator access, organization membership, admin
+permission, authorship, contribution history, or familiarity. If ownership/governance is
+unclear, use only the base loader until evidence establishes personal scope.
+
+When one task spans multiple repositories or GitHub objects, apply this overlay only to
+the personal targets. Never export its defaults to external or shared targets.
 
 ## Personal Conventions
 
