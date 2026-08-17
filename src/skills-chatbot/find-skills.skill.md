@@ -17,6 +17,7 @@ metadata:
 ```yaml
 source: <auto>
 ref: <auto>
+scope: <auto>
 query: <auto>
 target: <auto>
 profiles: <auto>
@@ -24,6 +25,7 @@ profiles: <auto>
 
 - `source` — repository, directory, URL, or other explicit Skill source. `<auto>` resolves the live repository/source already associated with the task. Do not expand to unrelated public sources automatically.
 - `ref` — branch, tag, commit, or equivalent source revision. `<auto>` uses the live/current ref when known, otherwise the source default.
+- `scope` — repository area or capability set allowed for discovery. `<auto>` follows the caller's intent and repository-declared Skill surfaces without widening beyond the source.
 - `query` — capability need. `<auto>` infers it from the user or caller; for inventory/sync intent, enumerate all in-scope candidates.
 - `target` — intended agent/chatbot harness. `<auto>` uses the active harness and its actual capabilities.
 - `profiles` — Skill locations or target profiles to inspect. `<auto>` discovers them from repository instructions, documentation, and structure instead of assuming fixed paths.
@@ -45,7 +47,7 @@ It does not:
 
 ### Resolve the source
 
-Confirm `source` and `ref` from live evidence. For a repository source, read only enough governing context to discover Skill placement and semantics, such as applicable instructions, README material, or asset-profile documentation.
+Confirm `source`, `ref`, and `scope` from live evidence. For a repository source, read only enough governing context to discover Skill placement and semantics, such as applicable instructions, README material, or asset-profile documentation.
 
 Do not assume that `skills/`, `skills-chatbot/`, `SKILL.md`, or `*.skill.md` are universal conventions. Use them when the source or active platform establishes them.
 
@@ -95,6 +97,7 @@ Return discovery results in a form that `install-skills` can consume. For each c
 capability: <name-or-identity>
 source: <resolved-source>
 ref: <resolved-ref>
+scope: <resolved-scope>
 target: <resolved-target>
 preferred: <candidate-path-or-id | null>
 siblings: []
