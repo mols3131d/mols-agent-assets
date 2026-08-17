@@ -1,19 +1,18 @@
 ---
 name: mols-mermaid-diagram
 description: >-
-  Create, edit, review, simplify, or troubleshoot Mermaid structural diagrams.
-  Use when the user asks for Mermaid diagram/code; provides Mermaid source with
-  syntax, render, layout, width/height, or readability problems; asks which
-  Mermaid diagram type fits; requests a Mermaid/diagram-as-code flowchart,
-  sequence, state, class, ERD, architecture/C4, Gantt, timeline, mindmap,
-  requirement, Git graph, Kanban, packet, or similar structural diagram; or
-  needs relationships, procedures, branching, handoffs, message order,
-  lifecycle, chronology, dependencies, boundaries, hierarchy, domain models,
-  requirements, or cardinality visualized as Mermaid. Even when Mermaid is
-  named, do not use when the primary task is quantitative magnitude, trend,
-  proportion, flow, or profile, whole-dashboard composition, a simple
-  list/table, or Mermaid package/API installation or integration unrelated to
-  authoring or rendering a diagram.
+  Use this skill to create, edit, review, simplify, or troubleshoot Mermaid structural
+  diagrams. Trigger on explicit Mermaid requests or Mermaid source; Mermaid-supported
+  flowchart, sequence, state, class, ERD, architecture/C4, Gantt, timeline, mindmap,
+  requirement, Git graph, Kanban, packet, or similar diagram requests; and diagram-as-code
+  or Markdown documentation tasks where relationships, procedures, branching, handoffs,
+  message order, lifecycle, chronology, dependencies, boundaries, hierarchy, domain models,
+  requirements, or database cardinality are the main information. Also use for Mermaid
+  syntax, rendering, layout, width/height, readability, type-selection, or compatibility
+  issues. Do not use for primarily quantitative magnitude/trend/proportion/quantified-flow/
+  profile visualization, whole-dashboard composition, simple list/table output, generic
+  image/illustration requests, or Mermaid package/API integration unrelated to authoring or
+  rendering a diagram.
 ---
 
 # Contract
@@ -32,20 +31,20 @@ Create or edit Mermaid so the reader can answer one structural question quickly.
 
 # Source Research
 
-Use web access as an authority aid, not as a hard runtime dependency. Do not block a diagram task merely because browsing is unavailable.
+Use web or GitHub access as an authority aid, not as a hard runtime dependency. Do not block a diagram task merely because external access is unavailable.
 
 ## Mermaid official documentation
 
-When web access is available, consult the relevant Mermaid official documentation before relying on exact syntax, newer or renderer-sensitive diagram types, configuration behavior, feature availability, or compatibility claims.
+When web access is available, consult the relevant Mermaid official documentation for non-trivial creation or redesign and whenever exact syntax, a newer or renderer-sensitive type, configuration behavior, feature availability, or compatibility matters.
 
-- Start from [Mermaid Open Source Documentation](https://mermaid.ai/open-source/) and navigate to only the diagram type or feature needed for the task.
+- Start from [Mermaid Open Source Documentation](https://mermaid.ai/open-source/) and open only the diagram type or feature needed for the task.
 - Prefer the official Mermaid documentation over memory, blogs, snippets, or third-party examples for Mermaid syntax and current features.
-- If the target renderer or host is known, its actual supported Mermaid version and integration constraints control compatibility even when current Mermaid itself supports a feature.
-- Do not browse unrelated Mermaid pages for routine edits whose syntax and compatibility are not in question.
+- If the target renderer or host is known, its actually supported Mermaid version and integration constraints control compatibility even when current Mermaid supports a feature.
+- Tiny edits that do not depend on syntax or compatibility may proceed without browsing.
 
 ## Canonical Skill references
 
-When web or GitHub access is available and the task needs deeper design guidance, consult the canonical `mols-mermaid-diagram` references selectively rather than loading the whole bundle.
+When web or GitHub access is available, consult the relevant canonical `mols-mermaid-diagram` reference for non-trivial type, layout, style, example, or verification decisions. Load only the responsibility needed for the current task.
 
 Canonical source:
 <https://github.com/mols3131d/mols-agent-assets/tree/main/src/skills/mols-mermaid-diagram>
@@ -59,7 +58,7 @@ Canonical source:
 - Syntax errors, renderer validation, export, or compatibility verification:
   <https://github.com/mols3131d/mols-agent-assets/blob/main/src/skills/mols-mermaid-diagram/references/mermaid-verification.md>
 
-If the user supplies a repository revision or the current task is pinned to another revision, use that revision instead of `main` when possible.
+Use Mermaid official documentation as the authority for Mermaid syntax and current feature support. Use canonical Skill references for this capability's design, readability, routing, and verification policy. If the user supplies a repository revision or the current task is pinned to another revision, use that revision instead of `main` when possible.
 
 Do not claim to have consulted a source that was not actually accessible. If external sources are unavailable, continue from this Skill's embedded contract and state uncertainty only where it materially affects the result.
 
