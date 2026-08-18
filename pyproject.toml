@@ -22,9 +22,7 @@ dev = [
 [tool.pytest.ini_options]
 pythonpath = [
   "src",
-  "src/skills/iceberg-code-report/scripts",
-  "src/skills/iceberg-code-review/scripts",
-  "src/skills/mols-markdown-scripts/scripts",
+  ".agentsmesh/skills/mols-markdown-scripts/scripts",
 ]
 testpaths = ["tests"]
 
