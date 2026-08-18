@@ -1,12 +1,11 @@
 # Auto-generated. DO NOT EDIT MANUALLY.
 # Tracks the state of all config files for team conflict resolution.
 
-generated_at: 2026-08-18T10:12:03.952Z
+generated_at: 2026-08-18T10:28:19.273Z
 generated_by: unknown
 lib_version: 0.32.0
 checksums:
-  rules/_root.md: sha256:157500e901a141b84d4aa726085d232a1e95a9f868a1ff9a34150da400d638f5
-  rules/language-ko.md: sha256:e175526dcd65e1b8823d88e1d707bfedfdbe5d34a6aaba5519df34378457a56c
+  rules/_root.md: sha256:c187d2e98c2f328c02a4186df72c4a32544027d7e12c0ea2742ff4bf2ec4ca94
   skills/caveman-ko/README.md: sha256:b7238cb7de0045996865b8d72552bf3f2b5e680d86233b16bb5f16cc8fac4658
   skills/caveman-ko/SKILL.md: sha256:05aa6bfc392a044991ed011aa56e49a6f419fc67548a38b4d6165b3048121ccd
   skills/clarify-code/.docs/baseline/decisions.md: sha256:db63b0a94ce944e627550374d347d75a63fdace6771ee3c5893cb3675f2f871d
@@ -65,7 +64,6 @@ checksums:
   skills/mols-markdown-dashboard/.docs/README.md: sha256:73f2279ee1fe4cc984cb64c08f87aa648bebe84a6e94052f1f620c2e7fca600c
   skills/mols-markdown-dashboard/.docs/REVIEW-LOOPS.md: sha256:c0fefcdd71074454b0acd0d05105a3055d40c160e16577750b8f91b88fb92b33
   skills/mols-markdown-dashboard/.docs/baseline/DIRECTIVE.md: sha256:299146974abf6f292fb955e95ae2b092fbf55eae8af732c08048606937338ac3
-  skills/mols-markdown-dashboard/.gitignore: sha256:e17df01b2d6935845725e853871f4cd104ca2dc8383fe3ac193497a765d34a17
   skills/mols-markdown-dashboard/SKILL.md: sha256:b0dd217fbcc4ff1130d9b1ce7408d8332160de4cbd15a69c08e9856b4b73cf70
   skills/mols-markdown-dashboard/examples/domain-dashboard.md: sha256:79f2e5bd98e8f70be2fa00cbd4f2ffb01132b306dc0d7e3ec44ce0ea2506b6a5
   skills/mols-markdown-dashboard/examples/domain-dashboard.yml: sha256:744b0d8fb148c492705c926a11c3ee97b09fa1f8cfb29d77c3bbf355c233ac36
@@ -174,9 +172,8 @@ checksums:
 extends: {}
 packs: {}
 outputs:
-  .github/copilot-instructions.md: sha256:9156ecf7e873cda9d0978e3cfcdae63bbef82f8ceed080117fa25ce16c64409a
-  .agents/rules/general.md: sha256:9156ecf7e873cda9d0978e3cfcdae63bbef82f8ceed080117fa25ce16c64409a
-  .agents/rules/language-ko.md: sha256:c650e76c9b0dfcebe4ee48d0270c3072d62b0e1568481465e0c76596e9ffd569
+  .github/copilot-instructions.md: sha256:991b19bfa2777a3c98505191c6a0bb816528cef4e8bea2a043cc53210673b1eb
+  .agents/rules/general.md: sha256:991b19bfa2777a3c98505191c6a0bb816528cef4e8bea2a043cc53210673b1eb
   .github/skills/caveman-ko/SKILL.md: sha256:f0f3a778d6574a5d4e2f9f3b85e0239aa28f256d8b1a87afbfae9c85f6d020a4
   .github/skills/caveman-ko/README.md: sha256:b7238cb7de0045996865b8d72552bf3f2b5e680d86233b16bb5f16cc8fac4658
   .github/skills/clarify-code/SKILL.md: sha256:3f4719c9691447628a8f342788fb3357d1cf4f9ed56b819d74b629b4e1964f2f
@@ -236,7 +233,6 @@ outputs:
   .github/skills/mols-markdown-dashboard/.docs/MAINTENANCE.md: sha256:440d9551bde3765436d92f809ae3d38b0845341f1003cce7b293b2cdd06d0b70
   .github/skills/mols-markdown-dashboard/.docs/README.md: sha256:084aaf13e4867eac0ce1679a79658052a904a14daab48b15eb73362cb0863d7e
   .github/skills/mols-markdown-dashboard/.docs/REVIEW-LOOPS.md: sha256:c0fefcdd71074454b0acd0d05105a3055d40c160e16577750b8f91b88fb92b33
-  .github/skills/mols-markdown-dashboard/.gitignore: sha256:e17df01b2d6935845725e853871f4cd104ca2dc8383fe3ac193497a765d34a17
   .github/skills/mols-markdown-dashboard/examples/domain-dashboard.md: sha256:79f2e5bd98e8f70be2fa00cbd4f2ffb01132b306dc0d7e3ec44ce0ea2506b6a5
   .github/skills/mols-markdown-dashboard/examples/domain-dashboard.yml: sha256:744b0d8fb148c492705c926a11c3ee97b09fa1f8cfb29d77c3bbf355c233ac36
   .github/skills/mols-markdown-dashboard/examples/project-dashboard.md: sha256:b8e82cfd3f2b19b34dff29ca1b53caeb5e7258baf364a9f132be2584000e3703
@@ -400,7 +396,6 @@ outputs:
   .agents/skills/mols-markdown-dashboard/.docs/MAINTENANCE.md: sha256:440d9551bde3765436d92f809ae3d38b0845341f1003cce7b293b2cdd06d0b70
   .agents/skills/mols-markdown-dashboard/.docs/README.md: sha256:084aaf13e4867eac0ce1679a79658052a904a14daab48b15eb73362cb0863d7e
   .agents/skills/mols-markdown-dashboard/.docs/REVIEW-LOOPS.md: sha256:c0fefcdd71074454b0acd0d05105a3055d40c160e16577750b8f91b88fb92b33
-  .agents/skills/mols-markdown-dashboard/.gitignore: sha256:e17df01b2d6935845725e853871f4cd104ca2dc8383fe3ac193497a765d34a17
   .agents/skills/mols-markdown-dashboard/examples/domain-dashboard.md: sha256:79f2e5bd98e8f70be2fa00cbd4f2ffb01132b306dc0d7e3ec44ce0ea2506b6a5
   .agents/skills/mols-markdown-dashboard/examples/domain-dashboard.yml: sha256:744b0d8fb148c492705c926a11c3ee97b09fa1f8cfb29d77c3bbf355c233ac36
   .agents/skills/mols-markdown-dashboard/examples/project-dashboard.md: sha256:b8e82cfd3f2b19b34dff29ca1b53caeb5e7258baf364a9f132be2584000e3703
