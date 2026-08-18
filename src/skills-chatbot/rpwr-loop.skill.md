@@ -26,7 +26,7 @@ All arguments are optional.
 
 ```yaml
 output_policy: auto       # auto | chat | persist | both
-improve_loops: {min: 4, max: 8}
+rpwr_loops: {min: 4, max: 8}
 acceptance_ledger: auto   # auto | on | off
 live_progress: auto       # auto | compact | quiet
 research_policy: auto     # auto | internal | external | mixed
@@ -36,7 +36,7 @@ Explicit user overrides take precedence unless they conflict with higher authori
 Workflow order, genuine-loop counting, evidence-based completion, and authority checks
 are invariants rather than configurable options.
 
-`improve_loops` applies only to the RPWR main loop. Do not reset its budget by silently
+`rpwr_loops` applies only to the RPWR main loop. Do not reset its budget by silently
 starting another run. Another run requires explicit user continuation or an
 already-established higher-level campaign/iteration budget that clearly authorizes it.
 
@@ -167,7 +167,7 @@ Enter the main loop only from `READY` or `READY WITH LIMITS`.
 
 # RPWR Main Loop
 
-Run `Research → Plan → Work → Review` within `improve_loops`.
+Run `Research → Plan → Work → Review` within `rpwr_loops`.
 
 ## Research
 
