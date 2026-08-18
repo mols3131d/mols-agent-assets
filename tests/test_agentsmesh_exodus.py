@@ -1,0 +1,65 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+import yaml
+
+ROOT = Path(__file__).resolve().parents[1]
+CONTRACT = ROOT / "evals/regression/agentsmesh-exodus.json"
+
+
+def load_contract() -> dict:
+    return json.loads(CONTRACT.read_text(encoding="utf-8"))
+
+
+def directory_names(path: Path) -> set[str]:
+    return {entry.name for entry in path.iterdir() if entry.is_dir()}
+
+
+def test_agentsmesh_config_matches_regression_contract() -> None:
+    contract = load_contract()["canonical"]
+    config = yaml.safe_load((ROOT / "agentsmesh.yaml").read_text(encoding="utf-8"))
+
+    assert config["version"] == 1
+    assert config["targets"] == contract["targets"]
+    assert config["features"] == contract["features"]
+
+
+def test_canonical_rules_and_skills_match_regression_contract() -> None:
+    contract = load_contract()["canonical"]
+
+    rules = ROOT / ".agentsmesh/rules"
+    assert {path.name for path in rules.glob("*.md")} == set(contract["rules"])
+
+    skills = ROOT / ".agentsmesh/skills"
+    assert directory_names(skills) == set(contract["skills"])
+    for name in contract["skills"]:
+        assert (skills / name / "SKILL.md").is_file()
+
+
+def test_active_target_projections_cover_all_canonical_skills() -> None:
+    contract = load_contract()
+    expected_skills = set(contract["canonical"]["skills"])
+
+    for projection in contract["projections"].values():
+        assert (ROOT / projection["root_rule"]).is_file()
+        assert directory_names(ROOT / projection["skills"]) == expected_skills
+
+
+def test_declared_exceptions_remain_explicit() -> None:
+    for path in load_contract()["exceptions"]:
+        assert (ROOT / path).exists(), path
+
+
+def test_retired_legacy_surfaces_do_not_return() -> None:
+    for path in load_contract()["retired"]:
+        assert not (ROOT / path).exists(), path
+
+
+def test_pinned_agentsmesh_version_matches_generated_lock() -> None:
+    package = json.loads((ROOT / "package.json").read_text(encoding="utf-8"))
+    lock = yaml.safe_load((ROOT / ".agentsmesh/.lock").read_text(encoding="utf-8"))
+
+    assert package["devDependencies"]["agentsmesh"] == "0.32.0"
+    assert lock["lib_version"] == "0.32.0"
