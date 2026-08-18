@@ -22,6 +22,9 @@ EXCLUDED_DIRS = {
     "__pycache__",
     "evals",
     "node_modules",
+    "results",
+    "scenarios",
+    "tests",
 }
 EXCLUDED_FILES = {".DS_Store"}
 EXCLUDED_SUFFIXES = {".pyc", ".pyo"}
