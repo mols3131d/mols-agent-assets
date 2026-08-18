@@ -1,0 +1,43 @@
+name: AgentsMesh Snapshot
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-slim
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - name: Install pinned toolchain
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Regenerate AgentsMesh state
+        run: npx agentsmesh generate --force
+      - name: Package generated state
+        shell: bash
+        run: |
+          set -euo pipefail
+          tar -czf /tmp/agentsmesh-generated.tgz \
+            .agentsmesh/.lock \
+            .github/copilot-instructions.md \
+            .github/agents \
+            .github/skills \
+            .agents/rules \
+            .agents/skills
+      - uses: actions/upload-artifact@v4
+        with:
+          name: agentsmesh-generated
+          path: /tmp/agentsmesh-generated.tgz
+          if-no-files-found: error
+          retention-days: 1
