@@ -18,7 +18,10 @@ INSTRUCTION = (
     "plugin inventories as substitutes for this repository index."
 )
 TARGETS = {
-    ROOT / "src/skills": ("*/SKILL.md", "src/skills/{name}/SKILL.md"),
+    ROOT / ".agentsmesh/skills": (
+        "*/SKILL.md",
+        ".agentsmesh/skills/{name}/SKILL.md",
+    ),
     ROOT / "src/skills-chatbot": (
         "*.skill.md",
         "src/skills-chatbot/{name}.skill.md",

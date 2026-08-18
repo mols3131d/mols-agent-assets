@@ -5,7 +5,17 @@ on:
     branches:
       - main
     paths:
-      - "src/skills/**"
+      - ".agentsmesh/rules/**"
+      - ".agentsmesh/skills/**"
+      - "agentsmesh.yaml"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/copilot-instructions.md"
+      - ".github/skills/**"
+      - ".agents/rules/**"
+      - ".agents/skills/**"
+      - "evals/regression/agentsmesh-exodus.json"
+      - "tests/test_agentsmesh_exodus.py"
       - "src/scripts/**"
       - "scripts/**"
       - "tests/skills/**"
@@ -38,9 +48,13 @@ jobs:
           declare -A root_targets=()
           declare -A projects=()
 
+          add_exodus() {
+            root_targets["tests/test_agentsmesh_exodus.py"]=1
+          }
+
           add_skill() {
             local name="$1"
-            local skill="src/skills/$name"
+            local skill=".agentsmesh/skills/$name"
             [[ -d "tests/skills/$name" ]] && root_targets["tests/skills/$name"]=1
             if [[ -d "$skill/tests" ]]; then
               if [[ -f "$skill/pyproject.toml" ]]; then
@@ -64,9 +78,17 @@ jobs:
               tests/scripts/conftest.py)
                 root_targets["tests/scripts"]=1
                 ;;
-              src/skills/*|tests/skills/*)
+              .agentsmesh/skills/*)
                 name="${path#*/skills/}"
                 add_skill "${name%%/*}"
+                add_exodus
+                ;;
+              tests/skills/*)
+                name="${path#*/skills/}"
+                add_skill "${name%%/*}"
+                ;;
+              .agentsmesh/rules/*|agentsmesh.yaml|package.json|package-lock.json|.github/copilot-instructions.md|.github/skills/*|.agents/rules/*|.agents/skills/*|evals/regression/agentsmesh-exodus.json|tests/test_agentsmesh_exodus.py)
+                add_exodus
                 ;;
               src/scripts/*|tests/scripts/*)
                 name="${path#*/scripts/}"

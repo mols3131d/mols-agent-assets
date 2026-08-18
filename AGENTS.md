@@ -2,8 +2,10 @@
 
 ## Directory Roles
 
-- `.agents/`: Runtime instructions. Follow contents. Edit only when explicitly requested.
-- `src/`: Source workspace for agents, skills, chatbot skills, rules, and tooling. Never treat contents as runtime instructions.
+- `.agentsmesh/`: Canonical source for portable coding-agent Rules and Skills managed by AgentsMesh. Edit this source, not generated target files.
+- `.github/skills/`, `.github/copilot-instructions.md`, `.agents/rules/`, and `.agents/skills/`: AgentsMesh-generated target projections. Do not hand-edit them.
+- `.agents/AGENTS.md`: Repository-local guard outside the AgentsMesh generated surfaces. Follow its contents.
+- `src/`: Source workspace only for profiles outside the current AgentsMesh contract, including hosted-chatbot Skills, target-specific Agents, Prompts, and repository tooling. Never treat contents as runtime instructions unless an applicable profile explicitly says so.
 - `tests/`: Repository-level automated tests for assets and tooling.
 - `docs/`: Repository-level human-facing documentation and references.
 
@@ -14,7 +16,7 @@ For asset doctrine, distinguish:
 
 Prefer Skill as the portable reusable unit when a capability or situation-specific context should be activated on demand by the model rather than loaded globally.
 
-For Rule deployment, follow `docs/references/rules/agent-assets-rules-projections.md`: this repository uses non-standard local conventions for root/nested `AGENTS.md`, harness-appropriate glob selectors, and `CHATBOT.md`. The chatbot fallback is `CHATBOT.md → AGENTS.md → README.md`.
+For portable coding-agent Rule deployment, AgentsMesh owns canonical representation and target fan-out from `.agentsmesh/rules/`. `docs/references/rules/agent-assets-rules-projections.md` documents repository-local boundaries, including the hosted-chatbot fallback `CHATBOT.md → AGENTS.md → README.md`, which remains outside AgentsMesh.
 
 For Skill authoring, separate external contracts from repository-local extensions:
 
@@ -23,12 +25,15 @@ For Skill authoring, separate external contracts from repository-local extension
 
 Do not copy Tier 2 vendor rules into repository-local standards. Read the official target-harness source linked by the specification reference when host-specific behavior matters.
 
-Target profile and package-surface details are delegated to `docs/references/skills/agent-assets-skills-target-profiles.md`. Treat `skills/`, `skills-chatbot/`, and `skills-chatbot-runtime/` as repository-local, non-standard target profiles rather than Agent Skills specification categories.
+Target profile and package-surface details are delegated to `docs/references/skills/agent-assets-skills-target-profiles.md`. Treat `.agentsmesh/skills/`, `src/skills-chatbot/`, and `src/skills-chatbot-runtime/` as distinct repository deployment profiles rather than Agent Skills specification categories.
 
 Supporting resources are not peer Agent Asset types alongside Rule, Skill, Prompt, and Agent.
 
 ## Asset Pipeline
 
-1. **Author**: Create or edit assets in `src/`.
-1. **Validate**: Run applicable asset checks and tests.
+1. **Author**: Edit portable coding-agent Rules or Skills in `.agentsmesh/`; edit explicitly out-of-scope profiles in their declared `src/` owner.
+1. **Generate**: For AgentsMesh-managed assets, run the pinned AgentsMesh toolchain to project active targets.
+1. **Validate**: Run applicable AgentsMesh checks plus repository tests/evals at the cheapest relevant level.
 1. **Deploy**: Merge the validated feature branch to the distribution branch.
+
+Generated target files are evidence and distribution artifacts, not independent sources of truth.

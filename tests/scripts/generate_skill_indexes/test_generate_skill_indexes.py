@@ -18,17 +18,17 @@ def test_render_index_prepends_metadata_and_instruction(tmp_path):
     content = generate_skill_indexes.render_index(
         tmp_path,
         "*/SKILL.md",
-        "src/skills/{name}/SKILL.md",
+        ".agentsmesh/skills/{name}/SKILL.md",
     )
     rows = [json.loads(line) for line in content.splitlines()]
 
     assert rows[:2] == [
         {
             "metadata": {
-                "workspace_path": "src/skills/{name}/SKILL.md",
+                "workspace_path": ".agentsmesh/skills/{name}/SKILL.md",
                 "github_url": (
                     "https://github.com/mols3131d/mols-agent-assets/blob/main/"
-                    "src/skills/{name}/SKILL.md"
+                    ".agentsmesh/skills/{name}/SKILL.md"
                 ),
             }
         },
@@ -44,7 +44,7 @@ def test_target_templates_cover_each_skill_profile():
     }
 
     assert targets == {
-        "src/skills": "src/skills/{name}/SKILL.md",
+        ".agentsmesh/skills": ".agentsmesh/skills/{name}/SKILL.md",
         "src/skills-chatbot": "src/skills-chatbot/{name}.skill.md",
         "src/skills-chatbot-runtime": "src/skills-chatbot-runtime/{name}/SKILL.md",
     }

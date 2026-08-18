@@ -1,16 +1,18 @@
 # 개발 워크스페이스 (`src/`)
 
-`src/`는 AI 에이전트 자산의 source workspace입니다.
+`src/`는 이제 **현재 AgentsMesh portable contract 밖에 있는 profile과 tooling만** 보관합니다.
+
+portable coding-agent Rule과 Skill의 canonical source는 각각 `.agentsmesh/rules/`, `.agentsmesh/skills/`로 이동했습니다.
 
 | 디렉터리 | 역할 |
 | --- | --- |
-| `agents/` | subagent 및 custom agent |
-| `skills/` | workspace를 다루는 agent skill |
-| `skills-chatbot/` | 4,000-token flat budget 안에서 한 파일로 완결되는 chatbot skill |
-| `skills-chatbot-runtime/` | 큰 context 또는 bundled resource/runtime 기능이 필요한 chatbot skill |
-| `rules/` | 재사용 가능한 행동 규칙 |
+| `agents/` | active AgentsMesh target set에서 의미를 안전하게 보존할 수 없는 target-specific subagent/custom agent |
+| `prompts/` | explicit invocation prompt와 hosted-service orchestration prompt |
+| `skills-chatbot/` | self-contained single-file hosted-chatbot Skill |
+| `skills-chatbot-runtime/` | bundled/runtime hosted-chatbot Skill |
+| `rules/` | AgentsMesh 밖의 hosted-chatbot-specific Rule |
 | `scripts/` | 개발 및 검증 도구 |
 
-세 Skill 디렉터리는 **계층이 아니라 비표준 repository-local target profile**입니다. 같은 capability가 여러 profile에 존재할 수 있으며, 각 harness가 지원하는 규격과 기능을 최대한 활용하도록 서로 다른 형태로 최적화합니다. 따라서 profile 간 의미 중복은 독립 배포와 target-specific 최적화를 위한 의도적 중복일 수 있습니다.
+`src/skills/`를 두 번째 portable Skill source로 다시 만들지 않습니다. portable coding-agent Skill의 authority는 `.agentsmesh/skills/` 하나입니다.
 
-Directory-based Skill source package 내부에서는 dot-prefixed directory(`.*`)를 **non-runtime maintainer surface**로 사용합니다. Skill 내부 maintainer 문서는 `docs/`가 아니라 `.docs/`에 두고, `.docs/baseline/`은 본래 purpose, requirements, invariants, 주요 decisions와 recovery directive를 보존합니다. Runtime에서 필요한 resource는 `references/`, `scripts/`, `assets/` 같은 non-dot surface에 둡니다.
+hosted-chatbot Skill profile은 Agent Skills specification의 공식 분류가 아니라 repository-local deployment profile입니다. target payload가 실제로 다를 때 같은 capability가 portable AgentsMesh Skill과 hosted-chatbot projection으로 공존할 수 있습니다.
