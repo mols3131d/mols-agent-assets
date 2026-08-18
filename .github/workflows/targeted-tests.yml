@@ -88,6 +88,10 @@ jobs:
               tests/scripts/conftest.py)
                 root_targets["tests/scripts"]=1
                 ;;
+              .github/workflows/targeted-tests.yml)
+                add_exodus
+                add_asset_docs
+                ;;
               .agentsmesh/skills/*)
                 name="${path#*/skills/}"
                 add_skill "${name%%/*}"

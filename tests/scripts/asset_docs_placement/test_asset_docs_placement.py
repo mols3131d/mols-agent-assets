@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[3]
 RUNTIME_SKILLS = ROOT / "src" / "skills-chatbot-runtime"
 CREATOR = RUNTIME_SKILLS / "mols-skill-creator"
 INSPECTOR = RUNTIME_SKILLS / "artifact-consistency-inspector"
+TARGETED_TESTS = ROOT / ".github" / "workflows" / "targeted-tests.yml"
 
 
 def run_package(skill: Path, output: Path) -> Path:
@@ -30,7 +31,9 @@ def run_package(skill: Path, output: Path) -> Path:
 
 
 def test_runtime_packages_do_not_keep_legacy_docs() -> None:
-    legacy = sorted(path for path in RUNTIME_SKILLS.rglob(".docs") if path.is_dir())
+    legacy = sorted(
+        path for path in RUNTIME_SKILLS.rglob(".docs") if path.is_dir()
+    )
     assert legacy == []
 
 
@@ -62,7 +65,11 @@ def test_creator_initializer_is_minimal_and_self_contained(tmp_path: Path) -> No
     assert result.returncode == 0, result.stderr or result.stdout
 
     created = tmp_path / "smoke-skill"
-    files = sorted(path.relative_to(created).as_posix() for path in created.rglob("*") if path.is_file())
+    files = sorted(
+        path.relative_to(created).as_posix()
+        for path in created.rglob("*")
+        if path.is_file()
+    )
     assert files == ["SKILL.md"]
     assert not (created / ".docs").exists()
 
@@ -83,9 +90,15 @@ def test_creator_contract_sources_use_optional_maintainer_docs() -> None:
     assert "Reads DIRECTIVE before editing" not in assertions
     assert "without mandatory maintainer docs" in assertions
 
-    upstream = (CREATOR / "references/upstream-sources.md").read_text(encoding="utf-8")
-    quality = (CREATOR / "references/quality-model.md").read_text(encoding="utf-8")
-    platform = (CREATOR / "references/platform-compatibility.md").read_text(encoding="utf-8")
+    upstream = (CREATOR / "references/upstream-sources.md").read_text(
+        encoding="utf-8"
+    )
+    quality = (CREATOR / "references/quality-model.md").read_text(
+        encoding="utf-8"
+    )
+    platform = (CREATOR / "references/platform-compatibility.md").read_text(
+        encoding="utf-8"
+    )
     assert "모든 대상 스킬에 의무화" not in upstream
     assert "`docs/`를 패키지에 포함한다" not in upstream
     assert "필요한 자산과 `docs/`가 포함된다" not in quality
@@ -116,7 +129,9 @@ def test_creator_validator_flags_legacy_docs(tmp_path: Path) -> None:
     assert "external maintainer-doc surface" in result.stdout
 
 
-def test_creator_packager_excludes_explicit_non_runtime_surfaces(tmp_path: Path) -> None:
+def test_creator_packager_excludes_explicit_non_runtime_surfaces(
+    tmp_path: Path,
+) -> None:
     archive = run_package(CREATOR, tmp_path / "dist")
     with zipfile.ZipFile(archive) as zf:
         names = set(zf.namelist())
@@ -129,13 +144,15 @@ def test_creator_packager_excludes_explicit_non_runtime_surfaces(tmp_path: Path)
     assert not any("/.docs/" in name or "/.evals/" in name for name in names)
 
 
-def test_creator_packager_does_not_treat_every_dot_dir_as_non_runtime(tmp_path: Path) -> None:
+def test_creator_packager_does_not_treat_every_dot_dir_as_non_runtime(
+    tmp_path: Path,
+) -> None:
     skill = tmp_path / "dot-runtime"
     skill.mkdir()
     (skill / "SKILL.md").write_text(
         "---\n"
         "name: dot-runtime\n"
-        "description: Package a target-owned dot runtime resource for regression testing.\n"
+        "description: Package a target-owned dot runtime resource for testing.\n"
         "---\n\n"
         "# Dot Runtime\n",
         encoding="utf-8",
@@ -151,6 +168,15 @@ def test_creator_packager_does_not_treat_every_dot_dir_as_non_runtime(tmp_path: 
 
     assert "dot-runtime/.runtime/config.json" in names
     assert "dot-runtime/evals/case.json" not in names
+
+
+def test_targeted_workflow_routes_asset_doc_contract_changes() -> None:
+    workflow = TARGETED_TESTS.read_text(encoding="utf-8")
+    assert '"src/skills-chatbot-runtime/**"' in workflow
+    assert '"docs/skills/**"' in workflow
+    assert "src/skills-chatbot-runtime/*|docs/skills/*" in workflow
+    assert ".github/workflows/targeted-tests.yml)" in workflow
+    assert 'root_targets["tests/scripts/asset_docs_placement"]=1' in workflow
 
 
 def test_artifact_consistency_inspector_contract_tests_pass() -> None:

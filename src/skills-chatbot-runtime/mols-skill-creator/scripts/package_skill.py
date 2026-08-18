@@ -52,7 +52,6 @@ def main() -> int:
                 continue
             if in_excluded_dir(path, root):
                 continue
-            relative_to_package = path.relative_to(root)
             if path.name in EXCLUDED_FILES:
                 continue
             if path.suffix in EXCLUDED_SUFFIXES or path == archive:
