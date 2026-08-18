@@ -8,6 +8,7 @@
 | --- | --- |
 | `tests/scripts/` | 저장소 자동화 스크립트의 deterministic correctness test |
 | `tests/skills/<skill>/` | Skill-specific deterministic correctness test와 그 fixture |
+| `tests/evals/` | repository-owned evaluation fixture의 deterministic syntax/shape check |
 | `evals/skills/<skill>/` | Skill-specific trigger, behavior, adversarial 등 model/evaluation fixture |
 | `evals/regression/` | 여러 자산·target에 걸친 deterministic regression contract |
 
@@ -33,6 +34,7 @@ agentsmesh lint
 - `lint`는 canonical/target compatibility를 정적으로 검사합니다.
 - `check`는 lock과 generated state의 빠른 drift gate입니다.
 - `generate --check`는 실제 generation path를 다시 계산하는 stronger regeneration gate입니다.
+- `evals/skills/**/*.json` 변경은 최소한 `tests/evals/`의 deterministic parse gate를 통과합니다. 이 검증은 model-based eval 실행을 의미하지 않습니다.
 - 위 검증은 실제 LLM behavior를 증명하지 않습니다. trigger precision, task success, runtime parity가 필요한 주장은 별도 runtime evidence가 있어야 합니다.
 
 ## 실행 정책
