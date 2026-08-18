@@ -57,11 +57,21 @@ def test_active_target_projections_cover_supported_canonical_assets() -> None:
 
     for projection in contract["projections"].values():
         assert (ROOT / projection["root_rule"]).is_file()
-        assert directory_names(ROOT / projection["skills"]) == expected_skills
 
-        agents_path = projection.get("agents")
-        if agents_path:
-            projected_agents = ROOT / agents_path
+        projected_skill_names = directory_names(ROOT / projection["skills"])
+        agent_mode = projection.get("agent_mode")
+
+        if agent_mode == "embedded-skill":
+            prefix = projection["agent_prefix"]
+            expected_embedded_agents = {f"{prefix}{name}" for name in expected_agents}
+            assert projected_skill_names == expected_skills | expected_embedded_agents
+            for name in expected_embedded_agents:
+                assert (ROOT / projection["skills"] / name / "SKILL.md").is_file()
+        else:
+            assert projected_skill_names == expected_skills
+
+        if agent_mode == "native":
+            projected_agents = ROOT / projection["agents"]
             assert {
                 path.name.removesuffix(".agent.md")
                 for path in projected_agents.glob("*.agent.md")
