@@ -14,6 +14,10 @@ description: Repository-wide contract for mols-agent-assets coding-agent work.
 - `tests/` owns repository-level automated verification; package-local evals remain with their package when their lifecycle is package-specific.
 - `docs/` owns human-facing standards, references, and migration records.
 
+## Language
+
+- Use natural Korean for user-facing prose by default. Keep established IT terms in English or parallel when that is clearer or more precise.
+
 ## Asset Doctrine
 
 - Primary Agent Asset types are Rule, Skill, Prompt, and Agent. Supporting resources are not peer asset types.
