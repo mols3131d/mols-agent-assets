@@ -38,11 +38,11 @@ Skill specifications use the `agentskills.io` open standard as Tier 1. `docs/ref
 | `.agentsmesh/` | Portable coding-agent canonical assets and AgentsMesh lock |
 | `.github/skills/`, `.github/copilot-instructions.md` | Generated GitHub Copilot projection |
 | `.agents/rules/`, `.agents/skills/` | Generated Antigravity projection |
-| `src/` | Target-specific/hosted profiles outside AgentsMesh plus tooling |
+| `src/` | Target-specific/hosted Agent Asset profiles outside AgentsMesh |
 | `tests/` | Repository-level automated tests |
 | `evals/` | Cross-asset evaluation contracts when present |
 | `docs/` | Human-facing documentation and references |
-| `scripts/` | Repository automation tools |
+| `scripts/` | Repository automation, synchronization, and development tooling |
 
 ## Basic Workflow
 

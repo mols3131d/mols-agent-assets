@@ -1,8 +1,8 @@
 # Source Workspace (`src/`)
 
-`src/` now contains only Agent Asset profiles and tooling **outside the current portable AgentsMesh contract**.
+`src/` contains only Agent Asset profiles **outside the current portable AgentsMesh contract**.
 
-Portable coding-agent Rules and Skills have moved to `.agentsmesh/rules/` and `.agentsmesh/skills/`.
+Portable coding-agent Rules and Skills live in `.agentsmesh/rules/` and `.agentsmesh/skills/`. Repository tooling lives in root `scripts/`.
 
 | Directory | Role |
 | --- | --- |
@@ -11,11 +11,10 @@ Portable coding-agent Rules and Skills have moved to `.agentsmesh/rules/` and `.
 | `skills-chatbot/` | Self-contained single-file hosted-chatbot Skills |
 | `skills-chatbot-runtime/` | Bundled/runtime hosted-chatbot Skills |
 | `rules/` | Hosted-chatbot-specific Rules outside AgentsMesh |
-| `scripts/` | Development and validation tooling |
 
 Do not recreate `src/skills/` as a second portable Skill source. `.agentsmesh/skills/` is authoritative for portable coding-agent Skills.
 
-The peer Agent Asset types remain **Rule, Skill, Prompt, and Agent**. Supporting resources are not peer asset types.
+The peer Agent Asset types remain **Rule, Skill, Prompt, and Agent**. Supporting resources and repository tooling are not peer asset types.
 
 The hosted-chatbot Skill profiles are repository-local deployment profiles, not categories defined by the Agent Skills specification. The same capability may have a portable AgentsMesh Skill and a hosted-chatbot projection when their target payloads genuinely differ.
 

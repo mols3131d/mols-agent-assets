@@ -38,11 +38,11 @@ Skill 규격은 `agentskills.io`의 open standard를 Tier 1으로 사용합니�
 | `.agentsmesh/` | portable coding-agent canonical assets와 AgentsMesh lock |
 | `.github/skills/`, `.github/copilot-instructions.md` | generated GitHub Copilot projection |
 | `.agents/rules/`, `.agents/skills/` | generated Antigravity projection |
-| `src/` | AgentsMesh scope 밖의 target-specific/hosted profiles와 tooling |
+| `src/` | AgentsMesh scope 밖의 target-specific/hosted Agent Asset profile |
 | `tests/` | 저장소 수준 자동화 테스트 |
 | `evals/` | cross-asset evaluation contracts when present |
 | `docs/` | 저장소 수준 사람용 문서와 reference |
-| `scripts/` | 저장소 자동화 도구 |
+| `scripts/` | 저장소 자동화·동기화·개발 도구 |
 
 ## Basic Workflow
 

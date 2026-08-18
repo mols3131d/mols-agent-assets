@@ -5,7 +5,8 @@
 - `.agentsmesh/`: Canonical source for portable coding-agent Rules and Skills managed by AgentsMesh. Edit this source, not generated target files.
 - `.github/skills/`, `.github/copilot-instructions.md`, `.agents/rules/`, and `.agents/skills/`: AgentsMesh-generated target projections. Do not hand-edit them.
 - `.agents/AGENTS.md`: Repository-local guard outside the AgentsMesh generated surfaces. Follow its contents.
-- `src/`: Source workspace only for profiles outside the current AgentsMesh contract, including hosted-chatbot Skills, target-specific Agents, Prompts, and repository tooling. Never treat contents as runtime instructions unless an applicable profile explicitly says so.
+- `src/`: Source workspace only for Agent Asset profiles outside the current AgentsMesh contract, including hosted-chatbot Skills, target-specific Agents, Prompts, and hosted-chatbot-specific Rules. Never treat contents as runtime instructions unless an applicable profile explicitly says so.
+- `scripts/`: Repository automation, synchronization, setup, validation, and other development tooling.
 - `tests/`: Repository-level automated tests for assets and tooling.
 - `docs/`: Repository-level human-facing documentation and references.
 

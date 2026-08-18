@@ -9,14 +9,14 @@ lockfile에 등록된 원격 파일을 로컬 경로로 동기화하는 Python C
 저장소 루트에서 실행합니다.
 
 ```bash
-python -m src.scripts.sync_github_files
+python -m scripts.sync_github_files
 ```
 
 기본 lockfile은 현재 디렉터리의 `my-assets-lock.json`입니다. 다른 파일을 사용하려면
 경로를 지정합니다.
 
 ```bash
-python -m src.scripts.sync_github_files --lockfile path/to/assets-lock.json
+python -m scripts.sync_github_files --lockfile path/to/assets-lock.json
 ```
 
 ## Lockfile

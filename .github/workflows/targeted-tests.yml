@@ -22,7 +22,6 @@ on:
       - "docs/skills/**"
       - "docs/references/skills/**"
       - "docs/references/common/standards/agent-assets-standard-personal.md"
-      - "src/scripts/**"
       - "scripts/**"
       - "tests/skills/**"
       - "tests/scripts/**"
@@ -107,7 +106,7 @@ jobs:
               src/skills-chatbot-runtime/*|docs/skills/*|docs/references/skills/*|docs/references/common/standards/agent-assets-standard-personal.md|docs/README.md|docs/development.md)
                 add_asset_docs
                 ;;
-              src/scripts/*|tests/scripts/*)
+              tests/scripts/*)
                 name="${path#*/scripts/}"
                 add_script "${name%%/*}"
                 ;;
