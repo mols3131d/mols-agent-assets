@@ -18,6 +18,7 @@ on:
       - ".agents/skills/**"
       - "evals/regression/**"
       - "evals/skills/**"
+      - "tests/evals/**"
       - "tests/test_agentsmesh_exodus.py"
       - "docs/README.md"
       - "docs/development.md"
@@ -25,14 +26,12 @@ on:
       - "docs/skills/**"
       - "docs/references/skills/**"
       - "docs/references/common/standards/agent-assets-standard-personal.md"
-      - "scripts/**"
       - "tests/skills/**"
       - "tests/scripts/**"
+      - "scripts/**"
+      - "pyproject.toml"
+      - "uv.lock"
       - ".github/workflows/targeted-tests.yml"
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -44,14 +43,13 @@ jobs:
     steps:
       - name: Checkout PR merge
         uses: actions/checkout@v7
-        with:
-          fetch-depth: 2
-          persist-credentials: false
 
       - name: Select affected tests
         id: scope
         shell: bash
         run: |
+          set -euo pipefail
+
           mapfile -d '' files < <(git diff --name-only -z HEAD^1 HEAD)
           declare -A root_targets=()
 
@@ -69,6 +67,13 @@ jobs:
             return 0
           }
 
+          add_eval() {
+            local name="$1"
+            root_targets["tests/evals"]=1
+            add_skill "$name"
+            return 0
+          }
+
           add_script() {
             local name="$1"
             [[ -d "tests/scripts/$name" ]] && root_targets["tests/scripts/$name"]=1
@@ -80,12 +85,16 @@ jobs:
               tests/skills/conftest.py)
                 root_targets["tests/skills"]=1
                 ;;
+              tests/evals/*)
+                root_targets["tests/evals"]=1
+                ;;
               tests/scripts/conftest.py)
                 root_targets["tests/scripts"]=1
                 ;;
               .github/workflows/targeted-tests.yml)
                 add_exodus
                 add_asset_docs
+                root_targets["tests/evals"]=1
                 ;;
               .agentsmesh/skills/*)
                 name="${path#*/skills/}"
@@ -93,9 +102,13 @@ jobs:
                 add_exodus
                 add_asset_docs
                 ;;
-              tests/skills/*|evals/skills/*)
+              tests/skills/*)
                 name="${path#*/skills/}"
                 add_skill "${name%%/*}"
+                ;;
+              evals/skills/*)
+                name="${path#*/skills/}"
+                add_eval "${name%%/*}"
                 ;;
               .agentsmesh/rules/*|.agentsmesh/agents/*|agentsmesh.yaml|package.json|package-lock.json|.github/copilot-instructions.md|.github/skills/*|.github/agents/*|.agents/rules/*|.agents/skills/*|evals/regression/*|tests/test_agentsmesh_exodus.py)
                 add_exodus
