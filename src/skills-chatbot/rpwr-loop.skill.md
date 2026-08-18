@@ -1,261 +1,324 @@
 ---
 name: rpwr-loop
 description: >-
-  Improve difficult or high-level work through adaptive multi-phase loops. Use when the
-  user asks for deep iterative work, repeated improvement or review loops, says to run
-  loops, or explicitly asks for RPI, RPWR, an RPI loop, or an RPWR loop instead of a
-  single-pass result.
+  Improve difficult or high-level work through an adaptive Research → Plan → Work →
+  Review main loop supported by Prepare and Finalize workflows. Use when the user asks
+  for deep iterative work, repeated improvement or review loops, says to run loops, or
+  explicitly asks for RPI, RPWR, an RPI loop, or an RPWR loop instead of a single-pass
+  result.
 ---
 
 # RPWR Loop
 
-Use **RPWR** as a three-phase workflow for difficult or high-level work. `RPI` is an
-alias for this workflow.
+Use **RPWR** as one iterative main loop with two supporting workflows. `RPI` is an alias.
 
-Each phase has its own loop:
-
-1. **Prepare** — `Discover → Assess → Configure → Verify`
-1. **Improve** — `Research → Plan → Work → Review`
-1. **Finalize** — `Inspect → Resolve → Validate → Gate`
-
-Count only genuine phase cycles. Do not force phases into the same reasoning shape.
-
-## Arguments
-
-```yaml
-output_policy: auto  # auto | chat | persist | both
-phase_1_prepare: {min_loops: 1, max_loops: 2}
-phase_2_improve: {min_loops: 4, max_loops: 8}
-phase_3_finalize: {min_loops: 1, max_loops: 2}
+```text
+Prepare workflow
+→ RPWR main loop: Research → Plan → Work → Review × N
+→ Finalize workflow
 ```
 
-An explicit user override takes precedence over these defaults.
+Only the RPWR main loop is counted. Prepare and Finalize are workflows, not loops.
 
-### Output Policy
+# Arguments
 
-- `auto` — default. Return the report in chat unless Prepare identifies a clearly
-  appropriate durable, writable destination that already belongs to the work context.
-  If so, persist it there and return a concise chat summary with its location.
+All arguments are optional.
+
+```yaml
+output_policy: auto       # auto | chat | persist | both
+rpwr_loops: {min: 2, max: 10}
+acceptance_ledger: auto   # auto | on | off
+live_progress: auto       # auto | compact | quiet
+research_policy: auto     # auto | internal | external | mixed
+```
+
+Explicit user overrides take precedence unless they conflict with higher authority.
+Workflow order, genuine-loop counting, evidence-based completion, and authority checks
+are invariants rather than configurable options.
+
+`rpwr_loops` applies only to the RPWR main loop. Do not reset its budget by silently
+starting another run. Another run requires explicit user continuation or an
+already-established higher-level campaign/iteration budget that clearly authorizes it.
+
+## Execution Policies
+
+- `acceptance_ledger: auto` — create a ledger only for consequential multi-gate work.
+  `on` forces an explicit ledger; `off` suppresses the explicit ledger but never removes
+  required acceptance conditions.
+- `live_progress: auto` — surface useful loop/stage updates without narrating mechanics.
+  `compact` reports each counted loop plus material gate changes. `quiet` reports only
+  major transitions, blockers, and completion.
+- `research_policy: auto` — allocate internal/external evidence by uncertainty and
+  expected information gain. `internal` or `external` constrains the primary evidence
+  surface when the task permits it. `mixed` deliberately uses both where material.
+  Higher-authority freshness or verification requirements still apply.
+
+## Output Policy
+
+- `auto` — use chat unless Prepare finds an appropriate writable destination already
+  belonging to the work; then persist there and return a concise chat summary.
 - `chat` — return the full report in chat.
-- `persist` — persist to the most appropriate confirmed destination; if none is clear
-  or writable, fall back to chat and state the limitation.
-- `both` — persist the report and also return it in chat.
+- `persist` — persist to the confirmed destination; if none is appropriate/writable,
+  fall back to chat and state the limitation.
+- `both` — persist and return the report in chat.
 
-A destination may be a repository, Drive, workspace document system, chatbot library,
-knowledge base, or another persistent surface. Availability alone does not make a
-surface appropriate. Prefer where the work already belongs; if ambiguous, use chat.
-Never invent a storage convention or assume write access.
+Availability alone does not make a destination appropriate. Prefer where the work
+already belongs; if ambiguous, use chat. Never invent storage conventions or write
+access.
 
-## Loop Integrity
+# Integrity
 
-A counted loop is one complete, substantive cycle of the **current phase's loop**. It
-is not an edit, finding, file, subtask, tool call, or label around mechanical work.
+## Main-Loop Integrity
 
-Count a loop only when its cycle produces a material understanding, decision, work,
-validation, risk, or confidence delta. A no-change loop may count when a distinct,
-substantive investigation or validation closes important uncertainty.
+A counted loop is one complete, substantive `Research → Plan → Work → Review` cycle,
+not an edit, finding, file, subtask, tool call, or label around mechanical work.
 
-Do not count:
+Count it only when the cycle materially changes understanding, a decision, work,
+validation, risk, or confidence. A no-change loop may count when distinct substantive
+investigation or validation closes important uncertainty.
 
-- one isolated edit, fix, finding, file change, or subtask;
-- rereading or restating the same evidence;
-- repeated review or validation from the same perspective;
-- mechanical execution without task-specific judgment;
-- cosmetic churn or artificial splitting used to satisfy a loop count.
+Name loops by the material question, risk, or uncertainty resolved, not by file groups
+or mechanical work units.
 
-Never invent findings or simulate reasoning. If a phase minimum cannot be satisfied
-with genuine cycles, do not claim that it was; return the best result and report the
-budget shortfall.
+Do not count isolated edits, repeated evidence, mechanical execution, cosmetic churn,
+or artificial splitting. Never invent findings or simulate reasoning. If genuine minima
+cannot be satisfied, report the shortfall instead of manufacturing loops.
 
-A confirmed blocker may end a phase or the workflow before its minimum. Do not perform
-fake loops after further execution has become impossible or unauthorized.
+Prepare and Finalize never contribute to the loop count.
 
 Do not expose private chain-of-thought. Report observable evidence, decisions, work,
 validation, and outcomes only.
 
-## Phase 1 — Prepare
+## Stage Discipline
 
-Complete **1–2 Prepare loops** to establish a trustworthy execution strategy.
+Progression is monotonic:
 
-### Discover
+`Prepare workflow → RPWR main loop → Finalize workflow`
 
-Build an evidence-based picture of:
+Prepare establishes execution readiness. Finalize closes the shaped result. Neither is a
+second improvement loop in disguise.
 
-- **Task:** objective, scope, context, constraints, uncertainty, stakes, acceptance
-  conditions, relevant evidence, likely failure modes, and natural work context.
-- **Environment:** agent capabilities, tools, connected resources, permissions,
-  governing instructions, write authority, validation surfaces, durable storage
-  surfaces, and material limitations.
+Once Finalize begins, bounded finishing work stays in `Resolve`. If Finalize discovers a
+core-assumption failure requiring broad Research, replanning, or substantial reshaping,
+return `BLOCKED`; do not reopen the main loop inside the same run. Another run requires
+the run-start authority defined above.
 
-Confirm capabilities and authority when they affect execution. Do not assume a tool,
-connection, permission, storage target, or write capability exists.
+## Acceptance Ledger
 
-### Assess
+For multiple consequential completion conditions, explicit gates, or costly false
+completion, use a compact ledger:
 
-Match task requirements against the actual environment. Identify material gaps,
-uncertainties, dependencies, useful evidence and tools, major risks, persistence
-context, and authority boundaries.
+```text
+Gate | Evidence needed | Status
+```
 
-Distinguish:
+Use `pending`, `pass`, `fail`, `accepted-limit`, or `not-applicable`.
 
-- **available** — the environment can technically perform an action;
-- **authorized** — applicable system, user, workspace, and repository instructions
-  permit that action.
+- Prepare establishes material gates and evidence.
+- The RPWR loop updates a gate in the same loop when evidence changes it.
+- Finalize checks every material gate before `PASS`.
 
-Do not treat technical access as authorization. Also distinguish an unavailable
-capability from one that has merely not been checked yet.
+The ledger is working state, not a deliverable or loop. Add newly discovered material
+gates explicitly. Never infer `pass` from intended work. `accepted-limit` cannot relax a
+user, policy, or contract requirement unless the same authority permits it.
 
-### Configure
+# Prepare Workflow
 
-Set the smallest viable strategy for Improve and Finalize. Configure only what changes
-execution: useful tools and evidence surfaces, initial Research scope, assumptions,
-acceptance conditions, Review emphasis, validation approach, transition signals, and
-report delivery or persistence when context justifies it.
+Run once before the main loop:
 
-Keep the strategy adaptive. Do not script every future loop or route around governing
-instructions merely because a tool makes it possible.
+`Discover → Assess → Configure → Verify`
 
-### Verify
+The workflow may revisit its own steps while establishing readiness, but those passes
+are not counted loops.
 
-Verify that the strategy is executable, proportionate, authorized, and free of material
-unverified dependencies.
+## Discover
 
-End each Prepare loop with a readiness result:
+Build an evidence-based view of the **task** (objective, scope, constraints, stakes,
+acceptance conditions, evidence, failure modes) and **environment** (capabilities, tools,
+permissions, governing instructions, write authority, validation/persistence surfaces,
+limitations).
 
-- **READY** — execution can proceed.
-- **READY WITH LIMITS** — execution can proceed with explicit non-blocking limits.
-- **BLOCKED** — a critical dependency, capability, authority, or evidence gap prevents
-  trustworthy execution.
+## Assess
 
-The first loop is mandatory. Use the second when material preparation uncertainty
-remains. Enter Improve only if readiness is `READY` or `READY WITH LIMITS`; otherwise
-stop and report the blocker.
+Match requirements to the environment and identify material gaps, dependencies,
+evidence/tools, risks, and authority boundaries. Distinguish **available** (technically
+possible) from **authorized** (permitted), and unavailable from merely unchecked.
 
-## Phase 2 — Improve
+## Configure
 
-Complete **4–8 Improve loops**. This is the primary work phase.
+Choose the smallest viable strategy for the main loop and Finalize: evidence surfaces,
+Research scope, assumptions, acceptance gates, Review emphasis, validation, transition
+signals, and persistence. Apply the optional execution policies. Keep the strategy
+adaptive rather than scripting every future loop.
 
-### Research
+## Verify
 
-Gather evidence needed for the current objective and unresolved findings. Start broad
-enough to orient the work, then narrow as findings localize. Broaden again when the
-problem boundary is unclear, evidence conflicts, or a core assumption fails. Change
-evidence, method, or perspective when the previous investigation saturates.
+Verify the strategy is executable, proportionate, authorized, and free of material
+unchecked dependencies. For a ledger, every known material gate needs an evidence path
+or explicit non-blocking limitation.
 
-Research may use current context, artifacts, repositories, data, prior results, domain
-knowledge, or external sources. It is not synonymous with web search.
+Return one readiness state:
 
-Allocate research effort adaptively across internal and external evidence according to
-current uncertainty, evidence gaps, task risk, and which source is most likely to
-materially change understanding or confidence. Favor internal evidence when correctness
-depends on the actual artifact, repository, data, or established work context; favor
-external evidence when freshness, standards, vendor behavior, alternatives, or
-independent validation matter. Use both when local conclusions need external grounding
-or challenge. Do not target a fixed ratio.
+- **READY**
+- **READY WITH LIMITS**
+- **BLOCKED**
 
-### Plan
+Enter the main loop only from `READY` or `READY WITH LIMITS`.
 
-Turn current evidence and findings into the smallest plan that can materially improve
-the result. Set only the needed objective, scope, constraints, approach, work units,
-trade-offs, acceptance conditions, and validation points.
+# RPWR Main Loop
 
-### Work
+Run `Research → Plan → Work → Review` within `rpwr_loops`.
 
-Perform a meaningful batch of task-appropriate work against the plan and evidence.
-Preserve confirmed constraints unless new evidence justifies changing them. Do not
-claim work or validation that was not performed.
+## Research
 
-### Review
+Gather evidence for the current objective and unresolved findings. Orient broadly,
+narrow as findings localize, and broaden again when boundaries are unclear, evidence
+conflicts, or a core assumption fails. Change method or perspective when investigation
+saturates. Research is not synonymous with web search.
 
-Use this default cadence by **Improve loop number**:
+Under `research_policy: auto`, allocate internal vs external research by uncertainty and
+expected information gain, not a fixed ratio. Favor internal evidence for
+artifact/repository/data truth; favor external evidence for freshness, standards,
+vendor behavior, alternatives, or independent challenge.
 
-- **odd — Quality Review:** correctness, completeness, coherence, clarity, usability,
-  evidence quality, and objective fit.
-- **even — Pessimistic Review:** consequential failure modes, edge cases, hidden
-  assumptions, regressions, misuse, operational risk, and security or safety when
-  relevant.
+## Plan
 
-The cadence is a default, not a ritual. Override it when current risk clearly requires
-a different perspective; do not force irrelevant review dimensions.
+Turn evidence into the smallest plan that can materially improve the result: needed
+scope, constraints, approach, trade-offs, gates, and validation.
 
-After four genuine loops, move to Finalize when the result is substantially shaped and
-remaining work is mainly finishing or validation. Otherwise continue while a material
-delta remains, up to eight loops. At eight, carry unresolved material findings into
-Finalize.
+## Work
 
-## Phase 3 — Finalize
+Perform a meaningful batch against the plan. Preserve confirmed constraints unless
+evidence justifies change. Never claim unperformed work or validation. Update changed
+acceptance gates in the same loop.
 
-Complete **1–2 Finalize loops**. Finalize is the completion gate for the work.
+## Review
 
-Finalize loop:
+Default cadence by counted loop number:
+
+- **odd — Quality Review** — correctness, completeness, coherence, clarity, usability,
+  evidence quality, objective fit.
+- **even — Pessimistic Review** — consequential failure modes, edge cases, hidden
+  assumptions, regressions, misuse, operational/security/safety risk when relevant.
+
+Override the cadence when current risk clearly needs another perspective.
+
+Treat concrete failure/correction as evidence for the next unresolved question. If the
+same failure recurs, change the plan, evidence, or approach rather than repeating it.
+
+After the minimum genuine loops, move to Finalize when the result is substantially
+shaped, no known issue requires broad reshaping, and remaining work is mainly completion
+or validation. Otherwise continue while material deltas remain, up to the configured
+maximum. Carry unresolved findings into Finalize honestly.
+
+# Finalize Workflow
+
+Run once after the main loop:
 
 `Inspect → Resolve → Validate → Gate`
 
-### Inspect
+Finalize is a completion workflow, not a counted loop. It may perform bounded finishing
+corrections in `Resolve` and validate them before `Gate`; do not turn those corrections
+into hidden RPWR loops.
 
-Inspect acceptance conditions, unresolved material findings, recent changes,
-validation gaps, regressions, residual risks, and required phase-loop integrity. Look
-only where an issue could still materially affect completion.
+## Inspect
 
-### Resolve
+Inspect acceptance gates, unresolved findings, recent changes, validation gaps,
+regressions, residual risk, and main-loop integrity. Look only where completion could
+still materially change.
 
-Correct, complete, revert, or explicitly accept what materially blocks trustworthy
-completion. Reject new scope unless a core assumption failed or completion would
-otherwise be misleading.
+## Resolve
 
-### Validate
+Correct, complete, revert, or explicitly accept what blocks trustworthy completion.
+Keep remediation bounded to the shaped result and reject new scope. If broad new
+Research/replanning/reshaping is required, the Gate must become `BLOCKED`.
 
-Perform the smallest task-appropriate checks that can materially change confidence in
-completion. Validate the result and final changes against important requirements,
-evidence, regression risk, residual risk, and checks claimed by the work.
+## Validate
 
-### Gate
+Run the smallest checks that can materially change completion confidence. Validate
+requirements, regressions, residual risk, and checks claimed by the work. Validate
+ledger gates against named evidence; `pending` or `fail` cannot silently pass.
 
-Return one gate result:
+## Gate
 
-- **PASS** — completion is trustworthy, required genuine-loop minima were satisfied,
-  and any remaining limitations are non-blocking and documented.
-- **RETRY** — an actionable material issue remains and a second Finalize loop can
-  meaningfully address it.
-- **BLOCKED** — trustworthy completion cannot be reached with the remaining loop
-  budget, evidence, capability, or authority.
+Return one result:
 
-The first genuine Finalize loop is the normal completion gate. Stop on `PASS`. On
-`RETRY`, run one additional genuine Finalize loop. At the second loop, unresolved
-completion-blocking issues produce `BLOCKED`, not a false success.
+- **PASS** — genuine main-loop minima are satisfied; material gates pass or are validly
+  accepted as non-blocking; limitations are documented.
+- **INCOMPLETE** — a best-effort result exists, but required loop depth or completion
+  evidence remains unsatisfied after bounded finishing work.
+- **BLOCKED** — trustworthy completion requires unavailable
+  budget/evidence/capability/authority or broad reshaping.
 
-A prior phase budget shortfall prevents `PASS` unless the user explicitly overrode that
-budget. Do not use Finalize to retroactively legitimize fake or missing loops.
+A main-loop budget shortfall prevents `PASS` unless the user explicitly overrode that
+budget. Finalize cannot retroactively legitimize fake or missing loops.
 
-## Reporting
+# Output
 
-Keep a compact observable record while working.
+## Live Progress
 
-For every counted loop, write one line using the phase's actual cycle:
+Follow explicit user cadence/format overrides first.
 
-```text
-Prepare N — D: <discovery> | A: <assessment> | C: <configuration> | V: <readiness>
-Improve N — Research: <research> | Plan: <decision> | Work: <work> | Review: <review>
-Finalize N — I: <inspection> | R: <resolution> | V: <validation> | G: <gate>
+For a counted main loop:
+
+```markdown
+**RPWR 3/10 — <material question or outcome>**
+- **Research** — <new evidence>
+- **Plan** — <decision or next approach>
+- **Work** — <meaningful work completed>
+- **Review** — <finding, risk, or confidence change>
 ```
 
-Each field states only the material delta. Do not expand one action into multiple loop
-lines.
+Prepare/Finalize updates are unnumbered:
 
-For each phase reached, write **one paragraph** summarizing its objective, major
-decisions or changes, evidence or validation, and remaining material concerns.
+```markdown
+**Prepare — READY**
+- **Discover** — <task/environment delta>
+- **Assess** — <risk or constraint>
+- **Configure** — <execution strategy>
+- **Verify** — <readiness>
+```
 
-When the workflow ends for any reason, produce a work report with one final status:
+```markdown
+**Finalize — PASS**
+- **Inspect** — <material final finding>
+- **Resolve** — <bounded completion work>
+- **Validate** — <evidence>
+- **Gate** — <result>
+```
 
-- **COMPLETE** — required phase budgets were genuinely satisfied and Finalize passed.
-- **INCOMPLETE** — a best-effort result exists, but required loop depth or validation
-  was not genuinely satisfied.
+For a material gate/status change outside a completed main-loop cycle:
+
+```markdown
+**Gate update — <gate>**
+- **Status** — <new status>
+- **Impact** — <what this changes>
+```
+
+Gate-only updates and Prepare/Finalize workflow updates are not counted loops. Do not
+assign them loop numbers. Keep fields short, avoid repeated unchanged evidence, and do
+not dump the full ledger on every update.
+
+## Final Reporting
+
+Keep the final/persisted record compact and audit-oriented:
+
+```text
+Prepare — D: <discovery> | A: <assessment> | C: <configuration> | V: <readiness>
+RPWR N — Research: <research> | Plan: <decision> | Work: <work> | Review: <review>
+Finalize — I: <inspection> | R: <resolution> | V: <validation> | G: <gate>
+```
+
+Only RPWR main-loop records are numbered and repeated. Prepare and Finalize appear once.
+Live and final formats describe the same observable work without exposing private
+reasoning.
+
+Add concise stage summaries when useful. End with one workflow status:
+
+- **COMPLETE** — required main-loop budget was genuinely satisfied and Finalize passed.
+- **INCOMPLETE** — a best-effort result exists but required depth/validation did not.
 - **BLOCKED** — a material capability, evidence, authority, or completion blocker
   prevented trustworthy completion.
 
-Include the final result, loop summaries grouped by phase, one paragraph per phase
-reached, material decisions and validation, and unresolved findings, limitations,
-blockers, or checks not performed.
-
-Deliver or persist the report according to `output_policy`. Reporting happens after
-execution ends and never counts as another loop.
+Include unresolved limitations/checks and final material gate state when a ledger was
+used. Deliver/persist according to `output_policy`. Reporting never counts as a loop.
