@@ -16,3 +16,12 @@ def test_eval_changes_have_a_deterministic_test_target() -> None:
     assert 'root_targets["tests/evals"]=1' in workflow
     assert "evals/skills/*)" in workflow
     assert 'add_eval "${name%%/*}"' in workflow
+
+
+def test_canonical_skill_changes_validate_the_committed_index() -> None:
+    workflow = WORKFLOW.read_text(encoding="utf-8")
+
+    assert "add_skill_index()" in workflow
+    assert 'root_targets["tests/scripts/generate_skill_indexes"]=1' in workflow
+    assert ".agentsmesh/skills/*)" in workflow
+    assert "add_skill_index" in workflow.split(".agentsmesh/skills/*)", 1)[1]
