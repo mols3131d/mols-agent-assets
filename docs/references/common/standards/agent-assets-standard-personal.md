@@ -73,7 +73,7 @@ docs/<asset-type>/<asset-name>/
 소유한다. **각 자산 유형의 최적 Superset과 projection boundary는 해당 유형 문서가 authority다.**
 
 - Rule Superset → [Rule Canonical Superset](../../rules/agent-assets-rules-canonical-superset.md)
-- Rule placement/fallback → [Rule Projections](../../rules/agent-assets-rules-projections.md)
+- Rule projection → [Rule Projections](../../rules/agent-assets-rules-projections.md)
 - Skill Superset → [Skill Canonical Superset](../../skills/agent-assets-skills-canonical-superset.md)
 - Skill-specific Personal Standard → [Personal Skill Standard](../../skills/agent-assets-skills-standard-personal.md)
 - Prompt Superset → [Prompt Canonical Superset](../../prompts/agent-assets-prompts-canonical-superset.md)
@@ -93,10 +93,13 @@ Skill target profile과 package surface의 상세 규격은 Personal Skill Stand
 - 공통 filesystem naming convention →
   [Agent Asset Naming Convention](agent-assets-naming-convention.md)
 - cross-harness canonical Superset과 유형별 target projection model
-- `CHATBOT.md`와 repository-local fallback
+- root `CHATBOT.md` repository bootstrap convention →
+  [CHATBOT Repository Bootstrap](chatbot-repository-bootstrap.md)
 - directory/glob Rule projection convention
 - 필요할 때만 사용하는 `docs/<asset-type>/<asset-name>/` maintainer documentation convention
 - Skill-specific authoring/deployment convention
+
+`CHATBOT.md`는 Rule, Skill, Prompt, Agent와 동급의 Agent Asset type이 아니다. capable chatbot이 repository context와 자산을 찾도록 돕는 **개인적인 repository convention**이며, 세부 bootstrap contract는 전용 reference가 소유한다.
 
 Skill 확장의 상세 목록과 경계는
 [Personal Skill Standard](../../skills/agent-assets-skills-standard-personal.md)가
