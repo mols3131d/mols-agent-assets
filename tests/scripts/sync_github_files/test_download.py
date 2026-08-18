@@ -1,4 +1,4 @@
-from src.scripts import sync_github_files
+from scripts import sync_github_files
 
 
 def test_download_uses_raw_github_url(monkeypatch):

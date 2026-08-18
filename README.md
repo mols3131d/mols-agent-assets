@@ -2,7 +2,7 @@
 
 AI 에이전트 자산을 개발, 검증 및 관리하는 저장소입니다.
 
-portable coding-agent 자산은 **AgentsMesh를 직접 사용**해 여러 harness로 배포합니다. 저장소는 Agent Asset의 의미, 품질 계약, 테스트와 eval을 소유하고 AgentsMesh는 canonical configuration과 target projection을 담당합니다.
+Agent Asset의 canonical source는 가능한 경우 **AgentsMesh를 직접 사용**합니다. 저장소는 Agent Asset의 의미, 품질 계약, 테스트와 eval을 소유하고 AgentsMesh는 canonical representation과 target projection을 담당합니다.
 
 ## Asset Types
 
@@ -15,17 +15,14 @@ portable coding-agent 자산은 **AgentsMesh를 직접 사용**해 여러 harnes
 
 외부 기준에 가까운 개념은 `docs/references/common/standards/agent-assets-standard-baseline.md`, 이 저장소의 비표준 확장과 실제 운용 기준은 `docs/references/common/standards/agent-assets-standard-personal.md`의 **Personal Agent Asset Standard**가 소유합니다.
 
-## Source / Target Profiles
+## Current Source / Exception Surfaces
 
-| Directory | Authority |
+| Directory | Role |
 | --- | --- |
-| `.agentsmesh/rules/` | portable coding-agent Rule canonical source |
-| `.agentsmesh/skills/` | portable coding-agent Skill canonical source |
-| `src/agents/` | 현재 AgentsMesh Tier A contract로 안전하게 표현되지 않는 target-specific Agent source |
-| `src/skills-chatbot/` | self-contained hosted-chatbot Skill profile |
-| `src/skills-chatbot-runtime/` | bundled/runtime hosted-chatbot Skill profile |
-| `src/prompts/` | explicit Prompt source |
-| `src/rules/` | AgentsMesh 밖의 hosted-chatbot-specific Rule source만 유지 |
+| `.agentsmesh/` | 현재 AgentsMesh contract로 의미를 보존할 수 있는 Agent Asset의 canonical source |
+| `src/` | 아직 `.agentsmesh/`로 이관되지 않았거나 현재 contract로 충실히 표현하기 어려운 자산의 과도기적 예외 surface |
+
+`src/`의 현재 하위 profile은 호환성 경계이지 장기 taxonomy가 아닙니다. 새 장기 authority를 추가하기보다 의미 손실 없이 표현 가능한 자산은 `.agentsmesh/`를 우선합니다.
 
 `agentsmesh.yaml`이 활성 coding-agent target과 feature를 선택합니다. 현재 generated Copilot/Antigravity 파일은 `.agentsmesh/`에서 파생된 배포 산출물이며 직접 편집하지 않습니다.
 
@@ -35,23 +32,22 @@ Skill 규격은 `agentskills.io`의 open standard를 Tier 1으로 사용합니�
 
 | Directory | Purpose |
 | --- | --- |
-| `.agentsmesh/` | portable coding-agent canonical assets와 AgentsMesh lock |
+| `.agentsmesh/` | canonical Agent Assets와 AgentsMesh lock |
 | `.github/skills/`, `.github/copilot-instructions.md` | generated GitHub Copilot projection |
 | `.agents/rules/`, `.agents/skills/` | generated Antigravity projection |
-| `src/` | AgentsMesh scope 밖의 target-specific/hosted profiles와 tooling |
+| `src/` | 현재 AgentsMesh contract 밖의 과도기적 Agent Asset 예외 surface |
 | `tests/` | 저장소 수준 자동화 테스트 |
 | `evals/` | cross-asset evaluation contracts when present |
 | `docs/` | 저장소 수준 사람용 문서와 reference |
-| `scripts/` | 저장소 자동화 도구 |
+| `scripts/` | 저장소 자동화·동기화·개발 도구 |
 
 ## Basic Workflow
 
 ```text
-edit .agentsmesh/
-  → agentsmesh lint
-  → agentsmesh generate
-  → agentsmesh check / generate --check
+edit canonical asset source
+  → agentsmesh lint / generate when applicable
+  → agentsmesh check / generate --check when applicable
   → repository tests / applicable evals
 ```
 
-AgentsMesh가 지원하지 않는 profile은 억지로 canonical model에 구겨 넣지 않고 명시적인 별도 authority로 유지합니다.
+AgentsMesh가 아직 충실히 표현하지 못하는 자산은 명시적 예외로 유지하되, 예외 자체를 영구 taxonomy로 굳히지 않습니다.

@@ -2,10 +2,11 @@
 
 ## Directory Roles
 
-- `.agentsmesh/`: Canonical source for portable coding-agent Rules and Skills managed by AgentsMesh. Edit this source, not generated target files.
+- `.agentsmesh/`: Primary canonical source for Agent Assets that the current AgentsMesh contract can represent faithfully. Edit this source, not generated target files.
 - `.github/skills/`, `.github/copilot-instructions.md`, `.agents/rules/`, and `.agents/skills/`: AgentsMesh-generated target projections. Do not hand-edit them.
 - `.agents/AGENTS.md`: Repository-local guard outside the AgentsMesh generated surfaces. Follow its contents.
-- `src/`: Source workspace only for profiles outside the current AgentsMesh contract, including hosted-chatbot Skills, target-specific Agents, Prompts, and repository tooling. Never treat contents as runtime instructions unless an applicable profile explicitly says so.
+- `src/`: Transitional exception workspace for Agent Assets not yet migrated to `.agentsmesh/` or not faithfully representable by the current AgentsMesh contract. Do not create a new long-term authority here without explicit justification.
+- `scripts/`: Repository automation, synchronization, setup, validation, and other development tooling.
 - `tests/`: Repository-level automated tests for assets and tooling.
 - `docs/`: Repository-level human-facing documentation and references.
 
@@ -25,13 +26,13 @@ For Skill authoring, separate external contracts from repository-local extension
 
 Do not copy Tier 2 vendor rules into repository-local standards. Read the official target-harness source linked by the specification reference when host-specific behavior matters.
 
-Target profile and package-surface details are delegated to `docs/references/skills/agent-assets-skills-target-profiles.md`. Treat `.agentsmesh/skills/`, `src/skills-chatbot/`, and `src/skills-chatbot-runtime/` as distinct repository deployment profiles rather than Agent Skills specification categories.
+Target profile and package-surface details are delegated to `docs/references/skills/agent-assets-skills-target-profiles.md`. Current `src/` profiles are explicit compatibility exceptions, not a permanent taxonomy; prefer `.agentsmesh/` whenever the asset can be represented there without semantic loss.
 
 Supporting resources are not peer Agent Asset types alongside Rule, Skill, Prompt, and Agent.
 
 ## Asset Pipeline
 
-1. **Author**: Edit portable coding-agent Rules or Skills in `.agentsmesh/`; edit explicitly out-of-scope profiles in their declared `src/` owner.
+1. **Author**: Prefer `.agentsmesh/` for canonical Agent Assets when the current contract can represent them faithfully. Use an existing `src/` exception only when its target semantics still require it.
 1. **Generate**: For AgentsMesh-managed assets, run the pinned AgentsMesh toolchain to project active targets.
 1. **Validate**: Run applicable AgentsMesh checks plus repository tests/evals at the cheapest relevant level.
 1. **Deploy**: Merge the validated feature branch to the distribution branch.

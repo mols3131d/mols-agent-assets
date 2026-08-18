@@ -1,4 +1,4 @@
-from src.scripts.sync_github_files import classify_state
+from scripts.sync_github_files import classify_state
 
 
 def test_classify_missing():

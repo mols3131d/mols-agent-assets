@@ -1,4 +1,4 @@
-from src.scripts.sync_github_files import sha256_bytes
+from scripts.sync_github_files import sha256_bytes
 
 
 def test_sha256_bytes():

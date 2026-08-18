@@ -2,7 +2,7 @@
 
 Repository for developing, validating, and managing AI agent assets.
 
-Portable coding-agent assets use **AgentsMesh directly** for multi-harness distribution. This repository owns Agent Asset semantics, quality contracts, tests, and evals; AgentsMesh owns canonical coding-agent configuration and target projection.
+Use **AgentsMesh directly** as the canonical source whenever its current contract can faithfully represent an Agent Asset. This repository owns Agent Asset semantics, quality contracts, tests, and evals; AgentsMesh owns canonical representation and target projection.
 
 ## Asset Types
 
@@ -15,17 +15,14 @@ Portable coding-agent assets use **AgentsMesh directly** for multi-harness distr
 
 `docs/references/common/standards/agent-assets-standard-baseline.md` owns the standards-adjacent baseline. `docs/references/common/standards/agent-assets-standard-personal.md` owns this repository's intentional non-standard extensions and operating conventions.
 
-## Source / Target Profiles
+## Current Source / Exception Surfaces
 
-| Directory | Authority |
+| Directory | Role |
 | --- | --- |
-| `.agentsmesh/rules/` | Canonical portable coding-agent Rules |
-| `.agentsmesh/skills/` | Canonical portable coding-agent Skills |
-| `src/agents/` | Target-specific Agents not safely representable by the current Tier A AgentsMesh contract |
-| `src/skills-chatbot/` | Self-contained hosted-chatbot Skill profile |
-| `src/skills-chatbot-runtime/` | Bundled/runtime hosted-chatbot Skill profile |
-| `src/prompts/` | Explicit Prompt sources |
-| `src/rules/` | Hosted-chatbot-specific Rules outside AgentsMesh only |
+| `.agentsmesh/` | Canonical source for Agent Assets faithfully representable by the current AgentsMesh contract |
+| `src/` | Transitional exception surface for assets not yet migrated to `.agentsmesh/` or not faithfully representable by the current contract |
+
+Current `src/` profiles are compatibility boundaries, not a permanent taxonomy. Prefer `.agentsmesh/` over adding new long-term authority when semantics can be preserved without loss.
 
 `agentsmesh.yaml` selects active coding-agent targets and features. Generated Copilot and Antigravity files are derived distribution artifacts and must not be hand-edited.
 
@@ -35,23 +32,22 @@ Skill specifications use the `agentskills.io` open standard as Tier 1. `docs/ref
 
 | Directory | Purpose |
 | --- | --- |
-| `.agentsmesh/` | Portable coding-agent canonical assets and AgentsMesh lock |
+| `.agentsmesh/` | Canonical Agent Assets and AgentsMesh lock |
 | `.github/skills/`, `.github/copilot-instructions.md` | Generated GitHub Copilot projection |
 | `.agents/rules/`, `.agents/skills/` | Generated Antigravity projection |
-| `src/` | Target-specific/hosted profiles outside AgentsMesh plus tooling |
+| `src/` | Transitional Agent Asset exceptions outside the current AgentsMesh contract |
 | `tests/` | Repository-level automated tests |
 | `evals/` | Cross-asset evaluation contracts when present |
 | `docs/` | Human-facing documentation and references |
-| `scripts/` | Repository automation tools |
+| `scripts/` | Repository automation, synchronization, and development tooling |
 
 ## Basic Workflow
 
 ```text
-edit .agentsmesh/
-  → agentsmesh lint
-  → agentsmesh generate
-  → agentsmesh check / generate --check
+edit canonical asset source
+  → agentsmesh lint / generate when applicable
+  → agentsmesh check / generate --check when applicable
   → repository tests / applicable evals
 ```
 
-Do not force profiles that AgentsMesh cannot faithfully represent into its canonical model. Keep explicit separate authority where target semantics differ.
+Keep assets that AgentsMesh cannot yet represent faithfully as explicit exceptions without turning those exceptions into permanent taxonomy.

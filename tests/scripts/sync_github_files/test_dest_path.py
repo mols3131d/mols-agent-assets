@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from src.scripts.sync_github_files import (
+from scripts.sync_github_files import (
     filename_from_url,
     github_blob_to_raw,
     resolve_dest_path,

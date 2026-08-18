@@ -1,6 +1,8 @@
 # Script Tests
 
-This directory contains tests for both:
+Repository-level tests for:
 
-- `src/scripts/`
-- skill-local `scripts/` directories
+- root `scripts/` tooling;
+- cross-cutting script/tooling contracts that belong in the central test suite.
+
+Skill-specific script correctness belongs under `tests/skills/<skill>/` or the Skill's intentional colocated test surface.
