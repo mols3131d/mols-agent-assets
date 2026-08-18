@@ -31,6 +31,11 @@ phase_3_finalize: {min_loops: 1, max_loops: 2}
 
 An explicit user override takes precedence over these defaults.
 
+These phase budgets belong to one RPWR run. Do not reset or bypass them by
+silently starting another run. A new run requires either explicit user continuation or
+an already-established higher-level campaign/iteration budget that clearly authorizes
+another run.
+
 ### Output Policy
 
 - `auto` — default. Return the report in chat unless Prepare identifies a clearly
@@ -88,7 +93,9 @@ Finalize loop after `RETRY`.
 
 If Finalize discovers that a core assumption failed so materially that broad Research,
 replanning, or substantial reshaping is required, return `BLOCKED` rather than
-silently reopening Improve. The result may become the input to a new RPWR run.
+silently reopening Improve. `BLOCKED` ends the current run. Its result may become input
+to another run only when the user or an already-established higher-level budget
+actually authorizes that run.
 
 This rule keeps phase counts auditable and prevents finishing work from being relabeled
 as extra Improve loops.
@@ -301,7 +308,7 @@ Emit a live update after a counted loop or another material gate/status change, 
 every tool call or mechanical action. Do not repeat unchanged evidence from the previous
 update.
 
-Use this default shape:
+Use this default shape for a completed counted loop:
 
 ```markdown
 **Improve 3/8 — <material question or outcome>**
@@ -316,6 +323,18 @@ Use the current phase's actual field names:
 - Prepare — **Discover / Assess / Configure / Verify**
 - Improve — **Research / Plan / Work / Review**
 - Finalize — **Inspect / Resolve / Validate / Gate**
+
+A material gate/status change that occurs outside a completed phase cycle may be shown
+as an unnumbered gate update, for example:
+
+```markdown
+**Gate update — <gate>**
+- **Status** — <new status>
+- **Impact** — <what this changes>
+```
+
+A gate-only update is **not a counted loop**. Do not assign it a new loop number or
+include it as a loop record in Final Reporting.
 
 Keep each field to one short sentence or fragment unless the material finding needs more
 context. Put the most important delta in the title so the update is useful when skimmed.
@@ -348,8 +367,9 @@ Each field states only the material delta. Do not expand one action into multipl
 lines. Preserve these phase fields in a persisted report instead of collapsing them into
 ambiguous `I1`, `I2`, or workstream-only summaries when auditability matters.
 
-Live progress and final reporting are two presentations of the same observable loop
-record. Do not duplicate both formats in the same update.
+Numbered live loop updates and final reporting are two presentations of the same
+observable loop record. Unnumbered gate-only updates are working-state notifications,
+not loop records. Do not duplicate live and audit formats in the same update.
 
 For each phase reached, write **one paragraph** summarizing its objective, major
 decisions or changes, evidence or validation, and remaining material concerns.
