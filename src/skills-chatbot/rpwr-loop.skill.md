@@ -114,7 +114,8 @@ The ledger is working state, not another deliverable or loop.
 
 If a new material gate emerges after Prepare, add it explicitly instead of relying on
 memory. Never mark a gate passed from intended work or inferred success; require the
-evidence named by that gate.
+evidence named by that gate. Do not use `accepted-limit` to relax an explicit user,
+policy, or contract requirement unless the same authority permits that limitation.
 
 ## Phase 1 — Prepare
 
