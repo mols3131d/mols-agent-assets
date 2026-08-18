@@ -1,0 +1,55 @@
+name: Asset Docs Migration Validation
+
+on:
+  push:
+    branches:
+      - agent/refactor/asset-docs-placement
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-slim
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Compile changed Python
+        run: |
+          python -m py_compile \
+            src/skills-chatbot-runtime/mols-skill-creator/scripts/init_skill.py \
+            src/skills-chatbot-runtime/mols-skill-creator/scripts/validate_skill.py \
+            src/skills-chatbot-runtime/artifact-consistency-inspector/tests/run_tests.py
+
+      - name: Validate skill creator
+        run: |
+          python src/skills-chatbot-runtime/mols-skill-creator/scripts/validate_skill.py \
+            src/skills-chatbot-runtime/mols-skill-creator
+
+      - name: Smoke minimal initializer
+        run: |
+          rm -rf /tmp/mols-skill-init
+          python src/skills-chatbot-runtime/mols-skill-creator/scripts/init_skill.py \
+            smoke-skill --path /tmp/mols-skill-init \
+            --description "Smoke-test skill description with enough detail for validation."
+          test -f /tmp/mols-skill-init/smoke-skill/SKILL.md
+          test ! -e /tmp/mols-skill-init/smoke-skill/.docs
+          test "$(find /tmp/mols-skill-init/smoke-skill -type f | wc -l)" -eq 1
+
+      - name: Run artifact consistency inspector tests
+        run: |
+          python src/skills-chatbot-runtime/artifact-consistency-inspector/tests/run_tests.py
+
+      - name: Check maintainer docs cutover
+        run: |
+          test -f docs/skills/artifact-consistency-inspector/customization.md
+          test -f docs/skills/mols-agent-asset-validator/baseline/DIRECTIVE.md
+          test -f docs/skills/mols-skill-creator/baseline/DIRECTIVE.md
+          test -f docs/skills/mols-skill-creator/WORKING.md
+          if find src/skills-chatbot-runtime -type d -name .docs -print -quit | grep -q .; then
+            echo "legacy package-local .docs remains" >&2
+            exit 1
+          fi
