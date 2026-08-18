@@ -1,0 +1,44 @@
+name: AgentsMesh EXODUS Refresh
+
+on:
+  push:
+    branches:
+      - agent/refactor/agentsmesh-migration
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-slim
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - name: Install pinned toolchain
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Regenerate projections and lock
+        run: |
+          npx agentsmesh generate
+          npx agentsmesh check
+      - name: Commit generated state
+        shell: bash
+        run: |
+          set -euo pipefail
+          paths=(
+            .agentsmesh/.lock
+            .github/copilot-instructions.md
+            .github/skills
+            .agents/rules
+            .agents/skills
+          )
+          [[ -z "$(git status --porcelain -- "${paths[@]}")" ]] && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A -- "${paths[@]}"
+          git commit -m "chore: regenerate AgentsMesh projections"
+          git push origin HEAD:agent/refactor/agentsmesh-migration
