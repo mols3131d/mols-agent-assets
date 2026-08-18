@@ -38,11 +38,17 @@ def validate(root: Path) -> dict[str, list[str]]:
     if not skill_path.is_file():
         errors.append("missing required file: SKILL.md")
 
-    # Personal repository convention: maintainer-only docs belong in .docs/.
-    # A docs/ directory is not universally invalid because an external Skill may use it
-    # as a runtime resource, so require classification rather than assuming intent.
+    # docs/ may be a legitimate runtime resource in an external Skill. Classify it
+    # rather than assuming placement. In this repository, maintainer-only documentation
+    # belongs outside the package under docs/skills/<skill-name>/ when it is actually needed.
     if (root / "docs").exists():
-        warnings.append("docs/ present; classify runtime-required material vs maintainer-only .docs/")
+        warnings.append(
+            "docs/ present; confirm it is runtime-required rather than maintainer-only documentation"
+        )
+    if (root / ".docs").exists():
+        warnings.append(
+            ".docs/ present; migrate maintainer-only docs to the target project's external maintainer-doc surface"
+        )
 
     if skill_path.is_file():
         text = skill_path.read_text(encoding="utf-8")

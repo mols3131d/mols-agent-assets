@@ -1,6 +1,6 @@
 ---
 title: Baseline Directive Template
-description: Skill .docs/baseline maintainer document의 durable purpose, requirements, decisions와 quality criteria를 기록하는 선택적 template
+description: 특정 Skill의 durable purpose, requirements, decisions와 quality criteria를 docs/skills/<skill-name>/baseline에 기록할 때 사용하는 선택적 maintainer template
 ---
 
 # Purpose

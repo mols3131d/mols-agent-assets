@@ -1,6 +1,6 @@
 # Artifact Consistency Inspector
 
-원격 software 또는 data repository를 읽기 전용으로 검사하고, 서로 일치하거나 추적되어야 하는 artifact 사이의 gap을 evidence와 함께 Markdown report로 반환하는 ChatGPT skill입니다.
+원격 software 또는 data repository를 읽기 전용으로 검사하고, 서로 일치하거나 추적되어야 하는 artifact 사이의 gap을 evidence와 함께 Markdown report로 반환하는 ChatGPT Skill입니다.
 
 ```text
 intent, rule, or contract ↔ implementation ↔ validation
@@ -27,8 +27,6 @@ artifact-consistency-inspector/
 │   ├── rule-sources.md
 │   ├── report-format.md
 │   └── example-report.md
-├── .docs/
-│   └── customization.md
 └── tests/
     ├── README.md
     ├── run_tests.py
@@ -36,7 +34,9 @@ artifact-consistency-inspector/
     └── results/
 ```
 
-`references/`는 runtime에서 조건부로 읽는 resource이고, `.docs/`는 runtime payload가 아닌 maintainer 문서입니다.
+`references/`는 runtime에서 조건부로 읽는 resource이고, `tests/`는 source package의
+development/self-validation surface입니다. 이 repository의 maintainer-only customization
+문서는 runtime package 밖 `docs/skills/artifact-consistency-inspector/`에서 관리합니다.
 
 ChatGPT 설치 시 ZIP 내부의 `artifact-consistency-inspector/SKILL.md` 이름과 위치를 유지하는 것이 안전합니다. 외부 ZIP 파일명은 자유롭게 변경할 수 있습니다.
 
@@ -88,7 +88,3 @@ python tests/run_tests.py
 - `references/rule-sources.md` — ordered `rule_sources`, `auto` expansion, conflict handling
 - `references/report-format.md` — filename, front matter, report body
 - `references/example-report.md` — 허구 evidence 기반 출력 예시
-
-## Maintainer docs
-
-- `.docs/customization.md` — 변경 가능한 항목과 유지할 계약

@@ -1,6 +1,6 @@
 # Chatbot Runtime Skills
 
-업체가 제공하는 hosted chatbot runtime에서 **bundle과 runtime 기능을 활용해야 하는 skill**을 둡니다.
+업체가 제공하는 hosted chatbot runtime에서 **bundle과 runtime 기능을 활용해야 하는 Skill**을 둡니다.
 
 > [!NOTE]
 > `skills-chatbot-runtime/`은 Agent Skills 표준의 공식 분류가 아니라, bundle·progressive loading·host-specific runtime surface가 필요한 hosted chatbot harness를 위해 이 저장소가 만든 **비표준 repository-local target profile**입니다. 표준 Skill format과 호환되는 구조를 활용할 수 있지만 이 directory/profile 자체는 표준이 아닙니다.
@@ -9,7 +9,7 @@
 
 `skills-chatbot-runtime/`은 배포 capability가 다음 중 하나라도 해당할 때 사용합니다.
 
-- flat 단일 skill 파일이 **4,000 tokens 이상**이라 여러 Markdown 파일로 분리해야 합니다.
+- flat 단일 Skill 파일이 **4,000 tokens 이상**이라 여러 Markdown 파일로 분리해야 합니다.
 - Markdown 한 파일만으로 실행 capability를 완결할 수 없습니다.
 - 실행에 `references/`, `assets/`, `scripts/`, images 같은 bundled resources가 필요합니다.
 - host-specific tool schema, integration resource, progressive loading, script/runtime package처럼 **단일 Markdown 밖의 runtime surface**가 capability에 필요합니다.
@@ -22,30 +22,39 @@
 
 ## Package Surfaces
 
-Directory-based hosted-runtime Skill package에서 **dot-prefixed directory(`.*`)는 non-runtime maintainer surface**로 사용합니다. 이 convention도 repository-local이며 외부 표준이 아닙니다.
+Directory-based hosted-runtime Skill package에는 **실행 또는 의도적인 distributable self-validation에 필요한 surface만** 둡니다.
 
 ```text
 skill-name/
 ├─ SKILL.md
-├─ references/          # runtime
-├─ scripts/             # runtime when required
-├─ assets/              # runtime when required
-└─ .docs/               # non-runtime
-   ├─ baseline/          # durable intent / requirements / decisions / directives
-   └─ ...                # maintenance or working docs
+├─ references/          # runtime when needed
+├─ scripts/             # runtime when needed
+├─ assets/              # runtime when needed
+├─ templates/           # runtime when needed
+├─ tests/               # only when package contract intentionally includes them
+└─ ...                  # target-required runtime surface
 ```
 
-- runtime이 필요로 하는 resource는 dot directory 아래에 두지 않습니다.
-- 기존 hosted-runtime Skill 내부 `docs/`는 `.docs/`로 사용합니다. repository root의 `docs/`는 별개입니다.
-- `.docs/baseline/`은 원래 purpose/essence, requirements, invariants, important decisions, recovery directive를 보존합니다.
-- `DIRECTIVE.md`, `intent.md`, `requirements.md`, `decisions.md`는 예시이며 고정 schema가 아닙니다.
-- working log나 임시 조사처럼 쉽게 폐기 가능한 정보는 baseline에 넣지 않습니다.
-- `.evals/`, `.tests/` 등 다른 dot directory도 non-runtime validation/development surface로 사용할 수 있습니다.
-- packaging/deployment는 dot directory를 runtime payload에서 제외하는 것을 기본으로 합니다.
+- runtime이 필요로 하는 resource는 package 안의 명시적 runtime surface가 소유합니다.
+- maintainer-only 문서를 runtime dependency로 만들지 않습니다.
+- package-local `.docs/`를 maintainer documentation convention으로 사용하지 않습니다.
+- `.evals/`, `.tests/` 같은 validation/development surface는 해당 target·package contract가 실제로 필요할 때만 사용하며 maintainer docs와 같은 개념으로 취급하지 않습니다.
 
-이 package-local dot-surface convention을 `.agentsmesh/skills/`에 적용하지 않습니다. AgentsMesh-managed portable Skill은 `docs/skills/<skill-name>/`을 maintainer surface로 사용합니다.
+## Maintainer Docs
 
-Maintainer-only 파일이 존재한다는 이유만으로 runtime placement를 강제하지 않습니다. 반대로 실행 중 읽어야 하는 문서를 `.docs/`로 옮겨 runtime dependency를 숨기지 않습니다. 그런 문서는 `references/` 같은 runtime surface에 둡니다.
+특정 hosted-runtime Skill이 복잡하거나 훼손 위험이 크고 durable decision, baseline,
+maintenance 또는 recovery 지식을 별도로 보존할 가치가 있을 때만 repository root의
+`docs/skills/<skill-name>/`에 maintainer-only 문서를 둡니다.
+
+이 surface는 **선택적**입니다.
+
+- 단순하고 self-explanatory한 Skill에는 만들지 않습니다.
+- 임시 조사, 작업 로그, 쉽게 재생성되는 상태는 durable docs로 승격하지 않습니다.
+- runtime-required 문서는 `references/` 등 package runtime surface에 둡니다.
+- maintainer docs의 존재만으로 runtime profile을 선택하지 않습니다.
+- baseline이 필요하면 `docs/skills/<skill-name>/baseline/`을 사용할 수 있지만 mandatory schema가 아닙니다.
+
+이 repository-root convention은 `.agentsmesh/skills/`과 hosted-runtime Skill 모두에 동일하게 적용됩니다. 차이는 runtime package shape이지 maintainer documentation의 소유 위치가 아닙니다.
 
 ## Naming
 

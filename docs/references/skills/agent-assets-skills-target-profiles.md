@@ -82,23 +82,11 @@ Portable front matter field와 constraint는 [Agent Skills Specification](agent-
 
 ## Directory-Based Package
 
-### AgentsMesh-managed portable source
+Directory-based Skill source는 **runtime/deployable package surface와 repository maintainer surface를 분리**한다.
 
-`.agentsmesh/skills/<skill-name>/`은 portable coding-agent Skill의 canonical source이면서 AgentsMesh projection 입력이다. 따라서 이 subtree는 **target에 배포해도 되는 package surface만** 소유한다.
+### Runtime package
 
-AgentsMesh `0.32.0`은 Skill의 supporting file을 재귀적으로 수집하며 `.git`, `node_modules`, `.DS_Store`와 일부 boilerplate 외의 임의 dot-prefixed maintainer directory를 자동으로 제외하지 않는다. 이 저장소에서는 다음 경계를 적용한다.
-
-- runtime에 필요한 `references/`, `scripts/`, `assets/`, `templates/`, `src/`, examples와 config는 필요할 때 canonical Skill 안에 둔다.
-- maintainer-only 문서, durable baseline, recovery record와 decision history는 `docs/skills/<skill-name>/`에 둔다.
-- 일반 correctness test는 `tests/skills/<skill-name>/`을 기본 owner로 사용한다.
-- package-local `tests/`는 Skill이 self-contained validation을 distributable package contract로 명시적으로 소유할 때만 유지한다.
-- `.agentsmesh/skills/<skill-name>/` 아래에는 non-runtime을 숨기기 위한 dot-prefixed path를 두지 않는다.
-
-Generated target package에서 이 경계가 깨지면 generation 자체가 성공했더라도 package-surface regression으로 취급한다.
-
-### Other directory packages
-
-AgentsMesh-managed portable source가 아닌 directory package는 target packaging contract가 dot-prefixed maintainer surface를 실제로 제외할 때 다음 convention을 사용할 수 있다.
+Skill이 실행 중 필요로 하는 resource만 package 안에 둔다.
 
 ```text
 skill-name/
@@ -106,21 +94,51 @@ skill-name/
 ├─ references/          # runtime when needed
 ├─ scripts/             # runtime when needed
 ├─ assets/              # runtime when needed
-└─ .docs/               # non-runtime maintainer surface
-   └─ baseline/          # durable intent / requirements / decisions
+├─ templates/           # runtime when needed
+├─ tests/               # only when distributable self-validation is intentional
+└─ ...                  # target-required runtime surface
 ```
 
-- runtime behavior에 필요한 resource는 non-dot surface에 둔다.
-- dot-prefixed directory는 **해당 target packaging이 실제로 제외할 때만** non-runtime maintainer surface로 사용한다.
-- repository root `docs/`는 이 package-local convention의 대상이 아니다.
-- `.evals/`, `.tests/` 같은 추가 non-runtime surface도 target packaging이 제외하고 실제 필요가 있을 때만 둔다.
+- runtime behavior에 필요한 knowledge/resource는 package 내부의 명시적 runtime surface가 소유한다.
+- maintainer-only 문서를 runtime dependency로 숨기지 않는다.
+- package-local dot directory를 maintainer documentation convention으로 사용하지 않는다.
+- target의 mandatory package contract가 별도 surface를 요구하면 그 contract가 우선한다.
+
+### Repository maintainer docs
+
+특정 Skill에 durable maintainer documentation이 실제로 필요하면 repository root의
+`docs/skills/<skill-name>/`을 사용한다. 이 directory는 **선택적**이며 단순한 Skill에는
+만들지 않는다.
+
+다음과 같은 경우에만 검토한다.
+
+- source만으로 purpose, architecture 또는 중요 invariant를 복구하기 어렵다.
+- 잘못된 refactor·단순화로 핵심 의도가 훼손될 위험이 크다.
+- durable decision, recovery, migration 또는 compatibility 지식이 필요하다.
+- 별도 baseline이 향후 회귀·복구 비용을 의미 있게 낮춘다.
+
+Maintainer docs는 runtime package에 포함시키지 않고, runtime이 이 문서를 읽어야 정상
+동작하도록 설계하지 않는다.
+
+### AgentsMesh-managed portable source
+
+`.agentsmesh/skills/<skill-name>/`은 portable coding-agent Skill의 canonical source이면서 AgentsMesh projection 입력이다. 따라서 이 subtree는 **target에 배포해도 되는 package surface만** 소유한다.
+
+AgentsMesh `0.32.0`은 Skill의 supporting file을 재귀적으로 수집하며 `.git`, `node_modules`, `.DS_Store`와 일부 boilerplate 외의 임의 dot-prefixed maintainer directory를 자동으로 제외하지 않는다. 이 저장소에서는 다음 경계를 적용한다.
+
+- runtime에 필요한 `references/`, `scripts/`, `assets/`, `templates/`, `src/`, examples와 config는 필요할 때 canonical Skill 안에 둔다.
+- 필요한 maintainer-only guide, durable baseline, recovery record와 decision history는 `docs/skills/<skill-name>/`에 둔다.
+- 일반 correctness test는 `tests/skills/<skill-name>/`을 기본 owner로 사용한다.
+- package-local `tests/`는 Skill이 self-contained validation을 distributable package contract로 명시적으로 소유할 때만 유지한다.
+- `.agentsmesh/skills/<skill-name>/` 아래에는 non-runtime을 숨기기 위한 dot-prefixed path를 두지 않는다.
+
+Generated target package에서 이 경계가 깨지면 generation 자체가 성공했더라도 package-surface regression으로 취급한다.
 
 ## Maintainer Baseline
 
 Maintainer baseline은 반복 개선 과정에서 잃으면 안 되는 **본래 purpose, requirements, invariants, major decisions와 recovery directives**를 보존한다.
 
-- AgentsMesh-managed portable Skill → `docs/skills/<skill-name>/baseline/`
-- package-local non-runtime dot surface가 안전한 다른 profile → `.docs/baseline/`
+필요할 때 `docs/skills/<skill-name>/baseline/`에 둔다. Baseline 자체도 mandatory schema나 기본 scaffold가 아니다.
 
 넣는다:
 

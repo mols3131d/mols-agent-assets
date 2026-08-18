@@ -5,17 +5,13 @@ description: {{description}}
 
 # {{title}}
 
-## Authority
-
-1. 사용자의 현재 명시적 지시
-1. `docs/DIRECTIVE.md`
-1. `docs/WORKING.md`
-1. 현재 구현
-
 ## Workflow
 
-핵심 실행 흐름을 명령형으로 작성한다.
+Describe the smallest executable workflow for the Skill's actual job. Add references,
+scripts, assets, or target metadata only when the runtime needs them.
 
 ## Validation
 
-목적, 실행 가능성, 구조, 효율성, 일관성, 회귀, 안전, 패키징을 검증한다.
+Verify the intended behavior, material failure paths, and applicable target/project
+contracts. Do not require maintainer-only documentation unless the target project
+explicitly needs it.

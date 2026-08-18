@@ -12,7 +12,7 @@ constraint를 이 index에서 다시 정의하지 않는다.
 1. [Agent Skill Design Guide](agent-skills-guide.md)
    — Skill을 설계·작성·검증하는 통합 흐름.
 1. [Skill Target Profiles](agent-assets-skills-target-profiles.md)
-   — `skills/`, `skills-chatbot/`, `skills-chatbot-runtime/`의 repository-local 상세.
+   — `.agentsmesh/skills/`, `src/skills-chatbot/`, `src/skills-chatbot-runtime/`의 repository-local 상세.
 
 ## Focused References
 
@@ -26,7 +26,7 @@ constraint를 이 index에서 다시 정의하지 않는다.
 ## Repository-Local Supporting References
 
 - [Baseline Directive Template](agent-assets-skills-baseline-directive-template.md)
-  — `.docs/baseline/`에 durable intent와 decision을 남길 때 사용할 수 있는 maintainer template.
+  — 특정 Skill에 durable intent와 decision을 별도로 보존할 가치가 있을 때 `docs/skills/<skill-name>/baseline/`에서 사용할 수 있는 **선택적** maintainer template.
 - [Template-Driven Markdown](agent-assets-skills-template-driven-markdown.md)
   — repository template 기반 Markdown 생성에 관한 Skill reference. Agent Skills 표준의 일부가 아니다.
 

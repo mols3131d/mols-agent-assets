@@ -15,7 +15,7 @@
 | Portability | 공통 코어와 환경 전용 규칙이 분리되어 있다. |
 | Regression | 기존의 유효한 핵심 동작이 유지된다. |
 | Safety | 사용자 기대 밖의 권한 확대·은닉 동작·데이터 유출이 없다. |
-| Packaging | 필요한 자산과 `docs/`가 포함된다. |
+| Packaging | 필요한 runtime 자산만 포함하고 maintainer-only·evaluation·development material은 target contract가 요구하지 않으면 제외한다. |
 
 ## Review Questions
 
@@ -25,6 +25,7 @@
 - 핵심 경로보다 예외·초급 설명·API 나열이 더 큰가?
 - 실패했을 때 원인을 찾고 복구할 기준이 남아 있는가?
 - 검증 결과가 실제 동작을 증명하는가, 단순 형식 통과에 그치는가?
+- runtime package에 실행과 무관한 maintainer·eval·개발 자료가 섞였는가?
 
 ## Loop Policy
 

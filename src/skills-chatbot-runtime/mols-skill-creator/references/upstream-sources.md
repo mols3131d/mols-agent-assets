@@ -14,8 +14,8 @@
 
 - 공통으로 반복되는 원칙은 범용 코어 후보로 본다.
 - 특정 제품·SDK·런타임에만 필요한 규칙은 adapter 또는 reference로 격리한다.
-- 원문의 구조를 그대로 병합하지 않는다. 대상 스킬의 목적, 위험도, 사용 빈도에 맞춰 재구성한다.
-- 외부 원칙이 `DIRECTIVE.md`와 충돌하면 인간 기준선을 우선한다.
+- 원문의 구조를 그대로 합성하지 말고 대상 Skill의 목적, 위험도, 사용 빈도에 맞춰 재구성한다.
+- 외부 원칙이 사용자 지시, 적용 가능한 project/runtime authority 또는 기존 durable baseline과 충돌하면 더 높은 authority를 우선한다.
 - 최신성에 민감한 내용은 링크를 다시 열고 날짜·버전·범위를 확인한다.
 
 ## Adopted Synthesis
@@ -31,6 +31,6 @@
 
 ## Deliberate Deviations
 
-- `docs/`를 패키지에 포함한다. 이는 이 스킬의 인간 의도 복구 요구사항이 일반적인 최소 패키징 관례보다 우선하기 때문이다.
-- `DIRECTIVE.md`와 `WORKING.md`를 모든 대상 스킬에 의무화한다.
-- 기존 스킬 개선을 신규 생성보다 우선한다.
+- 기존 Skill 개선을 신규 생성보다 우선한다.
+- maintainer docs는 모든 Skill의 필수 package surface가 아니다. 대상 프로젝트가 별도 보존 가치를 인정할 때만 project-owned maintainer surface를 사용한다.
+- packaging은 target/runtime contract에 종속된다. source에 존재한다는 이유만으로 maintainer·evaluation·development material을 runtime payload에 포함하지 않는다.

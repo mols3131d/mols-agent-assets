@@ -34,30 +34,17 @@ def main() -> int:
         return 2
 
     template_root = Path(__file__).resolve().parent.parent / "assets" / "templates"
-    (target / ".docs" / "baseline").mkdir(parents=True, exist_ok=True)
+    target.mkdir(parents=True, exist_ok=True)
 
     title = " ".join(part.capitalize() for part in args.name.split("-"))
     values = {
         "skill_name": args.name,
         "title": title,
         "description": args.description,
-        "purpose": "TODO: Define the durable purpose.",
-        "requirement": "TODO: Define a concrete requirement.",
-        "allowed_scope": "TODO: Define allowed changes and operations.",
-        "decision": "TODO: Record a major adopted decision.",
-        "rejected_decision": "TODO: Record a major rejected decision when valuable.",
-        "rationale": "TODO: Explain why.",
     }
 
-    for source_name, relative_target in [
-        ("SKILL.md", "SKILL.md"),
-        ("DIRECTIVE.md", ".docs/baseline/DIRECTIVE.md"),
-        ("WORKING.md", ".docs/WORKING.md"),
-    ]:
-        source = (template_root / source_name).read_text(encoding="utf-8")
-        destination = target / relative_target
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        destination.write_text(render(source, values), encoding="utf-8")
+    source = (template_root / "SKILL.md").read_text(encoding="utf-8")
+    (target / "SKILL.md").write_text(render(source, values), encoding="utf-8")
 
     print(target)
     return 0

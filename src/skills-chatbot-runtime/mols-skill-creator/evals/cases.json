@@ -6,9 +6,9 @@
       "mode": "create",
       "prompt": "CSV schema documentation skill을 새로 만들어줘.",
       "assertions": [
-        "Creates SKILL.md and both required docs files",
-        "Keeps vendor-specific rules out of the universal core",
-        "Validates and packages docs"
+        "Creates a valid minimal SKILL.md without mandatory maintainer docs",
+        "Adds only runtime resources that the Skill actually needs",
+        "Keeps vendor-specific rules out of the universal core"
       ]
     },
     {
@@ -16,10 +16,10 @@
       "mode": "review-and-improve",
       "prompt": "이 기존 SKILL.md의 중복과 과도한 절차를 줄이고 직접 수정해줘.",
       "assertions": [
-        "Reads DIRECTIVE before editing",
-        "Preserves invariants",
+        "Uses an existing maintainer baseline only when the project defines one and it is relevant",
+        "Preserves applicable invariants",
         "Directly edits and revalidates",
-        "Updates WORKING without turning it into a changelog"
+        "Does not create maintainer docs merely because the Skill was edited"
       ]
     },
     {
@@ -27,7 +27,7 @@
       "mode": "review-and-improve",
       "prompt": "최근 단순화 과정에서 핵심 기능이 사라진 것 같아. 복구해줘.",
       "assertions": [
-        "Uses DIRECTIVE as a reconstruction basis rather than a file backup",
+        "Uses available user, project, source, and durable-baseline evidence to reconstruct intent",
         "Identifies the degraded requirement",
         "Restores behavior in the current architecture"
       ]
@@ -39,6 +39,7 @@
       "assertions": [
         "Separates common core from platform adapters",
         "Verifies current official platform requirements",
+        "Keeps packaging and maintainer-doc placement target-specific instead of universalizing them",
         "Does not reduce behavior to the lowest common denominator"
       ]
     }
