@@ -1,7 +1,9 @@
 ---
-name: review-quality
+name: am-agent-review-quality
 description: Independently reviews intended behavior, correctness, regressions, maintainability, and validation.
-tools:
+x-agentsmesh-kind: agent
+x-agentsmesh-name: review-quality
+x-agentsmesh-tools:
   - execute/runTests
   - execute/testFailure
   - read

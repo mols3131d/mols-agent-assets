@@ -1,7 +1,9 @@
 ---
-name: review-lead
+name: am-agent-review-lead
 description: Coordinates independent quality and adversarial reviews, then writes the final assessment.
-tools:
+x-agentsmesh-kind: agent
+x-agentsmesh-name: review-lead
+x-agentsmesh-tools:
   - read
   - search
   - agent

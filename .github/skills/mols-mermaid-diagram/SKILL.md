@@ -31,10 +31,10 @@ Mermaid로 **관계·절차·책임·상태·시간·구조를 빠르고 쉽게 
 
 ## Reference Routing
 
-- 새 diagram을 만들거나 type·구조를 바꿀 때 [Mermaid Diagram Reference](references/mermaid-diagrams.md)를 읽는다.
-- theme, 강조 또는 기존 diagram의 visual language를 다룰 때만 [Style Policy](references/style-policy.md)를 읽는다.
-- 문법이 필요하면 [Examples](references/examples/README.md)에서 선택한 type의 문서만 읽는다.
-- render, export, syntax error 또는 compatibility 확인이 필요할 때 [Verification](references/mermaid-verification.md)을 읽는다.
+- 새 diagram을 만들거나 type·구조를 바꿀 때 [Mermaid Diagram Reference](./references/mermaid-diagrams.md)를 읽는다.
+- theme, 강조 또는 기존 diagram의 visual language를 다룰 때만 [Style Policy](./references/style-policy.md)를 읽는다.
+- 문법이 필요하면 [Examples](./references/examples/README.md)에서 선택한 type의 문서만 읽는다.
+- render, export, syntax error 또는 compatibility 확인이 필요할 때 [Verification](./references/mermaid-verification.md)을 읽는다.
 - 수치 비교·추세·비율·양적 이동·계층 규모·다차원 profile이 핵심이면 `mols-mermaid-chart`를 사용한다. Histogram, box plot, scatter는 전문 chart 도구를 사용한다.
 
 ## Workflow

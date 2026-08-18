@@ -1,7 +1,9 @@
 ---
-name: review-adversarial
+name: am-agent-review-adversarial
 description: Independently challenges assumptions and searches for reachable failure, abuse, and recovery scenarios.
-tools:
+x-agentsmesh-kind: agent
+x-agentsmesh-name: review-adversarial
+x-agentsmesh-tools:
   - read
   - search
 ---
