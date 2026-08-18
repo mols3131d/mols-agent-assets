@@ -1,14 +1,13 @@
 # Auto-generated. DO NOT EDIT MANUALLY.
 # Tracks the state of all config files for team conflict resolution.
 
-generated_at: 2026-08-18T10:28:19.273Z
+generated_at: 2026-08-18T11:34:25.554Z
 generated_by: unknown
 lib_version: 0.32.0
 checksums:
   rules/_root.md: sha256:c187d2e98c2f328c02a4186df72c4a32544027d7e12c0ea2742ff4bf2ec4ca94
   skills/caveman-ko/README.md: sha256:b7238cb7de0045996865b8d72552bf3f2b5e680d86233b16bb5f16cc8fac4658
   skills/caveman-ko/SKILL.md: sha256:05aa6bfc392a044991ed011aa56e49a6f419fc67548a38b4d6165b3048121ccd
-  skills/clarify-code/.docs/baseline/decisions.md: sha256:db63b0a94ce944e627550374d347d75a63fdace6771ee3c5893cb3675f2f871d
   skills/clarify-code/SKILL.md: sha256:78d14ed668ef5c49896fc1a5d2c3829f983a702a75da15e271491ceadfdbda53
   skills/clarify-code/references/diagnosis.md: sha256:99ef934889ed4e6d13576e66148d036cadf97e2a6508202c5909360eaea78791
   skills/clarify-code/references/documentation.md: sha256:a0c20183c1415ac2cbda2d457ea780e588ec4bf269e68e86c01176a57ac6f54e
@@ -50,7 +49,6 @@ checksums:
   skills/mols-agent-asset-studio/workflows/review.md: sha256:87602c7c171088a31650344c62d48392a5db9c37ce0367da5ef20eb9f46b89b8
   skills/mols-agent-asset-studio/workflows/tune.md: sha256:09e951e524a9ed613887e386bd6312f587c7d601a2088893badd0b1d18f7e729
   skills/mols-agent-asset-studio/workflows/validate.md: sha256:f4566ca555d5ffbbfa89373f687c22d9448c15029d42a8ec10b3c27581f1257d
-  skills/mols-documents-studio/.docs/baseline/decisions.md: sha256:ca988d93da9e0e90cbd610723e58a09b2de8b601a8f405af788420a93d65a4d2
   skills/mols-documents-studio/README.md: sha256:91156f9c749ecdff5f0f52b1c001dee1660d836d4866cd69b4e37c8379d05238
   skills/mols-documents-studio/SKILL.md: sha256:0199191cbae530953ccb70cdfebc3d99f2e8c45f1456398a3abc16c481effa03
   skills/mols-documents-studio/references/bluf-principle.md: sha256:98f0239f6263926e632d4130970d633f91ae12ed814f9e0ddecb616c60c6452c
@@ -59,11 +57,6 @@ checksums:
   skills/mols-documents-studio/templates/decisions-lite.template.md: sha256:c383e85ee8239a871afa894eae6082846d6228fb18b65bf55204dd30dff8f5b5
   skills/mols-documents-studio/workflows/INDEX.csv: sha256:863561f96f51b75baa211ebf741d202d58cfc163399cbb8fcbc1bc7be14c73b9
   skills/mols-documents-studio/workflows/write-decisions.md: sha256:a8b7582d91797d2c2929415f5e3bd1bab74adb2210979d36f2dfee408cc86b15
-  skills/mols-markdown-dashboard/.docs/ARCHITECTURE.md: sha256:2e31c4ecfd5b2ebd97b33e4c5461ce18dda2804a0d85e1ac6d9188da4be9938f
-  skills/mols-markdown-dashboard/.docs/MAINTENANCE.md: sha256:440d9551bde3765436d92f809ae3d38b0845341f1003cce7b293b2cdd06d0b70
-  skills/mols-markdown-dashboard/.docs/README.md: sha256:73f2279ee1fe4cc984cb64c08f87aa648bebe84a6e94052f1f620c2e7fca600c
-  skills/mols-markdown-dashboard/.docs/REVIEW-LOOPS.md: sha256:c0fefcdd71074454b0acd0d05105a3055d40c160e16577750b8f91b88fb92b33
-  skills/mols-markdown-dashboard/.docs/baseline/DIRECTIVE.md: sha256:299146974abf6f292fb955e95ae2b092fbf55eae8af732c08048606937338ac3
   skills/mols-markdown-dashboard/SKILL.md: sha256:b0dd217fbcc4ff1130d9b1ce7408d8332160de4cbd15a69c08e9856b4b73cf70
   skills/mols-markdown-dashboard/examples/domain-dashboard.md: sha256:79f2e5bd98e8f70be2fa00cbd4f2ffb01132b306dc0d7e3ec44ce0ea2506b6a5
   skills/mols-markdown-dashboard/examples/domain-dashboard.yml: sha256:744b0d8fb148c492705c926a11c3ee97b09fa1f8cfb29d77c3bbf355c233ac36
@@ -96,7 +89,6 @@ checksums:
   skills/mols-markdown-for-human/references/semantic-markers.md: sha256:c531451b7cb68beb75e7d3fb80d98f8c59edc416649b1904589fd77ecde264ce
   skills/mols-markdown-for-human/references/text-bars.md: sha256:9d5464504afb2c583c4b27c753311802d2eb951b0f0d5eb3494210bd50eae525
   skills/mols-markdown-for-human/references/tree-structures.md: sha256:f45d2858a9d3b052aafd1683ccb754ca1189a584b6ffa7e059bb57348b1b97ea
-  skills/mols-markdown-scripts/.docs/baseline/decisions.md: sha256:b53c31b20a6861cf1e1f03350127ea168c7d2aea0e21a6f5c2645acba33775fc
   skills/mols-markdown-scripts/README.md: sha256:4f272751b3bcdae4912799c90acbad4de0afc4136b1ab4dd6d2908c36778c57d
   skills/mols-markdown-scripts/SKILL.md: sha256:3a018ebd134c14212684c82b22efb48063529996388f8913f24d1e06b9c61320
   skills/mols-markdown-scripts/pyproject.toml: sha256:7b8467f4f9e626e0321ac31254b525df7692e3c9a5407a4b6156edb65f4c9585
@@ -177,7 +169,6 @@ outputs:
   .github/skills/caveman-ko/SKILL.md: sha256:f0f3a778d6574a5d4e2f9f3b85e0239aa28f256d8b1a87afbfae9c85f6d020a4
   .github/skills/caveman-ko/README.md: sha256:b7238cb7de0045996865b8d72552bf3f2b5e680d86233b16bb5f16cc8fac4658
   .github/skills/clarify-code/SKILL.md: sha256:3f4719c9691447628a8f342788fb3357d1cf4f9ed56b819d74b629b4e1964f2f
-  .github/skills/clarify-code/.docs/baseline/decisions.md: sha256:db63b0a94ce944e627550374d347d75a63fdace6771ee3c5893cb3675f2f871d
   .github/skills/clarify-code/references/diagnosis.md: sha256:99ef934889ed4e6d13576e66148d036cadf97e2a6508202c5909360eaea78791
   .github/skills/clarify-code/references/documentation.md: sha256:a0c20183c1415ac2cbda2d457ea780e588ec4bf269e68e86c01176a57ac6f54e
   .github/skills/clarify-code/references/validation.md: sha256:38dc6ee3f17682b4611341afe4dccf81d56f17dbfdbc0fda87d1575bf1c53d30
@@ -219,7 +210,6 @@ outputs:
   .github/skills/mols-agent-asset-studio/workflows/tune.md: sha256:c83e32835ca095faaad011d9333565cd741863f6c95282ea4b2d995e2cb2edff
   .github/skills/mols-agent-asset-studio/workflows/validate.md: sha256:f4566ca555d5ffbbfa89373f687c22d9448c15029d42a8ec10b3c27581f1257d
   .github/skills/mols-documents-studio/SKILL.md: sha256:38e9ee27b2526c4a68e5e25563aa972ca5411e602c0bc662f236372ca4016493
-  .github/skills/mols-documents-studio/.docs/baseline/decisions.md: sha256:ca988d93da9e0e90cbd610723e58a09b2de8b601a8f405af788420a93d65a4d2
   .github/skills/mols-documents-studio/README.md: sha256:91156f9c749ecdff5f0f52b1c001dee1660d836d4866cd69b4e37c8379d05238
   .github/skills/mols-documents-studio/references/bluf-principle.md: sha256:98f0239f6263926e632d4130970d633f91ae12ed814f9e0ddecb616c60c6452c
   .github/skills/mols-documents-studio/references/decisions-lite-guide.md: sha256:82a7663a4a3f847f3e087d30dc2972d326ba684706f10614345238f8ba2f0cd3
@@ -228,11 +218,6 @@ outputs:
   .github/skills/mols-documents-studio/workflows/INDEX.csv: sha256:863561f96f51b75baa211ebf741d202d58cfc163399cbb8fcbc1bc7be14c73b9
   .github/skills/mols-documents-studio/workflows/write-decisions.md: sha256:a8b7582d91797d2c2929415f5e3bd1bab74adb2210979d36f2dfee408cc86b15
   .github/skills/mols-markdown-dashboard/SKILL.md: sha256:9571a941e1003630560d0da30dc19a454d437922b31a155684b7b1ca0b019709
-  .github/skills/mols-markdown-dashboard/.docs/ARCHITECTURE.md: sha256:2e31c4ecfd5b2ebd97b33e4c5461ce18dda2804a0d85e1ac6d9188da4be9938f
-  .github/skills/mols-markdown-dashboard/.docs/baseline/DIRECTIVE.md: sha256:299146974abf6f292fb955e95ae2b092fbf55eae8af732c08048606937338ac3
-  .github/skills/mols-markdown-dashboard/.docs/MAINTENANCE.md: sha256:440d9551bde3765436d92f809ae3d38b0845341f1003cce7b293b2cdd06d0b70
-  .github/skills/mols-markdown-dashboard/.docs/README.md: sha256:084aaf13e4867eac0ce1679a79658052a904a14daab48b15eb73362cb0863d7e
-  .github/skills/mols-markdown-dashboard/.docs/REVIEW-LOOPS.md: sha256:c0fefcdd71074454b0acd0d05105a3055d40c160e16577750b8f91b88fb92b33
   .github/skills/mols-markdown-dashboard/examples/domain-dashboard.md: sha256:79f2e5bd98e8f70be2fa00cbd4f2ffb01132b306dc0d7e3ec44ce0ea2506b6a5
   .github/skills/mols-markdown-dashboard/examples/domain-dashboard.yml: sha256:744b0d8fb148c492705c926a11c3ee97b09fa1f8cfb29d77c3bbf355c233ac36
   .github/skills/mols-markdown-dashboard/examples/project-dashboard.md: sha256:b8e82cfd3f2b19b34dff29ca1b53caeb5e7258baf364a9f132be2584000e3703
@@ -265,7 +250,6 @@ outputs:
   .github/skills/mols-markdown-for-human/references/text-bars.md: sha256:9d5464504afb2c583c4b27c753311802d2eb951b0f0d5eb3494210bd50eae525
   .github/skills/mols-markdown-for-human/references/tree-structures.md: sha256:f45d2858a9d3b052aafd1683ccb754ca1189a584b6ffa7e059bb57348b1b97ea
   .github/skills/mols-markdown-scripts/SKILL.md: sha256:9a218fdc3b6fdae55485a324b1195159657a82c5b6315eaa49d5963460204392
-  .github/skills/mols-markdown-scripts/.docs/baseline/decisions.md: sha256:b53c31b20a6861cf1e1f03350127ea168c7d2aea0e21a6f5c2645acba33775fc
   .github/skills/mols-markdown-scripts/pyproject.toml: sha256:7b8467f4f9e626e0321ac31254b525df7692e3c9a5407a4b6156edb65f4c9585
   .github/skills/mols-markdown-scripts/README.md: sha256:4f272751b3bcdae4912799c90acbad4de0afc4136b1ab4dd6d2908c36778c57d
   .github/skills/mols-markdown-scripts/scripts/check_dependencies.py: sha256:e722f2f12d59a376d3d7bfaa3cbdead416c36612492a2c87aec96f9610ed91eb
@@ -340,7 +324,6 @@ outputs:
   .agents/skills/caveman-ko/SKILL.md: sha256:f0f3a778d6574a5d4e2f9f3b85e0239aa28f256d8b1a87afbfae9c85f6d020a4
   .agents/skills/caveman-ko/README.md: sha256:b7238cb7de0045996865b8d72552bf3f2b5e680d86233b16bb5f16cc8fac4658
   .agents/skills/clarify-code/SKILL.md: sha256:3f4719c9691447628a8f342788fb3357d1cf4f9ed56b819d74b629b4e1964f2f
-  .agents/skills/clarify-code/.docs/baseline/decisions.md: sha256:db63b0a94ce944e627550374d347d75a63fdace6771ee3c5893cb3675f2f871d
   .agents/skills/clarify-code/references/diagnosis.md: sha256:99ef934889ed4e6d13576e66148d036cadf97e2a6508202c5909360eaea78791
   .agents/skills/clarify-code/references/documentation.md: sha256:a0c20183c1415ac2cbda2d457ea780e588ec4bf269e68e86c01176a57ac6f54e
   .agents/skills/clarify-code/references/validation.md: sha256:38dc6ee3f17682b4611341afe4dccf81d56f17dbfdbc0fda87d1575bf1c53d30
@@ -382,7 +365,6 @@ outputs:
   .agents/skills/mols-agent-asset-studio/workflows/tune.md: sha256:c83e32835ca095faaad011d9333565cd741863f6c95282ea4b2d995e2cb2edff
   .agents/skills/mols-agent-asset-studio/workflows/validate.md: sha256:f4566ca555d5ffbbfa89373f687c22d9448c15029d42a8ec10b3c27581f1257d
   .agents/skills/mols-documents-studio/SKILL.md: sha256:b988a2f9a8e5117a63769f97a0cdcc4c596ba30a9597daa1f627753b5426bc5a
-  .agents/skills/mols-documents-studio/.docs/baseline/decisions.md: sha256:ca988d93da9e0e90cbd610723e58a09b2de8b601a8f405af788420a93d65a4d2
   .agents/skills/mols-documents-studio/README.md: sha256:91156f9c749ecdff5f0f52b1c001dee1660d836d4866cd69b4e37c8379d05238
   .agents/skills/mols-documents-studio/references/bluf-principle.md: sha256:98f0239f6263926e632d4130970d633f91ae12ed814f9e0ddecb616c60c6452c
   .agents/skills/mols-documents-studio/references/decisions-lite-guide.md: sha256:82a7663a4a3f847f3e087d30dc2972d326ba684706f10614345238f8ba2f0cd3
@@ -391,11 +373,6 @@ outputs:
   .agents/skills/mols-documents-studio/workflows/INDEX.csv: sha256:863561f96f51b75baa211ebf741d202d58cfc163399cbb8fcbc1bc7be14c73b9
   .agents/skills/mols-documents-studio/workflows/write-decisions.md: sha256:a8b7582d91797d2c2929415f5e3bd1bab74adb2210979d36f2dfee408cc86b15
   .agents/skills/mols-markdown-dashboard/SKILL.md: sha256:9571a941e1003630560d0da30dc19a454d437922b31a155684b7b1ca0b019709
-  .agents/skills/mols-markdown-dashboard/.docs/ARCHITECTURE.md: sha256:2e31c4ecfd5b2ebd97b33e4c5461ce18dda2804a0d85e1ac6d9188da4be9938f
-  .agents/skills/mols-markdown-dashboard/.docs/baseline/DIRECTIVE.md: sha256:299146974abf6f292fb955e95ae2b092fbf55eae8af732c08048606937338ac3
-  .agents/skills/mols-markdown-dashboard/.docs/MAINTENANCE.md: sha256:440d9551bde3765436d92f809ae3d38b0845341f1003cce7b293b2cdd06d0b70
-  .agents/skills/mols-markdown-dashboard/.docs/README.md: sha256:084aaf13e4867eac0ce1679a79658052a904a14daab48b15eb73362cb0863d7e
-  .agents/skills/mols-markdown-dashboard/.docs/REVIEW-LOOPS.md: sha256:c0fefcdd71074454b0acd0d05105a3055d40c160e16577750b8f91b88fb92b33
   .agents/skills/mols-markdown-dashboard/examples/domain-dashboard.md: sha256:79f2e5bd98e8f70be2fa00cbd4f2ffb01132b306dc0d7e3ec44ce0ea2506b6a5
   .agents/skills/mols-markdown-dashboard/examples/domain-dashboard.yml: sha256:744b0d8fb148c492705c926a11c3ee97b09fa1f8cfb29d77c3bbf355c233ac36
   .agents/skills/mols-markdown-dashboard/examples/project-dashboard.md: sha256:b8e82cfd3f2b19b34dff29ca1b53caeb5e7258baf364a9f132be2584000e3703
@@ -428,7 +405,6 @@ outputs:
   .agents/skills/mols-markdown-for-human/references/text-bars.md: sha256:9d5464504afb2c583c4b27c753311802d2eb951b0f0d5eb3494210bd50eae525
   .agents/skills/mols-markdown-for-human/references/tree-structures.md: sha256:f45d2858a9d3b052aafd1683ccb754ca1189a584b6ffa7e059bb57348b1b97ea
   .agents/skills/mols-markdown-scripts/SKILL.md: sha256:a538282afae2111b4c30956c12b2184158e66210cd58c636528dbab71084148b
-  .agents/skills/mols-markdown-scripts/.docs/baseline/decisions.md: sha256:b53c31b20a6861cf1e1f03350127ea168c7d2aea0e21a6f5c2645acba33775fc
   .agents/skills/mols-markdown-scripts/pyproject.toml: sha256:7b8467f4f9e626e0321ac31254b525df7692e3c9a5407a4b6156edb65f4c9585
   .agents/skills/mols-markdown-scripts/README.md: sha256:4f272751b3bcdae4912799c90acbad4de0afc4136b1ab4dd6d2908c36778c57d
   .agents/skills/mols-markdown-scripts/scripts/check_dependencies.py: sha256:e722f2f12d59a376d3d7bfaa3cbdead416c36612492a2c87aec96f9610ed91eb
