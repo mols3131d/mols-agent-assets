@@ -1,20 +1,30 @@
 {
-  "$schema": "https://beta.frontmatter.codes/frontmatter.schema.json",
+  "$schema": "https://frontmatter.codes/frontmatter.schema.json",
+  "frontMatter.framework.id": "other",
+  "frontMatter.validation.enabled": true,
+  "frontMatter.content.pageFolders": [
+    {
+      "title": "Docs",
+      "path": "[[workspace]]/docs",
+      "contentTypes": ["default"]
+    }
+  ],
   "frontMatter.taxonomy.contentTypes": [
     {
       "name": "default",
       "pageBundle": false,
-      "previewPath": null,
       "fields": [
         {
           "title": "Title",
           "name": "title",
-          "type": "string"
+          "type": "string",
+          "single": true
         },
         {
           "title": "Description",
           "name": "description",
-          "type": "string"
+          "type": "string",
+          "single": true
         },
         {
           "title": "Tags",
@@ -24,13 +34,10 @@
       ]
     }
   ],
-  "frontMatter.framework.id": "other",
-  "frontMatter.validation.enabled": true,
-  "frontMatter.content.publicFolder": "",
-  "frontMatter.content.pageFolders": [
-    {
-      "title": "docs",
-      "path": "[[workspace]]/docs"
-    }
+  "frontMatter.panel.actions.disabled": [
+    "optimizeSlug",
+    "preview",
+    "openOnWebsite",
+    "startStopServer"
   ]
 }
