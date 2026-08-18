@@ -1,0 +1,23 @@
+{
+  "id": "rule-sources-conflict-unresolved",
+  "rule_sources": "auto",
+  "auto_candidates": [
+    "docs/policy-a.md",
+    "docs/policy-b.md"
+  ],
+  "authority_tiers": {
+    "docs/policy-a.md": 1,
+    "docs/policy-b.md": 1
+  },
+  "conflicting_pairs": [
+    [
+      "docs/policy-a.md",
+      "docs/policy-b.md"
+    ]
+  ],
+  "expected_resolved": [
+    "docs/policy-a.md",
+    "docs/policy-b.md"
+  ],
+  "expected_conflict": "unresolved-tier"
+}
