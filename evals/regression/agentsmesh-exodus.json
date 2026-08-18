@@ -4,7 +4,7 @@
   "canonical": {
     "targets": ["copilot", "antigravity"],
     "features": ["rules", "skills"],
-    "rules": ["_root.md", "language-ko.md"],
+    "rules": ["_root.md"],
     "skills": [
       "caveman-ko",
       "clarify-code",
@@ -38,6 +38,7 @@
   ],
   "retired": [
     ".agentsmesh/_legacy",
+    ".agentsmesh/rules/language-ko.md",
     "src/skills",
     "src/rules/language-ko.md",
     "tests/skills/rulesync-agent-assets",
