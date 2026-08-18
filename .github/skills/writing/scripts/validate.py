@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-import json
 import re
 import sys
 from pathlib import Path
@@ -15,7 +14,6 @@ REQUIRED_FILES = [
     "references/workflows.md",
     "references/review-rubric.md",
     "references/examples.md",
-    "references/trigger-evals.json",
     "assets/writing-brief-template.md",
     "assets/review-output-template.md",
 ]
@@ -44,7 +42,9 @@ def parse_frontmatter(text: str) -> dict[str, str]:
         if value in {">", "|"}:
             i += 1
             parts: list[str] = []
-            while i < len(block) and (block[i].startswith("  ") or not block[i].strip()):
+            while i < len(block) and (
+                block[i].startswith("  ") or not block[i].strip()
+            ):
                 if block[i].strip():
                     parts.append(block[i].strip())
                 i += 1
@@ -63,6 +63,10 @@ def main() -> int:
     for rel in REQUIRED_FILES:
         if not (root / rel).is_file():
             errors.append(f"missing required file: {rel}")
+
+    for name in ("tests", "evals", "scenarios", "results"):
+        if (root / name).exists():
+            errors.append(f"repository verification surface must stay outside package: {name}/")
 
     skill_path = root / "SKILL.md"
     if not skill_path.is_file():
@@ -105,28 +109,6 @@ def main() -> int:
             continue
         if not (root / target).exists():
             errors.append(f"broken relative link in SKILL.md: {target}")
-
-    eval_path = root / "references/trigger-evals.json"
-    if eval_path.is_file():
-        try:
-            cases = json.loads(eval_path.read_text(encoding="utf-8"))
-            if not isinstance(cases, list):
-                errors.append("trigger-evals.json must contain a JSON array")
-            else:
-                positives = sum(case.get("should_trigger") is True for case in cases if isinstance(case, dict))
-                negatives = sum(case.get("should_trigger") is False for case in cases if isinstance(case, dict))
-                if positives < 8 or negatives < 8:
-                    errors.append("trigger evals need at least 8 positive and 8 negative cases")
-                for index, case in enumerate(cases):
-                    if not isinstance(case, dict):
-                        errors.append(f"trigger eval case {index} is not an object")
-                        continue
-                    if not isinstance(case.get("query"), str) or not case["query"].strip():
-                        errors.append(f"trigger eval case {index} has no query")
-                    if not isinstance(case.get("should_trigger"), bool):
-                        errors.append(f"trigger eval case {index} has invalid should_trigger")
-        except json.JSONDecodeError as exc:
-            errors.append(f"invalid trigger-evals.json: {exc}")
 
     for warning in warnings:
         print(f"WARN: {warning}")

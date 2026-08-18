@@ -22,21 +22,14 @@ intent, rule, or contract ↔ implementation ↔ validation
 artifact-consistency-inspector/
 ├── SKILL.md
 ├── README.md
-├── references/
-│   ├── inspection-rules.md
-│   ├── rule-sources.md
-│   ├── report-format.md
-│   └── example-report.md
-└── tests/
-    ├── README.md
-    ├── run_tests.py
-    ├── scenarios/
-    └── results/
+└── references/
+    ├── inspection-rules.md
+    ├── rule-sources.md
+    ├── report-format.md
+    └── example-report.md
 ```
 
-`.github/skills/artifact-consistency-inspector/references/`는 runtime에서 조건부로 읽는 resource이고, `.github/skills/artifact-consistency-inspector/tests/`는 source package의
-development/self-validation surface입니다. 이 repository의 maintainer-only customization
-문서는 runtime package 밖 `docs/skills/artifact-consistency-inspector/`에서 관리합니다.
+`.github/skills/artifact-consistency-inspector/references/`는 runtime에서 조건부로 읽는 resource입니다. Repository-owned deterministic tests와 scenarios는 deployable package 밖 `tests/skills/artifact-consistency-inspector/`에서 관리합니다.
 
 ChatGPT 설치 시 ZIP 내부의 `artifact-consistency-inspector/SKILL.md` 이름과 위치를 유지하는 것이 안전합니다. 외부 ZIP 파일명은 자유롭게 변경할 수 있습니다.
 
@@ -74,13 +67,13 @@ loops: 2
 
 보고서에는 YAML front matter, compact Summary table, Findings, Coverage가 포함됩니다. 각 finding은 `Observed difference`, `References`, `Potential impact` heading을 사용하며, unresolved finding에만 `Why unresolved`를 추가합니다. `author`는 사용자가 지정하지 않으면 `<author>` placeholder로 유지됩니다.
 
-## 테스트
+## Source-repository verification
 
 ```bash
-python tests/run_tests.py
+uv run pytest tests/skills/artifact-consistency-inspector
 ```
 
-표준 라이브러리만 사용하며 network와 repository write 권한이 필요하지 않습니다. 테스트는 package contract와 deterministic scenario를 검증합니다. 실제 모델의 원격 저장소 탐색·추론 품질은 별도 live evaluation 대상입니다.
+테스트는 package contract와 deterministic scenario를 검증합니다. 실제 모델의 원격 저장소 탐색·추론 품질은 별도 live evaluation 대상입니다.
 
 ## Runtime references
 

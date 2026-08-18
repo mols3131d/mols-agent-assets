@@ -1,37 +1,20 @@
 # Auto-generated. DO NOT EDIT MANUALLY.
 # Tracks the state of all config files for team conflict resolution.
 
-generated_at: 2026-08-18T19:15:55.217Z
+generated_at: 2026-08-18T19:30:13.502Z
 generated_by: unknown
 lib_version: 0.32.0
 checksums:
   agents/review-adversarial.md: sha256:065885304beef836d33c0e6e797e9bbe3faf29133ce0b1cf722ccdcade9730a8
   agents/review-lead.md: sha256:f52f5bbfdbc4a4b7a4839ecbd62d5a8844b509267b6f8e967c711fc089f0df4c
   agents/review-quality.md: sha256:ef41f89ce8e04c331aae064284b4958cc984ef3ea9d02a9bebba903390bd3e19
-  rules/_root.md: sha256:7883d54abebed286e3c6ee13b92018f485b25da8b27a1f94b0c5583275d03dc6
-  skills/artifact-consistency-inspector/README.md: sha256:e052a462e5b4e49ae09f16f898ae232b2a3b0551f48fedbb495899c634c80d80
-  skills/artifact-consistency-inspector/SKILL.md: sha256:f3922d73c16fd51b4e1c89ed622606f8774d59dce3dc03d60e9872021abf0d57
+  rules/_root.md: sha256:392472fa7fdf2e4bc918aaef37b424d6da70b3bea7d2d2f0a76bc737b3c17b4c
+  skills/artifact-consistency-inspector/README.md: sha256:f8fa72b8943feaeb8a39f737c977e2ab83cc5ce27f2e6889b671de020b9c8a63
+  skills/artifact-consistency-inspector/SKILL.md: sha256:a383550db06964c0637877c990ff88a02b1c1933279c894a1194d4d6f7cd94ab
   skills/artifact-consistency-inspector/references/example-report.md: sha256:4f69d06c960b0578c1c5a742a147fe85daf7f9ea2b60cb96d1724798dfff0569
   skills/artifact-consistency-inspector/references/inspection-rules.md: sha256:d3c5ff15afa2b008cc2f9cf3ea0e65ca03e38af8d34fc56631f8befcc53da2c1
   skills/artifact-consistency-inspector/references/report-format.md: sha256:cfe7c2a012e71bc8856394ab7d8e733fff1dc2231c9b80d92d9066da98384f01
   skills/artifact-consistency-inspector/references/rule-sources.md: sha256:b1396941d2e21ba19c3aca12cffc5557cb37abe8745d94e9dfb7915443e80313
-  skills/artifact-consistency-inspector/tests/README.md: sha256:80209b9d0b2c3653e2fec7399c5ceba44b8a1a729161fa0666d815a05f2130ec
-  skills/artifact-consistency-inspector/tests/results/artifact-consistency-inspector-test-report-202608042358.md: sha256:d1f9d3d5027715fbbd851cfeaba4d384b8576e35327e901ee5f50b437ff34374
-  skills/artifact-consistency-inspector/tests/run_tests.py: sha256:d74f797fee575bd5bfc699798b915b52ee5ebb377a5f371504a21ce51058a5b5
-  skills/artifact-consistency-inspector/tests/scenarios/asymmetric-drift.json: sha256:a3ccf3b4046340a7d9230785cac654fae49c7cd259699f2f600c28a0385bfb0f
-  skills/artifact-consistency-inspector/tests/scenarios/authoritative-contradiction.json: sha256:dda331cb211f8ed624639cbfa4793e6681d7ee39eea500f8e896ef86133dda4c
-  skills/artifact-consistency-inspector/tests/scenarios/bounded-no-findings.json: sha256:a74492eb802bf290dd45e6f738740b7ec4085f5ff3c42e361b7ad4bf88b895fd
-  skills/artifact-consistency-inspector/tests/scenarios/file-anchor-validation-gap.json: sha256:c4d5f63ab51505e63ae332c65b3d08c714fca93e16c144eca5ce1826a996ef42
-  skills/artifact-consistency-inspector/tests/scenarios/host-agnostic-feature.json: sha256:ba3cc0789c6b909391bb04d081ce4eea9b107d83322b1c665a4be44a231ec472
-  skills/artifact-consistency-inspector/tests/scenarios/inferred-convention-unresolved.json: sha256:ef79fe18d09d69a888ca0ef6f382b3c35a20ab4a2df6ad9ed9a8025dcd86cff9
-  skills/artifact-consistency-inspector/tests/scenarios/omission-zero-search-unresolved.json: sha256:bfdad2155c05aecd94f19772c876ad3381145ed4aed81342048ab31f28cf3025
-  skills/artifact-consistency-inspector/tests/scenarios/pr-revision-mismatch.json: sha256:43fcdd260eb01b7d207fa75ec21ba2f99bc9877cd9d59c5d509c582167cfe181
-  skills/artifact-consistency-inspector/tests/scenarios/primary-access-blocked.json: sha256:9fd48e4bea986545bbd454fc2f5c133fb120eb5b600913c04fa3bf043bab52c9
-  skills/artifact-consistency-inspector/tests/scenarios/repository-wide-sampled-no-findings.json: sha256:dcb53d938df6b0ab2950a26e919b11f6b94ca4623fe3a0fccae2b828c8229734
-  skills/artifact-consistency-inspector/tests/scenarios/rule-sources-auto-deduplicate.json: sha256:60a88944ba34dfbf1d1c8cdbc63560357614b084ce0e1527ba81196d6f4f513d
-  skills/artifact-consistency-inspector/tests/scenarios/rule-sources-conflict-unresolved.json: sha256:9fd77b49cb80da170e4a512a5d0f6f76e2bb2b4274306d7cef849f42be9ffe77
-  skills/artifact-consistency-inspector/tests/scenarios/rule-sources-explicit-order.json: sha256:9a24be4ad2ac0064afcf060c5ed839ec94330f328539d0565349f1eace478ddb
-  skills/artifact-consistency-inspector/tests/scenarios/stale-reference.json: sha256:8b65aca60eea68db3309d5978aa960a9471557981e6b42dd01771accb2584b13
   skills/caveman-ko/README.md: sha256:b7238cb7de0045996865b8d72552bf3f2b5e680d86233b16bb5f16cc8fac4658
   skills/caveman-ko/SKILL.md: sha256:05aa6bfc392a044991ed011aa56e49a6f419fc67548a38b4d6165b3048121ccd
   skills/clarify-code/SKILL.md: sha256:78d14ed668ef5c49896fc1a5d2c3829f983a702a75da15e271491ceadfdbda53
@@ -91,9 +74,6 @@ checksums:
   skills/mols-agent-asset-validator/agents/orchestration.agent.md: sha256:4510040c2657412239ac291f73dd665c5128a483b3166248cb08e25145f25193
   skills/mols-agent-asset-validator/agents/quality.agent.md: sha256:2c0029421dd6b9bb7c0f38a00905d7c4599d5d84babcefe6812f224f696e9f5a
   skills/mols-agent-asset-validator/agents/routing.agent.md: sha256:74a3bb744975cbae551d9bd9fc23127cb27c9e922b2cab878115072b0225c7ff
-  skills/mols-agent-asset-validator/evals/adversarial-evals.json: sha256:88a9609638e73b0b72a5ccff1ed77d1241c4d5bf9c09fae9bbfff9357a20859f
-  skills/mols-agent-asset-validator/evals/behavior-evals.json: sha256:c8645c0506d4eb8b17042a1ed710ffd5c74e7c1f08c2d2d3886764854527b44e
-  skills/mols-agent-asset-validator/evals/trigger-evals.json: sha256:0d110610e93f92b1785c147ba3d53ba5e3d6337ca4b4ce4ec820a53e5494af91
   skills/mols-agent-asset-validator/references/asset-contract.md: sha256:3fa79097c669695a19192bcbe3d8dbe4d49674d4f904194748486229d9593bd6
   skills/mols-agent-asset-validator/references/performance-review.md: sha256:8f52012c3fa813a2bdc0af36efdbb179aa497863b93d54d95bcf6ca4d4e593bd
   skills/mols-agent-asset-validator/references/platform-capabilities.md: sha256:f9f8268ebb93ebc6054d4f26a2a7b6aab580302fc6f4e8e975dc80293aad50a1
@@ -104,7 +84,6 @@ checksums:
   skills/mols-agent-asset-validator/schemas/result.schema.json: sha256:aab6b471197133f638cd17c0969800437cc38eee5cd6eb5453752840d4641a66
   skills/mols-agent-asset-validator/scripts/scan_assets.py: sha256:e9413e615c2bc754be2654c0d426ed6621472c02cf86541521ae3d15903d4db9
   skills/mols-agent-asset-validator/scripts/validate.py: sha256:32cfba668cb14d4b55f723301cb2e2ad1d1f4cc4df505ba194b5adfecb5b10f5
-  skills/mols-agent-asset-validator/tests/test_scan_assets.py: sha256:a4db4fc4693590e6eeeeab8535476e13e4e167a3616efec9c2dfc0296eee745d
   skills/mols-documents-studio/README.md: sha256:91156f9c749ecdff5f0f52b1c001dee1660d836d4866cd69b4e37c8379d05238
   skills/mols-documents-studio/SKILL.md: sha256:0199191cbae530953ccb70cdfebc3d99f2e8c45f1456398a3abc16c481effa03
   skills/mols-documents-studio/references/bluf-principle.md: sha256:98f0239f6263926e632d4130970d633f91ae12ed814f9e0ddecb616c60c6452c
@@ -219,7 +198,6 @@ checksums:
   skills/mols-skill-creator/assets/templates/SKILL.md: sha256:14473cff04eb5f83eaa65e2709b425992a1aa92293b5e50b097f3f2398cc2ce5
   skills/mols-skill-creator/assets/templates/WORKING.md: sha256:97630e870ce3a3e815a623941fef5d34909bf9dbd97849d1a6fdcf6dcd729c09
   skills/mols-skill-creator/assets/templates/agents/openai.yaml: sha256:e008531e8d01be8e012d1ac69fa44348a58a7b01276bec8d5b06fc8010a6ec7d
-  skills/mols-skill-creator/evals/cases.json: sha256:89e4751b1b2dbd8fbd8d3bd737df2f4a56be7d1f49a43f9b1c0844864ababf42
   skills/mols-skill-creator/references/platform-compatibility.md: sha256:734f8a3dfb57ccb0837511c42ba3d2fc4d4a0b6d86b59223e696af530f2d6d22
   skills/mols-skill-creator/references/quality-model.md: sha256:1d9c7880a93186a5a9c1cd6f222db8a5ff8b25b1729aec057d98cf6e29e909c6
   skills/mols-skill-creator/references/upstream-sources.md: sha256:08164e4c8e3c2e5dc1c1c941d2422dd68fc667878e3e26434984e04a708ebc82
@@ -244,52 +222,34 @@ checksums:
   skills/vcs-git-commit/references/--help.ko.md: sha256:573953ce9a883d0c6e3940ad4dd152a67914f537b3d21ef992073bff0d620110
   skills/vcs-git-commit/references/--help.md: sha256:ebf9b34b4d42978b9a828f33fe1be4736518d31b390e2a0caeb221b98c7171f5
   skills/vcs-git-commit/references/default-gitmessage.md: sha256:d18e83dba5fc11a93afd313e757f7533908a8c4f351da84a866fc7bc649f2dd2
-  skills/writing/README.md: sha256:32672f669a2d51c34ca1c8e3bdfe11d01dc8b4aa00b6b8b8d623d69602e78753
+  skills/writing/README.md: sha256:fab4ee05f7fc0fafbd3dd90112e1ec56b56207a1dc746f5c5a5740e0a3440fc0
   skills/writing/SKILL.md: sha256:534c4f1c929171a5d0c3cf038a30833d259044ea5b80cd27ffbc4ad6072ea7a6
   skills/writing/agents/openai.yaml: sha256:be4c0e323a49b6d34fda327827199e1e0363dfa0f27512ce96a8d5a833c62f1a
   skills/writing/assets/icon.svg: sha256:49315dda7125ec5fc77ef5f2b96126d8b2121c6e72944b4702972e90f321d3ee
   skills/writing/assets/review-output-template.md: sha256:fb8d94be49bb341a94bb20a4f1e802a6c57c9dd6361d6bc4e413ba38c460b6d7
   skills/writing/assets/writing-brief-template.md: sha256:e080d93c3fb0d6eed6c400d2267f63b06eaa940f1cb34f962390b4b3cb7ea1b1
-  skills/writing/evals/trigger.json: sha256:1b9c07b5da053b1c82a199591299c6edb45773dea96aff21b0e34b5ea4c66ccd
   skills/writing/references/examples.md: sha256:f95f98c1d187e4e245e74b8ec2950567266a0c0025510ae94bd0ab901a0ab6b5
   skills/writing/references/principles.md: sha256:072ff72357ffee8ea8a4b64f99fcc04b4cb2d7b2be24e6e33654fecd0b34d9c7
   skills/writing/references/review-rubric.md: sha256:9929adb3aa69bda402695d1cb7369c30d706a03053162eba9ef5ef7f6417e481
   skills/writing/references/workflows.md: sha256:d8c8bfd2b776f78d0fb94c5b67efeeb87df4e9954fe1572bb7b971a32c7bf580
-  skills/writing/scripts/validate.py: sha256:bf658f0bbded1a1449c5bab071a1fdb500e257f9404e4ae2ccb064a8b88e450f
+  skills/writing/scripts/validate.py: sha256:d8bab443718c6b3122a2f5baa4bb58c42f3b7dedd71843b96b6bbcd5e575dd9a
 extends: {}
 packs: {}
 outputs:
-  .github/copilot-instructions.md: sha256:bf1014d1b938931db89b87180b19e7f6f6bea93131958dc4e595961231404459
-  .agents/rules/general.md: sha256:bf1014d1b938931db89b87180b19e7f6f6bea93131958dc4e595961231404459
+  .github/copilot-instructions.md: sha256:9aedd0c4ddc68f41308e858ac93fe6c27641c33574aea782025bd55e1deafd63
+  .agents/rules/general.md: sha256:9aedd0c4ddc68f41308e858ac93fe6c27641c33574aea782025bd55e1deafd63
   .github/agents/review-adversarial.agent.md: sha256:2ad98619d630eddad24b86ddc582a181963d8cf8a655fd58287e068940f3c97e
   .github/agents/review-lead.agent.md: sha256:f3a301c7874a967b87095b6267a32b17536559b392f1f67cb289b4d9a8dd1080
   .github/agents/review-quality.agent.md: sha256:3c0276a77b2d26a8405b520899a66e204212f85df02a979639315256fd414ac2
   .agents/skills/am-agent-review-adversarial/SKILL.md: sha256:98dcbc12896398acfd4d2a1b83087fb24502bd1aca473ebc19e52994a36422a7
   .agents/skills/am-agent-review-lead/SKILL.md: sha256:33a617291da4f776e9cd021b2c4df9c2d6334fa559c2d8b5ea31bc330789ed1f
   .agents/skills/am-agent-review-quality/SKILL.md: sha256:e7d3fff7cc68e7d9968d0a63126d79652a494aaedf7888c7dab247a48eab66ad
-  .github/skills/artifact-consistency-inspector/SKILL.md: sha256:c2f47a6891a424c0135a4cfcdde0fe9ea940d69f404806604408a5f713e94879
-  .github/skills/artifact-consistency-inspector/README.md: sha256:ed90fe796307b3c65fabe639ac984cccf479d2decfa8330401bacc32110ecc78
+  .github/skills/artifact-consistency-inspector/SKILL.md: sha256:6e8d09225aa2cd056ecb277884f90f8b3f139c5f20ef9ce4fe1046e206ac3bbe
+  .github/skills/artifact-consistency-inspector/README.md: sha256:0888d71d97ff36b3212325734416822faa01163b60c7d961aed6dd26501338b0
   .github/skills/artifact-consistency-inspector/references/example-report.md: sha256:4f69d06c960b0578c1c5a742a147fe85daf7f9ea2b60cb96d1724798dfff0569
   .github/skills/artifact-consistency-inspector/references/inspection-rules.md: sha256:d3c5ff15afa2b008cc2f9cf3ea0e65ca03e38af8d34fc56631f8befcc53da2c1
   .github/skills/artifact-consistency-inspector/references/report-format.md: sha256:cfe7c2a012e71bc8856394ab7d8e733fff1dc2231c9b80d92d9066da98384f01
   .github/skills/artifact-consistency-inspector/references/rule-sources.md: sha256:b1396941d2e21ba19c3aca12cffc5557cb37abe8745d94e9dfb7915443e80313
-  .github/skills/artifact-consistency-inspector/tests/README.md: sha256:80209b9d0b2c3653e2fec7399c5ceba44b8a1a729161fa0666d815a05f2130ec
-  .github/skills/artifact-consistency-inspector/tests/results/artifact-consistency-inspector-test-report-202608042358.md: sha256:d1f9d3d5027715fbbd851cfeaba4d384b8576e35327e901ee5f50b437ff34374
-  .github/skills/artifact-consistency-inspector/tests/run_tests.py: sha256:125003fc4b126997a3e42536dc86491cb1770db5dcce561fdf1ea297689e0544
-  .github/skills/artifact-consistency-inspector/tests/scenarios/asymmetric-drift.json: sha256:a3ccf3b4046340a7d9230785cac654fae49c7cd259699f2f600c28a0385bfb0f
-  .github/skills/artifact-consistency-inspector/tests/scenarios/authoritative-contradiction.json: sha256:dda331cb211f8ed624639cbfa4793e6681d7ee39eea500f8e896ef86133dda4c
-  .github/skills/artifact-consistency-inspector/tests/scenarios/bounded-no-findings.json: sha256:a74492eb802bf290dd45e6f738740b7ec4085f5ff3c42e361b7ad4bf88b895fd
-  .github/skills/artifact-consistency-inspector/tests/scenarios/file-anchor-validation-gap.json: sha256:c4d5f63ab51505e63ae332c65b3d08c714fca93e16c144eca5ce1826a996ef42
-  .github/skills/artifact-consistency-inspector/tests/scenarios/host-agnostic-feature.json: sha256:ba3cc0789c6b909391bb04d081ce4eea9b107d83322b1c665a4be44a231ec472
-  .github/skills/artifact-consistency-inspector/tests/scenarios/inferred-convention-unresolved.json: sha256:ef79fe18d09d69a888ca0ef6f382b3c35a20ab4a2df6ad9ed9a8025dcd86cff9
-  .github/skills/artifact-consistency-inspector/tests/scenarios/omission-zero-search-unresolved.json: sha256:bfdad2155c05aecd94f19772c876ad3381145ed4aed81342048ab31f28cf3025
-  .github/skills/artifact-consistency-inspector/tests/scenarios/pr-revision-mismatch.json: sha256:43fcdd260eb01b7d207fa75ec21ba2f99bc9877cd9d59c5d509c582167cfe181
-  .github/skills/artifact-consistency-inspector/tests/scenarios/primary-access-blocked.json: sha256:9fd48e4bea986545bbd454fc2f5c133fb120eb5b600913c04fa3bf043bab52c9
-  .github/skills/artifact-consistency-inspector/tests/scenarios/repository-wide-sampled-no-findings.json: sha256:dcb53d938df6b0ab2950a26e919b11f6b94ca4623fe3a0fccae2b828c8229734
-  .github/skills/artifact-consistency-inspector/tests/scenarios/rule-sources-auto-deduplicate.json: sha256:60a88944ba34dfbf1d1c8cdbc63560357614b084ce0e1527ba81196d6f4f513d
-  .github/skills/artifact-consistency-inspector/tests/scenarios/rule-sources-conflict-unresolved.json: sha256:9fd77b49cb80da170e4a512a5d0f6f76e2bb2b4274306d7cef849f42be9ffe77
-  .github/skills/artifact-consistency-inspector/tests/scenarios/rule-sources-explicit-order.json: sha256:9a24be4ad2ac0064afcf060c5ed839ec94330f328539d0565349f1eace478ddb
-  .github/skills/artifact-consistency-inspector/tests/scenarios/stale-reference.json: sha256:8b65aca60eea68db3309d5978aa960a9471557981e6b42dd01771accb2584b13
   .github/skills/caveman-ko/SKILL.md: sha256:f0f3a778d6574a5d4e2f9f3b85e0239aa28f256d8b1a87afbfae9c85f6d020a4
   .github/skills/caveman-ko/README.md: sha256:b7238cb7de0045996865b8d72552bf3f2b5e680d86233b16bb5f16cc8fac4658
   .github/skills/clarify-code/SKILL.md: sha256:3f4719c9691447628a8f342788fb3357d1cf4f9ed56b819d74b629b4e1964f2f
@@ -349,9 +309,6 @@ outputs:
   .github/skills/mols-agent-asset-validator/agents/orchestration.agent.md: sha256:4510040c2657412239ac291f73dd665c5128a483b3166248cb08e25145f25193
   .github/skills/mols-agent-asset-validator/agents/quality.agent.md: sha256:2c0029421dd6b9bb7c0f38a00905d7c4599d5d84babcefe6812f224f696e9f5a
   .github/skills/mols-agent-asset-validator/agents/routing.agent.md: sha256:74a3bb744975cbae551d9bd9fc23127cb27c9e922b2cab878115072b0225c7ff
-  .github/skills/mols-agent-asset-validator/evals/adversarial-evals.json: sha256:88a9609638e73b0b72a5ccff1ed77d1241c4d5bf9c09fae9bbfff9357a20859f
-  .github/skills/mols-agent-asset-validator/evals/behavior-evals.json: sha256:c8645c0506d4eb8b17042a1ed710ffd5c74e7c1f08c2d2d3886764854527b44e
-  .github/skills/mols-agent-asset-validator/evals/trigger-evals.json: sha256:0d110610e93f92b1785c147ba3d53ba5e3d6337ca4b4ce4ec820a53e5494af91
   .github/skills/mols-agent-asset-validator/references/asset-contract.md: sha256:3fa79097c669695a19192bcbe3d8dbe4d49674d4f904194748486229d9593bd6
   .github/skills/mols-agent-asset-validator/references/performance-review.md: sha256:8f52012c3fa813a2bdc0af36efdbb179aa497863b93d54d95bcf6ca4d4e593bd
   .github/skills/mols-agent-asset-validator/references/platform-capabilities.md: sha256:f9f8268ebb93ebc6054d4f26a2a7b6aab580302fc6f4e8e975dc80293aad50a1
@@ -362,7 +319,6 @@ outputs:
   .github/skills/mols-agent-asset-validator/schemas/result.schema.json: sha256:aab6b471197133f638cd17c0969800437cc38eee5cd6eb5453752840d4641a66
   .github/skills/mols-agent-asset-validator/scripts/scan_assets.py: sha256:e9413e615c2bc754be2654c0d426ed6621472c02cf86541521ae3d15903d4db9
   .github/skills/mols-agent-asset-validator/scripts/validate.py: sha256:32cfba668cb14d4b55f723301cb2e2ad1d1f4cc4df505ba194b5adfecb5b10f5
-  .github/skills/mols-agent-asset-validator/tests/test_scan_assets.py: sha256:a4db4fc4693590e6eeeeab8535476e13e4e167a3616efec9c2dfc0296eee745d
   .github/skills/mols-documents-studio/SKILL.md: sha256:38e9ee27b2526c4a68e5e25563aa972ca5411e602c0bc662f236372ca4016493
   .github/skills/mols-documents-studio/README.md: sha256:91156f9c749ecdff5f0f52b1c001dee1660d836d4866cd69b4e37c8379d05238
   .github/skills/mols-documents-studio/references/bluf-principle.md: sha256:98f0239f6263926e632d4130970d633f91ae12ed814f9e0ddecb616c60c6452c
@@ -476,7 +432,6 @@ outputs:
   .github/skills/mols-skill-creator/assets/templates/agents/openai.yaml: sha256:e008531e8d01be8e012d1ac69fa44348a58a7b01276bec8d5b06fc8010a6ec7d
   .github/skills/mols-skill-creator/assets/templates/DIRECTIVE.md: sha256:35b1d95516f1fdbd0522ac130f77606c48d1a37138a40bb5c2cf63649401d67b
   .github/skills/mols-skill-creator/assets/templates/WORKING.md: sha256:1ba47a474fc03351b3fac2fb23265a9da23c92e36f34b27f2f0892590179ba70
-  .github/skills/mols-skill-creator/evals/cases.json: sha256:89e4751b1b2dbd8fbd8d3bd737df2f4a56be7d1f49a43f9b1c0844864ababf42
   .github/skills/mols-skill-creator/references/platform-compatibility.md: sha256:734f8a3dfb57ccb0837511c42ba3d2fc4d4a0b6d86b59223e696af530f2d6d22
   .github/skills/mols-skill-creator/references/quality-model.md: sha256:1d9c7880a93186a5a9c1cd6f222db8a5ff8b25b1729aec057d98cf6e29e909c6
   .github/skills/mols-skill-creator/references/upstream-sources.md: sha256:08164e4c8e3c2e5dc1c1c941d2422dd68fc667878e3e26434984e04a708ebc82
@@ -506,36 +461,18 @@ outputs:
   .github/skills/writing/assets/icon.svg: sha256:49315dda7125ec5fc77ef5f2b96126d8b2121c6e72944b4702972e90f321d3ee
   .github/skills/writing/assets/review-output-template.md: sha256:fb8d94be49bb341a94bb20a4f1e802a6c57c9dd6361d6bc4e413ba38c460b6d7
   .github/skills/writing/assets/writing-brief-template.md: sha256:e080d93c3fb0d6eed6c400d2267f63b06eaa940f1cb34f962390b4b3cb7ea1b1
-  .github/skills/writing/evals/trigger.json: sha256:1b9c07b5da053b1c82a199591299c6edb45773dea96aff21b0e34b5ea4c66ccd
-  .github/skills/writing/README.md: sha256:3d8e7f742bf85fb6b9957628afce0f84c75559c3ffca7e983c3434d4e1fbb838
+  .github/skills/writing/README.md: sha256:678ec9ed7347a5b3cbbc025860c235b9c94563d3905454af46f43356518c62fa
   .github/skills/writing/references/examples.md: sha256:f95f98c1d187e4e245e74b8ec2950567266a0c0025510ae94bd0ab901a0ab6b5
   .github/skills/writing/references/principles.md: sha256:072ff72357ffee8ea8a4b64f99fcc04b4cb2d7b2be24e6e33654fecd0b34d9c7
   .github/skills/writing/references/review-rubric.md: sha256:9929adb3aa69bda402695d1cb7369c30d706a03053162eba9ef5ef7f6417e481
   .github/skills/writing/references/workflows.md: sha256:7b41ad42c6ad325ff3bf272aa88671800d9a2ebd0ed53ffe98a827777f83ab12
-  .github/skills/writing/scripts/validate.py: sha256:bf658f0bbded1a1449c5bab071a1fdb500e257f9404e4ae2ccb064a8b88e450f
-  .agents/skills/artifact-consistency-inspector/SKILL.md: sha256:a07bec271e6fd6fdfa7417c6a307c72e3ee354fa96b8b16efcb49210bfcf0950
-  .agents/skills/artifact-consistency-inspector/README.md: sha256:ea4e7ebfb3392ae9011215fd9c0342ff87ab9ac05970d32c7a8063199b5457b8
+  .github/skills/writing/scripts/validate.py: sha256:d8bab443718c6b3122a2f5baa4bb58c42f3b7dedd71843b96b6bbcd5e575dd9a
+  .agents/skills/artifact-consistency-inspector/SKILL.md: sha256:6e8d09225aa2cd056ecb277884f90f8b3f139c5f20ef9ce4fe1046e206ac3bbe
+  .agents/skills/artifact-consistency-inspector/README.md: sha256:bfdc642a7f26fc060a7f487e8c4beea2615e8ee8acbccee195929532e5ded6fd
   .agents/skills/artifact-consistency-inspector/references/example-report.md: sha256:4f69d06c960b0578c1c5a742a147fe85daf7f9ea2b60cb96d1724798dfff0569
   .agents/skills/artifact-consistency-inspector/references/inspection-rules.md: sha256:d3c5ff15afa2b008cc2f9cf3ea0e65ca03e38af8d34fc56631f8befcc53da2c1
   .agents/skills/artifact-consistency-inspector/references/report-format.md: sha256:cfe7c2a012e71bc8856394ab7d8e733fff1dc2231c9b80d92d9066da98384f01
   .agents/skills/artifact-consistency-inspector/references/rule-sources.md: sha256:b1396941d2e21ba19c3aca12cffc5557cb37abe8745d94e9dfb7915443e80313
-  .agents/skills/artifact-consistency-inspector/tests/README.md: sha256:80209b9d0b2c3653e2fec7399c5ceba44b8a1a729161fa0666d815a05f2130ec
-  .agents/skills/artifact-consistency-inspector/tests/results/artifact-consistency-inspector-test-report-202608042358.md: sha256:d1f9d3d5027715fbbd851cfeaba4d384b8576e35327e901ee5f50b437ff34374
-  .agents/skills/artifact-consistency-inspector/tests/run_tests.py: sha256:125003fc4b126997a3e42536dc86491cb1770db5dcce561fdf1ea297689e0544
-  .agents/skills/artifact-consistency-inspector/tests/scenarios/asymmetric-drift.json: sha256:a3ccf3b4046340a7d9230785cac654fae49c7cd259699f2f600c28a0385bfb0f
-  .agents/skills/artifact-consistency-inspector/tests/scenarios/authoritative-contradiction.json: sha256:dda331cb211f8ed624639cbfa4793e6681d7ee39eea500f8e896ef86133dda4c
-  .agents/skills/artifact-consistency-inspector/tests/scenarios/bounded-no-findings.json: sha256:a74492eb802bf290dd45e6f738740b7ec4085f5ff3c42e361b7ad4bf88b895fd
-  .agents/skills/artifact-consistency-inspector/tests/scenarios/file-anchor-validation-gap.json: sha256:c4d5f63ab51505e63ae332c65b3d08c714fca93e16c144eca5ce1826a996ef42
-  .agents/skills/artifact-consistency-inspector/tests/scenarios/host-agnostic-feature.json: sha256:ba3cc0789c6b909391bb04d081ce4eea9b107d83322b1c665a4be44a231ec472
-  .agents/skills/artifact-consistency-inspector/tests/scenarios/inferred-convention-unresolved.json: sha256:ef79fe18d09d69a888ca0ef6f382b3c35a20ab4a2df6ad9ed9a8025dcd86cff9
-  .agents/skills/artifact-consistency-inspector/tests/scenarios/omission-zero-search-unresolved.json: sha256:bfdad2155c05aecd94f19772c876ad3381145ed4aed81342048ab31f28cf3025
-  .agents/skills/artifact-consistency-inspector/tests/scenarios/pr-revision-mismatch.json: sha256:43fcdd260eb01b7d207fa75ec21ba2f99bc9877cd9d59c5d509c582167cfe181
-  .agents/skills/artifact-consistency-inspector/tests/scenarios/primary-access-blocked.json: sha256:9fd48e4bea986545bbd454fc2f5c133fb120eb5b600913c04fa3bf043bab52c9
-  .agents/skills/artifact-consistency-inspector/tests/scenarios/repository-wide-sampled-no-findings.json: sha256:dcb53d938df6b0ab2950a26e919b11f6b94ca4623fe3a0fccae2b828c8229734
-  .agents/skills/artifact-consistency-inspector/tests/scenarios/rule-sources-auto-deduplicate.json: sha256:60a88944ba34dfbf1d1c8cdbc63560357614b084ce0e1527ba81196d6f4f513d
-  .agents/skills/artifact-consistency-inspector/tests/scenarios/rule-sources-conflict-unresolved.json: sha256:9fd77b49cb80da170e4a512a5d0f6f76e2bb2b4274306d7cef849f42be9ffe77
-  .agents/skills/artifact-consistency-inspector/tests/scenarios/rule-sources-explicit-order.json: sha256:9a24be4ad2ac0064afcf060c5ed839ec94330f328539d0565349f1eace478ddb
-  .agents/skills/artifact-consistency-inspector/tests/scenarios/stale-reference.json: sha256:8b65aca60eea68db3309d5978aa960a9471557981e6b42dd01771accb2584b13
   .agents/skills/caveman-ko/SKILL.md: sha256:f0f3a778d6574a5d4e2f9f3b85e0239aa28f256d8b1a87afbfae9c85f6d020a4
   .agents/skills/caveman-ko/README.md: sha256:b7238cb7de0045996865b8d72552bf3f2b5e680d86233b16bb5f16cc8fac4658
   .agents/skills/clarify-code/SKILL.md: sha256:3f4719c9691447628a8f342788fb3357d1cf4f9ed56b819d74b629b4e1964f2f
@@ -595,9 +532,6 @@ outputs:
   .agents/skills/mols-agent-asset-validator/agents/orchestration.agent.md: sha256:4510040c2657412239ac291f73dd665c5128a483b3166248cb08e25145f25193
   .agents/skills/mols-agent-asset-validator/agents/quality.agent.md: sha256:2c0029421dd6b9bb7c0f38a00905d7c4599d5d84babcefe6812f224f696e9f5a
   .agents/skills/mols-agent-asset-validator/agents/routing.agent.md: sha256:74a3bb744975cbae551d9bd9fc23127cb27c9e922b2cab878115072b0225c7ff
-  .agents/skills/mols-agent-asset-validator/evals/adversarial-evals.json: sha256:88a9609638e73b0b72a5ccff1ed77d1241c4d5bf9c09fae9bbfff9357a20859f
-  .agents/skills/mols-agent-asset-validator/evals/behavior-evals.json: sha256:c8645c0506d4eb8b17042a1ed710ffd5c74e7c1f08c2d2d3886764854527b44e
-  .agents/skills/mols-agent-asset-validator/evals/trigger-evals.json: sha256:0d110610e93f92b1785c147ba3d53ba5e3d6337ca4b4ce4ec820a53e5494af91
   .agents/skills/mols-agent-asset-validator/references/asset-contract.md: sha256:3fa79097c669695a19192bcbe3d8dbe4d49674d4f904194748486229d9593bd6
   .agents/skills/mols-agent-asset-validator/references/performance-review.md: sha256:8f52012c3fa813a2bdc0af36efdbb179aa497863b93d54d95bcf6ca4d4e593bd
   .agents/skills/mols-agent-asset-validator/references/platform-capabilities.md: sha256:f9f8268ebb93ebc6054d4f26a2a7b6aab580302fc6f4e8e975dc80293aad50a1
@@ -608,7 +542,6 @@ outputs:
   .agents/skills/mols-agent-asset-validator/schemas/result.schema.json: sha256:aab6b471197133f638cd17c0969800437cc38eee5cd6eb5453752840d4641a66
   .agents/skills/mols-agent-asset-validator/scripts/scan_assets.py: sha256:e9413e615c2bc754be2654c0d426ed6621472c02cf86541521ae3d15903d4db9
   .agents/skills/mols-agent-asset-validator/scripts/validate.py: sha256:32cfba668cb14d4b55f723301cb2e2ad1d1f4cc4df505ba194b5adfecb5b10f5
-  .agents/skills/mols-agent-asset-validator/tests/test_scan_assets.py: sha256:a4db4fc4693590e6eeeeab8535476e13e4e167a3616efec9c2dfc0296eee745d
   .agents/skills/mols-documents-studio/SKILL.md: sha256:b988a2f9a8e5117a63769f97a0cdcc4c596ba30a9597daa1f627753b5426bc5a
   .agents/skills/mols-documents-studio/README.md: sha256:91156f9c749ecdff5f0f52b1c001dee1660d836d4866cd69b4e37c8379d05238
   .agents/skills/mols-documents-studio/references/bluf-principle.md: sha256:98f0239f6263926e632d4130970d633f91ae12ed814f9e0ddecb616c60c6452c
@@ -722,7 +655,6 @@ outputs:
   .agents/skills/mols-skill-creator/assets/templates/agents/openai.yaml: sha256:e008531e8d01be8e012d1ac69fa44348a58a7b01276bec8d5b06fc8010a6ec7d
   .agents/skills/mols-skill-creator/assets/templates/DIRECTIVE.md: sha256:35b1d95516f1fdbd0522ac130f77606c48d1a37138a40bb5c2cf63649401d67b
   .agents/skills/mols-skill-creator/assets/templates/WORKING.md: sha256:1ba47a474fc03351b3fac2fb23265a9da23c92e36f34b27f2f0892590179ba70
-  .agents/skills/mols-skill-creator/evals/cases.json: sha256:89e4751b1b2dbd8fbd8d3bd737df2f4a56be7d1f49a43f9b1c0844864ababf42
   .agents/skills/mols-skill-creator/references/platform-compatibility.md: sha256:734f8a3dfb57ccb0837511c42ba3d2fc4d4a0b6d86b59223e696af530f2d6d22
   .agents/skills/mols-skill-creator/references/quality-model.md: sha256:1d9c7880a93186a5a9c1cd6f222db8a5ff8b25b1729aec057d98cf6e29e909c6
   .agents/skills/mols-skill-creator/references/upstream-sources.md: sha256:08164e4c8e3c2e5dc1c1c941d2422dd68fc667878e3e26434984e04a708ebc82
@@ -752,10 +684,9 @@ outputs:
   .agents/skills/writing/assets/icon.svg: sha256:49315dda7125ec5fc77ef5f2b96126d8b2121c6e72944b4702972e90f321d3ee
   .agents/skills/writing/assets/review-output-template.md: sha256:fb8d94be49bb341a94bb20a4f1e802a6c57c9dd6361d6bc4e413ba38c460b6d7
   .agents/skills/writing/assets/writing-brief-template.md: sha256:e080d93c3fb0d6eed6c400d2267f63b06eaa940f1cb34f962390b4b3cb7ea1b1
-  .agents/skills/writing/evals/trigger.json: sha256:1b9c07b5da053b1c82a199591299c6edb45773dea96aff21b0e34b5ea4c66ccd
-  .agents/skills/writing/README.md: sha256:10043e7957f75f313c87082339f9bc59a18bbab2d7b77f116ffdd85f33fbdc20
+  .agents/skills/writing/README.md: sha256:e3578b317cd0655c97f7ce152bf9578ddb64bf534605968db70497dd3f8dd494
   .agents/skills/writing/references/examples.md: sha256:f95f98c1d187e4e245e74b8ec2950567266a0c0025510ae94bd0ab901a0ab6b5
   .agents/skills/writing/references/principles.md: sha256:072ff72357ffee8ea8a4b64f99fcc04b4cb2d7b2be24e6e33654fecd0b34d9c7
   .agents/skills/writing/references/review-rubric.md: sha256:9929adb3aa69bda402695d1cb7369c30d706a03053162eba9ef5ef7f6417e481
   .agents/skills/writing/references/workflows.md: sha256:7b41ad42c6ad325ff3bf272aa88671800d9a2ebd0ed53ffe98a827777f83ab12
-  .agents/skills/writing/scripts/validate.py: sha256:bf658f0bbded1a1449c5bab071a1fdb500e257f9404e4ae2ccb064a8b88e450f
+  .agents/skills/writing/scripts/validate.py: sha256:d8bab443718c6b3122a2f5baa4bb58c42f3b7dedd71843b96b6bbcd5e575dd9a
