@@ -31,11 +31,14 @@
     "copilot": {
       "root_rule": ".github/copilot-instructions.md",
       "skills": ".github/skills",
+      "agent_mode": "native",
       "agents": ".github/agents"
     },
     "antigravity": {
       "root_rule": ".agents/rules/general.md",
-      "skills": ".agents/skills"
+      "skills": ".agents/skills",
+      "agent_mode": "embedded-skill",
+      "agent_prefix": "am-agent-"
     }
   },
   "exceptions": [
