@@ -24,6 +24,26 @@ Phase 0 결과, AgentsMesh 대이주는 **착수 가능**하다.
 
 따라서 EXODUS는 **portable Rules/Skills부터 시작하고, Agents와 hosted chatbot profiles는 별도 경계로 취급**한다.
 
+## Legacy-first staging decision
+
+Migration 실행은 정규화보다 먼저 **legacy mirror를 보존**하는 순서로 진행한다.
+
+```text
+src/
+  ↓ exact tree copy
+.agentsmesh/_legacy/src/
+  ↓ asset-by-asset adaptation
+.agentsmesh/{rules,skills,agents,commands}/
+```
+
+- `.agentsmesh/_legacy/src/`는 현재 `src/` tree의 변형 없는 staging snapshot이다.
+- `_legacy/`는 AgentsMesh의 underscore-prefixed exclusion을 이용해 generation 대상에서 제외한다.
+- 기존 `src/`가 cutover 전까지 canonical authority다. `_legacy`는 별도 authority가 아니다.
+- migration 중 asset은 `_legacy`에서 직접 수정하지 않고, 새 canonical surface로 복사·적응하면서 원본과 비교한다.
+- 모든 responsibility가 새 owner 또는 명시적 retirement에 매핑된 뒤 `_legacy/`를 삭제한다.
+
+이 전략은 초기 단계에서 format 정규화와 source 보존을 분리한다. 먼저 구세계를 온전히 보존하고, 이후 AgentsMesh-native form으로 하나씩 승격한다.
+
 ---
 
 # 1. Asset Inventory
@@ -402,155 +422,127 @@ The following invariants must survive EXODUS unless a later phase explicitly cha
 
 - root repository instructions must keep their effective responsibilities until explicitly transferred;
 - branch/PR/test conventions must not disappear because a generated root file overwrites them;
-- `.agents/AGENTS.md` guard behavior must either remain or have an explicit replacement.
+- `.agents/AGENTS.md` remains a no-edit guard until its generated/exception status is resolved.
 
 ## Skills
 
-- `name` and routing-critical `description`;
-- activation and negative boundaries;
-- runtime supporting files;
-- internal relative links;
-- scripts/assets/references required for behavior;
-- package-local tests/evals where they belong;
-- derived index discoverability after path change.
-
-AgentsMesh supporting-file references require target-compatible relative paths. Skill packages with internal links must be checked during migration rather than bulk-copied blindly.
-
-## Rules
-
-- always-on vs scoped intent;
-- globs;
-- target scoping;
-- root instruction precedence;
-- hosted chatbot fallback remains outside the coding-harness projection contract.
+- name and description remain stable unless a behavior change is intentional;
+- runtime supporting files and relative references remain reachable;
+- Skills with executable scripts keep those scripts under deterministic tests;
+- chatbot variants do not become accidental generated copies of coding-harness Skills.
 
 ## Agents
 
-- role and authority;
-- allowed/forbidden mutation behavior;
-- tool restrictions;
-- user invocability;
-- delegation graph;
-- review independence between quality and adversarial reviewers.
+- `review-quality` and `review-adversarial` remain independent;
+- `review-lead` continues to require both independent analyses before synthesis;
+- review Agents do not gain mutation, commit, push, merge or approval authority through translation;
+- capability loss caused by a target limitation is reported explicitly.
 
-`review-lead` is not considered migrated if it merely preserves prose while losing the ability to coordinate the two reviewers.
+## Rules
+
+- repository-wide language policy remains applicable where intended;
+- hosted-chatbot Skill routing continues to resolve its canonical index locations;
+- the repository-local chatbot fallback is not falsely presented as an AgentsMesh standard.
 
 ## Verification
 
-- `uv run pytest` remains the repository correctness gate until deliberately replaced;
-- targeted test selection must continue to select the affected Skill tests after path migration;
-- generated indexes remain derived, deterministic metadata;
-- package-local eval authority is preserved.
+- `uv run pytest` remains the repository correctness gate until intentionally replaced;
+- targeted test selection must continue to map changed canonical Skills to their tests;
+- index generation remains derived from the actual Skill authority path;
+- generated projection success never substitutes for runtime behavioral evidence.
 
 ---
 
-# 9. Risks and Blockers
+# 9. Risk Register
 
-## P1 — Agent canonical mismatch
-
-Current custom Agent front matter contains repository/vendor-specific fields that are not direct AgentsMesh canonical fields.
-
-**Action:** do not move Agents in the first crossing. Build an explicit field/behavior mapping first.
-
-## P1 — Antigravity capability gap
-
-Antigravity project mode currently has no Agents or MCP support in the AgentsMesh matrix.
-
-**Action:** Tier A cutover must be feature-scoped. Rules/Skills can pass while Agents/MCP remain unsupported for Antigravity.
-
-## P1 — Path-coupled CI and index generation
-
-Moving `src/skills/` without first updating CI/index tooling would silently reduce verification and break discovery.
-
-**Action:** treat workflow/generator updates as part of the Skill cutover batch.
-
-## P2 — Rule source is mixed
-
-`src/rules/` contains both portable coding-harness intent and hosted-chatbot-only routing.
-
-**Action:** migrate by asset, not folder.
-
-## P2 — Rulesync authority debt
-
-Rule projection documentation still names Rulesync as the fan-out owner and references an empty canonical-superset document.
-
-**Action:** replace this authority only when AgentsMesh Rule cutover is proven; do not maintain both.
-
-## P2 — Legacy tests/config
-
-Orphan Skill tests and stale `pyproject.toml` paths create false confidence and maintenance noise.
-
-**Action:** resolve before declaring the new verification model clean.
-
-## P2 — Toolchain pin not yet established
-
-The repository is currently Python-oriented and has no established AgentsMesh package pin in this snapshot.
-
-**Action:** Phase 1 must select one exact-version installation strategy without introducing an unnecessary wrapper framework.
-
----
-
-# 10. Phase 0 Gate
-
-| Gate | Result | Evidence / limitation |
+| Severity | Risk | Required response |
 | --- | --- | --- |
-| Asset Inventory | **PASS** | primary source families and counts inventoried |
-| Authority Map | **PASS** | portable, hosted, runtime and derived surfaces separated |
-| Active Target Set | **PASS WITH LIMITS** | Tier A/B provisional until local runtime confirmation |
-| Target × Capability | **PASS** | project-scope matrix recorded; major gaps explicit |
-| Projection Map | **PASS** | existing Rulesync/repository projection responsibilities identified |
-| Validation Map | **PASS** | local hooks, CI, indexes, tests and path coupling identified |
-| Baseline Eval Map | **PASS** | package-local evals found; shared pre-cutover need defined |
-| Preservation Contract | **PASS** | repository/Skill/Rule/Agent/verification invariants recorded |
-| Source Mutation | **PASS** | no canonical asset moved during Phase 0 |
-
-**Phase 0 result: READY WITH LIMITS.**
-
-The limits are known migration work, not blockers to Phase 1.
+| 🔴 P1 | generated root `AGENTS.md` can overwrite repository authority before migration is complete | root authority map and diff gate before enabling root generation |
+| 🔴 P1 | existing Agent front matter is VS Code-specific and cannot be copied mechanically | explicit adaptation; hold `review-lead` until delegation semantics are preserved |
+| 🔴 P1 | Tier A Antigravity does not support project Agents/MCP | do not make those features universal Tier A invariants |
+| 🔴 P1 | CI/index automation is coupled to `src/skills/**` | migrate tooling before Skill authority cutover |
+| 🟠 P2 | Rulesync references remain repository authority during migration | keep until AgentsMesh path is operational, then retire deliberately |
+| 🟠 P2 | stale tests/pythonpath may create false failures or confidence | classify and remove/recover before final verification |
+| 🟠 P2 | target matrix can change with AgentsMesh releases | exact version pin and re-check matrix during upgrades |
+| 🟡 P3 | chatbot-specific Rule remains under generic `src/rules/` | preserve initially; later consider clearer profile without blocking EXODUS |
+| 🟡 P3 | root shared Eval corpus does not exist yet | create only minimum pre-cutover routing/regression cases |
 
 ---
 
-# 11. Phase 1 Work Order
+# 10. Phase 1 Work Order
 
-`Raise the New Capital` begins with the following order:
+Phase 1 should proceed in this order.
 
-1. Verify and pin the exact AgentsMesh version and installation method.
-2. Add `agentsmesh.yaml` with only the provisional Tier A targets and the minimum initial features.
-3. Create `.agentsmesh/rules/_root.md` as a non-authoritative staging source; do not cut root authority yet.
-4. Import or manually map the first Rule candidates.
-5. Run `agentsmesh lint`, `generate`, `diff`, `check`, and `generate --check` against the pinned version.
-6. Record normalization differences.
-7. Establish the minimal shared pre-cutover routing/regression corpus before any source deletion.
-8. Only after those gates pass, begin `The First Crossing` for Rules.
-
-Initial features should stay deliberately narrow. `rules` and `skills` have the strongest cross-target support. Agent/MCP/permission complexity is deferred until its own evidence exists.
+1. **Preserve legacy tree first**
+   - mirror current `src/` exactly under `.agentsmesh/_legacy/src/`;
+   - keep original `src/` as authority;
+   - do not run generation from `_legacy`;
+   - record the source tree SHA and cleanup condition.
+2. **Resolve install contract**
+   - verify current AgentsMesh release/version at implementation time;
+   - choose repository-local exact pin;
+   - record the install command and lock strategy;
+   - do not use implicit `latest`.
+3. **Initialize canonical surface**
+   - introduce `agentsmesh.yaml`;
+   - create canonical `_root.md` only after root responsibility mapping;
+   - keep Lessons, remote packs, plugins and complex hooks disabled.
+4. **Configure target scope**
+   - Tier A: Copilot + Antigravity;
+   - Tier B only when explicitly generated;
+   - enable only needed features.
+5. **Import or stage existing rules**
+   - compare existing native/project rules;
+   - do not bulk-import chatbot-only routing into coding targets;
+   - preserve root authority.
+6. **Run deterministic AgentsMesh baseline**
+   - `lint`;
+   - `generate`;
+   - `diff`;
+   - `check`;
+   - `generate --check`.
+7. **Classify normalization differences**
+   - expected representation change;
+   - semantic loss;
+   - target limitation;
+   - repository bug;
+   - AgentsMesh bug.
+8. **Establish minimum shared Eval baseline**
+   - routing/regression cases for the first Rule/Skill cutover;
+   - no expensive model suite yet.
+9. **Prepare tooling cutover**
+   - update targeted test path mapping;
+   - update Skill index generator/workflow;
+   - resolve stale `pyproject.toml` and orphan tests.
+10. **Only then begin canonical Rule cutover**
+   - start with `language-ko`;
+   - keep chatbot routing separate;
+   - do not delete legacy source until its gate passes.
 
 ---
 
-# References
+# Phase 0 Gate
 
-Repository evidence:
+## PASS
 
-- `AGENTS.md`
-- `README.md`
-- `src/rules/`
-- `src/agents/`
-- `src/skills/INDEX.jsonl`
-- `src/skills-chatbot/INDEX.jsonl`
-- `src/skills-chatbot-runtime/INDEX.jsonl`
-- `src/prompts/`
-- `scripts/generate_skill_indexes.py`
-- `.github/workflows/skill-indexes.yml`
-- `.github/workflows/targeted-tests.yml`
-- `lefthook.yml`
-- `pyproject.toml`
-- `docs/testing.md`
-- `docs/references/rules/agent-assets-rules-projections.md`
-- `docs/references/skills/agent-assets-skills-target-profiles.md`
+- Asset Inventory: complete enough to start migration.
+- Authority Map: current and target ownership identified.
+- Active Target Set: provisional Tier A/B established.
+- Target × Capability Matrix: documented.
+- Projection Map: current responsibilities and exceptions identified.
+- Validation Map: CI/index/tooling coupling identified.
+- Migration Classification: move/adapt/keep/retire assigned.
+- Preservation Contract: established.
 
-External evidence:
+## Deferred to Phase 1/2
 
-- AgentsMesh canonical configuration: <https://samplexbro.github.io/agentsmesh/canonical-config/>
-- AgentsMesh Agents: <https://samplexbro.github.io/agentsmesh/canonical-config/agents/>
-- AgentsMesh supported tools matrix: <https://samplexbro.github.io/agentsmesh/reference/supported-tools/>
-- AgentsMesh existing-project adoption: <https://samplexbro.github.io/agentsmesh/guides/existing-project/>
+- exact AgentsMesh version pin;
+- executable CLI baseline;
+- real target generation diff;
+- shared root `/evals` cases;
+- Agent adaptation proof;
+- orphan verification debt cleanup.
+
+These are not reasons to block EXODUS. They are now explicit work rather than hidden assumptions.
+
+> **The Census is complete. The old world is mapped. The new capital may now be raised.**
