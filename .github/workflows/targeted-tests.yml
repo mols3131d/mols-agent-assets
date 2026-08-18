@@ -66,11 +66,13 @@ jobs:
           add_skill() {
             local name="$1"
             [[ -d "tests/skills/$name" ]] && root_targets["tests/skills/$name"]=1
+            return 0
           }
 
           add_script() {
             local name="$1"
             [[ -d "tests/scripts/$name" ]] && root_targets["tests/scripts/$name"]=1
+            return 0
           }
 
           for path in "${files[@]}"; do
@@ -113,12 +115,11 @@ jobs:
             esac
           done
 
-          ((${#root_targets[@]})) && printf '%s\0' "${!root_targets[@]}" > /tmp/root-tests
-
-          if ((${#root_targets[@]} == 0)); then
-            echo "run=false" >> "$GITHUB_OUTPUT"
-          else
+          if ((${#root_targets[@]})); then
+            printf '%s\0' "${!root_targets[@]}" > /tmp/root-tests
             echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Set up uv
