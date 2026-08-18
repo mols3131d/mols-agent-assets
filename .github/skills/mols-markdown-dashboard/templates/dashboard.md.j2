@@ -1,0 +1,53 @@
+# {{ dashboard.title | markdown_inline }}
+
+> **Snapshot:** {{ dashboard.snapshot | markdown_inline }}
+> **Current Focus:** {{ dashboard.current_focus | markdown_inline }}
+
+## Development Progress
+
+| {{ row_label }} | Implementation Status | Implementation Progress | Verification Status | Verification Progress |
+| --- | :---: | --- | :---: | --- |
+{% for item in dashboard.items %}
+| {{ item.name | markdown_cell }} | {{ item.implementation_status.display }} | `{{ item.implementation_progress | progress_bar }}` | {{ item.verification_status.display }} | `{{ item.verification_progress | progress_bar }}` |
+{% endfor %}
+{% if dashboard.include_total %}
+| **Total** | **{{ total.implementation_status.display }}** | **`{{ total.implementation_progress | progress_bar }}`** | **{{ total.verification_status.display }}** | **`{{ total.verification_progress | progress_bar }}`** |
+{% endif %}
+{% if implementation_gap_rows %}
+
+## Implementation Gaps
+
+| {{ row_label }} | # | Remaining Requirement |
+| --- | :---: | --- |
+{% for row in implementation_gap_rows %}
+| {{ row.name | markdown_cell }} | {{ row.number }} | {{ row.text | markdown_cell }} |
+{% endfor %}
+{% endif %}
+{% if verification_gap_rows %}
+
+## Verification Gaps
+
+| {{ row_label }} | # | Remaining Verification |
+| --- | :---: | --- |
+{% for row in verification_gap_rows %}
+| {{ row.name | markdown_cell }} | {{ row.number }} | {{ row.text | markdown_cell }} |
+{% endfor %}
+{% endif %}
+{% if dashboard.risks %}
+
+## Risks / Blockers
+
+| Area | Risk / Blocker | Impact |
+| --- | --- | --- |
+{% for risk in dashboard.risks %}
+| {{ risk.area | markdown_cell }} | {{ risk.text | markdown_cell }} | {{ risk.impact | markdown_cell }} |
+{% endfor %}
+{% endif %}
+{% if dashboard.references %}
+
+## References
+
+{% for reference in dashboard.references %}
+- {{ reference | markdown_inline }}
+{% endfor %}
+{% endif %}

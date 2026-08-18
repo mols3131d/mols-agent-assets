@@ -1,0 +1,8 @@
+"name","description"
+"create-index","Generate a new index from Markdown YAML frontmatter as CSV, a Markdown table, or a Markdown list."
+"format-markdown","Format markdown files."
+"help","Help guide and usage instructions for the markdown skill."
+"update-index","Regenerate an existing index after Markdown files or frontmatter change, preserving the target project's output path, format, and field conventions."
+"validate-frontmatter","Validate YAML frontmatter keys and values."
+"validate-headers","Validate markdown header hierarchy."
+"validate-links","Validate markdown link fragments and references."
