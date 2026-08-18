@@ -10,6 +10,7 @@ on:
       - "package.json"
       - "package-lock.json"
       - ".github/copilot-instructions.md"
+      - ".github/agents/**"
       - ".github/skills/**"
       - ".agents/rules/**"
       - ".agents/skills/**"
@@ -51,6 +52,7 @@ jobs:
           mkdir -p "$tmp/.github"
           cp "$root/agentsmesh.yaml" "$tmp/agentsmesh.yaml"
           cp "$root/.github/copilot-instructions.md" "$tmp/.github/copilot-instructions.md"
+          cp -R "$root/.github/agents" "$tmp/.github/agents"
           cp -R "$root/.github/skills" "$tmp/.github/skills"
           (
             cd "$tmp"
@@ -58,6 +60,7 @@ jobs:
             "$root/node_modules/.bin/agentsmesh" generate
           )
           diff -u "$root/.github/copilot-instructions.md" "$tmp/.github/copilot-instructions.md"
+          diff -ru "$root/.github/agents" "$tmp/.github/agents"
           diff -ru "$root/.github/skills" "$tmp/.github/skills"
       - name: Verify Antigravity round trip
         shell: bash
