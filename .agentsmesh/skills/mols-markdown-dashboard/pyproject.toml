@@ -23,7 +23,6 @@ package = false
 [tool.pytest.ini_options]
 addopts = "-q"
 pythonpath = ["src"]
-testpaths = ["tests"]
 
 [tool.ruff]
 target-version = "py311"
@@ -39,7 +38,7 @@ indent-style = "space"
 line-ending = "lf"
 
 [tool.ty.src]
-include = ["src", "scripts", "tests"]
+include = ["src", "scripts"]
 
 [tool.ty.environment]
 root = ["./src"]

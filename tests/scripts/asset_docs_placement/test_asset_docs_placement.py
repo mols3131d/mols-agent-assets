@@ -44,6 +44,7 @@ def test_skill_verification_assets_live_outside_packages() -> None:
         ROOT / "tests/skills/artifact-consistency-inspector/test_contract.py",
         ROOT / "tests/skills/artifact-consistency-inspector/scenarios",
         ROOT / "tests/skills/mols-agent-asset-validator/test_scan_assets.py",
+        ROOT / "tests/skills/mols-markdown-dashboard/test_render.py",
         ROOT / "tests/skills/writing/test_trigger_evals.py",
         ROOT / "evals/skills/mols-agent-asset-validator",
         ROOT / "evals/skills/mols-skill-creator/cases.json",

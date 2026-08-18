@@ -5,11 +5,16 @@ from pathlib import Path
 from mols_dashboard.loader import load_dashboard
 from mols_dashboard.render import render_dashboard
 
-ROOT = Path(__file__).resolve().parents[1]
+SKILL_ROOT = (
+    Path(__file__).resolve().parents[3]
+    / ".agentsmesh"
+    / "skills"
+    / "mols-markdown-dashboard"
+)
 
 
 def test_domain_example_renders_core_tables_and_resets_gap_numbers() -> None:
-    dashboard = load_dashboard(ROOT / "examples/domain-dashboard.yml")
+    dashboard = load_dashboard(SKILL_ROOT / "examples/domain-dashboard.yml")
     markdown = render_dashboard(dashboard)
 
     assert "| Capability | Implementation Status" in markdown
@@ -21,7 +26,7 @@ def test_domain_example_renders_core_tables_and_resets_gap_numbers() -> None:
 
 
 def test_project_example_uses_domain_row_label() -> None:
-    dashboard = load_dashboard(ROOT / "examples/project-dashboard.yml")
+    dashboard = load_dashboard(SKILL_ROOT / "examples/project-dashboard.yml")
     markdown = render_dashboard(dashboard)
 
     assert "| Domain | Implementation Status" in markdown
@@ -65,7 +70,7 @@ items:
 
 
 def test_empty_optional_sections_are_omitted() -> None:
-    dashboard = load_dashboard(ROOT / "examples/project-dashboard.yml")
+    dashboard = load_dashboard(SKILL_ROOT / "examples/project-dashboard.yml")
     markdown = render_dashboard(dashboard)
 
     assert "## Risks / Blockers" not in markdown

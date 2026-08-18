@@ -9,7 +9,12 @@ import pytest
 
 from mols_dashboard.cli import main
 
-ROOT = Path(__file__).resolve().parents[1]
+SKILL_ROOT = (
+    Path(__file__).resolve().parents[3]
+    / ".agentsmesh"
+    / "skills"
+    / "mols-markdown-dashboard"
+)
 
 
 def heading_events(markdown: str) -> Iterator[dict[str, object]]:
@@ -34,7 +39,7 @@ def test_render_cli_checks_markdown_and_writes_atomically(
     result = main(
         [
             "render",
-            str(ROOT / "examples/domain-dashboard.yml"),
+            str(SKILL_ROOT / "examples/domain-dashboard.yml"),
             "-o",
             str(output),
         ]
@@ -54,7 +59,7 @@ def test_render_cli_supports_stdout(
     result = main(
         [
             "render",
-            str(ROOT / "examples/project-dashboard.yml"),
+            str(SKILL_ROOT / "examples/project-dashboard.yml"),
             "-o",
             "-",
         ]
