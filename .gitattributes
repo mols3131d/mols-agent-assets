@@ -7,5 +7,3 @@
 # Derived repository metadata
 .agentsmesh/.lock linguist-generated
 .agentsmesh/skills/INDEX.jsonl linguist-generated
-src/skills-chatbot/INDEX.jsonl linguist-generated
-src/skills-chatbot-runtime/INDEX.jsonl linguist-generated

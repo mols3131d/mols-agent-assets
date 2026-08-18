@@ -22,14 +22,6 @@ TARGETS = {
         "*/SKILL.md",
         ".agentsmesh/skills/{name}/SKILL.md",
     ),
-    ROOT / "src/skills-chatbot": (
-        "*.skill.md",
-        "src/skills-chatbot/{name}.skill.md",
-    ),
-    ROOT / "src/skills-chatbot-runtime": (
-        "*/SKILL.md",
-        "src/skills-chatbot-runtime/{name}/SKILL.md",
-    ),
 }
 
 

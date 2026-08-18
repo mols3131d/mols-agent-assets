@@ -7,9 +7,9 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-RUNTIME_SKILLS = ROOT / "src" / "skills-chatbot-runtime"
-CREATOR = RUNTIME_SKILLS / "mols-skill-creator"
-INSPECTOR = RUNTIME_SKILLS / "artifact-consistency-inspector"
+SKILLS = ROOT / ".agentsmesh" / "skills"
+CREATOR = SKILLS / "mols-skill-creator"
+INSPECTOR = SKILLS / "artifact-consistency-inspector"
 TARGETED_TESTS = ROOT / ".github" / "workflows" / "targeted-tests.yml"
 
 
@@ -30,10 +30,8 @@ def run_package(skill: Path, output: Path) -> Path:
     return output / f"{skill.name}.zip"
 
 
-def test_runtime_packages_do_not_keep_legacy_docs() -> None:
-    legacy = sorted(
-        path for path in RUNTIME_SKILLS.rglob(".docs") if path.is_dir()
-    )
+def test_skill_packages_do_not_keep_legacy_docs() -> None:
+    legacy = sorted(path for path in SKILLS.rglob(".docs") if path.is_dir())
     assert legacy == []
 
 
@@ -172,9 +170,10 @@ def test_creator_packager_does_not_treat_every_dot_dir_as_non_runtime(
 
 def test_targeted_workflow_routes_asset_doc_contract_changes() -> None:
     workflow = TARGETED_TESTS.read_text(encoding="utf-8")
-    assert '"src/skills-chatbot-runtime/**"' in workflow
+    assert '".agentsmesh/skills/**"' in workflow
     assert '"docs/skills/**"' in workflow
-    assert "src/skills-chatbot-runtime/*|docs/skills/*" in workflow
+    assert ".agentsmesh/skills/*)" in workflow
+    assert "add_asset_docs" in workflow
     assert ".github/workflows/targeted-tests.yml)" in workflow
     assert 'root_targets["tests/scripts/asset_docs_placement"]=1' in workflow
 
