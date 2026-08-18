@@ -1,7 +1,7 @@
 # Auto-generated. DO NOT EDIT MANUALLY.
 # Tracks the state of all config files for team conflict resolution.
 
-generated_at: 2026-08-18T19:13:24.571Z
+generated_at: 2026-08-18T19:15:55.217Z
 generated_by: unknown
 lib_version: 0.32.0
 checksums:
@@ -244,13 +244,13 @@ checksums:
   skills/vcs-git-commit/references/--help.ko.md: sha256:573953ce9a883d0c6e3940ad4dd152a67914f537b3d21ef992073bff0d620110
   skills/vcs-git-commit/references/--help.md: sha256:ebf9b34b4d42978b9a828f33fe1be4736518d31b390e2a0caeb221b98c7171f5
   skills/vcs-git-commit/references/default-gitmessage.md: sha256:d18e83dba5fc11a93afd313e757f7533908a8c4f351da84a866fc7bc649f2dd2
-  skills/writing/.evals/trigger.json: sha256:1b9c07b5da053b1c82a199591299c6edb45773dea96aff21b0e34b5ea4c66ccd
   skills/writing/README.md: sha256:32672f669a2d51c34ca1c8e3bdfe11d01dc8b4aa00b6b8b8d623d69602e78753
   skills/writing/SKILL.md: sha256:534c4f1c929171a5d0c3cf038a30833d259044ea5b80cd27ffbc4ad6072ea7a6
   skills/writing/agents/openai.yaml: sha256:be4c0e323a49b6d34fda327827199e1e0363dfa0f27512ce96a8d5a833c62f1a
   skills/writing/assets/icon.svg: sha256:49315dda7125ec5fc77ef5f2b96126d8b2121c6e72944b4702972e90f321d3ee
   skills/writing/assets/review-output-template.md: sha256:fb8d94be49bb341a94bb20a4f1e802a6c57c9dd6361d6bc4e413ba38c460b6d7
   skills/writing/assets/writing-brief-template.md: sha256:e080d93c3fb0d6eed6c400d2267f63b06eaa940f1cb34f962390b4b3cb7ea1b1
+  skills/writing/evals/trigger.json: sha256:1b9c07b5da053b1c82a199591299c6edb45773dea96aff21b0e34b5ea4c66ccd
   skills/writing/references/examples.md: sha256:f95f98c1d187e4e245e74b8ec2950567266a0c0025510ae94bd0ab901a0ab6b5
   skills/writing/references/principles.md: sha256:072ff72357ffee8ea8a4b64f99fcc04b4cb2d7b2be24e6e33654fecd0b34d9c7
   skills/writing/references/review-rubric.md: sha256:9929adb3aa69bda402695d1cb7369c30d706a03053162eba9ef5ef7f6417e481
@@ -502,11 +502,11 @@ outputs:
   .github/skills/vcs-git-commit/references/--help.md: sha256:ebf9b34b4d42978b9a828f33fe1be4736518d31b390e2a0caeb221b98c7171f5
   .github/skills/vcs-git-commit/references/default-gitmessage.md: sha256:d18e83dba5fc11a93afd313e757f7533908a8c4f351da84a866fc7bc649f2dd2
   .github/skills/writing/SKILL.md: sha256:4c2d9bcf9daefc9cf812dab2a552d96d48ea2239820a73970f516acf3e8c2f93
-  .github/skills/writing/.evals/trigger.json: sha256:1b9c07b5da053b1c82a199591299c6edb45773dea96aff21b0e34b5ea4c66ccd
   .github/skills/writing/agents/openai.yaml: sha256:be4c0e323a49b6d34fda327827199e1e0363dfa0f27512ce96a8d5a833c62f1a
   .github/skills/writing/assets/icon.svg: sha256:49315dda7125ec5fc77ef5f2b96126d8b2121c6e72944b4702972e90f321d3ee
   .github/skills/writing/assets/review-output-template.md: sha256:fb8d94be49bb341a94bb20a4f1e802a6c57c9dd6361d6bc4e413ba38c460b6d7
   .github/skills/writing/assets/writing-brief-template.md: sha256:e080d93c3fb0d6eed6c400d2267f63b06eaa940f1cb34f962390b4b3cb7ea1b1
+  .github/skills/writing/evals/trigger.json: sha256:1b9c07b5da053b1c82a199591299c6edb45773dea96aff21b0e34b5ea4c66ccd
   .github/skills/writing/README.md: sha256:3d8e7f742bf85fb6b9957628afce0f84c75559c3ffca7e983c3434d4e1fbb838
   .github/skills/writing/references/examples.md: sha256:f95f98c1d187e4e245e74b8ec2950567266a0c0025510ae94bd0ab901a0ab6b5
   .github/skills/writing/references/principles.md: sha256:072ff72357ffee8ea8a4b64f99fcc04b4cb2d7b2be24e6e33654fecd0b34d9c7
@@ -748,11 +748,11 @@ outputs:
   .agents/skills/vcs-git-commit/references/--help.md: sha256:ebf9b34b4d42978b9a828f33fe1be4736518d31b390e2a0caeb221b98c7171f5
   .agents/skills/vcs-git-commit/references/default-gitmessage.md: sha256:d18e83dba5fc11a93afd313e757f7533908a8c4f351da84a866fc7bc649f2dd2
   .agents/skills/writing/SKILL.md: sha256:4c2d9bcf9daefc9cf812dab2a552d96d48ea2239820a73970f516acf3e8c2f93
-  .agents/skills/writing/.evals/trigger.json: sha256:1b9c07b5da053b1c82a199591299c6edb45773dea96aff21b0e34b5ea4c66ccd
   .agents/skills/writing/agents/openai.yaml: sha256:be4c0e323a49b6d34fda327827199e1e0363dfa0f27512ce96a8d5a833c62f1a
   .agents/skills/writing/assets/icon.svg: sha256:49315dda7125ec5fc77ef5f2b96126d8b2121c6e72944b4702972e90f321d3ee
   .agents/skills/writing/assets/review-output-template.md: sha256:fb8d94be49bb341a94bb20a4f1e802a6c57c9dd6361d6bc4e413ba38c460b6d7
   .agents/skills/writing/assets/writing-brief-template.md: sha256:e080d93c3fb0d6eed6c400d2267f63b06eaa940f1cb34f962390b4b3cb7ea1b1
+  .agents/skills/writing/evals/trigger.json: sha256:1b9c07b5da053b1c82a199591299c6edb45773dea96aff21b0e34b5ea4c66ccd
   .agents/skills/writing/README.md: sha256:10043e7957f75f313c87082339f9bc59a18bbab2d7b77f116ffdd85f33fbdc20
   .agents/skills/writing/references/examples.md: sha256:f95f98c1d187e4e245e74b8ec2950567266a0c0025510ae94bd0ab901a0ab6b5
   .agents/skills/writing/references/principles.md: sha256:072ff72357ffee8ea8a4b64f99fcc04b4cb2d7b2be24e6e33654fecd0b34d9c7
