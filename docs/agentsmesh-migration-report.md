@@ -1,98 +1,65 @@
----
-title: Project EXODUS 완료 보고서
-description: mols-agent-assets의 portable coding-agent 자산을 AgentsMesh canonical source와 검증 가능한 target projection으로 이전한 결과 보고서
----
-
 # Project EXODUS 완료 보고서
 
-> **Status:** COMPLETE  
-> **Gate:** PASS  
-> **Migration branch:** `agent/refactor/agentsmesh-migration`  
-> **Implementation PR:** #40  
-> **AgentsMesh:** `0.32.0`
+## 상태
 
-## 결론
+**Repository / harness migration: COMPLETE**  
+**Post-migration hardening: COMPLETE**  
+**Finalize gate: PASS**
 
-Project EXODUS의 **repository / harness migration은 완료**됐다.
+Project EXODUS는 portable coding-agent Rule과 Skill의 canonical authority를 legacy `src/` workspace에서 AgentsMesh로 이전하고, hosted-chatbot 및 target-specific 예외를 명시적으로 보존했다.
 
-portable coding-agent Rule과 Skill의 source authority는 `src/`에서 `.agentsmesh/`로 이전됐고, GitHub Copilot과 Antigravity target projection은 실제 pinned AgentsMesh CLI로 생성·검증된다.
-
-```text
-.agentsmesh/
-  ↓ AgentsMesh 0.32.0
-  ├─ GitHub Copilot
-  └─ Antigravity
-```
-
-저장소는 더 이상 이 두 harness의 Rule/Skill 배치 형식을 독립적으로 소유하지 않는다. AgentsMesh가 canonical representation, generation, drift와 round-trip projection을 담당한다. 저장소는 Agent Asset semantics, repository tests와 eval contract를 계속 소유한다.
-
-이번 완료 판정은 **LLM runtime behavior parity를 주장하지 않는다.** 실제 모델 trigger quality, task success, model judgment와 production trace는 별도 runtime eval 영역이다.
+후속 심층 RPWR 검증에서는 초기 완료 상태가 AgentsMesh 자체의 round-trip에는 일관됐지만 repository-local package-surface contract를 완전히 검증하지 못했다는 사실을 발견했다. 해당 finding을 수정하고 재검증한 현재 상태를 최종 완료 상태로 본다.
 
 # 최종 Authority
 
-| Surface | Authority |
-| --- | --- |
-| `.agentsmesh/rules/` | portable coding-agent Rule canonical source |
-| `.agentsmesh/skills/` | portable coding-agent Skill canonical source |
-| `agentsmesh.yaml` | active target / feature selection |
-| `.github/copilot-instructions.md`, `.github/skills/` | generated Copilot projection |
-| `.agents/rules/`, `.agents/skills/` | generated Antigravity projection |
-| `src/agents/` | target-specific Agent exception |
-| `src/skills-chatbot/` | flat hosted-chatbot Skill source |
-| `src/skills-chatbot-runtime/` | runtime hosted-chatbot Skill source |
-| `src/prompts/` | Prompt source |
-| `src/rules/chatbot-repo-skill-routing.md` | hosted-chatbot-specific Rule source |
-| `evals/` | cross-asset evaluation contracts |
-| `tests/` | executable repository verification |
+```text
+.agentsmesh/rules/   → portable coding-agent Rule canonical source
+.agentsmesh/skills/  → portable coding-agent Skill deployable canonical source
+agentsmesh.yaml      → active target / feature selection
 
-Generated target files는 source가 아니다. 수정은 `.agentsmesh/`에서 시작한다.
+docs/skills/<skill>/ → maintainer-only guide / baseline / decision / recovery
+```
 
-# 이주된 자산
+Active Tier A target은 GitHub Copilot과 Antigravity이며, AgentsMesh가 관리하는 active feature는 Rules와 Skills다.
 
-## Rules
+`agentsmesh`는 repository `package.json` / `package-lock.json`에서 정확히 `0.32.0`으로 고정한다. `agentsmesh.yaml`의 YAML schema도 같은 0.32.0 release commit `ac8e24449c34f19925721dc60a0d902f5217b1e3`에 pin한다.
 
-repository-wide contract와 기존 global Korean-language policy를 `.agentsmesh/rules/_root.md` 하나로 통합했다.
+# 이주 범위
 
-별도 `language-ko` additional Rule은 Copilot에서 global Rule semantics를 보존하지 못해 제거했다. 이는 단순 정리가 아니라 실제 `agentsmesh lint`가 발견한 projection fidelity 문제를 수정한 결과다.
+## Portable Rules와 Skills
 
-## Skills
+- portable Skill 11개를 `.agentsmesh/skills/`에서 관리한다.
+- repository-wide Rule contract는 `.agentsmesh/rules/_root.md`가 소유한다.
+- global Korean language policy는 root Rule에 포함한다.
+- Skill index authority는 `.agentsmesh/skills/INDEX.jsonl`이다.
 
-다음 11개 portable Skill을 `.agentsmesh/skills/`로 이전했다.
+## Generated targets
 
-- `caveman-ko`
-- `clarify-code`
-- `mols-agent-asset-studio`
-- `mols-documents-studio`
-- `mols-markdown-dashboard`
-- `mols-markdown-for-human`
-- `mols-markdown-scripts`
-- `mols-mermaid-chart`
-- `mols-mermaid-diagram`
-- `mols-rule-dry`
-- `vcs-git-commit`
+AgentsMesh가 다음 target projection을 생성한다.
 
-Skill discovery index도 `.agentsmesh/skills/INDEX.jsonl`을 portable source index로 사용하도록 이전했다.
+```text
+Copilot
+├─ .github/copilot-instructions.md
+└─ .github/skills/
+
+Antigravity
+├─ .agents/rules/
+└─ .agents/skills/
+```
+
+Generated projection과 `.agentsmesh/.lock`은 source authority가 아니다. `.gitattributes`에서 `linguist-generated`로 표시해 GitHub review에서는 canonical change를 우선적으로 볼 수 있게 한다.
 
 # 명시적 예외
 
-EXODUS는 directory 통일 자체를 목표로 하지 않았다. AgentsMesh가 의미를 자연스럽게 보존하지 못하는 자산은 억지로 옮기지 않았다.
-
-## Target-specific Agents
-
-`src/agents/`는 유지한다.
-
-현재 active target인 Copilot과 Antigravity는 project Agent capability가 동등하지 않으며, 기존 review Agent는 VS Code-specific tool identifiers와 delegation semantics를 가진다. 특히 `review-lead`의 reviewer delegation을 삭제하거나 가짜 portability로 바꾸지 않았다.
-
-## Hosted chatbot profiles
-
 다음은 AgentsMesh coding-target contract 밖에 남는다.
 
+- `src/agents/`
 - `src/skills-chatbot/`
 - `src/skills-chatbot-runtime/`
 - `src/prompts/`
 - `src/rules/chatbot-repo-skill-routing.md`
 
-portable Skill을 참조하는 chatbot routing과 Mermaid Skill의 canonical repository link는 새 `.agentsmesh/skills/` authority를 가리키도록 갱신했다.
+`src/agents/`의 review Agents는 VS Code-specific tool identifier와 delegation semantics를 가지며 Antigravity가 동등한 project Agent capability를 제공하지 않으므로 가짜 portability로 바꾸지 않았다.
 
 # 퇴역한 구세계
 
@@ -100,21 +67,80 @@ portable Skill을 참조하는 chatbot routing과 Mermaid Skill의 canonical rep
 
 - `src/skills/`
 - `src/rules/language-ko.md`
-- `src/skills/rulesync-agent-assets/`
-- `tests/skills/rulesync-agent-assets/`
-- orphan `tests/skills/iceberg-code-review/`
-- orphan `tests/skills/mols-kanban-markdown/`
-- migration-only `.agentsmesh/_legacy/`
-- stale `pyproject.toml` `iceberg-code-*` Python paths
+- `rulesync-agent-assets`
+- Rulesync root test scope
+- orphan `iceberg-code-review` / `mols-kanban-markdown` test scope
+- stale `iceberg-code-*` Python path
+- `.agentsmesh/_legacy/`
 - migration-only write-back workflow
 
-초기에는 `src/` 전체를 `.agentsmesh/_legacy/src/`에 동일 Git tree로 보존한 뒤, 책임 매핑과 cutover가 끝난 후 삭제했다. Git history가 최종 rollback point다.
+Git history가 rollback point다.
+
+# Post-EXODUS 심층 검증과 Hardening
+
+## Finding 1 — Maintainer surface가 target package에 배포됨
+
+심층 검증에서 `.agentsmesh/skills/` 아래의 `.docs/`가 Copilot과 Antigravity projection에 그대로 포함되는 것을 발견했다.
+
+Repository target-profile contract는 dot-prefixed maintainer directory를 non-runtime surface로 정의했지만 AgentsMesh `0.32.0`은 Skill supporting file을 재귀 수집하며 `.git`, `node_modules`, `.DS_Store`와 일부 boilerplate 외의 임의 `.docs`를 제외하지 않는다.
+
+따라서 기존 round-trip 성공은 잘못된 package surface까지 충실하게 왕복시킨 self-consistency evidence였고, repository-local package fidelity 자체를 증명하지는 못했다.
+
+### 해결
+
+AgentsMesh-managed portable Skill은 이제 deployable canonical subtree와 maintainer surface를 분리한다.
+
+```text
+.agentsmesh/skills/<skill>/  → target에 실제 배포 가능한 파일만
+docs/skills/<skill>/         → maintainer guide / baseline / decisions
+```
+
+다음 maintainer 문서를 byte-preserving move 또는 placement-only 수정으로 외부화했다.
+
+- clarify-code baseline decisions
+- mols-documents-studio baseline decisions
+- mols-markdown-scripts baseline decisions
+- mols-markdown-dashboard architecture / maintenance / review history / baseline directive
+
+Dashboard package-local `tests/`는 별도로 재검토했다. 해당 Skill의 durable baseline이 self-contained quality gate와 pytest를 distributable package contract의 일부로 명시하고 있으므로 이번 hardening에서는 유지했다.
+
+## Finding 2 — package-surface regression 부재
+
+기존 EXODUS regression은 canonical Skill 목록과 projection coverage는 검증했지만 supporting file의 deployability를 검사하지 않았다.
+
+### 해결
+
+`evals/regression/agentsmesh-exodus.json`에 package-surface contract를 추가하고 `tests/test_agentsmesh_exodus.py`가 canonical과 모든 active projection을 재귀 검사한다.
+
+현재 contract는 deployable Skill subtree의 dot-prefixed path를 금지한다. `.docs`, `.gitignore` 같은 non-runtime hidden surface가 다시 들어오면 generation이나 round-trip이 성공해도 repository test가 실패한다.
+
+## Finding 3 — schema provenance drift
+
+CLI/package는 `agentsmesh@0.32.0`에 pin돼 있었지만 YAML language-server schema는 moving `master`를 가리켰다.
+
+### 해결
+
+schema URL을 upstream 0.32.0 release commit에 pin해 runtime toolchain과 authoring schema provenance를 같은 revision에 묶었다.
+
+## Finding 4 — read-only workflow credential persistence
+
+Permanent AgentsMesh verification workflow는 `contents: read`였지만 checkout credential persistence를 명시적으로 끄지 않았다.
+
+### 해결
+
+`actions/checkout`에 `persist-credentials: false`를 설정했다. Migration refresh에만 사용한 temporary write workflow는 generated state 재생성 직후 제거했다.
+
+## Finding 5 — generated diff review noise
+
+Canonical + Copilot + Antigravity projection을 같은 PR에 보존하기 때문에 generated file이 review surface 대부분을 차지했다.
+
+### 해결
+
+`.gitattributes`의 `linguist-generated`를 사용해 generated projection, AgentsMesh lock과 derived Skill indexes를 GitHub diff에서 기본적으로 접히게 했다. Generated artifact를 삭제하거나 authority로 승격한 것은 아니다.
 
 # 검증 체계
 
-## AgentsMesh gate
-
-영구 PR gate는 pinned `agentsmesh@0.32.0`으로 다음을 실행한다.
+Permanent AgentsMesh PR gate는 pinned `agentsmesh@0.32.0`으로 다음을 실행한다.
 
 ```text
 npm ci
@@ -130,83 +156,19 @@ Copilot import → generate → diff
 Antigravity import → generate → diff
 ```
 
-최종 Finalize run에서 전 단계가 성공했다.
-
-특히 round-trip gate는 generated target output을 임시 repository에 복사한 뒤 `agentsmesh import --from <target>`으로 canonical configuration을 재구성하고 다시 generate하여 원본 target output과 비교한다.
-
-## Repository regression
-
-`evals/regression/agentsmesh-exodus.json`이 migration topology와 authority contract를 기록하고, `tests/test_agentsmesh_exodus.py`가 다음을 deterministic하게 검증한다.
+Repository targeted test는 EXODUS regression을 포함해 다음을 검증한다.
 
 - active target / feature set
 - canonical Rule과 Skill 목록
 - target projection coverage
+- deployable Skill package surface
 - explicit exception 존재
 - retired legacy surface 부재
 - pinned AgentsMesh version과 generated lock version 일치
 
-`targeted-tests.yml`은 AgentsMesh canonical/output/config 변화가 이 EXODUS regression test를 실제로 선택하도록 연결됐다.
+이 검증은 구조·projection·drift·regeneration·round-trip·repository package contract를 증명한다. 실제 LLM trigger quality, task success, behavior parity, trace와 score는 증명하지 않는다.
 
-최종 Targeted PR Tests도 성공했다.
-
-# 실제로 깨진 것과 수정한 것
-
-EXODUS는 단순 파일 이동으로 끝나지 않았다. 실제 generator/importer를 돌리면서 두 개의 concrete fidelity issue를 발견했다.
-
-## 1. Global language Rule의 Copilot projection gap
-
-초기 `language-ko.md`는 non-root additional Rule이었고 glob이 없었다.
-
-AgentsMesh lint는 Copilot에서 이런 Rule이 생성되지 않는다고 경고했다. 따라서 global language preference를 `_root.md`로 옮겨 두 Tier A target 모두에서 실제 적용 가능한 repository-wide contract로 만들었다.
-
-## 2. Skill-local `.gitignore` round-trip gap
-
-첫 Copilot round-trip에서 164개 파일이 정상 import됐지만 `mols-markdown-dashboard/.gitignore` 하나가 importer를 통과하지 않았다.
-
-해당 파일은 `.venv`, cache, `__pycache__`를 무시하는 maintainer convenience였고 runtime Skill contract가 아니었다. 별도 workaround나 adapter를 만들지 않고 canonical Skill에서 제거했다.
-
-수정 후 Copilot과 Antigravity round-trip 모두 성공했다.
-
-# Tooling Cutover
-
-다음 repository tooling도 새 authority를 따르도록 변경했다.
-
-- `scripts/generate_skill_indexes.py`
-- Skill index generator tests
-- `.github/workflows/skill-indexes.yml`
-- `.github/workflows/targeted-tests.yml`
-- `pyproject.toml`
-- `mols-agent-asset-studio` repository tests
-- root / source / development / testing / Rule projection documentation
-
-따라서 `.agentsmesh/skills/`는 단순 보관 위치가 아니라 실제 discovery, CI와 verification이 따라가는 canonical source다.
-
-# RPWR 실행 기록
-
-## Prepare
-
-- **P1:** repository authority, migration PR, RPWR/Agent Asset/GitHub rules를 재확인하고 migration 가능 상태를 판정했다.
-- **P2:** AgentsMesh `0.32.0`, schema v1과 target implementation을 확인하고 local network 제약 때문에 실제 CLI evidence는 GitHub Actions에서 확보하도록 결정했다.
-
-## Improve
-
-- **I1:** Copilot + Antigravity를 Tier A로 고정하고 공통 Native 영역인 Rules + Skills부터 이주했다.
-- **I2:** `.agentsmesh/` canonical source와 exact dependency pin을 만들고 index/test/import path를 새 authority로 이전했다.
-- **I3:** 실제 AgentsMesh generation을 실행해 두 target projection과 `.lock`을 생성했다.
-- **I4:** README, AGENTS, development/testing/reference 문서 authority를 cutover했다.
-- **I5:** EXODUS deterministic regression contract와 executable pytest를 만들었다.
-- **I6:** old portable source, Rulesync와 orphan verification debt를 제거했다.
-- **I7:** legacy staging을 제거하고 target-specific Agent exception을 명시했다.
-- **I8:** 실제 lint/round-trip에서 발견된 global Rule projection gap과 Skill `.gitignore` importer gap을 수정하고 재검증했다.
-
-## Finalize
-
-- **F1:** generator/drift 검증 후 round-trip을 추가하면서 concrete failure를 발견해 `RETRY`했다.
-- **F2:** failure를 canonical source에서 해결한 뒤 `lint`, `check`, `generate --check`, Copilot round-trip, Antigravity round-trip, targeted repository tests를 모두 통과해 **PASS**했다.
-
-# 완료 상태
-
-이제 portable coding-agent 자산의 기본 작업 흐름은 다음 하나다.
+# 최종 작업 흐름
 
 ```text
 edit .agentsmesh/
@@ -217,7 +179,24 @@ edit .agentsmesh/
   → commit canonical + generated outputs
 ```
 
-다음 단계인 Langfuse 또는 다른 eval/observability platform 도입은 **EXODUS 완료 조건이 아니다.** 그것은 runtime behavior, experiment, trace와 score를 다루는 별도 후속 capability다.
+Maintainer-only portable Skill 문서는 `docs/skills/<skill>/`에서 관리하고 target package에 포함시키지 않는다.
 
-> **Harness engineering은 AgentsMesh에게 넘어갔다.**  
-> **이 저장소는 Agent Asset의 의미와 품질을 개발한다.**
+# RPWR 기록
+
+## Initial EXODUS
+
+- Prepare: 2 loops
+- Improve: 8 loops
+- Finalize: 2 loops
+- 첫 Finalize에서 round-trip finding으로 retry
+- 두 번째 Finalize에서 PASS
+
+## Post-EXODUS deep hardening
+
+세 캠페인으로 수행했다.
+
+1. **Validation** — authority, upstream parser behavior, generated package surface, CI, round-trip, reproducibility와 완료 주장을 재검증했다. 초기 verdict는 `Revise`였다.
+2. **Improvement Research** — wrapper/plugin 없이 package placement, regression, provenance, CI hardening과 reviewability를 강화하는 최소 설계를 선택했다.
+3. **Development** — maintainer surface 외부화, regression 강화, schema pin, checkout hardening, generated diff metadata를 구현하고 pinned generator로 target output과 lock을 재생성했다.
+
+최종 permanent gate가 모두 통과해야 이 보고서의 `PASS`를 유효한 완료 상태로 취급한다.
