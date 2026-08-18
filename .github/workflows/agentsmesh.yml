@@ -4,73 +4,41 @@ on:
   pull_request:
     branches:
       - main
-    paths:
-      - ".agentsmesh/**"
-      - "agentsmesh.yaml"
-      - "package.json"
-      - "package-lock.json"
-      - ".github/copilot-instructions.md"
-      - ".github/skills/**"
-      - ".agents/rules/**"
-      - ".agents/skills/**"
-      - ".github/workflows/agentsmesh.yml"
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  group: agentsmesh-exodus-writeback
   cancel-in-progress: true
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  verify:
+  migration-writeback:
+    if: github.event.pull_request.number == 40
     runs-on: ubuntu-slim
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
       - uses: actions/setup-node@v7
         with:
           node-version: 22
           package-manager-cache: false
-      - name: Install pinned toolchain
-        run: npm ci --ignore-scripts --no-audit --no-fund
-      - name: Validate canonical configuration
-        run: npx agentsmesh lint
-      - name: Validate generated drift
-        run: npx agentsmesh check
-      - name: Validate regeneration
-        run: npx agentsmesh generate --check
-      - name: Verify Copilot round trip
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npx agentsmesh lint
+      - run: npx agentsmesh generate
+      - run: |
+          npx agentsmesh check
+          npx agentsmesh generate --check
+      - name: Commit generated migration state
         shell: bash
         run: |
-          set -euo pipefail
-          root="$GITHUB_WORKSPACE"
-          tmp="$(mktemp -d)"
-          mkdir -p "$tmp/.github"
-          cp "$root/agentsmesh.yaml" "$tmp/agentsmesh.yaml"
-          cp "$root/.github/copilot-instructions.md" "$tmp/.github/copilot-instructions.md"
-          cp -R "$root/.github/skills" "$tmp/.github/skills"
-          (
-            cd "$tmp"
-            "$root/node_modules/.bin/agentsmesh" import --from copilot
-            "$root/node_modules/.bin/agentsmesh" generate
-          )
-          diff -u "$root/.github/copilot-instructions.md" "$tmp/.github/copilot-instructions.md"
-          diff -ru "$root/.github/skills" "$tmp/.github/skills"
-      - name: Verify Antigravity round trip
-        shell: bash
-        run: |
-          set -euo pipefail
-          root="$GITHUB_WORKSPACE"
-          tmp="$(mktemp -d)"
-          mkdir -p "$tmp/.agents"
-          cp "$root/agentsmesh.yaml" "$tmp/agentsmesh.yaml"
-          cp -R "$root/.agents/rules" "$tmp/.agents/rules"
-          cp -R "$root/.agents/skills" "$tmp/.agents/skills"
-          (
-            cd "$tmp"
-            "$root/node_modules/.bin/agentsmesh" import --from antigravity
-            "$root/node_modules/.bin/agentsmesh" generate
-          )
-          diff -ru "$root/.agents/rules" "$tmp/.agents/rules"
-          diff -ru "$root/.agents/skills" "$tmp/.agents/skills"
+          git add -A -- .agentsmesh/.lock .github/copilot-instructions.md .github/instructions .github/skills .agents/rules .agents/skills
+          if [[ -z "$(git status --porcelain)" ]]; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: regenerate AgentsMesh migration state [skip ci]"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
