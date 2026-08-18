@@ -35,6 +35,27 @@ jobs:
           package-manager-cache: false
       - name: Install pinned AgentsMesh
         run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Rewrite legacy canonical Skill links
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          paths = (
+              Path("src/skills-chatbot/mols-mermaid-chart.skill.md"),
+              Path("src/skills-chatbot/mols-mermaid-diagram.skill.md"),
+          )
+          for path in paths:
+              text = path.read_text(encoding="utf-8")
+              updated = text.replace(
+                  "mols-agent-assets/tree/main/src/skills/",
+                  "mols-agent-assets/tree/main/.agentsmesh/skills/",
+              ).replace(
+                  "mols-agent-assets/blob/main/src/skills/",
+                  "mols-agent-assets/blob/main/.agentsmesh/skills/",
+              )
+              path.write_text(updated, encoding="utf-8")
+          PY
       - name: Verify canonical configuration
         run: |
           npx agentsmesh --version
@@ -45,10 +66,16 @@ jobs:
         run: |
           npx agentsmesh check
           npx agentsmesh generate --check
-      - name: Commit generated artifacts
+      - name: Commit migration artifacts
         shell: bash
         run: |
-          git add -A -- package-lock.json .agentsmesh .github .agents
+          git add -A -- \
+            package-lock.json \
+            .agentsmesh \
+            .github \
+            .agents \
+            src/skills-chatbot/mols-mermaid-chart.skill.md \
+            src/skills-chatbot/mols-mermaid-diagram.skill.md
           if [[ -z "$(git status --porcelain)" ]]; then
             exit 0
           fi
