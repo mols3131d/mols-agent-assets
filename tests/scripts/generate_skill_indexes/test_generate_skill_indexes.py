@@ -46,3 +46,12 @@ def test_target_template_uses_canonical_skill_surface():
     assert targets == {
         ".agentsmesh/skills": ".agentsmesh/skills/{name}/SKILL.md",
     }
+
+
+def test_committed_canonical_skill_index_is_current():
+    for directory, (pattern, workspace_path) in generate_skill_indexes.TARGETS.items():
+        expected = generate_skill_indexes.render_index(directory, pattern, workspace_path)
+        actual = (directory / "INDEX.jsonl").read_text(encoding="utf-8")
+        assert actual == expected, (
+            f"stale Skill index: {directory.relative_to(generate_skill_indexes.ROOT)}/INDEX.jsonl"
+        )
