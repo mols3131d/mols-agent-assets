@@ -1,14 +1,14 @@
 # Auto-generated. DO NOT EDIT MANUALLY.
 # Tracks the state of all config files for team conflict resolution.
 
-generated_at: 2026-08-18T19:08:05.150Z
+generated_at: 2026-08-18T19:13:24.571Z
 generated_by: unknown
 lib_version: 0.32.0
 checksums:
   agents/review-adversarial.md: sha256:065885304beef836d33c0e6e797e9bbe3faf29133ce0b1cf722ccdcade9730a8
   agents/review-lead.md: sha256:f52f5bbfdbc4a4b7a4839ecbd62d5a8844b509267b6f8e967c711fc089f0df4c
   agents/review-quality.md: sha256:ef41f89ce8e04c331aae064284b4958cc984ef3ea9d02a9bebba903390bd3e19
-  rules/_root.md: sha256:c187d2e98c2f328c02a4186df72c4a32544027d7e12c0ea2742ff4bf2ec4ca94
+  rules/_root.md: sha256:7883d54abebed286e3c6ee13b92018f485b25da8b27a1f94b0c5583275d03dc6
   skills/artifact-consistency-inspector/README.md: sha256:e052a462e5b4e49ae09f16f898ae232b2a3b0551f48fedbb495899c634c80d80
   skills/artifact-consistency-inspector/SKILL.md: sha256:f3922d73c16fd51b4e1c89ed622606f8774d59dce3dc03d60e9872021abf0d57
   skills/artifact-consistency-inspector/references/example-report.md: sha256:4f69d06c960b0578c1c5a742a147fe85daf7f9ea2b60cb96d1724798dfff0569
@@ -259,8 +259,8 @@ checksums:
 extends: {}
 packs: {}
 outputs:
-  .github/copilot-instructions.md: sha256:991b19bfa2777a3c98505191c6a0bb816528cef4e8bea2a043cc53210673b1eb
-  .agents/rules/general.md: sha256:991b19bfa2777a3c98505191c6a0bb816528cef4e8bea2a043cc53210673b1eb
+  .github/copilot-instructions.md: sha256:bf1014d1b938931db89b87180b19e7f6f6bea93131958dc4e595961231404459
+  .agents/rules/general.md: sha256:bf1014d1b938931db89b87180b19e7f6f6bea93131958dc4e595961231404459
   .github/agents/review-adversarial.agent.md: sha256:2ad98619d630eddad24b86ddc582a181963d8cf8a655fd58287e068940f3c97e
   .github/agents/review-lead.agent.md: sha256:f3a301c7874a967b87095b6267a32b17536559b392f1f67cb289b4d9a8dd1080
   .github/agents/review-quality.agent.md: sha256:3c0276a77b2d26a8405b520899a66e204212f85df02a979639315256fd414ac2
