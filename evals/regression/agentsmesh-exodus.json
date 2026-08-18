@@ -37,6 +37,7 @@
     "src/rules/chatbot-repo-skill-routing.md"
   ],
   "retired": [
+    ".agentsmesh/_legacy",
     "src/skills",
     "src/rules/language-ko.md",
     "tests/skills/rulesync-agent-assets",
