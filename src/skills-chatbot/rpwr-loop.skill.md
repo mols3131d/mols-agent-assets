@@ -291,11 +291,52 @@ Improve loop. At the second Finalize loop, unresolved completion-blocking issues
 A prior phase budget shortfall prevents `PASS` unless the user explicitly overrode that
 budget. Do not use Finalize to retroactively legitimize fake or missing loops.
 
-## Reporting
+## Live Progress
 
-Keep a compact observable record while working.
+When the user can see work while it is running, prefer **scan-friendly loop updates**
+over the dense audit line used in the final report. Follow an explicit user cadence or
+format override when provided.
 
-For every counted loop, write one line using the phase's actual cycle:
+Emit a live update after a counted loop or another material gate/status change, not for
+every tool call or mechanical action. Do not repeat unchanged evidence from the previous
+update.
+
+Use this default shape:
+
+```markdown
+**Improve 3/8 — <material question or outcome>**
+- **Research** — <new evidence>
+- **Plan** — <decision or next approach>
+- **Work** — <meaningful work completed>
+- **Review** — <finding, risk, or confidence change>
+```
+
+Use the current phase's actual field names:
+
+- Prepare — **Discover / Assess / Configure / Verify**
+- Improve — **Research / Plan / Work / Review**
+- Finalize — **Inspect / Resolve / Validate / Gate**
+
+Keep each field to one short sentence or fragment unless the material finding needs more
+context. Put the most important delta in the title so the update is useful when skimmed.
+Status symbols such as `✅`, `⚠️`, `❌`, or `⏳` may be used sparingly when they encode
+real state; do not use decoration as structure.
+
+When a phase completes, optionally add one compact transition line when it helps the
+user orient:
+
+```text
+Improve complete — 4 genuine loops | gates: 5 pass, 1 pending
+```
+
+Do not dump the full acceptance ledger on every update. Surface only gates whose state
+changed or that currently block progress.
+
+## Final Reporting
+
+Keep a compact audit-oriented record for the final or persisted work report.
+
+For every counted loop, record one line using the phase's actual cycle:
 
 ```text
 Prepare N — D: <discovery> | A: <assessment> | C: <configuration> | V: <readiness>
@@ -306,6 +347,9 @@ Finalize N — I: <inspection> | R: <resolution> | V: <validation> | G: <gate>
 Each field states only the material delta. Do not expand one action into multiple loop
 lines. Preserve these phase fields in a persisted report instead of collapsing them into
 ambiguous `I1`, `I2`, or workstream-only summaries when auditability matters.
+
+Live progress and final reporting are two presentations of the same observable loop
+record. Do not duplicate both formats in the same update.
 
 For each phase reached, write **one paragraph** summarizing its objective, major
 decisions or changes, evidence or validation, and remaining material concerns.
