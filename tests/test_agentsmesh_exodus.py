@@ -17,6 +17,15 @@ def directory_names(path: Path) -> set[str]:
     return {entry.name for entry in path.iterdir() if entry.is_dir()}
 
 
+def skill_roots() -> list[Path]:
+    contract = load_contract()
+    names = contract["canonical"]["skills"]
+    roots = [ROOT / ".agentsmesh/skills" / name for name in names]
+    for projection in contract["projections"].values():
+        roots.extend(ROOT / projection["skills"] / name for name in names)
+    return roots
+
+
 def test_agentsmesh_config_matches_regression_contract() -> None:
     contract = load_contract()["canonical"]
     config = yaml.safe_load((ROOT / "agentsmesh.yaml").read_text(encoding="utf-8"))
@@ -45,6 +54,18 @@ def test_active_target_projections_cover_all_canonical_skills() -> None:
     for projection in contract["projections"].values():
         assert (ROOT / projection["root_rule"]).is_file()
         assert directory_names(ROOT / projection["skills"]) == expected_skills
+
+
+def test_deployable_skill_surface_has_no_dot_prefixed_paths() -> None:
+    assert load_contract()["package_surface"]["forbid_dot_paths"] is True
+
+    for skill_root in skill_roots():
+        for path in skill_root.rglob("*"):
+            relative = path.relative_to(skill_root)
+            assert not any(part.startswith(".") for part in relative.parts), (
+                f"non-runtime dot path leaked into deployable Skill surface: "
+                f"{skill_root.relative_to(ROOT)}/{relative}"
+            )
 
 
 def test_declared_exceptions_remain_explicit() -> None:

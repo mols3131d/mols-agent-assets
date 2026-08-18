@@ -19,6 +19,9 @@
       "vcs-git-commit"
     ]
   },
+  "package_surface": {
+    "forbid_dot_paths": true
+  },
   "projections": {
     "copilot": {
       "root_rule": ".github/copilot-instructions.md",

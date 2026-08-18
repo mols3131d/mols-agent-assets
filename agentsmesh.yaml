@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/sampleXbro/agentsmesh/master/schemas/agentsmesh.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/sampleXbro/agentsmesh/ac8e24449c34f19925721dc60a0d902f5217b1e3/schemas/agentsmesh.json
 version: 1
 targets:
   - copilot

@@ -8,15 +8,15 @@ description: 이 저장소의 Skill target profile, flat/runtime 경계와 packa
 이 문서는 [Personal Skill Standard](agent-assets-skills-standard-personal.md)가
 위임한 **repository-local target profile과 package surface 상세 규격**을 소유한다.
 
-> `skills/`, `skills-chatbot/`, `skills-chatbot-runtime/`은 Agent Skills specification의 공식 분류가 아니다.
+> `.agentsmesh/skills/`, `src/skills-chatbot/`, `src/skills-chatbot-runtime/`은 Agent Skills specification의 공식 분류가 아니다.
 
 ## Profiles
 
-| Profile | Target |
-| --- | --- |
-| `skills/` | workspace/filesystem/shell/repository authority가 있는 agent runtime |
-| `skills-chatbot/` | self-contained single Markdown만 받는 flat chatbot harness |
-| `skills-chatbot-runtime/` | bundle, progressive loading, host-specific runtime surface를 활용하는 hosted chatbot runtime |
+| Profile | Source | Target |
+| --- | --- | --- |
+| portable coding-agent | `.agentsmesh/skills/` | workspace/filesystem/shell/repository authority가 있는 agent runtime |
+| flat chatbot | `src/skills-chatbot/` | self-contained single Markdown만 받는 flat chatbot harness |
+| hosted chatbot runtime | `src/skills-chatbot-runtime/` | bundle, progressive loading, host-specific runtime surface를 활용하는 hosted chatbot runtime |
 
 같은 capability가 여러 profile에 존재할 수 있다. target harness가 서로 독립된 payload를 요구한다면 이 semantic overlap은 의도적인 projection이며 DRY 위반으로 보지 않는다.
 
@@ -24,7 +24,7 @@ description: 이 저장소의 Skill target profile, flat/runtime 경계와 packa
 
 ## Flat vs Runtime
 
-`skills-chatbot/`은 다음을 모두 만족할 때 사용한다.
+`src/skills-chatbot/`은 다음을 모두 만족할 때 사용한다.
 
 1. `<skill-name>.skill.md` 한 파일로 완결된다.
 1. 배포 파일이 `<4,000 tokens`다.
@@ -32,7 +32,7 @@ description: 이 저장소의 Skill target profile, flat/runtime 경계와 packa
 
 Skill이 host가 이미 제공하는 tool이나 connector를 사용하도록 지시한다는 사실만으로 runtime profile이 되는 것은 아니다. 필요한 행동 계약이 한 Markdown 파일에 완결되면 flat profile을 우선한다.
 
-그 외에는 `skills-chatbot-runtime/`을 사용한다. 예를 들어 references/assets/scripts, host-specific tool schema나 integration resource, progressive loading 등 단일 Markdown 밖의 runtime surface가 실제 capability에 필요할 때다.
+그 외 hosted chatbot Skill은 `src/skills-chatbot-runtime/`을 사용한다. 예를 들어 references/assets/scripts, host-specific tool schema나 integration resource, progressive loading 등 단일 Markdown 밖의 runtime surface가 실제 capability에 필요할 때다.
 
 `<4,000 tokens`는 이 저장소의 로컬 budget이며 외부 표준이 아니다.
 
@@ -82,6 +82,24 @@ Portable front matter field와 constraint는 [Agent Skills Specification](agent-
 
 ## Directory-Based Package
 
+### AgentsMesh-managed portable source
+
+`.agentsmesh/skills/<skill-name>/`은 portable coding-agent Skill의 canonical source이면서 AgentsMesh projection 입력이다. 따라서 이 subtree는 **target에 배포해도 되는 package surface만** 소유한다.
+
+AgentsMesh `0.32.0`은 Skill의 supporting file을 재귀적으로 수집하며 `.git`, `node_modules`, `.DS_Store`와 일부 boilerplate 외의 임의 dot-prefixed maintainer directory를 자동으로 제외하지 않는다. 이 저장소에서는 다음 경계를 적용한다.
+
+- runtime에 필요한 `references/`, `scripts/`, `assets/`, `templates/`, `src/`, examples와 config는 필요할 때 canonical Skill 안에 둔다.
+- maintainer-only 문서, durable baseline, recovery record와 decision history는 `docs/skills/<skill-name>/`에 둔다.
+- 일반 correctness test는 `tests/skills/<skill-name>/`을 기본 owner로 사용한다.
+- package-local `tests/`는 Skill이 self-contained validation을 distributable package contract로 명시적으로 소유할 때만 유지한다.
+- `.agentsmesh/skills/<skill-name>/` 아래에는 non-runtime을 숨기기 위한 dot-prefixed path를 두지 않는다.
+
+Generated target package에서 이 경계가 깨지면 generation 자체가 성공했더라도 package-surface regression으로 취급한다.
+
+### Other directory packages
+
+AgentsMesh-managed portable source가 아닌 directory package는 target packaging contract가 dot-prefixed maintainer surface를 실제로 제외할 때 다음 convention을 사용할 수 있다.
+
 ```text
 skill-name/
 ├─ SKILL.md
@@ -93,13 +111,16 @@ skill-name/
 ```
 
 - runtime behavior에 필요한 resource는 non-dot surface에 둔다.
-- dot-prefixed directory는 packaging/deployment에서 제외하는 non-runtime maintainer surface로 사용한다.
-- repository root `docs/`는 이 convention의 대상이 아니다.
-- `.evals/`, `.tests/` 같은 추가 non-runtime surface는 실제 필요가 있을 때만 둔다.
+- dot-prefixed directory는 **해당 target packaging이 실제로 제외할 때만** non-runtime maintainer surface로 사용한다.
+- repository root `docs/`는 이 package-local convention의 대상이 아니다.
+- `.evals/`, `.tests/` 같은 추가 non-runtime surface도 target packaging이 제외하고 실제 필요가 있을 때만 둔다.
 
-## `.docs/baseline/`
+## Maintainer Baseline
 
-`.docs/baseline/`은 반복 개선 과정에서 잃으면 안 되는 **본래 purpose, requirements, invariants, major decisions와 recovery directives**를 보존한다.
+Maintainer baseline은 반복 개선 과정에서 잃으면 안 되는 **본래 purpose, requirements, invariants, major decisions와 recovery directives**를 보존한다.
+
+- AgentsMesh-managed portable Skill → `docs/skills/<skill-name>/baseline/`
+- package-local non-runtime dot surface가 안전한 다른 profile → `.docs/baseline/`
 
 넣는다:
 
@@ -117,8 +138,7 @@ skill-name/
 
 Baseline은 단순 refactor나 문구 변경으로 갱신하지 않는다. 의도·요구사항·불변조건이 실제로 바뀔 때만 함께 바꾼다.
 
-필요하면 [Baseline Directive Template](agent-assets-skills-baseline-directive-template.md)을
-초기 maintainer document로 사용할 수 있다. Template 자체는 mandatory schema가 아니다.
+필요하면 [Baseline Directive Template](agent-assets-skills-baseline-directive-template.md)을 초기 maintainer document로 사용할 수 있다. Template 자체는 mandatory schema가 아니다.
 
 ## Context-Only Naming
 
@@ -161,8 +181,6 @@ Personal overlay activation은 conversation이나 connection 전체가 아니라
 
 ## Boundary
 
-Portable `SKILL.md`와 front matter 규격은
-[Agent Skills Specification](agent-skills-io/agent-skills-io-specification.md)이
-소유한다. 이 문서는 target profile에 필요한 repository-local extension만 정의한다.
+Portable `SKILL.md`와 front matter 규격은 [Agent Skills Specification](agent-skills-io/agent-skills-io-specification.md)이 소유한다. 이 문서는 target profile에 필요한 repository-local extension만 정의한다.
 
 Skill을 분리할지는 파일 길이가 아니라 activation intent와 responsibility로 판단한다. 세부 지식만 조건부로 달라진다면 별도 Skill보다 runtime `references/`를 먼저 검토한다.

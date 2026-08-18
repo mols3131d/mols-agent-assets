@@ -2,17 +2,19 @@
 
 ## Change Protocol
 
-1. `.docs/baseline/DIRECTIVE.md`를 읽고 관련 Requirement와 Decision ID를 식별한다.
+1. `baseline/DIRECTIVE.md`를 읽고 관련 Requirement와 Decision ID를 식별한다.
 2. 변경이 기존 directive의 본래 목적·요구사항·결정사항을 바꾸면 코드보다 baseline directive를 먼저 수정한다.
 3. Example YAML, rendered Markdown와 tests를 함께 수정한다.
 4. Project와 domain 예제를 모두 렌더링한다.
 5. 3개 핵심 표의 열과 의미가 유지되는지 확인한다.
 6. 통합 품질 게이트를 실행한다.
-7. 변경 후 `.docs/REVIEW-LOOPS.md` 또는 별도 review artifact에 판단을 남긴다.
+7. 변경 후 `REVIEW-LOOPS.md` 또는 별도 review artifact에 판단을 남긴다.
 
-`.docs/`와 `.docs/baseline/`은 source maintenance/recovery용 non-runtime surface다. Runtime 동작이 이 문서를 읽어야만 정상 작동하도록 만들지 않는다.
+이 디렉터리와 `baseline/`은 source maintenance/recovery용 non-runtime surface다. Runtime 동작이 이 문서를 읽어야만 정상 작동하도록 만들지 않는다.
 
 ## Quality Gate
+
+Skill 구현 루트 `.agentsmesh/skills/mols-markdown-dashboard/`에서 실행한다.
 
 ```bash
 uv sync --all-groups
@@ -35,6 +37,8 @@ ruff check
 
 ## Render Examples
 
+Skill 구현 루트에서 실행한다.
+
 ```bash
 uv run python scripts/render_dashboard.py render \
   examples/project-dashboard.yml \
@@ -47,7 +51,7 @@ uv run python scripts/render_dashboard.py render \
 
 ## Recovery Checklist
 
-스킬이 후속 에이전트 수정으로 훼손됐을 때 `.docs/baseline/DIRECTIVE.md`와 다음 항목을 대조한다.
+스킬이 후속 에이전트 수정으로 훼손됐을 때 `baseline/DIRECTIVE.md`와 다음 항목을 대조한다.
 
 | Check | Expected |
 | --- | --- |
