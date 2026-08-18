@@ -1,0 +1,57 @@
+name: Repository Regenerate
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-slim
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v9.0.0
+        with:
+          enable-cache: false
+      - name: Refresh root lock
+        run: uv lock
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - name: Install pinned AgentsMesh toolchain
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Regenerate AgentsMesh state
+        run: npx agentsmesh generate --force
+      - name: Validate regenerated state
+        run: |
+          uv lock --check
+          npx agentsmesh lint
+          npx agentsmesh check
+          npx agentsmesh generate --check
+      - name: Commit generated state
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add \
+            uv.lock \
+            .agentsmesh/.lock \
+            .github/copilot-instructions.md \
+            .github/agents \
+            .github/skills \
+            .agents/rules \
+            .agents/skills
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "build: regenerate repository projections"
+          git push origin HEAD:${{ github.head_ref }}
