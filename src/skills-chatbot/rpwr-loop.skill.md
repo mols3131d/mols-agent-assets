@@ -9,16 +9,13 @@ description: >-
 
 # RPWR Loop
 
-Use **RPWR** as a three-phase workflow for difficult or high-level work. `RPI` is an
-alias for this workflow.
-
-Each phase has its own loop:
+Use **RPWR** for difficult or high-level work. `RPI` is an alias.
 
 1. **Prepare** — `Discover → Assess → Configure → Verify`
 1. **Improve** — `Research → Plan → Work → Review`
 1. **Finalize** — `Inspect → Resolve → Validate → Gate`
 
-Count only genuine phase cycles. Do not force phases into the same reasoning shape.
+Count only genuine cycles of the current phase.
 
 ## Arguments
 
@@ -29,286 +26,221 @@ phase_2_improve: {min_loops: 4, max_loops: 8}
 phase_3_finalize: {min_loops: 1, max_loops: 2}
 ```
 
-An explicit user override takes precedence over these defaults.
+Explicit user overrides take precedence.
 
-These phase budgets belong to one RPWR run. Do not reset or bypass them by
-silently starting another run. A new run requires either explicit user continuation or
-an already-established higher-level campaign/iteration budget that clearly authorizes
-another run.
+Phase budgets belong to one RPWR run. Do not reset them by silently starting another
+run. Another run requires explicit user continuation or an already-established
+higher-level campaign/iteration budget that clearly authorizes it.
 
 ### Output Policy
 
-- `auto` — default. Return the report in chat unless Prepare identifies a clearly
-  appropriate durable, writable destination that already belongs to the work context.
-  If so, persist it there and return a concise chat summary with its location.
+- `auto` — use chat unless Prepare finds an appropriate writable destination already
+  belonging to the work; then persist there and return a concise chat summary.
 - `chat` — return the full report in chat.
-- `persist` — persist to the most appropriate confirmed destination; if none is clear
-  or writable, fall back to chat and state the limitation.
-- `both` — persist the report and also return it in chat.
+- `persist` — persist to the confirmed destination; if none is appropriate/writable,
+  fall back to chat and state the limitation.
+- `both` — persist and return the report in chat.
 
-A destination may be a repository, Drive, workspace document system, chatbot library,
-knowledge base, or another persistent surface. Availability alone does not make a
-surface appropriate. Prefer where the work already belongs; if ambiguous, use chat.
-Never invent a storage convention or assume write access.
+Availability alone does not make a destination appropriate. Prefer where the work
+already belongs; if ambiguous, use chat. Never invent storage conventions or write
+access.
+
+# Integrity
 
 ## Loop Integrity
 
-A counted loop is one complete, substantive cycle of the **current phase's loop**. It
-is not an edit, finding, file, subtask, tool call, or label around mechanical work.
+A counted loop is one complete, substantive cycle of the current phase, not an edit,
+finding, file, subtask, tool call, or label around mechanical work.
 
-Count a loop only when its cycle produces a material understanding, decision, work,
-validation, risk, or confidence delta. A no-change loop may count when a distinct,
-substantive investigation or validation closes important uncertainty.
+Count it only when the cycle materially changes understanding, a decision, work,
+validation, risk, or confidence. A no-change loop may count when distinct substantive
+investigation or validation closes important uncertainty.
 
-Name or summarize loops by the material question, risk, or uncertainty they resolve,
-not by the file group or mechanical work unit they happened to touch.
+Name loops by the material question, risk, or uncertainty resolved, not by file groups
+or mechanical work units.
 
 Do not count:
 
-- one isolated edit, fix, finding, file change, or subtask;
-- rereading or restating the same evidence;
-- repeated review or validation from the same perspective;
+- isolated edits, fixes, findings, files, or subtasks;
+- rereading/restating the same evidence;
+- repeated review from the same perspective;
 - mechanical execution without task-specific judgment;
-- cosmetic churn or artificial splitting used to satisfy a loop count.
+- cosmetic churn or artificial splitting.
 
-Never invent findings or simulate reasoning. If a phase minimum cannot be satisfied
-with genuine cycles, do not claim that it was; return the best result and report the
-budget shortfall.
-
-A confirmed blocker may end a phase or the workflow before its minimum. Do not perform
-fake loops after further execution has become impossible or unauthorized.
+Never invent findings or simulate reasoning. If genuine minima cannot be satisfied,
+report the shortfall. A confirmed blocker may stop execution before its minimum; never
+manufacture loops after work is blocked or unauthorized.
 
 Do not expose private chain-of-thought. Report observable evidence, decisions, work,
 validation, and outcomes only.
 
 ## Phase Discipline
 
-Phase progression is monotonic:
+Progression is monotonic: `Prepare → Improve → Finalize`.
 
-`Prepare → Improve → Finalize`
+Do not return to an earlier phase for ordinary remediation. Once Finalize begins, handle
+bounded issues in its `Resolve`, using the second Finalize loop after `RETRY` when needed.
 
-Do not return to an earlier phase for ordinary remediation. Once Finalize begins, a
-material issue is handled by the current Finalize loop's `Resolve`, or by the second
-Finalize loop after `RETRY`.
-
-If Finalize discovers that a core assumption failed so materially that broad Research,
-replanning, or substantial reshaping is required, return `BLOCKED` rather than
-silently reopening Improve. `BLOCKED` ends the current run. Its result may become input
-to another run only when the user or an already-established higher-level budget
-actually authorizes that run.
-
-This rule keeps phase counts auditable and prevents finishing work from being relabeled
-as extra Improve loops.
+If Finalize discovers a core-assumption failure requiring broad Research, replanning, or
+substantial reshaping, return `BLOCKED`; do not reopen Improve. `BLOCKED` ends the
+current run. Another run requires the run-start authority defined above.
 
 ## Acceptance Ledger
 
-When the task has multiple consequential completion conditions, explicit gates, or a
-high cost of false completion, Prepare creates a compact **acceptance ledger**. Do not
-create one for a simple task with one obvious success condition.
-
-Track only material gates:
+For multiple consequential completion conditions, explicit gates, or costly false
+completion, Prepare creates a compact acceptance ledger. Skip it for a simple task with
+one obvious success condition.
 
 ```text
 Gate | Evidence needed | Status
 ```
 
-Use statuses such as `pending`, `pass`, `fail`, `accepted-limit`, or `not-applicable`.
-The ledger is working state, not another deliverable or loop.
+Use `pending`, `pass`, `fail`, `accepted-limit`, or `not-applicable`.
 
-- **Prepare** establishes the initial gates and evidence requirements.
-- **Improve** updates the ledger when work or new evidence changes a gate.
-- **Finalize** checks every material gate before `PASS`.
+- Prepare establishes material gates and evidence.
+- Improve updates a gate in the same loop when evidence changes it.
+- Finalize checks every material gate before `PASS`.
 
-If a new material gate emerges after Prepare, add it explicitly instead of relying on
-memory. Never mark a gate passed from intended work or inferred success; require the
-evidence named by that gate. Do not use `accepted-limit` to relax an explicit user,
-policy, or contract requirement unless the same authority permits that limitation.
+The ledger is working state, not a deliverable or loop. Add newly discovered material
+gates explicitly. Never infer `pass` from intended work. `accepted-limit` cannot relax a
+user, policy, or contract requirement unless the same authority permits it.
 
-## Phase 1 — Prepare
+# Phase 1 — Prepare
 
-Complete **1–2 Prepare loops** to establish a trustworthy execution strategy.
+Complete **1–2 Prepare loops**.
 
-### Discover
+## Discover
 
-Build an evidence-based picture of:
+Build an evidence-based view of the **task** (objective, scope, constraints, stakes,
+acceptance conditions, evidence, failure modes) and **environment** (capabilities, tools,
+permissions, governing instructions, write authority, validation/persistence surfaces,
+limitations). Confirm capabilities and authority when they affect execution.
 
-- **Task:** objective, scope, context, constraints, uncertainty, stakes, acceptance
-  conditions, relevant evidence, likely failure modes, and natural work context.
-- **Environment:** agent capabilities, tools, connected resources, permissions,
-  governing instructions, write authority, validation surfaces, durable storage
-  surfaces, and material limitations.
+## Assess
 
-Confirm capabilities and authority when they affect execution. Do not assume a tool,
-connection, permission, storage target, or write capability exists.
+Match requirements to the environment and identify material gaps, dependencies,
+evidence/tools, risk, and authority boundaries. Distinguish **available** (technically
+possible) from **authorized** (permitted), and unavailable from merely unchecked.
 
-### Assess
+## Configure
 
-Match task requirements against the actual environment. Identify material gaps,
-uncertainties, dependencies, useful evidence and tools, major risks, persistence
-context, and authority boundaries.
+Choose the smallest viable Improve/Finalize strategy: evidence, Research scope,
+assumptions, gates, Review emphasis, validation, transitions, and persistence. If
+warranted, materialize the ledger with observable evidence. Keep the strategy adaptive.
 
-Distinguish:
+## Verify
 
-- **available** — the environment can technically perform an action;
-- **authorized** — applicable system, user, workspace, and repository instructions
-  permit that action.
+Verify the strategy is executable, proportionate, authorized, and free of material
+unchecked dependencies. For a ledger, every known material gate needs an evidence path
+or explicit non-blocking limitation.
 
-Do not treat technical access as authorization. Also distinguish an unavailable
-capability from one that has merely not been checked yet.
+Return:
 
-### Configure
+- **READY**
+- **READY WITH LIMITS**
+- **BLOCKED**
 
-Set the smallest viable strategy for Improve and Finalize. Configure only what changes
-execution: useful tools and evidence surfaces, initial Research scope, assumptions,
-acceptance conditions, Review emphasis, validation approach, transition signals, and
-report delivery or persistence when context justifies it.
+The first Prepare loop is mandatory. Use a second only while material preparation
+uncertainty remains. Enter Improve only from `READY` or `READY WITH LIMITS`.
 
-If the task warrants an acceptance ledger, materialize it here with the evidence needed
-for each gate. Prefer observable checks over vague success language.
+# Phase 2 — Improve
 
-Keep the strategy adaptive. Do not script every future loop or route around governing
-instructions merely because a tool makes it possible.
+Complete **4–8 Improve loops**.
 
-### Verify
+## Research
 
-Verify that the strategy is executable, proportionate, authorized, and free of material
-unverified dependencies. When an acceptance ledger exists, verify that every known
-material gate has an evidence path or an explicit non-blocking limitation.
+Gather evidence for the current objective and unresolved findings. Orient broadly,
+narrow as findings localize, and broaden again when boundaries are unclear, evidence
+conflicts, or a core assumption fails. Change method or perspective when investigation
+saturates. Research is not synonymous with web search.
 
-End each Prepare loop with a readiness result:
+Allocate internal vs external research by uncertainty and expected information gain, not
+a fixed ratio. Favor internal evidence for artifact/repository/data truth; favor external
+evidence for freshness, standards, vendor behavior, alternatives, or independent
+challenge. Use both when local conclusions need grounding.
 
-- **READY** — execution can proceed.
-- **READY WITH LIMITS** — execution can proceed with explicit non-blocking limits.
-- **BLOCKED** — a critical dependency, capability, authority, or evidence gap prevents
-  trustworthy execution.
+## Plan
 
-The first loop is mandatory. Use the second when material preparation uncertainty
-remains. Enter Improve only if readiness is `READY` or `READY WITH LIMITS`; otherwise
-stop and report the blocker.
+Turn evidence into the smallest plan that can materially improve the result: needed
+scope, constraints, approach, trade-offs, gates, and validation.
 
-## Phase 2 — Improve
+## Work
 
-Complete **4–8 Improve loops**. This is the primary work phase.
+Perform a meaningful batch against the plan. Preserve confirmed constraints unless
+evidence justifies change. Never claim unperformed work/validation. Update changed gates
+in the same loop.
 
-### Research
+## Review
 
-Gather evidence needed for the current objective and unresolved findings. Start broad
-enough to orient the work, then narrow as findings localize. Broaden again when the
-problem boundary is unclear, evidence conflicts, or a core assumption fails. Change
-evidence, method, or perspective when the previous investigation saturates.
+Default cadence by Improve loop number:
 
-Research may use current context, artifacts, repositories, data, prior results, domain
-knowledge, or external sources. It is not synonymous with web search.
+- **odd — Quality Review** — correctness, completeness, coherence, clarity, usability,
+  evidence quality, objective fit.
+- **even — Pessimistic Review** — consequential failure modes, edge cases, hidden
+  assumptions, regressions, misuse, operational/security/safety risk when relevant.
 
-Allocate research effort adaptively across internal and external evidence according to
-current uncertainty, evidence gaps, task risk, and which source is most likely to
-materially change understanding or confidence. Favor internal evidence when correctness
-depends on the actual artifact, repository, data, or established work context; favor
-external evidence when freshness, standards, vendor behavior, alternatives, or
-independent validation matter. Use both when local conclusions need external grounding
-or challenge. Do not target a fixed ratio.
+Override the cadence when risk clearly needs another perspective.
 
-### Plan
+Treat concrete failure/correction as evidence for the next unresolved question. If the
+same failure recurs, change the plan, evidence, or approach rather than repeating it.
 
-Turn current evidence and findings into the smallest plan that can materially improve
-the result. Set only the needed objective, scope, constraints, approach, work units,
-trade-offs, acceptance conditions, and validation points.
+After four genuine loops, move to Finalize when the result is substantially shaped, no
+known issue requires broad reshaping, and remaining work is mainly completion or
+validation. Otherwise continue while material deltas remain, up to eight loops. Carry
+unresolved findings into Finalize honestly.
 
-### Work
+# Phase 3 — Finalize
 
-Perform a meaningful batch of task-appropriate work against the plan and evidence.
-Preserve confirmed constraints unless new evidence justifies changing them. Do not
-claim work or validation that was not performed.
-
-When work or evidence changes a material acceptance gate, update the ledger in the same
-loop. Do not postpone known gate state until Finalize.
-
-### Review
-
-Use this default cadence by **Improve loop number**:
-
-- **odd — Quality Review:** correctness, completeness, coherence, clarity, usability,
-  evidence quality, and objective fit.
-- **even — Pessimistic Review:** consequential failure modes, edge cases, hidden
-  assumptions, regressions, misuse, operational risk, and security or safety when
-  relevant.
-
-The cadence is a default, not a ritual. Override it when current risk clearly requires
-a different perspective; do not force irrelevant review dimensions.
-
-A concrete failure or correction becomes evidence for the next unresolved question.
-Do not merely repeat the failed method; change the plan, evidence, or execution approach
-when the same failure recurs.
-
-After four genuine loops, move to Finalize when the result is substantially shaped,
-no known issue still requires broad Improve-phase reshaping, and remaining work is
-mainly completion or validation. Otherwise continue while a material delta remains, up
-to eight loops. At eight, carry unresolved material findings into Finalize without
-pretending they disappeared.
-
-## Phase 3 — Finalize
-
-Complete **1–2 Finalize loops**. Finalize is the completion gate for the work.
-
-Finalize loop:
+Complete **1–2 Finalize loops** using:
 
 `Inspect → Resolve → Validate → Gate`
 
-### Inspect
+## Inspect
 
-Inspect acceptance conditions, the acceptance ledger when present, unresolved material
-findings, recent changes, validation gaps, regressions, residual risks, and required
-phase-loop integrity. Look only where an issue could still materially affect completion.
+Inspect gates, unresolved findings, recent changes, validation gaps, regressions,
+residual risk, and loop integrity. Look only where completion could still change.
 
-### Resolve
+## Resolve
 
-Correct, complete, revert, or explicitly accept what materially blocks trustworthy
-completion. Keep remediation bounded to finishing the shaped result. Reject new scope.
+Correct, complete, revert, or explicitly accept what blocks trustworthy completion.
+Keep remediation bounded to the shaped result and reject new scope. If broad new
+Research/replanning/reshaping is required, Gate must become `BLOCKED`.
 
-If the issue requires broad new Research, replanning, or substantial reshaping rather
-than bounded completion work, do not return to Improve; the Gate must become `BLOCKED`.
+## Validate
 
-### Validate
+Run the smallest checks that can change completion confidence. Validate requirements,
+regressions, residual risk, and claimed checks. Validate ledger gates against named
+evidence; `pending` or `fail` cannot silently pass.
 
-Perform the smallest task-appropriate checks that can materially change confidence in
-completion. Validate the result and final changes against important requirements,
-evidence, regression risk, residual risk, and checks claimed by the work.
+## Gate
 
-When an acceptance ledger exists, validate its material gates against their named
-evidence. A `pending` or `fail` gate cannot be silently treated as passed.
+Return:
 
-### Gate
+- **PASS** — genuine loop minima are satisfied; material gates pass or are validly
+  accepted as non-blocking; limitations are documented.
+- **RETRY** — one more bounded Finalize loop can resolve and validate an actionable
+  material issue without reopening Improve.
+- **BLOCKED** — trustworthy completion requires unavailable budget/evidence/capability/
+  authority or broad reshaping.
 
-Return one gate result:
+Stop on first `PASS`. On first `RETRY`, run one additional
+`Inspect → Resolve → Validate → Gate` cycle. Do not relabel its remediation as Improve.
+A blocking issue after Finalize 2 yields `BLOCKED`.
 
-- **PASS** — completion is trustworthy, required genuine-loop minima were satisfied,
-  all material acceptance gates are passed or explicitly accepted as non-blocking, and
-  remaining limitations are documented.
-- **RETRY** — an actionable material issue remains and one more bounded Finalize loop
-  can meaningfully resolve and validate it without reopening Improve.
-- **BLOCKED** — trustworthy completion cannot be reached with the remaining Finalize
-  budget, evidence, capability, authority, or without broad reshaping.
+A prior phase-budget shortfall prevents `PASS` unless the user explicitly overrode that
+budget. Finalize cannot retroactively legitimize fake or missing loops.
 
-The first genuine Finalize loop is the normal completion gate. Stop on `PASS`. On
-`RETRY`, run one additional genuine Finalize loop using the same
-`Inspect → Resolve → Validate → Gate` cycle. Do not relabel its remediation as another
-Improve loop. At the second Finalize loop, unresolved completion-blocking issues produce
-`BLOCKED`, not a false success.
-
-A prior phase budget shortfall prevents `PASS` unless the user explicitly overrode that
-budget. Do not use Finalize to retroactively legitimize fake or missing loops.
+# Output
 
 ## Live Progress
 
-When the user can see work while it is running, prefer **scan-friendly loop updates**
-over the dense audit line used in the final report. Follow an explicit user cadence or
-format override when provided.
+When the user can see execution, prefer scan-friendly updates. Follow explicit user
+cadence/format overrides.
 
-Emit a live update after a counted loop or another material gate/status change, not for
-every tool call or mechanical action. Do not repeat unchanged evidence from the previous
-update.
+Emit after a counted loop or material gate/status change, not every tool call. Do not
+repeat unchanged evidence.
 
-Use this default shape for a completed counted loop:
+For a completed counted loop:
 
 ```markdown
 **Improve 3/8 — <material question or outcome>**
@@ -318,14 +250,13 @@ Use this default shape for a completed counted loop:
 - **Review** — <finding, risk, or confidence change>
 ```
 
-Use the current phase's actual field names:
+Use the actual phase fields:
 
 - Prepare — **Discover / Assess / Configure / Verify**
 - Improve — **Research / Plan / Work / Review**
 - Finalize — **Inspect / Resolve / Validate / Gate**
 
-A material gate/status change that occurs outside a completed phase cycle may be shown
-as an unnumbered gate update, for example:
+For a material gate/status change outside a completed cycle:
 
 ```markdown
 **Gate update — <gate>**
@@ -333,29 +264,21 @@ as an unnumbered gate update, for example:
 - **Impact** — <what this changes>
 ```
 
-A gate-only update is **not a counted loop**. Do not assign it a new loop number or
-include it as a loop record in Final Reporting.
+A gate-only update is **not a counted loop**. Give it no loop number and exclude it from
+Final Reporting.
 
-Keep each field to one short sentence or fragment unless the material finding needs more
-context. Put the most important delta in the title so the update is useful when skimmed.
-Status symbols such as `✅`, `⚠️`, `❌`, or `⏳` may be used sparingly when they encode
-real state; do not use decoration as structure.
+Keep fields short. Put the main delta in the title. Use status symbols only when they
+encode real state. Do not dump the full ledger; surface changed/blocking gates.
 
-When a phase completes, optionally add one compact transition line when it helps the
-user orient:
+An optional phase transition line may help orientation:
 
 ```text
 Improve complete — 4 genuine loops | gates: 5 pass, 1 pending
 ```
 
-Do not dump the full acceptance ledger on every update. Surface only gates whose state
-changed or that currently block progress.
-
 ## Final Reporting
 
-Keep a compact audit-oriented record for the final or persisted work report.
-
-For every counted loop, record one line using the phase's actual cycle:
+Keep the final/persisted record compact and audit-oriented. For every counted loop:
 
 ```text
 Prepare N — D: <discovery> | A: <assessment> | C: <configuration> | V: <readiness>
@@ -363,29 +286,25 @@ Improve N — Research: <research> | Plan: <decision> | Work: <work> | Review: <
 Finalize N — I: <inspection> | R: <resolution> | V: <validation> | G: <gate>
 ```
 
-Each field states only the material delta. Do not expand one action into multiple loop
-lines. Preserve these phase fields in a persisted report instead of collapsing them into
-ambiguous `I1`, `I2`, or workstream-only summaries when auditability matters.
+Each field states only the material delta. Preserve phase fields rather than collapsing
+them into ambiguous workstream-only labels.
 
-Numbered live loop updates and final reporting are two presentations of the same
-observable loop record. Unnumbered gate-only updates are working-state notifications,
-not loop records. Do not duplicate live and audit formats in the same update.
+Numbered live updates and Final Reporting describe the same loop record. Unnumbered gate
+updates are working-state notifications, not loops. Do not duplicate live and audit
+formats in the same update.
 
-For each phase reached, write **one paragraph** summarizing its objective, major
-decisions or changes, evidence or validation, and remaining material concerns.
+For each reached phase, add one paragraph on objective, material changes,
+evidence/validation, and remaining concerns.
 
-When the workflow ends for any reason, produce a work report with one final status:
+End with one workflow status:
 
 - **COMPLETE** — required phase budgets were genuinely satisfied and Finalize passed.
-- **INCOMPLETE** — a best-effort result exists, but required loop depth or validation
-  was not genuinely satisfied.
+- **INCOMPLETE** — a best-effort result exists but required depth/validation did not.
 - **BLOCKED** — a material capability, evidence, authority, or completion blocker
   prevented trustworthy completion.
 
-Include the final result, loop summaries grouped by phase, one paragraph per phase
-reached, material decisions and validation, and unresolved findings, limitations,
-blockers, or checks not performed. When an acceptance ledger was used, include its final
-material gate state or an equivalent concise gate summary.
+Include the result, loop summaries, phase paragraphs, validation, and unresolved
+limitations/checks. If a ledger was used, include its final material gate state.
 
-Deliver or persist the report according to `output_policy`. Reporting happens after
-execution ends and never counts as another loop.
+Deliver/persist according to `output_policy`. Reporting happens after execution and
+never counts as another loop.
