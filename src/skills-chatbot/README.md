@@ -24,7 +24,7 @@ Skill 본문이 host가 이미 제공하는 tool이나 connector를 **사용하�
 
 Maintainer-only `docs/`, `evals/`, `tests/`, 개발용 validator도 배포 Skill과 분리할 수 있다면 그 존재만으로 runtime placement를 강제하지 않습니다. 작은 textual schema나 설정 예시는 명확성과 유지보수성을 해치지 않는 범위에서 fenced code로 flat file에 포함할 수 있습니다.
 
-로컬/원격 workspace, filesystem, shell 같은 workspace authority가 필요하면 `../skills/` profile도 검토합니다.
+로컬/원격 workspace, filesystem, shell 같은 workspace authority가 필요하면 repository root의 `.agentsmesh/skills/` portable coding-agent profile을 검토합니다.
 
 ## Triggering
 
@@ -55,6 +55,6 @@ Personal overlay의 이름과 activation 규칙은 [`agent-assets-skills-target-
 
 ## Target Variants
 
-같은 capability가 `../skills/`, `skills-chatbot/`, `../skills-chatbot-runtime/` 중 둘 이상에 함께 존재할 수 있습니다. target profile이 다르면 의미가 겹친다는 이유만으로 제거하지 않습니다.
+같은 capability가 `.agentsmesh/skills/`, `skills-chatbot/`, `../skills-chatbot-runtime/` 중 둘 이상에 함께 존재할 수 있습니다. target profile이 다르면 의미가 겹친다는 이유만으로 제거하지 않습니다.
 
 flat variant는 외부 bundle 없이 **한 파일만 전달되는 harness에서 독립적으로 동작하도록 최적화**합니다. 다른 profile의 구조를 그대로 복제하기보다 flat target에서 가장 효율적인 형태를 우선합니다.
