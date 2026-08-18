@@ -8,7 +8,7 @@
 
 Project EXODUS는 portable coding-agent Rule과 Skill의 canonical authority를 legacy `src/` workspace에서 AgentsMesh로 이전하고, hosted-chatbot 및 target-specific 예외를 명시적으로 보존했다.
 
-후속 심층 RPWR 검증에서는 초기 완료 상태가 AgentsMesh 자체의 round-trip에는 일관됐지만 repository-local package-surface contract를 완전히 검증하지 못했다는 사실을 발견했다. 해당 finding을 수정하고 재검증한 현재 상태를 최종 완료 상태로 본다.
+후속 심층 RPWR 검증에서는 초기 완료 상태가 AgentsMesh 자체의 round-trip에는 일관됐지만 repository-local package-surface contract를 완전히 검증하지 못했다는 사실을 발견했다. 해당 finding과 후속 authoring-route drift를 수정하고 현재 final head에서 다시 검증했다.
 
 # 최종 Authority
 
@@ -138,6 +138,14 @@ Canonical + Copilot + Antigravity projection을 같은 PR에 보존하기 때문
 
 `.gitattributes`의 `linguist-generated`를 사용해 generated projection, AgentsMesh lock과 derived Skill indexes를 GitHub diff에서 기본적으로 접히게 했다. Generated artifact를 삭제하거나 authority로 승격한 것은 아니다.
 
+## Finding 6 — hosted-chatbot 문서가 퇴역한 portable 경로를 안내함
+
+Finalize self-review에서 `src/skills-chatbot/README.md`와 `src/skills-chatbot-runtime/README.md`가 여전히 퇴역한 `../skills/` profile을 portable coding-agent source로 안내하는 것을 발견했다.
+
+### 해결
+
+두 문서의 portable profile route를 repository root `.agentsmesh/skills/`로 교정했다. Runtime profile 문서에는 package-local `.docs/` convention이 AgentsMesh-managed portable Skill에 적용되지 않으며, 해당 maintainer surface는 `docs/skills/<skill-name>/`이 소유한다고 명시했다.
+
 # 검증 체계
 
 Permanent AgentsMesh PR gate는 pinned `agentsmesh@0.32.0`으로 다음을 실행한다.
@@ -167,6 +175,21 @@ Repository targeted test는 EXODUS regression을 포함해 다음을 검증한�
 - pinned AgentsMesh version과 generated lock version 일치
 
 이 검증은 구조·projection·drift·regeneration·round-trip·repository package contract를 증명한다. 실제 LLM trigger quality, task success, behavior parity, trace와 score는 증명하지 않는다.
+
+## 최종 재검증 결과
+
+Post-EXODUS hardening과 Finalize remediation을 모두 포함한 final head에서 다음 permanent checks가 다시 성공했다.
+
+- `Targeted PR Tests` — PASS
+- `AgentsMesh` — PASS
+  - pinned toolchain install — PASS
+  - `agentsmesh lint` — PASS
+  - `agentsmesh check` — PASS
+  - `agentsmesh generate --check` — PASS
+  - Copilot `import → generate → diff` — PASS
+  - Antigravity `import → generate → diff` — PASS
+
+최종 branch에는 migration-only write workflow가 남아 있지 않으며 permanent AgentsMesh workflow는 `contents: read`와 `persist-credentials: false`를 사용한다.
 
 # 최종 작업 흐름
 
@@ -199,4 +222,4 @@ Maintainer-only portable Skill 문서는 `docs/skills/<skill>/`에서 관리하�
 2. **Improvement Research** — wrapper/plugin 없이 package placement, regression, provenance, CI hardening과 reviewability를 강화하는 최소 설계를 선택했다.
 3. **Development** — maintainer surface 외부화, regression 강화, schema pin, checkout hardening, generated diff metadata를 구현하고 pinned generator로 target output과 lock을 재생성했다.
 
-최종 permanent gate가 모두 통과해야 이 보고서의 `PASS`를 유효한 완료 상태로 취급한다.
+Development Finalize 1에서는 stale hosted-chatbot portable route를 발견해 `RETRY`했고, Finalize 2에서 bounded remediation 후 final head의 permanent checks를 다시 통과해 **PASS**했다.
