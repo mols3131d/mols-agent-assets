@@ -39,6 +39,31 @@ policy가 필요하지 않은 reusable capability/context는 Skill이 기본 후
 
 특정 **work surface가 활성화된 동안에는 항상 필요하지만 다른 task에는 불필요한 baseline context**는 전역 Rule 대신 scope baseline Skill loader로 둘 수 있다. 이 경우 scope 내부의 넓은 activation은 의도된 coverage이며, 세부 activation과 review 규칙은 유형별 Skill reference가 소유한다.
 
+### Optional Asset Documentation
+
+개별 자산의 maintainer 문서는 **선택적 supporting resource**다. 모든 자산에 문서
+directory를 만들지 않는다.
+
+이 저장소에서 특정 자산의 maintainer-only 문서가 실제로 필요하면 다음 위치를 사용한다.
+
+```text
+docs/<asset-type>/<asset-name>/
+```
+
+예: `docs/skills/<skill-name>/`, `docs/agents/<agent-name>/`.
+
+다음 중 하나 이상이 실질적인 유지보수 가치를 만들 때만 생성한다.
+
+- source만으로 purpose, architecture 또는 중요한 책임 경계를 복구하기 어렵다.
+- refactor·단순화 과정에서 intent, invariant, non-goal이 훼손될 위험이 크다.
+- durable decision, trade-off 또는 recovery/migration 지식이 필요하다.
+- baseline을 별도 보존하면 향후 회귀·복구 비용이 의미 있게 낮아진다.
+
+단순하고 self-explanatory한 자산, 임시 작업 로그, 쉽게 재생성되는 상태에는 만들지
+않는다. Runtime-required 지식은 canonical/deployable 자산 surface가 소유한다.
+`docs/references/<asset-type>/`은 유형 전체가 공유하는 reference이며,
+`docs/<asset-type>/<asset-name>/`은 특정 자산 하나의 maintainer 지식이다.
+
 ## Type-Specific Standards
 
 공통 taxonomy와 유형별 repository-local extension을 분리한다.
@@ -70,6 +95,7 @@ Skill target profile과 package surface의 상세 규격은 Personal Skill Stand
 - cross-harness canonical Superset과 유형별 target projection model
 - `CHATBOT.md`와 repository-local fallback
 - directory/glob Rule projection convention
+- 필요할 때만 사용하는 `docs/<asset-type>/<asset-name>/` maintainer documentation convention
 - Skill-specific authoring/deployment convention
 
 Skill 확장의 상세 목록과 경계는
@@ -93,5 +119,6 @@ repository-local convention보다 우선한다.
 - 이미 다른 문서가 같은 의미를 authoritative하게 소유하는가?
 - 현재 요구가 있는가, 미래 확장을 예상한 것인가?
 - 별도 자산이나 abstraction이 실제 판단 복잡도를 줄이는가?
+- 자산별 maintainer 문서가 실제 훼손·복구 위험을 줄이는가, 아니면 문서 구조만 늘리는가?
 
 유형별 세부사항이면 `common/`에 넣지 않는다.

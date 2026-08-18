@@ -17,11 +17,10 @@ RESULTS = ROOT / "tests" / "results"
 REQUIRED_PACKAGE_FILES = {
     "SKILL.md",
     "README.md",
-    "docs/inspection-rules.md",
-    "docs/rule-sources.md",
-    "docs/report-format.md",
-    "docs/customization.md",
-    "docs/example-report.md",
+    "references/inspection-rules.md",
+    "references/rule-sources.md",
+    "references/report-format.md",
+    "references/example-report.md",
     "tests/README.md",
     "tests/run_tests.py",
 }
@@ -137,6 +136,7 @@ def test_package_structure() -> None:
     actual = {str(p.relative_to(ROOT)) for p in ROOT.rglob("*") if p.is_file()}
     missing = REQUIRED_PACKAGE_FILES - actual
     assert not missing, f"missing package files: {sorted(missing)}"
+    assert not any(part == ".docs" for p in ROOT.rglob("*") for part in p.relative_to(ROOT).parts)
 
 
 def test_skill_front_matter() -> None:
@@ -147,10 +147,10 @@ def test_skill_front_matter() -> None:
 
 def test_reference_integrity() -> None:
     skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
-    for rel in ["docs/inspection-rules.md", "docs/rule-sources.md", "docs/report-format.md", "docs/example-report.md"]:
+    for rel in ["references/inspection-rules.md", "references/rule-sources.md", "references/report-format.md", "references/example-report.md"]:
         assert rel in skill, f"SKILL.md does not reference {rel}"
         assert (ROOT / rel).exists(), f"referenced file missing: {rel}"
-    assert "tests/" in skill and "maintainer-facing" in skill
+    assert "tests/" in skill and "development-facing" in skill
 
 
 def test_no_coding_agent_defaults() -> None:
@@ -174,7 +174,7 @@ def test_read_only_contract() -> None:
 
 def test_rule_sources_contract() -> None:
     skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
-    doc = (ROOT / "docs" / "rule-sources.md").read_text(encoding="utf-8")
+    doc = (ROOT / "references" / "rule-sources.md").read_text(encoding="utf-8")
     assert "rule_sources: auto" in skill
     assert "ordered list" in skill
     assert "expands in place" in skill
@@ -183,14 +183,14 @@ def test_rule_sources_contract() -> None:
     forbidden_fixed_orders = [
         "policy documents always outrank",
         "configuration always outranks",
-        "specification always outranks",
+        "specification always outrank",
     ]
     for phrase in forbidden_fixed_orders:
         assert phrase not in (skill + doc).lower()
 
 
 def test_report_front_matter() -> None:
-    fm = parse_front_matter((ROOT / "docs" / "example-report.md").read_text(encoding="utf-8"))
+    fm = parse_front_matter((ROOT / "references" / "example-report.md").read_text(encoding="utf-8"))
     assert list(fm.keys()) == REQUIRED_REPORT_KEYS, list(fm.keys())
     assert fm["author"] == "<author>"
     assert fm["type"] == "artifact-consistency-report"
@@ -202,8 +202,8 @@ def test_report_front_matter() -> None:
 
 def test_report_schema_contract() -> None:
     skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
-    fmt = (ROOT / "docs" / "report-format.md").read_text(encoding="utf-8")
-    example = (ROOT / "docs" / "example-report.md").read_text(encoding="utf-8")
+    fmt = (ROOT / "references" / "report-format.md").read_text(encoding="utf-8")
+    example = (ROOT / "references" / "example-report.md").read_text(encoding="utf-8")
     for key in REQUIRED_REPORT_KEYS:
         assert f"{key}:" in fmt, f"report-format missing {key}"
     for key in REMOVED_REPORT_KEYS:
@@ -220,7 +220,7 @@ def test_report_schema_contract() -> None:
 
 
 def test_compact_report_example() -> None:
-    text = (ROOT / "docs" / "example-report.md").read_text(encoding="utf-8")
+    text = (ROOT / "references" / "example-report.md").read_text(encoding="utf-8")
     assert "| Result | `findings` |" in text
     assert "| Coverage | `bounded-complete` |" in text
     sections = text.split("\n### CON-")[1:]
@@ -305,8 +305,9 @@ def test_zip_shape() -> None:
             names = zf.namelist()
             assert f"{ROOT.name}/SKILL.md" in names
             assert f"{ROOT.name}/README.md" in names
-            assert f"{ROOT.name}/docs/rule-sources.md" in names
+            assert f"{ROOT.name}/references/rule-sources.md" in names
             assert any(n.startswith(f"{ROOT.name}/tests/scenarios/") for n in names)
+            assert not any("/.docs/" in n for n in names)
             assert all(not n.startswith("/") for n in names)
             assert zf.testzip() is None
     finally:
