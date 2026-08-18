@@ -6,6 +6,7 @@ targets:
 features:
   - rules
   - skills
+  - agents
 collaboration:
   strategy: merge
   lock_features: []
