@@ -26,7 +26,7 @@ All arguments are optional.
 
 ```yaml
 output_policy: auto       # auto | chat | persist | both
-rpwr_loops: {min: 4, max: 8}
+rpwr_loops: {min: 2, max: 10}
 acceptance_ledger: auto   # auto | on | off
 live_progress: auto       # auto | compact | quiet
 research_policy: auto     # auto | internal | external | mixed
@@ -262,7 +262,7 @@ Follow explicit user cadence/format overrides first.
 For a counted main loop:
 
 ```markdown
-**RPWR 3/8 — <material question or outcome>**
+**RPWR 3/10 — <material question or outcome>**
 - **Research** — <new evidence>
 - **Plan** — <decision or next approach>
 - **Work** — <meaningful work completed>
