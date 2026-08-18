@@ -1,0 +1,21 @@
+{
+  "id": "omission-zero-search-unresolved",
+  "input": {
+    "root_cause": "required-counterpart-absence",
+    "direct_evidence": false,
+    "counterevidence_checked": false,
+    "verified_findings": 0,
+    "unresolved_candidates": 1,
+    "material_blocker": false,
+    "primary_access": true,
+    "repository_wide_sampling": false,
+    "zero_result_only": true,
+    "bounded_absence": false
+  },
+  "expected": {
+    "gap_type": "omission",
+    "status": "unresolved",
+    "result": "incomplete",
+    "coverage": "partial"
+  }
+}

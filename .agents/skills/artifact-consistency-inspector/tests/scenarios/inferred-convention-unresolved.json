@@ -1,0 +1,8 @@
+{
+  "id": "inferred-convention-unresolved",
+  "rule_source_authority": "inferred-convention",
+  "mandatory_established": false,
+  "direct_evidence": true,
+  "counterevidence_checked": true,
+  "expected_status": "unresolved"
+}

@@ -1,0 +1,128 @@
+[
+  {
+    "id": "validate-chatgpt-skill",
+    "query": "이 ChatGPT Skill ZIP의 trigger와 references를 검증해줘",
+    "should_trigger": true,
+    "reason": "Bounded Skill package validation"
+  },
+  {
+    "id": "audit-agent-instructions",
+    "query": "이 agent instructions가 도구 권한과 충돌하는지 감사해줘",
+    "should_trigger": true,
+    "reason": "Agent instruction and tool contract audit"
+  },
+  {
+    "id": "test-prompt-routing",
+    "query": "이 prompt가 positive와 negative 요청을 올바르게 구분하는지 테스트해줘",
+    "should_trigger": true,
+    "reason": "Prompt routing validation"
+  },
+  {
+    "id": "review-subagent-handoffs",
+    "query": "lead와 subagent handoff 구조에 deadlock이나 context loss가 있는지 검토해줘",
+    "should_trigger": true,
+    "reason": "Multi-agent orchestration review"
+  },
+  {
+    "id": "stress-test-tool-schema",
+    "query": "이 MCP tool schema와 approval rule을 적대적으로 검증해줘",
+    "should_trigger": true,
+    "reason": "Tool and guardrail adversarial validation"
+  },
+  {
+    "id": "compare-skill-versions",
+    "query": "이전 Skill과 수정된 Skill의 validation delta를 확인해줘",
+    "should_trigger": true,
+    "reason": "Baseline re-validation"
+  },
+  {
+    "id": "build-eval-coverage",
+    "query": "이 agent 자산의 eval fixture coverage와 grader 품질을 검증해줘",
+    "should_trigger": true,
+    "reason": "Eval asset validation"
+  },
+  {
+    "id": "validate-hook-script",
+    "query": "이 hook script가 agent asset 계약과 exit code를 지키는지 검사해줘",
+    "should_trigger": true,
+    "reason": "Agent-supporting script validation"
+  },
+  {
+    "id": "ordinary-code-review",
+    "query": "이 Python 함수의 race condition을 코드 리뷰해줘",
+    "should_trigger": false,
+    "reason": "Product code review belongs to a code-review skill"
+  },
+  {
+    "id": "email-edit",
+    "query": "이 이메일을 더 친절하게 다듬어줘",
+    "should_trigger": false,
+    "reason": "Standalone prose editing"
+  },
+  {
+    "id": "document-summary",
+    "query": "이 설계 문서를 요약해줘",
+    "should_trigger": false,
+    "reason": "Summary without agent-asset validation"
+  },
+  {
+    "id": "open-research",
+    "query": "요즘 멀티 에이전트 프레임워크를 넓게 조사해줘",
+    "should_trigger": false,
+    "reason": "Open-ended research"
+  },
+  {
+    "id": "implement-agent",
+    "query": "고객 지원 agent를 새로 구현해줘",
+    "should_trigger": false,
+    "reason": "Implementation-only request without validation"
+  },
+  {
+    "id": "business-report",
+    "query": "우리 분기 매출 보고서를 검토해줘",
+    "should_trigger": false,
+    "reason": "Business artifact is not an agent asset"
+  },
+  {
+    "id": "prompt-copyedit",
+    "query": "이 프롬프트 문장을 더 자연스럽게 고쳐줘",
+    "should_trigger": false,
+    "reason": "Copyediting rather than behavior validation"
+  },
+  {
+    "id": "agent-explanation",
+    "query": "handoff가 뭔지 설명해줘",
+    "should_trigger": false,
+    "reason": "Explanation-only request"
+  },
+  {
+    "id": "instruction-bottleneck-review",
+    "query": "이 SKILL.md가 지침 병목으로 고성능 모델의 판단을 제한하는지 검증해줘",
+    "should_trigger": true,
+    "reason": "Agent Skill instruction-bottleneck validation"
+  },
+  {
+    "id": "context-noise-review",
+    "query": "이 agent package에서 컨텍스트 노이즈와 항상 로드되는 불필요한 references를 찾아줘",
+    "should_trigger": true,
+    "reason": "Agent asset context-noise validation"
+  },
+  {
+    "id": "human-debt-review",
+    "query": "이 subagent 자산의 인간 이해 부채와 owner 추적 비용을 검토해줘",
+    "should_trigger": true,
+    "reason": "Agent asset human-comprehension validation"
+  },
+  {
+    "id": "ordinary-policy-document-debt",
+    "query": "이 일반 사내 정책 문서의 인간 이해 부채를 검토해줘",
+    "should_trigger": false,
+    "reason": "Standalone document is not an agent-facing asset"
+  },
+  {
+    "id": "application-stability",
+    "query": "이 웹 애플리케이션의 안정성을 테스트해줘",
+    "should_trigger": false,
+    "reason": "Product runtime stability belongs to product testing"
+  }
+]
