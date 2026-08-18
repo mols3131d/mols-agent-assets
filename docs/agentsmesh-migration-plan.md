@@ -420,10 +420,10 @@ harness-native rules
 현재 `AGENTS.md`처럼 repository operation을 실제로 지배하는 파일을 generated artifact로 바꾸기 전에 다음을 완료한다.
 
 1. 현재 root instruction의 책임을 inventory한다.
-2. portable responsibility는 `.agentsmesh/rules/_root.md` 또는 scoped rule에 옮긴다.
-3. portable하지 않은 responsibility는 명시적 owner를 남긴다.
-4. generated root 파일이 기존 repository authority를 덮어쓰지 않는지 diff한다.
-5. root fallback / nested instruction behavior를 다시 검증한다.
+1. portable responsibility는 `.agentsmesh/rules/_root.md` 또는 scoped rule에 옮긴다.
+1. portable하지 않은 responsibility는 명시적 owner를 남긴다.
+1. generated root 파일이 기존 repository authority를 덮어쓰지 않는지 diff한다.
+1. root fallback / nested instruction behavior를 다시 검증한다.
 
 **Gate:** 설명되지 않은 semantic loss나 authority loss가 하나라도 있으면 Rules cutover를 금지한다.
 
