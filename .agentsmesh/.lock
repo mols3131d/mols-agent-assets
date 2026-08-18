@@ -1,7 +1,7 @@
 # Auto-generated. DO NOT EDIT MANUALLY.
 # Tracks the state of all config files for team conflict resolution.
 
-generated_at: 2026-08-18T19:30:13.502Z
+generated_at: 2026-08-18T19:42:36.782Z
 generated_by: unknown
 lib_version: 0.32.0
 checksums:
@@ -97,7 +97,7 @@ checksums:
   skills/mols-markdown-dashboard/examples/domain-dashboard.yml: sha256:744b0d8fb148c492705c926a11c3ee97b09fa1f8cfb29d77c3bbf355c233ac36
   skills/mols-markdown-dashboard/examples/project-dashboard.md: sha256:b8e82cfd3f2b19b34dff29ca1b53caeb5e7258baf364a9f132be2584000e3703
   skills/mols-markdown-dashboard/examples/project-dashboard.yml: sha256:c744e9b0062eebb602867b6dfa17683131bbcd26be6f79e0c6cea2c768014ace
-  skills/mols-markdown-dashboard/pyproject.toml: sha256:2b936511c3c7e605cc7aab67aaddd4f985f11db528ae17f50f905daaa82911d1
+  skills/mols-markdown-dashboard/pyproject.toml: sha256:6e59911b2f891590f0d9cd0bbf29b4317428db6a80541420fb869e415d5e29c6
   skills/mols-markdown-dashboard/references/dashboard-method.md: sha256:d8038925b3aaae820b19adde0f78ef6bff1396e82baa476410e559e0ec4f1609
   skills/mols-markdown-dashboard/references/dashboard-schema.md: sha256:3e68a34c9c0514e26e4a101e0a78327b8bb27d0adc25039a578f5329b3f6a57f
   skills/mols-markdown-dashboard/references/render-workflow.md: sha256:d8cb492051fe26a31e827f7806b0458ab4ea03498d3fff7555332318e0261aec
@@ -114,12 +114,6 @@ checksums:
   skills/mols-markdown-dashboard/src/mols_dashboard/render.py: sha256:4cca0213384f9f350cd95a59f5450405947129002a1443ff6e6ecf0d60cbc892
   skills/mols-markdown-dashboard/src/mols_dashboard/validate.py: sha256:3d04f5680fa9d0ea25050360c437b1b887422ad291db24d3710d530c4f61839f
   skills/mols-markdown-dashboard/templates/dashboard.md.j2: sha256:3a3f0fec15acf4fa50ed023176118ec09c40794abfc5d8cddea74ef206a862e0
-  skills/mols-markdown-dashboard/tests/test_cli.py: sha256:ad6ba679df488befcafc0dc90166cf368b6d8506468ab4d944247d407e1feb96
-  skills/mols-markdown-dashboard/tests/test_derive.py: sha256:f952bb59b589e8c160764886411661c0b8f8a85148eb7ba24c4f8302c406dfff
-  skills/mols-markdown-dashboard/tests/test_loader.py: sha256:dab1776bf789c523d6c16b3643793a6ba77fb587898bcbdef05e0a103353ba16
-  skills/mols-markdown-dashboard/tests/test_model.py: sha256:93c903ede11a739e112bbc25e63645a185cefb356e0cff24b7057ed720fe84cf
-  skills/mols-markdown-dashboard/tests/test_render.py: sha256:25e7482a9a3236ad110347b8c642c38ce26f6437203a9574b0e4ea3ce50a9c9e
-  skills/mols-markdown-dashboard/tests/test_validate.py: sha256:c32211cf81e40445d9efae7539488c8059da277f7a0e5698784baa21b748c3cc
   skills/mols-markdown-for-human/SKILL.md: sha256:70e3220aafd9be9f42551632b573a3de3f5cce6abda3c8a4becc0466b29f1080
   skills/mols-markdown-for-human/references/semantic-markers.md: sha256:c531451b7cb68beb75e7d3fb80d98f8c59edc416649b1904589fd77ecde264ce
   skills/mols-markdown-for-human/references/text-bars.md: sha256:9d5464504afb2c583c4b27c753311802d2eb951b0f0d5eb3494210bd50eae525
@@ -332,7 +326,7 @@ outputs:
   .github/skills/mols-markdown-dashboard/examples/domain-dashboard.yml: sha256:744b0d8fb148c492705c926a11c3ee97b09fa1f8cfb29d77c3bbf355c233ac36
   .github/skills/mols-markdown-dashboard/examples/project-dashboard.md: sha256:b8e82cfd3f2b19b34dff29ca1b53caeb5e7258baf364a9f132be2584000e3703
   .github/skills/mols-markdown-dashboard/examples/project-dashboard.yml: sha256:c744e9b0062eebb602867b6dfa17683131bbcd26be6f79e0c6cea2c768014ace
-  .github/skills/mols-markdown-dashboard/pyproject.toml: sha256:2b936511c3c7e605cc7aab67aaddd4f985f11db528ae17f50f905daaa82911d1
+  .github/skills/mols-markdown-dashboard/pyproject.toml: sha256:6e59911b2f891590f0d9cd0bbf29b4317428db6a80541420fb869e415d5e29c6
   .github/skills/mols-markdown-dashboard/references/dashboard-method.md: sha256:d8038925b3aaae820b19adde0f78ef6bff1396e82baa476410e559e0ec4f1609
   .github/skills/mols-markdown-dashboard/references/dashboard-schema.md: sha256:3e68a34c9c0514e26e4a101e0a78327b8bb27d0adc25039a578f5329b3f6a57f
   .github/skills/mols-markdown-dashboard/references/render-workflow.md: sha256:d8cb492051fe26a31e827f7806b0458ab4ea03498d3fff7555332318e0261aec
@@ -349,12 +343,6 @@ outputs:
   .github/skills/mols-markdown-dashboard/src/mols_dashboard/render.py: sha256:4cca0213384f9f350cd95a59f5450405947129002a1443ff6e6ecf0d60cbc892
   .github/skills/mols-markdown-dashboard/src/mols_dashboard/validate.py: sha256:3d04f5680fa9d0ea25050360c437b1b887422ad291db24d3710d530c4f61839f
   .github/skills/mols-markdown-dashboard/templates/dashboard.md.j2: sha256:3a3f0fec15acf4fa50ed023176118ec09c40794abfc5d8cddea74ef206a862e0
-  .github/skills/mols-markdown-dashboard/tests/test_cli.py: sha256:ad6ba679df488befcafc0dc90166cf368b6d8506468ab4d944247d407e1feb96
-  .github/skills/mols-markdown-dashboard/tests/test_derive.py: sha256:f952bb59b589e8c160764886411661c0b8f8a85148eb7ba24c4f8302c406dfff
-  .github/skills/mols-markdown-dashboard/tests/test_loader.py: sha256:dab1776bf789c523d6c16b3643793a6ba77fb587898bcbdef05e0a103353ba16
-  .github/skills/mols-markdown-dashboard/tests/test_model.py: sha256:93c903ede11a739e112bbc25e63645a185cefb356e0cff24b7057ed720fe84cf
-  .github/skills/mols-markdown-dashboard/tests/test_render.py: sha256:25e7482a9a3236ad110347b8c642c38ce26f6437203a9574b0e4ea3ce50a9c9e
-  .github/skills/mols-markdown-dashboard/tests/test_validate.py: sha256:c32211cf81e40445d9efae7539488c8059da277f7a0e5698784baa21b748c3cc
   .github/skills/mols-markdown-for-human/SKILL.md: sha256:8198281792353e2a0fe50f96d48351c0e442be168100dee8c33d8d2d29f5723a
   .github/skills/mols-markdown-for-human/references/semantic-markers.md: sha256:c531451b7cb68beb75e7d3fb80d98f8c59edc416649b1904589fd77ecde264ce
   .github/skills/mols-markdown-for-human/references/text-bars.md: sha256:9d5464504afb2c583c4b27c753311802d2eb951b0f0d5eb3494210bd50eae525
@@ -555,7 +543,7 @@ outputs:
   .agents/skills/mols-markdown-dashboard/examples/domain-dashboard.yml: sha256:744b0d8fb148c492705c926a11c3ee97b09fa1f8cfb29d77c3bbf355c233ac36
   .agents/skills/mols-markdown-dashboard/examples/project-dashboard.md: sha256:b8e82cfd3f2b19b34dff29ca1b53caeb5e7258baf364a9f132be2584000e3703
   .agents/skills/mols-markdown-dashboard/examples/project-dashboard.yml: sha256:c744e9b0062eebb602867b6dfa17683131bbcd26be6f79e0c6cea2c768014ace
-  .agents/skills/mols-markdown-dashboard/pyproject.toml: sha256:2b936511c3c7e605cc7aab67aaddd4f985f11db528ae17f50f905daaa82911d1
+  .agents/skills/mols-markdown-dashboard/pyproject.toml: sha256:6e59911b2f891590f0d9cd0bbf29b4317428db6a80541420fb869e415d5e29c6
   .agents/skills/mols-markdown-dashboard/references/dashboard-method.md: sha256:d8038925b3aaae820b19adde0f78ef6bff1396e82baa476410e559e0ec4f1609
   .agents/skills/mols-markdown-dashboard/references/dashboard-schema.md: sha256:3e68a34c9c0514e26e4a101e0a78327b8bb27d0adc25039a578f5329b3f6a57f
   .agents/skills/mols-markdown-dashboard/references/render-workflow.md: sha256:d8cb492051fe26a31e827f7806b0458ab4ea03498d3fff7555332318e0261aec
@@ -572,12 +560,6 @@ outputs:
   .agents/skills/mols-markdown-dashboard/src/mols_dashboard/render.py: sha256:4cca0213384f9f350cd95a59f5450405947129002a1443ff6e6ecf0d60cbc892
   .agents/skills/mols-markdown-dashboard/src/mols_dashboard/validate.py: sha256:3d04f5680fa9d0ea25050360c437b1b887422ad291db24d3710d530c4f61839f
   .agents/skills/mols-markdown-dashboard/templates/dashboard.md.j2: sha256:3a3f0fec15acf4fa50ed023176118ec09c40794abfc5d8cddea74ef206a862e0
-  .agents/skills/mols-markdown-dashboard/tests/test_cli.py: sha256:ad6ba679df488befcafc0dc90166cf368b6d8506468ab4d944247d407e1feb96
-  .agents/skills/mols-markdown-dashboard/tests/test_derive.py: sha256:f952bb59b589e8c160764886411661c0b8f8a85148eb7ba24c4f8302c406dfff
-  .agents/skills/mols-markdown-dashboard/tests/test_loader.py: sha256:dab1776bf789c523d6c16b3643793a6ba77fb587898bcbdef05e0a103353ba16
-  .agents/skills/mols-markdown-dashboard/tests/test_model.py: sha256:93c903ede11a739e112bbc25e63645a185cefb356e0cff24b7057ed720fe84cf
-  .agents/skills/mols-markdown-dashboard/tests/test_render.py: sha256:25e7482a9a3236ad110347b8c642c38ce26f6437203a9574b0e4ea3ce50a9c9e
-  .agents/skills/mols-markdown-dashboard/tests/test_validate.py: sha256:c32211cf81e40445d9efae7539488c8059da277f7a0e5698784baa21b748c3cc
   .agents/skills/mols-markdown-for-human/SKILL.md: sha256:8198281792353e2a0fe50f96d48351c0e442be168100dee8c33d8d2d29f5723a
   .agents/skills/mols-markdown-for-human/references/semantic-markers.md: sha256:c531451b7cb68beb75e7d3fb80d98f8c59edc416649b1904589fd77ecde264ce
   .agents/skills/mols-markdown-for-human/references/text-bars.md: sha256:9d5464504afb2c583c4b27c753311802d2eb951b0f0d5eb3494210bd50eae525
