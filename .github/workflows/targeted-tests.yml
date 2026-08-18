@@ -5,7 +5,17 @@ on:
     branches:
       - main
     paths:
+      - ".agentsmesh/rules/**"
       - ".agentsmesh/skills/**"
+      - "agentsmesh.yaml"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/copilot-instructions.md"
+      - ".github/skills/**"
+      - ".agents/rules/**"
+      - ".agents/skills/**"
+      - "evals/regression/agentsmesh-exodus.json"
+      - "tests/test_agentsmesh_exodus.py"
       - "src/scripts/**"
       - "scripts/**"
       - "tests/skills/**"
@@ -38,6 +48,10 @@ jobs:
           declare -A root_targets=()
           declare -A projects=()
 
+          add_exodus() {
+            root_targets["tests/test_agentsmesh_exodus.py"]=1
+          }
+
           add_skill() {
             local name="$1"
             local skill=".agentsmesh/skills/$name"
@@ -64,9 +78,17 @@ jobs:
               tests/scripts/conftest.py)
                 root_targets["tests/scripts"]=1
                 ;;
-              .agentsmesh/skills/*|tests/skills/*)
+              .agentsmesh/skills/*)
                 name="${path#*/skills/}"
                 add_skill "${name%%/*}"
+                add_exodus
+                ;;
+              tests/skills/*)
+                name="${path#*/skills/}"
+                add_skill "${name%%/*}"
+                ;;
+              .agentsmesh/rules/*|agentsmesh.yaml|package.json|package-lock.json|.github/copilot-instructions.md|.github/skills/*|.agents/rules/*|.agents/skills/*|evals/regression/agentsmesh-exodus.json|tests/test_agentsmesh_exodus.py)
+                add_exodus
                 ;;
               src/scripts/*|tests/scripts/*)
                 name="${path#*/scripts/}"
