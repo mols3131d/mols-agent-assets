@@ -1,17 +1,13 @@
-# Hosted Chatbot Compatibility (`src/`)
+# Custom Agent Assets (`src/`)
 
-`src/` keeps hosted-chatbot Agent Assets that are outside the current AgentsMesh coding-target surface.
+`src/` is reserved for repository-local **custom or non-standard Agent Assets** that intentionally remain outside the current AgentsMesh contract.
 
-Portable coding-agent Rules, Skills, and Agents belong in `.agentsmesh/`. Repository tooling belongs in root `scripts/`.
+Normal Rules, Skills, and Agents belong in `.agentsmesh/` whenever AgentsMesh can represent them. Repository tooling belongs in root `scripts/`.
 
 | Directory | Current role |
 | --- | --- |
-| `skills-chatbot/` | Self-contained single-file hosted-chatbot Skills |
-| `skills-chatbot-runtime/` | Bundled/runtime hosted-chatbot Skills |
-| `rules/` | Hosted-chatbot-specific Rules outside the current AgentsMesh contract |
+| `rules/` | Custom or target-specific Rules outside the current AgentsMesh contract |
 
-Do not recreate `src/skills/`, `src/agents/`, or `src/prompts/` as parallel portable sources. Use `.agentsmesh/` when the active coding-agent contract can own the asset.
+Do not recreate `src/skills/`, `src/skills-chatbot/`, `src/skills-chatbot-runtime/`, `src/agents/`, or `src/prompts/` as parallel sources. A Skill that can use the normal `<name>/SKILL.md` package belongs in `.agentsmesh/skills/`, whether it is single-file or bundled.
 
 The peer Agent Asset types remain **Rule, Skill, Prompt, and Agent**. Supporting resources and repository tooling are not peer asset types.
-
-The repository-local chatbot fallback `CHATBOT.md → AGENTS.md → README.md` remains a separate hosted-chatbot convention documented under `docs/references/rules/`.
