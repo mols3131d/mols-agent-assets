@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate and package a skill runtime payload, excluding non-runtime dot directories."""
+"""Validate and package a Skill runtime payload with explicit non-runtime exclusions."""
 
 from __future__ import annotations
 
@@ -9,13 +9,27 @@ import sys
 import zipfile
 from pathlib import Path
 
-EXCLUDED_PARTS = {"__pycache__", ".pytest_cache", ".mypy_cache", ".git"}
+EXCLUDED_DIRS = {
+    ".docs",
+    ".evals",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".svn",
+    ".tests",
+    ".venv",
+    "__pycache__",
+    "evals",
+    "node_modules",
+}
+EXCLUDED_FILES = {".DS_Store"}
 EXCLUDED_SUFFIXES = {".pyc", ".pyo"}
 
 
-def in_non_runtime_dot_dir(path: Path, root: Path) -> bool:
+def in_excluded_dir(path: Path, root: Path) -> bool:
     relative = path.relative_to(root)
-    return any(part.startswith(".") for part in relative.parts[:-1])
+    return any(part in EXCLUDED_DIRS for part in relative.parts[:-1])
 
 
 def main() -> int:
@@ -36,10 +50,10 @@ def main() -> int:
         for path in sorted(root.rglob("*")):
             if path.is_dir():
                 continue
-            if in_non_runtime_dot_dir(path, root):
+            if in_excluded_dir(path, root):
                 continue
             relative_to_package = path.relative_to(root)
-            if any(part in EXCLUDED_PARTS for part in relative_to_package.parts):
+            if path.name in EXCLUDED_FILES:
                 continue
             if path.suffix in EXCLUDED_SUFFIXES or path == archive:
                 continue
