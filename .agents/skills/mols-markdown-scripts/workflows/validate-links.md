@@ -14,4 +14,4 @@ Verify internal anchor and reference links in markdown files.
 - Call `scripts/validate_links.py` to check links.
 - If `rumdl` CLI tool missing:
   1. Run using `uvx --with rumdl rumdl check` or `uv run rumdl check` as custom executable.
-  2. If CLI run fails, delegate to manual regex search: extract targets from `\[.*?\]\((.*?)\)`, manually check target validity (file existence or heading anchors in same file).
+  1. If CLI run fails, delegate to manual regex search: extract targets from `\[.*?\]\((.*?)\)`, manually check target validity (file existence or heading anchors in same file).

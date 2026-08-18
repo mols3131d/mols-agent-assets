@@ -14,15 +14,15 @@ files. Do not edit generated index rows manually.
 
 1. Inspect the existing index and target project conventions first:
    output path, format, selected fields, grouping, depth, and validation flags.
-2. Run the same `scripts/generate_index.py` command used to create the index.
+1. Run the same `scripts/generate_index.py` command used to create the index.
    Change only the target directory or options required by the requested update.
-3. If the original command is unavailable, infer options from the existing index
+1. If the original command is unavailable, infer options from the existing index
    and project convention. Prefer the existing output path and format.
-4. Use `--output <existing-index-path>` to replace the generated index after
+1. Use `--output <existing-index-path>` to replace the generated index after
    checking the target path.
-5. Use `--require-fields` and `--unique-fields` when the target convention
+1. Use `--require-fields` and `--unique-fields` when the target convention
    requires complete and unique frontmatter values.
-6. Review the diff and run the Markdown formatter only when the selected format
+1. Review the diff and run the Markdown formatter only when the selected format
    is Markdown.
 
 ## Recommended command shape

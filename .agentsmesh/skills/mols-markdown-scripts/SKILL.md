@@ -16,13 +16,13 @@ Format and validate Markdown files.
 ## Routing
 
 1. Read `workflows/INDEX.csv` once.
-2. Identify requested outcome, operation, object, constraints.
-3. Compare the request with each workflow `description`.
-4. Select the minimum workflow set covering the request.
-5. Resolve ambiguity with one targeted question.
-6. Resolve each selected `name` as `workflows/<name>.md`.
-7. Load resources only when selected workflow requires.
-8. Run workflow validation before completion.
+1. Identify requested outcome, operation, object, constraints.
+1. Compare the request with each workflow `description`.
+1. Select the minimum workflow set covering the request.
+1. Resolve ambiguity with one targeted question.
+1. Resolve each selected `name` as `workflows/<name>.md`.
+1. Load resources only when selected workflow requires.
+1. Run workflow validation before completion.
 
 Route by semantic intent, not keyword. Do not scan `workflows/`.
 

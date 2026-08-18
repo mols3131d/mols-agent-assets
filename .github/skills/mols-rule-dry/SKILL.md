@@ -16,10 +16,10 @@ Set the write boundary from the request. Read outside that boundary only when ne
 Apply DRY in this order:
 
 1. **Application correctness**: the rule remains available or applied in every intended situation and no unintended situation gains it.
-2. **Source of truth**: preserve established authority and required projections.
-3. **Single ownership**: canonicalize equivalent peer copies when it is safe to do so.
-4. **Minimum context**: avoid repeated rule context where the runtime already provides the same guidance.
-5. **Simple structure**: do not add abstraction merely to reduce repetition.
+1. **Source of truth**: preserve established authority and required projections.
+1. **Single ownership**: canonicalize equivalent peer copies when it is safe to do so.
+1. **Minimum context**: avoid repeated rule context where the runtime already provides the same guidance.
+1. **Simple structure**: do not add abstraction merely to reduce repetition.
 
 Never trade policy, application correctness, or established source authority for DRY.
 
@@ -31,19 +31,19 @@ Inspect rule-bearing files in the write boundary and any external rule context n
 
 ### 2. Resolve Application
 
-Determine when each candidate currently applies and when it is intended to apply before comparing or moving it. Read [application.md](./references/application.md) when target boundaries, attachment conditions, overlap, or runtime representability must be decided.
+Determine when each candidate currently applies and when it is intended to apply before comparing or moving it. Read [application.md](references/application.md) when target boundaries, attachment conditions, overlap, or runtime representability must be decided.
 
 ### 3. Decide Duplication
 
-Compare candidates only after their application conditions are known. Read [duplication.md](./references/duplication.md) when deciding semantic equivalence, inherited restatement, repeated requirements across scopes or attachment modes, or genuine exception intent.
+Compare candidates only after their application conditions are known. Read [duplication.md](references/duplication.md) when deciding semantic equivalence, inherited restatement, repeated requirements across scopes or attachment modes, or genuine exception intent.
 
 ### 4. Resolve Ownership
 
-Determine whether an authoritative source is already established for confirmed repeated requirements. Preserve established authority; when only equivalent editable peer copies exist, decide whether they are eligible for canonicalization. Read [ownership.md](./references/ownership.md) when authority, peer copies, or generated and derived copies are involved.
+Determine whether an authoritative source is already established for confirmed repeated requirements. Preserve established authority; when only equivalent editable peer copies exist, decide whether they are eligible for canonicalization. Read [ownership.md](references/ownership.md) when authority, peer copies, or generated and derived copies are involved.
 
 ### 5. Choose Placement
 
-Choose the native owner or owners after application and ownership status are known. Read [placement.md](./references/placement.md) to map the resolved application to the project's supported rule containers and metadata while preserving precedence.
+Choose the native owner or owners after application and ownership status are known. Read [placement.md](references/placement.md) to map the resolved application to the project's supported rule containers and metadata while preserving precedence.
 
 ### 6. Apply and Verify
 

@@ -15,12 +15,12 @@ Phase 0 결과, AgentsMesh 대이주는 **착수 가능**하다.
 가장 중요한 발견은 다음과 같다.
 
 1. 일반 portable Skill은 12개이며, 그중 `rulesync-agent-assets`는 이주 대상이 아니라 최종적으로 retire/replace할 dependency다.
-2. `src/rules/`의 두 Rule도 성격이 다르다. `language-ko`는 portable 후보지만 `chatbot-repo-skill-routing`은 hosted chatbot 전용이다.
-3. custom Agent 3개는 VS Code 전용 front matter를 사용하며 AgentsMesh canonical Agent schema와 직접 일치하지 않는다.
-4. GitHub Copilot과 Antigravity는 현재 가장 우선적인 coding-harness target이지만 capability parity가 없다. 특히 Antigravity는 project scope에서 Agents와 MCP를 지원하지 않는다.
-5. `src/skills/**` 경로가 CI, index generator, docs와 tests에 직접 박혀 있으므로 source 이동 전에 repository tooling을 함께 바꿔야 한다.
-6. root shared `/evals`는 아직 없지만 `mols-agent-asset-validator`에는 package-local trigger/behavior/adversarial eval corpus가 이미 있다. 이것은 이동하지 않는다.
-7. `tests/skills/`와 `pyproject.toml`에는 이미 사라진 Skill을 가리키는 legacy verification debt가 있다.
+1. `src/rules/`의 두 Rule도 성격이 다르다. `language-ko`는 portable 후보지만 `chatbot-repo-skill-routing`은 hosted chatbot 전용이다.
+1. custom Agent 3개는 VS Code 전용 front matter를 사용하며 AgentsMesh canonical Agent schema와 직접 일치하지 않는다.
+1. GitHub Copilot과 Antigravity는 현재 가장 우선적인 coding-harness target이지만 capability parity가 없다. 특히 Antigravity는 project scope에서 Agents와 MCP를 지원하지 않는다.
+1. `src/skills/**` 경로가 CI, index generator, docs와 tests에 직접 박혀 있으므로 source 이동 전에 repository tooling을 함께 바꿔야 한다.
+1. root shared `/evals`는 아직 없지만 `mols-agent-asset-validator`에는 package-local trigger/behavior/adversarial eval corpus가 이미 있다. 이것은 이동하지 않는다.
+1. `tests/skills/`와 `pyproject.toml`에는 이미 사라진 Skill을 가리키는 legacy verification debt가 있다.
 
 따라서 EXODUS는 **portable Rules/Skills부터 시작하고, Agents와 hosted chatbot profiles는 별도 경계로 취급**한다.
 
@@ -353,9 +353,9 @@ evals/
 Initial priority:
 
 1. Skill routing descriptions that are relied on by repository-wide discovery.
-2. Rule activation/scope that changes when converted to AgentsMesh front matter.
-3. Known failure cases discovered during normalization/import.
-4. Critical Agent behavior only when that Agent reaches its own migration phase.
+1. Rule activation/scope that changes when converted to AgentsMesh front matter.
+1. Known failure cases discovered during normalization/import.
+1. Critical Agent behavior only when that Agent reaches its own migration phase.
 
 Behavioral and adversarial suites expand only where deterministic checks cannot protect the contract.
 
@@ -478,43 +478,43 @@ Phase 1 should proceed in this order.
    - keep original `src/` as authority;
    - do not run generation from `_legacy`;
    - record the source tree SHA and cleanup condition.
-2. **Resolve install contract**
+1. **Resolve install contract**
    - verify current AgentsMesh release/version at implementation time;
    - choose repository-local exact pin;
    - record the install command and lock strategy;
    - do not use implicit `latest`.
-3. **Initialize canonical surface**
+1. **Initialize canonical surface**
    - introduce `agentsmesh.yaml`;
    - create canonical `_root.md` only after root responsibility mapping;
    - keep Lessons, remote packs, plugins and complex hooks disabled.
-4. **Configure target scope**
+1. **Configure target scope**
    - Tier A: Copilot + Antigravity;
    - Tier B only when explicitly generated;
    - enable only needed features.
-5. **Import or stage existing rules**
+1. **Import or stage existing rules**
    - compare existing native/project rules;
    - do not bulk-import chatbot-only routing into coding targets;
    - preserve root authority.
-6. **Run deterministic AgentsMesh baseline**
+1. **Run deterministic AgentsMesh baseline**
    - `lint`;
    - `generate`;
    - `diff`;
    - `check`;
    - `generate --check`.
-7. **Classify normalization differences**
+1. **Classify normalization differences**
    - expected representation change;
    - semantic loss;
    - target limitation;
    - repository bug;
    - AgentsMesh bug.
-8. **Establish minimum shared Eval baseline**
+1. **Establish minimum shared Eval baseline**
    - routing/regression cases for the first Rule/Skill cutover;
    - no expensive model suite yet.
-9. **Prepare tooling cutover**
+1. **Prepare tooling cutover**
    - update targeted test path mapping;
    - update Skill index generator/workflow;
    - resolve stale `pyproject.toml` and orphan tests.
-10. **Only then begin canonical Rule cutover**
+1. **Only then begin canonical Rule cutover**
    - start with `language-ko`;
    - keep chatbot routing separate;
    - do not delete legacy source until its gate passes.

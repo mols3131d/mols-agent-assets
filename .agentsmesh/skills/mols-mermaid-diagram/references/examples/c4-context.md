@@ -52,7 +52,6 @@ C4Context
     Rel(recovery, lifecycle, "Returns recovery result")
 ```
 
-
 ## Advanced: Component And Dynamic Views
 
 C4는 Context, Container, Component, Dynamic, Deployment의 다섯 view를 지원하지만 experimental이다. 같은 질문을 여러 view에 반복하지 않고 zoom level을 명확히 한다.

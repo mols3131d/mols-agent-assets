@@ -219,7 +219,7 @@ Maintainer-only portable Skill 문서는 `docs/skills/<skill>/`에서 관리하�
 세 캠페인으로 수행했다.
 
 1. **Validation** — authority, upstream parser behavior, generated package surface, CI, round-trip, reproducibility와 완료 주장을 재검증했다. 초기 verdict는 `Revise`였다.
-2. **Improvement Research** — wrapper/plugin 없이 package placement, regression, provenance, CI hardening과 reviewability를 강화하는 최소 설계를 선택했다.
-3. **Development** — maintainer surface 외부화, regression 강화, schema pin, checkout hardening, generated diff metadata를 구현하고 pinned generator로 target output과 lock을 재생성했다.
+1. **Improvement Research** — wrapper/plugin 없이 package placement, regression, provenance, CI hardening과 reviewability를 강화하는 최소 설계를 선택했다.
+1. **Development** — maintainer surface 외부화, regression 강화, schema pin, checkout hardening, generated diff metadata를 구현하고 pinned generator로 target output과 lock을 재생성했다.
 
 Development Finalize 1에서는 stale hosted-chatbot portable route를 발견해 `RETRY`했고, Finalize 2에서 bounded remediation 후 final head의 permanent checks를 다시 통과해 **PASS**했다.

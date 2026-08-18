@@ -10,8 +10,8 @@
 ## 컨벤션 탐색 순서
 
 1. **설정 파일 검사**: `.gitmessage`, `.github/commit_template.md`, `CONTRIBUTING.md`, `CONVENTIONS.md`, `AGENTS.md`, `CLAUDE.md`, `.cursorrules` 등
-2. **커밋 히스토리 검사**: `git log -n 20 --oneline` 분석 (언어, 프리픽스 패턴, 대소문자 규칙 파악)
-3. **기본 규격 Fallback**: `references/conventional-commits.md` 참조
+1. **커밋 히스토리 검사**: `git log -n 20 --oneline` 분석 (언어, 프리픽스 패턴, 대소문자 규칙 파악)
+1. **기본 규격 Fallback**: `references/conventional-commits.md` 참조
 
 ## 디렉터리 구조
 

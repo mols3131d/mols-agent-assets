@@ -17,10 +17,10 @@ Set the write boundary from the request. Read outside that boundary only when ne
 Apply DRY in this order:
 
 1. **Application correctness**: the rule remains available or applied in every intended situation and no unintended situation gains it.
-2. **Source of truth**: preserve established authority and required projections.
-3. **Single ownership**: canonicalize equivalent peer copies when it is safe to do so.
-4. **Minimum context**: avoid repeated rule context where the runtime already provides the same guidance.
-5. **Simple structure**: do not add abstraction merely to reduce repetition.
+1. **Source of truth**: preserve established authority and required projections.
+1. **Single ownership**: canonicalize equivalent peer copies when it is safe to do so.
+1. **Minimum context**: avoid repeated rule context where the runtime already provides the same guidance.
+1. **Simple structure**: do not add abstraction merely to reduce repetition.
 
 Never trade policy, application correctness, or established source authority for DRY.
 

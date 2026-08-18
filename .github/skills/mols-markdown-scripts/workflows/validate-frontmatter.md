@@ -20,4 +20,4 @@ Validate markdown YAML frontmatter structure and schema.
 - Exit code `0` means pass, `1` validation failure, and `2` execution/schema error.
 - If `pyyaml` dependency missing:
   1. Try install via `pip install pyyaml` or `uv pip install pyyaml`.
-  2. If install fails, delegate to manual parsing: read content, extract lines between first `---` markers, parse key-value lines via string split or regex, validate types/constraints manually.
+  1. If install fails, delegate to manual parsing: read content, extract lines between first `---` markers, parse key-value lines via string split or regex, validate types/constraints manually.

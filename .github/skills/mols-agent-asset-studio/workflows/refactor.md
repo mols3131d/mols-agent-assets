@@ -2,7 +2,7 @@
 
 Use this workflow when restructuring an existing agent asset is itself the primary
 objective. Small structural edits that merely support another improvement stay in
-[./improve.md](./improve.md).
+[./improve.md](improve.md).
 
 ## Orient
 
@@ -39,7 +39,7 @@ Check for duplicated or orphaned responsibility, unnecessary indirection, stale
 paths, hidden sibling dependencies, and taxonomy without a concrete loading or
 ownership benefit.
 
-Use [./review.md](./review.md) or [./validate.md](./validate.md) when required. Static
+Use [./review.md](review.md) or [./validate.md](validate.md) when required. Static
 inspection and deterministic validation do not prove runtime behavioral parity.
 
 Report the structural problem addressed, structure changed, invariants preserved

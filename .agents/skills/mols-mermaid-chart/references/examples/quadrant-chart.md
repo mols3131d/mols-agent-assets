@@ -46,7 +46,6 @@ quadrantChart
 
 개선된 Quadrant chart는 effort와 impact처럼 비교 가능한 두 축만 사용한다. 진행 상태, owner, deadline을 좌표에 숨기지 말고 별도 table이나 semantic marker로 제공한다.
 
-
 ## Intermediate: Explicit Coordinate Scale
 
 Quadrant 좌표는 0~1 normalized 값이다. source score를 normalization한 경우 계산식을 문서에 남긴다.

@@ -45,8 +45,8 @@ Control skill execution by combining option flags or natural language expression
 - **Mechanism**: `vcs-git-commit` prioritizes template structure and comment rules defined in `.gitmessage` at the repository root.
 - **How to Customise**:
   1. Edit `.gitmessage` in the repository root (template format, allowed commit types, line caps, or comment guidelines).
-  2. The agent automatically detects and applies updated `.gitmessage` rules on subsequent commit requests.
-  3. If `.gitmessage` does not exist, the fallback specification (`references/default-gitmessage.md`) applies.
+  1. The agent automatically detects and applies updated `.gitmessage` rules on subsequent commit requests.
+  1. If `.gitmessage` does not exist, the fallback specification (`references/default-gitmessage.md`) applies.
 
 ---
 
@@ -54,5 +54,5 @@ Control skill execution by combining option flags or natural language expression
 
 1. **Custom Commit Message Override**:
    - Prompt `"feat: implement login API"` overrides convention discovery and applies the custom message directly.
-2. **Handling Pre-commit Hook Failures**:
+1. **Handling Pre-commit Hook Failures**:
    - Default mode stops and briefs hook error output. Request `"Fix hook error and re-commit --autopilot"` to auto-repair and complete commit.

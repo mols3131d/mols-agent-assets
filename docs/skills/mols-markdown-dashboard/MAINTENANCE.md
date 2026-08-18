@@ -3,12 +3,12 @@
 ## Change Protocol
 
 1. `baseline/DIRECTIVE.md`를 읽고 관련 Requirement와 Decision ID를 식별한다.
-2. 변경이 기존 directive의 본래 목적·요구사항·결정사항을 바꾸면 코드보다 baseline directive를 먼저 수정한다.
-3. Example YAML, rendered Markdown와 tests를 함께 수정한다.
-4. Project와 domain 예제를 모두 렌더링한다.
-5. 3개 핵심 표의 열과 의미가 유지되는지 확인한다.
-6. 통합 품질 게이트를 실행한다.
-7. 변경 후 `REVIEW-LOOPS.md` 또는 별도 review artifact에 판단을 남긴다.
+1. 변경이 기존 directive의 본래 목적·요구사항·결정사항을 바꾸면 코드보다 baseline directive를 먼저 수정한다.
+1. Example YAML, rendered Markdown와 tests를 함께 수정한다.
+1. Project와 domain 예제를 모두 렌더링한다.
+1. 3개 핵심 표의 열과 의미가 유지되는지 확인한다.
+1. 통합 품질 게이트를 실행한다.
+1. 변경 후 `REVIEW-LOOPS.md` 또는 별도 review artifact에 판단을 남긴다.
 
 이 디렉터리와 `baseline/`은 source maintenance/recovery용 non-runtime surface다. Runtime 동작이 이 문서를 읽어야만 정상 작동하도록 만들지 않는다.
 

@@ -26,9 +26,9 @@ without responsibility or trigger collision.
 Use the first available authority:
 
 1. explicit project policy;
-2. neighboring accepted convention;
-3. target-runtime convention;
-4. lowercase kebab-case fallback based on responsibility.
+1. neighboring accepted convention;
+1. target-runtime convention;
+1. lowercase kebab-case fallback based on responsibility.
 
 Prefer the shortest name that still distinguishes responsibility. Never rename an
 accepted asset without authority and reference updates.

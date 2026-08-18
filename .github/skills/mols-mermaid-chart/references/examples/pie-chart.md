@@ -24,7 +24,6 @@ pie showData title Incident outcomes
 
 개선된 pie chart는 모든 slice가 같은 모집단과 기준 시점을 공유하도록 한다. 비율의 합이 전체를 구성하지 않거나 category가 중복되면 pie 대신 table 또는 bar chart를 사용한다.
 
-
 ## Advanced: Donut, Legend Position And Highlight
 
 Mermaid 11.16.0 이상에서는 pie config로 donut hole, legend 위치와 특정 slice 강조를 지정할 수 있다. active theme은 그대로 유지한다.

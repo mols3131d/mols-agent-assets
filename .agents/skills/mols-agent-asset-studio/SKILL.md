@@ -12,12 +12,12 @@ the request and load supporting references only when needed.
 
 | Need | Workflow |
 | --- | --- |
-| Create a new agent asset | [create.md](./workflows/create.md) |
-| Improve an existing asset | [improve.md](./workflows/improve.md) |
-| Refactor structure as the primary objective | [refactor.md](./workflows/refactor.md) |
-| Tune an existing Skill to a specific project | [tune.md](./workflows/tune.md) |
-| Perform read-only semantic review | [review.md](./workflows/review.md) |
-| Run deterministic validation | [validate.md](./workflows/validate.md) |
+| Create a new agent asset | [create.md](workflows/create.md) |
+| Improve an existing asset | [improve.md](workflows/improve.md) |
+| Refactor structure as the primary objective | [refactor.md](workflows/refactor.md) |
+| Tune an existing Skill to a specific project | [tune.md](workflows/tune.md) |
+| Perform read-only semantic review | [review.md](workflows/review.md) |
+| Run deterministic validation | [validate.md](workflows/validate.md) |
 
 Route directly when one row matches. If the request spans workflows, compose only
 the necessary ones. A common authoring chain is `Create/Improve/Refactor/Tune ->
@@ -34,12 +34,12 @@ only the references it requires.
 
 | Need | Reference |
 | --- | --- |
-| Asset type, naming, portability, project conventions | [design.md](./references/design.md) |
-| Preservation, replacement, consolidation, recovery | [change-safety.md](./references/change-safety.md) |
-| Deeper or adversarial semantic review | [review.md](./references/review.md) |
-| Validation planning and evidence | [validation.md](./references/validation.md) |
-| External sources, executable content, provenance | [security-provenance.md](./references/security-provenance.md) |
-| Deterministic helpers and runtime profiles | [operations.md](./references/operations.md) |
+| Asset type, naming, portability, project conventions | [design.md](references/design.md) |
+| Preservation, replacement, consolidation, recovery | [change-safety.md](references/change-safety.md) |
+| Deeper or adversarial semantic review | [review.md](references/review.md) |
+| Validation planning and evidence | [validation.md](references/validation.md) |
+| External sources, executable content, provenance | [security-provenance.md](references/security-provenance.md) |
+| Deterministic helpers and runtime profiles | [operations.md](references/operations.md) |
 
 Scripts and templates are support resources, not extra workflow stages.
 

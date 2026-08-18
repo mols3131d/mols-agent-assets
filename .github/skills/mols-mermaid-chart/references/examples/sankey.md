@@ -28,7 +28,6 @@ sankey
 
 개선된 Sankey는 node 이름을 source, processing stage, destination처럼 같은 의미 수준으로 유지한다. 관계만 보여주고 양이 없다면 Sankey를 사용하지 않고 flowchart나 diagram으로 바꾼다.
 
-
 ## Intermediate: Quoted CSV Fields
 
 comma가 포함된 label은 CSV quoting을 사용한다.
