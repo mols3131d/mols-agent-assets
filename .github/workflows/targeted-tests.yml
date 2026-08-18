@@ -43,6 +43,8 @@ jobs:
     steps:
       - name: Checkout PR merge
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
 
       - name: Select affected tests
         id: scope
