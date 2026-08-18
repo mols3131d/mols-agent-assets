@@ -55,6 +55,9 @@ Count a loop only when its cycle produces a material understanding, decision, wo
 validation, risk, or confidence delta. A no-change loop may count when a distinct,
 substantive investigation or validation closes important uncertainty.
 
+Name or summarize loops by the material question, risk, or uncertainty they resolve,
+not by the file group or mechanical work unit they happened to touch.
+
 Do not count:
 
 - one isolated edit, fix, finding, file change, or subtask;
@@ -72,6 +75,46 @@ fake loops after further execution has become impossible or unauthorized.
 
 Do not expose private chain-of-thought. Report observable evidence, decisions, work,
 validation, and outcomes only.
+
+## Phase Discipline
+
+Phase progression is monotonic:
+
+`Prepare → Improve → Finalize`
+
+Do not return to an earlier phase for ordinary remediation. Once Finalize begins, a
+material issue is handled by the current Finalize loop's `Resolve`, or by the second
+Finalize loop after `RETRY`.
+
+If Finalize discovers that a core assumption failed so materially that broad Research,
+replanning, or substantial reshaping is required, return `BLOCKED` rather than
+silently reopening Improve. The result may become the input to a new RPWR run.
+
+This rule keeps phase counts auditable and prevents finishing work from being relabeled
+as extra Improve loops.
+
+## Acceptance Ledger
+
+When the task has multiple consequential completion conditions, explicit gates, or a
+high cost of false completion, Prepare creates a compact **acceptance ledger**. Do not
+create one for a simple task with one obvious success condition.
+
+Track only material gates:
+
+```text
+Gate | Evidence needed | Status
+```
+
+Use statuses such as `pending`, `pass`, `fail`, `accepted-limit`, or `not-applicable`.
+The ledger is working state, not another deliverable or loop.
+
+- **Prepare** establishes the initial gates and evidence requirements.
+- **Improve** updates the ledger when work or new evidence changes a gate.
+- **Finalize** checks every material gate before `PASS`.
+
+If a new material gate emerges after Prepare, add it explicitly instead of relying on
+memory. Never mark a gate passed from intended work or inferred success; require the
+evidence named by that gate.
 
 ## Phase 1 — Prepare
 
@@ -112,13 +155,17 @@ execution: useful tools and evidence surfaces, initial Research scope, assumptio
 acceptance conditions, Review emphasis, validation approach, transition signals, and
 report delivery or persistence when context justifies it.
 
+If the task warrants an acceptance ledger, materialize it here with the evidence needed
+for each gate. Prefer observable checks over vague success language.
+
 Keep the strategy adaptive. Do not script every future loop or route around governing
 instructions merely because a tool makes it possible.
 
 ### Verify
 
 Verify that the strategy is executable, proportionate, authorized, and free of material
-unverified dependencies.
+unverified dependencies. When an acceptance ledger exists, verify that every known
+material gate has an evidence path or an explicit non-blocking limitation.
 
 End each Prepare loop with a readiness result:
 
@@ -165,6 +212,9 @@ Perform a meaningful batch of task-appropriate work against the plan and evidenc
 Preserve confirmed constraints unless new evidence justifies changing them. Do not
 claim work or validation that was not performed.
 
+When work or evidence changes a material acceptance gate, update the ledger in the same
+loop. Do not postpone known gate state until Finalize.
+
 ### Review
 
 Use this default cadence by **Improve loop number**:
@@ -178,10 +228,15 @@ Use this default cadence by **Improve loop number**:
 The cadence is a default, not a ritual. Override it when current risk clearly requires
 a different perspective; do not force irrelevant review dimensions.
 
-After four genuine loops, move to Finalize when the result is substantially shaped and
-remaining work is mainly finishing or validation. Otherwise continue while a material
-delta remains, up to eight loops. At eight, carry unresolved material findings into
-Finalize.
+A concrete failure or correction becomes evidence for the next unresolved question.
+Do not merely repeat the failed method; change the plan, evidence, or execution approach
+when the same failure recurs.
+
+After four genuine loops, move to Finalize when the result is substantially shaped,
+no known issue still requires broad Improve-phase reshaping, and remaining work is
+mainly completion or validation. Otherwise continue while a material delta remains, up
+to eight loops. At eight, carry unresolved material findings into Finalize without
+pretending they disappeared.
 
 ## Phase 3 — Finalize
 
@@ -193,15 +248,17 @@ Finalize loop:
 
 ### Inspect
 
-Inspect acceptance conditions, unresolved material findings, recent changes,
-validation gaps, regressions, residual risks, and required phase-loop integrity. Look
-only where an issue could still materially affect completion.
+Inspect acceptance conditions, the acceptance ledger when present, unresolved material
+findings, recent changes, validation gaps, regressions, residual risks, and required
+phase-loop integrity. Look only where an issue could still materially affect completion.
 
 ### Resolve
 
 Correct, complete, revert, or explicitly accept what materially blocks trustworthy
-completion. Reject new scope unless a core assumption failed or completion would
-otherwise be misleading.
+completion. Keep remediation bounded to finishing the shaped result. Reject new scope.
+
+If the issue requires broad new Research, replanning, or substantial reshaping rather
+than bounded completion work, do not return to Improve; the Gate must become `BLOCKED`.
 
 ### Validate
 
@@ -209,20 +266,26 @@ Perform the smallest task-appropriate checks that can materially change confiden
 completion. Validate the result and final changes against important requirements,
 evidence, regression risk, residual risk, and checks claimed by the work.
 
+When an acceptance ledger exists, validate its material gates against their named
+evidence. A `pending` or `fail` gate cannot be silently treated as passed.
+
 ### Gate
 
 Return one gate result:
 
 - **PASS** — completion is trustworthy, required genuine-loop minima were satisfied,
-  and any remaining limitations are non-blocking and documented.
-- **RETRY** — an actionable material issue remains and a second Finalize loop can
-  meaningfully address it.
-- **BLOCKED** — trustworthy completion cannot be reached with the remaining loop
-  budget, evidence, capability, or authority.
+  all material acceptance gates are passed or explicitly accepted as non-blocking, and
+  remaining limitations are documented.
+- **RETRY** — an actionable material issue remains and one more bounded Finalize loop
+  can meaningfully resolve and validate it without reopening Improve.
+- **BLOCKED** — trustworthy completion cannot be reached with the remaining Finalize
+  budget, evidence, capability, authority, or without broad reshaping.
 
 The first genuine Finalize loop is the normal completion gate. Stop on `PASS`. On
-`RETRY`, run one additional genuine Finalize loop. At the second loop, unresolved
-completion-blocking issues produce `BLOCKED`, not a false success.
+`RETRY`, run one additional genuine Finalize loop using the same
+`Inspect → Resolve → Validate → Gate` cycle. Do not relabel its remediation as another
+Improve loop. At the second Finalize loop, unresolved completion-blocking issues produce
+`BLOCKED`, not a false success.
 
 A prior phase budget shortfall prevents `PASS` unless the user explicitly overrode that
 budget. Do not use Finalize to retroactively legitimize fake or missing loops.
@@ -240,7 +303,8 @@ Finalize N — I: <inspection> | R: <resolution> | V: <validation> | G: <gate>
 ```
 
 Each field states only the material delta. Do not expand one action into multiple loop
-lines.
+lines. Preserve these phase fields in a persisted report instead of collapsing them into
+ambiguous `I1`, `I2`, or workstream-only summaries when auditability matters.
 
 For each phase reached, write **one paragraph** summarizing its objective, major
 decisions or changes, evidence or validation, and remaining material concerns.
@@ -255,7 +319,8 @@ When the workflow ends for any reason, produce a work report with one final stat
 
 Include the final result, loop summaries grouped by phase, one paragraph per phase
 reached, material decisions and validation, and unresolved findings, limitations,
-blockers, or checks not performed.
+blockers, or checks not performed. When an acceptance ledger was used, include its final
+material gate state or an equivalent concise gate summary.
 
 Deliver or persist the report according to `output_policy`. Reporting happens after
 execution ends and never counts as another loop.
