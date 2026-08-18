@@ -8,7 +8,12 @@ from pathlib import Path
 
 import sys
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = (
+    Path(__file__).resolve().parents[3]
+    / ".agentsmesh"
+    / "skills"
+    / "mols-agent-asset-validator"
+)
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from scan_assets import ScanError, extract_zip_safely, scan_directory  # noqa: E402
@@ -23,7 +28,9 @@ class ScanAssetsTests(unittest.TestCase):
                 encoding="utf-8",
             )
             (root / "evals").mkdir()
-            (root / "evals" / "cases.json").write_text(json.dumps({"cases": []}) + "\n", encoding="utf-8")
+            (root / "evals" / "cases.json").write_text(
+                json.dumps({"cases": []}) + "\n", encoding="utf-8"
+            )
             result = scan_directory(root)
             self.assertEqual(result["summary"]["critical"], 0)
             self.assertEqual(result["summary"]["major"], 0)
@@ -51,7 +58,10 @@ class ScanAssetsTests(unittest.TestCase):
     def test_possible_secret_is_critical(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             root = Path(temp_dir)
-            (root / "prompt.md").write_text("token: " + "sk-" + "abcdefghijklmnopqrstuvwx" + "\n", encoding="utf-8")
+            (root / "prompt.md").write_text(
+                "token: " + "sk-" + "abcdefghijklmnopqrstuvwx" + "\n",
+                encoding="utf-8",
+            )
             result = scan_directory(root)
             self.assertEqual(result["summary"]["critical"], 1)
 
@@ -125,7 +135,9 @@ class ScanAssetsTests(unittest.TestCase):
                 encoding="utf-8",
             )
             result = scan_directory(root)
-            self.assertTrue(any(item["category"] == "human-comprehension" for item in result["findings"]))
+            self.assertTrue(
+                any(item["category"] == "human-comprehension" for item in result["findings"])
+            )
 
     def test_repeated_normative_instruction_across_three_files_is_reported(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -155,7 +167,9 @@ class ScanAssetsTests(unittest.TestCase):
             )
             result = scan_directory(root)
             self.assertGreaterEqual(result["analysis_signals"]["relationship_count"], 1)
-            self.assertTrue(any(item["to"] == "references/guide.md" for item in result["relationships"]))
+            self.assertTrue(
+                any(item["to"] == "references/guide.md" for item in result["relationships"])
+            )
 
 
 if __name__ == "__main__":

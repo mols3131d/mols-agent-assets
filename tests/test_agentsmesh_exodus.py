@@ -78,10 +78,16 @@ def test_active_target_projections_cover_supported_canonical_assets() -> None:
             } == expected_agents
 
 
-def test_deployable_skill_surface_has_no_dot_prefixed_paths() -> None:
-    assert load_contract()["package_surface"]["forbid_dot_paths"] is True
+def test_deployable_skill_surface_excludes_repository_verification() -> None:
+    surface = load_contract()["package_surface"]
+    assert surface["forbid_dot_paths"] is True
+    forbidden_top_level = set(surface["forbid_top_level_dirs"])
 
     for skill_root in skill_roots():
+        assert directory_names(skill_root).isdisjoint(forbidden_top_level), (
+            f"repository verification leaked into deployable Skill surface: "
+            f"{skill_root.relative_to(ROOT)}"
+        )
         for path in skill_root.rglob("*"):
             relative = path.relative_to(skill_root)
             assert not any(part.startswith(".") for part in relative.parts), (

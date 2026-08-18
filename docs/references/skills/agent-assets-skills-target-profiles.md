@@ -44,7 +44,7 @@ Skill activation 정보는 front matter `description`에 집중한다. `descript
 
 다른 Skill과의 prerequisite, fallback, handoff, execution order 같은 orchestration은 본문에서 다룬다. 본문은 이미 Skill이 선택·활성화되었다고 가정한다.
 
-## Supporting Resources
+## Deployable Surface
 
 실행에 실제로 필요할 때만 package를 확장한다.
 
@@ -55,14 +55,34 @@ skill-name/
 ├─ scripts/             # runtime when needed
 ├─ assets/              # runtime when needed
 ├─ templates/           # runtime when needed
-├─ tests/               # only when distributable self-validation is intentional
 └─ ...                  # target-required runtime surface
 ```
 
 - runtime behavior에 필요한 knowledge/resource는 package 내부의 명시적 runtime surface가 소유한다.
 - maintainer-only 문서를 runtime dependency로 숨기지 않는다.
-- 일반 correctness test는 repository root `tests/skills/<skill-name>/`을 기본 owner로 사용한다.
+- `.agentsmesh/skills/<skill-name>/` 아래에는 repository verification 자산인 `tests/`, `evals/`, `scenarios/`, 생성된 `results/`를 두지 않는다.
 - `.agentsmesh/skills/<skill-name>/` 아래에는 non-runtime을 숨기기 위한 dot-prefixed path를 두지 않는다.
+
+## Repository Verification Surface
+
+Skill 검증 자산은 deployable package와 분리한다.
+
+```text
+tests/skills/<skill-name>/
+├─ test_*.py
+└─ scenarios/            # deterministic test fixtures when needed
+
+evals/skills/<skill-name>/
+└─ ...                   # trigger, behavior, adversarial, model eval fixtures
+```
+
+- deterministic correctness test는 `tests/skills/<skill-name>/`이 소유한다.
+- deterministic test가 소비하는 scenario/fixture는 해당 test directory 아래에 둔다.
+- behavioral/model evaluation fixture는 `evals/skills/<skill-name>/`이 소유한다.
+- `scenarios/`를 독립적인 repository top-level asset type으로 만들지 않는다. 소비하는 test/eval이 소유한다.
+- test/eval이 생성한 `results/`는 durable artifact로 명시적으로 승격하지 않는 한 commit하지 않는다.
+
+Generated target package에 repository verification 자산이 나타나면 generation 자체가 성공했더라도 regression이다.
 
 ## Target Boundaries
 

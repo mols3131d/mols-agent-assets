@@ -6,17 +6,21 @@
 
 | 경로 | 역할 |
 | --- | --- |
-| `tests/scripts/` | 저장소 자동화 스크립트의 기본 correctness 테스트 |
-| `tests/skills/<skill>/` | Skill 스크립트의 기본 correctness 테스트 |
-| `.agentsmesh/skills/<skill>/tests/` | package contract에 포함되는 distributable self-validation |
-| `.agentsmesh/skills/<skill>/evals/` | package lifecycle에 종속된 package-local eval |
-| `evals/` | 여러 자산에 걸친 evaluation contract |
+| `tests/scripts/` | 저장소 자동화 스크립트의 deterministic correctness test |
+| `tests/skills/<skill>/` | Skill-specific deterministic correctness test와 그 fixture |
+| `evals/skills/<skill>/` | Skill-specific trigger, behavior, adversarial 등 model/evaluation fixture |
+| `evals/regression/` | 여러 자산·target에 걸친 deterministic regression contract |
 
-기본 correctness 테스트는 저장소 루트 `tests/`에 둡니다. Skill package 내부의 `tests/`나 `evals/`는 해당 package와 함께 배포하거나 lifecycle을 함께 관리할 명확한 이유가 있을 때만 사용합니다.
+Deployable Skill package인 `.agentsmesh/skills/<skill>/`에는 repository verification 자산을 두지 않습니다. `tests/`, `evals/`, `scenarios/`, 생성된 `results/`는 runtime resource가 아닙니다.
+
+Scenario는 독립적인 최상위 유형으로 만들지 않습니다.
+
+- deterministic test가 소비하면 `tests/skills/<skill>/scenarios/`
+- behavioral/model eval이 소비하면 `evals/skills/<skill>/`
 
 ## 검증 계층
 
-AgentsMesh-managed Rule/Skill 변경은 가능한 범위에서 다음 순서로 검증합니다.
+AgentsMesh-managed Rule/Skill/Agent 변경은 가능한 범위에서 다음 순서로 검증합니다.
 
 ```text
 agentsmesh lint
@@ -34,9 +38,9 @@ agentsmesh lint
 ## 실행 정책
 
 - `uv run pytest`와 Lefthook `pre-push`는 루트 `tests/`를 기본 repository gate로 실행합니다.
-- package-local self-validation은 기본 gate에 자동 포함하지 않습니다.
-- package-local 검증이 일반 correctness에 필수가 되면 `tests/skills/<skill>/`로 승격합니다.
+- Skill-specific deterministic test도 `tests/skills/<skill>/`에서 같은 pytest gate를 사용합니다.
 - 비싼 model-based eval은 모든 PR의 기본 gate로 만들지 않습니다. deterministic check로 판단할 수 없는 behavior만 manual, scheduled, release gate 등 필요한 시점에 실행합니다.
+- 테스트나 eval이 생성한 report/result는 durable evidence로 명시적으로 승격하지 않는 한 commit하지 않습니다.
 
 ## 기본 명령
 

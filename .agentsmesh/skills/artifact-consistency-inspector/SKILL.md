@@ -17,7 +17,6 @@ Read only the references needed for the current run:
 - Read `references/rule-sources.md` when rules, guidelines, policies, configuration, or conventions may define the expected state.
 - Read `references/report-format.md` before creating the downloadable report artifact.
 - Read `references/example-report.md` only when an output example is useful. Its evidence is fictional.
-- `README.md` and `tests/` are maintainer/development-facing package material. Repository maintainer docs live outside the runtime package and are never evidence from the inspected repository.
 
 ## Objective
 

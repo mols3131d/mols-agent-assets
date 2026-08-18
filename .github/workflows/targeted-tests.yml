@@ -7,17 +7,21 @@ on:
     paths:
       - ".agentsmesh/rules/**"
       - ".agentsmesh/skills/**"
+      - ".agentsmesh/agents/**"
       - "agentsmesh.yaml"
       - "package.json"
       - "package-lock.json"
       - ".github/copilot-instructions.md"
       - ".github/skills/**"
+      - ".github/agents/**"
       - ".agents/rules/**"
       - ".agents/skills/**"
-      - "evals/regression/agentsmesh-exodus.json"
+      - "evals/regression/**"
+      - "evals/skills/**"
       - "tests/test_agentsmesh_exodus.py"
       - "docs/README.md"
       - "docs/development.md"
+      - "docs/testing.md"
       - "docs/skills/**"
       - "docs/references/skills/**"
       - "docs/references/common/standards/agent-assets-standard-personal.md"
@@ -50,7 +54,6 @@ jobs:
         run: |
           mapfile -d '' files < <(git diff --name-only -z HEAD^1 HEAD)
           declare -A root_targets=()
-          declare -A projects=()
 
           add_exodus() {
             root_targets["tests/test_agentsmesh_exodus.py"]=1
@@ -62,21 +65,12 @@ jobs:
 
           add_skill() {
             local name="$1"
-            local skill=".agentsmesh/skills/$name"
             [[ -d "tests/skills/$name" ]] && root_targets["tests/skills/$name"]=1
-            if [[ -d "$skill/tests" ]]; then
-              if [[ -f "$skill/pyproject.toml" ]]; then
-                projects["$skill"]=1
-              else
-                root_targets["$skill/tests"]=1
-              fi
-            fi
           }
 
           add_script() {
             local name="$1"
             [[ -d "tests/scripts/$name" ]] && root_targets["tests/scripts/$name"]=1
-            return 0
           }
 
           for path in "${files[@]}"; do
@@ -97,14 +91,14 @@ jobs:
                 add_exodus
                 add_asset_docs
                 ;;
-              tests/skills/*)
+              tests/skills/*|evals/skills/*)
                 name="${path#*/skills/}"
                 add_skill "${name%%/*}"
                 ;;
-              .agentsmesh/rules/*|agentsmesh.yaml|package.json|package-lock.json|.github/copilot-instructions.md|.github/skills/*|.agents/rules/*|.agents/skills/*|evals/regression/agentsmesh-exodus.json|tests/test_agentsmesh_exodus.py)
+              .agentsmesh/rules/*|.agentsmesh/agents/*|agentsmesh.yaml|package.json|package-lock.json|.github/copilot-instructions.md|.github/skills/*|.github/agents/*|.agents/rules/*|.agents/skills/*|evals/regression/*|tests/test_agentsmesh_exodus.py)
                 add_exodus
                 ;;
-              docs/skills/*|docs/references/skills/*|docs/references/common/standards/agent-assets-standard-personal.md|docs/README.md|docs/development.md)
+              docs/skills/*|docs/references/skills/*|docs/references/common/standards/agent-assets-standard-personal.md|docs/README.md|docs/development.md|docs/testing.md)
                 add_asset_docs
                 ;;
               tests/scripts/*)
@@ -120,9 +114,8 @@ jobs:
           done
 
           ((${#root_targets[@]})) && printf '%s\0' "${!root_targets[@]}" > /tmp/root-tests
-          ((${#projects[@]})) && printf '%s\0' "${!projects[@]}" > /tmp/project-tests
 
-          if ((${#root_targets[@]} == 0 && ${#projects[@]} == 0)); then
+          if ((${#root_targets[@]} == 0)); then
             echo "run=false" >> "$GITHUB_OUTPUT"
           else
             echo "run=true" >> "$GITHUB_OUTPUT"
@@ -141,13 +134,3 @@ jobs:
           [[ -f /tmp/root-tests ]] || exit 0
           mapfile -d '' targets < /tmp/root-tests
           uv run --frozen --no-default-groups --group test pytest -q "${targets[@]}"
-
-      - name: Run colocated skill tests
-        if: steps.scope.outputs.run == 'true'
-        shell: bash
-        run: |
-          [[ -f /tmp/project-tests ]] || exit 0
-          mapfile -d '' projects < /tmp/project-tests
-          for project in "${projects[@]}"; do
-            (cd "$project" && uv run pytest)
-          done

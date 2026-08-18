@@ -9,14 +9,21 @@
 - `references/workflows.md`: 하위 워크플로우
 - `references/review-rubric.md`: 목적 적합성 리뷰 기준
 - `references/examples.md`: 라우팅과 행동 예시
-- `references/trigger-evals.json`: 자동 활성화 설명을 검증하기 위한 양성·음성 쿼리
 - `assets/`: 글쓰기 브리프와 리뷰 출력 템플릿
-- `scripts/validate.py`: 패키지 구조와 메타데이터 검증
+- `scripts/validate.py`: deployable 패키지 구조와 메타데이터 검증
+
+Trigger evaluation fixture는 deployable package 밖 `evals/skills/writing/`에서 관리한다.
 
 ## 검증
 
 ```bash
 python3 scripts/validate.py
+```
+
+Repository eval fixture까지 검증하려면 저장소 루트에서 다음을 실행한다.
+
+```bash
+uv run pytest tests/skills/writing
 ```
 
 Agent Skills 참조 도구가 설치되어 있다면 추가로 다음을 실행할 수 있다.

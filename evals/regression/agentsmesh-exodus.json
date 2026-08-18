@@ -45,7 +45,8 @@
     ]
   },
   "package_surface": {
-    "forbid_dot_paths": true
+    "forbid_dot_paths": true,
+    "forbid_top_level_dirs": ["tests", "evals", "scenarios", "results"]
   },
   "projections": {
     "copilot": {
