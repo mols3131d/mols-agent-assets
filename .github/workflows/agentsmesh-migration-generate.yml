@@ -5,6 +5,10 @@ on:
     branches:
       - agent/refactor/agentsmesh-migration
 
+concurrency:
+  group: agentsmesh-migration-generate
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
