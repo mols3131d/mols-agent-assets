@@ -35,7 +35,7 @@ def test_agentsmesh_config_matches_regression_contract() -> None:
     assert config["features"] == contract["features"]
 
 
-def test_canonical_rules_and_skills_match_regression_contract() -> None:
+def test_canonical_rules_skills_and_agents_match_regression_contract() -> None:
     contract = load_contract()["canonical"]
 
     rules = ROOT / ".agentsmesh/rules"
@@ -46,14 +46,26 @@ def test_canonical_rules_and_skills_match_regression_contract() -> None:
     for name in contract["skills"]:
         assert (skills / name / "SKILL.md").is_file()
 
+    agents = ROOT / ".agentsmesh/agents"
+    assert {path.stem for path in agents.glob("*.md")} == set(contract["agents"])
 
-def test_active_target_projections_cover_all_canonical_skills() -> None:
+
+def test_active_target_projections_cover_supported_canonical_assets() -> None:
     contract = load_contract()
     expected_skills = set(contract["canonical"]["skills"])
+    expected_agents = set(contract["canonical"]["agents"])
 
     for projection in contract["projections"].values():
         assert (ROOT / projection["root_rule"]).is_file()
         assert directory_names(ROOT / projection["skills"]) == expected_skills
+
+        agents_path = projection.get("agents")
+        if agents_path:
+            projected_agents = ROOT / agents_path
+            assert {
+                path.name.removesuffix(".agent.md")
+                for path in projected_agents.glob("*.agent.md")
+            } == expected_agents
 
 
 def test_deployable_skill_surface_has_no_dot_prefixed_paths() -> None:
