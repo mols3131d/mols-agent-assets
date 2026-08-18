@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "src/skills/**"
+      - ".agentsmesh/skills/**"
       - "src/scripts/**"
       - "scripts/**"
       - "tests/skills/**"
@@ -40,7 +40,7 @@ jobs:
 
           add_skill() {
             local name="$1"
-            local skill="src/skills/$name"
+            local skill=".agentsmesh/skills/$name"
             [[ -d "tests/skills/$name" ]] && root_targets["tests/skills/$name"]=1
             if [[ -d "$skill/tests" ]]; then
               if [[ -f "$skill/pyproject.toml" ]]; then
@@ -64,7 +64,7 @@ jobs:
               tests/scripts/conftest.py)
                 root_targets["tests/scripts"]=1
                 ;;
-              src/skills/*|tests/skills/*)
+              .agentsmesh/skills/*|tests/skills/*)
                 name="${path#*/skills/}"
                 add_skill "${name%%/*}"
                 ;;
