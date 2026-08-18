@@ -1,0 +1,39 @@
+name: AgentsMesh Migration Generate
+
+on:
+  push:
+    branches:
+      - agent/refactor/agentsmesh-migration
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-slim
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npx agentsmesh lint
+      - run: npx agentsmesh generate
+      - run: |
+          npx agentsmesh check
+          npx agentsmesh generate --check
+      - name: Commit generated migration state
+        shell: bash
+        run: |
+          git add -A -- .agentsmesh/.lock .github/copilot-instructions.md .github/instructions .github/skills .agents/rules .agents/skills
+          if [[ -z "$(git status --porcelain)" ]]; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: regenerate AgentsMesh migration state [skip ci]"
+          git push origin HEAD:${{ github.ref_name }}
