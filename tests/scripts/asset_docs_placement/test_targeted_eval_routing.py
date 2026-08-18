@@ -1,0 +1,17 @@
+from __future__ import annotations
+
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[3]
+WORKFLOW = ROOT / ".github" / "workflows" / "targeted-tests.yml"
+
+
+def test_eval_changes_have_a_deterministic_test_target() -> None:
+    workflow = WORKFLOW.read_text(encoding="utf-8")
+
+    assert '"evals/skills/**"' in workflow
+    assert '"tests/evals/**"' in workflow
+    assert "add_eval()" in workflow
+    assert 'root_targets["tests/evals"]=1' in workflow
+    assert "evals/skills/*)" in workflow
+    assert 'add_eval "${name%%/*}"' in workflow
