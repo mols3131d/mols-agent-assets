@@ -58,7 +58,7 @@ Agent는 일반적으로 role/instructions, tools, authority/permissions, handof
 
 다음은 외부 공통 baseline이 아니라 이 저장소의 repository-local extension이다.
 
-- `CHATBOT.md`와 fallback chain
+- root `CHATBOT.md` repository bootstrap convention
 - directory/glob Rule projection convention
 - `load-context-*` naming
 - `skills/`, `skills-chatbot/`, `skills-chatbot-runtime/` target profiles
