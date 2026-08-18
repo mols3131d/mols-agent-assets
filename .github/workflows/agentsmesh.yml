@@ -9,94 +9,34 @@ on:
       - "agentsmesh.yaml"
       - "package.json"
       - "package-lock.json"
+      - ".github/copilot-instructions.md"
+      - ".github/skills/**"
+      - ".agents/rules/**"
+      - ".agents/skills/**"
       - ".github/workflows/agentsmesh.yml"
-  push:
-    branches:
-      - agent/refactor/agentsmesh-migration
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
-  migration-generate:
-    if: github.event_name == 'push'
-    runs-on: ubuntu-slim
-    timeout-minutes: 5
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          ref: ${{ github.ref_name }}
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 22
-          package-manager-cache: false
-      - name: Install pinned AgentsMesh
-        run: npm install --ignore-scripts --no-audit --no-fund
-      - name: Rewrite legacy canonical Skill links
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          paths = (
-              Path("src/skills-chatbot/mols-mermaid-chart.skill.md"),
-              Path("src/skills-chatbot/mols-mermaid-diagram.skill.md"),
-          )
-          for path in paths:
-              text = path.read_text(encoding="utf-8")
-              updated = text.replace(
-                  "mols-agent-assets/tree/main/src/skills/",
-                  "mols-agent-assets/tree/main/.agentsmesh/skills/",
-              ).replace(
-                  "mols-agent-assets/blob/main/src/skills/",
-                  "mols-agent-assets/blob/main/.agentsmesh/skills/",
-              )
-              path.write_text(updated, encoding="utf-8")
-          PY
-      - name: Verify canonical configuration
-        run: |
-          npx agentsmesh --version
-          npx agentsmesh lint
-      - name: Generate active targets
-        run: npx agentsmesh generate
-      - name: Verify generated state
-        run: |
-          npx agentsmesh check
-          npx agentsmesh generate --check
-      - name: Commit migration artifacts
-        shell: bash
-        run: |
-          git add -A -- \
-            package-lock.json \
-            .agentsmesh \
-            .github \
-            .agents \
-            src/skills-chatbot/mols-mermaid-chart.skill.md \
-            src/skills-chatbot/mols-mermaid-diagram.skill.md
-          if [[ -z "$(git status --porcelain)" ]]; then
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "4189824+github-actions[bot]@users.noreply.github.com"
-          git commit -m "chore: generate AgentsMesh targets [skip ci]"
-          git push origin HEAD:${{ github.ref_name }}
-
   verify:
-    if: github.event_name == 'pull_request'
     runs-on: ubuntu-slim
     timeout-minutes: 5
-    permissions:
-      contents: read
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
           node-version: 22
           package-manager-cache: false
-      - run: npm ci --ignore-scripts --no-audit --no-fund
-      - run: npx agentsmesh lint
-      - run: npx agentsmesh check
-      - run: npx agentsmesh generate --check
+      - name: Install pinned toolchain
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Validate canonical configuration
+        run: npx agentsmesh lint
+      - name: Validate generated drift
+        run: npx agentsmesh check
+      - name: Validate regeneration
+        run: npx agentsmesh generate --check
