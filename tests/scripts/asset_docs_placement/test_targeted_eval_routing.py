@@ -9,6 +9,7 @@ WORKFLOW = ROOT / ".github" / "workflows" / "targeted-tests.yml"
 def test_eval_changes_have_a_deterministic_test_target() -> None:
     workflow = WORKFLOW.read_text(encoding="utf-8")
 
+    assert "fetch-depth: 2" in workflow
     assert '"evals/skills/**"' in workflow
     assert '"tests/evals/**"' in workflow
     assert "add_eval()" in workflow
