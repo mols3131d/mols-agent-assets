@@ -34,7 +34,7 @@ jobs:
       - name: Commit generated migration state
         shell: bash
         run: |
-          git add -A -- .agentsmesh/.lock .github/copilot-instructions.md .github/instructions .github/skills .agents/rules .agents/skills
+          git add -A -- .agentsmesh/.lock .github/copilot-instructions.md .github/skills .agents/rules .agents/skills
           if [[ -z "$(git status --porcelain)" ]]; then
             exit 0
           fi
