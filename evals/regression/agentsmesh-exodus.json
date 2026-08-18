@@ -3,7 +3,7 @@
   "kind": "deterministic-regression",
   "canonical": {
     "targets": ["copilot", "antigravity"],
-    "features": ["rules", "skills"],
+    "features": ["rules", "skills", "agents"],
     "rules": ["_root.md"],
     "skills": [
       "caveman-ko",
@@ -17,6 +17,11 @@
       "mols-mermaid-diagram",
       "mols-rule-dry",
       "vcs-git-commit"
+    ],
+    "agents": [
+      "review-adversarial",
+      "review-lead",
+      "review-quality"
     ]
   },
   "package_surface": {
@@ -25,7 +30,8 @@
   "projections": {
     "copilot": {
       "root_rule": ".github/copilot-instructions.md",
-      "skills": ".github/skills"
+      "skills": ".github/skills",
+      "agents": ".github/agents"
     },
     "antigravity": {
       "root_rule": ".agents/rules/general.md",
@@ -33,8 +39,6 @@
     }
   },
   "exceptions": [
-    "src/agents",
-    "src/prompts",
     "src/skills-chatbot",
     "src/skills-chatbot-runtime",
     "src/rules/chatbot-repo-skill-routing.md"
@@ -43,6 +47,8 @@
     ".agentsmesh/_legacy",
     ".agentsmesh/rules/language-ko.md",
     "src/skills",
+    "src/agents",
+    "src/prompts",
     "src/rules/language-ko.md",
     "tests/skills/rulesync-agent-assets",
     "tests/skills/iceberg-code-review",
