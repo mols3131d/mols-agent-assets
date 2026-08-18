@@ -48,16 +48,16 @@ When web access is available, consult the relevant Mermaid official documentatio
 When web or GitHub access is available, use the canonical `mols-mermaid-diagram` references progressively. Open only the reference whose condition applies.
 
 Canonical source:
-<https://github.com/mols3131d/mols-agent-assets/tree/main/src/skills/mols-mermaid-diagram>
+<https://github.com/mols3131d/mols-agent-assets/tree/main/.agentsmesh/skills/mols-mermaid-diagram>
 
 - New diagram, type selection, or structure/grouping/splitting change:
-  <https://github.com/mols3131d/mols-agent-assets/blob/main/src/skills/mols-mermaid-diagram/references/mermaid-diagrams.md>
+  <https://github.com/mols3131d/mols-agent-assets/blob/main/.agentsmesh/skills/mols-mermaid-diagram/references/mermaid-diagrams.md>
 - Theme, emphasis, styling, or existing visual-language decision:
-  <https://github.com/mols3131d/mols-agent-assets/blob/main/src/skills/mols-mermaid-diagram/references/style-policy.md>
+  <https://github.com/mols3131d/mols-agent-assets/blob/main/.agentsmesh/skills/mols-mermaid-diagram/references/style-policy.md>
 - Exact syntax or example needed: start from the index, then open only the selected type:
-  <https://github.com/mols3131d/mols-agent-assets/blob/main/src/skills/mols-mermaid-diagram/references/examples/README.md>
+  <https://github.com/mols3131d/mols-agent-assets/blob/main/.agentsmesh/skills/mols-mermaid-diagram/references/examples/README.md>
 - Render, export, syntax error, or compatibility verification:
-  <https://github.com/mols3131d/mols-agent-assets/blob/main/src/skills/mols-mermaid-diagram/references/mermaid-verification.md>
+  <https://github.com/mols3131d/mols-agent-assets/blob/main/.agentsmesh/skills/mols-mermaid-diagram/references/mermaid-verification.md>
 
 For a new diagram or structural redesign, use the canonical reference to choose the representation and the official Mermaid documentation to confirm the selected type's current syntax and support status when both sources are accessible.
 
