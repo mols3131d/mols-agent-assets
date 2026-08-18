@@ -1,0 +1,10 @@
+[project]
+name = "mols-markdown-scripts"
+version = "0.0.1"
+description = "Markdown validation and formatting utilities"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+  "pyromark>=0.9.13",
+  "pyyaml>=6.0.2",
+]

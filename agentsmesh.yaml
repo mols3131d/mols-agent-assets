@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/sampleXbro/agentsmesh/master/schemas/agentsmesh.json
+version: 1
+targets:
+  - copilot
+  - antigravity
+features:
+  - rules
+  - skills
+collaboration:
+  strategy: merge
+  lock_features: []
