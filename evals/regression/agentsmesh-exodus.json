@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "kind": "deterministic-regression",
+  "canonical": {
+    "targets": ["copilot", "antigravity"],
+    "features": ["rules", "skills"],
+    "rules": ["_root.md"],
+    "skills": [
+      "caveman-ko",
+      "clarify-code",
+      "mols-agent-asset-studio",
+      "mols-documents-studio",
+      "mols-markdown-dashboard",
+      "mols-markdown-for-human",
+      "mols-markdown-scripts",
+      "mols-mermaid-chart",
+      "mols-mermaid-diagram",
+      "mols-rule-dry",
+      "vcs-git-commit"
+    ]
+  },
+  "package_surface": {
+    "forbid_dot_paths": true
+  },
+  "projections": {
+    "copilot": {
+      "root_rule": ".github/copilot-instructions.md",
+      "skills": ".github/skills"
+    },
+    "antigravity": {
+      "root_rule": ".agents/rules/general.md",
+      "skills": ".agents/skills"
+    }
+  },
+  "exceptions": [
+    "src/agents",
+    "src/prompts",
+    "src/skills-chatbot",
+    "src/skills-chatbot-runtime",
+    "src/rules/chatbot-repo-skill-routing.md"
+  ],
+  "retired": [
+    ".agentsmesh/_legacy",
+    ".agentsmesh/rules/language-ko.md",
+    "src/skills",
+    "src/rules/language-ko.md",
+    "tests/skills/rulesync-agent-assets",
+    "tests/skills/iceberg-code-review",
+    "tests/skills/mols-kanban-markdown"
+  ]
+}

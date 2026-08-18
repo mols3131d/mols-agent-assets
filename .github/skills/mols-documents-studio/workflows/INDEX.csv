@@ -1,0 +1,2 @@
+id,name,description,trigger,excludes
+write-decisions,Write Decisions,Write architecture decision record (ADR) using decisions-lite template,write decisions | create decision | adr,general code changes

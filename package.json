@@ -1,0 +1,13 @@
+{
+  "name": "mols-agent-assets-tooling",
+  "private": true,
+  "devDependencies": {
+    "agentsmesh": "0.32.0"
+  },
+  "scripts": {
+    "agentsmesh:lint": "agentsmesh lint",
+    "agentsmesh:check": "agentsmesh check",
+    "agentsmesh:generate:check": "agentsmesh generate --check",
+    "agentsmesh:diff": "agentsmesh diff"
+  }
+}

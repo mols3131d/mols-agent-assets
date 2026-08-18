@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "src/skills/*/SKILL.md"
+      - ".agentsmesh/skills/*/SKILL.md"
       - "src/skills-chatbot/*.skill.md"
       - "src/skills-chatbot-runtime/*/SKILL.md"
       - "scripts/generate_skill_indexes.py"
@@ -33,7 +33,7 @@ jobs:
         shell: bash
         run: |
           indexes=(
-            src/skills/INDEX.jsonl
+            .agentsmesh/skills/INDEX.jsonl
             src/skills-chatbot/INDEX.jsonl
             src/skills-chatbot-runtime/INDEX.jsonl
           )
