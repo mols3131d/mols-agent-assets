@@ -59,6 +59,8 @@ def parse_front_matter(text: str) -> dict[str, str]:
     for raw in text[4:end].splitlines():
         if not raw.strip() or raw.lstrip().startswith("#"):
             continue
+        if raw[:1].isspace():
+            continue
         if ":" not in raw:
             raise AssertionError(f"invalid front matter line: {raw}")
         key, value = raw.split(":", 1)
@@ -182,7 +184,7 @@ def test_rule_sources_contract() -> None:
     assert "universal precedence" in doc
     forbidden_fixed_orders = [
         "policy documents always outrank",
-        "configuration always outranks",
+        "configuration always outrank",
         "specification always outrank",
     ]
     for phrase in forbidden_fixed_orders:
