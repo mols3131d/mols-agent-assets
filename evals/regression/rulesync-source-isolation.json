@@ -1,11 +1,11 @@
 {
-  "version": 7,
+  "version": 8,
   "kind": "deterministic-regression",
   "canonical": {
     "workspace": "src/rulesync",
     "asset_root": "src/rulesync/.rulesync",
     "config": "src/rulesync/rulesync.jsonc",
-    "targets": ["copilot", "antigravity-ide"],
+    "targets": [],
     "features": ["rules", "skills", "subagents"],
     "rules": [],
     "skills": [
