@@ -1,10 +1,7 @@
 # Routes
 
-Default single entrypoint for repository routing assets when one entrypoint is useful.
-This convention is optional; repositories may use another routing entrypoint or direct
-route-file links instead.
-
-Use only the routing assets relevant to the current task and target paths.
+Default single entrypoint for repository routing assets when useful. This convention is
+optional; repositories may use another routing entrypoint or direct route-file links.
 
 - [Skills](skills.jsonl) — select by `name` and `description`, then load the selected `source`.
 - [Rules](rules.jsonl) — match target paths against selectors, then load matching `source` entries.
