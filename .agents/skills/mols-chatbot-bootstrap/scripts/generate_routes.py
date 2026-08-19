@@ -137,7 +137,12 @@ def resolve_kinds(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description=(
+            "Generate baseline routes for the bundled common layout. "
+            "Inspect/adapt the script first when the target asset spec differs."
+        )
+    )
     parser.add_argument("--repo", type=Path, default=Path.cwd())
     parser.add_argument(
         "--skills-root",
