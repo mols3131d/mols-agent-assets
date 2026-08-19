@@ -97,11 +97,10 @@ def render_jsonl(meta: dict[str, object], entries: list[dict[str, object]]) -> s
     return "\n".join(lines) + "\n"
 
 
-def write(path: Path, content: str, force: bool) -> None:
-    if path.exists() and not force:
-        raise SystemExit(f"refusing to overwrite existing route: {path} (use --force)")
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(content, encoding="utf-8")
+def resolve_output_dir(repo: Path, value: Path | None) -> Path:
+    if value is None:
+        return repo / ".agents" / "routes"
+    return value.resolve() if value.is_absolute() else (repo / value).resolve()
 
 
 def main() -> None:
@@ -110,7 +109,7 @@ def main() -> None:
     parser.add_argument(
         "--output-dir",
         type=Path,
-        help="Output directory. Defaults to <repo>/.agents/routes.",
+        help="Output directory, relative to repo unless absolute. Defaults to .agents/routes.",
     )
     parser.add_argument(
         "--force",
@@ -120,34 +119,33 @@ def main() -> None:
     args = parser.parse_args()
 
     repo = args.repo.resolve()
-    output_dir = (
-        args.output_dir.resolve()
-        if args.output_dir
-        else repo / ".agents" / "routes"
-    )
-
-    write(
-        output_dir / "skills.jsonl",
-        render_jsonl(
+    output_dir = resolve_output_dir(repo, args.output_dir)
+    outputs = {
+        output_dir / "skills.jsonl": render_jsonl(
             {
                 "kind": "skills",
                 "instructions": "Select task-relevant Skills by name and description, then load only the selected source.",
             },
             skill_routes(repo),
         ),
-        args.force,
-    )
-    write(
-        output_dir / "rules.jsonl",
-        render_jsonl(
+        output_dir / "rules.jsonl": render_jsonl(
             {
                 "kind": "rules",
                 "instructions": "Match known target paths against globs, then load only matching Rule sources.",
             },
             rule_routes(repo),
         ),
-        args.force,
-    )
+    }
+
+    if not args.force:
+        existing = [path for path in outputs if path.exists()]
+        if existing:
+            joined = ", ".join(str(path) for path in existing)
+            raise SystemExit(f"refusing to overwrite existing routes: {joined} (use --force)")
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    for path, content in outputs.items():
+        path.write_text(content, encoding="utf-8")
 
 
 if __name__ == "__main__":
