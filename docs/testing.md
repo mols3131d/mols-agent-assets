@@ -27,7 +27,7 @@ canonical source
 
 Repository `npm run rulesync:*` command는 `scripts/run_rulesync.py`를 사용합니다. Runner는 Rulesync의 target path나 projection semantics를 재구현하지 않고 CLI에 위임합니다. Generated target projection과 Rulesync lock state는 repository에 남기지 않습니다.
 
-이 저장소는 supported vendor/target matrix를 검증하지 않습니다. CI의 `--targets '*'` projection은 current Rulesync adapter 전체를 temporary workspace에서 smoke-test하기 위한 일시적 operation이며 support 선언이 아닙니다.
+이 저장소는 supported vendor/target matrix를 검증하지 않습니다. Repository CI는 target을 선택하지 않고 canonical Rulesync configuration과 repository-owned invariant만 검증합니다. 특정 target projection이 작업에 중요할 때만 해당 target을 명시해 temporary workspace에서 별도로 검증합니다.
 
 Repository test는 Rulesync 자체가 아니라 이 저장소가 추가로 소유하는 invariant에 집중합니다.
 
