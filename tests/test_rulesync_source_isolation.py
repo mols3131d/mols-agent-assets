@@ -94,8 +94,13 @@ def test_distribution_assets_are_not_repository_runtime_configuration() -> None:
     for path in contract["forbidden_workspace_generated_surfaces"]:
         assert not (ROOT / path).exists(), path
 
-    for path in contract["repository_local_exceptions"]:
-        assert (ROOT / path).exists(), path
+    assert (ROOT / ".agents/AGENTS.md").is_file()
+
+    local_skills = ROOT / ".agents/skills"
+    if local_skills.exists():
+        assert directory_names(local_skills) <= set(
+            contract["repository_local_skill_exceptions"]
+        )
 
 
 def test_deployable_skill_surface_excludes_repository_verification() -> None:
