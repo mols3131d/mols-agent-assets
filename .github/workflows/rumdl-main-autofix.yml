@@ -75,24 +75,25 @@ jobs:
           npx agentsmesh generate
           python scripts/generate_skill_indexes.py
 
-      - name: Normalize and validate AgentsMesh Markdown
+      - name: Normalize generated Markdown
         if: steps.markdown.outputs.agentsmesh_source_changed == 'true'
         shell: bash
         run: |
           set -euo pipefail
           mapfile -d '' markdown < <(git ls-files -z -- '*.md')
-          managed=()
+          generated=()
           for file in "${markdown[@]}"; do
-            source_attr="$(git check-attr agentsmesh-source -- "$file")"
-            generated_attr="$(git check-attr linguist-generated -- "$file")"
-            if [[ "$source_attr" == *": agentsmesh-source: set" ]] || \
-               [[ "$generated_attr" == *": linguist-generated: set" ]]; then
-              managed+=("$file")
-            fi
+            attr="$(git check-attr linguist-generated -- "$file")"
+            [[ "$attr" == *": linguist-generated: set" ]] && generated+=("$file")
           done
 
-          ((${#managed[@]})) || exit 0
-          uvx rumdl@0.2.6 fmt "${managed[@]}"
+          if ((${#generated[@]})); then
+            # AgentsMesh 0.32 owns these exact serialization choices:
+            # MD047 trailing newlines and MD057 ./ link prefixes.
+            # Run every other rumdl formatter rule on projections.
+            uvx rumdl@0.2.6 fmt --disable MD047,MD057 "${generated[@]}"
+          fi
+
           npx agentsmesh check
           npx agentsmesh generate --check
 
