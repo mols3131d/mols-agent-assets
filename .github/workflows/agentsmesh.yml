@@ -43,20 +43,21 @@ jobs:
           enable-cache: false
       - name: Install pinned toolchain
         run: npm ci --ignore-scripts --no-audit --no-fund
-      - name: Validate canonical Markdown formatting
+      - name: Validate canonical Markdown normalization
         shell: bash
         run: |
           set -euo pipefail
           mapfile -d '' markdown < <(git ls-files -z -- '.agentsmesh/**/*.md')
           ((${#markdown[@]})) || exit 0
-          uvx rumdl@0.2.6 check "${markdown[@]}"
+          uvx rumdl@0.2.6 fmt "${markdown[@]}"
+          git diff --exit-code -- "${markdown[@]}"
       - name: Validate canonical configuration
         run: npx agentsmesh lint
       - name: Validate generated drift
         run: npx agentsmesh check
       - name: Validate regeneration
         run: npx agentsmesh generate --check
-      - name: Validate generated Markdown formatting
+      - name: Validate generated Markdown normalization
         shell: bash
         run: |
           set -euo pipefail
@@ -67,7 +68,8 @@ jobs:
             [[ "$attr" == *": linguist-generated: set" ]] && generated+=("$file")
           done
           ((${#generated[@]})) || exit 0
-          uvx rumdl@0.2.6 check "${generated[@]}"
+          uvx rumdl@0.2.6 fmt "${generated[@]}"
+          git diff --exit-code -- "${generated[@]}"
       - name: Verify Copilot round trip
         shell: bash
         run: |
