@@ -73,6 +73,9 @@ def rel(path: Path, repo: Path) -> str:
 
 
 def skill_routes(repo: Path, root: Path) -> list[dict[str, object]]:
+    if not root.is_dir():
+        return []
+
     entries: list[dict[str, object]] = []
     for path in sorted(root.glob("*/SKILL.md")):
         front = front_matter(path)
@@ -86,6 +89,9 @@ def skill_routes(repo: Path, root: Path) -> list[dict[str, object]]:
 
 
 def rule_routes(repo: Path, root: Path) -> list[dict[str, object]]:
+    if not root.is_dir():
+        return []
+
     entries: list[dict[str, object]] = []
     for path in sorted(root.rglob("*.md")):
         front = front_matter(path)
@@ -101,15 +107,21 @@ def render_jsonl(meta: dict[str, object], entries: list[dict[str, object]]) -> s
     return "\n".join(lines) + "\n"
 
 
-def resolve_kinds(kind: str, skills_root: Path, rules_root: Path) -> list[str]:
+def resolve_kinds(
+    kind: str,
+    skills_root: Path,
+    rules_root: Path,
+    skill_entries: list[dict[str, object]],
+    rule_entries: list[dict[str, object]],
+) -> list[str]:
     if kind == "auto":
         kinds = []
-        if skills_root.is_dir():
+        if skill_entries:
             kinds.append("skills")
-        if rules_root.is_dir():
+        if rule_entries:
             kinds.append("rules")
         if not kinds:
-            raise SystemExit("no local Skill or Rule roots found")
+            raise SystemExit("no routable local Skills or Rules found")
         return kinds
 
     kinds = ["skills", "rules"] if kind == "both" else [kind]
@@ -142,7 +154,7 @@ def main() -> None:
         "--kinds",
         choices=("auto", "skills", "rules", "both"),
         default="auto",
-        help="Route kinds to generate. auto generates only kinds whose local roots exist.",
+        help="Route kinds to generate. auto emits only kinds with routable local entries.",
     )
     parser.add_argument(
         "--force",
@@ -155,7 +167,10 @@ def main() -> None:
     skills_root = resolve_path(repo, args.skills_root, ".agents/skills")
     rules_root = resolve_path(repo, args.rules_root, ".agents/rules")
     output_dir = resolve_path(repo, args.output_dir, ".agents/routes")
-    kinds = resolve_kinds(args.kinds, skills_root, rules_root)
+
+    skill_entries = skill_routes(repo, skills_root)
+    rule_entries = rule_routes(repo, rules_root)
+    kinds = resolve_kinds(args.kinds, skills_root, rules_root, skill_entries, rule_entries)
 
     outputs: dict[Path, str] = {}
     if "skills" in kinds:
@@ -164,7 +179,7 @@ def main() -> None:
                 "kind": "skills",
                 "instructions": "Select task-relevant Skills by name and description, then load only the selected source.",
             },
-            skill_routes(repo, skills_root),
+            skill_entries,
         )
     if "rules" in kinds:
         outputs[output_dir / "rules.jsonl"] = render_jsonl(
@@ -172,7 +187,7 @@ def main() -> None:
                 "kind": "rules",
                 "instructions": "Match known target paths against globs, then load only matching Rule sources.",
             },
-            rule_routes(repo, rules_root),
+            rule_entries,
         )
 
     if not args.force:
