@@ -86,6 +86,7 @@ Dedicated tool은 다음을 선택적으로 제공할 수 있다.
 
 - portable front matter와 directory format
 - 특정 vendor/harness의 mandatory discovery path
-- repository-local Personal Skill Standard
+- Rulesync canonical representation
+- repository-local [Skill Authoring Conventions](../skill-authoring-conventions.md)
 
-Client 구현 선택을 Skill authoring requirement처럼 일반화하지 않는다.
+Client 구현 선택을 canonical source나 Skill authoring requirement처럼 일반화하지 않는다.
