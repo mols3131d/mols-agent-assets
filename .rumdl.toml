@@ -27,15 +27,66 @@ extend-enable = [
 ]
 
 [per-file-ignores]
-# AgentsMesh 0.32 owns the exact trailing-newline serialization of generated
-# Markdown projections, so MD047 is not validated or auto-fixed on these paths.
-# Keep this list aligned with every Markdown projection target in agentsmesh.yaml.
-# If another vendor target is added later, add its generated Markdown paths here.
+# MD047 remains enabled for normal and canonical Markdown. Ignore it only on
+# vendor projection surfaces because generators may own exact EOF serialization.
+# This repository reserves the root names and vendor paths below for generated
+# agent assets even when the corresponding target directory does not exist yet.
+# Keep this list aligned with AgentsMesh built-in/plugin targets and other vendor
+# generators used by this repository. When a new vendor target is added, add every
+# generated Markdown path here before enabling that target.
+
+# Shared/root projections: Codex, Claude, Gemini, Grok-compatible agents, Aider,
+# Qwen, Replit, Crush, and several AGENTS.md-first AgentsMesh targets.
+"AGENTS.md" = ["MD047"]
+"CLAUDE.md" = ["MD047"]
+"GEMINI.md" = ["MD047"]
+"QWEN.md" = ["MD047"]
+"CONVENTIONS.md" = ["MD047"]
+"CRUSH.md" = ["MD047"]
+"replit.md" = ["MD047"]
+
+# OpenAI / shared Agent Skills projections.
+".codex/**/*.md" = ["MD047"]
+".agents/**/*.md" = ["MD047"]
+
+# Anthropic and xAI. Grok is predeclared for a future AgentsMesh/plugin target.
+".claude/**/*.md" = ["MD047"]
+".grok/**/*.md" = ["MD047"]
+
+# Google: Gemini CLI and Antigravity-related project Markdown.
+".gemini/**/*.md" = ["MD047"]
+
+# GitHub / Microsoft Copilot.
 ".github/copilot-instructions.md" = ["MD047"]
+".github/instructions/**/*.md" = ["MD047"]
+".github/prompts/**/*.md" = ["MD047"]
 ".github/skills/**/*.md" = ["MD047"]
 ".github/agents/**/*.md" = ["MD047"]
-".agents/rules/**/*.md" = ["MD047"]
-".agents/skills/**/*.md" = ["MD047"]
+
+# AWS and major IDE/agent vendors.
+".amazonq/**/*.md" = ["MD047"]
+".kiro/**/*.md" = ["MD047"]
+".cursor/**/*.md" = ["MD047"]
+".windsurf/**/*.md" = ["MD047"]
+".junie/**/*.md" = ["MD047"]
+".augment/**/*.md" = ["MD047"]
+".cline/**/*.md" = ["MD047"]
+".continue/**/*.md" = ["MD047"]
+".roo/**/*.md" = ["MD047"]
+".trae/**/*.md" = ["MD047"]
+
+# Other major AgentsMesh-supported coding agents/platforms.
+".factory/**/*.md" = ["MD047"]
+".opencode/**/*.md" = ["MD047"]
+".qwen/**/*.md" = ["MD047"]
+".warp/**/*.md" = ["MD047"]
+".kilo/**/*.md" = ["MD047"]
+".deepagents/**/*.md" = ["MD047"]
+".crush/**/*.md" = ["MD047"]
+".pi/**/*.md" = ["MD047"]
+".rovodev/**/*.md" = ["MD047"]
+".aider/**/*.md" = ["MD047"]
+".replit/**/*.md" = ["MD047"]
 
 [MD003]
 style = "atx"
