@@ -13,6 +13,7 @@ SKILL_ROOT = (
     Path(__file__).resolve().parents[3]
     / "src"
     / "agentsmesh"
+    / ".agentsmesh"
     / "skills"
     / "mols-markdown-dashboard"
 )
