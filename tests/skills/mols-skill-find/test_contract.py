@@ -6,9 +6,7 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[3]
-SKILL = ROOT / ".agentsmesh" / "skills" / "mols-skill-find" / "SKILL.md"
-COPILOT = ROOT / ".github" / "skills" / "mols-skill-find" / "SKILL.md"
-ANTIGRAVITY = ROOT / ".agents" / "skills" / "mols-skill-find" / "SKILL.md"
+SKILL = ROOT / "src" / "agentsmesh" / "skills" / "mols-skill-find" / "SKILL.md"
 DEFAULT_SOURCE = "https://github.com/mols3131d/mols-agent-assets"
 EXPECTED_ARGUMENTS = {
     "sources",
@@ -54,16 +52,11 @@ def test_discovery_arguments_are_auto_first_and_source_agnostic() -> None:
     assert "agent/chatbot" not in body
 
 
-def test_declared_default_is_visible_in_projected_skill_bodies() -> None:
+def test_declared_default_is_visible_in_canonical_skill() -> None:
     _, body = load()
     assert DEFAULT_SOURCE in body
     assert "## Defaults" in body
     assert "fallback: none" in body
-
-    for projection in [COPILOT, ANTIGRAVITY]:
-        projected = projection.read_text(encoding="utf-8")
-        assert DEFAULT_SOURCE in projected, projection
-        assert "## Defaults" in projected, projection
 
 
 def test_auto_resolution_keeps_defaults_declarative_and_bounded() -> None:
