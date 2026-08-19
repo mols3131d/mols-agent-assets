@@ -13,23 +13,25 @@ description: Agent Skills 외부 규격 위에 적용하는 repository-local Ski
 
 Personal Standard는 적용 가능한 외부 contract를 만족한 뒤 적용한다.
 
-- Portable Agent Skill 규격 → Tier 1 Specification
-- Target-specific 추가·제약 → 해당 Tier 2 공식 원문
+- Rulesync canonical asset contract → current Rulesync schema and target adapters
+- Agent Skills projection → Tier 1 Specification
+- Target-specific projection → 해당 Tier 2 공식 원문
 - Repository-local 추가 convention → 이 Personal Standard
 
 Target runtime의 mandatory contract가 repository-local convention보다 우선한다.
 
 ## Front Matter
 
-표준 front matter field와 constraint는 [Agent Skills Specification](agent-skills-io/agent-skills-io-specification.md)이 소유한다.
+Canonical `src/rulesync/.rulesync/skills/<skill-name>/SKILL.md` front matter는 **Rulesync canonical schema를 따른다**.
+
+- 공통 Rulesync field는 top level에 둔다.
+- Agent Skills 전용 field인 `license`, `compatibility`, `metadata`, `allowed-tools`는 `agentsskills:` section에 둔다.
+- 특정 target 전용 field는 해당 Rulesync target namespace에 둔다.
+- Rulesync가 지원하지 않는 공통 passthrough schema를 repository-local 규칙으로 새로 만들지 않는다.
+
+Agent Skills projection의 field와 constraint는 [Agent Skills Specification](agent-skills-io/agent-skills-io-specification.md)이 소유한다. Rulesync target adapter가 표현하지 않는 semantics는 해당 target의 capability boundary로 취급하며 수동 projection 규칙을 추가하지 않는다.
 
 현재 Personal Standard는 **추가 required top-level front matter field를 정의하지 않는다**.
-
-Repository-local 추가 metadata가 필요하면 portable한 경우 표준 `metadata` mapping을 우선한다. 특정 host가 별도 top-level field를 요구하면 Tier 2 host-specific contract로 다루며 portable field처럼 일반화하지 않는다.
-
-Canonical `SKILL.md`의 portable field는 Rulesync projection 편의를 위해 target namespace로 이동시키지 않는다. Rulesync가 특정 portable 또는 custom field를 모든 target으로 전달하지 못하더라도 canonical source의 표준 형태가 우선한다.
-
-Rulesync canonical source에서 **target-specific** extension이 필요하면 해당 target namespace에 둔다. 이 namespace는 projection-layer 입력이며 portable Agent Skills field로 취급하지 않는다. Portable field를 target에도 명시적으로 전달해야 한다면 해당 target contract와 Rulesync adapter가 그 field를 지원하는지 확인하고, 필요한 mapping을 target namespace에 추가한 뒤 projection 결과를 검증한다.
 
 ## Personal Extensions
 
@@ -53,8 +55,9 @@ Skill은 chatbot/agent 또는 flat/runtime으로 분류하지 않는다. `SKILL.
 
 새 Skill 규칙은 가장 좁은 authoritative owner에 둔다.
 
-- Portable 공통 규격 → Tier 1 Specification
-- 특정 vendor/harness 규격 → Tier 2 공식 원문 링크
+- Rulesync canonical 표현 → Rulesync current schema
+- Agent Skills output contract → Tier 1 Specification
+- 특정 vendor/harness output contract → Tier 2 공식 원문 링크
 - Repository 전체의 Skill 확장 → Personal Standard
 - Repository package shape와 target boundary → 해당 focused reference
 - 특정 Skill 하나의 contract → 해당 Skill
