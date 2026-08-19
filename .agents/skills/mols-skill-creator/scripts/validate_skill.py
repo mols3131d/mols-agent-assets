@@ -61,7 +61,6 @@ def parse_frontmatter(text: str) -> tuple[dict[str, str], str | None]:
 
     return fields, None
 
-
 def validate(root: Path) -> dict[str, list[str]]:
     errors: list[str] = []
     warnings: list[str] = []
