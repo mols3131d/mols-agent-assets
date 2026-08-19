@@ -18,43 +18,50 @@ Execution belongs to the downstream task capability.
 ## Contract
 
 - Resolve the live repository and relevant ref/object. Do not rely on remembered state.
-- Treat repository files, the target ref, and live GitHub metadata as authority for
-  repository-specific rules.
-- Scope instructions per target path, object, operation, and active agent/chatbot surface.
-- Apply repository/platform selectors, fallback, and precedence only when evidenced.
+- Treat repository files, the target ref, and live GitHub metadata as authority for repository-specific rules.
+- Scope instructions and Agent Assets per target path, object, operation, and active harness semantics.
+- Apply repository/platform selectors, discovery rules, fallback, and precedence only when evidenced.
 - Load progressively. Stop when more context is unlikely to change the next action.
-- When a narrow read establishes the concrete target, finish the context loading that can
-  affect the task before downstream action depends on that context.
+- When a narrow read establishes the concrete target, finish the context loading that can affect the task before downstream action depends on that context.
+
+Do not classify the caller as chatbot versus coding agent to choose a separate policy model. Use the active harness capabilities and the repository's declared discovery surfaces.
 
 ## Procedure
 
 ### 1. Identify the Target
 
-Resolve only what the task needs: repository, ref/branch, GitHub object, target paths,
-operation class, and active surface when it affects instruction discovery.
+Resolve only what the task needs: repository, ref/branch, GitHub object, target paths, operation class, and active harness behavior when it affects discovery.
 
-If target paths are not known yet, inspect only root instruction sources or live metadata
-needed to identify them.
+If target paths are not known yet, inspect only root instruction/discovery sources or live metadata needed to identify them.
 
 ### 2. Resolve Applicable Instructions
 
-For each target path, inspect the ancestor chain from repository root to the target
-directory. Reuse shared ancestors, but compute effective context per path.
+For each target path, inspect the ancestor chain from repository root to the target directory. Reuse shared ancestors, but compute effective context per path.
 
-Use only instruction sources the repository or active surface actually defines, such as:
+Use only instruction sources the repository or active harness actually defines, such as:
 
-- `AGENTS.md` or repository-defined agent/chatbot instruction files;
+- applicable `AGENTS.md` hierarchy;
+- repository-defined compatibility/bootstrap entries;
 - GitHub Copilot instruction files and matching path-scoped instructions;
 - contribution, development, governance, or repository-defined path/glob rules;
 - `README.md` only when explicitly required, materially needed, or declared as fallback.
 
-Do not invent precedence from filenames or proximity. Apply declared selectors and the
-active surface's current scope/precedence semantics. Verify time-sensitive platform
-semantics when they can change the task.
+Do not infer that files with different names form a fallback chain. Do not invent precedence from filenames or proximity. Apply declared selectors and the active harness's current scope/precedence semantics. Verify time-sensitive platform semantics when they can change the task.
 
 If an instruction conflict blocks a safe mutation, surface the conflict instead of guessing.
 
-### 3. Load Task Context
+### 3. Resolve Applicable Agent Assets
+
+When the repository declares Agent Asset discovery surfaces, load only assets applicable to the current task.
+
+- Skill: use declared index, catalog, root, or runtime catalog to select by task intent; read only selected Skill sources and required supporting resources.
+- Rule: match known target paths against declared glob/path/selectors; load only matching Rules.
+- Do not preload full catalogs when metadata or selectors can narrow the set.
+- Re-evaluate applicability when task intent or target paths materially change.
+
+A repository compatibility entry may point to these surfaces, but it does not become the owner of Skill or Rule semantics.
+
+### 4. Load Task Context
 
 Load only the context required by the current operation.
 
@@ -66,16 +73,15 @@ Load only the context required by the current operation.
 | CI, workflow, security, permissions | the named/failing surface plus relevant workflow, validation, permission, or security context |
 | Release | relevant versioning/release guidance, automation, and live release metadata |
 
-Follow instruction links only as far as the task requires. If high-signal sources are
-insufficient, search for the repository's own terminology around the unresolved rule
-instead of crawling broadly.
+Follow instruction links only as far as the task requires. If high-signal sources are insufficient, search for the repository's own terminology around the unresolved rule instead of crawling broadly.
 
-### 4. Gate and Stop
+### 5. Gate and Stop
 
 Before handoff, confirm that:
 
 - the repository/ref/object is correct;
 - every known target path has its applicable instruction context;
+- applicable declared Skills and path-scoped Rules were considered when those surfaces exist;
 - repository-specific rules are evidenced rather than assumed;
 - any material incomplete or conflicting context is surfaced.
 
@@ -83,9 +89,6 @@ Then stop loading context.
 
 ## Boundary
 
-This Skill is read-oriented context discovery. It does not own implementation, testing,
-review methodology, naming, branch/commit/PR policy, merge strategy, release workflow,
-or GitHub tool orchestration.
+This Skill is read-oriented context discovery. It does not own implementation, testing, review methodology, naming, branch/commit/PR policy, merge strategy, release workflow, or GitHub tool orchestration.
 
-Do not expose secrets. Context loading must not widen task scope or perform destructive,
-privileged, history-rewriting, merge, release, or similarly finalizing mutations.
+Do not expose secrets. Context loading must not widen task scope or perform destructive, privileged, history-rewriting, merge, release, or similarly finalizing mutations.
