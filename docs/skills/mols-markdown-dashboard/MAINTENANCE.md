@@ -14,7 +14,7 @@
 
 ## Quality Gate
 
-Skill 구현 루트 `src/agentsmesh/skills/mols-markdown-dashboard/`에서 실행한다.
+Skill 구현 루트 `src/agentsmesh/.agentsmesh/skills/mols-markdown-dashboard/`에서 실행한다.
 
 ```bash
 uv sync --all-groups
