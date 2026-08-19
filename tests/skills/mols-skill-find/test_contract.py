@@ -32,7 +32,7 @@ def test_discovery_arguments_are_auto_first_and_source_agnostic() -> None:
     frontmatter, body = load()
     metadata = frontmatter["metadata"]
     assert isinstance(metadata, dict)
-    assert metadata["default-source"] == "github:mols3131d/mols-agent-assets"
+    assert metadata["default-source"] == "https://github.com/mols3131d/mols-agent-assets"
 
     block = re.search(r"## Arguments\n\n```yaml\n(.*?)\n```", body, re.DOTALL)
     assert block is not None
@@ -58,6 +58,7 @@ def test_auto_resolution_keeps_defaults_declarative_and_bounded() -> None:
         "Explicit values always win.",
         "metadata.default-source",
         "fallback: external",
+        "build a source plan from applicable evidence rather than choosing one source prematurely",
         "Do not fetch a remote repository merely to rediscover Skills already exposed",
         "An index is an optimization and authority hint, not a universal requirement.",
         "Do not invent target profiles or sibling classes.",
@@ -66,7 +67,14 @@ def test_auto_resolution_keeps_defaults_declarative_and_bounded() -> None:
         assert phrase in body
 
     assert "<none>" in body
-    assert "native-first" in body
-    assert "source-first" in body
-    assert "index-first" in body
+    assert "first-match" in body
+    assert "merge" in body
+    assert "exhaustive" in body
     assert "sync-prep" in body
+
+
+def test_strategy_and_source_access_are_separate_axes() -> None:
+    _, body = load()
+    assert "It controls how ordered source results are combined" in body
+    assert "`index` in SourceSpec controls index use for that source." in body
+    assert "Do not use `strategy` to override `sources` order, SourceSpec scope, or `index` policy." in body
