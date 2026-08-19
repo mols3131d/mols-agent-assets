@@ -23,7 +23,7 @@ For statements with the same requirement:
 - Different scopes or attachment modes -> repeated rule across applications; a consolidation candidate, not automatically redundant.
 - Narrower statement changes, limits, or overrides the broader requirement -> genuine exception, not duplication.
 
-Repeated rules across applications may be consolidated only when the intended application remains exactly representable and precedence or attachment behavior does not change. Source authority and projection status are resolved separately in [./ownership.md](ownership.md).
+Repeated rules across applications may be consolidated only when the intended application remains exactly representable and precedence or attachment behavior does not change. Source authority and projection status are resolved separately in [./ownership.md](./ownership.md).
 
 ## Ambiguity
 

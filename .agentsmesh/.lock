@@ -1,7 +1,7 @@
 # Auto-generated. DO NOT EDIT MANUALLY.
 # Tracks the state of all config files for team conflict resolution.
 
-generated_at: 2026-08-19T04:54:19.170Z
+generated_at: 2026-08-19T06:02:43.953Z
 generated_by: runner
 lib_version: 0.32.0
 checksums:
@@ -197,8 +197,8 @@ checksums:
   skills/mols-skill-creator/scripts/init_skill.py: sha256:00d2720f2ee6e5560089ce5b4f624a560f6129781f25291167284247688df54b
   skills/mols-skill-creator/scripts/package_skill.py: sha256:462917d3f0001166e868a226b59213a7e4f6270b0907d2519a0ca4f8c07cfda1
   skills/mols-skill-creator/scripts/validate_skill.py: sha256:d73925a81a17286b262eb004df57fea9cc0564be93e0735980e7920d0f84bd27
-  skills/mols-skill-find/SKILL.md: sha256:ec819e23c4db32351effe558d904524dd3a5b40f023bfbbe936775c547af15ef
-  skills/mols-skill-install/SKILL.md: sha256:dd19c61d35571e0832c18e98836f55eaad03a9fcfa2b2d5f15f1f6e0a34eaa17
+  skills/mols-skill-find/SKILL.md: sha256:b7dbd55f21bc862fdb9cc6378559a85c54ffe675c1bd6a03e6cdaea88311c767
+  skills/mols-skill-install/SKILL.md: sha256:bfbdb676ce866da2fb2e777e44a9a60d9a0528604be1604c681edfedf0a78d53
   skills/news-table/SKILL.md: sha256:77db70065a6dee0f1ca85fe5a3c0ca40f4bd10ff09af251f18af5fc3a3b5cd52
   skills/rpwr-loop/SKILL.md: sha256:8b11a82f55824e1eb4ca7a317b512fbb6d26bd305853bba8856e7159f22311ab
   skills/searcher/SKILL.md: sha256:07b4168a80ca4093add07262fe65069d7cd1c8bd53a64010ca57acbf162d613f
@@ -423,8 +423,8 @@ outputs:
   .github/skills/mols-skill-creator/scripts/init_skill.py: sha256:00d2720f2ee6e5560089ce5b4f624a560f6129781f25291167284247688df54b
   .github/skills/mols-skill-creator/scripts/package_skill.py: sha256:462917d3f0001166e868a226b59213a7e4f6270b0907d2519a0ca4f8c07cfda1
   .github/skills/mols-skill-creator/scripts/validate_skill.py: sha256:d73925a81a17286b262eb004df57fea9cc0564be93e0735980e7920d0f84bd27
-  .github/skills/mols-skill-find/SKILL.md: sha256:dbf8caf8759b9d872cbc392a25959bf5901d647d3189cbf75a08608e7e934723
-  .github/skills/mols-skill-install/SKILL.md: sha256:da500e2a7421ae53222e53e126a58298178daf551801916d67d176ffc9ef7b62
+  .github/skills/mols-skill-find/SKILL.md: sha256:817aa023030a0109c8c9ca8fac924fada732e3ec845e5d205ba58625429afc96
+  .github/skills/mols-skill-install/SKILL.md: sha256:b7e1c6004b04950d02dbefa3f7faa5ea1f3dede5fc55f0879258ad2d738ed40e
   .github/skills/news-table/SKILL.md: sha256:16468168e73b529680c80c59d929788338cef5913f04386fc6c2057862cddc2b
   .github/skills/rpwr-loop/SKILL.md: sha256:1f62cc99217d1570e74c963aaa44b6968e31d0117d1c8fc3a8ee39ba42dd77ec
   .github/skills/searcher/SKILL.md: sha256:2d11029fea01a7c650cf916defe4c1c271107348d7bfb66e925838dc93a15527
@@ -638,8 +638,8 @@ outputs:
   .agents/skills/mols-skill-creator/scripts/init_skill.py: sha256:00d2720f2ee6e5560089ce5b4f624a560f6129781f25291167284247688df54b
   .agents/skills/mols-skill-creator/scripts/package_skill.py: sha256:462917d3f0001166e868a226b59213a7e4f6270b0907d2519a0ca4f8c07cfda1
   .agents/skills/mols-skill-creator/scripts/validate_skill.py: sha256:d73925a81a17286b262eb004df57fea9cc0564be93e0735980e7920d0f84bd27
-  .agents/skills/mols-skill-find/SKILL.md: sha256:dbf8caf8759b9d872cbc392a25959bf5901d647d3189cbf75a08608e7e934723
-  .agents/skills/mols-skill-install/SKILL.md: sha256:da500e2a7421ae53222e53e126a58298178daf551801916d67d176ffc9ef7b62
+  .agents/skills/mols-skill-find/SKILL.md: sha256:817aa023030a0109c8c9ca8fac924fada732e3ec845e5d205ba58625429afc96
+  .agents/skills/mols-skill-install/SKILL.md: sha256:b7e1c6004b04950d02dbefa3f7faa5ea1f3dede5fc55f0879258ad2d738ed40e
   .agents/skills/news-table/SKILL.md: sha256:16468168e73b529680c80c59d929788338cef5913f04386fc6c2057862cddc2b
   .agents/skills/rpwr-loop/SKILL.md: sha256:1f62cc99217d1570e74c963aaa44b6968e31d0117d1c8fc3a8ee39ba42dd77ec
   .agents/skills/searcher/SKILL.md: sha256:2d11029fea01a7c650cf916defe4c1c271107348d7bfb66e925838dc93a15527
