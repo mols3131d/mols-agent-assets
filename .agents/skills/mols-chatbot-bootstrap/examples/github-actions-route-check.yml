@@ -1,0 +1,27 @@
+# Reference example only. Adapt paths, arguments, and parser assumptions to the target workspace.
+name: Route metadata check
+
+on:
+  pull_request:
+    paths:
+      - ".agents/skills/**"
+      - ".agents/rules/**"
+      - ".agents/routes/**"
+
+permissions:
+  contents: read
+
+jobs:
+  routes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Validate route invariants
+        run: >-
+          python .agents/skills/mols-chatbot-bootstrap/scripts/generate_routes.py
+          --repo .
+          --check
+          --kinds auto
