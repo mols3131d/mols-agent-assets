@@ -16,7 +16,7 @@ Chatbot과 coding agent를 별도 runtime actor로 분류하지 않는다. 차�
 - repository root에 `CHATBOT.md` 하나만 둔다.
 - nested `CHATBOT.md` hierarchy를 만들지 않는다.
 - `CHATBOT.md`는 `AGENTS.md`, Skill, Rule의 authority를 복제하거나 대체하지 않는다.
-- active runtime이 같은 discovery/loading을 이미 제공하면 중복 수행하지 않는다.
+- compatibility responsibility는 독립적으로 적용한다. active runtime이 이미 제공하는 behavior는 건너뛰고 누락된 behavior만 보정한다.
 - runtime capability 차이를 이유로 별도 chatbot policy tree나 actor taxonomy를 만들지 않는다.
 - platform/system/user/tool authority와 target harness의 강제 규격은 이 convention보다 우선한다.
 
@@ -26,18 +26,17 @@ Chatbot과 coding agent를 별도 runtime actor로 분류하지 않는다. 차�
 
 ### `AGENTS.md` Hierarchy
 
-현재 task의 target path마다 repository root에서 target directory까지 applicable `AGENTS.md` chain을 계산하고 로드한다.
+active runtime이 applicable `AGENTS.md` hierarchy를 자동으로 제공하지 않는 target path에 대해서만 repository root에서 target directory까지 applicable chain을 계산하고 로드한다.
 
 - shared ancestor는 재사용하되 effective context는 target path별로 계산한다.
-- 더 가까운 `AGENTS.md`는 충돌하는 항목이나 명시적 scoped exception만 override하고 독립적인 상위 guidance는 유지한다.
+- hierarchy와 precedence는 repository 또는 active harness가 선언한 contract를 따른다.
 - target path가 바뀌면 applicability를 다시 계산한다.
-- repository나 active harness가 다른 hierarchy/precedence contract를 명시하면 그 contract를 따른다.
 
 `CHATBOT.md` 자체는 이 hierarchy의 한 단계가 아니다.
 
 ### Skill Discovery and Loading
 
-현재 task intent에 맞는 Skill만 discovery/load한다.
+active runtime이 repository Skill discovery/loading을 제공하지 않는 범위에서 현재 task intent에 맞는 Skill만 discovery/load한다.
 
 - repository가 Skill index, catalog, root 또는 discovery entry를 제공하면 metadata로 후보를 고른다.
 - 선택된 Skill의 canonical source와 필요한 supporting resource만 읽는다.
@@ -48,7 +47,7 @@ Skill의 trigger, procedure, authority와 output semantics는 Skill source가 �
 
 ### Path-Scoped Rule Discovery and Loading
 
-known target path와 repository가 선언한 selector가 일치하는 Rule만 discovery/load한다.
+active runtime이 path-scoped Rule discovery/loading을 제공하지 않는 범위에서 known target path와 repository가 선언한 selector가 일치하는 Rule만 discovery/load한다.
 
 - glob, `applyTo`, path 또는 target-native selector는 해당 Rule surface의 semantics를 따른다.
 - 여러 target path를 다루면 Rule applicability를 path별로 계산한다.
@@ -63,12 +62,11 @@ repository task를 시작하면 필요한 범위에서 다음을 수행한다.
 
 1. root `CHATBOT.md`를 compatibility entry로 확인한다.
 1. task intent와 known target path를 식별한다.
-1. applicable `AGENTS.md` hierarchy를 로드한다.
-1. task intent에 맞는 Skill을 discovery/load한다.
-1. known target path와 일치하는 path-scoped Rule을 discovery/load한다.
+1. `AGENTS.md`, Skill, Rule 세 responsibility마다 active runtime이 이미 제공하는 behavior를 확인한다.
+1. 누락된 responsibility에 대해서만 applicable context와 Agent Asset을 discovery/load한다.
 1. linked context는 현재 판단에 필요한 만큼만 추가로 읽는다.
 
-이 순서는 discovery 절차이며 새로운 authority precedence를 만들지 않는다.
+이 순서는 discovery 절차이며 새로운 authority precedence를 만들지 않는다. Partial harness support는 정상적인 상태다. 예를 들어 runtime이 `AGENTS.md` hierarchy는 제공하지만 repository Skill discovery는 제공하지 않으면 Skill responsibility만 보정한다.
 
 ## Boundary
 
@@ -86,9 +84,10 @@ Issue, Pull Request, comment, source text처럼 repository에 있다는 이유�
 ## Review Test
 
 1. `CHATBOT.md`가 별도 policy owner가 아니라 compatibility layer로 남아 있는가?
-1. target path에 적용되는 `AGENTS.md` hierarchy를 복구하는가?
+1. 세 compatibility responsibility를 독립적으로 판단하는가?
+1. target path에 필요한 `AGENTS.md` hierarchy를 복구하는가?
 1. task intent에 맞는 Skill만 progressive load하는가?
 1. target path와 selector가 일치하는 Rule만 load하는가?
-1. native harness가 이미 제공하는 behavior를 중복하지 않는가?
+1. native harness가 이미 제공하는 behavior를 해당 responsibility에서 중복하지 않는가?
 1. 기존 Rule, Skill, `AGENTS.md`의 authority를 복제하지 않는가?
 1. runtime capability 차이를 별도 actor taxonomy로 확대하지 않는가?
