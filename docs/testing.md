@@ -10,30 +10,29 @@
 | `tests/skills/<skill>/` | Skill-specific deterministic correctness test와 fixture |
 | `tests/evals/` | repository-owned evaluation fixture의 syntax/shape check |
 | `evals/skills/<skill>/` | Skill-specific trigger, behavior, adversarial 등 model/evaluation fixture |
-| `evals/regression/` | 여러 source·target에 걸친 deterministic regression contract |
+| `evals/regression/` | 여러 source에 걸친 deterministic regression contract |
 
 Deployable Skill package인 `src/rulesync/.rulesync/skills/<skill>/`에는 repository verification 자산을 두지 않습니다. `tests/`, `evals/`, `scenarios/`, generated `results/`는 runtime resource가 아닙니다.
 
 ## 검증 계층
 
-Rulesync-managed source 변경은 가능한 범위에서 다음 순서로 검증합니다.
-
 ```text
-native workspace: src/rulesync
-  → rulesync doctor --strict / generate --dry-run directly
-  → copy workspace verbatim to a temporary directory for generation
-  → rulesync generate + generate --check
+canonical source
+  → rulesync doctor --strict
+  → 필요할 때 target을 선택해 generate --dry-run
+  → write-producing generate/check는 temporary workspace에서만 수행
   → affected repository tests
   → applicable behavioral/runtime eval
 ```
 
-Repository `npm run rulesync:*` command는 `scripts/run_rulesync.py`를 사용합니다. `doctor`와 `preview`는 native workspace에서 직접 실행하고, `validate`만 temporary copy를 사용합니다. Generated target projection과 Rulesync lock state는 canonical repository file로 남기지 않습니다.
+Repository `npm run rulesync:*` command는 `scripts/run_rulesync.py`를 사용합니다. Runner는 Rulesync의 target path나 projection semantics를 재구현하지 않고 CLI에 위임합니다. Generated target projection과 Rulesync lock state는 repository에 남기지 않습니다.
 
-Rulesync schema와 target mapping 자체는 upstream contract가 소유합니다. Repository test는 다음처럼 이 저장소가 추가로 보장해야 하는 invariant에 집중합니다.
+이 저장소는 supported vendor/target matrix를 검증하지 않습니다. CI의 `--targets '*'` projection은 current Rulesync adapter 전체를 temporary workspace에서 smoke-test하기 위한 일시적 operation이며 support 선언이 아닙니다.
 
-- distribution source와 repository runtime surface의 isolation
+Repository test는 Rulesync 자체가 아니라 이 저장소가 추가로 소유하는 invariant에 집중합니다.
+
+- canonical source와 repository runtime surface의 isolation
 - deployable Skill package와 verification surface의 분리
-- generated projection의 package/body fidelity
 - repository-owned route generation
 - behavioral/runtime claim에 필요한 별도 evidence
 
@@ -43,8 +42,8 @@ Deterministic check로 판정할 수 있는 계약은 model grader보다 우선�
 
 ```bash
 npm run rulesync:doctor
-npm run rulesync:preview
-npm run rulesync:validate
+npm run rulesync:preview -- --targets <target>
+npm run rulesync:validate -- --targets <target>
 uv run pytest
 uv run ruff check .
 ```
