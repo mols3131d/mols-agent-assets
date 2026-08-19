@@ -1,6 +1,6 @@
 [global]
 flavor = "gfm"
-disable = ["MD013", "MD025", "MD033", "MD041", "MD047"]
+disable = ["MD013", "MD025", "MD033", "MD041"]
 exclude = [
   "**/.git/",
   "**/.tmp/",
@@ -25,6 +25,17 @@ extend-enable = [
   "MD073",
   "MD080",
 ]
+
+[per-file-ignores]
+# AgentsMesh 0.32 owns the exact trailing-newline serialization of generated
+# Markdown projections, so MD047 is not validated or auto-fixed on these paths.
+# Keep this list aligned with every Markdown projection target in agentsmesh.yaml.
+# If another vendor target is added later, add its generated Markdown paths here.
+".github/copilot-instructions.md" = ["MD047"]
+".github/skills/**/*.md" = ["MD047"]
+".github/agents/**/*.md" = ["MD047"]
+".agents/rules/**/*.md" = ["MD047"]
+".agents/skills/**/*.md" = ["MD047"]
 
 [MD003]
 style = "atx"
