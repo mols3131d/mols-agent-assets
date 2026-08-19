@@ -2,56 +2,63 @@
 
 ## Directory Roles
 
-- `src/rulesync/rulesync.jsonc`: isolated native Rulesync workspace의 projection configuration.
-- `src/rulesync/.rulesync/rules/`: Rulesync-compatible Rule canonical source.
-- `src/rulesync/.rulesync/skills/`: Rulesync-compatible Skill canonical source.
-- `src/rulesync/.rulesync/subagents/`: Rulesync를 통해 target Agent로 projection되는 Agent canonical source.
-- `src/`의 다른 경로: Rulesync contract로 표현할 수 없는 실제 custom/non-standard Agent Asset만 유지.
-- `tests/`: 자산 및 도구의 deterministic verification.
+- `src/rulesync/rulesync.jsonc`: Rulesync target과 feature configuration.
+- `src/rulesync/.rulesync/`: Rulesync canonical source.
+- `src/rulesync/.rulesync/rules/`: distributable Rulesync Rule source.
+- `src/rulesync/.rulesync/skills/`: distributable Rulesync Skill source.
+- `src/rulesync/.rulesync/subagents/`: distributable Rulesync Subagent source.
+- `src/rulesync/`의 peer source: Rulesync가 표현하지 못하는 실제 required semantics만 예외적으로 유지.
+- `route/`: canonical Skill metadata에서 생성되는 cross-runtime discovery projection.
+- `tests/`: deterministic repository verification.
 - `evals/`: behavioral/model eval과 cross-asset regression contract.
-- `docs/<asset-type>/<asset-name>/`: 특정 자산에 필요할 때만 두는 maintainer-only 문서.
-- `docs/references/`: 여러 자산이 공유하는 공통·유형별 reference.
+- `docs/skills/<skill-name>/`: 특정 Skill에 필요할 때만 두는 maintainer documentation.
+- `docs/references/`: shared convention, principle과 external reference routing.
 
-Repository root의 `.rulesync/`, `rulesync.jsonc`, `.github/skills/`, `.github/agents/`, `.github/copilot-instructions.md`, `.agents/rules/`, `.agents/skills/`, `.agents/agents/`는 canonical 또는 generated distribution surface로 commit하지 않습니다. `src/rulesync/.rulesync/`만 distribution source로 사용합니다.
+Rulesync-managed source의 schema, feature name과 target namespace는 current Rulesync를 따릅니다. Repository-local abstraction으로 다시 정의하지 않습니다.
 
-현재 target이 canonical asset의 semantics를 완전히 지원하지 않더라도 canonical authority와 target capability를 구분합니다. 지원되지 않는 semantics를 portability 명목으로 삭제하거나 수동 projection으로 위조하지 않습니다.
+Repository root의 `.rulesync/`, `rulesync.jsonc`와 generated target surfaces는 distribution source로 commit하지 않습니다. 자세한 integration boundary는 [Rulesync Repository Conventions](references/common/standards/rulesync-repository-conventions.md)가 소유합니다.
 
-## Skill Package Convention
+## Rulesync-Native Authoring
 
-Skill은 chatbot/agent 또는 flat/runtime으로 분류하지 않습니다.
+새 자산을 만들 때 먼저 적절한 Rulesync feature가 있는지 확인합니다.
 
-모든 canonical Skill은 다음 경로에서 시작합니다.
+1. Rulesync가 표현할 수 있으면 native feature와 canonical shape를 사용합니다.
+1. target-specific behavior는 해당 Rulesync target namespace에 둡니다.
+1. target adapter가 표현하지 못하는 semantics는 capability limitation으로 남깁니다.
+1. 실제 요구가 있고 Rulesync가 표현할 수 없을 때만 custom source를 검토합니다.
+
+Repository-local superset schema, manual projection layer나 parallel taxonomy를 만들지 않습니다.
+
+### Skills
+
+Canonical Skill은 다음 경로에서 시작합니다.
 
 ```text
 src/rulesync/.rulesync/skills/<skill-name>/SKILL.md
 ```
 
-`SKILL.md` 하나로 capability가 완결되면 **single-file Skill**로 유지합니다. 파일 길이나 runtime 존재만으로 분리하지 않습니다.
+Single-file 기본, supporting resource, maintainer documentation과 naming 같은 개인 관행은 [Skill Authoring Conventions](references/skills/skill-authoring-conventions.md)가 소유합니다.
 
-실행에 실제로 필요할 때만 같은 package에 `references/`, `scripts/`, `assets/`, `templates/` 같은 supporting resource를 추가합니다.
+## Maintainer Documentation
 
-Single-file Skill에서는 top-level `#` heading을 여러 Markdown 문서의 responsibility boundary처럼 사용할 수 있습니다. 모든 heading은 하나의 명확한 책임을 가져야 하며, 불필요한 미세 분할은 하지 않습니다.
+Maintainer docs는 기본 산출물이 아닙니다. Canonical source만으로 안전하게 유지보수하기 어렵거나 durable decision·recovery knowledge가 실제로 필요할 때만 만듭니다.
 
-## Asset Documentation
+- runtime-required knowledge는 deployable source가 소유합니다.
+- 임시 작업 로그와 쉽게 재생성되는 상태는 durable docs로 승격하지 않습니다.
+- 완료된 migration 계획과 보고서는 current guidance에서 제거하고 Git history에 맡깁니다.
+- shared knowledge는 가장 좁은 `docs/references/` owner가 소유합니다.
 
-자산별 maintainer 문서는 기본 산출물이 아닙니다. canonical source만으로 안전하게 유지보수하기 어렵거나 복잡성·훼손 위험·durable decision·recovery 지식이 별도로 보존될 가치가 있을 때만 `docs/<asset-type>/<asset-name>/`을 만듭니다.
+### README Convention
 
-- runtime이 읽어야 하는 정보는 deployable asset package에 둡니다.
-- 임시 작업 로그와 쉽게 재생성되는 상태는 durable maintainer docs로 승격하지 않습니다.
-- 완료된 migration 계획·보고서는 current guidance로 유지하지 않고 Git history에 맡깁니다.
-- 유형 전체가 공유하는 지식은 `docs/references/<asset-type>/`이 소유합니다.
-
-### README 관행
-
-디렉터리 진입 문서가 필요하면 `README.md` 하나만 두고 한국어를 기본으로 작성합니다. `README.en.md`, `README.ko.md`처럼 언어별 복제본은 만들지 않습니다. 제품명, 표준명, 코드·경로·API 식별자와 영어가 더 정확한 기술 용어는 원문을 유지할 수 있습니다.
+Directory entry document가 필요하면 `README.md` 하나만 두고 한국어를 기본으로 작성합니다. 언어별 README 복제본은 만들지 않습니다. 제품명, 표준명, path, code, API identifier와 영어가 더 정확한 기술 용어는 원문을 유지할 수 있습니다.
 
 ## Workflow
 
-1. `<owner>/<type>/<topic>` 브랜치를 생성합니다.
-1. Rulesync가 표현할 수 있는 Rule, Skill, Agent는 `src/rulesync/.rulesync/`에서 작성하거나 수정합니다. Agent는 Rulesync canonical `subagents/`로 표현합니다.
-1. 필요한 경우에만 자산별 maintainer docs를 함께 갱신합니다.
-1. Markdown 변경은 repository rumdl policy에 맞춰 format합니다.
-1. Read-only Rulesync validation은 `src/rulesync/`에서 `doctor --strict` 또는 `generate --dry-run`으로 수행합니다.
-1. Generation처럼 파일을 쓰는 native validation은 `src/rulesync/` workspace 전체를 temporary directory로 복사한 뒤 `generate`와 `generate --check`를 수행합니다. Persistent lock이나 generated target을 이 저장소의 drift baseline으로 두지 않습니다.
+1. `<owner>/<type>/<topic>` branch에서 작업합니다.
+1. Rulesync-managed 자산은 `src/rulesync/.rulesync/`의 native feature path에서 작성하거나 수정합니다.
+1. 필요한 maintainer docs와 derived route만 함께 갱신합니다.
+1. Markdown은 repository rumdl policy에 맞춰 format합니다.
+1. Read-only validation은 `src/rulesync/`에서 `doctor --strict` 또는 `generate --dry-run`으로 수행합니다.
+1. Write-producing generation은 workspace 전체를 temporary directory로 복사한 뒤 `generate`와 `generate --check`를 수행합니다.
 1. 필요한 repository test/eval을 실행합니다.
-1. canonical source를 검토합니다. generated projection과 Rulesync lock state는 commit하지 않습니다.
+1. Canonical source를 최종 검토합니다. Generated target projection과 Rulesync lock state는 commit하지 않습니다.
