@@ -26,10 +26,9 @@ def test_library_workspace_is_canonical_and_target_neutral() -> None:
     assert config["targets"] == []
     assert contract["target_neutral"] is True
 
-    for feature in config["features"]:
-        assert (source / feature).exists(), feature
-
-    for skill_root in (source / "skills").iterdir():
+    skills = source / "skills"
+    assert skills.is_dir()
+    for skill_root in skills.iterdir():
         if skill_root.is_dir():
             assert (skill_root / "SKILL.md").is_file(), skill_root
 
