@@ -6,6 +6,7 @@
 /.archive/
 /.gemini/
 /.codex/
+/src/rulesync/rulesync.local.jsonc
 
 # Temporary and backup files
 *.tmp
