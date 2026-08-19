@@ -1,6 +1,6 @@
 # CI Design Patterns
 
-Choose patterns only after inspecting the target. Combine only what covers real failure classes.
+Choose patterns only after inspecting the target. Combine only what protects real admission risks or useful non-blocking confidence.
 
 ## Minimal Deterministic PR
 
@@ -8,12 +8,13 @@ Use when important contracts are static or deterministic.
 
 ```text
 change
-→ syntax/schema/format
+→ classify merge risk
+→ syntax / schema / contract
 → affected deterministic tests
-→ merge evidence
+→ strict admission evidence
 ```
 
-Good for small prompt, Skill, Rule, documentation, or script repositories. Do not add model evaluation merely because an LLM consumes the assets.
+Good for small prompt, Skill, Rule, documentation, or script repositories. Pure style does not need to block merge unless representation affects correctness or an explicit contract. Do not add model evaluation merely because an LLM consumes the assets.
 
 ## Targeted Impact Routing
 
@@ -38,7 +39,7 @@ script X      → script-specific tests
 CI router     → router tests + representative root checks
 ```
 
-The router is CI code; test it deterministically.
+The router is CI code; test it deterministically. If it cannot resolve impact with enough confidence, broaden the selected checks or fail safe rather than returning an empty or incomplete set.
 
 ## Harness / Projection Gate
 
@@ -59,7 +60,7 @@ This proves transformation fidelity, not live runtime behavior.
 
 Use only when deterministic evidence cannot cover the important behavior risk.
 
-For PR feedback, prefer a small representative smoke set:
+For merge-critical behavior, prefer the smallest representative blocking set that can support the admission decision:
 
 ```text
 semantic change
@@ -68,7 +69,7 @@ semantic change
 → threshold or regression interpretation
 ```
 
-Move expensive evidence to scheduled/manual or promotion boundaries, including broad provider/model matrices, large adversarial suites, repeated stochastic samples, latency/cost collection, and live runtime parity.
+Move evidence that does not affect admission to scheduled/manual or post-merge execution, including broad provider/model matrices, large adversarial suites, repeated stochastic samples, latency/cost collection, and live runtime parity.
 
 Keep fixture shape validation separate from model execution.
 
@@ -77,15 +78,15 @@ Keep fixture shape validation separate from model execution.
 A useful default for repositories that need several evidence depths is:
 
 ```text
-PR       → static + affected deterministic + optional semantic smoke
-main     → broader deterministic / integration regression
+PR       → blocking merge-critical static + affected deterministic + required semantic smoke
+main     → non-admission broader regression or diagnostics
 schedule → exhaustive semantic/runtime/provider evaluation
 ```
 
-This is not mandatory. Small repositories may need only the PR tier.
+This is not mandatory. Small repositories may need only the PR tier. A failure that makes the change unacceptable on `main` belongs before merge even when its check is expensive.
 
 ## Maintenance Automation
 
-Use for derived-state upkeep rather than merge confidence: formatting, index/route regeneration, synchronized projections, generated documentation, or similar writes.
+Use for derived-state upkeep rather than merge confidence: pure formatting, style normalization, index/route regeneration, synchronized projections, generated documentation, or similar writes.
 
-Prefer clear source authority and idempotent generation. Where practical, validate on PR and write only after merge. Avoid commit loops and workflows that silently overwrite intentional semantic tuning.
+Prefer clear source authority and idempotent generation. Where practical, validate merge-critical invariants on PR and write only after merge. Avoid commit loops and workflows that silently overwrite intentional semantic tuning.
