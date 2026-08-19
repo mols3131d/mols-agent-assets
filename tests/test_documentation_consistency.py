@@ -19,7 +19,7 @@ def test_current_guidance_uses_custom_exception_model() -> None:
     development = (DOCS / "development.md").read_text(encoding="utf-8")
 
     assert "과도기" not in readme_ko
-    assert "Transitional" not in readme_en
+    assert "transitional" not in readme_en.lower()
     assert "not yet migrated" not in readme_en
     assert "src/rules/" not in development
 
