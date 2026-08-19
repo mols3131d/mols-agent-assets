@@ -1,14 +1,16 @@
 # Auto-generated. DO NOT EDIT MANUALLY.
 # Tracks the state of all config files for team conflict resolution.
 
-generated_at: 2026-08-19T07:28:44.476Z
-generated_by: runner
+generated_at: 2026-08-19T09:33:06.734Z
+generated_by: unknown
 lib_version: 0.32.0
 checksums:
   agents/review-adversarial.md: sha256:065885304beef836d33c0e6e797e9bbe3faf29133ce0b1cf722ccdcade9730a8
   agents/review-lead.md: sha256:f52f5bbfdbc4a4b7a4839ecbd62d5a8844b509267b6f8e967c711fc089f0df4c
   agents/review-quality.md: sha256:ef41f89ce8e04c331aae064284b4958cc984ef3ea9d02a9bebba903390bd3e19
   rules/_root.md: sha256:392472fa7fdf2e4bc918aaef37b424d6da70b3bea7d2d2f0a76bc737b3c17b4c
+  skills/adudeck-textbook/SKILL.md: sha256:a7fdaa324de3512544c0fc2d70a1fbe2c11cf23a547d0c94dd754729d7a97da6
+  skills/adudeck-textbook-write/SKILL.md: sha256:bcad4d52715dede008363f9d3a92380d8ae7298aa1bb0b44aebbfe09e969eec3
   skills/artifact-consistency-inspector/SKILL.md: sha256:b7a570f72bba7215d41aa79417a75a1e1352662afaa71aecb23f6dbf89a65ac7
   skills/artifact-consistency-inspector/references/example-report.md: sha256:4f69d06c960b0578c1c5a742a147fe85daf7f9ea2b60cb96d1724798dfff0569
   skills/artifact-consistency-inspector/references/inspection-rules.md: sha256:d3c5ff15afa2b008cc2f9cf3ea0e65ca03e38af8d34fc56631f8befcc53da2c1
@@ -236,6 +238,8 @@ outputs:
   .agents/skills/am-agent-review-adversarial/SKILL.md: sha256:98dcbc12896398acfd4d2a1b83087fb24502bd1aca473ebc19e52994a36422a7
   .agents/skills/am-agent-review-lead/SKILL.md: sha256:33a617291da4f776e9cd021b2c4df9c2d6334fa559c2d8b5ea31bc330789ed1f
   .agents/skills/am-agent-review-quality/SKILL.md: sha256:e7d3fff7cc68e7d9968d0a63126d79652a494aaedf7888c7dab247a48eab66ad
+  .github/skills/adudeck-textbook/SKILL.md: sha256:9693db15c75ed1362dfcf223ec3c7a725a51c1abc8cbced65fd05d017d5e13d4
+  .github/skills/adudeck-textbook-write/SKILL.md: sha256:c1684603dede1e502faa7c4f31d863b790068c855ed8f03b52773d3e977d61d7
   .github/skills/artifact-consistency-inspector/SKILL.md: sha256:6e8d09225aa2cd056ecb277884f90f8b3f139c5f20ef9ce4fe1046e206ac3bbe
   .github/skills/artifact-consistency-inspector/references/example-report.md: sha256:4f69d06c960b0578c1c5a742a147fe85daf7f9ea2b60cb96d1724798dfff0569
   .github/skills/artifact-consistency-inspector/references/inspection-rules.md: sha256:d3c5ff15afa2b008cc2f9cf3ea0e65ca03e38af8d34fc56631f8befcc53da2c1
@@ -451,6 +455,8 @@ outputs:
   .github/skills/writing/references/review-rubric.md: sha256:9929adb3aa69bda402695d1cb7369c30d706a03053162eba9ef5ef7f6417e481
   .github/skills/writing/references/workflows.md: sha256:7b41ad42c6ad325ff3bf272aa88671800d9a2ebd0ed53ffe98a827777f83ab12
   .github/skills/writing/scripts/validate.py: sha256:d8bab443718c6b3122a2f5baa4bb58c42f3b7dedd71843b96b6bbcd5e575dd9a
+  .agents/skills/adudeck-textbook/SKILL.md: sha256:9693db15c75ed1362dfcf223ec3c7a725a51c1abc8cbced65fd05d017d5e13d4
+  .agents/skills/adudeck-textbook-write/SKILL.md: sha256:c1684603dede1e502faa7c4f31d863b790068c855ed8f03b52773d3e977d61d7
   .agents/skills/artifact-consistency-inspector/SKILL.md: sha256:6e8d09225aa2cd056ecb277884f90f8b3f139c5f20ef9ce4fe1046e206ac3bbe
   .agents/skills/artifact-consistency-inspector/references/example-report.md: sha256:4f69d06c960b0578c1c5a742a147fe85daf7f9ea2b60cb96d1724798dfff0569
   .agents/skills/artifact-consistency-inspector/references/inspection-rules.md: sha256:d3c5ff15afa2b008cc2f9cf3ea0e65ca03e38af8d34fc56631f8befcc53da2c1
