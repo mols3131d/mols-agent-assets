@@ -7,7 +7,7 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-SKILL = ROOT / "src/agentsmesh/skills/mols-agent-asset-studio"
+SKILL = ROOT / "src/agentsmesh/.agentsmesh/skills/mols-agent-asset-studio"
 SCRIPTS = SKILL / "scripts"
 WORKFLOWS = ("create", "improve", "refactor", "tune", "review", "validate")
 REMOVED_SPLIT_SKILLS = (
@@ -66,9 +66,9 @@ def test_inventory_finds_single_studio_entrypoint(tmp_path: Path) -> None:
     assert result.returncode == 0, result.stdout + result.stderr
     rows = json.loads(output.read_text(encoding="utf-8"))
     paths = {row["path"] for row in rows}
-    assert "src/agentsmesh/skills/mols-agent-asset-studio/SKILL.md" in paths
+    assert "src/agentsmesh/.agentsmesh/skills/mols-agent-asset-studio/SKILL.md" in paths
     for name in REMOVED_SPLIT_SKILLS:
-        assert f"src/agentsmesh/skills/{name}/SKILL.md" not in paths
+        assert f"src/agentsmesh/.agentsmesh/skills/{name}/SKILL.md" not in paths
 
 
 def test_github_agent_profile_validates(tmp_path: Path) -> None:
