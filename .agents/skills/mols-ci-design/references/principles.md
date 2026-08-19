@@ -4,91 +4,67 @@ Design CI as an evidence system, not a collection of workflows.
 
 ## Evidence Tiers
 
-Prefer the cheapest evidence that can actually detect the failure.
+Prefer the cheapest evidence that can detect the failure.
 
-1. **Static structure** — syntax, schema, frontmatter, references, file placement, formatting.
-2. **Deterministic behavior** — scripts, generators, contract tests, regression invariants.
-3. **Harness or projection compatibility** — target generation, adapter fidelity, package surface, round-trip or isolated validation.
-4. **Semantic behavior** — trigger selection, instruction following, task behavior, adversarial cases.
-5. **Live runtime evidence** — real provider/tool invocation, integration behavior, latency/cost or runtime parity.
+1. **Static** — syntax, schema, frontmatter, references, placement, formatting.
+2. **Deterministic** — scripts, generators, contract tests, regression invariants.
+3. **Harness / projection** — target generation, adapter fidelity, package surface, isolated or round-trip validation.
+4. **Semantic** — routing, instruction following, task behavior, adversarial cases.
+5. **Live runtime** — real provider/tool invocation, integration behavior, latency/cost, runtime parity.
 
-Passing a lower tier does not prove a higher tier.
+A lower tier does not prove a higher one.
 
-## Cost Ordering
+## Selection Rules
 
-Use these defaults:
+Use these defaults unless target evidence requires otherwise:
 
 - deterministic before probabilistic;
 - affected before exhaustive;
 - PR smoke before full matrix;
-- local/static checks before network/model calls;
-- narrow provider/target coverage before cross-provider matrices;
-- scheduled/manual exhaustive evaluation when PR execution would be disproportionately expensive.
-
-Do not add a model grader merely because the repository contains prompts or Skills.
+- local/static before network/model calls;
+- existing provider and checks before new machinery;
+- no cache until repeated setup cost is material;
+- no model grader when deterministic assertions are sufficient.
 
 ## Change Impact
 
-Map changes to checks through the smallest maintainable mechanism.
+Use the smallest maintainable mapping that is sufficient:
 
-Prefer, in order when sufficient:
-
-1. provider-native path filters;
+1. provider path filters;
 2. repository naming/layout conventions;
-3. a small selector script;
-4. an explicit dependency/impact manifest only when simpler mechanisms cannot represent the relationships reliably.
+3. a small selector/router script;
+4. an explicit dependency manifest only when simpler mechanisms cannot represent the relationships reliably.
 
-Do not encode a large path switch statement without considering how it will stay synchronized with asset moves and new asset types.
+Avoid large unexplained path switches that become stale when assets move.
 
-## Gate Boundaries
+## Responsibility Boundaries
 
-Separate these responsibilities:
+| Responsibility | Default role |
+| --- | --- |
+| PR gate | read-only merge confidence |
+| main/post-merge | broader deterministic or integration regression |
+| scheduled/manual | expensive, exhaustive, provider-specific, or stochastic eval |
+| maintenance | formatting, regeneration, synchronization, indexing, other writes |
 
-- **PR gate** — read-only checks required for merge confidence;
-- **main/post-merge verification** — broader checks justified after integration;
-- **scheduled/manual eval** — expensive, exhaustive, provider-specific, or stochastic evaluation;
-- **maintenance automation** — formatting, regeneration, synchronization, index updates, or other repository writes.
+Do not make maintenance a merge gate merely because it is automated.
 
-A maintenance job should not become a merge gate merely because it is automated.
+## Semantic and Runtime Evidence
 
-## Semantic Evaluation
+Use semantic/runtime evaluation only when an important contract cannot be reduced to deterministic assertions. Typical examples are routing precision, adversarial boundaries, model-dependent task success, and live harness/provider parity.
 
-Use semantic/runtime evaluation when the important contract cannot be reduced to deterministic assertions.
+Keep fixture validation separate from eval execution. For stochastic results, define an appropriate threshold, baseline, sample policy, or non-blocking interpretation instead of treating one sample as deterministic.
 
-Good candidates include:
+## Safety and Performance
 
-- Skill or tool routing precision;
-- behavioral regressions across prompt/instruction changes;
-- adversarial instruction boundaries;
-- task success that depends on model judgment;
-- live provider or harness parity.
-
-Keep fixtures and scoring contracts versioned. Distinguish test-fixture validation from actually executing the eval.
-
-When results are stochastic, design around thresholds, repeated samples, baselines, or non-blocking evidence as appropriate rather than pretending one sample is deterministic.
-
-## Permissions and Secrets
-
-Default merge gates to read-only repository permissions.
-
-Introduce write permissions only for an explicitly separated write responsibility. Keep secrets away from untrusted PR execution unless the provider and repository trust model explicitly supports it.
-
-Treat third-party actions, downloaded tools, model APIs, and generated commits as trust boundaries.
-
-## Performance
-
-Optimize measured bottlenecks, not imagined ones.
-
-- Use concurrency cancellation for superseded PR runs when supported.
-- Add caching only when repeated dependency/setup cost is material and the cache trust boundary is acceptable.
-- Avoid broad matrices by default.
-- Give expensive jobs explicit timeouts and bounded retries/samples.
-- Prefer direct targeted tests over collecting an entire suite and filtering late when practical.
+- Default merge gates to least privilege and read-only repository access where practical.
+- Keep secrets away from untrusted PR execution unless the trust model explicitly permits them.
+- Treat third-party actions, downloaded tools, model APIs, and generated commits as trust boundaries.
+- Cancel superseded PR runs when supported and useful.
+- Bound expensive jobs with timeouts and samples/retries.
+- Avoid broad matrices unless each dimension detects a distinct failure class.
 
 ## Authority
 
-CI validates repository authority; it must not silently redefine it.
+CI validates repository authority; it does not silently redefine it.
 
-Generated files, indexes, projections, eval results, and maintenance commits are derived unless the repository explicitly declares otherwise.
-
-When generated content is intentionally semantically tuned, validate factual invariants instead of forcing byte-for-byte regeneration unless byte identity is the actual contract.
+Generated files, indexes, projections, eval results, and maintenance commits are derived unless the repository says otherwise. When generated content is intentionally semantically tuned, validate factual invariants rather than forcing byte identity unless byte identity is the actual contract.
