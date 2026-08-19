@@ -6,17 +6,17 @@
 
 | 경로 | 역할 |
 | --- | --- |
-| `tests/scripts/` | 저장소 자동화 스크립트의 deterministic correctness test |
+| `tests/scripts/` | repository automation script의 deterministic correctness test |
 | `tests/skills/<skill>/` | Skill-specific deterministic correctness test와 fixture |
-| `tests/evals/` | repository-owned evaluation fixture의 deterministic syntax/shape check |
+| `tests/evals/` | repository-owned evaluation fixture의 syntax/shape check |
 | `evals/skills/<skill>/` | Skill-specific trigger, behavior, adversarial 등 model/evaluation fixture |
-| `evals/regression/` | 여러 자산·target에 걸친 deterministic regression contract |
+| `evals/regression/` | 여러 source·target에 걸친 deterministic regression contract |
 
-Deployable Skill package인 `src/rulesync/.rulesync/skills/<skill>/`에는 repository verification 자산을 두지 않습니다. `tests/`, `evals/`, `scenarios/`, 생성된 `results/`는 runtime resource가 아닙니다.
+Deployable Skill package인 `src/rulesync/.rulesync/skills/<skill>/`에는 repository verification 자산을 두지 않습니다. `tests/`, `evals/`, `scenarios/`, generated `results/`는 runtime resource가 아닙니다.
 
 ## 검증 계층
 
-Rulesync-managed Rule/Skill/Agent 변경은 가능한 범위에서 다음 순서로 검증합니다.
+Rulesync-managed source 변경은 가능한 범위에서 다음 순서로 검증합니다.
 
 ```text
 native workspace: src/rulesync
@@ -27,20 +27,24 @@ native workspace: src/rulesync
   → applicable behavioral/runtime eval
 ```
 
-Repository `npm run rulesync:*` 명령은 `scripts/run_rulesync.py`를 사용합니다. `doctor`와 `preview`는 native workspace에서 직접 실행하고, `validate`만 temporary copy를 사용합니다. 생성된 `.github/`, `.agents/`, lock state 등 target projection을 canonical repository file로 남기지 않습니다.
+Repository `npm run rulesync:*` command는 `scripts/run_rulesync.py`를 사용합니다. `doctor`와 `preview`는 native workspace에서 직접 실행하고, `validate`만 temporary copy를 사용합니다. Generated target projection과 Rulesync lock state는 canonical repository file로 남기지 않습니다.
 
-이 저장소는 Rulesync lock이나 target projection을 persistent baseline으로 commit하지 않습니다. 지속적인 source boundary와 repository regression은 Git 및 repository-owned deterministic tests가 담당합니다.
+Rulesync schema와 target mapping 자체는 upstream contract가 소유합니다. Repository test는 다음처럼 이 저장소가 추가로 보장해야 하는 invariant에 집중합니다.
 
-- deterministic check로 판정할 수 있는 계약을 model grader보다 우선합니다.
-- `evals/skills/**/*.json` 변경은 최소한 `tests/evals/`의 deterministic parse gate를 통과합니다.
-- 위 검증은 실제 LLM behavior를 증명하지 않습니다. trigger precision, task success, runtime parity가 필요한 주장은 별도 runtime evidence가 있어야 합니다.
+- distribution source와 repository runtime surface의 isolation
+- deployable Skill package와 verification surface의 분리
+- generated projection의 package/body fidelity
+- repository-owned route generation
+- behavioral/runtime claim에 필요한 별도 evidence
+
+Deterministic check로 판정할 수 있는 계약은 model grader보다 우선합니다. Trigger precision, task success 또는 runtime parity가 필요한 주장은 실제 runtime/eval evidence 없이 성공으로 간주하지 않습니다.
 
 ## 기본 명령
 
 ```bash
 npm run rulesync:doctor
-npm run rulesync:preview   # native workspace에서 write 없이 projection 확인
-npm run rulesync:validate  # temporary copy에서 generation consistency 검증
+npm run rulesync:preview
+npm run rulesync:validate
 uv run pytest
 uv run ruff check .
 ```
