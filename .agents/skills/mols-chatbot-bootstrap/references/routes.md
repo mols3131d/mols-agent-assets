@@ -72,7 +72,7 @@ Do not copy the Skill body into the route file.
 
 ## Rules
 
-Route Rules primarily when applicability depends on path/glob selectors.
+The baseline Rule route shape is for applicability driven by path/glob selectors.
 
 ```jsonl
 {"source":".agents/rules/python.md","globs":["**/*.py","**/*.pyi"]}
@@ -82,7 +82,7 @@ Derive selectors from the target repository's authoritative Rule metadata. `glob
 
 Normalize representation only. Do not change applicability semantics or copy Rule policy text into the route.
 
-Global or non-path Rules do not need entries unless they have a real discovery need.
+Do not force global or non-path Rules into this selector shape. If a target has a real need to route them, define the smallest explicit representation for that target and adapt generation/validation accordingly rather than inventing fake globs.
 
 ## Ordering
 
