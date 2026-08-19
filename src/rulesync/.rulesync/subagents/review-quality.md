@@ -18,6 +18,8 @@ antigravity-ide:
     - run_command
     - view_file
     - grep_search
+  mainAgent: false
+  subagent: true
 ---
 
 # 품질 검토
