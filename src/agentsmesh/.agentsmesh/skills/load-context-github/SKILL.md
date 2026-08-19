@@ -41,10 +41,11 @@ For each target path, inspect the ancestor chain from repository root to the tar
 Use only instruction sources the repository or active harness actually defines, such as:
 
 - applicable `AGENTS.md` hierarchy;
-- repository-defined compatibility/bootstrap entries;
 - GitHub Copilot instruction files and matching path-scoped instructions;
 - contribution, development, governance, or repository-defined path/glob rules;
 - `README.md` only when explicitly required, materially needed, or declared as fallback.
+
+A repository-defined compatibility/bootstrap entry may route discovery, but it is instruction or policy authority only when the repository explicitly assigns that role.
 
 Do not infer that files with different names form a fallback chain. Do not invent precedence from filenames or proximity. Apply declared selectors and the active harness's current scope/precedence semantics. Verify time-sensitive platform semantics when they can change the task.
 
@@ -56,6 +57,7 @@ When the repository declares Agent Asset discovery surfaces, load only assets ap
 
 - Skill: use declared index, catalog, root, or runtime catalog to select by task intent; read only selected Skill sources and required supporting resources.
 - Rule: match known target paths against declared glob/path/selectors; load only matching Rules.
+- Reuse already-loaded applicable assets from the same relevant revision. Do not recursively re-select this loader or another routing asset merely because it appears in a discovered catalog.
 - Do not preload full catalogs when metadata or selectors can narrow the set.
 - Re-evaluate applicability when task intent or target paths materially change.
 
