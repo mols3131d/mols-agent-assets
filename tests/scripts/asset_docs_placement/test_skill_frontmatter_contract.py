@@ -6,7 +6,7 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[3]
-SKILLS = ROOT / "src" / "agentsmesh" / "skills"
+SKILLS = ROOT / "src" / "agentsmesh" / ".agentsmesh" / "skills"
 NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
 
