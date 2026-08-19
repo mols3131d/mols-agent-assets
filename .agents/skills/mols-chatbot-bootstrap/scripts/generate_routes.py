@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Generate deterministic baseline routes for local Skills and glob/path Rules.
+"""Generate deterministic baseline routes for a common local Skill/Rule layout.
+
+This is a reference implementation, not a universal asset parser. Inspect the target
+workspace's asset roots, package shape, frontmatter, and Rule selector semantics before
+using it. Configure or adapt the script when those contracts differ.
 
 Defaults follow the common .agents layout, but roots and output are configurable. Existing
 route files are preserved unless --force is explicitly supplied.
