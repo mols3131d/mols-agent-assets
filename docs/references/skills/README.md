@@ -4,7 +4,7 @@
 
 ## 먼저 볼 문서
 
-1. [Rulesync Repository Conventions](../common/standards/rulesync-repository-conventions.md)
+1. [Rulesync Repository Conventions](../common/conventions/rulesync-repository-conventions.md)
    — 이 저장소에서 Rulesync canonical source와 derived target surface를 구분하는 기준.
 1. [Skill Authoring Conventions](skill-authoring-conventions.md)
    — single-file 기본, package responsibility, maintainer docs와 naming 같은 repository-local 관행.
