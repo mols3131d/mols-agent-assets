@@ -7,7 +7,7 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-SKILLS = ROOT / "src" / "agentsmesh" / "skills"
+SKILLS = ROOT / "src" / "agentsmesh" / ".agentsmesh" / "skills"
 CREATOR = SKILLS / "mols-skill-creator"
 TARGETED_TESTS = ROOT / ".github" / "workflows" / "targeted-tests.yml"
 
@@ -161,6 +161,6 @@ def test_targeted_workflow_routes_skill_tests_and_evals() -> None:
     assert '"src/agentsmesh/**"' in workflow
     assert '"tests/skills/**"' in workflow
     assert '"evals/skills/**"' in workflow
-    assert "src/agentsmesh/skills/*)" in workflow
+    assert "src/agentsmesh/.agentsmesh/skills/*)" in workflow
     assert "evals/skills/*)" in workflow
     assert 'root_targets["tests/scripts/asset_docs_placement"]=1' in workflow
