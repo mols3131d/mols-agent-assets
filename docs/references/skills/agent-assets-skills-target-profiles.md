@@ -7,19 +7,19 @@ description: 이 저장소의 canonical Skill package shape와 target-specific b
 
 이 문서는 [Personal Skill Standard](agent-assets-skills-standard-personal.md)가 위임한 **repository-local Skill package와 target boundary**를 소유한다.
 
-Agent Skills specification의 portable contract가 우선하며, 이 문서는 repository-local extension만 정의한다.
+Canonical 표현은 current Rulesync schema를 따르고, 생성된 target artifact의 contract는 각 target specification이 소유한다.
 
 ## Canonical Placement
 
-AgentsMesh가 표현할 수 있는 Skill은 chatbot/agent, flat/runtime으로 나누지 않고 다음 canonical path를 사용한다.
+Rulesync가 표현할 수 있는 Skill은 chatbot/agent, flat/runtime으로 나누지 않고 다음 canonical path를 사용한다.
 
 ```text
-src/agentsmesh/.agentsmesh/skills/<skill-name>/SKILL.md
+src/rulesync/.rulesync/skills/<skill-name>/SKILL.md
 ```
 
-`src/agentsmesh/`는 격리된 native AgentsMesh workspace이며, 그 안의 `.agentsmesh/`가 canonical asset source다. Repository root에는 `.agentsmesh/`를 두지 않으므로 `mols-agent-assets`가 보관한 distribution asset이 이 저장소 자체의 runtime Skill로 자동 discovery되지 않는다.
+`src/rulesync/`는 격리된 native Rulesync workspace이며, 그 안의 `.rulesync/`가 canonical asset source다. Repository root에는 `.rulesync/`를 두지 않으므로 `mols-agent-assets`가 보관한 distribution asset이 이 저장소 자체의 runtime Skill로 자동 discovery되지 않는다.
 
-특정 target semantics가 현재 AgentsMesh contract로 표현되지 않아 custom source가 실제로 필요한 경우에만 `src/agentsmesh/`의 peer source를 검토한다.
+특정 target semantics가 현재 Rulesync contract로 표현되지 않아 custom source가 실제로 필요한 경우에만 `src/rulesync/`의 peer source를 검토한다.
 
 ## Single-File by Default
 
@@ -42,7 +42,7 @@ Single-file Skill은 여러 Markdown 문서의 책임을 한 파일에 유지할
 
 ### Front Matter Triggering
 
-Skill activation 정보는 front matter `description`에 집중한다. `description`은 selection contract이며 capability, task context, 필요한 핵심 negative boundary를 구분할 수 있어야 한다.
+Skill activation 정보는 Rulesync 공통 front matter `description`에 집중한다. `description`은 selection contract이며 capability, task context, 필요한 핵심 negative boundary를 구분할 수 있어야 한다.
 
 다른 Skill과의 prerequisite, fallback, handoff, execution order 같은 orchestration은 본문에서 다룬다. 본문은 이미 Skill이 선택·활성화되었다고 가정한다.
 
@@ -62,8 +62,8 @@ skill-name/
 
 - runtime behavior에 필요한 knowledge/resource는 package 내부의 명시적 runtime surface가 소유한다.
 - maintainer-only 문서를 runtime dependency로 숨기지 않는다.
-- `src/agentsmesh/.agentsmesh/skills/<skill-name>/` 아래에는 repository verification 자산인 `tests/`, `evals/`, `scenarios/`, 생성된 `results/`를 두지 않는다.
-- `src/agentsmesh/.agentsmesh/skills/<skill-name>/` 아래에는 non-runtime을 숨기기 위한 dot-prefixed path를 두지 않는다.
+- `src/rulesync/.rulesync/skills/<skill-name>/` 아래에는 repository verification 자산인 `tests/`, `evals/`, `scenarios/`, 생성된 `results/`를 두지 않는다.
+- `src/rulesync/.rulesync/skills/<skill-name>/` 아래에는 non-runtime을 숨기기 위한 dot-prefixed path를 두지 않는다.
 
 ## Repository Verification Surface
 
@@ -92,10 +92,22 @@ Skill 종류와 execution target을 같은 taxonomy로 취급하지 않는다.
 
 - Skill은 Skill이다.
 - target runtime이 richer하다는 이유만으로 별도 Skill type/profile을 만들지 않는다.
-- 같은 canonical Skill을 target이 일부만 표현할 수 있다면 capability 차이를 explicit limitation으로 다룬다.
-- target-specific semantics가 capability의 본질이고 현재 AgentsMesh가 안전하게 표현할 수 없다면 그때만 custom/non-standard source를 검토한다.
+- 같은 canonical Skill을 target이 일부만 표현할 수 있다면 capability 차이를 target limitation으로 받아들인다.
+- target-specific semantics가 capability의 본질이고 현재 Rulesync가 안전하게 표현할 수 없다면 그때만 custom/non-standard source를 검토한다.
 
-AgentsMesh target projection은 canonical source가 아니다. Read-only native check는 `src/agentsmesh/`에서 직접 수행하고, generation은 workspace의 temporary copy에서 검증하며 결과를 commit하지 않는다.
+Rulesync target projection은 canonical source가 아니다. Read-only native check는 `src/rulesync/`에서 직접 수행하고, generation은 workspace의 temporary copy에서 검증하며 결과를 commit하지 않는다.
+
+### Front Matter Projection
+
+Canonical `SKILL.md` front matter는 **Rulesync canonical schema를 그대로 사용한다**.
+
+- Rulesync 공통 field는 top level에 둔다.
+- Agent Skills target의 `license`, `compatibility`, `metadata`, `allowed-tools`는 `agentsskills:` section에 둔다.
+- 특정 vendor/harness 전용 field는 해당 Rulesync target namespace에 둔다.
+- Rulesync가 제공하지 않는 shared passthrough 또는 compatibility layer를 repository-local schema로 만들지 않는다.
+- target adapter가 표현하지 않는 field는 해당 target의 capability boundary로 취급한다.
+
+따라서 canonical validity와 projection validity는 각각 Rulesync와 target contract를 기준으로 검증한다. Body와 supporting package shape는 deterministic projection check로 검증하고, target-specific metadata가 중요하면 해당 generated field를 별도 검증한다.
 
 ## Repository Maintainer Docs
 
@@ -118,6 +130,6 @@ Context-only Skill은 activation intent에 따라 scope baseline loader 또는 c
 
 ## Boundary
 
-Portable `SKILL.md`와 front matter 규격은 [Agent Skills Specification](agent-skills-io/agent-skills-io-specification.md)이 소유한다. 이 문서는 repository-local package shape와 target boundary만 정의한다.
+Rulesync canonical front matter와 target namespace는 current Rulesync schema가 소유한다. Agent Skills 또는 vendor-native output 규격은 해당 외부 specification이 소유한다. 이 문서는 repository-local package shape와 target boundary만 정의한다.
 
 Skill을 분리할지는 파일 길이가 아니라 activation intent, responsibility, 실제 runtime resource 필요성으로 판단한다.

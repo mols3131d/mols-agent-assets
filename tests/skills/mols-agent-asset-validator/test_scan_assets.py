@@ -10,8 +10,8 @@ from pathlib import Path
 ROOT = (
     Path(__file__).resolve().parents[3]
     / "src"
-    / "agentsmesh"
-    / ".agentsmesh"
+    / "rulesync"
+    / ".rulesync"
     / "skills"
     / "mols-agent-asset-validator"
 )

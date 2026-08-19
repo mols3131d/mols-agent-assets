@@ -9,8 +9,8 @@ ROOT = Path(__file__).resolve().parents[3]
 SKILL = (
     ROOT
     / "src"
-    / "agentsmesh"
-    / ".agentsmesh"
+    / "rulesync"
+    / ".rulesync"
     / "skills"
     / "mols-skill-find"
     / "SKILL.md"
@@ -39,7 +39,9 @@ def load() -> tuple[dict[str, object], str]:
 
 def test_discovery_arguments_are_auto_first_and_source_agnostic() -> None:
     frontmatter, body = load()
-    metadata = frontmatter["metadata"]
+    agentsskills = frontmatter["agentsskills"]
+    assert isinstance(agentsskills, dict)
+    metadata = agentsskills["metadata"]
     assert isinstance(metadata, dict)
     assert "default-source" not in metadata
 

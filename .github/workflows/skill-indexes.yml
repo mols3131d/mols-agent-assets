@@ -3,7 +3,7 @@ name: Generate Skill Indexes
 on:
   push:
     paths:
-      - "src/agentsmesh/.agentsmesh/skills/*/SKILL.md"
+      - "src/rulesync/.rulesync/skills/*/SKILL.md"
       - "scripts/generate_skill_indexes.py"
       - ".github/workflows/skill-indexes.yml"
 
@@ -28,7 +28,7 @@ jobs:
       - name: Commit changed indexes
         shell: bash
         run: |
-          indexes=(src/agentsmesh/.agentsmesh/skills/INDEX.jsonl)
+          indexes=(src/rulesync/.rulesync/skills/INDEX.jsonl)
           [[ -z "$(git status --porcelain -- "${indexes[@]}")" ]] && exit 0
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

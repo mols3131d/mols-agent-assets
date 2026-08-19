@@ -6,8 +6,8 @@ from pathlib import Path
 SKILL_ROOT = (
     Path(__file__).resolve().parents[3]
     / "src"
-    / "agentsmesh"
-    / ".agentsmesh"
+    / "rulesync"
+    / ".rulesync"
     / "skills"
     / "mols-markdown-dashboard"
 )

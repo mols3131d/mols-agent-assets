@@ -1,0 +1,48 @@
+name: Rulesync
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "src/rulesync/**"
+      - "package.json"
+      - ".gitattributes"
+      - ".rumdl.toml"
+      - "scripts/run_rulesync.py"
+      - ".github/workflows/rulesync.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-slim
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - uses: astral-sh/setup-uv@v9.0.0
+        with:
+          enable-cache: false
+      - name: Validate canonical Markdown normalization
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -d '' markdown < <(git ls-files -z -- 'src/rulesync/**/*.md')
+          ((${#markdown[@]})) || exit 0
+          uvx rumdl@0.2.6 fmt "${markdown[@]}"
+          git diff --exit-code -- "${markdown[@]}"
+      - name: Validate canonical configuration
+        run: npm run rulesync:doctor
+      - name: Validate isolated projection consistency
+        run: npm run rulesync:validate

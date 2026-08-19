@@ -39,7 +39,7 @@ Chatbot과 coding agent는 별도 actor type으로 분류하지 않습니다. �
 
 특정 **work surface가 활성화된 동안에는 항상 필요하지만 다른 task에는 불필요한 baseline context**는 전역 Rule 대신 scope baseline Skill loader로 둘 수 있습니다. 이 경우 scope 내부의 넓은 activation은 의도된 coverage이며, 세부 activation과 review 규칙은 유형별 Skill reference가 소유합니다.
 
-AgentsMesh가 충실히 표현할 수 있는 Rule, Skill, Agent는 `src/agentsmesh/` native workspace 안의 `src/agentsmesh/.agentsmesh/`를 canonical source로 사용합니다. Repository root `.agentsmesh/`는 distribution source로 사용하지 않습니다. `src/`의 다른 peer는 현재 AgentsMesh contract 밖의 실제 custom/non-standard 요구가 있을 때만 사용하는 exception surface이며 parallel taxonomy가 아닙니다.
+Rulesync가 충실히 표현할 수 있는 Rule, Skill, Agent는 `src/rulesync/` native workspace 안의 `src/rulesync/.rulesync/`를 canonical source로 사용합니다. Repository root `.rulesync/`는 distribution source로 사용하지 않습니다. Agent는 Rulesync canonical `subagents/` feature로 표현합니다. `src/`의 다른 peer는 현재 Rulesync contract 밖의 실제 custom/non-standard 요구가 있을 때만 사용하는 exception surface이며 parallel taxonomy가 아닙니다.
 
 ### Optional Asset Documentation
 
@@ -83,7 +83,7 @@ Skill의 Tier 1 open standard와 Tier 2 vendor/harness 공식 원문 registry는
 다음은 외부 범용 표준이 아니라 이 저장소의 의도적인 확장입니다.
 
 - 공통 filesystem naming convention → [Agent Asset Naming Convention](agent-assets-naming-convention.md)
-- `src/agentsmesh/` native workspace 안의 canonical source와 active target projection 경계
+- `src/rulesync/` native workspace 안의 canonical source와 active target projection 경계
 - root `CHATBOT.md` chat-runtime harness compatibility convention → [CHATBOT Runtime Compatibility Layer](chatbot-repository-bootstrap.md)
 - directory/glob Rule projection convention
 - 필요할 때만 사용하는 `docs/<asset-type>/<asset-name>/` maintainer documentation convention
