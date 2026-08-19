@@ -6,9 +6,10 @@ description: >
   notices, reports, proposals, posts, explanations, scripts, and other finished
   prose. Do not use when the main task is factual lookup, summarization only, short
   translation, code, data analysis, or document-file layout conversion.
-metadata:
-  version: "1.0.0"
-  target: "OpenAI ChatGPT"
+agentsskills:
+  metadata:
+    version: "1.0.0"
+    target: "OpenAI ChatGPT"
 ---
 
 # Writing
