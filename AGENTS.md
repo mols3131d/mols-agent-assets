@@ -8,7 +8,7 @@
 - Current Rulesync schema, file formats, feature names, target namespaces, and adapters are authoritative for Rulesync-managed assets.
 - Repository-local documentation must not redefine Rulesync contracts that can be referenced directly.
 
-Repository-specific integration conventions live in `docs/references/common/standards/rulesync-repository-conventions.md`.
+Repository-specific integration conventions live in `docs/references/common/conventions/rulesync-repository-conventions.md`.
 
 ## Repository Boundary
 
