@@ -24,6 +24,7 @@ def test_rumdl_config_keeps_repository_markdown_policy() -> None:
     config = RUMDL.read_text(encoding="utf-8")
     assert "[MD054]" not in config
     assert 'disable = ["MD013", "MD025", "MD033", "MD041"]' in config
+    assert "[per-file-ignores]" not in config
     assert "[MD057]" in config
     assert "compact-paths = false" in config
 
@@ -44,8 +45,9 @@ def test_pr_verifier_uses_temporary_agentsmesh_projection() -> None:
 
     assert "Validate canonical Markdown normalization" in workflow
     assert "npm run agentsmesh:lint" in workflow
-    assert "npm run agentsmesh:check" in workflow
-    assert "npm run agentsmesh:generate:check" in workflow
+    assert "npm run agentsmesh:validate" in workflow
+    assert "npm run agentsmesh:check" not in workflow
+    assert "npm run agentsmesh:generate:check" not in workflow
     assert "Validate generated Markdown normalization" not in workflow
     assert "git check-attr linguist-generated" not in workflow
     assert "npx agentsmesh generate" not in workflow
