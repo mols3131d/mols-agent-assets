@@ -69,6 +69,22 @@ def test_antigravity_subagents_use_native_tool_ids() -> None:
         assert set(section["tools"]) == tools
 
 
+def test_antigravity_reviewers_preserve_native_roles() -> None:
+    subagents = ROOT / load_contract()["canonical"]["asset_root"] / "subagents"
+
+    for name in ("review-adversarial", "review-quality"):
+        frontmatter = load_frontmatter(subagents / f"{name}.md")
+        section = frontmatter["antigravity-ide"]
+        assert isinstance(section, dict)
+        assert section["mainAgent"] is False
+        assert section["subagent"] is True
+
+    lead = load_frontmatter(subagents / "review-lead.md")["antigravity-ide"]
+    assert isinstance(lead, dict)
+    assert "mainAgent" not in lead
+    assert "subagent" not in lead
+
+
 def test_distribution_assets_are_not_repository_runtime_configuration() -> None:
     contract = load_contract()
 
