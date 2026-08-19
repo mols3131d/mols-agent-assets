@@ -12,6 +12,8 @@ antigravity-ide:
   tools:
     - view_file
     - grep_search
+  mainAgent: false
+  subagent: true
 ---
 
 # 적대적 검토
