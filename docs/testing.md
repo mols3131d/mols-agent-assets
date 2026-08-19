@@ -36,7 +36,7 @@ selected canonical workspace
 
 Repository `npm run rulesync:*` command는 현재 library workspace인 `src/rulesync/`를 대상으로 `scripts/run_rulesync.py`를 사용합니다. Runner는 Rulesync의 target path나 projection semantics를 재구현하지 않고 CLI에 위임합니다. Generated target projection과 Rulesync lock state는 repository에 남기지 않습니다.
 
-Repository-level Rulesync workspace가 생기면 root에서 별도로 native diagnostics를 실행합니다. Library command에 root workspace를 숨겨서 합치지 않습니다.
+Repository workspace가 생기면 root에서 별도로 native diagnostics를 실행합니다. Library command에 root workspace를 숨겨서 합치지 않습니다.
 
 이 저장소는 supported vendor/target matrix를 검증하지 않습니다. Repository CI는 target을 선택하지 않고 library canonical Rulesync configuration과 repository-owned invariant만 검증합니다. 특정 target projection이 작업에 중요할 때만 해당 target과 workspace를 명시해 temporary workspace에서 별도로 검증합니다.
 
