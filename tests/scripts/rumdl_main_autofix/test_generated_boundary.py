@@ -4,6 +4,7 @@ ROOT = Path(__file__).resolve().parents[3]
 ATTRIBUTES = ROOT / ".gitattributes"
 RUMDL = ROOT / ".rumdl.toml"
 AUTOFIX = ROOT / ".github" / "workflows" / "rumdl-main-autofix.yml"
+SKILL_INDEXES = ROOT / ".github" / "workflows" / "skill-indexes.yml"
 AGENTSMESH = ROOT / ".github" / "workflows" / "agentsmesh.yml"
 
 
@@ -29,15 +30,20 @@ def test_rumdl_config_keeps_repository_markdown_policy() -> None:
     assert "compact-paths = false" in config
 
 
-def test_main_autofix_formats_source_without_native_projection() -> None:
+def test_main_autofix_only_formats_markdown() -> None:
     workflow = AUTOFIX.read_text(encoding="utf-8")
 
-    assert "git check-attr agentsmesh-source" in workflow
     assert 'uvx rumdl@0.2.6 fmt "${files[@]}"' in workflow
-    assert "python scripts/generate_skill_indexes.py" in workflow
+    assert "git check-attr agentsmesh-source" not in workflow
+    assert "git check-attr linguist-generated" not in workflow
+    assert "generate_skill_indexes.py" not in workflow
     assert "agentsmesh generate" not in workflow
-    assert ".github/skills" not in workflow
-    assert ".agents/skills" not in workflow
+
+
+def test_skill_index_workflow_owns_index_generation() -> None:
+    workflow = SKILL_INDEXES.read_text(encoding="utf-8")
+    assert "python scripts/generate_skill_indexes.py" in workflow
+    assert "src/agentsmesh/skills/INDEX.jsonl" in workflow
 
 
 def test_pr_verifier_uses_temporary_agentsmesh_projection() -> None:
