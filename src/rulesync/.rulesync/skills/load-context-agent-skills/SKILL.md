@@ -12,20 +12,25 @@ description: >-
 
 This Skill acts as an **authority router** for Agent Skill work. The active workflow owns creation, editing, validation, installation, packaging, publication, and final output.
 
-Resolve authority in this order:
+Resolve authority from the actual source and target:
 
-1. **Portable standard** — Agent Skills open standard.
-1. **Target contract** — current official documentation for the actual vendor/harness.
-1. **Personal convention** — mols standards only when personal scope is established.
+1. **Canonical source contract** — when the Skill is Rulesync-managed, current Rulesync schema and adapters own canonical representation.
+1. **Portable or target contract** — Agent Skills open standard when it applies, then the actual vendor/harness contract.
+1. **Personal convention** — mols conventions only when personal scope is established.
 1. **Skill-local contract** — requirements specific to the Skill being authored.
 
-Do not turn vendor-specific creator guidance or personal conventions into portable requirements.
+Do not turn vendor-specific creator guidance or personal conventions into portable requirements. Do not force Agent Skills top-level representation onto a Rulesync canonical source; use the Rulesync target namespace instead.
 
 # Required Source Check
 
 Before materially creating, modifying, porting, or reviewing a Skill, read the sources that apply to the task.
 
-Always use the current portable specification when format, metadata, discovery, or portability matters:
+When working in a Rulesync-managed source tree, use the current Rulesync schema and file-format documentation for canonical representation:
+
+- [Rulesync](https://github.com/dyoshikawa/rulesync)
+- [Rulesync file formats](https://github.com/dyoshikawa/rulesync/blob/main/docs/reference/file-formats.md)
+
+When Agent Skills format, metadata, discovery, or portability matters, read:
 
 - [Agent Skills Specification](https://agentskills.io/specification)
 - [Agent Skills documentation index](https://agentskills.io/llms.txt)
@@ -59,17 +64,17 @@ Apply them only when one of these is established:
 
 When personal scope applies, read:
 
-- [Personal Skill Standard](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/skills/agent-assets-skills-standard-personal.md)
-- [Skill Target Profiles](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/skills/agent-assets-skills-target-profiles.md)
-- [Personal Agent Asset Standard](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/standards/agent-assets-standard-personal.md)
+- [Rulesync Repository Conventions](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/standards/rulesync-repository-conventions.md)
+- [Skill Authoring Conventions](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/skills/skill-authoring-conventions.md)
+- [Agent Asset Naming Convention](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/standards/agent-assets-naming-convention.md) when filesystem naming matters
 
-Apply personal conventions only after the portable and mandatory target contracts are satisfied.
+Apply personal conventions only after mandatory source and target contracts are satisfied.
 
 # Fallback
 
 If current sources cannot be accessed:
 
-- preserve the portable `SKILL.md` baseline with discovery metadata;
+- preserve the active source framework's canonical shape;
 - avoid inventing target-specific metadata, paths, packaging, permissions, or creator behavior;
 - do not reconstruct detailed personal conventions from memory;
 - expose the verification gap when it can affect compatibility or behavior.
