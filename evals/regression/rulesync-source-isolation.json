@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 5,
   "kind": "deterministic-regression",
   "canonical": {
     "workspace": "src/rulesync",
@@ -60,7 +60,6 @@
     ".github/skills",
     ".github/agents",
     ".agents/rules",
-    ".agents/skills",
     ".agents/agents"
   ],
   "forbidden_workspace_generated_surfaces": [
@@ -70,7 +69,11 @@
     "src/rulesync/rulesync-npm.lock.json"
   ],
   "repository_local_exceptions": [
-    ".agents/AGENTS.md"
+    ".agents/AGENTS.md",
+    ".agents/skills/mols-chatbot-bootstrap"
+  ],
+  "repository_local_skill_exceptions": [
+    "mols-chatbot-bootstrap"
   ],
   "retired": [
     "src/agentsmesh",
