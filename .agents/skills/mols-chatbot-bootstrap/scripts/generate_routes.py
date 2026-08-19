@@ -42,16 +42,18 @@ def list_value(front: str, key: str) -> list[str]:
         rf"(?ms)^{re.escape(key)}:\s*\n((?:[ \t]+-\s+.*(?:\n|$))*)",
         front,
     )
-    if not block:
-        value = scalar(front, key)
-        return [value] if value else []
+    if block:
+        values: list[str] = []
+        for line in block.group(1).splitlines():
+            item = re.sub(r"^\s*-\s+", "", line).strip().strip("'\"")
+            if item:
+                values.append(item)
+        return values
 
-    values: list[str] = []
-    for line in block.group(1).splitlines():
-        item = re.sub(r"^\s*-\s+", "", line).strip().strip("'\"")
-        if item:
-            values.append(item)
-    return values
+    value = scalar(front, key)
+    if not value:
+        return []
+    return [item.strip().strip("'\"") for item in value.split(",") if item.strip()]
 
 
 def front_matter(path: Path) -> str:
