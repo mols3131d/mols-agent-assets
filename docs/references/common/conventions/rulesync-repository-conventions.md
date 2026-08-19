@@ -19,34 +19,57 @@ description: Rulesync native source를 이 개인 자산 저장소에서 관리�
 - File formats: <https://github.com/dyoshikawa/rulesync/blob/main/docs/reference/file-formats.md>
 - Configuration: <https://github.com/dyoshikawa/rulesync/blob/main/docs/guide/configuration.md>
 
-## Canonical Workspace
+## Workspace Boundary
+
+Rulesync workspace를 두 역할로 분리합니다.
 
 ```text
-src/rulesync/
-├── rulesync.jsonc
-└── .rulesync/
-    ├── rules/
-    ├── skills/
-    └── subagents/
+./
+├── rulesync.jsonc          # optional repository-local workspace config
+├── .rulesync/              # optional repository-local canonical assets
+│
+└── src/rulesync/
+    ├── rulesync.jsonc      # reusable library workspace config
+    └── .rulesync/          # reusable/distributable canonical assets
+        ├── rules/
+        ├── skills/
+        └── subagents/
 ```
 
-`src/rulesync/.rulesync/`가 Rulesync-managed asset source입니다. Repository root에 `.rulesync/`나 `rulesync.jsonc`를 두지 않아, 보관한 distribution asset이 이 저장소 자체의 runtime configuration으로 자동 활성화되지 않게 합니다.
+### Repository workspace
 
-현재 사용하는 Rulesync feature는 `rules`, `skills`, `subagents`입니다. 새 feature가 필요하면 별도 repository taxonomy보다 Rulesync의 native feature와 source shape를 우선합니다.
+Root `.rulesync/`와 `rulesync.jsonc`는 **이 repository 자체를 configure/maintain하기 위한 Rulesync asset만** 소유합니다.
+
+- 필요할 때만 만듭니다.
+- `src/rulesync/.rulesync/`의 library를 mirror하지 않습니다.
+- repository-specific Rule/Skill/Subagent를 reusable library에 넣지 않습니다.
+- root workspace의 존재는 library asset이 이 repository에서 자동 활성화된다는 의미가 아닙니다.
+
+### Library workspace
+
+`src/rulesync/.rulesync/`는 다른 workspace에서 재사용할 **개인 canonical asset library**입니다.
+
+- reusable/distributable Rulesync asset만 둡니다.
+- repository maintenance policy를 넣지 않습니다.
+- library 전체를 root workspace로 projection하거나 복사하지 않습니다.
+
+현재 library workspace가 사용하는 Rulesync feature는 `rules`, `skills`, `subagents`입니다. 새 feature가 필요하면 별도 repository taxonomy보다 Rulesync의 native feature와 source shape를 우선합니다.
 
 ## Target Scope
 
 이 저장소는 **지원 vendor/target 목록을 정의하지 않습니다.** 개인적으로 사용했거나 사용 중이거나 앞으로 사용할 수 있는 canonical asset을 보관하는 것이 목적입니다.
 
-Committed `rulesync.jsonc`는 projection target을 선택하지 않습니다. Target 선택은 projection/validation을 실행하는 시점의 CLI option 또는 commit하지 않는 `rulesync.local.jsonc`가 소유합니다.
+Committed library `rulesync.jsonc`는 projection target을 선택하지 않습니다. Target 선택은 projection/validation을 실행하는 시점의 CLI option 또는 commit하지 않는 `rulesync.local.jsonc`가 소유합니다.
+
+Repository workspace도 target을 repository-wide support matrix로 해석하지 않습니다. 특정 local workflow가 target을 필요로 할 때 해당 workspace의 operation/configuration으로만 다룹니다.
 
 개별 asset은 의미가 있는 target-specific section을 가질 수 있습니다. 과거에 사용한 metadata도 여전히 유효하다면 현재 projection 대상이 아니라는 이유만으로 제거하지 않습니다.
 
 ## Canonical and Derived Surfaces
 
-Rulesync가 생성하는 `.github/`, `.agents/`, root instruction file, lock state와 기타 projection은 derived artifact이며 이 저장소에 source로 commit하지 않습니다.
+Root `.rulesync/`와 `src/rulesync/.rulesync/`는 서로 다른 canonical source입니다. 어느 쪽이든 Rulesync가 생성하는 `.github/`, `.agents/`, root instruction file, lock state와 기타 projection은 derived artifact이며 projection output으로 commit하지 않습니다.
 
-`route/`도 canonical source가 아니라 cross-runtime discovery를 위한 derived metadata입니다. 자세한 contract는 [`route/README.md`](../../../../route/README.md)가 소유합니다.
+`route/`는 library canonical source가 아니라 cross-runtime discovery를 위한 derived metadata입니다. 자세한 contract는 [`route/README.md`](../../../../route/README.md)가 소유합니다.
 
 ## Native-First Decision
 
@@ -54,15 +77,17 @@ Rulesync가 생성하는 `.github/`, `.agents/`, root instruction file, lock sta
 
 1. Rulesync가 표현할 수 있는가?
 1. 가능하면 native feature와 namespace를 사용합니다.
-1. 표현할 수 없고 실제 요구가 있을 때만 `src/rulesync/`의 peer custom source를 검토합니다.
+1. 표현할 수 없고 실제 요구가 있을 때만 적절한 workspace의 peer custom source를 검토합니다.
 
 Repository-local superset schema, passthrough layer, 별도 transpiler나 manual projection semantics를 만들지 않습니다.
 
-이 저장소 자체의 maintenance policy는 root `AGENTS.md`와 maintainer documentation이 소유합니다. `src/rulesync/.rulesync/rules/`에는 실제로 보관·배포할 Rule만 둡니다.
+이 저장소 자체의 maintenance asset을 Rulesync로 관리한다면 root workspace에 둡니다. `src/rulesync/.rulesync/`에는 실제로 보관·재사용할 asset만 둡니다.
 
 ## Validation
 
-Canonical configuration은 직접 검사하고, projection은 필요할 때 temporary workspace에서만 생성합니다.
+각 workspace는 독립적으로 검증합니다.
+
+Reusable library:
 
 ```bash
 npm run rulesync:doctor
@@ -70,15 +95,17 @@ npm run rulesync:preview -- --targets <target>
 npm run rulesync:validate -- --targets <target>
 ```
 
-Repository CI는 target을 선택하지 않고 canonical configuration과 repository-owned invariant만 검증합니다. Target projection 검증이 필요한 작업에서는 target을 명시해 temporary workspace에서 수행하고 generated output은 폐기합니다.
+Repository workspace가 존재하면 root에서 별도로 Rulesync native diagnostics/projection validation을 수행합니다. Library validation이 root workspace를 암묵적으로 포함하거나 그 반대가 되지 않게 합니다.
 
-Repository tests는 source isolation, package boundary와 derived route처럼 **이 저장소가 추가로 소유하는 invariant만** 검증합니다. Rulesync의 schema나 target mapping을 재구현하지 않습니다.
+Repository CI는 target을 선택하지 않고 library canonical configuration과 repository-owned invariant만 검증합니다. Target projection 검증이 필요한 작업에서는 target과 workspace를 명시해 temporary workspace에서 수행하고 generated output은 폐기합니다.
+
+Repository tests는 workspace isolation, package boundary와 derived route처럼 **이 저장소가 추가로 소유하는 invariant만** 검증합니다. Rulesync의 schema나 target mapping을 재구현하지 않습니다.
 
 ## Boundary
 
 - Rulesync canonical/model semantics → Rulesync
 - target-specific runtime semantics → 해당 target contract
-- repository integration → 이 문서
+- repository/library workspace separation → 이 문서
 - Skill authoring 관행 → Skill-specific convention
 - chatbot compatibility routing → chatbot bootstrap convention
 - filesystem naming → naming convention
