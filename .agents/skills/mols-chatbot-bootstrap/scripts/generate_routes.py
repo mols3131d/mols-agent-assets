@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Generate baseline .agents route files from local Skills and glob-scoped Rules.
+"""Generate deterministic baseline route files for local Skills and glob-scoped Rules.
 
-This produces deterministic routing candidates. A maintainer or agent may tune routing
-metadata afterward, especially Skill descriptions, without changing source identity or
-Rule selector semantics.
+Generation handles factual baseline metadata only. Route descriptions may be tuned later,
+so existing output is preserved unless --force is explicitly supplied.
 """
 
 from __future__ import annotations
@@ -66,61 +65,88 @@ def rel(path: Path, repo: Path) -> str:
 
 
 def skill_routes(repo: Path) -> list[dict[str, object]]:
-    routes: list[dict[str, object]] = []
+    entries: list[dict[str, object]] = []
     for path in sorted((repo / ".agents" / "skills").glob("*/SKILL.md")):
         front = front_matter(path)
         name = scalar(front, "name")
         description = scalar(front, "description")
-        if not name or not description:
-            continue
-        routes.append({"name": name, "description": description, "source": rel(path, repo)})
-    return routes
+        if name and description:
+            entries.append(
+                {"name": name, "description": description, "source": rel(path, repo)}
+            )
+    return entries
 
 
 def rule_routes(repo: Path) -> list[dict[str, object]]:
-    routes: list[dict[str, object]] = []
+    entries: list[dict[str, object]] = []
     rules_root = repo / ".agents" / "rules"
     if not rules_root.exists():
-        return routes
+        return entries
 
     for path in sorted(rules_root.rglob("*.md")):
         front = front_matter(path)
         globs = list_value(front, "globs") or list_value(front, "applyTo")
-        if not globs:
-            continue
-        routes.append({"source": rel(path, repo), "globs": globs})
-    return routes
+        if globs:
+            entries.append({"source": rel(path, repo), "globs": globs})
+    return entries
 
 
-def write_jsonl(path: Path, meta: dict[str, object], entries: list[dict[str, object]]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+def render_jsonl(meta: dict[str, object], entries: list[dict[str, object]]) -> str:
     lines = [json.dumps({"_meta": meta}, ensure_ascii=False, separators=(",", ":"))]
     lines.extend(json.dumps(entry, ensure_ascii=False, separators=(",", ":")) for entry in entries)
-    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return "\n".join(lines) + "\n"
+
+
+def write(path: Path, content: str, force: bool) -> None:
+    if path.exists() and not force:
+        raise SystemExit(f"refusing to overwrite existing route: {path} (use --force)")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(content, encoding="utf-8")
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo", type=Path, default=Path.cwd())
-    args = parser.parse_args()
-    repo = args.repo.resolve()
-
-    routes = repo / ".agents" / "routes"
-    write_jsonl(
-        routes / "skills.jsonl",
-        {
-            "kind": "skills",
-            "instructions": "Select task-relevant Skills by name and description, then load only the selected source.",
-        },
-        skill_routes(repo),
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        help="Output directory. Defaults to <repo>/.agents/routes.",
     )
-    write_jsonl(
-        routes / "rules.jsonl",
-        {
-            "kind": "rules",
-            "instructions": "Match known target paths against globs, then load only matching Rule sources.",
-        },
-        rule_routes(repo),
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Overwrite existing route files. Use only when replacing approved tuning intentionally.",
+    )
+    args = parser.parse_args()
+
+    repo = args.repo.resolve()
+    output_dir = (
+        args.output_dir.resolve()
+        if args.output_dir
+        else repo / ".agents" / "routes"
+    )
+
+    write(
+        output_dir / "skills.jsonl",
+        render_jsonl(
+            {
+                "kind": "skills",
+                "instructions": "Select task-relevant Skills by name and description, then load only the selected source.",
+            },
+            skill_routes(repo),
+        ),
+        args.force,
+    )
+    write(
+        output_dir / "rules.jsonl",
+        render_jsonl(
+            {
+                "kind": "rules",
+                "instructions": "Match known target paths against globs, then load only matching Rule sources.",
+            },
+            rule_routes(repo),
+        ),
+        args.force,
     )
 
 
