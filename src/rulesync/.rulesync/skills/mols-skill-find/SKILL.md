@@ -5,8 +5,9 @@ description: >-
   directories, URLs, or explicit packages without installing them. Use when the caller
   needs one best Skill, a scoped inventory, or a sync-ready selection set and the source,
   target, discovery path, or constraints may be partially unspecified.
-metadata:
-  references: "vercel-labs/skills:skills/find-skills/SKILL.md"
+agentsskills:
+  metadata:
+    references: "vercel-labs/skills:skills/find-skills/SKILL.md"
 ---
 
 # Mols Skill Find
