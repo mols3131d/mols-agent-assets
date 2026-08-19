@@ -25,8 +25,8 @@ Rulesync workspace를 두 역할로 분리합니다.
 
 ```text
 ./
-├── rulesync.jsonc          # optional repository-local workspace config
-├── .rulesync/              # optional repository-local canonical assets
+├── rulesync.jsonc          # optional repository workspace config
+├── .rulesync/              # optional repository canonical assets
 │
 └── src/rulesync/
     ├── rulesync.jsonc      # reusable library workspace config
