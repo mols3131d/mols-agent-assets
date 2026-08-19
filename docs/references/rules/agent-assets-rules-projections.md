@@ -5,25 +5,30 @@ description: 이 저장소에서 portable coding-agent Rule의 canonical source�
 
 # Rule Projections
 
-이 저장소는 portable coding-agent Rule의 canonical source와 target fan-out에 **AgentsMesh를 직접 사용**한다.
+이 저장소는 portable coding-agent Rule의 canonical source를 `src/agentsmesh/rules/`에 보관하고, 필요할 때 AgentsMesh temporary workspace를 통해 target projection을 검증한다.
 
 ```text
-.agentsmesh/rules/
+src/agentsmesh/rules/
+  → temporary .agentsmesh/rules/
   → AgentsMesh
-  → target-native Rule files
+  → temporary target-native Rule files
 ```
 
-`agentsmesh.yaml`이 active target과 feature를 선택한다. AgentsMesh가 생성한 target file은 derived artifact이며 source authority가 아니다.
+`src/agentsmesh/agentsmesh.yaml`이 projection target과 feature를 선택한다. AgentsMesh가 생성한 target file은 derived artifact이며 source authority가 아니고 이 repository에는 commit하지 않는다.
 
 ## Portable coding-agent Rules
 
-- repository-wide Rule은 `.agentsmesh/rules/_root.md`를 canonical root로 사용한다.
-- 추가 Rule은 `.agentsmesh/rules/*.md`에 두고 AgentsMesh canonical front matter로 scope/trigger를 표현한다.
-- target별 path, filename, glob representation과 embedded/native 차이는 AgentsMesh projection에 위임한다.
+- repository-wide Rule source는 `src/agentsmesh/rules/_root.md`를 canonical root로 사용한다.
+- 추가 Rule은 `src/agentsmesh/rules/*.md`에 두고 AgentsMesh-compatible front matter로 scope/trigger를 표현한다.
+- target별 path, filename, glob representation과 embedded/native 차이는 temporary AgentsMesh projection에서 검증한다.
 - target이 canonical capability를 완전히 표현하지 못하면 해당 차이를 숨기거나 full parity로 주장하지 않는다.
-- generated target Rule을 직접 수정해 canonical source와 별도 authority를 만들지 않는다.
+- generated target Rule을 source authority로 유지하지 않는다.
 
-현재 active Tier A target은 `agentsmesh.yaml`이 선언한 GitHub Copilot과 Antigravity다. 다른 target을 추가할 때는 AgentsMesh capability와 실제 generated result를 검증한 뒤 승격한다.
+현재 Tier A projection target은 `src/agentsmesh/agentsmesh.yaml`이 선언한 GitHub Copilot과 Antigravity다. 다른 target을 추가할 때는 AgentsMesh capability와 실제 generated result를 temporary workspace에서 검증한 뒤 승격한다.
+
+## Repository Runtime Boundary
+
+Repository root의 `.agentsmesh/` 또는 harness-native Rule/Skill directory를 distribution source나 generated evidence로 commit하지 않는다. 이 경계는 이 asset-library repository가 보관한 자산을 자기 runtime configuration으로 자동 인식하는 것을 방지한다.
 
 ## Hosted chatbot boundary
 
@@ -42,7 +47,6 @@ Hosted chatbot에 실제 persistent scoped policy가 필요하면 그 policy 자
 
 ## Boundary
 
-- AgentsMesh가 담당하는 portable coding-agent Rule과 hosted-chatbot repository bootstrap의 authority를 섞지 않는다.
-- 같은 policy를 canonical Rule과 generated target output에서 독립적으로 유지하지 않는다.
+- AgentsMesh-compatible portable coding-agent Rule과 hosted-chatbot repository bootstrap의 authority를 섞지 않는다.
+- canonical Rule과 temporary generated target output을 독립 authority로 유지하지 않는다.
 - AgentsMesh가 지원하지 않는 semantics가 실제로 필요한 target에는 명시적 exception을 둘 수 있지만, 그 exception을 portable source처럼 일반화하지 않는다.
-- 과거 `rulesync-agent-assets` 기반 fan-out은 EXODUS에서 퇴역하며 새 Rule projection owner가 아니다.

@@ -1,8 +1,9 @@
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-FIND = ROOT / ".agentsmesh" / "skills" / "mols-skill-find" / "SKILL.md"
-INSTALL = ROOT / ".agentsmesh" / "skills" / "mols-skill-install" / "SKILL.md"
+SKILLS = ROOT / "src" / "agentsmesh" / "skills"
+FIND = SKILLS / "mols-skill-find" / "SKILL.md"
+INSTALL = SKILLS / "mols-skill-install" / "SKILL.md"
 
 
 def test_install_consumes_unified_find_handoff() -> None:

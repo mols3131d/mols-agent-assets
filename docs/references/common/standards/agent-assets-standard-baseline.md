@@ -61,7 +61,8 @@ Agent는 일반적으로 role/instructions, tools, authority/permissions, handof
 - root `CHATBOT.md` repository bootstrap convention
 - directory/glob Rule projection convention
 - `load-context-*` naming
-- `.agentsmesh/skills/<skill-name>/SKILL.md` canonical package convention
+- `src/agentsmesh/skills/<skill-name>/SKILL.md` canonical package convention
+- repository runtime-discovery surface와 distribution source의 physical isolation
 - single-file-by-default Skill authoring convention
 - Skill package의 runtime/non-runtime surface boundary
 - maintainer baseline preservation convention

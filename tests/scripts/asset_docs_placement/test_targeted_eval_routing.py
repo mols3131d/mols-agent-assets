@@ -23,5 +23,5 @@ def test_canonical_skill_changes_validate_the_committed_index() -> None:
 
     assert "add_skill_index()" in workflow
     assert 'root_targets["tests/scripts/generate_skill_indexes"]=1' in workflow
-    assert ".agentsmesh/skills/*)" in workflow
-    assert "add_skill_index" in workflow.split(".agentsmesh/skills/*)", 1)[1]
+    assert "src/agentsmesh/skills/*)" in workflow
+    assert "add_skill_index" in workflow.split("src/agentsmesh/skills/*)", 1)[1]

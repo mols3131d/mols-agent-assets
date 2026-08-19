@@ -14,10 +14,12 @@ Agent Skills specification의 portable contract가 우선하며, 이 문서는 r
 AgentsMesh가 표현할 수 있는 Skill은 chatbot/agent, flat/runtime으로 나누지 않고 다음 canonical path를 사용한다.
 
 ```text
-.agentsmesh/skills/<skill-name>/SKILL.md
+src/agentsmesh/skills/<skill-name>/SKILL.md
 ```
 
-`src/`에 parallel Skill profile을 만들지 않는다. 특정 target semantics가 현재 AgentsMesh contract로 표현되지 않아 custom source가 실제로 필요한 경우에만 `src/` exception을 검토한다.
+이 경로는 의도적으로 repository-root `.agentsmesh/`와 분리한다. `mols-agent-assets`는 자산 라이브러리이므로 canonical distribution asset이 이 저장소 자체의 runtime Skill로 자동 discovery되면 안 된다.
+
+특정 target semantics가 현재 AgentsMesh contract로 표현되지 않아 custom source가 실제로 필요한 경우에만 `src/agentsmesh/`의 peer source를 검토한다.
 
 ## Single-File by Default
 
@@ -60,8 +62,8 @@ skill-name/
 
 - runtime behavior에 필요한 knowledge/resource는 package 내부의 명시적 runtime surface가 소유한다.
 - maintainer-only 문서를 runtime dependency로 숨기지 않는다.
-- `.agentsmesh/skills/<skill-name>/` 아래에는 repository verification 자산인 `tests/`, `evals/`, `scenarios/`, 생성된 `results/`를 두지 않는다.
-- `.agentsmesh/skills/<skill-name>/` 아래에는 non-runtime을 숨기기 위한 dot-prefixed path를 두지 않는다.
+- `src/agentsmesh/skills/<skill-name>/` 아래에는 repository verification 자산인 `tests/`, `evals/`, `scenarios/`, 생성된 `results/`를 두지 않는다.
+- `src/agentsmesh/skills/<skill-name>/` 아래에는 non-runtime을 숨기기 위한 dot-prefixed path를 두지 않는다.
 
 ## Repository Verification Surface
 
@@ -93,7 +95,7 @@ Skill 종류와 execution target을 같은 taxonomy로 취급하지 않는다.
 - 같은 canonical Skill을 target이 일부만 표현할 수 있다면 capability 차이를 explicit limitation으로 다룬다.
 - target-specific semantics가 capability의 본질이고 현재 AgentsMesh가 안전하게 표현할 수 없다면 그때만 custom/non-standard source를 검토한다.
 
-Generated target package에서 canonical runtime surface가 유실되거나 비-runtime surface가 누출되면 generation 성공 여부와 별개로 regression으로 취급한다.
+AgentsMesh target projection은 canonical source가 아니다. 이 저장소에서는 native projection을 temporary workspace에서 생성·검증하고 commit하지 않는다.
 
 ## Repository Maintainer Docs
 

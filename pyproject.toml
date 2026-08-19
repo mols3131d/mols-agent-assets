@@ -21,9 +21,10 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
+addopts = ["--import-mode=importlib"]
 pythonpath = [
   "src",
-  ".agentsmesh/skills/mols-markdown-scripts/scripts",
+  "src/agentsmesh/skills/mols-markdown-scripts/scripts",
 ]
 testpaths = ["tests"]
 

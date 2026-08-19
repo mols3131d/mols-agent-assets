@@ -6,7 +6,7 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-CREATOR = ROOT / ".agentsmesh" / "skills" / "mols-skill-creator"
+CREATOR = ROOT / "src" / "agentsmesh" / "skills" / "mols-skill-creator"
 
 
 def test_packager_excludes_repository_verification_directories(tmp_path: Path) -> None:

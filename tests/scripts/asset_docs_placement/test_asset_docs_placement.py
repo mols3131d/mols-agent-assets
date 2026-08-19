@@ -7,7 +7,7 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-SKILLS = ROOT / ".agentsmesh" / "skills"
+SKILLS = ROOT / "src" / "agentsmesh" / "skills"
 CREATOR = SKILLS / "mols-skill-creator"
 TARGETED_TESTS = ROOT / ".github" / "workflows" / "targeted-tests.yml"
 
@@ -158,9 +158,9 @@ def test_creator_packager_excludes_non_runtime_surfaces(tmp_path: Path) -> None:
 
 def test_targeted_workflow_routes_skill_tests_and_evals() -> None:
     workflow = TARGETED_TESTS.read_text(encoding="utf-8")
-    assert '".agentsmesh/skills/**"' in workflow
+    assert '"src/agentsmesh/**"' in workflow
     assert '"tests/skills/**"' in workflow
     assert '"evals/skills/**"' in workflow
-    assert ".agentsmesh/skills/*)" in workflow
+    assert "src/agentsmesh/skills/*)" in workflow
     assert "evals/skills/*)" in workflow
     assert 'root_targets["tests/scripts/asset_docs_placement"]=1' in workflow
