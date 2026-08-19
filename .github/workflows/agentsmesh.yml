@@ -69,7 +69,7 @@ jobs:
           done
 
           ((${#generated[@]})) || exit 0
-          uvx rumdl@0.2.6 fmt --disable MD047 "${generated[@]}"
+          uvx rumdl@0.2.6 fmt "${generated[@]}"
           git diff --exit-code -- "${generated[@]}"
       - name: Verify Copilot round trip
         shell: bash
