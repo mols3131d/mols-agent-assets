@@ -17,7 +17,6 @@ on:
       - "evals/skills/**"
       - "tests/evals/**"
       - "tests/test_rulesync_source_isolation.py"
-      - "tests/test_chatbot_harness_compatibility.py"
       - "tests/test_documentation_consistency.py"
       - "docs/**"
       - "tests/skills/**"
@@ -52,10 +51,6 @@ jobs:
 
           add_isolation() {
             root_targets["tests/test_rulesync_source_isolation.py"]=1
-          }
-
-          add_chatbot_compatibility() {
-            root_targets["tests/test_chatbot_harness_compatibility.py"]=1
           }
 
           add_documentation_consistency() {
@@ -102,7 +97,6 @@ jobs:
                 ;;
               .github/workflows/targeted-tests.yml)
                 add_isolation
-                add_chatbot_compatibility
                 add_documentation_consistency
                 add_asset_docs
                 add_distribution_routes
@@ -122,7 +116,6 @@ jobs:
                 name="${path#src/rulesync/.rulesync/skills/}"
                 add_skill "${name%%/*}"
                 add_isolation
-                add_chatbot_compatibility
                 add_asset_docs
                 add_distribution_routes
                 ;;
@@ -141,8 +134,7 @@ jobs:
                 name="${path#evals/skills/}"
                 add_eval "${name%%/*}"
                 ;;
-              evals/regression/chatbot-harness-compatibility.json|tests/test_chatbot_harness_compatibility.py|docs/references/common/conventions/chatbot-repository-bootstrap.md)
-                add_chatbot_compatibility
+              docs/references/common/conventions/chatbot-repository-bootstrap.md)
                 add_documentation_consistency
                 ;;
               docs/references/common/conventions/rulesync-repository-conventions.md)
