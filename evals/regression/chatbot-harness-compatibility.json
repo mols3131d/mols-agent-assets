@@ -16,6 +16,8 @@
       "`CHATBOT.md` 자체는 이 hierarchy의 한 단계가 아니다"
     ],
     "personal_standard": [
+      "## Runtime Model",
+      "Chatbot과 coding agent는 별도 actor type으로 분류하지 않습니다",
       "`CHATBOT.md`는 Rule, Skill, Prompt, Agent와 동급의 Agent Asset type이 아닙니다"
     ],
     "rule_projection": [
@@ -23,9 +25,11 @@
     ],
     "github_loader": [
       "Do not classify the caller as chatbot versus coding agent",
+      "A repository-defined compatibility/bootstrap entry may route discovery, but it is instruction or policy authority only when the repository explicitly assigns that role",
       "Do not infer that files with different names form a fallback chain",
       "read only selected Skill sources and required supporting resources",
-      "match known target paths against declared glob/path/selectors"
+      "match known target paths against declared glob/path/selectors",
+      "Do not recursively re-select this loader or another routing asset merely because it appears in a discovered catalog"
     ],
     "mols_loader": [
       "Treat each compatibility responsibility independently",
