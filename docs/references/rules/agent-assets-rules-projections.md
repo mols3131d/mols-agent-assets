@@ -1,11 +1,11 @@
 ---
 title: Rule Projections
-description: 이 저장소에서 portable coding-agent Rule의 canonical source와 target projection 책임 경계
+description: 이 저장소에서 portable agent Rule의 canonical source와 target projection 책임 경계
 ---
 
 # Rule Projections
 
-이 저장소는 portable coding-agent Rule의 canonical source를 `src/agentsmesh/.agentsmesh/rules/`에 보관한다. `src/agentsmesh/` 자체가 격리된 native AgentsMesh workspace이므로 별도 shape 변환은 필요하지 않는다.
+이 저장소는 portable agent Rule의 canonical source를 `src/agentsmesh/.agentsmesh/rules/`에 보관한다. `src/agentsmesh/` 자체가 격리된 native AgentsMesh workspace이므로 별도 shape 변환은 필요하지 않는다.
 
 ```text
 src/agentsmesh/.agentsmesh/rules/
@@ -15,7 +15,7 @@ src/agentsmesh/.agentsmesh/rules/
 
 `src/agentsmesh/agentsmesh.yaml`이 projection target과 feature를 선택한다. AgentsMesh가 생성한 target file은 derived artifact이며 source authority가 아니고 이 repository에는 commit하지 않는다.
 
-## Portable coding-agent Rules
+## Portable Agent Rules
 
 - repository-wide Rule source는 `src/agentsmesh/.agentsmesh/rules/_root.md`를 canonical root로 사용한다.
 - 추가 Rule은 `src/agentsmesh/.agentsmesh/rules/*.md`에 두고 AgentsMesh-compatible front matter로 scope/trigger를 표현한다.
@@ -29,23 +29,23 @@ src/agentsmesh/.agentsmesh/rules/
 
 Repository root의 `.agentsmesh/` 또는 harness-native Rule/Skill directory를 distribution source나 generated evidence로 commit하지 않는다. Canonical `.agentsmesh/`는 오직 격리된 `src/agentsmesh/` workspace 아래에 둔다. 이 경계는 이 asset-library repository가 보관한 자산을 자기 runtime configuration으로 자동 인식하는 것을 방지한다.
 
-## Hosted chatbot boundary
+## Chat Runtime Compatibility Boundary
 
-`CHATBOT.md`는 Rule projection이 아니다. capable chatbot이 repository context, agent assets, runtime resources와 operational boundary를 찾도록 돕는 **mols의 개인 repository bootstrap convention**이다.
+`CHATBOT.md`는 Rule projection이나 별도 Rule authority가 아니다. repository-aware chat runtime이 path-scoped Rule을 자동 discovery/load하지 못할 때 **누락된 harness behavior를 보정하는 compatibility entry**다.
 
-세부 contract는 [CHATBOT Repository Bootstrap](../common/standards/chatbot-repository-bootstrap.md)이 소유한다.
+세부 contract는 [CHATBOT Runtime Compatibility Layer](../common/standards/chatbot-repository-bootstrap.md)이 소유한다.
 
-따라서 이 문서는 다음을 정의하지 않는다.
+역할을 다음처럼 분리한다.
 
-- `CHATBOT.md` discovery 또는 placement
-- `CHATBOT.md → AGENTS.md → README.md` 같은 fallback chain
-- chatbot context loading 또는 Skill routing
-- chatbot runtime, script, validation, Git operation policy
+- Rule source 또는 active target Rule surface가 policy, selector, precedence를 소유한다.
+- `CHATBOT.md`는 known target path와 selector가 일치하는 Rule을 discovery/load하도록 연결한다.
+- Rule body, full Rule catalog, glob table을 `CHATBOT.md`에 복제하지 않는다.
+- active runtime이 같은 Rule discovery/loading을 이미 제공하면 compatibility layer가 중복 수행하지 않는다.
 
-Hosted chatbot에 실제 persistent scoped policy가 필요하면 그 policy 자체의 owner를 명확히 두고, coding-agent Rule과 동일한 의미를 공유하는 경우에도 target semantics가 다르면 무리하게 같은 projection으로 취급하지 않는다.
+Chat runtime의 tool capability가 coding-oriented harness와 다르더라도 Rule taxonomy를 별도로 만들지 않는다. 동일한 policy를 공유할 수 있으면 기존 Rule authority를 사용하고 target이 해당 semantics를 표현할 수 없는 실제 차이만 명시적 exception으로 남긴다.
 
 ## Boundary
 
-- AgentsMesh-compatible portable coding-agent Rule과 hosted-chatbot repository bootstrap의 authority를 섞지 않는다.
+- canonical Rule과 chat-runtime compatibility entry를 독립 policy authority로 유지하지 않는다.
 - canonical Rule과 temporary generated target output을 독립 authority로 유지하지 않는다.
-- AgentsMesh가 지원하지 않는 semantics가 실제로 필요한 target에는 명시적 exception을 둘 수 있지만, 그 exception을 portable source처럼 일반화하지 않는다.
+- AgentsMesh가 지원하지 않는 semantics가 실제로 필요한 target에는 명시적 exception을 둘 수 있지만 그 exception을 portable source처럼 일반화하지 않는다.

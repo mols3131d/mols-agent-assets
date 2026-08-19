@@ -22,6 +22,10 @@ description: 외부 baseline을 확장한 repository-local Agent Asset taxonomy�
 
 `references/`, `scripts/`, `assets/`, docs, evals, tests 같은 supporting resource는 이 네 유형을 지원하지만 동급 behavioral asset type은 아닙니다.
 
+## Runtime Model
+
+Chatbot과 coding agent는 별도 actor type으로 분류하지 않습니다. 특정 runtime의 tool capability보다 **agent harness의 context·asset discovery/loading behavior** 차이를 별도 문제로 다룹니다.
+
 ## Placement
 
 새 자산은 다음 질문으로 분류합니다.
@@ -80,12 +84,12 @@ Skill의 Tier 1 open standard와 Tier 2 vendor/harness 공식 원문 registry는
 
 - 공통 filesystem naming convention → [Agent Asset Naming Convention](agent-assets-naming-convention.md)
 - `src/agentsmesh/` native workspace 안의 canonical source와 active target projection 경계
-- root `CHATBOT.md` repository bootstrap convention → [CHATBOT Repository Bootstrap](chatbot-repository-bootstrap.md)
+- root `CHATBOT.md` chat-runtime harness compatibility convention → [CHATBOT Runtime Compatibility Layer](chatbot-repository-bootstrap.md)
 - directory/glob Rule projection convention
 - 필요할 때만 사용하는 `docs/<asset-type>/<asset-name>/` maintainer documentation convention
 - Skill-specific authoring/deployment convention
 
-`CHATBOT.md`는 Rule, Skill, Prompt, Agent와 동급의 Agent Asset type이 아닙니다. capable chatbot이 repository context와 자산을 찾도록 돕는 **개인적인 repository convention**이며, 세부 bootstrap contract는 전용 reference가 소유합니다.
+`CHATBOT.md`는 Rule, Skill, Prompt, Agent와 동급의 Agent Asset type이 아닙니다. repository-aware chat runtime에서 누락되는 agent harness의 context·asset discovery/loading을 보정하는 **개인 compatibility convention**입니다. 별도 project policy surface로 사용하지 않으며 세부 contract는 전용 reference가 소유합니다.
 
 Skill 확장의 상세 목록과 경계는 [Personal Skill Standard](../../skills/agent-assets-skills-standard-personal.md)가 소유합니다. 공통 표준에서는 이를 다시 나열하지 않습니다.
 

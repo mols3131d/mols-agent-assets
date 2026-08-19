@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "kind": "deterministic-regression",
+  "contract": "chatbot-harness-compatibility",
+  "sources": {
+    "standard": "docs/references/common/standards/chatbot-repository-bootstrap.md",
+    "personal_standard": "docs/references/common/standards/agent-assets-standard-personal.md",
+    "rule_projection": "docs/references/rules/agent-assets-rules-projections.md",
+    "github_loader": "src/agentsmesh/.agentsmesh/skills/load-context-github/SKILL.md",
+    "mols_loader": "src/agentsmesh/.agentsmesh/skills/load-context-github-mols/SKILL.md"
+  },
+  "required": {
+    "standard": [
+      "compatibility responsibility는 독립적으로 적용한다",
+      "Partial harness support는 정상적인 상태다",
+      "`CHATBOT.md` 자체는 이 hierarchy의 한 단계가 아니다"
+    ],
+    "personal_standard": [
+      "## Runtime Model",
+      "Chatbot과 coding agent는 별도 actor type으로 분류하지 않습니다",
+      "`CHATBOT.md`는 Rule, Skill, Prompt, Agent와 동급의 Agent Asset type이 아닙니다"
+    ],
+    "rule_projection": [
+      "`CHATBOT.md`는 Rule projection이나 별도 Rule authority가 아니다"
+    ],
+    "github_loader": [
+      "Do not classify the caller as chatbot versus coding agent",
+      "A repository-defined compatibility/bootstrap entry may route discovery, but it is instruction or policy authority only when the repository explicitly assigns that role",
+      "Do not infer that files with different names form a fallback chain",
+      "read only selected Skill sources and required supporting resources",
+      "match known target paths against declared glob/path/selectors",
+      "Do not recursively re-select this loader or another routing asset merely because it appears in a discovered catalog"
+    ],
+    "mols_loader": [
+      "Treat each compatibility responsibility independently",
+      "Partial harness support is valid",
+      "Do **not** invent `CHATBOT.md → AGENTS.md → README.md` or another filename fallback chain"
+    ]
+  },
+  "forbidden": {
+    "mols_loader": [
+      "### Instruction Fallback",
+      "Unless the repository explicitly defines a different applicable instruction policy"
+    ]
+  }
+}

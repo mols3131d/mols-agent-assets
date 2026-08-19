@@ -12,3 +12,4 @@
 ## Current suites
 
 - `regression/agentsmesh-source-isolation.json` — `src/agentsmesh/` native workspace와 `src/agentsmesh/.agentsmesh/` canonical asset source, repository runtime-discovery surface 격리를 고정하는 deterministic contract.
+- `regression/chatbot-harness-compatibility.json` — `CHATBOT.md` compatibility layer, GitHub context loader, Rule boundary 사이의 authority·discovery·partial-harness invariant를 고정하는 deterministic contract.
