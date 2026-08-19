@@ -12,8 +12,8 @@ description: Create, update, render, or review static Markdown engineering dashb
 기본 대시보드는 세 가지를 구분한다.
 
 1. `Development Progress` — 구현·검증 상태와 정확한 `n/n`
-2. `Implementation Gaps` — 아직 구현되지 않은 Requirement
-3. `Verification Gaps` — 실패·미검증·blocked·manual-only Verification Target
+1. `Implementation Gaps` — 아직 구현되지 않은 Requirement
+1. `Verification Gaps` — 실패·미검증·blocked·manual-only Verification Target
 
 Project dashboard는 `Domain`, domain dashboard는 `Capability`를 한 행으로 사용한다.
 
@@ -43,10 +43,10 @@ Project dashboard는 `Domain`, domain dashboard는 `Capability`를 한 행으로
 ## Workflow
 
 1. dashboard level과 snapshot을 정한다.
-2. Requirement, 구현 근거, Verification Target, 검증 근거를 조사한다.
-3. 근거에서 status, progress, gaps를 결정한다.
-4. 반복 가능한 산출물이면 YAML을 만들거나 갱신한다.
-5. 사용할 수 있으면 bundled renderer로 Markdown을 생성하고 검증한다.
+1. Requirement, 구현 근거, Verification Target, 검증 근거를 조사한다.
+1. 근거에서 status, progress, gaps를 결정한다.
+1. 반복 가능한 산출물이면 YAML을 만들거나 갱신한다.
+1. 사용할 수 있으면 bundled renderer로 Markdown을 생성하고 검증한다.
 
 의미 판단은 에이전트가 담당한다. 스크립트는 입력 검증, 계산, 렌더링과 구조 검증만 담당한다.
 

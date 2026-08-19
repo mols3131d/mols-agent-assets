@@ -24,7 +24,7 @@
 ## Rules
 
 1. 차트를 삭제해도 판단이 같으면 삭제한다.
-2. snapshot이 하나뿐이면 progress trend를 만들지 않는다.
-3. denominator가 달라진 snapshot을 단순 percentage trend로 연결하지 않는다.
-4. 복잡한 Mermaid는 사용 가능한 Mermaid 전문 도구나 스킬이 있으면 위임한다. 없어도 핵심 dashboard 완성을 막지 않는다.
-5. 같은 사실을 표와 diagram에서 반복하지 않는다.
+1. snapshot이 하나뿐이면 progress trend를 만들지 않는다.
+1. denominator가 달라진 snapshot을 단순 percentage trend로 연결하지 않는다.
+1. 복잡한 Mermaid는 사용 가능한 Mermaid 전문 도구나 스킬이 있으면 위임한다. 없어도 핵심 dashboard 완성을 막지 않는다.
+1. 같은 사실을 표와 diagram에서 반복하지 않는다.

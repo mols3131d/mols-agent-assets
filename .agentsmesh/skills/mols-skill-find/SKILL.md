@@ -78,11 +78,11 @@ Resolve each `<auto>` independently. Do not treat one inferred value as permissi
 Use this evidence order unless an explicit argument overrides it:
 
 1. explicit caller arguments;
-2. caller-established source or selection context;
-3. capabilities and Skill catalogs already exposed by the active runtime;
-4. current task or repository guidance that declares a Skill source, index, or root;
-5. source-local evidence such as repository instructions, manifests, indexes, and package structure;
-6. declared `Defaults`, only when no more relevant source satisfies the request and `fallback` permits them.
+1. caller-established source or selection context;
+1. capabilities and Skill catalogs already exposed by the active runtime;
+1. current task or repository guidance that declares a Skill source, index, or root;
+1. source-local evidence such as repository instructions, manifests, indexes, and package structure;
+1. declared `Defaults`, only when no more relevant source satisfies the request and `fallback` permits them.
 
 Declared defaults must not override an explicit source, hijack discovery for an unrelated repository, or cause unrelated public-source expansion.
 
@@ -126,9 +126,9 @@ Normalize `sources` into ordered SourceSpecs.
 When `sources: <auto>`, build a source plan from applicable evidence rather than choosing one source prematurely:
 
 1. caller-established task/source context;
-2. runtime-native Skill catalog when it exposes the relevant capability space;
-3. current repository-declared Skill source when relevant;
-4. declared `Defaults` only when `fallback` permits them.
+1. runtime-native Skill catalog when it exposes the relevant capability space;
+1. current repository-declared Skill source when relevant;
+1. declared `Defaults` only when `fallback` permits them.
 
 Deduplicate equivalent sources while preserving the strongest provenance and most specific scope.
 
@@ -143,10 +143,10 @@ Do not fetch a remote repository merely to rediscover Skills already exposed aut
 For each source, prefer the cheapest authoritative representation that can answer the request:
 
 1. direct/native Skill catalog;
-2. source-declared index or manifest;
-3. scoped package discovery using source conventions;
-4. targeted repository scan only when the source lacks a sufficient catalog or index;
-5. external search only when explicitly permitted by `fallback` or caller intent.
+1. source-declared index or manifest;
+1. scoped package discovery using source conventions;
+1. targeted repository scan only when the source lacks a sufficient catalog or index;
+1. external search only when explicitly permitted by `fallback` or caller intent.
 
 `index` in SourceSpec controls index use for that source. An index is an optimization and authority hint, not a universal requirement. Do not assume a fixed filename or path unless the source declares it.
 
