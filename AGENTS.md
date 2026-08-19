@@ -6,7 +6,8 @@
 - `src/rulesync/rulesync.jsonc`: workspace projection configuration.
 - `src/rulesync/.rulesync/`: canonical Rulesync source for Rules, Skills, and Subagents. This nested location preserves the native Rulesync layout without exposing the repository root as a Rulesync runtime workspace.
 - Repository-root `.rulesync/` and `rulesync.jsonc`: forbidden. Distribution assets must not auto-activate for this repository itself.
-- `.github/skills/`, `.github/agents/`, `.github/copilot-instructions.md`, `.agents/rules/`, `.agents/skills/`, and `.agents/agents/`: generated runtime projections. Do not commit them to this repository.
+- `.github/skills/`, `.github/agents/`, `.github/copilot-instructions.md`, `.agents/rules/`, and `.agents/agents/`: generated runtime projection surfaces. Do not commit generated Rulesync output there.
+- `.agents/skills/`: repository runtime Skill surface. Only explicitly repository-local Skills belong here; it is not canonical distribution source and must not receive generated Rulesync projections. The current explicit exception is `mols-chatbot-bootstrap`.
 - `.agents/AGENTS.md`: repository-local guard outside the distribution source. Follow its contents.
 - `src/`: source tree for distributable Agent Assets. Keep non-Rulesync custom assets as explicit peers of `src/rulesync/` only when a real format or target requires them.
 - `scripts/`: repository automation, synchronization, setup, validation, and other development tooling.
@@ -42,4 +43,4 @@ Supporting resources are not peer Agent Asset types alongside Rule, Skill, Promp
 1. **Verify**: Run applicable repository tests/evals at the cheapest relevant level.
 1. **Deploy**: Merge canonical source changes only. Do not commit generated target projections or Rulesync lock state.
 
-The physical isolation is intentional: this repository develops Agent Assets; it must not implicitly consume every asset it stores.
+The physical isolation is intentional: this repository develops Agent Assets; it must not implicitly consume every distribution asset it stores.
