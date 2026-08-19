@@ -51,7 +51,12 @@ only the missing ones.
 An `INDEX.jsonl` is discovery metadata, not a second source of truth. Keep one JSON object
 per line and preserve a deterministic order.
 
-Include the source path so the selected asset can be loaded on demand. Do not copy asset
+Use one `source` field as the asset locator:
+
+- local asset → repository-root-relative path;
+- remote asset → URL.
+
+Do not add separate local/remote locator fields for the same purpose. Do not copy asset
 bodies or invent metadata that is not needed for routing.
 
 ### Skills
@@ -59,10 +64,16 @@ bodies or invent metadata that is not needed for routing.
 Index Skills for task-intent selection. Derive entries from each Skill's canonical
 `SKILL.md` front matter.
 
-Use `name` and `description` as the primary discovery fields, plus the source path:
+Use `name` and `description` as the primary discovery fields, plus `source`:
 
 ```json
-{"name":"example-skill","description":"Do X when Y. Do not use for Z.","path":".agents/skills/example-skill/SKILL.md"}
+{"name":"example-skill","description":"Do X when Y. Do not use for Z.","source":".agents/skills/example-skill/SKILL.md"}
+```
+
+Remote example:
+
+```json
+{"name":"example-skill","description":"Do X when Y. Do not use for Z.","source":"https://github.com/example/repo/blob/main/SKILL.md"}
 ```
 
 Do not summarize the full Skill body into the index. The `description` should remain the
@@ -73,10 +84,10 @@ Skill's own discovery description rather than a separately maintained synopsis.
 Index Rules primarily when applicability depends on a path/glob selector. The index should
 let a runtime decide whether a Rule applies without loading every Rule body first.
 
-For glob-scoped Rules, preserve the source path and normalized glob selectors:
+For glob-scoped Rules, preserve `source` and normalized glob selectors:
 
 ```json
-{"path":".agents/rules/python.md","globs":["**/*.py","**/*.pyi"]}
+{"source":".agents/rules/python.md","globs":["**/*.py","**/*.pyi"]}
 ```
 
 Read the selectors from the Rule's authoritative metadata such as `globs`, `applyTo`, or
@@ -93,8 +104,8 @@ generation over manual maintenance.
 
 The generator should derive:
 
-- Skill index entries from canonical Skill `name`, `description`, and source path;
-- Rule index entries primarily from canonical path/glob selectors and source path.
+- Skill index entries from canonical Skill `name`, `description`, and `source`;
+- Rule index entries primarily from canonical path/glob selectors and `source`.
 
 Use the repository's existing language and automation surface when practical. Keep the
 generator small and idempotent. Prefer one generator when Skill and Rule indexes share the
@@ -123,7 +134,8 @@ Verify that:
 - native harness behavior is not duplicated;
 - Skill indexes reflect canonical `name` and `description` metadata;
 - Rule indexes reflect canonical path/glob selectors;
-- indexes point to canonical sources and contain only routing metadata;
+- each indexed asset has one valid `source` locator;
+- indexes contain only routing metadata;
 - generated indexes are deterministic when generation is used;
 - CI detects stale committed indexes when CI validation is used;
 - no project policy, Skill body, or Rule body was duplicated.
