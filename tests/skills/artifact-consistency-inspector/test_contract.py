@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[3]
-SKILL = ROOT / "src/agentsmesh/.agentsmesh/skills/artifact-consistency-inspector"
+SKILL = ROOT / "src/rulesync/.rulesync/skills/artifact-consistency-inspector"
 SCENARIOS = Path(__file__).resolve().parent / "scenarios"
 
 REQUIRED_PACKAGE_FILES = {

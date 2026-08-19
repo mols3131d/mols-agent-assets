@@ -21,7 +21,7 @@ def test_eval_changes_have_a_deterministic_test_target() -> None:
 def test_canonical_skill_changes_validate_the_committed_index() -> None:
     workflow = WORKFLOW.read_text(encoding="utf-8")
 
-    skill_case = "src/agentsmesh/.agentsmesh/skills/*)"
+    skill_case = "src/rulesync/.rulesync/skills/*)"
     assert "add_skill_index()" in workflow
     assert 'root_targets["tests/scripts/generate_skill_indexes"]=1' in workflow
     assert skill_case in workflow
