@@ -5,25 +5,15 @@ on:
     branches:
       - main
     paths:
-      - ".agentsmesh/rules/**"
-      - ".agentsmesh/skills/**"
-      - ".agentsmesh/agents/**"
-      - "agentsmesh.yaml"
+      - "src/agentsmesh/**"
       - "package.json"
       - "package-lock.json"
       - ".gitattributes"
       - ".rumdl.toml"
-      - ".github/copilot-instructions.md"
-      - ".github/skills/**"
-      - ".github/agents/**"
-      - ".github/workflows/agentsmesh.yml"
-      - ".github/workflows/rumdl-main-autofix.yml"
-      - ".agents/rules/**"
-      - ".agents/skills/**"
       - "evals/regression/**"
       - "evals/skills/**"
       - "tests/evals/**"
-      - "tests/test_agentsmesh_exodus.py"
+      - "tests/test_agentsmesh_source_isolation.py"
       - "docs/README.md"
       - "docs/development.md"
       - "docs/testing.md"
@@ -59,8 +49,8 @@ jobs:
           mapfile -d '' files < <(git diff --name-only -z HEAD^1 HEAD)
           declare -A root_targets=()
 
-          add_exodus() {
-            root_targets["tests/test_agentsmesh_exodus.py"]=1
+          add_isolation() {
+            root_targets["tests/test_agentsmesh_source_isolation.py"]=1
           }
 
           add_asset_docs() {
@@ -102,38 +92,38 @@ jobs:
                 root_targets["tests/scripts"]=1
                 ;;
               .github/workflows/targeted-tests.yml)
-                add_exodus
+                add_isolation
                 add_asset_docs
                 add_skill_index
                 add_script "rumdl_main_autofix"
                 root_targets["tests/evals"]=1
                 ;;
-              .gitattributes|.rumdl.toml|.github/workflows/agentsmesh.yml|.github/workflows/rumdl-main-autofix.yml)
+              .gitattributes|.rumdl.toml|.github/workflows/rumdl-main-autofix.yml)
                 add_script "rumdl_main_autofix"
                 ;;
-              .agentsmesh/skills/*)
-                name="${path#*/skills/}"
+              src/agentsmesh/skills/*)
+                name="${path#src/agentsmesh/skills/}"
                 add_skill "${name%%/*}"
-                add_exodus
+                add_isolation
                 add_asset_docs
                 add_skill_index
                 ;;
               tests/skills/*)
-                name="${path#*/skills/}"
+                name="${path#tests/skills/}"
                 add_skill "${name%%/*}"
                 ;;
               evals/skills/*)
-                name="${path#*/skills/}"
+                name="${path#evals/skills/}"
                 add_eval "${name%%/*}"
                 ;;
-              .agentsmesh/rules/*|.agentsmesh/agents/*|agentsmesh.yaml|package.json|package-lock.json|.github/copilot-instructions.md|.github/skills/*|.github/agents/*|.agents/rules/*|.agents/skills/*|evals/regression/*|tests/test_agentsmesh_exodus.py)
-                add_exodus
+              src/agentsmesh/rules/*|src/agentsmesh/agents/*|src/agentsmesh/agentsmesh.yaml|package.json|package-lock.json|evals/regression/*|tests/test_agentsmesh_source_isolation.py)
+                add_isolation
                 ;;
               docs/skills/*|docs/references/skills/*|docs/references/common/standards/agent-assets-standard-personal.md|docs/README.md|docs/development.md|docs/testing.md)
                 add_asset_docs
                 ;;
               tests/scripts/*)
-                name="${path#*/scripts/}"
+                name="${path#tests/scripts/}"
                 add_script "${name%%/*}"
                 ;;
               scripts/*)

@@ -1,13 +1,8 @@
-# AgentsMesh canonical source
-.agentsmesh/** agentsmesh-source
+# Canonical Agent Asset source
+src/agentsmesh/** agentsmesh-source
 
-# AgentsMesh-generated target projections
-.github/copilot-instructions.md linguist-generated
-.github/skills/** linguist-generated
-.github/agents/** linguist-generated
-.agents/rules/** linguist-generated
-.agents/skills/** linguist-generated
+# Repository-local runtime guard
+.agents/AGENTS.md linguist-detectable
 
 # Derived repository metadata
-.agentsmesh/.lock linguist-generated
-.agentsmesh/skills/INDEX.jsonl linguist-generated
+src/agentsmesh/skills/INDEX.jsonl linguist-generated
