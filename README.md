@@ -27,7 +27,7 @@ Library workspace의 현재 Rulesync features는 `rules`, `skills`, `subagents`�
 
 이 저장소는 **지원 vendor/target matrix를 정의하지 않습니다.** Target은 projection이나 validation을 실행할 때 선택합니다. 개별 canonical asset의 유효한 target-specific metadata는 현재 projection 대상이 아니라는 이유만으로 제거하지 않습니다.
 
-Rulesync가 생성한 `.github/`·`.agents/` target surface는 canonical source가 아니며 projection output으로 commit하지 않습니다. Repository-local root Rulesync source와 reusable library source는 물리적으로 분리해 library 전체가 이 저장소의 runtime configuration으로 암묵적으로 활성화되지 않게 합니다.
+Rulesync가 생성한 `.github/`·`.agents/` target surface는 canonical source가 아니며 projection output으로 commit하지 않습니다. Repository workspace와 reusable library workspace는 물리적으로 분리해 library 전체가 이 저장소의 runtime configuration으로 암묵적으로 활성화되지 않게 합니다.
 
 `route/`도 canonical source가 아닙니다. Cross-runtime discovery contract는 [`route/README.md`](route/README.md)가 소유합니다.
 
