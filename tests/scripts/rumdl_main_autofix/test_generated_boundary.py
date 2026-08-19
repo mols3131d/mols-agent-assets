@@ -12,6 +12,13 @@ GENERATED_MARKERS = {
     ".agents/rules/** linguist-generated",
     ".agents/skills/** linguist-generated",
 }
+GENERATED_MD047_IGNORES = {
+    '".github/copilot-instructions.md" = ["MD047"]',
+    '".github/skills/**/*.md" = ["MD047"]',
+    '".github/agents/**/*.md" = ["MD047"]',
+    '".agents/rules/**/*.md" = ["MD047"]',
+    '".agents/skills/**/*.md" = ["MD047"]',
+}
 
 
 def test_agentsmesh_source_and_generated_markers_have_separate_roles() -> None:
@@ -25,7 +32,13 @@ def test_agentsmesh_source_and_generated_markers_have_separate_roles() -> None:
 def test_rumdl_config_matches_agentsmesh_serialization() -> None:
     config = RUMDL.read_text(encoding="utf-8")
     assert "[MD054]" not in config
-    assert 'disable = ["MD013", "MD025", "MD033", "MD041", "MD047"]' in config
+    assert 'disable = ["MD013", "MD025", "MD033", "MD041"]' in config
+    assert 'disable = ["MD013", "MD025", "MD033", "MD041", "MD047"]' not in config
+    assert "[per-file-ignores]" in config
+    for ignore in GENERATED_MD047_IGNORES:
+        assert ignore in config
+    assert "Keep this list aligned with every Markdown projection target in agentsmesh.yaml." in config
+    assert "If another vendor target is added later" in config
     assert "[MD057]" in config
     assert "compact-paths = false" in config
 
