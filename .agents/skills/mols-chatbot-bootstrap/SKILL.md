@@ -4,7 +4,7 @@ description: >-
   Bootstrap or update a repository for mols CHATBOT.md compatibility. Use when a
   repository should support chat runtimes that may not automatically load applicable
   AGENTS.md guidance, task-relevant Skills, or path-scoped Rules, including requests to
-  create CHATBOT.md, discovery routes, route generators, or drift-check CI.
+  create CHATBOT.md, route metadata, route generation, or drift validation.
 ---
 
 # Mols Chatbot Bootstrap
@@ -13,143 +13,144 @@ Establish the smallest repository-local compatibility harness for chat runtimes.
 
 ## Contract
 
-Inspect the repository before changing it. Reuse existing conventions, scripts, routes,
-and CI before creating new ones.
+Inspect the repository first. Reuse existing instructions, scripts, routes, and CI.
+Create only what is actually needed.
 
 As needed:
 
 - create or update root `CHATBOT.md`;
-- expose Skills through `.agents/routes/skills.jsonl` for task-intent discovery;
-- expose path/glob-scoped Rules through `.agents/routes/rules.jsonl` for selector-based discovery;
-- generate route files from canonical sources when they can drift;
-- add CI validation when committed generated routes can become stale.
+- create `.agents/routes/ROUTE.md` as the single route entrypoint;
+- maintain `.agents/routes/skills.jsonl` for task-intent Skill routing;
+- maintain `.agents/routes/rules.jsonl` for path/glob Rule routing;
+- use deterministic generation for factual baseline metadata;
+- tune routing metadata when the generated baseline is not selective enough;
+- add the smallest useful drift validation.
 
-Do not add machinery merely because this Skill lists it. Create only what the repository
-actually needs.
-
-`AGENTS.md`, Skills, and Rules remain authoritative. `CHATBOT.md` and route files are
-routing and compatibility surfaces only.
+`AGENTS.md`, Skills, and Rules remain authoritative. Route assets are discovery metadata.
 
 ## CHATBOT.md
 
 Keep root `CHATBOT.md` minimal and root-only.
 
-It should recover only harness behavior the active runtime does not already provide:
+When repository routing is needed, link to `.agents/routes/ROUTE.md` rather than listing
+individual route files. `ROUTE.md` owns the route inventory and concise consumption guidance.
 
-- load the applicable `AGENTS.md` hierarchy for known target paths;
-- discover/load task-relevant Skills through `.agents/routes/skills.jsonl`;
-- discover/load Rules whose selectors match known target paths through `.agents/routes/rules.jsonl`.
+Recover only harness behavior the runtime does not already provide:
 
-Do not copy project policy, Skill bodies, Rule bodies, full catalogs, or static path tables
-into `CHATBOT.md`. Do not invent a `CHATBOT.md → AGENTS.md → README.md` fallback chain.
+- applicable `AGENTS.md` hierarchy loading;
+- task-relevant Skill discovery/loading;
+- target-path Rule discovery/loading.
 
-Treat the responsibilities independently. If the runtime already provides one, recover
-only the missing ones.
+Do not copy project policy, Skill bodies, Rule bodies, catalogs, or static path tables into
+`CHATBOT.md`.
 
-## Route Files
+## Route Shape
 
-Each route file is JSONL discovery metadata, not a second source of truth. Keep one JSON
-object per line and preserve deterministic order.
+Each JSONL route file reserves its first line for `_meta`; remaining lines are route entries.
+Keep deterministic order.
 
-Reserve the first line for a header object with `_meta`. It may carry concise metadata and
-instructions for consuming that route file. Consumers must not treat the header as an
-asset entry.
-
-Example:
-
-```json
-{"_meta":{"kind":"skills","instructions":"Select task-relevant Skills by name and description, then load only the selected source."}}
-```
-
-Keep the header small. Do not move project policy or asset content into it.
-
-Every asset entry uses one `source` field as its locator:
+Use one `source` locator:
 
 - local asset → repository-root-relative path;
 - remote asset → URL.
 
-Do not add separate local/remote locator fields for the same purpose.
-
 ### Skills
 
-Index Skills for task-intent selection. Derive local entries from each canonical
-`SKILL.md` front matter.
+Route Skills primarily by `name` and `description`.
 
-Use `name`, `description`, and `source`:
-
-```json
+```jsonl
 {"_meta":{"kind":"skills","instructions":"Select task-relevant Skills by name and description, then load only the selected source."}}
 {"name":"example-skill","description":"Do X when Y. Do not use for Z.","source":".agents/skills/example-skill/SKILL.md"}
 ```
 
-A remote Skill uses the same shape with a URL in `source`.
+The generator may copy canonical `name` and `description` as a baseline. After generation,
+review the route set as a routing system and tune `description` when that improves selection
+precision or reduces overlap between Skills.
 
-Do not summarize the full Skill body into the route file. `description` should remain the
-Skill's own discovery description rather than a separately maintained synopsis.
+Tuning must preserve the Skill's actual capability and trigger boundary. Do not invent a
+capability, narrow away intended use, or turn the route description into a second Skill body.
+
+Keep `name` and local `source` aligned with the canonical Skill unless migration explicitly
+changes identity or location.
 
 ### Rules
 
-Index Rules primarily when applicability depends on a path/glob selector. The route file
-should let a runtime decide whether a Rule applies without loading every Rule body first.
+Route Rules primarily by applicability selectors such as `globs` or `applyTo`.
 
-For glob-scoped Rules, preserve `source` and normalized glob selectors:
-
-```json
+```jsonl
 {"_meta":{"kind":"rules","instructions":"Match known target paths against globs, then load only matching Rule sources."}}
 {"source":".agents/rules/python.md","globs":["**/*.py","**/*.pyi"]}
 ```
 
-Read selectors from authoritative Rule metadata such as `globs`, `applyTo`, or an
-equivalent repository convention. Normalize only the route representation; do not change
-the Rule's own selector semantics.
+Generate selectors from authoritative Rule metadata. Tune only the route representation
+needed for reliable matching; do not change selector meaning or copy Rule policy text.
 
-Do not add global or non-path Rules merely to make the route file a complete catalog
-unless the repository actually needs them for discovery. Do not copy Rule policy text
-into the route file.
+Global or non-path Rules do not need entries unless the repository has a real discovery need.
+
+## Generation
+
+Use `scripts/generate_routes.py` as a baseline generator or as a starting point for a
+repository-local generator.
+
+It deterministically extracts:
+
+- local Skills from `.agents/skills/*/SKILL.md` using `name`, `description`, and `source`;
+- local glob/path Rules from `.agents/rules/**/*.md` using selectors and `source`;
+- the reserved `_meta` headers.
+
+The script is intentionally not the final authority for routing quality. Generation handles
+mechanical facts; review and tuning handle semantic routing quality.
+
+When the target repository uses different asset roots or front-matter conventions, adapt the
+smallest part of the script rather than adding another framework or manifest layer.
+
+## Tuning
+
+After generation, inspect the route set together rather than reviewing entries in isolation.
+
+Tune only when useful:
+
+- distinguish Skills whose canonical descriptions overlap;
+- make positive triggers and important exclusions easier to route;
+- remove wording that does not help selection;
+- normalize equivalent Rule selector metadata without changing applicability;
+- keep `_meta.instructions` concise and specific to how that route file should be consumed.
+
+Prefer canonical metadata unchanged when it already routes well.
 
 ## Automation
 
-When source assets can change and generated route files are committed, prefer
-deterministic generation over manual maintenance.
+If generated route files are committed and sources can change, add the smallest practical
+validation against stale structural metadata.
 
-The generator should derive:
+Do not require byte-for-byte regeneration when intentional routing tuning is allowed. A drift
+check should protect factual invariants such as missing/renamed sources, Skill identity, and
+Rule selectors without erasing approved semantic tuning.
 
-- Skill entries from canonical `name`, `description`, and `source`;
-- Rule entries primarily from canonical path/glob selectors and `source`;
-- the reserved `_meta` header deterministically.
-
-Use the repository's existing language and automation surface when practical. Keep the
-generator small and idempotent. Prefer one generator when Skill and Rule routes share the
-same source-discovery logic.
-
-Add the smallest CI drift check that can prove committed route files match canonical
-sources. Reuse an existing workflow when possible instead of creating another workflow.
-
-Do not require generation or CI for static routes intentionally maintained by another
-authoritative mechanism.
+Reuse an existing workflow when possible.
 
 ## Workflow
 
-1. Inspect repository instructions, asset roots, existing routes, scripts, and CI.
-2. Determine which compatibility responsibilities are actually missing.
-3. Create or update the minimal root `CHATBOT.md` router.
-4. Add or repair only the route files required by the repository.
-5. Add generation and drift validation only where route drift is a real possibility.
-6. Validate idempotence, routing metadata, and authority boundaries.
+1. Inspect repository instructions, asset roots, routes, scripts, and CI.
+2. Determine which compatibility responsibilities are missing.
+3. Create or update minimal root `CHATBOT.md` linking `.agents/routes/ROUTE.md`.
+4. Create or update `ROUTE.md` and required route files.
+5. Generate factual baseline metadata where useful.
+6. Tune routing metadata only where it improves routing quality.
+7. Add drift validation only where stale routes are a real risk.
+8. Verify authority boundaries and routing behavior.
 
 ## Validation
 
 Verify that:
 
 - `CHATBOT.md` is root-only and minimal;
-- native harness behavior is not duplicated;
-- `.agents/routes/skills.jsonl` reflects canonical Skill `name` and `description` metadata;
-- `.agents/routes/rules.jsonl` reflects canonical path/glob selectors;
-- the first line is a reserved `_meta` header, not an asset entry;
-- each asset entry has one valid `source` locator;
-- route files contain only routing metadata and concise routing instructions;
-- generated routes are deterministic when generation is used;
-- CI detects stale committed routes when CI validation is used;
-- no project policy, Skill body, or Rule body was duplicated.
+- `.agents/routes/ROUTE.md` is the single route entrypoint;
+- route entries use one valid `source` locator;
+- Skill routes are useful for intent selection without becoming duplicate Skill bodies;
+- Rule routes preserve authoritative selector semantics;
+- generated baseline output is deterministic;
+- intentional tuning is not overwritten by drift validation;
+- no project policy or asset body was duplicated.
 
 Prefer the smallest valid result over a uniform repository layout.
