@@ -39,7 +39,7 @@ The bundled generator assumes by default:
 with common frontmatter containing:
 
 - Skill `name` and `description`;
-- Rule `globs` or `applyTo` selectors.
+- selector-based Rule `globs` or `applyTo` metadata.
 
 Its main options are:
 
@@ -53,12 +53,12 @@ Its main options are:
 --force                explicit overwrite of existing route files
 ```
 
-`--kinds auto` uses only kinds with routable local entries. It does not create an empty route file merely because a conventional directory exists.
+`--kinds auto` uses only kinds with routable local entries for generation. In check mode it can also discover existing route files, including remote-only route sets.
 
 The baseline should derive only mechanical facts:
 
 - Skills → canonical `name`, `description`, local `source`;
-- Rules → authoritative path/glob selectors and local `source`;
+- selector-based Rules → authoritative path/glob selectors and local `source`;
 - deterministic `_meta` headers and ordering.
 
 Remote assets and semantic routing choices are not inferred by the script. Add them through explicit Skill arguments or model review.
@@ -114,6 +114,7 @@ Map the target repository's authoritative selector semantics into the route repr
 Do not assume `globs` or `applyTo` exists merely because the bundled script supports them.
 
 Normalize representation only. Do not broaden or narrow selector meaning unless the canonical Rule itself changes.
+If non-path Rules need routing, extend the target route representation and checker deliberately instead of inventing selector values.
 
 #### `_meta`
 
@@ -132,11 +133,12 @@ When committed routes can drift, validate factual invariants rather than byte-fo
 
 The bundled `--check` mode verifies the common-layout invariants it understands, including:
 
-- `_meta.kind` and JSONL structure;
+- `_meta.kind`, routing instructions, and JSONL structure;
 - valid and unique `source` locators;
 - existence of local sources;
 - coverage and identity of discovered local Skills;
-- coverage and selector equality of discovered local Rules.
+- coverage and selector equality of discovered local selector-based Rules;
+- basic structure of remote-only or hybrid route entries.
 
 It intentionally does **not** require a tuned Skill `description` to equal the generated baseline.
 Remote semantic correctness and target-specific metadata still require model or target-native validation.
