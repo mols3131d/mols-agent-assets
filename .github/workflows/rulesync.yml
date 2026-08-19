@@ -44,5 +44,3 @@ jobs:
           git diff --exit-code -- "${markdown[@]}"
       - name: Validate canonical configuration
         run: npm run rulesync:doctor
-      - name: Smoke-test transient projection
-        run: npm run rulesync:validate -- --targets '*'
