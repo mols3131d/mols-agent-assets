@@ -1,6 +1,6 @@
 [global]
 flavor = "gfm"
-disable = ["MD013", "MD025", "MD033", "MD041"]
+disable = ["MD013", "MD025", "MD033", "MD041", "MD047"]
 exclude = [
   "**/.git/",
   "**/.tmp/",
