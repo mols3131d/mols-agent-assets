@@ -70,10 +70,12 @@
   ],
   "repository_local_exceptions": [
     ".agents/AGENTS.md",
-    ".agents/skills/mols-chatbot-bootstrap"
+    ".agents/skills/mols-chatbot-bootstrap",
+    ".agents/skills/mols-ci-design"
   ],
   "repository_local_skill_exceptions": [
-    "mols-chatbot-bootstrap"
+    "mols-chatbot-bootstrap",
+    "mols-ci-design"
   ],
   "retired": [
     "src/agentsmesh",
