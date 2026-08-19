@@ -21,7 +21,10 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("name")
     parser.add_argument("--path", type=Path, required=True)
-    parser.add_argument("--description", default="TODO: Describe what the skill does and when to use it.")
+    parser.add_argument(
+        "--description",
+        default="TODO: Describe what the skill does and when to use it.",
+    )
     args = parser.parse_args()
 
     if not NAME_RE.fullmatch(args.name):
@@ -43,7 +46,7 @@ def main() -> int:
         "description": args.description,
     }
 
-    source = (template_root / "SKILL.md").read_text(encoding="utf-8")
+    source = (template_root / "skill.template.md").read_text(encoding="utf-8")
     (target / "SKILL.md").write_text(render(source, values), encoding="utf-8")
 
     print(target)

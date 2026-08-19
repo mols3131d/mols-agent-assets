@@ -62,6 +62,16 @@ def test_deployable_skill_surface_excludes_repository_verification() -> None:
             f"repository verification leaked into deployable Skill surface: "
             f"{skill_root.relative_to(ROOT)}"
         )
+        nested_entrypoints = [
+            path.relative_to(skill_root)
+            for path in skill_root.rglob("SKILL.md")
+            if path != skill_root / "SKILL.md"
+        ]
+        assert not nested_entrypoints, (
+            "Rulesync treats every basename SKILL.md as a Skill entrypoint and omits "
+            f"nested copies from projection: {skill_root.relative_to(ROOT)} "
+            f"{nested_entrypoints}"
+        )
         for path in skill_root.rglob("*"):
             relative = path.relative_to(skill_root)
             assert not any(part.startswith(".") for part in relative.parts), (
