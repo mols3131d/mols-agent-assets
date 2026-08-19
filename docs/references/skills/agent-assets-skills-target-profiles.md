@@ -97,7 +97,19 @@ Skill 종류와 execution target을 같은 taxonomy로 취급하지 않는다.
 
 Rulesync target projection은 canonical source가 아니다. Read-only native check는 `src/rulesync/`에서 직접 수행하고, generation은 workspace의 temporary copy에서 검증하며 결과를 commit하지 않는다.
 
-Rulesync의 target-specific front matter section은 projection adapter 입력이지 portable Agent Skills 표준의 일부가 아니다. Portable field는 Tier 1 contract를 우선하고, target extension은 실제 target이 필요할 때만 namespaced section에 둔다.
+### Front Matter Projection
+
+Canonical `SKILL.md`는 먼저 portable Agent Skills 문서여야 한다. `name`, `description`과 Tier 1에서 정의한 optional portable field는 canonical top-level에서 유지한다.
+
+Rulesync의 target-specific front matter section은 **projection adapter 입력**이지 portable Agent Skills 표준의 일부가 아니다. 다음 경계를 지킨다.
+
+- portable field를 Rulesync가 모든 target에 passthrough하지 않는다는 이유만으로 target namespace로 이동시키지 않는다.
+- target-only field는 해당 target namespace에 둔다.
+- portable field를 특정 target output에도 보존해야 하고 Rulesync adapter가 이를 명시적으로 지원할 때만 필요한 target mapping을 추가한다.
+- Rulesync가 지원하지 않는 canonical field가 target output에서 누락되면 canonical source를 훼손해 숨기지 않고 projection limitation으로 기록한다.
+- arbitrary 또는 미래의 front matter가 모든 target에 무손실 전달된다고 가정하지 않는다.
+
+따라서 **canonical validity와 projection fidelity는 별도 검증 대상**이다. `doctor`와 generation 성공만으로 front matter 의미 보존을 주장하지 않는다. Body와 supporting package shape는 deterministic projection check로 검증하고, target-specific metadata가 중요하면 해당 field를 별도 검증한다.
 
 ## Repository Maintainer Docs
 

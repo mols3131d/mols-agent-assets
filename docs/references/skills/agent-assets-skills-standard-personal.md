@@ -27,7 +27,9 @@ Target runtime의 mandatory contract가 repository-local convention보다 우선
 
 Repository-local 추가 metadata가 필요하면 portable한 경우 표준 `metadata` mapping을 우선한다. 특정 host가 별도 top-level field를 요구하면 Tier 2 host-specific contract로 다루며 portable field처럼 일반화하지 않는다.
 
-Rulesync canonical source에서 target-specific extension이 필요하면 해당 target namespace에 둔다. 이 namespace는 projection-layer 입력이며 portable Agent Skills field로 취급하지 않는다.
+Canonical `SKILL.md`의 portable field는 Rulesync projection 편의를 위해 target namespace로 이동시키지 않는다. Rulesync가 특정 portable 또는 custom field를 모든 target으로 전달하지 못하더라도 canonical source의 표준 형태가 우선한다.
+
+Rulesync canonical source에서 **target-specific** extension이 필요하면 해당 target namespace에 둔다. 이 namespace는 projection-layer 입력이며 portable Agent Skills field로 취급하지 않는다. Portable field를 target에도 명시적으로 전달해야 한다면 해당 target contract와 Rulesync adapter가 그 field를 지원하는지 확인하고, 필요한 mapping을 target namespace에 추가한 뒤 projection 결과를 검증한다.
 
 ## Personal Extensions
 
