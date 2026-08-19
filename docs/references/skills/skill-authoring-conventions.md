@@ -1,13 +1,13 @@
 ---
 title: Skill Authoring Conventions
-description: Rulesync canonical Skill 위에 적용하는 repository-local authoring convention
+description: Rulesync canonical Skill에 적용하는 repository-local authoring convention
 ---
 
 # Skill Authoring Conventions
 
 이 문서는 Rulesync가 소유하지 않는 **repository-local Skill authoring convention**만 정의합니다.
 
-Canonical Skill schema와 target namespace는 current Rulesync가 소유합니다. Agent Skills 또는 vendor/harness output contract가 필요한 경우 해당 공식 specification을 따릅니다.
+Canonical Skill schema와 target namespace는 current Rulesync가 소유합니다. Agent Skills 또는 vendor/harness contract가 필요한 경우 해당 공식 specification을 따릅니다.
 
 ## Canonical Package
 
@@ -17,7 +17,9 @@ Rulesync-managed Skill은 다음 경로에서 시작합니다.
 src/rulesync/.rulesync/skills/<skill-name>/SKILL.md
 ```
 
-Canonical front matter는 Rulesync schema를 그대로 사용합니다. Agent Skills 전용 metadata는 Rulesync의 `agentsskills:` namespace를 사용하고, 특정 target 전용 field는 해당 Rulesync target namespace를 사용합니다.
+Canonical front matter는 Rulesync schema를 그대로 사용합니다. Target-specific field는 의미가 있는 해당 Rulesync target section에 둡니다. `agentsskills:`는 Agent Skills target section이며 repository-wide shared metadata namespace로 취급하지 않습니다.
+
+이 저장소가 현재 특정 target으로 projection하지 않는다는 이유만으로 유효한 과거 또는 향후 target-specific metadata를 제거하지 않습니다.
 
 Repository-local shared passthrough schema를 추가하지 않습니다.
 
@@ -59,7 +61,7 @@ skill-name/
 - runtime behavior에 필요한 resource는 deployable package 안에 둡니다.
 - repository verification 자산인 `tests/`, `evals/`, `scenarios/`, generated `results/`를 deployable package에 두지 않습니다.
 - maintainer-only 문서를 runtime dependency로 숨기지 않습니다.
-- nested `SKILL.md`는 Rulesync에서 별도 Skill entrypoint로 해석될 수 있으므로 supporting template 이름으로 사용하지 않습니다.
+- nested `SKILL.md`는 별도 entrypoint로 해석될 수 있으므로 supporting template 이름으로 사용하지 않습니다.
 
 Deterministic tests는 `tests/skills/<skill-name>/`, behavioral/model eval은 `evals/skills/<skill-name>/`이 소유합니다.
 
@@ -84,11 +86,8 @@ Deterministic tests는 `tests/skills/<skill-name>/`, behavioral/model eval은 `e
 
 ## Validation
 
-Skill 검증은 authority에 맞춰 분리합니다.
-
 - canonical schema와 projection → Rulesync
-- Agent Skills output contract → Agent Skills specification
-- vendor/harness output contract → 해당 target 공식 원문
+- target artifact contract → 해당 target 공식 원문
 - repository package invariant → repository deterministic tests
 - trigger와 task behavior → runtime/eval evidence
 
@@ -96,6 +95,4 @@ Generated projection이 성공했다는 사실만으로 runtime behavior parity�
 
 ## Boundary
 
-이 문서는 single-file authoring, package responsibility, maintainer docs와 naming 같은 개인 관행만 소유합니다.
-
-Rulesync가 이미 정의한 canonical field, target mapping, projection path를 이 문서에 복제하지 않습니다.
+이 문서는 single-file authoring, package responsibility, maintainer docs와 naming 같은 개인 관행만 소유합니다. Rulesync가 이미 정의한 canonical field, target mapping과 projection semantics를 복제하지 않습니다.
