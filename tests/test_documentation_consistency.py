@@ -13,17 +13,22 @@ def test_docs_have_no_empty_markdown_placeholders() -> None:
     assert empty == []
 
 
+def test_readme_language_variants_are_not_used() -> None:
+    variants = list(ROOT.glob("README.*.md"))
+    for directory in ("src", "docs", "evals", "tests", "scripts"):
+        variants.extend((ROOT / directory).rglob("README.*.md"))
+
+    assert sorted(path.relative_to(ROOT) for path in variants) == []
+
+
 def test_current_guidance_uses_custom_exception_model() -> None:
-    readme_ko = (ROOT / "README.md").read_text(encoding="utf-8")
-    readme_en = (ROOT / "README.en.md").read_text(encoding="utf-8")
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
     development = (DOCS / "development.md").read_text(encoding="utf-8")
 
-    assert "과도기" not in readme_ko
-    assert "transitional" not in readme_en.lower()
-    assert "not yet migrated" not in readme_en
+    assert "과도기" not in readme
     assert "src/rules/" not in development
 
-    assert "custom/non-standard" in readme_en
+    assert "custom/non-standard" in readme
     assert "custom/non-standard" in development
 
 

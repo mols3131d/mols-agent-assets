@@ -1,6 +1,6 @@
-# Documentation
+# 문서 안내
 
-| Document | Purpose |
+| 문서 | 용도 |
 | --- | --- |
 | [Directive](baseline/DIRECTIVE.md) | 요구사항, 결정사항과 훼손 방지 invariant의 정본 |
 | [Architecture](ARCHITECTURE.md) | YAML에서 Markdown까지의 component와 책임 경계 |
