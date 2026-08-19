@@ -21,22 +21,30 @@ def test_readme_language_variants_are_not_used() -> None:
     assert sorted(path.relative_to(ROOT) for path in variants) == []
 
 
-def test_current_guidance_uses_custom_exception_model() -> None:
+def test_current_guidance_uses_rulesync_native_exception_model() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     development = (DOCS / "development.md").read_text(encoding="utf-8")
 
     assert "과도기" not in readme
     assert "src/rules/" not in development
 
-    assert "custom/non-standard" in readme
-    assert "custom/non-standard" in development
+    assert "Rulesync가 표현하지 못하는" in readme
+    assert "Rulesync가 표현하지 못하는" in development
+    assert "repository-local superset schema" not in readme
+    assert "parallel taxonomy" in development
 
 
-def test_completed_migration_records_are_not_current_docs() -> None:
+def test_retired_guidance_is_not_current_docs() -> None:
     obsolete = {
         "agentsmesh-migration-plan.md",
         "agentsmesh-migration-census.md",
         "agentsmesh-migration-report.md",
         "skill-configuration.md",
+        "agent-assets-standard-baseline.md",
+        "agent-assets-standard-personal.md",
+        "agent-assets-rules-projections.md",
+        "agent-assets-skills-standard-personal.md",
+        "agent-assets-skills-target-profiles.md",
     }
-    assert obsolete.isdisjoint({path.name for path in DOCS.iterdir() if path.is_file()})
+    current = {path.name for path in DOCS.rglob("*.md")}
+    assert obsolete.isdisjoint(current)
