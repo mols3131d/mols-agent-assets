@@ -59,7 +59,7 @@ jobs:
           npx agentsmesh lint
           npx agentsmesh generate
           python scripts/generate_skill_indexes.py
-      - name: Probe generated rumdl idempotence
+      - name: Normalize generated Markdown with compatibility profile
         shell: bash
         run: |
           set -euo pipefail
@@ -72,20 +72,18 @@ jobs:
             .agents/skills
 
           mapfile -d '' markdown < <(git ls-files -z -- '*.md')
-          managed=()
+          generated=()
           for file in "${markdown[@]}"; do
-            source_attr="$(git check-attr agentsmesh-source -- "$file")"
-            generated_attr="$(git check-attr linguist-generated -- "$file")"
-            if [[ "$source_attr" == *": agentsmesh-source: set" ]] || \
-               [[ "$generated_attr" == *": linguist-generated: set" ]]; then
-              managed+=("$file")
-            fi
+            attr="$(git check-attr linguist-generated -- "$file")"
+            [[ "$attr" == *": linguist-generated: set" ]] && generated+=("$file")
           done
 
-          ((${#managed[@]})) || exit 0
-          uvx rumdl@0.2.6 fmt "${managed[@]}"
-          echo "rumdl post-generation changes:"
-          git diff --name-only -- "${managed[@]}"
+          if ((${#generated[@]})); then
+            uvx rumdl@0.2.6 fmt --disable MD047,MD057 "${generated[@]}"
+          fi
+
+          echo "rumdl post-generation changes outside generator baseline:"
+          git diff --name-only -- "${generated[@]}"
           npx agentsmesh check
           npx agentsmesh generate --check
       - name: Validate focused contracts
