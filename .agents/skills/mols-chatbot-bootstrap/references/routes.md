@@ -4,7 +4,7 @@ Use route assets to decide which canonical asset to load without loading every a
 
 ## Layout
 
-Default layout:
+Default target layout:
 
 ```text
 .agents/routes/
@@ -13,10 +13,15 @@ Default layout:
 └── rules.jsonl
 ```
 
+This is a default convention for the **target workspace**, not a requirement for the repository that packages this Skill.
+
 `ROUTE.md` is the default single entrypoint when that is useful. It is not mandatory.
 Repositories may reuse another routing entrypoint or link route files directly.
 
 ## ROUTE.md
+
+Create or update `ROUTE.md` in the target workspace only when a single route entrypoint is useful.
+Do not create it merely because this Skill is installed or packaged.
 
 Keep `ROUTE.md` small. It should identify available route assets and how to consume them.
 
@@ -29,6 +34,7 @@ Example:
 - [Rules](rules.jsonl) — match target paths against selectors, then load matching `source` entries.
 ```
 
+Link only route assets that actually exist or are being created as part of the same bootstrap operation.
 Do not move project policy or asset bodies into `ROUTE.md`.
 
 ## JSONL Header
@@ -72,7 +78,7 @@ Route Rules primarily when applicability depends on path/glob selectors.
 {"source":".agents/rules/python.md","globs":["**/*.py","**/*.pyi"]}
 ```
 
-Derive selectors from authoritative Rule metadata such as `globs`, `applyTo`, or an equivalent repository convention.
+Derive selectors from the target repository's authoritative Rule metadata. `globs` and `applyTo` are common examples, not universal requirements.
 
 Normalize representation only. Do not change applicability semantics or copy Rule policy text into the route.
 
