@@ -12,9 +12,11 @@ on:
       - "package.json"
       - "package-lock.json"
       - ".gitattributes"
+      - ".rumdl.toml"
       - ".github/copilot-instructions.md"
       - ".github/skills/**"
       - ".github/agents/**"
+      - ".github/workflows/agentsmesh.yml"
       - ".github/workflows/rumdl-main-autofix.yml"
       - ".agents/rules/**"
       - ".agents/skills/**"
@@ -103,9 +105,10 @@ jobs:
                 add_exodus
                 add_asset_docs
                 add_skill_index
+                add_script "rumdl_main_autofix"
                 root_targets["tests/evals"]=1
                 ;;
-              .gitattributes|.github/workflows/rumdl-main-autofix.yml)
+              .gitattributes|.rumdl.toml|.github/workflows/agentsmesh.yml|.github/workflows/rumdl-main-autofix.yml)
                 add_script "rumdl_main_autofix"
                 ;;
               .agentsmesh/skills/*)
