@@ -42,11 +42,11 @@ overwrite: <auto>
 Resolve each `<auto>` independently using this evidence order:
 
 1. explicit caller intent and arguments;
-2. active target repository/workspace context;
-3. applicable repository instructions and established conventions;
-4. existing `CHATBOT.md`, route entrypoints, route files, scripts, validators, and CI;
-5. authoritative local asset roots and explicitly declared remote assets;
-6. this Skill's defaults and bundled resources.
+1. active target repository/workspace context;
+1. applicable repository instructions and established conventions;
+1. existing `CHATBOT.md`, route entrypoints, route files, scripts, validators, and CI;
+1. authoritative local asset roots and explicitly declared remote assets;
+1. this Skill's defaults and bundled resources.
 
 Default behavior is conservative:
 
@@ -102,14 +102,14 @@ Do not copy project policy, Skill bodies, Rule bodies, catalogs, or static path 
 ## Workflow
 
 1. Resolve arguments and inspect the target's current state, asset locations, package shapes, frontmatter, selectors, generation, validation, and CI conventions.
-2. Determine which compatibility responsibilities are actually missing or stale.
-3. Create, update, or audit root `CHATBOT.md` according to `mode` and `scope`.
-4. Establish the smallest useful route surface according to `route_entry` and `sources`; create `ROUTE.md` in the target only when that default is useful.
-5. Verify generator assumptions against the target. Reuse, configure, adapt, or replace the bundled script as needed.
-6. Generate factual baseline routes according to `generation` without violating `overwrite`.
-7. Tune generator compatibility and route quality according to `tuning`.
-8. Validate according to `validation`. Reuse target-native checks first; adapt the bundled checker or CI example only when useful.
-9. Verify authority boundaries and that intentional tuning is preserved.
+1. Determine which compatibility responsibilities are actually missing or stale.
+1. Create, update, or audit root `CHATBOT.md` according to `mode` and `scope`.
+1. Establish the smallest useful route surface according to `route_entry` and `sources`; create `ROUTE.md` in the target only when that default is useful.
+1. Verify generator assumptions against the target. Reuse, configure, adapt, or replace the bundled script as needed.
+1. Generate factual baseline routes according to `generation` without violating `overwrite`.
+1. Tune generator compatibility and route quality according to `tuning`.
+1. Validate according to `validation`. Reuse target-native checks first; adapt the bundled checker or CI example only when useful.
+1. Verify authority boundaries and that intentional tuning is preserved.
 
 ## Validation
 

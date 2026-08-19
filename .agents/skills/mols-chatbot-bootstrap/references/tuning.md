@@ -21,9 +21,9 @@ The bundled script is a **reference baseline for a common layout**, not a portab
 If the target differs, prefer the smallest safe adaptation:
 
 1. pass different roots/output paths when the metadata contract is otherwise compatible;
-2. adapt parser/extraction/check logic when frontmatter or selector semantics differ;
-3. reuse target-native generation or validation when it is already authoritative;
-4. use direct/model generation when adapting a script costs more than the route surface justifies.
+1. adapt parser/extraction/check logic when frontmatter or selector semantics differ;
+1. reuse target-native generation or validation when it is already authoritative;
+1. use direct/model generation when adapting a script costs more than the route surface justifies.
 
 Do not force target assets into the bundled script's assumptions.
 
