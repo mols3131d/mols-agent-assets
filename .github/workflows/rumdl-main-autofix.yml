@@ -88,10 +88,9 @@ jobs:
           done
 
           if ((${#generated[@]})); then
-            # AgentsMesh 0.32 owns these exact serialization choices:
-            # MD047 trailing newlines and MD057 ./ link prefixes.
-            # Run every other rumdl formatter rule on projections.
-            uvx rumdl@0.2.6 fmt --disable MD047,MD057 "${generated[@]}"
+            # AgentsMesh 0.32 owns the exact trailing-newline serialization.
+            # MD057 remains enabled; compact path rewriting is disabled in .rumdl.toml.
+            uvx rumdl@0.2.6 fmt --disable MD047 "${generated[@]}"
           fi
 
           npx agentsmesh check
