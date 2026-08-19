@@ -8,19 +8,8 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / "src/agentsmesh"
-FEATURE_DIRS = ("rules", "skills", "agents")
+WORKSPACE = ROOT / "src" / "agentsmesh"
 COMMANDS = frozenset({"lint", "preview", "validate"})
-
-
-def stage_workspace(destination: Path) -> None:
-    shutil.copy2(SOURCE / "agentsmesh.yaml", destination / "agentsmesh.yaml")
-    canonical = destination / ".agentsmesh"
-    canonical.mkdir()
-    for name in FEATURE_DIRS:
-        source = SOURCE / name
-        if source.exists():
-            shutil.copytree(source, canonical / name)
 
 
 def agentsmesh_executable() -> Path:
@@ -35,34 +24,31 @@ def agentsmesh_executable() -> Path:
     raise RuntimeError("agentsmesh executable not found; run npm ci first")
 
 
+def invoke(workspace: Path, *args: str) -> None:
+    subprocess.run([str(agentsmesh_executable()), *args], cwd=workspace, check=True)
+
+
 def run(command: str) -> None:
     if command not in COMMANDS:
         raise ValueError(f"unsupported command: {command}")
 
+    if command == "lint":
+        invoke(WORKSPACE, "lint")
+        return
+
+    if command == "preview":
+        invoke(WORKSPACE, "diff")
+        return
+
+    # The source is already a native AgentsMesh workspace. Copy it verbatim only
+    # for write-producing validation so generated target projections and lock state
+    # never become repository files.
     with TemporaryDirectory(prefix="mols-agentsmesh-") as temporary:
-        workspace = Path(temporary)
-        stage_workspace(workspace)
-        executable = str(agentsmesh_executable())
-
-        def invoke(*args: str) -> None:
-            subprocess.run([executable, *args], cwd=workspace, check=True)
-
-        if command == "lint":
-            invoke("lint")
-            return
-
-        if command == "preview":
-            # The workspace intentionally has no committed target outputs. Native diff
-            # therefore renders the complete prospective projection without writing it.
-            invoke("diff")
-            return
-
-        # Materialize only inside the temporary workspace, then verify that a second
-        # render is unchanged and that the generated lock/output state is internally
-        # consistent. This is projection validation, not persistent repository drift.
-        invoke("generate")
-        invoke("generate", "--check")
-        invoke("check")
+        workspace = Path(temporary) / "workspace"
+        shutil.copytree(WORKSPACE, workspace)
+        invoke(workspace, "generate")
+        invoke(workspace, "generate", "--check")
+        invoke(workspace, "check")
 
 
 if __name__ == "__main__":
