@@ -2,18 +2,19 @@
 
 `src/`는 배포 가능한 Agent Asset의 canonical source tree입니다.
 
-`src/agentsmesh/`는 AgentsMesh로 표현하는 Rule, Skill, Agent를 소유합니다.
+`src/agentsmesh/`는 AgentsMesh로 표현하는 Rule, Skill, Agent를 위한 격리된 native workspace입니다.
 
 ```text
 src/agentsmesh/
 ├── agentsmesh.yaml
-├── agents/
-├── rules/
-└── skills/
+└── .agentsmesh/
+    ├── agents/
+    ├── rules/
+    └── skills/
 ```
 
-경로를 `.agentsmesh/`가 아니라 `agentsmesh/`로 두는 것은 의도적입니다. 이 저장소는 자산 라이브러리이므로, 보관한 자산이 IDE나 harness의 conventional dot-directory discovery 때문에 이 저장소 자체의 runtime configuration으로 활성화되면 안 됩니다.
+이 구조는 AgentsMesh의 native layout을 그대로 유지하면서도 repository root의 `.agentsmesh/` discovery와 분리합니다. 따라서 저장한 distribution asset이 이 저장소 자체의 runtime configuration으로 자동 활성화되지 않습니다.
 
-AgentsMesh native tooling이 필요하면 이 tree를 temporary workspace에 stage하여 `rules/`, `skills/`, `agents/`를 `.agentsmesh/{rules,skills,agents}`로 만들고 `agentsmesh.yaml`을 workspace root에 둡니다. 생성된 target projection은 temporary artifact이며 canonical repository file이 아닙니다.
+Read-only native command는 `src/agentsmesh/`에서 직접 실행합니다. `generate`처럼 파일을 쓰는 검증은 workspace 전체를 temporary directory로 복사한 뒤 실행하며, 생성된 target projection과 `.lock`은 canonical repository file이 아닙니다.
 
 AgentsMesh가 표현할 수 없는 실제 custom/non-standard format이 필요할 때만 `src/`에 peer directory를 추가합니다. `skills-chatbot`, `skills-chatbot-runtime` 같은 과거 taxonomy를 다시 만들지 않습니다.
