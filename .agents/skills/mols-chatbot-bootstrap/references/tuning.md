@@ -4,18 +4,45 @@ Generation creates a factual baseline. Model review improves routing quality.
 
 Neither replaces the canonical Skill or Rule.
 
+## Compatibility First
+
+Do not assume one repository layout or metadata contract is universal.
+
+Before using any generator, inspect the target repository for:
+
+- authoritative Skill and Rule roots;
+- Skill package shape and entrypoint naming;
+- frontmatter syntax and supported fields;
+- Rule applicability keys such as `globs`, `applyTo`, or another repository-specific selector;
+- local versus remote asset sources;
+- existing route files, generators, and conventions.
+
+The bundled script is a **reference baseline for a common layout**, not a portable parser for every workspace.
+
+If the target differs, prefer the smallest safe adaptation:
+
+1. pass different roots/output paths when the metadata contract is otherwise compatible;
+2. adapt the parser or extraction logic when frontmatter or selector semantics differ;
+3. reuse a target-native generator when it is already authoritative;
+4. use direct/model generation when adapting a script costs more than the route surface justifies.
+
+Do not force target assets into the bundled script's assumptions.
+
 ## Baseline Generation
 
-Use the bundled generator when local assets can be represented mechanically.
-
-Default layout:
+The bundled generator's default assumptions are:
 
 ```text
 .agents/skills/*/SKILL.md
 .agents/rules/**/*.md
 ```
 
-The script is configurable rather than tied to that layout:
+and common frontmatter containing:
+
+- Skill `name` and `description`;
+- Rule `globs` or `applyTo` selectors.
+
+The script is configurable where simple path differences are sufficient:
 
 ```text
 --repo <path>          target repository; default current directory
@@ -42,12 +69,12 @@ Do not make the generator infer new capabilities, rewrite Rule semantics, or sum
 
 Resolve the Skill's `generation` argument conservatively:
 
-- `script` — use or adapt deterministic generation;
+- `script` — use a compatible generator or deliberately adapt one;
 - `model` — write/update routes directly when scripting adds more machinery than value;
 - `<none>` — do not generate routes;
-- `<auto>` — reuse existing generation first, use/adapt the bundled script when repeatability or drift cost justifies it, otherwise prefer the smaller direct edit.
+- `<auto>` — inspect compatibility first, reuse existing generation when possible, adapt the bundled script when worthwhile, otherwise prefer the smaller direct edit.
 
-Custom local roots should normally be passed to the script before forking its logic.
+Configuration is preferred over code changes when roots/output paths are the only difference. Parser changes are appropriate when the target's asset spec is materially different.
 
 ## Tuning
 
@@ -71,6 +98,8 @@ If the canonical description already routes well, keep it unchanged.
 ### Rule routes
 
 Rule selectors are factual applicability metadata.
+
+Map the target repository's authoritative selector semantics into the route representation. Do not assume `globs` or `applyTo` exists merely because the bundled script supports them.
 
 You may normalize equivalent representation for routing, but do not broaden or narrow selector meaning unless the canonical Rule itself is changed.
 
