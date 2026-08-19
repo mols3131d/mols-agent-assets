@@ -7,10 +7,10 @@ Design CI as an evidence system, not a collection of workflows.
 Prefer the cheapest evidence that can detect the failure.
 
 1. **Static** — syntax, schema, frontmatter, references, placement, formatting.
-2. **Deterministic** — scripts, generators, contract tests, regression invariants.
-3. **Harness / projection** — target generation, adapter fidelity, package surface, isolated or round-trip validation.
-4. **Semantic** — routing, instruction following, task behavior, adversarial cases.
-5. **Live runtime** — real provider/tool invocation, integration behavior, latency/cost, runtime parity.
+1. **Deterministic** — scripts, generators, contract tests, regression invariants.
+1. **Harness / projection** — target generation, adapter fidelity, package surface, isolated or round-trip validation.
+1. **Semantic** — routing, instruction following, task behavior, adversarial cases.
+1. **Live runtime** — real provider/tool invocation, integration behavior, latency/cost, runtime parity.
 
 A lower tier does not prove a higher one.
 
@@ -31,9 +31,9 @@ Use these defaults unless target evidence requires otherwise:
 Use the smallest maintainable mapping that is sufficient:
 
 1. provider path filters;
-2. repository naming/layout conventions;
-3. a small selector/router script;
-4. an explicit dependency manifest only when simpler mechanisms cannot represent the relationships reliably.
+1. repository naming/layout conventions;
+1. a small selector/router script;
+1. an explicit dependency manifest only when simpler mechanisms cannot represent the relationships reliably.
 
 Avoid large unexplained path switches that become stale when assets move.
 

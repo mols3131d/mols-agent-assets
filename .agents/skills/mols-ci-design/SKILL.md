@@ -58,12 +58,12 @@ Read only what the current design needs.
 ## Workflow
 
 1. Resolve arguments and inspect the target.
-2. Inventory relevant change surfaces and existing verification; record what each check actually proves.
-3. Map likely failures to evidence tiers and design the smallest maintainable change-to-check routing.
-4. Select only the CI patterns needed for those failures and separate PR, broader regression, expensive eval, and maintenance responsibilities as applicable.
-5. Define triggers, permissions, secrets, concurrency, caching, matrices, and timeouts only where they materially affect the design.
-6. Produce one repository-specific handoff using `references/handoff.md`.
-7. Review against `references/principles.md`; remove duplicated checks, speculative machinery, stale path coupling, and claims stronger than the evidence.
+1. Inventory relevant change surfaces and existing verification; record what each check actually proves.
+1. Map likely failures to evidence tiers and design the smallest maintainable change-to-check routing.
+1. Select only the CI patterns needed for those failures and separate PR, broader regression, expensive eval, and maintenance responsibilities as applicable.
+1. Define triggers, permissions, secrets, concurrency, caching, matrices, and timeouts only where they materially affect the design.
+1. Produce one repository-specific handoff using `references/handoff.md`.
+1. Review against `references/principles.md`; remove duplicated checks, speculative machinery, stale path coupling, and claims stronger than the evidence.
 
 ## Validation
 
