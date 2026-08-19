@@ -2,6 +2,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 ATTRIBUTES = ROOT / ".gitattributes"
+RUMDL = ROOT / ".rumdl.toml"
 AUTOFIX = ROOT / ".github" / "workflows" / "rumdl-main-autofix.yml"
 AGENTSMESH = ROOT / ".github" / "workflows" / "agentsmesh.yml"
 GENERATED_DISABLE = "MD047,MD057"
@@ -20,6 +21,11 @@ def test_agentsmesh_source_and_generated_markers_have_separate_roles() -> None:
     assert "agentsmesh-managed" not in attributes
     for marker in GENERATED_MARKERS:
         assert marker in attributes
+
+
+def test_rumdl_config_has_no_retired_md054_style_option() -> None:
+    config = RUMDL.read_text(encoding="utf-8")
+    assert "[MD054]" not in config
 
 
 def test_main_autofix_formats_source_then_regenerates_then_formats_generated() -> None:
@@ -51,7 +57,8 @@ def test_main_autofix_formats_source_then_regenerates_then_formats_generated() -
 def test_pr_verifier_checks_full_source_and_compatible_generated_fmt() -> None:
     workflow = AGENTSMESH.read_text(encoding="utf-8")
 
-    assert "Normalize canonical Markdown" in workflow or "Validate canonical Markdown normalization" in workflow
+    assert "Validate canonical Markdown normalization" in workflow
+    assert "Validate generated Markdown normalization" in workflow
     assert "git check-attr linguist-generated" in workflow
     assert f"--disable {GENERATED_DISABLE}" in workflow
     assert "rumdl@0.2.6 check" not in workflow
