@@ -8,19 +8,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKSPACE = ROOT / "src" / "rulesync"
-RULESYNC_VERSION = "16.14.0"
 
 
 def rulesync_command() -> list[str]:
-    executable = "rulesync.cmd" if sys.platform == "win32" else "rulesync"
-    local = ROOT / "node_modules" / ".bin" / executable
-    if local.is_file():
-        return [str(local)]
-
     npx = shutil.which("npx")
     if npx is None:
-        raise RuntimeError("npx is required to run the pinned Rulesync toolchain")
-    return [npx, "--yes", f"rulesync@{RULESYNC_VERSION}"]
+        raise RuntimeError("npx is required to run Rulesync")
+    return [npx, "--yes", "rulesync@latest"]
 
 
 def run(args: list[str], cwd: Path) -> None:
