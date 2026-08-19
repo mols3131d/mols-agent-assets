@@ -1,157 +1,97 @@
 # CI Design Patterns
 
-Choose patterns after inspecting the target. Combine only the patterns that solve evidenced failure classes.
+Choose patterns only after inspecting the target. Combine only what covers real failure classes.
 
-## Minimal Deterministic PR Gate
+## Minimal Deterministic PR
 
-Use when most important contracts are static or deterministic.
-
-Typical shape:
+Use when important contracts are static or deterministic.
 
 ```text
-changed files
-→ syntax/schema/format checks
+change
+→ syntax/schema/format
 → affected deterministic tests
-→ merge decision
+→ merge evidence
 ```
 
-Good for small prompt, Skill, Rule, documentation, or script repositories where runtime evaluation is not required for every change.
+Good for small prompt, Skill, Rule, documentation, or script repositories. Do not add model evaluation merely because an LLM consumes the assets.
 
-Avoid adding a semantic layer merely because the assets are consumed by an LLM.
-
-## Affected-Asset Targeting
+## Targeted Impact Routing
 
 Use when the repository has many independent assets or test suites.
 
-Typical shape:
-
 ```text
 changed asset
-→ resolve affected asset identity / subsystem
-→ select matching tests and deterministic eval-fixture checks
-→ run only selected targets
+→ resolve affected identity/subsystem
+→ select matching checks
+→ run only those targets
 ```
 
-Prefer path filters or naming conventions when they remain understandable. Use a selector script when relationships exceed what workflow syntax can express cleanly.
+Prefer path filters or naming conventions while they stay clear. Move to a small router script when workflow syntax becomes awkward. Add a dependency manifest only when stable repository conventions are insufficient.
 
-Escalate to a manifest only when dependencies cannot be derived reliably from stable repository conventions.
+Representative mapping:
 
-## Harness or Projection Gate
+```text
+skill A       → contract(A) + fixture-shape(A) + optional smoke(A)
+shared loader → dependent contracts + compatibility regression
+rule          → rule contract + affected projection check
+script X      → script-specific tests
+CI router     → router tests + representative root checks
+```
 
-Use when canonical assets are translated, projected, packaged, or adapted for one or more runtimes.
+The router is CI code; test it deterministically.
 
-Typical checks:
+## Harness / Projection Gate
+
+Use when canonical assets are translated, projected, packaged, or adapted for runtimes.
+
+Typical evidence:
 
 - canonical configuration validity;
 - isolated or dry-run generation;
-- generated package/file-set fidelity;
+- generated file/package fidelity;
 - supporting-file preservation;
-- forbidden generated surfaces in canonical roots;
-- round-trip or `generate --check` when the tool supports a meaningful invariant.
+- forbidden generated surfaces;
+- meaningful round-trip or `generate --check` invariants.
 
 This proves transformation fidelity, not live runtime behavior.
 
-## Semantic Smoke Eval
+## Semantic and Runtime Eval
 
-Use when a change can alter model-visible behavior and deterministic checks cannot cover the important risk.
+Use only when deterministic evidence cannot cover the important behavior risk.
 
-Typical shape:
+For PR feedback, prefer a small representative smoke set:
 
 ```text
-relevant semantic change
-→ small representative case set
+semantic change
+→ trigger / high-risk adversarial cases
 → bounded model/provider execution
-→ threshold / regression comparison
+→ threshold or regression interpretation
 ```
 
-Keep it small enough for PR feedback. Prefer trigger and high-risk adversarial cases over a broad benchmark.
+Move expensive evidence to scheduled/manual or promotion boundaries, including broad provider/model matrices, large adversarial suites, repeated stochastic samples, latency/cost collection, and live runtime parity.
 
-Decide whether it is blocking based on evaluator stability, cost, and failure reproducibility.
+Keep fixture shape validation separate from model execution.
 
-## Scheduled or Manual Full Eval
+## Progressive Evidence
 
-Use for exhaustive or expensive evidence that is disproportionate for every PR.
-
-Examples:
-
-- multiple models/providers;
-- large adversarial suites;
-- repeated stochastic samples;
-- full prompt/Skill regression sets;
-- latency/cost collection;
-- runtime parity checks across harnesses.
-
-Run on schedule, manual dispatch, release candidate, or another explicit promotion boundary.
-
-Do not present delayed full-eval evidence as if the PR gate already proved it.
-
-## PR Smoke, Main Broader, Scheduled Full
-
-Use when the repository benefits from progressive evidence depth.
+A useful default for repositories that need several evidence depths is:
 
 ```text
 PR       → static + affected deterministic + optional semantic smoke
 main     → broader deterministic / integration regression
-schedule → exhaustive semantic/runtime/provider matrix
+schedule → exhaustive semantic/runtime/provider evaluation
 ```
 
-This is a useful default pattern, not a requirement. Small repositories may need only the PR tier.
+This is not mandatory. Small repositories may need only the PR tier.
 
 ## Maintenance Automation
 
-Use for derived-state upkeep rather than merge confidence.
+Use for derived-state upkeep rather than merge confidence: formatting, index/route regeneration, synchronized projections, generated documentation, or similar writes.
 
-Examples:
+Prefer clear source authority and idempotent generation. Where practical, validate on PR and write only after merge. Avoid commit loops and workflows that silently overwrite intentional semantic tuning.
 
-- formatting;
-- route/index regeneration;
-- generated documentation;
-- synchronized projections;
-- dependency metadata refresh.
+## Restraint
 
-Prefer idempotent generation and clear source authority. Keep write permissions scoped to this responsibility.
+Before adding cache, matrices, hosted graders, or a new routing framework, ask what failure they uniquely detect or what measured bottleneck they solve.
 
-Where practical, validate on PR and write only after merge. Avoid workflows that repeatedly fight contributor changes or create commit loops.
-
-## Fixture Shape Gate vs Eval Execution
-
-Keep these distinct.
-
-```text
-eval fixture changed
-→ deterministic parse/schema/identity validation
-
-behavior-sensitive asset changed
-→ maybe execute applicable semantic eval
-```
-
-Valid JSON or a valid eval schema does not prove model behavior. Conversely, model execution should not be required merely to catch malformed fixtures.
-
-## Changed-File Router
-
-Use when provider path filters are too coarse but a full dependency framework is unnecessary.
-
-A small router may map changed paths to logical checks such as:
-
-```text
-skill A         → contract(A) + eval-fixture-shape + optional smoke(A)
-shared loader   → all dependent Skill contracts + compatibility regression
-rule            → rule contract + affected projection check
-script X        → script-specific tests
-CI router       → router tests + representative root checks
-```
-
-The router itself becomes critical CI code. Give it deterministic tests and ensure changes to the router trigger representative coverage.
-
-## Matrix Restraint
-
-Use matrices only for dimensions that need simultaneous evidence.
-
-Before adding a dimension such as provider, model, OS, runtime, or prompt variant, ask:
-
-- can one representative value gate the PR?
-- can the rest move to scheduled/manual evaluation?
-- is the dimension genuinely independent?
-- does each combination detect a distinct failure class?
-
-Avoid Cartesian products that exist only because the CI platform makes them easy to express.
+A representative PR value plus scheduled broader coverage is usually better than an unexplained Cartesian product.
