@@ -166,7 +166,8 @@ def test_repository_rulesync_commands_keep_projection_transient() -> None:
 
     workflow = (ROOT / ".github/workflows/rulesync.yml").read_text(encoding="utf-8")
     assert "npm run rulesync:doctor" in workflow
-    assert "npm run rulesync:validate -- --targets '*'" in workflow
+    assert "rulesync:validate" not in workflow
+    assert "--targets" not in workflow
     assert "rulesync generate" not in workflow
     assert "copilot" not in workflow.lower()
     assert "antigravity" not in workflow.lower()
