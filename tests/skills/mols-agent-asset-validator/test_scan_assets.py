@@ -1,16 +1,16 @@
 from __future__ import annotations
 
 import json
+import sys
 import tempfile
 import unittest
 import zipfile
 from pathlib import Path
 
-import sys
-
 ROOT = (
     Path(__file__).resolve().parents[3]
-    / ".agentsmesh"
+    / "src"
+    / "agentsmesh"
     / "skills"
     / "mols-agent-asset-validator"
 )
