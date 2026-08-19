@@ -12,26 +12,29 @@ description: >-
 
 # Load Mols GitHub Context
 
-This Skill contributes **personal mols conventions** for the GitHub target. Resolve live
-target context through `load-context-github`; this overlay does not replace the base loader.
+This Skill contributes **personal mols conventions** for the GitHub target. Resolve live target context through `load-context-github`; this overlay does not replace the base loader.
 
 ## Scope Discipline
 
-Keep personal conventions bound to targets that remain evidenced as personally governed.
-If newly loaded context shows that a target is team, company, organization, or shared,
-stop applying this overlay to that target. In mixed-target work, never carry personal
-defaults from an in-scope target into another target.
+Keep personal conventions bound to targets that remain evidenced as personally governed. If newly loaded context shows that a target is team, company, organization, or shared, stop applying this overlay to that target. In mixed-target work, never carry personal defaults from an in-scope target into another target.
 
 ## Personal Conventions
 
-### Instruction Fallback
+### `CHATBOT.md` Compatibility Entry
 
-Unless the repository explicitly defines a different applicable instruction policy, use:
+For an in-scope personal repository, check repository-root `CHATBOT.md` when the active runtime does not already provide equivalent repository context and Agent Asset loading.
 
-`CHATBOT.md` → if absent `AGENTS.md` → if absent `README.md`
+When present, treat it as a **harness compatibility entry**, not as a separate chatbot policy owner and not as a fallback peer of `AGENTS.md` or `README.md`.
 
-Apply the fallback per relevant path/scope. Repository-local selectors and explicit
-overrides still govern when present.
+Its intended responsibility is to recover harness behavior that the active chat runtime may omit, especially:
+
+- applicable `AGENTS.md` hierarchy loading for known target paths;
+- task-intent Skill discovery/loading from repository-declared surfaces;
+- path/glob-scoped Rule discovery/loading for known target paths.
+
+The underlying `AGENTS.md`, Skill, and Rule sources retain their own authority, selectors, triggers, procedures, and precedence. Do not copy their bodies into `CHATBOT.md` merely for chat compatibility.
+
+If root `CHATBOT.md` is absent, continue with `load-context-github` and the active harness's evidenced discovery behavior. Do **not** invent `CHATBOT.md → AGENTS.md → README.md` or another filename fallback chain.
 
 This is a mols convention, not a GitHub, Copilot, Agent Skills, or general repository standard.
 
@@ -47,6 +50,4 @@ Unless repository-local rules or an explicit user instruction say otherwise:
 
 ## Boundary
 
-This overlay owns only cross-repository personal conventions. Project-specific branch
-names, commit formats, tests, inbox policy, release process, architecture, and other local
-rules must be discovered from the live repository by `load-context-github`.
+This overlay owns only cross-repository personal conventions. Project-specific branch names, commit formats, tests, inbox policy, release process, architecture, discovery roots, Skill inventory, Rule selectors, and other local rules must be discovered from the live repository by `load-context-github`.
