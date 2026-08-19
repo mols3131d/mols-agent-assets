@@ -6,7 +6,7 @@ description: >
   Use when user says "caveman mode", "talk like caveman", "use caveman", "less tokens",
   "be brief", "원시인 모드", "짧게 말해", "토큰 아껴서 말해", or invokes /caveman.
   Also auto-triggers when token efficiency is requested.
-metadata:
+agentsskills:
   license: MIT
 ---
 
