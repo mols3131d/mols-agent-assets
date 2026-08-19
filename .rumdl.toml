@@ -49,7 +49,7 @@ style = "asterisk"
 style = "asterisk"
 
 [MD057]
-compact-paths = true
+compact-paths = false
 
 [MD060]
 style = "compact"
