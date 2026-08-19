@@ -23,12 +23,13 @@ Rulesync가 표현할 수 있는 Agent Asset은 `src/rulesync/`의 **격리된 n
 | `src/rulesync/.rulesync/` | Rulesync-compatible Rule, Skill, Subagent의 정본 소스 |
 | `src/`의 다른 경로 | 실제 요구가 있는 custom/non-standard Agent Asset 소스 |
 | `.agents/AGENTS.md` | 이 저장소 자체에 적용되는 저장소 로컬 guard |
+| `.agents/skills/` | 명시적으로 repository-local인 runtime Skill만 두는 예외 surface |
 | `tests/` | 결정론적 테스트 |
 | `evals/` | 행동/model eval과 cross-asset 회귀 계약 |
 | `docs/` | 사람용 문서와 레퍼런스 |
 | `scripts/` | 자동화·검증·동기화 도구 |
 
-저장소 루트의 `.rulesync/`, `rulesync.jsonc`, `.github/skills/`, `.github/agents/`, `.github/copilot-instructions.md`, `.agents/rules/`, `.agents/skills/`, `.agents/agents/`는 배포 소스로 사용하지 않습니다. Native read-only 검증은 `src/rulesync/`에서 직접 실행하고, generation처럼 파일을 쓰는 검증만 workspace 전체를 임시 디렉터리로 복사해 수행합니다.
+저장소 루트의 `.rulesync/`, `rulesync.jsonc`, `.github/skills/`, `.github/agents/`, `.github/copilot-instructions.md`, `.agents/rules/`, `.agents/agents/`는 배포 소스로 사용하지 않습니다. `.agents/skills/`도 distribution canonical source가 아니며 현재 명시적 repository-local Skill인 `mols-chatbot-bootstrap`만 예외로 둡니다. Native read-only 검증은 `src/rulesync/`에서 직접 실행하고, generation처럼 파일을 쓰는 검증만 workspace 전체를 임시 디렉터리로 복사해 수행합니다.
 
 Canonical Skill front matter와 target namespace는 current Rulesync schema를 따릅니다. Agent Skills와 vendor/harness 규격은 생성된 target artifact의 contract로 적용하며, 공식 원문은 `docs/references/skills/agent-skills-io/agent-skills-io-specification.md`에서 연결합니다. 이 저장소의 추가 convention은 `docs/references/skills/agent-assets-skills-standard-personal.md`, package shape와 target boundary는 `docs/references/skills/agent-assets-skills-target-profiles.md`가 소유합니다.
 
