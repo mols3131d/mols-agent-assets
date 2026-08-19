@@ -26,7 +26,7 @@ The script is configurable rather than tied to that layout:
 --force                explicit overwrite of existing route files
 ```
 
-`--kinds auto` generates only route kinds whose local roots exist. Missing kinds are not materialized as empty route files.
+`--kinds auto` emits only kinds with routable local entries. It does not create an empty route file merely because a conventional directory exists.
 
 The baseline generator should extract only mechanical facts:
 
