@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import yaml
+
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "evals/regression/rulesync-source-isolation.json"
 
@@ -13,6 +15,16 @@ def load_contract() -> dict:
 
 def directory_names(path: Path) -> set[str]:
     return {entry.name for entry in path.iterdir() if entry.is_dir()}
+
+
+def load_frontmatter(path: Path) -> dict[str, object]:
+    text = path.read_text(encoding="utf-8")
+    assert text.startswith("---\n"), path
+    end = text.find("\n---\n", 4)
+    assert end >= 0, path
+    data = yaml.safe_load(text[4:end])
+    assert isinstance(data, dict), path
+    return data
 
 
 def test_rulesync_source_matches_regression_contract() -> None:
@@ -35,6 +47,26 @@ def test_rulesync_source_matches_regression_contract() -> None:
 
     subagents = source / "subagents"
     assert {path.stem for path in subagents.glob("*.md")} == set(contract["subagents"])
+
+
+def test_antigravity_subagents_use_native_tool_ids() -> None:
+    subagents = ROOT / load_contract()["canonical"]["asset_root"] / "subagents"
+    expected = {
+        "review-adversarial": {"view_file", "grep_search"},
+        "review-lead": {
+            "view_file",
+            "grep_search",
+            "invoke_subagent",
+            "replace_file_content",
+        },
+        "review-quality": {"run_command", "view_file", "grep_search"},
+    }
+
+    for name, tools in expected.items():
+        frontmatter = load_frontmatter(subagents / f"{name}.md")
+        section = frontmatter["antigravity-ide"]
+        assert isinstance(section, dict)
+        assert set(section["tools"]) == tools
 
 
 def test_distribution_assets_are_not_repository_runtime_configuration() -> None:

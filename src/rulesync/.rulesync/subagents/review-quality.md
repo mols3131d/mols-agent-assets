@@ -15,13 +15,9 @@ copilot:
     - search
 antigravity-ide:
   tools:
-    - execute/runTests
-    - execute/testFailure
-    - read
-    - vscodeGeneral/usages
-    - vscodeGeneral/runTests
-    - vscodeGeneral/testFailure
-    - search
+    - run_command
+    - view_file
+    - grep_search
 ---
 
 # 품질 검토

@@ -12,10 +12,10 @@ copilot:
     - edit
 antigravity-ide:
   tools:
-    - read
-    - search
-    - agent
-    - edit
+    - view_file
+    - grep_search
+    - invoke_subagent
+    - replace_file_content
 ---
 
 # 검토 리드

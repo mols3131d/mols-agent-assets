@@ -10,8 +10,8 @@ copilot:
     - search
 antigravity-ide:
   tools:
-    - read
-    - search
+    - view_file
+    - grep_search
 ---
 
 # 적대적 검토
