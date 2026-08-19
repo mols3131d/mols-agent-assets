@@ -5,6 +5,9 @@ on:
     branches:
       - main
     paths:
+      - "README.md"
+      - "AGENTS.md"
+      - "src/README.md"
       - "src/rulesync/**"
       - "route/**"
       - "package.json"
@@ -15,14 +18,8 @@ on:
       - "tests/evals/**"
       - "tests/test_rulesync_source_isolation.py"
       - "tests/test_chatbot_harness_compatibility.py"
-      - "docs/README.md"
-      - "docs/development.md"
-      - "docs/testing.md"
-      - "docs/skills/**"
-      - "docs/references/skills/**"
-      - "docs/references/common/standards/agent-assets-standard-personal.md"
-      - "docs/references/common/standards/chatbot-repository-bootstrap.md"
-      - "docs/references/rules/agent-assets-rules-projections.md"
+      - "tests/test_documentation_consistency.py"
+      - "docs/**"
       - "tests/skills/**"
       - "tests/scripts/**"
       - "scripts/**"
@@ -59,6 +56,10 @@ jobs:
 
           add_chatbot_compatibility() {
             root_targets["tests/test_chatbot_harness_compatibility.py"]=1
+          }
+
+          add_documentation_consistency() {
+            root_targets["tests/test_documentation_consistency.py"]=1
           }
 
           add_asset_docs() {
@@ -102,6 +103,7 @@ jobs:
               .github/workflows/targeted-tests.yml)
                 add_isolation
                 add_chatbot_compatibility
+                add_documentation_consistency
                 add_asset_docs
                 add_distribution_routes
                 add_script "rumdl_main_autofix"
@@ -112,6 +114,9 @@ jobs:
                 ;;
               .gitattributes|.rumdl.toml|.github/workflows/rumdl-main-autofix.yml)
                 add_script "rumdl_main_autofix"
+                ;;
+              README.md|AGENTS.md|src/README.md|tests/test_documentation_consistency.py)
+                add_documentation_consistency
                 ;;
               src/rulesync/.rulesync/skills/load-context-github/SKILL.md|src/rulesync/.rulesync/skills/load-context-github-mols/SKILL.md)
                 name="${path#src/rulesync/.rulesync/skills/}"
@@ -136,18 +141,24 @@ jobs:
                 name="${path#evals/skills/}"
                 add_eval "${name%%/*}"
                 ;;
-              evals/regression/chatbot-harness-compatibility.json|tests/test_chatbot_harness_compatibility.py|docs/references/common/standards/chatbot-repository-bootstrap.md|docs/references/rules/agent-assets-rules-projections.md)
+              evals/regression/chatbot-harness-compatibility.json|tests/test_chatbot_harness_compatibility.py|docs/references/common/standards/chatbot-repository-bootstrap.md)
                 add_chatbot_compatibility
+                add_documentation_consistency
                 ;;
-              docs/references/common/standards/agent-assets-standard-personal.md)
-                add_chatbot_compatibility
+              docs/references/common/standards/rulesync-repository-conventions.md)
+                add_isolation
                 add_asset_docs
+                add_documentation_consistency
                 ;;
-              src/rulesync/.rulesync/rules/*|src/rulesync/.rulesync/subagents/*|src/rulesync/rulesync.jsonc|package.json|evals/regression/*|tests/test_rulesync_source_isolation.py)
+              src/rulesync/.rulesync/rules/*|src/rulesync/.rulesync/subagents/*|src/rulesync/rulesync.jsonc|package.json|evals/regression/rulesync-source-isolation.json|tests/test_rulesync_source_isolation.py)
                 add_isolation
                 ;;
               docs/skills/*|docs/references/skills/*|docs/README.md|docs/development.md|docs/testing.md)
                 add_asset_docs
+                add_documentation_consistency
+                ;;
+              docs/*)
+                add_documentation_consistency
                 ;;
               tests/scripts/*)
                 name="${path#tests/scripts/}"
