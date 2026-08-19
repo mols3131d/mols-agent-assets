@@ -30,7 +30,7 @@ Rulesync가 표현할 수 있는 Agent Asset은 `src/rulesync/`의 **격리된 n
 
 저장소 루트의 `.rulesync/`, `rulesync.jsonc`, `.github/skills/`, `.github/agents/`, `.github/copilot-instructions.md`, `.agents/rules/`, `.agents/skills/`, `.agents/agents/`는 배포 소스로 사용하지 않습니다. Native read-only 검증은 `src/rulesync/`에서 직접 실행하고, generation처럼 파일을 쓰는 검증만 workspace 전체를 임시 디렉터리로 복사해 수행합니다.
 
-Skill 규격은 `agentskills.io` 공개 표준을 Tier 1으로 사용합니다. 주요 vendor/harness의 Tier 2 규격은 `docs/references/skills/agent-skills-io/agent-skills-io-specification.md`에서 공식 원문만 연결하며 복제하지 않습니다. 이 저장소의 Skill 확장은 `docs/references/skills/agent-assets-skills-standard-personal.md`, package shape와 target boundary는 `docs/references/skills/agent-assets-skills-target-profiles.md`가 소유합니다.
+Canonical Skill front matter와 target namespace는 current Rulesync schema를 따릅니다. Agent Skills와 vendor/harness 규격은 생성된 target artifact의 contract로 적용하며, 공식 원문은 `docs/references/skills/agent-skills-io/agent-skills-io-specification.md`에서 연결합니다. 이 저장소의 추가 convention은 `docs/references/skills/agent-assets-skills-standard-personal.md`, package shape와 target boundary는 `docs/references/skills/agent-assets-skills-target-profiles.md`가 소유합니다.
 
 ## 기본 작업 흐름
 
