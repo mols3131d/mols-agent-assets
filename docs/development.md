@@ -16,7 +16,7 @@
 
 Rulesync-managed source의 schema, feature name과 target namespace는 current Rulesync를 따릅니다. Repository-local abstraction으로 다시 정의하지 않습니다.
 
-Repository root의 `.rulesync/`, `rulesync.jsonc`와 generated target surfaces는 distribution source로 commit하지 않습니다. 자세한 integration boundary는 [Rulesync Repository Conventions](references/common/standards/rulesync-repository-conventions.md)가 소유합니다.
+Repository root의 `.rulesync/`, `rulesync.jsonc`와 generated target surfaces는 distribution source로 commit하지 않습니다. 자세한 integration boundary는 [Rulesync Repository Conventions](references/common/conventions/rulesync-repository-conventions.md)가 소유합니다.
 
 ## Rulesync-Native Authoring
 
