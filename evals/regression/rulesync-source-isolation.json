@@ -1,6 +1,11 @@
 {
-  "version": 8,
+  "version": 9,
   "kind": "deterministic-regression",
+  "repository_workspace": {
+    "config": "rulesync.jsonc",
+    "asset_root": ".rulesync",
+    "optional": true
+  },
   "canonical": {
     "workspace": "src/rulesync",
     "asset_root": "src/rulesync/.rulesync",
@@ -53,9 +58,7 @@
     "forbid_dot_paths": true,
     "forbid_top_level_dirs": ["tests", "evals", "scenarios", "results"]
   },
-  "forbidden_repository_runtime_surfaces": [
-    ".rulesync",
-    "rulesync.jsonc",
+  "forbidden_committed_projection_surfaces": [
     ".agentsmesh",
     "agentsmesh.yaml",
     ".github/copilot-instructions.md",
