@@ -6,6 +6,8 @@
     "features": ["rules", "skills", "agents"],
     "rules": ["_root.md"],
     "skills": [
+      "adudeck-textbook",
+      "adudeck-textbook-write",
       "artifact-consistency-inspector",
       "caveman-ko",
       "clarify-code",
