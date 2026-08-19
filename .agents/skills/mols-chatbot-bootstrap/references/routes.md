@@ -21,7 +21,7 @@ Repositories may reuse another routing entrypoint or link route files directly.
 ## ROUTE.md
 
 Create or update `ROUTE.md` in the target workspace only when a single route entrypoint is useful.
-Do not create it merely because this Skill is installed or packaged.
+Do not create it merely because this Skill is installed, packaged, or stored in an asset repository.
 
 Keep `ROUTE.md` small. It should identify available route assets and how to consume them.
 
