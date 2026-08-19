@@ -11,15 +11,15 @@ Agent Skills specification의 portable contract가 우선하며, 이 문서는 r
 
 ## Canonical Placement
 
-AgentsMesh가 표현할 수 있는 Skill은 chatbot/agent, flat/runtime으로 나누지 않고 다음 canonical path를 사용한다.
+Rulesync가 표현할 수 있는 Skill은 chatbot/agent, flat/runtime으로 나누지 않고 다음 canonical path를 사용한다.
 
 ```text
-src/agentsmesh/.agentsmesh/skills/<skill-name>/SKILL.md
+src/rulesync/.rulesync/skills/<skill-name>/SKILL.md
 ```
 
-`src/agentsmesh/`는 격리된 native AgentsMesh workspace이며, 그 안의 `.agentsmesh/`가 canonical asset source다. Repository root에는 `.agentsmesh/`를 두지 않으므로 `mols-agent-assets`가 보관한 distribution asset이 이 저장소 자체의 runtime Skill로 자동 discovery되지 않는다.
+`src/rulesync/`는 격리된 native Rulesync workspace이며, 그 안의 `.rulesync/`가 canonical asset source다. Repository root에는 `.rulesync/`를 두지 않으므로 `mols-agent-assets`가 보관한 distribution asset이 이 저장소 자체의 runtime Skill로 자동 discovery되지 않는다.
 
-특정 target semantics가 현재 AgentsMesh contract로 표현되지 않아 custom source가 실제로 필요한 경우에만 `src/agentsmesh/`의 peer source를 검토한다.
+특정 target semantics가 현재 Rulesync contract로 표현되지 않아 custom source가 실제로 필요한 경우에만 `src/rulesync/`의 peer source를 검토한다.
 
 ## Single-File by Default
 
@@ -62,8 +62,8 @@ skill-name/
 
 - runtime behavior에 필요한 knowledge/resource는 package 내부의 명시적 runtime surface가 소유한다.
 - maintainer-only 문서를 runtime dependency로 숨기지 않는다.
-- `src/agentsmesh/.agentsmesh/skills/<skill-name>/` 아래에는 repository verification 자산인 `tests/`, `evals/`, `scenarios/`, 생성된 `results/`를 두지 않는다.
-- `src/agentsmesh/.agentsmesh/skills/<skill-name>/` 아래에는 non-runtime을 숨기기 위한 dot-prefixed path를 두지 않는다.
+- `src/rulesync/.rulesync/skills/<skill-name>/` 아래에는 repository verification 자산인 `tests/`, `evals/`, `scenarios/`, 생성된 `results/`를 두지 않는다.
+- `src/rulesync/.rulesync/skills/<skill-name>/` 아래에는 non-runtime을 숨기기 위한 dot-prefixed path를 두지 않는다.
 
 ## Repository Verification Surface
 
@@ -93,9 +93,11 @@ Skill 종류와 execution target을 같은 taxonomy로 취급하지 않는다.
 - Skill은 Skill이다.
 - target runtime이 richer하다는 이유만으로 별도 Skill type/profile을 만들지 않는다.
 - 같은 canonical Skill을 target이 일부만 표현할 수 있다면 capability 차이를 explicit limitation으로 다룬다.
-- target-specific semantics가 capability의 본질이고 현재 AgentsMesh가 안전하게 표현할 수 없다면 그때만 custom/non-standard source를 검토한다.
+- target-specific semantics가 capability의 본질이고 현재 Rulesync가 안전하게 표현할 수 없다면 그때만 custom/non-standard source를 검토한다.
 
-AgentsMesh target projection은 canonical source가 아니다. Read-only native check는 `src/agentsmesh/`에서 직접 수행하고, generation은 workspace의 temporary copy에서 검증하며 결과를 commit하지 않는다.
+Rulesync target projection은 canonical source가 아니다. Read-only native check는 `src/rulesync/`에서 직접 수행하고, generation은 workspace의 temporary copy에서 검증하며 결과를 commit하지 않는다.
+
+Rulesync의 target-specific front matter section은 projection adapter 입력이지 portable Agent Skills 표준의 일부가 아니다. Portable field는 Tier 1 contract를 우선하고, target extension은 실제 target이 필요할 때만 namespaced section에 둔다.
 
 ## Repository Maintainer Docs
 

@@ -11,7 +11,7 @@
 1. [Agent Skill Design Guide](agent-skills-guide.md)
    — Skill을 설계·작성·검증하는 통합 흐름.
 1. [Skill Package and Target Boundaries](agent-assets-skills-target-profiles.md)
-   — `src/agentsmesh/.agentsmesh/skills/<name>/SKILL.md` package shape, single-file 관행, supporting resource와 target-specific boundary.
+   — `src/rulesync/.rulesync/skills/<name>/SKILL.md` package shape, single-file 관행, supporting resource와 target-specific boundary.
 
 ## 주제별 레퍼런스
 

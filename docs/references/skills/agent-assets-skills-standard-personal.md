@@ -27,19 +27,21 @@ Target runtime의 mandatory contract가 repository-local convention보다 우선
 
 Repository-local 추가 metadata가 필요하면 portable한 경우 표준 `metadata` mapping을 우선한다. 특정 host가 별도 top-level field를 요구하면 Tier 2 host-specific contract로 다루며 portable field처럼 일반화하지 않는다.
 
+Rulesync canonical source에서 target-specific extension이 필요하면 해당 target namespace에 둔다. 이 namespace는 projection-layer 입력이며 portable Agent Skills field로 취급하지 않는다.
+
 ## Personal Extensions
 
 Repository-local package shape와 target boundary 상세는 [Skill Package and Target Boundaries](agent-assets-skills-target-profiles.md)가 소유한다.
 
 현재 Personal Skill Standard의 extension registry는 다음과 같다.
 
-- `src/agentsmesh/.agentsmesh/skills/<skill-name>/SKILL.md` canonical package convention
+- `src/rulesync/.rulesync/skills/<skill-name>/SKILL.md` canonical package convention
 - single-file-by-default authoring convention
 - Skill package의 runtime/non-runtime surface boundary
 - maintainer baseline preservation convention
 - `load-context-*` context-only naming and activation convention
 
-`src/agentsmesh/`는 격리된 native AgentsMesh workspace이며, 그 안의 `src/agentsmesh/.agentsmesh/`가 canonical asset source다. Repository root `.agentsmesh/`와 분리함으로써 asset-library repository가 보관 자산을 자기 runtime Skill로 자동 활성화하지 않도록 한다. Native read-only tooling은 이 workspace에서 직접 실행하고, generation처럼 파일을 쓰는 검증만 temporary copy에서 수행한다.
+`src/rulesync/`는 격리된 native Rulesync workspace이며, 그 안의 `src/rulesync/.rulesync/`가 canonical asset source다. Repository root `.rulesync/`와 분리함으로써 asset-library repository가 보관 자산을 자기 runtime Skill로 자동 활성화하지 않도록 한다. Native read-only tooling은 이 workspace에서 직접 실행하고, generation처럼 파일을 쓰는 검증만 temporary copy에서 수행한다.
 
 Skill은 chatbot/agent 또는 flat/runtime으로 분류하지 않는다. `SKILL.md` 하나로 capability가 완결되면 single-file package로 유지하고, 실제 runtime resource가 필요할 때만 supporting surface를 추가한다.
 

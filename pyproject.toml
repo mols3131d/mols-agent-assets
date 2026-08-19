@@ -24,7 +24,7 @@ dev = [
 addopts = ["--import-mode=importlib"]
 pythonpath = [
   "src",
-  "src/agentsmesh/.agentsmesh/skills/mols-markdown-scripts/scripts",
+  "src/rulesync/.rulesync/skills/mols-markdown-scripts/scripts",
 ]
 testpaths = ["tests"]
 
