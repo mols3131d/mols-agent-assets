@@ -85,10 +85,26 @@ def test_antigravity_reviewers_preserve_native_roles() -> None:
     assert "subagent" not in lead
 
 
-def test_distribution_assets_are_not_repository_runtime_configuration() -> None:
+def test_rulesync_workspaces_and_generated_surfaces_stay_separate() -> None:
     contract = load_contract()
+    repository = contract["repository_workspace"]
+    library = contract["canonical"]
 
-    for path in contract["forbidden_repository_runtime_surfaces"]:
+    repository_source = ROOT / repository["asset_root"]
+    repository_config = ROOT / repository["config"]
+    library_source = ROOT / library["asset_root"]
+    library_config = ROOT / library["config"]
+
+    assert repository_source != library_source
+    assert repository_config != library_config
+    assert library_source.is_dir()
+    assert library_config.is_file()
+
+    if repository_source.exists() or repository_config.exists():
+        assert repository_source.is_dir()
+        assert repository_config.is_file()
+
+    for path in contract["forbidden_committed_projection_surfaces"]:
         assert not (ROOT / path).exists(), path
 
     for path in contract["forbidden_workspace_generated_surfaces"]:
