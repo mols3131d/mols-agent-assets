@@ -1,3 +1,5 @@
+"""Generate the repository-root distribution route, never target-local `.agents/routes/`."""
+
 from __future__ import annotations
 
 import json
