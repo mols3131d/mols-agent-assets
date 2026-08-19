@@ -72,13 +72,13 @@ Read only what the current design needs.
 
 Before finalizing, verify that:
 
-- every failure that would make the change unacceptable on `main` has blocking pre-merge evidence;
+- every known failure that would make the change unacceptable on `main` has blocking pre-merge evidence;
 - optimization reduces execution cost or scope, not the admission standard;
 - low-risk changes do not trigger unrelated expensive checks;
 - uncertain impact broadens validation instead of creating a silent coverage gap;
 - merge gates use the least privilege practical;
 - runtime claims require runtime evidence;
-- the design is strong enough that delegated changes cannot merge merely because relevant verification was omitted;
+- known merge-critical verification cannot be silently omitted from delegated changes by impact routing;
 - the plan can be implemented incrementally without an unrelated framework migration.
 
 Stop at the handoff unless implementation is explicitly requested.
