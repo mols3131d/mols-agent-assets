@@ -18,17 +18,17 @@ def test_render_index_prepends_metadata_and_instruction(tmp_path):
     content = generate_skill_indexes.render_index(
         tmp_path,
         "*/SKILL.md",
-        ".agentsmesh/skills/{name}/SKILL.md",
+        "src/agentsmesh/skills/{name}/SKILL.md",
     )
     rows = [json.loads(line) for line in content.splitlines()]
 
     assert rows[:2] == [
         {
             "metadata": {
-                "workspace_path": ".agentsmesh/skills/{name}/SKILL.md",
+                "workspace_path": "src/agentsmesh/skills/{name}/SKILL.md",
                 "github_url": (
                     "https://github.com/mols3131d/mols-agent-assets/blob/main/"
-                    ".agentsmesh/skills/{name}/SKILL.md"
+                    "src/agentsmesh/skills/{name}/SKILL.md"
                 ),
             }
         },
@@ -37,14 +37,14 @@ def test_render_index_prepends_metadata_and_instruction(tmp_path):
     assert [row["name"] for row in rows[2:]] == ["alpha", "beta"]
 
 
-def test_target_template_uses_canonical_skill_surface():
+def test_target_template_uses_isolated_canonical_skill_surface():
     targets = {
         directory.relative_to(generate_skill_indexes.ROOT).as_posix(): workspace_path
         for directory, (_, workspace_path) in generate_skill_indexes.TARGETS.items()
     }
 
     assert targets == {
-        ".agentsmesh/skills": ".agentsmesh/skills/{name}/SKILL.md",
+        "src/agentsmesh/skills": "src/agentsmesh/skills/{name}/SKILL.md",
     }
 
 

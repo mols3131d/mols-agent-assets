@@ -1,4 +1,0 @@
-interface:
-  display_name: "Agent Asset Studio"
-  short_description: "Build and refine agent assets through focused workflows"
-  default_prompt: "Use $mols-agent-asset-studio to select and run the smallest workflow for this agent-asset task."

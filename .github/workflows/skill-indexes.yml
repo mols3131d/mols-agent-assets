@@ -2,12 +2,8 @@ name: Generate Skill Indexes
 
 on:
   push:
-    branches:
-      - main
     paths:
-      - ".agentsmesh/skills/*/SKILL.md"
-      - "src/skills-chatbot/*.skill.md"
-      - "src/skills-chatbot-runtime/*/SKILL.md"
+      - "src/agentsmesh/skills/*/SKILL.md"
       - "scripts/generate_skill_indexes.py"
       - ".github/workflows/skill-indexes.yml"
 
@@ -15,7 +11,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: skill-index-main
+  group: skill-index-${{ github.ref_name }}
   cancel-in-progress: true
 
 jobs:
@@ -32,15 +28,11 @@ jobs:
       - name: Commit changed indexes
         shell: bash
         run: |
-          indexes=(
-            .agentsmesh/skills/INDEX.jsonl
-            src/skills-chatbot/INDEX.jsonl
-            src/skills-chatbot-runtime/INDEX.jsonl
-          )
+          indexes=(src/agentsmesh/skills/INDEX.jsonl)
           [[ -z "$(git status --porcelain -- "${indexes[@]}")" ]] && exit 0
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -- "${indexes[@]}"
           git commit -m "chore: update skill indexes"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

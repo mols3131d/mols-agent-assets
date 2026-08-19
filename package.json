@@ -5,9 +5,9 @@
     "agentsmesh": "0.32.0"
   },
   "scripts": {
-    "agentsmesh:lint": "agentsmesh lint",
-    "agentsmesh:check": "agentsmesh check",
-    "agentsmesh:generate:check": "agentsmesh generate --check",
-    "agentsmesh:diff": "agentsmesh diff"
+    "agentsmesh:lint": "python scripts/run_agentsmesh.py lint",
+    "agentsmesh:check": "python scripts/run_agentsmesh.py check",
+    "agentsmesh:generate:check": "python scripts/run_agentsmesh.py generate-check",
+    "agentsmesh:diff": "python scripts/run_agentsmesh.py diff"
   }
 }
