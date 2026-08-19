@@ -14,12 +14,15 @@ on:
       - "evals/skills/**"
       - "tests/evals/**"
       - "tests/test_agentsmesh_source_isolation.py"
+      - "tests/test_chatbot_harness_compatibility.py"
       - "docs/README.md"
       - "docs/development.md"
       - "docs/testing.md"
       - "docs/skills/**"
       - "docs/references/skills/**"
       - "docs/references/common/standards/agent-assets-standard-personal.md"
+      - "docs/references/common/standards/chatbot-repository-bootstrap.md"
+      - "docs/references/rules/agent-assets-rules-projections.md"
       - "tests/skills/**"
       - "tests/scripts/**"
       - "scripts/**"
@@ -51,6 +54,10 @@ jobs:
 
           add_isolation() {
             root_targets["tests/test_agentsmesh_source_isolation.py"]=1
+          }
+
+          add_chatbot_compatibility() {
+            root_targets["tests/test_chatbot_harness_compatibility.py"]=1
           }
 
           add_asset_docs() {
@@ -93,6 +100,7 @@ jobs:
                 ;;
               .github/workflows/targeted-tests.yml)
                 add_isolation
+                add_chatbot_compatibility
                 add_asset_docs
                 add_skill_index
                 add_script "rumdl_main_autofix"
@@ -100,6 +108,14 @@ jobs:
                 ;;
               .gitattributes|.rumdl.toml|.github/workflows/rumdl-main-autofix.yml)
                 add_script "rumdl_main_autofix"
+                ;;
+              src/agentsmesh/.agentsmesh/skills/load-context-github/SKILL.md|src/agentsmesh/.agentsmesh/skills/load-context-github-mols/SKILL.md)
+                name="${path#src/agentsmesh/.agentsmesh/skills/}"
+                add_skill "${name%%/*}"
+                add_isolation
+                add_chatbot_compatibility
+                add_asset_docs
+                add_skill_index
                 ;;
               src/agentsmesh/.agentsmesh/skills/*)
                 name="${path#src/agentsmesh/.agentsmesh/skills/}"
@@ -116,10 +132,17 @@ jobs:
                 name="${path#evals/skills/}"
                 add_eval "${name%%/*}"
                 ;;
+              evals/regression/chatbot-harness-compatibility.json|tests/test_chatbot_harness_compatibility.py|docs/references/common/standards/chatbot-repository-bootstrap.md|docs/references/rules/agent-assets-rules-projections.md)
+                add_chatbot_compatibility
+                ;;
+              docs/references/common/standards/agent-assets-standard-personal.md)
+                add_chatbot_compatibility
+                add_asset_docs
+                ;;
               src/agentsmesh/.agentsmesh/rules/*|src/agentsmesh/.agentsmesh/agents/*|src/agentsmesh/agentsmesh.yaml|package.json|package-lock.json|evals/regression/*|tests/test_agentsmesh_source_isolation.py)
                 add_isolation
                 ;;
-              docs/skills/*|docs/references/skills/*|docs/references/common/standards/agent-assets-standard-personal.md|docs/README.md|docs/development.md|docs/testing.md)
+              docs/skills/*|docs/references/skills/*|docs/README.md|docs/development.md|docs/testing.md)
                 add_asset_docs
                 ;;
               tests/scripts/*)
