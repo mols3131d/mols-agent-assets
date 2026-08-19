@@ -107,7 +107,11 @@ def render_jsonl(meta: dict[str, object], entries: list[dict[str, object]]) -> s
     return "\n".join(lines) + "\n"
 
 
-def resolve_kinds(
+def expand_kinds(kind: str) -> list[str]:
+    return ["skills", "rules"] if kind == "both" else [kind]
+
+
+def generation_kinds(
     kind: str,
     skills_root: Path,
     rules_root: Path,
@@ -124,11 +128,30 @@ def resolve_kinds(
             raise SystemExit("no routable local Skills or Rules found")
         return kinds
 
-    kinds = ["skills", "rules"] if kind == "both" else [kind]
+    kinds = expand_kinds(kind)
     roots = {"skills": skills_root, "rules": rules_root}
     missing = [name for name in kinds if not roots[name].is_dir()]
     if missing:
         raise SystemExit(f"requested asset root not found: {', '.join(missing)}")
+    return kinds
+
+
+def check_kinds(
+    kind: str,
+    output_dir: Path,
+    skill_entries: list[dict[str, object]],
+    rule_entries: list[dict[str, object]],
+) -> list[str]:
+    if kind != "auto":
+        return expand_kinds(kind)
+
+    available = {
+        "skills": bool(skill_entries) or (output_dir / "skills.jsonl").is_file(),
+        "rules": bool(rule_entries) or (output_dir / "rules.jsonl").is_file(),
+    }
+    kinds = [name for name in ("skills", "rules") if available[name]]
+    if not kinds:
+        raise SystemExit("no route files or routable local Skills/Rules found")
     return kinds
 
 
@@ -151,7 +174,12 @@ def load_routes(path: Path, kind: str) -> list[dict[str, object]]:
     if not rows:
         raise SystemExit(f"empty route file: {path}")
     meta = rows[0].get("_meta")
-    if not isinstance(meta, dict) or meta.get("kind") != kind:
+    if (
+        not isinstance(meta, dict)
+        or meta.get("kind") != kind
+        or not isinstance(meta.get("instructions"), str)
+        or not str(meta["instructions"]).strip()
+    ):
         raise SystemExit(f"invalid _meta header for {kind}: {path}")
     return rows[1:]
 
@@ -186,8 +214,13 @@ def check_routes(
         if source in actual:
             raise SystemExit(f"duplicate route source in {path}: {source}")
         if kind == "skills":
-            if not isinstance(entry.get("name"), str) or not isinstance(
-                entry.get("description"), str
+            name = entry.get("name")
+            description = entry.get("description")
+            if (
+                not isinstance(name, str)
+                or not name.strip()
+                or not isinstance(description, str)
+                or not description.strip()
             ):
                 raise SystemExit(f"Skill route requires name and description: {source}")
         else:
@@ -236,7 +269,7 @@ def main() -> None:
         "--kinds",
         choices=("auto", "skills", "rules", "both"),
         default="auto",
-        help="Route kinds to generate/check. auto uses routable local entries.",
+        help="Route kinds to generate/check. auto uses local entries or existing routes.",
     )
     parser.add_argument(
         "--check",
@@ -260,14 +293,21 @@ def main() -> None:
 
     skill_entries = skill_routes(repo, skills_root)
     rule_entries = rule_routes(repo, rules_root)
-    kinds = resolve_kinds(args.kinds, skills_root, rules_root, skill_entries, rule_entries)
     baselines = {"skills": skill_entries, "rules": rule_entries}
 
     if args.check:
+        kinds = check_kinds(args.kinds, output_dir, skill_entries, rule_entries)
         for kind in kinds:
             check_routes(repo, output_dir / f"{kind}.jsonl", kind, baselines[kind])
         return
 
+    kinds = generation_kinds(
+        args.kinds,
+        skills_root,
+        rules_root,
+        skill_entries,
+        rule_entries,
+    )
     outputs: dict[Path, str] = {}
     if "skills" in kinds:
         outputs[output_dir / "skills.jsonl"] = render_jsonl(
