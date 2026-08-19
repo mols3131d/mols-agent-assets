@@ -5,9 +5,9 @@ description: root CHATBOT.md로 chat runtime에서 누락되는 agent harness의
 
 # CHATBOT Runtime Compatibility Layer
 
-`CHATBOT.md`는 **mols의 개인 repository convention**이다. 외부 표준, vendor 규격, Rule/Skill/Prompt/Agent와 동급의 Agent Asset type이 아니다.
+`CHATBOT.md`는 **mols의 개인 repository convention**이다. 외부 표준, vendor 규격, Rulesync feature 또는 target-native artifact type이 아니다.
 
-Chatbot과 coding agent를 별도 runtime actor로 분류하지 않는다. 차이는 tool capability 자체보다 **agent harness가 repository context와 Agent Asset을 얼마나 자동으로 discovery/load하는가**로 본다.
+Chatbot과 coding agent를 별도 runtime actor로 분류하지 않는다. 차이는 tool capability 자체보다 **agent harness가 repository context와 configuration asset을 얼마나 자동으로 discovery/load하는가**로 본다.
 
 `CHATBOT.md`의 목적은 repository-aware chat runtime에서 누락되는 harness behavior를 보정하는 것이다. 별도 project policy를 소유하거나 기존 agent guidance를 대체하지 않는다.
 
@@ -63,7 +63,7 @@ repository task를 시작하면 필요한 범위에서 다음을 수행한다.
 1. root `CHATBOT.md`를 compatibility entry로 확인한다.
 1. task intent와 known target path를 식별한다.
 1. `AGENTS.md`, Skill, Rule 세 responsibility마다 active runtime이 이미 제공하는 behavior를 확인한다.
-1. 누락된 responsibility에 대해서만 applicable context와 Agent Asset을 discovery/load한다.
+1. 누락된 responsibility에 대해서만 applicable context와 configuration asset을 discovery/load한다.
 1. linked context는 현재 판단에 필요한 만큼만 추가로 읽는다.
 
 이 순서는 discovery 절차이며 새로운 authority precedence를 만들지 않는다. Partial harness support는 정상적인 상태다. 예를 들어 runtime이 `AGENTS.md` hierarchy는 제공하지만 repository Skill discovery는 제공하지 않으면 Skill responsibility만 보정한다.
