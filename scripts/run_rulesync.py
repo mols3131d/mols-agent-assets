@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import shutil
 import subprocess
 import sys
@@ -33,12 +34,49 @@ def markdown_body(path: Path) -> str:
     return "\n".join(lines[end + 1 :]).strip()
 
 
+def frontmatter(path: Path) -> str:
+    text = path.read_text(encoding="utf-8")
+    if not text.startswith("---\n"):
+        return ""
+    lines = text.splitlines()
+    try:
+        end = lines.index("---", 1)
+    except ValueError as exc:
+        raise AssertionError(f"unclosed frontmatter: {path}") from exc
+    return "\n".join(lines[1:end])
+
+
+def is_root_rule(path: Path) -> bool:
+    return bool(re.search(r"(?m)^root:\s*true(?:\s+#.*)?\s*$", frontmatter(path)))
+
+
 def relative_files(root: Path) -> set[str]:
     return {
         path.relative_to(root).as_posix()
         for path in root.rglob("*")
         if path.is_file()
     }
+
+
+def assert_root_rule_projection(workspace: Path) -> None:
+    source_rules = workspace / ".rulesync" / "rules"
+    root_rules = sorted(path for path in source_rules.glob("*.md") if is_root_rule(path))
+    outputs = (
+        workspace / ".github" / "copilot-instructions.md",
+        workspace / "AGENTS.md",
+    )
+
+    if not root_rules:
+        for output in outputs:
+            assert not output.exists(), f"unexpected projected root Rule: {output}"
+        return
+
+    expected = "\n\n".join(markdown_body(path) for path in root_rules)
+    for output in outputs:
+        assert output.is_file(), f"missing projected root Rule: {output}"
+        assert markdown_body(output) == expected, (
+            f"root Rule composition changed during projection: {output}"
+        )
 
 
 def assert_skill_projection(workspace: Path, output_dir: Path) -> None:
@@ -75,16 +113,7 @@ def assert_skill_projection(workspace: Path, output_dir: Path) -> None:
 def assert_projection(workspace: Path) -> None:
     source = workspace / ".rulesync"
 
-    root_rule = source / "rules" / "overview.md"
-    for output in (
-        workspace / ".github" / "copilot-instructions.md",
-        workspace / "AGENTS.md",
-    ):
-        assert output.is_file(), f"missing projected root Rule: {output}"
-        assert markdown_body(output) == markdown_body(root_rule), (
-            f"root Rule body changed during projection: {output}"
-        )
-
+    assert_root_rule_projection(workspace)
     assert_skill_projection(workspace, workspace / ".github" / "skills")
     assert_skill_projection(workspace, workspace / ".agents" / "skills")
 
