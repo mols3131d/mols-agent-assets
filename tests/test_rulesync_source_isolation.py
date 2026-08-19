@@ -34,7 +34,7 @@ def test_rulesync_source_matches_regression_contract() -> None:
     config = json.loads((ROOT / contract["config"]).read_text(encoding="utf-8"))
 
     assert source == workspace / ".rulesync"
-    assert config["targets"] == contract["targets"]
+    assert config["targets"] == contract["targets"] == []
     assert config["features"] == contract["features"]
 
     rules = source / "rules"
@@ -145,7 +145,7 @@ def test_rulesync_toolchain_tracks_latest() -> None:
     assert not (ROOT / "package-lock.json").exists()
 
 
-def test_repository_rulesync_commands_keep_write_validation_isolated() -> None:
+def test_repository_rulesync_commands_keep_projection_transient() -> None:
     package = json.loads((ROOT / "package.json").read_text(encoding="utf-8"))
     scripts = package["scripts"]
 
@@ -158,7 +158,15 @@ def test_repository_rulesync_commands_keep_write_validation_isolated() -> None:
     assert scripts["rulesync:preview"].endswith(" preview")
     assert scripts["rulesync:validate"].endswith(" validate")
 
+    runner = (ROOT / "scripts/run_rulesync.py").read_text(encoding="utf-8")
+    assert "TemporaryDirectory" in runner
+    assert "assert_projection" not in runner
+    assert "copilot" not in runner.lower()
+    assert "antigravity" not in runner.lower()
+
     workflow = (ROOT / ".github/workflows/rulesync.yml").read_text(encoding="utf-8")
     assert "npm run rulesync:doctor" in workflow
-    assert "npm run rulesync:validate" in workflow
+    assert "npm run rulesync:validate -- --targets '*'" in workflow
     assert "rulesync generate" not in workflow
+    assert "copilot" not in workflow.lower()
+    assert "antigravity" not in workflow.lower()
