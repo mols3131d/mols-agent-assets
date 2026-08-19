@@ -141,11 +141,11 @@ jobs:
                 name="${path#evals/skills/}"
                 add_eval "${name%%/*}"
                 ;;
-              evals/regression/chatbot-harness-compatibility.json|tests/test_chatbot_harness_compatibility.py|docs/references/common/standards/chatbot-repository-bootstrap.md)
+              evals/regression/chatbot-harness-compatibility.json|tests/test_chatbot_harness_compatibility.py|docs/references/common/conventions/chatbot-repository-bootstrap.md)
                 add_chatbot_compatibility
                 add_documentation_consistency
                 ;;
-              docs/references/common/standards/rulesync-repository-conventions.md)
+              docs/references/common/conventions/rulesync-repository-conventions.md)
                 add_isolation
                 add_asset_docs
                 add_documentation_consistency
