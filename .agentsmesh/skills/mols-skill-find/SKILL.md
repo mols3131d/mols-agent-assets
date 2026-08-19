@@ -6,7 +6,6 @@ description: >-
   needs one best Skill, a scoped inventory, or a sync-ready selection set and the source,
   target, discovery path, or constraints may be partially unspecified.
 metadata:
-  default-source: "https://github.com/mols3131d/mols-agent-assets"
   references: "vercel-labs/skills:skills/find-skills/SKILL.md"
 ---
 
@@ -33,6 +32,18 @@ fallback: <auto>
 - `fallback` — `none`, `declared`, `external`, or `<auto>`. `<auto>` behaves as `declared`: declared fallbacks are allowed, unrelated public-source expansion is not.
 
 `<auto>` means **infer from evidence**, not “use a hidden fixed value.” `<none>` explicitly disables the optional behavior for that argument. Explicit values always win.
+
+## Defaults
+
+```yaml
+defaults:
+  sources:
+    - https://github.com/mols3131d/mols-agent-assets
+```
+
+Defaults are declarative last-resort values, not routing rules. They are considered only when `sources: <auto>` has no more relevant source and `fallback` allows declared fallbacks. An explicit `sources` value always overrides them, and `fallback: none` disables them.
+
+Keep defaults in the Skill body because target projections may omit optional custom front-matter metadata. A default must remain visible and usable in the deployed Skill, not only in the canonical source.
 
 For advanced calls, each item in `sources` may use a SourceSpec:
 
@@ -71,9 +82,9 @@ Use this evidence order unless an explicit argument overrides it:
 3. capabilities and Skill catalogs already exposed by the active runtime;
 4. current task or repository guidance that declares a Skill source, index, or root;
 5. source-local evidence such as repository instructions, manifests, indexes, and package structure;
-6. this Skill's declarative `metadata.default-source`, only as a declared fallback when no more relevant source satisfies the request.
+6. declared `Defaults`, only when no more relevant source satisfies the request and `fallback` permits them.
 
-The metadata default is a **fallback**, not a routing rule. It must not override an explicit source, hijack discovery for an unrelated repository, or cause unrelated public-source expansion.
+Declared defaults must not override an explicit source, hijack discovery for an unrelated repository, or cause unrelated public-source expansion.
 
 If a required value remains materially ambiguous, preserve it as unresolved or ask only for the smallest decision needed. Do not manufacture a repository path, target capability, revision, or compatibility claim.
 
@@ -117,7 +128,7 @@ When `sources: <auto>`, build a source plan from applicable evidence rather than
 1. caller-established task/source context;
 2. runtime-native Skill catalog when it exposes the relevant capability space;
 3. current repository-declared Skill source when relevant;
-4. `metadata.default-source` only as a declared fallback.
+4. declared `Defaults` only when `fallback` permits them.
 
 Deduplicate equivalent sources while preserving the strongest provenance and most specific scope.
 
