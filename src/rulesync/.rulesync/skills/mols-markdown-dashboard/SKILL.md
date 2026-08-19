@@ -9,9 +9,10 @@ description: >-
   results into this dashboard format. Also use to maintain or render this skill's
   YAML/Markdown format. Do not use for general status reports, task trackers,
   BI/analytics dashboards, or live monitoring/observability UIs.
-compatibility: >-
-  Core instructions are agent-runtime agnostic. The bundled renderer requires
-  Python 3.11+ and the dependencies declared in pyproject.toml; uv is optional.
+agentsskills:
+  compatibility: >-
+    Core instructions are agent-runtime agnostic. The bundled renderer requires
+    Python 3.11+ and the dependencies declared in pyproject.toml; uv is optional.
 ---
 
 # MOLS Markdown Dashboard
