@@ -2,7 +2,8 @@
 name: mols-skill-install
 description: >-
   Install, update, sync, migrate, or load a selected or otherwise unambiguous Skill into
-  the active target. Use when the requested end state is target delivery or Skill-state
+  an active target, including the current runtime when it exposes an observable Skill
+  management surface. Use when the requested end state is target delivery or Skill-state
   mutation and the candidate is resolved enough to act on safely. Do not use for broad
   Skill discovery, capability matching, or unresolved candidate selection.
 ---
@@ -21,17 +22,19 @@ on_conflict: <auto>
 
 - `selection` — one or more resolved Skill records, preferably the handoff from `mols-skill-find`. `<auto>` uses an unambiguous candidate already established by the caller or context.
 - `source` — direct Skill path, package, URL, repository, or other source when no selection record is supplied. `<auto>` uses the source already associated with the resolved candidate.
-- `target` — installation destination or active Skill consumer. `<auto>` uses the current runtime and its observable Skill capabilities.
+- `target` — installation destination or active Skill consumer. `<auto>` resolves from user intent, live context, and observable target capabilities; the current runtime is eligible when it exposes a suitable Skill management surface.
 - `action` — `install`, `update`, `sync`, `migrate`, `load`, or `<auto>`. `<auto>` infers the requested end state from caller intent and target semantics; it does not silently substitute a materially different state.
 - `on_conflict` — `override`, `separate`, `skip`, or `<auto>`. `<auto>` never authorizes a destructive resolution; it reports the conflict for user choice.
 
-`<auto>` is an inference sentinel. Resolve it from explicit user input, the caller's selection, live target state, source evidence, and target capabilities. Do not turn `<auto>` into a fixed repository path or platform assumption.
+`<auto>` is an inference sentinel. Resolve it from explicit user input, the caller's selection, live target state, source evidence, and target capabilities. Do not turn `<auto>` into a fixed repository path, product, actor category, or platform assumption.
 
 ## Contract
 
 This Skill owns **target delivery and Skill-state mutation** for already selected Skills.
 
 Use `mols-skill-find` first when the source is broad, the candidate is ambiguous, target compatibility must be resolved, or an inventory/sync selection set is needed.
+
+Resolve delivery by **requested end state and observable capability**, not by classifying the current actor as a chatbot, coding agent, or another runtime category. The runtime executing this Skill may itself be the target when it provides a suitable native or equivalent Skill-management surface.
 
 Preserve the requested end state. If a target distinguishes a reusable or registered Skill from a temporary in-context load, do not report the temporary state as equivalent to the requested reusable state. If a target does not make that distinction, follow its native model instead of inventing one.
 
@@ -49,9 +52,25 @@ Prefer a `mols-skill-find` selection record with at least `selected`, `source`, 
 
 A candidate must resolve to one concrete Skill package or target-native equivalent. If alternatives remain materially unresolved, return to `mols-skill-find` rather than choosing by filename, package size, vendor name, or directory shape.
 
+## Resolve the target
+
+Honor an explicit target first. For `target: <auto>`, infer the destination from the requested end state, established conversation/task context, and live observable capabilities.
+
+Treat the **current runtime itself as a target candidate** when it exposes a Skill or equivalent management surface that can satisfy the requested state, such as install, create, import, register, update, sync, or persistent reusable storage. This is capability-based self-targeting, not a chatbot-specific rule.
+
+Do not infer target capability merely because the runtime can read a Skill, execute its instructions, access its source, or temporarily place it in context. Those abilities may support `load`, inspection, or staging without supporting persistent installation.
+
+When user wording such as “install here”, “sync these Skills here”, or an equivalent request clearly refers to the active environment, prefer the current runtime if it can satisfy that state. When the requested destination remains materially ambiguous, do not silently choose among unrelated targets.
+
+Action intent and target resolution are separate:
+
+- `install`, `update`, `sync`, and `migrate` require the corresponding reusable target-state capability or an honest staged/pending transition;
+- `load` may be temporary when that is the requested end state;
+- requests to inspect, read, use as context, or run a Skill do not by themselves authorize persistent target-state mutation.
+
 ## Choose the target path
 
-Inspect the active target's actual Skill or equivalent capabilities before deciding how to deliver the candidate. Do not assume every target uses files, archives, install APIs, editors, persistent registries, or the same UI.
+Inspect the resolved target's actual Skill or equivalent capabilities before deciding how to deliver the candidate. Do not assume every target uses files, archives, install APIs, editors, persistent registries, or the same UI.
 
 Use the highest available path that satisfies the requested end state:
 
