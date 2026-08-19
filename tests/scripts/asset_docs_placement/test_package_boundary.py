@@ -9,8 +9,8 @@ ROOT = Path(__file__).resolve().parents[3]
 CREATOR = (
     ROOT
     / "src"
-    / "agentsmesh"
-    / ".agentsmesh"
+    / "rulesync"
+    / ".rulesync"
     / "skills"
     / "mols-skill-creator"
 )

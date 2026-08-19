@@ -8,8 +8,8 @@ from mols_dashboard.render import render_dashboard
 SKILL_ROOT = (
     Path(__file__).resolve().parents[3]
     / "src"
-    / "agentsmesh"
-    / ".agentsmesh"
+    / "rulesync"
+    / ".rulesync"
     / "skills"
     / "mols-markdown-dashboard"
 )
