@@ -117,9 +117,10 @@ def test_retired_legacy_surfaces_do_not_return() -> None:
         assert not (ROOT / path).exists(), path
 
 
-def test_rulesync_toolchain_stays_pinned() -> None:
+def test_rulesync_toolchain_tracks_latest() -> None:
     runner = (ROOT / "scripts/run_rulesync.py").read_text(encoding="utf-8")
-    assert 'RULESYNC_VERSION = "16.14.0"' in runner
+    assert '"rulesync@latest"' in runner
+    assert "RULESYNC_VERSION" not in runner
     assert not (ROOT / "package-lock.json").exists()
 
 
