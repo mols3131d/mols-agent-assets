@@ -12,7 +12,7 @@
 | `references/common/` | 여러 Rulesync feature에서 공유하는 principle, authoring, convention, tooling reference |
 | `references/skills/` | Skill 전체가 공유하는 reference |
 
-Rulesync schema, feature taxonomy와 target mapping은 이 저장소 문서가 재정의하지 않습니다. Repository integration은 [Rulesync Repository Conventions](references/common/standards/rulesync-repository-conventions.md)가 소유하고, upstream Rulesync 문서를 authority로 연결합니다.
+Rulesync schema, feature taxonomy와 target mapping은 이 저장소 문서가 재정의하지 않습니다. Repository integration은 [Rulesync Repository Conventions](references/common/conventions/rulesync-repository-conventions.md)가 소유하고, upstream Rulesync 문서를 authority로 연결합니다.
 
 ## Maintainer Documentation
 
