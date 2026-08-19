@@ -22,15 +22,17 @@ Keep personal conventions bound to targets that remain evidenced as personally g
 
 ### `CHATBOT.md` Compatibility Entry
 
-For an in-scope personal repository, check repository-root `CHATBOT.md` when the active runtime does not already provide equivalent repository context and Agent Asset loading.
+For an in-scope personal repository, use repository-root `CHATBOT.md` as a compatibility entry when the active runtime is missing any repository context or Agent Asset loading behavior that the file declares. Treat each compatibility responsibility independently: skip behavior the runtime already provides and recover only the missing behavior.
 
-When present, treat it as a **harness compatibility entry**, not as a separate chatbot policy owner and not as a fallback peer of `AGENTS.md` or `README.md`.
+When present, treat `CHATBOT.md` as a **harness compatibility entry**, not as a separate chatbot policy owner and not as a fallback peer of `AGENTS.md` or `README.md`.
 
 Its intended responsibility is to recover harness behavior that the active chat runtime may omit, especially:
 
 - applicable `AGENTS.md` hierarchy loading for known target paths;
 - task-intent Skill discovery/loading from repository-declared surfaces;
 - path/glob-scoped Rule discovery/loading for known target paths.
+
+Partial harness support is valid. For example, if the runtime already loads applicable `AGENTS.md` files but does not discover repository Skills, keep the native `AGENTS.md` behavior and use the compatibility entry only for Skill discovery/loading.
 
 The underlying `AGENTS.md`, Skill, and Rule sources retain their own authority, selectors, triggers, procedures, and precedence. Do not copy their bodies into `CHATBOT.md` merely for chat compatibility.
 
