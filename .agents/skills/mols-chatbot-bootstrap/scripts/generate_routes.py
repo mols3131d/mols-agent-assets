@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Generate deterministic baseline route files for local Skills and glob-scoped Rules.
+"""Generate deterministic baseline routes for local Skills and glob/path Rules.
 
-Generation handles factual baseline metadata only. Route descriptions may be tuned later,
-so existing output is preserved unless --force is explicitly supplied.
+Defaults follow the common .agents layout, but roots and output are configurable. Existing
+route files are preserved unless --force is explicitly supplied.
 """
 
 from __future__ import annotations
@@ -60,13 +60,21 @@ def front_matter(path: Path) -> str:
     return match.group(1) if match else ""
 
 
+def resolve_path(repo: Path, value: Path | None, default: str) -> Path:
+    path = Path(default) if value is None else value
+    return path.resolve() if path.is_absolute() else (repo / path).resolve()
+
+
 def rel(path: Path, repo: Path) -> str:
-    return path.relative_to(repo).as_posix()
+    try:
+        return path.relative_to(repo).as_posix()
+    except ValueError as exc:
+        raise SystemExit(f"local asset must be inside repo: {path}") from exc
 
 
-def skill_routes(repo: Path) -> list[dict[str, object]]:
+def skill_routes(repo: Path, root: Path) -> list[dict[str, object]]:
     entries: list[dict[str, object]] = []
-    for path in sorted((repo / ".agents" / "skills").glob("*/SKILL.md")):
+    for path in sorted(root.glob("*/SKILL.md")):
         front = front_matter(path)
         name = scalar(front, "name")
         description = scalar(front, "description")
@@ -77,13 +85,9 @@ def skill_routes(repo: Path) -> list[dict[str, object]]:
     return entries
 
 
-def rule_routes(repo: Path) -> list[dict[str, object]]:
+def rule_routes(repo: Path, root: Path) -> list[dict[str, object]]:
     entries: list[dict[str, object]] = []
-    rules_root = repo / ".agents" / "rules"
-    if not rules_root.exists():
-        return entries
-
-    for path in sorted(rules_root.rglob("*.md")):
+    for path in sorted(root.rglob("*.md")):
         front = front_matter(path)
         globs = list_value(front, "globs") or list_value(front, "applyTo")
         if globs:
@@ -97,19 +101,48 @@ def render_jsonl(meta: dict[str, object], entries: list[dict[str, object]]) -> s
     return "\n".join(lines) + "\n"
 
 
-def resolve_output_dir(repo: Path, value: Path | None) -> Path:
-    if value is None:
-        return repo / ".agents" / "routes"
-    return value.resolve() if value.is_absolute() else (repo / value).resolve()
+def resolve_kinds(kind: str, skills_root: Path, rules_root: Path) -> list[str]:
+    if kind == "auto":
+        kinds = []
+        if skills_root.is_dir():
+            kinds.append("skills")
+        if rules_root.is_dir():
+            kinds.append("rules")
+        if not kinds:
+            raise SystemExit("no local Skill or Rule roots found")
+        return kinds
+
+    kinds = ["skills", "rules"] if kind == "both" else [kind]
+    roots = {"skills": skills_root, "rules": rules_root}
+    missing = [name for name in kinds if not roots[name].is_dir()]
+    if missing:
+        raise SystemExit(f"requested asset root not found: {', '.join(missing)}")
+    return kinds
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo", type=Path, default=Path.cwd())
     parser.add_argument(
+        "--skills-root",
+        type=Path,
+        help="Local Skill root. Defaults to .agents/skills relative to repo.",
+    )
+    parser.add_argument(
+        "--rules-root",
+        type=Path,
+        help="Local Rule root. Defaults to .agents/rules relative to repo.",
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
-        help="Output directory, relative to repo unless absolute. Defaults to .agents/routes.",
+        help="Output directory. Defaults to .agents/routes relative to repo.",
+    )
+    parser.add_argument(
+        "--kinds",
+        choices=("auto", "skills", "rules", "both"),
+        default="auto",
+        help="Route kinds to generate. auto generates only kinds whose local roots exist.",
     )
     parser.add_argument(
         "--force",
@@ -119,23 +152,28 @@ def main() -> None:
     args = parser.parse_args()
 
     repo = args.repo.resolve()
-    output_dir = resolve_output_dir(repo, args.output_dir)
-    outputs = {
-        output_dir / "skills.jsonl": render_jsonl(
+    skills_root = resolve_path(repo, args.skills_root, ".agents/skills")
+    rules_root = resolve_path(repo, args.rules_root, ".agents/rules")
+    output_dir = resolve_path(repo, args.output_dir, ".agents/routes")
+    kinds = resolve_kinds(args.kinds, skills_root, rules_root)
+
+    outputs: dict[Path, str] = {}
+    if "skills" in kinds:
+        outputs[output_dir / "skills.jsonl"] = render_jsonl(
             {
                 "kind": "skills",
                 "instructions": "Select task-relevant Skills by name and description, then load only the selected source.",
             },
-            skill_routes(repo),
-        ),
-        output_dir / "rules.jsonl": render_jsonl(
+            skill_routes(repo, skills_root),
+        )
+    if "rules" in kinds:
+        outputs[output_dir / "rules.jsonl"] = render_jsonl(
             {
                 "kind": "rules",
                 "instructions": "Match known target paths against globs, then load only matching Rule sources.",
             },
-            rule_routes(repo),
-        ),
-    }
+            rule_routes(repo, rules_root),
+        )
 
     if not args.force:
         existing = [path for path in outputs if path.exists()]
