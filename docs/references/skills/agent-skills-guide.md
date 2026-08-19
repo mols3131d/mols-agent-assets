@@ -4,14 +4,14 @@ Agent Skill은 특정 영역의 지식과 반복 가능한 절차를 필요할 �
 패키지다. 좋은 Skill은 많은 정보를 담는 것이 아니라 **맞는 요청에서 활성화되고,
 필요한 지침만 제공하며, 결과를 검증할 수 있게 만드는 것**에 가깝다.
 
-이 문서는 설계 흐름만 소유한다. 규격과 전문 주제는 해당 reference가 소유한다.
+이 문서는 설계 흐름만 소유한다. Canonical representation과 전문 규격은 해당 authority가 소유한다.
 
-- Portable format / front matter →
+- Repository canonical representation →
+  [Rulesync Repository Conventions](../common/standards/rulesync-repository-conventions.md)
+- Repository-local Skill authoring →
+  [Skill Authoring Conventions](skill-authoring-conventions.md)
+- Agent Skills output / portable contract →
   [Agent Skills Specification](agent-skills-io/agent-skills-io-specification.md)
-- Repository-local extension →
-  [Personal Skill Standard](agent-assets-skills-standard-personal.md)
-- Package shape / target boundary →
-  [Skill Package and Target Boundaries](agent-assets-skills-target-profiles.md)
 - 상세 authoring 원칙 →
   [Skill Creation Best Practices](agent-skills-io/agent-skills-io-best-practices.md)
 
@@ -55,7 +55,8 @@ Use this skill when [사용자 목적과 상황].
 Do not use it when [겹치기 쉬운 제외 조건].
 ```
 
-Field constraint는
+Canonical field shape는 Rulesync schema를 따른다. Agent Skills projection의 field
+constraint가 필요한 경우
 [Specification](agent-skills-io/agent-skills-io-specification.md)을 따른다. Trigger
 품질을 측정하고 개선할 때는
 [Optimizing Skill Descriptions](agent-skills-io/agent-skills-io-optimizing-descriptions.md)을
@@ -106,11 +107,13 @@ Script 설계의 상세 규칙은
 
 검증을 분리한다.
 
-- **Static contract**: format, front matter, path, deterministic checks
+- **Canonical contract**: Rulesync schema, front matter, path, projection
+- **Target contract**: generated target artifact의 format과 mandatory semantics
 - **Trigger behavior**: 필요한 요청에서 활성화되고 near-miss를 피하는지
 - **Execution behavior**: 실제 task trace에서 retry, 누락, 불필요한 context가 있는지
 
-Static format은 Specification이 안내하는 validator를 사용한다. Trigger evaluation은
+Agent Skills output의 static format은 Specification이 안내하는 validator를 사용할 수 있다.
+Trigger evaluation은
 [Optimizing Skill Descriptions](agent-skills-io/agent-skills-io-optimizing-descriptions.md),
 실행 기반 개선 원칙은
 [Skill Creation Best Practices](agent-skills-io/agent-skills-io-best-practices.md)를 따른다.
@@ -124,22 +127,24 @@ Static format은 Specification이 안내하는 validator를 사용한다. Trigge
 - 모든 상세와 예시를 거대한 `SKILL.md`에 넣는다.
 - `references/` 전체를 무조건 로드한다.
 - resource를 만들고 읽을 조건을 정의하지 않는다.
-- 표준 규격이나 전문 guide 내용을 여러 문서에 복사한다.
+- Rulesync schema나 target contract를 repository-local 규격으로 복제한다.
 - validation 없이 생성이나 실행만으로 완료 처리한다.
 
 ## Completion Check
 
 - [ ] 하나의 일관된 사용자 목적과 activation boundary가 있다.
-- [ ] Tier 1, target contract, Personal Standard 중 적용할 authority를 확인했다.
+- [ ] Rulesync canonical contract와 실제 target contract를 확인했다.
+- [ ] 필요한 경우에만 repository-local Skill convention을 적용했다.
 - [ ] `description`만으로 사용 조건과 주요 near-miss를 구분할 수 있다.
 - [ ] 실제 작업 또는 실패에서 필요한 지식을 추출했다.
 - [ ] 공통 workflow, 분기, 중단, 복구, 완료 조건이 명확하다.
 - [ ] 추가 resource마다 실제 책임과 load condition이 있다.
 - [ ] 위험한 단계의 통제 수준이 실패 비용에 맞다.
-- [ ] 적용 가능한 static, trigger, execution validation을 구분해 수행했다.
+- [ ] 적용 가능한 canonical, target, trigger, execution validation을 구분해 수행했다.
 
 ## Sources
 
+- [Rulesync](https://github.com/dyoshikawa/rulesync)
 - [Agent Skills Specification](https://agentskills.io/specification)
 - [Best practices for skill creators](https://agentskills.io/skill-creation/best-practices)
 - [How to add skills support to your agent](https://agentskills.io/client-implementation/adding-skills-support)
