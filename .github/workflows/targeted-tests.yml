@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "src/rulesync/**"
+      - "route/**"
       - "package.json"
       - ".gitattributes"
       - ".rumdl.toml"
@@ -27,6 +28,7 @@ on:
       - "scripts/**"
       - "pyproject.toml"
       - "uv.lock"
+      - ".github/workflows/distribution-routes.yml"
       - ".github/workflows/targeted-tests.yml"
 
 permissions:
@@ -63,8 +65,8 @@ jobs:
             root_targets["tests/scripts/asset_docs_placement"]=1
           }
 
-          add_skill_index() {
-            root_targets["tests/scripts/generate_skill_indexes"]=1
+          add_distribution_routes() {
+            root_targets["tests/scripts/generate_distribution_routes"]=1
           }
 
           add_skill() {
@@ -101,9 +103,12 @@ jobs:
                 add_isolation
                 add_chatbot_compatibility
                 add_asset_docs
-                add_skill_index
+                add_distribution_routes
                 add_script "rumdl_main_autofix"
                 root_targets["tests/evals"]=1
+                ;;
+              .github/workflows/distribution-routes.yml|route/*)
+                add_distribution_routes
                 ;;
               .gitattributes|.rumdl.toml|.github/workflows/rumdl-main-autofix.yml)
                 add_script "rumdl_main_autofix"
@@ -114,14 +119,14 @@ jobs:
                 add_isolation
                 add_chatbot_compatibility
                 add_asset_docs
-                add_skill_index
+                add_distribution_routes
                 ;;
               src/rulesync/.rulesync/skills/*)
                 name="${path#src/rulesync/.rulesync/skills/}"
                 add_skill "${name%%/*}"
                 add_isolation
                 add_asset_docs
-                add_skill_index
+                add_distribution_routes
                 ;;
               tests/skills/*)
                 name="${path#tests/skills/}"

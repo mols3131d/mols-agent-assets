@@ -4,5 +4,5 @@ src/rulesync/** rulesync-source
 # Repository-local runtime guard
 .agents/AGENTS.md linguist-detectable
 
-# Derived repository metadata
-src/rulesync/.rulesync/skills/INDEX.jsonl linguist-generated
+# Derived cross-runtime discovery metadata
+route/skills.jsonl linguist-generated
