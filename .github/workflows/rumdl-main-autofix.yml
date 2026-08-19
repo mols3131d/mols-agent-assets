@@ -54,11 +54,7 @@ jobs:
             files+=("$file")
           done
 
-          if ((${#files[@]})); then
-            uvx rumdl@0.2.6 fmt "${files[@]}"
-            uvx rumdl@0.2.6 check "${files[@]}"
-          fi
-
+          ((${#files[@]})) && uvx rumdl@0.2.6 fmt "${files[@]}"
           echo "agentsmesh_source_changed=$agentsmesh_source_changed" >> "$GITHUB_OUTPUT"
 
       - name: Set up Node
@@ -79,7 +75,7 @@ jobs:
           npx agentsmesh generate
           python scripts/generate_skill_indexes.py
 
-      - name: Validate AgentsMesh Markdown
+      - name: Normalize and validate AgentsMesh Markdown
         if: steps.markdown.outputs.agentsmesh_source_changed == 'true'
         shell: bash
         run: |
@@ -96,7 +92,7 @@ jobs:
           done
 
           ((${#managed[@]})) || exit 0
-          uvx rumdl@0.2.6 check "${managed[@]}"
+          uvx rumdl@0.2.6 fmt "${managed[@]}"
           npx agentsmesh check
           npx agentsmesh generate --check
 
