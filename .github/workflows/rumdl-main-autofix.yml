@@ -13,40 +13,99 @@ permissions:
 jobs:
   format:
     runs-on: ubuntu-slim
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
 
       - name: Set up uv
         uses: astral-sh/setup-uv@v9.0.0
+        with:
+          enable-cache: false
 
       - name: Format changed Markdown
+        id: markdown
+        shell: bash
         env:
           BEFORE: ${{ github.event.before }}
           AFTER: ${{ github.sha }}
         run: |
+          set -euo pipefail
           git fetch --no-tags --depth=1 origin "$BEFORE"
           mapfile -d '' candidates < <(
             git diff --name-only -z --diff-filter=ACMR "$BEFORE" "$AFTER" -- '*.md'
           )
 
           files=()
+          agentsmesh_source_changed=false
           for file in "${candidates[@]}"; do
-            attr="$(git check-attr agentsmesh-managed -- "$file")"
-            [[ "$attr" == *": agentsmesh-managed: set" ]] && continue
+            source_attr="$(git check-attr agentsmesh-source -- "$file")"
+            generated_attr="$(git check-attr linguist-generated -- "$file")"
+
+            if [[ "$source_attr" == *": agentsmesh-source: set" ]]; then
+              agentsmesh_source_changed=true
+              files+=("$file")
+              continue
+            fi
+
+            [[ "$generated_attr" == *": linguist-generated: set" ]] && continue
             files+=("$file")
           done
 
-          ((${#files[@]})) || exit 0
-          uvx rumdl@0.2.6 fmt "${files[@]}"
+          if ((${#files[@]})); then
+            uvx rumdl@0.2.6 fmt "${files[@]}"
+            uvx rumdl@0.2.6 check "${files[@]}"
+          fi
+
+          echo "agentsmesh_source_changed=$agentsmesh_source_changed" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Node
+        if: steps.markdown.outputs.agentsmesh_source_changed == 'true'
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          package-manager-cache: false
+
+      - name: Install pinned AgentsMesh toolchain
+        if: steps.markdown.outputs.agentsmesh_source_changed == 'true'
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Regenerate AgentsMesh projections
+        if: steps.markdown.outputs.agentsmesh_source_changed == 'true'
+        run: |
+          npx agentsmesh lint
+          npx agentsmesh generate
+          python scripts/generate_skill_indexes.py
+
+      - name: Validate AgentsMesh Markdown
+        if: steps.markdown.outputs.agentsmesh_source_changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -d '' markdown < <(git ls-files -z -- '*.md')
+          managed=()
+          for file in "${markdown[@]}"; do
+            source_attr="$(git check-attr agentsmesh-source -- "$file")"
+            generated_attr="$(git check-attr linguist-generated -- "$file")"
+            if [[ "$source_attr" == *": agentsmesh-source: set" ]] || \
+               [[ "$generated_attr" == *": linguist-generated: set" ]]; then
+              managed+=("$file")
+            fi
+          done
+
+          ((${#managed[@]})) || exit 0
+          uvx rumdl@0.2.6 check "${managed[@]}"
+          npx agentsmesh check
+          npx agentsmesh generate --check
 
       - name: Commit fixes
         run: |
           git diff --quiet && exit 0
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -u
+          git add -A
           git commit -m "style(markdown): auto-fix with rumdl"
           git pull --rebase origin main
           git push origin HEAD:main
