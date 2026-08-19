@@ -24,7 +24,7 @@ Repository root의 `.rulesync/`와 `rulesync.jsonc`, 생성된 `.github/`·`.age
 
 ## Authority
 
-- Rulesync integration과 canonical/derived boundary → [Rulesync Repository Conventions](docs/references/common/standards/rulesync-repository-conventions.md)
+- Rulesync integration과 canonical/derived boundary → [Rulesync Repository Conventions](docs/references/common/conventions/rulesync-repository-conventions.md)
 - Skill authoring 관행 → [Skill Authoring Conventions](docs/references/skills/skill-authoring-conventions.md)
 - Agent Skills external specification과 vendor links → [Agent Skills Specification](docs/references/skills/agent-skills-io/agent-skills-io-specification.md)
 - 개발 workflow → [Development](docs/development.md)
