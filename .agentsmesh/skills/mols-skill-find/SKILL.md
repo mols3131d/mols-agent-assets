@@ -6,7 +6,7 @@ description: >-
   needs one best Skill, a scoped inventory, or a sync-ready selection set and the source,
   target, discovery path, or constraints may be partially unspecified.
 metadata:
-  default-source: "github:mols3131d/mols-agent-assets"
+  default-source: "https://github.com/mols3131d/mols-agent-assets"
   references: "vercel-labs/skills:skills/find-skills/SKILL.md"
 ---
 
@@ -29,8 +29,8 @@ fallback: <auto>
 - `mode` — `match`, `inventory`, `sync-prep`, or `<auto>`. `<auto>` derives the smallest mode that satisfies the caller.
 - `target` — intended Skill consumer or runtime. `<auto>` uses the active target when target fit materially affects selection. `<none>` disables target-specific filtering.
 - `constraints` — optional `require`, `prefer`, and `exclude` conditions over capability, package requirements, tools, resources, provenance, or target support. `<auto>` infers only constraints established by the caller or environment.
-- `strategy` — `native-first`, `source-first`, `index-first`, `scan`, or `<auto>`. `<auto>` chooses the cheapest authoritative discovery path for each source.
-- `fallback` — `none`, `declared`, `external`, or `<auto>`. `<auto>` permits declared fallbacks but never broadens to unrelated public sources on its own.
+- `strategy` — `first-match`, `merge`, `exhaustive`, or `<auto>`. It controls how ordered source results are combined, not how an individual source is scanned.
+- `fallback` — `none`, `declared`, `external`, or `<auto>`. `<auto>` behaves as `declared`: declared fallbacks are allowed, unrelated public-source expansion is not.
 
 `<auto>` means **infer from evidence**, not “use a hidden fixed value.” `<none>` explicitly disables the optional behavior for that argument. Explicit values always win.
 
@@ -51,6 +51,15 @@ sources:
 
 A scalar source is shorthand for `{source: <value>, ref: <auto>, scope: <auto>, index: <auto>}`.
 
+Constraints may stay simple or be structured only when needed:
+
+```yaml
+constraints:
+  require: []
+  prefer: []
+  exclude: []
+```
+
 ## Auto Resolution
 
 Resolve each `<auto>` independently. Do not treat one inferred value as permission to invent the others.
@@ -62,7 +71,7 @@ Use this evidence order unless an explicit argument overrides it:
 3. capabilities and Skill catalogs already exposed by the active runtime;
 4. current task or repository guidance that declares a Skill source, index, or root;
 5. source-local evidence such as repository instructions, manifests, indexes, and package structure;
-6. this Skill's declarative `metadata.default-source`, only when no more relevant source is established.
+6. this Skill's declarative `metadata.default-source`, only as a declared fallback when no more relevant source satisfies the request.
 
 The metadata default is a **fallback**, not a routing rule. It must not override an explicit source, hijack discovery for an unrelated repository, or cause unrelated public-source expansion.
 
@@ -73,7 +82,7 @@ If a required value remains materially ambiguous, preserve it as unresolved or a
 This Skill is **read-only discovery and selection**. It owns:
 
 - resolving candidate sources;
-- choosing an efficient discovery path;
+- choosing an efficient discovery path within each source;
 - matching capabilities to the caller's need;
 - applying explicit constraints and observable target compatibility;
 - grouping clear identity continuity;
@@ -94,35 +103,50 @@ It does not:
 Resolve `mode`, `query`, `target`, and `constraints` before spending work on broad discovery.
 
 - `match` finds the smallest relevant candidate set and selects the best supported candidate.
-- `inventory` enumerates all unique in-scope capabilities.
+- `inventory` enumerates all unique capabilities in the resolved source scope.
 - `sync-prep` returns a complete, reconciliation-ready selection set without mutating the target.
 
 When target information is irrelevant to the request, leave it unspecified rather than fabricating a target taxonomy.
 
-### Resolve sources
+### Build the source plan
 
 Normalize `sources` into ordered SourceSpecs.
 
-When `sources: <auto>`:
+When `sources: <auto>`, build a source plan from applicable evidence rather than choosing one source prematurely:
 
-1. use an explicitly established task/source context when present;
-2. otherwise use a runtime-native Skill catalog when it already exposes the relevant capability space;
-3. otherwise use repository-declared Skill discovery for the current task repository when relevant;
-4. otherwise use `metadata.default-source` when present and allowed by `fallback`.
+1. caller-established task/source context;
+2. runtime-native Skill catalog when it exposes the relevant capability space;
+3. current repository-declared Skill source when relevant;
+4. `metadata.default-source` only as a declared fallback.
+
+Deduplicate equivalent sources while preserving the strongest provenance and most specific scope.
+
+For `match`, `<auto>` strategy normally walks the plan as `first-match` and reaches declared fallbacks only when earlier sources do not produce a sufficient candidate.
+
+For `inventory` and `sync-prep`, do not silently aggregate unrelated sources. With `sources: <auto>`, use the highest-priority authoritative source that defines the requested scope unless the caller explicitly supplies multiple sources or requests `strategy: merge` or `strategy: exhaustive`.
 
 Do not fetch a remote repository merely to rediscover Skills already exposed authoritatively by the active runtime.
 
-### Choose a discovery path
+### Discover within a source
 
 For each source, prefer the cheapest authoritative representation that can answer the request:
 
 1. direct/native Skill catalog;
 2. source-declared index or manifest;
 3. scoped package discovery using source conventions;
-4. targeted repository scan only when the source lacks a sufficient catalog/index;
+4. targeted repository scan only when the source lacks a sufficient catalog or index;
 5. external search only when explicitly permitted by `fallback` or caller intent.
 
-An index is an optimization and authority hint, not a universal requirement. Do not assume a fixed filename or path unless the source declares it.
+`index` in SourceSpec controls index use for that source. An index is an optimization and authority hint, not a universal requirement. Do not assume a fixed filename or path unless the source declares it.
+
+### Apply strategy
+
+- `first-match` — walk ordered sources until the request has a sufficient supported result, then stop.
+- `merge` — combine candidates from the resolved sources, deduplicate capability identity, and preserve source provenance.
+- `exhaustive` — fully enumerate every resolved source before selection; use only when the caller needs complete cross-source coverage.
+- `<auto>` — use `first-match` for ordinary matching and the narrowest single-source plan for inventory or sync preparation unless explicit intent requires broader coverage.
+
+Do not use `strategy` to override `sources` order, SourceSpec scope, or `index` policy.
 
 ### Enumerate candidates
 
@@ -135,7 +159,7 @@ Inspect only enough candidate material to establish the fields relevant to the r
 - provenance and revision when available;
 - observable compatibility with `target` and `constraints`.
 
-For `match`, stop when the relevant candidate set is sufficiently covered. For `inventory` and `sync-prep`, cover the complete resolved scope.
+For `match`, stop when the strategy is satisfied. For `inventory` and `sync-prep`, cover the complete resolved scope promised by the selected source plan.
 
 ### Resolve identity
 
