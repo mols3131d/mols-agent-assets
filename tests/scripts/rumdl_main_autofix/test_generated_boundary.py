@@ -13,11 +13,46 @@ GENERATED_MARKERS = {
     ".agents/skills/** linguist-generated",
 }
 GENERATED_MD047_IGNORES = {
+    # Root projection files used by major coding-agent targets.
+    '"AGENTS.md" = ["MD047"]',
+    '"CLAUDE.md" = ["MD047"]',
+    '"GEMINI.md" = ["MD047"]',
+    '"QWEN.md" = ["MD047"]',
+    '"CONVENTIONS.md" = ["MD047"]',
+    '"CRUSH.md" = ["MD047"]',
+    '"replit.md" = ["MD047"]',
+    # Current and predeclared vendor projection directories.
+    '".codex/**/*.md" = ["MD047"]',
+    '".agents/**/*.md" = ["MD047"]',
+    '".claude/**/*.md" = ["MD047"]',
+    '".grok/**/*.md" = ["MD047"]',
+    '".gemini/**/*.md" = ["MD047"]',
     '".github/copilot-instructions.md" = ["MD047"]',
+    '".github/instructions/**/*.md" = ["MD047"]',
+    '".github/prompts/**/*.md" = ["MD047"]',
     '".github/skills/**/*.md" = ["MD047"]',
     '".github/agents/**/*.md" = ["MD047"]',
-    '".agents/rules/**/*.md" = ["MD047"]',
-    '".agents/skills/**/*.md" = ["MD047"]',
+    '".amazonq/**/*.md" = ["MD047"]',
+    '".kiro/**/*.md" = ["MD047"]',
+    '".cursor/**/*.md" = ["MD047"]',
+    '".windsurf/**/*.md" = ["MD047"]',
+    '".junie/**/*.md" = ["MD047"]',
+    '".augment/**/*.md" = ["MD047"]',
+    '".cline/**/*.md" = ["MD047"]',
+    '".continue/**/*.md" = ["MD047"]',
+    '".roo/**/*.md" = ["MD047"]',
+    '".trae/**/*.md" = ["MD047"]',
+    '".factory/**/*.md" = ["MD047"]',
+    '".opencode/**/*.md" = ["MD047"]',
+    '".qwen/**/*.md" = ["MD047"]',
+    '".warp/**/*.md" = ["MD047"]',
+    '".kilo/**/*.md" = ["MD047"]',
+    '".deepagents/**/*.md" = ["MD047"]',
+    '".crush/**/*.md" = ["MD047"]',
+    '".pi/**/*.md" = ["MD047"]',
+    '".rovodev/**/*.md" = ["MD047"]',
+    '".aider/**/*.md" = ["MD047"]',
+    '".replit/**/*.md" = ["MD047"]',
 }
 
 
@@ -37,8 +72,9 @@ def test_rumdl_config_matches_agentsmesh_serialization() -> None:
     assert "[per-file-ignores]" in config
     for ignore in GENERATED_MD047_IGNORES:
         assert ignore in config
-    assert "Keep this list aligned with every Markdown projection target in agentsmesh.yaml." in config
-    assert "If another vendor target is added later" in config
+    assert "even when the corresponding target directory does not exist yet" in config
+    assert "When a new vendor target is added" in config
+    assert "Grok is predeclared for a future AgentsMesh/plugin target" in config
     assert "[MD057]" in config
     assert "compact-paths = false" in config
 
