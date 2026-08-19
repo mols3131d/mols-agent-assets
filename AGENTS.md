@@ -20,14 +20,15 @@ For asset doctrine, distinguish:
 
 Prefer Skill as the portable reusable unit when a capability or situation-specific context should be activated on demand by the model rather than loaded globally.
 
-Do not classify Skills by chatbot vs agent or flat vs runtime. A canonical Skill lives at `src/rulesync/.rulesync/skills/<name>/SKILL.md`. Keep a Skill single-file when `SKILL.md` is sufficient; add supporting resources only when the capability actually needs them.
+Do not classify Skills by chatbot vs agent or flat vs runtime. A canonical Skill lives at `src/rulesync/.rulesync/skills/<name>/SKILL.md` and follows the current Rulesync canonical schema. Keep a Skill single-file when `SKILL.md` is sufficient; add supporting resources only when the capability actually needs them.
 
 Repository Agent assets represented through Rulesync live under `src/rulesync/.rulesync/subagents/`; use target-specific sections only for behavior the target actually supports.
 
-For Skill authoring, separate external contracts from repository-local extensions:
+For Skill authoring, separate canonical representation from generated target contracts:
 
-1. `docs/references/skills/agent-skills-io/agent-skills-io-specification.md` — Tier 1 `agentskills.io` portable specification plus links to official Tier 2 vendor/harness contracts.
-1. `docs/references/skills/agent-assets-skills-standard-personal.md` — repository-local **Personal Skill Standard** applied after external contracts.
+1. Current Rulesync schema and adapters — canonical front matter, target namespaces, and projection behavior.
+1. `docs/references/skills/agent-skills-io/agent-skills-io-specification.md` — Agent Skills output contract plus links to official vendor/harness contracts.
+1. `docs/references/skills/agent-assets-skills-standard-personal.md` — repository-local **Personal Skill Standard** for conventions not owned by Rulesync or a target contract.
 
 Do not copy Tier 2 vendor rules into repository-local standards. Read the official target-harness source linked by the specification reference when host-specific behavior matters.
 
