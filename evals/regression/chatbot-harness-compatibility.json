@@ -3,7 +3,7 @@
   "kind": "deterministic-regression",
   "contract": "chatbot-harness-compatibility",
   "sources": {
-    "standard": "docs/references/common/standards/chatbot-repository-bootstrap.md",
+    "standard": "docs/references/common/conventions/chatbot-repository-bootstrap.md",
     "github_loader": "src/rulesync/.rulesync/skills/load-context-github/SKILL.md",
     "mols_loader": "src/rulesync/.rulesync/skills/load-context-github-mols/SKILL.md"
   },
