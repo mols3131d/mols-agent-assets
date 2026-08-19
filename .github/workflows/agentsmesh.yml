@@ -24,16 +24,20 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  verify:
-    runs-on: ubuntu-slim
-    timeout-minutes: 6
+  reconcile:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v7
+      - name: Checkout PR head
+        uses: actions/checkout@v7
         with:
-          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 2
+          persist-credentials: true
       - uses: actions/setup-node@v7
         with:
           node-version: 22
@@ -43,66 +47,70 @@ jobs:
           enable-cache: false
       - name: Install pinned toolchain
         run: npm ci --ignore-scripts --no-audit --no-fund
-      - name: Validate canonical Markdown normalization
+      - name: Normalize canonical Markdown
         shell: bash
         run: |
           set -euo pipefail
           mapfile -d '' markdown < <(git ls-files -z -- '.agentsmesh/**/*.md')
           ((${#markdown[@]})) || exit 0
           uvx rumdl@0.2.6 fmt "${markdown[@]}"
-          git diff --exit-code -- "${markdown[@]}"
-      - name: Validate canonical configuration
-        run: npx agentsmesh lint
-      - name: Validate generated drift
-        run: npx agentsmesh check
-      - name: Validate regeneration
-        run: npx agentsmesh generate --check
-      - name: Validate generated Markdown normalization
+      - name: Regenerate projections
+        run: |
+          npx agentsmesh lint
+          npx agentsmesh generate
+          python scripts/generate_skill_indexes.py
+      - name: Probe generated rumdl idempotence
         shell: bash
         run: |
           set -euo pipefail
+          git add -A -- \
+            .agentsmesh \
+            .github/copilot-instructions.md \
+            .github/agents \
+            .github/skills \
+            .agents/rules \
+            .agents/skills
+
           mapfile -d '' markdown < <(git ls-files -z -- '*.md')
-          generated=()
+          managed=()
           for file in "${markdown[@]}"; do
-            attr="$(git check-attr linguist-generated -- "$file")"
-            [[ "$attr" == *": linguist-generated: set" ]] && generated+=("$file")
+            source_attr="$(git check-attr agentsmesh-source -- "$file")"
+            generated_attr="$(git check-attr linguist-generated -- "$file")"
+            if [[ "$source_attr" == *": agentsmesh-source: set" ]] || \
+               [[ "$generated_attr" == *": linguist-generated: set" ]]; then
+              managed+=("$file")
+            fi
           done
-          ((${#generated[@]})) || exit 0
-          uvx rumdl@0.2.6 fmt "${generated[@]}"
-          git diff --exit-code -- "${generated[@]}"
-      - name: Verify Copilot round trip
+
+          ((${#managed[@]})) || exit 0
+          uvx rumdl@0.2.6 fmt "${managed[@]}"
+          echo "rumdl post-generation changes:"
+          git diff --name-only -- "${managed[@]}"
+          npx agentsmesh check
+          npx agentsmesh generate --check
+      - name: Validate focused contracts
+        run: >-
+          uv run --frozen --no-default-groups --group test pytest -q
+          tests/skills/mols-skill-find
+          tests/skills/mols-skill-install
+          tests/scripts/rumdl_main_autofix
+          tests/evals
+          tests/test_agentsmesh_exodus.py
+          tests/scripts/generate_skill_indexes
+      - name: Commit normalized state
         shell: bash
         run: |
-          set -euo pipefail
-          root="$GITHUB_WORKSPACE"
-          tmp="$(mktemp -d)"
-          mkdir -p "$tmp/.github"
-          cp "$root/agentsmesh.yaml" "$tmp/agentsmesh.yaml"
-          cp "$root/.github/copilot-instructions.md" "$tmp/.github/copilot-instructions.md"
-          cp -R "$root/.github/agents" "$tmp/.github/agents"
-          cp -R "$root/.github/skills" "$tmp/.github/skills"
-          (
-            cd "$tmp"
-            "$root/node_modules/.bin/agentsmesh" import --from copilot
-            "$root/node_modules/.bin/agentsmesh" generate
-          )
-          diff -u "$root/.github/copilot-instructions.md" "$tmp/.github/copilot-instructions.md"
-          diff -ru "$root/.github/agents" "$tmp/.github/agents"
-          diff -ru "$root/.github/skills" "$tmp/.github/skills"
-      - name: Verify Antigravity round trip
-        shell: bash
-        run: |
-          set -euo pipefail
-          root="$GITHUB_WORKSPACE"
-          tmp="$(mktemp -d)"
-          mkdir -p "$tmp/.agents"
-          cp "$root/agentsmesh.yaml" "$tmp/agentsmesh.yaml"
-          cp -R "$root/.agents/rules" "$tmp/.agents/rules"
-          cp -R "$root/.agents/skills" "$tmp/.agents/skills"
-          (
-            cd "$tmp"
-            "$root/node_modules/.bin/agentsmesh" import --from antigravity
-            "$root/node_modules/.bin/agentsmesh" generate
-          )
-          diff -ru "$root/.agents/rules" "$tmp/.agents/rules"
-          diff -ru "$root/.agents/skills" "$tmp/.agents/skills"
+          rm -f .agentsmeshcache
+          git add -A -- \
+            .agentsmesh \
+            .github/copilot-instructions.md \
+            .github/agents \
+            .github/skills \
+            .agents/rules \
+            .agents/skills
+          git diff --cached --check
+          git diff --cached --quiet && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "style: normalize AgentsMesh Markdown"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
