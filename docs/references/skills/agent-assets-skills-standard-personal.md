@@ -33,13 +33,13 @@ Repository-local package shape와 target boundary 상세는 [Skill Package and T
 
 현재 Personal Skill Standard의 extension registry는 다음과 같다.
 
-- `src/agentsmesh/skills/<skill-name>/SKILL.md` canonical package convention
+- `src/agentsmesh/.agentsmesh/skills/<skill-name>/SKILL.md` canonical package convention
 - single-file-by-default authoring convention
 - Skill package의 runtime/non-runtime surface boundary
 - maintainer baseline preservation convention
 - `load-context-*` context-only naming and activation convention
 
-`src/agentsmesh/`라는 physical source boundary는 이 asset-library repository가 보관 자산을 자기 runtime Skill로 자동 활성화하지 않도록 하기 위한 repository-local convention이다. Native AgentsMesh tooling이 필요하면 temporary `.agentsmesh/` workspace로 stage한다.
+`src/agentsmesh/`는 격리된 native AgentsMesh workspace이며, 그 안의 `src/agentsmesh/.agentsmesh/`가 canonical asset source다. Repository root `.agentsmesh/`와 분리함으로써 asset-library repository가 보관 자산을 자기 runtime Skill로 자동 활성화하지 않도록 한다. Native read-only tooling은 이 workspace에서 직접 실행하고, generation처럼 파일을 쓰는 검증만 temporary copy에서 수행한다.
 
 Skill은 chatbot/agent 또는 flat/runtime으로 분류하지 않는다. `SKILL.md` 하나로 capability가 완결되면 single-file package로 유지하고, 실제 runtime resource가 필요할 때만 supporting surface를 추가한다.
 
