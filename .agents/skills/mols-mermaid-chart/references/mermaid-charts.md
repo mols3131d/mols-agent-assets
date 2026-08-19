@@ -56,7 +56,7 @@ Mermaid chart는 **수치가 있는 비교·추세·구성·이동량·계층 �
 - category, series 또는 hierarchy가 과밀하면 chart를 나누거나 table로 전환한다.
 - 하나의 chart에는 하나의 핵심 수치 질문만 둔다.
 
-Styling이 필요하면 [Style Policy](./style-policy.md)를 따른다.
+Styling이 필요하면 [Style Policy](style-policy.md)를 따른다.
 
 ## Output Modes
 
@@ -68,4 +68,4 @@ Styling이 필요하면 [Style Policy](./style-policy.md)를 따른다.
 
 ## Examples
 
-Type별 문법과 패턴은 [Mermaid Chart Examples](./examples/README.md)에서 필요한 문서만 읽는다. Example value는 문법 설명용이며 실제 source로 취급하지 않는다.
+Type별 문법과 패턴은 [Mermaid Chart Examples](examples/README.md)에서 필요한 문서만 읽는다. Example value는 문법 설명용이며 실제 source로 취급하지 않는다.

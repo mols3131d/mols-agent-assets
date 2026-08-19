@@ -2,8 +2,8 @@
 
 Use this workflow when an existing agent asset needs a focused quality or behavior
 improvement. If structural redesign is the primary objective, use
-[./refactor.md](./refactor.md). If fitting an existing Skill to a specific project is
-the primary objective, use [./tune.md](./tune.md).
+[./refactor.md](refactor.md). If fitting an existing Skill to a specific project is
+the primary objective, use [./tune.md](tune.md).
 
 ## Orient
 
@@ -32,7 +32,7 @@ Compare the result with both the requested improvement and preservation
 requirements. Check affected paths, links, schemas, scripts, and deterministic
 project checks when applicable.
 
-Use [./review.md](./review.md) or [./validate.md](./validate.md) when read-only semantic
+Use [./review.md](review.md) or [./validate.md](validate.md) when read-only semantic
 review or deterministic evidence is requested or required. Do not repeat review
 loops without a concrete finding or failed check.
 

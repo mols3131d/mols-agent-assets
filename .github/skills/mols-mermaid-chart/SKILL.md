@@ -35,10 +35,10 @@ Category 비교, 시간 추세, 구성비, 양적 이동, 계층 규모, multidi
 
 ## Reference Routing
 
-- 새 chart를 만들거나 type·구조를 바꿀 때 [Mermaid Chart Reference](./references/mermaid-charts.md)를 읽는다.
-- theme, palette, 강조 또는 기존 chart의 visual language를 다룰 때만 [Style Policy](./references/style-policy.md)를 읽는다.
-- 문법이 필요하면 [Examples](./references/examples/README.md)에서 선택한 type의 문서만 읽는다.
-- render, export, syntax error 또는 compatibility 확인이 필요할 때 [Verification](./references/mermaid-chart-verification.md)을 읽는다.
+- 새 chart를 만들거나 type·구조를 바꿀 때 [Mermaid Chart Reference](references/mermaid-charts.md)를 읽는다.
+- theme, palette, 강조 또는 기존 chart의 visual language를 다룰 때만 [Style Policy](references/style-policy.md)를 읽는다.
+- 문법이 필요하면 [Examples](references/examples/README.md)에서 선택한 type의 문서만 읽는다.
+- render, export, syntax error 또는 compatibility 확인이 필요할 때 [Verification](references/mermaid-chart-verification.md)을 읽는다.
 - 수치보다 관계·절차·상태·component 구조가 핵심이면 `mols-mermaid-diagram`을 사용한다.
 
 ## Workflow

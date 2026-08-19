@@ -67,7 +67,7 @@ Pie, Quadrant, Sankey, XY, Radar와 Treemap은 `mols-mermaid-chart`에서 다룬
 - 공백, punctuation, braces 또는 Markdown 문자가 있는 label은 quote를 우선한다.
 - participant, node, class와 subgraph reference는 사용 전에 선언한다.
 - experimental syntax, animation과 icon pack은 renderer 지원을 확인한다.
-- setup failure와 syntax failure를 구분한다. 자세한 절차는 [Verification](./mermaid-verification.md)을 따른다.
+- setup failure와 syntax failure를 구분한다. 자세한 절차는 [Verification](mermaid-verification.md)을 따른다.
 
 ## Grouping And Splitting
 
@@ -76,7 +76,7 @@ Pie, Quadrant, Sankey, XY, Radar와 Treemap은 `mols-mermaid-chart`에서 다룬
 - overview, detail, lifecycle과 ownership이 한 화면에 섞이거나 edge 추적이 어려우면 overview + detail로 분리한다.
 - overview와 detail의 용어, 방향, 상태 이름을 일치시킨다.
 
-Styling이 필요하면 [Style Policy](./style-policy.md)를 따른다.
+Styling이 필요하면 [Style Policy](style-policy.md)를 따른다.
 
 ## Output Modes
 
@@ -88,4 +88,4 @@ Styling이 필요하면 [Style Policy](./style-policy.md)를 따른다.
 
 ## Examples
 
-Type별 문법과 패턴은 [Mermaid Diagram Examples](./examples/README.md)에서 필요한 문서만 읽는다.
+Type별 문법과 패턴은 [Mermaid Diagram Examples](examples/README.md)에서 필요한 문서만 읽는다.

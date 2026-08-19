@@ -34,7 +34,7 @@ smallest project-owned asset that satisfies the responsibility.
 ## Finish
 
 Re-read the candidate against its purpose, activation, authority, and acceptance
-criteria. Use [./review.md](./review.md) or [./validate.md](./validate.md) only when the
+criteria. Use [./review.md](review.md) or [./validate.md](validate.md) only when the
 request or project policy requires those workflows.
 
 Report the created asset, key decisions, checks actually performed, and any

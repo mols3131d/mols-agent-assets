@@ -4,12 +4,12 @@ Mermaid 공식 Diagram Syntax의 **수치 chart 타입 6개를 모두 포함**�
 
 | Type | Example | Declaration | Advanced coverage |
 | --- | --- | --- | --- |
-| XY Chart | [XY Chart](./xy-chart.md) | `xychart` | bar, line, named series, data labels |
-| Pie Chart | [Pie Chart](./pie-chart.md) | `pie` | showData, donut, legend position, highlight |
-| Quadrant Chart | [Quadrant Chart](./quadrant-chart.md) | `quadrantChart` | normalized two-axis positioning |
-| Sankey | [Sankey](./sankey.md) | `sankey` | multi-stage flow, CSV labels, layout config |
-| Radar | [Radar](./radar.md) | `radar-beta` | comparable multidimensional profiles |
-| Treemap | [Treemap](./treemap.md) | `treemap-beta` | hierarchy and value formatting |
+| XY Chart | [XY Chart](xy-chart.md) | `xychart` | bar, line, named series, data labels |
+| Pie Chart | [Pie Chart](pie-chart.md) | `pie` | showData, donut, legend position, highlight |
+| Quadrant Chart | [Quadrant Chart](quadrant-chart.md) | `quadrantChart` | normalized two-axis positioning |
+| Sankey | [Sankey](sankey.md) | `sankey` | multi-stage flow, CSV labels, layout config |
+| Radar | [Radar](radar.md) | `radar-beta` | comparable multidimensional profiles |
+| Treemap | [Treemap](treemap.md) | `treemap-beta` | hierarchy and value formatting |
 
 선택한 type의 문서만 읽고 전체 example catalog를 한 번에 context에 넣지 않는다.
 
@@ -30,11 +30,11 @@ Mermaid 공식 Diagram Syntax의 **수치 chart 타입 6개를 모두 포함**�
 
 | Feature | Minimum version | Example |
 | --- | ---: | --- |
-| Sankey | 10.3.0 | [Sankey](./sankey.md) |
-| Radar | 11.6.0 | [Radar](./radar.md) |
-| XY data label outside bar | 11.14.0 | [XY Chart](./xy-chart.md) |
-| Sankey label and spacing config | 11.15.0 | [Sankey](./sankey.md) |
-| XY per-point line label | 11.16.0 | [XY Chart](./xy-chart.md) |
-| Pie donut, legend position and highlight | 11.16.0 | [Pie](./pie-chart.md) |
+| Sankey | 10.3.0 | [Sankey](sankey.md) |
+| Radar | 11.6.0 | [Radar](radar.md) |
+| XY data label outside bar | 11.14.0 | [XY Chart](xy-chart.md) |
+| Sankey label and spacing config | 11.15.0 | [Sankey](sankey.md) |
+| XY per-point line label | 11.16.0 | [XY Chart](xy-chart.md) |
+| Pie donut, legend position and highlight | 11.16.0 | [Pie](pie-chart.md) |
 
 minimum version은 feature gate일 뿐 권장 pin이 아니다. 실제 사용에서는 target 환경이 지원하는 최신 patched release를 우선한다.

@@ -30,9 +30,9 @@ description: |
 
 | Need | Reference |
 | --- | --- |
-| 상태, 위험, 행동과 category의 빠른 구분 | [Semantic Markers](./references/semantic-markers.md) |
-| 완료율 또는 소수 category의 단일 수치 비교 | [Text Bars](./references/text-bars.md) |
-| 파일, module, section 또는 ownership의 단일 부모 계층 | [Tree Structures](./references/tree-structures.md) |
+| 상태, 위험, 행동과 category의 빠른 구분 | [Semantic Markers](references/semantic-markers.md) |
+| 완료율 또는 소수 category의 단일 수치 비교 | [Text Bars](references/text-bars.md) |
+| 파일, module, section 또는 ownership의 단일 부모 계층 | [Tree Structures](references/tree-structures.md) |
 
 ## Workflow
 
@@ -78,7 +78,7 @@ description: |
 ### Semantic Emojis
 
 Emoji는 장식이 아니라 scan marker로 사용한다.
-반복되는 상태·위험·행동·category는 [Semantic Markers](./references/semantic-markers.md)를 따른다.
+반복되는 상태·위험·행동·category는 [Semantic Markers](references/semantic-markers.md)를 따른다.
 Text label을 함께 사용하고 같은 marker에는 같은 의미를 부여한다.
 
 ### Tables
@@ -87,8 +87,8 @@ Text label을 함께 사용하고 같은 marker에는 같은 의미를 부여한
 
 ### Text Bars and Trees
 
-진행률과 작은 범주 비교에는 [Text Bars](./references/text-bars.md)를 따른다.
-하나의 parent를 가진 hierarchy에는 [Tree Structures](./references/tree-structures.md)를 따른다.
+진행률과 작은 범주 비교에는 [Text Bars](references/text-bars.md)를 따른다.
+하나의 parent를 가진 hierarchy에는 [Tree Structures](references/tree-structures.md)를 따른다.
 추세와 많은 category는 `mermaid-chart`, DAG와 runtime flow는 `mermaid-diagram`을 사용한다.
 
 ### Callouts
