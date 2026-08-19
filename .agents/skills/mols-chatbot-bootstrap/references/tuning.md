@@ -6,14 +6,27 @@ Neither replaces the canonical Skill or Rule.
 
 ## Baseline Generation
 
-Use the bundled generator when the target repository follows the default local layout:
+Use the bundled generator when local assets can be represented mechanically.
+
+Default layout:
 
 ```text
 .agents/skills/*/SKILL.md
 .agents/rules/**/*.md
 ```
 
-Run it from the Skill package or adapt the smallest necessary part for the target repository.
+The script is configurable rather than tied to that layout:
+
+```text
+--repo <path>          target repository; default current directory
+--skills-root <path>   local Skill root; default .agents/skills
+--rules-root <path>    local Rule root; default .agents/rules
+--output-dir <path>    route output; default .agents/routes
+--kinds <value>        auto | skills | rules | both; default auto
+--force                explicit overwrite of existing route files
+```
+
+`--kinds auto` generates only route kinds whose local roots exist. Missing kinds are not materialized as empty route files.
 
 The baseline generator should extract only mechanical facts:
 
@@ -21,7 +34,20 @@ The baseline generator should extract only mechanical facts:
 - Rules → authoritative path/glob selectors and local `source`;
 - deterministic `_meta` headers and ordering.
 
+Remote assets and semantic routing choices are not inferred by the script. Add them through explicit Skill arguments or model review.
+
 Do not make the generator infer new capabilities, rewrite Rule semantics, or summarize asset bodies.
+
+## Generation Strategy
+
+Resolve the Skill's `generation` argument conservatively:
+
+- `script` — use or adapt deterministic generation;
+- `model` — write/update routes directly when scripting adds more machinery than value;
+- `<none>` — do not generate routes;
+- `<auto>` — reuse existing generation first, use/adapt the bundled script when repeatability or drift cost justifies it, otherwise prefer the smaller direct edit.
+
+Custom local roots should normally be passed to the script before forking its logic.
 
 ## Tuning
 
@@ -56,9 +82,9 @@ Tune `_meta.instructions` only to clarify how the route file should be consumed.
 
 Approved tuning must not be silently destroyed by later generation.
 
-The bundled generator therefore should not overwrite existing route files unless overwrite is explicitly requested.
+The bundled generator refuses to overwrite existing route files unless `--force` is explicit.
 
-For regeneration or comparison, use a separate output directory or explicit overwrite only when the caller intends to replace current route files.
+For regeneration or comparison, prefer a separate `--output-dir`. Use `--force` only when the caller actually intends replacement and the Skill's `overwrite` argument permits it.
 
 ## Drift Validation
 
