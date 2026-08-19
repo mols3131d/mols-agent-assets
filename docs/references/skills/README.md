@@ -1,7 +1,6 @@
 # Skill References
 
-이 directory는 Skill 관련 reference의 **navigation만** 소유한다. 규격이나 세부
-constraint를 이 index에서 다시 정의하지 않는다.
+이 directory는 Skill 관련 reference의 **navigation만** 소유한다. 규격이나 세부 constraint를 이 index에서 다시 정의하지 않는다.
 
 ## Start Here
 
@@ -11,8 +10,8 @@ constraint를 이 index에서 다시 정의하지 않는다.
    — 이 저장소에서 추가한 Skill-specific convention.
 1. [Agent Skill Design Guide](agent-skills-guide.md)
    — Skill을 설계·작성·검증하는 통합 흐름.
-1. [Skill Target Profiles](agent-assets-skills-target-profiles.md)
-   — `.agentsmesh/skills/`, `src/skills-chatbot/`, `src/skills-chatbot-runtime/`의 repository-local 상세.
+1. [Skill Package and Target Boundaries](agent-assets-skills-target-profiles.md)
+   — `.agentsmesh/skills/<name>/SKILL.md` package shape, single-file 관행, supporting resource와 target-specific boundary.
 
 ## Focused References
 

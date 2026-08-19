@@ -49,7 +49,7 @@ that specification applicable.
   into the Skill.
 
 If structural redesign becomes the primary work, apply the preservation discipline
-from [./refactor.md](refactor.md) rather than creating a competing tuning structure.
+from [./refactor.md](./refactor.md) rather than creating a competing tuning structure.
 
 ## Finish
 
@@ -58,6 +58,6 @@ target project's actual requirements. Check for stale generic assumptions,
 unnecessary hardcoding, duplicated authority, invalid paths or commands, and
 ownership conflicts.
 
-Use [./review.md](review.md) or [./validate.md](validate.md) when required. Report what
+Use [./review.md](./review.md) or [./validate.md](./validate.md) when required. Report what
 project context required adaptation, what was preserved, what was tuned, checks
 performed, and unresolved findings.

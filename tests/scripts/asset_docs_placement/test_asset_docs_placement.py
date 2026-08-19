@@ -7,9 +7,8 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-RUNTIME_SKILLS = ROOT / "src" / "skills-chatbot-runtime"
-CREATOR = RUNTIME_SKILLS / "mols-skill-creator"
-INSPECTOR = RUNTIME_SKILLS / "artifact-consistency-inspector"
+SKILLS = ROOT / ".agentsmesh" / "skills"
+CREATOR = SKILLS / "mols-skill-creator"
 TARGETED_TESTS = ROOT / ".github" / "workflows" / "targeted-tests.yml"
 
 
@@ -30,11 +29,28 @@ def run_package(skill: Path, output: Path) -> Path:
     return output / f"{skill.name}.zip"
 
 
-def test_runtime_packages_do_not_keep_legacy_docs() -> None:
-    legacy = sorted(
-        path for path in RUNTIME_SKILLS.rglob(".docs") if path.is_dir()
-    )
-    assert legacy == []
+def test_skill_packages_exclude_repository_verification_surfaces() -> None:
+    forbidden = {"tests", "evals", "scenarios", "results"}
+    for skill in SKILLS.iterdir():
+        if not skill.is_dir():
+            continue
+        assert {path.name for path in skill.iterdir() if path.is_dir()}.isdisjoint(
+            forbidden
+        ), skill.name
+
+
+def test_skill_verification_assets_live_outside_packages() -> None:
+    expected = [
+        ROOT / "tests/skills/artifact-consistency-inspector/test_contract.py",
+        ROOT / "tests/skills/artifact-consistency-inspector/scenarios",
+        ROOT / "tests/skills/mols-agent-asset-validator/test_scan_assets.py",
+        ROOT / "tests/skills/mols-markdown-dashboard/test_render.py",
+        ROOT / "tests/skills/writing/test_trigger_evals.py",
+        ROOT / "evals/skills/mols-agent-asset-validator",
+        ROOT / "evals/skills/mols-skill-creator/cases.json",
+        ROOT / "evals/skills/writing/trigger.json",
+    ]
+    assert all(path.exists() for path in expected)
 
 
 def test_migrated_maintainer_docs_exist_outside_packages() -> None:
@@ -71,16 +87,11 @@ def test_creator_initializer_is_minimal_and_self_contained(tmp_path: Path) -> No
         if path.is_file()
     )
     assert files == ["SKILL.md"]
-    assert not (created / ".docs").exists()
-
-    skill_text = (created / "SKILL.md").read_text(encoding="utf-8")
-    assert "docs/DIRECTIVE.md" not in skill_text
-    assert "docs/WORKING.md" not in skill_text
-    assert "maintainer-only documentation" in skill_text
 
 
-def test_creator_contract_sources_use_optional_maintainer_docs() -> None:
-    cases = json.loads((CREATOR / "evals/cases.json").read_text(encoding="utf-8"))
+def test_creator_contract_sources_use_repository_eval_surface() -> None:
+    cases_path = ROOT / "evals/skills/mols-skill-creator/cases.json"
+    cases = json.loads(cases_path.read_text(encoding="utf-8"))
     assertions = "\n".join(
         assertion
         for case in cases["cases"]
@@ -129,62 +140,27 @@ def test_creator_validator_flags_legacy_docs(tmp_path: Path) -> None:
     assert "external maintainer-doc surface" in result.stdout
 
 
-def test_creator_packager_excludes_explicit_non_runtime_surfaces(
-    tmp_path: Path,
-) -> None:
+def test_creator_packager_excludes_non_runtime_surfaces(tmp_path: Path) -> None:
     archive = run_package(CREATOR, tmp_path / "dist")
-    with zipfile.ZipFile(archive) as zf:
-        names = set(zf.namelist())
+    with zipfile.ZipFile(archive) as handle:
+        names = set(handle.namelist())
 
     prefix = f"{CREATOR.name}/"
     assert prefix + "SKILL.md" in names
     assert prefix + "agents/openai.yaml" in names
     assert prefix + "references/quality-model.md" in names
-    assert prefix + "evals/cases.json" not in names
-    assert not any("/.docs/" in name or "/.evals/" in name for name in names)
-
-
-def test_creator_packager_does_not_treat_every_dot_dir_as_non_runtime(
-    tmp_path: Path,
-) -> None:
-    skill = tmp_path / "dot-runtime"
-    skill.mkdir()
-    (skill / "SKILL.md").write_text(
-        "---\n"
-        "name: dot-runtime\n"
-        "description: Package a target-owned dot runtime resource for testing.\n"
-        "---\n\n"
-        "# Dot Runtime\n",
-        encoding="utf-8",
+    assert not any(
+        f"/{part}/" in name
+        for name in names
+        for part in ("tests", "evals", "scenarios", "results")
     )
-    (skill / ".runtime").mkdir()
-    (skill / ".runtime/config.json").write_text("{}\n", encoding="utf-8")
-    (skill / "evals").mkdir()
-    (skill / "evals/case.json").write_text("{}\n", encoding="utf-8")
-
-    archive = run_package(skill, tmp_path / "dist")
-    with zipfile.ZipFile(archive) as zf:
-        names = set(zf.namelist())
-
-    assert "dot-runtime/.runtime/config.json" in names
-    assert "dot-runtime/evals/case.json" not in names
 
 
-def test_targeted_workflow_routes_asset_doc_contract_changes() -> None:
+def test_targeted_workflow_routes_skill_tests_and_evals() -> None:
     workflow = TARGETED_TESTS.read_text(encoding="utf-8")
-    assert '"src/skills-chatbot-runtime/**"' in workflow
-    assert '"docs/skills/**"' in workflow
-    assert "src/skills-chatbot-runtime/*|docs/skills/*" in workflow
-    assert ".github/workflows/targeted-tests.yml)" in workflow
+    assert '".agentsmesh/skills/**"' in workflow
+    assert '"tests/skills/**"' in workflow
+    assert '"evals/skills/**"' in workflow
+    assert ".agentsmesh/skills/*)" in workflow
+    assert "evals/skills/*)" in workflow
     assert 'root_targets["tests/scripts/asset_docs_placement"]=1' in workflow
-
-
-def test_artifact_consistency_inspector_contract_tests_pass() -> None:
-    result = subprocess.run(
-        [sys.executable, str(INSPECTOR / "tests/run_tests.py")],
-        cwd=INSPECTOR,
-        check=False,
-        capture_output=True,
-        text=True,
-    )
-    assert result.returncode == 0, result.stdout + result.stderr

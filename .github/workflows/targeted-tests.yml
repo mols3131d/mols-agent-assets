@@ -7,29 +7,31 @@ on:
     paths:
       - ".agentsmesh/rules/**"
       - ".agentsmesh/skills/**"
+      - ".agentsmesh/agents/**"
       - "agentsmesh.yaml"
       - "package.json"
       - "package-lock.json"
       - ".github/copilot-instructions.md"
       - ".github/skills/**"
+      - ".github/agents/**"
       - ".agents/rules/**"
       - ".agents/skills/**"
-      - "evals/regression/agentsmesh-exodus.json"
+      - "evals/regression/**"
+      - "evals/skills/**"
+      - "tests/evals/**"
       - "tests/test_agentsmesh_exodus.py"
-      - "src/skills-chatbot-runtime/**"
       - "docs/README.md"
       - "docs/development.md"
+      - "docs/testing.md"
       - "docs/skills/**"
       - "docs/references/skills/**"
       - "docs/references/common/standards/agent-assets-standard-personal.md"
-      - "scripts/**"
       - "tests/skills/**"
       - "tests/scripts/**"
+      - "scripts/**"
+      - "pyproject.toml"
+      - "uv.lock"
       - ".github/workflows/targeted-tests.yml"
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -43,15 +45,15 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 2
-          persist-credentials: false
 
       - name: Select affected tests
         id: scope
         shell: bash
         run: |
+          set -euo pipefail
+
           mapfile -d '' files < <(git diff --name-only -z HEAD^1 HEAD)
           declare -A root_targets=()
-          declare -A projects=()
 
           add_exodus() {
             root_targets["tests/test_agentsmesh_exodus.py"]=1
@@ -61,17 +63,21 @@ jobs:
             root_targets["tests/scripts/asset_docs_placement"]=1
           }
 
+          add_skill_index() {
+            root_targets["tests/scripts/generate_skill_indexes"]=1
+          }
+
           add_skill() {
             local name="$1"
-            local skill=".agentsmesh/skills/$name"
             [[ -d "tests/skills/$name" ]] && root_targets["tests/skills/$name"]=1
-            if [[ -d "$skill/tests" ]]; then
-              if [[ -f "$skill/pyproject.toml" ]]; then
-                projects["$skill"]=1
-              else
-                root_targets["$skill/tests"]=1
-              fi
-            fi
+            return 0
+          }
+
+          add_eval() {
+            local name="$1"
+            root_targets["tests/evals"]=1
+            add_skill "$name"
+            return 0
           }
 
           add_script() {
@@ -85,26 +91,37 @@ jobs:
               tests/skills/conftest.py)
                 root_targets["tests/skills"]=1
                 ;;
+              tests/evals/*)
+                root_targets["tests/evals"]=1
+                ;;
               tests/scripts/conftest.py)
                 root_targets["tests/scripts"]=1
                 ;;
               .github/workflows/targeted-tests.yml)
                 add_exodus
                 add_asset_docs
+                add_skill_index
+                root_targets["tests/evals"]=1
                 ;;
               .agentsmesh/skills/*)
                 name="${path#*/skills/}"
                 add_skill "${name%%/*}"
                 add_exodus
+                add_asset_docs
+                add_skill_index
                 ;;
               tests/skills/*)
                 name="${path#*/skills/}"
                 add_skill "${name%%/*}"
                 ;;
-              .agentsmesh/rules/*|agentsmesh.yaml|package.json|package-lock.json|.github/copilot-instructions.md|.github/skills/*|.agents/rules/*|.agents/skills/*|evals/regression/agentsmesh-exodus.json|tests/test_agentsmesh_exodus.py)
+              evals/skills/*)
+                name="${path#*/skills/}"
+                add_eval "${name%%/*}"
+                ;;
+              .agentsmesh/rules/*|.agentsmesh/agents/*|agentsmesh.yaml|package.json|package-lock.json|.github/copilot-instructions.md|.github/skills/*|.github/agents/*|.agents/rules/*|.agents/skills/*|evals/regression/*|tests/test_agentsmesh_exodus.py)
                 add_exodus
                 ;;
-              src/skills-chatbot-runtime/*|docs/skills/*|docs/references/skills/*|docs/references/common/standards/agent-assets-standard-personal.md|docs/README.md|docs/development.md)
+              docs/skills/*|docs/references/skills/*|docs/references/common/standards/agent-assets-standard-personal.md|docs/README.md|docs/development.md|docs/testing.md)
                 add_asset_docs
                 ;;
               tests/scripts/*)
@@ -119,13 +136,11 @@ jobs:
             esac
           done
 
-          ((${#root_targets[@]})) && printf '%s\0' "${!root_targets[@]}" > /tmp/root-tests
-          ((${#projects[@]})) && printf '%s\0' "${!projects[@]}" > /tmp/project-tests
-
-          if ((${#root_targets[@]} == 0 && ${#projects[@]} == 0)); then
-            echo "run=false" >> "$GITHUB_OUTPUT"
-          else
+          if ((${#root_targets[@]})); then
+            printf '%s\0' "${!root_targets[@]}" > /tmp/root-tests
             echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Set up uv
@@ -141,13 +156,3 @@ jobs:
           [[ -f /tmp/root-tests ]] || exit 0
           mapfile -d '' targets < /tmp/root-tests
           uv run --frozen --no-default-groups --group test pytest -q "${targets[@]}"
-
-      - name: Run colocated skill tests
-        if: steps.scope.outputs.run == 'true'
-        shell: bash
-        run: |
-          [[ -f /tmp/project-tests ]] || exit 0
-          mapfile -d '' projects < /tmp/project-tests
-          for project in "${projects[@]}"; do
-            (cd "$project" && uv run pytest)
-          done

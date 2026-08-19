@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/mols-agent-asset-validator/result.schema.json",
+  "title": "Agent Asset Validation Result",
+  "type": "object",
+  "required": [
+    "target",
+    "scope",
+    "mode",
+    "execution",
+    "loop_ledger",
+    "evidence_ledger",
+    "axis_results",
+    "findings",
+    "coverage",
+    "disposition",
+    "limitations"
+  ],
+  "properties": {
+    "target": {"type": "string", "minLength": 1},
+    "question": {"type": ["string", "null"]},
+    "scope": {"type": "object"},
+    "mode": {"enum": ["validate", "improve"]},
+    "baseline": {"type": ["string", "object", "null"]},
+    "inventory": {"type": "array", "items": {"type": "object"}},
+    "relationship_graph": {"type": "array", "items": {"$ref": "#/$defs/relation"}},
+    "capability": {"type": "object"},
+    "execution": {
+      "type": "object",
+      "required": ["mode", "loops_requested", "loops_completed"],
+      "properties": {
+        "mode": {"enum": ["single", "independent", "sequential-fallback"]},
+        "runtime": {"type": ["string", "null"]},
+        "trials_requested": {"type": ["integer", "null"], "minimum": 1, "maximum": 20},
+        "trials_completed": {"type": ["integer", "null"], "minimum": 0, "maximum": 20},
+        "loops_requested": {"type": "integer", "minimum": 1, "maximum": 10},
+        "loops_completed": {"type": "integer", "minimum": 0, "maximum": 10},
+        "early_stop_reason": {"type": ["string", "null"]}
+      }
+    },
+    "loop_ledger": {"type": "array", "items": {"$ref": "#/$defs/loop"}},
+    "evidence_ledger": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+    "axis_results": {
+      "type": "object",
+      "additionalProperties": {"enum": ["pass", "fail", "unknown", "not_applicable"]}
+    },
+    "findings": {"type": "array", "items": {"$ref": "#/$defs/finding"}},
+    "coverage": {"type": "object"},
+    "disposition": {"enum": ["pass", "revise", "blocked"]},
+    "required_actions": {"type": "array", "items": {"type": "string"}},
+    "next_owner": {"type": ["string", "null"]},
+    "resume_condition": {"type": ["string", "null"]},
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "delta": {"type": "array", "items": {"type": "object"}}
+  },
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "required": ["level", "claim", "source"],
+      "properties": {
+        "level": {"enum": ["verified", "simulated", "inferred", "unknown"]},
+        "claim": {"type": "string", "minLength": 1},
+        "source": {"type": "string", "minLength": 1}
+      }
+    },
+    "relation": {
+      "type": "object",
+      "required": ["from", "type", "to"],
+      "properties": {
+        "from": {"type": "string"},
+        "type": {"enum": ["declares", "reads", "invokes", "delegates", "constrains", "overrides", "evaluates", "produces"]},
+        "to": {"type": "string"},
+        "evidence": {"type": ["string", "null"]}
+      }
+    },
+    "loop": {
+      "type": "object",
+      "required": ["number", "lenses", "evidence", "findings", "changes", "verification", "outcome"],
+      "properties": {
+        "number": {"type": "integer", "minimum": 1, "maximum": 10},
+        "lenses": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "evidence": {"type": "array", "items": {"type": "string"}},
+        "findings": {"type": "array", "items": {"type": "string"}},
+        "unknowns": {"type": "array", "items": {"type": "string"}},
+        "changes": {"type": "array", "items": {"type": "string"}},
+        "verification": {"type": "array", "items": {"type": "string"}},
+        "outcome": {"type": "string", "minLength": 1},
+        "continue_reason": {"type": ["string", "null"]}
+      }
+    },
+    "finding": {
+      "type": "object",
+      "required": ["id", "category", "severity", "evidence_level", "claim", "evidence", "impact", "required_action", "owner"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^F-[0-9]{3,}$"},
+        "category": {"type": "string"},
+        "severity": {"enum": ["critical", "major", "minor", "note"]},
+        "evidence_level": {"enum": ["verified", "simulated", "inferred", "unknown"]},
+        "claim": {"type": "string", "minLength": 1},
+        "evidence": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "impact": {"type": "string", "minLength": 1},
+        "reproduction": {"type": ["string", "null"]},
+        "required_action": {"type": "string", "minLength": 1},
+        "owner": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

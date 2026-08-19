@@ -10,8 +10,8 @@ Agent Skill은 특정 영역의 지식과 반복 가능한 절차를 필요할 �
   [Agent Skills Specification](agent-skills-io/agent-skills-io-specification.md)
 - Repository-local extension →
   [Personal Skill Standard](agent-assets-skills-standard-personal.md)
-- Target profile / package surface →
-  [Skill Target Profiles](agent-assets-skills-target-profiles.md)
+- Package shape / target boundary →
+  [Skill Package and Target Boundaries](agent-assets-skills-target-profiles.md)
 - 상세 authoring 원칙 →
   [Skill Creation Best Practices](agent-skills-io/agent-skills-io-best-practices.md)
 

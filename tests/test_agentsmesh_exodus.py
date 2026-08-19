@@ -35,7 +35,7 @@ def test_agentsmesh_config_matches_regression_contract() -> None:
     assert config["features"] == contract["features"]
 
 
-def test_canonical_rules_and_skills_match_regression_contract() -> None:
+def test_canonical_rules_skills_and_agents_match_regression_contract() -> None:
     contract = load_contract()["canonical"]
 
     rules = ROOT / ".agentsmesh/rules"
@@ -46,20 +46,48 @@ def test_canonical_rules_and_skills_match_regression_contract() -> None:
     for name in contract["skills"]:
         assert (skills / name / "SKILL.md").is_file()
 
+    agents = ROOT / ".agentsmesh/agents"
+    assert {path.stem for path in agents.glob("*.md")} == set(contract["agents"])
 
-def test_active_target_projections_cover_all_canonical_skills() -> None:
+
+def test_active_target_projections_cover_supported_canonical_assets() -> None:
     contract = load_contract()
     expected_skills = set(contract["canonical"]["skills"])
+    expected_agents = set(contract["canonical"]["agents"])
 
     for projection in contract["projections"].values():
         assert (ROOT / projection["root_rule"]).is_file()
-        assert directory_names(ROOT / projection["skills"]) == expected_skills
+
+        projected_skill_names = directory_names(ROOT / projection["skills"])
+        agent_mode = projection.get("agent_mode")
+
+        if agent_mode == "embedded-skill":
+            prefix = projection["agent_prefix"]
+            expected_embedded_agents = {f"{prefix}{name}" for name in expected_agents}
+            assert projected_skill_names == expected_skills | expected_embedded_agents
+            for name in expected_embedded_agents:
+                assert (ROOT / projection["skills"] / name / "SKILL.md").is_file()
+        else:
+            assert projected_skill_names == expected_skills
+
+        if agent_mode == "native":
+            projected_agents = ROOT / projection["agents"]
+            assert {
+                path.name.removesuffix(".agent.md")
+                for path in projected_agents.glob("*.agent.md")
+            } == expected_agents
 
 
-def test_deployable_skill_surface_has_no_dot_prefixed_paths() -> None:
-    assert load_contract()["package_surface"]["forbid_dot_paths"] is True
+def test_deployable_skill_surface_excludes_repository_verification() -> None:
+    surface = load_contract()["package_surface"]
+    assert surface["forbid_dot_paths"] is True
+    forbidden_top_level = set(surface["forbid_top_level_dirs"])
 
     for skill_root in skill_roots():
+        assert directory_names(skill_root).isdisjoint(forbidden_top_level), (
+            f"repository verification leaked into deployable Skill surface: "
+            f"{skill_root.relative_to(ROOT)}"
+        )
         for path in skill_root.rglob("*"):
             relative = path.relative_to(skill_root)
             assert not any(part.startswith(".") for part in relative.parts), (

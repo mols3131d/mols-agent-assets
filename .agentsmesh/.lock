@@ -1,21 +1,39 @@
 # Auto-generated. DO NOT EDIT MANUALLY.
 # Tracks the state of all config files for team conflict resolution.
 
-generated_at: 2026-08-18T11:34:25.554Z
-generated_by: unknown
+generated_at: 2026-08-19T04:54:19.170Z
+generated_by: runner
 lib_version: 0.32.0
 checksums:
-  rules/_root.md: sha256:c187d2e98c2f328c02a4186df72c4a32544027d7e12c0ea2742ff4bf2ec4ca94
+  agents/review-adversarial.md: sha256:065885304beef836d33c0e6e797e9bbe3faf29133ce0b1cf722ccdcade9730a8
+  agents/review-lead.md: sha256:f52f5bbfdbc4a4b7a4839ecbd62d5a8844b509267b6f8e967c711fc089f0df4c
+  agents/review-quality.md: sha256:ef41f89ce8e04c331aae064284b4958cc984ef3ea9d02a9bebba903390bd3e19
+  rules/_root.md: sha256:392472fa7fdf2e4bc918aaef37b424d6da70b3bea7d2d2f0a76bc737b3c17b4c
+  skills/artifact-consistency-inspector/SKILL.md: sha256:b7a570f72bba7215d41aa79417a75a1e1352662afaa71aecb23f6dbf89a65ac7
+  skills/artifact-consistency-inspector/references/example-report.md: sha256:4f69d06c960b0578c1c5a742a147fe85daf7f9ea2b60cb96d1724798dfff0569
+  skills/artifact-consistency-inspector/references/inspection-rules.md: sha256:d3c5ff15afa2b008cc2f9cf3ea0e65ca03e38af8d34fc56631f8befcc53da2c1
+  skills/artifact-consistency-inspector/references/report-format.md: sha256:cfe7c2a012e71bc8856394ab7d8e733fff1dc2231c9b80d92d9066da98384f01
+  skills/artifact-consistency-inspector/references/rule-sources.md: sha256:b1396941d2e21ba19c3aca12cffc5557cb37abe8745d94e9dfb7915443e80313
   skills/caveman-ko/README.md: sha256:b7238cb7de0045996865b8d72552bf3f2b5e680d86233b16bb5f16cc8fac4658
   skills/caveman-ko/SKILL.md: sha256:05aa6bfc392a044991ed011aa56e49a6f419fc67548a38b4d6165b3048121ccd
   skills/clarify-code/SKILL.md: sha256:78d14ed668ef5c49896fc1a5d2c3829f983a702a75da15e271491ceadfdbda53
   skills/clarify-code/references/diagnosis.md: sha256:99ef934889ed4e6d13576e66148d036cadf97e2a6508202c5909360eaea78791
   skills/clarify-code/references/documentation.md: sha256:a0c20183c1415ac2cbda2d457ea780e588ec4bf269e68e86c01176a57ac6f54e
   skills/clarify-code/references/validation.md: sha256:38dc6ee3f17682b4611341afe4dccf81d56f17dbfdbc0fda87d1575bf1c53d30
+  skills/guide-technical-docs-repo/SKILL.md: sha256:630ecb6ae66485ea5617acceecf1393f4ed737d57c876704ce57c594407b2da8
+  skills/load-context-agent-assets/SKILL.md: sha256:a6b181256c21be19f79c0fd6b3c3ed5e1e49c23e32bf7e9905ed30ee142b51c7
+  skills/load-context-agent-skills/SKILL.md: sha256:eb856423c84f83f8b3210e1775fbcc50fe134f96e3769556439e10f24b491495
+  skills/load-context-coding/SKILL.md: sha256:aca2c05868da401588dafe447c018c735f00424785409036a89700506d4175d0
+  skills/load-context-github/SKILL.md: sha256:571e70de7a305f9a1a5e36027e376e40898e9d1401eba0a211ade0b6682ee4cd
+  skills/load-context-github-mols/SKILL.md: sha256:afa10e199b940747907a7291fa4cd490ef87d31b06b998917afb0b06a656f587
+  skills/load-context-human-writing/SKILL.md: sha256:0fa62007fcbadff704a4c66619ae6abfad2529a70ac3164aa00ca7a6ebbc7059
+  skills/load-context-notion/SKILL.md: sha256:d1da0f090fd9bbeaf2602821d0b3b82793e7e701347c453231a07ca7e3398ce0
+  skills/load-context-notion-mols/SKILL.md: sha256:a5959f45e6cbdb6a833ffb343c68df2211c1c5a2ffbc363f406b1b7db166423d
+  skills/load-context-tech-doc-fidelity/SKILL.md: sha256:ef03468fabd1af46d55b7835622940410421ab2d18df8ae554fc0c96aac2f17c
   skills/mols-agent-asset-studio/SKILL.md: sha256:55472307b78a76b943f7c2dc04056af9abb0f3ce7ede33edcbfb62d198930369
   skills/mols-agent-asset-studio/agents/openai.yaml: sha256:d32116668a9e7135778175bedf5dbd900d7bbcdd1355ac0275c818f810a244ae
   skills/mols-agent-asset-studio/references/change-safety.md: sha256:0133c676a9ff89d989a876ccf156d0ccfb9f90618d93647d7fa24aa78eebae4d
-  skills/mols-agent-asset-studio/references/design.md: sha256:9a4fec333dd65b4eb94790f57543b180d29e59e7d7b8234af3fa9d8252cebc76
+  skills/mols-agent-asset-studio/references/design.md: sha256:b084554f0c05c6e8484c4a26d877add34a3a61e9c20c27dfaba71315273e740b
   skills/mols-agent-asset-studio/references/operations.md: sha256:af79ba677c2cab8944bb5f56d7e00f41cdebfb17b26d7980a71e334427ab8ca6
   skills/mols-agent-asset-studio/references/review.md: sha256:8d4e2c811b09dc9473ddb8e3917a5f2053d6f2d571e94bcbdb384812f4a0bd93
   skills/mols-agent-asset-studio/references/security-provenance.md: sha256:c98e211689254d29cc03670e685ee7c50f9035ced6e2f6802d583791086b01c6
@@ -49,6 +67,22 @@ checksums:
   skills/mols-agent-asset-studio/workflows/review.md: sha256:87602c7c171088a31650344c62d48392a5db9c37ce0367da5ef20eb9f46b89b8
   skills/mols-agent-asset-studio/workflows/tune.md: sha256:09e951e524a9ed613887e386bd6312f587c7d601a2088893badd0b1d18f7e729
   skills/mols-agent-asset-studio/workflows/validate.md: sha256:f4566ca555d5ffbbfa89373f687c22d9448c15029d42a8ec10b3c27581f1257d
+  skills/mols-agent-asset-validator/SKILL.md: sha256:09b3e7c7d36e9a545064f1330caddfe8da42d9c171c3064e8657148016a9c623
+  skills/mols-agent-asset-validator/agents/adversarial.agent.md: sha256:cfc347bd36fc09fe78288fbc04474c469ced15f31342235c0bb3844c9fdf093e
+  skills/mols-agent-asset-validator/agents/efficiency.agent.md: sha256:8130a792733428c88f76ebde489acb9a65206611cd6ffd1805105d2e70e7f473
+  skills/mols-agent-asset-validator/agents/orchestration.agent.md: sha256:4510040c2657412239ac291f73dd665c5128a483b3166248cb08e25145f25193
+  skills/mols-agent-asset-validator/agents/quality.agent.md: sha256:2c0029421dd6b9bb7c0f38a00905d7c4599d5d84babcefe6812f224f696e9f5a
+  skills/mols-agent-asset-validator/agents/routing.agent.md: sha256:74a3bb744975cbae551d9bd9fc23127cb27c9e922b2cab878115072b0225c7ff
+  skills/mols-agent-asset-validator/references/asset-contract.md: sha256:3fa79097c669695a19192bcbe3d8dbe4d49674d4f904194748486229d9593bd6
+  skills/mols-agent-asset-validator/references/performance-review.md: sha256:8f52012c3fa813a2bdc0af36efdbb179aa497863b93d54d95bcf6ca4d4e593bd
+  skills/mols-agent-asset-validator/references/platform-capabilities.md: sha256:f9f8268ebb93ebc6054d4f26a2a7b6aab580302fc6f4e8e975dc80293aad50a1
+  skills/mols-agent-asset-validator/references/re-review.md: sha256:8f1f2419136e6ae2c2fa8fda2a802294ee314d6ff1d97989fbaedbbce4c6851e
+  skills/mols-agent-asset-validator/references/reconciliation.md: sha256:748ea8a22d449c0b961835f0cbfbff2dd590f3e3253f11ca870d216817739893
+  skills/mols-agent-asset-validator/references/runtime-evaluation.md: sha256:c43108ec21af2fa41c1a57f0b5610844441c62893e08cdad9b8d4062fd3a614a
+  skills/mols-agent-asset-validator/schemas/eval-case.schema.json: sha256:cd011d55703db38e418d5d744f8d892f00c1db9bfc679603a811e7f9eb959d6d
+  skills/mols-agent-asset-validator/schemas/result.schema.json: sha256:aab6b471197133f638cd17c0969800437cc38eee5cd6eb5453752840d4641a66
+  skills/mols-agent-asset-validator/scripts/scan_assets.py: sha256:e9413e615c2bc754be2654c0d426ed6621472c02cf86541521ae3d15903d4db9
+  skills/mols-agent-asset-validator/scripts/validate.py: sha256:32cfba668cb14d4b55f723301cb2e2ad1d1f4cc4df505ba194b5adfecb5b10f5
   skills/mols-documents-studio/README.md: sha256:91156f9c749ecdff5f0f52b1c001dee1660d836d4866cd69b4e37c8379d05238
   skills/mols-documents-studio/SKILL.md: sha256:0199191cbae530953ccb70cdfebc3d99f2e8c45f1456398a3abc16c481effa03
   skills/mols-documents-studio/references/bluf-principle.md: sha256:98f0239f6263926e632d4130970d633f91ae12ed814f9e0ddecb616c60c6452c
@@ -56,13 +90,13 @@ checksums:
   skills/mols-documents-studio/references/emojis.md: sha256:83a3f67d4454f836b2be369ab5eba7d85e3319829f5009b5fc9eeec7e1a47161
   skills/mols-documents-studio/templates/decisions-lite.template.md: sha256:c383e85ee8239a871afa894eae6082846d6228fb18b65bf55204dd30dff8f5b5
   skills/mols-documents-studio/workflows/INDEX.csv: sha256:863561f96f51b75baa211ebf741d202d58cfc163399cbb8fcbc1bc7be14c73b9
-  skills/mols-documents-studio/workflows/write-decisions.md: sha256:a8b7582d91797d2c2929415f5e3bd1bab74adb2210979d36f2dfee408cc86b15
+  skills/mols-documents-studio/workflows/write-decisions.md: sha256:abcede8b0edbb5c93906ad5e757f06a9e7a0c29a219f9a5deef47a6d2f50aa01
   skills/mols-markdown-dashboard/SKILL.md: sha256:b0dd217fbcc4ff1130d9b1ce7408d8332160de4cbd15a69c08e9856b4b73cf70
   skills/mols-markdown-dashboard/examples/domain-dashboard.md: sha256:79f2e5bd98e8f70be2fa00cbd4f2ffb01132b306dc0d7e3ec44ce0ea2506b6a5
   skills/mols-markdown-dashboard/examples/domain-dashboard.yml: sha256:744b0d8fb148c492705c926a11c3ee97b09fa1f8cfb29d77c3bbf355c233ac36
   skills/mols-markdown-dashboard/examples/project-dashboard.md: sha256:b8e82cfd3f2b19b34dff29ca1b53caeb5e7258baf364a9f132be2584000e3703
   skills/mols-markdown-dashboard/examples/project-dashboard.yml: sha256:c744e9b0062eebb602867b6dfa17683131bbcd26be6f79e0c6cea2c768014ace
-  skills/mols-markdown-dashboard/pyproject.toml: sha256:2b936511c3c7e605cc7aab67aaddd4f985f11db528ae17f50f905daaa82911d1
+  skills/mols-markdown-dashboard/pyproject.toml: sha256:ba795f91a2b636e305f891708b3148b5829adf3bbb062019c8c589d12cc433e8
   skills/mols-markdown-dashboard/references/dashboard-method.md: sha256:d8038925b3aaae820b19adde0f78ef6bff1396e82baa476410e559e0ec4f1609
   skills/mols-markdown-dashboard/references/dashboard-schema.md: sha256:3e68a34c9c0514e26e4a101e0a78327b8bb27d0adc25039a578f5329b3f6a57f
   skills/mols-markdown-dashboard/references/render-workflow.md: sha256:d8cb492051fe26a31e827f7806b0458ab4ea03498d3fff7555332318e0261aec
@@ -79,18 +113,12 @@ checksums:
   skills/mols-markdown-dashboard/src/mols_dashboard/render.py: sha256:4cca0213384f9f350cd95a59f5450405947129002a1443ff6e6ecf0d60cbc892
   skills/mols-markdown-dashboard/src/mols_dashboard/validate.py: sha256:3d04f5680fa9d0ea25050360c437b1b887422ad291db24d3710d530c4f61839f
   skills/mols-markdown-dashboard/templates/dashboard.md.j2: sha256:3a3f0fec15acf4fa50ed023176118ec09c40794abfc5d8cddea74ef206a862e0
-  skills/mols-markdown-dashboard/tests/test_cli.py: sha256:ad6ba679df488befcafc0dc90166cf368b6d8506468ab4d944247d407e1feb96
-  skills/mols-markdown-dashboard/tests/test_derive.py: sha256:f952bb59b589e8c160764886411661c0b8f8a85148eb7ba24c4f8302c406dfff
-  skills/mols-markdown-dashboard/tests/test_loader.py: sha256:dab1776bf789c523d6c16b3643793a6ba77fb587898bcbdef05e0a103353ba16
-  skills/mols-markdown-dashboard/tests/test_model.py: sha256:93c903ede11a739e112bbc25e63645a185cefb356e0cff24b7057ed720fe84cf
-  skills/mols-markdown-dashboard/tests/test_render.py: sha256:25e7482a9a3236ad110347b8c642c38ce26f6437203a9574b0e4ea3ce50a9c9e
-  skills/mols-markdown-dashboard/tests/test_validate.py: sha256:c32211cf81e40445d9efae7539488c8059da277f7a0e5698784baa21b748c3cc
   skills/mols-markdown-for-human/SKILL.md: sha256:70e3220aafd9be9f42551632b573a3de3f5cce6abda3c8a4becc0466b29f1080
   skills/mols-markdown-for-human/references/semantic-markers.md: sha256:c531451b7cb68beb75e7d3fb80d98f8c59edc416649b1904589fd77ecde264ce
   skills/mols-markdown-for-human/references/text-bars.md: sha256:9d5464504afb2c583c4b27c753311802d2eb951b0f0d5eb3494210bd50eae525
   skills/mols-markdown-for-human/references/tree-structures.md: sha256:f45d2858a9d3b052aafd1683ccb754ca1189a584b6ffa7e059bb57348b1b97ea
   skills/mols-markdown-scripts/README.md: sha256:4f272751b3bcdae4912799c90acbad4de0afc4136b1ab4dd6d2908c36778c57d
-  skills/mols-markdown-scripts/SKILL.md: sha256:3a018ebd134c14212684c82b22efb48063529996388f8913f24d1e06b9c61320
+  skills/mols-markdown-scripts/SKILL.md: sha256:5317a9d725c853eec5011988a2bd0e1cb7be0b15c6e943cb9073cf09e43bfbd8
   skills/mols-markdown-scripts/pyproject.toml: sha256:7b8467f4f9e626e0321ac31254b525df7692e3c9a5407a4b6156edb65f4c9585
   skills/mols-markdown-scripts/scripts/check_dependencies.py: sha256:e722f2f12d59a376d3d7bfaa3cbdead416c36612492a2c87aec96f9610ed91eb
   skills/mols-markdown-scripts/scripts/format_markdown.py: sha256:fa38858f4fd77937ad2a65089ee0e1dc68eaddca5d0ac3f0c357536e9faf51b9
@@ -102,20 +130,20 @@ checksums:
   skills/mols-markdown-scripts/scripts/validate_headers.py: sha256:fd65c8896061c8706394cc65080069687a7470c662dd4f3f6d92f6291a20659e
   skills/mols-markdown-scripts/scripts/validate_links.py: sha256:719578b2e2ed9fc36be6ca2f0ed0db8f374a1a21fc907d3d0cb1eb8f16ab9fb0
   skills/mols-markdown-scripts/workflows/INDEX.csv: sha256:36027675fe006f70a1bad23244cf09b57a3f4746a98c3050b5e406bc182d2959
-  skills/mols-markdown-scripts/workflows/create-index.md: sha256:95fd333c926682b5fd4e5c62603e6df0dab5c2b2c64a5b034cfab60698b9553f
-  skills/mols-markdown-scripts/workflows/format-markdown.md: sha256:ace30c44066d58def7aadac7bc289ddc2dc661964cef5fe84030b0f341f7be11
+  skills/mols-markdown-scripts/workflows/create-index.md: sha256:23a5659dc4edee71e5c998700df5970fc1df49f7479fd56bac576df663cf79c0
+  skills/mols-markdown-scripts/workflows/format-markdown.md: sha256:5bcdc2199b71581e58f929877503241bdf167ac8b500c0310acab2cfb6d82941
   skills/mols-markdown-scripts/workflows/help.md: sha256:01a686147252cef838a72047a87aff356b2767d28699cc8983f13ffe51eb2ca0
-  skills/mols-markdown-scripts/workflows/update-index.md: sha256:cb68297a2276137e33fc070474e8208ed44593d8e59c1d770aa09cdaf55389e6
-  skills/mols-markdown-scripts/workflows/validate-frontmatter.md: sha256:f1aad151fa734b49edc7a6c7d4da13ab2b039098dabf090db00bde1600b56de7
-  skills/mols-markdown-scripts/workflows/validate-headers.md: sha256:3b1cd6c5177d1c1f7f14051415397aeee05c50a2d8db0e4c331a86b3fbcb9b7d
-  skills/mols-markdown-scripts/workflows/validate-links.md: sha256:7feccb12aa2dc84ded4a152c703c16767df7e9767c2effb6833a5f1c56b8484a
+  skills/mols-markdown-scripts/workflows/update-index.md: sha256:366202f6393fe5acf686b1e76107b6f1cdef4b6758f6e9bde1fdc2b0f0b7bc40
+  skills/mols-markdown-scripts/workflows/validate-frontmatter.md: sha256:725108669f3b5f8c4ef8912cebbc1c46fe322dd211908f769e13f39680f83394
+  skills/mols-markdown-scripts/workflows/validate-headers.md: sha256:1b8b41f91f7b0b43c9abf755de09748f49b0948d8c4baea226df155600842bb9
+  skills/mols-markdown-scripts/workflows/validate-links.md: sha256:d353801801a4e1d90c78dc243273a02b70d0e3f36044db2f84e62767cd0beb8c
   skills/mols-mermaid-chart/SKILL.md: sha256:daebd7f437bea2c25dd4189d186658cf946818d841715fcee51059d918cbb95e
   skills/mols-mermaid-chart/THIRD-PARTY-NOTICES.md: sha256:efecb672034ba6d06aaadc76b807f0174872aa7501788c536b3e84b73e78d8c2
   skills/mols-mermaid-chart/references/examples/README.md: sha256:acee3a1352a030cbefcec5449e4e2c68c55f2306ab42bdb42c75faf0f812c2b7
-  skills/mols-mermaid-chart/references/examples/pie-chart.md: sha256:f90277034c87534822dd4c9a7b9116bc5a8bdfdc9462506cf17061932c4bcf75
-  skills/mols-mermaid-chart/references/examples/quadrant-chart.md: sha256:a47221c3eaea25939c9ae97e195a90b3c17de27c20ad6ba932725f495b7eb59d
+  skills/mols-mermaid-chart/references/examples/pie-chart.md: sha256:ed637922e90f6a50c1a5e947ffb65b4ec8996766910de1ee536b343f329645d3
+  skills/mols-mermaid-chart/references/examples/quadrant-chart.md: sha256:ec02502f612c413add776ecaf59583f9227745014e90de16bfff78d3efe11a30
   skills/mols-mermaid-chart/references/examples/radar.md: sha256:36348c4a1fc3e088526bc880b36dca9efadce6fee6aad7995dbfb8e0beedc993
-  skills/mols-mermaid-chart/references/examples/sankey.md: sha256:5a700fdf04c8fb0a0870e9df925bc6696edbc54e8a299ef95f6da34518131d0b
+  skills/mols-mermaid-chart/references/examples/sankey.md: sha256:39d444029167fa64dc60e24a4cde99f0a90329a229846176a1d004726ce718d9
   skills/mols-mermaid-chart/references/examples/treemap.md: sha256:0574b843babe449662bdbc19604e657e3581f88b19712dcb648001f2183187a2
   skills/mols-mermaid-chart/references/examples/xy-chart.md: sha256:ba15cae9ec0d41a5b6eac80e11e971343328b6cade4e50c7a11a9048ebcd9883
   skills/mols-mermaid-chart/references/mermaid-chart-verification.md: sha256:f8544d9a24ed20736d2dd3dc1687e47741fdd2ca89498a587583e3b253040dbc
@@ -126,7 +154,7 @@ checksums:
   skills/mols-mermaid-diagram/references/examples/README.md: sha256:f12deb4c56913d00049c50980c9601a25df9eee493686560209962be16569de1
   skills/mols-mermaid-diagram/references/examples/architecture-diagram.md: sha256:b1435bff7d5c26402dd509d9a4eaeb18b4d70ca8cb9f9ef865f04174ea6a459c
   skills/mols-mermaid-diagram/references/examples/block-diagram.md: sha256:fe34a8ccdc90f32c6d541d5c085aeeb50e33a68d802186f09a834f4f4c156858
-  skills/mols-mermaid-diagram/references/examples/c4-context.md: sha256:e349556b6b1387ae186cf9a6453dcd8727ac12e577f48a7f9f4545dec60db66c
+  skills/mols-mermaid-diagram/references/examples/c4-context.md: sha256:210f607942811933694854363c5f6edbddb99f3e2b48d56d0e64be355f6f8bc9
   skills/mols-mermaid-diagram/references/examples/class-diagram.md: sha256:30f79cfd9f5d5a5a4ee608cc1afd56b12791188e2c9883e7a661c1afc285fbe1
   skills/mols-mermaid-diagram/references/examples/cynefin.md: sha256:8f24c8dbf9d2e18a932f3a63ee288d0465ec90454dcc983e93bbff1597f0bb1b
   skills/mols-mermaid-diagram/references/examples/er-diagram.md: sha256:a24a50dc1602eca4febd150b1ed6af55f58646ab4f7cf5400e0c61ad23e78c9c
@@ -151,31 +179,88 @@ checksums:
   skills/mols-mermaid-diagram/references/mermaid-diagrams.md: sha256:b7849bdd6021b3c9afadbc323678a359055c6904886830d5b72689788f0e1081
   skills/mols-mermaid-diagram/references/mermaid-verification.md: sha256:051231d297bfa421a0d0c07f76704e51cd06dbfdc3ba6f2df26da7673f63062d
   skills/mols-mermaid-diagram/references/style-policy.md: sha256:ae0cc57e41594c98d77abdf61917a07369c8fcc6ba65889ccedf3eed77974bcc
-  skills/mols-rule-dry/SKILL.md: sha256:4474bba4a5e948e4264431a08b5218a47838ddccc309e4034db0a729d31ce40d
+  skills/mols-rule-dry/SKILL.md: sha256:9932845bea5331b4ed9656d3bc36a78b8c76356c55ddd1fe180ae67c96d8f5c2
   skills/mols-rule-dry/references/application.md: sha256:8693f326c07b8de8a588d5cf49a8e4c775c742711f6db6a109327417f1eca9c8
   skills/mols-rule-dry/references/duplication.md: sha256:8c3e45e460245cbf6590f827de545a632e9f2a92b1351a03d1e5865c8d17ad85
   skills/mols-rule-dry/references/ownership.md: sha256:c49aa77fb371980422da0e2c235656f26d37d549d12a5348aefa5a57dcf70882
   skills/mols-rule-dry/references/placement.md: sha256:2c5f0364621f823554812e776c289cf5f83f84ac807e502f4678183979c050e1
-  skills/vcs-git-commit/README.md: sha256:25ee6dfc4c4fc94302d0a97f6f4182c17107ac7b0e5bdfcade5605ae3d8421da
-  skills/vcs-git-commit/SKILL.md: sha256:ad290ac4c5d730c7c7a733fb000d05ecf5b1e71d65d95d24477daeb62d141cb2
-  skills/vcs-git-commit/references/--help.ko.md: sha256:d13535a756ec5efa831226f4553a28008deb92f60dc6f8a09e337afb589fbbb2
-  skills/vcs-git-commit/references/--help.md: sha256:f0baf198bbbbe1e795f7d44c01deb6af6588dcbfeab1fc9604c30894d48c3549
+  skills/mols-skill-creator/SKILL.md: sha256:125d0750a1149e85699fac7d05ccd7194e47e10603ca1bcd39ac58bacd216eaa
+  skills/mols-skill-creator/agents/openai.yaml: sha256:6437d6511426ad2dcd13e1f7c910a5617fed7538fe3bdf6a1d7622cf8de6327d
+  skills/mols-skill-creator/assets/icon.svg: sha256:8936b24f674a1250d999e2c2b5901374fb4240426f32bd1ae340c352a90d617d
+  skills/mols-skill-creator/assets/templates/DIRECTIVE.md: sha256:35b1d95516f1fdbd0522ac130f77606c48d1a37138a40bb5c2cf63649401d67b
+  skills/mols-skill-creator/assets/templates/SKILL.md: sha256:14473cff04eb5f83eaa65e2709b425992a1aa92293b5e50b097f3f2398cc2ce5
+  skills/mols-skill-creator/assets/templates/WORKING.md: sha256:97630e870ce3a3e815a623941fef5d34909bf9dbd97849d1a6fdcf6dcd729c09
+  skills/mols-skill-creator/assets/templates/agents/openai.yaml: sha256:e008531e8d01be8e012d1ac69fa44348a58a7b01276bec8d5b06fc8010a6ec7d
+  skills/mols-skill-creator/references/platform-compatibility.md: sha256:734f8a3dfb57ccb0837511c42ba3d2fc4d4a0b6d86b59223e696af530f2d6d22
+  skills/mols-skill-creator/references/quality-model.md: sha256:1d9c7880a93186a5a9c1cd6f222db8a5ff8b25b1729aec057d98cf6e29e909c6
+  skills/mols-skill-creator/references/upstream-sources.md: sha256:08164e4c8e3c2e5dc1c1c941d2422dd68fc667878e3e26434984e04a708ebc82
+  skills/mols-skill-creator/scripts/init_skill.py: sha256:00d2720f2ee6e5560089ce5b4f624a560f6129781f25291167284247688df54b
+  skills/mols-skill-creator/scripts/package_skill.py: sha256:462917d3f0001166e868a226b59213a7e4f6270b0907d2519a0ca4f8c07cfda1
+  skills/mols-skill-creator/scripts/validate_skill.py: sha256:d73925a81a17286b262eb004df57fea9cc0564be93e0735980e7920d0f84bd27
+  skills/mols-skill-find/SKILL.md: sha256:ec819e23c4db32351effe558d904524dd3a5b40f023bfbbe936775c547af15ef
+  skills/mols-skill-install/SKILL.md: sha256:dd19c61d35571e0832c18e98836f55eaad03a9fcfa2b2d5f15f1f6e0a34eaa17
+  skills/news-table/SKILL.md: sha256:77db70065a6dee0f1ca85fe5a3c0ca40f4bd10ff09af251f18af5fc3a3b5cd52
+  skills/rpwr-loop/SKILL.md: sha256:8b11a82f55824e1eb4ca7a317b512fbb6d26bd305853bba8856e7159f22311ab
+  skills/searcher/SKILL.md: sha256:07b4168a80ca4093add07262fe65069d7cd1c8bd53a64010ca57acbf162d613f
+  skills/text-humanize-korean/SKILL.md: sha256:0b7fce4858df8d8602747410c1a50062b1fa47d755d45327ce9c03500addf914
+  skills/text-humanize-korean/agents/openai.yaml: sha256:58a5af6ffad2b57b666bbae1b9219fe26263a352192f6736e8d6b2f3e02d834d
+  skills/text-humanize-korean/assets/icon.svg: sha256:49315dda7125ec5fc77ef5f2b96126d8b2121c6e72944b4702972e90f321d3ee
+  skills/text-humanize-korean/references/examples.md: sha256:d341748ff67631d33438728d6c7280f242b0daf95144e4b86bb496f8aa8079a1
+  skills/text-humanize-korean/references/fidelity-rules.md: sha256:49f2094c445f4e5b6d8b62814ec3bb4d6af2518d9e376a7bf4e4c6942833a809
+  skills/text-humanize-korean/references/quick-rules.md: sha256:7b625002fb5d1f57c38b787d107d1297cb7705fff3bcc517b3c8f0df02f94b15
+  skills/text-humanize-korean/references/taxonomy.md: sha256:1e305bf11840ee14474b5d22d8eece77fcf73e94b7aa53be43d990afa0dff37d
+  skills/text-humanize-korean/scripts/verify_fidelity.py: sha256:522af7609884c6967f369010cdc4a2028d1b4e84c5b068c0c13a89cc25f0dfd3
+  skills/vcs-git-commit/README.md: sha256:81c24d6c8e96a19016c4d5ac389122affc109f43ccdbf95d4cdbad51baa6f88d
+  skills/vcs-git-commit/SKILL.md: sha256:32f097d77ae7dc067ed1e343c7a1ff8ba5bff6232ebe385a46893391c3363611
+  skills/vcs-git-commit/references/--help.ko.md: sha256:573953ce9a883d0c6e3940ad4dd152a67914f537b3d21ef992073bff0d620110
+  skills/vcs-git-commit/references/--help.md: sha256:ebf9b34b4d42978b9a828f33fe1be4736518d31b390e2a0caeb221b98c7171f5
   skills/vcs-git-commit/references/default-gitmessage.md: sha256:d18e83dba5fc11a93afd313e757f7533908a8c4f351da84a866fc7bc649f2dd2
+  skills/writing/SKILL.md: sha256:fa20626d5aeb48c2c6f8aa33b2a84292d5beb6d946ace9eb8212705312b1f04d
+  skills/writing/agents/openai.yaml: sha256:be4c0e323a49b6d34fda327827199e1e0363dfa0f27512ce96a8d5a833c62f1a
+  skills/writing/assets/icon.svg: sha256:49315dda7125ec5fc77ef5f2b96126d8b2121c6e72944b4702972e90f321d3ee
+  skills/writing/assets/review-output-template.md: sha256:fb8d94be49bb341a94bb20a4f1e802a6c57c9dd6361d6bc4e413ba38c460b6d7
+  skills/writing/assets/writing-brief-template.md: sha256:e080d93c3fb0d6eed6c400d2267f63b06eaa940f1cb34f962390b4b3cb7ea1b1
+  skills/writing/references/examples.md: sha256:f95f98c1d187e4e245e74b8ec2950567266a0c0025510ae94bd0ab901a0ab6b5
+  skills/writing/references/principles.md: sha256:072ff72357ffee8ea8a4b64f99fcc04b4cb2d7b2be24e6e33654fecd0b34d9c7
+  skills/writing/references/review-rubric.md: sha256:9929adb3aa69bda402695d1cb7369c30d706a03053162eba9ef5ef7f6417e481
+  skills/writing/references/workflows.md: sha256:d8c8bfd2b776f78d0fb94c5b67efeeb87df4e9954fe1572bb7b971a32c7bf580
+  skills/writing/scripts/validate.py: sha256:d8bab443718c6b3122a2f5baa4bb58c42f3b7dedd71843b96b6bbcd5e575dd9a
 extends: {}
 packs: {}
 outputs:
-  .github/copilot-instructions.md: sha256:991b19bfa2777a3c98505191c6a0bb816528cef4e8bea2a043cc53210673b1eb
-  .agents/rules/general.md: sha256:991b19bfa2777a3c98505191c6a0bb816528cef4e8bea2a043cc53210673b1eb
+  .github/copilot-instructions.md: sha256:9aedd0c4ddc68f41308e858ac93fe6c27641c33574aea782025bd55e1deafd63
+  .agents/rules/general.md: sha256:9aedd0c4ddc68f41308e858ac93fe6c27641c33574aea782025bd55e1deafd63
+  .github/agents/review-adversarial.agent.md: sha256:2ad98619d630eddad24b86ddc582a181963d8cf8a655fd58287e068940f3c97e
+  .github/agents/review-lead.agent.md: sha256:f3a301c7874a967b87095b6267a32b17536559b392f1f67cb289b4d9a8dd1080
+  .github/agents/review-quality.agent.md: sha256:3c0276a77b2d26a8405b520899a66e204212f85df02a979639315256fd414ac2
+  .agents/skills/am-agent-review-adversarial/SKILL.md: sha256:98dcbc12896398acfd4d2a1b83087fb24502bd1aca473ebc19e52994a36422a7
+  .agents/skills/am-agent-review-lead/SKILL.md: sha256:33a617291da4f776e9cd021b2c4df9c2d6334fa559c2d8b5ea31bc330789ed1f
+  .agents/skills/am-agent-review-quality/SKILL.md: sha256:e7d3fff7cc68e7d9968d0a63126d79652a494aaedf7888c7dab247a48eab66ad
+  .github/skills/artifact-consistency-inspector/SKILL.md: sha256:6e8d09225aa2cd056ecb277884f90f8b3f139c5f20ef9ce4fe1046e206ac3bbe
+  .github/skills/artifact-consistency-inspector/references/example-report.md: sha256:4f69d06c960b0578c1c5a742a147fe85daf7f9ea2b60cb96d1724798dfff0569
+  .github/skills/artifact-consistency-inspector/references/inspection-rules.md: sha256:d3c5ff15afa2b008cc2f9cf3ea0e65ca03e38af8d34fc56631f8befcc53da2c1
+  .github/skills/artifact-consistency-inspector/references/report-format.md: sha256:cfe7c2a012e71bc8856394ab7d8e733fff1dc2231c9b80d92d9066da98384f01
+  .github/skills/artifact-consistency-inspector/references/rule-sources.md: sha256:b1396941d2e21ba19c3aca12cffc5557cb37abe8745d94e9dfb7915443e80313
   .github/skills/caveman-ko/SKILL.md: sha256:f0f3a778d6574a5d4e2f9f3b85e0239aa28f256d8b1a87afbfae9c85f6d020a4
   .github/skills/caveman-ko/README.md: sha256:b7238cb7de0045996865b8d72552bf3f2b5e680d86233b16bb5f16cc8fac4658
   .github/skills/clarify-code/SKILL.md: sha256:3f4719c9691447628a8f342788fb3357d1cf4f9ed56b819d74b629b4e1964f2f
   .github/skills/clarify-code/references/diagnosis.md: sha256:99ef934889ed4e6d13576e66148d036cadf97e2a6508202c5909360eaea78791
   .github/skills/clarify-code/references/documentation.md: sha256:a0c20183c1415ac2cbda2d457ea780e588ec4bf269e68e86c01176a57ac6f54e
   .github/skills/clarify-code/references/validation.md: sha256:38dc6ee3f17682b4611341afe4dccf81d56f17dbfdbc0fda87d1575bf1c53d30
+  .github/skills/guide-technical-docs-repo/SKILL.md: sha256:eeea015ad3b41c5492a3a9824b39d728f7fd94b7328b5f23309b803d5b62a9f3
+  .github/skills/load-context-agent-assets/SKILL.md: sha256:9bc863520549d371bd54cd9ed7c0aab4ad98e8d3d00d3fc1801fa7ac465d08aa
+  .github/skills/load-context-agent-skills/SKILL.md: sha256:e92c3dc35609e3dde3b5652909d0c8d9c62d04497bf85239b45b6c210cb84240
+  .github/skills/load-context-coding/SKILL.md: sha256:974975c39f429b5d07a68865fd34bf51783b0c22487b55b11328ccf0fb8c84df
+  .github/skills/load-context-github/SKILL.md: sha256:4cdb2b2e56abc081d3cdf1a6aac7a5a6e95ac2cee364f9099045151665b62c92
+  .github/skills/load-context-github-mols/SKILL.md: sha256:a50a1e2d3ee0d8f6657973b03fd57aca97da0fc30383c716c63273d008e71043
+  .github/skills/load-context-human-writing/SKILL.md: sha256:52475fb1288fd6437e5f21b69d24f73b9c2ee9e5f48a65542b77aff47d8fbf01
+  .github/skills/load-context-notion/SKILL.md: sha256:9bf7d6ad4baef1716e8f51f6c891dc96033ddd0b540799b9a5c51726ceb8baac
+  .github/skills/load-context-notion-mols/SKILL.md: sha256:d5ecee56ad90a533a8d79f105e273154107fdf5654855b541318271edc7c26ca
+  .github/skills/load-context-tech-doc-fidelity/SKILL.md: sha256:6a92f1357af18343bc3a16060ad2e68c24ed59d728ec695156bee3890b291fe5
   .github/skills/mols-agent-asset-studio/SKILL.md: sha256:271c0eb4f106c7b496fb1b0b3a442c78095c27461bd2e14508d499b794261287
   .github/skills/mols-agent-asset-studio/agents/openai.yaml: sha256:d32116668a9e7135778175bedf5dbd900d7bbcdd1355ac0275c818f810a244ae
   .github/skills/mols-agent-asset-studio/references/change-safety.md: sha256:0133c676a9ff89d989a876ccf156d0ccfb9f90618d93647d7fa24aa78eebae4d
-  .github/skills/mols-agent-asset-studio/references/design.md: sha256:9a4fec333dd65b4eb94790f57543b180d29e59e7d7b8234af3fa9d8252cebc76
+  .github/skills/mols-agent-asset-studio/references/design.md: sha256:b084554f0c05c6e8484c4a26d877add34a3a61e9c20c27dfaba71315273e740b
   .github/skills/mols-agent-asset-studio/references/operations.md: sha256:af79ba677c2cab8944bb5f56d7e00f41cdebfb17b26d7980a71e334427ab8ca6
   .github/skills/mols-agent-asset-studio/references/review.md: sha256:8d4e2c811b09dc9473ddb8e3917a5f2053d6f2d571e94bcbdb384812f4a0bd93
   .github/skills/mols-agent-asset-studio/references/security-provenance.md: sha256:c98e211689254d29cc03670e685ee7c50f9035ced6e2f6802d583791086b01c6
@@ -209,6 +294,22 @@ outputs:
   .github/skills/mols-agent-asset-studio/workflows/review.md: sha256:87602c7c171088a31650344c62d48392a5db9c37ce0367da5ef20eb9f46b89b8
   .github/skills/mols-agent-asset-studio/workflows/tune.md: sha256:c83e32835ca095faaad011d9333565cd741863f6c95282ea4b2d995e2cb2edff
   .github/skills/mols-agent-asset-studio/workflows/validate.md: sha256:f4566ca555d5ffbbfa89373f687c22d9448c15029d42a8ec10b3c27581f1257d
+  .github/skills/mols-agent-asset-validator/SKILL.md: sha256:310210c958c093cfc3c11961bb13a5865d3c43e77c8d52ccb38c914f5f24e32e
+  .github/skills/mols-agent-asset-validator/agents/adversarial.agent.md: sha256:cfc347bd36fc09fe78288fbc04474c469ced15f31342235c0bb3844c9fdf093e
+  .github/skills/mols-agent-asset-validator/agents/efficiency.agent.md: sha256:8130a792733428c88f76ebde489acb9a65206611cd6ffd1805105d2e70e7f473
+  .github/skills/mols-agent-asset-validator/agents/orchestration.agent.md: sha256:4510040c2657412239ac291f73dd665c5128a483b3166248cb08e25145f25193
+  .github/skills/mols-agent-asset-validator/agents/quality.agent.md: sha256:2c0029421dd6b9bb7c0f38a00905d7c4599d5d84babcefe6812f224f696e9f5a
+  .github/skills/mols-agent-asset-validator/agents/routing.agent.md: sha256:74a3bb744975cbae551d9bd9fc23127cb27c9e922b2cab878115072b0225c7ff
+  .github/skills/mols-agent-asset-validator/references/asset-contract.md: sha256:3fa79097c669695a19192bcbe3d8dbe4d49674d4f904194748486229d9593bd6
+  .github/skills/mols-agent-asset-validator/references/performance-review.md: sha256:8f52012c3fa813a2bdc0af36efdbb179aa497863b93d54d95bcf6ca4d4e593bd
+  .github/skills/mols-agent-asset-validator/references/platform-capabilities.md: sha256:f9f8268ebb93ebc6054d4f26a2a7b6aab580302fc6f4e8e975dc80293aad50a1
+  .github/skills/mols-agent-asset-validator/references/re-review.md: sha256:8f1f2419136e6ae2c2fa8fda2a802294ee314d6ff1d97989fbaedbbce4c6851e
+  .github/skills/mols-agent-asset-validator/references/reconciliation.md: sha256:748ea8a22d449c0b961835f0cbfbff2dd590f3e3253f11ca870d216817739893
+  .github/skills/mols-agent-asset-validator/references/runtime-evaluation.md: sha256:c43108ec21af2fa41c1a57f0b5610844441c62893e08cdad9b8d4062fd3a614a
+  .github/skills/mols-agent-asset-validator/schemas/eval-case.schema.json: sha256:cd011d55703db38e418d5d744f8d892f00c1db9bfc679603a811e7f9eb959d6d
+  .github/skills/mols-agent-asset-validator/schemas/result.schema.json: sha256:aab6b471197133f638cd17c0969800437cc38eee5cd6eb5453752840d4641a66
+  .github/skills/mols-agent-asset-validator/scripts/scan_assets.py: sha256:e9413e615c2bc754be2654c0d426ed6621472c02cf86541521ae3d15903d4db9
+  .github/skills/mols-agent-asset-validator/scripts/validate.py: sha256:32cfba668cb14d4b55f723301cb2e2ad1d1f4cc4df505ba194b5adfecb5b10f5
   .github/skills/mols-documents-studio/SKILL.md: sha256:38e9ee27b2526c4a68e5e25563aa972ca5411e602c0bc662f236372ca4016493
   .github/skills/mols-documents-studio/README.md: sha256:91156f9c749ecdff5f0f52b1c001dee1660d836d4866cd69b4e37c8379d05238
   .github/skills/mols-documents-studio/references/bluf-principle.md: sha256:98f0239f6263926e632d4130970d633f91ae12ed814f9e0ddecb616c60c6452c
@@ -216,13 +317,13 @@ outputs:
   .github/skills/mols-documents-studio/references/emojis.md: sha256:83a3f67d4454f836b2be369ab5eba7d85e3319829f5009b5fc9eeec7e1a47161
   .github/skills/mols-documents-studio/templates/decisions-lite.template.md: sha256:c383e85ee8239a871afa894eae6082846d6228fb18b65bf55204dd30dff8f5b5
   .github/skills/mols-documents-studio/workflows/INDEX.csv: sha256:863561f96f51b75baa211ebf741d202d58cfc163399cbb8fcbc1bc7be14c73b9
-  .github/skills/mols-documents-studio/workflows/write-decisions.md: sha256:a8b7582d91797d2c2929415f5e3bd1bab74adb2210979d36f2dfee408cc86b15
+  .github/skills/mols-documents-studio/workflows/write-decisions.md: sha256:abcede8b0edbb5c93906ad5e757f06a9e7a0c29a219f9a5deef47a6d2f50aa01
   .github/skills/mols-markdown-dashboard/SKILL.md: sha256:9571a941e1003630560d0da30dc19a454d437922b31a155684b7b1ca0b019709
   .github/skills/mols-markdown-dashboard/examples/domain-dashboard.md: sha256:79f2e5bd98e8f70be2fa00cbd4f2ffb01132b306dc0d7e3ec44ce0ea2506b6a5
   .github/skills/mols-markdown-dashboard/examples/domain-dashboard.yml: sha256:744b0d8fb148c492705c926a11c3ee97b09fa1f8cfb29d77c3bbf355c233ac36
   .github/skills/mols-markdown-dashboard/examples/project-dashboard.md: sha256:b8e82cfd3f2b19b34dff29ca1b53caeb5e7258baf364a9f132be2584000e3703
   .github/skills/mols-markdown-dashboard/examples/project-dashboard.yml: sha256:c744e9b0062eebb602867b6dfa17683131bbcd26be6f79e0c6cea2c768014ace
-  .github/skills/mols-markdown-dashboard/pyproject.toml: sha256:2b936511c3c7e605cc7aab67aaddd4f985f11db528ae17f50f905daaa82911d1
+  .github/skills/mols-markdown-dashboard/pyproject.toml: sha256:ba795f91a2b636e305f891708b3148b5829adf3bbb062019c8c589d12cc433e8
   .github/skills/mols-markdown-dashboard/references/dashboard-method.md: sha256:d8038925b3aaae820b19adde0f78ef6bff1396e82baa476410e559e0ec4f1609
   .github/skills/mols-markdown-dashboard/references/dashboard-schema.md: sha256:3e68a34c9c0514e26e4a101e0a78327b8bb27d0adc25039a578f5329b3f6a57f
   .github/skills/mols-markdown-dashboard/references/render-workflow.md: sha256:d8cb492051fe26a31e827f7806b0458ab4ea03498d3fff7555332318e0261aec
@@ -239,17 +340,11 @@ outputs:
   .github/skills/mols-markdown-dashboard/src/mols_dashboard/render.py: sha256:4cca0213384f9f350cd95a59f5450405947129002a1443ff6e6ecf0d60cbc892
   .github/skills/mols-markdown-dashboard/src/mols_dashboard/validate.py: sha256:3d04f5680fa9d0ea25050360c437b1b887422ad291db24d3710d530c4f61839f
   .github/skills/mols-markdown-dashboard/templates/dashboard.md.j2: sha256:3a3f0fec15acf4fa50ed023176118ec09c40794abfc5d8cddea74ef206a862e0
-  .github/skills/mols-markdown-dashboard/tests/test_cli.py: sha256:ad6ba679df488befcafc0dc90166cf368b6d8506468ab4d944247d407e1feb96
-  .github/skills/mols-markdown-dashboard/tests/test_derive.py: sha256:f952bb59b589e8c160764886411661c0b8f8a85148eb7ba24c4f8302c406dfff
-  .github/skills/mols-markdown-dashboard/tests/test_loader.py: sha256:dab1776bf789c523d6c16b3643793a6ba77fb587898bcbdef05e0a103353ba16
-  .github/skills/mols-markdown-dashboard/tests/test_model.py: sha256:93c903ede11a739e112bbc25e63645a185cefb356e0cff24b7057ed720fe84cf
-  .github/skills/mols-markdown-dashboard/tests/test_render.py: sha256:25e7482a9a3236ad110347b8c642c38ce26f6437203a9574b0e4ea3ce50a9c9e
-  .github/skills/mols-markdown-dashboard/tests/test_validate.py: sha256:c32211cf81e40445d9efae7539488c8059da277f7a0e5698784baa21b748c3cc
   .github/skills/mols-markdown-for-human/SKILL.md: sha256:8198281792353e2a0fe50f96d48351c0e442be168100dee8c33d8d2d29f5723a
   .github/skills/mols-markdown-for-human/references/semantic-markers.md: sha256:c531451b7cb68beb75e7d3fb80d98f8c59edc416649b1904589fd77ecde264ce
   .github/skills/mols-markdown-for-human/references/text-bars.md: sha256:9d5464504afb2c583c4b27c753311802d2eb951b0f0d5eb3494210bd50eae525
   .github/skills/mols-markdown-for-human/references/tree-structures.md: sha256:f45d2858a9d3b052aafd1683ccb754ca1189a584b6ffa7e059bb57348b1b97ea
-  .github/skills/mols-markdown-scripts/SKILL.md: sha256:9a218fdc3b6fdae55485a324b1195159657a82c5b6315eaa49d5963460204392
+  .github/skills/mols-markdown-scripts/SKILL.md: sha256:517460ba7f94a224d447c2133cbb1c8e0f500c2ca47e63ae7f9009e7b727c550
   .github/skills/mols-markdown-scripts/pyproject.toml: sha256:7b8467f4f9e626e0321ac31254b525df7692e3c9a5407a4b6156edb65f4c9585
   .github/skills/mols-markdown-scripts/README.md: sha256:4f272751b3bcdae4912799c90acbad4de0afc4136b1ab4dd6d2908c36778c57d
   .github/skills/mols-markdown-scripts/scripts/check_dependencies.py: sha256:e722f2f12d59a376d3d7bfaa3cbdead416c36612492a2c87aec96f9610ed91eb
@@ -261,20 +356,20 @@ outputs:
   .github/skills/mols-markdown-scripts/scripts/validate_frontmatter.py: sha256:1bb7c249fb7b37bea0a9ee6d9a5e67f56aecb26682f14a3c0c1e77338ad4edf4
   .github/skills/mols-markdown-scripts/scripts/validate_headers.py: sha256:fd65c8896061c8706394cc65080069687a7470c662dd4f3f6d92f6291a20659e
   .github/skills/mols-markdown-scripts/scripts/validate_links.py: sha256:719578b2e2ed9fc36be6ca2f0ed0db8f374a1a21fc907d3d0cb1eb8f16ab9fb0
-  .github/skills/mols-markdown-scripts/workflows/create-index.md: sha256:300ce32b2e13a31d57dd8e774572cdb01fd51f67d2758fe5eca683e5b7ba2e94
-  .github/skills/mols-markdown-scripts/workflows/format-markdown.md: sha256:ace30c44066d58def7aadac7bc289ddc2dc661964cef5fe84030b0f341f7be11
+  .github/skills/mols-markdown-scripts/workflows/create-index.md: sha256:da5fb191b80c3c9db1dee17e18ddd5afb5461a222eab2baee9f364f1900d6de2
+  .github/skills/mols-markdown-scripts/workflows/format-markdown.md: sha256:5bcdc2199b71581e58f929877503241bdf167ac8b500c0310acab2cfb6d82941
   .github/skills/mols-markdown-scripts/workflows/help.md: sha256:b85e842a68e680cfddf7b67c380182e4c8fe63b3245f2503ce20b7acd8a4d219
   .github/skills/mols-markdown-scripts/workflows/INDEX.csv: sha256:36027675fe006f70a1bad23244cf09b57a3f4746a98c3050b5e406bc182d2959
-  .github/skills/mols-markdown-scripts/workflows/update-index.md: sha256:efa1686418f2b3127832d52fcdc54923b2b7dbab7d942b76cca0f141f5f4802c
-  .github/skills/mols-markdown-scripts/workflows/validate-frontmatter.md: sha256:f1aad151fa734b49edc7a6c7d4da13ab2b039098dabf090db00bde1600b56de7
-  .github/skills/mols-markdown-scripts/workflows/validate-headers.md: sha256:3b1cd6c5177d1c1f7f14051415397aeee05c50a2d8db0e4c331a86b3fbcb9b7d
-  .github/skills/mols-markdown-scripts/workflows/validate-links.md: sha256:7feccb12aa2dc84ded4a152c703c16767df7e9767c2effb6833a5f1c56b8484a
+  .github/skills/mols-markdown-scripts/workflows/update-index.md: sha256:3f6d38dc2570bd1295692f84ca60322b2d528ac6d1243bfb68a9f23cad10f5d3
+  .github/skills/mols-markdown-scripts/workflows/validate-frontmatter.md: sha256:725108669f3b5f8c4ef8912cebbc1c46fe322dd211908f769e13f39680f83394
+  .github/skills/mols-markdown-scripts/workflows/validate-headers.md: sha256:1b8b41f91f7b0b43c9abf755de09748f49b0948d8c4baea226df155600842bb9
+  .github/skills/mols-markdown-scripts/workflows/validate-links.md: sha256:d353801801a4e1d90c78dc243273a02b70d0e3f36044db2f84e62767cd0beb8c
   .github/skills/mols-mermaid-chart/SKILL.md: sha256:1766e4eb459fbd85aa70808a33b66be282c51d0157e2f278a02e5c0a727f4473
-  .github/skills/mols-mermaid-chart/references/examples/pie-chart.md: sha256:f90277034c87534822dd4c9a7b9116bc5a8bdfdc9462506cf17061932c4bcf75
-  .github/skills/mols-mermaid-chart/references/examples/quadrant-chart.md: sha256:a47221c3eaea25939c9ae97e195a90b3c17de27c20ad6ba932725f495b7eb59d
+  .github/skills/mols-mermaid-chart/references/examples/pie-chart.md: sha256:ed637922e90f6a50c1a5e947ffb65b4ec8996766910de1ee536b343f329645d3
+  .github/skills/mols-mermaid-chart/references/examples/quadrant-chart.md: sha256:ec02502f612c413add776ecaf59583f9227745014e90de16bfff78d3efe11a30
   .github/skills/mols-mermaid-chart/references/examples/radar.md: sha256:36348c4a1fc3e088526bc880b36dca9efadce6fee6aad7995dbfb8e0beedc993
   .github/skills/mols-mermaid-chart/references/examples/README.md: sha256:8de38506530535fc13be8d420eb433fbae453ea2281580498714d630cb0c775a
-  .github/skills/mols-mermaid-chart/references/examples/sankey.md: sha256:5a700fdf04c8fb0a0870e9df925bc6696edbc54e8a299ef95f6da34518131d0b
+  .github/skills/mols-mermaid-chart/references/examples/sankey.md: sha256:39d444029167fa64dc60e24a4cde99f0a90329a229846176a1d004726ce718d9
   .github/skills/mols-mermaid-chart/references/examples/treemap.md: sha256:0574b843babe449662bdbc19604e657e3581f88b19712dcb648001f2183187a2
   .github/skills/mols-mermaid-chart/references/examples/xy-chart.md: sha256:ba15cae9ec0d41a5b6eac80e11e971343328b6cade4e50c7a11a9048ebcd9883
   .github/skills/mols-mermaid-chart/references/mermaid-chart-verification.md: sha256:f8544d9a24ed20736d2dd3dc1687e47741fdd2ca89498a587583e3b253040dbc
@@ -284,7 +379,7 @@ outputs:
   .github/skills/mols-mermaid-diagram/SKILL.md: sha256:041657ebc9192277cd9db83c7ff7ff77c07218a2953b0e59c20265f2c8e3ce28
   .github/skills/mols-mermaid-diagram/references/examples/architecture-diagram.md: sha256:b1435bff7d5c26402dd509d9a4eaeb18b4d70ca8cb9f9ef865f04174ea6a459c
   .github/skills/mols-mermaid-diagram/references/examples/block-diagram.md: sha256:fe34a8ccdc90f32c6d541d5c085aeeb50e33a68d802186f09a834f4f4c156858
-  .github/skills/mols-mermaid-diagram/references/examples/c4-context.md: sha256:e349556b6b1387ae186cf9a6453dcd8727ac12e577f48a7f9f4545dec60db66c
+  .github/skills/mols-mermaid-diagram/references/examples/c4-context.md: sha256:210f607942811933694854363c5f6edbddb99f3e2b48d56d0e64be355f6f8bc9
   .github/skills/mols-mermaid-diagram/references/examples/class-diagram.md: sha256:30f79cfd9f5d5a5a4ee608cc1afd56b12791188e2c9883e7a661c1afc285fbe1
   .github/skills/mols-mermaid-diagram/references/examples/cynefin.md: sha256:8f24c8dbf9d2e18a932f3a63ee288d0465ec90454dcc983e93bbff1597f0bb1b
   .github/skills/mols-mermaid-diagram/references/examples/er-diagram.md: sha256:a24a50dc1602eca4febd150b1ed6af55f58646ab4f7cf5400e0c61ad23e78c9c
@@ -311,26 +406,76 @@ outputs:
   .github/skills/mols-mermaid-diagram/references/mermaid-verification.md: sha256:051231d297bfa421a0d0c07f76704e51cd06dbfdc3ba6f2df26da7673f63062d
   .github/skills/mols-mermaid-diagram/references/style-policy.md: sha256:ae0cc57e41594c98d77abdf61917a07369c8fcc6ba65889ccedf3eed77974bcc
   .github/skills/mols-mermaid-diagram/THIRD-PARTY-NOTICES.md: sha256:5c2ee66519e4d8fdbc92ad9256f098ebaf8569d307df601e423a1240a86fbf01
-  .github/skills/mols-rule-dry/SKILL.md: sha256:5a41d6229a84b256c169e416c15537051c94bb470f51b695b5b75cd728b89ca7
+  .github/skills/mols-rule-dry/SKILL.md: sha256:0a4e38bfc92e6089849d4938cf91aeddccf5cb22157553969de1dff3b6a1f9a0
   .github/skills/mols-rule-dry/references/application.md: sha256:8693f326c07b8de8a588d5cf49a8e4c775c742711f6db6a109327417f1eca9c8
   .github/skills/mols-rule-dry/references/duplication.md: sha256:f5f0107b1d6740c587fee05318133672d34955daf110f6c7920821d0041cf9e2
   .github/skills/mols-rule-dry/references/ownership.md: sha256:c49aa77fb371980422da0e2c235656f26d37d549d12a5348aefa5a57dcf70882
   .github/skills/mols-rule-dry/references/placement.md: sha256:2c5f0364621f823554812e776c289cf5f83f84ac807e502f4678183979c050e1
-  .github/skills/vcs-git-commit/SKILL.md: sha256:2ef7d7ef86acdc9e4b05339729d3d30d3c84b097942c7ed4682cc9f6a46a8b3b
-  .github/skills/vcs-git-commit/README.md: sha256:25ee6dfc4c4fc94302d0a97f6f4182c17107ac7b0e5bdfcade5605ae3d8421da
-  .github/skills/vcs-git-commit/references/--help.ko.md: sha256:d13535a756ec5efa831226f4553a28008deb92f60dc6f8a09e337afb589fbbb2
-  .github/skills/vcs-git-commit/references/--help.md: sha256:f0baf198bbbbe1e795f7d44c01deb6af6588dcbfeab1fc9604c30894d48c3549
+  .github/skills/mols-skill-creator/SKILL.md: sha256:0b64b6b46d0e6c8bcd3dca05f16549e3bba88f2da4f7e05f89cfecb8c2ab7f1e
+  .github/skills/mols-skill-creator/agents/openai.yaml: sha256:6437d6511426ad2dcd13e1f7c910a5617fed7538fe3bdf6a1d7622cf8de6327d
+  .github/skills/mols-skill-creator/assets/icon.svg: sha256:8936b24f674a1250d999e2c2b5901374fb4240426f32bd1ae340c352a90d617d
+  .github/skills/mols-skill-creator/assets/templates/agents/openai.yaml: sha256:e008531e8d01be8e012d1ac69fa44348a58a7b01276bec8d5b06fc8010a6ec7d
+  .github/skills/mols-skill-creator/assets/templates/DIRECTIVE.md: sha256:35b1d95516f1fdbd0522ac130f77606c48d1a37138a40bb5c2cf63649401d67b
+  .github/skills/mols-skill-creator/assets/templates/WORKING.md: sha256:1ba47a474fc03351b3fac2fb23265a9da23c92e36f34b27f2f0892590179ba70
+  .github/skills/mols-skill-creator/references/platform-compatibility.md: sha256:734f8a3dfb57ccb0837511c42ba3d2fc4d4a0b6d86b59223e696af530f2d6d22
+  .github/skills/mols-skill-creator/references/quality-model.md: sha256:1d9c7880a93186a5a9c1cd6f222db8a5ff8b25b1729aec057d98cf6e29e909c6
+  .github/skills/mols-skill-creator/references/upstream-sources.md: sha256:08164e4c8e3c2e5dc1c1c941d2422dd68fc667878e3e26434984e04a708ebc82
+  .github/skills/mols-skill-creator/scripts/init_skill.py: sha256:00d2720f2ee6e5560089ce5b4f624a560f6129781f25291167284247688df54b
+  .github/skills/mols-skill-creator/scripts/package_skill.py: sha256:462917d3f0001166e868a226b59213a7e4f6270b0907d2519a0ca4f8c07cfda1
+  .github/skills/mols-skill-creator/scripts/validate_skill.py: sha256:d73925a81a17286b262eb004df57fea9cc0564be93e0735980e7920d0f84bd27
+  .github/skills/mols-skill-find/SKILL.md: sha256:dbf8caf8759b9d872cbc392a25959bf5901d647d3189cbf75a08608e7e934723
+  .github/skills/mols-skill-install/SKILL.md: sha256:da500e2a7421ae53222e53e126a58298178daf551801916d67d176ffc9ef7b62
+  .github/skills/news-table/SKILL.md: sha256:16468168e73b529680c80c59d929788338cef5913f04386fc6c2057862cddc2b
+  .github/skills/rpwr-loop/SKILL.md: sha256:1f62cc99217d1570e74c963aaa44b6968e31d0117d1c8fc3a8ee39ba42dd77ec
+  .github/skills/searcher/SKILL.md: sha256:2d11029fea01a7c650cf916defe4c1c271107348d7bfb66e925838dc93a15527
+  .github/skills/text-humanize-korean/SKILL.md: sha256:5167a7e7153fb444fe8554f5bf346d35f3b8ef681559d0eb85875fc441a40af4
+  .github/skills/text-humanize-korean/agents/openai.yaml: sha256:58a5af6ffad2b57b666bbae1b9219fe26263a352192f6736e8d6b2f3e02d834d
+  .github/skills/text-humanize-korean/assets/icon.svg: sha256:49315dda7125ec5fc77ef5f2b96126d8b2121c6e72944b4702972e90f321d3ee
+  .github/skills/text-humanize-korean/references/examples.md: sha256:d341748ff67631d33438728d6c7280f242b0daf95144e4b86bb496f8aa8079a1
+  .github/skills/text-humanize-korean/references/fidelity-rules.md: sha256:49f2094c445f4e5b6d8b62814ec3bb4d6af2518d9e376a7bf4e4c6942833a809
+  .github/skills/text-humanize-korean/references/quick-rules.md: sha256:7b625002fb5d1f57c38b787d107d1297cb7705fff3bcc517b3c8f0df02f94b15
+  .github/skills/text-humanize-korean/references/taxonomy.md: sha256:1e305bf11840ee14474b5d22d8eece77fcf73e94b7aa53be43d990afa0dff37d
+  .github/skills/text-humanize-korean/scripts/verify_fidelity.py: sha256:522af7609884c6967f369010cdc4a2028d1b4e84c5b068c0c13a89cc25f0dfd3
+  .github/skills/vcs-git-commit/SKILL.md: sha256:d05893f2ba6db4321a863b0fad3adfa2db06624246433bb57252409053f89638
+  .github/skills/vcs-git-commit/README.md: sha256:81c24d6c8e96a19016c4d5ac389122affc109f43ccdbf95d4cdbad51baa6f88d
+  .github/skills/vcs-git-commit/references/--help.ko.md: sha256:573953ce9a883d0c6e3940ad4dd152a67914f537b3d21ef992073bff0d620110
+  .github/skills/vcs-git-commit/references/--help.md: sha256:ebf9b34b4d42978b9a828f33fe1be4736518d31b390e2a0caeb221b98c7171f5
   .github/skills/vcs-git-commit/references/default-gitmessage.md: sha256:d18e83dba5fc11a93afd313e757f7533908a8c4f351da84a866fc7bc649f2dd2
+  .github/skills/writing/SKILL.md: sha256:4c2d9bcf9daefc9cf812dab2a552d96d48ea2239820a73970f516acf3e8c2f93
+  .github/skills/writing/agents/openai.yaml: sha256:be4c0e323a49b6d34fda327827199e1e0363dfa0f27512ce96a8d5a833c62f1a
+  .github/skills/writing/assets/icon.svg: sha256:49315dda7125ec5fc77ef5f2b96126d8b2121c6e72944b4702972e90f321d3ee
+  .github/skills/writing/assets/review-output-template.md: sha256:fb8d94be49bb341a94bb20a4f1e802a6c57c9dd6361d6bc4e413ba38c460b6d7
+  .github/skills/writing/assets/writing-brief-template.md: sha256:e080d93c3fb0d6eed6c400d2267f63b06eaa940f1cb34f962390b4b3cb7ea1b1
+  .github/skills/writing/references/examples.md: sha256:f95f98c1d187e4e245e74b8ec2950567266a0c0025510ae94bd0ab901a0ab6b5
+  .github/skills/writing/references/principles.md: sha256:072ff72357ffee8ea8a4b64f99fcc04b4cb2d7b2be24e6e33654fecd0b34d9c7
+  .github/skills/writing/references/review-rubric.md: sha256:9929adb3aa69bda402695d1cb7369c30d706a03053162eba9ef5ef7f6417e481
+  .github/skills/writing/references/workflows.md: sha256:7b41ad42c6ad325ff3bf272aa88671800d9a2ebd0ed53ffe98a827777f83ab12
+  .github/skills/writing/scripts/validate.py: sha256:d8bab443718c6b3122a2f5baa4bb58c42f3b7dedd71843b96b6bbcd5e575dd9a
+  .agents/skills/artifact-consistency-inspector/SKILL.md: sha256:6e8d09225aa2cd056ecb277884f90f8b3f139c5f20ef9ce4fe1046e206ac3bbe
+  .agents/skills/artifact-consistency-inspector/references/example-report.md: sha256:4f69d06c960b0578c1c5a742a147fe85daf7f9ea2b60cb96d1724798dfff0569
+  .agents/skills/artifact-consistency-inspector/references/inspection-rules.md: sha256:d3c5ff15afa2b008cc2f9cf3ea0e65ca03e38af8d34fc56631f8befcc53da2c1
+  .agents/skills/artifact-consistency-inspector/references/report-format.md: sha256:cfe7c2a012e71bc8856394ab7d8e733fff1dc2231c9b80d92d9066da98384f01
+  .agents/skills/artifact-consistency-inspector/references/rule-sources.md: sha256:b1396941d2e21ba19c3aca12cffc5557cb37abe8745d94e9dfb7915443e80313
   .agents/skills/caveman-ko/SKILL.md: sha256:f0f3a778d6574a5d4e2f9f3b85e0239aa28f256d8b1a87afbfae9c85f6d020a4
   .agents/skills/caveman-ko/README.md: sha256:b7238cb7de0045996865b8d72552bf3f2b5e680d86233b16bb5f16cc8fac4658
   .agents/skills/clarify-code/SKILL.md: sha256:3f4719c9691447628a8f342788fb3357d1cf4f9ed56b819d74b629b4e1964f2f
   .agents/skills/clarify-code/references/diagnosis.md: sha256:99ef934889ed4e6d13576e66148d036cadf97e2a6508202c5909360eaea78791
   .agents/skills/clarify-code/references/documentation.md: sha256:a0c20183c1415ac2cbda2d457ea780e588ec4bf269e68e86c01176a57ac6f54e
   .agents/skills/clarify-code/references/validation.md: sha256:38dc6ee3f17682b4611341afe4dccf81d56f17dbfdbc0fda87d1575bf1c53d30
+  .agents/skills/guide-technical-docs-repo/SKILL.md: sha256:eeea015ad3b41c5492a3a9824b39d728f7fd94b7328b5f23309b803d5b62a9f3
+  .agents/skills/load-context-agent-assets/SKILL.md: sha256:9bc863520549d371bd54cd9ed7c0aab4ad98e8d3d00d3fc1801fa7ac465d08aa
+  .agents/skills/load-context-agent-skills/SKILL.md: sha256:e92c3dc35609e3dde3b5652909d0c8d9c62d04497bf85239b45b6c210cb84240
+  .agents/skills/load-context-coding/SKILL.md: sha256:974975c39f429b5d07a68865fd34bf51783b0c22487b55b11328ccf0fb8c84df
+  .agents/skills/load-context-github/SKILL.md: sha256:4cdb2b2e56abc081d3cdf1a6aac7a5a6e95ac2cee364f9099045151665b62c92
+  .agents/skills/load-context-github-mols/SKILL.md: sha256:a50a1e2d3ee0d8f6657973b03fd57aca97da0fc30383c716c63273d008e71043
+  .agents/skills/load-context-human-writing/SKILL.md: sha256:52475fb1288fd6437e5f21b69d24f73b9c2ee9e5f48a65542b77aff47d8fbf01
+  .agents/skills/load-context-notion/SKILL.md: sha256:9bf7d6ad4baef1716e8f51f6c891dc96033ddd0b540799b9a5c51726ceb8baac
+  .agents/skills/load-context-notion-mols/SKILL.md: sha256:d5ecee56ad90a533a8d79f105e273154107fdf5654855b541318271edc7c26ca
+  .agents/skills/load-context-tech-doc-fidelity/SKILL.md: sha256:6a92f1357af18343bc3a16060ad2e68c24ed59d728ec695156bee3890b291fe5
   .agents/skills/mols-agent-asset-studio/SKILL.md: sha256:3d07a215e30f876a77f3131fc29a948c06877142774d047a09d46b5444d0f68c
   .agents/skills/mols-agent-asset-studio/agents/openai.yaml: sha256:d32116668a9e7135778175bedf5dbd900d7bbcdd1355ac0275c818f810a244ae
   .agents/skills/mols-agent-asset-studio/references/change-safety.md: sha256:0133c676a9ff89d989a876ccf156d0ccfb9f90618d93647d7fa24aa78eebae4d
-  .agents/skills/mols-agent-asset-studio/references/design.md: sha256:9a4fec333dd65b4eb94790f57543b180d29e59e7d7b8234af3fa9d8252cebc76
+  .agents/skills/mols-agent-asset-studio/references/design.md: sha256:b084554f0c05c6e8484c4a26d877add34a3a61e9c20c27dfaba71315273e740b
   .agents/skills/mols-agent-asset-studio/references/operations.md: sha256:af79ba677c2cab8944bb5f56d7e00f41cdebfb17b26d7980a71e334427ab8ca6
   .agents/skills/mols-agent-asset-studio/references/review.md: sha256:8d4e2c811b09dc9473ddb8e3917a5f2053d6f2d571e94bcbdb384812f4a0bd93
   .agents/skills/mols-agent-asset-studio/references/security-provenance.md: sha256:c98e211689254d29cc03670e685ee7c50f9035ced6e2f6802d583791086b01c6
@@ -364,6 +509,22 @@ outputs:
   .agents/skills/mols-agent-asset-studio/workflows/review.md: sha256:87602c7c171088a31650344c62d48392a5db9c37ce0367da5ef20eb9f46b89b8
   .agents/skills/mols-agent-asset-studio/workflows/tune.md: sha256:c83e32835ca095faaad011d9333565cd741863f6c95282ea4b2d995e2cb2edff
   .agents/skills/mols-agent-asset-studio/workflows/validate.md: sha256:f4566ca555d5ffbbfa89373f687c22d9448c15029d42a8ec10b3c27581f1257d
+  .agents/skills/mols-agent-asset-validator/SKILL.md: sha256:310210c958c093cfc3c11961bb13a5865d3c43e77c8d52ccb38c914f5f24e32e
+  .agents/skills/mols-agent-asset-validator/agents/adversarial.agent.md: sha256:cfc347bd36fc09fe78288fbc04474c469ced15f31342235c0bb3844c9fdf093e
+  .agents/skills/mols-agent-asset-validator/agents/efficiency.agent.md: sha256:8130a792733428c88f76ebde489acb9a65206611cd6ffd1805105d2e70e7f473
+  .agents/skills/mols-agent-asset-validator/agents/orchestration.agent.md: sha256:4510040c2657412239ac291f73dd665c5128a483b3166248cb08e25145f25193
+  .agents/skills/mols-agent-asset-validator/agents/quality.agent.md: sha256:2c0029421dd6b9bb7c0f38a00905d7c4599d5d84babcefe6812f224f696e9f5a
+  .agents/skills/mols-agent-asset-validator/agents/routing.agent.md: sha256:74a3bb744975cbae551d9bd9fc23127cb27c9e922b2cab878115072b0225c7ff
+  .agents/skills/mols-agent-asset-validator/references/asset-contract.md: sha256:3fa79097c669695a19192bcbe3d8dbe4d49674d4f904194748486229d9593bd6
+  .agents/skills/mols-agent-asset-validator/references/performance-review.md: sha256:8f52012c3fa813a2bdc0af36efdbb179aa497863b93d54d95bcf6ca4d4e593bd
+  .agents/skills/mols-agent-asset-validator/references/platform-capabilities.md: sha256:f9f8268ebb93ebc6054d4f26a2a7b6aab580302fc6f4e8e975dc80293aad50a1
+  .agents/skills/mols-agent-asset-validator/references/re-review.md: sha256:8f1f2419136e6ae2c2fa8fda2a802294ee314d6ff1d97989fbaedbbce4c6851e
+  .agents/skills/mols-agent-asset-validator/references/reconciliation.md: sha256:748ea8a22d449c0b961835f0cbfbff2dd590f3e3253f11ca870d216817739893
+  .agents/skills/mols-agent-asset-validator/references/runtime-evaluation.md: sha256:c43108ec21af2fa41c1a57f0b5610844441c62893e08cdad9b8d4062fd3a614a
+  .agents/skills/mols-agent-asset-validator/schemas/eval-case.schema.json: sha256:cd011d55703db38e418d5d744f8d892f00c1db9bfc679603a811e7f9eb959d6d
+  .agents/skills/mols-agent-asset-validator/schemas/result.schema.json: sha256:aab6b471197133f638cd17c0969800437cc38eee5cd6eb5453752840d4641a66
+  .agents/skills/mols-agent-asset-validator/scripts/scan_assets.py: sha256:e9413e615c2bc754be2654c0d426ed6621472c02cf86541521ae3d15903d4db9
+  .agents/skills/mols-agent-asset-validator/scripts/validate.py: sha256:32cfba668cb14d4b55f723301cb2e2ad1d1f4cc4df505ba194b5adfecb5b10f5
   .agents/skills/mols-documents-studio/SKILL.md: sha256:b988a2f9a8e5117a63769f97a0cdcc4c596ba30a9597daa1f627753b5426bc5a
   .agents/skills/mols-documents-studio/README.md: sha256:91156f9c749ecdff5f0f52b1c001dee1660d836d4866cd69b4e37c8379d05238
   .agents/skills/mols-documents-studio/references/bluf-principle.md: sha256:98f0239f6263926e632d4130970d633f91ae12ed814f9e0ddecb616c60c6452c
@@ -371,13 +532,13 @@ outputs:
   .agents/skills/mols-documents-studio/references/emojis.md: sha256:83a3f67d4454f836b2be369ab5eba7d85e3319829f5009b5fc9eeec7e1a47161
   .agents/skills/mols-documents-studio/templates/decisions-lite.template.md: sha256:c383e85ee8239a871afa894eae6082846d6228fb18b65bf55204dd30dff8f5b5
   .agents/skills/mols-documents-studio/workflows/INDEX.csv: sha256:863561f96f51b75baa211ebf741d202d58cfc163399cbb8fcbc1bc7be14c73b9
-  .agents/skills/mols-documents-studio/workflows/write-decisions.md: sha256:a8b7582d91797d2c2929415f5e3bd1bab74adb2210979d36f2dfee408cc86b15
+  .agents/skills/mols-documents-studio/workflows/write-decisions.md: sha256:abcede8b0edbb5c93906ad5e757f06a9e7a0c29a219f9a5deef47a6d2f50aa01
   .agents/skills/mols-markdown-dashboard/SKILL.md: sha256:9571a941e1003630560d0da30dc19a454d437922b31a155684b7b1ca0b019709
   .agents/skills/mols-markdown-dashboard/examples/domain-dashboard.md: sha256:79f2e5bd98e8f70be2fa00cbd4f2ffb01132b306dc0d7e3ec44ce0ea2506b6a5
   .agents/skills/mols-markdown-dashboard/examples/domain-dashboard.yml: sha256:744b0d8fb148c492705c926a11c3ee97b09fa1f8cfb29d77c3bbf355c233ac36
   .agents/skills/mols-markdown-dashboard/examples/project-dashboard.md: sha256:b8e82cfd3f2b19b34dff29ca1b53caeb5e7258baf364a9f132be2584000e3703
   .agents/skills/mols-markdown-dashboard/examples/project-dashboard.yml: sha256:c744e9b0062eebb602867b6dfa17683131bbcd26be6f79e0c6cea2c768014ace
-  .agents/skills/mols-markdown-dashboard/pyproject.toml: sha256:2b936511c3c7e605cc7aab67aaddd4f985f11db528ae17f50f905daaa82911d1
+  .agents/skills/mols-markdown-dashboard/pyproject.toml: sha256:ba795f91a2b636e305f891708b3148b5829adf3bbb062019c8c589d12cc433e8
   .agents/skills/mols-markdown-dashboard/references/dashboard-method.md: sha256:d8038925b3aaae820b19adde0f78ef6bff1396e82baa476410e559e0ec4f1609
   .agents/skills/mols-markdown-dashboard/references/dashboard-schema.md: sha256:3e68a34c9c0514e26e4a101e0a78327b8bb27d0adc25039a578f5329b3f6a57f
   .agents/skills/mols-markdown-dashboard/references/render-workflow.md: sha256:d8cb492051fe26a31e827f7806b0458ab4ea03498d3fff7555332318e0261aec
@@ -394,17 +555,11 @@ outputs:
   .agents/skills/mols-markdown-dashboard/src/mols_dashboard/render.py: sha256:4cca0213384f9f350cd95a59f5450405947129002a1443ff6e6ecf0d60cbc892
   .agents/skills/mols-markdown-dashboard/src/mols_dashboard/validate.py: sha256:3d04f5680fa9d0ea25050360c437b1b887422ad291db24d3710d530c4f61839f
   .agents/skills/mols-markdown-dashboard/templates/dashboard.md.j2: sha256:3a3f0fec15acf4fa50ed023176118ec09c40794abfc5d8cddea74ef206a862e0
-  .agents/skills/mols-markdown-dashboard/tests/test_cli.py: sha256:ad6ba679df488befcafc0dc90166cf368b6d8506468ab4d944247d407e1feb96
-  .agents/skills/mols-markdown-dashboard/tests/test_derive.py: sha256:f952bb59b589e8c160764886411661c0b8f8a85148eb7ba24c4f8302c406dfff
-  .agents/skills/mols-markdown-dashboard/tests/test_loader.py: sha256:dab1776bf789c523d6c16b3643793a6ba77fb587898bcbdef05e0a103353ba16
-  .agents/skills/mols-markdown-dashboard/tests/test_model.py: sha256:93c903ede11a739e112bbc25e63645a185cefb356e0cff24b7057ed720fe84cf
-  .agents/skills/mols-markdown-dashboard/tests/test_render.py: sha256:25e7482a9a3236ad110347b8c642c38ce26f6437203a9574b0e4ea3ce50a9c9e
-  .agents/skills/mols-markdown-dashboard/tests/test_validate.py: sha256:c32211cf81e40445d9efae7539488c8059da277f7a0e5698784baa21b748c3cc
   .agents/skills/mols-markdown-for-human/SKILL.md: sha256:8198281792353e2a0fe50f96d48351c0e442be168100dee8c33d8d2d29f5723a
   .agents/skills/mols-markdown-for-human/references/semantic-markers.md: sha256:c531451b7cb68beb75e7d3fb80d98f8c59edc416649b1904589fd77ecde264ce
   .agents/skills/mols-markdown-for-human/references/text-bars.md: sha256:9d5464504afb2c583c4b27c753311802d2eb951b0f0d5eb3494210bd50eae525
   .agents/skills/mols-markdown-for-human/references/tree-structures.md: sha256:f45d2858a9d3b052aafd1683ccb754ca1189a584b6ffa7e059bb57348b1b97ea
-  .agents/skills/mols-markdown-scripts/SKILL.md: sha256:a538282afae2111b4c30956c12b2184158e66210cd58c636528dbab71084148b
+  .agents/skills/mols-markdown-scripts/SKILL.md: sha256:5df561439809d3dcbcb548e70c526830e9591b0e805798cd44d371ef7d4ebe7a
   .agents/skills/mols-markdown-scripts/pyproject.toml: sha256:7b8467f4f9e626e0321ac31254b525df7692e3c9a5407a4b6156edb65f4c9585
   .agents/skills/mols-markdown-scripts/README.md: sha256:4f272751b3bcdae4912799c90acbad4de0afc4136b1ab4dd6d2908c36778c57d
   .agents/skills/mols-markdown-scripts/scripts/check_dependencies.py: sha256:e722f2f12d59a376d3d7bfaa3cbdead416c36612492a2c87aec96f9610ed91eb
@@ -416,20 +571,20 @@ outputs:
   .agents/skills/mols-markdown-scripts/scripts/validate_frontmatter.py: sha256:1bb7c249fb7b37bea0a9ee6d9a5e67f56aecb26682f14a3c0c1e77338ad4edf4
   .agents/skills/mols-markdown-scripts/scripts/validate_headers.py: sha256:fd65c8896061c8706394cc65080069687a7470c662dd4f3f6d92f6291a20659e
   .agents/skills/mols-markdown-scripts/scripts/validate_links.py: sha256:719578b2e2ed9fc36be6ca2f0ed0db8f374a1a21fc907d3d0cb1eb8f16ab9fb0
-  .agents/skills/mols-markdown-scripts/workflows/create-index.md: sha256:300ce32b2e13a31d57dd8e774572cdb01fd51f67d2758fe5eca683e5b7ba2e94
-  .agents/skills/mols-markdown-scripts/workflows/format-markdown.md: sha256:ace30c44066d58def7aadac7bc289ddc2dc661964cef5fe84030b0f341f7be11
+  .agents/skills/mols-markdown-scripts/workflows/create-index.md: sha256:da5fb191b80c3c9db1dee17e18ddd5afb5461a222eab2baee9f364f1900d6de2
+  .agents/skills/mols-markdown-scripts/workflows/format-markdown.md: sha256:5bcdc2199b71581e58f929877503241bdf167ac8b500c0310acab2cfb6d82941
   .agents/skills/mols-markdown-scripts/workflows/help.md: sha256:b85e842a68e680cfddf7b67c380182e4c8fe63b3245f2503ce20b7acd8a4d219
   .agents/skills/mols-markdown-scripts/workflows/INDEX.csv: sha256:36027675fe006f70a1bad23244cf09b57a3f4746a98c3050b5e406bc182d2959
-  .agents/skills/mols-markdown-scripts/workflows/update-index.md: sha256:efa1686418f2b3127832d52fcdc54923b2b7dbab7d942b76cca0f141f5f4802c
-  .agents/skills/mols-markdown-scripts/workflows/validate-frontmatter.md: sha256:f1aad151fa734b49edc7a6c7d4da13ab2b039098dabf090db00bde1600b56de7
-  .agents/skills/mols-markdown-scripts/workflows/validate-headers.md: sha256:3b1cd6c5177d1c1f7f14051415397aeee05c50a2d8db0e4c331a86b3fbcb9b7d
-  .agents/skills/mols-markdown-scripts/workflows/validate-links.md: sha256:7feccb12aa2dc84ded4a152c703c16767df7e9767c2effb6833a5f1c56b8484a
+  .agents/skills/mols-markdown-scripts/workflows/update-index.md: sha256:3f6d38dc2570bd1295692f84ca60322b2d528ac6d1243bfb68a9f23cad10f5d3
+  .agents/skills/mols-markdown-scripts/workflows/validate-frontmatter.md: sha256:725108669f3b5f8c4ef8912cebbc1c46fe322dd211908f769e13f39680f83394
+  .agents/skills/mols-markdown-scripts/workflows/validate-headers.md: sha256:1b8b41f91f7b0b43c9abf755de09748f49b0948d8c4baea226df155600842bb9
+  .agents/skills/mols-markdown-scripts/workflows/validate-links.md: sha256:d353801801a4e1d90c78dc243273a02b70d0e3f36044db2f84e62767cd0beb8c
   .agents/skills/mols-mermaid-chart/SKILL.md: sha256:1766e4eb459fbd85aa70808a33b66be282c51d0157e2f278a02e5c0a727f4473
-  .agents/skills/mols-mermaid-chart/references/examples/pie-chart.md: sha256:f90277034c87534822dd4c9a7b9116bc5a8bdfdc9462506cf17061932c4bcf75
-  .agents/skills/mols-mermaid-chart/references/examples/quadrant-chart.md: sha256:a47221c3eaea25939c9ae97e195a90b3c17de27c20ad6ba932725f495b7eb59d
+  .agents/skills/mols-mermaid-chart/references/examples/pie-chart.md: sha256:ed637922e90f6a50c1a5e947ffb65b4ec8996766910de1ee536b343f329645d3
+  .agents/skills/mols-mermaid-chart/references/examples/quadrant-chart.md: sha256:ec02502f612c413add776ecaf59583f9227745014e90de16bfff78d3efe11a30
   .agents/skills/mols-mermaid-chart/references/examples/radar.md: sha256:36348c4a1fc3e088526bc880b36dca9efadce6fee6aad7995dbfb8e0beedc993
   .agents/skills/mols-mermaid-chart/references/examples/README.md: sha256:8de38506530535fc13be8d420eb433fbae453ea2281580498714d630cb0c775a
-  .agents/skills/mols-mermaid-chart/references/examples/sankey.md: sha256:5a700fdf04c8fb0a0870e9df925bc6696edbc54e8a299ef95f6da34518131d0b
+  .agents/skills/mols-mermaid-chart/references/examples/sankey.md: sha256:39d444029167fa64dc60e24a4cde99f0a90329a229846176a1d004726ce718d9
   .agents/skills/mols-mermaid-chart/references/examples/treemap.md: sha256:0574b843babe449662bdbc19604e657e3581f88b19712dcb648001f2183187a2
   .agents/skills/mols-mermaid-chart/references/examples/xy-chart.md: sha256:ba15cae9ec0d41a5b6eac80e11e971343328b6cade4e50c7a11a9048ebcd9883
   .agents/skills/mols-mermaid-chart/references/mermaid-chart-verification.md: sha256:f8544d9a24ed20736d2dd3dc1687e47741fdd2ca89498a587583e3b253040dbc
@@ -439,7 +594,7 @@ outputs:
   .agents/skills/mols-mermaid-diagram/SKILL.md: sha256:041657ebc9192277cd9db83c7ff7ff77c07218a2953b0e59c20265f2c8e3ce28
   .agents/skills/mols-mermaid-diagram/references/examples/architecture-diagram.md: sha256:b1435bff7d5c26402dd509d9a4eaeb18b4d70ca8cb9f9ef865f04174ea6a459c
   .agents/skills/mols-mermaid-diagram/references/examples/block-diagram.md: sha256:fe34a8ccdc90f32c6d541d5c085aeeb50e33a68d802186f09a834f4f4c156858
-  .agents/skills/mols-mermaid-diagram/references/examples/c4-context.md: sha256:e349556b6b1387ae186cf9a6453dcd8727ac12e577f48a7f9f4545dec60db66c
+  .agents/skills/mols-mermaid-diagram/references/examples/c4-context.md: sha256:210f607942811933694854363c5f6edbddb99f3e2b48d56d0e64be355f6f8bc9
   .agents/skills/mols-mermaid-diagram/references/examples/class-diagram.md: sha256:30f79cfd9f5d5a5a4ee608cc1afd56b12791188e2c9883e7a661c1afc285fbe1
   .agents/skills/mols-mermaid-diagram/references/examples/cynefin.md: sha256:8f24c8dbf9d2e18a932f3a63ee288d0465ec90454dcc983e93bbff1597f0bb1b
   .agents/skills/mols-mermaid-diagram/references/examples/er-diagram.md: sha256:a24a50dc1602eca4febd150b1ed6af55f58646ab4f7cf5400e0c61ad23e78c9c
@@ -466,13 +621,48 @@ outputs:
   .agents/skills/mols-mermaid-diagram/references/mermaid-verification.md: sha256:051231d297bfa421a0d0c07f76704e51cd06dbfdc3ba6f2df26da7673f63062d
   .agents/skills/mols-mermaid-diagram/references/style-policy.md: sha256:ae0cc57e41594c98d77abdf61917a07369c8fcc6ba65889ccedf3eed77974bcc
   .agents/skills/mols-mermaid-diagram/THIRD-PARTY-NOTICES.md: sha256:5c2ee66519e4d8fdbc92ad9256f098ebaf8569d307df601e423a1240a86fbf01
-  .agents/skills/mols-rule-dry/SKILL.md: sha256:5a41d6229a84b256c169e416c15537051c94bb470f51b695b5b75cd728b89ca7
+  .agents/skills/mols-rule-dry/SKILL.md: sha256:0a4e38bfc92e6089849d4938cf91aeddccf5cb22157553969de1dff3b6a1f9a0
   .agents/skills/mols-rule-dry/references/application.md: sha256:8693f326c07b8de8a588d5cf49a8e4c775c742711f6db6a109327417f1eca9c8
   .agents/skills/mols-rule-dry/references/duplication.md: sha256:f5f0107b1d6740c587fee05318133672d34955daf110f6c7920821d0041cf9e2
   .agents/skills/mols-rule-dry/references/ownership.md: sha256:c49aa77fb371980422da0e2c235656f26d37d549d12a5348aefa5a57dcf70882
   .agents/skills/mols-rule-dry/references/placement.md: sha256:2c5f0364621f823554812e776c289cf5f83f84ac807e502f4678183979c050e1
-  .agents/skills/vcs-git-commit/SKILL.md: sha256:2ef7d7ef86acdc9e4b05339729d3d30d3c84b097942c7ed4682cc9f6a46a8b3b
-  .agents/skills/vcs-git-commit/README.md: sha256:25ee6dfc4c4fc94302d0a97f6f4182c17107ac7b0e5bdfcade5605ae3d8421da
-  .agents/skills/vcs-git-commit/references/--help.ko.md: sha256:d13535a756ec5efa831226f4553a28008deb92f60dc6f8a09e337afb589fbbb2
-  .agents/skills/vcs-git-commit/references/--help.md: sha256:f0baf198bbbbe1e795f7d44c01deb6af6588dcbfeab1fc9604c30894d48c3549
+  .agents/skills/mols-skill-creator/SKILL.md: sha256:1b24bd9118eea5bd90f1da5d97f1e9e49679e710ae080dd981775a740b2254b3
+  .agents/skills/mols-skill-creator/agents/openai.yaml: sha256:6437d6511426ad2dcd13e1f7c910a5617fed7538fe3bdf6a1d7622cf8de6327d
+  .agents/skills/mols-skill-creator/assets/icon.svg: sha256:8936b24f674a1250d999e2c2b5901374fb4240426f32bd1ae340c352a90d617d
+  .agents/skills/mols-skill-creator/assets/templates/agents/openai.yaml: sha256:e008531e8d01be8e012d1ac69fa44348a58a7b01276bec8d5b06fc8010a6ec7d
+  .agents/skills/mols-skill-creator/assets/templates/DIRECTIVE.md: sha256:35b1d95516f1fdbd0522ac130f77606c48d1a37138a40bb5c2cf63649401d67b
+  .agents/skills/mols-skill-creator/assets/templates/WORKING.md: sha256:1ba47a474fc03351b3fac2fb23265a9da23c92e36f34b27f2f0892590179ba70
+  .agents/skills/mols-skill-creator/references/platform-compatibility.md: sha256:734f8a3dfb57ccb0837511c42ba3d2fc4d4a0b6d86b59223e696af530f2d6d22
+  .agents/skills/mols-skill-creator/references/quality-model.md: sha256:1d9c7880a93186a5a9c1cd6f222db8a5ff8b25b1729aec057d98cf6e29e909c6
+  .agents/skills/mols-skill-creator/references/upstream-sources.md: sha256:08164e4c8e3c2e5dc1c1c941d2422dd68fc667878e3e26434984e04a708ebc82
+  .agents/skills/mols-skill-creator/scripts/init_skill.py: sha256:00d2720f2ee6e5560089ce5b4f624a560f6129781f25291167284247688df54b
+  .agents/skills/mols-skill-creator/scripts/package_skill.py: sha256:462917d3f0001166e868a226b59213a7e4f6270b0907d2519a0ca4f8c07cfda1
+  .agents/skills/mols-skill-creator/scripts/validate_skill.py: sha256:d73925a81a17286b262eb004df57fea9cc0564be93e0735980e7920d0f84bd27
+  .agents/skills/mols-skill-find/SKILL.md: sha256:dbf8caf8759b9d872cbc392a25959bf5901d647d3189cbf75a08608e7e934723
+  .agents/skills/mols-skill-install/SKILL.md: sha256:da500e2a7421ae53222e53e126a58298178daf551801916d67d176ffc9ef7b62
+  .agents/skills/news-table/SKILL.md: sha256:16468168e73b529680c80c59d929788338cef5913f04386fc6c2057862cddc2b
+  .agents/skills/rpwr-loop/SKILL.md: sha256:1f62cc99217d1570e74c963aaa44b6968e31d0117d1c8fc3a8ee39ba42dd77ec
+  .agents/skills/searcher/SKILL.md: sha256:2d11029fea01a7c650cf916defe4c1c271107348d7bfb66e925838dc93a15527
+  .agents/skills/text-humanize-korean/SKILL.md: sha256:5167a7e7153fb444fe8554f5bf346d35f3b8ef681559d0eb85875fc441a40af4
+  .agents/skills/text-humanize-korean/agents/openai.yaml: sha256:58a5af6ffad2b57b666bbae1b9219fe26263a352192f6736e8d6b2f3e02d834d
+  .agents/skills/text-humanize-korean/assets/icon.svg: sha256:49315dda7125ec5fc77ef5f2b96126d8b2121c6e72944b4702972e90f321d3ee
+  .agents/skills/text-humanize-korean/references/examples.md: sha256:d341748ff67631d33438728d6c7280f242b0daf95144e4b86bb496f8aa8079a1
+  .agents/skills/text-humanize-korean/references/fidelity-rules.md: sha256:49f2094c445f4e5b6d8b62814ec3bb4d6af2518d9e376a7bf4e4c6942833a809
+  .agents/skills/text-humanize-korean/references/quick-rules.md: sha256:7b625002fb5d1f57c38b787d107d1297cb7705fff3bcc517b3c8f0df02f94b15
+  .agents/skills/text-humanize-korean/references/taxonomy.md: sha256:1e305bf11840ee14474b5d22d8eece77fcf73e94b7aa53be43d990afa0dff37d
+  .agents/skills/text-humanize-korean/scripts/verify_fidelity.py: sha256:522af7609884c6967f369010cdc4a2028d1b4e84c5b068c0c13a89cc25f0dfd3
+  .agents/skills/vcs-git-commit/SKILL.md: sha256:d05893f2ba6db4321a863b0fad3adfa2db06624246433bb57252409053f89638
+  .agents/skills/vcs-git-commit/README.md: sha256:81c24d6c8e96a19016c4d5ac389122affc109f43ccdbf95d4cdbad51baa6f88d
+  .agents/skills/vcs-git-commit/references/--help.ko.md: sha256:573953ce9a883d0c6e3940ad4dd152a67914f537b3d21ef992073bff0d620110
+  .agents/skills/vcs-git-commit/references/--help.md: sha256:ebf9b34b4d42978b9a828f33fe1be4736518d31b390e2a0caeb221b98c7171f5
   .agents/skills/vcs-git-commit/references/default-gitmessage.md: sha256:d18e83dba5fc11a93afd313e757f7533908a8c4f351da84a866fc7bc649f2dd2
+  .agents/skills/writing/SKILL.md: sha256:4c2d9bcf9daefc9cf812dab2a552d96d48ea2239820a73970f516acf3e8c2f93
+  .agents/skills/writing/agents/openai.yaml: sha256:be4c0e323a49b6d34fda327827199e1e0363dfa0f27512ce96a8d5a833c62f1a
+  .agents/skills/writing/assets/icon.svg: sha256:49315dda7125ec5fc77ef5f2b96126d8b2121c6e72944b4702972e90f321d3ee
+  .agents/skills/writing/assets/review-output-template.md: sha256:fb8d94be49bb341a94bb20a4f1e802a6c57c9dd6361d6bc4e413ba38c460b6d7
+  .agents/skills/writing/assets/writing-brief-template.md: sha256:e080d93c3fb0d6eed6c400d2267f63b06eaa940f1cb34f962390b4b3cb7ea1b1
+  .agents/skills/writing/references/examples.md: sha256:f95f98c1d187e4e245e74b8ec2950567266a0c0025510ae94bd0ab901a0ab6b5
+  .agents/skills/writing/references/principles.md: sha256:072ff72357ffee8ea8a4b64f99fcc04b4cb2d7b2be24e6e33654fecd0b34d9c7
+  .agents/skills/writing/references/review-rubric.md: sha256:9929adb3aa69bda402695d1cb7369c30d706a03053162eba9ef5ef7f6417e481
+  .agents/skills/writing/references/workflows.md: sha256:7b41ad42c6ad325ff3bf272aa88671800d9a2ebd0ed53ffe98a827777f83ab12
+  .agents/skills/writing/scripts/validate.py: sha256:d8bab443718c6b3122a2f5baa4bb58c42f3b7dedd71843b96b6bbcd5e575dd9a

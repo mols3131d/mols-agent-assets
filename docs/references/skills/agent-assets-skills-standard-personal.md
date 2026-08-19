@@ -29,17 +29,19 @@ Repository-local 추가 metadata가 필요하면 portable한 경우 표준 `meta
 
 ## Personal Extensions
 
-Repository-local target profile과 package surface 상세는 [Skill Target Profiles](agent-assets-skills-target-profiles.md)가 소유한다.
+Repository-local package shape와 target boundary 상세는 [Skill Package and Target Boundaries](agent-assets-skills-target-profiles.md)가 소유한다.
 
 현재 Personal Skill Standard의 extension registry는 다음과 같다.
 
-- `.agentsmesh/skills/`, `src/skills-chatbot/`, `src/skills-chatbot-runtime/` target profile
-- flat chatbot payload budget
-- directory package의 runtime/non-runtime surface
+- `.agentsmesh/skills/<skill-name>/SKILL.md` canonical package convention
+- single-file-by-default authoring convention
+- Skill package의 runtime/non-runtime surface boundary
 - maintainer baseline preservation convention
 - `load-context-*` context-only naming and activation convention
 
-AgentsMesh-managed portable Skill은 deployable canonical subtree와 maintainer surface를 분리한다. 정확한 placement는 Target Profiles가 소유하며, maintainer baseline은 해당 profile에서 정한 repository-owned 문서 위치를 사용한다.
+Skill은 chatbot/agent 또는 flat/runtime으로 분류하지 않는다. `SKILL.md` 하나로 capability가 완결되면 single-file package로 유지하고, 실제 runtime resource가 필요할 때만 supporting surface를 추가한다.
+
+AgentsMesh-managed Skill은 deployable canonical subtree와 maintainer surface를 분리한다. 정확한 placement는 Package and Target Boundaries reference가 소유하며, maintainer baseline은 해당 reference에서 정한 repository-owned 문서 위치를 사용한다.
 
 상세 constraint는 이 문서에 복제하지 않는다.
 
@@ -50,7 +52,7 @@ AgentsMesh-managed portable Skill은 deployable canonical subtree와 maintainer 
 - Portable 공통 규격 → Tier 1 Specification
 - 특정 vendor/harness 규격 → Tier 2 공식 원문 링크
 - Repository 전체의 Skill 확장 → Personal Standard
-- 특정 target profile 상세 → 해당 focused reference
+- Repository package shape와 target boundary → 해당 focused reference
 - 특정 Skill 하나의 contract → 해당 Skill
 
 Personal convention이 더 이상 필요하지 않으면 삭제한다. 외부 표준이나 target contract로 편입된 규칙을 중복 소유하지 않는다.

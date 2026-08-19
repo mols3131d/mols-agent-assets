@@ -37,7 +37,7 @@ def test_render_index_prepends_metadata_and_instruction(tmp_path):
     assert [row["name"] for row in rows[2:]] == ["alpha", "beta"]
 
 
-def test_target_templates_cover_each_skill_profile():
+def test_target_template_uses_canonical_skill_surface():
     targets = {
         directory.relative_to(generate_skill_indexes.ROOT).as_posix(): workspace_path
         for directory, (_, workspace_path) in generate_skill_indexes.TARGETS.items()
@@ -45,6 +45,13 @@ def test_target_templates_cover_each_skill_profile():
 
     assert targets == {
         ".agentsmesh/skills": ".agentsmesh/skills/{name}/SKILL.md",
-        "src/skills-chatbot": "src/skills-chatbot/{name}.skill.md",
-        "src/skills-chatbot-runtime": "src/skills-chatbot-runtime/{name}/SKILL.md",
     }
+
+
+def test_committed_canonical_skill_index_is_current():
+    for directory, (pattern, workspace_path) in generate_skill_indexes.TARGETS.items():
+        expected = generate_skill_indexes.render_index(directory, pattern, workspace_path)
+        actual = (directory / "INDEX.jsonl").read_text(encoding="utf-8")
+        assert actual == expected, (
+            f"stale Skill index: {directory.relative_to(generate_skill_indexes.ROOT)}/INDEX.jsonl"
+        )

@@ -38,7 +38,7 @@ skill-name/
 └─ assets/
 ```
 
-주요 특성은 metadata 기반 discovery, activation, optional resource loading과 progressive disclosure다. 공식 guidance의 token 권장은 repository-local budget과 구분한다.
+주요 특성은 metadata 기반 discovery, activation, optional resource loading과 progressive disclosure다. 공식 guidance의 token 권장은 repository-local convention과 구분한다.
 
 ## Prompts
 
@@ -61,10 +61,10 @@ Agent는 일반적으로 role/instructions, tools, authority/permissions, handof
 - root `CHATBOT.md` repository bootstrap convention
 - directory/glob Rule projection convention
 - `load-context-*` naming
-- `skills/`, `skills-chatbot/`, `skills-chatbot-runtime/` target profiles
-- flat chatbot Skill의 `<4,000 tokens` budget
-- Skill package의 dot-prefixed non-runtime surface
-- `.docs/baseline/` preservation convention
+- `.agentsmesh/skills/<skill-name>/SKILL.md` canonical package convention
+- single-file-by-default Skill authoring convention
+- Skill package의 runtime/non-runtime surface boundary
+- maintainer baseline preservation convention
 
 실제 운용 기준은 [Personal Agent Asset Standard](agent-assets-standard-personal.md)와 유형별 reference가 소유한다.
 
