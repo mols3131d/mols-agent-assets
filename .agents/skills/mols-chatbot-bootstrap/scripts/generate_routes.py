@@ -1,12 +1,8 @@
 #!/usr/bin/env python3
-"""Generate deterministic baseline routes for a common local Skill/Rule layout.
+"""Generate or check baseline routes for common local Skill and Rule layouts.
 
-This is a reference implementation, not a universal asset parser. Inspect the target
-workspace's asset roots, package shape, frontmatter, and Rule selector semantics before
-using it. Configure or adapt the script when those contracts differ.
-
-Defaults follow the common .agents layout, but roots and output are configurable. Existing
-route files are preserved unless --force is explicitly supplied.
+This is a reference baseline, not a universal workspace parser. Inspect the target asset
+layout and metadata contract before use, and adapt the script when they differ.
 """
 
 from __future__ import annotations
@@ -136,10 +132,87 @@ def resolve_kinds(
     return kinds
 
 
+def load_routes(path: Path, kind: str) -> list[dict[str, object]]:
+    if not path.is_file():
+        raise SystemExit(f"route file not found: {path}")
+
+    rows: list[dict[str, object]] = []
+    for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        if not line.strip():
+            continue
+        try:
+            row = json.loads(line)
+        except json.JSONDecodeError as exc:
+            raise SystemExit(f"invalid JSONL at {path}:{number}: {exc.msg}") from exc
+        if not isinstance(row, dict):
+            raise SystemExit(f"route row must be an object at {path}:{number}")
+        rows.append(row)
+
+    if not rows:
+        raise SystemExit(f"empty route file: {path}")
+    meta = rows[0].get("_meta")
+    if not isinstance(meta, dict) or meta.get("kind") != kind:
+        raise SystemExit(f"invalid _meta header for {kind}: {path}")
+    return rows[1:]
+
+
+def validate_source(repo: Path, source: object) -> str:
+    if not isinstance(source, str) or not source:
+        raise SystemExit("every route entry requires a non-empty source")
+    if source.startswith(("https://", "http://")):
+        return source
+
+    path = (repo / source).resolve()
+    try:
+        path.relative_to(repo)
+    except ValueError as exc:
+        raise SystemExit(f"local route source escapes repository: {source}") from exc
+    if not path.is_file():
+        raise SystemExit(f"local route source not found: {source}")
+    return source
+
+
+def check_routes(
+    repo: Path,
+    path: Path,
+    kind: str,
+    expected: list[dict[str, object]],
+) -> None:
+    entries = load_routes(path, kind)
+    actual: dict[str, dict[str, object]] = {}
+
+    for entry in entries:
+        source = validate_source(repo, entry.get("source"))
+        if source in actual:
+            raise SystemExit(f"duplicate route source in {path}: {source}")
+        if kind == "skills":
+            if not isinstance(entry.get("name"), str) or not isinstance(
+                entry.get("description"), str
+            ):
+                raise SystemExit(f"Skill route requires name and description: {source}")
+        else:
+            globs = entry.get("globs")
+            if not isinstance(globs, list) or not globs or not all(
+                isinstance(item, str) and item for item in globs
+            ):
+                raise SystemExit(f"Rule route requires non-empty globs: {source}")
+        actual[source] = entry
+
+    for baseline in expected:
+        source = str(baseline["source"])
+        entry = actual.get(source)
+        if entry is None:
+            raise SystemExit(f"missing {kind} route for local source: {source}")
+        if kind == "skills" and entry.get("name") != baseline.get("name"):
+            raise SystemExit(f"Skill identity drift for source: {source}")
+        if kind == "rules" and entry.get("globs") != baseline.get("globs"):
+            raise SystemExit(f"Rule selector drift for source: {source}")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description=(
-            "Generate baseline routes for the bundled common layout. "
+            "Generate/check routes for the bundled common layout. "
             "Inspect/adapt the script first when the target asset spec differs."
         )
     )
@@ -157,13 +230,18 @@ def main() -> None:
     parser.add_argument(
         "--output-dir",
         type=Path,
-        help="Output directory. Defaults to .agents/routes relative to repo.",
+        help="Route directory. Defaults to .agents/routes relative to repo.",
     )
     parser.add_argument(
         "--kinds",
         choices=("auto", "skills", "rules", "both"),
         default="auto",
-        help="Route kinds to generate. auto emits only kinds with routable local entries.",
+        help="Route kinds to generate/check. auto uses routable local entries.",
+    )
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Validate route invariants without rewriting tuned route metadata.",
     )
     parser.add_argument(
         "--force",
@@ -171,6 +249,9 @@ def main() -> None:
         help="Overwrite existing route files. Use only when replacing approved tuning intentionally.",
     )
     args = parser.parse_args()
+
+    if args.check and args.force:
+        parser.error("--check and --force cannot be used together")
 
     repo = args.repo.resolve()
     skills_root = resolve_path(repo, args.skills_root, ".agents/skills")
@@ -180,6 +261,12 @@ def main() -> None:
     skill_entries = skill_routes(repo, skills_root)
     rule_entries = rule_routes(repo, rules_root)
     kinds = resolve_kinds(args.kinds, skills_root, rules_root, skill_entries, rule_entries)
+    baselines = {"skills": skill_entries, "rules": rule_entries}
+
+    if args.check:
+        for kind in kinds:
+            check_routes(repo, output_dir / f"{kind}.jsonl", kind, baselines[kind])
+        return
 
     outputs: dict[Path, str] = {}
     if "skills" in kinds:
