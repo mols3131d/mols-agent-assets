@@ -48,25 +48,57 @@ only the missing ones.
 
 ## Discovery Indexes
 
-Create an index only when it materially improves discovery.
+An `INDEX.jsonl` is discovery metadata, not a second source of truth. Keep one JSON object
+per line and preserve a deterministic order.
 
-Keep indexes as routing metadata, not duplicated asset content.
+Include the source path so the selected asset can be loaded on demand. Do not copy asset
+bodies or invent metadata that is not needed for routing.
 
-- Skill entries should contain enough identity and description metadata to select by task intent.
-- Rule entries should contain enough path/glob or equivalent selector metadata to determine applicability.
-- Preserve source paths so the selected canonical asset can be loaded on demand.
+### Skills
 
-Prefer one deterministic generator when multiple indexes share the same source-discovery
-logic. Do not introduce a manifest layer or framework unless the repository already needs
-one.
+Index Skills for task-intent selection. Derive entries from each Skill's canonical
+`SKILL.md` front matter.
+
+Use `name` and `description` as the primary discovery fields, plus the source path:
+
+```json
+{"name":"example-skill","description":"Do X when Y. Do not use for Z.","path":".agents/skills/example-skill/SKILL.md"}
+```
+
+Do not summarize the full Skill body into the index. The `description` should remain the
+Skill's own discovery description rather than a separately maintained synopsis.
+
+### Rules
+
+Index Rules primarily when applicability depends on a path/glob selector. The index should
+let a runtime decide whether a Rule applies without loading every Rule body first.
+
+For glob-scoped Rules, preserve the source path and normalized glob selectors:
+
+```json
+{"path":".agents/rules/python.md","globs":["**/*.py","**/*.pyi"]}
+```
+
+Read the selectors from the Rule's authoritative metadata such as `globs`, `applyTo`, or
+an equivalent repository convention. Normalize only the index representation; do not
+change the Rule's own selector semantics.
+
+Do not add global or non-path Rules merely to make the index a complete catalog unless the
+repository actually needs them for discovery. Do not copy Rule policy text into the index.
 
 ## Automation
 
 When source assets can change and generated indexes are committed, prefer deterministic
 generation over manual maintenance.
 
+The generator should derive:
+
+- Skill index entries from canonical Skill `name`, `description`, and source path;
+- Rule index entries primarily from canonical path/glob selectors and source path.
+
 Use the repository's existing language and automation surface when practical. Keep the
-generator small and idempotent.
+generator small and idempotent. Prefer one generator when Skill and Rule indexes share the
+same source-discovery logic.
 
 Add the smallest CI drift check that can prove committed indexes match canonical sources.
 Reuse an existing workflow when possible instead of creating another workflow.
@@ -89,7 +121,9 @@ Verify that:
 
 - `CHATBOT.md` is root-only and minimal;
 - native harness behavior is not duplicated;
-- Skill and Rule indexes point to canonical sources and contain only routing metadata;
+- Skill indexes reflect canonical `name` and `description` metadata;
+- Rule indexes reflect canonical path/glob selectors;
+- indexes point to canonical sources and contain only routing metadata;
 - generated indexes are deterministic when generation is used;
 - CI detects stale committed indexes when CI validation is used;
 - no project policy, Skill body, or Rule body was duplicated.
