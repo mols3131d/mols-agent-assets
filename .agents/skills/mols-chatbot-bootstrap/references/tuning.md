@@ -78,11 +78,26 @@ Configuration is preferred over code changes when roots/output paths are the onl
 
 ## Tuning
 
-Review the route set as a routing system, not as isolated entries.
+There are two distinct tuning surfaces.
 
+### Generator tuning
+
+Adapt generation only as much as the target requires:
+
+- asset discovery paths;
+- package/entrypoint shape;
+- frontmatter parsing;
+- selector extraction and normalization;
+- output locations or route kinds.
+
+Generator tuning must preserve the target asset's canonical semantics. It is compatibility work, not an excuse to redefine the asset spec.
+
+### Route tuning
+
+Review the generated or directly authored route set as a routing system, not as isolated entries.
 Tune only where it improves selection.
 
-### Skill descriptions
+#### Skill descriptions
 
 Useful tuning includes:
 
@@ -95,7 +110,7 @@ Preserve the Skill's actual capability and trigger boundary. Do not invent capab
 
 If the canonical description already routes well, keep it unchanged.
 
-### Rule routes
+#### Rule routes
 
 Rule selectors are factual applicability metadata.
 
@@ -103,7 +118,7 @@ Map the target repository's authoritative selector semantics into the route repr
 
 You may normalize equivalent representation for routing, but do not broaden or narrow selector meaning unless the canonical Rule itself is changed.
 
-### `_meta`
+#### `_meta`
 
 Tune `_meta.instructions` only to clarify how the route file should be consumed. Keep it short.
 
