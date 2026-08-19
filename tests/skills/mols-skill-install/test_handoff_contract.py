@@ -18,6 +18,8 @@ def test_install_consumes_unified_find_handoff() -> None:
         "complete `sync-prep` selection set",
         "one concrete Skill package or target-native equivalent",
         "For a single-file Skill, use `SKILL.md`",
+        "Process any Skill actively controlling the current discovery/install run after other selected capabilities.",
+        "use the new version on the next invocation",
     ]
     for phrase in required:
         assert phrase in install
@@ -27,6 +29,7 @@ def test_install_resolves_current_runtime_by_capability() -> None:
     install = INSTALL.read_text(encoding="utf-8")
 
     required = [
+        "Honor an explicit target first.",
         "requested end state and observable capability",
         "current runtime itself as a target candidate",
         "This is capability-based self-targeting, not a chatbot-specific rule.",
