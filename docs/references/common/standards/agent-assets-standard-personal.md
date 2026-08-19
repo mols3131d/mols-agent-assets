@@ -22,7 +22,9 @@ description: 외부 baseline을 확장한 repository-local Agent Asset taxonomy�
 
 `references/`, `scripts/`, `assets/`, docs, evals, tests 같은 supporting resource는 이 네 유형을 지원하지만 동급 behavioral asset type은 아닙니다.
 
-Chatbot과 coding agent는 이 taxonomy에서 별도 actor type으로 구분하지 않습니다. 특정 runtime이 가진 tool capability보다 **agent harness의 context·asset discovery/loading behavior** 차이를 별도 문제로 다룹니다.
+## Runtime Model
+
+Chatbot과 coding agent는 별도 actor type으로 분류하지 않습니다. 특정 runtime의 tool capability보다 **agent harness의 context·asset discovery/loading behavior** 차이를 별도 문제로 다룹니다.
 
 ## Placement
 
