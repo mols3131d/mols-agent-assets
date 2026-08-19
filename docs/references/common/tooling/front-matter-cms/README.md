@@ -1,4 +1,4 @@
-# Front Matter CMS Reference
+# Front Matter CMS 레퍼런스
 
 > 사람과 에이전트가 함께 보는 실무 레퍼런스.
 >
