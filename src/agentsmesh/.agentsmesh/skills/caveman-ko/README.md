@@ -1,9 +1,8 @@
 # Caveman-ko
 
 > [!WARNING]
-> Work in Progress (WIP)
-> This is still under development. Functionality is not guaranteed.
+> 개발 중(WIP)입니다. 기능을 보장하지 않습니다.
 
 ---
 
-*note: 순정 케이브맨 쓰는 것과 별반 차이 없을 수 있음.*
+*참고: 순정 케이브맨을 쓰는 것과 별반 차이가 없을 수 있음.*

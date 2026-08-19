@@ -41,6 +41,10 @@ Single-file Skill에서는 top-level `#` heading을 여러 Markdown 문서의 re
 - 완료된 migration 계획·보고서는 current guidance로 유지하지 않고 Git history에 맡깁니다.
 - 유형 전체가 공유하는 지식은 `docs/references/<asset-type>/`이 소유합니다.
 
+### README 관행
+
+디렉터리 진입 문서가 필요하면 `README.md` 하나만 두고 한국어를 기본으로 작성합니다. `README.en.md`, `README.ko.md`처럼 언어별 복제본은 만들지 않습니다. 제품명, 표준명, 코드·경로·API 식별자와 영어가 더 정확한 기술 용어는 원문을 유지할 수 있습니다.
+
 ## Workflow
 
 1. `<owner>/<type>/<topic>` 브랜치를 생성합니다.
