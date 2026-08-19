@@ -1,11 +1,12 @@
 ---
 name: mols-skill-find
 description: >-
-  Find and select installable Skills from a repository or explicit skill source without
-  installing them. Use to discover available capabilities, match a requested capability,
-  inventory Skills for synchronization, or choose one target-specific sibling before
-  installation. Do not mutate the source or install Skills.
+  Discover, match, and select Skills from runtime-native catalogs, repositories, indexes,
+  directories, URLs, or explicit packages without installing them. Use when the caller
+  needs one best Skill, a scoped inventory, or a sync-ready selection set and the source,
+  target, discovery path, or constraints may be partially unspecified.
 metadata:
+  default-source: "github:mols3131d/mols-agent-assets"
   references: "vercel-labs/skills:skills/find-skills/SKILL.md"
 ---
 
@@ -14,103 +15,168 @@ metadata:
 ## Arguments
 
 ```yaml
-source: <auto>
-ref: <auto>
-scope: <auto>
+sources: <auto>
 query: <auto>
+mode: <auto>
 target: <auto>
-profiles: <auto>
+constraints: <auto>
+strategy: <auto>
+fallback: <auto>
 ```
 
-- `source` — repository, directory, URL, or other explicit Skill source. `<auto>` defaults to `mols3131d/mols-agent-assets`; use another source only when the user or caller explicitly supplies one.
-- `ref` — branch, tag, commit, or equivalent source revision. `<auto>` uses the live/current ref for the resolved source when explicitly established, otherwise the source default.
-- `scope` — repository area or capability set allowed for discovery. `<auto>` follows the caller's intent and repository-declared Skill surfaces without widening beyond the source.
-- `query` — capability need. `<auto>` infers it from the user or caller; for inventory/sync intent, enumerate all in-scope candidates.
-- `target` — intended agent/chatbot harness. `<auto>` uses the active harness and its actual capabilities.
-- `profiles` — Skill locations or target profiles to inspect. `<auto>` discovers them from repository instructions, documentation, and structure instead of assuming fixed paths.
+- `sources` — `<auto>`, one source, or an ordered list of sources. A source may be a runtime-native Skill catalog, repository, directory, index, URL, or concrete Skill package.
+- `query` — capability need or selection intent. `<auto>` infers it from the caller. It may be omitted for inventory or sync preparation.
+- `mode` — `match`, `inventory`, `sync-prep`, or `<auto>`. `<auto>` derives the smallest mode that satisfies the caller.
+- `target` — intended Skill consumer or runtime. `<auto>` uses the active target when target fit materially affects selection. `<none>` disables target-specific filtering.
+- `constraints` — optional `require`, `prefer`, and `exclude` conditions over capability, package requirements, tools, resources, provenance, or target support. `<auto>` infers only constraints established by the caller or environment.
+- `strategy` — `native-first`, `source-first`, `index-first`, `scan`, or `<auto>`. `<auto>` chooses the cheapest authoritative discovery path for each source.
+- `fallback` — `none`, `declared`, `external`, or `<auto>`. `<auto>` permits declared fallbacks but never broadens to unrelated public sources on its own.
 
-`<auto>` is an inference sentinel. For `source`, it means the dogfooding default above, not the repository of an unrelated current task. Explicit arguments override defaults. Resolve other values from explicit user input, source/repository evidence, live task context when relevant, then current harness capabilities. Do not expand to unrelated public sources automatically.
+`<auto>` means **infer from evidence**, not “use a hidden fixed value.” `<none>` explicitly disables the optional behavior for that argument. Explicit values always win.
+
+For advanced calls, each item in `sources` may use a SourceSpec:
+
+```yaml
+sources:
+  - source: <location-or-native-catalog>
+    ref: <auto>
+    scope: <auto>
+    index: <auto>
+```
+
+- `source` identifies the source itself.
+- `ref` pins a branch, tag, commit, version, or equivalent revision when the source supports one.
+- `scope` limits discovery to a repository area, package set, or capability boundary.
+- `index` may be an explicit index, `<auto>` to use a source-declared index when useful, or `<none>` to force direct discovery.
+
+A scalar source is shorthand for `{source: <value>, ref: <auto>, scope: <auto>, index: <auto>}`.
+
+## Auto Resolution
+
+Resolve each `<auto>` independently. Do not treat one inferred value as permission to invent the others.
+
+Use this evidence order unless an explicit argument overrides it:
+
+1. explicit caller arguments;
+2. caller-established source or selection context;
+3. capabilities and Skill catalogs already exposed by the active runtime;
+4. current task or repository guidance that declares a Skill source, index, or root;
+5. source-local evidence such as repository instructions, manifests, indexes, and package structure;
+6. this Skill's declarative `metadata.default-source`, only when no more relevant source is established.
+
+The metadata default is a **fallback**, not a routing rule. It must not override an explicit source, hijack discovery for an unrelated repository, or cause unrelated public-source expansion.
+
+If a required value remains materially ambiguous, preserve it as unresolved or ask only for the smallest decision needed. Do not manufacture a repository path, target capability, revision, or compatibility claim.
 
 ## Contract
 
-This Skill is **read-only discovery**. It owns finding, identity grouping, target-fit selection, and handoff to an installation capability.
+This Skill is **read-only discovery and selection**. It owns:
+
+- resolving candidate sources;
+- choosing an efficient discovery path;
+- matching capabilities to the caller's need;
+- applying explicit constraints and observable target compatibility;
+- grouping clear identity continuity;
+- returning a selection that a delivery capability can consume.
 
 It does not:
 
 - install, update, rename, delete, or overwrite Skills;
-- mutate repository files;
-- infer repository conventions from one ecosystem or platform when the source defines its own;
-- recommend duplicate target variants as separate capabilities when they are sibling projections of the same Skill.
+- mutate source or target state;
+- assume one repository layout, vendor, or runtime model is universal;
+- broaden discovery to unrelated public sources unless `fallback: external` or equivalent caller intent explicitly allows it;
+- downgrade an unsupported capability and report it as equivalent.
 
 ## Discovery
 
-### Resolve the source
+### Resolve intent
 
-Confirm `source`, `ref`, and `scope` from the arguments and source evidence. For a repository source, read only enough governing context to discover Skill placement and semantics, such as applicable instructions, README material, or asset-profile documentation.
+Resolve `mode`, `query`, `target`, and `constraints` before spending work on broad discovery.
 
-Do not assume that `skills/`, `skills-chatbot/`, `SKILL.md`, or `*.skill.md` are universal conventions. Use them when the source or active platform establishes them.
+- `match` finds the smallest relevant candidate set and selects the best supported candidate.
+- `inventory` enumerates all unique in-scope capabilities.
+- `sync-prep` returns a complete, reconciliation-ready selection set without mutating the target.
+
+When target information is irrelevant to the request, leave it unspecified rather than fabricating a target taxonomy.
+
+### Resolve sources
+
+Normalize `sources` into ordered SourceSpecs.
+
+When `sources: <auto>`:
+
+1. use an explicitly established task/source context when present;
+2. otherwise use a runtime-native Skill catalog when it already exposes the relevant capability space;
+3. otherwise use repository-declared Skill discovery for the current task repository when relevant;
+4. otherwise use `metadata.default-source` when present and allowed by `fallback`.
+
+Do not fetch a remote repository merely to rediscover Skills already exposed authoritatively by the active runtime.
+
+### Choose a discovery path
+
+For each source, prefer the cheapest authoritative representation that can answer the request:
+
+1. direct/native Skill catalog;
+2. source-declared index or manifest;
+3. scoped package discovery using source conventions;
+4. targeted repository scan only when the source lacks a sufficient catalog/index;
+5. external search only when explicitly permitted by `fallback` or caller intent.
+
+An index is an optimization and authority hint, not a universal requirement. Do not assume a fixed filename or path unless the source declares it.
 
 ### Enumerate candidates
 
-Discover candidate Skills inside the resolved scope. For each candidate, inspect the smallest sufficient material needed to determine:
+Inspect only enough candidate material to establish the fields relevant to the request:
 
 - name and description;
-- activation intent and negative boundary;
-- responsibility and intended outcome;
-- package/runtime dependencies;
-- target profile or deployment shape when relevant.
+- activation intent and responsibility;
+- intended outcome and negative boundary;
+- runtime-required files, tools, or resources;
+- provenance and revision when available;
+- observable compatibility with `target` and `constraints`.
 
-For a specific `query`, stop once the relevant candidate set is sufficiently covered. For inventory/sync intent, enumerate the full in-scope set.
+For `match`, stop when the relevant candidate set is sufficiently covered. For `inventory` and `sync-prep`, cover the complete resolved scope.
 
-### Group capability identity
+### Resolve identity
 
-Names are strong signals, not identity by themselves. Treat candidates as the same capability when evidence shows continuity in responsibility, activation, outcome, behavioral contract, provenance, or repository history.
+Names are signals, not identity by themselves. Group candidates only when evidence shows continuity through provenance, source history, stable identity metadata, or materially matching activation, responsibility, outcome, and contract.
 
-Use strong evidence first:
+Do not invent target profiles or sibling classes. If a source genuinely exposes multiple implementations or projections of one capability, keep them as alternatives under the same capability identity and select only one when the caller requires one.
 
-- stable identity, provenance, previous-name metadata;
-- repository history showing rename, move, replacement, or projection;
-- matching responsibility, activation, outcome, and core contract.
+Use `confirmed`, `probable`, or `uncertain` identity confidence. Do not force uncertain identity for downstream destructive decisions.
 
-Do not merge candidates merely because their names or domains are similar.
+### Select
 
-When identity is not clear enough for a destructive downstream decision, mark it `uncertain` rather than forcing a match.
+Apply hard constraints before preferences.
 
-### Select target-specific siblings
+Prefer the simplest candidate that fully preserves the requested capability and satisfies observable target requirements. More files, richer packaging, newer naming, or a vendor-specific surface are not quality signals by themselves.
 
-When the same capability exists in multiple target profiles, return the sibling set as one capability and choose at most one preferred variant for `target`.
-
-Prefer the **simplest sufficient variant**:
-
-- choose a bundled/runtime variant when the target supports its required resources or tools and those materially improve or enable the capability;
-- choose a self-contained/flat variant when it provides the same capability without meaningful runtime benefit or when dependencies are unsupported;
-- do not prefer a variant because it has more files, more instructions, or a more complex profile name.
-
-If no variant can preserve the capability on the target, return the capability as unsupported rather than silently degrading it.
+If no candidate satisfies required constraints, return `unsupported` or `no-match`. Do not silently weaken the requirement.
 
 ## Handoff
 
-Return discovery results in a form that `mols-skill-install` can consume. For each capability, preserve at least:
+Return records that `mols-skill-install` or another delivery capability can consume:
 
 ```yaml
 capability: <name-or-identity>
+selected: <candidate-path-id-or-url | null>
 source: <resolved-source>
-ref: <resolved-ref>
-scope: <resolved-scope>
-target: <resolved-target>
-preferred: <candidate-path-or-id | null>
-siblings: []
+ref: <resolved-ref | null>
+target: <resolved-target | null>
+compatibility: supported | unsupported | unknown
 identity: confirmed | probable | uncertain
+alternatives: []
 notes: <only material selection or compatibility notes>
 ```
 
-For inventory/sync, return one record per capability, not one record per sibling variant.
+For `inventory` and `sync-prep`, return one record per capability identity. Do not duplicate one capability merely because the source exposes multiple representations.
 
 ## Output
 
-Answer the caller's discovery intent first.
+Answer the discovery intent first.
 
-- For a single capability query, show the best match and meaningful alternatives only.
-- For inventory/sync, return the complete capability selection set.
-- Expose unsupported or identity-uncertain cases that require a decision.
-- Do not include installation instructions unless the caller asks; hand mutation ownership to `mols-skill-install`.
+- `match` — return the selected candidate and only meaningful alternatives.
+- `inventory` — return the complete in-scope capability inventory.
+- `sync-prep` — return the complete selection set plus unresolved conflicts or unsupported items.
+- Surface only material uncertainty, source limitations, or target incompatibility.
+- Do not include installation instructions unless requested. Hand mutation ownership to `mols-skill-install` or the target-native equivalent.
