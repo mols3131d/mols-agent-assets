@@ -1,5 +1,5 @@
 {
-  "version": 6,
+  "version": 7,
   "kind": "deterministic-regression",
   "canonical": {
     "workspace": "src/rulesync",
@@ -7,7 +7,7 @@
     "config": "src/rulesync/rulesync.jsonc",
     "targets": ["copilot", "antigravity-ide"],
     "features": ["rules", "skills", "subagents"],
-    "rules": ["overview.md"],
+    "rules": [],
     "skills": [
       "artifact-consistency-inspector",
       "caveman-ko",
