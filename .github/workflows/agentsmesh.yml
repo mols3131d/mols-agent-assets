@@ -33,7 +33,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           ref: ${{ github.event.pull_request.head.ref }}
-          fetch-depth: 2
+          fetch-depth: 20
           persist-credentials: true
       - uses: actions/setup-node@v7
         with:
@@ -68,7 +68,7 @@ jobs:
       - name: Commit reconciled state
         shell: bash
         run: |
-          git show HEAD^:.github/workflows/agentsmesh.yml > .github/workflows/agentsmesh.yml
+          git show 6fc13ecdd90ddeb0ea101fd329d720154c162cdd:.github/workflows/agentsmesh.yml > .github/workflows/agentsmesh.yml
           git show d224380456fa89458271b0b1a0cec9a8f2932ca0:.github/workflows/targeted-tests.yml > .github/workflows/targeted-tests.yml
           rm -f .github/workflows/tmp-skill-contract-fix.yml scripts/tmp_skill_contract_fix.py
           git config user.name "github-actions[bot]"
