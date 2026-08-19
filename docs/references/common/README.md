@@ -7,13 +7,13 @@ description: Rulesync-managed 자산 전반에 공통으로 적용되는 reposit
 
 `common/`은 여러 Rulesync feature나 repository workflow에서 같은 의미로 재사용되는 지식만 소유합니다.
 
-Rulesync schema, feature taxonomy와 target mapping은 upstream Rulesync가 소유합니다. 이 디렉터리는 이를 별도 Agent Asset 표준으로 재정의하지 않습니다.
+Rulesync schema, feature taxonomy와 target mapping은 upstream Rulesync가 소유합니다. 이 디렉터리는 이를 repository-local schema나 별도 표준으로 재정의하지 않습니다.
 
 ## 구성
 
 | 디렉터리 | 책임 |
 | --- | --- |
-| `standards/` | repository integration, naming, chatbot compatibility 같은 local convention |
+| `conventions/` | repository integration, naming, chatbot compatibility 같은 local convention |
 | `principles/` | 자산을 추가·분리·중복 제거·단순화할 때 쓰는 설계 원칙 |
 | `authoring/` | 사람과 LLM이 지침·문서를 읽고 행동하기 쉽게 만드는 작성 원칙 |
 | `concepts/` | 설계 판단의 배경이 되는 문제와 개념 |
@@ -23,9 +23,9 @@ Feature-specific reference는 실제 독립 책임이 있을 때만 형제 direc
 
 ## 먼저 볼 문서
 
-- Rulesync source와 repository boundary를 판단한다 → [Rulesync Repository Conventions](standards/rulesync-repository-conventions.md)
-- 자산 이름과 접두사를 정한다 → [Agent Asset Naming Convention](standards/agent-assets-naming-convention.md)
-- chatbot compatibility bootstrap을 설계한다 → [CHATBOT Runtime Compatibility Layer](standards/chatbot-repository-bootstrap.md)
+- Rulesync source와 repository boundary를 판단한다 → [Rulesync Repository Conventions](conventions/rulesync-repository-conventions.md)
+- 자산 이름과 접두사를 정한다 → [Agent Asset Naming Convention](conventions/agent-assets-naming-convention.md)
+- chatbot compatibility bootstrap을 설계한다 → [CHATBOT Runtime Compatibility Layer](conventions/chatbot-repository-bootstrap.md)
 - 자산을 추가·분리·정리한다 → [Design Principles](principles/README.md)
 - LLM용 지침을 작성한다 → [LLM-Readable Instructions](authoring/agent-assets-authoring-llm-readable-instructions.md)
 - 사람용 문서를 작성한다 → [Human-Readable Documents](authoring/agent-assets-authoring-human-readable-documents.md)
