@@ -1,11 +1,9 @@
 {
-  "version": 1,
+  "version": 2,
   "kind": "deterministic-regression",
   "contract": "chatbot-harness-compatibility",
   "sources": {
     "standard": "docs/references/common/standards/chatbot-repository-bootstrap.md",
-    "personal_standard": "docs/references/common/standards/agent-assets-standard-personal.md",
-    "rule_projection": "docs/references/rules/agent-assets-rules-projections.md",
     "github_loader": "src/rulesync/.rulesync/skills/load-context-github/SKILL.md",
     "mols_loader": "src/rulesync/.rulesync/skills/load-context-github-mols/SKILL.md"
   },
@@ -14,14 +12,6 @@
       "compatibility responsibility는 독립적으로 적용한다",
       "Partial harness support는 정상적인 상태다",
       "`CHATBOT.md` 자체는 이 hierarchy의 한 단계가 아니다"
-    ],
-    "personal_standard": [
-      "## Runtime Model",
-      "Chatbot과 coding agent는 별도 actor type으로 분류하지 않습니다",
-      "`CHATBOT.md`는 Rule, Skill, Prompt, Agent와 동급의 Agent Asset type이 아닙니다"
-    ],
-    "rule_projection": [
-      "`CHATBOT.md`는 Rule projection이나 별도 Rule authority가 아니다"
     ],
     "github_loader": [
       "Do not classify the caller as chatbot versus coding agent",
