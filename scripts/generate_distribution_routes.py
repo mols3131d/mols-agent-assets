@@ -16,7 +16,7 @@ RAW_ROOT = (
     "https://raw.githubusercontent.com/mols3131d/mols-agent-assets/refs/heads/main"
 )
 SKILL_SOURCE_TEMPLATE = (
-    f"{RAW_ROOT}/src/rulesync/.rulesync/skills/{{name}}/SKILL.md"
+    f"{RAW_ROOT}/src/rulesync/.rulesync/skills/{{directory}}/SKILL.md"
 )
 INSTRUCTION = (
     "Before substantive work, select only task-relevant Skills by name and description, "
@@ -51,7 +51,7 @@ def render_skill_route(
     entries = []
     for path in directory.glob("*/SKILL.md"):
         entry = read_frontmatter(path)
-        entry["source"] = source_template.format(name=entry["name"])
+        entry["source"] = source_template.format(directory=path.parent.name)
         entries.append(entry)
 
     rows = [
