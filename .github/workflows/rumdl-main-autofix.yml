@@ -87,11 +87,7 @@ jobs:
             [[ "$attr" == *": linguist-generated: set" ]] && generated+=("$file")
           done
 
-          if ((${#generated[@]})); then
-            # AgentsMesh 0.32 owns the exact trailing-newline serialization.
-            # MD057 remains enabled; compact path rewriting is disabled in .rumdl.toml.
-            uvx rumdl@0.2.6 fmt --disable MD047 "${generated[@]}"
-          fi
+          ((${#generated[@]})) && uvx rumdl@0.2.6 fmt "${generated[@]}"
 
           npx agentsmesh check
           npx agentsmesh generate --check
