@@ -70,7 +70,7 @@ npm run rulesync:preview -- --targets <target>
 npm run rulesync:validate -- --targets <target>
 ```
 
-CI의 wildcard projection smoke도 일시적인 adapter 검증일 뿐 repository support matrix를 선언하지 않습니다. Generated output은 검증 후 폐기합니다.
+Repository CI는 target을 선택하지 않고 canonical configuration과 repository-owned invariant만 검증합니다. Target projection 검증이 필요한 작업에서는 target을 명시해 temporary workspace에서 수행하고 generated output은 폐기합니다.
 
 Repository tests는 source isolation, package boundary와 derived route처럼 **이 저장소가 추가로 소유하는 invariant만** 검증합니다. Rulesync의 schema나 target mapping을 재구현하지 않습니다.
 
