@@ -2,8 +2,10 @@
 
 ## Directory Roles
 
-- `src/agentsmesh/`: canonical source for Agent Assets represented through AgentsMesh, including Rules, Skills, Agents, and the projection config. It is intentionally **not** named `.agentsmesh/` so this asset-library repository does not auto-activate its own distribution assets.
-- `.agentsmesh/`: forbidden at repository root. A runtime-discoverable AgentsMesh workspace may exist only in temporary validation/projection workspaces.
+- `src/agentsmesh/`: native AgentsMesh workspace for distributable AgentsMesh-managed assets.
+- `src/agentsmesh/agentsmesh.yaml`: workspace projection configuration.
+- `src/agentsmesh/.agentsmesh/`: canonical AgentsMesh source for Rules, Skills, and Agents. This nested location preserves the native AgentsMesh layout without exposing the repository root as an AgentsMesh runtime workspace.
+- Repository-root `.agentsmesh/` and `agentsmesh.yaml`: forbidden. Distribution assets must not auto-activate for this repository itself.
 - `.github/skills/`, `.github/agents/`, `.github/copilot-instructions.md`, `.agents/rules/`, and `.agents/skills/`: generated runtime projections. Do not commit them to this repository.
 - `.agents/AGENTS.md`: repository-local guard outside the distribution source. Follow its contents.
 - `src/`: source tree for distributable Agent Assets. Keep non-AgentsMesh custom assets as explicit peers of `src/agentsmesh/` only when a real format or target requires them.
@@ -18,7 +20,7 @@ For asset doctrine, distinguish:
 
 Prefer Skill as the portable reusable unit when a capability or situation-specific context should be activated on demand by the model rather than loaded globally.
 
-Do not classify Skills by chatbot vs agent or flat vs runtime. A canonical Skill lives at `src/agentsmesh/skills/<name>/SKILL.md`. Keep a Skill single-file when `SKILL.md` is sufficient; add supporting resources only when the capability actually needs them.
+Do not classify Skills by chatbot vs agent or flat vs runtime. A canonical Skill lives at `src/agentsmesh/.agentsmesh/skills/<name>/SKILL.md`. Keep a Skill single-file when `SKILL.md` is sufficient; add supporting resources only when the capability actually needs them.
 
 For Skill authoring, separate external contracts from repository-local extensions:
 
@@ -31,9 +33,10 @@ Supporting resources are not peer Agent Asset types alongside Rule, Skill, Promp
 
 ## Asset Pipeline
 
-1. **Author**: Edit `src/agentsmesh/` for every Agent Asset the current AgentsMesh contract can represent.
-1. **Stage**: When native AgentsMesh validation or projection is needed, stage `src/agentsmesh/{rules,skills,agents}` as `<temporary-workspace>/.agentsmesh/` and stage `src/agentsmesh/agentsmesh.yaml` at that workspace root.
-1. **Validate**: Run applicable AgentsMesh checks in the temporary workspace plus repository tests/evals at the cheapest relevant level.
-1. **Deploy**: Merge canonical source changes. Do not commit temporary `.agentsmesh/` state or harness-native generated projections back into this repository.
+1. **Author**: Edit canonical assets under `src/agentsmesh/.agentsmesh/`; edit `src/agentsmesh/agentsmesh.yaml` only for workspace projection configuration.
+1. **Validate read-only**: Run native lint or preview directly from `src/agentsmesh/`.
+1. **Validate writes**: Copy the native workspace verbatim to a temporary directory before generation/idempotence checks so generated projections and lock state never become repository files.
+1. **Verify**: Run applicable repository tests/evals at the cheapest relevant level.
+1. **Deploy**: Merge canonical source changes only. Do not commit generated target projections or AgentsMesh lock state.
 
 The physical isolation is intentional: this repository develops Agent Assets; it must not implicitly consume every asset it stores.

@@ -11,7 +11,7 @@ AGENTSMESH = ROOT / ".github" / "workflows" / "agentsmesh.yml"
 def test_agentsmesh_source_and_runtime_surfaces_have_separate_roles() -> None:
     attributes = ATTRIBUTES.read_text(encoding="utf-8")
     assert "src/agentsmesh/** agentsmesh-source" in attributes
-    assert "src/agentsmesh/skills/INDEX.jsonl linguist-generated" in attributes
+    assert "src/agentsmesh/.agentsmesh/skills/INDEX.jsonl linguist-generated" in attributes
     for forbidden in [
         ".github/skills/** linguist-generated",
         ".github/agents/** linguist-generated",
@@ -43,10 +43,10 @@ def test_main_autofix_only_formats_markdown() -> None:
 def test_skill_index_workflow_owns_index_generation() -> None:
     workflow = SKILL_INDEXES.read_text(encoding="utf-8")
     assert "python scripts/generate_skill_indexes.py" in workflow
-    assert "src/agentsmesh/skills/INDEX.jsonl" in workflow
+    assert "src/agentsmesh/.agentsmesh/skills/INDEX.jsonl" in workflow
 
 
-def test_pr_verifier_uses_temporary_agentsmesh_projection() -> None:
+def test_pr_verifier_uses_isolated_agentsmesh_workspace() -> None:
     workflow = AGENTSMESH.read_text(encoding="utf-8")
 
     assert "Validate canonical Markdown normalization" in workflow

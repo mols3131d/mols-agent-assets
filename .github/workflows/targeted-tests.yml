@@ -101,8 +101,8 @@ jobs:
               .gitattributes|.rumdl.toml|.github/workflows/rumdl-main-autofix.yml)
                 add_script "rumdl_main_autofix"
                 ;;
-              src/agentsmesh/skills/*)
-                name="${path#src/agentsmesh/skills/}"
+              src/agentsmesh/.agentsmesh/skills/*)
+                name="${path#src/agentsmesh/.agentsmesh/skills/}"
                 add_skill "${name%%/*}"
                 add_isolation
                 add_asset_docs
@@ -116,7 +116,7 @@ jobs:
                 name="${path#evals/skills/}"
                 add_eval "${name%%/*}"
                 ;;
-              src/agentsmesh/rules/*|src/agentsmesh/agents/*|src/agentsmesh/agentsmesh.yaml|package.json|package-lock.json|evals/regression/*|tests/test_agentsmesh_source_isolation.py)
+              src/agentsmesh/.agentsmesh/rules/*|src/agentsmesh/.agentsmesh/agents/*|src/agentsmesh/agentsmesh.yaml|package.json|package-lock.json|evals/regression/*|tests/test_agentsmesh_source_isolation.py)
                 add_isolation
                 ;;
               docs/skills/*|docs/references/skills/*|docs/references/common/standards/agent-assets-standard-personal.md|docs/README.md|docs/development.md|docs/testing.md)

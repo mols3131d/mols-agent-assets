@@ -1,7 +1,7 @@
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-SKILLS = ROOT / "src" / "agentsmesh" / "skills"
+SKILLS = ROOT / "src" / "agentsmesh" / ".agentsmesh" / "skills"
 FIND = SKILLS / "mols-skill-find" / "SKILL.md"
 INSTALL = SKILLS / "mols-skill-install" / "SKILL.md"
 

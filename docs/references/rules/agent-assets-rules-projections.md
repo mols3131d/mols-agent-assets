@@ -5,30 +5,29 @@ description: 이 저장소에서 portable coding-agent Rule의 canonical source�
 
 # Rule Projections
 
-이 저장소는 portable coding-agent Rule의 canonical source를 `src/agentsmesh/rules/`에 보관하고, 필요할 때 AgentsMesh temporary workspace를 통해 target projection을 검증한다.
+이 저장소는 portable coding-agent Rule의 canonical source를 `src/agentsmesh/.agentsmesh/rules/`에 보관한다. `src/agentsmesh/` 자체가 격리된 native AgentsMesh workspace이므로 별도 shape 변환은 필요하지 않는다.
 
 ```text
-src/agentsmesh/rules/
-  → temporary .agentsmesh/rules/
-  → AgentsMesh
-  → temporary target-native Rule files
+src/agentsmesh/.agentsmesh/rules/
+  → AgentsMesh from src/agentsmesh/
+  → temporary target-native Rule files for write-producing validation
 ```
 
 `src/agentsmesh/agentsmesh.yaml`이 projection target과 feature를 선택한다. AgentsMesh가 생성한 target file은 derived artifact이며 source authority가 아니고 이 repository에는 commit하지 않는다.
 
 ## Portable coding-agent Rules
 
-- repository-wide Rule source는 `src/agentsmesh/rules/_root.md`를 canonical root로 사용한다.
-- 추가 Rule은 `src/agentsmesh/rules/*.md`에 두고 AgentsMesh-compatible front matter로 scope/trigger를 표현한다.
-- target별 path, filename, glob representation과 embedded/native 차이는 temporary AgentsMesh projection에서 검증한다.
+- repository-wide Rule source는 `src/agentsmesh/.agentsmesh/rules/_root.md`를 canonical root로 사용한다.
+- 추가 Rule은 `src/agentsmesh/.agentsmesh/rules/*.md`에 두고 AgentsMesh-compatible front matter로 scope/trigger를 표현한다.
+- target별 path, filename, glob representation과 embedded/native 차이는 temporary workspace copy에서 projection을 생성해 검증한다.
 - target이 canonical capability를 완전히 표현하지 못하면 해당 차이를 숨기거나 full parity로 주장하지 않는다.
 - generated target Rule을 source authority로 유지하지 않는다.
 
-현재 Tier A projection target은 `src/agentsmesh/agentsmesh.yaml`이 선언한 GitHub Copilot과 Antigravity다. 다른 target을 추가할 때는 AgentsMesh capability와 실제 generated result를 temporary workspace에서 검증한 뒤 승격한다.
+현재 Tier A projection target은 `src/agentsmesh/agentsmesh.yaml`이 선언한 GitHub Copilot과 Antigravity다. 다른 target을 추가할 때는 AgentsMesh capability와 실제 generated result를 temporary workspace copy에서 검증한 뒤 승격한다.
 
 ## Repository Runtime Boundary
 
-Repository root의 `.agentsmesh/` 또는 harness-native Rule/Skill directory를 distribution source나 generated evidence로 commit하지 않는다. 이 경계는 이 asset-library repository가 보관한 자산을 자기 runtime configuration으로 자동 인식하는 것을 방지한다.
+Repository root의 `.agentsmesh/` 또는 harness-native Rule/Skill directory를 distribution source나 generated evidence로 commit하지 않는다. Canonical `.agentsmesh/`는 오직 격리된 `src/agentsmesh/` workspace 아래에 둔다. 이 경계는 이 asset-library repository가 보관한 자산을 자기 runtime configuration으로 자동 인식하는 것을 방지한다.
 
 ## Hosted chatbot boundary
 

@@ -19,9 +19,11 @@ def directory_names(path: Path) -> set[str]:
 
 def test_agentsmesh_source_matches_regression_contract() -> None:
     contract = load_contract()["canonical"]
-    source = ROOT / contract["root"]
+    workspace = ROOT / contract["workspace"]
+    source = ROOT / contract["asset_root"]
     config = yaml.safe_load((ROOT / contract["config"]).read_text(encoding="utf-8"))
 
+    assert source == workspace / ".agentsmesh"
     assert config["version"] == 1
     assert config["targets"] == contract["targets"]
     assert config["features"] == contract["features"]
@@ -44,13 +46,16 @@ def test_distribution_assets_are_not_repository_runtime_configuration() -> None:
     for path in contract["forbidden_repository_runtime_surfaces"]:
         assert not (ROOT / path).exists(), path
 
+    for path in contract["forbidden_workspace_generated_surfaces"]:
+        assert not (ROOT / path).exists(), path
+
     for path in contract["repository_local_exceptions"]:
         assert (ROOT / path).exists(), path
 
 
 def test_deployable_skill_surface_excludes_repository_verification() -> None:
     contract = load_contract()
-    source = ROOT / contract["canonical"]["root"] / "skills"
+    source = ROOT / contract["canonical"]["asset_root"] / "skills"
     surface = contract["package_surface"]
     forbidden_top_level = set(surface["forbid_top_level_dirs"])
 

@@ -11,6 +11,7 @@ ROOT = (
     Path(__file__).resolve().parents[3]
     / "src"
     / "agentsmesh"
+    / ".agentsmesh"
     / "skills"
     / "mols-agent-asset-validator"
 )

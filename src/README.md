@@ -4,18 +4,19 @@
 
 ## `src/agentsmesh/`
 
-`src/agentsmesh/` owns every Rule, Skill, and Agent that is represented through AgentsMesh:
+`src/agentsmesh/` is an isolated native AgentsMesh workspace for every Rule, Skill, and Agent represented through AgentsMesh:
 
 ```text
 src/agentsmesh/
 ├── agentsmesh.yaml
-├── agents/
-├── rules/
-└── skills/
+└── .agentsmesh/
+    ├── agents/
+    ├── rules/
+    └── skills/
 ```
 
-The directory is intentionally named `agentsmesh`, not `.agentsmesh`. This repository is an asset library, so stored assets must not become repository-local runtime configuration merely because an IDE or harness discovers a conventional dot-directory.
+This preserves the native AgentsMesh layout without exposing a repository-root `.agentsmesh/` workspace. Stored distribution assets therefore do not become repository-local runtime configuration merely because an IDE or harness discovers conventional root paths.
 
-When native AgentsMesh tooling is required, stage this tree into a temporary workspace where `rules/`, `skills/`, and `agents/` become `.agentsmesh/{rules,skills,agents}` and `agentsmesh.yaml` becomes the workspace config. Generated target projections stay temporary and are not canonical repository files.
+Run read-only native commands directly from `src/agentsmesh/`. For write-producing validation such as generation, copy the workspace verbatim to a temporary directory. Generated target projections and `.lock` state are temporary artifacts, not canonical repository files.
 
 Create other `src/` peers only for real custom/non-standard formats that AgentsMesh cannot represent. Do not recreate legacy taxonomy such as `skills-chatbot` or `skills-chatbot-runtime`.

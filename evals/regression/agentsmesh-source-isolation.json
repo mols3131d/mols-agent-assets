@@ -1,8 +1,9 @@
 {
-  "version": 2,
+  "version": 3,
   "kind": "deterministic-regression",
   "canonical": {
-    "root": "src/agentsmesh",
+    "workspace": "src/agentsmesh",
+    "asset_root": "src/agentsmesh/.agentsmesh",
     "config": "src/agentsmesh/agentsmesh.yaml",
     "targets": ["copilot", "antigravity"],
     "features": ["rules", "skills", "agents"],
@@ -58,6 +59,11 @@
     ".github/agents",
     ".agents/rules",
     ".agents/skills"
+  ],
+  "forbidden_workspace_generated_surfaces": [
+    "src/agentsmesh/.agentsmesh/.lock",
+    "src/agentsmesh/.github",
+    "src/agentsmesh/.agents"
   ],
   "repository_local_exceptions": [
     ".agents/AGENTS.md"

@@ -1,8 +1,8 @@
-# Canonical Agent Asset source
+# Canonical Agent Asset workspace
 src/agentsmesh/** agentsmesh-source
 
 # Repository-local runtime guard
 .agents/AGENTS.md linguist-detectable
 
 # Derived repository metadata
-src/agentsmesh/skills/INDEX.jsonl linguist-generated
+src/agentsmesh/.agentsmesh/skills/INDEX.jsonl linguist-generated

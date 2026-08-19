@@ -6,7 +6,15 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[3]
-SKILL = ROOT / "src" / "agentsmesh" / "skills" / "mols-skill-find" / "SKILL.md"
+SKILL = (
+    ROOT
+    / "src"
+    / "agentsmesh"
+    / ".agentsmesh"
+    / "skills"
+    / "mols-skill-find"
+    / "SKILL.md"
+)
 DEFAULT_SOURCE = "https://github.com/mols3131d/mols-agent-assets"
 EXPECTED_ARGUMENTS = {
     "sources",
