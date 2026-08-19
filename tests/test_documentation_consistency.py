@@ -34,6 +34,14 @@ def test_current_guidance_uses_rulesync_native_exception_model() -> None:
     assert "parallel taxonomy" in development
 
 
+def test_common_repository_extensions_are_conventions_not_parallel_standards() -> None:
+    common = DOCS / "references" / "common"
+    assert not (common / "standards").exists()
+    assert (common / "conventions" / "rulesync-repository-conventions.md").is_file()
+    assert (common / "conventions" / "agent-assets-naming-convention.md").is_file()
+    assert (common / "conventions" / "chatbot-repository-bootstrap.md").is_file()
+
+
 def test_retired_guidance_is_not_current_docs() -> None:
     obsolete = {
         "agentsmesh-migration-plan.md",
