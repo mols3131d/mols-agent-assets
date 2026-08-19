@@ -7,7 +7,7 @@ Agent Skill은 특정 영역의 지식과 반복 가능한 절차를 필요할 �
 이 문서는 설계 흐름만 소유한다. Canonical representation과 전문 규격은 해당 authority가 소유한다.
 
 - Repository canonical representation →
-  [Rulesync Repository Conventions](../common/standards/rulesync-repository-conventions.md)
+  [Rulesync Repository Conventions](../common/conventions/rulesync-repository-conventions.md)
 - Repository-local Skill authoring →
   [Skill Authoring Conventions](skill-authoring-conventions.md)
 - Agent Skills output / portable contract →
