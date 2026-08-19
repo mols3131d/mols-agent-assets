@@ -1,68 +1,54 @@
 # 테스팅 및 품질 검증 가이드
 
-자동화 테스트, Rulesync 검증, 정적 분석 및 코드 품질 검증 가이드입니다.
+이 문서는 repository verification의 **위치와 증거 수준**을 정의합니다. Workspace/source ownership은 [Rulesync Repository Conventions](references/common/conventions/rulesync-repository-conventions.md)를 따릅니다.
 
-## 테스트 구조
+## 구조
 
 | 경로 | 역할 |
 | --- | --- |
-| `tests/scripts/` | repository automation script의 deterministic correctness test |
-| `tests/skills/<skill>/` | Skill-specific deterministic correctness test와 fixture |
-| `tests/evals/` | repository-owned evaluation fixture의 syntax/shape check |
-| `evals/skills/<skill>/` | Skill-specific trigger, behavior, adversarial 등 model/evaluation fixture |
-| `evals/regression/` | 여러 source에 걸친 deterministic regression contract |
+| `tests/scripts/` | repository automation의 deterministic test |
+| `tests/skills/<skill>/` | Skill-specific deterministic test와 fixture |
+| `tests/evals/` | eval fixture의 syntax/shape check |
+| `evals/skills/<skill>/` | trigger, behavior, adversarial 등 model/evaluation fixture |
+| `evals/regression/` | 여러 asset에 걸친 regression contract |
 
-Deployable Skill package인 `src/rulesync/.rulesync/skills/<skill>/`에는 repository verification 자산을 두지 않습니다. `tests/`, `evals/`, `scenarios/`, generated `results/`는 runtime resource가 아닙니다.
+Repository verification은 deployable Skill package 밖에 둡니다. `scenarios/`도 독립 asset type이 아니라 그것을 소비하는 test/eval 쪽에 둡니다.
 
-평가 code와 fixture는 package 밖에 있지만 **평가 대상의 authority는 `src/rulesync/.rulesync/`의 canonical asset**입니다. 실제 target-specific runtime claim을 검증해야 할 때만 Rulesync projection 뒤의 vendor usage surface를 evidence source로 사용합니다.
+Generated `results/`는 기본적으로 일회성 output입니다. 별도 report/evidence로 지속 보존할 명확한 이유가 있을 때만 durable artifact로 승격합니다.
 
-## Rulesync workspace
+## 원칙
 
-Rulesync 검증에서는 두 workspace를 섞지 않습니다.
+- Deterministic assertion으로 판정 가능한 계약은 model grader보다 우선합니다.
+- Test/eval은 canonical asset을 검증하며 자체적으로 두 번째 source of truth가 되지 않아야 합니다.
+- Skill/Subagent inventory, 문서의 특정 문장, 과거 migration 경로 같은 재생성 가능한 상태를 회귀 계약에 수동 복제하지 않습니다.
+- Target-specific runtime claim이 성공 조건일 때만 실제 usage surface의 evidence를 요구합니다.
+- Generated projection 성공만으로 runtime behavior parity를 주장하지 않습니다.
 
-- root `.rulesync/` + `rulesync.jsonc`: 이 repository 자체를 위한 optional workspace
-- `src/rulesync/.rulesync/` + `src/rulesync/rulesync.jsonc`: reusable asset library의 canonical authoring workspace
+## Rulesync 검증
 
-Root workspace가 존재해도 library 검증에 암묵적으로 포함하지 않으며, library asset을 repository runtime configuration으로 간주하지 않습니다.
-
-## 검증 계층
+Reusable library의 기본 순서는 다음과 같습니다.
 
 ```text
-src/rulesync/.rulesync/ canonical asset
-  → rulesync doctor --strict
-  → repository deterministic test / behavioral eval
-  → 필요할 때 target을 선택해 projection
-  → target-specific claim만 <vendor>/... usage surface에서 runtime 검증
+rulesync doctor --strict
+→ 관련 deterministic test / behavioral eval
+→ 필요한 경우에만 target projection/runtime 검증
 ```
 
-`<vendor>/...`는 개념적 표기이며 실제 projection path와 semantics는 Rulesync와 해당 target contract가 정합니다.
+Repository `npm run rulesync:*` command는 `scripts/run_rulesync.py`를 통해 `src/rulesync/` workspace를 대상으로 실행합니다. Runner는 target path나 projection semantics를 재구현하지 않고 Rulesync CLI에 위임합니다.
 
-Repository `npm run rulesync:*` command는 현재 library workspace인 `src/rulesync/`를 대상으로 `scripts/run_rulesync.py`를 사용합니다. Runner는 Rulesync의 target path나 projection semantics를 재구현하지 않고 CLI에 위임합니다. Generated target projection과 Rulesync lock state는 repository에 남기지 않습니다.
-
-Repository workspace가 생기면 root에서 별도로 native diagnostics를 실행합니다. Library command에 root workspace를 숨겨서 합치지 않습니다.
-
-이 저장소는 supported vendor/target matrix를 검증하지 않습니다. Repository CI는 target을 선택하지 않고 library canonical Rulesync configuration과 repository-owned invariant만 검증합니다. 특정 target projection/runtime이 작업의 성공 조건일 때만 해당 target과 workspace를 명시해 별도로 검증합니다.
-
-Repository test는 Rulesync 자체가 아니라 이 저장소가 추가로 소유하는 invariant에 집중합니다.
-
-- repository Rulesync workspace와 reusable library workspace의 isolation
-- canonical asset과 generated usage surface의 분리
-- deployable Skill package와 verification surface의 분리
-- repository-owned route generation
-- behavioral/runtime claim에 필요한 evidence
-
-Deterministic check로 판정할 수 있는 계약은 model grader보다 우선합니다. Trigger precision, task success 또는 runtime parity가 필요한 주장은 필요한 runtime/eval evidence 없이 성공으로 간주하지 않습니다.
+Root repository workspace가 실제로 존재하면 library와 별도로 검증합니다.
 
 ## 기본 명령
 
-Library workspace:
-
 ```bash
 npm run rulesync:doctor
-npm run rulesync:preview -- --targets <target>
-npm run rulesync:validate -- --targets <target>
 uv run pytest
 uv run ruff check .
 ```
 
-Repository workspace가 존재하면 root에서 Rulesync native CLI를 별도로 사용합니다.
+구체적인 target 검증이 필요할 때만 다음을 추가합니다.
+
+```bash
+npm run rulesync:preview -- --targets <target>
+npm run rulesync:validate -- --targets <target>
+```

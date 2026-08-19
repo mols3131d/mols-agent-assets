@@ -1,93 +1,21 @@
 {
-  "version": 9,
+  "version": 10,
   "kind": "deterministic-regression",
   "repository_workspace": {
     "config": "rulesync.jsonc",
     "asset_root": ".rulesync",
     "optional": true
   },
-  "canonical": {
-    "workspace": "src/rulesync",
-    "asset_root": "src/rulesync/.rulesync",
+  "library_workspace": {
     "config": "src/rulesync/rulesync.jsonc",
-    "targets": [],
-    "features": ["rules", "skills", "subagents"],
-    "rules": [],
-    "skills": [
-      "artifact-consistency-inspector",
-      "caveman-ko",
-      "clarify-code",
-      "guide-technical-docs-repo",
-      "load-context-agent-assets",
-      "load-context-agent-skills",
-      "load-context-coding",
-      "load-context-github",
-      "load-context-github-mols",
-      "load-context-human-writing",
-      "load-context-notion",
-      "load-context-notion-mols",
-      "load-context-tech-doc-fidelity",
-      "mols-agent-asset-studio",
-      "mols-agent-asset-validator",
-      "mols-chatbot-bootstrap",
-      "mols-ci-design",
-      "mols-documents-studio",
-      "mols-markdown-dashboard",
-      "mols-markdown-for-human",
-      "mols-markdown-scripts",
-      "mols-mermaid-chart",
-      "mols-mermaid-diagram",
-      "mols-rule-dry",
-      "mols-skill-creator",
-      "mols-skill-find",
-      "mols-skill-install",
-      "news-table",
-      "rpwr-loop",
-      "searcher",
-      "text-humanize-korean",
-      "vcs-git-commit",
-      "writing"
-    ],
-    "subagents": [
-      "review-adversarial",
-      "review-lead",
-      "review-quality"
-    ]
+    "asset_root": "src/rulesync/.rulesync",
+    "target_neutral": true
   },
-  "package_surface": {
-    "forbid_dot_paths": true,
-    "forbid_top_level_dirs": ["tests", "evals", "scenarios", "results"]
-  },
-  "forbidden_committed_projection_surfaces": [
-    ".agentsmesh",
-    "agentsmesh.yaml",
-    ".github/copilot-instructions.md",
-    ".github/skills",
-    ".github/agents",
-    ".agents/skills",
-    ".agents/rules",
-    ".agents/agents"
-  ],
-  "forbidden_workspace_generated_surfaces": [
+  "forbidden_library_generated_surfaces": [
     "src/rulesync/.github",
     "src/rulesync/.agents",
     "src/rulesync/rulesync.lock",
     "src/rulesync/rulesync-npm.lock.json"
   ],
-  "repository_local_exceptions": [
-    ".agents/AGENTS.md"
-  ],
-  "repository_local_skill_exceptions": [],
-  "retired": [
-    "src/agentsmesh",
-    "src/skills",
-    "src/skills-chatbot",
-    "src/skills-chatbot-runtime",
-    "src/agents",
-    "src/prompts",
-    "src/rules",
-    "tests/skills/rulesync-agent-assets",
-    "tests/skills/iceberg-code-review",
-    "tests/skills/mols-kanban-markdown"
-  ]
+  "verification_dirs": ["tests", "evals", "scenarios", "results"]
 }

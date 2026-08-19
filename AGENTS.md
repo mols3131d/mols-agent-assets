@@ -1,71 +1,22 @@
 # `AGENTS.md`
 
-## Authority
+## Working Rules
 
-Rulesync-managed assets use two intentionally separate workspaces.
+- `main`을 직접 수정하지 말고 작업 branch에서 변경합니다.
+- 재사용 Rulesync 자산은 `src/rulesync/.rulesync/`에서만 author/edit합니다.
+- 이 repository 자체를 위한 Rulesync 자산은 실제 필요가 있을 때만 root `.rulesync/` workspace에 둡니다. Reusable library를 root에 mirror하지 않습니다.
+- Rulesync-managed schema, feature, target namespace와 projection behavior는 current Rulesync를 따릅니다. Repository-local superset schema나 manual projection layer를 만들지 않습니다.
+- 이 저장소는 vendor/target support matrix를 정의하지 않습니다. Target은 구체적인 projection 또는 검증 작업에서만 선택합니다.
+- Generated vendor projection과 Rulesync lock state를 reusable library source로 commit하지 않습니다.
+- Repository verification은 `tests/`, `evals/`가 소유합니다. Runtime-required resource만 deployable asset package 안에 둡니다.
+- `route/`는 derived discovery metadata입니다. Canonical asset body나 policy를 복제하지 않습니다.
+- Maintainer docs는 durable decision, recovery knowledge 또는 실제 maintenance value가 있을 때만 만듭니다. 작업 로그와 쉽게 재생성되는 상태는 Git history에 맡깁니다.
+- 변경 후 가장 작은 관련 test/eval을 우선 실행합니다. Target-specific runtime claim이 성공 조건일 때만 해당 usage surface의 evidence를 요구합니다.
 
-- Repository workspace: root `.rulesync/` + `rulesync.jsonc`, only for Rulesync assets that configure or maintain this repository itself.
-- Library workspace: `src/rulesync/.rulesync/` + `src/rulesync/rulesync.jsonc`, for reusable assets this repository authors, evaluates, and stores.
-- Current Rulesync schema, file formats, feature names, target namespaces, and adapters are authoritative for Rulesync-managed assets.
-- Repository-local documentation must not redefine Rulesync contracts that can be referenced directly.
+## References
 
-Repository-specific integration conventions live in `docs/references/common/conventions/rulesync-repository-conventions.md`.
-
-## Library Lifecycle
-
-Treat `src/rulesync/.rulesync/` as the canonical **authoring and evaluation authority** for this repository's reusable Rulesync assets.
-
-```text
-src/rulesync/.rulesync/
-  author / edit / review / evaluate
-            ↓ Rulesync
-<vendor>/...
-  consume / run
-```
-
-`<vendor>/...` is conceptual. Rulesync and the target contract own the actual projection path and runtime semantics. Do not encode a repository-local vendor path abstraction or support matrix.
-
-Tests and eval fixtures stay under `tests/` and `evals/`; they verify the canonical library asset rather than becoming part of its deployable package.
-
-## Repository Boundary
-
-- Repository-level Rulesync assets, when needed, belong only in the root Rulesync workspace. Do not place them in `src/rulesync/.rulesync/`.
-- Reusable Rulesync assets belong only in `src/rulesync/.rulesync/`. Do not copy the whole library into the root workspace.
-- Root Rulesync workspace is optional. Do not create it merely to mirror the library.
-- Generated vendor runtime surfaces are not canonical source and must not be committed as projection output.
-- `.agents/AGENTS.md` is a repository-local guard outside both Rulesync canonical workspaces.
-- `route/` is derived cross-runtime discovery metadata for the library, not Rulesync canonical source. Follow `route/README.md` for its contract.
-- Keep non-Rulesync custom source as an explicit peer of `src/rulesync/` only when a real required semantic cannot be represented by Rulesync.
-
-## Target Scope
-
-This repository does not define a supported vendor/target matrix. Select a target only when projecting to or verifying a concrete usage surface.
-
-Target-specific sections in individual assets may remain when they are meaningful for past, current, or plausible future use. Do not remove valid metadata merely because a target is not selected for a current projection.
-
-## Authoring
-
-Use Rulesync feature terminology directly.
-
-For the library workspace, the committed feature set is `rules`, `skills`, and `subagents`.
-
-- Author library Rules only when they are actual reusable/stored Rules. Repository-maintenance Rules belong in the root workspace instead.
-- Canonical library Skills live at `src/rulesync/.rulesync/skills/<name>/SKILL.md`. Follow `docs/references/skills/skill-authoring-conventions.md` only for repository-local authoring conventions not owned by Rulesync or the target contract.
-- Canonical library Subagents live under `src/rulesync/.rulesync/subagents/`; use target-specific sections only for behavior the target actually supports.
-- Do not create repository-local superset schemas or manual projection semantics for fields Rulesync already models.
-- Do not claim runtime parity unless the relevant target usage surface has evidence when such evidence is required.
-
-Supporting resources are not separate Rulesync features unless Rulesync defines them as such. Put runtime resources with the asset that consumes them and repository verification under `tests/` or `evals/`.
-
-## Asset Pipeline
-
-For reusable library assets:
-
-1. **Author**: create or edit canonical source under `src/rulesync/.rulesync/`.
-1. **Review and evaluate**: run the smallest applicable repository tests/evals against that canonical asset.
-1. **Validate canonical**: run native Rulesync diagnostics against `src/rulesync/`.
-1. **Project when needed**: select a target for the concrete usage surface; keep write-producing projection temporary.
-1. **Verify runtime when required**: validate only target-specific claims that need evidence from the actual usage surface.
-1. **Keep canonical only**: do not commit generated target projection or Rulesync lock state as library source.
-
-For repository-level Rulesync assets, use only the root Rulesync workspace and validate it independently from the library workspace.
+- Rulesync integration boundary → `docs/references/common/conventions/rulesync-repository-conventions.md`
+- Skill authoring → `docs/references/skills/skill-authoring-conventions.md`
+- Development workflow → `docs/development.md`
+- Testing → `docs/testing.md`
+- Cross-runtime routing → `route/README.md`
