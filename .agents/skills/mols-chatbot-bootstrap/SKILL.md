@@ -26,14 +26,14 @@ overwrite: <auto>
 ```
 
 - `target` — repository or workspace to inspect and modify. `<auto>` uses the active repository/workspace established by the caller or runtime.
-- `mode` — `apply`, `refresh`, `audit`, or `<auto>`. `<auto>` chooses the smallest mode implied by the request and current state.
-- `scope` — one or more of `chatbot`, `skills`, `rules`, `automation`, or `<auto>`. `<auto>` includes only responsibilities needed by the request or missing from the target.
-- `sources` — explicit local asset roots, remote asset URLs, or `<auto>`. `<auto>` uses authoritative asset locations already declared or discoverable in the target; it does not invent unrelated remote sources.
+- `mode` — `apply`, `refresh`, `audit`, or `<auto>`. `<auto>` resolves to `audit` for review/check-only intent, `refresh` when relevant compatibility assets already exist and the caller asks to update/sync/repair them, otherwise `apply`.
+- `scope` — one or more of `chatbot`, `skills`, `rules`, `automation`, or `<auto>`. `<auto>` includes only responsibilities needed by the request or missing/stale in the target.
+- `sources` — explicit local asset roots, remote asset URLs, or `<auto>`. `<auto>` uses authoritative asset locations already declared or discoverable in the target plus remote assets explicitly established by the caller; it does not search for unrelated remote sources.
 - `route_entry` — an explicit entrypoint path, `direct`, `<none>`, or `<auto>`. `<auto>` reuses an existing entrypoint when suitable; otherwise it prefers `.agents/routes/ROUTE.md` when one link usefully represents the routing surface.
 - `generation` — `script`, `model`, `<none>`, or `<auto>`. `<auto>` reuses existing generation first, uses/adapts the bundled script when repeatability helps, and avoids a generator when a tiny static route is simpler.
 - `tuning` — `on`, `off`, or `<auto>`. `<auto>` reviews routing quality but edits semantic routing metadata only when selection materially improves.
-- `validation` — `local`, `ci`, `<none>`, or `<auto>`. `<auto>` performs the smallest useful local validation and adds CI only when committed route metadata has a meaningful drift risk.
-- `overwrite` — `preserve`, `replace`, or `<auto>`. `<auto>` preserves existing approved routing/tuning and makes surgical updates; replacement requires explicit intent or clear disposable generated state.
+- `validation` — `local`, `ci`, `<none>`, or `<auto>`. `<auto>` performs local validation after writes and adds CI only when committed route metadata has a meaningful drift risk.
+- `overwrite` — `preserve`, `replace`, or `<auto>`. `<auto>` is `preserve`. Existing approved routing/tuning is never replaced without explicit `replace` intent.
 
 `<auto>` means infer independently from evidence, not use one hidden fixed profile. `<none>` explicitly disables that optional behavior. Explicit arguments always win.
 
@@ -56,6 +56,8 @@ Default behavior is conservative:
 - `.agents/routes/ROUTE.md` as the default single entrypoint only when useful, never mandatory;
 - script generation only when it reduces real maintenance or drift cost;
 - semantic tuning only when routing improves.
+
+`mode: audit` is read-only. Do not infer write behavior from another argument while audit is active.
 
 Do not let one inferred value silently authorize another. If a material value cannot be resolved from evidence, leave that behavior disabled or unresolved rather than inventing repository structure.
 
