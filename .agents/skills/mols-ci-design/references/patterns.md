@@ -89,9 +89,3 @@ This is not mandatory. Small repositories may need only the PR tier.
 Use for derived-state upkeep rather than merge confidence: formatting, index/route regeneration, synchronized projections, generated documentation, or similar writes.
 
 Prefer clear source authority and idempotent generation. Where practical, validate on PR and write only after merge. Avoid commit loops and workflows that silently overwrite intentional semantic tuning.
-
-## Restraint
-
-Before adding cache, matrices, hosted graders, or a new routing framework, ask what failure they uniquely detect or what measured bottleneck they solve.
-
-A representative PR value plus scheduled broader coverage is usually better than an unexplained Cartesian product.
