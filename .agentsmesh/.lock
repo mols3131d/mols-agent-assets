@@ -1,7 +1,7 @@
 # Auto-generated. DO NOT EDIT MANUALLY.
 # Tracks the state of all config files for team conflict resolution.
 
-generated_at: 2026-08-19T04:54:19.170Z
+generated_at: 2026-08-19T07:28:44.476Z
 generated_by: runner
 lib_version: 0.32.0
 checksums:
@@ -91,18 +91,18 @@ checksums:
   skills/mols-documents-studio/templates/decisions-lite.template.md: sha256:c383e85ee8239a871afa894eae6082846d6228fb18b65bf55204dd30dff8f5b5
   skills/mols-documents-studio/workflows/INDEX.csv: sha256:863561f96f51b75baa211ebf741d202d58cfc163399cbb8fcbc1bc7be14c73b9
   skills/mols-documents-studio/workflows/write-decisions.md: sha256:abcede8b0edbb5c93906ad5e757f06a9e7a0c29a219f9a5deef47a6d2f50aa01
-  skills/mols-markdown-dashboard/SKILL.md: sha256:b0dd217fbcc4ff1130d9b1ce7408d8332160de4cbd15a69c08e9856b4b73cf70
+  skills/mols-markdown-dashboard/SKILL.md: sha256:796b85caf8e77dc64507db89a32bae2e4f3e2bffd12a1875e9af4a774468c6c7
   skills/mols-markdown-dashboard/examples/domain-dashboard.md: sha256:79f2e5bd98e8f70be2fa00cbd4f2ffb01132b306dc0d7e3ec44ce0ea2506b6a5
   skills/mols-markdown-dashboard/examples/domain-dashboard.yml: sha256:744b0d8fb148c492705c926a11c3ee97b09fa1f8cfb29d77c3bbf355c233ac36
   skills/mols-markdown-dashboard/examples/project-dashboard.md: sha256:b8e82cfd3f2b19b34dff29ca1b53caeb5e7258baf364a9f132be2584000e3703
   skills/mols-markdown-dashboard/examples/project-dashboard.yml: sha256:c744e9b0062eebb602867b6dfa17683131bbcd26be6f79e0c6cea2c768014ace
   skills/mols-markdown-dashboard/pyproject.toml: sha256:ba795f91a2b636e305f891708b3148b5829adf3bbb062019c8c589d12cc433e8
-  skills/mols-markdown-dashboard/references/dashboard-method.md: sha256:d8038925b3aaae820b19adde0f78ef6bff1396e82baa476410e559e0ec4f1609
+  skills/mols-markdown-dashboard/references/dashboard-method.md: sha256:30bd319c52fafacce88000a5923b88b914ebfb70a8150874840c0573b330a7d6
   skills/mols-markdown-dashboard/references/dashboard-schema.md: sha256:3e68a34c9c0514e26e4a101e0a78327b8bb27d0adc25039a578f5329b3f6a57f
   skills/mols-markdown-dashboard/references/render-workflow.md: sha256:d8cb492051fe26a31e827f7806b0458ab4ea03498d3fff7555332318e0261aec
-  skills/mols-markdown-dashboard/references/review-workflow.md: sha256:2fd872d5656b876e23a85a5ae92efc4e1c98600bcc3c74c4dbdb9a31e43b04c8
+  skills/mols-markdown-dashboard/references/review-workflow.md: sha256:599f86780f8f1f0e794fc641e50993237147fc4fab47ecf62ba240235e777a04
   skills/mols-markdown-dashboard/references/update-workflow.md: sha256:2105cc070594def89ceb5e430d376f73f38344d9d56126ff2c14d5790562bc00
-  skills/mols-markdown-dashboard/references/visual-selection.md: sha256:dc59002d5c10b51fb4025e73ba821785bfc4d01de765178a9e33abf5ed2b2cdd
+  skills/mols-markdown-dashboard/references/visual-selection.md: sha256:701fcefa4bb8e8b1a7d5501b7af5e9d2d13bd120c62b31819eb3b5ef4ea9d967
   skills/mols-markdown-dashboard/scripts/check_quality.py: sha256:baa8e3cd75f4a106705885343bb677d9bfaf3afd6e904a2ede1e951775bafee8
   skills/mols-markdown-dashboard/scripts/render_dashboard.py: sha256:e0f550423ed1eb90f40cff2fd6f9884c351c29a447b5dd24857d50e50d543ee9
   skills/mols-markdown-dashboard/src/mols_dashboard/__init__.py: sha256:fda5d3d52ae7b696aaada949290c5b2956c9cf0932bc8a1fa175d1710862d98a
@@ -197,8 +197,8 @@ checksums:
   skills/mols-skill-creator/scripts/init_skill.py: sha256:00d2720f2ee6e5560089ce5b4f624a560f6129781f25291167284247688df54b
   skills/mols-skill-creator/scripts/package_skill.py: sha256:462917d3f0001166e868a226b59213a7e4f6270b0907d2519a0ca4f8c07cfda1
   skills/mols-skill-creator/scripts/validate_skill.py: sha256:d73925a81a17286b262eb004df57fea9cc0564be93e0735980e7920d0f84bd27
-  skills/mols-skill-find/SKILL.md: sha256:ec819e23c4db32351effe558d904524dd3a5b40f023bfbbe936775c547af15ef
-  skills/mols-skill-install/SKILL.md: sha256:dd19c61d35571e0832c18e98836f55eaad03a9fcfa2b2d5f15f1f6e0a34eaa17
+  skills/mols-skill-find/SKILL.md: sha256:dd7eb65b55f79b4daeb80ce4a1f161d044a9cf3a947a08704e6c03afdd454328
+  skills/mols-skill-install/SKILL.md: sha256:bfbdb676ce866da2fb2e777e44a9a60d9a0528604be1604c681edfedf0a78d53
   skills/news-table/SKILL.md: sha256:77db70065a6dee0f1ca85fe5a3c0ca40f4bd10ff09af251f18af5fc3a3b5cd52
   skills/rpwr-loop/SKILL.md: sha256:8b11a82f55824e1eb4ca7a317b512fbb6d26bd305853bba8856e7159f22311ab
   skills/searcher/SKILL.md: sha256:07b4168a80ca4093add07262fe65069d7cd1c8bd53a64010ca57acbf162d613f
@@ -318,18 +318,18 @@ outputs:
   .github/skills/mols-documents-studio/templates/decisions-lite.template.md: sha256:c383e85ee8239a871afa894eae6082846d6228fb18b65bf55204dd30dff8f5b5
   .github/skills/mols-documents-studio/workflows/INDEX.csv: sha256:863561f96f51b75baa211ebf741d202d58cfc163399cbb8fcbc1bc7be14c73b9
   .github/skills/mols-documents-studio/workflows/write-decisions.md: sha256:abcede8b0edbb5c93906ad5e757f06a9e7a0c29a219f9a5deef47a6d2f50aa01
-  .github/skills/mols-markdown-dashboard/SKILL.md: sha256:9571a941e1003630560d0da30dc19a454d437922b31a155684b7b1ca0b019709
+  .github/skills/mols-markdown-dashboard/SKILL.md: sha256:69424cf059a00ccb6578271ff60b351e565e6b07edbdb38e6694d3895237e381
   .github/skills/mols-markdown-dashboard/examples/domain-dashboard.md: sha256:79f2e5bd98e8f70be2fa00cbd4f2ffb01132b306dc0d7e3ec44ce0ea2506b6a5
   .github/skills/mols-markdown-dashboard/examples/domain-dashboard.yml: sha256:744b0d8fb148c492705c926a11c3ee97b09fa1f8cfb29d77c3bbf355c233ac36
   .github/skills/mols-markdown-dashboard/examples/project-dashboard.md: sha256:b8e82cfd3f2b19b34dff29ca1b53caeb5e7258baf364a9f132be2584000e3703
   .github/skills/mols-markdown-dashboard/examples/project-dashboard.yml: sha256:c744e9b0062eebb602867b6dfa17683131bbcd26be6f79e0c6cea2c768014ace
   .github/skills/mols-markdown-dashboard/pyproject.toml: sha256:ba795f91a2b636e305f891708b3148b5829adf3bbb062019c8c589d12cc433e8
-  .github/skills/mols-markdown-dashboard/references/dashboard-method.md: sha256:d8038925b3aaae820b19adde0f78ef6bff1396e82baa476410e559e0ec4f1609
+  .github/skills/mols-markdown-dashboard/references/dashboard-method.md: sha256:30bd319c52fafacce88000a5923b88b914ebfb70a8150874840c0573b330a7d6
   .github/skills/mols-markdown-dashboard/references/dashboard-schema.md: sha256:3e68a34c9c0514e26e4a101e0a78327b8bb27d0adc25039a578f5329b3f6a57f
   .github/skills/mols-markdown-dashboard/references/render-workflow.md: sha256:d8cb492051fe26a31e827f7806b0458ab4ea03498d3fff7555332318e0261aec
-  .github/skills/mols-markdown-dashboard/references/review-workflow.md: sha256:2fd872d5656b876e23a85a5ae92efc4e1c98600bcc3c74c4dbdb9a31e43b04c8
+  .github/skills/mols-markdown-dashboard/references/review-workflow.md: sha256:599f86780f8f1f0e794fc641e50993237147fc4fab47ecf62ba240235e777a04
   .github/skills/mols-markdown-dashboard/references/update-workflow.md: sha256:2105cc070594def89ceb5e430d376f73f38344d9d56126ff2c14d5790562bc00
-  .github/skills/mols-markdown-dashboard/references/visual-selection.md: sha256:dc59002d5c10b51fb4025e73ba821785bfc4d01de765178a9e33abf5ed2b2cdd
+  .github/skills/mols-markdown-dashboard/references/visual-selection.md: sha256:701fcefa4bb8e8b1a7d5501b7af5e9d2d13bd120c62b31819eb3b5ef4ea9d967
   .github/skills/mols-markdown-dashboard/scripts/check_quality.py: sha256:baa8e3cd75f4a106705885343bb677d9bfaf3afd6e904a2ede1e951775bafee8
   .github/skills/mols-markdown-dashboard/scripts/render_dashboard.py: sha256:e0f550423ed1eb90f40cff2fd6f9884c351c29a447b5dd24857d50e50d543ee9
   .github/skills/mols-markdown-dashboard/src/mols_dashboard/__init__.py: sha256:fda5d3d52ae7b696aaada949290c5b2956c9cf0932bc8a1fa175d1710862d98a
@@ -423,8 +423,8 @@ outputs:
   .github/skills/mols-skill-creator/scripts/init_skill.py: sha256:00d2720f2ee6e5560089ce5b4f624a560f6129781f25291167284247688df54b
   .github/skills/mols-skill-creator/scripts/package_skill.py: sha256:462917d3f0001166e868a226b59213a7e4f6270b0907d2519a0ca4f8c07cfda1
   .github/skills/mols-skill-creator/scripts/validate_skill.py: sha256:d73925a81a17286b262eb004df57fea9cc0564be93e0735980e7920d0f84bd27
-  .github/skills/mols-skill-find/SKILL.md: sha256:dbf8caf8759b9d872cbc392a25959bf5901d647d3189cbf75a08608e7e934723
-  .github/skills/mols-skill-install/SKILL.md: sha256:da500e2a7421ae53222e53e126a58298178daf551801916d67d176ffc9ef7b62
+  .github/skills/mols-skill-find/SKILL.md: sha256:512e3613ef123ef8d6db6179146c5039a3ce1c535bd0eabe5b1cefc7abab8634
+  .github/skills/mols-skill-install/SKILL.md: sha256:b7e1c6004b04950d02dbefa3f7faa5ea1f3dede5fc55f0879258ad2d738ed40e
   .github/skills/news-table/SKILL.md: sha256:16468168e73b529680c80c59d929788338cef5913f04386fc6c2057862cddc2b
   .github/skills/rpwr-loop/SKILL.md: sha256:1f62cc99217d1570e74c963aaa44b6968e31d0117d1c8fc3a8ee39ba42dd77ec
   .github/skills/searcher/SKILL.md: sha256:2d11029fea01a7c650cf916defe4c1c271107348d7bfb66e925838dc93a15527
@@ -533,18 +533,18 @@ outputs:
   .agents/skills/mols-documents-studio/templates/decisions-lite.template.md: sha256:c383e85ee8239a871afa894eae6082846d6228fb18b65bf55204dd30dff8f5b5
   .agents/skills/mols-documents-studio/workflows/INDEX.csv: sha256:863561f96f51b75baa211ebf741d202d58cfc163399cbb8fcbc1bc7be14c73b9
   .agents/skills/mols-documents-studio/workflows/write-decisions.md: sha256:abcede8b0edbb5c93906ad5e757f06a9e7a0c29a219f9a5deef47a6d2f50aa01
-  .agents/skills/mols-markdown-dashboard/SKILL.md: sha256:9571a941e1003630560d0da30dc19a454d437922b31a155684b7b1ca0b019709
+  .agents/skills/mols-markdown-dashboard/SKILL.md: sha256:69424cf059a00ccb6578271ff60b351e565e6b07edbdb38e6694d3895237e381
   .agents/skills/mols-markdown-dashboard/examples/domain-dashboard.md: sha256:79f2e5bd98e8f70be2fa00cbd4f2ffb01132b306dc0d7e3ec44ce0ea2506b6a5
   .agents/skills/mols-markdown-dashboard/examples/domain-dashboard.yml: sha256:744b0d8fb148c492705c926a11c3ee97b09fa1f8cfb29d77c3bbf355c233ac36
   .agents/skills/mols-markdown-dashboard/examples/project-dashboard.md: sha256:b8e82cfd3f2b19b34dff29ca1b53caeb5e7258baf364a9f132be2584000e3703
   .agents/skills/mols-markdown-dashboard/examples/project-dashboard.yml: sha256:c744e9b0062eebb602867b6dfa17683131bbcd26be6f79e0c6cea2c768014ace
   .agents/skills/mols-markdown-dashboard/pyproject.toml: sha256:ba795f91a2b636e305f891708b3148b5829adf3bbb062019c8c589d12cc433e8
-  .agents/skills/mols-markdown-dashboard/references/dashboard-method.md: sha256:d8038925b3aaae820b19adde0f78ef6bff1396e82baa476410e559e0ec4f1609
+  .agents/skills/mols-markdown-dashboard/references/dashboard-method.md: sha256:30bd319c52fafacce88000a5923b88b914ebfb70a8150874840c0573b330a7d6
   .agents/skills/mols-markdown-dashboard/references/dashboard-schema.md: sha256:3e68a34c9c0514e26e4a101e0a78327b8bb27d0adc25039a578f5329b3f6a57f
   .agents/skills/mols-markdown-dashboard/references/render-workflow.md: sha256:d8cb492051fe26a31e827f7806b0458ab4ea03498d3fff7555332318e0261aec
-  .agents/skills/mols-markdown-dashboard/references/review-workflow.md: sha256:2fd872d5656b876e23a85a5ae92efc4e1c98600bcc3c74c4dbdb9a31e43b04c8
+  .agents/skills/mols-markdown-dashboard/references/review-workflow.md: sha256:599f86780f8f1f0e794fc641e50993237147fc4fab47ecf62ba240235e777a04
   .agents/skills/mols-markdown-dashboard/references/update-workflow.md: sha256:2105cc070594def89ceb5e430d376f73f38344d9d56126ff2c14d5790562bc00
-  .agents/skills/mols-markdown-dashboard/references/visual-selection.md: sha256:dc59002d5c10b51fb4025e73ba821785bfc4d01de765178a9e33abf5ed2b2cdd
+  .agents/skills/mols-markdown-dashboard/references/visual-selection.md: sha256:701fcefa4bb8e8b1a7d5501b7af5e9d2d13bd120c62b31819eb3b5ef4ea9d967
   .agents/skills/mols-markdown-dashboard/scripts/check_quality.py: sha256:baa8e3cd75f4a106705885343bb677d9bfaf3afd6e904a2ede1e951775bafee8
   .agents/skills/mols-markdown-dashboard/scripts/render_dashboard.py: sha256:e0f550423ed1eb90f40cff2fd6f9884c351c29a447b5dd24857d50e50d543ee9
   .agents/skills/mols-markdown-dashboard/src/mols_dashboard/__init__.py: sha256:fda5d3d52ae7b696aaada949290c5b2956c9cf0932bc8a1fa175d1710862d98a
@@ -638,8 +638,8 @@ outputs:
   .agents/skills/mols-skill-creator/scripts/init_skill.py: sha256:00d2720f2ee6e5560089ce5b4f624a560f6129781f25291167284247688df54b
   .agents/skills/mols-skill-creator/scripts/package_skill.py: sha256:462917d3f0001166e868a226b59213a7e4f6270b0907d2519a0ca4f8c07cfda1
   .agents/skills/mols-skill-creator/scripts/validate_skill.py: sha256:d73925a81a17286b262eb004df57fea9cc0564be93e0735980e7920d0f84bd27
-  .agents/skills/mols-skill-find/SKILL.md: sha256:dbf8caf8759b9d872cbc392a25959bf5901d647d3189cbf75a08608e7e934723
-  .agents/skills/mols-skill-install/SKILL.md: sha256:da500e2a7421ae53222e53e126a58298178daf551801916d67d176ffc9ef7b62
+  .agents/skills/mols-skill-find/SKILL.md: sha256:512e3613ef123ef8d6db6179146c5039a3ce1c535bd0eabe5b1cefc7abab8634
+  .agents/skills/mols-skill-install/SKILL.md: sha256:b7e1c6004b04950d02dbefa3f7faa5ea1f3dede5fc55f0879258ad2d738ed40e
   .agents/skills/news-table/SKILL.md: sha256:16468168e73b529680c80c59d929788338cef5913f04386fc6c2057862cddc2b
   .agents/skills/rpwr-loop/SKILL.md: sha256:1f62cc99217d1570e74c963aaa44b6968e31d0117d1c8fc3a8ee39ba42dd77ec
   .agents/skills/searcher/SKILL.md: sha256:2d11029fea01a7c650cf916defe4c1c271107348d7bfb66e925838dc93a15527

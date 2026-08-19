@@ -38,7 +38,7 @@ CLI flags and natural language requests map to `Parameters` as follows:
 
 1. **Git Template**: Check `.gitmessage`.
 1. **Git History**: Inspect `git log -n 20 --oneline` for language, prefix patterns, casing, and issue refs.
-1. **Fallback**: Read [./references/default-gitmessage.md](references/default-gitmessage.md).
+1. **Fallback**: Read [./references/default-gitmessage.md](./references/default-gitmessage.md).
 
 ### Step 2: Staging
 

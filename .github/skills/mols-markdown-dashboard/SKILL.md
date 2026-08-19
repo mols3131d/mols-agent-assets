@@ -30,13 +30,13 @@ Project dashboard는 `Domain`, domain dashboard는 `Capability`를 한 행으로
 
 | When | Load |
 | --- | --- |
-| status, progress, gap의 의미나 집계를 판단한다 | [Dashboard Method](references/dashboard-method.md) |
-| 기존 dashboard를 현재 근거로 갱신한다 | [Update Workflow](references/update-workflow.md) |
-| dashboard의 사실성·집계·gap을 리뷰한다 | [Review Workflow](references/review-workflow.md) |
-| dashboard YAML을 읽거나 쓴다 | [Dashboard Schema](references/dashboard-schema.md) |
-| bundled renderer를 실행하거나 결과를 검증한다 | [Render Workflow](references/render-workflow.md) |
-| 표만으로 관계·추세를 설명하기 어렵다 | [Visual Selection](references/visual-selection.md) |
-| 관련 reference를 읽고도 형식이 불명확하다 | [Domain Example](examples/domain-dashboard.md) 또는 [Project Example](examples/project-dashboard.md) |
+| status, progress, gap의 의미나 집계를 판단한다 | [Dashboard Method](./references/dashboard-method.md) |
+| 기존 dashboard를 현재 근거로 갱신한다 | [Update Workflow](./references/update-workflow.md) |
+| dashboard의 사실성·집계·gap을 리뷰한다 | [Review Workflow](./references/review-workflow.md) |
+| dashboard YAML을 읽거나 쓴다 | [Dashboard Schema](./references/dashboard-schema.md) |
+| bundled renderer를 실행하거나 결과를 검증한다 | [Render Workflow](./references/render-workflow.md) |
+| 표만으로 관계·추세를 설명하기 어렵다 | [Visual Selection](./references/visual-selection.md) |
+| 관련 reference를 읽고도 형식이 불명확하다 | [Domain Example](./examples/domain-dashboard.md) 또는 [Project Example](./examples/project-dashboard.md) |
 
 예제는 필요한 reference를 읽은 뒤에도 형식이 불명확할 때만 사용한다.
 

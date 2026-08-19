@@ -9,12 +9,15 @@ on:
       - "agentsmesh.yaml"
       - "package.json"
       - "package-lock.json"
+      - ".gitattributes"
+      - ".rumdl.toml"
       - ".github/copilot-instructions.md"
       - ".github/agents/**"
       - ".github/skills/**"
       - ".agents/rules/**"
       - ".agents/skills/**"
       - ".github/workflows/agentsmesh.yml"
+      - ".github/workflows/rumdl-main-autofix.yml"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
@@ -26,7 +29,7 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-slim
-    timeout-minutes: 5
+    timeout-minutes: 6
     steps:
       - uses: actions/checkout@v7
         with:
@@ -35,14 +38,39 @@ jobs:
         with:
           node-version: 22
           package-manager-cache: false
+      - uses: astral-sh/setup-uv@v9.0.0
+        with:
+          enable-cache: false
       - name: Install pinned toolchain
         run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Validate canonical Markdown normalization
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -d '' markdown < <(git ls-files -z -- '.agentsmesh/**/*.md')
+          ((${#markdown[@]})) || exit 0
+          uvx rumdl@0.2.6 fmt "${markdown[@]}"
+          git diff --exit-code -- "${markdown[@]}"
       - name: Validate canonical configuration
         run: npx agentsmesh lint
       - name: Validate generated drift
         run: npx agentsmesh check
       - name: Validate regeneration
         run: npx agentsmesh generate --check
+      - name: Validate generated Markdown normalization
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -d '' markdown < <(git ls-files -z -- '*.md')
+          generated=()
+          for file in "${markdown[@]}"; do
+            attr="$(git check-attr linguist-generated -- "$file")"
+            [[ "$attr" == *": linguist-generated: set" ]] && generated+=("$file")
+          done
+
+          ((${#generated[@]})) || exit 0
+          uvx rumdl@0.2.6 fmt "${generated[@]}"
+          git diff --exit-code -- "${generated[@]}"
       - name: Verify Copilot round trip
         shell: bash
         run: |

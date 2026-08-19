@@ -62,9 +62,7 @@
       "agent_prefix": "am-agent-"
     }
   },
-  "exceptions": [
-    "src/rules/chatbot-repo-skill-routing.md"
-  ],
+  "exceptions": [],
   "retired": [
     ".agentsmesh/_legacy",
     ".agentsmesh/rules/language-ko.md",
@@ -73,7 +71,7 @@
     "src/skills-chatbot-runtime",
     "src/agents",
     "src/prompts",
-    "src/rules/language-ko.md",
+    "src/rules",
     "tests/skills/rulesync-agent-assets",
     "tests/skills/iceberg-code-review",
     "tests/skills/mols-kanban-markdown"
