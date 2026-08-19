@@ -32,7 +32,7 @@ overwrite: <auto>
 - `route_entry` — an explicit entrypoint path, `direct`, `<none>`, or `<auto>`. `<auto>` reuses an existing entrypoint when suitable; otherwise it prefers `.agents/routes/ROUTE.md` when one link usefully represents the routing surface.
 - `generation` — `script`, `model`, `<none>`, or `<auto>`. `<auto>` first checks whether existing or bundled generation matches the target asset layout and metadata contract, adapts it when worthwhile, and otherwise uses the smaller direct/model path.
 - `tuning` — `on`, `off`, or `<auto>`. `<auto>` covers both generator compatibility tuning and route-quality tuning, but changes only what materially improves compatibility or selection.
-- `validation` — `local`, `ci`, `<none>`, or `<auto>`. `<auto>` performs local validation after writes and adds CI only when committed route metadata has a meaningful drift risk.
+- `validation` — `local`, `ci`, `<none>`, or `<auto>`. `<auto>` performs local validation after writes and adds target CI only when committed route metadata has a meaningful drift risk.
 - `overwrite` — `preserve`, `replace`, or `<auto>`. `<auto>` is `preserve`. Existing approved routing/tuning is never replaced without explicit `replace` intent.
 
 `<auto>` means infer independently from evidence, not use one hidden fixed profile. `<none>` explicitly disables that optional behavior. Explicit arguments always win.
@@ -44,7 +44,7 @@ Resolve each `<auto>` independently using this evidence order:
 1. explicit caller intent and arguments;
 2. active target repository/workspace context;
 3. applicable repository instructions and established conventions;
-4. existing `CHATBOT.md`, route entrypoints, route files, scripts, and CI;
+4. existing `CHATBOT.md`, route entrypoints, route files, scripts, validators, and CI;
 5. authoritative local asset roots and explicitly declared remote assets;
 6. this Skill's defaults and bundled resources.
 
@@ -55,7 +55,7 @@ Default behavior is conservative:
 - local validation before new CI;
 - `.agents/routes/ROUTE.md` as the default single entrypoint only when useful, never mandatory;
 - never assume one asset layout, frontmatter shape, Rule selector key, or package spec is universal;
-- script generation only after its assumptions match the target or are deliberately adapted;
+- generation and validation only after their assumptions match the target or are deliberately adapted;
 - tune only when compatibility or routing quality improves.
 
 `mode: audit` is read-only. Do not infer write behavior from another argument while audit is active.
@@ -64,23 +64,25 @@ Do not let one inferred value silently authorize another. If a material value ca
 
 ## Contract
 
-Inspect the repository first. Reuse existing instructions, routes, scripts, and CI.
+Inspect the repository first. Reuse existing instructions, routes, scripts, validators, and CI.
 Create only what is actually needed.
 
 - Keep root `CHATBOT.md` minimal and root-only.
 - Recover only harness behavior the runtime does not already provide.
 - Keep `AGENTS.md`, Skills, and Rules authoritative; route assets are discovery metadata only.
-- Treat bundled generation as a reference baseline, not a universal repository parser.
+- Treat bundled scripts and examples as reference baselines, not universal target assets.
 - Use generation for mechanical baseline metadata and model review for routing quality.
 - Never silently erase approved route tuning.
+- Never install `ROUTE.md`, route JSONL, or CI merely because this Skill itself is installed.
 
 ## Resources
 
-Read only the reference needed for the current work.
+Read only the resource needed for the current work.
 
 - [Route convention](references/routes.md) — route files, `_meta`, `source`, `ROUTE.md`, Skill and Rule entry shapes.
-- [Generation and tuning](references/tuning.md) — generator assumptions, adaptation, semantic tuning, overwrite safety, and drift validation.
-- `scripts/generate_routes.py` — reference baseline generator for a common local Skill/Rule layout; inspect and adapt it before use when the target differs.
+- [Generation and tuning](references/tuning.md) — compatibility, generation, semantic tuning, validation, overwrite safety, and CI guidance.
+- `scripts/generate_routes.py` — reference generator/checker for a common local Skill/Rule layout; inspect and adapt it before use when the target differs.
+- `examples/github-actions-route-check.yml` — optional target-side CI example; adapt it and use only when `validation: ci` is justified.
 
 ## CHATBOT.md
 
@@ -99,14 +101,14 @@ Do not copy project policy, Skill bodies, Rule bodies, catalogs, or static path 
 
 ## Workflow
 
-1. Resolve arguments and inspect the target's current state, asset locations, package shapes, frontmatter, and selector conventions.
+1. Resolve arguments and inspect the target's current state, asset locations, package shapes, frontmatter, selectors, generation, validation, and CI conventions.
 2. Determine which compatibility responsibilities are actually missing or stale.
 3. Create, update, or audit root `CHATBOT.md` according to `mode` and `scope`.
 4. Establish the smallest useful route surface according to `route_entry` and `sources`; create `ROUTE.md` in the target only when that default is useful.
-5. Before running any generator, verify its assumptions against the target. Reuse, configure, adapt, or replace the bundled script as needed.
+5. Verify generator assumptions against the target. Reuse, configure, adapt, or replace the bundled script as needed.
 6. Generate factual baseline routes according to `generation` without violating `overwrite`.
 7. Tune generator compatibility and route quality according to `tuning`.
-8. Validate according to `validation`; add automation only when justified.
+8. Validate according to `validation`. Reuse target-native checks first; adapt the bundled checker or CI example only when useful.
 9. Verify authority boundaries and that intentional tuning is preserved.
 
 ## Validation
@@ -117,8 +119,9 @@ Verify that:
 - local `source` values are repository-root-relative and remote `source` values are URLs;
 - Skill routing is selective without becoming a duplicate Skill body;
 - Rule routing preserves authoritative selector semantics;
-- any generator used matches or has been adapted to the target asset layout and metadata contract;
+- generation and validation match or have been adapted to the target asset layout and metadata contract;
 - generated baseline output is deterministic when generation is used;
+- validation protects factual invariants without rejecting approved semantic tuning;
 - rerunning generation does not silently erase approved tuning;
 - no project policy or asset body was duplicated.
 
