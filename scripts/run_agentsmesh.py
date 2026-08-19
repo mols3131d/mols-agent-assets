@@ -10,6 +10,7 @@ from tempfile import TemporaryDirectory
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "src/agentsmesh"
 FEATURE_DIRS = ("rules", "skills", "agents")
+COMMANDS = frozenset({"lint", "preview", "validate"})
 
 
 def stage_workspace(destination: Path) -> None:
@@ -35,7 +36,7 @@ def agentsmesh_executable() -> Path:
 
 
 def run(command: str) -> None:
-    if command not in {"lint", "check", "generate-check", "diff"}:
+    if command not in COMMANDS:
         raise ValueError(f"unsupported command: {command}")
 
     with TemporaryDirectory(prefix="mols-agentsmesh-") as temporary:
@@ -50,15 +51,18 @@ def run(command: str) -> None:
             invoke("lint")
             return
 
-        # Commands below need a projection to compare or inspect, but that projection
-        # must stay outside the asset-library repository.
-        invoke("generate")
-        if command == "check":
-            invoke("check")
-        elif command == "generate-check":
-            invoke("generate", "--check")
-        else:
+        if command == "preview":
+            # The workspace intentionally has no committed target outputs. Native diff
+            # therefore renders the complete prospective projection without writing it.
             invoke("diff")
+            return
+
+        # Materialize only inside the temporary workspace, then verify that a second
+        # render is unchanged and that the generated lock/output state is internally
+        # consistent. This is projection validation, not persistent repository drift.
+        invoke("generate")
+        invoke("generate", "--check")
+        invoke("check")
 
 
 if __name__ == "__main__":

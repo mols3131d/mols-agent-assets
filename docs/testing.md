@@ -21,12 +21,15 @@ AgentsMesh-compatible Rule/Skill/Agent 변경은 가능한 범위에서 다음 �
 ```text
 stage src/agentsmesh into a temporary .agentsmesh workspace
   → agentsmesh lint
-  → temporary generation / drift checks
+  → isolated projection generation
+  → generation idempotence + temporary lock/output consistency
   → affected repository tests
   → applicable behavioral/runtime eval
 ```
 
 Repository `npm run agentsmesh:*` 명령은 `scripts/run_agentsmesh.py`를 통해 temporary workspace에서 실행됩니다. 생성된 `.agentsmesh/`, `.github/skills/`, `.github/agents/`, `.agents/rules/`, `.agents/skills/`를 이 저장소에 검증 산출물로 남기지 않습니다.
+
+이 저장소는 AgentsMesh `.lock`이나 target projection을 persistent baseline으로 commit하지 않습니다. 따라서 native `agentsmesh check`를 repository drift gate로 가장하지 않습니다. `agentsmesh:validate`는 temporary workspace를 생성한 뒤 generation idempotence와 그 workspace 내부의 lock/output consistency를 검증합니다. 지속적인 source boundary와 repository regression은 Git 및 repository-owned deterministic tests가 담당합니다.
 
 - deterministic check로 판정할 수 있는 계약을 model grader보다 우선합니다.
 - `evals/skills/**/*.json` 변경은 최소한 `tests/evals/`의 deterministic parse gate를 통과합니다.
@@ -37,8 +40,8 @@ Repository `npm run agentsmesh:*` 명령은 `scripts/run_agentsmesh.py`를 통�
 ```bash
 npm ci
 npm run agentsmesh:lint
-npm run agentsmesh:check
-npm run agentsmesh:generate:check
+npm run agentsmesh:preview   # write 없이 prospective target projection 확인
+npm run agentsmesh:validate  # temporary projection 생성 후 consistency 검증
 uv run pytest
 uv run ruff check .
 ```

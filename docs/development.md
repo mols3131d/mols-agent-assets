@@ -48,6 +48,6 @@ Single-file Skill에서는 top-level `#` heading을 여러 Markdown 문서의 re
 1. 필요한 경우에만 자산별 maintainer docs를 함께 갱신합니다.
 1. Markdown 변경은 repository rumdl policy에 맞춰 format합니다.
 1. AgentsMesh-native 검증이 필요하면 `src/agentsmesh/`를 temporary workspace의 `.agentsmesh/`로 stage합니다.
-1. `agentsmesh lint`, generation, drift check 같은 native command는 그 temporary workspace에서만 수행합니다.
+1. Native validation은 `agentsmesh lint`와 temporary projection의 generation/idempotence consistency를 확인합니다. Persistent `.lock`이나 generated target을 이 저장소의 drift baseline으로 두지 않습니다.
 1. 필요한 repository test/eval을 실행합니다.
 1. canonical source를 검토합니다. temporary `.agentsmesh/`와 harness-native generated projection은 commit하지 않습니다.

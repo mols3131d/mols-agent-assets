@@ -76,3 +76,22 @@ def test_retired_legacy_surfaces_do_not_return() -> None:
 def test_agentsmesh_toolchain_stays_pinned() -> None:
     package = json.loads((ROOT / "package.json").read_text(encoding="utf-8"))
     assert package["devDependencies"]["agentsmesh"] == "0.32.0"
+
+
+def test_repository_agentsmesh_commands_do_not_claim_persistent_drift() -> None:
+    package = json.loads((ROOT / "package.json").read_text(encoding="utf-8"))
+    scripts = package["scripts"]
+
+    assert set(scripts) == {
+        "agentsmesh:lint",
+        "agentsmesh:preview",
+        "agentsmesh:validate",
+    }
+    assert scripts["agentsmesh:lint"].endswith(" lint")
+    assert scripts["agentsmesh:preview"].endswith(" preview")
+    assert scripts["agentsmesh:validate"].endswith(" validate")
+
+    workflow = (ROOT / ".github/workflows/agentsmesh.yml").read_text(encoding="utf-8")
+    assert "npm run agentsmesh:validate" in workflow
+    assert "npm run agentsmesh:check" not in workflow
+    assert "npm run agentsmesh:generate:check" not in workflow
