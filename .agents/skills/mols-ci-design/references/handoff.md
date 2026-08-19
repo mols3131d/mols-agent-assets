@@ -91,7 +91,7 @@ Use observable, implementation-neutral criteria. Examples:
 - malformed eval fixtures fail before model execution;
 - pure style differences do not block merge unless representation affects correctness or an explicit contract;
 - PR merge gates do not require repository write permission without a demonstrated need;
-- delegated or agent-authored changes cannot merge merely because relevant verification was omitted;
+- known merge-critical verification cannot be silently omitted from delegated or agent-authored changes by impact routing;
 - approved semantic tuning is not rejected solely for differing from generated baseline text;
 - exhaustive provider/model matrices do not run on every PR without justification.
 
