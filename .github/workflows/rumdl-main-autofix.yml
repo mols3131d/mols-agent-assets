@@ -27,9 +27,17 @@ jobs:
           AFTER: ${{ github.sha }}
         run: |
           git fetch --no-tags --depth=1 origin "$BEFORE"
-          mapfile -d '' files < <(
+          mapfile -d '' candidates < <(
             git diff --name-only -z --diff-filter=ACMR "$BEFORE" "$AFTER" -- '*.md'
           )
+
+          files=()
+          for file in "${candidates[@]}"; do
+            attr="$(git check-attr linguist-generated -- "$file")"
+            [[ "$attr" == *": linguist-generated: set" ]] && continue
+            files+=("$file")
+          done
+
           ((${#files[@]})) || exit 0
           uvx rumdl@0.2.6 fmt "${files[@]}"
 
