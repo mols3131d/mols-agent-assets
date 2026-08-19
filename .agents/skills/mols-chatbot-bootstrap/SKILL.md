@@ -19,12 +19,15 @@ Create only what is actually needed.
 As needed:
 
 - create or update root `CHATBOT.md`;
-- create `.agents/routes/ROUTE.md` as the single route entrypoint;
+- prefer `.agents/routes/ROUTE.md` as the default single route entrypoint when useful;
 - maintain `.agents/routes/skills.jsonl` for task-intent Skill routing;
 - maintain `.agents/routes/rules.jsonl` for path/glob Rule routing;
 - use deterministic generation for factual baseline metadata;
 - tune routing metadata when the generated baseline is not selective enough;
 - add the smallest useful drift validation.
+
+`ROUTE.md` is a convenience convention, not a requirement. Reuse another route entrypoint
+or direct route-file links when that is simpler or already established by the repository.
 
 `AGENTS.md`, Skills, and Rules remain authoritative. Route assets are discovery metadata.
 
@@ -32,8 +35,9 @@ As needed:
 
 Keep root `CHATBOT.md` minimal and root-only.
 
-When repository routing is needed, link to `.agents/routes/ROUTE.md` rather than listing
-individual route files. `ROUTE.md` owns the route inventory and concise consumption guidance.
+When repository routing is needed, prefer linking to `.agents/routes/ROUTE.md` as one
+single entrypoint. If the repository already has an equivalent routing entrypoint, use it.
+Direct links to route files are also valid when they are simpler.
 
 Recover only harness behavior the runtime does not already provide:
 
@@ -133,8 +137,8 @@ Reuse an existing workflow when possible.
 
 1. Inspect repository instructions, asset roots, routes, scripts, and CI.
 2. Determine which compatibility responsibilities are missing.
-3. Create or update minimal root `CHATBOT.md` linking `.agents/routes/ROUTE.md`.
-4. Create or update `ROUTE.md` and required route files.
+3. Create or update minimal root `CHATBOT.md` with the smallest useful routing entrypoint.
+4. Create or update required route assets; use `ROUTE.md` by default when one entrypoint helps.
 5. Generate factual baseline metadata where useful.
 6. Tune routing metadata only where it improves routing quality.
 7. Add drift validation only where stale routes are a real risk.
@@ -145,7 +149,7 @@ Reuse an existing workflow when possible.
 Verify that:
 
 - `CHATBOT.md` is root-only and minimal;
-- `.agents/routes/ROUTE.md` is the single route entrypoint;
+- routing has a clear entrypoint without requiring `ROUTE.md` when another shape is better;
 - route entries use one valid `source` locator;
 - Skill routes are useful for intent selection without becoming duplicate Skill bodies;
 - Rule routes preserve authoritative selector semantics;
