@@ -5,7 +5,7 @@ ATTRIBUTES = ROOT / ".gitattributes"
 RUMDL = ROOT / ".rumdl.toml"
 AUTOFIX = ROOT / ".github" / "workflows" / "rumdl-main-autofix.yml"
 AGENTSMESH = ROOT / ".github" / "workflows" / "agentsmesh.yml"
-GENERATED_DISABLE = "MD047,MD057"
+GENERATED_DISABLE = "MD047"
 GENERATED_MARKERS = {
     ".github/copilot-instructions.md linguist-generated",
     ".github/skills/** linguist-generated",
@@ -23,9 +23,11 @@ def test_agentsmesh_source_and_generated_markers_have_separate_roles() -> None:
         assert marker in attributes
 
 
-def test_rumdl_config_has_no_retired_md054_style_option() -> None:
+def test_rumdl_config_matches_agentsmesh_relative_link_serialization() -> None:
     config = RUMDL.read_text(encoding="utf-8")
     assert "[MD054]" not in config
+    assert "[MD057]" in config
+    assert "compact-paths = false" in config
 
 
 def test_main_autofix_formats_source_then_regenerates_then_formats_generated() -> None:
@@ -50,21 +52,20 @@ def test_main_autofix_formats_source_then_regenerates_then_formats_generated() -
 
     assert "rumdl@0.2.6 check" not in workflow
     assert "agentsmesh-managed" not in workflow
-    assert "--disable MD047,MD057" in workflow
-    assert "--disable MD047,MD057," not in workflow
+    assert "--disable MD047,MD057" not in workflow
+    assert "MD057 remains enabled" in workflow
 
 
-def test_pr_verifier_checks_full_source_and_compatible_generated_fmt() -> None:
+def test_pr_verifier_checks_full_source_and_generated_md057() -> None:
     workflow = AGENTSMESH.read_text(encoding="utf-8")
 
     assert "Validate canonical Markdown normalization" in workflow
     assert "Validate generated Markdown normalization" in workflow
     assert "git check-attr linguist-generated" in workflow
     assert f"--disable {GENERATED_DISABLE}" in workflow
+    assert "--disable MD047,MD057" not in workflow
     assert "rumdl@0.2.6 check" not in workflow
 
-    # Canonical formatting must remain full-strength; only generated output gets
-    # the two serialization/link-rebasing compatibility exceptions.
     canonical_fmt = 'uvx rumdl@0.2.6 fmt "${markdown[@]}"'
     assert canonical_fmt in workflow
     assert workflow.index(canonical_fmt) < workflow.index(f"--disable {GENERATED_DISABLE}")
