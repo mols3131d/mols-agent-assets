@@ -31,6 +31,11 @@ replace(
     'metadata:\n  version: "0.0.1"\n  target: ["OpenAI ChatGPT"]\n  license: "MIT"\n  references:\n  - epoko77-ai/im-not-ai\n',
     'license: MIT\nmetadata:\n  target: "OpenAI ChatGPT"\n  version: "0.0.1"\n  references: "epoko77-ai/im-not-ai"\n',
 )
+replace(
+    ".agentsmesh/skills/mols-skill-find/SKILL.md",
+    'metadata:\n  references:\n    - vercel-labs/skills:skills/find-skills/SKILL.md\n',
+    'metadata:\n  references: "vercel-labs/skills:skills/find-skills/SKILL.md"\n',
+)
 
 for path in [
     ".agentsmesh/skills/artifact-consistency-inspector/README.md",
@@ -43,6 +48,7 @@ for path in [
 contract_test = Path("tests/skills/artifact-consistency-inspector/test_contract.py")
 text = contract_test.read_text(encoding="utf-8")
 text = text.replace('    "README.md",\n', "", 1)
+text = text.replace('        assert f"{SKILL.name}/README.md" in names\n', "", 1)
 contract_test.write_text(text, encoding="utf-8")
 
 validator = Path(".agentsmesh/skills/mols-skill-creator/scripts/validate_skill.py")
@@ -141,48 +147,68 @@ NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
 def load_frontmatter(path: Path) -> dict[str, object]:
     text = path.read_text(encoding="utf-8")
-    assert text.startswith("---\\n"), path
+    if not text.startswith("---\\n"):
+        raise AssertionError("missing frontmatter")
     end = text.find("\\n---\\n", 4)
-    assert end >= 0, path
+    if end < 0:
+        raise AssertionError("unclosed frontmatter")
     data = yaml.safe_load(text[4:end]) or {}
-    assert isinstance(data, dict), path
+    if not isinstance(data, dict):
+        raise AssertionError("frontmatter must be a mapping")
     return data
 
 
 def test_canonical_skill_frontmatter_matches_portable_contract() -> None:
     skills = sorted(SKILLS.glob("*/SKILL.md"))
     assert skills
+    problems: list[str] = []
 
     for path in skills:
-        data = load_frontmatter(path)
+        label = path.parent.name
+        try:
+            data = load_frontmatter(path)
+        except Exception as error:
+            problems.append(f"{label}: {error}")
+            continue
+
         name = data.get("name")
         description = data.get("description")
+        if not isinstance(name, str) or not NAME_RE.fullmatch(name):
+            problems.append(f"{label}: invalid name")
+        elif not 1 <= len(name) <= 64 or name != label:
+            problems.append(f"{label}: name must be 1-64 chars and match directory")
 
-        assert isinstance(name, str) and NAME_RE.fullmatch(name), path
-        assert 1 <= len(name) <= 64, path
-        assert name == path.parent.name, path
-        assert isinstance(description, str) and 1 <= len(description) <= 1024, path
+        if not isinstance(description, str) or not 1 <= len(description) <= 1024:
+            problems.append(f"{label}: description must be a non-empty string <=1024 chars")
 
         license_value = data.get("license")
-        if license_value is not None:
-            assert isinstance(license_value, str) and license_value, path
+        if license_value is not None and (not isinstance(license_value, str) or not license_value):
+            problems.append(f"{label}: license must be a non-empty string")
 
         compatibility = data.get("compatibility")
-        if compatibility is not None:
-            assert isinstance(compatibility, str), path
-            assert 1 <= len(compatibility) <= 500, path
+        if compatibility is not None and (
+            not isinstance(compatibility, str) or not 1 <= len(compatibility) <= 500
+        ):
+            problems.append(f"{label}: compatibility must be a string of 1-500 chars")
 
         metadata = data.get("metadata")
         if metadata is not None:
-            assert isinstance(metadata, dict), path
-            assert all(
-                isinstance(key, str) and isinstance(value, str)
-                for key, value in metadata.items()
-            ), path
+            if not isinstance(metadata, dict):
+                problems.append(f"{label}: metadata must be a mapping")
+            else:
+                bad = [
+                    str(key)
+                    for key, value in metadata.items()
+                    if not isinstance(key, str) or not isinstance(value, str)
+                ]
+                if bad:
+                    problems.append(f"{label}: metadata values must be strings: {', '.join(bad)}")
 
         allowed_tools = data.get("allowed-tools")
-        if allowed_tools is not None:
-            assert isinstance(allowed_tools, str), path
+        if allowed_tools is not None and not isinstance(allowed_tools, str):
+            problems.append(f"{label}: allowed-tools must be a string")
+
+    assert not problems, "\\n" + "\\n".join(problems)
 ''',
     encoding="utf-8",
 )
