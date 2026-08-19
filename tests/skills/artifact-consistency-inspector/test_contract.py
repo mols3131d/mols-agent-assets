@@ -12,7 +12,6 @@ SCENARIOS = Path(__file__).resolve().parent / "scenarios"
 
 REQUIRED_PACKAGE_FILES = {
     "SKILL.md",
-    "README.md",
     "references/inspection-rules.md",
     "references/rule-sources.md",
     "references/report-format.md",
@@ -343,7 +342,6 @@ def test_zip_shape(tmp_path: Path) -> None:
     with zipfile.ZipFile(archive) as handle:
         names = handle.namelist()
         assert f"{SKILL.name}/SKILL.md" in names
-        assert f"{SKILL.name}/README.md" in names
         assert f"{SKILL.name}/references/rule-sources.md" in names
         assert not any(
             f"/{name}/" in entry

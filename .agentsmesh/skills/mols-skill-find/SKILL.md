@@ -6,8 +6,7 @@ description: >-
   inventory Skills for synchronization, or choose one target-specific sibling before
   installation. Do not mutate the source or install Skills.
 metadata:
-  references:
-    - vercel-labs/skills:skills/find-skills/SKILL.md
+  references: "vercel-labs/skills:skills/find-skills/SKILL.md"
 ---
 
 # Mols Skill Find

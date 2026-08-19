@@ -6,12 +6,11 @@ description: >
   "AI 티 줄여줘", "ChatGPT/GPT 문체 없애줘", "사람이 쓴 것처럼 자연스럽게",
   "번역투 제거", "한국어 윤문", "AI 문체 진단", "과윤문 검토", "정밀 윤문"에 사용한다.
   AI 작성 여부나 detector 우회를 판정·보장하지 않는다.
+license: MIT
 metadata:
+  target: "OpenAI ChatGPT"
   version: "0.0.1"
-  target: ["OpenAI ChatGPT"]
-  license: "MIT"
-  references:
-  - epoko77-ai/im-not-ai
+  references: "epoko77-ai/im-not-ai"
 ---
 
 # text-humanize-korean

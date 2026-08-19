@@ -154,10 +154,10 @@ skills-ref validate ./my-skill
 [Personal Skill Standard](../agent-assets-skills-standard-personal.md)와 그 focused
 reference가 소유한다.
 
-- repository-local target profile
-- flat chatbot token budget
-- dot-prefixed maintainer surface
-- `.docs/baseline/`
+- repository-local package shape and target boundary
+- single-file-by-default authoring convention
+- deployable package와 repository verification surface boundary
+- optional maintainer documentation convention
 - repository-local naming convention
 
 Host-specific field나 behavior는 Tier 2 원문이 소유하며 이 문서에 복제하지 않는다.

@@ -7,9 +7,8 @@ description: >
   prose. Do not use when the main task is factual lookup, summarization only, short
   translation, code, data analysis, or document-file layout conversion.
 metadata:
-  - version: "1.0.0"
-  - target:
-    - "OpenAI ChatGPT"
+  version: "1.0.0"
+  target: "OpenAI ChatGPT"
 ---
 
 # Writing

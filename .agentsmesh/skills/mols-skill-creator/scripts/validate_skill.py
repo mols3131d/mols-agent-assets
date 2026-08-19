@@ -14,21 +14,52 @@ LINK_RE = re.compile(r"\[[^\]]+\]\((?!https?://|mailto:|#)([^)]+)\)")
 
 
 def parse_frontmatter(text: str) -> tuple[dict[str, str], str | None]:
+    """Read only the top-level fields this lightweight validator needs.
+
+    Full Agent Skills YAML conformance is repository/test or reference-validator
+    responsibility; this dependency-free helper must not reject valid block scalars
+    or nested optional metadata merely because it does not fully parse YAML.
+    """
     if not text.startswith("---\n"):
         return {}, "SKILL.md must start with YAML frontmatter"
     end = text.find("\n---\n", 4)
     if end < 0:
         return {}, "frontmatter closing delimiter not found"
+
+    lines = text[4:end].splitlines()
     fields: dict[str, str] = {}
-    for line in text[4:end].splitlines():
-        if not line.strip() or line.lstrip().startswith("#"):
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        if not line.strip() or line.lstrip().startswith("#") or line[:1].isspace():
+            i += 1
             continue
         if ":" not in line:
-            return {}, f"unsupported frontmatter line: {line}"
-        key, value = line.split(":", 1)
-        fields[key.strip()] = value.strip().strip('"\'')
-    return fields, None
+            return {}, f"unsupported top-level frontmatter line: {line}"
 
+        key, raw_value = line.split(":", 1)
+        key = key.strip()
+        value = raw_value.strip()
+        if value in {">", "|", ">-", "|-", ">+", "|+"}:
+            style = value[0]
+            i += 1
+            parts: list[str] = []
+            while i < len(lines):
+                child = lines[i]
+                if child.strip() and not child[:1].isspace():
+                    break
+                if child.strip():
+                    parts.append(child.strip())
+                elif style == "|":
+                    parts.append("")
+                i += 1
+            fields[key] = " ".join(parts) if style == ">" else "\n".join(parts).strip()
+            continue
+
+        fields[key] = value.strip('"\'')
+        i += 1
+
+    return fields, None
 
 def validate(root: Path) -> dict[str, list[str]]:
     errors: list[str] = []

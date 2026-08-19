@@ -2,8 +2,7 @@
 name: mols-agent-asset-validator
 description: Validate or improve a bounded agent-facing asset or package—including ChatGPT or Codex Skills, instructions, prompts, agents and subagents, tool schemas, guardrails, references, templates, configs, scripts, and eval fixtures—using deterministic inspection, semantic and routing review, behavioral and adversarial evaluation, orchestration analysis, runtime evidence when available, and explicit reviews of instruction bottlenecks, context-noise bottlenecks, stability, and human comprehension debt. Use for validation, audit, readiness, stress-testing, regression checking, or evidence-led improvement of agent assets. Do not use for ordinary product source-code review, standalone prose or email editing, open-ended research, or implementation requests unrelated to agent behavior.
 metadata:
-  - target:
-    - "OpenAI ChatGPT"
+  target: "OpenAI ChatGPT"
 ---
 
 # MOLS Agent Asset Validator
