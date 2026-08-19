@@ -1,11 +1,11 @@
 ---
 title: Agent Asset Naming Convention
-description: 폴더 계층을 쓰기 어려운 환경에서 관리 편의와 이름 충돌 방지를 위한 범용 Agent Asset naming convention
+description: 폴더 계층을 쓰기 어려운 환경에서 관리 편의와 이름 충돌 방지를 위한 configuration asset naming convention
 ---
 
 # Agent Asset Naming Convention
 
-이 문서는 Rule, Skill, Prompt, Agent처럼 이름을 직접 정할 수 있는 Agent Asset에 적용하는 **파일시스템 중심 naming convention**을 정의한다.
+이 문서는 Rulesync feature 또는 다른 agent harness에서 logical name을 직접 정할 수 있는 configuration asset에 적용하는 **파일시스템 중심 naming convention**을 정의한다.
 
 이 컨벤션의 최우선 목적은 두 가지다.
 
@@ -14,7 +14,7 @@ description: 폴더 계층을 쓰기 어려운 환경에서 관리 편의와 이
 
 **이름은 metadata를 기록하는 장소가 아니다.** 출처, scope, owner 같은 정보를 완전하게 표현하거나 복원하기 위한 schema가 아니며, 관리 편의와 collision avoidance에 필요한 최소한의 구분만 이름에 둔다.
 
-플랫폼이 강제하는 파일명이나 identifier 규격이 이 컨벤션보다 우선한다.
+Rulesync 또는 target platform이 강제하는 identifier/file naming contract가 이 컨벤션보다 우선한다.
 
 ## Pattern
 
@@ -31,7 +31,7 @@ description: 폴더 계층을 쓰기 어려운 환경에서 관리 편의와 이
 | `name` | 자산의 핵심 기능이나 역할 | `tag`, `review`, `research` |
 | `extension` | 같은 핵심 자산의 명확한 특수화 | `runtime`, `batch`, `github` |
 
-이 pattern은 사람이 파일시스템에서 자산을 관리하기 위한 naming convention이다. 각 segment 자체가 kebab-case일 수 있으므로 문자열을 역파싱하는 schema로 사용하지 않는다. 기계가 provenance, scope, owner 같은 정보를 알아야 한다면 이름이 아니라 별도 metadata를 사용한다.
+이 pattern은 사람이 파일시스템에서 자산을 관리하기 위한 naming convention이다. 각 segment 자체가 kebab-case일 수 있으므로 문자열을 역파싱하는 schema로 사용하지 않는다. 기계가 provenance, scope, owner 같은 정보를 알아야 한다면 이름이 아니라 source framework나 target contract가 제공하는 metadata를 사용한다.
 
 ## Source
 
@@ -92,18 +92,19 @@ tag
 
 ## Host Boundary
 
-이 컨벤션은 host가 자유롭게 정하도록 허용한 **logical asset name**에 적용한다.
+이 컨벤션은 source framework나 target harness가 자유롭게 정하도록 허용한 **logical asset name**에만 적용한다.
 
-- `SKILL.md`, `AGENTS.md`처럼 platform이 강제하는 고정 파일명은 rename하지 않는다.
-- `.agent.md`, `.prompt.md`처럼 host가 의미를 부여하는 suffix가 있다면 suffix 바깥의 logical name에 적용한다.
-- Agent Skills에 적용할 때 최종 Skill 이름과 디렉터리는 Agent Skills specification의 naming contract를 만족해야 한다.
+- `SKILL.md`, `AGENTS.md`처럼 framework/target이 강제하는 고정 파일명은 rename하지 않는다.
+- `.agent.md`, `.prompt.md`처럼 target이 의미를 부여하는 suffix가 있다면 suffix 바깥의 logical name에 적용한다.
+- Rulesync-managed source는 current Rulesync naming/schema contract를 먼저 따른다.
+- Agent Skills output에는 Agent Skills specification의 naming contract를 적용한다.
 - target harness가 더 엄격한 규칙을 가지면 해당 공식 규격을 따른다.
 
 ## External Skills
 
 외부 Skill은 이 컨벤션을 맞추기 위해 임의로 rename하지 않고 **upstream naming을 우선한다**.
 
-Agent Skills에서는 `name`이 디렉터리명과 결합된 identifier이므로 rename은 단순한 filesystem 정리가 아니라 upstream 자산 자체의 변경이 될 수 있다. 이름 충돌이 실제로 발생하면 target harness가 지원하는 namespace, placement, precedence 또는 qualified invocation 같은 충돌 해결 수단을 먼저 사용한다.
+Agent Skills에서는 `name`이 디렉터리명과 결합된 identifier이므로 rename은 단순한 filesystem 정리가 아니라 upstream 자산 자체의 변경이 될 수 있다. 이름 충돌이 실제로 발생하면 source framework나 target harness가 지원하는 namespace, placement, precedence 또는 qualified invocation 같은 충돌 해결 수단을 먼저 사용한다.
 
 통합을 위해 rename이 불가피하다면 upstream provenance는 별도로 보존한다.
 
@@ -126,11 +127,12 @@ liner-tag-runtime
 1. 현재 namespace에서 이름 충돌 가능성을 충분히 줄이는가?
 1. `source`, `family`, `extension`이 실제 관리 편의에 필요한가?
 1. metadata를 이름에 과도하게 인코딩하고 있지 않은가?
-1. host의 naming contract를 침범하지 않는가?
+1. source framework와 target naming contract를 침범하지 않는가?
 1. 외부 Skill의 upstream 이름을 불필요하게 바꾸고 있지 않은가?
 
 ## Research Basis
 
+- [Rulesync](https://github.com/dyoshikawa/rulesync) — canonical feature/source와 target projection의 naming boundary.
 - [Agent Skills Specification](https://agentskills.io/specification) — Skill `name`은 디렉터리명과 일치하는 제한된 identifier다.
 - [GitHub Copilot CLI command reference](https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference) — 중복 Skill 이름은 name-based precedence의 대상이 될 수 있다.
 - [Anthropic Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices) — 일관되고 구체적인 Skill naming을 권장한다.
