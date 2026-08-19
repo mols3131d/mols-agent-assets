@@ -3,9 +3,10 @@ name: mols-markdown-for-human
 description: >
   빠르고 쉽게 사람이 읽을 수 있는 Markdown 문서를 생성하거나 개선한다.
   핵심을 먼저 보여주고 문서의 정보 구조에 맞는 Markdown 표현을 선택한다.
-compatibility: GitHub Flavored Markdown
-metadata:
-  version: "3.0.0"
+agentsskills:
+  compatibility: GitHub Flavored Markdown
+  metadata:
+    version: "3.0.0"
 ---
 
 # Markdown for Human
