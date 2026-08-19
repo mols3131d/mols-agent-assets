@@ -1,15 +1,15 @@
 ---
 name: mols-ci-design
 description: >-
-  Design efficient CI for chatbot and agent repositories and produce an implementation-ready
-  handoff. Use for CI planning, review, or redesign involving tests, evals, change-impact
-  routing, evidence boundaries, and maintenance automation. Do not implement workflows unless
-  explicitly requested.
+  Design lightweight, risk-proportional CI with strict admission to main and an
+  implementation-ready handoff. Use for CI planning, review, or redesign involving tests,
+  evals, change-impact routing, evidence boundaries, and maintenance automation. Do not
+  implement workflows unless explicitly requested.
 ---
 
 # Mols CI Design
 
-Design the smallest CI system that provides enough evidence for the target, then hand the design to an implementation agent or maintainer.
+Design the lightest CI that preserves strict admission to `main` and provides enough automated evidence for safe delegated development.
 
 ## Arguments
 
@@ -39,19 +39,21 @@ Explicit values win. `<auto>` means inspect first and resolve from evidence, not
 
 Design and hand off by default.
 
-- Inspect repository guidance, CI, tests, evals, scripts, generators, asset roots, and existing validation before proposing changes.
-- Map each important failure class to the cheapest evidence that can detect it.
-- Separate merge gates, broader regression, semantic/runtime evaluation, and write-capable maintenance when those responsibilities exist.
+- Treat `main`, or the target's established equivalent integration branch, as the strict admission boundary.
+- Identify failures that would make a change unacceptable on that boundary and require blocking pre-merge evidence for them.
+- Optimize verification scope, cost, and latency without lowering the admission standard.
+- Use risk-proportional verification: low-risk or non-semantic changes should not pay for unrelated checks.
+- Prefer the cheapest evidence that can prove each required claim, and keep different evidence tiers distinct.
+- Make impact routing fail-safe: when affected scope is uncertain, broaden validation rather than silently skip relevant checks.
+- Keep pure style or formatting out of merge evidence unless representation affects parseability, correctness, or an explicit contract.
 - Reuse repository-native checks, validators, providers, and conventions before adding machinery.
-- Treat static, deterministic, projection, semantic, and live-runtime evidence as distinct claims.
-- Define provider-specific syntax only after the CI architecture is clear.
 - Do not create workflows, scripts, tests, eval fixtures, secrets, or branch rules unless implementation is explicitly requested.
 
 ## Resources
 
 Read only what the current design needs.
 
-- [Principles](references/principles.md) — evidence tiers, selection rules, safety, and authority boundaries.
+- [Principles](references/principles.md) — admission boundary, evidence tiers, selection rules, safety, and authority boundaries.
 - [Patterns](references/patterns.md) — reusable CI architectures and impact-routing patterns.
 - [Handoff](references/handoff.md) — implementation-ready output contract.
 
@@ -59,8 +61,9 @@ Read only what the current design needs.
 
 1. Resolve arguments and inspect the target.
 1. Inventory relevant change surfaces and existing verification; record what each check actually proves.
-1. Map likely failures to evidence tiers and design the smallest maintainable change-to-check routing.
-1. Select only the CI patterns needed for those failures and separate PR, broader regression, expensive eval, and maintenance responsibilities as applicable.
+1. Classify failures by whether they would make a change unacceptable on `main` or its equivalent integration branch.
+1. Map merge-critical failures to blocking evidence, then choose the cheapest sufficient check and smallest maintainable impact routing.
+1. Place broader, expensive, stochastic, or maintenance work outside the merge gate when it does not affect admission.
 1. Define triggers, permissions, secrets, concurrency, caching, matrices, and timeouts only where they materially affect the design.
 1. Produce one repository-specific handoff using `references/handoff.md`.
 1. Review against `references/principles.md`; remove duplicated checks, speculative machinery, stale path coupling, and claims stronger than the evidence.
@@ -69,11 +72,13 @@ Read only what the current design needs.
 
 Before finalizing, verify that:
 
-- every proposed check owns a real failure class;
-- expensive or stochastic checks have a reason cheaper evidence is insufficient;
-- impact routing is understandable and maintainable for the target;
+- every failure that would make the change unacceptable on `main` has blocking pre-merge evidence;
+- optimization reduces execution cost or scope, not the admission standard;
+- low-risk changes do not trigger unrelated expensive checks;
+- uncertain impact broadens validation instead of creating a silent coverage gap;
 - merge gates use the least privilege practical;
 - runtime claims require runtime evidence;
+- the design is strong enough that delegated changes cannot merge merely because relevant verification was omitted;
 - the plan can be implemented incrementally without an unrelated framework migration.
 
 Stop at the handoff unless implementation is explicitly requested.
