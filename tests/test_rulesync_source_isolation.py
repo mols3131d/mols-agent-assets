@@ -3,10 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import yaml
-
 ROOT = Path(__file__).resolve().parents[1]
-CONTRACT = ROOT / "evals/regression/agentsmesh-source-isolation.json"
+CONTRACT = ROOT / "evals/regression/rulesync-source-isolation.json"
 
 
 def load_contract() -> dict:
@@ -17,14 +15,13 @@ def directory_names(path: Path) -> set[str]:
     return {entry.name for entry in path.iterdir() if entry.is_dir()}
 
 
-def test_agentsmesh_source_matches_regression_contract() -> None:
+def test_rulesync_source_matches_regression_contract() -> None:
     contract = load_contract()["canonical"]
     workspace = ROOT / contract["workspace"]
     source = ROOT / contract["asset_root"]
-    config = yaml.safe_load((ROOT / contract["config"]).read_text(encoding="utf-8"))
+    config = json.loads((ROOT / contract["config"]).read_text(encoding="utf-8"))
 
-    assert source == workspace / ".agentsmesh"
-    assert config["version"] == 1
+    assert source == workspace / ".rulesync"
     assert config["targets"] == contract["targets"]
     assert config["features"] == contract["features"]
 
@@ -36,8 +33,8 @@ def test_agentsmesh_source_matches_regression_contract() -> None:
     for name in contract["skills"]:
         assert (skills / name / "SKILL.md").is_file()
 
-    agents = source / "agents"
-    assert {path.stem for path in agents.glob("*.md")} == set(contract["agents"])
+    subagents = source / "subagents"
+    assert {path.stem for path in subagents.glob("*.md")} == set(contract["subagents"])
 
 
 def test_distribution_assets_are_not_repository_runtime_configuration() -> None:
@@ -78,25 +75,26 @@ def test_retired_legacy_surfaces_do_not_return() -> None:
         assert not (ROOT / path).exists(), path
 
 
-def test_agentsmesh_toolchain_stays_pinned() -> None:
-    package = json.loads((ROOT / "package.json").read_text(encoding="utf-8"))
-    assert package["devDependencies"]["agentsmesh"] == "0.32.0"
+def test_rulesync_toolchain_stays_pinned() -> None:
+    runner = (ROOT / "scripts/run_rulesync.py").read_text(encoding="utf-8")
+    assert 'RULESYNC_VERSION = "16.14.0"' in runner
+    assert not (ROOT / "package-lock.json").exists()
 
 
-def test_repository_agentsmesh_commands_do_not_claim_persistent_drift() -> None:
+def test_repository_rulesync_commands_keep_write_validation_isolated() -> None:
     package = json.loads((ROOT / "package.json").read_text(encoding="utf-8"))
     scripts = package["scripts"]
 
     assert set(scripts) == {
-        "agentsmesh:lint",
-        "agentsmesh:preview",
-        "agentsmesh:validate",
+        "rulesync:doctor",
+        "rulesync:preview",
+        "rulesync:validate",
     }
-    assert scripts["agentsmesh:lint"].endswith(" lint")
-    assert scripts["agentsmesh:preview"].endswith(" preview")
-    assert scripts["agentsmesh:validate"].endswith(" validate")
+    assert scripts["rulesync:doctor"].endswith(" doctor")
+    assert scripts["rulesync:preview"].endswith(" preview")
+    assert scripts["rulesync:validate"].endswith(" validate")
 
-    workflow = (ROOT / ".github/workflows/agentsmesh.yml").read_text(encoding="utf-8")
-    assert "npm run agentsmesh:validate" in workflow
-    assert "npm run agentsmesh:check" not in workflow
-    assert "npm run agentsmesh:generate:check" not in workflow
+    workflow = (ROOT / ".github/workflows/rulesync.yml").read_text(encoding="utf-8")
+    assert "npm run rulesync:doctor" in workflow
+    assert "npm run rulesync:validate" in workflow
+    assert "rulesync generate" not in workflow

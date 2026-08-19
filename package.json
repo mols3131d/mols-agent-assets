@@ -1,12 +1,9 @@
 {
   "name": "mols-agent-assets-tooling",
   "private": true,
-  "devDependencies": {
-    "agentsmesh": "0.32.0"
-  },
   "scripts": {
-    "agentsmesh:lint": "python scripts/run_agentsmesh.py lint",
-    "agentsmesh:preview": "python scripts/run_agentsmesh.py preview",
-    "agentsmesh:validate": "python scripts/run_agentsmesh.py validate"
+    "rulesync:doctor": "python scripts/run_rulesync.py doctor",
+    "rulesync:preview": "python scripts/run_rulesync.py preview",
+    "rulesync:validate": "python scripts/run_rulesync.py validate"
   }
 }

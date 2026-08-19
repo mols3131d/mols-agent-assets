@@ -1,17 +1,16 @@
-name: AgentsMesh
+name: Rulesync
 
 on:
   pull_request:
     branches:
       - main
     paths:
-      - "src/agentsmesh/**"
+      - "src/rulesync/**"
       - "package.json"
-      - "package-lock.json"
       - ".gitattributes"
       - ".rumdl.toml"
-      - "scripts/run_agentsmesh.py"
-      - ".github/workflows/agentsmesh.yml"
+      - "scripts/run_rulesync.py"
+      - ".github/workflows/rulesync.yml"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
@@ -23,7 +22,7 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-slim
-    timeout-minutes: 6
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v7
         with:
@@ -35,17 +34,15 @@ jobs:
       - uses: astral-sh/setup-uv@v9.0.0
         with:
           enable-cache: false
-      - name: Install pinned toolchain
-        run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Validate canonical Markdown normalization
         shell: bash
         run: |
           set -euo pipefail
-          mapfile -d '' markdown < <(git ls-files -z -- 'src/agentsmesh/**/*.md')
+          mapfile -d '' markdown < <(git ls-files -z -- 'src/rulesync/**/*.md')
           ((${#markdown[@]})) || exit 0
           uvx rumdl@0.2.6 fmt "${markdown[@]}"
           git diff --exit-code -- "${markdown[@]}"
       - name: Validate canonical configuration
-        run: npm run agentsmesh:lint
+        run: npm run rulesync:doctor
       - name: Validate isolated projection consistency
-        run: npm run agentsmesh:validate
+        run: npm run rulesync:validate

@@ -1,14 +1,27 @@
 ---
+targets:
+  - copilot
+  - antigravity-ide
 name: review-quality
 description: Independently reviews intended behavior, correctness, regressions, maintainability, and validation.
-tools:
-  - execute/runTests
-  - execute/testFailure
-  - read
-  - vscodeGeneral/usages
-  - vscodeGeneral/runTests
-  - vscodeGeneral/testFailure
-  - search
+copilot:
+  tools:
+    - execute/runTests
+    - execute/testFailure
+    - read
+    - vscodeGeneral/usages
+    - vscodeGeneral/runTests
+    - vscodeGeneral/testFailure
+    - search
+antigravity-ide:
+  tools:
+    - execute/runTests
+    - execute/testFailure
+    - read
+    - vscodeGeneral/usages
+    - vscodeGeneral/runTests
+    - vscodeGeneral/testFailure
+    - search
 ---
 
 # 품질 검토

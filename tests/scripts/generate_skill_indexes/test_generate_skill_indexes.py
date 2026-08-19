@@ -18,17 +18,17 @@ def test_render_index_prepends_metadata_and_instruction(tmp_path):
     content = generate_skill_indexes.render_index(
         tmp_path,
         "*/SKILL.md",
-        "src/agentsmesh/.agentsmesh/skills/{name}/SKILL.md",
+        "src/rulesync/.rulesync/skills/{name}/SKILL.md",
     )
     rows = [json.loads(line) for line in content.splitlines()]
 
     assert rows[:2] == [
         {
             "metadata": {
-                "workspace_path": "src/agentsmesh/.agentsmesh/skills/{name}/SKILL.md",
+                "workspace_path": "src/rulesync/.rulesync/skills/{name}/SKILL.md",
                 "github_url": (
                     "https://github.com/mols3131d/mols-agent-assets/blob/main/"
-                    "src/agentsmesh/.agentsmesh/skills/{name}/SKILL.md"
+                    "src/rulesync/.rulesync/skills/{name}/SKILL.md"
                 ),
             }
         },
@@ -44,8 +44,8 @@ def test_target_template_uses_isolated_canonical_skill_surface():
     }
 
     assert targets == {
-        "src/agentsmesh/.agentsmesh/skills": (
-            "src/agentsmesh/.agentsmesh/skills/{name}/SKILL.md"
+        "src/rulesync/.rulesync/skills": (
+            "src/rulesync/.rulesync/skills/{name}/SKILL.md"
         ),
     }
 

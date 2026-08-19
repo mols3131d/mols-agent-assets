@@ -1,13 +1,13 @@
 {
-  "version": 3,
+  "version": 4,
   "kind": "deterministic-regression",
   "canonical": {
-    "workspace": "src/agentsmesh",
-    "asset_root": "src/agentsmesh/.agentsmesh",
-    "config": "src/agentsmesh/agentsmesh.yaml",
-    "targets": ["copilot", "antigravity"],
-    "features": ["rules", "skills", "agents"],
-    "rules": ["_root.md"],
+    "workspace": "src/rulesync",
+    "asset_root": "src/rulesync/.rulesync",
+    "config": "src/rulesync/rulesync.jsonc",
+    "targets": ["copilot", "antigravity-ide"],
+    "features": ["rules", "skills", "subagents"],
+    "rules": ["overview.md"],
     "skills": [
       "artifact-consistency-inspector",
       "caveman-ko",
@@ -41,7 +41,7 @@
       "vcs-git-commit",
       "writing"
     ],
-    "agents": [
+    "subagents": [
       "review-adversarial",
       "review-lead",
       "review-quality"
@@ -52,23 +52,28 @@
     "forbid_top_level_dirs": ["tests", "evals", "scenarios", "results"]
   },
   "forbidden_repository_runtime_surfaces": [
+    ".rulesync",
+    "rulesync.jsonc",
     ".agentsmesh",
     "agentsmesh.yaml",
     ".github/copilot-instructions.md",
     ".github/skills",
     ".github/agents",
     ".agents/rules",
-    ".agents/skills"
+    ".agents/skills",
+    ".agents/agents"
   ],
   "forbidden_workspace_generated_surfaces": [
-    "src/agentsmesh/.agentsmesh/.lock",
-    "src/agentsmesh/.github",
-    "src/agentsmesh/.agents"
+    "src/rulesync/.github",
+    "src/rulesync/.agents",
+    "src/rulesync/rulesync.lock",
+    "src/rulesync/rulesync-npm.lock.json"
   ],
   "repository_local_exceptions": [
     ".agents/AGENTS.md"
   ],
   "retired": [
+    "src/agentsmesh",
     "src/skills",
     "src/skills-chatbot",
     "src/skills-chatbot-runtime",

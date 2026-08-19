@@ -1,11 +1,21 @@
 ---
+targets:
+  - copilot
+  - antigravity-ide
 name: review-lead
 description: Coordinates independent quality and adversarial reviews, then writes the final assessment.
-tools:
-  - read
-  - search
-  - agent
-  - edit
+copilot:
+  tools:
+    - read
+    - search
+    - agent
+    - edit
+antigravity-ide:
+  tools:
+    - read
+    - search
+    - agent
+    - edit
 ---
 
 # 검토 리드

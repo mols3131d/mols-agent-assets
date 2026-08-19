@@ -1,9 +1,17 @@
 ---
+targets:
+  - copilot
+  - antigravity-ide
 name: review-adversarial
 description: Independently challenges assumptions and searches for reachable failure, abuse, and recovery scenarios.
-tools:
-  - read
-  - search
+copilot:
+  tools:
+    - read
+    - search
+antigravity-ide:
+  tools:
+    - read
+    - search
 ---
 
 # 적대적 검토
