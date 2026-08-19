@@ -1,177 +1,106 @@
 # CI Design Handoff
 
-Produce one implementation-ready design artifact. The handoff should let an implementation agent act without rediscovering the repository, while keeping design decisions separate from implementation syntax.
+Produce one implementation-ready design artifact. It should preserve the repository discovery and decisions an implementer would otherwise have to repeat.
 
-## Required Sections
+Use the sections below as a default shape, not a mandatory form. Omit optional sections that add no implementation value.
 
-### Context
+## Context
 
 Record only evidence that affects the design:
 
-- target repository/workspace and relevant instructions;
-- current CI provider and workflows;
-- asset roots and important generated/projection surfaces;
+- target and applicable repository guidance;
+- current CI/workflows;
+- relevant asset and generated/projection roots;
 - tests, evals, validators, generators, and maintenance automation;
-- relevant constraints such as secrets, runner limits, branch policy, or model/provider access.
+- material runner, secret, branch, provider, cost, or platform constraints.
 
-Cite concrete repository paths or commands where possible.
+Prefer concrete paths, commands, and existing workflow names.
 
-### Goals
+## Goals and Non-Goals
 
-State the desired properties of the CI system, such as:
+State what the design should improve and what it intentionally does not introduce. Use non-goals only where they prevent likely scope expansion, such as a provider migration, new eval framework, write-back automation, or exhaustive provider matrix.
 
-- fast PR feedback;
-- protection of canonical asset contracts;
-- bounded semantic/runtime cost;
-- clear projection/runtime evidence boundaries;
-- low maintenance burden.
+## Failure → Evidence
 
-### Non-Goals
+Map each important failure to the cheapest sufficient evidence.
 
-Explicitly exclude work that the design does not require, especially:
-
-- CI provider migrations;
-- new eval frameworks;
-- full runtime parity claims;
-- write-back automation;
-- new dependency manifests;
-- exhaustive provider/model matrices.
-
-Include an excluded item only when relevant to preventing accidental scope expansion.
-
-### Failure and Evidence Model
-
-Map important failure classes to the cheapest sufficient evidence.
-
-Suggested shape:
-
-| Failure class | Evidence | Gate |
+| Failure class | Evidence | Boundary |
 | --- | --- | --- |
-| malformed asset metadata | deterministic static check | PR |
-| generator regression | script/contract test | PR |
-| target projection drift | isolated projection check | PR or main |
-| Skill trigger regression | semantic smoke eval | conditional PR |
-| cross-provider parity | runtime eval | scheduled/manual |
+| malformed asset metadata | static/deterministic check | PR |
+| generator regression | contract/script test | PR |
+| projection drift | isolated projection check | PR or main |
+| routing regression | semantic smoke | conditional PR |
+| runtime parity | live runtime eval | scheduled/manual |
 
-Do not include rows without a real target failure class.
+Keep only rows that apply to the target.
 
-### CI Architecture
+## CI Architecture
 
-Describe each responsibility independently.
+For each proposed workflow or logical job, specify only what implementation needs:
 
-For every proposed workflow or logical job, specify:
+- purpose and failure class;
+- trigger/change scope;
+- selected checks or dependencies;
+- blocking or informational role;
+- permissions/secrets;
+- timeout, concurrency, cache, matrix, or artifacts when material;
+- evidence boundary: what it proves and does not prove.
 
-- purpose;
-- trigger and path/change scope;
-- dependencies or selected targets;
-- evidence tier;
-- blocking versus informational behavior;
-- permissions and secrets;
-- timeout/concurrency/caching when material;
-- outputs or artifacts when material;
-- what the job explicitly does **not** prove.
+Prefer logical responsibilities over premature filenames.
 
-Prefer logical workflow names over final filenames unless filename choice matters.
+## Impact Routing
 
-### Impact Routing
+Show how representative changes select checks and how shared/global changes fan out.
 
-Define how repository changes select checks.
+Use the smallest maintainable mechanism: path filters, layout/naming convention, a small router script, or an explicit dependency map when justified.
 
-Use the smallest maintainable representation that fits the target:
+## Evaluation
 
-- path filters;
-- naming/layout convention;
-- selector script;
-- explicit dependency mapping only if justified.
+Include this only when semantic or runtime evaluation is part of the design. Specify the triggering changes, case ownership, smoke/full boundary, evaluator type, provider/model scope, failure interpretation, stochastic sampling/retry policy when needed, cost/secret boundary, and whether results block merge.
 
-Include representative mappings and shared/global changes that intentionally fan out.
+If deterministic evidence is sufficient, say that briefly instead of inventing an eval layer.
 
-### Eval Strategy
+## Maintenance
 
-If semantic/runtime evaluation is justified, specify:
+Include only when write-capable automation is needed. Describe the write responsibility, canonical source authority, trigger, permissions, and how commit loops or silent overwrites are prevented. Keep it separate from merge confidence.
 
-- which asset changes trigger it;
-- case/fixture ownership;
-- smoke versus exhaustive suites;
-- evaluator type: deterministic, model grader, human, or runtime assertion;
-- provider/model scope;
-- threshold/baseline or failure interpretation;
-- retry/sample policy if stochastic;
-- cost/secret boundary;
-- whether the result blocks merge.
+## Implementation Plan
 
-If no model/runtime eval is justified, say so explicitly and explain which deterministic evidence covers the current contract.
+Give the smallest incremental order. Usually stabilize cheap deterministic checks and impact routing before adding optional semantic/runtime layers.
 
-### Maintenance Automation
+Do not require a framework migration unless it is already an accepted prerequisite.
 
-Describe formatting, regeneration, synchronization, indexing, or write-back separately from merge gates.
+## Acceptance Criteria
 
-Specify canonical source authority and how commit loops or silent overwrites are prevented.
+Use observable, implementation-neutral criteria. Examples:
 
-If no maintenance workflow is needed, omit this section or state `None` briefly.
-
-### Implementation Order
-
-Give an incremental sequence. Prefer establishing cheap deterministic gates before optional semantic/runtime layers.
-
-Example:
-
-1. stabilize existing deterministic checks;
-2. add or simplify impact routing;
-3. isolate projection/integration checks;
-4. add semantic smoke only for uncovered behavior risk;
-5. add scheduled exhaustive evaluation if justified.
-
-Do not require a framework migration unless it is itself an accepted prerequisite.
-
-### Acceptance Criteria
-
-Make criteria observable and implementation-neutral where possible.
-
-Examples:
-
-- a Skill-only change does not run unrelated script tests;
-- shared routing changes trigger representative dependent tests;
-- PR gates require no repository write permission;
+- an isolated Skill change does not run unrelated script tests;
+- a shared routing change fans out to known dependents;
 - malformed eval fixtures fail before model execution;
-- tuned semantic metadata is not rejected solely because it differs byte-for-byte from a generated baseline;
-- full provider/model matrices do not run on every PR without explicit justification.
+- PR merge gates do not require repository write permission without a demonstrated need;
+- approved semantic tuning is not rejected solely for differing from generated baseline text;
+- exhaustive provider/model matrices do not run on every PR without justification.
 
-### Risks and Open Decisions
+## Risks and Open Decisions
 
-List only unresolved items that could change implementation or evidence quality.
-
-Separate known facts from assumptions. Do not hide uncertainty behind `<auto>` after the repository has been inspected.
+List only unresolved items that can change implementation or evidence quality. Separate facts from assumptions; do not leave resolved repository facts hidden behind `<auto>`.
 
 ## Optional Diagram
 
-Use Mermaid when the execution/evidence flow is easier to understand visually.
-
-Example:
+Use Mermaid when it makes the evidence flow materially easier to understand.
 
 ```mermaid
 flowchart LR
     C[Change] --> R[Impact Router]
     R --> D[Deterministic Gates]
-    R --> S[Semantic Smoke]
+    R --> S[Optional Semantic Smoke]
     D --> M[Merge Evidence]
     S --> M
-    M --> F[Scheduled Full Eval]
+    M --> F[Broader or Scheduled Eval]
 ```
-
-Keep the diagram subordinate to the written contract.
-
-## Implementation Syntax
-
-YAML, shell, test code, or provider configuration may be included as short illustrative snippets when they remove ambiguity. Do not turn the handoff into a completed implementation unless the caller explicitly requests implementation.
 
 ## Final Review
 
-Before handing off, remove:
+Remove generic advice, duplicate higher-cost checks, unsupported hard-coded paths, speculative cache/matrix/secret choices, model eval where deterministic assertions suffice, and runtime claims without runtime evidence.
 
-- generic CI advice not tied to the target;
-- duplicate gates that detect the same failure at higher cost;
-- stale hard-coded paths not supported by the inspected repository;
-- speculative caches, matrices, secrets, or hosted services;
-- model eval where deterministic assertions suffice;
-- claims of runtime behavior without runtime evidence.
+Provider YAML, shell, or test snippets may be included only when they remove implementation ambiguity. Do not turn the handoff into completed CI unless implementation is explicitly requested.
