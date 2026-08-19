@@ -22,11 +22,16 @@ Rulesync가 표현할 수 있는 Agent Asset은 `src/rulesync/`의 **격리된 n
 | `src/rulesync/` | 격리된 native Rulesync workspace와 projection 설정 |
 | `src/rulesync/.rulesync/` | Rulesync-compatible Rule, Skill, Subagent의 정본 소스 |
 | `src/`의 다른 경로 | 실제 요구가 있는 custom/non-standard Agent Asset 소스 |
+| `route/` | 이 저장소가 배포하는 cross-runtime discovery projection. canonical source가 아님 |
 | `.agents/AGENTS.md` | 이 저장소 자체에 적용되는 저장소 로컬 guard |
 | `tests/` | 결정론적 테스트 |
 | `evals/` | 행동/model eval과 cross-asset 회귀 계약 |
 | `docs/` | 사람용 문서와 레퍼런스 |
 | `scripts/` | 자동화·검증·동기화 도구 |
+
+`route/`는 Rulesync native workspace의 일부가 아닙니다. Rulesync가 native projection/discovery를 제공하는 runtime은 그 기능을 우선하고, 그렇지 않은 chatbot/runtime만 `route/`의 파생 routing metadata로 필요한 canonical asset을 선택해 로드합니다. `route/skills.jsonl`은 canonical Skill metadata에서 자동 생성합니다.
+
+`.agents/routes/`는 `mols-chatbot-bootstrap`이 대상 workspace에 둘 수 있는 repository-local compatibility route convention이며, 이 저장소가 배포하는 루트 `route/`와 별개입니다. `scripts/generate_distribution_routes.py`는 `.agents/routes/`를 갱신하지 않습니다. 자세한 경계는 [`route/README.md`](route/README.md)가 소유합니다.
 
 저장소 루트의 `.rulesync/`, `rulesync.jsonc`, `.github/skills/`, `.github/agents/`, `.github/copilot-instructions.md`, `.agents/skills/`, `.agents/rules/`, `.agents/agents/`는 배포 소스로 사용하지 않습니다. Native read-only 검증은 `src/rulesync/`에서 직접 실행하고, generation처럼 파일을 쓰는 검증만 workspace 전체를 임시 디렉터리로 복사해 수행합니다.
 
@@ -43,4 +48,4 @@ src/rulesync/.rulesync 편집
   → 정본 소스만 최종 검토
 ```
 
-핵심 원칙은 단순합니다. **native layout은 보존하되, 저장소 루트의 runtime surface와 배포 소스는 분리합니다.**
+핵심 원칙은 단순합니다. **Rulesync native source, target-local runtime route, cross-runtime distribution route의 권한을 분리합니다.**

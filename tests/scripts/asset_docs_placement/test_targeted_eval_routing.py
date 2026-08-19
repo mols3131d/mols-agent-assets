@@ -18,11 +18,11 @@ def test_eval_changes_have_a_deterministic_test_target() -> None:
     assert 'add_eval "${name%%/*}"' in workflow
 
 
-def test_canonical_skill_changes_validate_the_committed_index() -> None:
+def test_canonical_skill_changes_validate_distribution_routes() -> None:
     workflow = WORKFLOW.read_text(encoding="utf-8")
 
     skill_case = "src/rulesync/.rulesync/skills/*)"
-    assert "add_skill_index()" in workflow
-    assert 'root_targets["tests/scripts/generate_skill_indexes"]=1' in workflow
+    assert "add_distribution_routes()" in workflow
+    assert 'root_targets["tests/scripts/generate_distribution_routes"]=1' in workflow
     assert skill_case in workflow
-    assert "add_skill_index" in workflow.split(skill_case, 1)[1]
+    assert "add_distribution_routes" in workflow.split(skill_case, 1)[1]
