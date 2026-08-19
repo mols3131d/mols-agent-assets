@@ -65,4 +65,7 @@ def test_pr_verifier_uses_shared_rumdl_config_for_all_markdown() -> None:
     assert "rumdl@0.2.6 check" not in workflow
 
     canonical_fmt = 'uvx rumdl@0.2.6 fmt "${markdown[@]}"'
-    assert workflow.count(canonical_fmt) >= 2
+    generated_fmt = 'uvx rumdl@0.2.6 fmt "${generated[@]}"'
+    assert canonical_fmt in workflow
+    assert generated_fmt in workflow
+    assert workflow.index(canonical_fmt) < workflow.index(generated_fmt)
