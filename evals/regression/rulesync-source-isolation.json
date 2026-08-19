@@ -1,5 +1,5 @@
 {
-  "version": 5,
+  "version": 6,
   "kind": "deterministic-regression",
   "canonical": {
     "workspace": "src/rulesync",
@@ -24,6 +24,8 @@
       "load-context-tech-doc-fidelity",
       "mols-agent-asset-studio",
       "mols-agent-asset-validator",
+      "mols-chatbot-bootstrap",
+      "mols-ci-design",
       "mols-documents-studio",
       "mols-markdown-dashboard",
       "mols-markdown-for-human",
@@ -59,6 +61,7 @@
     ".github/copilot-instructions.md",
     ".github/skills",
     ".github/agents",
+    ".agents/skills",
     ".agents/rules",
     ".agents/agents"
   ],
@@ -69,14 +72,9 @@
     "src/rulesync/rulesync-npm.lock.json"
   ],
   "repository_local_exceptions": [
-    ".agents/AGENTS.md",
-    ".agents/skills/mols-chatbot-bootstrap",
-    ".agents/skills/mols-ci-design"
+    ".agents/AGENTS.md"
   ],
-  "repository_local_skill_exceptions": [
-    "mols-chatbot-bootstrap",
-    "mols-ci-design"
-  ],
+  "repository_local_skill_exceptions": [],
   "retired": [
     "src/agentsmesh",
     "src/skills",
