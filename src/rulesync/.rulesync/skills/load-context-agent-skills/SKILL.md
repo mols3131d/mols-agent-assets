@@ -44,10 +44,10 @@ Apply them only when one of these is established:
 - project/repository instructions declare them;
 - the target is a mols personal project or personal asset being maintained under those conventions.
 
-When personal scope applies, read:
+When personal scope applies, load only the local convention relevant to the current source and decision:
 
-- [Skill Authoring Conventions](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/skills/skill-authoring-conventions.md)
-- [Agent Asset Naming Convention](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/naming.md) when filesystem naming matters
+- Rulesync-managed Skill authoring → [Skill Authoring Conventions](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/skills/skill-authoring-conventions.md)
+- filesystem naming → [Agent Asset Naming Convention](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/naming.md)
 
 Apply personal conventions only after mandatory source and target contracts are satisfied.
 
