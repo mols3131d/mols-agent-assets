@@ -33,7 +33,7 @@ mise install
 mise run setup
 ```
 
-`mise.toml`은 `uv`, Node.js, rumdl, Lefthook, Biome version을 고정합니다. Python version과 dependency environment는 `.python-version`, `pyproject.toml`, `uv.lock`을 통해 uv가 관리합니다.
+`mise.toml`은 `uv`, Node.js, rumdl, Lefthook, Biome, Rulesync version을 고정합니다. Python version과 dependency environment는 `.python-version`, `pyproject.toml`, `uv.lock`을 통해 uv가 관리합니다.
 
 Cross-tool 검증 entry point는 다음과 같습니다.
 
@@ -41,6 +41,8 @@ Cross-tool 검증 entry point는 다음과 같습니다.
 mise run check
 mise run test
 ```
+
+PR에서는 lock freshness를 포함해 `uv --locked` semantics로 테스트합니다. `mise.toml`, `.python-version`, `pyproject.toml`, `uv.lock`처럼 실행 환경 전체에 영향을 줄 수 있는 변경은 targeted routing을 넓혀 root `tests/` 전체를 검증합니다. Tooling configuration 변경은 `mise run check`도 blocking verification으로 실행합니다.
 
 ## Rulesync 검증
 
@@ -52,7 +54,7 @@ rulesync doctor --strict
 → 필요한 경우에만 target projection/runtime 검증
 ```
 
-Repository `npm run rulesync:*` command는 `scripts/run_rulesync.py`를 통해 `src/rulesync/` workspace를 대상으로 실행합니다. Runner는 target path나 projection semantics를 재구현하지 않고 Rulesync CLI에 위임합니다.
+Rulesync CLI version은 `mise.toml`에서 exact pin합니다. Repository `npm run rulesync:*` command는 `scripts/run_rulesync.py`를 통해 `src/rulesync/` workspace를 대상으로 실행합니다. Runner는 target path나 projection semantics를 재구현하지 않고 mise-managed Rulesync CLI에 위임합니다.
 
 Root repository workspace가 실제로 존재하면 library와 별도로 검증합니다.
 
