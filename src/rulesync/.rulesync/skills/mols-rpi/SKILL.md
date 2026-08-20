@@ -2,14 +2,18 @@
 name: mols-rpi
 description: >-
   Run adaptive RPI work with explicit Research → Plan → Implementation prerequisites,
-  evidence-driven Review, and bounded serial recursion. Use when the user requests RPI
-  or RPI(R), asks to loop, deeply improve, or recursively improve work—including
-  standalone loop/루프, recursive loop/재귀 루프, improvement loop/개선 루프, or deep
-  loop/심층 루프 method requests. Also use without those words for complex multi-step
-  work where uncertainty, consequential decisions, multiple acceptance conditions, or
-  prerequisite research and planning make a single-pass response unreliable. Do not use
-  when loop is merely the topic being discussed, for generic content repetition, or for
-  trivial tasks where explicit prerequisite artifacts add no meaningful control.
+  evidence-driven Review, and bounded serial recursion. Use when the user requests RPI or
+  RPI(R), loop/loops/loop it/루프, recursive loop/재귀 루프, improvement loop/개선 루프,
+  deep loop/심층 루프, or equivalent repeated research/planning/work/review or recursive
+  improvement. Also use without those words for complex multi-step work where a single
+  pass is materially unreliable because the task needs evidence gathering or
+  reconciliation before consequential decisions, an explicit Plan before consequential
+  Work, convergence across multiple acceptance conditions or coupled workstreams,
+  repeated verification or likely replanning, narrower subproblem resolution, or
+  protection against costly rework from hidden assumptions or uncertainty. Do not use
+  when loop is merely the topic, identifier, or code concept being discussed, when the
+  user only asks to repeat content without iterative work, merely because a task is long,
+  or for trivial work where explicit prerequisite artifacts add no meaningful control.
 ---
 
 # Mols RPI
@@ -34,9 +38,11 @@ Research-only work may stop after Research + Review. Plan-only work requires Res
 and may stop after Plan + Review. Perform Implementation only when the Goal requires
 planned execution.
 
-## Arguments
+# Arguments
 
-All arguments are optional.
+All arguments are optional. `<auto>` delegates resolution to the owning runtime concern.
+An explicit value overrides `<auto>` only when compatible with higher authority and RPI
+invariants.
 
 ```yaml
 target: <auto>
@@ -51,72 +57,47 @@ progress: <auto>
 output: <auto>
 ```
 
-- `target` — repository, workspace, artifact, or active task target. `<auto>` uses the
-  current target established by context and governing instructions.
-- `goal` — requested end state, or `<auto>`. `<auto>` derives the smallest observable Goal
-  that satisfies the user's request without inventing adjacent work.
-- `terminal` — `research`, `plan`, `goal`, or `<auto>`. `<auto>` infers the requested
-  terminal stage. `research` stops after Research + Review; `plan` after Research + Plan +
-  Review; `goal` continues until the Goal is accepted, handed off, or blocked.
-- `scope` — explicit starting Scope or `<auto>`. `<auto>` infers the smallest viable
-  Active Scope from the Goal, user boundaries, and governing artifacts.
-- `scope_policy` — `adaptive`, `narrow-only`, `fixed`, or `<auto>`. `<auto>` uses
-  `adaptive`. `adaptive` permits bounded narrowing and gated expansion; `narrow-only`
-  permits narrowing but never expansion; `fixed` permits no Scope boundary change.
-- `research` — `internal`, `external`, `mixed`, or `<auto>`. `<auto>` allocates evidence
-  surfaces by uncertainty, freshness, authority, and expected information gain.
-- `recursion` — `prefer`, `off`, or `<auto>`. `<auto>` pushes a qualifying narrower child
-  only when isolation is materially more useful than staying at the current Scope.
-  `prefer` favors eligible child isolation but never requires fake recursion; `off` keeps
-  all resolution at the current Scope.
-- `max_total_loops` — integer `1..30` or `<auto>`. `<auto>` uses the hard Run ceiling of
-  `30` while still stopping early on convergence, saturation, or blocking. A lower value
-  becomes the effective ceiling; no argument may raise the hard cap above 30.
-- `progress` — `compact`, `quiet`, or `<auto>`. `<auto>` reports material transitions,
-  blockers, handoff, and completion without narrating hidden reasoning. `compact` may also
-  identify counted Loops; `quiet` suppresses routine stage updates.
-- `output` — `inline`, `persist`, `both`, or `<auto>`. `<auto>` follows established
-  artifact policy and uses inline output when no appropriate writable destination exists.
+| Argument | Explicit values | Runtime owner |
+| --- | --- | --- |
+| `target` | target reference | Runtime / governing context |
+| `goal` | observable end state | Core Lifecycle |
+| `terminal` | `research`, `plan`, `goal` | Run Boundary and Handoff |
+| `scope` | starting boundary | Scope Control |
+| `scope_policy` | `adaptive`, `narrow-only`, `fixed` | Scope Control |
+| `research` | `internal`, `external`, `mixed` | Research |
+| `recursion` | `prefer`, `off` | Recursive Resolution |
+| `max_total_loops` | integer `1..30` | Run and Loop |
+| `progress` | `compact`, `quiet` | Reporting and Output |
+| `output` | `inline`, `persist`, `both` | Reporting and Output |
 
-Explicit values win over `<auto>` when they are compatible with higher authority and the
-RPI invariants. `<auto>` means resolve from current evidence and context, not apply a
-fixed profile. Arguments may narrow behavior, but they never authorize side effects,
-relax prerequisite ordering, weaken validation, cross explicit Scope boundaries, reset a
-Run, or raise `max_total_loops` above 30.
+Arguments choose behavior; their owning sections define it. Arguments never authorize
+side effects, relax prerequisite ordering or validation, cross explicit Scope boundaries,
+reset a Run, or raise the hard Loop ceiling above 30.
 
-## Activation
+# Runtime
 
-Activate when either condition holds.
+## Core Lifecycle
 
-### Explicit method intent
+This diagram owns only **phase progression and phase-local feedback**. Scope changes,
+recursive descent, and Run termination are separate control concerns below.
 
-Use this Skill when the user asks to perform the active task with:
+```mermaid
+flowchart LR
+    G["Goal + Active Scope"] --> R["Research"]
+    R -->|planning needed| P["Plan"]
+    R -->|research terminal| V["Review"]
+    P -->|work needed| I["Goal-directed Work"]
+    P -->|plan terminal| V
+    I --> V
+    V -->|evidence gap| R
+    V -->|plan gap| P
+    V -->|bounded work gap| I
+```
 
-- `RPI` or `RPI(R)`;
-- `loop`, `loops`, `loop it`, or `루프`;
-- `recursive loop` or `재귀 루프`;
-- `improvement loop`, `deep loop`, `개선 루프`, or `심층 루프`;
-- equivalent repeated research/planning/work/review or recursive improvement language.
+Review classifies the current finding. Core lifecycle findings stay here; cross-cutting
+findings are delegated to their owning control concern.
 
-A standalone method word is sufficient when the active task is clear from context.
-Do not activate when *loop* is merely the topic, identifier, or code concept being
-discussed, or when the user only asks to repeat content without iterative work.
-
-### Complexity intent
-
-Use this Skill without an explicit method word when a single pass would create material
-reliability risk because the task needs one or more of:
-
-- evidence gathering or reconciliation before consequential decisions;
-- an explicit Plan before consequential Work;
-- convergence across multiple acceptance conditions or coupled workstreams;
-- repeated verification or likely replanning;
-- narrower subproblem resolution;
-- protection against costly rework from hidden assumptions or uncertainty.
-
-Do not activate merely because a task is long.
-
-## Run and Loop Contract
+## Run and Loop
 
 One **Run** is one bounded RPI execution that ends in completion, handoff, or blocking.
 The hard ceiling is always:
@@ -125,12 +106,11 @@ The hard ceiling is always:
 max_total_loops: 30
 ```
 
-Resolve the argument into an effective Loop ceiling at Run start. `<auto>` resolves to 30;
-an explicit lower value wins. A request above 30 does not raise the hard ceiling. Unless
-the user explicitly requires an exact number of substantive Loops, treat a requested
-count as a ceiling rather than a target. Even an exact request never permits fake,
-mechanical, or no-op Loops; if no substantive next Loop exists, stop and report the
-shortfall.
+Resolve `max_total_loops` at Run start. `<auto>` resolves to 30; an explicit lower value
+wins. A request above 30 does not raise the hard ceiling. Unless the user explicitly
+requires an exact number of substantive Loops, treat a requested count as a ceiling rather
+than a target. Even an exact request never permits fake, mechanical, or no-op Loops; if no
+substantive next Loop exists, stop and report the shortfall.
 
 Maintain one cumulative `loops_used` counter as Run working state. Increment it exactly
 once when a substantive Review closes. Scope push/pop never changes or resets it.
@@ -160,9 +140,9 @@ simulate progress.
 
 Never hide a reset by starting a nested or renamed Run inside the current Run.
 
-## Scope Contract
+## Scope Control
 
-Maintain one observable **Active Scope** for each current parent or child scope:
+Maintain one observable **Active Scope** for the current scope:
 
 ```text
 Active Scope
@@ -179,6 +159,24 @@ it. Explicit user-defined boundaries take precedence over inferred convenience.
 
 Scope controls what Work belongs to the current problem; it does not grant operational
 permission or weaken authority, safety, persistence, or validation requirements.
+
+```mermaid
+flowchart TD
+    S["Active Scope"] --> V["Review"]
+    V -->|keep| S
+    V -->|narrow permitted| N["Narrow Scope"]
+    N --> P["Revalidate Plan coverage"]
+    P --> S
+    V -->|expansion needed| E["Expansion proposal only"]
+    E --> Q{"Policy + explicit boundary permit?"}
+    Q -->|no| B["Expose blocked boundary"]
+    Q -->|yes| R["Research validates need + boundary"]
+    R --> U["Plan incorporates smallest justified delta"]
+    U --> A{"Authority + safety pass?"}
+    A -->|no| B
+    A -->|yes| X["Expand Active Scope"]
+    X --> S
+```
 
 Apply these rules:
 
@@ -201,53 +199,19 @@ Apply these rules:
 1. **Explicit boundaries are not silently mutable.** Never expand across a user-defined
    `Out of scope`, replace a user-defined Goal, or relax a required acceptance condition
    without new authority from the source that set that boundary.
-1. **Scope change never resets controls.** Narrowing or expansion does not reset
-   `loops_used`, mint a new Run, broaden authority, or relax acceptance/validation gates.
-1. **Recursive Scope only narrows.** A child Active Scope must be a strict subset of its
-   parent Scope and may not rewrite the parent's Goal, `Out of scope`, or acceptance
-   conditions.
+1. **Scope changes preserve controls.** They do not mint a new Run, broaden authority, or
+   relax acceptance or validation requirements; Run accounting remains owned by
+   `Run and Loop`.
+
+Recursive child boundaries are owned by `Recursive Resolution`.
 
 If trustworthy continuation requires an unauthorized or policy-forbidden expansion, stop
-affected Work and surface the required Scope/authority change instead of drifting outward.
+affected Work and surface the required Scope or authority change instead of drifting
+outward.
 
-## Model
+# Execution
 
-```mermaid
-flowchart TD
-    G["Goal + Active Scope + current state"] --> R["Research artifact"]
-    R -->|planning needed| P["Plan artifact"]
-    R -->|research terminal| V["Review"]
-    P -->|work needed| A{Authority valid?}
-    P -->|plan terminal| V
-    A -->|no| X["Blocked / approval required"]
-    A -->|yes| I["Goal-directed Work"]
-    I --> V
-
-    V -->|sufficient| F["Complete"]
-    V -->|evidence gap| R
-    V -->|plan gap| P
-    V -->|bounded work gap| A
-    V -->|scope narrowing allowed| N["Narrow Active Scope"]
-    N --> P
-    V -->|scope expansion allowed + needed| E["Propose expansion"]
-    E --> R
-    V -->|narrower blocker + recursion allowed| S["Push child scope"]
-    V -->|saturation| L["Limit or Block"]
-    V -->|Loop ceiling reached| H["Handoff"]
-
-    S --> C["Apply the same RPI contract"]
-    C --> T["Child Review"]
-    T --> U["Return evidence + decision + parent impact"]
-    U --> B["Revalidate affected parent artifact"]
-    B -->|Research stale| R
-    B -->|Plan stale| P
-    B -->|Plan valid| A
-```
-
-Recursion is serial and single-agent. Do not invent subagents, parallel reviewers, or
-hidden workers when the runtime does not provide them.
-
-## Artifact Contract
+## Artifacts
 
 Consequential downstream stages require observable prerequisite artifacts. Private
 reasoning, unreported intent, or remembered chain-of-thought is not an artifact.
@@ -305,17 +269,17 @@ Apply these rules:
 
 Do not regenerate valid artifacts for ceremony.
 
-## RPI Stages
+## Stages
 
 ### Research
 
 Resolve `research` for the current question. `<auto>` chooses internal, external, or mixed
 evidence according to uncertainty, freshness, source authority, and expected information
-gain. An explicit preference constrains the primary evidence surface only when compatible
-with freshness, verification, and higher-authority requirements.
+gain. An explicit value constrains the primary evidence surface only when compatible with
+freshness, verification, and higher-authority requirements.
 
 Gather only the evidence needed for the current decision, Scope, Plan, or Review.
-Research is not synonymous with web search: prefer repository/workspace evidence for
+Research is not synonymous with web search: prefer repository or workspace evidence for
 local truth and external evidence for freshness, standards, vendor behavior,
 alternatives, or independent challenge.
 
@@ -326,9 +290,8 @@ instructions apply only when an authorized source actually governs the active sc
 
 Derive the smallest Plan that can move the current state toward the Goal inside the
 Active Scope. Include the intended state change, scope, approach, ordered Work,
-acceptance/validation, and material assumptions that would force replanning if they
-changed. When Review proposed a Scope expansion, incorporate only the boundary validated
-by Research; do not plan Work against an unvalidated wider Scope.
+acceptance or validation, and material assumptions that would force replanning if they
+changed. When Scope Control validates an expansion, incorporate only that boundary.
 
 A Plan is methodological authorization, not operational permission.
 
@@ -340,41 +303,39 @@ actions when equivalent; before destructive, irreversible, or externally consequ
 actions, verify the exact target and applicable approval gate.
 
 If Work requires a material new assumption, approach, or Scope outside the accepted Plan,
-stop affected Work and return to Review. Use the Scope Contract for boundary changes;
-return to Research first when the new decision lacks evidence.
+stop affected Work and return to Review. Review classifies the gap and delegates any
+boundary change to Scope Control.
 
 ### Review
 
 Review is both verifier and controller. Compare the current result with the Goal, Active
 Scope, applicable prerequisite artifacts, acceptance conditions, and relevant validation.
 Record only material deviations, gaps, regressions, uncertainty, Scope deltas or proposed
-expansions, and the next transition.
+expansions, and the next owner.
 
-Choose the next transition from evidence and resolved arguments:
+Review **classifies and dispatches**; the owning concern defines how the transition is
+executed:
 
-| Review result | Next action |
+| Review finding | Owner |
 | --- | --- |
-| sufficient for `terminal` | Complete |
-| evidence gap | Research → revalidate/update dependent Plan before affected Work |
-| plan gap | Update Plan; Research first if the missing decision lacks support |
-| bounded work gap | Fix within the valid Scope, Plan, and authority; validate; Review again |
-| useful scope narrowing | Narrow Scope only when `scope_policy` permits; revalidate Plan |
-| material scope expansion required | Under `adaptive`, propose smallest justified expansion → Research → Plan → authority → expand Scope → Work; otherwise expose the blocked boundary |
-| narrower material blocker | Push a recursive child only when `recursion` permits |
-| saturation | Change source/method/perspective or permitted Scope once useful; otherwise Block |
-| effective Loop ceiling reached | Finish Review and hand off |
-| blocked | Stop and expose the blocking evidence, capability, Scope, authority, approval, or dependency |
+| evidence, plan, or bounded Work gap | Core Lifecycle |
+| Scope boundary change | Scope Control |
+| saturation or no credible gain | Goal-State Convergence |
+| narrower material blocker | Recursive Resolution |
+| accepted terminal, blocking boundary, or Loop ceiling | Run Boundary and Handoff |
 
 Validate consequential claims as close as practical to the stage that produced them.
 Prefer the cheapest evidence that can answer the question: direct inspection →
-deterministic checks → integration/projection evidence → semantic/model judgment → live
-runtime evidence. A lower tier does not prove a higher-tier claim, and unperformed checks
-must not be reported as verification.
+deterministic checks → integration or projection evidence → semantic or model judgment →
+live runtime evidence. A lower tier does not prove a higher-tier claim, and unperformed
+checks must not be reported as verification.
+
+# Adaptive Control
 
 ## Goal-State Convergence
 
 At material Reviews, focus on the smallest useful set of Goal, Active Scope, current
-state, remaining material gaps, supporting/counterevidence, and unresolved uncertainty.
+state, remaining material gaps, supporting or counterevidence, and unresolved uncertainty.
 
 Continue only when another Loop has a credible path to material information gain,
 uncertainty reduction, verified quality gain, or closure of an acceptance condition.
@@ -382,53 +343,84 @@ Repeated activity without such gain is saturation, not progress.
 
 When saturated, change the evidence source, method, or perspective, or narrow the Active
 Scope when permitted and useful. If credible continuation instead requires broader Scope,
-use the Scope Contract rather than silently widening it. If a material gap remains and no
-valid path exists, stop as BLOCKED. Do not invent findings, depth, or churn to consume the
-Loop ceiling.
+delegate to Scope Control. If a material gap remains and no valid path exists, classify it
+as blocked for Run Boundary and Handoff. Do not invent findings, depth, or churn to
+consume the Loop ceiling.
 
-## Recursive Subproblem Resolution
+## Recursive Resolution
 
-If `recursion: off`, do not push child scopes. Continue at the current Scope, replan, hand
-off, or block as evidence requires.
+If `recursion: off`, do not push child scopes. Continue at the current Scope or return the
+finding to the owning concern.
 
 Otherwise, push a child scope only from Review, and only when a narrower problem can
 materially reduce parent uncertainty or unblock parent Work more efficiently than staying
 at the parent scope. If a blocker appears during Research, Plan, or Implementation, stop
 the affected stage, close the current Loop with Review, then decide whether to recurse.
 
+```mermaid
+flowchart TD
+    P["Parent Review"] --> Q{"Recursion permitted + qualifying narrower blocker?"}
+    Q -->|no| C["Continue parent control"]
+    Q -->|yes| S["Push strict-subset child Scope"]
+    S --> R["Child RPI"]
+    R --> V["Child Review"]
+    V -->|resolved| U["Return evidence + parent impact"]
+    V -->|narrower blocker + Loops remain| D["Push stricter child from Review"]
+    D --> R
+    U --> B["Revalidate parent Research + Scope + Plan"]
+    B --> C
+```
+
 A child must be:
 
 - a strict subset of the parent Active Scope;
 - material to the parent Goal;
 - independently resolvable enough to justify scope isolation;
-- worth its context/coordination cost;
-- executable within remaining total Loops and inherited authority.
+- worth its context or coordination cost;
+- executable within inherited authority and the current Run budget.
 
 On entry, preserve the parent state and inherit its Goal, `Out of scope`, acceptance
 conditions, instruction, authority, approval, persistence, and safety boundaries. A child
 may narrow these boundaries, never expand or replace them. Apply the same Scope, artifact,
 and RPI contracts inside the child.
 
-A child may push another child only from its own Review. Therefore every recursive descent
-is preceded by a counted substantive Loop, and the run-wide Loop ceiling keeps both
-iteration and recursion finite without a separate maximum depth.
+Every recursive descent is Review-gated and uses the existing `Run and Loop` accounting;
+it never creates or resets a Run. A child may push another child only from its own Review.
 
 If resolving a child would require Work outside the parent Active Scope, do not expand the
-child locally. Return the expansion need and supporting evidence to the parent Review,
-which may apply the Scope Contract if `scope_policy` permits expansion.
+child locally. Return the expansion need and supporting evidence to the parent Review for
+Scope Control.
 
-Return only what the parent needs: new evidence, the decision/resolved finding, impact on
-parent Research, Scope, or Plan, and unresolved limitations. Then pop the child scope and
-revalidate affected parent artifacts. A child result never automatically overrides
+Return only what the parent needs: new evidence, the decision or resolved finding, impact
+on parent Research, Scope, or Plan, and unresolved limitations. Then pop the child scope
+and revalidate affected parent artifacts. A child result never automatically overrides
 stronger parent evidence, Scope, or authority.
 
 Use perspective switching—not pretend multi-agent debate—when another viewpoint is useful
 but no narrower subproblem exists.
 
-## Handoff
+## Run Boundary and Handoff
 
-Reaching the effective Loop ceiling with material work remaining is a **continuation
-boundary**, not proof that the Goal failed.
+Run termination is a separate control concern from phase progression. Evaluate it after a
+substantive Review closes and `loops_used` is incremented.
+
+```mermaid
+flowchart TD
+    V["Review closes"] --> L["loops_used += 1"]
+    L --> A{"Terminal result accepted?"}
+    A -->|yes| C["COMPLETE"]
+    A -->|no| B{"Trustworthy continuation blocked?"}
+    B -->|yes| X["BLOCKED"]
+    B -->|no| E{"loops_used >= effective ceiling?"}
+    E -->|no| N["Next Loop at earliest stale prerequisite"]
+    E -->|yes| H["Serialize continuation state"]
+    H --> O["HANDOFF"]
+```
+
+Resolve `terminal` here. `<auto>` infers the requested terminal stage; `research` accepts
+Research + Review, `plan` accepts Research + Plan + Review, and `goal` requires the Goal
+itself to be accepted. Reaching the effective Loop ceiling with material work remaining is
+a **continuation boundary**, not proof that the Goal failed.
 
 After the final allowed Review:
 
@@ -437,7 +429,7 @@ After the final allowed Review:
    format;
 1. preserve `loops_used`, the effective ceiling, the active scope path, the current Active
    Scope definition, pending Scope proposals, resolved argument values, and references to
-   valid Research, accepted Plan, completed Work/validation, current Review state,
+   valid Research, accepted Plan, completed Work or validation, current Review state,
    remaining material gaps, unresolved child results or parent impacts, and recommended
    next transition;
 1. preserve the exhaustion reason plus authority, approval, environment, validation, and
@@ -454,20 +446,9 @@ limit explicitly established for that continuation Run. Handoff does not itself 
 or auto-start another Run, and it must never become a hidden reset inside the exhausted
 Run.
 
-## Progress and Output
-
-Honor `progress` without exposing private chain-of-thought. Report observable evidence,
-decisions, Work, validation, Scope changes, Loop counts, handoff, and outcomes only.
-
-Honor `output` only where the destination is appropriate and writable. `persist` falls
-back to inline when persistence is unavailable or unauthorized; state that limitation.
-`both` does not duplicate unchanged working artifacts unnecessarily.
-
-## Completion
-
 Finish with one observable Run state:
 
-- **COMPLETE** — the requested terminal Goal/stage is accepted by Review;
+- **COMPLETE** — the requested terminal Goal or stage is accepted by Review;
 - **HANDOFF** — the effective Loop ceiling was reached with material continuation
   remaining;
 - **BLOCKED** — material evidence, capability, Scope, authority, approval, dependency, or
@@ -476,3 +457,15 @@ Finish with one observable Run state:
 Never report COMPLETE while a known material gap still requires broader Research,
 replanning, Scope reconciliation, affected Work reconciliation, or unresolved recursive
 integration for the accepted scope.
+
+# Reporting and Output
+
+Resolve `progress` here. `<auto>` reports material transitions, blockers, handoff, and
+completion without narrating hidden reasoning; `compact` may also identify counted Loops;
+`quiet` suppresses routine stage updates. Report observable evidence, decisions, Work,
+validation, Scope changes, Loop counts, handoff, and outcomes only.
+
+Resolve `output` here. `<auto>` follows established artifact policy and uses inline output
+when no appropriate writable destination exists. `persist` falls back to inline when
+persistence is unavailable or unauthorized; state that limitation. `both` does not
+duplicate unchanged working artifacts unnecessarily.
