@@ -136,7 +136,10 @@ def test_ollama_runtime_gets_skill_and_task_but_not_expected_assertions(monkeypa
     assert result.get("error") is None
     assert body["model"] == "qwen2.5:test"
     assert body["messages"][1]["content"] == task
+    assert body["format"] == ADAPTER.RUNTIME_ENVELOPE_SCHEMA
+    assert body["format"]["additionalProperties"] is False
     assert ADAPTER.SKILL_PATH.read_text(encoding="utf-8") in system
+    assert json.dumps(ADAPTER.RUNTIME_ENVELOPE_SCHEMA, ensure_ascii=False) in system
     assert canonical["assertions"][0] not in system
 
 
