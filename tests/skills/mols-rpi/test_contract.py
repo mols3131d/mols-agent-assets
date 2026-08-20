@@ -22,12 +22,18 @@ def compact(text: str) -> str:
     return " ".join(text.split())
 
 
+def section(body: str, start: str, end: str | None = None) -> str:
+    begin = body.index(start)
+    finish = body.index(end, begin + len(start)) if end else len(body)
+    return body[begin:finish]
+
+
 def test_description_owns_discovery_without_body_trigger_duplication() -> None:
     frontmatter, body = load()
     description = frontmatter["description"]
     assert isinstance(description, str)
 
-    positive = [
+    required = [
         "requests RPI",
         "RPI(R)",
         "loop/loops/loop it/루프",
@@ -35,26 +41,20 @@ def test_description_owns_discovery_without_body_trigger_duplication() -> None:
         "improvement loop/개선 루프",
         "deep loop/심층 루프",
         "equivalent repeated research/planning/work/review or recursive improvement",
-    ]
-    implicit = [
         "evidence gathering or reconciliation before consequential decisions",
         "an explicit Plan before consequential Work",
         "multiple acceptance conditions or coupled workstreams",
         "repeated verification or likely replanning",
         "narrower subproblem resolution",
         "costly rework from hidden assumptions or uncertainty",
-    ]
-    negative = [
         "loop is merely the topic, identifier, or code concept",
         "only asks to repeat content without iterative work",
         "merely because a task is long",
         "trivial work where explicit prerequisite artifacts add no meaningful control",
     ]
-
-    for phrase in positive + implicit + negative:
+    for phrase in required:
         assert phrase in description
 
-    assert "# Interface" not in body
     assert "## Activation" not in body
     assert "### Explicit method intent" not in body
     assert "### Complexity intent" not in body
@@ -69,23 +69,31 @@ def test_rpi_is_orchestration_not_domain_replacement() -> None:
     assert "does not replace more specific task authority" in body
 
 
-def test_arguments_are_auto_first_and_invariant_bounded() -> None:
+def test_arguments_own_choices_not_runtime_semantics() -> None:
     _, body = load()
-    body = compact(body)
+    arguments = compact(section(body, "# Arguments", "# Runtime"))
+
     required = [
-        "# Arguments",
         "target: <auto> goal: <auto> terminal: <auto> scope: <auto> scope_policy: <auto>",
         "research: <auto> recursion: <auto> max_total_loops: <auto> progress: <auto> output: <auto>",
-        "Explicit values win over `<auto>`",
-        "`scope_policy` — `adaptive`, `narrow-only`, `fixed`, or `<auto>`",
-        "`research` — `internal`, `external`, `mixed`, or `<auto>`",
-        "`recursion` — `prefer`, `off`, or `<auto>`",
-        "`max_total_loops` — integer `1..30` or `<auto>`",
-        "no argument may raise the hard cap above 30",
-        "Arguments may narrow behavior, but they never authorize side effects",
+        "| `scope_policy` | `adaptive`, `narrow-only`, `fixed` | Scope Control |",
+        "| `research` | `internal`, `external`, `mixed` | Research |",
+        "| `recursion` | `prefer`, `off` | Recursive Resolution |",
+        "| `max_total_loops` | integer `1..30` | Run and Loop |",
+        "Arguments choose behavior; their owning sections define it.",
+        "Arguments never authorize side effects",
     ]
     for phrase in required:
-        assert phrase in body
+        assert phrase in arguments
+
+    forbidden = [
+        "permits bounded narrowing",
+        "pushes a qualifying narrower child",
+        "reports material transitions",
+        "uses the hard Run ceiling of `30` while still stopping early",
+    ]
+    for phrase in forbidden:
+        assert phrase not in arguments
 
 
 def test_heading_hierarchy_is_grouped_by_responsibility() -> None:
@@ -100,43 +108,37 @@ def test_heading_hierarchy_is_grouped_by_responsibility() -> None:
     positions = [body.index(heading) for heading in headings]
     assert positions == sorted(positions)
 
-    arguments = body[positions[0] : positions[1]]
-    runtime = body[positions[1] : positions[2]]
-    execution = body[positions[2] : positions[3]]
-    control = body[positions[3] : positions[4]]
+    runtime = section(body, "# Runtime", "# Execution")
+    execution = section(body, "# Execution", "# Adaptive Control")
+    control = section(body, "# Adaptive Control", "# Reporting and Output")
 
-    assert "target: <auto>" in arguments
-    assert "## Activation" not in arguments
-    assert "## Core Lifecycle" in runtime
-    assert "## Run and Loop" in runtime
-    assert "## Scope Control" in runtime
-    assert "## Artifacts" in execution
-    assert "## Stages" in execution
-    assert "### Research" in execution
-    assert "### Plan" in execution
-    assert "### Implementation" in execution
-    assert "### Review" in execution
-    assert "## Goal-State Convergence" in control
-    assert "## Recursive Resolution" in control
-    assert "## Run Boundary and Handoff" in control
+    for heading in ("## Core Lifecycle", "## Run and Loop", "## Scope Control"):
+        assert heading in runtime
+    for heading in ("## Artifacts", "## Stages", "### Research", "### Plan", "### Implementation", "### Review"):
+        assert heading in execution
+    for heading in ("## Goal-State Convergence", "## Recursive Resolution", "## Run Boundary and Handoff"):
+        assert heading in control
 
 
 def test_run_has_one_global_hard_loop_ceiling() -> None:
     _, body = load()
-    body = compact(body)
-    assert "max_total_loops: 30" in body
-    assert "loops_used" in body
-    assert "Parent and recursive child Loops share `loops_used`" in body
-    assert "no separate per-scope Loop limit" in body
-    assert "no fixed recursion-depth limit" in body
-    assert "Never hide a reset" in body
-
-
-def test_scope_is_explicit_dynamic_and_bounded() -> None:
-    _, body = load()
-    body = compact(body)
+    run = compact(section(body, "## Run and Loop", "## Scope Control"))
     required = [
-        "## Scope Control",
+        "max_total_loops: 30",
+        "loops_used",
+        "Parent and recursive child Loops share `loops_used`",
+        "no separate per-scope Loop limit",
+        "no fixed recursion-depth limit",
+        "Never hide a reset",
+    ]
+    for phrase in required:
+        assert phrase in run
+
+
+def test_scope_control_owns_current_scope_changes_only() -> None:
+    _, body = load()
+    scope = compact(section(body, "## Scope Control", "# Execution"))
+    required = [
         "Active Scope - Goal - In scope - Out of scope - Acceptance conditions",
         "At Run start, establish a provisional Active Scope",
         "infer the smallest scope sufficient to pursue the Goal",
@@ -149,13 +151,38 @@ def test_scope_is_explicit_dynamic_and_bounded() -> None:
         "smallest justified boundary delta",
         "Explicit boundaries are not silently mutable",
         "new authority from the source that set that boundary",
-        "Scope change never resets controls",
-        "Recursive Scope only narrows",
-        "strict subset of its parent Scope",
-        "do not expand the child locally",
+        "Scope changes preserve controls",
+        "Recursive child boundaries are owned by `Recursive Resolution`",
     ]
     for phrase in required:
-        assert phrase in body
+        assert phrase in scope
+
+    assert "strict subset of its parent Scope" not in scope
+    assert "do not expand the child locally" not in scope
+
+
+def test_review_classifies_and_dispatches_without_reimplementing_controls() -> None:
+    _, body = load()
+    review = compact(section(body, "### Review", "# Adaptive Control"))
+    required = [
+        "Review **classifies and dispatches**",
+        "| evidence, plan, or bounded Work gap | Core Lifecycle |",
+        "| Scope boundary change | Scope Control |",
+        "| saturation or no credible gain | Goal-State Convergence |",
+        "| narrower material blocker | Recursive Resolution |",
+        "| accepted terminal, blocking boundary, or Loop ceiling | Run Boundary and Handoff |",
+    ]
+    for phrase in required:
+        assert phrase in review
+
+    forbidden = [
+        "propose smallest justified expansion → Research → Plan",
+        "Push a recursive child only when",
+        "Finish Review and hand off",
+        "Change source/method/perspective",
+    ]
+    for phrase in forbidden:
+        assert phrase not in review
 
 
 def test_diagrams_are_split_by_control_concern() -> None:
@@ -163,22 +190,13 @@ def test_diagrams_are_split_by_control_concern() -> None:
     assert body.count("```mermaid") == 4
     assert "## Model" not in body
 
-    headings = [
-        "## Core Lifecycle",
-        "## Scope Control",
-        "## Recursive Resolution",
-        "## Run Boundary and Handoff",
-    ]
-    positions = [body.index(heading) for heading in headings]
-    assert positions == sorted(positions)
+    core = section(body, "## Core Lifecycle", "## Run and Loop")
+    scope = section(body, "## Scope Control", "# Execution")
+    recursion = section(body, "## Recursive Resolution", "## Run Boundary and Handoff")
+    boundary = section(body, "## Run Boundary and Handoff", "# Reporting and Output")
 
-    core = body[positions[0] : body.index("## Run and Loop")]
-    scope = body[positions[1] : body.index("# Execution")]
-    recursion = body[positions[2] : positions[3]]
-    boundary = body[positions[3] : body.index("# Reporting and Output")]
-
-    for section in (core, scope, recursion, boundary):
-        assert section.count("```mermaid") == 1
+    for concern in (core, scope, recursion, boundary):
+        assert concern.count("```mermaid") == 1
 
     assert "Expansion proposal" not in core
     assert "Child RPI" not in core
@@ -191,13 +209,22 @@ def test_diagrams_are_split_by_control_concern() -> None:
     assert "Expand Active Scope" not in boundary
 
 
-def test_recursion_is_review_gated_and_authority_cannot_expand() -> None:
+def test_recursion_owns_child_scope_and_reuses_run_accounting() -> None:
     _, body = load()
-    body = compact(body)
-    assert "push a child scope only from Review" in body
-    assert "every recursive descent" in body
-    assert "preceded by a counted substantive Loop" in body
-    assert "A child may narrow these boundaries, never expand or replace them." in body
+    recursion = compact(section(body, "## Recursive Resolution", "## Run Boundary and Handoff"))
+    required = [
+        "push a child scope only from Review",
+        "strict subset of the parent Active Scope",
+        "A child may narrow these boundaries, never expand or replace them.",
+        "Every recursive descent is Review-gated and uses the existing `Run and Loop` accounting",
+        "it never creates or resets a Run",
+        "do not expand the child locally",
+    ]
+    for phrase in required:
+        assert phrase in recursion
+
+    assert "There is no separate per-scope Loop limit" not in recursion
+    assert "run-wide Loop ceiling keeps" not in recursion
 
 
 def test_artifact_order_and_permission_boundary_are_explicit() -> None:
@@ -212,7 +239,7 @@ def test_artifact_order_and_permission_boundary_are_explicit() -> None:
 
 def test_loop_exhaustion_is_a_handoff_boundary() -> None:
     _, body = load()
-    body = compact(body)
+    boundary = compact(section(body, "## Run Boundary and Handoff", "# Reporting and Output"))
     required = [
         "continuation boundary",
         "start no new Loop",
@@ -225,4 +252,4 @@ def test_loop_exhaustion_is_a_handoff_boundary() -> None:
         "**HANDOFF**",
     ]
     for phrase in required:
-        assert phrase in body
+        assert phrase in boundary
