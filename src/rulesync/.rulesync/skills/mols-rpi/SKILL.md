@@ -39,8 +39,9 @@ Plan + Review. Perform Implementation only when the Goal requires planned execut
 
 # Arguments
 
-All arguments are optional. `<auto>` delegates to the owning runtime concern. An explicit
-value overrides `<auto>` only when compatible with higher authority and RPI invariants.
+All arguments are optional. `<auto>` delegates resolution to the owning runtime concern.
+An explicit value overrides `<auto>` only when compatible with higher authority and RPI
+invariants.
 
 ```yaml
 target: <auto>
@@ -98,7 +99,7 @@ findings go to their owner.
 ## Run and Loop
 
 One **Run** is one bounded RPI execution ending in completion, handoff, or blocking. The
-hard ceiling is:
+hard ceiling is always:
 
 ```yaml
 max_total_loops: 30
@@ -297,8 +298,8 @@ equivalent. Before destructive, irreversible, or externally consequential action
 the exact target and applicable approval gate.
 
 If Work requires a material new assumption, approach, or Scope outside the accepted Plan,
-stop affected Work and return to Review. Review classifies the gap and delegates boundary
-changes to Scope Control.
+stop affected Work and return to Review. Review classifies the gap and delegates any
+boundary change to Scope Control.
 
 ### Review
 
@@ -328,18 +329,18 @@ must not be reported as verification.
 
 ## Goal-State Convergence
 
-At material Reviews, focus on the useful minimum: Goal, Active Scope, current state,
-remaining material gaps, supporting or counterevidence, and unresolved uncertainty.
+At material Reviews, focus on the smallest useful set of Goal, Active Scope, current
+state, remaining material gaps, supporting or counterevidence, and unresolved uncertainty.
 
 Continue only when another Loop has a credible path to material information gain,
 uncertainty reduction, verified quality gain, or closure of an acceptance condition.
 Repeated activity without such gain is saturation, not progress.
 
 When saturated, change the evidence source, method, or perspective, or narrow Active Scope
-when permitted and useful. If credible continuation requires broader Scope, delegate to
-Scope Control. If a material gap remains and no valid path exists, classify it as blocked
-for Run Boundary and Handoff. Do not invent findings, depth, or churn to consume the Loop
-ceiling.
+when permitted and useful. If credible continuation instead requires broader Scope,
+delegate to Scope Control. If a material gap remains and no valid path exists, classify it
+as blocked for Run Boundary and Handoff. Do not invent findings, depth, or churn to consume
+the Loop ceiling.
 
 ## Recursive Resolution
 
