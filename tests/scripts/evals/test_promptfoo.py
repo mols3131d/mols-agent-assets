@@ -31,6 +31,21 @@ def _canonical_cases() -> dict[str, dict]:
     return {case["id"]: case for case in payload["cases"]}
 
 
+def _fake_response(payload: dict):
+    class FakeResponse:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, traceback):
+            return False
+
+        def read(self) -> bytes:
+            response = {"message": {"content": json.dumps(payload, ensure_ascii=False)}}
+            return json.dumps(response).encode("utf-8")
+
+    return FakeResponse()
+
+
 def test_generator_reuses_canonical_fixture_without_semantic_duplication() -> None:
     canonical = _canonical_cases()
     generated = ADAPTER.generate_tests({"semantic": False})
@@ -99,48 +114,93 @@ def test_fixture_provider_is_plumbing_only() -> None:
     assert "not runtime behavior evidence" in payload["response"]
 
 
-def test_ollama_runtime_gets_skill_and_task_but_not_expected_assertions(monkeypatch) -> None:
-    captured: dict[str, object] = {}
-
-    class FakeResponse:
-        def __enter__(self):
-            return self
-
-        def __exit__(self, exc_type, exc, traceback):
-            return False
-
-        def read(self) -> bytes:
-            payload = {
-                "message": {
-                    "content": json.dumps(
-                        {"activation": True, "response": "RPI response"}, ensure_ascii=False
-                    )
-                }
-            }
-            return json.dumps(payload).encode("utf-8")
+def test_activation_routes_with_metadata_then_executes_full_skill(monkeypatch) -> None:
+    captured: list[dict] = []
+    responses = iter(
+        [
+            {"activation": True, "response": "selected"},
+            {"response": "Research before Plan; Review controls the next transition."},
+        ]
+    )
 
     def fake_urlopen(api_request, timeout):
-        captured["timeout"] = timeout
-        captured["body"] = json.loads(api_request.data.decode("utf-8"))
-        return FakeResponse()
+        captured.append(json.loads(api_request.data.decode("utf-8")))
+        return _fake_response(next(responses))
 
     monkeypatch.setattr(ADAPTER.request, "urlopen", fake_urlopen)
     monkeypatch.setenv("PROMPTFOO_RUNTIME_MODEL", "qwen2.5:test")
 
     task = "이 작업 RPI로 진행해줘."
-    result = ADAPTER.call_api(task, {"config": {"mode": "ollama"}}, {"vars": {}})
-    body = captured["body"]
+    result = ADAPTER.call_api(
+        task,
+        {"config": {"mode": "ollama"}},
+        {"vars": {"mode": "activation"}},
+    )
+    payload = json.loads(result["output"])
+    skill = ADAPTER.SKILL_PATH.read_text(encoding="utf-8")
     canonical = _canonical_cases()["explicit-rpi-activates"]
-    system = body["messages"][0]["content"]
 
-    assert result.get("error") is None
-    assert body["model"] == "qwen2.5:test"
-    assert body["messages"][1]["content"] == task
-    assert body["format"] == ADAPTER.RUNTIME_ENVELOPE_SCHEMA
-    assert body["format"]["additionalProperties"] is False
-    assert ADAPTER.SKILL_PATH.read_text(encoding="utf-8") in system
-    assert json.dumps(ADAPTER.RUNTIME_ENVELOPE_SCHEMA, ensure_ascii=False) in system
-    assert canonical["assertions"][0] not in system
+    assert len(captured) == 2
+    assert captured[0]["model"] == "qwen2.5:test"
+    assert captured[0]["messages"][1]["content"] == task
+    assert captured[0]["format"] == ADAPTER.RUNTIME_ENVELOPE_SCHEMA
+    assert ADAPTER._skill_frontmatter(skill) in captured[0]["messages"][0]["content"]
+    assert "# Mols RPI" not in captured[0]["messages"][0]["content"]
+    assert captured[1]["format"] == ADAPTER.BEHAVIOR_RESPONSE_SCHEMA
+    assert skill in captured[1]["messages"][0]["content"]
+    assert canonical["assertions"][0] not in captured[1]["messages"][0]["content"]
+    assert payload["activation"] is True
+    assert "Research before Plan" in payload["response"]
+
+
+def test_negative_activation_never_loads_skill_body(monkeypatch) -> None:
+    captured: list[dict] = []
+
+    def fake_urlopen(api_request, timeout):
+        captured.append(json.loads(api_request.data.decode("utf-8")))
+        return _fake_response(
+            {"activation": False, "response": "for와 while은 반복 조건이 다릅니다."}
+        )
+
+    monkeypatch.setattr(ADAPTER.request, "urlopen", fake_urlopen)
+
+    result = ADAPTER.call_api(
+        "Python for loop와 while loop 차이를 설명해줘.",
+        {"config": {"mode": "ollama"}},
+        {"vars": {"mode": "activation-negative"}},
+    )
+    payload = json.loads(result["output"])
+
+    assert len(captured) == 1
+    assert captured[0]["format"] == ADAPTER.RUNTIME_ENVELOPE_SCHEMA
+    assert "# Mols RPI" not in captured[0]["messages"][0]["content"]
+    assert payload["activation"] is False
+
+
+def test_behavior_mode_skips_routing_and_uses_full_skill(monkeypatch) -> None:
+    captured: list[dict] = []
+
+    def fake_urlopen(api_request, timeout):
+        captured.append(json.loads(api_request.data.decode("utf-8")))
+        return _fake_response(
+            {"response": "Review에서 확장을 제안하고 Research와 Plan을 갱신해야 합니다."}
+        )
+
+    monkeypatch.setattr(ADAPTER.request, "urlopen", fake_urlopen)
+
+    result = ADAPTER.call_api(
+        "작업 중 보니 범위를 넓혀야 해.",
+        {"config": {"mode": "ollama"}},
+        {"vars": {"mode": "scope-control"}},
+    )
+    payload = json.loads(result["output"])
+    skill = ADAPTER.SKILL_PATH.read_text(encoding="utf-8")
+
+    assert len(captured) == 1
+    assert captured[0]["format"] == ADAPTER.BEHAVIOR_RESPONSE_SCHEMA
+    assert skill in captured[0]["messages"][0]["content"]
+    assert payload["activation"] is True
+    assert "Research" in payload["response"]
 
 
 def test_runner_defaults_are_local_and_non_sharing() -> None:
