@@ -1,15 +1,19 @@
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 import sys
 import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
+DOCS = ROOT / "docs"
 SKILLS = ROOT / "src" / "rulesync" / ".rulesync" / "skills"
 CREATOR = SKILLS / "mols-skill-creator"
 TARGETED_TESTS = ROOT / ".github" / "workflows" / "targeted-tests.yml"
+RESERVED_DOC_NAMESPACES = {"development", "document", "references"}
+MARKDOWN_LINK = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
 
 
 def run_package(skill: Path, output: Path) -> Path:
@@ -27,6 +31,42 @@ def run_package(skill: Path, output: Path) -> Path:
     )
     assert result.returncode == 0, result.stderr or result.stdout
     return output / f"{skill.name}.zip"
+
+
+def iter_asset_capsules() -> list[Path]:
+    capsules: list[Path] = []
+    for asset_type in DOCS.iterdir():
+        if not asset_type.is_dir() or asset_type.name in RESERVED_DOC_NAMESPACES:
+            continue
+        capsules.extend(path for path in asset_type.iterdir() if path.is_dir())
+    return sorted(capsules)
+
+
+def test_asset_capsules_keep_relative_links_inside_capsule() -> None:
+    for capsule in iter_asset_capsules():
+        root = capsule.resolve()
+        for document in capsule.rglob("*.md"):
+            for raw_target in MARKDOWN_LINK.findall(
+                document.read_text(encoding="utf-8")
+            ):
+                target = raw_target.split("#", 1)[0].strip()
+                if (
+                    not target
+                    or "://" in target
+                    or target.startswith(("mailto:", "data:"))
+                ):
+                    continue
+                resolved = (document.parent / target).resolve()
+                assert resolved.is_relative_to(root), (
+                    f"{document.relative_to(ROOT)} links outside its capsule: {raw_target}"
+                )
+
+
+def test_skill_doc_capsules_have_corresponding_skill_source() -> None:
+    skill_docs = DOCS / "skills"
+    for capsule in skill_docs.iterdir():
+        if capsule.is_dir():
+            assert (SKILLS / capsule.name / "SKILL.md").is_file(), capsule.name
 
 
 def test_skill_packages_exclude_repository_verification_surfaces() -> None:
@@ -55,6 +95,7 @@ def test_migrated_maintainer_docs_exist_outside_packages() -> None:
     expected = [
         ROOT / "docs/skills/artifact-consistency-inspector/customization.md",
         ROOT / "docs/skills/mols-agent-asset-validator/baseline/DIRECTIVE.md",
+        ROOT / "docs/skills/mols-skill-creator/README.md",
         ROOT / "docs/skills/mols-skill-creator/WORKING.md",
         ROOT / "docs/skills/mols-skill-creator/baseline/DIRECTIVE.md",
     ]
