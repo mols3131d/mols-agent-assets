@@ -34,6 +34,8 @@ Research-only work may stop after Research + Review. Plan-only work requires Res
 and may stop after Plan + Review. Perform Implementation only when the Goal requires
 planned execution.
 
+# Interface
+
 ## Arguments
 
 All arguments are optional.
@@ -116,6 +118,8 @@ reliability risk because the task needs one or more of:
 
 Do not activate merely because a task is long.
 
+# Runtime
+
 ## Core Lifecycle
 
 This diagram owns only **phase progression and phase-local feedback**. Scope changes,
@@ -137,7 +141,7 @@ flowchart LR
 Review is the controller that decides whether the next transition stays in this lifecycle
 or delegates to Scope control, recursive resolution, or the Run boundary.
 
-## Run and Loop Contract
+## Run and Loop
 
 One **Run** is one bounded RPI execution that ends in completion, handoff, or blocking.
 The hard ceiling is always:
@@ -181,7 +185,7 @@ simulate progress.
 
 Never hide a reset by starting a nested or renamed Run inside the current Run.
 
-## Scope Contract
+## Scope Control
 
 Maintain one observable **Active Scope** for each current parent or child scope:
 
@@ -249,7 +253,9 @@ Apply these rules:
 If trustworthy continuation requires an unauthorized or policy-forbidden expansion, stop
 affected Work and surface the required Scope/authority change instead of drifting outward.
 
-## Artifact Contract
+# Execution
+
+## Artifacts
 
 Consequential downstream stages require observable prerequisite artifacts. Private
 reasoning, unreported intent, or remembered chain-of-thought is not an artifact.
@@ -307,7 +313,7 @@ Apply these rules:
 
 Do not regenerate valid artifacts for ceremony.
 
-## RPI Stages
+## Stages
 
 ### Research
 
@@ -342,8 +348,8 @@ actions when equivalent; before destructive, irreversible, or externally consequ
 actions, verify the exact target and applicable approval gate.
 
 If Work requires a material new assumption, approach, or Scope outside the accepted Plan,
-stop affected Work and return to Review. Use the Scope Contract for boundary changes;
-return to Research first when the new decision lacks evidence.
+stop affected Work and return to Review. Use Scope Control for boundary changes; return to
+Research first when the new decision lacks evidence.
 
 ### Review
 
@@ -373,6 +379,8 @@ deterministic checks → integration/projection evidence → semantic/model judg
 runtime evidence. A lower tier does not prove a higher-tier claim, and unperformed checks
 must not be reported as verification.
 
+# Adaptive Control
+
 ## Goal-State Convergence
 
 At material Reviews, focus on the smallest useful set of Goal, Active Scope, current
@@ -384,11 +392,11 @@ Repeated activity without such gain is saturation, not progress.
 
 When saturated, change the evidence source, method, or perspective, or narrow the Active
 Scope when permitted and useful. If credible continuation instead requires broader Scope,
-use the Scope Contract rather than silently widening it. If a material gap remains and no
+use Scope Control rather than silently widening it. If a material gap remains and no
 valid path exists, stop as BLOCKED. Do not invent findings, depth, or churn to consume the
 Loop ceiling.
 
-## Recursive Subproblem Resolution
+## Recursive Resolution
 
 If `recursion: off`, do not push child scopes. Continue at the current Scope, replan, hand
 off, or block as evidence requires.
@@ -431,7 +439,7 @@ iteration and recursion finite without a separate maximum depth.
 
 If resolving a child would require Work outside the parent Active Scope, do not expand the
 child locally. Return the expansion need and supporting evidence to the parent Review,
-which may apply the Scope Contract if `scope_policy` permits expansion.
+which may apply Scope Control if `scope_policy` permits expansion.
 
 Return only what the parent needs: new evidence, the decision/resolved finding, impact on
 parent Research, Scope, or Plan, and unresolved limitations. Then pop the child scope and
@@ -498,7 +506,7 @@ Never report COMPLETE while a known material gap still requires broader Research
 replanning, Scope reconciliation, affected Work reconciliation, or unresolved recursive
 integration for the accepted scope.
 
-## Progress and Output
+# Reporting and Output
 
 Honor `progress` without exposing private chain-of-thought. Report observable evidence,
 decisions, Work, validation, Scope changes, Loop counts, handoff, and outcomes only.
