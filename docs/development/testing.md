@@ -42,7 +42,21 @@ mise run check
 mise run test
 ```
 
-PR에서는 lock freshness를 포함해 `uv --locked` semantics로 테스트합니다. `mise.toml`, `.python-version`, `pyproject.toml`, `uv.lock`처럼 실행 환경 전체에 영향을 줄 수 있는 변경은 targeted routing을 넓혀 root `tests/` 전체를 검증합니다. Tooling configuration 변경은 `mise run check`도 blocking verification으로 실행합니다.
+## PR Gate
+
+`main` 대상 모든 PR은 하나의 stable `PR Gate` job을 실행합니다. Workflow-level path filter를 두지 않아 required check가 skip 상태로 남지 않게 합니다.
+
+PR Gate는 root `tests/` 전체를 항상 `uv --locked` semantics로 실행합니다. 현재 deterministic suite가 충분히 작으므로 test-selection routing보다 full suite를 fail-safe 기본값으로 사용합니다.
+
+추가 비용이 있는 검증만 change impact에 따라 실행합니다.
+
+- tooling configuration → `mise run check`
+- canonical Rulesync source → Markdown normalization + `rulesync:doctor`
+- Skill route inputs → distribution route regeneration 후 committed output과 diff 확인
+- changed Markdown → rumdl normalization 후 diff 확인
+- `mols-rpi` / Promptfoo eval surface → Promptfoo fixture-mode smoke
+
+PR Gate는 `contents: read`만 사용합니다. Generated route나 Markdown drift가 있으면 CI가 수정해 push하지 않고 실패시켜 source branch에서 바로잡게 합니다. 따라서 merge 이후 `main`에 직접 write-back하는 CI는 두지 않습니다.
 
 ## Rulesync 검증
 
@@ -68,7 +82,7 @@ Promptfoo는 `evals/`의 behavioral contract를 소유하지 않습니다. `mols
 mise exec -- npm run eval:promptfoo:mols-rpi:smoke
 ```
 
-이 smoke는 fixture-mode plumbing check이며 **runtime behavior evidence가 아닙니다**.
+이 smoke는 fixture-mode plumbing check이며 **runtime behavior evidence가 아닙니다**. 관련 eval surface가 바뀌면 PR Gate가 이 smoke를 blocking verification으로 실행합니다.
 
 실제 local model eval은 Ollama를 사용합니다. 기본 runtime model과 semantic grader는 `qwen2.5`입니다.
 
