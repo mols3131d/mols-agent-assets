@@ -37,6 +37,14 @@ def test_activation_keeps_method_intent_but_excludes_generic_repeat() -> None:
     assert "only asks to repeat content without iterative work" in body
 
 
+def test_rpi_is_orchestration_not_domain_replacement() -> None:
+    _, body = load()
+    body = compact(body)
+    assert "orchestration method, not the task-domain capability" in body
+    assert "Keep applicable task-specific Skills, tools, and governing procedures in force" in body
+    assert "does not replace more specific task authority" in body
+
+
 def test_run_has_one_global_hard_loop_ceiling() -> None:
     _, body = load()
     body = compact(body)
