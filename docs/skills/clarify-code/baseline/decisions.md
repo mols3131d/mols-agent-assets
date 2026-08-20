@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | `clarify-code` 스킬 정립 | 독립적이고 범용적인 code clarification skill로 구성 | 범용적인 `clarify-code` 식별자 사용 |
 | description은 사용자 intent와 near-miss boundary를 직접 표현 | discovery 단계에서는 `name`과 `description`이 주요 routing signal | clarify 요청은 넓게 포착하고 feature, review, performance, architecture 요청은 제외 |
-| 공통 guardrail은 repository instructions가 소유 | 항상 적용되는 규칙과 선택적 workflow를 분리 | skill은 diagnosis, intervention, validation에 집중 |
+| higher-authority repository/source guardrail은 외부 authority로 존중하고, `clarify-code` 자체에 필요한 invariant는 asset 안에 보존 | host policy를 Skill에 복제하지 않으면서 asset-specific behavior를 hidden dependency로 만들지 않음 | 다른 repository로 옮겨도 Skill 고유 계약은 복원 가능하고 host rule은 overlay로 적용 |
 | 오해 비용이 가장 큰 병목 하나를 먼저 해소 | 전면 정리와 cosmetic cleanup을 방지 | destructive side effect, gate, ordering, invariant를 단순 복잡성보다 우선 |
 | explicit caller와 framework/runtime entrypoint를 모두 usage surface로 취급 | 등록 기반 호출과 public contract 보호 | caller-visible rename·move·extraction을 제한 |
 | code/name → docstring/comment → extraction 순으로 최소 해법 선택 | prose와 helper 증가로 생기는 이해 부채 방지 | caller contract와 code-local rationale만 필요한 위치에 설명 |

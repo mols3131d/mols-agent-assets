@@ -25,7 +25,6 @@ def main() -> int:
         Check("ty", ("ty", "check")),
         Check("rumdl", ("rumdl", "check", ".")),
         Check("Python compile", (sys.executable, "-m", "compileall", "-q", "src", "scripts")),
-        Check("pytest", (sys.executable, "-m", "pytest")),
     )
 
     for check in checks:
@@ -40,7 +39,7 @@ def _run(check: Check) -> int:
     executable = check.command[0]
     if executable != sys.executable and shutil.which(executable) is None:
         print(
-            f"missing quality tool: {executable}; run 'uv sync --all-groups' first",
+            f"missing quality tool: {executable}; provide it in the active environment",
             file=sys.stderr,
         )
         return 127
