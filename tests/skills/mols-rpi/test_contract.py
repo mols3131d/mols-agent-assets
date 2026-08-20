@@ -61,16 +61,19 @@ def test_scope_is_explicit_dynamic_and_bounded() -> None:
     body = compact(body)
     assert "## Scope Contract" in body
     assert "Active Scope - Goal - In scope - Out of scope - Acceptance conditions" in body
+    assert "At Run start, establish a provisional Active Scope" in body
     assert "infer the smallest scope sufficient to pursue the Goal" in body
     assert "Work stays inside the Active Scope" in body
     assert "Out-of-scope findings may inform Research or Review" in body
     assert "Narrowing is adaptive" in body
     assert "Expansion is consequential" in body
-    assert "Expand only from Review" in body
+    assert "the proposal does not change the Active Scope" in body
+    assert "Research must validate the need and boundary" in body
     assert "Explicit boundaries are not silently mutable" in body
     assert "Scope change never resets controls" in body
     assert "Recursive Scope only narrows" in body
     assert "strict subset of its parent Scope" in body
+    assert "do not expand the child locally" in body
 
 
 def test_recursion_is_review_gated_and_authority_cannot_expand() -> None:
@@ -99,6 +102,7 @@ def test_loop_exhaustion_is_a_handoff_boundary() -> None:
     assert "start no new Loop" in body
     assert "preserve `loops_used`, the effective ceiling, the active scope path" in body
     assert "current Active Scope definition" in body
+    assert "pending Scope proposals" in body
     assert "mark the Run as handed off, not complete" in body
     assert "Handoff does not itself authorize or auto-start another Run" in body
     assert "**HANDOFF**" in body
