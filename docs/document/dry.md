@@ -12,11 +12,19 @@
 
 ### References
 
-`docs/references/**`는 하나의 reference domain입니다.
+`docs/references/**`는 기본적으로 하나의 reference domain입니다.
 
 - references 내부의 둘 이상의 문서가 같은 의미를 중복 소유하면 DRY 위반입니다.
 - references와 references 밖의 project documentation이 같은 내용을 각각 필요에 맞게 설명하는 것은 허용합니다.
 - reference 내용은 project-local operational authority를 자동으로 획득하지 않습니다.
+
+#### Pattern Capsules
+
+`docs/references/patterns/*.md`의 각 pattern 문서는 하나의 독립 documentation domain입니다.
+
+- 다른 pattern capsule과의 overlap은 허용합니다.
+- 같은 capsule 내부의 불필요한 중복은 DRY 위반입니다.
+- Pattern capsule의 작성, self-containment, flexibility와 ownership contract는 [Patterns](../references/patterns/README.md)가 소유합니다.
 
 ### Asset Capsules
 
@@ -33,4 +41,5 @@ Asset capsule의 portability contract는 [Asset Capsules](asset-capsules.md)가 
 
 - 같은 domain이면 authoritative owner 하나로 합칩니다.
 - 다른 domain이면 독립 사용성에 실제 도움이 되는 overlap인지 확인합니다.
+- Pattern capsule은 overlap보다 responsibility ownership을 먼저 검토합니다.
 - 단순 편의를 위한 무의미한 복제는 domain이 달라도 만들지 않습니다.
