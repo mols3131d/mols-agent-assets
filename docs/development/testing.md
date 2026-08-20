@@ -38,6 +38,33 @@ Repository `npm run rulesync:*` command는 `scripts/run_rulesync.py`를 통해 `
 
 Root repository workspace가 실제로 존재하면 library와 별도로 검증합니다.
 
+## Promptfoo runtime eval PoC
+
+Promptfoo는 `evals/`의 behavioral contract를 소유하지 않습니다. `mols-rpi` PoC는 기존 `evals/skills/mols-rpi/cases.json`의 일부 case를 실행 시점에 읽어 Promptfoo test로 투영합니다.
+
+먼저 provider, generator와 deterministic assertion 연결만 확인합니다.
+
+```bash
+npm run eval:promptfoo:mols-rpi:smoke
+```
+
+이 smoke는 fixture-mode plumbing check이며 **runtime behavior evidence가 아닙니다**.
+
+실제 local model eval은 Ollama를 사용합니다. 기본 runtime model과 semantic grader는 `qwen2.5`입니다.
+
+```bash
+ollama pull qwen2.5
+npm run eval:promptfoo:mols-rpi
+```
+
+필요한 경우 다음 환경 변수만 override합니다.
+
+- `PROMPTFOO_RUNTIME_MODEL` — 실행 대상 Ollama model
+- `PROMPTFOO_GRADER_PROVIDER` — semantic grader provider
+- `OLLAMA_BASE_URL` — Ollama endpoint
+
+`scripts/evals/run_promptfoo.py`가 Promptfoo version을 고정하고 필요한 Node.js version을 확인합니다. Telemetry, update check, remote generation과 sharing은 기본 비활성화하며, Promptfoo local state는 `.tmp/` 아래에 둡니다. 두 config 모두 cache, result history와 sharing을 기본적으로 남기지 않습니다.
+
 ## 기본 명령
 
 ```bash

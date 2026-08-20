@@ -4,6 +4,8 @@
   "scripts": {
     "rulesync:doctor": "python scripts/run_rulesync.py doctor",
     "rulesync:preview": "python scripts/run_rulesync.py preview",
-    "rulesync:validate": "python scripts/run_rulesync.py validate"
+    "rulesync:validate": "python scripts/run_rulesync.py validate",
+    "eval:promptfoo:mols-rpi:smoke": "python scripts/evals/run_promptfoo.py eval -c evals/promptfoo/mols-rpi-smoke.yaml",
+    "eval:promptfoo:mols-rpi": "python scripts/evals/run_promptfoo.py eval -c evals/promptfoo/mols-rpi.yaml"
   }
 }
