@@ -4,6 +4,7 @@
 
 - `ROUTE.md`는 bootstrap transition만 소유합니다.
 - `skills.jsonl`은 canonical Skill metadata에서 생성되며 직접 편집하지 않습니다. `scripts/generate_distribution_routes.py`가 소유합니다.
+- `skills.jsonl`의 `_meta.instructions`가 Skill selection/loading routing을 소유합니다.
 - `.agents/routes/`는 `mols-chatbot-bootstrap`이 target workspace에 만드는 별도 compatibility surface이며 `route/`의 output이 아닙니다.
 
 Runtime이 native discovery를 제공하면 이 layer를 중복 적용하지 않습니다. Route metadata와 canonical source가 충돌하면 canonical source가 우선합니다.

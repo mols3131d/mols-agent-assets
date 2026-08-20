@@ -7,6 +7,7 @@ on:
     paths:
       - "README.md"
       - "AGENTS.md"
+      - "inbox/README.md"
       - "src/rulesync/**"
       - "route/**"
       - "package.json"
@@ -108,7 +109,7 @@ jobs:
               .gitattributes|.rumdl.toml|.github/workflows/rumdl-main-autofix.yml)
                 add_script "rumdl_main_autofix"
                 ;;
-              README.md|AGENTS.md|tests/test_documentation_consistency.py)
+              README.md|AGENTS.md|inbox/README.md|tests/test_documentation_consistency.py)
                 add_documentation_consistency
                 ;;
               src/rulesync/.rulesync/skills/load-context-github/SKILL.md|src/rulesync/.rulesync/skills/load-context-github-mols/SKILL.md)

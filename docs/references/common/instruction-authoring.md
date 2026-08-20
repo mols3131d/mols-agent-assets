@@ -9,7 +9,7 @@ description: 모델이 최소 해석으로 trigger, action, 자유도와 validat
 
 ## Rules
 
-- Local behavior를 바꾸지 않는 upstream/default/common-practice 재진술은 쓰지 않습니다. Local delta 판정은 [Design Principles](design-principles.md)가 소유합니다.
+- 어떤 behavior를 local instruction에 둘지는 [Design Principles](design-principles.md)의 Local Delta 기준을 따릅니다.
 - Required action을 직접 씁니다. 설명만으로 행동을 암시하지 않습니다.
 - Trigger, action, constraint와 validation을 가능한 한 가까이 둡니다.
 - Default를 하나 두고 대안은 default를 벗어나는 실제 조건이 있을 때만 노출합니다.
@@ -39,7 +39,7 @@ Condition → Action → Constraint / Validation
 
 각 instruction에서 다음을 복원할 수 있어야 합니다.
 
-- 이것이 실제 local delta인가?
+- [Design Principles](design-principles.md)의 Local Delta gate를 통과하는가?
 - 언제 적용되는가?
 - default action은 무엇인가?
 - 예외나 금지가 실제 행동을 어떻게 바꾸는가?
