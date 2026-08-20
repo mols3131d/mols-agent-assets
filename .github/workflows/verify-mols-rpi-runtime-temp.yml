@@ -1,0 +1,63 @@
+name: Temporary mols-rpi runtime verification
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/verify-mols-rpi-runtime-temp.yml"
+      - "evals/promptfoo/**"
+      - "evals/skills/mols-rpi/**"
+      - "scripts/evals/**"
+      - "src/rulesync/.rulesync/skills/mols-rpi/**"
+      - "package.json"
+      - "mise.toml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mols-rpi-runtime-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  runtime-eval:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: jdx/mise-action@v3
+        with:
+          install: false
+          cache: true
+
+      - name: Install repository runtime tools
+        run: mise install uv node
+
+      - name: Install and start Ollama
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL https://ollama.com/install.sh | sh
+          ollama serve > /tmp/ollama.log 2>&1 &
+          for _ in {1..30}; do
+            if curl -fsS http://127.0.0.1:11434/api/tags >/dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/ollama.log
+          exit 1
+
+      - name: Pull evaluation model
+        run: ollama pull qwen2.5:1.5b
+
+      - name: Run Promptfoo runtime eval
+        env:
+          PROMPTFOO_RUNTIME_MODEL: qwen2.5:1.5b
+          PROMPTFOO_GRADER_PROVIDER: ollama:chat:qwen2.5:1.5b
+          PROMPTFOO_RUNTIME_TIMEOUT_SECONDS: "300"
+        run: npm run eval:promptfoo:mols-rpi
