@@ -5,7 +5,7 @@
 ## Policies
 
 - [Ownership](ownership.md) — repository와 directory documentation의 책임 경계
-- [DRY Boundaries](dry.md) — project docs, references와 asset capsule의 중복 허용 경계
+- [DRY Boundaries](dry.md) — project docs, references, presets와 asset capsule의 중복 허용 경계
 - [Knowledge Lifecycle](knowledge-lifecycle.md) — durable knowledge, inbox, archive와 Git history의 역할
 - [Asset Capsules](asset-capsules.md) — portable asset documentation contract
 
