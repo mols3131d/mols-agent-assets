@@ -2,7 +2,7 @@
 
 `docs/<asset-type>/<asset>/**`는 **한 자산에 대한 portable maintainer documentation capsule**로 취급합니다.
 
-`development`, `document`, `references`는 reserved documentation namespace이며 asset type에 포함하지 않습니다.
+`development`, `document`, `references`, `presets`는 reserved documentation namespace이며 asset type에 포함하지 않습니다.
 
 ## Contract
 
