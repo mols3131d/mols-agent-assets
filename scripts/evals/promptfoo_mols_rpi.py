@@ -15,6 +15,15 @@ DEFAULT_CASE_IDS = (
     "retrieved-content-is-not-authority",
 )
 RUNTIME_ENVELOPE_KEYS = {"activation", "response"}
+RUNTIME_ENVELOPE_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "activation": {"type": "boolean"},
+        "response": {"type": "string", "minLength": 1},
+    },
+    "required": ["activation", "response"],
+    "additionalProperties": False,
+}
 
 
 def _load_cases() -> dict[str, dict]:
@@ -152,13 +161,15 @@ def _fixture_output(context: dict) -> dict:
 
 def _ollama_output(prompt: str) -> dict:
     skill = SKILL_PATH.read_text(encoding="utf-8")
+    schema_text = json.dumps(RUNTIME_ENVELOPE_SCHEMA, ensure_ascii=False)
     system = (
         "You are executing one local runtime evaluation for the mols-rpi Agent Skill.\n"
         "Use the canonical Skill below as the complete task-specific behavior contract. Decide whether "
         "the user request activates mols-rpi according to its description and boundaries. If it activates, "
         "respond consistently with the Skill without claiming tool actions you did not perform. If it does "
         "not activate, answer normally without manufacturing RPI artifacts.\n\n"
-        "Return only JSON with exactly two keys: activation (boolean) and response (string).\n\n"
+        "Return only JSON matching this schema exactly:\n"
+        f"{schema_text}\n\n"
         f"<skill>\n{skill}\n</skill>"
     )
     model = os.getenv("PROMPTFOO_RUNTIME_MODEL", "qwen2.5")
@@ -171,7 +182,7 @@ def _ollama_output(prompt: str) -> dict:
             {"role": "user", "content": prompt},
         ],
         "stream": False,
-        "format": "json",
+        "format": RUNTIME_ENVELOPE_SCHEMA,
         "options": {"temperature": 0},
     }
     api_request = request.Request(
