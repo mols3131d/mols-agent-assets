@@ -144,7 +144,7 @@ jobs:
               src/rulesync/.rulesync/rules/*|src/rulesync/.rulesync/subagents/*|src/rulesync/rulesync.jsonc|package.json|evals/regression/rulesync-source-isolation.json|tests/test_rulesync_source_isolation.py)
                 add_isolation
                 ;;
-              docs/skills/*|docs/references/skills/*|docs/development.md|docs/testing.md)
+              docs/skills/*|docs/references/skills/*|docs/testing.md)
                 add_asset_docs
                 add_documentation_consistency
                 ;;
