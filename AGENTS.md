@@ -5,4 +5,4 @@
 - Generated vendor projection과 Rulesync lock state는 reusable source로 commit하지 않습니다.
 - Cross-runtime Skill discovery fallback은 `route/README.md`를 따릅니다.
 - Repository 개발 규칙은 `docs/development/README.md`, 문서 규칙과 artifact lifecycle은 `docs/document/README.md`를 entrypoint로 사용합니다.
-- Repository verification은 `docs/testing.md`를 따릅니다.
+- Repository verification은 `docs/development/testing.md`를 따릅니다.
