@@ -15,7 +15,7 @@
 
 ## Typical Forms
 
-작으면 `baseline.md`, 내용이 커지면 `baseline/README.md`를 entrypoint로 하는 directory를 사용할 수 있습니다.
+권장되는 간단한 형태는 `baseline.md`, 내용이 커졌을 때의 형태는 `baseline/README.md`를 entrypoint로 하는 directory입니다.
 
 ```text
 <asset-docs>/
@@ -29,7 +29,7 @@
    └─ ...
 ```
 
-파일명과 분할 방식은 project에 맞게 조정할 수 있습니다. 중요한 것은 baseline의 역할과 보호 성격이 명확한 것입니다.
+Project가 다른 구조를 사용할 수는 있지만, baseline의 entrypoint와 보호 성격은 쉽게 식별할 수 있어야 합니다.
 
 ## Recommended Contents
 
@@ -43,9 +43,9 @@
 
 ## Protection
 
-`baseline.md` 또는 `baseline/README.md` 같은 entrypoint에는 **함부로 편집하면 안 되는 보호 문서임을 명시**하는 것을 권장합니다.
+`baseline.md` 또는 `baseline/README.md` 같은 baseline entrypoint에는 **함부로 편집하면 안 되는 보호 문서임을 명시합니다.**
 
-예를 들어 일반 구현 변경에 맞춰 baseline을 자동 수정하지 않고, 목적·본질·원칙·중요 결정 자체를 바꾸려는 경우에만 변경 의도와 근거를 확인하도록 할 수 있습니다. 구체적인 승인 절차나 변경 workflow는 각 repository가 정합니다.
+일반 구현 변경에 맞춰 baseline을 자동 수정하지 않고, 목적·본질·원칙·중요 결정 자체를 바꾸려는 경우에만 변경 의도와 근거를 확인하도록 할 수 있습니다. 구체적인 승인 절차나 변경 workflow는 각 repository가 정합니다.
 
 ## Extensions
 
