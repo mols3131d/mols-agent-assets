@@ -31,8 +31,8 @@ Maintainer docs는 기본 산출물이 아닙니다.
 - Durable decision, recovery knowledge 또는 source만으로 복구하기 어려운 intent만 별도 문서로 보존합니다.
 - 작업 로그, 완료된 migration 기록과 쉽게 재생성되는 상태는 Git history에 맡깁니다.
 - Shared knowledge는 가장 좁은 `docs/references/` owner가 한 번만 소유합니다.
-
-Directory entry document가 필요하면 `README.md` 하나를 기본으로 합니다. 언어별 README 복제본은 만들지 않습니다.
+- Directory-level README는 child source만으로 복구하기 어려운 contract나 navigation decision을 실제로 소유할 때만 둡니다. Sibling 문서를 열거하기 위한 index-only README는 만들지 않습니다.
+- 언어별 README 복제본은 만들지 않습니다.
 
 ## Workflow
 
