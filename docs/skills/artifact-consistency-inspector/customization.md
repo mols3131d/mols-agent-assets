@@ -6,7 +6,6 @@ Runtime package의 일부가 아니며 Skill 실행이 이 문서에 의존해�
 ## Safe to change
 
 - Skill `name`과 `description`
-- README wording과 invocation examples
 - report title과 description wording
 - `author` value 또는 placeholder policy
 - default language
@@ -15,7 +14,7 @@ Runtime package의 일부가 아니며 Skill 실행이 이 문서에 의존해�
 - report section headings
 - ZIP usage conditions
 - optional report front matter fields
-- scenario inventory와 test-report wording
+- packaged example wording과 available verification fixture wording
 
 External ZIP과 report filename은 자유롭게 변경할 수 있다. Download-folder collision과
 cache ambiguity가 중요하면 timestamp suffix를 유지한다.
@@ -25,7 +24,7 @@ cache ambiguity가 중요하면 timestamp suffix를 유지한다.
 - `rule_sources`는 repository-specific locator나 selector를 사용할 수 있다.
 - 사용자가 지정한 list order는 해당 run의 authority다.
 - Auto-discovery signal은 domain에 맞게 확장할 수 있지만 하나의 universal source-type precedence를 hard-code하지 않는다.
-- source selector를 rename하면 `SKILL.md`, `references/rule-sources.md`, examples와 tests를 함께 갱신한다.
+- source selector를 rename하면 `SKILL.md`, `references/rule-sources.md`, packaged examples와 available verification fixtures를 함께 갱신한다.
 
 ## Preserve
 
@@ -46,8 +45,8 @@ cache ambiguity가 중요하면 timestamp suffix를 유지한다.
 ## Rename behavior
 
 - external ZIP: 자유롭게 rename 가능
-- internal root folder: package references와 tests를 함께 갱신하면 rename 가능
-- `README.md`, `references/*.md`: `SKILL.md`의 relative reference를 함께 갱신하면 rename 가능
+- internal root folder: package references와 available verification fixtures를 함께 갱신하면 rename 가능
+- `references/*.md`: `SKILL.md`의 relative reference를 함께 갱신하면 rename 가능
 - `SKILL.md`: filename과 Skill root 위치를 보존
 - report output: rename 가능; timestamp suffix는 권장
 
@@ -58,4 +57,4 @@ Field를 추가할 수 있지만 다음을 지킨다.
 - free-text value는 quote한다.
 - machine field는 body state와 일치한다.
 - secret과 temporary internal path는 제외한다.
-- samples, tests, README와 report-format rule을 함께 갱신한다.
+- `SKILL.md`, packaged examples/references와 available verification fixtures를 함께 갱신한다.
