@@ -105,16 +105,33 @@ def test_diagrams_are_split_by_control_concern() -> None:
     _, body = load()
     assert body.count("```mermaid") == 4
     assert "## Model" not in body
-    assert "## Core Lifecycle" in body
-    assert "## Scope Contract" in body
-    assert "## Recursive Subproblem Resolution" in body
-    assert "## Run Boundary and Handoff" in body
 
-    core = body.index("## Core Lifecycle")
-    scope = body.index("## Scope Contract")
-    recursion = body.index("## Recursive Subproblem Resolution")
-    boundary = body.index("## Run Boundary and Handoff")
-    assert core < scope < recursion < boundary
+    headings = [
+        "## Core Lifecycle",
+        "## Scope Contract",
+        "## Recursive Subproblem Resolution",
+        "## Run Boundary and Handoff",
+    ]
+    positions = [body.index(heading) for heading in headings]
+    assert positions == sorted(positions)
+
+    core = body[positions[0] : body.index("## Run and Loop Contract")]
+    scope = body[positions[1] : body.index("## Artifact Contract")]
+    recursion = body[positions[2] : positions[3]]
+    boundary = body[positions[3] : body.index("## Progress and Output")]
+
+    for section in (core, scope, recursion, boundary):
+        assert section.count("```mermaid") == 1
+
+    assert "Expansion proposal" not in core
+    assert "Child RPI" not in core
+    assert "HANDOFF" not in core
+    assert "Child RPI" not in scope
+    assert "HANDOFF" not in scope
+    assert "Expand Active Scope" not in recursion
+    assert "HANDOFF" not in recursion
+    assert "Child RPI" not in boundary
+    assert "Expand Active Scope" not in boundary
 
 
 def test_recursion_is_review_gated_and_authority_cannot_expand() -> None:
