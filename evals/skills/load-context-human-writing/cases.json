@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "reader-first-technical-report",
+      "prompt": "이 긴 기술 조사 결과를 팀원이 빠르게 이해하고 결정을 내릴 수 있는 보고서로 정리해줘.",
+      "assertions": [
+        "Surfaces the conclusion, decision, status, or useful orientation early",
+        "Organizes around reader questions and decisions rather than discovery order",
+        "Preserves material evidence, uncertainty, constraints, and rationale"
+      ]
+    },
+    {
+      "id": "do-not-overcompress",
+      "prompt": "이 문서를 최대한 짧고 읽기 쉽게 줄여줘. 다만 왜 이 결정을 했는지는 나중에도 복구 가능해야 해.",
+      "assertions": [
+        "Does not treat shorter text as the primary success criterion",
+        "Removes redundancy before removing rationale or constraints",
+        "Preserves enough context to avoid increasing interpretation or re-entry cost"
+      ]
+    },
+    {
+      "id": "reduce-understanding-debt",
+      "prompt": "문서 여러 군데에 같은 정책이 조금씩 다르게 설명돼 있어. 사람이 이해하기 쉽게 개선해줘.",
+      "assertions": [
+        "Recognizes competing duplicated explanations as understanding debt",
+        "Prefers one clear authoritative owner instead of adding another summary",
+        "Preserves references or pointers where other locations still need discoverability"
+      ]
+    },
+    {
+      "id": "long-term-reentry",
+      "prompt": "이 결정 문서는 몇 달 뒤 다시 볼 가능성이 높아. 미래의 내가 맥락을 다시 조사하지 않아도 되게 다듬어줘.",
+      "assertions": [
+        "Preserves purpose, current decision or state, rationale, and material constraints when relevant",
+        "Uses authoritative pointers instead of duplicating large source bodies",
+        "Includes next action, owner, or trigger only when the artifact is action-bearing"
+      ]
+    },
+    {
+      "id": "markdown-representation-choice",
+      "prompt": "이 내용을 Markdown으로 읽기 쉽게 만들어줘. 상태, 비교표, 간단한 진행률, 디렉터리 구조가 섞여 있어.",
+      "assertions": [
+        "Chooses Markdown representations by the reader operation they support",
+        "Uses semantic markers, tables, text bars, or trees only where they reduce reader work",
+        "Keeps exact values, labels, hierarchy, and meaning authoritative over visual decoration"
+      ]
+    },
+    {
+      "id": "mixed-human-agent-artifact",
+      "prompt": "README 설명과 에이전트 행동 지침이 같은 문서에 섞여 있어. 전체를 읽기 좋게 정리해줘.",
+      "assertions": [
+        "Applies human-writing principles only to the reader-facing layer",
+        "Does not rewrite agent-facing behavioral instructions as ordinary prose merely for readability",
+        "Preserves the distinct authority and responsibility of mixed-content sections"
+      ]
+    },
+    {
+      "id": "literal-transformation-negative",
+      "prompt": "이 문장을 내용과 구조를 바꾸지 말고 그대로 번역만 해줘.",
+      "assertions": [
+        "Does not force a reader-centered restructuring workflow onto a literal transformation request",
+        "Preserves requested fidelity instead of introducing unsolicited headings or representations"
+      ]
+    },
+    {
+      "id": "avoid-formatting-debt",
+      "prompt": "가독성을 높이려고 이 문서에 이모지, 표, callout, 다이어그램을 최대한 많이 넣어줘.",
+      "assertions": [
+        "Rejects decorative formatting that does not reduce reader work",
+        "Uses plain prose or lists when they are simpler and clearer",
+        "Avoids duplicating the same information across multiple representations without a distinct reader need"
+      ]
+    }
+  ]
+}
