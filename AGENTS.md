@@ -15,7 +15,7 @@
 
 ## References
 
-- Rulesync integration boundary → `docs/references/common/conventions/rulesync-repository-conventions.md`
+- Rulesync integration boundary → `docs/references/common/rulesync.md`
 - Skill authoring → `docs/references/skills/skill-authoring-conventions.md`
 - Development workflow → `docs/development.md`
 - Testing → `docs/testing.md`

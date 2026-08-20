@@ -64,9 +64,9 @@ Apply them only when one of these is established:
 
 When personal scope applies, read:
 
-- [Rulesync Repository Conventions](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/conventions/rulesync-repository-conventions.md)
+- [Rulesync Repository Conventions](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/rulesync.md)
 - [Skill Authoring Conventions](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/skills/skill-authoring-conventions.md)
-- [Agent Asset Naming Convention](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/conventions/agent-assets-naming-convention.md) when filesystem naming matters
+- [Agent Asset Naming Convention](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/naming.md) when filesystem naming matters
 
 Apply personal conventions only after mandatory source and target contracts are satisfied.
 

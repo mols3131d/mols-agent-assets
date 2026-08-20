@@ -22,7 +22,8 @@ Rulesync가 이미 정의하는 schema, feature, target namespace와 projection 
 
 ## 자세한 규칙
 
-- Rulesync workspace와 canonical/derived 경계 → [Rulesync Repository Conventions](docs/references/common/conventions/rulesync-repository-conventions.md)
+- Rulesync workspace와 canonical/derived 경계 → [Rulesync Repository Conventions](docs/references/common/rulesync.md)
+- Rulesync 공식 문서와 도구 reference → [Rulesync Tooling Reference](docs/references/tooling/rulesync.md)
 - Skill authoring 관행 → [Skill Authoring Conventions](docs/references/skills/skill-authoring-conventions.md)
 - 개발 workflow → [Development](docs/development.md)
 - 검증 → [Testing](docs/testing.md)

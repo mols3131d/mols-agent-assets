@@ -1,6 +1,6 @@
 # 자산 개발 가이드
 
-Rulesync workspace와 source ownership은 [Rulesync Repository Conventions](references/common/conventions/rulesync-repository-conventions.md)가 소유합니다. 이 문서는 **변경 절차**만 다룹니다.
+Rulesync workspace와 source ownership은 [Rulesync Repository Conventions](references/common/rulesync.md)가 소유합니다. 이 문서는 **변경 절차**만 다룹니다.
 
 ## Placement
 

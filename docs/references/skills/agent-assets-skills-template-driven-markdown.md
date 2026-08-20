@@ -89,7 +89,7 @@ Template 선택 우선순위:
 
 ## Front Matter CMS
 
-Root `frontmatter.json`이 존재하면 applicable content type, field shape와 linked template을 selection/validation context로 사용합니다. Product option semantics는 local copy가 아니라 current configuration과 [Front Matter CMS official-source router](../common/tooling/front-matter-cms/README.md)에서 확인합니다.
+Root `frontmatter.json`이 존재하면 applicable content type, field shape와 linked template을 selection/validation context로 사용합니다. Product option semantics는 local copy가 아니라 current configuration과 [Front Matter CMS official-source router](../tooling/front-matter-cms.md)에서 확인합니다.
 
 ## Completion Checks
 

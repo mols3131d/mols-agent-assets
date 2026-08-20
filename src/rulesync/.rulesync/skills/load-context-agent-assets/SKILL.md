@@ -24,15 +24,14 @@ Do not copy fast-changing platform behavior into this Skill and do not treat rem
 
 # Authoring Sources
 
-For general agent-asset authoring, use the maintained references in:
+For general agent-asset authoring, load only the concern that matters:
 
-- [Common agent-asset principles](https://github.com/mols3131d/mols-agent-assets/tree/main/docs/references/common/principles)
-- [LLM-readable instructions](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/authoring/agent-assets-authoring-llm-readable-instructions.md)
-- [Human-readable documents](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/authoring/agent-assets-authoring-human-readable-documents.md)
+- [Design principles](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/design-principles.md) — responsibility, duplication, simplicity, context cost
+- [Instruction authoring](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/instruction-authoring.md) — trigger/action/constraint/validation wording
 
-Read the specific reference only when its concern matters. Do not load every linked document by default.
+When human-facing maintainer documentation is materially in scope, compose with `load-context-human-writing` rather than maintaining or loading a duplicate prose guide here.
 
-When the target platform publishes an authoritative specification or authoring guide for the asset type, that target source outranks these general authoring references for target-specific behavior.
+When the target platform publishes an authoritative specification or authoring guide for the asset type, that target source outranks these general references for target-specific behavior.
 
 # Personal Overlay — mols
 
@@ -44,10 +43,10 @@ Apply the personal overlay only when one of these is established:
 - project/repository instructions declare them;
 - the target is a mols personal project or personal asset that is being maintained under those conventions.
 
-When the overlay applies, read the applicable authority before using the convention:
+When the overlay applies, read only the applicable convention:
 
-- [Rulesync Repository Conventions](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/conventions/rulesync-repository-conventions.md) when the asset is Rulesync-managed or this repository's source boundary matters
-- [Agent Asset Naming Convention](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/conventions/agent-assets-naming-convention.md) when filesystem naming matters
+- [Rulesync Repository Conventions](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/rulesync.md) when Rulesync source ownership matters
+- [Agent Asset Naming Convention](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/naming.md) when filesystem naming matters
 
 For Skill-specific work, also use `load-context-agent-skills` and its Skill-specific sources.
 
