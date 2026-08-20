@@ -23,7 +23,7 @@ concurrency:
 jobs:
   runtime-eval:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v7
         with:
@@ -52,12 +52,14 @@ jobs:
           cat /tmp/ollama.log
           exit 1
 
-      - name: Pull evaluation model
-        run: ollama pull qwen2.5:1.5b
+      - name: Pull evaluation models
+        run: |
+          ollama pull qwen2.5:1.5b
+          ollama pull qwen2.5:3b
 
       - name: Run Promptfoo runtime eval
         env:
           PROMPTFOO_RUNTIME_MODEL: qwen2.5:1.5b
-          PROMPTFOO_GRADER_PROVIDER: ollama:chat:qwen2.5:1.5b
+          PROMPTFOO_GRADER_PROVIDER: ollama:chat:qwen2.5:3b
           PROMPTFOO_RUNTIME_TIMEOUT_SECONDS: "300"
         run: npm run eval:promptfoo:mols-rpi
