@@ -17,15 +17,18 @@ concurrency:
 jobs:
   generate:
     runs-on: ubuntu-slim
-    timeout-minutes: 3
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v9.0.0
+      - uses: jdx/mise-action@v3
         with:
-          enable-cache: false
+          install: false
+          cache: true
+      - name: Install uv
+        run: mise install uv
       - name: Generate distribution routes
         run: >-
-          uv run --no-project --with "pyyaml>=6.0.2"
+          mise exec -- uv run --no-project --with "pyyaml>=6.0.2"
           python scripts/generate_distribution_routes.py
       - name: Commit changed routes
         shell: bash
