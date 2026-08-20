@@ -40,7 +40,7 @@ jobs:
           set -euo pipefail
           mapfile -d '' markdown < <(git ls-files -z -- 'src/rulesync/**/*.md')
           ((${#markdown[@]})) || exit 0
-          mise exec -- rumdl fmt "${markdown[@]}"
+          rumdl fmt "${markdown[@]}"
           git diff --exit-code -- "${markdown[@]}"
       - name: Validate canonical configuration
-        run: mise exec -- npm run rulesync:doctor
+        run: npm run rulesync:doctor
