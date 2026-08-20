@@ -54,12 +54,4 @@ Do not invent a repository-local asset taxonomy when the active source framework
 
 # Fallback
 
-If authoritative sources cannot be accessed, do not invent detailed platform or personal rules. Preserve only these stable defaults until verification is possible:
-
-- one coherent responsibility per artifact;
-- one authoritative owner per durable rule;
-- explicit activation, action, authority, and observable validation where they matter;
-- no speculative structure or mechanism without a current need;
-- minimize context without removing behavior-critical boundaries.
-
-Expose any unresolved source-dependent assumption that can materially affect the result.
+If authoritative sources cannot be accessed, preserve the established source/target boundary, avoid introducing unverified platform-specific behavior or metadata, and expose any unresolved assumption that can materially affect the result. Do not reconstruct detailed platform or personal rules from memory.

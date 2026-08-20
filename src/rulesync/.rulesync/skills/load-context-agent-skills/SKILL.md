@@ -10,47 +10,29 @@ description: >-
 
 # Contract
 
-This Skill acts as an **authority router** for Agent Skill work. The active workflow owns creation, editing, validation, installation, packaging, publication, and final output.
+This Skill is an **authority router** for Agent Skill work. The active workflow owns creation, editing, validation, installation, packaging, publication, and final output.
 
 Resolve authority from the actual source and target:
 
-1. **Canonical source contract** — when the Skill is Rulesync-managed, current Rulesync schema and adapters own canonical representation.
+1. **Canonical source contract** — the framework that owns the authored source representation.
 1. **Portable or target contract** — Agent Skills open standard when it applies, then the actual vendor/harness contract.
 1. **Personal convention** — mols conventions only when personal scope is established.
 1. **Skill-local contract** — requirements specific to the Skill being authored.
 
-Do not turn vendor-specific creator guidance or personal conventions into portable requirements. Do not force Agent Skills top-level representation onto a Rulesync canonical source; use the Rulesync target namespace instead.
+Do not turn target-specific creator guidance or personal conventions into portable requirements. Do not replace the active source framework's canonical representation with a target representation by assumption.
 
 # Required Source Check
 
-Before materially creating, modifying, porting, or reviewing a Skill, read the sources that apply to the task.
+Before materially creating, modifying, porting, or reviewing a Skill, identify the actual source framework and target, then load only the applicable registry:
 
-When working in a Rulesync-managed source tree, use the current Rulesync schema and file-format documentation for canonical representation:
+- Rulesync-managed source ownership and canonical representation → [Rulesync](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/tooling/rulesync.md)
+- Agent Skills standard, target/harness references, and official creator sources → [Agent Skills Specification](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/skills/specification.md)
 
-- [Rulesync](https://github.com/dyoshikawa/rulesync)
-- [Rulesync file formats](https://github.com/dyoshikawa/rulesync/blob/main/docs/reference/file-formats.md)
+Follow the selected registry to the **current authoritative source that applies to the task**. Do not load every target guide, copy fast-changing platform behavior into this Skill, or rely on remembered target behavior when it can be checked.
 
-When Agent Skills format, metadata, discovery, or portability matters, read:
+# Official Target Authoring
 
-- [Agent Skills Specification](https://agentskills.io/specification)
-- [Agent Skills documentation index](https://agentskills.io/llms.txt)
-
-Use the maintained repository registry to locate current target-specific references without reproducing them here:
-
-- [mols Agent Skills Specification and vendor registry](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/skills/specification.md)
-
-After identifying the actual target, follow only that target's official links from the registry. Do not load every vendor guide.
-
-# Official Vendor Authoring
-
-If the selected target publishes an official `skill-creator`, **read or invoke it before authoring or optimizing the Skill**. If it does not, read the target's official Skill authoring guide instead. Do not borrow a sibling target's creator by assumption.
-
-- **OpenAI** — [`skill-creator`](https://github.com/openai/skills/blob/main/skills/.system/skill-creator/SKILL.md)
-- **Anthropic** — [`skill-creator`](https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md)
-- **Google** — Gemini CLI built-in [`skill-creator`](https://github.com/google-gemini/gemini-cli/blob/main/packages/core/src/skills/builtin/skill-creator/SKILL.md); for Antigravity use [Authoring Google Antigravity Skills](https://codelabs.developers.google.com/getting-started-with-antigravity-skills) unless a current Antigravity-specific official creator can be verified
-- **Microsoft / GitHub** — Microsoft [`skill-creator`](https://github.com/microsoft/skills/blob/main/.github/skills/skill-creator/SKILL.md) for its Microsoft/Azure scope; for GitHub Copilot use [Adding agent skills](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills) unless a GitHub-specific official creator can be verified
-
-Creator guidance is target-specific authoring guidance, not the Agent Skills open standard.
+If the selected target publishes an official `skill-creator`, read or invoke it before materially authoring or optimizing the Skill. Otherwise use that target's official Skill authoring guide. The registry owns the current links; do not duplicate them here or borrow a sibling target's creator by assumption.
 
 # Personal Overlay — mols
 
@@ -62,11 +44,10 @@ Apply them only when one of these is established:
 - project/repository instructions declare them;
 - the target is a mols personal project or personal asset being maintained under those conventions.
 
-When personal scope applies, read:
+When personal scope applies, load only the local convention relevant to the current source and decision:
 
-- [Rulesync](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/tooling/rulesync.md)
-- [Skill Authoring Conventions](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/skills/skill-authoring-conventions.md)
-- [Agent Asset Naming Convention](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/naming.md) when filesystem naming matters
+- Rulesync-managed Skill authoring → [Skill Authoring Conventions](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/skills/skill-authoring-conventions.md)
+- filesystem naming → [Agent Asset Naming Convention](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/naming.md)
 
 Apply personal conventions only after mandatory source and target contracts are satisfied.
 

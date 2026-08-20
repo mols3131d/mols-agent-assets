@@ -1,17 +1,15 @@
 # Agent Skills Specification
 
-이 문서는 Agent Skills 관련 **official source registry**입니다. Portable contract의 최종 authority는 [Agent Skills Specification](https://agentskills.io/specification)이며, 이 저장소는 규격의 field·path·validation 세부사항을 snapshot으로 복제하지 않습니다.
-
-Rulesync-managed Skill의 canonical source shape는 current Rulesync가 소유하고, repository-local 작성 관행은 [Skill Authoring Conventions](skill-authoring-conventions.md)가 소유합니다.
+Agent Skills 관련 **official source registry**입니다. Specification의 field·path·validation 세부사항은 local snapshot으로 복제하지 않습니다.
 
 ## Authority
 
-1. **Rulesync canonical contract** — Rulesync-managed source shape와 target namespace
+1. **Rulesync canonical contract** — Rulesync-managed source일 때의 canonical representation → [Rulesync](../tooling/rulesync.md)
 1. **Agent Skills open standard** — portable Agent Skills contract가 실제로 적용될 때
 1. **Target/harness official contract** — discovery, activation, permissions, packaging, host metadata 등 target-specific behavior
-1. **Repository convention** — 위 source가 소유하지 않는 local authoring 관행
+1. **Repository convention** — 위 source가 소유하지 않는 local authoring 관행 → [Skill Authoring Conventions](skill-authoring-conventions.md)
 
-Vendor 문서가 registry에 있다는 사실만으로 Agent Skills 표준 호환을 추정하지 않습니다.
+Vendor 문서가 registry에 있다는 사실만으로 이 저장소의 support나 Agent Skills 호환을 추정하지 않습니다.
 
 ## Open Standard
 
@@ -41,10 +39,3 @@ Target-specific 세부사항이 필요하면 실제 target 하나를 먼저 고�
 - OpenAI — [`skill-creator`](https://github.com/openai/skills/blob/main/skills/.system/skill-creator/SKILL.md)
 
 Creator Skill은 target-specific authoring guidance이며 portable specification의 authority가 아닙니다. 공식 creator를 확인하지 못한 target은 해당 target의 official authoring guide를 사용합니다.
-
-## Boundary
-
-- Canonical Rulesync representation → Rulesync
-- Portable Agent Skills contract → agentskills.io
-- Target runtime behavior → 해당 target official source
-- Repository-local authoring → [Skill Authoring Conventions](skill-authoring-conventions.md)

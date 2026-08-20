@@ -1,9 +1,10 @@
-# 문서 안내
+# mols-markdown-dashboard Maintainer Docs
 
-| 문서 | 용도 |
-| --- | --- |
-| [Directive](baseline/DIRECTIVE.md) | 요구사항, 결정사항과 훼손 방지 invariant의 정본 |
-| [Architecture](ARCHITECTURE.md) | YAML에서 Markdown까지의 component와 책임 경계 |
-| [Maintenance](MAINTENANCE.md) | 변경·검증·복구 절차 |
+이 디렉터리는 `mols-markdown-dashboard`의 maintainer documentation capsule입니다.
 
-스킬을 수정하는 에이전트는 `baseline/DIRECTIVE.md`부터 읽습니다. 완료된 review/work log는 current maintainer docs에 누적하지 않습니다.
+먼저 [`baseline/DIRECTIVE.md`](baseline/DIRECTIVE.md)를 읽습니다. 요구사항, 결정사항과 훼손 방지 invariant의 기준입니다.
+
+- 구현 구조를 이해할 때 → [Architecture](ARCHITECTURE.md)
+- 변경·검증·복구할 때 → [Maintenance](MAINTENANCE.md)
+
+완료된 작업 기록은 이 capsule에 누적하지 않습니다. 현재 자산을 이해·유지·복구하는 데 계속 필요한 정보만 남깁니다.

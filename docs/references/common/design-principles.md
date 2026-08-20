@@ -5,10 +5,11 @@ description: 에이전트 자산을 추가, 분리, 중복 제거, 단순화할 
 
 # Agent Asset Design Principles
 
-목표는 규칙을 늘리는 것이 아니라 **행동 신뢰성과 authority를 보존하면서 구조와 context를 최소화하는 것**입니다.
+목표는 규칙을 늘리는 것이 아니라 **행동 신뢰성과 authority를 보존하면서 local context를 최소화하는 것**입니다.
 
 ## 판단 순서
 
+1. **Standard First / Local Delta Only** — 표준, 도구, target contract 또는 충분히 확립된 default가 이미 행동을 결정하면 local 문서에 다시 설명하지 않습니다. Local source는 deviation, extension, ambiguity resolution만 소유합니다.
 1. **YAGNI** — 지금 실제 요구가 없는 구조·호환성·metadata를 만들지 않습니다.
 1. **SRP** — trigger, permission, lifecycle 또는 변경 이유가 다르면 책임 분리를 검토합니다.
 1. **DRY** — 같은 의미의 authoritative owner를 둘 이상 만들지 않습니다.
@@ -17,8 +18,21 @@ description: 에이전트 자산을 추가, 분리, 중복 제거, 단순화할 
 
 앞 단계에서 제거할 수 있는 문제를 뒤 단계의 abstraction으로 해결하지 않습니다.
 
+## Local Delta
+
+Local rule이나 reference를 추가하기 전에 다음 중 하나인지 확인합니다.
+
+- **Deviation** — upstream/default와 의도적으로 다르게 행동해야 합니다.
+- **Extension** — upstream에 없는 repository-specific behavior나 boundary가 필요합니다.
+- **Ambiguity resolution** — upstream만으로 이 repository에서 결정을 하나로 복원할 수 없습니다.
+
+셋 중 어느 것도 아니면 작성하지 않는 것이 기본입니다. Upstream detail이 판단에 필요하면 authoritative source를 링크하거나 작업 시점에 확인하고, 그 내용을 local prose로 복제하지 않습니다.
+
+관련 표준 가이드: [Agent Skills — Best practices for skill creators](https://agentskills.io/skill-creation/best-practices)
+
 ## Guardrails
 
+- "업계 상식"이라고 가정해 실제 target/version 차이나 중요한 local exception을 숨기지 않습니다.
 - YAGNI를 이유로 이미 존재하는 비가역적 위험이나 required guard를 방치하지 않습니다.
 - DRY 때문에 runtime 독립성을 깨거나 hidden dependency를 만들지 않습니다.
 - KISS를 이유로 필요한 validation, safety guard 또는 중요한 boundary를 제거하지 않습니다.
@@ -33,6 +47,7 @@ AI가 자산을 빠르게 만들수록 maintainer가 **무엇이 authoritative�
 
 ## Review
 
+- 이것이 local deviation, extension 또는 ambiguity resolution인가?
 - 이것이 없으면 현재 실제 문제가 생기는가?
 - 하나의 책임을 여러 파일이 소유하거나 여러 책임이 한 파일에 섞였는가?
 - 정책 변경 시 authoritative location이 하나로 명확한가?

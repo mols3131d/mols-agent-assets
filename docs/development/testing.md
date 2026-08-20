@@ -1,6 +1,6 @@
 # 테스팅 및 품질 검증 가이드
 
-이 문서는 repository verification의 **위치와 증거 수준**을 정의합니다. Workspace/source ownership은 [Rulesync](references/tooling/rulesync.md)를 따릅니다.
+이 문서는 repository verification의 **위치와 증거 수준**을 정의합니다. Workspace/source ownership은 [Rulesync](../references/tooling/rulesync.md)를 따릅니다.
 
 ## 구조
 
