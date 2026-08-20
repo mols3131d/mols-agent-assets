@@ -137,7 +137,7 @@ jobs:
               docs/references/common/chatbot-compatibility.md)
                 add_documentation_consistency
                 ;;
-              docs/references/common/rulesync.md)
+              docs/references/tooling/rulesync.md)
                 add_isolation
                 add_asset_docs
                 add_documentation_consistency
