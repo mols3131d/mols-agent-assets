@@ -61,5 +61,5 @@ Target-specific metadata는 의미가 있는 Rulesync target section에 둡니�
 ## Boundary
 
 - Skill 설계 workflow → [Agent Skill Design Guide](agent-skills-guide.md)
-- Rulesync/repository workspace boundary → [Rulesync Repository Conventions](../common/rulesync.md)
+- Rulesync/repository workspace boundary → [Rulesync](../tooling/rulesync.md)
 - 검증 위치와 evidence 수준 → [Testing](../../testing.md)
