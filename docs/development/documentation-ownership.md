@@ -6,13 +6,12 @@
 
 문서는 파일이나 디렉터리가 존재한다는 이유만으로 만들지 않습니다. 각 문서는 child source만으로 복구하기 어려운 contract, durable decision, recovery knowledge 또는 실제 navigation responsibility를 소유해야 합니다.
 
-현재 repository-level entrypoint는 다음 책임으로 구분합니다.
+Repository root의 일반 entrypoint는 다음 책임으로 구분합니다.
 
 | Surface | Responsibility |
 | --- | --- |
 | `README.md` | 사람에게 저장소의 목적과 주요 시작점을 제공 |
 | `AGENTS.md` | repository-local agent behavior와 작업 boundary 제공 |
-| `route/ROUTE.md` | native Skill discovery가 없는 runtime의 bootstrap transition 제공 |
 
 서로 다른 entrypoint가 같은 policy body를 복제하지 않습니다. Linked source가 자기 의미의 authority를 유지합니다.
 
