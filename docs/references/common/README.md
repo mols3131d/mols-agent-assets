@@ -11,7 +11,6 @@ description: 여러 자산과 workflow가 공유하는 최소 repository-local c
 
 | 문서 | 책임 |
 | --- | --- |
-| [Rulesync](rulesync.md) | Rulesync와 이 저장소의 workspace·source 경계 |
 | [Naming](naming.md) | flat namespace의 관리와 충돌 방지 |
 | [CHATBOT Compatibility](chatbot-compatibility.md) | chat runtime의 누락된 harness behavior 보정 |
 | [Design Principles](design-principles.md) | YAGNI, SRP, DRY, KISS, Progressive Disclosure 판단 |

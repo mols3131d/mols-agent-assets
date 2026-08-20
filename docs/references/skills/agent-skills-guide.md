@@ -4,7 +4,7 @@
 
 이 문서는 설계 흐름만 소유합니다.
 
-- canonical source boundary → [Rulesync Repository Conventions](../common/rulesync.md)
+- canonical source boundary → [Rulesync](../tooling/rulesync.md)
 - repository-local authoring → [Skill Authoring Conventions](skill-authoring-conventions.md)
 - Agent Skills portable contract와 vendor links → [Agent Skills Specification](specification.md)
 

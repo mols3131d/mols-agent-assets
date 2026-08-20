@@ -45,7 +45,7 @@ Apply the personal overlay only when one of these is established:
 
 When the overlay applies, read only the applicable convention:
 
-- [Rulesync Repository Conventions](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/rulesync.md) when Rulesync source ownership matters
+- [Rulesync](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/tooling/rulesync.md) when Rulesync source ownership matters
 - [Agent Asset Naming Convention](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/naming.md) when filesystem naming matters
 
 For Skill-specific work, also use `load-context-agent-skills` and its Skill-specific sources.
