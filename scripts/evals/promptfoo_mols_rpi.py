@@ -213,8 +213,8 @@ def _route(prompt: str, skill: str) -> tuple[dict, str] | dict:
         "Do not assume or use the Skill body before activation. Distinguish a request to use the "
         "method from a topical mention, identifier, code concept, or generic repetition according "
         "to the metadata. If the Skill does not activate, answer the user's request normally without "
-        "manufacturing Skill artifacts. If it activates, set activation=true; the response may be a "
-        "brief routing acknowledgement because execution happens after routing.\n\n"
+        "manufacturing Skill artifacts. If it activates, briefly state how the selected method will "
+        "structure the work using only what the discovery metadata establishes.\n\n"
         "Return only JSON matching this schema exactly:\n"
         f"{schema_text}\n\n"
         f"<skill-metadata>\n{_skill_frontmatter(skill)}\n</skill-metadata>"
@@ -264,9 +264,8 @@ def _ollama_output(prompt: str, context: dict) -> dict:
         routed = _route(prompt, skill)
         if isinstance(routed, dict):
             return routed
-        route_payload, route_content = routed
-        if route_payload["activation"] is False:
-            return {"output": route_content}
+        _, route_content = routed
+        return {"output": route_content}
 
     behavior = _execute_behavior(prompt, skill)
     if isinstance(behavior, dict):
