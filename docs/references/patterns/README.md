@@ -64,4 +64,6 @@ Pattern을 작성하거나 수정할 때 다음을 우선 확인합니다.
 5. 필요한 대안과 확장 가능성을 닫아버리지 않았는가?
 6. 다른 capsule과의 overlap을 없애려다 self-containment를 훼손하지 않았는가?
 
+이 README는 pattern 목록이나 index를 소유하지 않습니다. 이 디렉터리의 공통 contract만 소유합니다.
+
 이 디렉터리의 목표는 완전한 규격집을 만드는 것이 아니라, **독립적으로 재사용할 수 있고 필요에 따라 변형 가능한 pattern vocabulary**를 축적하는 것입니다.
