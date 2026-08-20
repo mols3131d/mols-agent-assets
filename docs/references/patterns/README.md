@@ -55,10 +55,10 @@ Pattern은 **본질은 분명하게, 적용은 유연하게** 작성합니다.
 Pattern을 작성하거나 수정할 때 다음을 확인합니다.
 
 1. 이 capsule만으로 pattern의 목적과 본질을 이해할 수 있는가?
-2. Core와 recommendation / option / example이 구분되어 있는가?
-3. 특정 repository나 tool에 불필요하게 고정되어 있지 않은가?
-4. 다른 pattern이나 project policy가 소유해야 할 책임을 가져오지 않았는가?
-5. 필요한 대안과 확장 가능성을 닫아버리지 않았는가?
-6. Bundle이라면 entrypoint에서 전체 의미와 내부 구조를 탐색할 수 있는가?
+1. Core와 recommendation / option / example이 구분되어 있는가?
+1. 특정 repository나 tool에 불필요하게 고정되어 있지 않은가?
+1. 다른 pattern이나 project policy가 소유해야 할 책임을 가져오지 않았는가?
+1. 필요한 대안과 확장 가능성을 닫아버리지 않았는가?
+1. Bundle이라면 entrypoint에서 전체 의미와 내부 구조를 탐색할 수 있는가?
 
 이 README는 pattern 목록이나 index를 소유하지 않습니다. **이 디렉터리의 공통 작성·검토 contract만 소유합니다.**
