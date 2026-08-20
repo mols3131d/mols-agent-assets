@@ -21,15 +21,8 @@ def test_readme_language_variants_are_not_used() -> None:
     assert sorted(path.relative_to(ROOT) for path in variants) == []
 
 
-def test_common_reference_entrypoints_exist() -> None:
+def test_common_convention_entrypoints_exist() -> None:
     common = DOCS / "references" / "common"
-    expected = {
-        "rulesync.md",
-        "naming.md",
-        "chatbot-compatibility.md",
-        "design-principles.md",
-        "instruction-authoring.md",
-        "front-matter-cms.md",
-    }
+    expected = {"rulesync.md", "naming.md", "chatbot-compatibility.md"}
 
     assert expected <= {path.name for path in common.glob("*.md")}
