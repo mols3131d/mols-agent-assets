@@ -14,7 +14,7 @@
 | Projection | Rulesync |
 | Behavioral Contract | `evals/` |
 | Deterministic Verification | `tests/` |
-| Runtime Eval Execution | Promptfoo |
+| Runtime Eval Orchestration | Promptfoo |
 | Target Runtime | Codex, Claude Code, local model 등 실제 executor |
 
 ## 배경
@@ -35,7 +35,7 @@
 
 Promptfoo는 다음 기능만 소유한다.
 
-- eval case 실행
+- eval case 실행 orchestration
 - provider/runtime adapter 호출
 - deterministic 또는 model grader 실행
 - trial 반복과 결과 집계
@@ -56,7 +56,7 @@ normalized eval case
       ↓
 Promptfoo
       ↓
-target runtime + grader
+runtime adapter + grader
 ```
 
 Promptfoo 제거 또는 교체 시 canonical fixture를 마이그레이션하지 않아도 되는 구조를 목표로 한다.
@@ -73,8 +73,19 @@ Rulesync Projection
         ↓
 Target Usage Surface
         ↓
-Promptfoo Runtime Eval
+Target Runtime
+
+Behavioral Contract
+     evals/
+        ↓
+Promptfoo
+        ↓
+Runtime Adapter
+        ↓
+Target Runtime
 ```
+
+Target Runtime이 Rulesync projection을 실제로 소비하고, Promptfoo는 해당 runtime을 호출하고 결과를 평가한다.
 
 Rulesync가 target surface로 정상 projection했다는 사실과 해당 runtime에서 behavior가 동일하다는 주장은 분리한다.
 
@@ -84,7 +95,7 @@ Rulesync가 target surface로 정상 projection했다는 사실과 해당 runtim
 2. projection correctness
 3. runtime behavior correctness
 
-Promptfoo는 3번만 소유한다.
+Promptfoo는 3번의 실행과 평가만 소유한다.
 
 ## 채택 이유
 
@@ -160,7 +171,7 @@ Repository-owned fixture를 한 번 normalize한 뒤 Promptfoo로 projection하�
 ## 도입 원칙
 
 1. **Repository contract first** — Promptfoo보다 `evals/`가 우선한다.
-2. **Projection before runtime claim** — 실제 target surface를 대상으로 평가한다.
+2. **Projection before runtime claim** — 실제 target surface를 소비하는 runtime을 대상으로 평가한다.
 3. **Deterministic before model grader** — 값싼 증거가 가능한 계약에 LLM judge를 사용하지 않는다.
 4. **Portable by default** — target-specific fixture는 실제 차이가 증명된 경우에만 추가한다.
 5. **Local/manual first** — stochastic eval은 안정성과 비용이 확인된 뒤 자동화 범위를 넓힌다.
