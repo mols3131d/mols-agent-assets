@@ -1,8 +1,19 @@
 # Artifact Inbox
 
-작업 중 생성되는 report, research, review, handoff, draft 같은 **임시·비정본 artifact**를 canonical surface와 분리해 두는 패턴입니다.
+작업 중 생성되는 report, research, review, handoff, draft 같은 **working / non-canonical artifact**를 canonical surface와 분리해 두는 패턴입니다.
 
-## Layout
+## Purpose
+
+완성되지 않았거나 아직 canonical owner로 승격할 필요가 없는 artifact를 안전하게 보관하면서, repository의 durable source와 작업 중 산출물을 구분합니다.
+
+## Core
+
+- Inbox는 working artifact를 위한 별도 surface입니다.
+- Inbox에 있다는 이유만으로 artifact가 canonical documentation, source, plan 또는 project state가 되지 않습니다.
+- Root inbox와 nested inbox는 같은 패턴을 서로 다른 scope에서 적용한 형태입니다.
+- Artifact가 durable knowledge가 되면 적절한 canonical owner로 옮길 수 있고, 더 이상 필요하지 않으면 삭제할 수 있습니다.
+
+## Typical Forms
 
 ```text
 inbox/
@@ -13,21 +24,45 @@ inbox/
    └─ ...
 ```
 
-- root `inbox/` — project-wide 또는 명확한 local owner가 없는 artifact
-- `**/inbox/*` — 특정 directory, domain, asset 등 가까운 scope에 속한 artifact
+대표적인 사용 방식은 다음과 같습니다.
 
-소유 범위가 분명하면 가장 가까운 nested inbox를 우선하고, 여러 scope를 가로지르면 root inbox를 사용합니다.
+- root `inbox/` — repository 또는 project 전체와 관련된 artifact
+- `**/inbox/*` — 특정 directory, domain, component, asset 등 local scope와 가까운 artifact
 
-## Pattern
+어느 쪽을 사용할지는 artifact의 관계와 project 구조에 따라 정할 수 있으며, 이 패턴 자체는 root와 nested 사이의 고정된 우선순위를 요구하지 않습니다.
 
-- Inbox는 작업 결과를 안전하게 임시 보관하고 사람·agent 사이에 전달하는 working surface입니다.
-- Artifact는 검토·정제 후 필요하면 적절한 canonical owner로 승격합니다.
-- 더 이상 가치가 없는 artifact는 삭제할 수 있습니다. 보존 자체가 목적이 아닙니다.
-- 구조, 파일명, retention 방식은 project 필요에 맞게 정합니다. 불필요한 index나 hierarchy를 강제하지 않습니다.
+## Typical Contents
+
+- research
+- review
+- briefing / report
+- handoff
+- draft
+- temporary analysis or generated artifact
+
+목록은 예시이며 inbox가 특정 artifact type만 허용한다는 뜻은 아닙니다.
+
+## Options
+
+Project 필요에 따라 다음을 선택적으로 추가할 수 있습니다.
+
+- 날짜 기반 directory
+- naming convention
+- frontmatter나 metadata
+- retention / cleanup policy
+- index나 routing asset
+- generator나 cleanup automation
+
+단순한 repository에서는 평평한 `inbox/` 하나만으로도 충분할 수 있습니다.
+
+## Lifecycle
+
+Artifact는 inbox에서 생성·검토·수정될 수 있습니다. 이후 필요에 따라 canonical owner로 승격하거나, 계속 working artifact로 유지하거나, 삭제할 수 있습니다.
+
+Inbox가 얼마나 오래 artifact를 보존할지와 어떤 승격 절차를 사용할지는 repository가 정합니다.
 
 ## Boundary
 
-- Inbox의 존재만으로 artifact가 canonical documentation, source, plan 또는 project state가 되지 않습니다.
-- Inbox를 branch state, task tracker, runtime dependency 또는 영구 archive처럼 사용하지 않습니다.
-- Durable knowledge는 inbox에 계속 쌓아두지 말고 실제 owner로 옮깁니다.
-- Nested inbox는 상위 inbox와 같은 의미를 가지며, 차이는 **scope와 proximity**뿐입니다.
+이 패턴은 **working artifact와 canonical surface를 분리하는 저장 위치와 scope**를 다룹니다.
+
+Inbox 자체가 archive, task tracker, workflow state, runtime dependency 등의 의미를 자동으로 갖지는 않습니다. Project가 그런 기능을 함께 사용하려면 별도 관행으로 정의할 수 있습니다.
