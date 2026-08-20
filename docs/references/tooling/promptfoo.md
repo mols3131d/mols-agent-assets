@@ -7,7 +7,7 @@ description: Promptfoo eval tooling의 official source routing과 repository-loc
 
 이 reference는 Promptfoo 사용법이나 option catalog를 복제하지 않고, 자주 확인할 current official source로 라우팅합니다.
 
-Repository-local 기준은 [Testing](../../development/testing.md), 실행 config는 [`evals/promptfoo/`](../../../evals/promptfoo/), adapter와 runner는 [`scripts/evals/`](../../../scripts/evals/)에서 확인합니다. Behavioral contract authority는 `evals/`에 둡니다.
+Repository-local 기준은 [Testing](../../development/testing.md), 실행 config는 [`evals/promptfoo/`](../../../evals/promptfoo/), adapter와 runner는 [`scripts/evals/`](../../../scripts/evals/)에서 확인합니다.
 
 ## Core lookup
 
@@ -43,8 +43,6 @@ Promptfoo OSS config와 config가 참조하는 code/data는 sandboxed input으�
 
 - [CI/CD integration](https://www.promptfoo.dev/docs/integrations/ci-cd/)
 - [GitHub Action](https://www.promptfoo.dev/docs/integrations/github-action/)
-
-Stochastic eval을 blocking gate로 사용할지는 Promptfoo 기능이 아니라 repository policy로 결정합니다.
 
 ## Red teaming
 
