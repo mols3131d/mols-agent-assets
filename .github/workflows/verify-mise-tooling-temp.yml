@@ -18,25 +18,43 @@ jobs:
       - uses: actions/checkout@v7
       - uses: jdx/mise-action@v3
         with:
-          install: true
+          install: false
           cache: false
-      - name: Show managed tools
-        run: |
-          mise exec -- uv --version
-          mise exec -- node --version
-          mise exec -- rumdl --version
-          mise exec -- lefthook version
-          mise exec -- biome --version
-      - name: Run static checks
-        run: mise run check
-      - name: Run tests
-        run: mise run test
-      - name: Record success
+      - name: Verify tooling
         shell: bash
         run: |
-          printf '%s\n' "$GITHUB_SHA" > .mise-tooling-verified
+          set +e
+          log=.mise-tooling-verification.log
+          : > "$log"
+          status=0
+
+          run_check() {
+            printf '\n$ %s\n' "$*" >> "$log"
+            "$@" >> "$log" 2>&1
+            code=$?
+            printf 'exit=%s\n' "$code" >> "$log"
+            if ((code != 0)); then
+              status=$code
+            fi
+          }
+
+          run_check mise install
+          run_check mise exec -- uv --version
+          run_check mise exec -- node --version
+          run_check mise exec -- rumdl version
+          run_check mise exec -- lefthook version
+          run_check mise exec -- biome --version
+          run_check mise run check
+          run_check mise run test
+
+          if ((status == 0)); then
+            printf '%s\n' "$GITHUB_SHA" > .mise-tooling-verified
+          fi
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- .mise-tooling-verified
+          git add -- "$log"
+          [[ -f .mise-tooling-verified ]] && git add -- .mise-tooling-verified
           git commit -m "chore(tooling): record mise verification"
           git push origin HEAD:chatbot/feat/mise-tooling
+          exit "$status"
