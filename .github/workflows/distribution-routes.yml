@@ -28,7 +28,7 @@ jobs:
         run: mise install uv
       - name: Generate distribution routes
         run: >-
-          mise exec -- uv run --no-project --with "pyyaml>=6.0.2"
+          uv run --no-project --with "pyyaml>=6.0.2"
           python scripts/generate_distribution_routes.py
       - name: Commit changed routes
         shell: bash
