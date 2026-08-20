@@ -121,9 +121,11 @@ Active Scope
 - Acceptance conditions
 ```
 
+At Run start, establish a provisional Active Scope before the first substantive Loop.
 Derive it from the user's instruction, governing artifacts, and current Goal. When the
-boundary is implicit, infer the smallest scope sufficient to pursue the Goal. Explicit
-user-defined boundaries take precedence over inferred convenience.
+boundary is implicit, infer the smallest scope sufficient to pursue the Goal and record
+material boundary uncertainty instead of silently widening it. Explicit user-defined
+boundaries take precedence over inferred convenience.
 
 Scope controls what Work belongs to the current problem; it does not grant operational
 permission or weaken authority, safety, persistence, or validation requirements.
@@ -135,9 +137,11 @@ Apply these rules:
 1. **Narrowing is adaptive.** Review may narrow an inferred or broad Scope when doing so
    preserves the Goal, user-required Work, and required acceptance conditions. Record the
    Scope delta and revalidate affected Plan coverage before Work continues.
-1. **Expansion is consequential.** Expand only from Review when evidence shows the wider
-   Scope is materially required for the Goal. Support the expansion with Research, update
-   the Plan before affected Work, and stay within current authority and safety boundaries.
+1. **Expansion is consequential.** Review may propose expansion when the wider Scope
+   appears materially required for the Goal, but the proposal does not change the Active
+   Scope. Research must validate the need and boundary, the Plan must incorporate the
+   validated expansion, and applicable authority/safety gates must pass before the Active
+   Scope expands and affected Work begins.
 1. **Explicit boundaries are not silently mutable.** Never expand across a user-defined
    `Out of scope`, replace a user-defined Goal, or relax a required acceptance condition
    without new authority from the source that set that boundary.
@@ -169,7 +173,7 @@ flowchart TD
     V -->|bounded work gap| A
     V -->|scope narrowing| N["Narrow Active Scope"]
     N --> P
-    V -->|scope expansion required| E["Research expansion"]
+    V -->|scope expansion needed| E["Propose expansion"]
     E --> R
     V -->|narrower blocker| S["Push child scope"]
     V -->|saturation| L["Limit or Block"]
@@ -222,7 +226,7 @@ Plan Artifact
 Review Artifact
 - Reviewed: <result + prerequisite artifacts>
 - Validation evidence
-- Scope delta, if any
+- Scope delta or pending expansion, if any
 - Deviations / gaps
 - Next transition / status
 ```
@@ -262,7 +266,8 @@ instructions apply only when an authorized source actually governs the active sc
 Derive the smallest Plan that can move the current state toward the Goal inside the
 Active Scope. Include the intended state change, scope, approach, ordered Work,
 acceptance/validation, and material assumptions that would force replanning if they
-changed.
+changed. When Review proposed a Scope expansion, incorporate only the boundary validated
+by Research; do not plan Work against an unvalidated wider Scope.
 
 A Plan is methodological authorization, not operational permission.
 
@@ -281,8 +286,8 @@ changes; return to Research first when the new decision lacks evidence.
 
 Review is both verifier and controller. Compare the current result with the Goal, Active
 Scope, applicable prerequisite artifacts, acceptance conditions, and relevant validation.
-Record only material deviations, gaps, regressions, uncertainty, Scope deltas, and the
-next transition.
+Record only material deviations, gaps, regressions, uncertainty, Scope deltas or proposed
+expansions, and the next transition.
 
 Choose the next transition from evidence:
 
@@ -293,7 +298,7 @@ Choose the next transition from evidence:
 | plan gap | Update Plan; Research first if the missing decision lacks support |
 | bounded work gap | Fix within the valid Scope, Plan, and authority; validate; Review again |
 | useful scope narrowing | Narrow Scope; revalidate affected Plan coverage before Work |
-| material scope expansion required | Research the expansion; update Plan; verify authority; never cross explicit user boundaries silently |
+| material scope expansion required | Propose expansion → Research validates boundary → Plan incorporates it → authority check → expand Scope → Work |
 | narrower material blocker | Push a recursive child scope from this Review |
 | saturation | Change source/method/perspective or narrow Scope once useful; if continuation requires expansion, apply the Scope Contract; otherwise Block when no credible path remains |
 | effective Loop ceiling reached | Finish Review and hand off |
@@ -344,6 +349,10 @@ A child may push another child only from its own Review. Therefore every recursi
 is preceded by a counted substantive Loop, and the run-wide Loop ceiling keeps both
 iteration and recursion finite without a separate maximum depth.
 
+If resolving a child would require Work outside the parent Active Scope, do not expand the
+child locally. Return the expansion need and supporting evidence to the parent Review,
+which may apply the Scope Contract.
+
 Return only what the parent needs: new evidence, the decision/resolved finding, impact on
 parent Research, Scope, or Plan, and unresolved limitations. Then pop the child scope and
 revalidate affected parent artifacts. A child result never automatically overrides
@@ -363,9 +372,9 @@ After the final allowed Review:
 1. use the established handoff mechanism rather than inventing another persistent handoff
    format;
 1. preserve `loops_used`, the effective ceiling, the active scope path, the current Active
-   Scope definition, and references to valid Research, accepted Plan, completed
-   Work/validation, current Review state, remaining material gaps, unresolved child
-   results or parent impacts, and recommended next transition;
+   Scope definition, pending Scope proposals, and references to valid Research, accepted
+   Plan, completed Work/validation, current Review state, remaining material gaps,
+   unresolved child results or parent impacts, and recommended next transition;
 1. preserve the exhaustion reason plus authority, approval, environment, validation, and
    material risk boundaries needed for safe continuation;
 1. mark the Run as handed off, not complete.
@@ -374,10 +383,10 @@ If no established handoff surface is available, return the same minimum continua
 state inline; do not invent storage or claim persistence.
 
 A later RPI Run may continue from the handoff only after validating inherited Research,
-Active Scope, Plan, current state, and authority. The later Run receives a new hard
-ceiling of 30, subject to any lower limit explicitly established for that continuation
-Run. Handoff does not itself authorize or auto-start another Run, and it must never become
-a hidden reset inside the exhausted Run.
+Active Scope, pending Scope proposals, Plan, current state, and authority. The later Run
+receives a new hard ceiling of 30, subject to any lower limit explicitly established for
+that continuation Run. Handoff does not itself authorize or auto-start another Run, and
+it must never become a hidden reset inside the exhausted Run.
 
 ## Completion
 
