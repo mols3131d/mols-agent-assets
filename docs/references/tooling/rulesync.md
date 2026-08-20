@@ -37,7 +37,7 @@ runtime usage surface
 
 이 저장소는 supported vendor/target matrix를 정의하지 않습니다. Target은 구체적인 projection 또는 검증 operation에서만 선택합니다. 개별 asset의 유효한 target-specific metadata는 현재 projection 대상이 아니라는 이유만으로 제거하지 않습니다.
 
-새 semantics가 필요하면 current Rulesync가 표현하는지 먼저 확인합니다. 가능하면 native feature/namespace를 사용하고, 실제로 표현할 수 없는 요구가 있을 때만 peer custom source를 검토합니다. Repository-local superset schema나 manual projection semantics를 만들지 않습니다.
+Repository-local superset schema나 manual projection semantics는 만들지 않습니다. Custom semantic은 **current Rulesync로 required behavior를 표현할 수 없다는 것이 확인된 경우에만** 후보가 됩니다.
 
 ## Local Entry Points
 
