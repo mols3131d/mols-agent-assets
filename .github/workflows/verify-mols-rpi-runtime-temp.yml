@@ -53,11 +53,19 @@ jobs:
           exit 1
 
       - name: Pull evaluation model
-        run: ollama pull qwen2.5:3b
+        run: ollama pull qwen2.5:7b
 
-      - name: Run Promptfoo runtime eval
+      - name: Run failing behavior cases
+        shell: bash
         env:
-          PROMPTFOO_RUNTIME_MODEL: qwen2.5:3b
-          PROMPTFOO_GRADER_PROVIDER: ollama:chat:qwen2.5:3b
+          PROMPTFOO_RUNTIME_MODEL: qwen2.5:7b
+          PROMPTFOO_GRADER_PROVIDER: ollama:chat:qwen2.5:7b
           PROMPTFOO_RUNTIME_TIMEOUT_SECONDS: "300"
-        run: npm run eval:promptfoo:mols-rpi
+        run: |
+          sed \
+            -e '/explicit-rpi-activates/d' \
+            -e '/loop-topic-does-not-activate/d' \
+            evals/promptfoo/mols-rpi.yaml \
+            > evals/promptfoo/mols-rpi-runtime-temp.yaml
+          uv run python scripts/evals/run_promptfoo.py eval \
+            -c evals/promptfoo/mols-rpi-runtime-temp.yaml
