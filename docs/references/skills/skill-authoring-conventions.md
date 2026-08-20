@@ -58,6 +58,6 @@ Repository-wide shared metadata를 만들기 위해 target namespace를 재사�
 
 ## Boundary
 
-- Skill 설계 workflow → [Agent Skill Design Guide](agent-skills-guide.md)
+- Agent Skills standard와 target source registry → [Agent Skills Specification](specification.md)
 - Rulesync/repository workspace boundary → [Rulesync](../tooling/rulesync.md)
 - 검증 위치와 evidence 수준 → [Testing](../../testing.md)
