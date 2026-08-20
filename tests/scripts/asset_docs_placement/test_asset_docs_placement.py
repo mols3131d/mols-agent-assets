@@ -195,11 +195,10 @@ def test_creator_packager_excludes_non_runtime_surfaces(tmp_path: Path) -> None:
     )
 
 
-def test_targeted_workflow_routes_skill_tests_and_evals() -> None:
+def test_pr_gate_covers_repository_tests_and_eval_smoke() -> None:
     workflow = TARGETED_TESTS.read_text(encoding="utf-8")
-    assert '"src/rulesync/**"' in workflow
-    assert '"tests/skills/**"' in workflow
-    assert '"evals/skills/**"' in workflow
-    assert "src/rulesync/.rulesync/skills/*)" in workflow
-    assert "evals/skills/*)" in workflow
-    assert 'root_targets["tests/scripts/asset_docs_placement"]=1' in workflow
+    assert "name: PR Gate" in workflow
+    assert "pytest -q tests" in workflow
+    assert "src/rulesync/.rulesync/skills/mols-rpi/*" in workflow
+    assert "evals/skills/mols-rpi/*" in workflow
+    assert "npm run eval:promptfoo:mols-rpi:smoke" in workflow
