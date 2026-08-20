@@ -9,11 +9,7 @@ Pattern은 특정 project의 operational policy가 아니라, 반복해서 사�
 하나의 pattern은 하나의 **self-contained capsule**입니다.
 
 - 다른 capsule 없이도 pattern의 목적, core, 주요 선택지와 경계를 이해할 수 있어야 합니다.
-- 다른 pattern과 내용이 겹치는 것은 self-containment와 재사용성에 도움이 되면 허용합니다.
-- 중복 자체보다 **각 capsule이 어떤 책임을 소유하는지**를 우선 봅니다.
-- 다른 pattern의 책임이나 특정 project의 operational policy를 대신 소유하지 않습니다.
-
-관련 pattern이나 외부 authority를 reference할 수 있지만, 그 의존성이 capsule의 핵심 의미를 대신하지는 않습니다.
+- 관련 pattern이나 외부 source를 reference할 수 있지만, 그 의존성이 capsule의 핵심 의미를 대신하지는 않습니다.
 
 ## Shape
 
@@ -47,10 +43,12 @@ Pattern은 **본질은 분명하게, 적용은 유연하게** 작성합니다.
 
 각 capsule은 자기 pattern을 충분히 설명하되 그 경계를 넘지 않습니다.
 
-- 다른 capsule과의 overlap은 허용합니다.
-- 같은 capsule이나 bundle 내부의 의미 없는 반복은 피합니다.
+- 다른 capsule과 내용이 겹치는 것은 self-containment와 재사용성에 도움이 되면 허용합니다.
+- 중복 자체보다 **각 capsule이 어떤 책임을 소유하는지**를 우선 봅니다.
+- 다른 pattern의 핵심 책임을 자기 규칙처럼 소유하지 않습니다.
 - Project-local convention과 mandatory workflow는 해당 project의 operational documentation이 소유합니다.
 - 외부 standard나 tool behavior가 authority라면 필요에 따라 reference하고 pattern이 이를 재정의하지 않습니다.
+- 같은 capsule이나 bundle 내부의 의미 없는 반복은 피합니다.
 
 ## Review
 
@@ -61,6 +59,6 @@ Pattern을 작성하거나 수정할 때 다음을 확인합니다.
 3. 특정 repository나 tool에 불필요하게 고정되어 있지 않은가?
 4. 다른 pattern이나 project policy가 소유해야 할 책임을 가져오지 않았는가?
 5. 필요한 대안과 확장 가능성을 닫아버리지 않았는가?
-6. Bundle이라면 분할 이유가 있고 entrypoint에서 전체를 탐색할 수 있는가?
+6. Bundle이라면 entrypoint에서 전체 의미와 내부 구조를 탐색할 수 있는가?
 
 이 README는 pattern 목록이나 index를 소유하지 않습니다. **이 디렉터리의 공통 작성·검토 contract만 소유합니다.**
