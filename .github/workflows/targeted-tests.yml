@@ -11,6 +11,11 @@ on:
       - "src/rulesync/**"
       - "route/**"
       - "package.json"
+      - "mise.toml"
+      - "biome.json"
+      - "lefthook.yml"
+      - ".python-version"
+      - ".vscode/tasks.json"
       - ".gitattributes"
       - ".rumdl.toml"
       - "evals/regression/**"
@@ -101,6 +106,7 @@ jobs:
                 add_asset_docs
                 add_distribution_routes
                 add_script "rumdl_main_autofix"
+                add_script "tooling"
                 root_targets["tests/evals"]=1
                 ;;
               .github/workflows/distribution-routes.yml|route/*)
@@ -108,6 +114,10 @@ jobs:
                 ;;
               .gitattributes|.rumdl.toml|.github/workflows/rumdl-main-autofix.yml)
                 add_script "rumdl_main_autofix"
+                add_script "tooling"
+                ;;
+              mise.toml|biome.json|lefthook.yml|.python-version|.vscode/tasks.json|pyproject.toml|uv.lock)
+                add_script "tooling"
                 ;;
               README.md|AGENTS.md|inbox/README.md|tests/test_documentation_consistency.py)
                 add_documentation_consistency
@@ -142,8 +152,12 @@ jobs:
                 add_asset_docs
                 add_documentation_consistency
                 ;;
-              src/rulesync/.rulesync/rules/*|src/rulesync/.rulesync/subagents/*|src/rulesync/rulesync.jsonc|package.json|evals/regression/rulesync-source-isolation.json|tests/test_rulesync_source_isolation.py)
+              src/rulesync/.rulesync/rules/*|src/rulesync/.rulesync/subagents/*|src/rulesync/rulesync.jsonc|evals/regression/rulesync-source-isolation.json|tests/test_rulesync_source_isolation.py)
                 add_isolation
+                ;;
+              package.json)
+                add_isolation
+                add_script "tooling"
                 ;;
               docs/skills/*|docs/references/skills/*|docs/development/testing.md)
                 add_asset_docs
@@ -171,11 +185,16 @@ jobs:
             echo "run=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Set up uv
+      - name: Set up mise
         if: steps.scope.outputs.run == 'true'
-        uses: astral-sh/setup-uv@v9.0.0
+        uses: jdx/mise-action@v3
         with:
-          enable-cache: false
+          install: false
+          cache: true
+
+      - name: Install uv
+        if: steps.scope.outputs.run == 'true'
+        run: mise install uv
 
       - name: Run central tests
         if: steps.scope.outputs.run == 'true'
@@ -183,4 +202,4 @@ jobs:
         run: |
           [[ -f /tmp/root-tests ]] || exit 0
           mapfile -d '' targets < /tmp/root-tests
-          uv run --frozen --no-default-groups --group test pytest -q "${targets[@]}"
+          mise exec -- uv run --frozen --no-default-groups --group test pytest -q "${targets[@]}"
