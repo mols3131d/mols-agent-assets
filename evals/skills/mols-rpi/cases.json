@@ -120,6 +120,7 @@
       "assertions": [
         "Stops affected Work and treats Scope expansion as a consequential Review transition",
         "Requires Research evidence for the expansion and an updated Plan before affected Work",
+        "Expands only by the smallest justified boundary delta rather than adjacent or opportunistic work",
         "Checks authority and safety boundaries before expanding"
       ]
     },
