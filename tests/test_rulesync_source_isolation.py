@@ -102,7 +102,8 @@ def test_repository_rulesync_commands_delegate_projection_to_rulesync() -> None:
     assert "TemporaryDirectory" in runner
     assert "assert_projection" not in runner
 
-    workflow = (ROOT / ".github/workflows/rulesync.yml").read_text(encoding="utf-8")
+    workflow = (ROOT / ".github/workflows/targeted-tests.yml").read_text(encoding="utf-8")
+    assert "Validate canonical Rulesync source" in workflow
     assert "npm run rulesync:doctor" in workflow
     assert "rulesync generate" not in workflow
     assert "--targets" not in workflow
