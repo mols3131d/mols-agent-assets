@@ -5,7 +5,7 @@ description: Rulesync native source를 이 개인 자산 저장소에서 관리�
 
 # Rulesync Repository Conventions
 
-이 문서는 Rulesync가 소유하지 않는 **repository integration boundary**만 정의합니다. Schema, file format, feature, target namespace와 projection behavior는 current upstream이 authoritative하며 자주 확인하는 공식 source는 [Rulesync Tooling Reference](../tooling/rulesync.md)에서 찾습니다.
+이 문서는 Rulesync가 소유하지 않는 **repository integration boundary**만 정의합니다. Schema, file format, feature, target namespace와 projection behavior는 current upstream이 authoritative합니다.
 
 ## Workspaces
 
