@@ -29,25 +29,23 @@ src/rulesync/.rulesync/
 Rulesync Projection
         │
         ▼
-Target Usage Surface
-        │
-        ▼
-Runtime Adapter
-        │
-        ▼
-Promptfoo
-        │
-        ├─ deterministic grader
-        ├─ local/model grader
-        └─ trial/result aggregation
-
-Behavioral Contract
- evals/**/*.json
-        │
-        └──────► Eval Normalizer ──────► Promptfoo
+Target Usage Surface ───────────────┐
+                                    │ consumed by
+                                    ▼
+Behavioral Contract             Target Runtime
+ evals/**/*.json                    ▲
+        │                           │ invoked by
+        ▼                           │
+Eval Normalizer                Runtime Adapter
+        │                           ▲
+        └──────────► Promptfoo ─────┘
+                         │
+                         ├─ deterministic grader
+                         ├─ local/model grader
+                         └─ trial/result aggregation
 ```
 
-Rulesync와 Promptfoo 사이에 직접적인 authority coupling을 만들지 않는다.
+Rulesync와 Promptfoo 사이에 직접적인 authority coupling을 만들지 않는다. Promptfoo는 runtime을 orchestration하고 평가하지만, target-specific asset surface는 Rulesync projection이 제공한다.
 
 ## 단계
 
@@ -100,6 +98,8 @@ Promptfoo provider 자체를 repository runtime abstraction으로 사용하지 �
 예:
 
 ```text
+Promptfoo
+    ↓
 runtime adapter
 ├─ native CLI
 ├─ local model
@@ -140,9 +140,10 @@ PoC가 안정화된 뒤 실제 target surface를 대상으로 검증한다.
 1. canonical asset 준비
 2. temporary workspace 생성
 3. Rulesync target projection
-4. target runtime 실행
-5. Promptfoo 평가
-6. temporary output 폐기
+4. Promptfoo가 runtime adapter를 통해 target runtime 실행
+5. target runtime이 projection된 usage surface를 소비
+6. Promptfoo가 결과 평가
+7. temporary output 폐기
 
 이 단계에서 처음으로 projection parity와 runtime parity를 함께 관찰한다.
 
