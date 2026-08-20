@@ -1,5 +1,5 @@
 # Route
 
-- [Skills](skills.jsonl) — select task-relevant Skills by `name` and `description`, then load only the selected `source`.
+Before substantive work, **read the complete Skill route at [`route/skills.jsonl`](https://raw.githubusercontent.com/mols3131d/mols-agent-assets/refs/heads/main/route/skills.jsonl) and follow its `_meta.instructions` before acting. Do not stop after reading this entrypoint.**
 
-Route metadata is discovery-only. Canonical assets remain authoritative.
+Route metadata is discovery-only. Canonical asset sources remain authoritative.
