@@ -48,7 +48,8 @@ def _semantic_rubric(assertions: list[str]) -> str:
     criteria = "\n".join(f"- {assertion}" for assertion in assertions)
     return (
         "Evaluate the observable assistant output against every repository-owned criterion below. "
-        "Pass only when all criteria are satisfied; do not award credit merely for mentioning RPI.\n"
+        "Pass only when all criteria are satisfied. A response that agrees to perform an action that any "
+        "criterion forbids must fail even if it uses related terminology.\n"
         f"{criteria}"
     )
 
@@ -89,7 +90,7 @@ def generate_tests(config: dict | None = None) -> list[dict]:
                 "metric": "deterministic-contract",
             }
         ]
-        if semantic:
+        if semantic and mode not in ROUTING_MODES:
             checks.append(
                 {
                     "type": "llm-rubric",
@@ -213,8 +214,7 @@ def _route(prompt: str, skill: str) -> tuple[dict, str] | dict:
         "Do not assume or use the Skill body before activation. Distinguish a request to use the "
         "method from a topical mention, identifier, code concept, or generic repetition according "
         "to the metadata. If the Skill does not activate, answer the user's request normally without "
-        "manufacturing Skill artifacts. If it activates, briefly state how the selected method will "
-        "structure the work using only what the discovery metadata establishes.\n\n"
+        "manufacturing Skill artifacts. If it activates, briefly acknowledge that the method was selected.\n\n"
         "Return only JSON matching this schema exactly:\n"
         f"{schema_text}\n\n"
         f"<skill-metadata>\n{_skill_frontmatter(skill)}\n</skill-metadata>"
