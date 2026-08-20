@@ -104,12 +104,16 @@ def test_artifact_order_and_permission_boundary_are_explicit() -> None:
 def test_loop_exhaustion_is_a_handoff_boundary() -> None:
     _, body = load()
     body = compact(body)
-    assert "continuation boundary" in body
-    assert "start no new Loop" in body
-    assert "preserve `loops_used`, the effective ceiling, the active scope path" in body
-    assert "current Active Scope definition" in body
-    assert "pending Scope proposals" in body
-    assert "validating inherited Research, Active Scope, pending Scope proposals, Plan" in body
-    assert "mark the Run as handed off, not complete" in body
-    assert "Handoff does not itself authorize or auto-start another Run" in body
-    assert "**HANDOFF**" in body
+    required = [
+        "continuation boundary",
+        "start no new Loop",
+        "preserve `loops_used`, the effective ceiling, the active scope path",
+        "current Active Scope definition",
+        "pending Scope proposals",
+        "validating inherited Research, Active Scope, pending Scope proposals, Plan",
+        "mark the Run as handed off, not complete",
+        "Handoff does not itself authorize or auto-start another Run",
+        "**HANDOFF**",
+    ]
+    for phrase in required:
+        assert phrase in body
