@@ -56,13 +56,30 @@ def test_run_has_one_global_hard_loop_ceiling() -> None:
     assert "Never hide a reset" in body
 
 
+def test_scope_is_explicit_dynamic_and_bounded() -> None:
+    _, body = load()
+    body = compact(body)
+    assert "## Scope Contract" in body
+    assert "Active Scope - Goal - In scope - Out of scope - Acceptance conditions" in body
+    assert "infer the smallest scope sufficient to pursue the Goal" in body
+    assert "Work stays inside the Active Scope" in body
+    assert "Out-of-scope findings may inform Research or Review" in body
+    assert "Narrowing is adaptive" in body
+    assert "Expansion is consequential" in body
+    assert "Expand only from Review" in body
+    assert "Explicit boundaries are not silently mutable" in body
+    assert "Scope change never resets controls" in body
+    assert "Recursive Scope only narrows" in body
+    assert "strict subset of its parent Scope" in body
+
+
 def test_recursion_is_review_gated_and_authority_cannot_expand() -> None:
     _, body = load()
     body = compact(body)
     assert "Push a child scope only from Review" in body
     assert "every recursive descent" in body
     assert "preceded by a counted substantive Loop" in body
-    assert "A child may narrow these boundaries, never expand them." in body
+    assert "A child may narrow these boundaries, never expand or replace them." in body
 
 
 def test_artifact_order_and_permission_boundary_are_explicit() -> None:
@@ -81,6 +98,7 @@ def test_loop_exhaustion_is_a_handoff_boundary() -> None:
     assert "continuation boundary" in body
     assert "start no new Loop" in body
     assert "preserve `loops_used`, the effective ceiling, the active scope path" in body
+    assert "current Active Scope definition" in body
     assert "mark the Run as handed off, not complete" in body
     assert "Handoff does not itself authorize or auto-start another Run" in body
     assert "**HANDOFF**" in body
