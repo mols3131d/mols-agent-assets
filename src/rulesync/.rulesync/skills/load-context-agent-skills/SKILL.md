@@ -37,7 +37,7 @@ When Agent Skills format, metadata, discovery, or portability matters, read:
 
 Use the maintained repository registry to locate current target-specific references without reproducing them here:
 
-- [mols Agent Skills Specification and vendor registry](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/skills/agent-skills-io/agent-skills-io-specification.md)
+- [mols Agent Skills Specification and vendor registry](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/skills/specification.md)
 
 After identifying the actual target, follow only that target's official links from the registry. Do not load every vendor guide.
 

@@ -2,7 +2,7 @@
 
 이 문서는 Agent Skills 관련 **official source registry**입니다. Portable contract의 최종 authority는 [Agent Skills Specification](https://agentskills.io/specification)이며, 이 저장소는 규격의 field·path·validation 세부사항을 snapshot으로 복제하지 않습니다.
 
-Rulesync-managed Skill의 canonical source shape는 current Rulesync가 소유하고, repository-local 작성 관행은 [Skill Authoring Conventions](../skill-authoring-conventions.md)가 소유합니다.
+Rulesync-managed Skill의 canonical source shape는 current Rulesync가 소유하고, repository-local 작성 관행은 [Skill Authoring Conventions](skill-authoring-conventions.md)가 소유합니다.
 
 ## Authority
 
@@ -47,4 +47,4 @@ Creator Skill은 target-specific authoring guidance이며 portable specification
 - Canonical Rulesync representation → Rulesync
 - Portable Agent Skills contract → agentskills.io
 - Target runtime behavior → 해당 target official source
-- Repository-local authoring → [Skill Authoring Conventions](../skill-authoring-conventions.md)
+- Repository-local authoring → [Skill Authoring Conventions](skill-authoring-conventions.md)

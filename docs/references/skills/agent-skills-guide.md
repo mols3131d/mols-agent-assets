@@ -6,7 +6,7 @@
 
 - canonical source boundary → [Rulesync Repository Conventions](../common/rulesync.md)
 - repository-local authoring → [Skill Authoring Conventions](skill-authoring-conventions.md)
-- Agent Skills portable contract와 vendor links → [Agent Skills Specification](agent-skills-io/agent-skills-io-specification.md)
+- Agent Skills portable contract와 vendor links → [Agent Skills Specification](specification.md)
 
 ## Model
 
