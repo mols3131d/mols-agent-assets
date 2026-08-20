@@ -29,7 +29,7 @@
 
 - 공통 template과 specialized template의 조합
 - schema composition이나 reusable definition
-- metadata 기반 생성·검증·routing
+- metadata를 생성·검증 또는 다른 tooling에서 재사용
 - template/schema 변경을 감지하는 validation automation
 
 자동화는 패턴의 확장 수단이며 필수 조건은 아닙니다.
