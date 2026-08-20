@@ -12,7 +12,8 @@ def test_rulesync_source_and_runtime_surfaces_have_separate_roles() -> None:
     attributes = ATTRIBUTES.read_text(encoding="utf-8")
     assert "src/rulesync/** rulesync-source" in attributes
     assert "route/skills.jsonl linguist-generated" in attributes
-    assert "src/rulesync/.rulesync/skills/INDEX.jsonl linguist-generated" not in attributes
+    generated_index = "src/rulesync/.rulesync/skills/INDEX.jsonl linguist-generated"
+    assert generated_index not in attributes
     for forbidden in [
         ".github/skills/** linguist-generated",
         ".github/agents/** linguist-generated",
@@ -36,7 +37,10 @@ def test_rumdl_config_keeps_repository_markdown_policy() -> None:
 def test_main_autofix_only_formats_markdown() -> None:
     workflow = AUTOFIX.read_text(encoding="utf-8")
 
-    assert 'uvx rumdl@0.2.6 fmt "${files[@]}"' in workflow
+    assert "mise install rumdl" in workflow
+    assert 'rumdl fmt "${files[@]}"' in workflow
+    assert "mise exec -- rumdl" not in workflow
+    assert "uvx rumdl" not in workflow
     assert "git check-attr rulesync-source" not in workflow
     assert "git check-attr linguist-generated" not in workflow
     assert "generate_distribution_routes.py" not in workflow

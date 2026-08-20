@@ -20,10 +20,14 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Set up uv
-        uses: astral-sh/setup-uv@v9.0.0
+      - name: Set up mise
+        uses: jdx/mise-action@v3
         with:
-          enable-cache: false
+          install: false
+          cache: true
+
+      - name: Install rumdl
+        run: mise install rumdl
 
       - name: Format changed Markdown
         shell: bash
@@ -36,7 +40,7 @@ jobs:
           mapfile -d '' files < <(
             git diff --name-only -z --diff-filter=ACMR "$BEFORE" "$AFTER" -- '*.md'
           )
-          ((${#files[@]})) && uvx rumdl@0.2.6 fmt "${files[@]}"
+          ((${#files[@]})) && rumdl fmt "${files[@]}"
 
       - name: Commit fixes
         run: |

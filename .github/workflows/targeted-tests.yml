@@ -11,6 +11,11 @@ on:
       - "src/rulesync/**"
       - "route/**"
       - "package.json"
+      - "mise.toml"
+      - "biome.json"
+      - "lefthook.yml"
+      - ".python-version"
+      - ".vscode/tasks.json"
       - ".gitattributes"
       - ".rumdl.toml"
       - "evals/regression/**"
@@ -25,7 +30,13 @@ on:
       - "pyproject.toml"
       - "uv.lock"
       - ".github/workflows/distribution-routes.yml"
+      - ".github/workflows/rulesync.yml"
+      - ".github/workflows/rumdl-main-autofix.yml"
       - ".github/workflows/targeted-tests.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -33,7 +44,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-slim
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - name: Checkout PR merge
         uses: actions/checkout@v7
@@ -48,6 +59,7 @@ jobs:
 
           mapfile -d '' files < <(git diff --name-only -z HEAD^1 HEAD)
           declare -A root_targets=()
+          tooling_changed=false
 
           add_isolation() {
             root_targets["tests/test_rulesync_source_isolation.py"]=1
@@ -96,18 +108,34 @@ jobs:
                 root_targets["tests/scripts"]=1
                 ;;
               .github/workflows/targeted-tests.yml)
+                tooling_changed=true
                 add_isolation
                 add_documentation_consistency
                 add_asset_docs
                 add_distribution_routes
                 add_script "rumdl_main_autofix"
+                add_script "tooling"
                 root_targets["tests/evals"]=1
                 ;;
               .github/workflows/distribution-routes.yml|route/*)
                 add_distribution_routes
+                add_script "tooling"
+                ;;
+              .github/workflows/rulesync.yml)
+                add_script "rumdl_main_autofix"
+                add_script "tooling"
                 ;;
               .gitattributes|.rumdl.toml|.github/workflows/rumdl-main-autofix.yml)
                 add_script "rumdl_main_autofix"
+                add_script "tooling"
+                ;;
+              mise.toml|.python-version|pyproject.toml|uv.lock)
+                tooling_changed=true
+                root_targets["tests"]=1
+                ;;
+              biome.json|lefthook.yml|.vscode/tasks.json)
+                tooling_changed=true
+                add_script "tooling"
                 ;;
               README.md|AGENTS.md|inbox/README.md|tests/test_documentation_consistency.py)
                 add_documentation_consistency
@@ -142,8 +170,13 @@ jobs:
                 add_asset_docs
                 add_documentation_consistency
                 ;;
-              src/rulesync/.rulesync/rules/*|src/rulesync/.rulesync/subagents/*|src/rulesync/rulesync.jsonc|package.json|evals/regression/rulesync-source-isolation.json|tests/test_rulesync_source_isolation.py)
+              src/rulesync/.rulesync/rules/*|src/rulesync/.rulesync/subagents/*|src/rulesync/rulesync.jsonc|evals/regression/rulesync-source-isolation.json|tests/test_rulesync_source_isolation.py)
                 add_isolation
+                ;;
+              package.json)
+                tooling_changed=true
+                add_isolation
+                add_script "tooling"
                 ;;
               docs/skills/*|docs/references/skills/*|docs/development/testing.md)
                 add_asset_docs
@@ -170,12 +203,24 @@ jobs:
           else
             echo "run=false" >> "$GITHUB_OUTPUT"
           fi
+          echo "tooling=$tooling_changed" >> "$GITHUB_OUTPUT"
 
-      - name: Set up uv
-        if: steps.scope.outputs.run == 'true'
-        uses: astral-sh/setup-uv@v9.0.0
+      - name: Set up mise
+        if: ${{ steps.scope.outputs.run == 'true' || steps.scope.outputs.tooling == 'true' }}
+        uses: jdx/mise-action@v3
         with:
-          enable-cache: false
+          install: false
+          cache: true
+
+      - name: Install uv
+        if: ${{ steps.scope.outputs.run == 'true' && steps.scope.outputs.tooling != 'true' }}
+        run: mise install uv
+
+      - name: Validate repository tooling
+        if: steps.scope.outputs.tooling == 'true'
+        run: |
+          mise install
+          mise run check
 
       - name: Run central tests
         if: steps.scope.outputs.run == 'true'
@@ -183,4 +228,4 @@ jobs:
         run: |
           [[ -f /tmp/root-tests ]] || exit 0
           mapfile -d '' targets < /tmp/root-tests
-          uv run --frozen --no-default-groups --group test pytest -q "${targets[@]}"
+          uv run --locked --no-default-groups --group test pytest -q "${targets[@]}"

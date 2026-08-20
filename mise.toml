@@ -1,0 +1,42 @@
+[tools]
+uv = "0.12.1"
+node = "24.19.0"
+rumdl = "0.2.54"
+lefthook = "2.1.10"
+"npm:@biomejs/biome" = "2.5.6"
+"npm:rulesync" = "16.5.0"
+
+[tasks.setup]
+description = "Install Python dependencies and Git hooks"
+run = [
+  "uv sync --all-groups",
+  "lefthook install",
+]
+
+[tasks.format]
+description = "Format repository source"
+run = [
+  "uv run ruff format .",
+  "uv run ruff check --fix .",
+  "rumdl fmt .",
+  "rumdl check --fix .",
+  "biome format --write .",
+]
+
+[tasks.check]
+description = "Validate the repository toolchain and lock state"
+run = [
+  "uv --version",
+  "node --version",
+  "rumdl version",
+  "lefthook version",
+  "biome --version",
+  "rulesync --version",
+  "uv lock --check",
+  "lefthook validate",
+  "biome check biome.json package.json .vscode/tasks.json",
+]
+
+[tasks.test]
+description = "Run repository tests"
+run = "uv run pytest"

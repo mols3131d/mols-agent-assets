@@ -12,11 +12,9 @@ test = [
   "pyromark>=0.9.13",
   "pytest>=9.0.3",
   "pyyaml>=6.0.2",
-  "rumdl>=0.2.6",
 ]
 dev = [
   { include-group = "test" },
-  "lefthook>=2.1.9",
   "ruff>=0.15.15",
 ]
 

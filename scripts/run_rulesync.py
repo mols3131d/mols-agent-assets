@@ -12,10 +12,10 @@ WORKSPACE = ROOT / "src" / "rulesync"
 
 
 def rulesync_command() -> list[str]:
-    npx = shutil.which("npx")
-    if npx is None:
-        raise RuntimeError("npx is required to run Rulesync")
-    return [npx, "--yes", "rulesync@latest"]
+    rulesync = shutil.which("rulesync")
+    if rulesync is None:
+        raise RuntimeError("rulesync is required; install repository tools with mise")
+    return [rulesync]
 
 
 def run(args: list[str], cwd: Path) -> None:

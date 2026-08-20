@@ -1,49 +1,49 @@
 {
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"label": "Format with ruff",
-			"type": "shell",
-			"command": "uv run ruff format . && uv run ruff check --fix .",
-			"problemMatcher": [],
-			"group": {
-				"kind": "build",
-				"isDefault": false
-			},
-			"detail": "Runs ruff formatting and lint auto-fixes."
-		},
-		{
-			"label": "Format with rumdl",
-			"type": "shell",
-			"command": "uv run rumdl format .",
-			"problemMatcher": [],
-			"group": {
-				"kind": "build",
-				"isDefault": false
-			},
-			"detail": "Runs rumdl markdown formatting."
-		},
-		{
-			"label": "Format ruff & rumdl",
-			"type": "shell",
-			"command": "uv run ruff format . && uv run ruff check --fix . && uv run rumdl format .",
-			"problemMatcher": [],
-			"group": {
-				"kind": "build",
-				"isDefault": false
-			},
-			"detail": "Runs both ruff and rumdl to format the workspace."
-		},
-		{
-			"label": "Update Agent Skills",
-			"type": "shell",
-			"command": "npx skills update -p -g -y",
-			"problemMatcher": [],
-			"group": {
-				"kind": "build",
-				"isDefault": false
-			},
-			"detail": "Runs npx skills update with flags."
-		}
-	]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Format workspace",
+      "type": "shell",
+      "command": "mise run format",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "detail": "Formats Python, Markdown, and Biome-supported files through the repository toolchain."
+    },
+    {
+      "label": "Check workspace",
+      "type": "shell",
+      "command": "mise run check",
+      "problemMatcher": [],
+      "group": {
+        "kind": "test",
+        "isDefault": false
+      },
+      "detail": "Runs static repository checks through mise and uv."
+    },
+    {
+      "label": "Test workspace",
+      "type": "shell",
+      "command": "mise run test",
+      "problemMatcher": [],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "detail": "Runs repository tests through uv."
+    },
+    {
+      "label": "Update Agent Skills",
+      "type": "shell",
+      "command": "mise exec -- npx skills update -p -g -y",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "detail": "Runs the skill updater with the mise-managed Node runtime."
+    }
+  ]
 }

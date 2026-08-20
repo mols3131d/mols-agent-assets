@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import tomllib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -77,10 +78,15 @@ def test_deployable_skill_surface_excludes_repository_verification() -> None:
         )
 
 
-def test_rulesync_toolchain_tracks_latest() -> None:
+def test_rulesync_toolchain_is_reproducibly_pinned() -> None:
+    mise = tomllib.loads((ROOT / "mise.toml").read_text(encoding="utf-8"))
     runner = (ROOT / "scripts/run_rulesync.py").read_text(encoding="utf-8")
-    assert '"rulesync@latest"' in runner
-    assert "RULESYNC_VERSION" not in runner
+    version = mise["tools"]["npm:rulesync"]
+
+    parts = version.split(".")
+    assert len(parts) == 3 and all(part.isdigit() for part in parts)
+    assert 'shutil.which("rulesync")' in runner
+    assert "rulesync@latest" not in runner
     assert not (ROOT / "package-lock.json").exists()
 
 
