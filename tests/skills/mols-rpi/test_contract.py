@@ -59,23 +59,27 @@ def test_run_has_one_global_hard_loop_ceiling() -> None:
 def test_scope_is_explicit_dynamic_and_bounded() -> None:
     _, body = load()
     body = compact(body)
-    assert "## Scope Contract" in body
-    assert "Active Scope - Goal - In scope - Out of scope - Acceptance conditions" in body
-    assert "At Run start, establish a provisional Active Scope" in body
-    assert "infer the smallest scope sufficient to pursue the Goal" in body
-    assert "Work stays inside the Active Scope" in body
-    assert "Out-of-scope findings may inform Research or Review" in body
-    assert "Narrowing is adaptive" in body
-    assert "Expansion is consequential" in body
-    assert "the proposal does not change the Active Scope" in body
-    assert "Research must validate the need and boundary" in body
-    assert "smallest justified boundary delta" in body
-    assert "Explicit boundaries are not silently mutable" in body
-    assert "new authority from the source that set that boundary" in body
-    assert "Scope change never resets controls" in body
-    assert "Recursive Scope only narrows" in body
-    assert "strict subset of its parent Scope" in body
-    assert "do not expand the child locally" in body
+    required = [
+        "## Scope Contract",
+        "Active Scope - Goal - In scope - Out of scope - Acceptance conditions",
+        "At Run start, establish a provisional Active Scope",
+        "infer the smallest scope sufficient to pursue the Goal",
+        "Work stays inside the Active Scope",
+        "Out-of-scope findings may inform Research or Review",
+        "Narrowing is adaptive",
+        "Expansion is consequential",
+        "the proposal does not change the Active Scope",
+        "Research must validate the need and boundary",
+        "smallest justified boundary delta",
+        "Explicit boundaries are not silently mutable",
+        "new authority from the source that set that boundary",
+        "Scope change never resets controls",
+        "Recursive Scope only narrows",
+        "strict subset of its parent Scope",
+        "do not expand the child locally",
+    ]
+    for phrase in required:
+        assert phrase in body
 
 
 def test_recursion_is_review_gated_and_authority_cannot_expand() -> None:
