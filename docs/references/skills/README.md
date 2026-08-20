@@ -7,7 +7,7 @@
 1. [Rulesync Repository Conventions](../common/rulesync.md) — canonical source와 derived surface 경계
 1. [Skill Authoring Conventions](skill-authoring-conventions.md) — single-file 기본, package responsibility, maintainer docs와 naming 관행
 1. [Agent Skill Design Guide](agent-skills-guide.md) — Skill 설계·작성·검증 흐름
-1. [Agent Skills Specification](agent-skills-io/agent-skills-io-specification.md) — official open standard와 vendor/harness source registry
+1. [Agent Skills Specification](specification.md) — official open standard와 vendor/harness source registry
 
 ## Repository-Specific References
 
