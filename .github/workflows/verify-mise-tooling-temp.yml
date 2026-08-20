@@ -6,6 +6,12 @@ on:
       - chatbot/feat/mise-tooling
     paths:
       - mise.toml
+      - scripts/run_rulesync.py
+      - tests/test_rulesync_source_isolation.py
+      - tests/scripts/tooling/**
+      - tests/scripts/rumdl_main_autofix/**
+      - .github/workflows/targeted-tests.yml
+      - .github/workflows/rulesync.yml
       - .github/workflows/verify-mise-tooling-temp.yml
 
 permissions:
