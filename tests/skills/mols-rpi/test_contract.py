@@ -64,6 +64,39 @@ def test_arguments_are_auto_first_and_invariant_bounded() -> None:
         assert phrase in body
 
 
+def test_heading_hierarchy_is_grouped_by_responsibility() -> None:
+    _, body = load()
+    headings = [
+        "# Interface",
+        "# Runtime",
+        "# Execution",
+        "# Adaptive Control",
+        "# Reporting and Output",
+    ]
+    positions = [body.index(heading) for heading in headings]
+    assert positions == sorted(positions)
+
+    interface = body[positions[0] : positions[1]]
+    runtime = body[positions[1] : positions[2]]
+    execution = body[positions[2] : positions[3]]
+    control = body[positions[3] : positions[4]]
+
+    assert "## Arguments" in interface
+    assert "## Activation" in interface
+    assert "## Core Lifecycle" in runtime
+    assert "## Run and Loop" in runtime
+    assert "## Scope Control" in runtime
+    assert "## Artifacts" in execution
+    assert "## Stages" in execution
+    assert "### Research" in execution
+    assert "### Plan" in execution
+    assert "### Implementation" in execution
+    assert "### Review" in execution
+    assert "## Goal-State Convergence" in control
+    assert "## Recursive Resolution" in control
+    assert "## Run Boundary and Handoff" in control
+
+
 def test_run_has_one_global_hard_loop_ceiling() -> None:
     _, body = load()
     body = compact(body)
@@ -79,7 +112,7 @@ def test_scope_is_explicit_dynamic_and_bounded() -> None:
     _, body = load()
     body = compact(body)
     required = [
-        "## Scope Contract",
+        "## Scope Control",
         "Active Scope - Goal - In scope - Out of scope - Acceptance conditions",
         "At Run start, establish a provisional Active Scope",
         "infer the smallest scope sufficient to pursue the Goal",
@@ -108,17 +141,17 @@ def test_diagrams_are_split_by_control_concern() -> None:
 
     headings = [
         "## Core Lifecycle",
-        "## Scope Contract",
-        "## Recursive Subproblem Resolution",
+        "## Scope Control",
+        "## Recursive Resolution",
         "## Run Boundary and Handoff",
     ]
     positions = [body.index(heading) for heading in headings]
     assert positions == sorted(positions)
 
-    core = body[positions[0] : body.index("## Run and Loop Contract")]
-    scope = body[positions[1] : body.index("## Artifact Contract")]
+    core = body[positions[0] : body.index("## Run and Loop")]
+    scope = body[positions[1] : body.index("# Execution")]
     recursion = body[positions[2] : positions[3]]
-    boundary = body[positions[3] : body.index("## Progress and Output")]
+    boundary = body[positions[3] : body.index("# Reporting and Output")]
 
     for section in (core, scope, recursion, boundary):
         assert section.count("```mermaid") == 1
