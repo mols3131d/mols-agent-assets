@@ -91,4 +91,4 @@ Historical compatibility를 조사할 때만 해당 release/tag의 문서를 고
 - runtime semantics → target contract
 - Skill authoring → [Skill Authoring Conventions](../skills/skill-authoring-conventions.md)
 - filesystem naming → [Naming](../common/naming.md)
-- verification → [Testing](../../testing.md)
+- verification → [Testing](../../development/testing.md)
