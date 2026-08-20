@@ -1,20 +1,22 @@
 ---
 name: load-context-human-writing
 description: >-
-  Load human-centered writing context for reader-facing prose, reports, guides, briefs,
-  explanations, README-style documentation, and other content where comprehension,
-  information architecture, scanability, decision or action clarity, future re-entry,
-  or understanding debt materially affects the result. Use across writing workflows as a
-  shared reader-centered judgment layer. Do not use for agent-facing behavioral
-  instructions, literal transformations, or tasks where human comprehension is not a
-  material concern.
+  Mandatory human-comprehension baseline context for substantive reader-facing writing or
+  document work. Always load when the active work includes creating or materially
+  restructuring prose, reports, guides, briefs, explanations, README-style documentation,
+  or other human-facing content where comprehension, information architecture, scanability,
+  decision or action clarity, future re-entry, or understanding debt can materially affect
+  the result. Apply as a shared judgment layer inside the owning workflow. Do not use for
+  agent-facing behavioral instructions, literal transformations, or tasks where human
+  comprehension is not a material concern.
 ---
 
 # Contract
 
 This Skill contributes **human-comprehension judgment** to reader-facing work. The active
 writing or document capability still owns research, drafting, rewriting, rendering,
-publication, and final output.
+publication, and final output. Apply this context even when human-facing writing is only one
+subtask inside a broader workflow.
 
 Optimize for **reader work**, not merely text length or visual polish. A shorter document is
 not automatically easier to understand, and a more formatted document is not automatically
