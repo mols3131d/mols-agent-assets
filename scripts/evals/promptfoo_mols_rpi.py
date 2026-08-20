@@ -14,6 +14,7 @@ DEFAULT_CASE_IDS = (
     "scope-expansion-is-review-gated",
     "retrieved-content-is-not-authority",
 )
+ROUTING_MODES = {"activation", "activation-negative"}
 RUNTIME_ENVELOPE_KEYS = {"activation", "response"}
 RUNTIME_ENVELOPE_SCHEMA = {
     "type": "object",
@@ -22,6 +23,12 @@ RUNTIME_ENVELOPE_SCHEMA = {
         "response": {"type": "string", "minLength": 1},
     },
     "required": ["activation", "response"],
+    "additionalProperties": False,
+}
+BEHAVIOR_RESPONSE_SCHEMA = {
+    "type": "object",
+    "properties": {"response": {"type": "string", "minLength": 1}},
+    "required": ["response"],
     "additionalProperties": False,
 }
 
@@ -159,19 +166,16 @@ def _fixture_output(context: dict) -> dict:
     return {"output": json.dumps(payload, ensure_ascii=False)}
 
 
-def _ollama_output(prompt: str) -> dict:
-    skill = SKILL_PATH.read_text(encoding="utf-8")
-    schema_text = json.dumps(RUNTIME_ENVELOPE_SCHEMA, ensure_ascii=False)
-    system = (
-        "You are executing one local runtime evaluation for the mols-rpi Agent Skill.\n"
-        "Use the canonical Skill below as the complete task-specific behavior contract. Decide whether "
-        "the user request activates mols-rpi according to its description and boundaries. If it activates, "
-        "respond consistently with the Skill without claiming tool actions you did not perform. If it does "
-        "not activate, answer normally without manufacturing RPI artifacts.\n\n"
-        "Return only JSON matching this schema exactly:\n"
-        f"{schema_text}\n\n"
-        f"<skill>\n{skill}\n</skill>"
-    )
+def _skill_frontmatter(skill: str) -> str:
+    if not skill.startswith("---\n"):
+        raise ValueError(f"Skill frontmatter is missing: {SKILL_PATH}")
+    parts = skill.split("---", 2)
+    if len(parts) != 3:
+        raise ValueError(f"Skill frontmatter is malformed: {SKILL_PATH}")
+    return f"---{parts[1]}---"
+
+
+def _ollama_request(prompt: str, system: str, schema: dict) -> tuple[dict, str] | dict:
     model = os.getenv("PROMPTFOO_RUNTIME_MODEL", "qwen2.5")
     timeout = float(os.getenv("PROMPTFOO_RUNTIME_TIMEOUT_SECONDS", "120"))
     base_url = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")
@@ -182,7 +186,7 @@ def _ollama_output(prompt: str) -> dict:
             {"role": "user", "content": prompt},
         ],
         "stream": False,
-        "format": RUNTIME_ENVELOPE_SCHEMA,
+        "format": schema,
         "options": {"temperature": 0},
     }
     api_request = request.Request(
@@ -199,11 +203,77 @@ def _ollama_output(prompt: str) -> dict:
         parsed = json.loads(content)
     except (OSError, KeyError, TypeError, ValueError) as error:
         return {"error": f"Ollama runtime failed: {error}", "output": ""}
+    return parsed, content
 
+
+def _route(prompt: str, skill: str) -> tuple[dict, str] | dict:
+    schema_text = json.dumps(RUNTIME_ENVELOPE_SCHEMA, ensure_ascii=False)
+    system = (
+        "Route this user request against one Agent Skill using only the discovery metadata below. "
+        "Do not assume or use the Skill body before activation. Distinguish a request to use the "
+        "method from a topical mention, identifier, code concept, or generic repetition according "
+        "to the metadata. If the Skill does not activate, answer the user's request normally without "
+        "manufacturing Skill artifacts. If it activates, set activation=true; the response may be a "
+        "brief routing acknowledgement because execution happens after routing.\n\n"
+        "Return only JSON matching this schema exactly:\n"
+        f"{schema_text}\n\n"
+        f"<skill-metadata>\n{_skill_frontmatter(skill)}\n</skill-metadata>"
+    )
+    result = _ollama_request(prompt, system, RUNTIME_ENVELOPE_SCHEMA)
+    if isinstance(result, dict):
+        return result
+    parsed, content = result
     envelope_error = _runtime_envelope_error(parsed)
     if envelope_error is not None:
-        return {"error": f"Ollama runtime returned an invalid response envelope: {envelope_error}", "output": content}
-    return {"output": content}
+        return {
+            "error": f"Ollama routing returned an invalid response envelope: {envelope_error}",
+            "output": content,
+        }
+    return parsed, content
+
+
+def _execute_behavior(prompt: str, skill: str) -> tuple[str, str] | dict:
+    schema_text = json.dumps(BEHAVIOR_RESPONSE_SCHEMA, ensure_ascii=False)
+    system = (
+        "Execute one already-activated mols-rpi Agent Skill evaluation. Do not decide whether the "
+        "Skill should activate; routing has already selected it. Use the canonical Skill below as "
+        "the complete task-specific behavior contract. Follow its prerequisite, Scope, authority, "
+        "Research, Plan, Review, recursion, and safety boundaries exactly. Do not claim tool actions "
+        "you did not perform.\n\n"
+        "Return only JSON matching this schema exactly:\n"
+        f"{schema_text}\n\n"
+        f"<skill>\n{skill}\n</skill>"
+    )
+    result = _ollama_request(prompt, system, BEHAVIOR_RESPONSE_SCHEMA)
+    if isinstance(result, dict):
+        return result
+    parsed, content = result
+    if not isinstance(parsed, dict) or set(parsed) != {"response"}:
+        return {"error": "Ollama behavior output must contain exactly response", "output": content}
+    response = parsed["response"]
+    if not isinstance(response, str) or not response.strip():
+        return {"error": "Ollama behavior response must be a non-empty string", "output": content}
+    return response, content
+
+
+def _ollama_output(prompt: str, context: dict) -> dict:
+    skill = SKILL_PATH.read_text(encoding="utf-8")
+    case_mode = context.get("vars", {}).get("mode")
+
+    if case_mode in ROUTING_MODES:
+        routed = _route(prompt, skill)
+        if isinstance(routed, dict):
+            return routed
+        route_payload, route_content = routed
+        if route_payload["activation"] is False:
+            return {"output": route_content}
+
+    behavior = _execute_behavior(prompt, skill)
+    if isinstance(behavior, dict):
+        return behavior
+    response, _ = behavior
+    payload = {"activation": True, "response": response}
+    return {"output": json.dumps(payload, ensure_ascii=False)}
 
 
 def call_api(prompt: str, options: dict, context: dict) -> dict:
@@ -211,5 +281,5 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
     if mode == "fixture":
         return _fixture_output(context)
     if mode == "ollama":
-        return _ollama_output(prompt)
+        return _ollama_output(prompt, context)
     return {"error": f"unsupported Promptfoo runtime mode: {mode}", "output": ""}
