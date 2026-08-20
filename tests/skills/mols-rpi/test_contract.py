@@ -22,19 +22,43 @@ def compact(text: str) -> str:
     return " ".join(text.split())
 
 
-def test_activation_keeps_method_intent_but_excludes_generic_repeat() -> None:
+def test_description_owns_discovery_without_body_trigger_duplication() -> None:
     frontmatter, body = load()
     description = frontmatter["description"]
     assert isinstance(description, str)
-    body = compact(body)
 
-    assert "requests RPI" in description
-    assert "asks to loop" in description
-    assert "recursive loop/재귀 루프" in description
-    assert "complex multi-step" in description
-    assert "generic content repetition" in description
-    assert "asks to loop, repeat" not in description
-    assert "only asks to repeat content without iterative work" in body
+    positive = [
+        "requests RPI",
+        "RPI(R)",
+        "loop/loops/loop it/루프",
+        "recursive loop/재귀 루프",
+        "improvement loop/개선 루프",
+        "deep loop/심층 루프",
+        "equivalent repeated research/planning/work/review or recursive improvement",
+    ]
+    implicit = [
+        "evidence gathering or reconciliation before consequential decisions",
+        "an explicit Plan before consequential Work",
+        "multiple acceptance conditions or coupled workstreams",
+        "repeated verification or likely replanning",
+        "narrower subproblem resolution",
+        "costly rework from hidden assumptions or uncertainty",
+    ]
+    negative = [
+        "loop is merely the topic, identifier, or code concept",
+        "only asks to repeat content without iterative work",
+        "merely because a task is long",
+        "trivial work where explicit prerequisite artifacts add no meaningful control",
+    ]
+
+    for phrase in positive + implicit + negative:
+        assert phrase in description
+
+    assert "# Interface" not in body
+    assert "## Activation" not in body
+    assert "### Explicit method intent" not in body
+    assert "### Complexity intent" not in body
+    assert "Use this Skill when the user asks" not in body
 
 
 def test_rpi_is_orchestration_not_domain_replacement() -> None:
@@ -49,7 +73,7 @@ def test_arguments_are_auto_first_and_invariant_bounded() -> None:
     _, body = load()
     body = compact(body)
     required = [
-        "## Arguments",
+        "# Arguments",
         "target: <auto> goal: <auto> terminal: <auto> scope: <auto> scope_policy: <auto>",
         "research: <auto> recursion: <auto> max_total_loops: <auto> progress: <auto> output: <auto>",
         "Explicit values win over `<auto>`",
@@ -67,7 +91,7 @@ def test_arguments_are_auto_first_and_invariant_bounded() -> None:
 def test_heading_hierarchy_is_grouped_by_responsibility() -> None:
     _, body = load()
     headings = [
-        "# Interface",
+        "# Arguments",
         "# Runtime",
         "# Execution",
         "# Adaptive Control",
@@ -76,13 +100,13 @@ def test_heading_hierarchy_is_grouped_by_responsibility() -> None:
     positions = [body.index(heading) for heading in headings]
     assert positions == sorted(positions)
 
-    interface = body[positions[0] : positions[1]]
+    arguments = body[positions[0] : positions[1]]
     runtime = body[positions[1] : positions[2]]
     execution = body[positions[2] : positions[3]]
     control = body[positions[3] : positions[4]]
 
-    assert "## Arguments" in interface
-    assert "## Activation" in interface
+    assert "target: <auto>" in arguments
+    assert "## Activation" not in arguments
     assert "## Core Lifecycle" in runtime
     assert "## Run and Loop" in runtime
     assert "## Scope Control" in runtime
