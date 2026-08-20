@@ -40,7 +40,7 @@ jobs:
           mapfile -d '' files < <(
             git diff --name-only -z --diff-filter=ACMR "$BEFORE" "$AFTER" -- '*.md'
           )
-          ((${#files[@]})) && mise exec -- rumdl fmt "${files[@]}"
+          ((${#files[@]})) && rumdl fmt "${files[@]}"
 
       - name: Commit fixes
         run: |
