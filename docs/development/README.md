@@ -6,6 +6,7 @@
 
 - [Change Workflow](change-workflow.md) — branch naming과 repository-local change flow
 - [Authority Routing](authority-routing.md) — source, standard, target과 local authority resolution
+- [Testing](testing.md) — repository verification 위치와 evidence 수준
 
 ## Related Owners
 
@@ -13,6 +14,5 @@
 - Documentation rules and conventions → [`docs/document/`](../document/)
 - Rulesync source/workspace boundary → [Rulesync](../references/tooling/rulesync.md)
 - Skill authoring convention → [Skill Authoring Conventions](../references/skills/skill-authoring-conventions.md)
-- Verification and evidence → [Testing](../testing.md)
 
 이 README는 development entrypoint이며 linked policy의 본문을 복제하지 않습니다.
