@@ -15,4 +15,4 @@ Artifact의 생성·승격·보존·삭제 기준과 Git history의 역할은 [K
 
 `inbox`는 directory convention이지 별도 branch, vendor feature 또는 workflow engine이 아닙니다. 특정 IDE, agent, chatbot, Notion 또는 GitHub 기능에 의존하지 않습니다.
 
-별도 index는 요구하지 않습니다. Artifact 형식도 특정 플랫폼 metadata에 종속시키지 않습니다.
+Artifact 형식은 특정 플랫폼 metadata에 종속시키지 않습니다.
