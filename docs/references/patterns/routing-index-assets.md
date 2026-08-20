@@ -28,6 +28,14 @@ route/
 - `ROUTE.md` 같은 entry asset은 필요한 routing/index file로 연결하는 최소 router 역할을 합니다.
 - Router/index를 먼저 읽고 필요한 원본만 선택하도록 하여 불필요한 context load를 줄입니다.
 
+## Automation
+
+가능하면 routing/index 정보를 수동으로 중복 작성하지 않고 기존 metadata에서 생성합니다.
+
+- Markdown frontmatter, manifest, directory metadata, file metadata 등 이미 존재하는 구조화된 정보를 우선 활용합니다.
+- 안정적으로 추출 가능한 정보는 script나 generator로 `INDEX.*`와 routing asset을 생성·갱신합니다.
+- 사람이 직접 관리하는 값은 자동으로 복원하기 어려운 선택 기준이나 routing intent처럼 필요한 delta로 제한합니다.
+
 ## Boundary
 
 - Routing/index asset은 **discovery, selection, navigation, context routing**만 소유하고 실제 내용·정책·동작의 canonical source가 되지 않습니다.
