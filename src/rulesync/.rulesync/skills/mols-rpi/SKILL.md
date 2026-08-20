@@ -116,6 +116,27 @@ reliability risk because the task needs one or more of:
 
 Do not activate merely because a task is long.
 
+## Core Lifecycle
+
+This diagram owns only **phase progression and phase-local feedback**. Scope changes,
+recursive descent, and Run termination are separate control concerns below.
+
+```mermaid
+flowchart LR
+    G["Goal + Active Scope"] --> R["Research"]
+    R -->|planning needed| P["Plan"]
+    R -->|research terminal| V["Review"]
+    P -->|work needed| I["Goal-directed Work"]
+    P -->|plan terminal| V
+    I --> V
+    V -->|evidence gap| R
+    V -->|plan gap| P
+    V -->|bounded work gap| I
+```
+
+Review is the controller that decides whether the next transition stays in this lifecycle
+or delegates to Scope control, recursive resolution, or the Run boundary.
+
 ## Run and Loop Contract
 
 One **Run** is one bounded RPI execution that ends in completion, handoff, or blocking.
@@ -180,6 +201,24 @@ it. Explicit user-defined boundaries take precedence over inferred convenience.
 Scope controls what Work belongs to the current problem; it does not grant operational
 permission or weaken authority, safety, persistence, or validation requirements.
 
+```mermaid
+flowchart TD
+    S["Active Scope"] --> V["Review"]
+    V -->|keep| S
+    V -->|narrow permitted| N["Narrow Scope"]
+    N --> P["Revalidate Plan coverage"]
+    P --> S
+    V -->|expansion needed| E["Expansion proposal only"]
+    E --> Q{"Policy + explicit boundary permit?"}
+    Q -->|no| B["Expose blocked boundary"]
+    Q -->|yes| R["Research validates need + boundary"]
+    R --> U["Plan incorporates smallest justified delta"]
+    U --> A{"Authority + safety pass?"}
+    A -->|no| B
+    A -->|yes| X["Expand Active Scope"]
+    X --> S
+```
+
 Apply these rules:
 
 1. **Work stays inside the Active Scope.** Out-of-scope findings may inform Research or
@@ -209,43 +248,6 @@ Apply these rules:
 
 If trustworthy continuation requires an unauthorized or policy-forbidden expansion, stop
 affected Work and surface the required Scope/authority change instead of drifting outward.
-
-## Model
-
-```mermaid
-flowchart TD
-    G["Goal + Active Scope + current state"] --> R["Research artifact"]
-    R -->|planning needed| P["Plan artifact"]
-    R -->|research terminal| V["Review"]
-    P -->|work needed| A{Authority valid?}
-    P -->|plan terminal| V
-    A -->|no| X["Blocked / approval required"]
-    A -->|yes| I["Goal-directed Work"]
-    I --> V
-
-    V -->|sufficient| F["Complete"]
-    V -->|evidence gap| R
-    V -->|plan gap| P
-    V -->|bounded work gap| A
-    V -->|scope narrowing allowed| N["Narrow Active Scope"]
-    N --> P
-    V -->|scope expansion allowed + needed| E["Propose expansion"]
-    E --> R
-    V -->|narrower blocker + recursion allowed| S["Push child scope"]
-    V -->|saturation| L["Limit or Block"]
-    V -->|Loop ceiling reached| H["Handoff"]
-
-    S --> C["Apply the same RPI contract"]
-    C --> T["Child Review"]
-    T --> U["Return evidence + decision + parent impact"]
-    U --> B["Revalidate affected parent artifact"]
-    B -->|Research stale| R
-    B -->|Plan stale| P
-    B -->|Plan valid| A
-```
-
-Recursion is serial and single-agent. Do not invent subagents, parallel reviewers, or
-hidden workers when the runtime does not provide them.
 
 ## Artifact Contract
 
@@ -396,6 +398,20 @@ materially reduce parent uncertainty or unblock parent Work more efficiently tha
 at the parent scope. If a blocker appears during Research, Plan, or Implementation, stop
 the affected stage, close the current Loop with Review, then decide whether to recurse.
 
+```mermaid
+flowchart TD
+    P["Parent Review"] --> Q{"Recursion permitted + qualifying narrower blocker?"}
+    Q -->|no| C["Continue parent control"]
+    Q -->|yes| S["Push strict-subset child Scope"]
+    S --> R["Child RPI"]
+    R --> V["Child Review"]
+    V -->|resolved| U["Return evidence + parent impact"]
+    V -->|narrower blocker + Loops remain| D["Push stricter child from Review"]
+    D --> R
+    U --> B["Revalidate parent Research + Scope + Plan"]
+    B --> C
+```
+
 A child must be:
 
 - a strict subset of the parent Active Scope;
@@ -425,7 +441,23 @@ stronger parent evidence, Scope, or authority.
 Use perspective switching—not pretend multi-agent debate—when another viewpoint is useful
 but no narrower subproblem exists.
 
-## Handoff
+## Run Boundary and Handoff
+
+Run termination is a separate control concern from phase progression. Evaluate it after a
+substantive Review closes and `loops_used` is incremented.
+
+```mermaid
+flowchart TD
+    V["Review closes"] --> L["loops_used += 1"]
+    L --> A{"Terminal result accepted?"}
+    A -->|yes| C["COMPLETE"]
+    A -->|no| B{"Trustworthy continuation blocked?"}
+    B -->|yes| X["BLOCKED"]
+    B -->|no| E{"loops_used >= effective ceiling?"}
+    E -->|no| N["Next Loop at earliest stale prerequisite"]
+    E -->|yes| H["Serialize continuation state"]
+    H --> O["HANDOFF"]
+```
 
 Reaching the effective Loop ceiling with material work remaining is a **continuation
 boundary**, not proof that the Goal failed.
@@ -454,17 +486,6 @@ limit explicitly established for that continuation Run. Handoff does not itself 
 or auto-start another Run, and it must never become a hidden reset inside the exhausted
 Run.
 
-## Progress and Output
-
-Honor `progress` without exposing private chain-of-thought. Report observable evidence,
-decisions, Work, validation, Scope changes, Loop counts, handoff, and outcomes only.
-
-Honor `output` only where the destination is appropriate and writable. `persist` falls
-back to inline when persistence is unavailable or unauthorized; state that limitation.
-`both` does not duplicate unchanged working artifacts unnecessarily.
-
-## Completion
-
 Finish with one observable Run state:
 
 - **COMPLETE** — the requested terminal Goal/stage is accepted by Review;
@@ -476,3 +497,12 @@ Finish with one observable Run state:
 Never report COMPLETE while a known material gap still requires broader Research,
 replanning, Scope reconciliation, affected Work reconciliation, or unresolved recursive
 integration for the accepted scope.
+
+## Progress and Output
+
+Honor `progress` without exposing private chain-of-thought. Report observable evidence,
+decisions, Work, validation, Scope changes, Loop counts, handoff, and outcomes only.
+
+Honor `output` only where the destination is appropriate and writable. `persist` falls
+back to inline when persistence is unavailable or unauthorized; state that limitation.
+`both` does not duplicate unchanged working artifacts unnecessarily.
