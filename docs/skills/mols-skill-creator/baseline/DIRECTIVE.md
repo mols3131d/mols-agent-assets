@@ -49,7 +49,7 @@ OpenAI, Microsoft, Anthropic 등 신뢰할 수 있는 상위 구현을 참고해
 | Boundary | Rule |
 | --- | --- |
 | Human authority | durable baseline의 핵심 의도는 명시적 authority 없이 바꾸지 않는다. |
-| Documentation | maintainer docs는 필요성 근거 없이 만들지 않고 target project의 외부 docs convention을 따른다. |
+| Documentation | maintainer docs는 필요성 근거 없이 만들지 않고 target project의 external maintainer-doc convention을 따른다. |
 | History | 작업 로그를 baseline으로 축적하지 않는다. 현재 판단에 필요 없는 임시 기록은 제거한다. |
 | Evidence | 외부 사실과 최신 규칙은 공식·1차 자료를 우선한다. |
 | Security | 사용자 기대를 벗어나는 은닉 동작, 권한 확대, 데이터 유출을 설계하지 않는다. |
@@ -63,7 +63,7 @@ OpenAI, Microsoft, Anthropic 등 신뢰할 수 있는 상위 구현을 참고해
 | 기존 Skill 개선을 핵심 기능으로 둔다. | 실제 사용과 dogfooding에서 축적되는 가치가 신규 생성보다 크다. |
 | maintainer docs는 optional이다. | 단순 Skill까지 문서화하면 context·유지보수 비용만 늘어나며, 복잡하거나 fragile한 자산에서만 별도 보존 가치가 생긴다. |
 | maintainer docs와 runtime package를 분리한다. | 실행 payload와 인간/maintainer 보존 지식의 책임을 혼합하지 않는다. |
-| 이 repository에서는 필요한 Skill maintainer docs를 `docs/skills/<skill-name>/`에 둔다. | 자산별 docs 위치를 일관되게 찾고 package surface와 분리한다. |
+| 필요한 Skill maintainer docs는 runtime package 밖의 하나의 asset-scoped capsule에 둔다. | Host project가 물리 경로를 선택해도 자산별 maintainer context를 함께 이동·복구할 수 있다. |
 | 기본 initializer는 `SKILL.md`만 생성한다. | 필요하지 않은 문서·directory의 선제 생성을 막는다. |
 | 자동 검증 → 자동 수정 → 재검증을 가능한 범위에서 적용한다. | 단발성 수정이 아니라 검증 가능한 품질 수렴을 목표로 한다. |
 
@@ -72,7 +72,7 @@ OpenAI, Microsoft, Anthropic 등 신뢰할 수 있는 상위 구현을 참고해
 | Decision | Rationale |
 | --- | --- |
 | 모든 Skill에 `DIRECTIVE.md`와 `WORKING.md`를 강제한다. | 단순 Skill에 의례적 문서 구조와 유지보수 비용을 만든다. |
-| package-local `.docs/`를 repository maintainer convention으로 사용한다. | maintainer docs를 package source와 섞고 target별 packaging 동작에 의존하게 만든다. |
+| package-local `.docs/`를 maintainer convention으로 사용한다. | maintainer docs를 package source와 섞고 target별 packaging 동작에 의존하게 만든다. |
 | maintainer docs를 runtime package에 포함한다. | runtime contract와 유지보수 지식의 책임이 혼합된다. |
 | 모든 과거 결정과 시행착오를 보존한다. | 현재 판단을 방해하고 토큰·인지 비용을 키운다. |
 | 수정 전마다 사용자 승인을 기다린다. | 승인된 작업 범위 안의 자동 개선과 검증 흐름을 불필요하게 중단한다. |
