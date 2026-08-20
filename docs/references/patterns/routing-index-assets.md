@@ -24,7 +24,7 @@ route/
 
 - `INDEX.*`는 디렉터리의 표면 파일·디렉터리와 필요하면 주요 내부 파일까지 요약합니다.
 - `route/` 같은 전담 surface에 여러 위치와 information domain을 연결하는 routing asset을 둘 수 있습니다.
-- domain, topic, artifact type 등 탐색 축별로 routing file을 나눌 수 있습니다.
+- domain, topic, content type 등 탐색 축별로 routing file을 나눌 수 있습니다.
 - `ROUTE.md` 같은 entry asset은 필요한 routing/index file로 연결하는 최소 router 역할을 합니다.
 - Router/index를 먼저 읽고 필요한 원본만 선택하도록 하여 불필요한 context load를 줄입니다.
 
