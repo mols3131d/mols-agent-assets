@@ -101,6 +101,22 @@ def test_scope_is_explicit_dynamic_and_bounded() -> None:
         assert phrase in body
 
 
+def test_diagrams_are_split_by_control_concern() -> None:
+    _, body = load()
+    assert body.count("```mermaid") == 4
+    assert "## Model" not in body
+    assert "## Core Lifecycle" in body
+    assert "## Scope Contract" in body
+    assert "## Recursive Subproblem Resolution" in body
+    assert "## Run Boundary and Handoff" in body
+
+    core = body.index("## Core Lifecycle")
+    scope = body.index("## Scope Contract")
+    recursion = body.index("## Recursive Subproblem Resolution")
+    boundary = body.index("## Run Boundary and Handoff")
+    assert core < scope < recursion < boundary
+
+
 def test_recursion_is_review_gated_and_authority_cannot_expand() -> None:
     _, body = load()
     body = compact(body)
