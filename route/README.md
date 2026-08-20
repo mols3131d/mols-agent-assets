@@ -18,7 +18,7 @@ Rulesync 또는 runtime이 native discovery를 제공하면 이 layer를 중복 
 | `route/` | 이 저장소가 배포하는 cross-runtime discovery projection |
 | `.agents/routes/` | `mols-chatbot-bootstrap`이 대상 workspace에 생성할 수 있는 repository-local compatibility route |
 
-둘은 서로의 output directory가 아닙니다.
+둘은 서로의 output directory가 아닙니다. Bootstrap 쪽 generator는 `src/rulesync/.rulesync/skills/mols-chatbot-bootstrap/scripts/generate_routes.py`가 소유합니다.
 
 ## Authority
 
