@@ -25,8 +25,8 @@ adaptive work method.
 
 `RPI` is the public method name. `Implementation` means **goal-directed execution of the
 accepted Plan**, not code-only implementation. It may produce code, documents, analysis,
-edits, decisions, configuration, tool actions, or any planned result that moves the current
-state toward the Goal.
+edits, decisions, configuration, tool actions, or another planned result that moves the
+current state toward the Goal.
 
 `mols-rpi` is an orchestration method, not the task-domain capability. Keep applicable
 task-specific Skills, tools, and governing procedures in force inside RPI stages. RPI owns
@@ -77,7 +77,7 @@ reset a Run, or raise the hard Loop ceiling above 30.
 ## Core Lifecycle
 
 This diagram owns only **phase progression and phase-local feedback**. Scope changes,
-recursive descent, and Run termination are separate concerns below.
+recursive descent, and Run termination are separate control concerns below.
 
 ```mermaid
 flowchart LR
@@ -92,8 +92,8 @@ flowchart LR
     V -->|bounded work gap| I
 ```
 
-Review classifies findings. Core Lifecycle handles local findings; cross-cutting findings
-go to their owner.
+Review classifies the current finding. Core Lifecycle findings stay here; cross-cutting
+findings go to their owner.
 
 ## Run and Loop
 
@@ -121,17 +121,18 @@ through Review. Examples:
 - `Implementation → Review` for a bounded fix already covered by a valid Plan;
 - `Research → Review` when Research itself is the requested terminal result.
 
-A distinct substantive attempt consumes one Loop at Review even if nothing changes, a
-hypothesis fails, or the work saturates. A no-change Loop is valid when real investigation
-or validation closes uncertainty or establishes a blocker/saturation condition.
-Mechanical edits, reporting, artifact formatting, repeated evidence, and no-op churn are
-not Loops and must not be repeated to simulate progress.
+A substantively distinct attempt consumes one Loop when it reaches Review even if Review
+concludes that nothing should change, a hypothesis failed, or the work saturated. A
+no-change Loop is valid when real investigation or validation closed uncertainty or
+established a blocker/saturation condition. Mechanical edits, reporting, artifact
+formatting, repeated evidence, and no-op churn are not Loops and must not be repeated to
+simulate progress.
 
 - Parent and recursive child Loops share `loops_used` and the same effective ceiling;
   returning between scopes never resets the counter.
 - There is no separate per-scope Loop limit and no fixed recursion-depth limit.
-- Never exceed the effective Loop ceiling or hard ceiling of 30; stop earlier on
-  convergence, saturation, or a blocker.
+- Never exceed the effective Loop ceiling or hard ceiling of 30. The ceiling is a safety
+  bound, not a target; stop earlier on convergence, saturation, or a blocker.
 - Handoff serialization is not another Loop.
 
 Never hide a reset by starting a nested or renamed Run inside the current Run.
@@ -215,9 +216,10 @@ governing workspace policy, and the established destination; never invent storag
 authority. Preserve only the minimum sensitive detail needed.
 
 Give each artifact a stable path, reference, heading, or label. Maintain the latest valid
-Research, Active Scope, and Plan for each current scope. Update or version them when
-materially changed; otherwise reference them instead of repeating unchanged full content.
-Keep Review delta-oriented to avoid context growth through artifact duplication.
+Research, Active Scope, and Plan as working state for each current scope. Update or
+version them when materially changed; otherwise reference them instead of repeating
+unchanged full content. Keep Review delta-oriented to avoid context growth through artifact
+duplication.
 
 Make lineage inspectable:
 
@@ -280,10 +282,10 @@ instructions apply only when an authorized source actually governs the Active Sc
 
 ### Plan
 
-Derive the smallest Plan that moves the current state toward the Goal inside Active Scope.
-Include the intended state change, scope, approach, ordered Work, acceptance or validation,
-and material assumptions that would force replanning if changed. When Scope Control
-validates an expansion, incorporate only that boundary.
+Derive the smallest Plan that can move the current state toward the Goal inside Active
+Scope. Include the intended state change, scope, approach, ordered Work, acceptance or
+validation, and material assumptions that would force replanning if changed. When Scope
+Control validates an expansion, incorporate only that boundary.
 
 A Plan is methodological authorization, not operational permission.
 
@@ -410,9 +412,9 @@ flowchart TD
 ```
 
 Resolve `terminal` here. `<auto>` infers the requested terminal stage; `research` accepts
-Research + Review, `plan` accepts Research + Plan + Review, and `goal` requires Goal
-acceptance. Reaching the effective Loop ceiling with material work remaining is a
-**continuation boundary**, not proof that the Goal failed.
+Research + Review, `plan` accepts Research + Plan + Review, and `goal` requires the Goal
+itself to be accepted. Reaching the effective Loop ceiling with material work remaining is
+a **continuation boundary**, not proof that the Goal failed.
 
 After the final allowed Review:
 
@@ -433,8 +435,8 @@ inline; do not invent storage or claim persistence.
 A later RPI Run may continue from the handoff only after validating inherited Research,
 Active Scope, pending Scope proposals, Plan, current state, authority, and still-applicable
 argument values. The later Run receives a new hard ceiling of 30, subject to any lower
-explicit limit for that continuation Run. Handoff does not itself authorize or auto-start
-another Run and must never become a hidden reset inside the exhausted Run.
+limit explicitly established for that continuation Run. Handoff does not itself authorize
+or auto-start another Run and must never become a hidden reset inside the exhausted Run.
 
 Finish with one observable Run state:
 
