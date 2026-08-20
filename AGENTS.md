@@ -1,22 +1,9 @@
 # `AGENTS.md`
 
-## Working Rules
-
-- `main`을 직접 수정하지 말고 작업 branch에서 변경합니다.
-- 재사용 Rulesync 자산은 `src/rulesync/.rulesync/`에서만 author/edit합니다.
-- 이 repository 자체를 위한 Rulesync 자산은 실제 필요가 있을 때만 root `.rulesync/` workspace에 둡니다. Reusable library를 root에 mirror하지 않습니다.
-- Rulesync-managed schema, feature, target namespace와 projection behavior는 current Rulesync를 따릅니다. Repository-local superset schema나 manual projection layer를 만들지 않습니다.
-- 이 저장소는 vendor/target support matrix를 정의하지 않습니다. Target은 구체적인 projection 또는 검증 작업에서만 선택합니다.
-- Generated vendor projection과 Rulesync lock state를 reusable library source로 commit하지 않습니다.
-- Repository verification은 `tests/`, `evals/`가 소유합니다. Runtime-required resource만 deployable asset package 안에 둡니다.
-- `route/`는 derived discovery metadata입니다. Canonical asset body나 policy를 복제하지 않습니다.
-- Maintainer docs는 durable decision, recovery knowledge 또는 실제 maintenance value가 있을 때만 만듭니다. 작업 로그와 쉽게 재생성되는 상태는 Git history에 맡깁니다.
+- `main`을 직접 수정하지 말고 dedicated branch에서 작업합니다.
+- Reusable Rulesync 자산은 `src/rulesync/.rulesync/`에서 author/edit합니다. Repository-specific Rulesync 자산은 실제 필요가 있을 때만 root `.rulesync/`에 둡니다.
+- Rulesync-managed schema, feature, target namespace와 projection behavior는 current Rulesync를 따릅니다. Repository-local superset schema, manual projection layer 또는 vendor support matrix를 만들지 않습니다.
+- Generated vendor projection과 Rulesync lock state는 reusable source로 commit하지 않습니다.
+- Task-relevant Skill은 runtime-native discovery를 우선합니다. Native discovery가 없을 때만 `route/ROUTE.md`를 bootstrap으로 사용하고 선택된 source만 로드합니다.
+- Maintainer docs는 durable decision, recovery knowledge 또는 실제 maintenance value가 있을 때만 만듭니다. Sibling 문서를 열거하기 위한 index-only entrypoint는 만들지 않습니다.
 - 변경 후 가장 작은 관련 test/eval을 우선 실행합니다. Target-specific runtime claim이 성공 조건일 때만 해당 usage surface의 evidence를 요구합니다.
-
-## References
-
-- Rulesync integration boundary와 official reference → `docs/references/tooling/rulesync.md`
-- Skill authoring → `docs/references/skills/skill-authoring-conventions.md`
-- Development workflow → `docs/development.md`
-- Testing → `docs/testing.md`
-- Cross-runtime routing → `route/README.md`
