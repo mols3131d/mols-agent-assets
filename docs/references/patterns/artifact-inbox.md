@@ -4,7 +4,7 @@
 
 ## Purpose
 
-완성되지 않았거나 아직 canonical owner로 승격할 필요가 없는 artifact를 안전하게 보관하면서, repository의 durable source와 작업 중 산출물을 구분합니다.
+완성 여부와 관계없이 canonical source와 분리해 보관하고 싶은 working / supporting artifact를 위한 명확한 surface를 제공하여, durable source와 작업 산출물을 구분합니다.
 
 ## Core
 
