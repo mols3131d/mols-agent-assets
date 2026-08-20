@@ -9,7 +9,7 @@ description: 모델이 최소 해석으로 trigger, action, 자유도와 validat
 
 ## Rules
 
-- Local behavior를 바꾸지 않는 upstream/default/common-practice 재진술은 쓰지 않습니다.
+- Local behavior를 바꾸지 않는 upstream/default/common-practice 재진술은 쓰지 않습니다. Local delta 판정은 [Design Principles](design-principles.md)가 소유합니다.
 - Required action을 직접 씁니다. 설명만으로 행동을 암시하지 않습니다.
 - Trigger, action, constraint와 validation을 가능한 한 가까이 둡니다.
 - Default를 하나 두고 대안은 default를 벗어나는 실제 조건이 있을 때만 노출합니다.
@@ -26,17 +26,6 @@ Condition → Action → Constraint / Validation
 ```
 
 `필요하면 관련 문서를 보고 적절히 처리한다`처럼 condition과 expected action을 모델에게 다시 추론시키는 표현은 피합니다.
-
-## Local Delta Test
-
-Instruction을 추가하기 전에 그것이 실제로 local action을 바꾸는지 확인합니다.
-
-- upstream/default와 다르게 해야 한다 → deviation을 씁니다.
-- repository-specific 추가 행동이나 금지가 필요하다 → extension을 씁니다.
-- 여러 합리적 해석 중 이 repository의 선택을 고정해야 한다 → ambiguity resolution을 씁니다.
-- 이미 표준·도구·target contract·일반 default만으로 같은 행동이 나온다 → 쓰지 않습니다.
-
-Authority를 알려야 할 필요가 있으면 가장 가까운 owner/router가 source를 한 번 연결합니다. 각 consumer instruction에서 upstream 내용을 요약하거나 `~을 따른다`는 문장을 반복하지 않습니다.
 
 ## Freedom
 
