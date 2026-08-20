@@ -24,6 +24,11 @@ accepted Plan**, not code-only implementation. It may produce code, documents, a
 edits, decisions, configuration, tool actions, or another planned result that moves the
 current state toward the Goal.
 
+`mols-rpi` is an orchestration method, not the task-domain capability. Keep applicable
+task-specific Skills, tools, and governing procedures in force inside RPI stages. RPI
+owns prerequisite ordering, Run/Loop state, Review transitions, recursion, and handoff;
+it does not replace more specific task authority.
+
 The dependency is directional, not a mandate to execute every downstream stage.
 Research-only work may stop after Research + Review. Plan-only work requires Research
 and may stop after Plan + Review. Perform Implementation only when the Goal requires
