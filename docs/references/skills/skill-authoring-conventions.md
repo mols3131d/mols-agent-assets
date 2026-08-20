@@ -7,8 +7,6 @@ description: Rulesync canonical Skill에 적용하는 repository-local authoring
 
 이 문서는 Rulesync와 target contract가 소유하지 않는 **mols의 Skill authoring 관행**만 정의합니다.
 
-Canonical schema, field와 target namespace는 current Rulesync를 따릅니다. Portable/target contract가 필요하면 해당 official specification을 확인합니다.
-
 ## Package
 
 Canonical entrypoint:
@@ -54,9 +52,9 @@ Maintainer-only knowledge를 runtime dependency로 숨기지 않습니다.
 
 ## Target Metadata
 
-Target-specific metadata는 의미가 있는 Rulesync target section에 둡니다. 현재 projection target이 아니라는 이유만으로 유효한 metadata를 제거하지 않습니다.
+유효한 target-specific metadata는 현재 projection target이 아니라는 이유만으로 제거하지 않습니다.
 
-`agentsskills:`는 Agent Skills target section이지 repository-wide shared metadata namespace가 아닙니다. Shared passthrough schema를 추가하지 않습니다.
+Repository-wide shared metadata를 만들기 위해 target namespace를 재사용하거나 passthrough schema를 추가하지 않습니다.
 
 ## Boundary
 
