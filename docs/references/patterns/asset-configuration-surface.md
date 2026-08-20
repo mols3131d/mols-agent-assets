@@ -112,4 +112,4 @@ explicit invocation config
 
 Template/schema 설계, context injection mechanism, configuration format이나 directory 이름은 정의하지 않습니다. Configuration이 routing behavior를 조정할 수는 있지만 routing/index architecture 자체는 별도의 관심사로 볼 수 있습니다.
 
-`.configs/`와 관련 예시는 filesystem convention의 한 형태일 뿐이며 이 패턴의 normative contract가 아닙니다.
+`.configs/`와 관련 예시는 filesystem convention의 한 형태일 뿐이며 필수 규격이나 경로가 아닙니다.
