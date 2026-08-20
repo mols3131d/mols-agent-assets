@@ -34,6 +34,10 @@ on:
       - ".github/workflows/rumdl-main-autofix.yml"
       - ".github/workflows/targeted-tests.yml"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -125,7 +129,11 @@ jobs:
                 add_script "rumdl_main_autofix"
                 add_script "tooling"
                 ;;
-              mise.toml|biome.json|lefthook.yml|.python-version|.vscode/tasks.json|pyproject.toml|uv.lock)
+              mise.toml|.python-version|pyproject.toml|uv.lock)
+                tooling_changed=true
+                root_targets["tests"]=1
+                ;;
+              biome.json|lefthook.yml|.vscode/tasks.json)
                 tooling_changed=true
                 add_script "tooling"
                 ;;
