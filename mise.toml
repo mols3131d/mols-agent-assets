@@ -23,13 +23,16 @@ run = [
 ]
 
 [tasks.check]
-description = "Run static repository checks"
+description = "Validate the repository toolchain and lock state"
 run = [
+  "uv --version",
+  "node --version",
+  "rumdl version",
+  "lefthook version",
+  "biome --version",
   "uv lock --check",
-  "uv run ruff check .",
-  "rumdl check .",
-  "biome lint .",
   "lefthook validate",
+  "biome check biome.json package.json .vscode/tasks.json",
 ]
 
 [tasks.test]
