@@ -45,6 +45,25 @@ def test_rpi_is_orchestration_not_domain_replacement() -> None:
     assert "does not replace more specific task authority" in body
 
 
+def test_arguments_are_auto_first_and_invariant_bounded() -> None:
+    _, body = load()
+    body = compact(body)
+    required = [
+        "## Arguments",
+        "target: <auto> goal: <auto> terminal: <auto> scope: <auto> scope_policy: <auto>",
+        "research: <auto> recursion: <auto> max_total_loops: <auto> progress: <auto> output: <auto>",
+        "Explicit values win over `<auto>`",
+        "`scope_policy` — `adaptive`, `narrow-only`, `fixed`, or `<auto>`",
+        "`research` — `internal`, `external`, `mixed`, or `<auto>`",
+        "`recursion` — `prefer`, `off`, or `<auto>`",
+        "`max_total_loops` — integer `1..30` or `<auto>`",
+        "no argument may raise the hard cap above 30",
+        "Arguments may narrow behavior, but they never authorize side effects",
+    ]
+    for phrase in required:
+        assert phrase in body
+
+
 def test_run_has_one_global_hard_loop_ceiling() -> None:
     _, body = load()
     body = compact(body)
@@ -85,7 +104,7 @@ def test_scope_is_explicit_dynamic_and_bounded() -> None:
 def test_recursion_is_review_gated_and_authority_cannot_expand() -> None:
     _, body = load()
     body = compact(body)
-    assert "Push a child scope only from Review" in body
+    assert "push a child scope only from Review" in body
     assert "every recursive descent" in body
     assert "preceded by a counted substantive Loop" in body
     assert "A child may narrow these boundaries, never expand or replace them." in body
