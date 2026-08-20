@@ -37,7 +37,8 @@ def test_main_autofix_only_formats_markdown() -> None:
     workflow = AUTOFIX.read_text(encoding="utf-8")
 
     assert "mise install rumdl" in workflow
-    assert 'mise exec -- rumdl fmt "${files[@]}"' in workflow
+    assert 'rumdl fmt "${files[@]}"' in workflow
+    assert "mise exec -- rumdl" not in workflow
     assert "uvx rumdl" not in workflow
     assert "git check-attr rulesync-source" not in workflow
     assert "git check-attr linguist-generated" not in workflow
