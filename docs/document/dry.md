@@ -24,7 +24,6 @@
 
 - 같은 capsule 내부의 중복은 DRY 위반입니다.
 - capsule과 project documentation, references 또는 다른 capsule 사이의 overlap은 portability와 self-containment를 위해 허용합니다.
-- 허용된 overlap을 이유로 서로 다른 capsule 사이에 hidden documentation dependency를 만들지 않습니다.
 
 Asset capsule의 portability contract는 [Asset Capsules](asset-capsules.md)가 소유합니다.
 
