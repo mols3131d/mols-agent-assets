@@ -1,0 +1,33 @@
+name: Temporary mise tooling verification
+
+on:
+  push:
+    branches:
+      - chatbot/feat/mise-tooling
+    paths:
+      - .github/workflows/verify-mise-tooling-temp.yml
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-slim
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: jdx/mise-action@v3
+        with:
+          install: true
+          cache: false
+      - name: Show managed tools
+        run: |
+          mise exec -- uv --version
+          mise exec -- node --version
+          mise exec -- rumdl --version
+          mise exec -- lefthook version
+          mise exec -- biome --version
+      - name: Run static checks
+        run: mise run check
+      - name: Run tests
+        run: mise run test
