@@ -11,6 +11,7 @@
 | `skills/<skill-name>/` | 실제 필요가 있는 Skill maintainer docs |
 | `references/common/` | 여러 asset/workflow가 공유하는 소수의 repository-local reference |
 | `references/skills/` | Skill 공통 reference |
+| `references/tooling/` | tool-specific configuration과 official source reference |
 
 Rulesync schema와 target mapping은 upstream을 따르며 repository integration boundary는 [Rulesync Repository Conventions](references/common/rulesync.md)가 소유합니다.
 
