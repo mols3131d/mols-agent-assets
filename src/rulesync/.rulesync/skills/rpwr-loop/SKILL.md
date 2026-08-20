@@ -1,16 +1,20 @@
 ---
 name: rpwr-loop
 description: >-
-  Improve difficult or high-level work through an adaptive Research → Plan → Work →
-  Review main loop supported by Prepare and Finalize workflows. Use when the user asks
-  for deep iterative work, repeated improvement or review loops, says to run loops, or
-  explicitly asks for RPI, RPWR, an RPI loop, or an RPWR loop instead of a single-pass
-  result.
+  Legacy RPWR compatibility workflow for explicit requests to use RPWR or the RPWR loop
+  by name. Do not use for RPI, RPI(R), generic loop requests, improvement loops,
+  recursive loops, or complex adaptive work; route those to `mols-rpi`.
 ---
 
 # RPWR Loop
 
-Use **RPWR** as one iterative main loop with two supporting workflows. `RPI` is an alias.
+This Skill is retained only for **explicit RPWR compatibility**.
+
+For `RPI`, `RPI(R)`, `loop`, `recursive loop`, improvement-loop requests, or complex
+adaptive work that benefits from Research → Plan → goal-directed Work → Review with
+artifact prerequisites, use `../mols-rpi/SKILL.md` instead.
+
+Use **RPWR** as one iterative main loop with two supporting workflows.
 
 ```text
 Prepare workflow
