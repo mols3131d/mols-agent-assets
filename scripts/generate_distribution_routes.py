@@ -19,11 +19,12 @@ SKILL_SOURCE_TEMPLATE = (
     f"{RAW_ROOT}/src/rulesync/.rulesync/skills/{{directory}}/SKILL.md"
 )
 INSTRUCTION = (
-    "Before substantive work, select only task-relevant Skills by name and description, "
-    "then load every selected source before acting. Select multiple Skills when their "
-    "responsibilities independently apply. If no Skill matches, continue without loading "
-    "one. Re-evaluate selection when the task materially changes. This file is derived "
-    "discovery metadata; the referenced canonical Skill remains authoritative."
+    "When this Skill route is loaded for a task, select only task-relevant Skills by name "
+    "and description, then load every selected source before continuing the task. Select "
+    "multiple Skills when their responsibilities independently apply. If no Skill matches, "
+    "continue without loading one. Re-evaluate selection when the task materially changes. "
+    "This file is derived discovery metadata; the referenced canonical Skill remains "
+    "authoritative."
 )
 
 
