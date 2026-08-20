@@ -24,6 +24,11 @@ official target documentation. If that target provides an official Skill creator
 or authoring guide, use it as target-specific guidance rather than a portable
 standard.
 
+If current authoritative source material is unavailable, preserve the established
+source shape, avoid inventing target-specific fields, paths, packaging, permissions,
+or creator behavior, and expose the compatibility gap when it can affect the
+result.
+
 ## Package
 
 Prefer the smallest deployable Skill package.
