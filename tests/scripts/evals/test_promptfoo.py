@@ -40,13 +40,8 @@ def test_generator_reuses_canonical_fixture_without_semantic_duplication() -> No
         case = canonical[test["vars"]["case_id"]]
         assert test["vars"]["task"] == case["prompt"]
         assert test["vars"]["mode"] == case["mode"]
+        assert test["vars"]["expected_activation"] is (case["mode"] != "activation-negative")
         assert [check["type"] for check in test["assert"]] == ["python"]
-        if case["mode"] == "activation":
-            assert test["vars"]["expected_activation"] is True
-        elif case["mode"] == "activation-negative":
-            assert test["vars"]["expected_activation"] is False
-        else:
-            assert "expected_activation" not in test["vars"]
 
 
 def test_semantic_grader_projects_canonical_assertions(monkeypatch) -> None:

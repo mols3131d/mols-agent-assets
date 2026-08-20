@@ -24,12 +24,8 @@ def _load_cases() -> dict[str, dict]:
     return {case["id"]: case for case in payload["cases"]}
 
 
-def _expected_activation(mode: str) -> bool | None:
-    if mode == "activation":
-        return True
-    if mode == "activation-negative":
-        return False
-    return None
+def _expected_activation(mode: str) -> bool:
+    return mode != "activation-negative"
 
 
 def _semantic_rubric(assertions: list[str]) -> str:
@@ -64,11 +60,12 @@ def generate_tests(config: dict | None = None) -> list[dict]:
         if not isinstance(prompt, str) or not isinstance(mode, str) or not isinstance(assertions, list):
             raise ValueError(f"invalid eval case: {case_id}")
 
-        vars_ = {"task": prompt, "case_id": case_id, "mode": mode}
-        expected_activation = _expected_activation(mode)
-        if expected_activation is not None:
-            vars_["expected_activation"] = expected_activation
-
+        vars_ = {
+            "task": prompt,
+            "case_id": case_id,
+            "mode": mode,
+            "expected_activation": _expected_activation(mode),
+        }
         checks = [
             {
                 "type": "python",
