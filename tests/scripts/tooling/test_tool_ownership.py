@@ -7,12 +7,22 @@ PYTHON_VERSION = ROOT / ".python-version"
 LEFTHOOK = ROOT / "lefthook.yml"
 PACKAGE = ROOT / "package.json"
 BIOME = ROOT / "biome.json"
+RULESYNC_RUNNER = ROOT / "scripts" / "run_rulesync.py"
+RULESYNC_WORKFLOW = ROOT / ".github" / "workflows" / "rulesync.yml"
+TARGETED_TESTS = ROOT / ".github" / "workflows" / "targeted-tests.yml"
 
 
 def test_mise_owns_repository_tools_but_not_python() -> None:
     config = MISE.read_text(encoding="utf-8")
 
-    for tool in ["uv", "node", "rumdl", "lefthook", '"npm:@biomejs/biome"']:
+    for tool in [
+        "uv",
+        "node",
+        "rumdl",
+        "lefthook",
+        '"npm:@biomejs/biome"',
+        '"npm:rulesync"',
+    ]:
         assert f"{tool} =" in config
     assert "python =" not in config
 
@@ -46,8 +56,30 @@ def test_node_scripts_route_python_through_uv() -> None:
     assert '"rulesync:doctor": "python ' not in package
 
 
+def test_rulesync_is_pinned_and_uses_mise_managed_binary() -> None:
+    mise = MISE.read_text(encoding="utf-8")
+    runner = RULESYNC_RUNNER.read_text(encoding="utf-8")
+    workflow = RULESYNC_WORKFLOW.read_text(encoding="utf-8")
+
+    assert '"npm:rulesync" = "' in mise
+    assert '"npm:rulesync" = "latest"' not in mise
+    assert 'shutil.which("rulesync")' in runner
+    assert "rulesync@latest" not in runner
+    assert 'mise install uv node rumdl "npm:rulesync"' in workflow
+
+
+def test_targeted_ci_gates_tooling_and_lock_freshness() -> None:
+    workflow = TARGETED_TESTS.read_text(encoding="utf-8")
+
+    assert "tooling_changed=true" in workflow
+    assert "mise run check" in workflow
+    assert "uv run --locked" in workflow
+    assert "uv run --frozen" not in workflow
+
+
 def test_biome_is_repository_configured() -> None:
     config = BIOME.read_text(encoding="utf-8")
 
     assert '"$schema": "https://biomejs.dev/schemas/2.5.6/schema.json"' in config
-    assert '"recommended": true' in config
+    assert '"preset": "recommended"' in config
+    assert '"recommended": true' not in config
