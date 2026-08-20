@@ -49,6 +49,16 @@
       ]
     },
     {
+      "id": "rpi-composes-with-domain-skill",
+      "mode": "orchestration",
+      "prompt": "이 에이전트 스킬을 재귀 개선해서 품질을 높여줘.",
+      "assertions": [
+        "Uses mols-rpi as the orchestration method while retaining applicable task-specific Skill authoring guidance",
+        "Does not let RPI replace the more specific task-domain capability or governing procedure",
+        "Uses the domain capability inside Research, Plan, Work, or Review as appropriate"
+      ]
+    },
+    {
       "id": "trivial-work-does-not-activate",
       "mode": "activation-negative",
       "prompt": "이 문장에서 오타 하나만 고쳐줘.",
