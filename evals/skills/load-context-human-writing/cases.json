@@ -11,6 +11,15 @@
       ]
     },
     {
+      "id": "cross-workflow-baseline",
+      "prompt": "RPI 조사 결과를 바탕으로 프로젝트 README의 현재 상태 설명을 개선해줘.",
+      "assertions": [
+        "Applies human-comprehension principles even though writing is a subtask of a broader workflow",
+        "Does not take ownership away from the active repository, research, or writing workflow",
+        "Improves reader orientation and retrieval without inventing new project facts"
+      ]
+    },
+    {
       "id": "do-not-overcompress",
       "prompt": "이 문서를 최대한 짧고 읽기 쉽게 줄여줘. 다만 왜 이 결정을 했는지는 나중에도 복구 가능해야 해.",
       "assertions": [
