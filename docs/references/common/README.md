@@ -1,6 +1,6 @@
 ---
 title: 공통 레퍼런스
-description: 여러 자산과 workflow가 공유하는 최소 repository-local convention, principle, authoring, tooling reference
+description: 여러 자산과 workflow가 공유하는 최소 repository-local convention, principle, authoring reference
 ---
 
 # 공통 레퍼런스
@@ -16,8 +16,7 @@ description: 여러 자산과 workflow가 공유하는 최소 repository-local c
 | [CHATBOT Compatibility](chatbot-compatibility.md) | chat runtime의 누락된 harness behavior 보정 |
 | [Design Principles](design-principles.md) | YAGNI, SRP, DRY, KISS, Progressive Disclosure 판단 |
 | [Instruction Authoring](instruction-authoring.md) | LLM이 적용할 behavioral instruction 작성 |
-| [Front Matter CMS](front-matter-cms.md) | repository configuration과 official source routing |
 
-사람용 일반 문서 작성 원칙은 `load-context-human-writing`이 소유하며 여기서 별도 복제하지 않습니다. Skill-specific reference는 `../skills/`가 소유합니다.
+사람용 일반 문서 작성 원칙은 `load-context-human-writing`이 소유하며 여기서 별도 복제하지 않습니다. Skill-specific reference는 `../skills/`, tool-specific reference는 `../tooling/`이 소유합니다.
 
 새 common 문서를 만들기 전에 **여러 책임에서 정말 같은 의미로 재사용되는지** 확인합니다. 미래의 공통화를 예상해 abstraction이나 taxonomy를 미리 만들지 않습니다.
