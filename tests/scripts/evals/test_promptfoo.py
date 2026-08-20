@@ -59,14 +59,19 @@ def test_generator_reuses_canonical_fixture_without_semantic_duplication() -> No
         assert [check["type"] for check in test["assert"]] == ["python"]
 
 
-def test_semantic_grader_projects_canonical_assertions(monkeypatch) -> None:
+def test_semantic_grader_only_projects_behavior_assertions(monkeypatch) -> None:
     monkeypatch.setenv("PROMPTFOO_GRADER_PROVIDER", "ollama:chat:test-grader")
     canonical = _canonical_cases()
     generated = ADAPTER.generate_tests({"semantic": True})
 
     for test in generated:
         case = canonical[test["vars"]["case_id"]]
-        semantic = next(check for check in test["assert"] if check["type"] == "llm-rubric")
+        semantic_checks = [check for check in test["assert"] if check["type"] == "llm-rubric"]
+        if case["mode"] in ADAPTER.ROUTING_MODES:
+            assert semantic_checks == []
+            continue
+        assert len(semantic_checks) == 1
+        semantic = semantic_checks[0]
         assert semantic["provider"] == "ollama:chat:test-grader"
         for criterion in case["assertions"]:
             assert criterion in semantic["value"]
@@ -114,18 +119,12 @@ def test_fixture_provider_is_plumbing_only() -> None:
     assert "not runtime behavior evidence" in payload["response"]
 
 
-def test_activation_routes_with_metadata_then_executes_full_skill(monkeypatch) -> None:
+def test_activation_mode_uses_only_discovery_metadata(monkeypatch) -> None:
     captured: list[dict] = []
-    responses = iter(
-        [
-            {"activation": True, "response": "selected"},
-            {"response": "Research before Plan; Review controls the next transition."},
-        ]
-    )
 
     def fake_urlopen(api_request, timeout):
         captured.append(json.loads(api_request.data.decode("utf-8")))
-        return _fake_response(next(responses))
+        return _fake_response({"activation": True, "response": "mols-rpi selected"})
 
     monkeypatch.setattr(ADAPTER.request, "urlopen", fake_urlopen)
     monkeypatch.setenv("PROMPTFOO_RUNTIME_MODEL", "qwen2.5:test")
@@ -138,19 +137,14 @@ def test_activation_routes_with_metadata_then_executes_full_skill(monkeypatch) -
     )
     payload = json.loads(result["output"])
     skill = ADAPTER.SKILL_PATH.read_text(encoding="utf-8")
-    canonical = _canonical_cases()["explicit-rpi-activates"]
 
-    assert len(captured) == 2
+    assert len(captured) == 1
     assert captured[0]["model"] == "qwen2.5:test"
     assert captured[0]["messages"][1]["content"] == task
     assert captured[0]["format"] == ADAPTER.RUNTIME_ENVELOPE_SCHEMA
     assert ADAPTER._skill_frontmatter(skill) in captured[0]["messages"][0]["content"]
     assert "# Mols RPI" not in captured[0]["messages"][0]["content"]
-    assert captured[1]["format"] == ADAPTER.BEHAVIOR_RESPONSE_SCHEMA
-    assert skill in captured[1]["messages"][0]["content"]
-    assert canonical["assertions"][0] not in captured[1]["messages"][0]["content"]
     assert payload["activation"] is True
-    assert "Research before Plan" in payload["response"]
 
 
 def test_negative_activation_never_loads_skill_body(monkeypatch) -> None:
