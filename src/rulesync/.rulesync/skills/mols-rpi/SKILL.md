@@ -2,14 +2,18 @@
 name: mols-rpi
 description: >-
   Run adaptive RPI work with explicit Research → Plan → Implementation prerequisites,
-  evidence-driven Review, and bounded serial recursion. Use when the user requests RPI
-  or RPI(R), asks to loop, deeply improve, or recursively improve work—including
-  standalone loop/루프, recursive loop/재귀 루프, improvement loop/개선 루프, or deep
-  loop/심층 루프 method requests. Also use without those words for complex multi-step
-  work where uncertainty, consequential decisions, multiple acceptance conditions, or
-  prerequisite research and planning make a single-pass response unreliable. Do not use
-  when loop is merely the topic being discussed, for generic content repetition, or for
-  trivial tasks where explicit prerequisite artifacts add no meaningful control.
+  evidence-driven Review, and bounded serial recursion. Use when the user requests RPI or
+  RPI(R), loop/loops/loop it/루프, recursive loop/재귀 루프, improvement loop/개선 루프,
+  deep loop/심층 루프, or equivalent repeated research/planning/work/review or recursive
+  improvement. Also use without those words for complex multi-step work where a single
+  pass is materially unreliable because the task needs evidence gathering or
+  reconciliation before consequential decisions, an explicit Plan before consequential
+  Work, convergence across multiple acceptance conditions or coupled workstreams,
+  repeated verification or likely replanning, narrower subproblem resolution, or
+  protection against costly rework from hidden assumptions or uncertainty. Do not use
+  when loop is merely the topic, identifier, or code concept being discussed, when the
+  user only asks to repeat content without iterative work, merely because a task is long,
+  or for trivial work where explicit prerequisite artifacts add no meaningful control.
 ---
 
 # Mols RPI
@@ -34,9 +38,7 @@ Research-only work may stop after Research + Review. Plan-only work requires Res
 and may stop after Plan + Review. Perform Implementation only when the Goal requires
 planned execution.
 
-# Interface
-
-## Arguments
+# Arguments
 
 All arguments are optional.
 
@@ -85,38 +87,6 @@ RPI invariants. `<auto>` means resolve from current evidence and context, not ap
 fixed profile. Arguments may narrow behavior, but they never authorize side effects,
 relax prerequisite ordering, weaken validation, cross explicit Scope boundaries, reset a
 Run, or raise `max_total_loops` above 30.
-
-## Activation
-
-Activate when either condition holds.
-
-### Explicit method intent
-
-Use this Skill when the user asks to perform the active task with:
-
-- `RPI` or `RPI(R)`;
-- `loop`, `loops`, `loop it`, or `루프`;
-- `recursive loop` or `재귀 루프`;
-- `improvement loop`, `deep loop`, `개선 루프`, or `심층 루프`;
-- equivalent repeated research/planning/work/review or recursive improvement language.
-
-A standalone method word is sufficient when the active task is clear from context.
-Do not activate when *loop* is merely the topic, identifier, or code concept being
-discussed, or when the user only asks to repeat content without iterative work.
-
-### Complexity intent
-
-Use this Skill without an explicit method word when a single pass would create material
-reliability risk because the task needs one or more of:
-
-- evidence gathering or reconciliation before consequential decisions;
-- an explicit Plan before consequential Work;
-- convergence across multiple acceptance conditions or coupled workstreams;
-- repeated verification or likely replanning;
-- narrower subproblem resolution;
-- protection against costly rework from hidden assumptions or uncertainty.
-
-Do not activate merely because a task is long.
 
 # Runtime
 
