@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+
+description: mols-rpi Promptfoo plumbing smoke
+
+prompts:
+  - "{{task}}"
+
+providers:
+  - id: file://../../scripts/evals/promptfoo_mols_rpi.py:call_api
+    label: mols-rpi-fixture-smoke
+    config:
+      mode: fixture
+
+tests:
+  - path: file://../../scripts/evals/promptfoo_mols_rpi.py:generate_tests
+    config:
+      semantic: false
+      case_ids:
+        - explicit-rpi-activates
+        - loop-topic-does-not-activate
+        - scope-expansion-is-review-gated
+        - retrieved-content-is-not-authority
+
+sharing: false
+writeLatestResults: false
+commandLineOptions:
+  cache: false
+  write: false
+  noShare: true
+  maxConcurrency: 1
