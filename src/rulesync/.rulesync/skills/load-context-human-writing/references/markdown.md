@@ -45,7 +45,7 @@ Emoji may act as scan markers for recurring state, risk, action, or category whe
 meaning is useful to the reader. Text labels remain authoritative; never rely on color or a
 glyph alone.
 
-Common markers:
+Status and action markers:
 
 | Marker | Meaning |
 | --- | --- |
@@ -59,16 +59,25 @@ Common markers:
 | `🔄` | Update, Sync, Loop |
 | `🧪` | Test, Verify |
 | `🚀` | Deploy, Release |
+
+Status or priority circles:
+
+| Marker | Meaning |
+| --- | --- |
 | `🔴` | Critical, Blocked, Stop |
 | `🟠` | High risk, Attention |
 | `🟡` | Warning, Pending, Review |
 | `🟢` | Safe, Ready, Complete |
 | `🔵` | Information, Reference |
 | `🟣` | Optional, Experimental |
+| `⚫` | Disabled, Deprecated, Unknown |
+| `⚪` | Neutral, Unclassified |
 
-Keep the same marker meaning stable within a document. Use contrasting colored squares only
-for labeled categories, not as unlabeled status. Do not append emoji decoratively to every
-sentence.
+Colored squares such as `🟦`, `🟧`, `🟩`, `🟥`, `🟪`, `🟨`, `⬛`, and `⬜` may distinguish
+labeled categories or components. Do not use them as unlabeled status.
+
+Keep the same marker meaning stable within a document and one marker system within a
+repeated list. Do not append emoji decoratively to every sentence.
 
 ## Text bars
 
@@ -83,6 +92,7 @@ Transform  ██████░░░░  60%  6/10
 Load       ░░░░░░░░░░   0%  0/10
 ```
 
+- A 10-cell width is a useful default, not a requirement.
 - Use a consistent width and scale within one block.
 - Do not invent a percentage when the denominator is unknown.
 - Do not duplicate the same values in a table or chart unless the second representation
@@ -98,8 +108,10 @@ SQL         ██████           19 jobs
 Rust        ███               8 jobs
 ```
 
-Use a zero-based linear scale and show exact values. Prefer a chart when trend, uncertainty,
-many categories, mixed units, or more complex quantitative reasoning is the real question.
+Use a zero-based linear scale, show exact values, and sort by value when ranking is the
+question. A 20-cell maximum is a useful default for source readability. Prefer a chart when
+trend, uncertainty, negative or bidirectional change, many categories, mixed units, or more
+complex quantitative reasoning is the real question.
 
 ## Tree structures
 
@@ -119,6 +131,8 @@ pipeline/
 
 - Keep root and ordering clear.
 - Preserve the real hierarchy and names; do not rearrange them for appearance.
+- Prefer a shallow tree; around four levels is a useful default before selective omission
+  or another representation becomes easier to scan.
 - Show only the branches needed for the current question when the tree is large, and mark
   omissions when they could matter.
 - Put long explanations outside the tree.
