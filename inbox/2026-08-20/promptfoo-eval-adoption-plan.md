@@ -138,12 +138,12 @@ PoC가 안정화된 뒤 실제 target surface를 대상으로 검증한다.
 흐름:
 
 1. canonical asset 준비
-2. temporary workspace 생성
-3. Rulesync target projection
-4. Promptfoo가 runtime adapter를 통해 target runtime 실행
-5. target runtime이 projection된 usage surface를 소비
-6. Promptfoo가 결과 평가
-7. temporary output 폐기
+1. temporary workspace 생성
+1. Rulesync target projection
+1. Promptfoo가 runtime adapter를 통해 target runtime 실행
+1. target runtime이 projection된 usage surface를 소비
+1. Promptfoo가 결과 평가
+1. temporary output 폐기
 
 이 단계에서 처음으로 projection parity와 runtime parity를 함께 관찰한다.
 
@@ -156,9 +156,9 @@ Target-specific exception은 실제 차이가 증명된 경우에만 fixture met
 권장 순서:
 
 1. local developer command
-2. manual workflow 또는 explicit eval job
-3. selected smoke eval
-4. 필요하면 scheduled/full regression
+1. manual workflow 또는 explicit eval job
+1. selected smoke eval
+1. 필요하면 scheduled/full regression
 
 Stochastic model eval은 초기에 PR blocking gate로 만들지 않는다.
 
@@ -268,13 +268,13 @@ Promptfoo configuration과 custom provider는 trusted code로 취급한다.
 첫 implementation은 다음 정도로 제한한다.
 
 1. Promptfoo dependency 또는 reproducible invocation 결정
-2. telemetry/cloud-off 기본값 정의
-3. `mols-rpi` fixture 일부를 읽는 normalizer 작성
-4. 하나의 runtime adapter 연결
-5. deterministic + semantic grader 각각 최소 하나 적용
-6. local 실행 command 제공
-7. generated result 저장 정책 확인
-8. PoC 결과를 기준으로 다음 gate 판단
+1. telemetry/cloud-off 기본값 정의
+1. `mols-rpi` fixture 일부를 읽는 normalizer 작성
+1. 하나의 runtime adapter 연결
+1. deterministic + semantic grader 각각 최소 하나 적용
+1. local 실행 command 제공
+1. generated result 저장 정책 확인
+1. PoC 결과를 기준으로 다음 gate 판단
 
 ## 성공 지표
 

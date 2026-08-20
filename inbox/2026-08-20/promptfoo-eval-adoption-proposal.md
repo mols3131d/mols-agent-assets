@@ -92,8 +92,8 @@ Rulesync가 target surface로 정상 projection했다는 사실과 해당 runtim
 검증 계층은 다음과 같다.
 
 1. source correctness
-2. projection correctness
-3. runtime behavior correctness
+1. projection correctness
+1. runtime behavior correctness
 
 Promptfoo는 3번의 실행과 평가만 소유한다.
 
@@ -171,12 +171,12 @@ Repository-owned fixture를 한 번 normalize한 뒤 Promptfoo로 projection하�
 ## 도입 원칙
 
 1. **Repository contract first** — Promptfoo보다 `evals/`가 우선한다.
-2. **Projection before runtime claim** — 실제 target surface를 소비하는 runtime을 대상으로 평가한다.
-3. **Deterministic before model grader** — 값싼 증거가 가능한 계약에 LLM judge를 사용하지 않는다.
-4. **Portable by default** — target-specific fixture는 실제 차이가 증명된 경우에만 추가한다.
-5. **Local/manual first** — stochastic eval은 안정성과 비용이 확인된 뒤 자동화 범위를 넓힌다.
-6. **Disposable results** — generated result는 기본적으로 일회성으로 취급한다.
-7. **Easy exit** — Promptfoo 제거 시 canonical assets와 fixture가 그대로 남아야 한다.
+1. **Projection before runtime claim** — 실제 target surface를 소비하는 runtime을 대상으로 평가한다.
+1. **Deterministic before model grader** — 값싼 증거가 가능한 계약에 LLM judge를 사용하지 않는다.
+1. **Portable by default** — target-specific fixture는 실제 차이가 증명된 경우에만 추가한다.
+1. **Local/manual first** — stochastic eval은 안정성과 비용이 확인된 뒤 자동화 범위를 넓힌다.
+1. **Disposable results** — generated result는 기본적으로 일회성으로 취급한다.
+1. **Easy exit** — Promptfoo 제거 시 canonical assets와 fixture가 그대로 남아야 한다.
 
 ## 권고 결정
 
@@ -194,9 +194,9 @@ PoC가 다음 조건을 만족할 때만 repository-level integration으로 승�
 
 ## 참고
 
-- Promptfoo documentation: https://www.promptfoo.dev/docs/
-- Custom providers: https://www.promptfoo.dev/docs/providers/custom-script/
-- Ollama provider: https://www.promptfoo.dev/docs/providers/ollama/
-- Python integration: https://www.promptfoo.dev/docs/integrations/python/
-- Telemetry: https://www.promptfoo.dev/docs/configuration/telemetry/
-- Rulesync documentation: https://rulesync.dyoshikawa.com/
+- Promptfoo documentation: <https://www.promptfoo.dev/docs/>
+- Custom providers: <https://www.promptfoo.dev/docs/providers/custom-script/>
+- Ollama provider: <https://www.promptfoo.dev/docs/providers/ollama/>
+- Python integration: <https://www.promptfoo.dev/docs/integrations/python/>
+- Telemetry: <https://www.promptfoo.dev/docs/configuration/telemetry/>
+- Rulesync documentation: <https://rulesync.dyoshikawa.com/>
