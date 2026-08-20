@@ -6,12 +6,23 @@
 
 ## Capsule Contract
 
-각 `*.md` pattern document는 **독립적으로 읽고 재사용할 수 있는 self-contained capsule**입니다.
+Pattern은 기본적으로 하나의 `*.md` 문서로 시작할 수 있으며, 내용이나 책임이 커지면 **directory bundle**로 구성할 수 있습니다.
+
+```text
+patterns/
+├─ simple-pattern.md
+└─ large-pattern/
+   ├─ README.md
+   └─ ...
+```
+
+파일이든 bundle이든 하나의 pattern은 **독립적으로 읽고 재사용할 수 있는 self-contained capsule**입니다.
 
 - 각 capsule은 자기 pattern의 목적, 본질, 적용 방식, 선택지와 경계를 충분히 설명합니다.
+- Bundle은 하나의 pattern capsule을 여러 파일로 나눈 형태이며, `README.md` 같은 entrypoint에서 전체 의미와 내부 읽기 경로를 복원할 수 있게 합니다.
 - 다른 capsule을 반드시 읽어야만 핵심 의미를 이해할 수 있는 hidden dependency를 만들지 않습니다.
 - 다른 pattern과 내용이 겹치는 것은 self-containment와 재사용성에 도움이 되면 허용합니다.
-- 중복 자체보다 **어떤 문서가 그 책임을 소유하는가**를 우선 봅니다.
+- 중복 자체보다 **어떤 capsule이 그 책임을 소유하는가**를 우선 봅니다.
 - 다른 pattern의 책임이나 특정 project의 operational policy를 대신 소유하지 않습니다.
 
 관련 pattern을 링크하거나 함께 설명할 수 있지만, 링크가 capsule의 독립성을 대체하지는 않습니다.
@@ -43,6 +54,8 @@ Pattern은 **본질은 분명하게, 적용은 유연하게** 작성합니다.
 
 Pattern에 필요하지 않은 section을 형식 때문에 추가하지 않습니다.
 
+Bundle로 확장할 때도 section을 기계적으로 파일로 분리하지 않습니다. 독립적인 책임이나 유지보수 이유가 생길 때만 파일을 나누고, bundle 전체는 하나의 pattern capsule로 유지합니다.
+
 ## Ownership
 
 각 capsule은 자기 책임을 충분히 소유하되 그 경계를 넘지 않습니다.
@@ -51,18 +64,19 @@ Pattern에 필요하지 않은 section을 형식 때문에 추가하지 않습�
 - 다른 capsule의 핵심 책임을 자기 규칙처럼 정의하면 ownership 문제입니다.
 - Project-local convention이나 mandatory workflow는 해당 project의 operational documentation이 소유합니다.
 - 외부 standard나 tool behavior가 authority라면 필요에 따라 reference하고 local pattern이 이를 재정의하지 않습니다.
-- 같은 capsule 내부에서는 의미 없는 반복을 피합니다.
+- 같은 capsule 또는 bundle 내부에서는 의미 없는 반복을 피합니다.
 
 ## Review
 
 Pattern을 작성하거나 수정할 때 다음을 우선 확인합니다.
 
-1. 이 문서 하나만으로 pattern의 목적과 본질을 이해할 수 있는가?
+1. 이 capsule 하나만으로 pattern의 목적과 본질을 이해할 수 있는가?
 2. Core와 example/recommendation/option이 구분되어 있는가?
 3. 특정 repository에 불필요하게 맞춰져 있지 않은가?
 4. 다른 pattern이나 project policy가 소유해야 할 책임을 가져오지 않았는가?
 5. 필요한 대안과 확장 가능성을 닫아버리지 않았는가?
 6. 다른 capsule과의 overlap을 없애려다 self-containment를 훼손하지 않았는가?
+7. Bundle이라면 파일 분할이 실제 책임 경계를 반영하고, entrypoint만으로 전체 구조를 탐색할 수 있는가?
 
 이 README는 pattern 목록이나 index를 소유하지 않습니다. 이 디렉터리의 공통 contract만 소유합니다.
 
