@@ -77,10 +77,13 @@ def test_deployable_skill_surface_excludes_repository_verification() -> None:
         )
 
 
-def test_rulesync_toolchain_tracks_latest() -> None:
+def test_rulesync_toolchain_is_reproducibly_pinned() -> None:
+    mise = (ROOT / "mise.toml").read_text(encoding="utf-8")
     runner = (ROOT / "scripts/run_rulesync.py").read_text(encoding="utf-8")
-    assert '"rulesync@latest"' in runner
-    assert "RULESYNC_VERSION" not in runner
+
+    assert '"npm:rulesync" = "16.5.0"' in mise
+    assert 'shutil.which("rulesync")' in runner
+    assert "rulesync@latest" not in runner
     assert not (ROOT / "package-lock.json").exists()
 
 
