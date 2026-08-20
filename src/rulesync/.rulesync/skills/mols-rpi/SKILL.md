@@ -141,7 +141,8 @@ Apply these rules:
    appears materially required for the Goal, but the proposal does not change the Active
    Scope. Research must validate the need and boundary, the Plan must incorporate the
    validated expansion, and applicable authority/safety gates must pass before the Active
-   Scope expands and affected Work begins.
+   Scope expands and affected Work begins. Expand only by the smallest justified boundary
+   delta; adjacent or opportunistic work remains out of scope.
 1. **Explicit boundaries are not silently mutable.** Never expand across a user-defined
    `Out of scope`, replace a user-defined Goal, or relax a required acceptance condition
    without new authority from the source that set that boundary.
@@ -298,7 +299,7 @@ Choose the next transition from evidence:
 | plan gap | Update Plan; Research first if the missing decision lacks support |
 | bounded work gap | Fix within the valid Scope, Plan, and authority; validate; Review again |
 | useful scope narrowing | Narrow Scope; revalidate affected Plan coverage before Work |
-| material scope expansion required | Propose expansion → Research validates boundary → Plan incorporates it → authority check → expand Scope → Work |
+| material scope expansion required | Propose smallest justified expansion → Research validates boundary → Plan incorporates it → authority check → expand Scope → Work |
 | narrower material blocker | Push a recursive child scope from this Review |
 | saturation | Change source/method/perspective or narrow Scope once useful; if continuation requires expansion, apply the Scope Contract; otherwise Block when no credible path remains |
 | effective Loop ceiling reached | Finish Review and hand off |
