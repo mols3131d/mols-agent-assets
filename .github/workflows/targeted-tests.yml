@@ -30,6 +30,8 @@ on:
       - "pyproject.toml"
       - "uv.lock"
       - ".github/workflows/distribution-routes.yml"
+      - ".github/workflows/rulesync.yml"
+      - ".github/workflows/rumdl-main-autofix.yml"
       - ".github/workflows/targeted-tests.yml"
 
 permissions:
@@ -111,6 +113,11 @@ jobs:
                 ;;
               .github/workflows/distribution-routes.yml|route/*)
                 add_distribution_routes
+                add_script "tooling"
+                ;;
+              .github/workflows/rulesync.yml)
+                add_script "rumdl_main_autofix"
+                add_script "tooling"
                 ;;
               .gitattributes|.rumdl.toml|.github/workflows/rumdl-main-autofix.yml)
                 add_script "rumdl_main_autofix"
@@ -202,4 +209,4 @@ jobs:
         run: |
           [[ -f /tmp/root-tests ]] || exit 0
           mapfile -d '' targets < /tmp/root-tests
-          mise exec -- uv run --frozen --no-default-groups --group test pytest -q "${targets[@]}"
+          uv run --frozen --no-default-groups --group test pytest -q "${targets[@]}"
