@@ -15,7 +15,7 @@ This Skill acts as an **authority router**, not as the workflow that owns the ar
 
 Before materially designing or revising an agent asset:
 
-1. Identify the asset type, target model/harness/platform, and deployment surface.
+1. Identify the actual source format, target model/harness/platform, and deployment surface.
 1. Read current authoritative target documentation when it can change the design.
 1. Read only the narrow authoring references relevant to the decision.
 1. Let the active workflow create, edit, validate, package, or publish the artifact.
@@ -46,16 +46,18 @@ Apply the personal overlay only when one of these is established:
 
 When the overlay applies, read the applicable authority before using the convention:
 
-- [Personal Agent Asset Standard](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/standards/agent-assets-standard-personal.md)
-- [Agent Asset Naming Convention](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/standards/agent-assets-naming-convention.md)
+- [Rulesync Repository Conventions](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/conventions/rulesync-repository-conventions.md) when the asset is Rulesync-managed or this repository's source boundary matters
+- [Agent Asset Naming Convention](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/conventions/agent-assets-naming-convention.md) when filesystem naming matters
 
 For Skill-specific work, also use `load-context-agent-skills` and its Skill-specific sources.
+
+Do not invent a repository-local asset taxonomy when the active source framework already defines the relevant feature model.
 
 # Fallback
 
 If authoritative sources cannot be accessed, do not invent detailed platform or personal rules. Preserve only these stable defaults until verification is possible:
 
-- one coherent responsibility per asset;
+- one coherent responsibility per artifact;
 - one authoritative owner per durable rule;
 - explicit activation, action, authority, and observable validation where they matter;
 - no speculative structure or mechanism without a current need;

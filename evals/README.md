@@ -1,15 +1,12 @@
 # 평가 (`evals/`)
 
-`evals/`는 저장소가 소유하는 평가 계약을 저장한다.
+`evals/`는 repository-owned behavioral/model evaluation fixture와 **기계적으로 검증할 가치가 있는 cross-asset regression contract**를 저장합니다.
 
-- Skill별 trigger, behavior, adversarial 평가 fixture는 `evals/skills/<skill-name>/`을 사용한다.
-- 여러 Agent Asset이나 target에 걸친 회귀 계약은 `evals/regression/`을 사용한다.
-- 실행 가능한 결정론적 정확성 테스트는 `tests/`가 소유한다.
-- 배포 가능한 `src/rulesync/.rulesync/skills/<skill-name>/` package 안에는 저장소 eval을 두지 않는다.
-- 결정론적 assertion으로 판정 가능한 계약은 model grader보다 우선한다.
-- runtime behavior를 검증하지 않은 case를 runtime evidence처럼 표현하지 않는다.
+- Skill별 trigger, behavior, adversarial fixture → `evals/skills/<skill-name>/`
+- 여러 source에 걸친 deterministic invariant → 필요한 경우에만 `evals/regression/`
+- 실행 가능한 deterministic correctness test → `tests/`
+- Deployable Skill package 안에는 repository eval을 두지 않습니다.
 
-## 현재 회귀 평가 묶음
+Deterministic assertion이 가능한 계약은 model grader보다 우선하지만, **문장 동기화나 semantic prose consistency를 문자열 regression으로 고정하지 않습니다.** 그런 의미는 authoritative source와 해당 behavioral review/eval이 소유합니다.
 
-- `regression/rulesync-source-isolation.json` — `src/rulesync/` native workspace와 `src/rulesync/.rulesync/` 정본 자산 소스, 저장소 runtime-discovery surface의 격리를 고정하는 결정론적 계약.
-- `regression/chatbot-harness-compatibility.json` — `CHATBOT.md` compatibility layer, GitHub context loader, Rule boundary 사이의 authority·discovery·partial-harness invariant를 고정하는 결정론적 계약.
+현재 `evals/regression/rulesync-source-isolation.json`은 repository/library Rulesync workspace와 generated surface의 최소 격리 contract만 소유합니다.

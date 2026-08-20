@@ -11,13 +11,13 @@ def write_skill(path, name, description):
     )
 
 
-def test_render_skill_route_uses_meta_sorted_entries_and_sources(tmp_path):
-    write_skill(tmp_path / "beta" / "SKILL.md", "beta", "Beta skill")
-    write_skill(tmp_path / "alpha" / "SKILL.md", "alpha", "Alpha skill")
+def test_render_skill_route_uses_meta_sorted_entries_and_canonical_sources(tmp_path):
+    write_skill(tmp_path / "beta-dir" / "SKILL.md", "beta", "Beta skill")
+    write_skill(tmp_path / "alpha-dir" / "SKILL.md", "alpha", "Alpha skill")
 
     content = generate_distribution_routes.render_skill_route(
         tmp_path,
-        "https://example.test/{name}/SKILL.md",
+        "https://example.test/{directory}/SKILL.md",
     )
     rows = [json.loads(line) for line in content.splitlines()]
 
@@ -31,12 +31,12 @@ def test_render_skill_route_uses_meta_sorted_entries_and_sources(tmp_path):
         {
             "name": "alpha",
             "description": "Alpha skill",
-            "source": "https://example.test/alpha/SKILL.md",
+            "source": "https://example.test/alpha-dir/SKILL.md",
         },
         {
             "name": "beta",
             "description": "Beta skill",
-            "source": "https://example.test/beta/SKILL.md",
+            "source": "https://example.test/beta-dir/SKILL.md",
         },
     ]
 

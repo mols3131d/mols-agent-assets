@@ -44,5 +44,3 @@ jobs:
           git diff --exit-code -- "${markdown[@]}"
       - name: Validate canonical configuration
         run: npm run rulesync:doctor
-      - name: Validate isolated projection consistency
-        run: npm run rulesync:validate

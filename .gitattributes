@@ -1,8 +1,5 @@
 # Canonical Agent Asset workspace
 src/rulesync/** rulesync-source
 
-# Repository-local runtime guard
-.agents/AGENTS.md linguist-detectable
-
 # Derived cross-runtime discovery metadata
 route/skills.jsonl linguist-generated

@@ -51,12 +51,13 @@ def test_distribution_route_workflow_owns_generation() -> None:
     assert "src/rulesync/.rulesync/skills/INDEX.jsonl" not in workflow
 
 
-def test_pr_verifier_uses_isolated_rulesync_workspace() -> None:
+def test_pr_verifier_checks_canonical_rulesync_source_only() -> None:
     workflow = RULESYNC.read_text(encoding="utf-8")
 
     assert "Validate canonical Markdown normalization" in workflow
     assert "npm run rulesync:doctor" in workflow
-    assert "npm run rulesync:validate" in workflow
+    assert "rulesync:validate" not in workflow
+    assert "--targets" not in workflow
     assert "Validate generated Markdown normalization" not in workflow
     assert "git check-attr linguist-generated" not in workflow
     assert "npx rulesync generate" not in workflow

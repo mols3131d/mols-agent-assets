@@ -21,22 +21,12 @@ def test_readme_language_variants_are_not_used() -> None:
     assert sorted(path.relative_to(ROOT) for path in variants) == []
 
 
-def test_current_guidance_uses_custom_exception_model() -> None:
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    development = (DOCS / "development.md").read_text(encoding="utf-8")
-
-    assert "과도기" not in readme
-    assert "src/rules/" not in development
-
-    assert "custom/non-standard" in readme
-    assert "custom/non-standard" in development
-
-
-def test_completed_migration_records_are_not_current_docs() -> None:
-    obsolete = {
-        "agentsmesh-migration-plan.md",
-        "agentsmesh-migration-census.md",
-        "agentsmesh-migration-report.md",
-        "skill-configuration.md",
+def test_repository_convention_entrypoints_exist() -> None:
+    conventions = DOCS / "references" / "common" / "conventions"
+    expected = {
+        "rulesync-repository-conventions.md",
+        "agent-assets-naming-convention.md",
+        "chatbot-repository-bootstrap.md",
     }
-    assert obsolete.isdisjoint({path.name for path in DOCS.iterdir() if path.is_file()})
+
+    assert expected <= {path.name for path in conventions.glob("*.md")}

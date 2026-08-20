@@ -1,145 +1,89 @@
 # 좋은 Agent Skill 설계 가이드
 
-Agent Skill은 특정 영역의 지식과 반복 가능한 절차를 필요할 때 불러 쓰는 경량
-패키지다. 좋은 Skill은 많은 정보를 담는 것이 아니라 **맞는 요청에서 활성화되고,
-필요한 지침만 제공하며, 결과를 검증할 수 있게 만드는 것**에 가깝다.
+좋은 Skill은 많은 정보를 담는 것이 아니라 **맞는 요청에서 활성화되고, 필요한 지침만 제공하며, 결과를 검증할 수 있게 만드는 것**에 가깝습니다.
 
-이 문서는 설계 흐름만 소유한다. 규격과 전문 주제는 해당 reference가 소유한다.
+이 문서는 설계 흐름만 소유합니다.
 
-- Portable format / front matter →
-  [Agent Skills Specification](agent-skills-io/agent-skills-io-specification.md)
-- Repository-local extension →
-  [Personal Skill Standard](agent-assets-skills-standard-personal.md)
-- Package shape / target boundary →
-  [Skill Package and Target Boundaries](agent-assets-skills-target-profiles.md)
-- 상세 authoring 원칙 →
-  [Skill Creation Best Practices](agent-skills-io/agent-skills-io-best-practices.md)
+- canonical source boundary → [Rulesync Repository Conventions](../common/conventions/rulesync-repository-conventions.md)
+- repository-local authoring → [Skill Authoring Conventions](skill-authoring-conventions.md)
+- Agent Skills portable contract와 vendor links → [Agent Skills Specification](agent-skills-io/agent-skills-io-specification.md)
 
-## Core Model
+## Model
 
 ```text
-Discovery              Activation               Execution
-name + description  →  SKILL.md 로드         →  필요한 resource만 사용
+Discovery           Activation       Execution
+name + description → SKILL.md load → 필요한 resource만 사용
 ```
 
-Progressive Disclosure는 초기 context와 관련 없는 instruction 간섭을 줄인다.
-
-Skill은 반복 workflow, project/domain-specific knowledge, 비자명한 예외, 엄격한
-output contract가 있을 때 유용하다. 단순한 일회성 요청이나 모델이 이미 안정적으로
-처리하는 일반 작업에는 만들지 않는다.
+단순 일회성 요청이나 모델이 이미 안정적으로 처리하는 일반 작업에는 Skill을 만들지 않습니다.
 
 ## Authoring Flow
 
 ### 1. Gather
 
-실제 성공 작업, 사용자 교정, runbook, schema, patch, 장애와 실패 trace에서 반복되는
-판단과 지식을 수집한다. 일반 지식을 다시 설명하기 위해 Skill을 만들지 않는다.
+실제 성공 작업, 사용자 교정, runbook, schema, patch와 실패 trace에서 반복되는 판단만 수집합니다. 일반 지식을 다시 설명하기 위해 Skill을 만들지 않습니다.
 
 ### 2. Bound
 
-다음 세 질문으로 책임을 좁힌다.
+다음 세 질문으로 책임을 좁힙니다.
 
 - 어떤 사용자 결과를 만드는가?
 - 언제 사용하고 언제 사용하지 않는가?
-- 독립 trigger, permission, 배포 주기가 필요한 책임이 섞였는가?
+- 독립 trigger, permission 또는 lifecycle이 필요한 책임이 섞였는가?
 
-공통 intent와 workflow를 공유하면 한 Skill 안에서 route한다. 목적이나 권한이
-달라지면 분리를 검토한다.
+공통 intent와 workflow를 공유하면 한 Skill 안에서 route하고, 목적이나 권한이 달라지면 분리를 검토합니다.
 
 ### 3. Describe
 
-`description`에는 내부 구현이 아니라 사용자 intent와 activation boundary를 쓴다.
+`description`에는 내부 구현이 아니라 **사용자 intent와 activation boundary**를 씁니다. Capability와 겹치기 쉬운 near-miss를 구분할 수 있어야 합니다.
 
-```text
-Use this skill when [사용자 목적과 상황].
-Do not use it when [겹치기 쉬운 제외 조건].
-```
+### 4. Author Core, Split Detail
 
-Field constraint는
-[Specification](agent-skills-io/agent-skills-io-specification.md)을 따른다. Trigger
-품질을 측정하고 개선할 때는
-[Optimizing Skill Descriptions](agent-skills-io/agent-skills-io-optimizing-descriptions.md)을
-사용한다. 이 Guide에서 eval recipe를 다시 정의하지 않는다.
+`SKILL.md`에는 모든 실행에 공통인 것만 둡니다.
 
-### 4. Author the Core Workflow
-
-`SKILL.md`에는 모든 실행에 공통으로 필요한 것만 둔다.
-
-- 기본 실행 순서와 필요한 입력
-- 중요한 분기와 중단 조건
-- 반드시 지킬 constraint와 비자명한 gotcha
+- 기본 workflow와 필요한 입력
+- 중요한 분기·중단 조건
+- critical constraint와 non-obvious gotcha
 - 실패 복구와 완료 validation
 - 추가 resource를 읽거나 실행할 조건
 
-세부 resource를 만들었다면 load condition도 같이 쓴다.
+긴 API/schema/variant 지식은 `references/`, 반복적인 deterministic 로직은 `scripts/`, template·sample·출력 재료는 `assets/`로 분리할 수 있습니다. 빈 directory는 만들지 않습니다.
 
-```markdown
-If the API returns a non-200 response, read `references/api-errors.md`.
+Resource를 분리했다면 `필요하면 읽는다`가 아니라 condition을 직접 연결합니다.
+
+```text
+API가 non-200 response를 반환하면 references/api-errors.md를 읽는다.
 ```
 
-### 5. Split Resources Only When Needed
+### 5. Validate
 
-| 내용 | 기본 위치 |
-| --- | --- |
-| 공통 workflow와 제약 | `SKILL.md` |
-| 긴 절차, API, schema, 예외 | `references/` |
-| 반복적이고 결정적인 실행 로직 | `scripts/` |
-| template, sample, 출력 재료 | `assets/` |
+검증 대상을 섞지 않습니다.
 
-빈 directory를 형식상 만들지 않는다. 파일을 나눠도 시작 시 전부 읽는다면
-Progressive Disclosure가 아니다.
+- canonical contract → Rulesync
+- portable/target contract → 해당 공식 specification
+- repository invariant → deterministic test
+- trigger/execution behavior → 실제 eval/runtime evidence
 
-Script 설계의 상세 규칙은
-[Using Scripts in Skills](agent-skills-io/agent-skills-io-scripts.md)가 소유한다.
-
-### 6. Calibrate Control
-
-실패 비용에 맞춰 instruction 강도를 조절한다.
-
-- 방법이 다양함 → goal과 완료 조건 중심
-- 선호 경로가 있음 → default procedure 제공
-- 파괴적·보안·순서 의존 작업 → 순서, 승인, validation을 명시
-
-선택지를 늘리기보다 안전한 default 하나를 우선한다.
-
-### 7. Validate and Improve
-
-검증을 분리한다.
-
-- **Static contract**: format, front matter, path, deterministic checks
-- **Trigger behavior**: 필요한 요청에서 활성화되고 near-miss를 피하는지
-- **Execution behavior**: 실제 task trace에서 retry, 누락, 불필요한 context가 있는지
-
-Static format은 Specification이 안내하는 validator를 사용한다. Trigger evaluation은
-[Optimizing Skill Descriptions](agent-skills-io/agent-skills-io-optimizing-descriptions.md),
-실행 기반 개선 원칙은
-[Skill Creation Best Practices](agent-skills-io/agent-skills-io-best-practices.md)를 따른다.
-
-검증하지 않은 항목을 성공으로 간주하지 않는다.
+생성이나 projection 성공만으로 runtime behavior를 성공으로 간주하지 않습니다.
 
 ## Avoid
 
-- 모델이 이미 아는 일반 지식을 장황하게 반복한다.
-- 서로 다른 사용자 목적이나 권한을 한 Skill에 몰아넣는다.
-- 모든 상세와 예시를 거대한 `SKILL.md`에 넣는다.
-- `references/` 전체를 무조건 로드한다.
-- resource를 만들고 읽을 조건을 정의하지 않는다.
-- 표준 규격이나 전문 guide 내용을 여러 문서에 복사한다.
-- validation 없이 생성이나 실행만으로 완료 처리한다.
+- 일반 LLM 지식을 장황하게 반복합니다.
+- 서로 다른 사용자 목적이나 권한을 한 Skill에 몰아넣습니다.
+- 모든 상세를 거대한 `SKILL.md`에 넣습니다.
+- `references/` 전체를 무조건 로드합니다.
+- Rulesync schema나 target contract를 repository-local 규격으로 복제합니다.
+- 실제 evidence 없이 trigger 또는 runtime parity를 주장합니다.
 
 ## Completion Check
 
-- [ ] 하나의 일관된 사용자 목적과 activation boundary가 있다.
-- [ ] Tier 1, target contract, Personal Standard 중 적용할 authority를 확인했다.
-- [ ] `description`만으로 사용 조건과 주요 near-miss를 구분할 수 있다.
-- [ ] 실제 작업 또는 실패에서 필요한 지식을 추출했다.
-- [ ] 공통 workflow, 분기, 중단, 복구, 완료 조건이 명확하다.
-- [ ] 추가 resource마다 실제 책임과 load condition이 있다.
-- [ ] 위험한 단계의 통제 수준이 실패 비용에 맞다.
-- [ ] 적용 가능한 static, trigger, execution validation을 구분해 수행했다.
+- 하나의 일관된 사용자 목적과 activation boundary가 있는가?
+- `description`만으로 주요 near-miss를 구분할 수 있는가?
+- 공통 workflow와 critical guardrail만 core에 남겼는가?
+- 각 resource에 실제 책임과 load condition이 있는가?
+- 필요한 canonical, target, repository, runtime validation을 구분했는가?
 
-## Sources
+## Official References
 
 - [Agent Skills Specification](https://agentskills.io/specification)
 - [Best practices for skill creators](https://agentskills.io/skill-creation/best-practices)
-- [How to add skills support to your agent](https://agentskills.io/client-implementation/adding-skills-support)
