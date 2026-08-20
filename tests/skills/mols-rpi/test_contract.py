@@ -71,6 +71,7 @@ def test_scope_is_explicit_dynamic_and_bounded() -> None:
     assert "Research must validate the need and boundary" in body
     assert "smallest justified boundary delta" in body
     assert "Explicit boundaries are not silently mutable" in body
+    assert "new authority from the source that set that boundary" in body
     assert "Scope change never resets controls" in body
     assert "Recursive Scope only narrows" in body
     assert "strict subset of its parent Scope" in body
