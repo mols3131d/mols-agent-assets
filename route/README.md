@@ -4,11 +4,10 @@
 
 ## 현재 surface
 
-`skills.jsonl`은 `src/rulesync/.rulesync/skills/*/SKILL.md`의 canonical `name`과 `description`에서 결정론적으로 생성합니다. 각 entry의 `source`는 해당 canonical `SKILL.md` raw URL을 가리킵니다.
+- `ROUTE.md` — route 파일을 가리키는 최소 entrypoint.
+- `skills.jsonl` — `src/rulesync/.rulesync/skills/*/SKILL.md`의 canonical `name`과 `description`에서 결정론적으로 생성되는 Skill discovery metadata. 각 `source`는 해당 canonical `SKILL.md` raw URL을 가리킵니다.
 
-- 직접 편집하지 않습니다.
-- `scripts/generate_distribution_routes.py`만 repository-root `route/`를 갱신합니다.
-- Rulesync 또는 runtime이 native discovery를 제공하면 이 layer를 중복 적용하지 않습니다.
+`skills.jsonl`은 직접 편집하지 않습니다. `scripts/generate_distribution_routes.py`만 repository-root `route/`를 갱신합니다. Rulesync 또는 runtime이 native discovery를 제공하면 이 layer를 중복 적용하지 않습니다.
 
 ## 두 Route Surface
 
