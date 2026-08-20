@@ -1,39 +1,23 @@
 ---
 title: 공통 레퍼런스
-description: Rulesync-managed 자산 전반에 공통으로 적용되는 repository convention, principle, authoring, concept와 tooling reference
+description: 여러 자산과 workflow가 공유하는 최소 repository-local convention, principle, authoring, tooling reference
 ---
 
 # 공통 레퍼런스
 
-`common/`은 여러 Rulesync feature나 repository workflow에서 같은 의미로 재사용되는 지식만 소유합니다.
+`common/`은 둘 이상의 자산이나 repository workflow에서 같은 의미로 재사용되고, upstream 또는 더 좁은 feature owner가 없는 **durable knowledge**만 소유합니다.
 
-Rulesync schema, feature taxonomy와 target mapping은 upstream Rulesync가 소유합니다. 이 디렉터리는 이를 repository-local schema나 별도 표준으로 재정의하지 않습니다.
+문서 수가 적은 현재는 flat structure를 기본으로 합니다. 분류용 directory는 여러 독립 문서가 실제로 생겨 탐색 비용을 줄일 때만 추가합니다.
 
-## 구성
-
-| 디렉터리 | 책임 |
+| 문서 | 책임 |
 | --- | --- |
-| `conventions/` | repository integration, naming, chatbot compatibility 같은 local convention |
-| `principles/` | 자산을 추가·분리·중복 제거·단순화할 때 쓰는 설계 원칙 |
-| `authoring/` | 사람과 LLM이 지침·문서를 읽고 행동하기 쉽게 만드는 작성 원칙 |
-| `concepts/` | 설계 판단의 배경이 되는 문제와 개념 |
-| `tooling/` | 여러 feature에서 공통으로 사용하는 도구 reference |
+| [Rulesync](rulesync.md) | Rulesync와 이 저장소의 workspace·source 경계 |
+| [Naming](naming.md) | flat namespace의 관리와 충돌 방지 |
+| [CHATBOT Compatibility](chatbot-compatibility.md) | chat runtime의 누락된 harness behavior 보정 |
+| [Design Principles](design-principles.md) | YAGNI, SRP, DRY, KISS, Progressive Disclosure 판단 |
+| [Instruction Authoring](instruction-authoring.md) | LLM이 적용할 behavioral instruction 작성 |
+| [Front Matter CMS](front-matter-cms.md) | repository configuration과 official source routing |
 
-Feature-specific reference는 실제 독립 책임이 있을 때만 형제 directory를 사용합니다. 현재 Skill reference는 `../skills/`가 소유합니다.
+사람용 일반 문서 작성 원칙은 `load-context-human-writing`이 소유하며 여기서 별도 복제하지 않습니다. Skill-specific reference는 `../skills/`가 소유합니다.
 
-## 먼저 볼 문서
-
-- Rulesync source와 repository boundary를 판단한다 → [Rulesync Repository Conventions](conventions/rulesync-repository-conventions.md)
-- 자산 이름과 접두사를 정한다 → [Agent Asset Naming Convention](conventions/agent-assets-naming-convention.md)
-- chatbot compatibility bootstrap을 설계한다 → [CHATBOT Runtime Compatibility Layer](conventions/chatbot-repository-bootstrap.md)
-- 자산을 추가·분리·정리한다 → [Design Principles](principles/README.md)
-- LLM용 지침을 작성한다 → [LLM-Readable Instructions](authoring/agent-assets-authoring-llm-readable-instructions.md)
-- 사람용 문서를 작성한다 → [Human-Readable Documents](authoring/agent-assets-authoring-human-readable-documents.md)
-
-## 범위
-
-새 문서를 `common/`에 두기 전에 묻습니다.
-
-> 둘 이상의 Rulesync feature 또는 repository workflow에서 같은 의미로 재사용되는가?
-
-아니라면 더 좁은 owner가 적절합니다. 미래에 공통화될 것이라는 예상만으로 공통 abstraction을 만들지 않습니다.
+새 common 문서를 만들기 전에 **여러 책임에서 정말 같은 의미로 재사용되는지** 확인합니다. 미래의 공통화를 예상해 abstraction이나 taxonomy를 미리 만들지 않습니다.
