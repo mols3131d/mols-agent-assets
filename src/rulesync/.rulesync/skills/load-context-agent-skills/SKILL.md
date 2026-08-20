@@ -64,7 +64,7 @@ Apply them only when one of these is established:
 
 When personal scope applies, read:
 
-- [Rulesync Repository Conventions](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/rulesync.md)
+- [Rulesync](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/tooling/rulesync.md)
 - [Skill Authoring Conventions](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/skills/skill-authoring-conventions.md)
 - [Agent Asset Naming Convention](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/references/common/naming.md) when filesystem naming matters
 
