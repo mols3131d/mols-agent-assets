@@ -13,64 +13,416 @@ $ mise install
 [2mmise[0m [34mnode[0m@24.19.0    [3/3] 11.17.0
 [2mmise[0m [34mnode[0m@24.19.0  [38;5;10m✓[0m installed
 [2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] install
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] install
 [2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] resolving
 [2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] resolving 1/1 pkgs
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving
 [2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] resolving 1/1 pkgs · 87.6 KiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 1/1 pkgs
 [2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] resolving 2/2 pkgs · 87.6 KiB
-[2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] resolving 2/11 pkgs · 87.6 KiB
-[2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] resolving 3/11 pkgs · 87.6 KiB
-[2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] resolving 4/11 pkgs · 87.6 KiB
-[2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] resolving 5/11 pkgs · 87.6 KiB
-[2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] resolving 6/11 pkgs · 87.6 KiB
-[2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] resolving 7/11 pkgs · 87.6 KiB
-[2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] resolving 8/11 pkgs · 87.6 KiB
-[2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] resolving 9/11 pkgs · 87.6 KiB
-[2mmise[0m [34muv[0m@0.12.1       [1/3] download uv-x86_64-unknown-linux-gnu.tar.gz
+[2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] resolving 2/9 pkgs · 87.6 KiB
+[2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] resolving 3/9 pkgs · 87.6 KiB
+[2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] resolving 4/9 pkgs · 87.6 KiB
+[2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] resolving 5/9 pkgs · 87.6 KiB
+[2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] resolving 6/9 pkgs · 87.6 KiB
+[2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] resolving 7/9 pkgs · 87.6 KiB
+[2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] resolving 8/9 pkgs · 87.6 KiB
+[2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] resolving 9/9 pkgs · 87.6 KiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 2/2 pkgs
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 2/27 pkgs
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 3/27 pkgs
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 3/55 pkgs
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 3/55 pkgs · 2.9 KiB
 [2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] fetching 1/9 pkgs · 87.6 KiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 4/55 pkgs · 2.9 KiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 5/55 pkgs · 2.9 KiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 6/55 pkgs · 2.9 KiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 7/55 pkgs · 2.9 KiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 7/55 pkgs · 2.0 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 7/55 pkgs · 2.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 7/55 pkgs · 2.7 MiB
+[2mmise[0m [34muv[0m@0.12.1       [1/3] download uv-x86_64-unknown-linux-gnu.tar.gz
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 8/55 pkgs · 2.7 MiB
 [2mmise[0m [34muv[0m@0.12.1       [2/3] verify GitHub artifact attestations
 [2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] fetching 1/9 pkgs · 22.6 MiB
 [2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] fetching 2/9 pkgs · 22.6 MiB
+[2mmise[0m [34mrumdl[0m@0.2.54    [1/3] download rumdl-v0.2.54-x86_64-unknown-linux-gnu.tar.gz
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 9/55 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 10/55 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 11/55 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 11/66 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 12/66 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 12/78 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 13/78 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 13/85 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 14/85 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 14/87 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 15/87 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 16/87 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 17/87 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 18/87 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 19/87 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 20/87 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 20/88 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 21/88 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 21/96 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 22/96 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 22/97 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 23/97 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 24/97 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 24/101 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 25/101 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 25/107 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 26/107 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 26/108 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 27/108 pkgs · 2.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 27/108 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 28/108 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 28/162 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 29/162 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 29/166 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 30/166 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 31/166 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 32/166 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 33/166 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 34/166 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 34/172 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 35/172 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 35/173 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 36/173 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 36/175 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 37/175 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 37/187 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 38/187 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 38/189 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 39/189 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 39/190 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 40/190 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 40/192 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 41/192 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 42/192 pkgs · 2.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 42/192 pkgs · 3.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 42/192 pkgs · 3.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 43/192 pkgs · 3.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 43/192 pkgs · 3.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 43/192 pkgs · 3.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 43/192 pkgs · 3.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 43/192 pkgs · 3.9 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 43/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 44/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 45/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 46/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 47/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 48/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 49/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 50/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 51/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 52/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 53/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 54/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 55/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 56/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 57/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 58/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 59/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 60/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 61/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 62/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 63/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 64/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 65/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 66/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 67/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 68/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 69/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 70/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 71/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 72/192 pkgs · 4.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 72/192 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 73/192 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 74/192 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 75/192 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 76/192 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 77/192 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 78/192 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 79/192 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 80/192 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 81/192 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 82/192 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 83/192 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 83/193 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 84/193 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 85/193 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 85/201 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 86/201 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 87/201 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 87/203 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 88/203 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 88/205 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 89/205 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 89/207 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 90/207 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 91/207 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 91/211 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 92/211 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 92/215 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 93/215 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 94/215 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 94/222 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 95/222 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 95/233 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 96/233 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 96/237 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 97/237 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 98/237 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 98/239 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 99/239 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 100/239 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 101/239 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 102/239 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 103/239 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 104/239 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 105/239 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 106/239 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 107/239 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 108/239 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 108/240 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 109/240 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 110/240 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 111/240 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 112/240 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 113/240 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 114/240 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 115/240 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 116/240 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 117/240 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 118/240 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 118/242 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 119/242 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 120/242 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 121/242 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 122/242 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 122/244 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 123/244 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 123/246 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 124/246 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 124/251 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 125/251 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 126/251 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 126/259 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 127/259 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 127/261 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 128/261 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 128/275 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 129/275 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 129/280 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 130/280 pkgs · 4.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 130/280 pkgs · 4.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 131/280 pkgs · 4.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 132/280 pkgs · 4.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 133/280 pkgs · 4.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 134/280 pkgs · 4.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 135/280 pkgs · 4.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 136/280 pkgs · 4.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 137/280 pkgs · 4.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 137/281 pkgs · 4.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 138/281 pkgs · 4.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 139/281 pkgs · 4.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 139/285 pkgs · 4.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 140/285 pkgs · 4.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 140/287 pkgs · 4.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 141/287 pkgs · 4.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 142/287 pkgs · 4.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 142/288 pkgs · 4.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 143/288 pkgs · 4.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 144/288 pkgs · 4.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 145/288 pkgs · 4.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 145/288 pkgs · 4.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 146/288 pkgs · 4.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 147/288 pkgs · 4.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 148/288 pkgs · 4.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 149/288 pkgs · 4.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 150/288 pkgs · 4.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 151/288 pkgs · 4.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 152/288 pkgs · 4.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 153/288 pkgs · 4.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 153/288 pkgs · 4.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 154/288 pkgs · 4.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 155/288 pkgs · 4.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 156/288 pkgs · 4.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 157/288 pkgs · 4.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 158/288 pkgs · 4.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 159/288 pkgs · 4.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 160/288 pkgs · 4.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 160/288 pkgs · 4.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 160/288 pkgs · 4.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 160/288 pkgs · 4.9 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 160/288 pkgs · 5.0 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 160/288 pkgs · 5.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 160/288 pkgs · 5.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 161/288 pkgs · 5.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 162/288 pkgs · 5.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 163/288 pkgs · 5.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 164/288 pkgs · 5.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 165/288 pkgs · 5.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 165/288 pkgs · 6.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 166/288 pkgs · 6.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 167/288 pkgs · 6.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 168/288 pkgs · 6.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 169/288 pkgs · 6.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 170/288 pkgs · 6.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 171/288 pkgs · 6.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 172/288 pkgs · 6.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 173/288 pkgs · 6.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 174/288 pkgs · 6.5 MiB
+[2mmise[0m [34muv[0m@0.12.1       [2/3] ✓ GitHub artifact attestations verified
+[2mmise[0m [34muv[0m@0.12.1       [2/3] checksum uv-x86_64-unknown-linux-gnu.tar.gz
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 174/288 pkgs · 6.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 174/288 pkgs · 6.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 174/288 pkgs · 7.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 174/288 pkgs · 7.2 MiB
+[2mmise[0m [34muv[0m@0.12.1       [3/3] extract uv-x86_64-unknown-linux-gnu.tar.gz
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 175/288 pkgs · 7.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 176/288 pkgs · 7.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 177/288 pkgs · 7.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 178/288 pkgs · 7.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 179/288 pkgs · 7.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 180/288 pkgs · 7.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 181/288 pkgs · 7.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 182/288 pkgs · 7.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 183/288 pkgs · 7.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 184/288 pkgs · 7.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 185/288 pkgs · 7.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 186/288 pkgs · 7.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 187/288 pkgs · 7.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 188/288 pkgs · 7.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 189/288 pkgs · 7.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 190/288 pkgs · 7.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 191/288 pkgs · 7.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 192/288 pkgs · 7.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 193/288 pkgs · 7.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 194/288 pkgs · 7.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 195/288 pkgs · 7.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 196/288 pkgs · 7.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 197/288 pkgs · 7.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 197/288 pkgs · 7.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 198/288 pkgs · 7.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 199/288 pkgs · 7.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 200/288 pkgs · 7.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 201/288 pkgs · 7.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 202/288 pkgs · 7.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 203/288 pkgs · 7.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 204/288 pkgs · 7.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 205/288 pkgs · 7.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 205/288 pkgs · 7.4 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 206/288 pkgs · 7.4 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 207/288 pkgs · 7.4 MiB
+[2mmise[0m [34mrumdl[0m@0.2.54    [2/3] verify GitHub artifact attestations
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 208/288 pkgs · 7.4 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 209/288 pkgs · 7.4 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 209/288 pkgs · 7.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 209/288 pkgs · 7.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 210/288 pkgs · 7.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 211/288 pkgs · 7.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 212/288 pkgs · 7.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 213/288 pkgs · 7.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 214/288 pkgs · 7.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 215/288 pkgs · 7.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 216/288 pkgs · 7.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 217/288 pkgs · 7.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 218/288 pkgs · 7.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 219/288 pkgs · 7.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 220/288 pkgs · 7.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 221/288 pkgs · 7.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 222/288 pkgs · 7.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 223/288 pkgs · 7.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 224/288 pkgs · 7.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 225/288 pkgs · 7.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 226/288 pkgs · 7.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 226/288 pkgs · 7.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 227/288 pkgs · 7.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 228/288 pkgs · 7.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 229/288 pkgs · 7.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 230/288 pkgs · 7.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 231/288 pkgs · 7.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 232/288 pkgs · 7.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 233/288 pkgs · 7.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 234/288 pkgs · 7.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 235/288 pkgs · 7.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 236/288 pkgs · 7.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 237/288 pkgs · 7.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 238/288 pkgs · 7.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 239/288 pkgs · 7.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 240/288 pkgs · 7.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 241/288 pkgs · 7.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 242/288 pkgs · 7.7 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 243/288 pkgs · 7.7 MiB
+[2mmise[0m [34mrumdl[0m@0.2.54    [2/3] ✓ GitHub artifact attestations verified
+[2mmise[0m [34mrumdl[0m@0.2.54    [2/3] checksum rumdl-v0.2.54-x86_64-unknown-linux-gnu.tar.gz
+[2mmise[0m [34mrumdl[0m@0.2.54    [3/3] extract rumdl-v0.2.54-x86_64-unknown-linux-gnu.tar.gz
+[2mmise[0m [34mlefthook[0m@2.1.10 [1/3] download lefthook_2.1.10_Linux_x86_64.gz
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 243/288 pkgs · 7.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 243/288 pkgs · 7.9 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 243/288 pkgs · 8.0 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 243/288 pkgs · 8.1 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 243/288 pkgs · 8.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 243/288 pkgs · 8.3 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 243/288 pkgs · 8.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 243/288 pkgs · 8.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 243/288 pkgs · 10.0 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 244/288 pkgs · 10.0 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 245/288 pkgs · 10.0 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 245/288 pkgs · 11.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 245/288 pkgs · 12.0 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 245/288 pkgs · 12.4 MiB
 [2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] fetching 2/2 pkgs · 22.6 MiB
 [2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] linking 2/2 pkgs · 22.6 MiB
 [2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [1/3] installing 2/2 pkgs · 22.6 MiB
-[2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [38;5;10m✓[0m installed
-[2mmise[0m [34muv[0m@0.12.1       [2/3] ✓ GitHub artifact attestations verified
-[2mmise[0m [34muv[0m@0.12.1       [2/3] checksum uv-x86_64-unknown-linux-gnu.tar.gz
-[2mmise[0m [34muv[0m@0.12.1       [3/3] extract uv-x86_64-unknown-linux-gnu.tar.gz
-[2mmise[0m [34mrumdl[0m@0.2.54    [1/3] download rumdl-v0.2.54-x86_64-unknown-linux-gnu.tar.gz
-[2mmise[0m [34mlefthook[0m@2.1.10 [1/3] download lefthook_2.1.10_Linux_x86_64.gz
-[2mmise[0m [34muv[0m@0.12.1     [38;5;10m✓[0m installed
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 245/288 pkgs · 12.6 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 245/288 pkgs · 12.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 245/288 pkgs · 13.5 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 245/288 pkgs · 13.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] resolving 245/288 pkgs · 17.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] fetching 244/245 pkgs · 17.8 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] fetching 244/245 pkgs · 18.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] fetching 245/245 pkgs · 18.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] linking 245/245 pkgs · 18.2 MiB
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [1/3] installing 245/245 pkgs · 18.2 MiB
+[33mmise[0m [33mWARN[0m  1 transitive package has deprecation warnings.
 [2mmise[0m [34mlefthook[0m@2.1.10 [2/3] verify GitHub artifact attestations
-[2mmise[0m [34mrumdl[0m@0.2.54    [2/3] verify GitHub artifact attestations
+[2mmise[0m [34mrumdl[0m@0.2.54  [38;5;10m✓[0m installed
+[2mmise[0m [34mnpm:@biomejs/biome[0m@2.5.6 [38;5;10m✓[0m installed
+[2mmise[0m [34muv[0m@0.12.1     [38;5;10m✓[0m installed
+[2mmise[0m [34mnpm:rulesync[0m@16.5.0 [38;5;10m✓[0m installed
 [2mmise[0m [34mlefthook[0m@2.1.10 [2/3] ✓ GitHub artifact attestations verified
 [2mmise[0m [34mlefthook[0m@2.1.10 [2/3] checksum lefthook_2.1.10_Linux_x86_64.gz
 [2mmise[0m [34mlefthook[0m@2.1.10 [3/3] extract lefthook_2.1.10_Linux_x86_64.gz
 [2mmise[0m [34mlefthook[0m@2.1.10 [38;5;10m✓[0m installed
-[2mmise[0m [34mrumdl[0m@0.2.54    [2/3] ✓ GitHub artifact attestations verified
-[2mmise[0m [34mrumdl[0m@0.2.54    [2/3] checksum rumdl-v0.2.54-x86_64-unknown-linux-gnu.tar.gz
-[2mmise[0m [34mrumdl[0m@0.2.54    [3/3] extract rumdl-v0.2.54-x86_64-unknown-linux-gnu.tar.gz
-[2mmise[0m [34mrumdl[0m@0.2.54  [38;5;10m✓[0m installed
 exit=0
 
-$ mise exec -- uv --version
+$ uv --version
 uv 0.12.1 (x86_64-unknown-linux-gnu)
 exit=0
 
-$ mise exec -- node --version
+$ node --version
 v24.19.0
 exit=0
 
-$ mise exec -- rumdl version
+$ rumdl version
 rumdl 0.2.54
 exit=0
 
-$ mise exec -- lefthook version
+$ lefthook version
 2.1.10
 exit=0
 
-$ mise exec -- biome --version
+$ biome --version
 Version: 2.5.6
 
+exit=0
+
+$ rulesync --version
+16.5.0
 exit=0
 
 $ mise run check
@@ -85,65 +437,46 @@ rumdl 0.2.54
 [38;5;14m[check][0m [1m$ biome --version[0m
 Version: 2.5.6
 
+[38;5;14m[check][0m [1m$ rulesync --version[0m
+16.5.0
 [38;5;14m[check][0m [1m$ uv lock --check[0m
 Downloading cpython-3.13.14-linux-x86_64-gnu (download) (33.2MiB)
  Downloaded cpython-3.13.14-linux-x86_64-gnu (download)
 Using CPython 3.13.14
-Resolved 13 packages in 0.59ms
+Resolved 13 packages in 0.86ms
 [38;5;14m[check][0m [1m$ lefthook validate[0m
 All good
 [38;5;14m[check][0m [1m$ biome check biome.json package.json .vscode/tasks.json[0m
-biome.json:13:13 deserialize  DEPRECATED  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  i The use of the recommended field has been deprecated, and will removed in the next major version of Biome. Use preset instead.
-  
-    11 │     "lineEnding": "lf"
-    12 │   },
-  > 13 │   "linter": {
-       │             ^
-  > 14 │     "enabled": true,
-  > 15 │     "rules": {
-  > 16 │       "recommended": true
-  > 17 │     }
-  > 18 │   }
-       │   ^
-    19 │ }
-    20 │ 
-  
-  i Migrate the configuration with the proper command
-  
-  $ biome migrate
-  
-
-Checked 3 files in 3ms. No fixes applied.
-Found 1 info.
+Checked 3 files in 2ms. No fixes applied.
 exit=0
 
-$ uv run ruff check tests/scripts/tooling/test_tool_ownership.py tests/scripts/rumdl_main_autofix/test_generated_boundary.py
+$ npm run rulesync:doctor
+
+> rulesync:doctor
+> uv run python scripts/run_rulesync.py doctor
+
 Using CPython 3.13.14
 Creating virtual environment at: .venv
 Downloading pygments (1.2MiB)
 Downloading ruff (10.9MiB)
  Downloaded pygments
  Downloaded ruff
-Installed 11 packages in 17ms
-E501 Line too long (91 > 88)
-  --> tests/scripts/rumdl_main_autofix/test_generated_boundary.py:15:89
-   |
-13 |     assert "src/rulesync/** rulesync-source" in attributes
-14 |     assert "route/skills.jsonl linguist-generated" in attributes
-15 |     assert "src/rulesync/.rulesync/skills/INDEX.jsonl linguist-generated" not in attributes
-   |                                                                                         ^^^
-16 |     for forbidden in [
-17 |         ".github/skills/** linguist-generated",
-   |
+Installed 11 packages in 13ms
+✓ No problems found (0 error(s), 0 warning(s), 0 info(s)).
+exit=0
 
-Found 1 error.
-exit=1
+$ uv run ruff check tests/scripts/tooling/test_tool_ownership.py tests/scripts/rumdl_main_autofix/test_generated_boundary.py
+All checks passed!
+exit=0
+
+$ uv run --locked --no-default-groups --group test pytest -q tests/scripts/tooling tests/scripts/rumdl_main_autofix
+............                                                             [100%]
+12 passed in 0.04s
+exit=0
 
 $ rumdl check docs/references/tooling/mise.md docs/development/testing.md
 
-Success: No issues found in 2 files (41ms)
+Success: No issues found in 2 files (43ms)
 exit=0
 
 $ mise run test
@@ -153,7 +486,7 @@ platform linux -- Python 3.13.14, pytest-9.0.3, pluggy-1.6.0
 rootdir: /home/runner/work/mols-agent-assets/mols-agent-assets
 configfile: pyproject.toml
 testpaths: tests
-collected 210 items
+collected 212 items
 
 tests/evals/test_skill_eval_json.py .                                    [  0%]
 tests/scripts/asset_docs_placement/test_asset_docs_placement.py ........ [  4%]
@@ -164,23 +497,23 @@ tests/scripts/evals/test_promptfoo.py ........                           [ 10%]
 tests/scripts/generate_distribution_routes/test_generate_distribution_routes.py . [ 10%]
 ....                                                                     [ 12%]
 tests/scripts/rumdl_main_autofix/test_generated_boundary.py .....        [ 15%]
-tests/scripts/sync_github_files/test_dest_path.py ......                 [ 18%]
+tests/scripts/sync_github_files/test_dest_path.py ......                 [ 17%]
 tests/scripts/sync_github_files/test_download.py .                       [ 18%]
-tests/scripts/sync_github_files/test_hash.py .                           [ 19%]
+tests/scripts/sync_github_files/test_hash.py .                           [ 18%]
 tests/scripts/sync_github_files/test_state_machine.py .......            [ 22%]
-tests/scripts/tooling/test_tool_ownership.py .....                       [ 24%]
-tests/scripts/validate_commit_msg/test_validate_commit_msg.py .......... [ 29%]
+tests/scripts/tooling/test_tool_ownership.py .......                     [ 25%]
+tests/scripts/validate_commit_msg/test_validate_commit_msg.py .......... [ 30%]
 .                                                                        [ 30%]
 tests/skills/artifact-consistency-inspector/test_contract.py ........... [ 35%]
-...                                                                      [ 36%]
-tests/skills/mols-agent-asset-studio/test_asset_scripts.py ...........   [ 41%]
-tests/skills/mols-agent-asset-validator/test_scan_assets.py ............ [ 47%]
+...                                                                      [ 37%]
+tests/skills/mols-agent-asset-studio/test_asset_scripts.py ...........   [ 42%]
+tests/skills/mols-agent-asset-validator/test_scan_assets.py ............ [ 48%]
 .                                                                        [ 48%]
 tests/skills/mols-markdown-dashboard/test_cli.py ..                      [ 49%]
 tests/skills/mols-markdown-dashboard/test_derive.py ...                  [ 50%]
 tests/skills/mols-markdown-dashboard/test_loader.py ......               [ 53%]
-tests/skills/mols-markdown-dashboard/test_model.py ................      [ 60%]
-tests/skills/mols-markdown-dashboard/test_render.py ....                 [ 62%]
+tests/skills/mols-markdown-dashboard/test_model.py ................      [ 61%]
+tests/skills/mols-markdown-dashboard/test_render.py ....                 [ 63%]
 tests/skills/mols-markdown-dashboard/test_validate.py .........          [ 67%]
 tests/skills/mols-markdown-scripts/test_format_markdown.py .....         [ 69%]
 tests/skills/mols-markdown-scripts/test_frontmatter.py ......            [ 72%]
@@ -195,7 +528,19 @@ tests/skills/mols-rpi/test_contract.py ...........                       [ 93%]
 tests/skills/mols-skill-find/test_contract.py ....                       [ 95%]
 tests/skills/mols-skill-install/test_handoff_contract.py ...             [ 96%]
 tests/test_documentation_consistency.py ..                               [ 97%]
-tests/test_rulesync_source_isolation.py .....                            [100%]
+tests/test_rulesync_source_isolation.py ...F.                            [100%]
 
-============================= 210 passed in 2.43s ==============================
-exit=0
+=================================== FAILURES ===================================
+____________________ test_rulesync_toolchain_tracks_latest _____________________
+
+    def test_rulesync_toolchain_tracks_latest() -> None:
+        runner = (ROOT / "scripts/run_rulesync.py").read_text(encoding="utf-8")
+>       assert '"rulesync@latest"' in runner
+E       assert '"rulesync@latest"' in 'from __future__ import annotations\n\nimport shutil\nimport subprocess\nimport sys\nimport tempfile\nfrom collections...pected}> [rulesync args...]")\n\n    commands[sys.argv[1]](sys.argv[2:])\n\n\nif __name__ == "__main__":\n    main()\n'
+
+tests/test_rulesync_source_isolation.py:82: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_rulesync_source_isolation.py::test_rulesync_toolchain_tracks_latest - assert '"rulesync@latest"' in 'from __future__ import annotations\n\nimport shutil\nimport subprocess\nimport sys\nimport tempfile\nfrom collections...pected}> [rulesync args...]")\n\n    commands[sys.argv[1]](sys.argv[2:])\n\n\nif __name__ == "__main__":\n    main()\n'
+======================== 1 failed, 211 passed in 2.30s =========================
+[34m[test][0m [31mERROR[0m task failed
+exit=1
