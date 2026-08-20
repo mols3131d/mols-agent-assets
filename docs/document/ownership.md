@@ -9,8 +9,6 @@
 | `README.md` | 사람에게 repository의 목적과 주요 시작점을 제공 |
 | `AGENTS.md` | repository-local agent behavior와 작업 boundary 제공 |
 
-서로 다른 entrypoint가 같은 policy body를 소유하지 않습니다. Linked source가 자기 의미의 authority를 유지합니다.
-
 ## Directory Documentation
 
 Directory-level README는 해당 directory의 contract 또는 navigation responsibility를 실제로 소유할 때 entrypoint로 둡니다.
