@@ -29,8 +29,8 @@ description: "스킬이 후속 수정에서 훼손되지 않도록 핵심 요구
 | R-016 | Risks / Blockers와 References는 값이 있을 때만 렌더링한다. | 빈 section과 장식적 구조를 제거한다. |
 | R-017 | 정의되지 않은 YAML 필드는 경로가 포함된 오류로 즉시 거부한다. | 에이전트 오타가 조용히 유실되거나 잘못 렌더링되는 일을 막는다. |
 | R-018 | 출력 파일은 임시 파일을 거쳐 atomic replace로 갱신한다. | 실패한 렌더가 기존 dashboard를 부분적으로 손상하지 않게 한다. |
-| R-019 | 예제 Markdown은 예제 YAML에서 생성되며 품질 검사에서 drift를 확인한다. | 문서 예제와 실제 renderer의 차이를 방지한다. |
-| R-020 | release 품질 게이트는 `uv`, `ruff`, `ty`, `rumdl`, `pytest`와 예제 drift 검사를 사용한다. | 실행·형식·타입·Markdown 품질을 하나의 재현 가능한 절차로 고정한다. |
+| R-019 | 예제 Markdown은 예제 YAML에서 생성되며 package-local 품질 검사에서 drift를 확인한다. | 문서 예제와 실제 renderer의 차이를 방지한다. |
+| R-020 | Package-local 품질 게이트는 `uv`, `ruff`, `ty`, `rumdl`, Python compile과 예제 drift 검사를 사용한다. Host repository가 별도 tests/evals를 제공하면 그 verification contract를 추가로 따른다. | asset 자체의 portable quality gate와 host-specific verification을 분리한다. |
 
 ### Decisions
 
@@ -47,7 +47,7 @@ description: "스킬이 후속 수정에서 훼손되지 않도록 핵심 요구
 | D-009 | 핵심 Markdown 표에는 상태 범례와 풋노트를 기본 생성하지 않는다. | 상태 풋노트 또는 별도 legend | 이모지와 상태명이 이미 의미를 전달한다. |
 | D-010 | 차트와 복잡한 Mermaid는 조건부이며 전문 스킬에 위임한다. | 모든 dashboard에 chart 삽입 | visual duplication과 유지보수 비용을 줄인다. |
 | D-011 | loader boundary 이후에는 raw dictionary 대신 immutable slot dataclass를 사용한다. | 전 구간 `dict[str, Any]` 사용 | 타입 경계를 명확히 하고 renderer와 validation의 계약을 단순화한다. |
-| D-012 | 단일 `scripts/check_quality.py`가 모든 release 검사를 조정한다. | 도구별 명령을 사람 기억에 의존 | 에이전트와 사람이 동일한 품질 절차를 반복할 수 있게 한다. |
+| D-012 | 단일 `scripts/check_quality.py`가 package-local release 검사를 조정하고 host tests/evals는 host repository가 소유한다. | package script가 특정 repository의 external test layout까지 가정 | capsule+asset을 이동해도 quality gate가 같은 package root에서 재현된다. |
 
 ### Protected Invariants
 
@@ -57,8 +57,8 @@ description: "스킬이 후속 수정에서 훼손되지 않도록 핵심 요구
 - project와 domain dashboard의 표 문법은 첫 번째 열을 제외하고 동일해야 한다.
 - YAML status에는 이모지를 저장하지 않는다. renderer가 표시 문자열을 결정한다.
 - Markdown을 재렌더링해도 Gap 번호와 합계가 결정적으로 같아야 한다.
-- schema, examples, template, tests와 directive를 서로 독립적으로 변경하지 않는다.
-- 품질 도구를 사용할 수 없으면 통과했다고 기록하지 않고 제한을 review 문서에 남긴다.
+- schema, examples, template, relevant verification fixtures와 directive를 서로 독립적으로 변경하지 않는다.
+- 품질 도구를 사용할 수 없으면 통과했다고 기록하지 않고 제한을 현재 review에 남긴다.
 
 ### Non-Goals
 
