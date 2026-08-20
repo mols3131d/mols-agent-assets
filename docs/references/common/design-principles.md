@@ -19,6 +19,7 @@ description: 에이전트 자산을 추가, 분리, 중복 제거, 단순화할 
 
 ## Guardrails
 
+- YAGNI를 이유로 이미 존재하는 비가역적 위험이나 required guard를 방치하지 않습니다.
 - DRY 때문에 runtime 독립성을 깨거나 hidden dependency를 만들지 않습니다.
 - KISS를 이유로 필요한 validation, safety guard 또는 중요한 boundary를 제거하지 않습니다.
 - Progressive Disclosure로 detail을 분리해도 load condition과 critical gotcha는 발견 가능한 곳에 남깁니다.
@@ -27,6 +28,8 @@ description: 에이전트 자산을 추가, 분리, 중복 제거, 단순화할 
 ## Human Comprehension
 
 AI가 자산을 빠르게 만들수록 maintainer가 **무엇이 authoritative하고 왜 존재하는지 이해하는 속도**가 병목이 될 수 있습니다. 이를 더 많은 설명으로 해결하지 않습니다. Owner, 책임 경계와 탐색 경로를 줄이고 명확하게 유지합니다.
+
+관련 배경: [Understanding is the New Bottleneck](https://wikidocs.net/blog/@jaehong/23176/)
 
 ## Review
 
