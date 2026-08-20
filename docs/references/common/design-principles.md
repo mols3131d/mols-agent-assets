@@ -9,7 +9,7 @@ description: 에이전트 자산을 추가, 분리, 중복 제거, 단순화할 
 
 ## 판단 순서
 
-1. **Upstream First / Local Delta Only** — 표준, 도구, target contract 또는 충분히 확립된 default가 이미 행동을 결정하면 local 문서에 다시 설명하지 않습니다. Local source는 deviation, extension, ambiguity resolution만 소유합니다.
+1. **Standard First / Local Delta Only** — 표준, 도구, target contract 또는 충분히 확립된 default가 이미 행동을 결정하면 local 문서에 다시 설명하지 않습니다. Local source는 deviation, extension, ambiguity resolution만 소유합니다.
 1. **YAGNI** — 지금 실제 요구가 없는 구조·호환성·metadata를 만들지 않습니다.
 1. **SRP** — trigger, permission, lifecycle 또는 변경 이유가 다르면 책임 분리를 검토합니다.
 1. **DRY** — 같은 의미의 authoritative owner를 둘 이상 만들지 않습니다.
@@ -27,6 +27,8 @@ Local rule이나 reference를 추가하기 전에 다음 중 하나인지 확인
 - **Ambiguity resolution** — upstream만으로 이 repository에서 결정을 하나로 복원할 수 없습니다.
 
 셋 중 어느 것도 아니면 작성하지 않는 것이 기본입니다. Upstream detail이 판단에 필요하면 authoritative source를 링크하거나 작업 시점에 확인하고, 그 내용을 local prose로 복제하지 않습니다.
+
+관련 표준 가이드: [Agent Skills — Best practices for skill creators](https://agentskills.io/skill-creation/best-practices)
 
 ## Guardrails
 
