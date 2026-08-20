@@ -37,7 +37,7 @@ flowchart LR
 - Aggregate는 percentage 평균을 사용하지 않는다.
 - pyromark는 렌더 후 검증 단계에만 존재한다.
 - Specialist Mermaid skill이 없더라도 핵심 dashboard는 완성돼야 한다.
-- 품질 도구는 dev dependency이며 runtime renderer의 필수 dependency가 아니다.
+- 품질 도구는 maintainer-time tool이며 runtime renderer의 필수 dependency가 아니다.
 
 ## Failure Safety
 
@@ -59,4 +59,4 @@ read YAML
 | ---: | --- |
 | `0` | Render 또는 validation 성공 |
 | `2` | YAML, semantic rule, template, file 또는 Markdown validation 실패 |
-| `127` | `check_quality.py`에서 필요한 dev tool을 찾지 못함 |
+| `127` | `check_quality.py`에서 필요한 maintainer tool을 찾지 못함 |
