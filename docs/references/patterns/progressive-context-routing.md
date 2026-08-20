@@ -2,21 +2,21 @@
 
 후보를 한 번에 확정하거나 모든 context를 처음부터 읽기보다, **얕은 discovery에서 더 구체적인 context로 점진적으로 이동하며 applicability와 다음 route를 좁혀 가는** 패턴입니다.
 
-Agent Skill에서 frontmatter나 index로 후보를 찾은 뒤 `SKILL.md` 본문에서 다시 적용 가능성을 확인하는 구성이 대표적인 예지만, 이 패턴은 Skill에 한정되지 않습니다.
+Agent Skill에서 frontmatter나 index로 후보를 찾은 뒤 `SKILL.md`에서 다시 적용 가능성과 다음 context를 판단하는 구성이 대표적인 예지만, 이 패턴은 Skill에 한정되지 않습니다.
 
 ## Purpose
 
 큰 context surface에서는 처음부터 모든 source를 읽는 것보다 작은 routing signal로 후보를 좁힌 뒤 필요한 context만 단계적으로 로드하는 편이 효율적일 수 있습니다.
 
-이 방식은 다음과 같은 상황에서 특히 유용합니다.
+특히 다음과 같은 상황에서 유용합니다.
 
 - 많은 asset 중 일부만 현재 task와 관련될 때
-- candidate source 자체가 길거나 instruction-rich해서 불필요한 load 비용이 클 때
+- candidate source가 길거나 instruction-rich해서 불필요한 load 비용이 클 때
 - 잘못 선택된 context가 terminology, assumptions, workflow 같은 noise를 추가할 수 있을 때
-- 상위 metadata만으로는 대략적인 후보를 고를 수 있지만 최종 applicability는 더 풍부한 local context가 필요할 때
-- 선택된 asset이 다시 더 구체적인 source, reference, workflow 또는 다른 asset으로 routing해야 할 때
+- 상위 metadata만으로 후보를 좁힐 수 있지만 실제 적용 판단에는 더 풍부한 local context가 필요할 때
+- 선택된 asset이 다시 더 구체적인 source, reference, workflow 또는 다른 asset으로 routing할 때
 
-목적은 단순히 약한 모델의 정확도를 보정하는 데 있지 않습니다. 최신 고성능 모델에서도 **relevant context density, context economy, locality, progressive disclosure**를 높이는 구조적 선택으로 사용할 수 있습니다.
+목적은 약한 모델의 정확도를 보정하는 데 한정되지 않습니다. 최신 고성능 모델에서도 **relevant context density, context economy, locality, progressive disclosure**를 높이는 구조적 선택으로 사용할 수 있습니다.
 
 ## Core
 
@@ -31,12 +31,12 @@ load candidate-local context
       ↓
 applicability / routing decision
       ↓
-apply or route deeper
+apply / refine / route onward
 ```
 
-처음 단계는 비교적 작고 넓은 signal로 후보를 찾고, 다음 단계에서는 candidate에 더 가까운 context를 사용해 적용 여부나 다음 route를 판단합니다.
+처음에는 비교적 작고 넓은 signal로 후보를 찾고, 필요성이 높아질수록 candidate에 가까운 context를 사용해 적용 방식이나 다음 route를 좁힙니다.
 
-이 과정은 정확히 두 단계일 필요가 없습니다. 정보 구조와 비용에 따라 한 번의 gate로 끝날 수도 있고 여러 단계의 routing으로 이어질 수도 있습니다.
+정확히 두 단계일 필요는 없습니다. 한 번의 local check로 끝날 수도 있고 여러 단계의 routing으로 이어질 수도 있습니다.
 
 ## Skill Example
 
@@ -48,14 +48,19 @@ index / frontmatter
 
 SKILL.md entry
 → 현재 task에 실제로 적용할 가치가 있는가?
+→ 어떤 부분이나 reference가 필요한가?
 
 SKILL.md body / references / related assets
-→ 어떻게 적용하거나 어디로 더 routing할 것인가?
+→ 필요한 context만 더 사용하거나 다른 route로 연결
 ```
 
-`SKILL.md` 본문 초반에 applicability를 다시 확인하는 짧은 gate를 둘 수도 있습니다. 특히 Skill 본문이 크거나 강한 procedural instruction을 포함한다면, 본문 전체를 깊게 소비하기 전에 현재 task와의 관련성을 한 번 더 판단하는 방식이 context cost와 불필요한 context contamination을 줄이는 데 도움이 될 수 있습니다.
+`SKILL.md` 초반에 짧은 applicability guidance나 routing gate를 둘 수 있습니다. Skill 본문이 크거나 강한 procedural instruction을 포함한다면, 더 깊은 context나 reference를 사용하기 전에 관련성을 다시 판단하는 데 도움이 될 수 있습니다.
 
-이 gate는 대표적인 technique이지 Skill format의 필수 요소는 아닙니다.
+다만 실제 token 절감 정도는 harness가 metadata, entrypoint, body, reference를 얼마나 분리해서 retrieve하거나 load할 수 있는지에 따라 달라집니다. `SKILL.md` 전체가 이미 context에 들어온 뒤 entry gate를 읽는 구조라면, gate는 적용 범위와 추가 loading을 좁힐 수 있지만 이미 소비된 body token 자체를 되돌리지는 못합니다.
+
+큰 body의 load 비용까지 줄이는 것이 중요하다면 metadata → small entry/gate → larger body/reference처럼 retrieval surface 자체를 단계적으로 나누는 구성이 더 직접적일 수 있습니다.
+
+이런 gate와 layout은 대표적인 technique이지 Skill format의 필수 요소는 아닙니다.
 
 ## Other Forms
 
@@ -83,43 +88,35 @@ command or workflow router
 → concrete procedure
 ```
 
-Routing layer의 표현 방식은 frontmatter, manifest, index, rule, directory entrypoint, metadata 등 환경에 따라 달라질 수 있습니다.
+Routing signal은 frontmatter, manifest, index, rule, directory entrypoint, metadata 등 환경에 따라 달라질 수 있습니다.
 
 ## Recommended Default
 
 특별한 이유가 없다면 다음과 같은 구성이 단순한 출발점이 될 수 있습니다.
 
 - 초기 discovery에는 작고 비교적 안정적인 metadata를 사용합니다.
-- 후보 수가 충분히 줄어든 뒤 candidate-local context를 로드합니다.
-- Candidate-local entrypoint에서는 현재 task에 대한 applicability와 필요한 다음 context를 짧게 판단할 수 있게 합니다.
-- 더 깊은 routing은 실제로 추가 context가 필요할 때만 진행합니다.
+- 후보가 충분히 좁혀진 뒤 candidate-local context를 로드합니다.
+- Candidate-local entrypoint에서는 applicability와 필요한 다음 context를 짧게 판단할 수 있게 합니다.
+- 추가 context는 실제로 필요할 때 로드합니다.
 - 단계가 늘어날수록 더 구체적이고 관련성 높은 context로 좁혀지는 구성을 선호합니다.
 
-작은 repository나 context cost가 중요하지 않은 환경에서는 이런 계층을 만들지 않고 source를 바로 읽는 편이 더 단순할 수 있습니다.
+작은 repository나 source가 짧은 환경에서는 계층을 만들지 않고 바로 읽는 편이 더 단순할 수 있습니다.
 
 ## Context Contamination
 
-여기서 context contamination은 반드시 instruction hierarchy 실패를 의미하지 않습니다.
+여기서 context contamination은 instruction hierarchy 실패만을 뜻하지 않습니다. 관련 없는 source를 읽는 것만으로도 현재 task와 무관한 terminology, assumptions, procedures, schema, examples와 추가 token burden이 active context에 들어올 수 있습니다.
 
-관련 없는 source를 읽는 것만으로도 다음과 같은 정보가 active context에 추가될 수 있습니다.
+최신 모델이 이런 정보를 잘 구분하더라도 필요 없는 context를 줄이고 relevant context density를 높이는 것 자체가 유용할 수 있습니다.
 
-- 현재 task와 관계없는 terminology
-- 다른 workflow의 assumptions와 procedures
-- 사용하지 않을 schema나 examples
-- 비슷하지만 다른 domain의 constraints
-- 추가적인 tokens와 attention burden
-
-최신 모델이 이런 정보를 잘 구분하더라도, 필요 없는 context를 줄이고 relevant context density를 높이는 것 자체가 유용할 수 있습니다.
-
-따라서 progressive routing은 "틀린 candidate를 절대 읽지 않는다"보다 **필요성이 높아질수록 더 많은 context를 읽는다**는 방향으로 이해하는 편이 적절합니다.
+따라서 이 패턴은 "틀린 candidate를 절대 읽지 않는다"보다 **필요성이 높아질수록 더 많은 context를 읽는다**는 방향으로 이해하는 편이 적절합니다.
 
 ## Options
 
 - Metadata가 충분히 정확하고 candidate body가 작다면 별도 local gate를 생략할 수 있습니다.
 - Candidate entrypoint를 yes/no gate 대신 적용 방식, 관련 reference, 대안 candidate를 안내하는 router로 사용할 수 있습니다.
-- 여러 asset을 함께 적용하는 환경에서는 하나를 배제하기보다 관련 candidate 여러 개를 선택한 뒤 각각 필요한 정도만 로드할 수 있습니다.
+- 여러 asset을 함께 적용하는 환경에서는 관련 candidate 여러 개를 선택한 뒤 각각 필요한 정도만 로드할 수 있습니다.
 - Routing metadata를 자동 생성하거나 static index로 유지하는 방식 모두 가능합니다.
-- Candidate-local routing이 다시 다른 candidate로 이어지는 계층형 구조도 사용할 수 있습니다.
+- Candidate-local routing이 다른 candidate나 병렬 context로 이어지는 계층형 구조도 사용할 수 있습니다.
 
 ## Considerations
 
@@ -127,12 +124,10 @@ Routing layer의 표현 방식은 frontmatter, manifest, index, rule, directory 
 - Metadata와 underlying source가 따로 관리되면 stale routing 가능성을 고려해야 합니다.
 - Candidate-local gate 자체가 장문의 두 번째 instruction body가 되면 progressive loading의 이점이 줄어듭니다.
 - 어떤 단계에서 얼마만큼의 context를 로드할지는 model capability, context window, asset 크기, retrieval cost, task 중요도에 따라 달라질 수 있습니다.
-- 이 패턴은 routing 단계를 늘리는 것이 목표가 아니라 **필요한 context를 필요한 시점에 더 정확한 범위로 가져오는 것**이 목표입니다.
+- 목표는 routing 단계를 늘리는 것이 아니라 **필요한 context를 필요한 시점에 적절한 범위로 가져오는 것**입니다.
 
 ## Boundary
 
 이 패턴은 **discovery 이후 context를 점진적으로 좁히고 로드하는 routing shape**를 설명합니다.
 
-어떤 index format을 사용할지, Skill activation semantics를 어떻게 정의할지, 어떤 instruction mechanism이 authority를 가지는지, 또는 특정 단계 수를 강제하지 않습니다.
-
-Routing/index asset 자체의 구조와 자동화는 별도의 routing/index pattern으로 다룰 수 있고, scope별 instruction injection은 별도의 context-layering pattern으로 다룰 수 있습니다.
+특정 index format, Skill activation semantics, instruction authority 또는 단계 수를 정의하지 않습니다. Routing/index asset 자체의 구조와 자동화, scope별 instruction injection, asset customization은 각각 별도의 관심사로 볼 수 있습니다.
