@@ -28,7 +28,7 @@ flowchart LR
 | `validate.py` | Status-progress-gap 일관성과 생성 Markdown의 heading·section 구조를 검증한다. |
 | `cli.py` | `render`와 `validate` 명령, atomic output과 안정적인 exit code를 제공한다. |
 | `templates/dashboard.md.j2` | 확정된 Markdown 표현만 담당한다. |
-| `scripts/check_quality.py` | Ruff, ty, rumdl, compile, pytest와 example drift 검사를 조정한다. |
+| `scripts/check_quality.py` | Ruff, ty, rumdl, compile과 example drift의 package-local 검사를 조정한다. |
 
 ## Design Boundaries
 
