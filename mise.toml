@@ -1,0 +1,37 @@
+[tools]
+uv = "0.12.1"
+node = "24.19.0"
+rumdl = "0.3.0"
+lefthook = "2.1.10"
+"npm:@biomejs/biome" = "2.5.6"
+
+[tasks.setup]
+description = "Install Python dependencies and Git hooks"
+run = [
+  "uv sync --all-groups",
+  "lefthook install",
+]
+
+[tasks.format]
+description = "Format repository source"
+run = [
+  "uv run ruff format .",
+  "uv run ruff check --fix .",
+  "rumdl fmt .",
+  "rumdl check --fix .",
+  "biome format --write .",
+]
+
+[tasks.check]
+description = "Run static repository checks"
+run = [
+  "uv lock --check",
+  "uv run ruff check .",
+  "rumdl check .",
+  "biome lint .",
+  "lefthook validate",
+]
+
+[tasks.test]
+description = "Run repository tests"
+run = "uv run pytest"
