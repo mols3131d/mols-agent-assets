@@ -4,14 +4,25 @@
 
 ## Layout
 
+작으면 `baseline.md`, 내용이 커지면 `baseline/README.md`를 entrypoint로 하는 directory를 사용합니다.
+
 ```text
 <asset-docs>/
 ├─ baseline.md
+
+# or
+
+<asset-docs>/
 └─ baseline/
+   ├─ README.md
    └─ ...
 ```
 
-작으면 `baseline.md`, 내용이 커지면 `baseline/`을 사용합니다.
+## Protection
+
+`baseline.md` 또는 `baseline/README.md`에는 **함부로 편집하면 안 되는 보호 문서임을 명시**합니다.
+
+Baseline은 일반 작업 중 현재 구현에 맞춰 자동으로 수정하거나 정리하지 않습니다. 자산의 목적·본질·원칙·요구·주요 결정 자체가 의도적으로 바뀌는 경우에만 그 근거와 변경 의도를 확인한 뒤 갱신합니다.
 
 ## Contents
 
