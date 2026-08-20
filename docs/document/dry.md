@@ -20,13 +20,11 @@
 
 #### Pattern Capsules
 
-`docs/references/patterns/*.md`의 각 pattern 문서는 **독립적으로 읽고 재사용할 수 있는 self-contained reference capsule**로 취급합니다.
+`docs/references/patterns/*.md`의 각 pattern 문서는 하나의 독립 documentation domain입니다.
 
-- 각 pattern document는 하나의 독립 documentation domain입니다.
-- 다른 pattern capsule과 내용이 겹치는 것은 self-containment와 재사용성에 도움이 되면 허용합니다.
-- 중복 자체보다 **각 capsule이 자기 pattern의 목적, 본질, 옵션, 확장, 고려사항과 경계만 소유하는지**를 우선 검토합니다.
-- 다른 pattern의 책임이나 project-local operational policy를 대신 소유하면 ownership 문제입니다.
-- 같은 capsule 내부의 불필요한 중복은 DRY 위반으로 봅니다.
+- 다른 pattern capsule과의 overlap은 허용합니다.
+- 같은 capsule 내부의 불필요한 중복은 DRY 위반입니다.
+- Pattern capsule의 작성, self-containment, flexibility와 ownership contract는 [Patterns](../references/patterns/README.md)가 소유합니다.
 
 ### Asset Capsules
 
