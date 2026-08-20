@@ -14,6 +14,7 @@ description: Promptfoo eval tooling의 official source routing과 repository-loc
 - [Getting started](https://www.promptfoo.dev/docs/getting-started/) — 전체 개념과 기본 eval 흐름
 - [Configuration overview](https://www.promptfoo.dev/docs/configuration/guide/) — config를 작성하거나 구조를 나눌 때
 - [Configuration reference](https://www.promptfoo.dev/docs/configuration/reference/) — field semantics와 정확한 schema를 확인할 때
+- [Configuration schema](https://www.promptfoo.dev/config-schema.json) — editor validation이나 machine-readable schema가 필요할 때
 - [Command line](https://www.promptfoo.dev/docs/usage/command-line/) — `eval`, filtering, cache, output 등 CLI option을 확인할 때
 
 ## Eval authoring
@@ -36,13 +37,15 @@ description: Promptfoo eval tooling의 official source routing과 repository-loc
 
 ## Local and private operation
 
+- [Security model](https://github.com/promptfoo/promptfoo/blob/main/SECURITY.md) — config, custom code, local UI와 trust boundary 확인
 - [Ollama provider](https://www.promptfoo.dev/docs/providers/ollama/) — local target 또는 local grader 사용
 - [Caching](https://www.promptfoo.dev/docs/configuration/caching/) — cache behavior와 storage 확인
 - [Telemetry](https://www.promptfoo.dev/docs/configuration/telemetry/) — telemetry와 update check 제어
 - [Sharing](https://www.promptfoo.dev/docs/usage/sharing/) — 결과 업로드 경계와 sharing 비활성화
 - [FAQ](https://www.promptfoo.dev/docs/faq/) — offline/private 실행과 hosted feature의 data boundary 확인
+- [Red team data handling](https://www.promptfoo.dev/docs/red-team/troubleshooting/data-handling/) — red team generation/grading에서 어떤 data가 외부로 나갈 수 있는지 확인
 
-내부 또는 민감한 eval에서는 config만 보고 local-only라고 추정하지 않습니다. Hosted generation, grading, sharing 등 외부 통신 가능성이 있는 기능은 current official documentation에서 다시 확인합니다.
+Promptfoo OSS는 sandbox가 아니며 config와 config가 참조하는 script/provider/dataset을 trusted code와 data로 취급합니다. 내부 또는 민감한 eval에서는 config만 보고 local-only라고 추정하지 않고, hosted generation, grading, sharing 등 외부 통신 가능성이 있는 기능은 current official documentation에서 다시 확인합니다.
 
 ## Automation and troubleshooting
 
