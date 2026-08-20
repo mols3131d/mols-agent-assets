@@ -1,7 +1,7 @@
 [tools]
 uv = "0.12.1"
 node = "24.19.0"
-rumdl = "0.3.0"
+rumdl = "0.2.54"
 lefthook = "2.1.10"
 "npm:@biomejs/biome" = "2.5.6"
 
