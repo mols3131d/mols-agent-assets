@@ -69,6 +69,7 @@ def test_scope_is_explicit_dynamic_and_bounded() -> None:
     assert "Expansion is consequential" in body
     assert "the proposal does not change the Active Scope" in body
     assert "Research must validate the need and boundary" in body
+    assert "smallest justified boundary delta" in body
     assert "Explicit boundaries are not silently mutable" in body
     assert "Scope change never resets controls" in body
     assert "Recursive Scope only narrows" in body
