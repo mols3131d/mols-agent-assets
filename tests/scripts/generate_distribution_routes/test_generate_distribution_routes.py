@@ -58,6 +58,14 @@ def test_distribution_and_repository_local_route_surfaces_are_distinct():
     )
 
 
+def test_route_entrypoint_targets_distribution_skill_route():
+    entrypoint = (
+        generate_distribution_routes.DISTRIBUTION_ROUTE_DIR / "ROUTE.md"
+    ).read_text(encoding="utf-8")
+    expected_url = f"{generate_distribution_routes.RAW_ROOT}/route/skills.jsonl"
+    assert expected_url in entrypoint
+
+
 def test_committed_distribution_skill_route_is_current():
     expected = generate_distribution_routes.render_skill_route()
     actual = generate_distribution_routes.DISTRIBUTION_SKILL_ROUTE.read_text(
