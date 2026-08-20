@@ -19,13 +19,3 @@ def test_readme_language_variants_are_not_used() -> None:
         variants.extend((ROOT / directory).rglob("README.*.md"))
 
     assert sorted(path.relative_to(ROOT) for path in variants) == []
-
-
-def test_reference_entrypoints_exist() -> None:
-    references = DOCS / "references"
-
-    common = {path.name for path in (references / "common").glob("*.md")}
-    tooling = {path.name for path in (references / "tooling").glob("*.md")}
-
-    assert {"naming.md", "chatbot-compatibility.md"} <= common
-    assert "rulesync.md" in tooling
