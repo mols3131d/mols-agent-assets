@@ -5,6 +5,7 @@ on:
     branches:
       - chatbot/feat/mise-tooling
     paths:
+      - mise.toml
       - .github/workflows/verify-mise-tooling-temp.yml
 
 permissions:
