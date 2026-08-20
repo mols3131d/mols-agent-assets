@@ -27,14 +27,22 @@ Directory-level README 또는 index는 기본 산출물이 아닙니다.
 
 Sibling 문서를 단순 열거하기 위한 index-only README는 만들지 않습니다. 파일 목록과 쉽게 재생성되는 상태는 filesystem, search와 Git history에 맡깁니다.
 
-## Durable vs Historical Knowledge
+## Knowledge and Artifact Lifecycle
 
-Repository에 남길 것은 현재와 미래의 판단을 바꾸는 지식입니다.
+정보의 현재성, authority와 보존 가치를 분리합니다.
 
-- 유지: durable decision, invariant, recovery knowledge, non-obvious rationale
-- 유지하지 않음: 완료된 migration log, 일회성 작업 상태, 쉽게 재생성되는 inventory, PR별 진행 기록
+| Kind | Destination | Meaning |
+| --- | --- | --- |
+| Current durable knowledge | canonical source 또는 `docs/` | 현재와 미래의 판단을 계속 바꾸는 decision, invariant, recovery knowledge와 non-obvious rationale |
+| Working / handoff artifact | `inbox/YYYY-MM-DD/` | 작업 과정에서 생성되며 아직 canonical하지 않은 report, review, research, handoff와 generated output |
+| Retained historical artifact | `inbox/archive/YYYY-MM-DD/` | 현재 정본은 아니지만 artifact 원문 자체를 다시 참고할 가치가 있는 기록 |
+| Repository change history | Git history와 PR | 변경 과정, 완료된 migration, 이전 canonical state와 일반 작업 이력 |
 
-역사적 맥락만 필요한 경우 Git history와 PR을 사용합니다. 현재 behavior를 이해하거나 안전하게 변경하기 위해 rationale이 계속 필요하면 development documentation으로 승격합니다.
+`inbox/`와 archive의 상세 lifecycle은 [`inbox/README.md`](../../inbox/README.md)가 소유합니다.
+
+Durable knowledge를 inbox나 archive에만 남겨 current authority를 숨기지 않습니다. 반대로 단순 과거 상태를 durable documentation으로 승격하거나 archive에 중복 보관하지 않습니다.
+
+Git history는 **어떻게 변경되었는지**를 보존하고, archive는 **비정본 artifact 자체를 계속 찾아볼 가치가 있을 때**만 사용합니다.
 
 ## Boundary
 
