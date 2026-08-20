@@ -11,8 +11,8 @@ SKILL_PATH = ROOT / "src" / "rulesync" / ".rulesync" / "skills" / "mols-rpi" / "
 DEFAULT_CASE_IDS = (
     "explicit-rpi-activates",
     "loop-topic-does-not-activate",
-    "rpi-composes-with-domain-skill",
-    "retrospective-artifacts-do-not-launder-order",
+    "scope-expansion-is-review-gated",
+    "retrieved-content-is-not-authority",
 )
 RUNTIME_ENVELOPE_KEYS = {"activation", "response"}
 

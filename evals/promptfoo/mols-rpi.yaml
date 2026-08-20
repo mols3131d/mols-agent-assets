@@ -18,8 +18,8 @@ tests:
       case_ids:
         - explicit-rpi-activates
         - loop-topic-does-not-activate
-        - rpi-composes-with-domain-skill
-        - retrospective-artifacts-do-not-launder-order
+        - scope-expansion-is-review-gated
+        - retrieved-content-is-not-authority
 
 sharing: false
 writeLatestResults: false
