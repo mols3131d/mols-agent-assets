@@ -14,6 +14,7 @@ DEFAULT_CASE_IDS = (
     "rpi-composes-with-domain-skill",
     "retrospective-artifacts-do-not-launder-order",
 )
+RUNTIME_ENVELOPE_KEYS = {"activation", "response"}
 
 
 def _load_cases() -> dict[str, dict]:
@@ -108,21 +109,29 @@ def _coerce_optional_bool(value: object) -> bool | None:
     return None
 
 
+def _runtime_envelope_error(payload: object) -> str | None:
+    if not isinstance(payload, dict):
+        return "provider output must be a JSON object"
+    if set(payload) != RUNTIME_ENVELOPE_KEYS:
+        return "provider output must contain exactly activation and response"
+    if not isinstance(payload["activation"], bool):
+        return "provider output activation must be boolean"
+    if not isinstance(payload["response"], str) or not payload["response"].strip():
+        return "provider output response must be a non-empty string"
+    return None
+
+
 def get_assert(output: str, context: dict) -> dict:
     try:
         payload = json.loads(output)
     except (TypeError, json.JSONDecodeError):
         return {"pass": False, "score": 0, "reason": "provider output is not valid JSON"}
 
-    activation = payload.get("activation")
-    response = payload.get("response")
-    if not isinstance(activation, bool) or not isinstance(response, str) or not response.strip():
-        return {
-            "pass": False,
-            "score": 0,
-            "reason": "provider output must contain boolean activation and non-empty response",
-        }
+    envelope_error = _runtime_envelope_error(payload)
+    if envelope_error is not None:
+        return {"pass": False, "score": 0, "reason": envelope_error}
 
+    activation = payload["activation"]
     expected = _coerce_optional_bool(context.get("vars", {}).get("expected_activation"))
     if expected is not None and activation is not expected:
         return {
@@ -183,11 +192,10 @@ def _ollama_output(prompt: str) -> dict:
     except (OSError, KeyError, TypeError, ValueError) as error:
         return {"error": f"Ollama runtime failed: {error}", "output": ""}
 
-    activation = parsed.get("activation")
-    answer = parsed.get("response")
-    if not isinstance(activation, bool) or not isinstance(answer, str) or not answer.strip():
-        return {"error": "Ollama runtime returned an invalid response envelope", "output": content}
-    return {"output": json.dumps({"activation": activation, "response": answer}, ensure_ascii=False)}
+    envelope_error = _runtime_envelope_error(parsed)
+    if envelope_error is not None:
+        return {"error": f"Ollama runtime returned an invalid response envelope: {envelope_error}", "output": content}
+    return {"output": content}
 
 
 def call_api(prompt: str, options: dict, context: dict) -> dict:

@@ -41,6 +41,12 @@ def test_generator_reuses_canonical_fixture_without_semantic_duplication() -> No
         assert test["vars"]["task"] == case["prompt"]
         assert test["vars"]["mode"] == case["mode"]
         assert [check["type"] for check in test["assert"]] == ["python"]
+        if case["mode"] == "activation":
+            assert test["vars"]["expected_activation"] is True
+        elif case["mode"] == "activation-negative":
+            assert test["vars"]["expected_activation"] is False
+        else:
+            assert "expected_activation" not in test["vars"]
 
 
 def test_semantic_grader_projects_canonical_assertions(monkeypatch) -> None:
@@ -56,6 +62,15 @@ def test_semantic_grader_projects_canonical_assertions(monkeypatch) -> None:
             assert criterion in semantic["value"]
 
 
+def test_runtime_envelope_requires_exact_keys_and_types() -> None:
+    assert ADAPTER._runtime_envelope_error({"activation": True, "response": "ok"}) is None
+    assert ADAPTER._runtime_envelope_error(["not", "an", "object"]) is not None
+    assert ADAPTER._runtime_envelope_error(
+        {"activation": True, "response": "ok", "debug": "hidden"}
+    ) is not None
+    assert ADAPTER._runtime_envelope_error({"activation": "true", "response": "ok"}) is not None
+
+
 def test_deterministic_grader_checks_envelope_and_activation() -> None:
     passing = ADAPTER.get_assert(
         json.dumps({"activation": False, "response": "normal answer"}),
@@ -66,10 +81,15 @@ def test_deterministic_grader_checks_envelope_and_activation() -> None:
         {"vars": {"expected_activation": False}},
     )
     malformed = ADAPTER.get_assert("not-json", {"vars": {}})
+    extra = ADAPTER.get_assert(
+        json.dumps({"activation": False, "response": "normal answer", "debug": "unexpected"}),
+        {"vars": {"expected_activation": False}},
+    )
 
     assert passing["pass"] is True
     assert mismatch["pass"] is False
     assert malformed["pass"] is False
+    assert extra["pass"] is False
 
 
 def test_fixture_provider_is_plumbing_only() -> None:
@@ -127,12 +147,15 @@ def test_ollama_runtime_gets_skill_and_task_but_not_expected_assertions(monkeypa
 
 def test_runner_defaults_are_local_and_non_sharing() -> None:
     env = RUNNER.build_env({"PROMPTFOO_DISABLE_TELEMETRY": "0"})
+    state_dir = ROOT / ".tmp" / "promptfoo"
 
     assert env["PROMPTFOO_DISABLE_TELEMETRY"] == "0"
     assert env["PROMPTFOO_DISABLE_UPDATE"] == "1"
     assert env["PROMPTFOO_DISABLE_REMOTE_GENERATION"] == "true"
     assert env["PROMPTFOO_DISABLE_SHARING"] == "1"
-    assert env["PROMPTFOO_CONFIG_DIR"] == str(ROOT / ".tmp" / "promptfoo")
+    assert env["PROMPTFOO_CONFIG_DIR"] == str(state_dir)
+    assert env["PROMPTFOO_LOG_DIR"] == str(state_dir / "logs")
+    assert env["PROMPTFOO_CACHE_PATH"] == str(state_dir / "cache")
     assert env["PROMPTFOO_PYTHON"]
     assert RUNNER.parse_node_version("v22.22.0") == (22, 22, 0)
 

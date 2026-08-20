@@ -14,11 +14,14 @@ MIN_NODE_VERSION = (22, 22, 0)
 
 def build_env(base: dict[str, str] | None = None) -> dict[str, str]:
     env = dict(os.environ if base is None else base)
+    state_dir = ROOT / ".tmp" / "promptfoo"
     env.setdefault("PROMPTFOO_DISABLE_TELEMETRY", "1")
     env.setdefault("PROMPTFOO_DISABLE_UPDATE", "1")
     env.setdefault("PROMPTFOO_DISABLE_REMOTE_GENERATION", "true")
     env.setdefault("PROMPTFOO_DISABLE_SHARING", "1")
-    env.setdefault("PROMPTFOO_CONFIG_DIR", str(ROOT / ".tmp" / "promptfoo"))
+    env.setdefault("PROMPTFOO_CONFIG_DIR", str(state_dir))
+    env.setdefault("PROMPTFOO_LOG_DIR", str(state_dir / "logs"))
+    env.setdefault("PROMPTFOO_CACHE_PATH", str(state_dir / "cache"))
     env.setdefault("PROMPTFOO_PYTHON", sys.executable)
     env.setdefault("PROMPTFOO_RUNTIME_MODEL", "qwen2.5")
     env.setdefault("PROMPTFOO_GRADER_PROVIDER", "ollama:chat:qwen2.5")
