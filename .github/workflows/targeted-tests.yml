@@ -1,38 +1,9 @@
-name: Targeted PR Tests
+name: PR Gate
 
 on:
   pull_request:
     branches:
       - main
-    paths:
-      - "README.md"
-      - "AGENTS.md"
-      - "inbox/README.md"
-      - "src/rulesync/**"
-      - "route/**"
-      - "package.json"
-      - "mise.toml"
-      - "biome.json"
-      - "lefthook.yml"
-      - ".python-version"
-      - ".vscode/tasks.json"
-      - ".gitattributes"
-      - ".rumdl.toml"
-      - "evals/regression/**"
-      - "evals/skills/**"
-      - "tests/evals/**"
-      - "tests/test_rulesync_source_isolation.py"
-      - "tests/test_documentation_consistency.py"
-      - "docs/**"
-      - "tests/skills/**"
-      - "tests/scripts/**"
-      - "scripts/**"
-      - "pyproject.toml"
-      - "uv.lock"
-      - ".github/workflows/distribution-routes.yml"
-      - ".github/workflows/rulesync.yml"
-      - ".github/workflows/rumdl-main-autofix.yml"
-      - ".github/workflows/targeted-tests.yml"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
@@ -42,178 +13,82 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  pr-gate:
+    name: PR Gate
     runs-on: ubuntu-slim
-    timeout-minutes: 8
+    timeout-minutes: 10
     steps:
       - name: Checkout PR merge
         uses: actions/checkout@v7
         with:
           fetch-depth: 2
+          persist-credentials: false
 
-      - name: Select affected tests
+      - name: Classify change impact
         id: scope
         shell: bash
         run: |
           set -euo pipefail
 
+          tooling=false
+          rulesync=false
+          routes=false
+          markdown=false
+          promptfoo=false
+
           mapfile -d '' files < <(git diff --name-only -z HEAD^1 HEAD)
-          declare -A root_targets=()
-          tooling_changed=false
-
-          add_isolation() {
-            root_targets["tests/test_rulesync_source_isolation.py"]=1
-          }
-
-          add_documentation_consistency() {
-            root_targets["tests/test_documentation_consistency.py"]=1
-          }
-
-          add_asset_docs() {
-            root_targets["tests/scripts/asset_docs_placement"]=1
-          }
-
-          add_distribution_routes() {
-            root_targets["tests/scripts/generate_distribution_routes"]=1
-          }
-
-          add_skill() {
-            local name="$1"
-            [[ -d "tests/skills/$name" ]] && root_targets["tests/skills/$name"]=1
-            return 0
-          }
-
-          add_eval() {
-            local name="$1"
-            root_targets["tests/evals"]=1
-            add_skill "$name"
-            return 0
-          }
-
-          add_script() {
-            local name="$1"
-            [[ -d "tests/scripts/$name" ]] && root_targets["tests/scripts/$name"]=1
-            return 0
-          }
-
           for path in "${files[@]}"; do
             case "$path" in
-              tests/skills/conftest.py)
-                root_targets["tests/skills"]=1
-                ;;
-              tests/evals/*)
-                root_targets["tests/evals"]=1
-                ;;
-              tests/scripts/conftest.py)
-                root_targets["tests/scripts"]=1
-                ;;
               .github/workflows/targeted-tests.yml)
-                tooling_changed=true
-                add_isolation
-                add_documentation_consistency
-                add_asset_docs
-                add_distribution_routes
-                add_script "rumdl_main_autofix"
-                add_script "tooling"
-                root_targets["tests/evals"]=1
+                tooling=true
+                rulesync=true
+                routes=true
+                markdown=true
+                promptfoo=true
                 ;;
-              .github/workflows/distribution-routes.yml|route/*)
-                add_distribution_routes
-                add_script "tooling"
+              mise.toml|biome.json|lefthook.yml|.python-version|.vscode/tasks.json|pyproject.toml|uv.lock|package.json)
+                tooling=true
                 ;;
-              .github/workflows/rulesync.yml)
-                add_script "rumdl_main_autofix"
-                add_script "tooling"
+            esac
+
+            case "$path" in
+              src/rulesync/*|scripts/run_rulesync.py|package.json|mise.toml|.gitattributes|.rumdl.toml)
+                rulesync=true
                 ;;
-              .gitattributes|.rumdl.toml|.github/workflows/rumdl-main-autofix.yml)
-                add_script "rumdl_main_autofix"
-                add_script "tooling"
+            esac
+
+            case "$path" in
+              src/rulesync/.rulesync/skills/*/SKILL.md|scripts/generate_distribution_routes.py|route/skills.jsonl)
+                routes=true
                 ;;
-              mise.toml|.python-version|pyproject.toml|uv.lock)
-                tooling_changed=true
-                root_targets["tests"]=1
+            esac
+
+            case "$path" in
+              *.md)
+                markdown=true
                 ;;
-              biome.json|lefthook.yml|.vscode/tasks.json)
-                tooling_changed=true
-                add_script "tooling"
-                ;;
-              README.md|AGENTS.md|inbox/README.md|tests/test_documentation_consistency.py)
-                add_documentation_consistency
-                ;;
-              src/rulesync/.rulesync/skills/load-context-github/SKILL.md|src/rulesync/.rulesync/skills/load-context-github-mols/SKILL.md)
-                name="${path#src/rulesync/.rulesync/skills/}"
-                add_skill "${name%%/*}"
-                add_isolation
-                add_asset_docs
-                add_distribution_routes
-                ;;
-              src/rulesync/.rulesync/skills/*)
-                name="${path#src/rulesync/.rulesync/skills/}"
-                add_skill "${name%%/*}"
-                add_isolation
-                add_asset_docs
-                add_distribution_routes
-                ;;
-              tests/skills/*)
-                name="${path#tests/skills/}"
-                add_skill "${name%%/*}"
-                ;;
-              evals/skills/*)
-                name="${path#evals/skills/}"
-                add_eval "${name%%/*}"
-                ;;
-              docs/references/common/chatbot-compatibility.md)
-                add_documentation_consistency
-                ;;
-              docs/references/tooling/rulesync.md)
-                add_isolation
-                add_asset_docs
-                add_documentation_consistency
-                ;;
-              src/rulesync/.rulesync/rules/*|src/rulesync/.rulesync/subagents/*|src/rulesync/rulesync.jsonc|evals/regression/rulesync-source-isolation.json|tests/test_rulesync_source_isolation.py)
-                add_isolation
-                ;;
-              package.json)
-                tooling_changed=true
-                add_isolation
-                add_script "tooling"
-                ;;
-              docs/skills/*|docs/references/skills/*|docs/development/testing.md)
-                add_asset_docs
-                add_documentation_consistency
-                ;;
-              docs/*)
-                add_documentation_consistency
-                ;;
-              tests/scripts/*)
-                name="${path#tests/scripts/}"
-                add_script "${name%%/*}"
-                ;;
-              scripts/*)
-                name="${path#scripts/}"
-                name="${name%.py}"
-                add_script "${name%%/*}"
+            esac
+
+            case "$path" in
+              evals/promptfoo/*|evals/skills/mols-rpi/*|scripts/evals/*|src/rulesync/.rulesync/skills/mols-rpi/*|package.json|mise.toml)
+                promptfoo=true
                 ;;
             esac
           done
 
-          if ((${#root_targets[@]})); then
-            printf '%s\0' "${!root_targets[@]}" > /tmp/root-tests
-            echo "run=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "run=false" >> "$GITHUB_OUTPUT"
-          fi
-          echo "tooling=$tooling_changed" >> "$GITHUB_OUTPUT"
+          echo "tooling=$tooling" >> "$GITHUB_OUTPUT"
+          echo "rulesync=$rulesync" >> "$GITHUB_OUTPUT"
+          echo "routes=$routes" >> "$GITHUB_OUTPUT"
+          echo "markdown=$markdown" >> "$GITHUB_OUTPUT"
+          echo "promptfoo=$promptfoo" >> "$GITHUB_OUTPUT"
 
       - name: Set up mise
-        if: ${{ steps.scope.outputs.run == 'true' || steps.scope.outputs.tooling == 'true' }}
         uses: jdx/mise-action@v3
         with:
           install: false
           cache: true
 
       - name: Install uv
-        if: ${{ steps.scope.outputs.run == 'true' && steps.scope.outputs.tooling != 'true' }}
         run: mise install uv
 
       - name: Validate repository tooling
@@ -222,10 +97,44 @@ jobs:
           mise install
           mise run check
 
-      - name: Run central tests
-        if: steps.scope.outputs.run == 'true'
+      - name: Run deterministic tests
+        run: uv run --locked --no-default-groups --group test pytest -q tests
+
+      - name: Validate canonical Rulesync source
+        if: steps.scope.outputs.rulesync == 'true'
         shell: bash
         run: |
-          [[ -f /tmp/root-tests ]] || exit 0
-          mapfile -d '' targets < /tmp/root-tests
-          uv run --locked --no-default-groups --group test pytest -q "${targets[@]}"
+          set -euo pipefail
+          mise install node rumdl "npm:rulesync"
+          mapfile -d '' markdown < <(git ls-files -z -- 'src/rulesync/**/*.md')
+          if ((${#markdown[@]})); then
+            rumdl fmt "${markdown[@]}"
+            git diff --exit-code -- "${markdown[@]}"
+          fi
+          npm run rulesync:doctor
+
+      - name: Validate distribution routes
+        if: steps.scope.outputs.routes == 'true'
+        run: |
+          uv run --no-project --with "pyyaml>=6.0.2" python scripts/generate_distribution_routes.py
+          git diff --exit-code -- route/skills.jsonl
+
+      - name: Validate changed Markdown normalization
+        if: steps.scope.outputs.markdown == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mise install rumdl
+          mapfile -d '' markdown < <(
+            git diff --name-only -z --diff-filter=ACMR HEAD^1 HEAD -- '*.md'
+          )
+          if ((${#markdown[@]})); then
+            rumdl fmt "${markdown[@]}"
+            git diff --exit-code -- "${markdown[@]}"
+          fi
+
+      - name: Run mols-rpi Promptfoo smoke
+        if: steps.scope.outputs.promptfoo == 'true'
+        run: |
+          mise install node
+          npm run eval:promptfoo:mols-rpi:smoke
