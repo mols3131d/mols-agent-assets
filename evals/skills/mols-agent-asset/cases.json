@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "create-minimal-skill",
+      "mode": "skill",
+      "prompt": "CSV schema documentation Skill을 새로 만들어줘.",
+      "assertions": [
+        "Routes Skill-specific decisions through the Skill reference",
+        "Prefers a minimal SKILL.md package and adds resources only when needed",
+        "Keeps target-specific rules out of portable guidance"
+      ]
+    },
+    {
+      "id": "improve-existing-skill",
+      "mode": "skill",
+      "prompt": "이 기존 SKILL.md의 중복과 과도한 절차를 줄이고 직접 수정해줘.",
+      "assertions": [
+        "Prefers the established Skill owner over creating a competing Skill",
+        "Preserves essential responsibility and valid behavior",
+        "Does not normalize unrelated structure or create ceremonial maintainer docs"
+      ]
+    },
+    {
+      "id": "repair-skill-intent",
+      "mode": "skill",
+      "prompt": "최근 단순화에서 핵심 동작이 빠진 것 같아. 기존 근거를 보고 복구해줘.",
+      "assertions": [
+        "Uses current source, project authority, and established intent as evidence",
+        "Separates durable behavior from incidental wording or layout",
+        "Restores the smallest coherent behavior without inventing a new owner"
+      ]
+    },
+    {
+      "id": "adapt-skill-target",
+      "mode": "skill",
+      "prompt": "이 Skill을 현재 프로젝트의 Rulesync source와 실제 target runtime에 맞게 조정해줘.",
+      "assertions": [
+        "Keeps the source framework as authority for canonical representation",
+        "Consults current target authority only for target-specific semantics",
+        "Does not edit a generated target projection as canonical source"
+      ]
+    },
+    {
+      "id": "rule-simple-dedup",
+      "mode": "rule",
+      "prompt": "같은 scope에 같은 규칙 문장이 두 번 들어갔어. 중복을 제거해줘.",
+      "assertions": [
+        "Uses the Rule reference",
+        "Removes a confirmed equivalent peer duplicate when application and authority are the same",
+        "Does not add an abstraction layer merely to deduplicate text"
+      ]
+    },
+    {
+      "id": "rule-scope-overlap",
+      "mode": "rule",
+      "prompt": "루트 규칙과 하위 디렉터리 규칙이 비슷해. DRY하게 합쳐줘.",
+      "assertions": [
+        "Resolves intended application before moving or deleting guidance",
+        "Preserves narrower exceptions or required scope-specific copies",
+        "Checks precedence or attachment differences instead of assuming textual duplication"
+      ]
+    },
+    {
+      "id": "rule-generated-projection",
+      "mode": "rule",
+      "prompt": "Rulesync가 생성한 target 규칙 파일에도 같은 문장이 있어. 거기서 하나 지워줘.",
+      "assertions": [
+        "Treats generated or projected copies as derived rather than independent authority",
+        "Does not hand-edit the derived copy merely for physical DRY",
+        "Routes the change to the canonical editable source when authorized"
+      ]
+    },
+    {
+      "id": "agent-definition-common-core",
+      "mode": "agent",
+      "prompt": "이 subagent 정의의 책임이 너무 넓어. 기존 역할을 보존하면서 좁혀줘.",
+      "assertions": [
+        "Uses the common authoring contract without inventing an agent-specific reference",
+        "Preserves source and project authority",
+        "Makes the smallest coherent responsibility change"
+      ]
+    },
+    {
+      "id": "install-is-not-authoring",
+      "mode": "negative",
+      "prompt": "이 Skill을 내 ChatGPT에 설치해줘.",
+      "assertions": [
+        "Does not claim Skill installation as mols-agent-asset responsibility",
+        "Routes installation to a dedicated installation capability when available"
+      ]
+    },
+    {
+      "id": "formal-validation-is-validator",
+      "mode": "negative",
+      "prompt": "이 agent asset을 readiness 기준으로 심층 검증하고 adversarial eval까지 해줘.",
+      "assertions": [
+        "Treats mols-agent-asset-validator as the primary capability",
+        "Does not expand the authoring Skill into a formal validation framework"
+      ]
+    },
+    {
+      "id": "human-prose-is-out-of-scope",
+      "mode": "negative",
+      "prompt": "README 문장을 더 읽기 좋게 다듬어줘.",
+      "assertions": [
+        "Does not activate agent-asset authoring for ordinary human-facing prose"
+      ]
+    }
+  ]
+}
