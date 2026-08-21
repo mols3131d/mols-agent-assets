@@ -66,6 +66,7 @@ Inbox가 얼마나 오래 artifact를 보존할지와 어떤 승격 절차를 �
 | Pattern | Relationship |
 | --- | --- |
 | [Nonstandard Directory Guide](nonstandard-directory-guide.md) | `inbox/` 같은 repository-local nonstandard surface에 local guide가 필요할 때 참고합니다. |
+| [Directory Context Capsule](directory-context-capsule.md) | Inbox 자체에 local agent rule, lifecycle guidance, routing 또는 task-specific context가 필요할 때 entrypoint와 nearby context surface를 붙이는 방식으로 함께 사용할 수 있습니다. |
 
 ## Boundary
 
