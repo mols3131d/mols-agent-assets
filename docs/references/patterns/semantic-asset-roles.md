@@ -13,12 +13,14 @@ representation
 → Skill / Rule / prompt / document / command / vendor-native asset / ...
 
 semantic role
-→ Knowledge / Workflow / Policy or Control / Evaluation / ...
+→ Knowledge / Workflow / Constraint or Control / Evaluation / ...
 ```
 
 같은 semantic role을 여러 representation으로 구현할 수 있고, 같은 representation도 서로 다른 semantic role을 가질 수 있습니다.
 
 따라서 `Skill이므로 Workflow`, `Rule이므로 Control`처럼 spec 자체를 의미 유형으로 간주하지 않습니다.
+
+Role은 자산 안에 어떤 종류의 문장이 들어 있는지가 아니라 **그 자산이 주로 어떤 책임을 소유하고 어떤 이유로 변경되는가**를 기준으로 이해할 수 있습니다. Workflow 안에 domain 설명이 조금 있다고 해서 곧바로 Knowledge asset이 되는 것은 아닙니다.
 
 ## Typical Roles
 
@@ -27,8 +29,8 @@ semantic role
 | Role | Typical responsibility |
 | --- | --- |
 | Knowledge | 작업을 이해하거나 판단하는 데 필요한 지식, 맥락, 원칙, reference |
-| Workflow | 목표를 달성하기 위한 절차와 다른 자산의 orchestration |
-| Policy / Control | 범위, 권한, invariant, guardrail처럼 행동을 제한하거나 조정하는 의미 |
+| Workflow | 목표를 달성하기 위한 절차나 의사결정 흐름 |
+| Constraint / Control | 범위, 권한, invariant, guardrail처럼 행동을 제한하거나 조정하는 의미 |
 | Evaluation | 완료, 품질, acceptance, validation 같은 판단 기준 |
 
 필요하면 다른 역할을 추가하거나 위 역할을 더 넓게 해석할 수 있습니다. 모든 자산을 반드시 하나의 role로 분류할 필요도 없습니다.
@@ -50,9 +52,9 @@ release workflow
    └─ evaluation criteria
 ```
 
-보통 Workflow가 composition을 주도하고, Knowledge는 여러 Workflow에서 재사용 가능한 판단 재료로 남기는 구성이 자연스럽습니다. Control이나 Evaluation도 필요한 단계에서 선택적으로 결합할 수 있습니다.
+큰 Workflow가 작은 Workflow와 supporting asset을 조합하는 형태가 대표적이지만, 실제 composition owner는 harness, router, entrypoint 또는 다른 orchestration asset일 수도 있습니다.
 
-이 방향은 고정 dependency rule이 아니라 책임을 작게 유지하기 위한 대표적인 구성입니다.
+Knowledge는 여러 Workflow에서 재사용 가능한 판단 재료로 남기고, Constraint나 Evaluation은 필요한 단계에서 선택적으로 결합하는 구성이 흔히 유용합니다. 이는 고정 dependency rule이 아니라 책임과 재사용 경계를 이해하기 위한 대표적인 방향입니다.
 
 ## Conditional Use
 
