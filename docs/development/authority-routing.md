@@ -37,25 +37,27 @@ Local guidance는 표준, tool, source framework 또는 target/harness가 이미
 
 ## Source Placement
 
-Authored source의 위치는 **재사용 source인지, 이 repository에서 직접 소비하는 runtime asset인지**를 먼저 구분합니다.
+Authored source의 위치는 **재사용 library source인지, 이 repository가 직접 소비하는 runtime asset인지**를 먼저 구분합니다.
 
-- Rulesync가 canonical representation을 소유하는 reusable asset은 `src/rulesync/` 아래에서 author/edit합니다.
-- 특정 vendor의 native contract를 source of truth로 사용하는 reusable asset은 `src/<vendor>/` 아래에서 author/edit합니다.
-- 이 repository에서 직접 사용하는 vendor-native asset은 `src/`에 복제하지 않고 해당 vendor가 정의한 native project path에 둡니다.
-- Generated vendor projection은 authored vendor-native source와 다릅니다. Generated output을 별도 canonical source로 취급하지 않습니다.
+- Rulesync를 canonical authored source로 사용하는 reusable asset은 `src/rulesync/` 아래에서 author/edit합니다.
+- 특정 vendor의 native contract를 canonical authored source로 사용하는 reusable asset은 `src/<vendor>/` 아래에서 author/edit합니다.
+- 이 repository가 직접 소비하는 framework/vendor asset은 `src/`에 별도 authority를 만들지 않고 해당 framework 또는 vendor가 정의한 native project path에 둡니다.
+- Generated projection은 authored source와 다릅니다. Generated output을 별도 canonical source로 취급하지 않습니다.
 - 동일한 semantic asset에 Rulesync source와 vendor-native source를 동시에 canonical authority로 두지 않습니다.
 
-가능하면 portable/framework source를 우선하되, vendor 고유 capability나 native packaging을 source 자체로 보존할 이유가 있으면 vendor-native source를 사용할 수 있습니다. 구체적인 내부 layout과 schema는 local superset을 만들지 않고 해당 framework 또는 vendor의 current official contract를 따릅니다.
+Rulesync와 vendor-native source 중 어느 쪽을 선택할지는 portability 자체보다 **asset이 어떤 contract를 source of truth로 삼는지**에 따라 정합니다. Cross-target projection을 위한 Rulesync representation이 본체라면 Rulesync source를, vendor 고유 capability·packaging·behavior를 native contract 그대로 보존하는 것이 본체라면 vendor-native source를 사용할 수 있습니다.
+
+구체적인 내부 layout과 schema는 local superset을 만들지 않고 해당 framework 또는 vendor의 current official contract를 따릅니다.
 
 ```text
-reusable + Rulesync-managed
+reusable + Rulesync-authored
 → src/rulesync/...
 
 reusable + vendor-native authored
 → src/<vendor>/...
 
-repository-direct vendor asset
-→ <vendor-defined native project path>
+repository-direct asset
+→ <framework/vendor-defined native project path>
 ```
 
 `src/<vendor>/`는 reusable authored source를 보관하기 위한 repository convention입니다. Vendor runtime이 직접 탐색하는 project path를 대체하지 않습니다.
