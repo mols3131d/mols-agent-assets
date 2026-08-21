@@ -1,3 +1,7 @@
+---
+description: 문서 작업 전에 development, document, references, asset capsule 중 읽을 docs surface를 선택할 때 사용합니다.
+---
+
 # Documentation Layout
 
 `docs/`는 문서의 책임과 portability에 따라 다음 surface로 나눕니다.
