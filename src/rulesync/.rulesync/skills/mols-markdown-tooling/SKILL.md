@@ -29,17 +29,16 @@ Use deterministic tools for Markdown mechanics. Do not turn the Skill into a wor
 
 ## Operations
 
-| Need | Bundled utility |
-| --- | --- |
-| Check declared dependencies | `scripts/check_dependencies.py` |
-| Format Markdown | `scripts/format_markdown.py` |
-| Validate YAML frontmatter | `scripts/validate_frontmatter.py` |
-| Validate heading hierarchy | `scripts/validate_headers.py` |
-| Validate links and fragments | `scripts/validate_links.py` |
-| Generate or regenerate a frontmatter index | `scripts/generate_index.py` |
-| Apply an explicit Markdown size guard | `scripts/markdown_size_guard.py` |
+| Need | Bundled utility | Invocation |
+| --- | --- | --- |
+| Check declared dependencies | `scripts/check_dependencies.py` | no arguments |
+| Format Markdown | `scripts/format_markdown.py` | Markdown file paths |
+| Validate YAML frontmatter | `scripts/validate_frontmatter.py` | file paths; use `--help` for schema options |
+| Validate heading hierarchy | `scripts/validate_headers.py` | Markdown file paths |
+| Validate links and fragments | `scripts/validate_links.py` | Markdown file paths |
+| Generate or regenerate a frontmatter index | `scripts/generate_index.py` | target directory; use `--help` for output and validation options |
 
-Run the selected utility with `--help` when its arguments are not already established by the target repository or task. Do not load a second routing layer just to discover these operations.
+Do not load a second routing layer just to discover these operations.
 
 ## Index Discipline
 
