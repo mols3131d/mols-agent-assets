@@ -1,6 +1,7 @@
 {
-	"recommendations": [
-		"rvben.rumdl",
-		"ms-vscode.vscode-chat-customizations-evaluations"
-	]
+  "recommendations": [
+    "editorconfig.editorconfig",
+    "rvben.rumdl",
+    "ms-vscode.vscode-chat-customizations-evaluations"
+  ]
 }
