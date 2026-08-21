@@ -26,16 +26,16 @@ Role은 자산 안에 어떤 종류의 문장이 들어 있는지가 아니라 *
 
 역할은 닫힌 taxonomy가 아니라 **조합을 이해하기 위한 대표적인 의미 단위**입니다.
 
-| Role | Typical responsibility |
-| --- | --- |
-| Knowledge | 작업을 이해하거나 판단하는 데 필요한 지식, 맥락, 원칙, reference |
-| Workflow | 목표를 달성하기 위한 절차나 의사결정 흐름 |
-| Constraint / Control | 범위, 권한, invariant, guardrail처럼 행동을 제한하거나 조정하는 의미 |
-| Evaluation | 완료, 품질, acceptance, validation 같은 판단 기준 |
+| Role | Owns | Useful composition boundary |
+| --- | --- | --- |
+| Knowledge | 지식, 맥락, 원칙, reference | 언제 관련되고 어떤 판단 재료를 제공하는가 |
+| Workflow | 절차나 의사결정 흐름 | 어떤 목표를 받고 어떤 결과나 handoff를 만드는가 |
+| Constraint / Control | 범위, 권한, invariant, guardrail | 언제 적용되고 무엇을 제한하거나 조정하는가 |
+| Evaluation | 완료, 품질, acceptance, validation 기준 | 무엇을 어떤 기준으로 판단하는가 |
 
 역할의 경계는 내용의 주제만으로 정하지 않습니다. 같은 원칙이나 문장도 판단 재료로 제공되면 Knowledge에 가깝고, 적용되는 행동 경계를 소유하면 Constraint에 가까울 수 있습니다.
 
-필요하면 다른 역할을 추가하거나 위 역할을 더 넓게 해석할 수 있습니다. 모든 자산을 반드시 하나의 role로 분류할 필요도 없습니다.
+필요하면 다른 역할을 추가하거나 위 역할을 더 넓게 해석할 수 있습니다. 모든 자산을 반드시 하나의 role로 분류하거나 공통 interface schema를 만들 필요도 없습니다.
 
 ## Composition
 
@@ -60,19 +60,6 @@ release workflow
 
 Knowledge는 여러 Workflow에서 재사용 가능한 판단 재료로 남기고, Constraint나 Evaluation은 필요한 단계에서 결합하는 구성이 흔히 유용합니다. 이는 고정 dependency rule이 아니라 책임과 재사용 경계를 이해하기 위한 대표적인 방향입니다.
 
-## Module Boundaries
-
-자산을 모듈처럼 조합하려면 형식적인 interface보다 **무엇을 기대하고 무엇을 제공하는지**가 이해 가능해야 합니다.
-
-예를 들어 다음 정도의 semantic boundary가 도움이 될 수 있습니다.
-
-- Knowledge — 언제 관련되고 어떤 판단 재료를 제공하는가
-- Workflow — 어떤 목표를 받고 어떤 결과나 handoff를 만드는가
-- Constraint / Control — 언제 적용되고 무엇을 제한하거나 조정하는가
-- Evaluation — 무엇을 어떤 기준으로 판단하는가
-
-이를 별도 schema나 공통 field로 만들 필요는 없습니다. 자연어 책임과 입력·출력 관계가 충분히 명확하다면 그것으로도 조합 가능한 경계가 될 수 있습니다.
-
 ## Conditional Use
 
 의미 역할을 분리하면 **필요한 자산만 필요한 상황에 결합**하기 쉬워집니다.
@@ -94,21 +81,15 @@ if repository mutation is needed
 
 실제 discovery와 loading 방식은 metadata, index, entrypoint, Skill routing 등 환경에 따라 달라질 수 있습니다. 필요한 context를 언제 로드할지는 [Progressive Context Routing](progressive-context-routing.md) 같은 별도 패턴과 조합할 수 있습니다.
 
-## Granularity
+## Granularity and Representation
 
-Semantic role은 자산을 무조건 작게 쪼개기 위한 규칙이 아닙니다.
+Semantic role은 자산을 무조건 작게 쪼개거나 새 schema로 표현하기 위한 규칙이 아닙니다.
 
 하나의 자산이 여러 책임을 자연스럽게 함께 소유할 수도 있습니다. 다만 서로 독립적으로 재사용하거나 조건부로 로드할 가치가 있는 책임이 반복해서 섞인다면 분리를 고려할 수 있습니다.
 
-예를 들어 여러 Workflow 안에 같은 domain 지식이 반복된다면 그 지식을 별도 Knowledge asset으로 두는 편이 재사용과 context locality에 도움이 될 수 있습니다.
+예를 들어 여러 Workflow 안에 같은 domain 지식이 반복된다면 별도 Knowledge asset으로 두는 편이 재사용과 context locality에 도움이 될 수 있습니다. 반대로 한 번만 쓰이는 짧은 지식을 분리해 dependency만 늘릴 필요는 없습니다.
 
-반대로 한 번만 쓰이는 짧은 지식을 별도 asset으로 분리해 dependency만 늘릴 필요는 없습니다.
-
-## Representation
-
-Semantic role을 별도 schema로 표현할 필요는 없습니다.
-
-필요하다면 directory, filename, frontmatter, metadata, routing index, catalog 등으로 드러낼 수 있고, 구조 없이 자산의 책임만 명확히 해도 됩니다.
+필요하다면 role을 directory, filename, frontmatter, metadata, routing index, catalog 등으로 드러낼 수 있고, 구조 없이 자산의 책임만 명확히 해도 됩니다.
 
 중요한 것은 저장 형식을 통일하는 것이 아니라 **무엇을 재사용하고 무엇이 무엇을 조합하는지 이해하기 쉬워지는가**입니다.
 
