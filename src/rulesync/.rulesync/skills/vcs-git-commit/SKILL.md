@@ -1,83 +1,88 @@
 ---
 name: vcs-git-commit
-description: >
-  USE WHEN: detecting commit conventions, staging files, generating commit messages, performing git commits, or briefing commit results (e.g. natural language requests like "run commit", "git commit", "run commit", "create commit messages", "커밋해줘", "깃 메시지 만들어줘").
-  EXCLUDES: pushing to remote repos, merging branches, creating pull requests, resolving merge conflicts, running git commit -a, or performing commits in other VCS like jj (Jujutsu).
+description: >-
+  Prepare or create Git commits from an existing Git worktree. Use when the task is
+  to inspect commit conventions, select or stage intended changes, write a commit
+  message, execute git commit, or report the result. Do not use for push, pull
+  requests, merge, conflict resolution, branch management, history rewriting, or
+  non-Git version control.
 ---
 
-# Git Commit Skill
+# Git Commit
 
-End-to-end git commit workflow: convention discovery, staging, message generation, committing, and briefing.
+Commit only the intended work and leave unrelated worktree state untouched.
 
-## Context
+# Contract
 
-### Variables
+- Treat explicit user intent and applicable repository guidance as authority for the
+  commit boundary and message convention.
+- Inspect the actual worktree and index before any mutation. Do not infer commit
+  contents from conversation context alone.
+- Stage and commit only the intended change set. Preserve unrelated staged,
+  unstaged, and untracked work.
+- Derive the commit message from the staged diff, not from unstaged changes or a
+  generic task summary.
+- Use non-destructive Git operations and keep normal repository hooks active.
+- Do not claim success until the resulting commit and remaining worktree state have
+  been checked.
 
-- `git_status`: Modified, untracked, and staged file status.
-- `git_log`: Recent commit history (`git log -n 20 --oneline`).
-- `commit_convention`: Git message convention template file (`.gitmessage`).
+# Resolve
 
-### Parameters
+1. Confirm the target is a Git repository and identify the current worktree state.
+1. Inspect `git status --short` and the staged or unstaged diffs needed to understand
+   the intended change set.
+1. Load applicable repository instructions and commit-message requirements. Prefer,
+   in order: explicit user instruction, repository-defined guidance or configured
+   commit template, then recent commit history as supporting evidence. Do not infer
+   a strict convention from inconsistent history.
+1. Determine the commit boundary before staging. If already-staged content contains
+   unrelated or ambiguous work, stop before committing rather than silently bundling
+   it.
+1. If repository policy forbids committing on the current branch, hand off branch
+   preparation before creating the commit.
+1. If the user only requests a commit message, inspect enough evidence to draft it
+   but do not mutate the index or repository.
 
-- `staging_mode`: Selective logical staging (default) vs all changes.
-- `commit_mode`: Execute commit (default) vs generate message only.
-- `briefing_format`: Chat response summary (default) vs briefing document file.
-- `execution_mode`: Stop and brief on hook failure (default) vs auto-fix or delegate.
+# Stage
 
-### Arguments
+- Prefer exact paths such as `git add -- <paths>` and deliberate hunk selection when
+  the runtime can perform partial staging safely.
+- Never use `git add -A`, `git add .`, `git add --all`, or `git commit -a` as a
+  shortcut for deciding scope.
+- Do not reset, discard, or unstage pre-existing work merely to simplify the commit
+  workflow.
+- When the intended work clearly requires multiple independent commits, stage and
+  commit one coherent unit at a time. Do not split changes merely to satisfy an
+  arbitrary preferred shape.
 
-CLI flags and natural language requests map to `Parameters` as follows:
+# Message
 
-- `--all`: Sets `staging_mode = all`
-- `--message-only`: Sets `commit_mode = message_only`
-- `--doc`: Sets `briefing_format = document`
-- `--autopilot`: Sets `execution_mode = autopilot`
+- Base the message on the final staged diff and the resolved repository convention.
+- Use a user-supplied message when it accurately represents the staged diff and does
+  not violate an applicable repository requirement.
+- If no repository convention is established, use a concise imperative summary and
+  add a body only when non-obvious rationale is useful.
+- Do not invent scopes, issue references, breaking-change markers, co-authors,
+  attribution, or other metadata not supported by the change or repository policy.
 
-## Workflow
+# Commit
 
-### Step 1: Convention Discovery
+1. Re-read the staged diff before committing and stop if it is empty or outside the
+   resolved boundary.
+1. Run a normal `git commit` with the resolved message and repository hooks enabled.
+1. If a hook or commit command fails, preserve the current state and report the
+   relevant failure. Do not bypass hooks or start editing product content as part of
+   this Skill. A requested fix is a separate task capability.
+1. After success, verify the new commit and inspect `git status --short` so remaining
+   changes are not mistaken for committed work.
+1. Report the commit identifier and subject plus any meaningful remaining worktree
+   state.
 
-1. **Git Template**: Check `.gitmessage`.
-1. **Git History**: Inspect `git log -n 20 --oneline` for language, prefix patterns, casing, and issue refs.
-1. **Fallback**: Read [references/default-gitmessage.md](references/default-gitmessage.md).
+# Boundary
 
-### Step 2: Staging
-
-- **Default**: Group files by domain or work unit and stage selectively (`git add <files>`).
-- **Explicit Request (`--all`)**: Stage all changes (`git add -A`).
-- **Restriction**: Never use `git commit -a`.
-
-### Step 3: Commit Message Generation
-
-- Format commit message applying Step 1 rules.
-- **Message-Only Request (`--message-only`)**: Present formatted message in code block and stop workflow (skip Step 4 Commit Execution).
-
-### Step 4: Commit Execution
-
-- Execute `git commit` with the formatted message from Step 3.
-- **Hook Failure Handling**:
-  - **Default**: Stop execution immediately and brief user with error logs.
-  - **Autopilot (`--autopilot`)**: Self-fix or delegate to subagents before re-committing.
-
-### Step 5: Briefing
-
-- **Default**: Provide a concise summary in the chat response.
-- **Explicit Request (`--doc`)**: Write a formal briefing document.
-
-## When to Stop
-
-Stop execution immediately and report to the user on:
-
-- 2 consecutive failed retries on the same command or hook fix.
-- Command or pre-commit hook hangs and timeouts.
-- Unresolved merge conflicts or ambiguous staging choices.
-- Unauthorized destructive operations or resets.
-
-## Boundaries
-
-- NEVER run `git push` (especially `--force`).
-- NEVER bypass hooks (`--no-verify` / `-n`).
-- NEVER overwrite history (`--amend`).
-- NEVER auto-stage all via `git commit -a`.
-- NEVER create empty commits (`--allow-empty`).
-- NEVER spoof commit metadata (`--author`, `--date`).
+- No push, pull request, merge, rebase, branch creation, conflict resolution, stash,
+  reset, restore, or other history/worktree management outside the commit itself.
+- No `--amend`, `--no-verify`, `--allow-empty`, forced metadata, or authorship/date
+  spoofing.
+- Do not edit source or documentation solely to make a commit or hook succeed.
+- Do not operate on other version-control systems such as Jujutsu.
