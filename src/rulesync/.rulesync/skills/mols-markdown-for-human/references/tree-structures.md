@@ -20,5 +20,5 @@ pipeline/
 - 실제 hierarchy와 이름을 보기 좋게 만들려고 재배치하지 않는다.
 - 긴 설명은 tree 밖의 list나 table로 분리한다.
 
-여러 parent를 가진 DAG, dependency와 runtime flow는 `mols-mermaid-diagram`을 사용한다.
+여러 parent를 가진 DAG, dependency와 runtime flow는 이 표현의 범위를 벗어난다. 대안 선택은 `SKILL.md`의 `Visual Routing`을 따른다.
 항목별 속성 비교는 table을 사용한다.
