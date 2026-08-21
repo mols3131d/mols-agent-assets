@@ -10,7 +10,7 @@ description: >-
 
 # News Table
 
-This Skill owns **news selection, deduplication, ranking, and presentation**. The active research capability owns evidence acquisition and source verification.
+This Skill owns **news curation and presentation**, including topic-level selection, deduplication, ranking, count, and cadence interpretation. The active research capability owns evidence acquisition and source verification; scheduling or automation capability owns repeated execution.
 
 # Arguments
 
