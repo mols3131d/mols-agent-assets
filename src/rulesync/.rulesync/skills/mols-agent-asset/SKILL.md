@@ -106,6 +106,9 @@ inferring success.
 
 - Do not discover or install Skills; use the dedicated discovery or installation
   capability.
+- Prompt, Hook, and MCP authoring are outside this Skill's maintained type-specific
+  scope. Do not add dedicated references or workflows for them without repeated
+  local need and an explicit scope decision.
 - Do not create a local schema, project profile, host validator, packaging
   framework, or asset taxonomy merely to standardize agent assets.
 - Do not normalize unrelated assets while changing one target.
