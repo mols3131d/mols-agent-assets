@@ -21,7 +21,8 @@ agentsskills:
 ## Scope
 
 이 skill은 BLUF, heading, prose, list, table, semantic emoji, callout, footnote, text bar와 단일 부모 계층의 tree structure를 담당한다.
-복잡한 관계·흐름·상태, 정량 chart와 개발 dashboard는 독립 skill의 책임이며 선택 기준은 `Visual Routing`을 따른다.
+복잡한 관계·흐름·상태, 정량 시각화와 개발 dashboard는 독립 skill의 책임이며 선택 기준은 `Visual Routing`을 따른다.
+독립 skill의 세부 문법과 규칙은 이 package에 복제하지 않는다.
 
 ## References
 
