@@ -20,10 +20,8 @@ Fallback target layout:
 ```
 
 `ROUTE.md` is optional. Reuse another established entrypoint or link route files directly
-when that is simpler.
-
-Do not create this layout merely for uniformity. A small repository may need only an inline
-router, one index, or no separate route asset at all.
+when that is simpler. Do not create this layout merely for uniformity; a small repository
+may need only an inline router, one index, or no separate route asset at all.
 
 ## ROUTE.md
 
