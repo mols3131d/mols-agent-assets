@@ -9,8 +9,8 @@ description: >-
 
 # Mols Chatbot Bootstrap
 
-Establish or repair the smallest repository-local compatibility harness that lets a chat
-runtime reach the repository guidance and Agent Assets it cannot discover natively.
+Establish or repair the smallest compatibility path from a chat runtime's guaranteed
+instruction surface into repository guidance and Agent Assets it cannot discover natively.
 
 # Lifecycle
 
@@ -24,8 +24,10 @@ This is a low-frequency provisioning Skill, not baseline operational context.
   load → bootstrap or repair → release from active context.
 - Persist or preinstall this Skill only when repeated access is explicitly useful in the
   target runtime or across repositories.
-- After bootstrap, repository-local compatibility assets own the resulting harness. Normal
-  repository work must not depend on this Skill remaining loaded or installed.
+- After bootstrap, the durable runtime-side pointer when needed and repository-local
+  entry/router sustain the compatibility path; canonical repository assets retain their own
+  authority. Normal repository work must not depend on this Skill remaining loaded or
+  installed.
 - Reinvoke it when the compatibility harness becomes missing or stale, or when runtime or
   repository architecture materially changes.
 
