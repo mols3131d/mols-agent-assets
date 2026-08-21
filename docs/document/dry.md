@@ -31,7 +31,7 @@
 각 `docs/<asset-type>/<owner>/**`는 하나의 독립적인 documentation domain입니다. `<owner>`는 하나의 asset 또는 family일 수 있으며 `development`, `document`, `references`는 asset type이 아니라 reserved documentation namespace입니다.
 
 - 같은 capsule 내부의 중복은 DRY 위반입니다.
-- asset-specific capsule과 project documentation, references 또는 다른 capsule 사이의 overlap은 portability와 self-containment를 위해 허용합니다.
+- capsule과 project documentation, references 또는 다른 capsule 사이의 overlap은 portability와 self-containment를 위해 허용합니다.
 - family가 공유하는 durable knowledge는 family capsule이 소유하고 member-specific capsule에 반복하지 않습니다.
 - member-specific intent, recovery 또는 invariant는 해당 asset capsule이 소유합니다. Family capsule이 모든 member 문서를 흡수하는 상위 문서가 되지 않습니다.
 
