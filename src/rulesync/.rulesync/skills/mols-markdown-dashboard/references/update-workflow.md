@@ -19,4 +19,4 @@ Plan, change, task, design 같은 work artifact는 host policy가 authoritative�
 5. risks와 references에서 stale 항목을 제거하거나 갱신한다.
 6. Markdown을 다시 렌더링하고 stale content가 남지 않았는지 확인한다.
 
-핵심 표의 수동 Markdown 수정은 재렌더링 시 보존된다고 가정하지 않는다.
+Renderer-managed Markdown의 직접 수정은 다음 render에서 보존된다고 가정하지 않는다. 추가 visual이나 custom section을 dashboard projection 안에 유지해야 하면 selected template이 소유하게 하고, 별도 artifact로 충분하면 dashboard에서는 reference만 둔다.
