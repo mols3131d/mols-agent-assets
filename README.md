@@ -29,6 +29,7 @@
 
 ## Navigation
 
+- Agent Asset design → [Design Principles](docs/references/common/design-principles.md)
 - Agent-facing repository rules → [`AGENTS.md`](AGENTS.md)
 - Repository development → [Development](docs/development/README.md)
 - Documentation → [Documentation](docs/document/README.md)
