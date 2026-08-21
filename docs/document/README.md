@@ -1,3 +1,7 @@
+---
+description: 문서 배치, ownership, DRY, knowledge lifecycle, asset capsule 규칙이 필요할 때 해당 documentation policy를 찾는 데 사용합니다.
+---
+
 # Documentation
 
 이 디렉터리는 **이 repository의 문서 규칙과 관행**을 소유합니다.
