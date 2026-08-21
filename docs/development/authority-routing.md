@@ -45,7 +45,7 @@ Authored source의 위치는 **재사용 library source인지, 이 repository가
 - Generated projection은 authored source와 다릅니다. Generated output을 별도 canonical source로 취급하지 않습니다.
 - 동일한 semantic asset에 Rulesync source와 vendor-native source를 동시에 canonical authority로 두지 않습니다.
 
-Rulesync와 vendor-native source 중 어느 쪽을 선택할지는 portability 자체보다 **asset이 어떤 contract를 source of truth로 삼는지**에 따라 정합니다. Cross-target projection을 위한 Rulesync representation이 본체라면 Rulesync source를, vendor 고유 capability·packaging·behavior를 native contract 그대로 보존하는 것이 본체라면 vendor-native source를 사용할 수 있습니다.
+Rulesync와 vendor-native source 중 어느 쪽을 선택할지는 portability나 기능 부족 여부가 아니라 **어느 representation을 그 asset의 canonical authored source로 관리할지**에 따라 정합니다. Rulesync representation을 canonical source로 선택하면 Rulesync source를, vendor의 native representation 자체를 canonical source로 선택하면 vendor-native source를 사용합니다.
 
 구체적인 내부 layout과 schema는 local superset을 만들지 않고 해당 framework 또는 vendor의 current official contract를 따릅니다.
 
