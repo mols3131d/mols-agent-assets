@@ -1,3 +1,7 @@
+---
+description: repository 개발 작업에서 change workflow, authority routing, testing 중 적용할 local policy를 찾을 때 사용합니다.
+---
+
 # Development
 
 이 디렉터리는 **이 repository의 개발 규칙과 관행**을 소유합니다.
