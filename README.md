@@ -1,14 +1,10 @@
 # mols-agent-assets
 
-반복해서 사용할 AI Agent Asset과 관련 설계 지식을 개발·관리·고도화하는 **개인 upstream library**입니다.
-
-이 저장소는 특정 runtime 하나의 설정 모음이 아닙니다. 여러 repository와 runtime에서 다시 쓸 가치가 있는 source와 knowledge를 한 곳에 축적하고, consumer가 필요에 맞게 가져가거나 조정할 수 있게 하는 것이 목적입니다.
+반복해서 사용할 AI Agent Asset과 관련 설계 지식을 개발·관리·고도화하는 **개인 library**이자, 이를 사용하는 repository와 runtime의 **upstream source**입니다.
 
 ## Purpose
 
-- 반복 사용 가치가 있는 Agent Asset과 관련 설계 지식을 한 곳에서 지속적으로 관리하고 개선합니다.
-- 자산이 특정 project, vendor, target 또는 맥락에서 시작됐다는 이유만으로 library 밖으로 분류하지 않습니다. 다른 곳에서도 다시 사용할 가치가 있으면 library source로 관리할 수 있습니다.
-- Consumer repository는 library source를 그대로 사용하거나 자신의 target, project authority와 constraints에 맞게 조정합니다.
+반복해서 사용할 가치가 있는 Agent Asset과 설계 지식을 project별 일회성 설정으로 흩어두지 않고 하나의 library에서 지속적으로 관리·개선합니다. 자산의 출발점이 특정 project, vendor, target 또는 context여도 재사용 가치가 있으면 함께 관리할 수 있으며, consumer는 원본을 그대로 사용하거나 자신의 환경에 맞게 조정합니다.
 
 ## Vision
 
