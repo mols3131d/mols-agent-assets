@@ -40,11 +40,22 @@ def test_asset_capsules_keep_relative_links_inside_capsule() -> None:
                 )
 
 
-def test_skill_doc_capsules_have_corresponding_skill_source() -> None:
+def test_skill_doc_capsules_have_skill_or_family_owner() -> None:
     skill_docs = DOCS / "skills"
+    skill_names = {
+        path.name for path in SKILLS.iterdir() if (path / "SKILL.md").is_file()
+    }
+
     for capsule in skill_docs.iterdir():
-        if capsule.is_dir():
-            assert (SKILLS / capsule.name / "SKILL.md").is_file(), capsule.name
+        if not capsule.is_dir() or (SKILLS / capsule.name / "SKILL.md").is_file():
+            continue
+
+        readme = capsule / "README.md"
+        assert readme.is_file(), f"family docs require README.md: {capsule.name}"
+        body = readme.read_text(encoding="utf-8")
+        assert any(name in body for name in skill_names), (
+            f"family docs must name at least one current Skill: {capsule.name}"
+        )
 
 
 def test_skill_packages_exclude_repository_verification_surfaces() -> None:
