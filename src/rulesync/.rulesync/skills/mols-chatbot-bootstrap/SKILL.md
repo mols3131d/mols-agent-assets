@@ -31,7 +31,8 @@ This is a low-frequency provisioning Skill, not baseline operational context.
 
 # Contract
 
-- Inspect the target before changing it.
+- Inspect the target before changing it. A review-only request stays read-only, and an
+  already-sufficient harness is a valid no-op result.
 - Reuse native runtime behavior and established repository mechanisms before adding a
   compatibility layer.
 - Recover only behavior the target chat runtime is actually missing.
@@ -44,23 +45,6 @@ This is a low-frequency provisioning Skill, not baseline operational context.
   explicitly supersedes them.
 - Do not create route files, generators, validators, or CI merely because this Skill or a
   bundled resource makes them available.
-
-# Resolve
-
-Infer only what can change the result from caller intent and observable target state:
-
-1. the repository or workspace being adapted;
-1. which chat-runtime discovery behavior is missing or stale;
-1. the existing authoritative guidance and Agent Asset surfaces;
-1. the smallest compatibility surface that can bridge the gap;
-1. the validation needed for the state actually changed.
-
-A review-only request stays read-only. If the existing harness already satisfies the
-requested compatibility, report that state rather than rewriting it.
-
-Do not expose an internal mode or option matrix when the request and target state already
-determine the next action. If a consequential target choice remains genuinely ambiguous,
-resolve it from target authority or surface only that decision.
 
 # CHATBOT.md
 
@@ -79,16 +63,16 @@ Do not copy project policy, Skill bodies, Rule bodies, catalogs, or static path 
 
 # Workflow
 
-1. Inspect the target runtime assumptions, repository guidance, existing entrypoints,
-   routing surfaces, generators, validators, and CI only as far as they can affect the
-   compatibility decision.
+1. Inspect caller intent and the target runtime/repository state only as far as they can
+   affect the compatibility decision: existing guidance, entrypoints, routing surfaces,
+   generators, validators, and CI.
 1. Determine the exact missing or stale compatibility behavior. If native or existing
    mechanisms already cover it, reuse them and stop adding structure.
 1. Establish or repair the smallest entrypoint and routing surface that closes that gap.
    Use the target's established representation when one exists.
 1. When no established route convention exists and a separate route surface is justified,
-   use [Route convention](references/routes.md) as the mols fallback rather than as a
-   universal schema.
+   use [Fallback route convention](references/routes.md) as the mols fallback rather than
+   as a universal schema.
 1. Use generation only when deterministic regeneration or drift checking provides concrete
    value. Prefer target-native or existing tooling; otherwise use the bundled reference
    generator only when its assumptions fit or a small adaptation is justified.
@@ -103,8 +87,8 @@ Do not copy project policy, Skill bodies, Rule bodies, catalogs, or static path 
 
 Load only the resource needed for the current decision:
 
-- [Route convention](references/routes.md) — when a separate routing surface is needed and
-  the target has no stronger established representation.
+- [Fallback route convention](references/routes.md) — when a separate routing surface is
+  needed and the target has no stronger established representation.
 - [Generation and tuning](references/tuning.md) — when generation, regeneration, semantic
   route tuning, or drift validation is materially justified.
 - `scripts/generate_routes.py` — when a compatible deterministic baseline generator or
