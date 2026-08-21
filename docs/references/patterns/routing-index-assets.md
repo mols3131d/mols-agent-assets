@@ -39,6 +39,8 @@ route/
 
 이 예시는 조합하거나 단순화할 수 있으며 특정 형식을 요구하지 않습니다.
 
+`route/`처럼 비표준 repository-local surface를 별도로 두고 그 의미나 사용법이 자명하지 않다면 [Nonstandard Directory Guide](nonstandard-directory-guide.md)를 함께 참고할 수 있습니다.
+
 ## Automation
 
 가능하면 routing/index 정보를 수동으로 중복 작성하기보다 이미 존재하는 metadata를 활용한 자동화를 권장합니다.
