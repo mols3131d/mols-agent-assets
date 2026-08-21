@@ -15,6 +15,12 @@ Dashboard Skill은 **visual이 필요한지와 어떤 reader question을 보완�
 | 시간이 지나며 나아졌나? | trend visual을 고려 | 비교 가능한 여러 snapshot이 있을 때 |
 | 어디서 막히는가? | dependency/state visual을 고려 | 관계가 표보다 중요할 때 |
 
+## Projection Boundary
+
+Bundled renderer가 관리하는 `dashboard.md`에 visual을 포함해야 하면 **선택된 template이 그 visual을 소유**하게 한다. Template에 없는 visual을 렌더 결과에 수동으로 붙이면 다음 render에서 보존된다고 가정하지 않으며 `validate --markdown`에서는 drift로 취급한다.
+
+Visual이 dashboard projection 자체의 일부일 필요가 없으면 별도 adjacent artifact로 두고 dashboard에서 reference하는 편이 더 단순하다. 이를 위해 core YAML schema에 visual field를 자동으로 추가하지 않는다.
+
 ## Default Exclusions
 
 - 원형·도넛 차트
