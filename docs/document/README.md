@@ -10,7 +10,7 @@ description: 문서 배치, ownership, DRY, frontmatter, knowledge lifecycle, as
 
 - [Ownership](ownership.md) — repository와 directory documentation의 책임 경계
 - [DRY Boundaries](dry.md) — project docs, references와 asset capsule의 중복 허용 경계
-- [Frontmatter](frontmatter.md) — 문서 metadata field와 routing-oriented `description` 작성 규칙
+- [Frontmatter](frontmatter.md) — frontmatter authority와 Front Matter CMS reference routing
 - [Knowledge Lifecycle](knowledge-lifecycle.md) — durable knowledge, inbox, archive와 Git history의 역할
 - [Asset Capsules](asset-capsules.md) — portable asset documentation contract
 
