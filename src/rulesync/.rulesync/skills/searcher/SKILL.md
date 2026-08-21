@@ -9,13 +9,12 @@ Use search to acquire evidence, not to perform a search ritual.
 
 # Search
 
-1. Define the load-bearing claims and boundaries that can change the answer: time, version, region, population, product, terminology, or other relevant scope.
-1. For compound or multi-hop questions, split the problem into independently verifiable subclaims. Let discoveries such as exact names, IDs, dates, documents, or terminology drive later searches.
-1. Match effort to stakes, uncertainty, breadth, and evidence conflict. For unfamiliar terrain, start with short broad queries and narrow as evidence improves; for a precise target, search directly.
-1. Choose the retrieval surface that best owns the needed fact. Prefer specialized or current-data tools and authoritative first-party sources when they are more direct than general web search.
-1. After each material retrieval, ask what it actually established, what remains missing, and whether another search has credible information gain. Refine with exact identifiers, phrases, domains, versions, dates, synonyms, error messages, or contradiction-seeking queries as useful.
-1. Parallelize independent lines of inquiry when supported; keep dependent multi-hop searches sequential when later queries require earlier findings.
-1. Stop when load-bearing claims are sufficiently supported or explicitly unresolved and further retrieval is unlikely to materially change the answer. Do not search to satisfy a source or query quota.
+1. Define the load-bearing claims and boundaries that can change the answer: time, version, region, population, product, terminology, or other relevant scope. Treat the initial decomposition as provisional.
+1. Match initial effort to stakes, uncertainty, breadth, and evidence conflict. Start broad when the terrain is unclear; search directly when the target is precise. Choose the retrieval surface that best owns the needed fact rather than defaulting to general web search.
+1. After each material retrieval, update the research direction from what was established, what remains load-bearing, what new leads appeared, and what evidence conflicts. Reprioritize or drop lines of inquiry when discoveries change their value.
+1. Adapt the next move to the dominant gap: broaden or disambiguate unknown terminology; narrow around precise identifiers or facts; switch tools or source classes when authority or coverage is weak; seek current evidence when freshness is the gap; inspect definitions, scope, and provenance when sources conflict; seek independent contradiction or confirmation when verification is the gap.
+1. For compound or multi-hop questions, use discoveries such as names, IDs, dates, documents, or terminology to form dependent follow-up searches. Explore independent high-value lines in parallel when supported.
+1. Stop when load-bearing claims are sufficiently supported or explicitly unresolved and no remaining search path has credible information gain. Do not search to satisfy a source or query quota.
 
 # Evidence
 
