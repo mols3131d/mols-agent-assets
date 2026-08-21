@@ -35,7 +35,13 @@ This is a low-frequency provisioning Skill, not baseline operational context.
   already-sufficient harness is a valid no-op result.
 - Reuse native runtime behavior and established repository mechanisms before adding a
   compatibility layer.
-- Recover only behavior the target chat runtime is actually missing.
+- Recover only behavior the target chat runtime is actually missing. Treat missing
+  `AGENTS.md`, Skill, and Rule discovery responsibilities independently; partial native
+  support is a valid target state.
+- When the runtime does not natively discover the repository entrypoint, connect a
+  guaranteed runtime-side instruction surface to that entrypoint. If that surface cannot
+  be changed or verified with current authority, return the exact required handoff and do
+  not claim end-to-end compatibility is complete.
 - Keep `AGENTS.md`, Skills, Rules, and other canonical assets authoritative; compatibility
   entrypoints and route metadata only connect the runtime to those owners.
 - Preserve established target conventions. Do not impose one route layout, filename,
@@ -48,8 +54,8 @@ This is a low-frequency provisioning Skill, not baseline operational context.
 
 # CHATBOT.md
 
-For mols `CHATBOT.md` compatibility, keep the root file minimal and treat it as a bootstrap
-pointer, not another policy owner.
+For mols `CHATBOT.md` compatibility, keep one root `CHATBOT.md` and treat it as a minimal
+repository entry/router, not another policy owner.
 
 It should connect the runtime to the smallest useful existing or repository-local routing
 surface needed to recover missing behavior such as:
@@ -64,12 +70,17 @@ Do not copy project policy, Skill bodies, Rule bodies, catalogs, or static path 
 # Workflow
 
 1. Inspect caller intent and the target runtime/repository state only as far as they can
-   affect the compatibility decision: existing guidance, entrypoints, routing surfaces,
-   generators, validators, and CI.
+   affect the compatibility decision: native discovery, guaranteed runtime instruction
+   surfaces, existing guidance, entrypoints, routing surfaces, generators, validators, and
+   CI.
 1. Determine the exact missing or stale compatibility behavior. If native or existing
    mechanisms already cover it, reuse them and stop adding structure.
-1. Establish or repair the smallest entrypoint and routing surface that closes that gap.
-   Use the target's established representation when one exists.
+1. Establish or repair the smallest repository-side entrypoint and routing surface that
+   closes the repository gap. Use the target's established representation when one exists.
+1. If the runtime does not natively discover that entrypoint, establish the smallest
+   runtime-side bootstrap that explicitly points to it and requires loading its routing
+   guidance. When the runtime-side surface is outside current write authority, provide the
+   exact handoff instead of pretending the first hop exists.
 1. When no established route convention exists and a separate route surface is justified,
    use [Fallback route convention](references/routes.md) as the mols fallback rather than
    as a universal schema.
@@ -103,14 +114,20 @@ installation side effects or universal target assets.
 
 Verify only claims relevant to the resulting harness:
 
-- the runtime has a stable first hop into repository context when one is needed;
-- routing is actionable without duplicating canonical policy or asset bodies;
+- when native discovery is insufficient, a guaranteed runtime-side bootstrap identifies the
+  repository entrypoint and its loading expectation;
+- the repository entrypoint is stable and actionable, and routing can reach the required
+  repository guidance and Agent Assets without duplicating their bodies;
+- missing `AGENTS.md`, Skill, and Rule discovery responsibilities are recovered only where
+  the runtime lacks them;
 - Skill selection remains semantic and Rule applicability preserves authoritative selector
   meaning;
 - any generated metadata is deterministic for the assumptions actually used;
 - validation checks factual drift without erasing approved semantic tuning;
 - target-specific paths, formats, permissions, and CI behavior came from observable target
   authority rather than assumption;
+- if the runtime-side first hop could not be established or observed, that limitation is
+  reported rather than counted as completed compatibility;
 - normal repository work no longer depends on this Skill being loaded or installed.
 
 Prefer the smallest valid result over a uniform repository layout.
@@ -122,5 +139,7 @@ Prefer the smallest valid result over a uniform repository layout.
   repository work.
 - It does not define a portable chatbot standard or guarantee automatic discovery of
   `CHATBOT.md` or any route path.
+- It does not grant authority to modify runtime-side project, system, workspace, plugin, or
+  harness configuration merely because such a bootstrap would complete the chain.
 - It does not justify a separate Skill for bootstrap, repair, review, generation, tuning,
   or validation merely because those workflow branches exist inside the same outcome.
