@@ -1,15 +1,15 @@
 ---
 name: mols-agent-asset
 description: >-
-  Create, modify, simplify, refactor, or adapt commonly used agent assets,
-  primarily Skills, Rules or scoped instructions, and agent or subagent
-  definitions. Use when authoring or changing agent-facing behavior, choosing or
-  preserving the right asset owner, resolving source and target authority, or
-  reducing duplicated or overgrown asset structure. For formal validation,
-  audit, readiness, stress testing, regression, or behavioral evaluation, use
-  mols-agent-asset-validator instead. Do not use for discovering, installing, or
-  invoking an unchanged Skill, ordinary product code, human-facing prose, prompt
-  writing, or hook and MCP setup.
+  Create, modify, simplify, refactor, or adapt agent Skills, Rules or scoped
+  instructions, and agent or subagent definitions. Use as the primary authoring
+  and improvement capability when changing agent-facing behavior, ownership,
+  activation, source or target authority, or duplicated or overgrown asset
+  structure. Use mols-agent-asset-validator when the primary task is formal
+  validation, audit, readiness, stress testing, regression, behavioral or
+  adversarial evaluation, or bounded correction driven by those findings. Do not
+  use for Skill discovery, installation, or invocation, ordinary product code,
+  human-facing prose, prompt writing, hook setup, or MCP setup.
 ---
 
 # Mols Agent Asset
