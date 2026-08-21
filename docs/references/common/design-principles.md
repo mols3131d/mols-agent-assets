@@ -35,7 +35,7 @@ Local rule이나 reference를 추가하기 전에 다음 중 하나인지 확인
 - "업계 상식"이라고 가정해 실제 target/version 차이나 중요한 local exception을 숨기지 않습니다.
 - YAGNI를 이유로 이미 존재하는 비가역적 위험이나 required guard를 방치하지 않습니다.
 - DRY 때문에 runtime 독립성을 깨거나 hidden dependency를 만들지 않습니다.
-- KISS를 이유로 필요한 validation, safety guard 또는 중요한 boundary를 제거하지 않습니다.
+- KISS를 이유로 서로 다른 책임을 합치거나 필요한 구조, validation, safety guard 또는 중요한 boundary를 제거하지 않습니다.
 - Progressive Disclosure로 detail을 분리해도 load condition과 critical gotcha는 발견 가능한 곳에 남깁니다.
 - Source만으로 복구하기 어려운 durable rationale과 invariant는 보존하고, 작업 로그와 재생성 가능한 상태는 Git history에 맡깁니다.
 
