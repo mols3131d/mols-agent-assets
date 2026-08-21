@@ -1,16 +1,17 @@
 # mols-markdown-maintenance Maintainer Docs
 
-`mols-markdown-maintenance` owns deterministic Markdown mechanics in the `mols-markdown` family.
+`mols-markdown-maintenance` owns deterministic Markdown maintenance selection and the small local delta not already provided by the selected Markdown backend.
 
 ## Invariants
 
+- Repository-native Markdown tooling and configuration win when they already own the requested behavior.
+- Standard formatting, heading checks, and link checks use rumdl directly instead of local wrapper scripts.
+- Custom runtime code is limited to frontmatter schema validation and frontmatter-driven index generation.
 - Deterministic validation or parsing is not replaced by an LLM fallback when that would change semantics.
 - Missing required tooling fails explicitly.
-- Repository-native commands and configuration win when they already own the target behavior.
 - Generated indexes remain projections and are regenerated from source Markdown/frontmatter.
-- Dependencies stay minimal and justified by deterministic behavior.
-- `SKILL.md` routes directly to bundled utilities; no workflow index is required.
+- Dependencies stay minimal and justified by local deterministic behavior.
 
 ## Maintenance
 
-Keep backend prose only for non-obvious invariants that cannot be recovered from the executable interface. Prefer deleting duplicated workflow instructions over adding another routing layer.
+Do not mirror rumdl's changing rule/configuration reference here. Keep only the ownership boundary and local invariants; consult current upstream authority when exact backend semantics matter.
