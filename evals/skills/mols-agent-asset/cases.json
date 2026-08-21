@@ -111,6 +111,33 @@
       ]
     },
     {
+      "id": "prompt-authoring-is-out-of-scope",
+      "mode": "negative",
+      "prompt": "VS Code에서 쓸 재사용 prompt 파일 하나 만들어줘.",
+      "assertions": [
+        "Does not claim prompt authoring as a maintained mols-agent-asset type",
+        "Does not add a prompt-specific reference or workflow to mols-agent-asset"
+      ]
+    },
+    {
+      "id": "hook-authoring-is-out-of-scope",
+      "mode": "negative",
+      "prompt": "에이전트 작업 전에 실행되는 hook 설정을 만들어줘.",
+      "assertions": [
+        "Does not claim Hook authoring as a maintained mols-agent-asset type",
+        "Does not add a Hook-specific reference or workflow to mols-agent-asset"
+      ]
+    },
+    {
+      "id": "mcp-authoring-is-out-of-scope",
+      "mode": "negative",
+      "prompt": "이 프로젝트용 MCP 설정을 작성해줘.",
+      "assertions": [
+        "Does not claim MCP authoring as a maintained mols-agent-asset type",
+        "Does not add an MCP-specific reference or workflow to mols-agent-asset"
+      ]
+    },
+    {
       "id": "human-prose-is-out-of-scope",
       "mode": "negative",
       "prompt": "README 문장을 더 읽기 좋게 다듬어줘.",
