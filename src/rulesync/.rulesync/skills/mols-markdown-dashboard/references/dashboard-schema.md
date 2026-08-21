@@ -8,7 +8,7 @@ version: 1
 dashboard:
   level: project | domain
   title: <string>
-  snapshot: <date, version, or revision>
+  snapshot: <date, version, or revision string>
   current_focus: <one concise sentence>
   include_total: true
 
@@ -59,6 +59,8 @@ progress:
 
 - 정의되지 않은 root, dashboard, item, progress, gap, risk 필드는 오류로 처리한다.
 - schema version이 지원 범위를 벗어나면 추측해 변환하지 않는다.
+- title, snapshot, current focus, item name, gap text, risk text와 reference 같은 text field는 YAML string이어야 한다.
+- date처럼 YAML parser가 다른 scalar type으로 해석할 수 있는 text는 따옴표로 명시한다.
 - title, snapshot, current focus, item name과 reference는 한 줄이어야 한다.
 - 표 셀의 pipe와 여러 줄 gap은 renderer가 안전하게 escape한다.
 
@@ -66,10 +68,12 @@ progress:
 
 - `implemented`는 implementation progress가 완료돼야 한다.
 - `implemented`에는 implementation gap이 없어야 한다.
-- `not_started`는 implementation completed가 `0`이어야 한다.
+- `not_started`와 `planned`는 implementation completed가 `0`이어야 한다.
+- `in_progress`는 implementation이 미완료여야 하며 실제 작업이 시작됐다면 completed가 `0`일 수도 있다.
 - `passing`은 verification progress가 완료돼야 한다.
 - `passing`에는 verification gap이 없어야 한다.
 - `unverified`는 verification completed가 `0`이어야 한다.
+- `partial`은 하나 이상의 current result와 하나 이상의 result 없는 Target이 있어야 한다.
 - progress는 `0 <= completed <= total`, `total > 0`이어야 한다.
 - item name은 dashboard 안에서 중복될 수 없다.
 
