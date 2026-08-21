@@ -43,8 +43,8 @@ agentsskills:
 
 ## Workflow
 
-1. 독자, 목적, 핵심 결론과 다음 행동 중 결과를 바꾸는 정보만 정한다. 필요한 배경과 reading surface 제약도 같은 기준으로 반영한다.
-1. 기존 문서라면 보존해야 할 사실, 결정, 관계, 식별자와 voice를 구분한다.
+1. 독자, 목적, 핵심 결론과 다음 행동은 필요한 만큼만 정한다. 배경과 reading surface 제약도 결과를 바꿀 때만 반영한다.
+1. 기존 문서라면 보존해야 할 사실, 결정, 순서, 관계, 식별자와 voice를 구분한다.
 1. 정보 구조에서 heading과 section을 도출한다.
 1. 가장 단순하고 빠르게 읽히는 표현을 선택하고 중복과 불필요한 형식을 제거한다.
 1. source와 rendered view에서 의미가 유지되는지 확인한다.
@@ -127,7 +127,7 @@ GitHub target에서는 `NOTE`, `TIP`, `IMPORTANT`, `WARNING`, `CAUTION`을 사�
 - 하나의 사실이나 규칙은 가장 적절한 한 곳에서만 설명한다.
 - 같은 내용을 heading, prose, table, callout과 visual에서 반복하지 않는다.
 - 겹치는 section을 통합하고 다른 위치에서는 링크나 짧은 참조를 사용한다.
-- 같은 개념에는 같은 용어를 사용한다. 사용자의 용어와 naming, 표준 domain term은 보존하고 독자에게 필요할 때만 설명하며 정확성을 낮추는 쉬운 표현으로 임의 치환하지 않는다.
+- 같은 개념에는 같은 용어를 사용한다. 사용자의 용어와 naming, 표준 domain term은 보존하고 독자에게 필요할 때만 설명한다.
 - 주체, 행동, 조건, 예외와 결과가 모호할 때는 이를 명시한다.
-- 사실, citation, quotation, identifier, 사용자 의도와 voice, 필요한 불확실성과 nuance를 보존한다. 원문에 없는 사실, 수치, 판단과 관계를 추가하지 않는다.
+- 사실, citation, quotation, identifier, 사용자 의도와 voice, 필요한 불확실성과 nuance를 보존하며 원문에 없는 사실, 수치, 판단과 관계를 추가하지 않는다.
 - 유용한 visual은 보존하고 예시를 복사하기보다 실제 정보 구조를 먼저 판단한다.
