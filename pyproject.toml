@@ -22,7 +22,7 @@ dev = [
 addopts = ["--import-mode=importlib"]
 pythonpath = [
   "src",
-  "src/rulesync/.rulesync/skills/mols-markdown-scripts/scripts",
+  "src/rulesync/.rulesync/skills/mols-markdown-maintenance/scripts",
 ]
 testpaths = ["tests"]
 
