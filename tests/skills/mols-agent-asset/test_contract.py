@@ -28,6 +28,7 @@ def test_authoring_skill_routes_only_supported_type_context() -> None:
     assert "(references/skill.md)" in body
     assert "(references/rule.md)" in body
     assert "mols-agent-asset-validator" in body
+    assert "validator-primary" in body
 
 
 def test_legacy_authoring_entrypoints_are_removed() -> None:
@@ -46,6 +47,7 @@ def test_eval_contract_exists_for_new_entrypoint() -> None:
         "rule-generated-projection",
         "install-is-not-authoring",
         "formal-validation-is-validator",
+        "validation-driven-fix-keeps-validator-primary",
         "prompt-authoring-is-out-of-scope",
         "hook-authoring-is-out-of-scope",
         "mcp-authoring-is-out-of-scope",
