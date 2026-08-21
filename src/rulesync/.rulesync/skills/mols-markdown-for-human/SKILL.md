@@ -17,8 +17,7 @@ agentsskills:
 독자가 핵심을 빠르게 파악하고 필요한 정보를 쉽게 다시 찾도록 만든다.
 사용자와 프로젝트의 명시적인 스타일 선호를 우선한다.
 
-사람 전용 문서뿐 아니라 사람이 읽고 유지보수하는 agent-facing Markdown에도 적용한다.
-이 경우 human-readable presentation을 담당하며 행동 계약, activation과 authority는 해당 자산의 owner가 소유한다.
+사람 전용 문서뿐 아니라 사람이 읽고 유지보수하는 agent-facing Markdown에도 적용하되, human-readable presentation만 담당한다. 행동 계약, activation과 authority는 해당 자산의 owner가 소유한다.
 
 ## Scope
 
@@ -44,12 +43,10 @@ agentsskills:
 
 ## Workflow
 
-1. 독자, 목적, 핵심 결론, 필요한 사전지식과 다음 행동을 확인한다. Reading surface가 표현을 바꿀 때만 그 제약도 확인한다.
-1. 기존 문서를 개선할 때 사실, 결정, 순서와 관계를 보존하고 무엇을 정확히 유지해야 하는지 구분한다.
-1. 결론과 중요한 상태를 먼저 배치한다.
+1. 독자, 목적, 핵심 결론, 필요한 배경과 다음 행동을 정한다. Reading surface가 결과를 바꿀 때만 제약을 반영한다.
+1. 기존 문서라면 보존해야 할 사실, 결정, 관계, 식별자와 voice를 구분한다.
 1. 정보 구조에서 heading과 section을 도출한다.
-1. 가장 단순하고 빠르게 읽히는 표현을 선택한다.
-1. KISS와 DRY에 따라 중복과 불필요한 형식을 제거한다.
+1. 가장 단순하고 빠르게 읽히는 표현을 선택하고 중복과 불필요한 형식을 제거한다.
 1. source와 rendered view에서 의미가 유지되는지 확인한다.
 
 ## Writing Structure
@@ -75,8 +72,8 @@ agentsskills:
 | 소수 category의 단일 수치 | Horizontal bar |
 | 단일 부모 hierarchy | Tree structure |
 | 핵심 안내, 팁, 경고 | Callout |
-| 복잡한 관계·흐름·상태 | `mermaid-diagram` |
-| 정량 비교·추세·분포 | `mermaid-chart` |
+| 복잡한 관계·흐름·상태 | `mols-mermaid-diagram` |
+| 정량 비교·추세·분포 | `mols-mermaid-chart` |
 | 출처와 부가 설명 | Footnote 또는 References |
 
 짧은 prose나 list가 더 빠르게 읽히면 visual을 추가하지 않는다.
@@ -98,7 +95,7 @@ Text label을 함께 사용하고 같은 marker에는 같은 의미를 부여한
 
 진행률과 작은 범주 비교에는 [Text Bars](references/text-bars.md)를 따른다.
 하나의 parent를 가진 hierarchy에는 [Tree Structures](references/tree-structures.md)를 따른다.
-추세와 많은 category는 `mermaid-chart`, DAG와 runtime flow는 `mermaid-diagram`을 사용한다.
+추세와 많은 category는 `mols-mermaid-chart`, DAG와 runtime flow는 `mols-mermaid-diagram`을 사용한다.
 
 ### Callouts
 
@@ -130,10 +127,7 @@ GitHub target에서는 `NOTE`, `TIP`, `IMPORTANT`, `WARNING`, `CAUTION`을 사�
 - 하나의 사실이나 규칙은 가장 적절한 한 곳에서만 설명한다.
 - 같은 내용을 heading, prose, table, callout과 visual에서 반복하지 않는다.
 - 겹치는 section을 통합하고 다른 위치에서는 링크나 짧은 참조를 사용한다.
-- 같은 개념에는 같은 용어를 사용하고 표준 domain term을 임의로 쉬운 표현으로 바꾸지 않는다.
+- 같은 개념에는 같은 용어를 사용한다. 사용자의 용어와 naming, 표준 domain term은 정확성을 낮추는 쉬운 표현으로 임의 치환하지 않는다.
 - 주체, 행동, 조건, 예외와 결과가 모호할 때는 이를 명시한다.
-- 정확성을 낮추는 단순화를 피하고 필요한 불확실성, nuance와 한계를 보존한다.
-- 원문의 사실, citation, quotation, identifier와 사용자 지정 voice를 보존한다.
-- 원문에 없는 사실, 수치, 판단과 관계를 추가하지 않는다.
-- 사용자의 용어, naming, 의도와 유용한 visual을 보존한다.
-- 예시를 복사하기보다 실제 정보 구조를 먼저 판단한다.
+- 사실, citation, quotation, identifier, 사용자 의도와 voice, 필요한 불확실성과 nuance를 보존한다. 원문에 없는 사실, 수치, 판단과 관계를 추가하지 않는다.
+- 유용한 visual은 보존하고 예시를 복사하기보다 실제 정보 구조를 먼저 판단한다.
