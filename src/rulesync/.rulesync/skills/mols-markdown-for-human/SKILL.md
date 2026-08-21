@@ -48,7 +48,7 @@ agentsskills:
 1. 결론과 중요한 상태를 먼저 배치한다.
 1. heading과 section을 구성한다.
 1. 정보 구조에 맞는 가장 이해하기 쉬운 표현을 선택한다.
-1. 필요한 의미, 정보, 구조와 제약은 유지하고 중복, 장식과 불필요한 복잡성만 제거한다.
+1. KISS와 DRY에 따라 불필요한 복잡성과 중복을 제거한다.
 1. source와 rendered view에서 의미가 유지되는지 확인한다.
 
 ## Writing Structure
