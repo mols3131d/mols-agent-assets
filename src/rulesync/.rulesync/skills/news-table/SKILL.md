@@ -27,9 +27,9 @@ The user may specify the following naturally. Interpret omitted values from the 
 
 The values may differ by topic. For example: `AI agents every 6 hours, 10 developments from the last 48 hours; data engineering daily, 5 developments from the last week.`
 
-`Count` means distinct developments after deduplication unless the user explicitly asks for articles or sources. `Interval` and `Freshness` are independent: a topic may refresh every few hours while considering a wider evidence window.
+`Count` means distinct developments after deduplication. `Interval` and `Freshness` are independent: a topic may refresh every few hours while considering a wider evidence window.
 
-`Interval` expresses requested cadence at a minimum granularity of one hour; sub-hour recurrence is outside this Skill's contract. Actual repeated execution belongs to the active scheduler, automation capability, or harness. If no interval is requested, treat the topic as one-shot rather than inventing a recurrence.
+`Interval` expresses requested cadence at a minimum granularity of one hour; sub-hour recurrence is outside this Skill's contract and must not be silently rounded. Actual repeated execution belongs to the active scheduler, automation capability, or harness. If no interval is requested, treat the topic as one-shot rather than inventing a recurrence.
 
 # Curation
 
@@ -67,4 +67,4 @@ Add `Score` when it helps comparison. Adapt other columns to the request. Attach
 
 Do not duplicate search, source-ranking, or cross-checking procedures here. When fresh evidence is needed, combine this Skill with the appropriate research capability.
 
-Do not implement waiting, timers, or recurrence inside this Skill. When recurring delivery is requested, pass the interpreted topic cadence to the available scheduling or automation capability.
+Do not implement waiting, timers, or recurrence inside this Skill. When recurring delivery is requested, pass the interpreted topic cadence to an available scheduling or automation capability. If none is available, keep the cadence as unmet scheduling intent and do not claim that recurring delivery is active.
