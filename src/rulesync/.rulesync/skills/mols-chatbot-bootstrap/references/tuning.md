@@ -1,33 +1,36 @@
 # Generation and Tuning
 
-Generation creates a factual baseline. Model review improves routing quality.
-Neither replaces the canonical Skill or Rule.
+Use this reference only when route generation, regeneration, semantic tuning, or drift
+validation is materially justified. Generation creates a factual baseline; model review may
+improve routing quality. Neither replaces the canonical Skill or Rule.
 
 ## Compatibility First
 
 Do not assume one repository layout or metadata contract is universal.
 
-Before using generation or validation, inspect the target repository for:
+Before using generation or validation, inspect only target facts that can change the
+mechanism:
 
 - authoritative Skill and Rule roots;
-- Skill package shape and entrypoint naming;
-- frontmatter syntax and supported fields;
-- Rule applicability keys such as `globs`, `applyTo`, or another repository-specific selector;
-- local versus remote asset sources;
+- package/entrypoint shape and supported frontmatter;
+- Rule applicability selectors;
+- local versus remote sources;
 - existing route files, generators, validators, and CI conventions.
 
-The bundled script is a **reference baseline for a common layout**, not a portable parser for every workspace.
+Prefer target-native or established generation and validation when sufficient. The bundled
+script is a **reference baseline for a common local layout**, not a portable parser for every
+workspace.
 
-If the target differs, prefer the smallest safe adaptation:
+If the target differs, choose the smallest safe path:
 
-1. pass different roots/output paths when the metadata contract is otherwise compatible;
-1. adapt parser/extraction/check logic when frontmatter or selector semantics differ;
-1. reuse target-native generation or validation when it is already authoritative;
-1. use direct/model generation when adapting a script costs more than the route surface justifies.
+1. configure an existing compatible mechanism;
+1. make a small adaptation when repeatable mechanics justify it;
+1. use a direct/model edit when automation costs more than the route surface;
+1. skip generation when no durable generated surface is needed.
 
 Do not force target assets into the bundled script's assumptions.
 
-## Baseline Generation
+## Baseline Generator
 
 The bundled generator assumes by default:
 
@@ -36,10 +39,8 @@ The bundled generator assumes by default:
 .agents/rules/**/*.md
 ```
 
-with common frontmatter containing:
-
-- Skill `name` and `description`;
-- selector-based Rule `globs` or `applyTo` metadata.
+with common frontmatter containing Skill `name` and `description`, and selector-based Rule
+`globs` or `applyTo` metadata.
 
 Its main options are:
 
@@ -53,83 +54,45 @@ Its main options are:
 --force                explicit overwrite of existing route files
 ```
 
-`--kinds auto` uses only kinds with routable local entries for generation. In check mode it can also discover existing route files, including remote-only route sets.
-
-The baseline should derive only mechanical facts:
+The baseline derives only mechanical facts:
 
 - Skills → canonical `name`, `description`, local `source`;
-- selector-based Rules → authoritative path/glob selectors and local `source`;
+- selector-based Rules → authoritative selectors and local `source`;
 - deterministic `_meta` headers and ordering.
 
-Remote assets and semantic routing choices are not inferred by the script. Add them through explicit Skill arguments or model review.
+Remote assets and semantic routing choices are not inferred by the script. Add them only
+from explicit source information or review evidence.
 
-## Generation Strategy
-
-Resolve `generation` conservatively:
-
-- `script` — use a compatible generator or deliberately adapt one;
-- `model` — write/update routes directly when scripting adds more machinery than value;
-- `<none>` — do not generate routes;
-- `<auto>` — inspect compatibility first, reuse existing generation when possible, adapt the bundled script when worthwhile, otherwise prefer the smaller direct edit.
-
-Prefer configuration over code changes when roots/output paths are the only difference.
+Use the bundled script only when deterministic regeneration or checking provides more value
+than carrying or adapting it costs. Small or one-off route surfaces usually favor a direct
+edit; an established target generator should be reused instead.
 
 ## Tuning
 
-There are two distinct tuning surfaces.
+Tune only where routing behavior materially improves.
 
-### Generator tuning
-
-Adapt only what the target requires:
-
-- asset discovery paths;
-- package/entrypoint shape;
-- frontmatter parsing;
-- selector extraction and normalization;
-- output locations or route kinds;
-- validation logic that depends on those assumptions.
-
-Generator tuning preserves canonical semantics. It does not redefine the asset spec.
-
-### Route tuning
-
-Review the route set as a routing system. Tune only where selection improves.
-
-#### Skill descriptions
-
-Useful tuning includes:
-
-- distinguish Skills with overlapping canonical descriptions;
-- expose positive triggers that help selection;
-- expose important exclusions that prevent false activation;
-- remove wording that does not help routing.
-
-Preserve the Skill's actual capability and trigger boundary. Do not turn `description` into a second Skill body.
-If the canonical description already routes well, keep it unchanged.
-
-#### Rule routes
-
-Rule selectors are factual applicability metadata.
-Map the target repository's authoritative selector semantics into the route representation.
-Do not assume `globs` or `applyTo` exists merely because the bundled script supports them.
-
-Normalize representation only. Do not broaden or narrow selector meaning unless the canonical Rule itself changes.
-If non-path Rules need routing, extend the target route representation and checker deliberately instead of inventing selector values.
-
-#### `_meta`
-
-Tune `_meta.instructions` only to clarify consumption of the route file. Keep it short.
+- **Generator adaptation** changes only mechanics the target actually requires, such as
+  discovery paths, entrypoint shape, selector extraction, output location, or factual
+  validation. It does not redefine asset semantics.
+- **Skill route tuning** may clarify positive/negative triggers or distinguish overlapping
+  capabilities, but must preserve the Skill's actual responsibility and must not become a
+  second Skill body.
+- **Rule route tuning** preserves authoritative applicability. Do not invent selectors for
+  non-path Rules merely to fit the fallback representation.
+- **`_meta.instructions`** stays short and limited to route-file consumption.
 
 ## Regeneration Safety
 
 Approved tuning must not be silently destroyed by later generation.
 
-The bundled generator refuses to overwrite existing route files unless `--force` is explicit.
-For regeneration or comparison, prefer a separate `--output-dir`. Use `--force` only when the caller actually intends replacement and `overwrite` permits it.
+The bundled generator refuses to overwrite existing route files unless `--force` is
+explicit. Prefer a separate output directory for comparison or regeneration experiments.
+Use `--force` only when replacement is actually intended and current authority permits it.
 
 ## Drift Validation
 
-When committed routes can drift, validate factual invariants rather than byte-for-byte equality with generated baseline output.
+When committed routes can drift, validate factual invariants rather than byte-for-byte
+equality with generated baseline output.
 
 The bundled `--check` mode verifies the common-layout invariants it understands, including:
 
@@ -140,20 +103,15 @@ The bundled `--check` mode verifies the common-layout invariants it understands,
 - coverage and selector equality of discovered local selector-based Rules;
 - basic structure of remote-only or hybrid route entries.
 
-It intentionally does **not** require a tuned Skill `description` to equal the generated baseline.
-Remote semantic correctness and target-specific metadata still require model or target-native validation.
+It intentionally does **not** require a tuned Skill `description` to equal the generated
+baseline. Remote semantic correctness and target-specific metadata still require model or
+target-native validation.
 
 ## CI Example
 
-`examples/github-actions-route-check.yml` is a reference workflow, not an installation side effect.
-Create or adapt target CI only when `validation: ci` is actually justified.
+`examples/github-actions-route-check.yml` is a reference workflow, not an installation side
+effect.
 
-Before using the example, adjust as needed:
-
-- workflow trigger paths;
-- location of this Skill or another validator;
-- `--skills-root`, `--rules-root`, `--output-dir`, and `--kinds`;
-- parser/check logic when the target asset specification differs.
-
-Reuse an existing target workflow or validator before adding another one.
-Do not copy the example into `.github/workflows/` merely because this Skill is installed.
+Use or adapt it only when committed route metadata has a meaningful recurring drift risk
+and the target lacks an equivalent check. Reuse an existing workflow or validator first.
+When justified, adapt the example to the actual target rather than copying it unchanged.
