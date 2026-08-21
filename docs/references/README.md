@@ -1,3 +1,7 @@
+---
+description: reusable knowledge나 source routing이 필요할 때 references가 맞는 문서 surface인지 판단하는 데 사용합니다.
+---
+
 # References
 
 `docs/references/`는 **이 repository 또는 다른 프로젝트에서 참고할 문서**를 보관합니다.
