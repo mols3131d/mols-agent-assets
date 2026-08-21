@@ -52,7 +52,6 @@ Use the target repository's rumdl configuration when it represents accepted proj
 
 - Human-readable Markdown composition belongs to `mols-markdown-for-human`.
 - Engineering dashboard semantics belong to `mols-markdown-dashboard`.
-- Document-level semantics such as decision records belong to `mols-document`.
 - Mermaid diagram/chart semantics belong to `mols-mermaid`.
 
 This Skill owns deterministic Markdown maintenance selection and the small local delta not already owned by the Markdown backend.
