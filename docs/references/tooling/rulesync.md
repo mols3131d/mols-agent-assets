@@ -14,7 +14,7 @@ description: 이 저장소의 Rulesync integration boundary와 current official 
 | Workspace | 책임 |
 | --- | --- |
 | root `.rulesync/` + `rulesync.jsonc` | 실제 필요가 있을 때만 사용하는 repository-local Rulesync assets/configuration |
-| `src/rulesync/.rulesync/` + `src/rulesync/rulesync.jsonc` | 재사용 asset library의 canonical authoring source |
+| `src/rulesync/.rulesync/` + `src/rulesync/rulesync.jsonc` | 재사용 Rulesync asset library의 canonical authoring source |
 
 두 workspace는 독립적입니다. Repository-specific asset을 reusable library에 넣지 않고, library를 root에 mirror하거나 자동 활성화하지 않습니다.
 
@@ -28,7 +28,7 @@ runtime usage surface
   consume / run
 ```
 
-- `src/rulesync/.rulesync/`가 reusable asset의 authority입니다.
+- `src/rulesync/.rulesync/`가 Rulesync-managed reusable asset의 authority입니다.
 - Repository verification은 `tests/`, `evals/`가 소유합니다.
 - Generated vendor projection과 Rulesync lock state는 reusable source가 아닙니다.
 - `route/`는 library metadata에서 파생되는 cross-runtime discovery surface이며 canonical body를 대체하지 않습니다. 세부 contract는 [`route/README.md`](../../../route/README.md)가 소유합니다.
@@ -37,13 +37,13 @@ runtime usage surface
 
 이 저장소는 supported vendor/target matrix를 정의하지 않습니다. Target은 구체적인 projection 또는 검증 operation에서만 선택합니다. 개별 asset의 유효한 target-specific metadata는 현재 projection 대상이 아니라는 이유만으로 제거하지 않습니다.
 
-Repository-local superset schema나 manual projection semantics는 만들지 않습니다. Custom semantic은 **current Rulesync로 required behavior를 표현할 수 없다는 것이 확인된 경우에만** 후보가 됩니다.
+Repository-local superset schema나 manual projection semantics는 만들지 않습니다. Vendor-native authored source의 선택과 배치는 [Authority Routing](../../development/authority-routing.md)을 따릅니다.
 
 ## Local Entry Points
 
 | 확인할 것 | Source |
 | --- | --- |
-| reusable workspace와 canonical assets | [`src/rulesync/`](../../../src/rulesync/) |
+| reusable Rulesync workspace와 canonical assets | [`src/rulesync/`](../../../src/rulesync/) |
 | library configuration | [`src/rulesync/rulesync.jsonc`](../../../src/rulesync/rulesync.jsonc) |
 | Rulesync 실행 wrapper | [`scripts/run_rulesync.py`](../../../scripts/run_rulesync.py) |
 | repository command entrypoints | [`package.json`](../../../package.json) |
@@ -88,6 +88,7 @@ Historical compatibility를 조사할 때만 해당 release/tag의 문서를 고
 
 ## Boundary
 
+- authored source placement와 target authority → [Authority Routing](../../development/authority-routing.md)
 - runtime semantics → target contract
 - Skill authoring → [Skill Authoring Conventions](../skills/skill-authoring-conventions.md)
 - filesystem naming → [Naming](../common/naming.md)
