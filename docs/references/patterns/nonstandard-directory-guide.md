@@ -19,4 +19,10 @@ Guide에는 필요에 따라 다음 정도를 둘 수 있습니다.
 
 Agent에게만 필요한 behavior, instruction, path-scoped rule 같은 내용은 local guide에 섞기보다 `AGENTS.md`나 repository가 사용하는 다른 agent instruction / Rule asset으로 두는 것을 고려합니다. 사람이 알아야 할 directory 설명과 agent-only operational guidance를 분리하면 guide가 불필요하게 runtime-specific policy를 소유하는 것을 피할 수 있습니다.
 
+## Related Patterns
+
+| Pattern | Relationship |
+| --- | --- |
+| [Directory Context Capsule](directory-context-capsule.md) | Directory-local entrypoint와 주변 rules, Skills, references 등 agent-facing context를 하나의 scope-local capsule로 구성할 때 참고합니다. |
+
 이 패턴은 비표준 directory를 만들 것을 권장하는 것이 아니라, **이미 필요한 비표준 surface를 설명 가능한 상태로 유지하기 위한 작은 보완책**입니다.
