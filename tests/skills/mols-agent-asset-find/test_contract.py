@@ -80,6 +80,17 @@ def test_bounded_inventory_and_sync_are_complete() -> None:
         assert phrase in body
 
 
+def test_delivery_uses_target_authority() -> None:
+    _, body = load()
+    body = normalized(body)
+    required = [
+        "resolve them from observable target capabilities or current target authority rather than memory.",
+        "Do not invent a target UI, path, or persistence model.",
+    ]
+    for phrase in required:
+        assert phrase in body
+
+
 def test_target_state_limits_update_and_sync_claims() -> None:
     _, body = load()
     body = normalized(body)
