@@ -68,7 +68,9 @@ Load type-specific context only when it applies:
 Do not add another type-specific reference until repeated local decisions justify
 one. If the requested work is formal validation, audit, readiness, stress testing,
 regression, or behavioral evaluation rather than authoring, use
-`mols-agent-asset-validator`.
+`mols-agent-asset-validator`. Validation-driven bounded correction remains
+validator-primary; compose this Skill only for authoring decisions that independently
+apply.
 
 # Change
 
