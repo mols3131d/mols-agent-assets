@@ -21,7 +21,9 @@ runtime / project instruction
         ↓
 repository entrypoint
         ↓
-repository guidance / routing / task-relevant context
+repository guidance / routing-index surfaces
+        ↓
+selection signals → task-relevant canonical context
 ```
 
 두 surface의 책임을 분리합니다.
@@ -71,7 +73,7 @@ Entrypoint는 repository의 모든 지침을 복제하기보다 **chatbot이 기
 이 repository에서 substantive work를 수행할 때:
 
 - repository-wide guidance는 `AGENTS.md`를 확인한다.
-- task-relevant Skills는 canonical Skill index 또는 routing surface에서 선택한다.
+- task-relevant Skills는 candidate의 이름, applicability와 source를 제공하는 routing/index asset에서 선택한다.
 - path-scoped guidance가 있으면 현재 작업 범위에 맞는 source를 추가로 확인한다.
 - repository-specific development/document policy는 각 canonical entrypoint를 따른다.
 ```
@@ -79,6 +81,41 @@ Entrypoint는 repository의 모든 지침을 복제하기보다 **chatbot이 기
 이 예시는 고정 schema가 아닙니다. Repository가 이미 가진 instruction, routing, index, documentation 구조에 맞게 더 작거나 다른 형태로 구성할 수 있습니다.
 
 특히 `AGENTS.md`, Skill body, Rule, development policy처럼 이미 authority를 가진 내용을 entrypoint에 다시 복사하기보다 **그 owner로 route하는 방식**이 drift와 context duplication을 줄이는 데 도움이 됩니다.
+
+## Routable Discovery
+
+Entrypoint가 asset directory나 source path만 알려주는 것으로는 semantic routing이 성립하지 않을 수 있습니다. Chatbot이 여러 후보 중 task-relevant asset을 선택해야 한다면 **후보를 찾는 정보뿐 아니라 선택할 근거**도 발견 가능한 routing surface에 있어야 합니다.
+
+Skill처럼 applicability에 따라 선택하는 asset은 보통 다음 signal이 필요합니다.
+
+| Signal | Purpose |
+| --- | --- |
+| candidate identity | 어떤 후보인지 구분함 |
+| applicability | 현재 task에 언제 적용할지 판단함. description, trigger, `when to use` 등으로 표현할 수 있음 |
+| source | 선택한 canonical asset을 실제로 로드할 위치를 알려줌 |
+
+예를 들어 다음은 routable discovery의 한 형태입니다.
+
+```json
+{"name":"mols-rpi","description":"Use for recursive RPI improvement work ...","source":"src/.../mols-rpi/SKILL.md"}
+```
+
+반면 다음처럼 directory 위치만 알려주는 것은 navigation에는 도움이 되지만, 그 자체로는 어떤 Skill을 선택해야 하는지 판단할 수 없습니다.
+
+```text
+Skills are under src/.../skills/
+```
+
+따라서 semantic selection이 필요한 경우에는 다음과 같은 hop이 더 적절합니다.
+
+```text
+repository entrypoint
+→ routing/index asset
+→ candidate identity + applicability + source
+→ selected canonical asset
+```
+
+구체적인 routing/index의 구조, format, 생성 방식은 [Routing & Index Assets](routing-index-assets.md)를 참고합니다. 이 패턴은 특정 schema를 강제하지 않고, **소비자가 후보를 선택할 만큼의 signal이 제공되어야 한다는 조건**만 둡니다.
 
 ## Bootstrap
 
@@ -113,10 +150,11 @@ Bootstrap은 repository guidance 자체를 품기보다 **entrypoint 위치와 l
 ```text
 bootstrap
 → root CHATBOT.md
-→ AGENTS.md / Skills / Rules / docs
+→ routing/index assets
+→ selected AGENTS.md / Skill / Rule / docs source
 ```
 
-`CHATBOT.md`는 거의 routing만 소유할 수 있습니다.
+`CHATBOT.md`는 거의 routing만 소유할 수 있습니다. Semantic selection이 필요한 자산은 bare directory가 아니라 선택 signal을 제공하는 routing/index asset으로 연결하는 편이 좋습니다.
 
 ### Dedicated Entrypoint Path
 
@@ -135,6 +173,7 @@ Discovery metadata가 자동 생성된다면 structured artifact 자체를 entry
 ```text
 bootstrap
 → route/chatbot.json
+→ candidate metadata
 → selected canonical sources
 ```
 
@@ -169,6 +208,7 @@ repository/
 
 - Entrypoint는 portable standard가 아니라 repository convention일 수 있으므로 automatic discovery를 주장하지 않습니다.
 - Runtime이 native repository instruction discovery를 충분히 제공한다면 별도 entrypoint가 불필요할 수 있습니다.
+- Semantic selection이 필요한 asset에 directory path나 file list만 제공하면 discovery는 가능해도 실제 routing은 불가능할 수 있습니다.
 - Entrypoint가 너무 많은 실제 지침을 직접 소유하면 기존 canonical assets와 중복되고 항상 로드되는 context도 커질 수 있습니다.
 - Bootstrap instruction과 repository entrypoint가 같은 내용을 반복하지 않도록 responsibility를 나누는 편이 유지보수하기 쉽습니다.
 - Entrypoint를 여러 개로 늘리면 locality는 좋아질 수 있지만 discovery, precedence와 stale duplication 비용도 커질 수 있습니다.
@@ -178,7 +218,11 @@ repository/
 
 이 패턴은 **chatbot이 repository context에 진입하는 bootstrap과 first entrypoint**를 다룹니다.
 
-그 이후 어떤 scope mechanism에 지침을 배치할지는 [Layered Context Instructions](layered-context-instructions.md), 많은 context source 중 필요한 것을 단계적으로 좁혀 로드하는 방식은 [Progressive Context Routing](progressive-context-routing.md)과 함께 사용할 수 있습니다.
+| Pattern | Relationship |
+| --- | --- |
+| [Routing & Index Assets](routing-index-assets.md) | Entrypoint 이후 후보의 위치와 selection signal을 제공해 실제 context routing이 가능하게 합니다. |
+| [Layered Context Instructions](layered-context-instructions.md) | 어떤 scope mechanism에 instruction을 배치할지 다룹니다. |
+| [Progressive Context Routing](progressive-context-routing.md) | 많은 context source 중 필요한 것을 단계적으로 좁혀 로드하는 방식을 다룹니다. |
 
 Repository entrypoint는 이 pattern들의 기능을 다시 구현할 필요 없이, 해당 repository가 사용하는 mechanism으로 chatbot을 연결하는 첫 hop으로 동작할 수 있습니다.
 
@@ -186,9 +230,10 @@ Repository entrypoint는 이 pattern들의 기능을 다시 구현할 필요 없
 
 이 패턴은 `CHATBOT.md`, repository root, Markdown 또는 다른 특정 representation을 표준으로 정의하지 않습니다. 또한 특정 runtime의 automatic loading, inheritance, precedence 또는 path discovery behavior를 보장하지 않습니다.
 
-핵심은 다음 두 가지입니다.
+핵심은 다음과 같습니다.
 
 1. Repository 안에 chatbot이 context loading을 시작할 **하나의 stable entrypoint**를 둡니다.
 1. 그 entrypoint가 자동으로 보일 것이라 가정하지 않고, 실제 runtime이 확실히 받는 instruction surface에서 명시적으로 연결합니다.
+1. Semantic selection이 필요한 context는 bare path만 가리키지 않고, 후보를 선택할 수 있는 routing/index surface로 연결합니다.
 
 추가 entrypoint는 가능한 extension이지 이 패턴의 필수 구성은 아닙니다.
