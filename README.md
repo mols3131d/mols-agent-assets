@@ -4,10 +4,14 @@
 
 ## Purpose
 
-- 재사용할 Agent Skill, Rule, subagent, reference, pattern과 관련 자산을 하나의 source library에서 관리합니다.
-- 대부분의 자산은 특정 project나 runtime에 불필요하게 묶이지 않는 portable form을 지향합니다.
-- 특정 source framework, vendor 또는 target에 특화되어 있어도 반복 사용·배포·변형할 가치가 있으면 library asset으로 관리할 수 있습니다.
-- Consumer repository에서는 이 library의 자산을 그대로 사용하거나 해당 project에 맞게 생성·조정할 수 있습니다.
+Agent Skill, Rule, subagent, reference, pattern과 관련 자산을 하나의 source library에서 관리하고, consumer repository와 runtime에서 그대로 사용하거나 필요에 맞게 조정할 수 있게 합니다.
+
+## Vision
+
+- **Reusable by default** — 반복해서 사용할 가치가 있는 자산을 이 repository에서 한 번 관리하고 여러 환경에서 재사용합니다.
+- **Portable when practical** — 대부분의 자산은 특정 project나 runtime에 불필요하게 묶이지 않는 form을 지향하지만, portability 자체를 목적이나 필수 조건으로 만들지 않습니다.
+- **Specialization is allowed** — 특정 source framework, vendor, target 또는 사용 맥락에 특화되어도 반복 사용·배포·변형할 가치가 있으면 library asset으로 관리할 수 있습니다.
+- **Adapt downstream** — consumer repository에서는 canonical asset을 그대로 사용하거나 해당 project의 요구와 authority에 맞게 생성·조정합니다.
 
 ## Source Model
 
