@@ -10,14 +10,14 @@
 
 - **Build once, improve over time** — 반복되는 capability와 아이디어를 project마다 새로 만들기보다 하나의 library source를 장기적으로 개선합니다.
 - **Portable when practical, specialized when useful** — 대부분은 portable하게 유지하되 특정 vendor, target 또는 context에 대한 specialization이 가치 있으면 그대로 보존합니다. 보편성을 위해 유용한 차이를 없애거나 억지 abstraction을 만들지 않습니다.
-- **Library upstream, consumers downstream** — canonical source는 여기서 관리하고 consumer-specific adaptation은 downstream에서 소유합니다. Downstream의 adaptation도 여러 곳에서 다시 사용할 가치가 생기면 library asset으로 관리할 수 있습니다.
+- **Library upstream, consumers downstream** — canonical source는 여기서 관리하고 consumer-specific adaptation은 각 consumer가 소유합니다. 그 adaptation도 여러 곳에서 다시 사용할 가치가 생기면 library asset으로 관리할 수 있습니다.
 - **Preserve reusable design knowledge** — 좋은 Agent Asset을 다시 만들고 판단하는 데 도움이 되는 pattern, reference와 maintainer knowledge도 자산과 함께 축적합니다.
 
 ## Repository Model
 
 | Surface | Meaning |
 | --- | --- |
-| `src/` | 이 repository가 관리하는 **library source**. Portable asset뿐 아니라 vendor-, target-, context-specific asset도 재사용·배포·변형할 가치가 있으면 포함할 수 있습니다. |
+| `src/` | 이 repository가 관리하는 **library source**. Portable asset뿐 아니라 vendor/target/context-specific asset도 재사용·배포·변형할 가치가 있으면 포함할 수 있습니다. |
 | `docs/references/` | 여러 작업과 repository에서 다시 참고할 수 있는 specification router, convention, pattern과 reusable knowledge |
 | `docs/<asset-type>/<owner>/` | 개별 asset 또는 family를 유지보수하기 위한 maintainer documentation capsule |
 | `route/` | canonical asset metadata에서 파생되는 cross-runtime discovery surface |
