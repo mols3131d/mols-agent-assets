@@ -1,11 +1,10 @@
 ---
 name: mols-chatbot-bootstrap
 description: >-
-  Bootstrap or repair a repository for mols CHATBOT.md compatibility when a chat runtime
-  cannot natively discover applicable repository guidance, task-relevant Skills, or
-  path-scoped Rules. Use for initial compatibility setup or when that harness becomes
-  stale after runtime or repository architecture changes. Do not use for routine
-  repository work once native or established discovery already satisfies the need.
+  Bootstrap or update a repository for mols CHATBOT.md compatibility. Use when a
+  repository should support chat runtimes that may not automatically load applicable
+  AGENTS.md guidance, task-relevant Skills, or path-scoped Rules, including route
+  metadata, generation, tuning, or drift validation.
 ---
 
 # Mols Chatbot Bootstrap
