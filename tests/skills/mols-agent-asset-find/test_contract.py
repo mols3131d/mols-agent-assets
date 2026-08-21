@@ -80,6 +80,18 @@ def test_bounded_inventory_and_sync_are_complete() -> None:
         assert phrase in body
 
 
+def test_target_state_limits_update_and_sync_claims() -> None:
+    _, body = load()
+    body = normalized(body)
+    required = [
+        "Do not claim update, migration, or synchronization completeness when the target state required to establish that claim cannot be observed.",
+        "do not infer identity continuity or a clean update.",
+        "report the sync as incomplete or unsupported rather than claiming it succeeded.",
+    ]
+    for phrase in required:
+        assert phrase in body
+
+
 def test_selection_uses_fit_and_evidence_not_popularity() -> None:
     _, body = load()
     body = normalized(body)
