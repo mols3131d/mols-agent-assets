@@ -8,25 +8,25 @@ improve routing quality. Neither replaces the canonical Skill or Rule.
 
 Do not assume one repository layout or metadata contract is universal.
 
-Before using generation or validation, inspect only the target facts that can change the
+Before using generation or validation, inspect only target facts that can change the
 mechanism:
 
 - authoritative Skill and Rule roots;
 - package/entrypoint shape and supported frontmatter;
-- Rule applicability keys such as `globs`, `applyTo`, or another target selector;
+- Rule applicability selectors;
 - local versus remote sources;
 - existing route files, generators, validators, and CI conventions.
 
-Prefer target-native or already-established generation and validation when they are
-sufficient. The bundled script is a **reference baseline for a common local layout**, not a
-portable parser for every workspace.
+Prefer target-native or established generation and validation when sufficient. The bundled
+script is a **reference baseline for a common local layout**, not a portable parser for every
+workspace.
 
 If the target differs, choose the smallest safe path:
 
 1. configure an existing compatible mechanism;
-1. make a small deliberate adaptation when repeatable mechanics justify it;
-1. use a direct/model edit when adapting automation costs more than the route surface;
-1. skip generation entirely when no durable generated surface is needed.
+1. make a small adaptation when repeatable mechanics justify it;
+1. use a direct/model edit when automation costs more than the route surface;
+1. skip generation when no durable generated surface is needed.
 
 Do not force target assets into the bundled script's assumptions.
 
@@ -39,10 +39,8 @@ The bundled generator assumes by default:
 .agents/rules/**/*.md
 ```
 
-with common frontmatter containing:
-
-- Skill `name` and `description`;
-- selector-based Rule `globs` or `applyTo` metadata.
+with common frontmatter containing Skill `name` and `description`, and selector-based Rule
+`globs` or `applyTo` metadata.
 
 Its main options are:
 
@@ -56,53 +54,32 @@ Its main options are:
 --force                explicit overwrite of existing route files
 ```
 
-`--kinds auto` uses only kinds with routable local entries for generation. In check mode it
-can also discover existing route files, including remote-only route sets.
-
 The baseline derives only mechanical facts:
 
 - Skills → canonical `name`, `description`, local `source`;
-- selector-based Rules → authoritative path/glob selectors and local `source`;
+- selector-based Rules → authoritative selectors and local `source`;
 - deterministic `_meta` headers and ordering.
 
 Remote assets and semantic routing choices are not inferred by the script. Add them only
 from explicit source information or review evidence.
 
-## Choosing the Mechanism
-
-Use the bundled script only when its deterministic regeneration/checking value exceeds the
-cost of carrying or adapting it. Otherwise prefer the smaller target-native or direct path.
-
-Typical choices:
-
-- existing target generator/checker → reuse it;
-- compatible repeated local route generation → bundled script may be useful;
-- small or one-off route surface → direct/model edit is usually simpler;
-- no separate route asset → no generation work.
-
-Prefer configuration over code changes when roots or output paths are the only difference.
+Use the bundled script only when deterministic regeneration or checking provides more value
+than carrying or adapting it costs. Small or one-off route surfaces usually favor a direct
+edit; an established target generator should be reused instead.
 
 ## Tuning
 
 Tune only where routing behavior materially improves.
 
-### Generator adaptation
-
-Adapt only mechanics the target actually requires, such as discovery paths, entrypoint
-shape, selector extraction, output location, or factual validation. Generator adaptation
-preserves canonical semantics; it does not redefine the asset specification.
-
-### Route tuning
-
-For Skill descriptions, distinguish overlapping capabilities, expose useful positive or
-negative triggers, and remove wording that does not help selection. Preserve the Skill's
-actual capability and trigger boundary; do not turn the route description into a second
-Skill body.
-
-For Rules, map authoritative selector semantics without broadening or narrowing them. Do
-not invent selectors for non-path Rules merely to fit the fallback representation.
-
-Keep `_meta.instructions` short and limited to consumption of the route file.
+- **Generator adaptation** changes only mechanics the target actually requires, such as
+  discovery paths, entrypoint shape, selector extraction, output location, or factual
+  validation. It does not redefine asset semantics.
+- **Skill route tuning** may clarify positive/negative triggers or distinguish overlapping
+  capabilities, but must preserve the Skill's actual responsibility and must not become a
+  second Skill body.
+- **Rule route tuning** preserves authoritative applicability. Do not invent selectors for
+  non-path Rules merely to fit the fallback representation.
+- **`_meta.instructions`** stays short and limited to route-file consumption.
 
 ## Regeneration Safety
 
@@ -137,7 +114,4 @@ effect.
 
 Use or adapt it only when committed route metadata has a meaningful recurring drift risk
 and the target lacks an equivalent check. Reuse an existing workflow or validator first.
-When the example is justified, adapt its trigger paths, asset locations, roots, output path,
-route kinds, and parser/check assumptions to the actual target.
-
-Do not copy the example into `.github/workflows/` merely because this Skill is available.
+When justified, adapt the example to the actual target rather than copying it unchanged.
