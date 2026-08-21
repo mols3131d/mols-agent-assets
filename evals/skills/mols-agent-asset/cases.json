@@ -88,7 +88,7 @@
       "prompt": "이 Skill을 내 ChatGPT에 설치해줘.",
       "assertions": [
         "Does not claim Skill installation as mols-agent-asset responsibility",
-        "Routes installation to a dedicated installation capability when available"
+        "Routes discovery, loading, installation, synchronization, or invocation to mols-agent-asset-use"
       ]
     },
     {
