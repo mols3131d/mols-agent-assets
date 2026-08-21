@@ -31,6 +31,8 @@ inbox/
 
 어느 쪽을 사용할지는 artifact의 관계와 project 구조에 따라 정할 수 있으며, 이 패턴 자체는 root와 nested 사이의 고정된 우선순위를 요구하지 않습니다.
 
+`inbox/` 같은 비표준 repository-local surface의 의미나 운영 방식이 이름만으로 충분히 드러나지 않는다면 [Nonstandard Directory Guide](nonstandard-directory-guide.md)를 함께 참고할 수 있습니다.
+
 ## Typical Contents
 
 - research
