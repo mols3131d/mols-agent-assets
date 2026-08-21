@@ -40,23 +40,27 @@ Requirement authority와 source hierarchy는 host repository의 documented polic
 
 ## Status Vocabulary
 
+Status는 현재 상태를, progress는 완료되거나 현재 결과가 확보된 의미 단위의 범위를 나타낸다. 둘은 같은 값이 아니다.
+
 ### Implementation
 
 | Code | Meaning |
 | --- | --- |
 | `not_started` | 구현 근거가 없고 시작하지 않음 |
 | `planned` | 스펙은 있으나 구현 단계 전 |
-| `in_progress` | 일부 Requirement만 구현 |
+| `in_progress` | 구현 작업이 진행 중이며 필수 Requirement가 남아 있음 |
 | `implemented` | 필수 Requirement 전체 구현 |
 | `blocked` | 구현 진행을 막는 조건이 있음 |
 | `unknown` | 근거가 부족해 판단할 수 없음 |
+
+`in_progress`는 작업이 실제 시작됐지만 아직 완결된 Requirement가 없어 progress가 `0/n`인 경우도 허용한다.
 
 ### Verification
 
 | Code | Meaning |
 | --- | --- |
 | `unverified` | 필수 검증 근거가 없음 |
-| `partial` | 필수 Verification Target 일부만 확인 |
+| `partial` | 필수 Verification Target 일부에 현재 결과가 있고 일부는 아직 결과가 없음 |
 | `passing` | 필수 Verification Target 전체 통과 |
 | `failing` | 하나 이상의 필수 검증 실패 |
 | `blocked` | 환경·의존성 때문에 검증 실행 불가 |
@@ -84,6 +88,7 @@ Verification Target을 의미 단위로 센다.
 - 현재 실행 결과가 있으면 통과와 실패 모두 progress 분자에 포함한다.
 - 실패 여부는 `Verification Status`와 Verification Gap에서 별도로 드러낸다.
 - 미검증, blocked, manual-only Target은 progress 분자에 포함하지 않는다.
+- `partial`은 `0 < completed < total`이어야 한다.
 
 ## Core Tables
 
