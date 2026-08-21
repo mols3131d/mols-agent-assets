@@ -40,11 +40,11 @@ Create or change the smallest agent asset that owns the requested behavior.
 Before material design or change, resolve only what can affect the result:
 
 1. responsibility and intended activation;
-2. current owner, or whether the responsibility is genuinely new;
-3. asset type;
-4. canonical source or framework;
-5. target runtime or deployment surface when target behavior matters;
-6. applicable project authority and write boundary.
+1. current owner, or whether the responsibility is genuinely new;
+1. asset type;
+1. canonical source or framework;
+1. target runtime or deployment surface when target behavior matters;
+1. applicable project authority and write boundary.
 
 Authority is concern-specific. User and project guidance own the requested outcome
 and allowed scope. The source framework owns canonical representation. The target
@@ -77,13 +77,13 @@ adaptation:
 
 1. Read the candidate owner and only the nearby authority or context that can
    change the decision.
-2. State what should change and what must remain true: responsibility, activation,
+1. State what should change and what must remain true: responsibility, activation,
    authority, safety, required capabilities, and applicable target compatibility.
-3. Make the smallest coherent change. Prefer deletion, simplification, clearer
+1. Make the smallest coherent change. Prefer deletion, simplification, clearer
    ownership, or project-native mechanisms over another abstraction layer.
-4. Add files only when they provide a concrete loading, ownership, runtime, or
+1. Add files only when they provide a concrete loading, ownership, runtime, or
    deterministic-mechanics benefit.
-5. Re-read the result against the request, preserved invariants, source/target
+1. Re-read the result against the request, preserved invariants, source/target
    boundary, and affected links or paths.
 
 Do not create separate workflow machinery merely because the operation is called
