@@ -60,14 +60,24 @@ Agent Skill                       Directory Context Capsule
 <skill>/                          <dir>/
 ├─ SKILL.md                       ├─ AGENTS.md      # example entrypoint
 └─ references/                    └─ .configs/      # example context surface
-                                     ├─ workflow.md
-                                     ├─ conventions.md
-                                     └─ examples.md
+                                     ├─ lifecycle.md
+                                     ├─ review.skill.md
+                                     └─ references/
+                                        └─ terminology.md
 ```
 
 두 구조 모두 entrypoint가 핵심 guidance를 제공하고 주변 context가 task-specific behavior와 knowledge를 보완할 수 있습니다.
 
-`.configs/`는 대표 예시일 뿐입니다. `configs/`, `.agents/`, `agents/`, `context/` 또는 repository에 더 자연스러운 다른 이름을 사용할 수 있습니다. Context 종류마다 별도 directory를 만들 필요도 없습니다.
+`.configs/`는 대표 예시일 뿐입니다. `configs/`, `.agents/`, `agents/`, `context/` 또는 repository에 더 자연스러운 다른 이름을 사용할 수 있습니다. Context 종류마다 별도 directory를 만들 필요도 없고, 실제 책임이 나뉠 때는 `.configs/` 아래에 하위 directory를 둘 수도 있습니다.
+
+파일명도 예시 convention을 둘 수 있습니다.
+
+```text
+<name>.md                 # ordinary context/document
+<name>.<asset-type>.md    # agent asset
+```
+
+예를 들어 `lifecycle.md`, `terminology.md`는 일반 context 문서로, `review.skill.md`, `routing.rule.md`는 agent-facing asset으로 구분할 수 있습니다. 이 suffix convention은 asset 종류를 사람이 빠르게 구분하기 위한 대표 예시이며 실제 filename이나 asset type contract를 정의하지 않습니다.
 
 차이는 activation과 contract입니다. Skill은 Skill runtime의 discovery/activation semantics를 따르지만, Directory Context Capsule은 directory scope, path rule, explicit routing 또는 harness의 native mechanism을 통해 적용될 수 있습니다. Directory에 파일을 두었다는 사실만으로 Skill semantics나 automatic discovery가 생긴다고 가정하지 않습니다.
 
@@ -82,16 +92,20 @@ Filesystem directory를 Kanban board처럼 사용하는 경우에도 같은 패�
 ```text
 kanban/
 ├─ AGENTS.md
-├─ .configs/
-│  ├─ workflow.md
-│  ├─ card-conventions.md
-│  └─ review.md
-└─ ...            # actual Kanban state and work items
+├─ backlog/
+├─ archive/
+└─ .configs/
+   ├─ lifecycle.md
+   ├─ card-conventions.md
+   ├─ move-card.skill.md
+   ├─ review.rule.md
+   └─ references/
+      └─ status-model.md
 ```
 
-`AGENTS.md`는 board의 목적, 상태 변경 원칙과 필요한 local context로 가는 route를 제공하고, `.configs/`는 workflow나 card convention처럼 세부 운영 context를 보관할 수 있습니다. 실제 Kanban state와 work item은 같은 directory의 본래 filesystem structure가 소유합니다.
+여기서 `backlog/`, `archive/` 같은 directory는 Kanban 자체의 filesystem state를 표현합니다. `AGENTS.md`는 board의 목적, 상태 변경 원칙과 필요한 local context로 가는 route를 제공하고, `.configs/`는 그 board를 다루기 위한 문서와 agent-facing asset을 함께 보관합니다.
 
-이 예시의 핵심은 Kanban 자체가 아니라 **실제 작업 surface와 그 surface를 다루는 agent context를 같은 directory boundary에 붙이는 것**입니다.
+이 예시에서는 일반 context를 `*.md`, agent asset을 `*.<asset-type>.md`로 구분하고 `references/` 같은 하위 directory도 사용하지만, **이 이름·suffix·layout은 모두 예시**입니다. 핵심은 실제 작업 surface와 그 surface를 다루는 local agent context를 같은 directory boundary에 붙이는 것입니다.
 
 ## Discovery and Loading
 
@@ -132,4 +146,4 @@ Harness가 nested instruction이나 scoped asset discovery를 지원하면 그 n
 
 이 패턴은 **directory-local entrypoint와 주변 agent-facing assets/context를 하나의 scope-local capsule로 구성하는 방식**을 설명합니다.
 
-특정 directory 이름, entrypoint filename, subdirectory layout, discovery mechanism 또는 Agent Skill packaging을 강제하지 않습니다. 또한 local entrypoint가 harness의 instruction precedence, permission, Skill discovery 또는 scope semantics를 새로 정의한다고 가정하지 않습니다.
+특정 directory 이름, entrypoint filename, subdirectory layout, filename suffix, discovery mechanism 또는 Agent Skill packaging을 강제하지 않습니다. 또한 local entrypoint가 harness의 instruction precedence, permission, Skill discovery 또는 scope semantics를 새로 정의한다고 가정하지 않습니다.
