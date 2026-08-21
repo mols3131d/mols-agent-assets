@@ -40,21 +40,9 @@ Prerequisite, fallback, handoff, execution order와 validation workflow는 body�
 
 ## Maintainer Documentation
 
-Maintainer documentation은 필요할 때 다음 두 ownership 단위를 사용할 수 있습니다.
+Skill maintainer documentation의 placement, family ownership과 portability contract는 [Asset Capsules](../../document/asset-capsules.md)가 소유합니다.
 
-```text
-docs/skills/<skill-name>/
-docs/skills/<family>/
-```
-
-- 하나의 Skill에만 적용되는 durable decision·recovery knowledge는 `docs/skills/<skill-name>/`이 소유합니다.
-- 같은 family에 속하는 durable shared knowledge나 family 책임 경계 자체는 `docs/skills/<family>/`이 한 번만 소유합니다. 현재 member 수만으로 family owner 여부를 결정하지 않습니다.
-- Family capsule의 `README.md`에는 현재 관련 Skill과 책임 경계를 사람이 읽을 수 있게 적습니다. 별도 family registry나 machine schema는 만들지 않습니다.
-- 공유할 수 있는 내용을 Skill별 문서에 복제하지 않습니다.
-- Source만으로 중요 intent/invariant를 충분히 복구할 수 있는 단순한 Skill이나 family에는 문서를 만들지 않습니다.
-- Maintainer-only knowledge를 runtime dependency로 숨기지 않습니다. Runtime에 필요한 instruction이나 resource는 계속 Skill package가 소유합니다.
-
-Family는 documentation ownership과 관리 편의를 위한 단위이며 discoverable Skill의 책임 경계를 대체하지 않습니다.
+Maintainer-only knowledge를 runtime dependency로 숨기지 않습니다.
 
 ## Context-Only Naming
 
