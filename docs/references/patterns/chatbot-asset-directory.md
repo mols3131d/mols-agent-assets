@@ -149,11 +149,13 @@ tools/chat-runtime/
 
 ## Surface README
 
-`.chatbot/`처럼 **비표준 repository-local surface**는 이름이나 위치만으로 목적과 사용법을 알기 어려울 수 있습니다. 이런 surface에는 `README.md` 같은 설명 문서를 두어 단순한 file entrypoint를 넘어 **surface 자체의 소개와 local contract를 제공하는 것**이 유용할 수 있습니다.
+`.chatbot/`처럼 **비표준 repository-local surface**는 이름이나 위치만으로 목적, 범위와 사용법을 알기 어려울 수 있습니다. 이런 surface에는 `README.md` 같은 설명 문서를 **추가하는 것을 권장할 수 있습니다**.
 
-`README.md`라는 이름이나 Markdown 형식은 필수가 아닙니다. 같은 책임을 맡는 다른 entry document, manifest 또는 catalog를 사용할 수 있습니다.
+이 문서는 surface를 소개하고 설명하는 guide가 될 수 있으며, 필요하면 동시에 사람이나 chatbot이 내부 자산을 탐색하는 **entrypoint, index 또는 routing guide** 역할도 겸할 수 있습니다. 설명 역할과 entrypoint 역할은 서로 대체하거나 배제하지 않습니다.
 
-이 문서는 필요에 따라 다음 중 일부를 소유할 수 있습니다.
+`README.md`라는 이름이나 Markdown 형식도 필수가 아닙니다. 같은 역할을 맡는 다른 document, manifest, catalog 또는 entry file을 사용할 수 있습니다.
+
+설명 문서에는 필요에 따라 다음 중 일부를 둘 수 있습니다.
 
 - **Introduction** — 이 surface가 왜 존재하고 어떤 문제를 보완하는지
 - **Scope** — 무엇을 이곳에 두고 무엇은 기존 canonical owner에 남기는지
@@ -161,10 +163,10 @@ tools/chat-runtime/
 - **Conventions** — naming, layout, loading, routing 등 repository-local 관행
 - **Recommendations** — 유용하지만 강제하지 않는 기본 선택이나 운영 방식
 - **Assets** — 어떤 종류의 asset이 있고 각각 어떤 책임을 가지는지
-- **Loading** — chatbot이나 repository entrypoint가 이 surface를 어떻게 발견하고 사용하는지
+- **Loading / Routing** — chatbot이나 repository entrypoint가 이 surface를 어떻게 발견하고 사용하는지
 - **Vendor boundary** — shared asset과 vendor-native 또는 vendor-specific asset의 관계
 
-모든 항목을 가져야 하는 고정 schema는 아닙니다. Surface의 규모와 비표준성 때문에 사람이 추측해야 하는 부분만 설명하면 됩니다.
+모든 항목을 가져야 하는 고정 schema는 아닙니다. Surface의 비표준성, 규모와 실제 운영 방식 때문에 사람이 추측해야 하는 부분만 설명하면 됩니다.
 
 특히 contract, convention, recommendation은 성격을 구분하는 편이 좋습니다.
 
@@ -179,7 +181,7 @@ recommendation
 → 상황에 따라 바꿀 수 있는 권장 기본값
 ```
 
-예를 들어 `.chatbot/README.md`를 사용한다면 다음 정도로 시작할 수 있습니다.
+예를 들어 `.chatbot/README.md`를 사용한다면 다음처럼 **설명과 entrypoint 역할을 함께** 둘 수 있습니다.
 
 ```markdown
 # Chatbot Assets
@@ -214,9 +216,13 @@ Permission-like profile은 실제 tool permission을 부여하지 않습니다. 
 - `skills/` — chatbot에서만 필요한 Skill 또는 compatibility fallback
 - `commands/` — 반복되는 chatbot 작업을 위한 reusable command-like instructions
 - `shared/` — 여러 chatbot runtime에서 공통으로 사용하는 guidance
+
+## Start Here
+
+현재 작업에 필요한 profile, Skill 또는 command를 위 설명에서 선택하고 해당 asset을 읽습니다. 공통 repository guidance가 필요하면 기존 canonical owner로 이동합니다.
 ```
 
-Surface가 작다면 별도 README 없이도 충분할 수 있습니다. 반대로 비표준 경로의 의미, 권한 경계, 내부 관행 또는 자산 선택 방법을 **repository 외부 지식 없이는 추측해야 하는 상태**라면 설명 문서를 두는 가치가 큽니다.
+비표준 surface가 작더라도 소개나 설명이 유지보수에 도움이 되면 README를 둘 수 있고, surface가 커졌다고 반드시 별도 entrypoint를 만들어야 하는 것도 아닙니다. 하나의 README가 설명, local guide, contract, convention, recommendation, index와 routing을 필요한 만큼 함께 소유할 수 있습니다.
 
 README를 단순 file index처럼 세세하게 유지할 필요도 없습니다. 안정적인 목적, 책임, 계약과 관행을 설명하고 세부 behavior는 각 asset이 소유하도록 두면 drift를 줄일 수 있습니다.
 
@@ -274,7 +280,7 @@ runtime-side bootstrap
 → existing canonical repository assets
 ```
 
-Entrypoint와 chatbot-only asset surface는 같은 위치에 있을 수도 있고 완전히 분리되어 있을 수도 있습니다.
+Entrypoint와 chatbot-only asset surface는 같은 위치에 있을 수도 있고 완전히 분리되어 있을 수도 있습니다. Surface의 README나 다른 설명 문서가 repository chatbot entrypoint 자체를 겸하는 구성도 가능합니다.
 
 ## Boundary
 
