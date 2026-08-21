@@ -70,3 +70,45 @@ def test_render_cli_supports_stdout(
     captured = capsys.readouterr()
     assert result == 0
     assert captured.out.startswith("# Project Pivot")
+
+
+def test_validate_cli_accepts_current_render(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setitem(sys.modules, "pyromark", SimpleNamespace(events=heading_events))
+
+    result = main(
+        [
+            "validate",
+            str(SKILL_ROOT / "examples/project-dashboard.yml"),
+            "--markdown",
+            str(SKILL_ROOT / "examples/project-dashboard.md"),
+        ]
+    )
+
+    assert result == 0
+
+
+def test_validate_cli_rejects_stale_rendered_content(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    monkeypatch.setitem(sys.modules, "pyromark", SimpleNamespace(events=heading_events))
+    expected = (SKILL_ROOT / "examples/project-dashboard.md").read_text(encoding="utf-8")
+    stale = expected.replace("8/10", "7/10", 1)
+    markdown = tmp_path / "dashboard.md"
+    markdown.write_text(stale, encoding="utf-8")
+
+    result = main(
+        [
+            "validate",
+            str(SKILL_ROOT / "examples/project-dashboard.yml"),
+            "--markdown",
+            str(markdown),
+        ]
+    )
+
+    captured = capsys.readouterr()
+    assert result == 2
+    assert "does not match current YAML render" in captured.err
