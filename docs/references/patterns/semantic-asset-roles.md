@@ -56,6 +56,19 @@ release workflow
 
 Knowledge는 여러 Workflow에서 재사용 가능한 판단 재료로 남기고, Constraint나 Evaluation은 필요한 단계에서 선택적으로 결합하는 구성이 흔히 유용합니다. 이는 고정 dependency rule이 아니라 책임과 재사용 경계를 이해하기 위한 대표적인 방향입니다.
 
+## Module Boundaries
+
+자산을 모듈처럼 조합하려면 형식적인 interface보다 **무엇을 기대하고 무엇을 제공하는지**가 이해 가능해야 합니다.
+
+예를 들어 다음 정도의 semantic boundary가 도움이 될 수 있습니다.
+
+- Knowledge — 언제 관련되고 어떤 판단 재료를 제공하는가
+- Workflow — 어떤 목표를 받고 어떤 결과나 handoff를 만드는가
+- Constraint / Control — 언제 적용되고 무엇을 제한하거나 조정하는가
+- Evaluation — 무엇을 어떤 기준으로 판단하는가
+
+이를 별도 schema나 공통 field로 만들 필요는 없습니다. 자연어 책임과 입력·출력 관계가 충분히 명확하다면 그것으로도 조합 가능한 경계가 될 수 있습니다.
+
 ## Conditional Use
 
 의미 역할을 분리하면 **필요한 자산만 필요한 상황에 결합**하기 쉬워집니다.
