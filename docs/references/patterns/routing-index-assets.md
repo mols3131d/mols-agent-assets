@@ -1,6 +1,6 @@
 # Routing & Index Assets
 
-필요한 정보를 빠르게 찾고 **관련 context만 효율적으로 주입**하기 위해 내용 자체와 분리된 discovery / routing asset을 두는 패턴입니다.
+필요한 정보나 자산으로 빠르게 연결하고 **관련 context만 효율적으로 선택·로드**하기 위해 내용 자체와 분리된 discovery / routing asset을 두는 패턴입니다.
 
 Agent Skill이나 Rules뿐 아니라 문서, 코드, 설정, 연구자료 등 탐색 가능한 information surface에 적용할 수 있습니다.
 
@@ -29,7 +29,7 @@ Routing의 다음 대상은 repository 안의 canonical file에 한정되지 않
 - repository-local file이나 directory;
 - 외부 repository, package, URL 또는 catalog;
 - framework나 runtime이 제공하는 native discovery/access surface;
-- tool이 생성하거나 관리하는 runtime asset의 source 또는 management surface;
+- tool-managed source, registry 또는 management surface;
 - 더 구체적인 routing/index asset.
 
 **Discovery location, canonical authority와 runtime access location은 같을 수도 있고 다를 수도 있습니다.** Routing 정보가 generated projection이나 설치된 copy를 가리킨다는 이유만으로 그 위치를 authoring authority로 취급하지 않습니다. Authority 차이가 routing 판단에 중요하면 소비자가 올바른 owner나 next surface에 도달할 만큼만 드러냅니다.
