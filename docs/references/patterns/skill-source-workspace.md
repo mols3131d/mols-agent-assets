@@ -1,6 +1,6 @@
-# Portable Skill Layout
+# Skill Source Workspace
 
-일반 project repository에서 Skill을 **portable하고 tuning하기 쉬운 source workspace**로 관리하는 패턴입니다.
+일반 project repository에서 Skill runtime source와 maintainer context를 함께 관리하여 **재사용·이동·조정하기 쉬운 source workspace**를 구성하는 패턴입니다.
 
 ## Purpose
 
@@ -50,6 +50,7 @@ Skill runtime source와 유지보수·검증·평가 context를 한 Skill 경계
 - Dot-prefix는 packaging exclusion을 자동 보장하지 않습니다. 배포 도구나 workflow가 maintainer-only surface를 어떻게 다루는지 확인합니다.
 - README가 커져 별도 설계·운영 문서를 대신하기 시작하면 entrypoint 책임을 넘어선 것인지 검토합니다.
 - 이 패턴의 핵심은 고정된 directory 목록이 아니라 **Skill과 함께 이동 가능한 runtime/maintainer context의 경계**입니다.
+- Portability는 이 패턴이 얻을 수 있는 결과 중 하나이지 Skill의 분류나 이 패턴의 적용 조건이 아닙니다.
 
 ## Boundary
 
