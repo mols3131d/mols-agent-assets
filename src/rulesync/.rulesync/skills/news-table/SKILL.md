@@ -18,7 +18,7 @@ The user may specify the following naturally. Interpret omitted values from the 
 
 - **Topics** — one or more news subjects.
 - **Count** — the desired number of distinct developments for each topic.
-- **Interval** — how often each topic should be generated or refreshed. The minimum supported granularity is one hour.
+- **Interval** — how often each topic should be generated or refreshed, using an hourly or coarser cadence.
 - **Freshness** — how far back to consider candidate developments for each topic.
 - **Region** — a geographic or market scope when relevant.
 - **Ranking** — the user's preferred emphasis, such as relevance, impact, novelty, or recency.
@@ -27,7 +27,7 @@ The user may specify the following naturally. Interpret omitted values from the 
 
 `Count` means distinct developments after deduplication unless the user explicitly asks for articles or sources. `Interval` and `Freshness` are independent: a topic may refresh every few hours while considering a wider evidence window.
 
-`Interval` expresses requested cadence; actual repeated execution belongs to the active scheduler, automation capability, or harness. If no interval is requested, treat the topic as one-shot rather than inventing a recurrence.
+`Interval` expresses requested cadence at a minimum granularity of one hour; sub-hour recurrence is outside this Skill's contract. Actual repeated execution belongs to the active scheduler, automation capability, or harness. If no interval is requested, treat the topic as one-shot rather than inventing a recurrence.
 
 # Curation
 
