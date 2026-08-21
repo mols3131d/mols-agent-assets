@@ -4,6 +4,8 @@
 
 Agent Skill에서 `SKILL.md`가 entrypoint가 되고 주변 파일이 필요한 context를 제공하는 것처럼, 일반 repository directory도 비슷한 구조를 가질 수 있습니다.
 
+이 directory는 source code 영역일 필요가 없습니다. Filesystem 자체가 작업 상태나 운영 surface를 표현하는 FS Kanban 같은 구조에도 적용할 수 있습니다.
+
 ## Purpose
 
 특정 directory에서만 필요한 behavior와 knowledge를 repository 전체 지침에 섞지 않고 해당 scope 가까이에 둡니다.
@@ -58,9 +60,9 @@ Agent Skill                       Directory Context Capsule
 <skill>/                          <dir>/
 ├─ SKILL.md                       ├─ AGENTS.md      # example entrypoint
 └─ references/                    └─ .configs/      # example context surface
-                                     ├─ architecture.md
-                                     ├─ testing.md
-                                     └─ migration.md
+                                     ├─ workflow.md
+                                     ├─ conventions.md
+                                     └─ examples.md
 ```
 
 두 구조 모두 entrypoint가 핵심 guidance를 제공하고 주변 context가 task-specific behavior와 knowledge를 보완할 수 있습니다.
@@ -73,19 +75,23 @@ Context surface 안에는 필요에 따라 scope-local rules, Skill 또는 task-
 
 실제 Skill, Rule 또는 vendor-native asset은 해당 asset type과 harness의 contract를 그대로 따릅니다. Capsule은 이들을 함께 배치하고 route하는 boundary이지 새로운 공통 schema가 아닙니다.
 
-예를 들어 `AGENTS.md`를 entrypoint로 사용한다면 다음처럼 둘 수 있습니다.
+## FS Kanban Example
 
-```md
-# Data Platform
+Filesystem directory를 Kanban board처럼 사용하는 경우에도 같은 패턴을 적용할 수 있습니다.
 
-이 directory에서는 data platform 관련 작업을 다룬다.
-
-- architecture 판단이 필요하면 `.configs/architecture.md`
-- test 작성이나 수정 시 `.configs/testing.md`
-- migration 작업이면 `.configs/migration.md`
-
-현재 task에 필요한 context만 읽는다.
+```text
+kanban/
+├─ AGENTS.md
+├─ .configs/
+│  ├─ workflow.md
+│  ├─ card-conventions.md
+│  └─ review.md
+└─ ...            # actual Kanban state and work items
 ```
+
+`AGENTS.md`는 board의 목적, 상태 변경 원칙과 필요한 local context로 가는 route를 제공하고, `.configs/`는 workflow나 card convention처럼 세부 운영 context를 보관할 수 있습니다. 실제 Kanban state와 work item은 같은 directory의 본래 filesystem structure가 소유합니다.
+
+이 예시의 핵심은 Kanban 자체가 아니라 **실제 작업 surface와 그 surface를 다루는 agent context를 같은 directory boundary에 붙이는 것**입니다.
 
 ## Discovery and Loading
 
