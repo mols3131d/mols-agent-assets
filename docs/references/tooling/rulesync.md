@@ -37,7 +37,7 @@ runtime usage surface
 
 이 저장소는 supported vendor/target matrix를 정의하지 않습니다. Target은 구체적인 projection 또는 검증 operation에서만 선택합니다. 개별 asset의 유효한 target-specific metadata는 현재 projection 대상이 아니라는 이유만으로 제거하지 않습니다.
 
-Repository-local superset schema나 manual projection semantics는 만들지 않습니다. Rulesync가 source representation을 소유하지 않는 vendor-native authored asset의 배치는 [Authority Routing](../../development/authority-routing.md)을 따릅니다.
+Repository-local superset schema나 manual projection semantics는 만들지 않습니다. Vendor-native authored source의 선택과 배치는 [Authority Routing](../../development/authority-routing.md)을 따릅니다.
 
 ## Local Entry Points
 
