@@ -8,12 +8,12 @@ Resolve Skill decisions from the actual source and target rather than one univer
 schema:
 
 1. The active source framework owns the canonical authored representation.
-2. Apply the portable Agent Skills contract when it actually governs the source or
+1. Apply the portable Agent Skills contract when it actually governs the source or
    target.
-3. The selected target or harness owns target-specific discovery, metadata,
+1. The selected target or harness owns target-specific discovery, metadata,
    permissions, packaging, and runtime behavior.
-4. Project conventions own only local behavior not already decided above.
-5. Skill-local contracts and established intent remain binding inside their scope.
+1. Project conventions own only local behavior not already decided above.
+1. Skill-local contracts and established intent remain binding inside their scope.
 
 Do not convert a target projection into canonical source by assumption. When a
 source framework such as Rulesync projects one canonical Skill into target
