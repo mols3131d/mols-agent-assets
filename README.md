@@ -6,15 +6,15 @@
 
 ## Purpose
 
-- 반복 사용 가치가 있는 Agent Asset과 관련 설계 지식을 durable source로 관리합니다.
-- 한 project에서 얻은 유용한 자산과 아이디어를 project-local state에 묻어두지 않고, 재사용할 가치가 있으면 library source로 끌어올려 계속 개선합니다.
+- 반복 사용 가치가 있는 Agent Asset과 관련 설계 지식을 한 곳에서 지속적으로 관리하고 개선합니다.
+- 자산이 특정 project, vendor, target 또는 맥락에서 시작됐다는 이유만으로 library 밖으로 분류하지 않습니다. 다른 곳에서도 다시 사용할 가치가 있으면 library source로 관리할 수 있습니다.
 - Consumer repository는 library source를 그대로 사용하거나 자신의 target, project authority와 constraints에 맞게 조정합니다.
 
 ## Vision
 
-- **Build once, improve over time** — 같은 capability와 아이디어를 project마다 새로 만들기보다 library에서 관리하고 반복해서 개선합니다.
-- **Portable by default, specialized when useful** — 가능한 범위에서 project와 runtime 결합을 줄이되, portability를 위해 유용한 specialization을 제거하거나 억지 abstraction을 만들지 않습니다.
-- **Library upstream, consumers downstream** — canonical source는 여기서 관리하고 consumer-specific adaptation은 downstream에서 소유합니다. Downstream에서 얻은 개선도 다시 재사용할 가치가 생기면 library source로 가져올 수 있습니다.
+- **Build once, improve over time** — 반복되는 capability와 아이디어를 project마다 새로 만들기보다 하나의 library source를 장기적으로 개선합니다.
+- **Portable when practical, specialized when useful** — 대부분은 portable하게 유지하되 특정 vendor, target 또는 context에 대한 specialization이 가치 있으면 그대로 보존합니다. 보편성을 위해 유용한 차이를 없애거나 억지 abstraction을 만들지 않습니다.
+- **Library upstream, consumers downstream** — canonical source는 여기서 관리하고 consumer-specific adaptation은 downstream에서 소유합니다. Downstream의 adaptation도 여러 곳에서 다시 사용할 가치가 생기면 library asset으로 관리할 수 있습니다.
 - **Preserve reusable design knowledge** — 좋은 Agent Asset을 다시 만들고 판단하는 데 도움이 되는 pattern, reference와 maintainer knowledge도 자산과 함께 축적합니다.
 
 ## Repository Model
