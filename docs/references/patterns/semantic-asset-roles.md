@@ -52,9 +52,11 @@ release workflow
    └─ evaluation criteria
 ```
 
+상위 Workflow 자체도 다시 더 큰 Workflow의 하위 모듈로 재사용할 수 있습니다. 조합 깊이를 미리 정할 필요는 없으며, 실제 책임과 재사용 경계가 있을 때만 계층을 늘립니다.
+
 큰 Workflow가 작은 Workflow와 supporting asset을 조합하는 형태가 대표적이지만, 실제 composition owner는 harness, router, entrypoint 또는 다른 orchestration asset일 수도 있습니다.
 
-Knowledge는 여러 Workflow에서 재사용 가능한 판단 재료로 남기고, Constraint나 Evaluation은 필요한 단계에서 선택적으로 결합하는 구성이 흔히 유용합니다. 이는 고정 dependency rule이 아니라 책임과 재사용 경계를 이해하기 위한 대표적인 방향입니다.
+Knowledge는 여러 Workflow에서 재사용 가능한 판단 재료로 남기고, Constraint나 Evaluation은 필요한 단계에서 결합하는 구성이 흔히 유용합니다. 이는 고정 dependency rule이 아니라 책임과 재사용 경계를 이해하기 위한 대표적인 방향입니다.
 
 ## Module Boundaries
 
@@ -86,6 +88,8 @@ if repository mutation is needed
 
 같은 Workflow가 상황에 따라 다른 Knowledge를 사용할 수도 있고, 하나의 Knowledge를 여러 Workflow가 공유할 수도 있습니다.
 
+여기서 conditional loading은 이미 적용되는 authority를 optional로 만든다는 뜻이 아닙니다. Semantic role은 authority나 precedence를 결정하지 않으며, 상위 지침이나 runtime contract가 적용을 요구하는 Constraint는 해당 authority를 그대로 따릅니다.
+
 실제 discovery와 loading 방식은 metadata, index, entrypoint, Skill routing 등 환경에 따라 달라질 수 있습니다. 필요한 context를 언제 로드할지는 [Progressive Context Routing](progressive-context-routing.md) 같은 별도 패턴과 조합할 수 있습니다.
 
 ## Granularity
@@ -108,6 +112,6 @@ Semantic role을 별도 schema로 표현할 필요는 없습니다.
 
 ## Boundary
 
-이 패턴은 에이전트 자산의 새로운 표준 type system을 정의하지 않습니다.
+이 패턴은 에이전트 자산의 새로운 표준 type system을 정의하지 않습니다. Semantic role 자체가 authority, activation, precedence 또는 loading mechanism을 대신하지도 않습니다.
 
 핵심은 **자산의 규격과 의미 역할을 분리해서 보고, 재사용 가치가 있는 의미 단위를 모듈처럼 조합하는 것**입니다.
