@@ -36,10 +36,11 @@ The values may differ by topic. For example: `AI agents every 6 hours, 10 develo
 1. Follow the user's topics, scope, freshness window, region, requested counts, and cadence when provided.
 1. Prefer actual new developments over evergreen background or repeated commentary.
 1. Merge duplicate coverage of the same development. Keep a later update separate when it materially changes the state, availability, impact, or implications.
+1. When a prior delivery is available, do not spend the current quota on unchanged developments already reported. A materially updated development may appear again when the new change itself is useful.
 1. Count each distinct development once and place it in the single most useful topic. Secondary relevance may be mentioned without duplicating the item into another topic count.
 1. Use the most meaningful date of the development rather than automatically using article publication date; distinguish event, release, publication, or effective dates when the difference matters.
 1. Preserve material uncertainty or disagreement from the evidence.
-1. Return fewer items rather than padding a requested count with weak, stale, or redundant developments, and make a material shortfall visible.
+1. Return fewer items rather than padding a requested count with weak, stale, redundant, or unchanged previously reported developments, and make a material shortfall visible.
 
 # Ranking
 
@@ -67,4 +68,4 @@ Add `Score` when it helps comparison. Adapt other columns to the request. Attach
 
 Do not duplicate search, source-ranking, or cross-checking procedures here. When fresh evidence is needed, combine this Skill with the appropriate research capability.
 
-Do not implement waiting, timers, or recurrence inside this Skill. When recurring delivery is requested, pass the interpreted topic cadence to an available scheduling or automation capability. If none is available, keep the cadence as unmet scheduling intent and do not claim that recurring delivery is active.
+Do not implement waiting, timers, recurrence, or persistent delivery state inside this Skill. When recurring delivery is requested, pass the interpreted topic cadence to an available scheduling or automation capability. If none is available, keep the cadence as unmet scheduling intent and do not claim that recurring delivery is active.
