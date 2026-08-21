@@ -7,8 +7,9 @@ description: >-
   activation, source or target authority, or duplicated or overgrown asset
   structure. Use mols-agent-asset-validator when the primary task is formal
   validation, audit, readiness, stress testing, regression, behavioral or
-  adversarial evaluation, or bounded correction driven by those findings. Do not
-  use for Skill discovery, installation, or invocation, ordinary product code,
+  adversarial evaluation, or bounded correction driven by those findings. Use
+  mols-agent-asset-find for discovery, selection, loading, installation,
+  synchronization, or invocation. Do not use for ordinary product code,
   human-facing prose, prompt writing, hook setup, or MCP setup.
 ---
 
@@ -106,8 +107,8 @@ inferring success.
 
 # Boundary
 
-- Do not discover or install Skills; use the dedicated discovery or installation
-  capability.
+- Do not discover, select, load, install, synchronize, or invoke Agent Assets; use
+  `mols-agent-asset-find`.
 - Prompt, Hook, and MCP authoring are outside this Skill's maintained type-specific
   scope. Do not add dedicated references or workflows for them without repeated
   local need and an explicit scope decision.
