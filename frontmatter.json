@@ -27,8 +27,7 @@
           "name": "description",
           "type": "string",
           "single": true,
-          "required": true,
-          "description": "탐색·라우팅용 메타데이터. 문서를 선택해야 하는 조건과 책임을 최소 컨텍스트로 식별하고, 일반 요약보다 trigger signal을 우선합니다."
+          "required": true
         }
       ]
     }
