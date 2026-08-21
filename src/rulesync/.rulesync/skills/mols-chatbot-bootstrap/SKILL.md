@@ -9,131 +9,134 @@ description: >-
 
 # Mols Chatbot Bootstrap
 
-Establish the smallest repository-local compatibility harness for chat runtimes.
+Establish or repair the smallest repository-local compatibility harness that lets a chat
+runtime reach the repository guidance and Agent Assets it cannot discover natively.
 
-## Lifecycle
+# Lifecycle
 
 This is a low-frequency provisioning Skill, not baseline operational context.
 
-- Reuse it across repositories when chatbot compatibility must be bootstrapped, refreshed, or audited; one repository may need it only once or occasionally.
-- Keep it discoverable in a Skill source or catalog instead of persistently installing or loading it merely for possible future use.
-- Prefer this consumer lifecycle when the runtime supports it: discover/select → temporary load → bootstrap/refresh/audit → release from active context.
-- Persist or preinstall this Skill only when the caller explicitly wants repeated access across repositories or persistent availability itself is useful in the target runtime.
-- After bootstrap, repository-local entrypoints, routes, scripts, validators, and CI own the resulting harness. Normal repository work must not depend on this Skill remaining loaded or installed.
-- Reinvoke it when compatibility assets become missing or stale, or when runtime or repository architecture materially changes.
+- Reuse it across repositories when chatbot compatibility must be established or repaired;
+  one repository may need it only once or occasionally.
+- Keep it discoverable in a Skill source or catalog instead of persistently installing or
+  loading it merely for possible future use.
+- Prefer this consumer lifecycle when the runtime supports it: discover/select → temporary
+  load → bootstrap or repair → release from active context.
+- Persist or preinstall this Skill only when repeated access is explicitly useful in the
+  target runtime or across repositories.
+- After bootstrap, repository-local compatibility assets own the resulting harness. Normal
+  repository work must not depend on this Skill remaining loaded or installed.
+- Reinvoke it when the compatibility harness becomes missing or stale, or when runtime or
+  repository architecture materially changes.
 
-## Arguments
+# Contract
 
-```yaml
-target: <auto>
-mode: <auto>
-scope: <auto>
-sources: <auto>
-route_entry: <auto>
-generation: <auto>
-tuning: <auto>
-validation: <auto>
-overwrite: <auto>
-```
+- Inspect the target before changing it.
+- Reuse native runtime behavior and established repository mechanisms before adding a
+  compatibility layer.
+- Recover only behavior the target chat runtime is actually missing.
+- Keep `AGENTS.md`, Skills, Rules, and other canonical assets authoritative; compatibility
+  entrypoints and route metadata only connect the runtime to those owners.
+- Preserve established target conventions. Do not impose one route layout, filename,
+  metadata schema, generator, or CI model on every repository.
+- Keep the harness independent of this Skill after provisioning.
+- Preserve approved routing intent and user customization unless the requested repair
+  explicitly supersedes them.
+- Do not create route files, generators, validators, or CI merely because this Skill or a
+  bundled resource makes them available.
 
-- `target` — repository or workspace to inspect and modify. `<auto>` uses the active repository/workspace established by the caller or runtime.
-- `mode` — `apply`, `refresh`, `audit`, or `<auto>`. `<auto>` resolves to `audit` for review/check-only intent, `refresh` when relevant compatibility assets already exist and the caller asks to update/sync/repair them, otherwise `apply`.
-- `scope` — one or more of `chatbot`, `skills`, `rules`, `automation`, or `<auto>`. `<auto>` includes only responsibilities needed by the request or missing/stale in the target.
-- `sources` — explicit local asset roots, remote asset URLs, or `<auto>`. `<auto>` uses authoritative asset locations already declared or discoverable in the target plus remote assets explicitly established by the caller; it does not search for unrelated remote sources.
-- `route_entry` — an explicit entrypoint path, `direct`, `<none>`, or `<auto>`. `<auto>` reuses an existing entrypoint when suitable; otherwise it prefers `.agents/routes/ROUTE.md` when one link usefully represents the routing surface.
-- `generation` — `script`, `model`, `<none>`, or `<auto>`. `<auto>` first checks whether existing or bundled generation matches the target asset layout and metadata contract, adapts it when worthwhile, and otherwise uses the smaller direct/model path.
-- `tuning` — `on`, `off`, or `<auto>`. `<auto>` covers both generator compatibility tuning and route-quality tuning, but changes only what materially improves compatibility or selection.
-- `validation` — `local`, `ci`, `<none>`, or `<auto>`. `<auto>` performs local validation after writes and adds target CI only when committed route metadata has a meaningful drift risk.
-- `overwrite` — `preserve`, `replace`, or `<auto>`. `<auto>` is `preserve`. Existing approved routing/tuning is never replaced without explicit `replace` intent.
+# Resolve
 
-`<auto>` means infer independently from evidence, not use one hidden fixed profile. `<none>` explicitly disables that optional behavior. Explicit arguments always win.
+Infer only what can change the result from caller intent and observable target state:
 
-## Auto Resolution
+1. the repository or workspace being adapted;
+1. which chat-runtime discovery behavior is missing or stale;
+1. the existing authoritative guidance and Agent Asset surfaces;
+1. the smallest compatibility surface that can bridge the gap;
+1. the validation needed for the state actually changed.
 
-Resolve each `<auto>` independently using this evidence order:
+A review-only request stays read-only. If the existing harness already satisfies the
+requested compatibility, report that state rather than rewriting it.
 
-1. explicit caller intent and arguments;
-1. active target repository/workspace context;
-1. applicable repository instructions and established conventions;
-1. existing `CHATBOT.md`, route entrypoints, route files, scripts, validators, and CI;
-1. authoritative local asset roots and explicitly declared remote assets;
-1. this Skill's defaults and bundled resources.
+Do not expose an internal mode or option matrix when the request and target state already
+determine the next action. If a consequential target choice remains genuinely ambiguous,
+resolve it from target authority or surface only that decision.
 
-Default behavior is conservative:
+# CHATBOT.md
 
-- reuse before creating;
-- preserve before replacing;
-- local validation before new CI;
-- `.agents/routes/ROUTE.md` as the default single entrypoint only when useful, never mandatory;
-- never assume one asset layout, frontmatter shape, Rule selector key, or package spec is universal;
-- generation and validation only after their assumptions match the target or are deliberately adapted;
-- tune only when compatibility or routing quality improves.
+For mols `CHATBOT.md` compatibility, keep the root file minimal and treat it as a bootstrap
+pointer, not another policy owner.
 
-`mode: audit` is read-only. Do not infer write behavior from another argument while audit is active.
+It should connect the runtime to the smallest useful existing or repository-local routing
+surface needed to recover missing behavior such as:
 
-Do not let one inferred value silently authorize another. If a material value cannot be resolved from evidence, leave that behavior disabled or unresolved rather than inventing repository structure.
+- applicable `AGENTS.md` guidance;
+- task-relevant Skill discovery and loading;
+- target-path Rule discovery and loading.
 
-## Contract
+Do not copy project policy, Skill bodies, Rule bodies, catalogs, or static path tables into
+`CHATBOT.md`.
 
-Inspect the repository first. Reuse existing instructions, routes, scripts, validators, and CI.
-Create only what is actually needed.
+# Workflow
 
-- Keep root `CHATBOT.md` minimal and root-only.
-- Recover only harness behavior the runtime does not already provide.
-- Keep `AGENTS.md`, Skills, and Rules authoritative; route assets are discovery metadata only.
-- Treat bundled scripts and examples as reference baselines, not universal target assets.
-- Use generation for mechanical baseline metadata and model review for routing quality.
-- Never silently erase approved route tuning.
-- Never install `ROUTE.md`, route JSONL, or CI merely because this Skill itself is installed.
+1. Inspect the target runtime assumptions, repository guidance, existing entrypoints,
+   routing surfaces, generators, validators, and CI only as far as they can affect the
+   compatibility decision.
+1. Determine the exact missing or stale compatibility behavior. If native or existing
+   mechanisms already cover it, reuse them and stop adding structure.
+1. Establish or repair the smallest entrypoint and routing surface that closes that gap.
+   Use the target's established representation when one exists.
+1. When no established route convention exists and a separate route surface is justified,
+   use [Route convention](references/routes.md) as the mols fallback rather than as a
+   universal schema.
+1. Use generation only when deterministic regeneration or drift checking provides concrete
+   value. Prefer target-native or existing tooling; otherwise use the bundled reference
+   generator only when its assumptions fit or a small adaptation is justified.
+1. Tune routing metadata only when selection materially improves. Do not duplicate asset
+   bodies or redefine authoritative applicability.
+1. Add or adapt validation proportional to the created drift risk. Reuse existing local or
+   CI checks before introducing another persistent mechanism.
+1. Verify authority boundaries, preservation of intentional tuning, and that the resulting
+   repository works without this Skill remaining active.
 
-## Resources
+# Resources
 
-Read only the resource needed for the current work.
+Load only the resource needed for the current decision:
 
-- [Route convention](references/routes.md) — route files, `_meta`, `source`, `ROUTE.md`, Skill and Rule entry shapes.
-- [Generation and tuning](references/tuning.md) — compatibility, generation, semantic tuning, validation, overwrite safety, and CI guidance.
-- `scripts/generate_routes.py` — reference generator/checker for a common local Skill/Rule layout; inspect and adapt it before use when the target differs.
-- `examples/github-actions-route-check.yml` — optional target-side CI example; adapt it and use only when `validation: ci` is justified.
+- [Route convention](references/routes.md) — when a separate routing surface is needed and
+  the target has no stronger established representation.
+- [Generation and tuning](references/tuning.md) — when generation, regeneration, semantic
+  route tuning, or drift validation is materially justified.
+- `scripts/generate_routes.py` — when a compatible deterministic baseline generator or
+  checker provides more value than a direct edit.
+- `examples/github-actions-route-check.yml` — only when persistent CI validation is
+  justified and the target lacks an equivalent check.
 
-## CHATBOT.md
+Bundled resources are reference implementations for this compatibility procedure, not
+installation side effects or universal target assets.
 
-When compatibility routing is needed, point `CHATBOT.md` at the smallest useful routing entrypoint.
+# Validation
 
-Default to `.agents/routes/ROUTE.md` when one link usefully represents the routing surface.
-Reuse another established entrypoint or direct route-file links when simpler.
+Verify only claims relevant to the resulting harness:
 
-Recover only missing behavior such as:
-
-- applicable `AGENTS.md` hierarchy loading;
-- task-relevant Skill discovery/loading;
-- target-path Rule discovery/loading.
-
-Do not copy project policy, Skill bodies, Rule bodies, catalogs, or static path tables into `CHATBOT.md`.
-
-## Workflow
-
-1. Resolve arguments and inspect the target's current state, asset locations, package shapes, frontmatter, selectors, generation, validation, and CI conventions.
-1. Determine which compatibility responsibilities are actually missing or stale.
-1. Create, update, or audit root `CHATBOT.md` according to `mode` and `scope`.
-1. Establish the smallest useful route surface according to `route_entry` and `sources`; create `ROUTE.md` in the target only when that default is useful.
-1. Verify generator assumptions against the target. Reuse, configure, adapt, or replace the bundled script as needed.
-1. Generate factual baseline routes according to `generation` without violating `overwrite`.
-1. Tune generator compatibility and route quality according to `tuning`.
-1. Validate according to `validation`. Reuse target-native checks first; adapt the bundled checker or CI example only when useful.
-1. Verify authority boundaries and that intentional tuning is preserved.
-
-## Validation
-
-Verify that:
-
-- routing has a clear entrypoint without requiring `ROUTE.md` when another shape is better;
-- local `source` values are repository-root-relative and remote `source` values are URLs;
-- Skill routing is selective without becoming a duplicate Skill body;
-- Rule routing preserves authoritative selector semantics;
-- generation and validation match or have been adapted to the target asset layout and metadata contract;
-- generated baseline output is deterministic when generation is used;
-- validation protects factual invariants without rejecting approved semantic tuning;
-- rerunning generation does not silently erase approved tuning;
-- no project policy or asset body was duplicated.
+- the runtime has a stable first hop into repository context when one is needed;
+- routing is actionable without duplicating canonical policy or asset bodies;
+- Skill selection remains semantic and Rule applicability preserves authoritative selector
+  meaning;
+- any generated metadata is deterministic for the assumptions actually used;
+- validation checks factual drift without erasing approved semantic tuning;
+- target-specific paths, formats, permissions, and CI behavior came from observable target
+  authority rather than assumption;
+- normal repository work no longer depends on this Skill being loaded or installed.
 
 Prefer the smallest valid result over a uniform repository layout.
+
+# Boundary
+
+- This Skill provisions compatibility; it does not become the ongoing owner of repository
+  guidance, Skill behavior, Rule behavior, routing semantics owned elsewhere, or routine
+  repository work.
+- It does not define a portable chatbot standard or guarantee automatic discovery of
+  `CHATBOT.md` or any route path.
+- It does not justify a separate Skill for bootstrap, repair, review, generation, tuning,
+  or validation merely because those workflow branches exist inside the same outcome.
