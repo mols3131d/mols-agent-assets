@@ -35,6 +35,9 @@ usable with the **least persistent target state that preserves the requested out
   possible.
 - Preserve target-native semantics. `install`, `register`, `import`, `apply`, `place`, and
   `configure` are target operations, not one universal Agent Asset model.
+- When exact target paths, fields, permissions, or behavior matter, resolve them from
+  observable target capabilities or current target authority rather than memory. Do not
+  invent a target UI, path, or persistence model.
 - Report the state actually reached. A temporary load, staged import, generated file, or
   pending approval is not a successful durable installation.
 - Do not claim update, migration, or synchronization completeness when the target state
@@ -127,7 +130,7 @@ Stop at the least persistent state that satisfies the requested outcome.
 
 ## Current-task use
 
-1. Use the asset directly when it is already available and legitimately activated.
+1. Use the asset directly when it is already available and applicable to the task.
 1. Otherwise use a temporary or session-scoped load when the runtime supports one.
 1. Use another non-durable target-native mechanism only when it preserves the same outcome.
 
