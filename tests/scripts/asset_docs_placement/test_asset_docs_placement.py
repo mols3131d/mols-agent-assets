@@ -53,7 +53,7 @@ def test_skill_doc_capsules_have_skill_or_family_owner() -> None:
         readme = capsule / "README.md"
         assert readme.is_file(), f"family docs require README.md: {capsule.name}"
         body = readme.read_text(encoding="utf-8")
-        assert any(name in body for name in skill_names), (
+        assert any(f"`{name}`" in body for name in skill_names), (
             f"family docs must name at least one current Skill: {capsule.name}"
         )
 
