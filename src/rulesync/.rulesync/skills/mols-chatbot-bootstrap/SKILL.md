@@ -11,6 +11,17 @@ description: >-
 
 Establish the smallest repository-local compatibility harness for chat runtimes.
 
+## Lifecycle
+
+This is a low-frequency provisioning Skill, not baseline operational context.
+
+- Reuse it across repositories when chatbot compatibility must be bootstrapped, refreshed, or audited; one repository may need it only once or occasionally.
+- Keep it discoverable in a Skill source or catalog instead of persistently installing or loading it merely for possible future use.
+- Prefer this consumer lifecycle when the runtime supports it: discover/select → temporary load → bootstrap/refresh/audit → release from active context.
+- Persist or preinstall this Skill only when the caller explicitly wants repeated access across repositories or persistent availability itself is useful in the target runtime.
+- After bootstrap, repository-local entrypoints, routes, scripts, validators, and CI own the resulting harness. Normal repository work must not depend on this Skill remaining loaded or installed.
+- Reinvoke it when compatibility assets become missing or stale, or when runtime or repository architecture materially changes.
+
 ## Arguments
 
 ```yaml
