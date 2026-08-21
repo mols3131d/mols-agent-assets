@@ -6,7 +6,7 @@ description: >
 agentsskills:
   compatibility: GitHub Flavored Markdown
   metadata:
-    version: "3.0.0"
+    version: "3.1.0"
 ---
 
 # Markdown for Human
@@ -16,6 +16,9 @@ agentsskills:
 빠르고 쉽게 사람이 읽을 수 있는 Markdown 문서를 생성하거나 개선한다.
 독자가 핵심을 빠르게 파악하고 필요한 정보를 쉽게 다시 찾도록 만든다.
 사용자와 프로젝트의 명시적인 스타일 선호를 우선한다.
+
+사람 전용 문서뿐 아니라 사람이 읽고 유지보수하는 agent-facing Markdown에도 적용한다.
+이 경우 human-readable presentation을 담당하며 행동 계약, activation과 authority는 해당 자산의 owner가 소유한다.
 
 ## Scope
 
@@ -41,8 +44,8 @@ agentsskills:
 
 ## Workflow
 
-1. 독자, 목적과 핵심 결론을 확인한다.
-1. 원문의 사실, 결정, 순서와 관계를 보존한다.
+1. 독자, 목적, 핵심 결론, 필요한 사전지식과 다음 행동을 확인한다. Reading surface가 표현을 바꿀 때만 그 제약도 확인한다.
+1. 기존 문서를 개선할 때 사실, 결정, 순서와 관계를 보존하고 무엇을 정확히 유지해야 하는지 구분한다.
 1. 결론과 중요한 상태를 먼저 배치한다.
 1. 정보 구조에서 heading과 section을 도출한다.
 1. 가장 단순하고 빠르게 읽히는 표현을 선택한다.
@@ -53,6 +56,7 @@ agentsskills:
 
 - 문서와 section의 첫 부분에 결론, 상태, 결정 또는 핵심 수치를 둔다.
 - 정보는 `결론 → 핵심 근거 → 세부 내용 → 참고 자료` 순서로 확장한다.
+- 저자의 작성·탐색 순서보다 독자의 질문, 판단과 다음 행동에 맞춰 구조화한다.
 - heading만 훑어도 흐름을 이해할 수 있게 구체적으로 작성한다.
 - heading depth는 얕게 유지하고 한 줄짜리 section을 연속해서 만들지 않는다.
 - 한 문단에는 하나의 핵심만 두고 첫 문장에 결론을 배치한다.
@@ -126,6 +130,10 @@ GitHub target에서는 `NOTE`, `TIP`, `IMPORTANT`, `WARNING`, `CAUTION`을 사�
 - 하나의 사실이나 규칙은 가장 적절한 한 곳에서만 설명한다.
 - 같은 내용을 heading, prose, table, callout과 visual에서 반복하지 않는다.
 - 겹치는 section을 통합하고 다른 위치에서는 링크나 짧은 참조를 사용한다.
+- 같은 개념에는 같은 용어를 사용하고 표준 domain term을 임의로 쉬운 표현으로 바꾸지 않는다.
+- 주체, 행동, 조건, 예외와 결과가 모호할 때는 이를 명시한다.
+- 정확성을 낮추는 단순화를 피하고 필요한 불확실성, nuance와 한계를 보존한다.
+- 원문의 사실, citation, quotation, identifier와 사용자 지정 voice를 보존한다.
 - 원문에 없는 사실, 수치, 판단과 관계를 추가하지 않는다.
 - 사용자의 용어, naming, 의도와 유용한 visual을 보존한다.
 - 예시를 복사하기보다 실제 정보 구조를 먼저 판단한다.
