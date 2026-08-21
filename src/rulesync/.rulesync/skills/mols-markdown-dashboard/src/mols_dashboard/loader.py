@@ -253,7 +253,9 @@ def _optional_sequence(value: Any, path: str) -> Sequence[Any]:
 def _text(raw: Any, path: str) -> str:
     if raw is None:
         raise DashboardInputError(f"{path} is required")
-    value = str(raw).strip()
+    if not isinstance(raw, str):
+        raise DashboardInputError(f"{path} must be a string")
+    value = raw.strip()
     if not value:
         raise DashboardInputError(f"{path} must not be empty")
     return value

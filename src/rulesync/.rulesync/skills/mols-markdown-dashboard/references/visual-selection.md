@@ -2,16 +2,24 @@
 
 ## Principle
 
-기본 세 표가 답하지 못하는 질문에만 visual을 추가한다.
+기본 세 표가 답하지 못하는 질문이 있을 때만 추가 visual을 고려한다.
 
-| Reader question | Preferred form | Condition |
+Dashboard Skill은 **visual이 필요한지와 어떤 reader question을 보완해야 하는지**까지만 판단한다. 실제 chart/diagram type, syntax와 visual design은 사용 가능한 전문 visual Skill이나 tool이 소유한다.
+
+| Reader question | Dashboard decision | Condition |
 | --- | --- | --- |
 | 현재 구현·검증 상태는? | Development Progress table | 항상 |
 | 무엇이 덜 구현됐나? | Implementation Gaps table | gap이 있을 때 |
 | 무엇이 덜 검증됐나? | Verification Gaps table | gap이 있을 때 |
 | 실제 진행을 막는가? | Risks / Blockers table | material risk가 있을 때 |
-| 시간이 지나며 나아졌나? | Mermaid line chart | 비교 가능한 여러 snapshot이 있을 때 |
-| 어디서 막히는가? | Mermaid flow/state diagram | 관계가 표보다 중요할 때 |
+| 시간이 지나며 나아졌나? | trend visual을 고려 | 비교 가능한 여러 snapshot이 있을 때 |
+| 어디서 막히는가? | dependency/state visual을 고려 | 관계가 표보다 중요할 때 |
+
+## Projection Boundary
+
+Bundled renderer가 관리하는 `dashboard.md`에 visual을 포함해야 하면 **선택된 template이 그 visual을 소유**하게 한다. Template에 없는 visual을 렌더 결과에 수동으로 붙이면 다음 render에서 보존된다고 가정하지 않으며 `validate --markdown`에서는 drift로 취급한다.
+
+Visual이 dashboard projection 자체의 일부일 필요가 없으면 별도 adjacent artifact로 두고 dashboard에서 reference하는 편이 더 단순하다. 이를 위해 core YAML schema에 visual field를 자동으로 추가하지 않는다.
 
 ## Default Exclusions
 
@@ -23,8 +31,9 @@
 
 ## Rules
 
-1. 차트를 삭제해도 판단이 같으면 삭제한다.
+1. visual을 삭제해도 판단이 같으면 삭제한다.
 1. snapshot이 하나뿐이면 progress trend를 만들지 않는다.
 1. denominator가 달라진 snapshot을 단순 percentage trend로 연결하지 않는다.
-1. 복잡한 Mermaid는 사용 가능한 Mermaid 전문 도구나 스킬이 있으면 위임한다. 없어도 핵심 dashboard 완성을 막지 않는다.
-1. 같은 사실을 표와 diagram에서 반복하지 않는다.
+1. 추가 visual이 필요하면 현재 환경에서 사용할 수 있는 chart/diagram 전문 Skill이나 tool에 reader question과 evidence를 넘긴다.
+1. 전문 visual capability가 없어도 핵심 dashboard 완성을 막지 않는다.
+1. 같은 사실을 표와 visual에서 반복하지 않는다.

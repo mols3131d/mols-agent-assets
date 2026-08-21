@@ -48,6 +48,14 @@ uv run python scripts/render_dashboard.py render \
   -o examples/domain-dashboard.md
 ```
 
+기존 Markdown이 현재 YAML과 같은 projection인지 확인할 때는 다음을 사용합니다.
+
+```bash
+uv run python scripts/render_dashboard.py validate \
+  examples/project-dashboard.yml \
+  --markdown examples/project-dashboard.md
+```
+
 ## Recovery Checklist
 
 스킬이 후속 수정으로 훼손됐을 때 `baseline/DIRECTIVE.md`와 다음 항목을 대조합니다.
@@ -61,9 +69,10 @@ uv run python scripts/render_dashboard.py render \
 | YAML status | Emoji 없는 stable code |
 | Rendered status | Emoji + English label |
 | Progress aggregation | Numerator와 denominator 합산 |
+| Status/progress boundary | `in_progress`는 `0/n` 가능, `partial`은 `0 < completed < total` |
 | Core renderer | PyYAML + dataclasses/StrEnum + Jinja2 |
-| Markdown check | pyromark parser 호출 |
-| Unknown fields | 경로와 함께 즉시 실패 |
+| Markdown check | pyromark parser 호출 + 기존 output exact drift 비교 |
+| Unknown fields/types | 경로와 함께 즉시 실패 |
 | Output write | Atomic replace |
 | Example integrity | YAML 재렌더 결과와 Markdown 일치 |
 | Default visuals | Core tables only; charts conditional |

@@ -36,12 +36,7 @@ def build_parser() -> argparse.ArgumentParser:
         required=True,
         help="output Markdown path or '-' for stdout",
     )
-    render.add_argument(
-        "--template-directory",
-        type=Path,
-        default=DEFAULT_TEMPLATE_DIRECTORY,
-    )
-    render.add_argument("--template-name", default=DEFAULT_TEMPLATE_NAME)
+    _add_template_arguments(render)
     render.add_argument(
         "--no-markdown-check",
         action="store_true",
@@ -58,8 +53,18 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         help="existing Markdown; otherwise render in memory",
     )
+    _add_template_arguments(validate)
 
     return parser
+
+
+def _add_template_arguments(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "--template-directory",
+        type=Path,
+        default=DEFAULT_TEMPLATE_DIRECTORY,
+    )
+    parser.add_argument("--template-name", default=DEFAULT_TEMPLATE_NAME)
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -68,12 +73,14 @@ def main(argv: Sequence[str] | None = None) -> int:
         dashboard = load_dashboard(args.input)
         validate_dashboard_consistency(dashboard)
 
+        expected_markdown = render_dashboard(
+            dashboard,
+            template_directory=args.template_directory,
+            template_name=args.template_name,
+        )
+
         if args.command == "render":
-            markdown = render_dashboard(
-                dashboard,
-                template_directory=args.template_directory,
-                template_name=args.template_name,
-            )
+            markdown = expected_markdown
             if not args.no_markdown_check:
                 validate_markdown(markdown, dashboard=dashboard)
             _write_output(args.output, markdown)
@@ -84,9 +91,13 @@ def main(argv: Sequence[str] | None = None) -> int:
         markdown = (
             args.markdown.read_text(encoding="utf-8")
             if args.markdown
-            else render_dashboard(dashboard)
+            else expected_markdown
         )
         validate_markdown(markdown, dashboard=dashboard)
+        if args.markdown and markdown != expected_markdown:
+            raise DashboardValidationError(
+                "existing Markdown does not match current YAML render"
+            )
         print(f"valid: {args.input}")
         return 0
     except (
