@@ -13,7 +13,7 @@ description: 에이전트 자산을 추가, 분리, 중복 제거, 단순화할 
 1. **YAGNI** — 지금 실제 요구가 없는 구조·호환성·metadata를 만들지 않습니다.
 1. **SRP** — trigger, permission, lifecycle 또는 변경 이유가 다르면 책임 분리를 검토합니다.
 1. **DRY** — 같은 의미의 authoritative owner를 둘 이상 만들지 않습니다.
-1. **KISS** — 같은 신뢰성을 더 적은 파일·단계·option으로 만들 수 있으면 단순한 쪽을 택합니다.
+1. **KISS** — 필요한 책임, 정보, 경계와 검증을 유지하면서 현재 문제 해결에 기여하지 않는 복잡성을 제거합니다. 파일·단계·option 수나 문서 길이가 적다는 이유만으로 더 단순하다고 판단하지 않습니다.
 1. **Progressive Disclosure** — discovery → core → conditional detail 순으로 필요한 context만 노출합니다.
 
 앞 단계에서 제거할 수 있는 문제를 뒤 단계의 abstraction으로 해결하지 않습니다.
@@ -41,7 +41,7 @@ Local rule이나 reference를 추가하기 전에 다음 중 하나인지 확인
 
 ## Human Comprehension
 
-AI가 자산을 빠르게 만들수록 maintainer가 **무엇이 authoritative하고 왜 존재하는지 이해하는 속도**가 병목이 될 수 있습니다. 이를 더 많은 설명으로 해결하지 않습니다. Owner, 책임 경계와 탐색 경로를 줄이고 명확하게 유지합니다.
+AI가 자산을 빠르게 만들수록 maintainer가 **무엇이 authoritative하고 왜 존재하는지 이해하는 속도**가 병목이 될 수 있습니다. 이를 더 많은 설명으로 해결하지 않습니다. 불필요한 owner, 책임 경계와 탐색 경로를 만들지 않고, 필요한 것은 명확하게 유지합니다.
 
 관련 배경: [Understanding is the New Bottleneck](https://wikidocs.net/blog/@jaehong/23176/)
 
