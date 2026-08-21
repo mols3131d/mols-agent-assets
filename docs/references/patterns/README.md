@@ -33,6 +33,7 @@ Pattern은 **본질은 분명하게, 적용은 유연하게** 작성합니다.
 
 - Pattern을 성립시키는 core와 invariant는 명확하게 둡니다.
 - 본질이 아닌 layout, filename, format, tool, workflow는 고정 규칙으로 만들지 않습니다.
+- Directory나 filename은 명시적으로 contract라고 정의하지 않는 한 예시로 해석합니다. 강한 표현이 필요해도 보통 recommendation 또는 default 수준으로 둡니다.
 - 대표 구현은 recommendation, typical form, example, option처럼 성격을 구분해 제시합니다.
 - 의미 있는 대안과 규모·환경에 따른 extension을 열어둡니다.
 - 작은 repository에서는 단순화하고, 필요한 경우 더 복잡한 구성으로 확장할 수 있어야 합니다.
