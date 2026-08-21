@@ -50,46 +50,26 @@ Entrypoint는 보통 다음에 집중합니다.
 
 ## Skill-like Shape
 
+대표 예시는 **entrypoint 하나와 context directory 하나**만 두는 단순한 형태입니다.
+
 ```text
 Agent Skill                       Directory Context Capsule
 
 <skill>/                          <dir>/
 ├─ SKILL.md                       ├─ AGENTS.md      # example entrypoint
-├─ references/                    ├─ skills/        # optional
-└─ ...                            ├─ references/
-                                  ├─ guidelines/
-                                  └─ ...
+└─ references/                    └─ .configs/      # example context surface
+                                     ├─ architecture.md
+                                     ├─ testing.md
+                                     └─ migration.md
 ```
 
-두 구조 모두 entrypoint가 핵심 guidance를 제공하고 주변 파일이 task-specific behavior와 추가 context를 제공할 수 있습니다.
+두 구조 모두 entrypoint가 핵심 guidance를 제공하고 주변 context가 task-specific behavior와 knowledge를 보완할 수 있습니다.
+
+`.configs/`는 대표 예시일 뿐입니다. `configs/`, `.agents/`, `agents/`, `context/` 또는 repository에 더 자연스러운 다른 이름을 사용할 수 있습니다. Context 종류마다 별도 directory를 만들 필요도 없습니다.
 
 차이는 activation과 contract입니다. Skill은 Skill runtime의 discovery/activation semantics를 따르지만, Directory Context Capsule은 directory scope, path rule, explicit routing 또는 harness의 native mechanism을 통해 적용될 수 있습니다. Directory에 파일을 두었다는 사실만으로 Skill semantics나 automatic discovery가 생긴다고 가정하지 않습니다.
 
-## Local Assets and Context
-
-하위 이름과 구조는 필요에 맞게 정합니다.
-
-```text
-<dir>/
-├─ <entrypoint>
-├─ skills/
-├─ references/
-├─ guidelines/
-├─ examples/
-└─ schemas/
-```
-
-`skills/`, `references/`, `guidelines/`, `examples/`, `schemas/`는 모두 예시입니다. `knowledge/`, `rules/`, `workflows/`, `templates/` 또는 flat files처럼 repository에 더 자연스러운 구성을 사용할 수 있습니다.
-
-Capsule에는 다음과 같은 material을 둘 수 있습니다.
-
-- scope-local rules와 conventions
-- scope-local Skill 또는 task-specific instruction asset
-- architecture 또는 domain knowledge
-- 작업별 guidelines와 checklists
-- examples와 known-good forms
-- schemas, templates와 structured references
-- 다른 canonical owner로 가는 routing guidance
+Context surface 안에는 필요에 따라 scope-local rules, Skill 또는 task-specific instruction, architecture/domain knowledge, guidelines, examples, schemas, templates, 다른 canonical owner로 가는 routing guidance 등을 함께 둘 수 있습니다.
 
 실제 Skill, Rule 또는 vendor-native asset은 해당 asset type과 harness의 contract를 그대로 따릅니다. Capsule은 이들을 함께 배치하고 route하는 boundary이지 새로운 공통 schema가 아닙니다.
 
@@ -100,10 +80,9 @@ Capsule에는 다음과 같은 material을 둘 수 있습니다.
 
 이 directory에서는 data platform 관련 작업을 다룬다.
 
-- architecture 판단이 필요하면 `references/architecture.md`
-- test 작성이나 수정 시 `guidelines/testing.md`
-- schema 관련 작업이면 `references/schema.md`
-- migration 작업이면 local migration Skill 또는 guidance를 사용한다
+- architecture 판단이 필요하면 `.configs/architecture.md`
+- test 작성이나 수정 시 `.configs/testing.md`
+- migration 작업이면 `.configs/migration.md`
 
 현재 task에 필요한 context만 읽는다.
 ```
@@ -125,7 +104,8 @@ Harness가 nested instruction이나 scoped asset discovery를 지원하면 그 n
 ## Options and Considerations
 
 - 작은 scope는 entrypoint 하나만으로 충분할 수 있습니다.
-- 세부 context나 task-specific asset이 늘어날 때만 하위 directory를 추가할 수 있습니다.
+- 세부 context나 task-specific asset이 늘어날 때 context directory 하나를 추가하는 정도로 시작할 수 있습니다.
+- Context 종류가 실제로 독립된 책임과 관리 필요를 가질 때만 더 세분화합니다.
 - Entrypoint가 Rule이고 사람이 읽는 설명은 별도 `README.md`가 맡을 수 있습니다.
 - `README.md` 하나가 human guide와 agent entrypoint를 함께 맡을 수도 있습니다. 다만 agent-only operational guidance가 커지면 별도 instruction/Rule asset으로 분리하는 편이 더 명확할 수 있습니다.
 - 여러 nested capsule은 실제 scope나 책임이 다를 때만 나누는 편이 좋습니다.
