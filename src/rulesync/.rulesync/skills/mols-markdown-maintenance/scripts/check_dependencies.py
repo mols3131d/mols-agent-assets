@@ -1,4 +1,4 @@
-# \!/usr/bin/env python3
+#!/usr/bin/env python3
 import importlib.metadata
 import re
 import shutil
@@ -42,12 +42,12 @@ def main() -> int:
         )
 
     if missing:
-        print("Dependency Check Failed for mols-markdown-tooling:", file=sys.stderr)
+        print("Dependency Check Failed for mols-markdown-maintenance:", file=sys.stderr)
         for item in missing:
             print(f" - {item}", file=sys.stderr)
         return 1
 
-    print("mols-markdown-tooling: All dependencies verified successfully.")
+    print("mols-markdown-maintenance: All dependencies verified successfully.")
     return 0
 
 

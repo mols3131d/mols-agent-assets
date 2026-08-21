@@ -1,9 +1,9 @@
 ---
-name: mols-markdown-tooling
+name: mols-markdown-maintenance
 description: >-
   Run deterministic Markdown maintenance for formatting, frontmatter validation,
   heading or link checks, and frontmatter-driven index generation or regeneration.
-  Use when correctness depends on repeatable Markdown tooling rather than prose judgment.
+  Use when correctness depends on repeatable Markdown mechanics rather than prose judgment.
   Prefer an established repository-native command when it owns the target behavior;
   otherwise use the bundled utilities. Do not use for general writing, document semantics,
   dashboard design, Mermaid authoring, or manual text cleanup that does not need tooling.
@@ -14,9 +14,9 @@ agentsskills:
     version: '0.1.0'
 ---
 
-# Mols Markdown Tooling
+# Mols Markdown Maintenance
 
-Use deterministic tools for Markdown mechanics. Do not turn the Skill into a workflow framework.
+Use deterministic tools for Markdown mechanics without introducing a workflow framework.
 
 ## Contract
 
@@ -37,8 +37,6 @@ Use deterministic tools for Markdown mechanics. Do not turn the Skill into a wor
 | Validate heading hierarchy | `scripts/validate_headers.py` | Markdown file paths |
 | Validate links and fragments | `scripts/validate_links.py` | Markdown file paths |
 | Generate or regenerate a frontmatter index | `scripts/generate_index.py` | target directory; use `--help` for output and validation options |
-
-Do not load a second routing layer just to discover these operations.
 
 ## Index Discipline
 

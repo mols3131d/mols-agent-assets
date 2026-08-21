@@ -1,5 +1,5 @@
 [project]
-name = "mols-markdown-tooling"
+name = "mols-markdown-maintenance"
 version = "0.1.0"
 description = "Deterministic Markdown maintenance utilities"
 readme = "SKILL.md"
