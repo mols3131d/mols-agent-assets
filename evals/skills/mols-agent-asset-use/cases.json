@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "find-only-stays-read-only",
+      "mode": "select",
+      "prompt": "현재 프로젝트에서 코드 설명에 쓸 Agent Asset을 찾아줘. 설치나 변경은 하지 마.",
+      "assertions": [
+        "Finds and selects an applicable asset without mutating the target",
+        "Uses the current repository or runtime source before unrelated fallback sources",
+        "Reports a bounded no-match when no candidate satisfies the request"
+      ]
+    },
+    {
+      "id": "temporary-use-does-not-install",
+      "mode": "use",
+      "prompt": "이 Skill은 이번 작업에서만 쓰면 돼. 굳이 설치하지 말고 필요하면 로드해서 사용해.",
+      "assertions": [
+        "Prefers direct use when the asset is already available",
+        "Otherwise prefers a temporary or session-scoped load",
+        "Does not create durable target state merely for convenience"
+      ]
+    },
+    {
+      "id": "explicit-install-means-persist",
+      "mode": "persist",
+      "prompt": "이 Skill을 앞으로 계속 쓸 수 있게 현재 target에 설치해줘.",
+      "assertions": [
+        "Preserves the explicit durable end state",
+        "Uses the target-native persistent mechanism instead of reporting a temporary load as installation",
+        "Does not duplicate an already-current asset identity"
+      ]
+    },
+    {
+      "id": "rule-uses-target-native-apply-semantics",
+      "mode": "persist",
+      "prompt": "이 repository Rule을 현재 agent target에서 계속 적용되게 해줘.",
+      "assertions": [
+        "Treats the Rule as an Agent Asset rather than forcing it into a Skill package",
+        "Preserves Rule scope, selector, precedence, and target attachment semantics",
+        "Uses the target-native durable operation such as apply or configure when appropriate"
+      ]
+    },
+    {
+      "id": "prompt-can-be-selected-without-authoring",
+      "mode": "select",
+      "prompt": "내가 지정한 source에서 PR 리뷰용 prompt를 찾아서 가장 맞는 것만 골라줘.",
+      "assertions": [
+        "Can discover and select a prompt as an Agent Asset",
+        "Does not rewrite the prompt merely because it was selected",
+        "Stays inside the explicit source boundary"
+      ]
+    },
+    {
+      "id": "external-fallback-is-explicit",
+      "mode": "select",
+      "prompt": "현재 source에 없으면 외부 공개 source까지 찾아도 돼. 데이터 품질 Agent Asset을 찾아줘.",
+      "assertions": [
+        "Broadens to external discovery only after the established source scope is insufficient",
+        "Preserves provenance for external candidates",
+        "Does not confuse discovery permission with permission to persist the asset"
+      ]
+    },
+    {
+      "id": "sync-is-bounded",
+      "mode": "sync",
+      "prompt": "내가 지정한 Agent Asset source만 기준으로 현재 target과 동기화해줘. target에만 있는 자산은 지우지 마.",
+      "assertions": [
+        "Reconciles only the bounded source set",
+        "Does not automatically delete target-only assets",
+        "Reports conflicts or extra target assets instead of widening sync scope"
+      ]
+    },
+    {
+      "id": "identity-uncertainty-blocks-overwrite",
+      "mode": "persist",
+      "prompt": "같은 이름의 Agent가 이미 있는데 같은 건지 모르겠어. 새 버전으로 바꿔줘.",
+      "assertions": [
+        "Treats the same name as insufficient identity evidence",
+        "Does not overwrite or merge the existing asset automatically",
+        "Surfaces the conflict and valid choices"
+      ]
+    }
+  ]
+}
