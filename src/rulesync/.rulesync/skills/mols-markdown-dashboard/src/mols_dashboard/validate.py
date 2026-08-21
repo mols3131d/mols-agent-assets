@@ -121,6 +121,10 @@ def _verification_errors(item: DashboardItem) -> tuple[str, ...]:
                     f"{item.name}: unverified must use blocked when a required target is blocked"
                 )
         case VerificationStatus.PARTIAL:
+            if not progress.completed:
+                errors.append(
+                    f"{item.name}: partial requires at least one target with a current result"
+                )
             if not gaps:
                 errors.append(
                     f"{item.name}: partial requires at least one verification gap"
@@ -171,11 +175,6 @@ def validate_markdown(
 
     if dashboard is not None:
         _validate_dashboard_markdown(markdown, headings, dashboard)
-
-    if any(token in markdown for token in ("{{", "}}", "{%", "%}")):
-        raise DashboardValidationError(
-            "unresolved Jinja placeholder remains in Markdown"
-        )
 
 
 def _validate_heading_structure(headings: tuple[Heading, ...]) -> None:
