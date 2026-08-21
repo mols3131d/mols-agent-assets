@@ -61,6 +61,8 @@ Entrypoint는 보통 directory의 목적과 책임, 항상 필요한 guidance, �
 
 `.configs/`는 대표 예시일 뿐입니다. `configs/`, `.agents/`, `agents/`, `context/` 또는 repository에 더 자연스러운 다른 이름을 사용할 수 있습니다. Context 종류마다 별도 directory를 만들 필요는 없고, 실제 책임이 나뉠 때는 context surface 아래에 하위 directory를 둘 수도 있습니다.
 
+같은 `.configs/` 이름을 asset customization surface로 사용할 수도 있지만, 이름만으로 pattern semantics가 결정되지는 않습니다. 이 패턴에서 핵심은 **directory-local agent context를 가까이 묶는 것**입니다.
+
 파일명도 예시 convention을 둘 수 있습니다.
 
 ```text
@@ -130,6 +132,7 @@ Directory에 asset이 존재한다는 사실만으로 automatic discovery, Skill
 | --- | --- |
 | [Layered Context Instructions](layered-context-instructions.md) | Scope에 따라 어떤 instruction mechanism을 사용할지 다룹니다. 이 패턴은 선택된 directory scope 안의 entrypoint와 context bundle을 다룹니다. |
 | [Progressive Context Routing](progressive-context-routing.md) | 필요한 context를 점진적으로 로드하는 shape를 다룹니다. Directory Context Capsule은 그 local destination이 될 수 있습니다. |
+| [Asset Configuration Surface](asset-configuration-surface.md) | Reusable asset의 core와 customization delta를 분리합니다. `.configs/`라는 예시 이름이 겹칠 수 있지만 이 패턴은 directory-local agent context boundary를 다룹니다. |
 | [Nonstandard Directory Guide](nonstandard-directory-guide.md) | 비표준 directory를 설명 가능한 상태로 유지하는 human-facing guide를 다룹니다. 이 패턴은 agent가 실제 작업에 사용할 guidance와 context bundle까지 다룹니다. |
 | [Artifact Inbox](artifact-inbox.md) | `inbox/` 같은 working surface가 자체 local agent guidance/context를 가질 때 함께 사용할 수 있습니다. |
 | [Skill Source Workspace](skill-source-workspace.md) | 실제 Agent Skill package를 다룹니다. 이 패턴은 일반 repository directory에 Skill-like entrypoint/context structure를 적용합니다. |
