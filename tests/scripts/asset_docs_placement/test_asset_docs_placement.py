@@ -40,7 +40,7 @@ def test_asset_capsules_keep_relative_links_inside_capsule() -> None:
                 )
 
 
-def test_skill_doc_capsules_have_skill_or_family_owner() -> None:
+def test_skill_doc_capsules_have_skill_or_documented_family_owner() -> None:
     skill_docs = DOCS / "skills"
     skill_names = {
         path.name for path in SKILLS.iterdir() if (path / "SKILL.md").is_file()
@@ -53,8 +53,10 @@ def test_skill_doc_capsules_have_skill_or_family_owner() -> None:
         readme = capsule / "README.md"
         assert readme.is_file(), f"family docs require README.md: {capsule.name}"
         body = readme.read_text(encoding="utf-8")
-        assert any(f"`{name}`" in body for name in skill_names), (
-            f"family docs must name at least one current Skill: {capsule.name}"
+        assert "## Members" in body, f"family docs require Members: {capsule.name}"
+        members = body.split("## Members", 1)[1].split("\n## ", 1)[0]
+        assert any(f"`{name}`" in members for name in skill_names), (
+            f"family Members must name at least one current Skill: {capsule.name}"
         )
 
 
