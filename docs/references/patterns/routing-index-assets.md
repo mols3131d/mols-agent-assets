@@ -87,6 +87,12 @@ Shared routing과 consumer-specific routing을 함께 둘 때는 실제 선택 �
 - 자동화 비용이 수동 관리보다 크면 단순한 수동 index가 더 적합할 수 있습니다.
 - Directory나 filename이 널리 쓰이는 형태라는 이유만으로 runtime이 자동 discovery한다고 가정하지 않습니다.
 
+## Related Patterns
+
+| Pattern | Relationship |
+| --- | --- |
+| [Nonstandard Directory Guide](nonstandard-directory-guide.md) | `route/` 같은 repository-local routing surface에 local guide가 필요할 때 참고합니다. |
+
 ## Boundary
 
 Routing/index asset은 underlying 문서·코드·정책·동작의 canonical owner가 되지 않습니다. 다만 **routing 자체에 필요한 위치, 분류, 선택 기준, routing intent**는 이 layer가 소유할 수 있습니다.

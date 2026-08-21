@@ -61,6 +61,12 @@ Artifact는 inbox에서 생성·검토·수정될 수 있습니다. 이후 필�
 
 Inbox가 얼마나 오래 artifact를 보존할지와 어떤 승격 절차를 사용할지는 repository가 정합니다.
 
+## Related Patterns
+
+| Pattern | Relationship |
+| --- | --- |
+| [Nonstandard Directory Guide](nonstandard-directory-guide.md) | `inbox/` 같은 repository-local nonstandard surface에 local guide가 필요할 때 참고합니다. |
+
 ## Boundary
 
 이 패턴은 **working artifact와 canonical surface를 분리하는 저장 위치와 scope**를 다룹니다.

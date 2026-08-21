@@ -146,9 +146,7 @@ tools/chat-runtime/
 
 `.chatbot/`처럼 repository가 자체적으로 만든 비표준 directory를 사용한다면, 필요에 따라 그 위치에 `README.md` 같은 guide를 추가해 surface의 목적, scope, contract, convention, recommendation과 내부 자산을 설명할 수 있습니다.
 
-이 guide가 entrypoint, index 또는 routing guide를 겸하는 것도 가능합니다.
-
-구체적인 설계는 [Nonstandard Directory Guide](nonstandard-directory-guide.md)를 참고할 수 있습니다. 이 패턴에서는 chatbot asset surface에 어떤 README section을 반드시 두어야 한다고 정의하지 않습니다.
+이 guide가 entrypoint, index 또는 routing guide를 겸하는 것도 가능합니다. 이 패턴에서는 chatbot asset surface에 어떤 README section을 반드시 두어야 한다고 정의하지 않습니다.
 
 ## Loading and Routing
 
@@ -207,6 +205,12 @@ runtime-side bootstrap
 ```
 
 Entrypoint와 chatbot-only asset surface는 같은 위치에 있을 수도 있고 완전히 분리되어 있을 수도 있습니다. Surface 안의 README나 다른 guide가 repository entrypoint를 겸하는 구성도 가능합니다.
+
+## Related Patterns
+
+| Pattern | Relationship |
+| --- | --- |
+| [Nonstandard Directory Guide](nonstandard-directory-guide.md) | `.chatbot/` 같은 repository-local nonstandard surface에 local guide가 필요할 때 참고합니다. |
 
 ## Boundary
 
