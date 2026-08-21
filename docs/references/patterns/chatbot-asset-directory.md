@@ -149,27 +149,64 @@ tools/chat-runtime/
 
 ## Surface README
 
-Chatbot-only asset을 여러 개 두기 시작하면 surface 자체에 `README.md` 같은 **human-readable entrypoint**를 두는 것이 유용할 수 있습니다. `README.md`라는 이름과 Markdown 형식은 필수가 아니며, 같은 책임을 가진 다른 entry file이나 catalog를 사용할 수 있습니다.
+`.chatbot/`처럼 **비표준 repository-local surface**는 이름이나 위치만으로 목적과 사용법을 알기 어려울 수 있습니다. 이런 surface에는 `README.md` 같은 설명 문서를 두어 단순한 file entrypoint를 넘어 **surface 자체의 소개와 local contract를 제공하는 것**이 유용할 수 있습니다.
 
-이 entrypoint는 asset body를 복제하기보다 다음을 짧게 설명하는 데 집중할 수 있습니다.
+`README.md`라는 이름이나 Markdown 형식은 필수가 아닙니다. 같은 책임을 맡는 다른 entry document, manifest 또는 catalog를 사용할 수 있습니다.
 
-- 이 surface가 왜 존재하고 무엇이 chatbot-only인지
-- 어떤 종류의 asset이 있으며 대략 언제 선택하는지
-- profile이나 command가 실제 권한인지 behavioral instruction인지
-- repository 또는 runtime entrypoint가 이 surface를 어떻게 발견하거나 route하는지
-- shared asset과 vendor-specific asset의 ownership boundary
-- 기존 canonical repository asset과 중복하지 않고 어디로 연결되는지
+이 문서는 필요에 따라 다음 중 일부를 소유할 수 있습니다.
 
-예를 들어 `.chatbot/`을 사용하는 repository라면 다음 정도로 시작할 수 있습니다.
+- **Introduction** — 이 surface가 왜 존재하고 어떤 문제를 보완하는지
+- **Scope** — 무엇을 이곳에 두고 무엇은 기존 canonical owner에 남기는지
+- **Contract** — 이 surface에서 지켜야 하는 중요한 invariant나 authority boundary
+- **Conventions** — naming, layout, loading, routing 등 repository-local 관행
+- **Recommendations** — 유용하지만 강제하지 않는 기본 선택이나 운영 방식
+- **Assets** — 어떤 종류의 asset이 있고 각각 어떤 책임을 가지는지
+- **Loading** — chatbot이나 repository entrypoint가 이 surface를 어떻게 발견하고 사용하는지
+- **Vendor boundary** — shared asset과 vendor-native 또는 vendor-specific asset의 관계
+
+모든 항목을 가져야 하는 고정 schema는 아닙니다. Surface의 규모와 비표준성 때문에 사람이 추측해야 하는 부분만 설명하면 됩니다.
+
+특히 contract, convention, recommendation은 성격을 구분하는 편이 좋습니다.
+
+```text
+contract
+→ 이 surface의 의미나 안전한 사용을 위해 지켜야 하는 경계
+
+convention
+→ 이 repository에서 일관성을 위해 채택한 관행
+
+recommendation
+→ 상황에 따라 바꿀 수 있는 권장 기본값
+```
+
+예를 들어 `.chatbot/README.md`를 사용한다면 다음 정도로 시작할 수 있습니다.
 
 ```markdown
 # Chatbot Assets
 
 이 directory는 coding agent와 다른 chatbot-only guidance와 compatibility asset을 보관합니다.
 
-## Use
+## Scope
 
-Repository chatbot entrypoint에서 현재 작업에 필요한 asset만 선택적으로 읽습니다. 이 directory의 존재만으로 자동 loading을 가정하지 않습니다.
+공통 repository behavior는 기존 canonical owner에 둡니다. 이곳에는 chatbot에서만 필요한 workflow, compatibility, work-profile delta를 둡니다.
+
+## Contract
+
+Permission-like profile은 실제 tool permission을 부여하지 않습니다. Runtime의 sandbox, approval, account authorization과 vendor-native configuration이 실제 capability를 소유합니다.
+
+이 directory의 존재만으로 자동 loading을 가정하지 않습니다.
+
+## Conventions
+
+- 반복되는 작업 범위는 `profiles/`에 둘 수 있습니다.
+- chatbot-only Skill은 `skills/`, 반복 작업 instruction은 `commands/`에 둘 수 있습니다.
+- 현재 task에 필요한 asset만 선택적으로 로드합니다.
+
+필요한 종류만 유지하며 이 layout을 모두 만들 필요는 없습니다.
+
+## Recommendations
+
+공통 agent guidance를 복제하기보다 기존 owner로 route하고, chatbot-specific delta만 이곳에서 소유하는 구성을 권장합니다.
 
 ## Assets
 
@@ -177,19 +214,11 @@ Repository chatbot entrypoint에서 현재 작업에 필요한 asset만 선택�
 - `skills/` — chatbot에서만 필요한 Skill 또는 compatibility fallback
 - `commands/` — 반복되는 chatbot 작업을 위한 reusable command-like instructions
 - `shared/` — 여러 chatbot runtime에서 공통으로 사용하는 guidance
-
-필요한 종류만 유지하며 위 layout을 모두 만들 필요는 없습니다.
-
-## Authority
-
-Permission-like profile은 실제 tool permission을 부여하지 않습니다. Runtime의 sandbox, approval, account authorization과 vendor-native configuration이 실제 capability를 소유합니다.
-
-공통 repository guidance는 기존 canonical owner를 따르며, 이 directory에는 chatbot-specific delta만 둡니다.
 ```
 
-Surface가 작다면 README 없이도 충분할 수 있습니다. 반대로 여러 profile, vendor delta, Skill, command가 생겨 **사람이나 chatbot이 무엇을 선택해야 하는지 추측해야 하는 상태**가 되면 entrypoint를 추가할 가치가 커집니다.
+Surface가 작다면 별도 README 없이도 충분할 수 있습니다. 반대로 비표준 경로의 의미, 권한 경계, 내부 관행 또는 자산 선택 방법을 **repository 외부 지식 없이는 추측해야 하는 상태**라면 설명 문서를 두는 가치가 큽니다.
 
-README를 asset index처럼 세세하게 유지해야 할 필요도 없습니다. 파일 목록보다 안정적인 responsibility와 routing 기준을 설명하고, 세부 내용은 각 asset이 소유하도록 두는 편이 drift를 줄일 수 있습니다.
+README를 단순 file index처럼 세세하게 유지할 필요도 없습니다. 안정적인 목적, 책임, 계약과 관행을 설명하고 세부 behavior는 각 asset이 소유하도록 두면 drift를 줄일 수 있습니다.
 
 ## Loading and Routing
 
