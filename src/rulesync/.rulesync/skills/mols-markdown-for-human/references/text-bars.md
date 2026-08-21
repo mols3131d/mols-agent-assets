@@ -36,5 +36,5 @@ Rust        ███               8 jobs
 - 순위가 목적이면 내림차순으로 정렬한다.
 - 음수, 양방향 변화, 불확실성 또는 서로 다른 단위에는 사용하지 않는다.
 
-추세, 많은 category 또는 복잡한 축은 `mols-mermaid-chart`를 사용한다.
+추세, 많은 category 또는 복잡한 축은 이 표현의 범위를 벗어난다. 대안 선택은 `SKILL.md`의 `Visual Routing`을 따른다.
 동일 정보를 table이나 chart와 중복 표현하지 않는다.

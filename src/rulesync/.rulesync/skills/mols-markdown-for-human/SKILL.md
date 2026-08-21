@@ -4,9 +4,8 @@ description: >
   빠르고 쉽게 사람이 읽을 수 있는 Markdown 문서를 생성하거나 개선한다.
   핵심을 먼저 보여주고 문서의 정보 구조에 맞는 Markdown 표현을 선택한다.
 agentsskills:
-  compatibility: GitHub Flavored Markdown
   metadata:
-    version: "3.1.0"
+    version: "3.1.1"
 ---
 
 # Markdown for Human
@@ -22,14 +21,8 @@ agentsskills:
 ## Scope
 
 이 skill은 BLUF, heading, prose, list, table, semantic emoji, callout, footnote, text bar와 단일 부모 계층의 tree structure를 담당한다.
-
-| Need | Independent skill |
-| --- | --- |
-| 관계, 절차, handoff, 상태 전이, architecture | `mols-mermaid-diagram` |
-| 수치 비교, 추세, 분포, 구성비 | `mols-mermaid-chart` |
-| 개발 현황, 위험, blocker와 next action의 통합 뷰 | `mols-markdown-dashboard` |
-
-독립 skill의 세부 문법과 규칙을 이 package에 복제하지 않는다.
+복잡한 관계·흐름·상태, 정량 시각화와 개발 dashboard는 독립 skill의 책임이며 선택 기준은 `Visual Routing`을 따른다.
+독립 skill의 세부 문법과 규칙은 이 package에 복제하지 않는다.
 
 ## References
 
@@ -76,6 +69,7 @@ agentsskills:
 | 핵심 안내, 팁, 경고 | Callout |
 | 복잡한 관계·흐름·상태 | `mols-mermaid-diagram` |
 | 정량 비교·추세·분포 | `mols-mermaid-chart` |
+| 개발 현황, 위험, blocker와 next action의 통합 뷰 | `mols-markdown-dashboard` |
 | 출처와 부가 설명 | Footnote 또는 References |
 
 짧은 prose나 list가 더 빠르게 읽히면 visual을 추가하지 않는다.
@@ -97,7 +91,7 @@ Text label을 함께 사용하고 같은 marker에는 같은 의미를 부여한
 
 진행률과 작은 범주 비교에는 [Text Bars](references/text-bars.md)를 따른다.
 하나의 parent를 가진 hierarchy에는 [Tree Structures](references/tree-structures.md)를 따른다.
-추세와 많은 category는 `mols-mermaid-chart`, DAG와 runtime flow는 `mols-mermaid-diagram`을 사용한다.
+범위를 벗어나는 시각화 선택은 `Visual Routing`을 따른다.
 
 ### Callouts
 
