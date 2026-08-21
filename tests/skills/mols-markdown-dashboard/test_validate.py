@@ -139,6 +139,54 @@ def test_unverified_gap_count_matches_targets_without_results() -> None:
         validate_dashboard_consistency(dashboard)
 
 
+def test_partial_status_requires_at_least_one_current_result() -> None:
+    dashboard = parse_dashboard(
+        _dashboard(
+            [
+                {
+                    "name": "A",
+                    "implementation": {
+                        "status": "implemented",
+                        "progress": "1/1",
+                    },
+                    "verification": {
+                        "status": "partial",
+                        "progress": "0/2",
+                        "gaps": ["Missing A", "Missing B"],
+                    },
+                }
+            ]
+        )
+    )
+
+    with pytest.raises(DashboardValidationError, match="at least one target"):
+        validate_dashboard_consistency(dashboard)
+
+
+def test_in_progress_can_start_at_zero_completed_requirements() -> None:
+    dashboard = parse_dashboard(
+        _dashboard(
+            [
+                {
+                    "name": "A",
+                    "implementation": {
+                        "status": "in_progress",
+                        "progress": "0/2",
+                        "gaps": ["Requirement A", "Requirement B"],
+                    },
+                    "verification": {
+                        "status": "unverified",
+                        "progress": "0/1",
+                        "gaps": ["Target A"],
+                    },
+                }
+            ]
+        )
+    )
+
+    validate_dashboard_consistency(dashboard)
+
+
 def test_partial_status_rejects_failing_gap() -> None:
     dashboard = parse_dashboard(
         _dashboard(
@@ -244,3 +292,12 @@ def test_unverified_status_rejects_blocked_gap() -> None:
 
     with pytest.raises(DashboardValidationError, match="must use blocked"):
         validate_dashboard_consistency(dashboard)
+
+
+def test_markdown_allows_literal_jinja_syntax_in_content() -> None:
+    markdown = (
+        f"# Demo\n\n## Development Progress\n\n{_progress_table()}\n\n"
+        "Reference syntax: {{ example }}\n"
+    )
+
+    validate_markdown(markdown, event_parser=heading_events)
