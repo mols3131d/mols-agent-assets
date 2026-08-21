@@ -31,24 +31,21 @@ result.
 
 ## Package
 
-Prefer the smallest deployable Skill package.
+Prefer the smallest deployable Skill package that preserves the required behavior.
 
-- Start with `SKILL.md`.
-- Add `references/`, `scripts/`, `assets/`, or templates only when the runtime
-  actually needs them.
-- Keep discovery information in the description and loaded behavior in the body.
-- Keep runtime-required knowledge inside the deployable Skill surface.
-- Keep repository verification such as tests and eval fixtures outside the runtime
-  package.
-- Do not create maintainer documentation merely because a Skill is directory-based
-  or was edited. Use a project-defined maintainer surface only when durable
-  rationale, recovery knowledge, or fragile invariants materially lower future
-  maintenance cost.
-- Avoid nested `SKILL.md` files for supporting material because hosts may interpret
-  them as separate discoverable Skills.
+- Let the governing source or target specification own required package names,
+  fields, directories, and discovery semantics; do not mirror that schema here.
+- Add supporting resources only when they provide a concrete runtime, loading, or
+  deterministic-mechanics benefit.
+- Put conditional detail behind an explicit load condition so always-loaded context
+  stays focused on decisions needed for every activation.
+- Keep repository-only verification or maintainer artifacts outside the deployable
+  Skill surface unless the governing runtime explicitly requires them.
+- Avoid supporting `SKILL.md` files that a host could discover as separate Skills;
+  use non-entrypoint filenames for supporting material.
 
-Use multiple top-level Markdown sections when they provide real responsibility
-boundaries; do not split a readable single-file Skill only because it is long.
+When a repository defines package or Markdown conventions, apply that live project
+authority rather than copying it into the Skill.
 
 ## Change
 
