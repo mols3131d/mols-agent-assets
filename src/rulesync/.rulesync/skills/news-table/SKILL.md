@@ -25,6 +25,8 @@ The user may specify the following naturally. Interpret omitted values from the 
 - **Score** — whether a visible relevance score would help comparison.
 - **Grouping** — topic-grouped tables or another grouping requested by the user.
 
+The values may differ by topic. For example: `AI agents every 6 hours, 10 developments from the last 48 hours; data engineering daily, 5 developments from the last week.`
+
 `Count` means distinct developments after deduplication unless the user explicitly asks for articles or sources. `Interval` and `Freshness` are independent: a topic may refresh every few hours while considering a wider evidence window.
 
 `Interval` expresses requested cadence at a minimum granularity of one hour; sub-hour recurrence is outside this Skill's contract. Actual repeated execution belongs to the active scheduler, automation capability, or harness. If no interval is requested, treat the topic as one-shot rather than inventing a recurrence.
@@ -54,12 +56,12 @@ Default shape:
 ```markdown
 ## <Topic>
 
-| Date | News | Score |
-| --- | --- | ---: |
-| MM-DD | **<what changed>** — <why it matters> | 5 |
+| Date | News |
+| --- | --- |
+| MM-DD | **<what changed>** — <why it matters> |
 ```
 
-Adapt columns to the request. Attach citations or source attribution with the host's supported mechanism; do not create a separate bibliography or source log unless requested or required.
+Add `Score` when it helps comparison. Adapt other columns to the request. Attach citations or source attribution with the host's supported mechanism; do not create a separate bibliography or source log unless requested or required.
 
 # Boundary
 
