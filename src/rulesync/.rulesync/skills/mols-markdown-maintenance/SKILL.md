@@ -31,7 +31,6 @@ Use deterministic tools for Markdown mechanics without introducing a workflow fr
 
 | Need | Bundled utility | Invocation |
 | --- | --- | --- |
-| Check declared dependencies | `scripts/check_dependencies.py` | no arguments |
 | Format Markdown | `scripts/format_markdown.py` | Markdown file paths |
 | Validate YAML frontmatter | `scripts/validate_frontmatter.py` | file paths; use `--help` for schema options |
 | Validate heading hierarchy | `scripts/validate_headers.py` | Markdown file paths |
