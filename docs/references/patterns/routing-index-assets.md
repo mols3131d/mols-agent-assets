@@ -13,15 +13,23 @@ Agent Skill이나 Rules뿐 아니라 문서, 코드, 설정, 연구자료 등 �
 - Index asset은 정보의 위치와 종류를 빠르게 파악하게 합니다.
 - Routing asset은 task, domain, topic 등 기준에 따라 다음에 읽을 source를 선택하도록 돕습니다.
 - Routing/index layer는 underlying source를 대신하지 않고 **discovery, selection, navigation, context routing**에 집중합니다.
-- 포맷이나 directory 구조보다 탐색 효율과 소비 주체에 맞는 표현을 우선합니다.
+- 포맷, filename, directory 이름이나 배치보다 탐색 효율과 소비 주체에 맞는 표현을 우선합니다.
 
-## Typical Options
+## Recommended and Example Forms
+
+아래 directory와 filename은 **권장 또는 예시**입니다. Pattern의 고정 schema나 필수 경로가 아니며 repository 구조, consumer, runtime 또는 이미 존재하는 convention에 맞게 바꿀 수 있습니다.
+
+작은 범위에서는 가까운 directory에 index 하나만 둘 수 있습니다.
 
 ```text
 <dir>/
 ├─ INDEX.tsv
 └─ ...
+```
 
+Repository 수준에서는 routing 전담 surface를 둘 수 있습니다.
+
+```text
 route/
 ├─ ROUTE.md
 ├─ docs.jsonl
@@ -29,15 +37,29 @@ route/
 └─ topic-*.md
 ```
 
-대표적인 선택지는 다음과 같습니다.
+소비 주체별 routing이 실제로 다르면 scope를 드러내는 directory를 사용할 수도 있습니다.
 
-- `INDEX.*` — directory의 표면 file/directory를 정리하고 필요하면 주요 내부 파일도 포함
-- `route/` — 여러 위치나 information domain을 연결하는 routing 전담 surface
+```text
+repository/
+├─ route/             # shared or repository-wide routing
+├─ .agents/
+│  └─ route/          # agent-oriented routing
+└─ .chatbot/
+   └─ route/          # chatbot-oriented routing
+```
+
+`route/`, `.agents/route/`, `.chatbot/route/`도 대표 예시일 뿐입니다. 같은 의미를 `routing/`, `index/`, vendor-native surface 또는 다른 project-local 이름으로 표현할 수 있습니다.
+
+대표적인 naming/format 선택지는 다음과 같습니다.
+
+- `INDEX.*` — directory의 표면 file/directory를 정리하고 필요하면 주요 내부 파일도 포함하는 index 이름 예시
+- `route/` — 여러 위치나 information domain을 연결하는 routing surface 이름 예시
+- `.agents/route/`, `.chatbot/route/` — 소비 주체별 routing을 분리할 때의 directory 예시
 - domain/topic/content type별 routing file
-- `ROUTE.md` — 다른 routing/index asset으로 연결하는 최소 entry router
+- `ROUTE.md` — 다른 routing/index asset으로 연결하는 최소 entry router 이름 예시
 - `md`, `jsonl`, `tsv`, `json`, `yaml` 등 목적에 맞는 포맷
 
-이 예시는 조합하거나 단순화할 수 있으며 특정 형식을 요구하지 않습니다.
+이름과 위치는 탐색 의도를 사람이 이해하기 쉽고 consumer가 안정적으로 찾을 수 있게 만드는 방향을 권장합니다. 이미 framework, vendor 또는 repository가 적절한 native convention을 제공한다면 그 convention을 재사용하는 편이 더 단순할 수 있습니다.
 
 ## Automation
 
@@ -49,20 +71,23 @@ route/
 - file metadata
 - 기타 구조화된 source
 
-안정적으로 추출 가능한 정보는 script나 generator로 `INDEX.*`와 routing asset을 생성·갱신할 수 있습니다. 사람이 직접 관리하는 정보는 자동으로 복원하기 어려운 routing intent나 선택 기준 같은 필요한 delta로 제한할 수 있습니다.
+안정적으로 추출 가능한 정보는 script나 generator로 index와 routing asset을 생성·갱신할 수 있습니다. 사람이 직접 관리하는 정보는 자동으로 복원하기 어려운 routing intent나 선택 기준 같은 필요한 delta로 제한할 수 있습니다.
 
 ## Extensions
 
-규모가 커지면 하나의 index에서 domain/topic별 router, 계층형 route, generated index 등으로 확장할 수 있습니다. 반대로 작은 repository에서는 단일 `INDEX.*`나 `ROUTE.md`만으로 충분할 수 있습니다.
+규모가 커지면 하나의 index에서 domain/topic별 router, 계층형 route, generated index 등으로 확장할 수 있습니다. 반대로 작은 repository에서는 단일 index나 router만으로 충분할 수 있습니다.
+
+Shared routing과 consumer-specific routing을 함께 둘 때는 실제 선택 기준이 다른 경우에만 분리하는 편이 좋습니다. 같은 source와 같은 routing intent를 여러 directory에 반복하지 않습니다.
 
 ## Considerations
 
 - Routing asset이 stale하면 잘못된 source를 선택하게 할 수 있으므로 구조 변경과 함께 갱신하거나 검증하는 방법을 고려합니다.
 - 사람이 읽는 탐색과 agent가 소비하는 context routing은 같은 source를 공유하거나 서로 다른 projection을 사용할 수 있습니다.
 - 자동화 비용이 수동 관리보다 크면 단순한 수동 index가 더 적합할 수 있습니다.
+- Directory나 filename이 널리 쓰이는 형태라는 이유만으로 runtime이 자동 discovery한다고 가정하지 않습니다.
 
 ## Boundary
 
 Routing/index asset은 underlying 문서·코드·정책·동작의 canonical owner가 되지 않습니다. 다만 **routing 자체에 필요한 위치, 분류, 선택 기준, routing intent**는 이 layer가 소유할 수 있습니다.
 
-이 패턴은 특정 schema, generator, 파일명 또는 routing algorithm을 강제하지 않습니다.
+이 패턴은 특정 schema, generator, directory, filename, format 또는 routing algorithm을 강제하지 않습니다. 예시 이름은 discovery intent를 설명하기 위한 representative form이며 실제 authority는 적용되는 framework, runtime과 repository convention에 있습니다.
