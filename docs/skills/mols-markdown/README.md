@@ -20,4 +20,5 @@ Markdown을 **표현 surface와 Markdown-specific maintenance surface**로 다�
 - 일반 Markdown 표현과 독자 가독성은 `mols-markdown-for-human`이 소유합니다.
 - engineering dashboard의 집계·gap·projection semantics는 `mols-markdown-dashboard`가 소유합니다.
 - 반복 가능한 formatting, validation, index mechanics는 `mols-markdown-maintenance`가 소유합니다.
+- Markdown maintenance에서 repository-native equivalent가 없으면 portable fallback backend로 rumdl을 사용합니다.
 - Mermaid diagram/chart의 시각적 의미와 type 선택은 `mols-mermaid` family가 소유합니다.
