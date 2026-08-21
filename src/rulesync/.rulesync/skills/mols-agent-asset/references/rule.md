@@ -17,11 +17,11 @@ selectors, attachment modes, precedence, or target projection differ.
 For repeated or overlapping Rule guidance, decide in this order:
 
 1. **Application** — where does each candidate currently and intentionally apply?
-2. **Requirement** — are the candidates semantically the same requirement, or are
+1. **Requirement** — are the candidates semantically the same requirement, or are
    they exceptions or scope-specific variants?
-3. **Authority** — which editable source owns the requirement? Is another copy
+1. **Authority** — which editable source owns the requirement? Is another copy
    inherited, generated, projected, or merely a peer duplicate?
-4. **Placement** — which supported Rule container, scope, selector, or attachment
+1. **Placement** — which supported Rule container, scope, selector, or attachment
    preserves the intended application and precedence with the least context?
 
 Do not move or deduplicate text before these four questions are sufficiently
