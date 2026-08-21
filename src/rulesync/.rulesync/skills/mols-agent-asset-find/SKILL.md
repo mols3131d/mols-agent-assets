@@ -37,6 +37,8 @@ usable with the **least persistent target state that preserves the requested out
   `configure` are target operations, not one universal Agent Asset model.
 - Report the state actually reached. A temporary load, staged import, generated file, or
   pending approval is not a successful durable installation.
+- Do not claim update, migration, or synchronization completeness when the target state
+  required to establish that claim cannot be observed.
 - Do not overwrite, rename, delete, merge, or discard customization when asset identity is
   uncertain.
 
@@ -141,6 +143,10 @@ when supported.
 - Uncertain identity or same-name collision → do not overwrite automatically; surface the
   minimum decision needed.
 
+If existing target state cannot be inspected, do not infer identity continuity or a clean
+update. Use only a target operation that can safely surface or reject collisions; otherwise
+report the limitation instead of claiming an update or migration.
+
 Preserve target-managed settings and user customization unless the requested transition
 explicitly supersedes them and authority permits it.
 
@@ -153,6 +159,9 @@ Synchronize only an explicit or otherwise clearly bounded source set.
 - Do not delete target-only assets automatically.
 - If an asset controls the current find/sync run, process it after the other selected
   assets and use its new version only on the next invocation.
+
+If enough target state cannot be observed to reconcile the bounded set, report the sync as
+incomplete or unsupported rather than claiming it succeeded.
 
 # Preserve Asset Semantics
 
