@@ -46,4 +46,7 @@ def test_eval_contract_exists_for_new_entrypoint() -> None:
         "rule-generated-projection",
         "install-is-not-authoring",
         "formal-validation-is-validator",
+        "prompt-authoring-is-out-of-scope",
+        "hook-authoring-is-out-of-scope",
+        "mcp-authoring-is-out-of-scope",
     } <= ids
