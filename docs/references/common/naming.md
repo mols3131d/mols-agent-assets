@@ -30,3 +30,12 @@ description: flat namespace에서 관리 편의와 이름 충돌 방지를 위�
 - 외부 Skill은 이 convention에 맞추기 위해 임의 rename하지 않습니다.
 
 예: `review`, `liner-tag`, `mols-liner-tag`, `liner-tag-runtime`.
+
+## Family Documentation
+
+같은 family의 Skill이 durable maintainer 지식을 공유하면 `docs/skills/<family>/`을 공동 owner로 사용할 수 있습니다.
+
+- Family 문서 이름은 관리 편의를 위한 owner label이며 runtime metadata가 아닙니다.
+- Family membership은 문서의 `README.md`에 사람이 읽을 수 있게 명시하고 이름을 역파싱하는 별도 registry나 schema를 만들지 않습니다.
+- Family 문서는 discoverable Skill을 대체하지 않습니다. 서로 다른 trigger와 책임은 계속 독립 Skill로 유지합니다.
+- 하나의 Skill에만 적용되는 maintainer 지식은 `docs/skills/<skill-name>/`에 남길 수 있습니다.
