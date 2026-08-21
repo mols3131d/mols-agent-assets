@@ -1,10 +1,10 @@
 ---
 name: mols-chatbot-bootstrap
 description: >-
-  Bootstrap or update a repository for mols CHATBOT.md compatibility. Use when a
-  repository should support chat runtimes that may not automatically load applicable
-  AGENTS.md guidance, task-relevant Skills, or path-scoped Rules, including route
-  metadata, generation, tuning, or drift validation.
+  Establish, repair, or review mols CHATBOT.md compatibility when a chat runtime cannot
+  natively reach applicable AGENTS.md guidance, Skills, or path-scoped Rules. Use for the
+  runtime first-hop to repository entry/router compatibility path. Do not use for unrelated
+  route or index generation, tuning, validation, or CI.
 ---
 
 # Mols Chatbot Bootstrap
