@@ -90,3 +90,11 @@ def test_rejects_multiline_dashboard_title() -> None:
 
     with pytest.raises(DashboardInputError, match="single line"):
         parse_dashboard(raw)
+
+
+def test_rejects_non_string_text_value() -> None:
+    raw = valid_raw()
+    raw["dashboard"]["title"] = 123
+
+    with pytest.raises(DashboardInputError, match="dashboard.title must be a string"):
+        parse_dashboard(raw)
