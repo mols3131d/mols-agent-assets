@@ -27,10 +27,11 @@ description: "스킬이 후속 수정에서 훼손되지 않도록 핵심 요구
 | R-014 | 스크립트는 계산·형식·검증만 담당하고 의미 판단은 에이전트가 담당한다. | 자동화가 근거 없는 status나 denominator를 만들지 않게 한다. |
 | R-015 | 기본 템플릿은 차트를 강제하지 않는다. | 진행 바와 중복되는 시각화를 피한다. |
 | R-016 | Risks / Blockers와 References는 값이 있을 때만 렌더링한다. | 빈 section과 장식적 구조를 제거한다. |
-| R-017 | 정의되지 않은 YAML 필드는 경로가 포함된 오류로 즉시 거부한다. | 에이전트 오타가 조용히 유실되거나 잘못 렌더링되는 일을 막는다. |
+| R-017 | 정의되지 않은 YAML 필드와 잘못된 value type은 경로가 포함된 오류로 즉시 거부한다. | 에이전트 오타나 잘못된 값이 조용히 유실·coerce되거나 잘못 렌더링되는 일을 막는다. |
 | R-018 | 출력 파일은 임시 파일을 거쳐 atomic replace로 갱신한다. | 실패한 렌더가 기존 dashboard를 부분적으로 손상하지 않게 한다. |
 | R-019 | 예제 Markdown은 예제 YAML에서 생성되며 package-local 품질 검사에서 drift를 확인한다. | 문서 예제와 실제 renderer의 차이를 방지한다. |
 | R-020 | Package-local 품질 게이트는 `uv`, `ruff`, `ty`, `rumdl`, Python compile과 예제 drift 검사를 사용한다. Host repository가 별도 tests/evals를 제공하면 그 verification contract를 추가로 따른다. | asset 자체의 portable quality gate와 host-specific verification을 분리한다. |
+| R-021 | 기존 Markdown을 YAML과 함께 검증할 때는 같은 template 설정으로 다시 렌더한 결과와 일치해야 한다. | heading만 맞는 stale status, progress, gap, risk 또는 reference가 검증을 통과하지 않게 한다. |
 
 ### Decisions
 
@@ -48,15 +49,19 @@ description: "스킬이 후속 수정에서 훼손되지 않도록 핵심 요구
 | D-010 | 차트와 복잡한 Mermaid는 조건부이며 전문 스킬에 위임한다. | 모든 dashboard에 chart 삽입 | visual duplication과 유지보수 비용을 줄인다. |
 | D-011 | loader boundary 이후에는 raw dictionary 대신 immutable slot dataclass를 사용한다. | 전 구간 `dict[str, Any]` 사용 | 타입 경계를 명확히 하고 renderer와 validation의 계약을 단순화한다. |
 | D-012 | 단일 `scripts/check_quality.py`가 package-local release 검사를 조정하고 host tests/evals는 host repository가 소유한다. | package script가 특정 repository의 external test layout까지 가정 | capsule+asset을 이동해도 quality gate가 같은 package root에서 재현된다. |
+| D-013 | 기존 Markdown drift는 rendered output의 exact comparison으로 검증한다. | heading/table shape만 비교 | renderer가 이미 canonical projection을 결정하므로 별도 Markdown semantic parser를 중복 구현하지 않고 stale content를 확실히 잡는다. |
 
 ### Protected Invariants
 
 - `Development Progress`, `Implementation Gaps`, `Verification Gaps`의 의미를 서로 섞지 않는다.
 - `Implementation Status`와 `Verification Status`를 하나의 generic status로 합치지 않는다.
+- status와 progress는 같은 값이 아니다. `in_progress`는 완료 Requirement가 아직 `0`이어도 실제 구현 작업이 시작됐다면 사용할 수 있다.
+- `partial` verification은 하나 이상의 Verification Target에 현재 결과가 있고 하나 이상의 Target이 아직 결과 없이 남아 있어야 한다.
 - progress denominator를 test function, file, commit 또는 임의 task 수로 자동 대체하지 않는다.
 - project와 domain dashboard의 표 문법은 첫 번째 열을 제외하고 동일해야 한다.
 - YAML status에는 이모지를 저장하지 않는다. renderer가 표시 문자열을 결정한다.
 - Markdown을 재렌더링해도 Gap 번호와 합계가 결정적으로 같아야 한다.
+- `validate --markdown`은 구조만 맞는 stale Markdown을 성공으로 판정하지 않는다.
 - schema, examples, template, relevant verification fixtures와 directive를 서로 독립적으로 변경하지 않는다.
 - 품질 도구를 사용할 수 없으면 통과했다고 기록하지 않고 제한을 현재 review에 남긴다.
 
