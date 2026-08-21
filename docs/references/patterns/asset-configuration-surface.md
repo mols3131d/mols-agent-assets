@@ -59,6 +59,8 @@ Asset이나 특정 scope와 customization의 결합이 강할 때 가까이 둘 
 
 Directory, package, domain 등 scope별 customization이 필요할 때 nested surface를 사용할 수 있습니다.
 
+이런 비표준 repository-local surface의 목적이나 사용법이 이름만으로 자명하지 않다면 [Nonstandard Directory Guide](nonstandard-directory-guide.md)를 함께 참고할 수 있습니다.
+
 ## Typical Content
 
 - runtime 또는 generation options
