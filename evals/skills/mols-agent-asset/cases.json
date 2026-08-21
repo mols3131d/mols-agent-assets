@@ -16,6 +16,7 @@
       "mode": "skill",
       "prompt": "이 기존 SKILL.md의 중복과 과도한 절차를 줄이고 직접 수정해줘.",
       "assertions": [
+        "Treats mols-agent-asset as the primary capability for general Skill improvement",
         "Prefers the established Skill owner over creating a competing Skill",
         "Preserves essential responsibility and valid behavior",
         "Does not normalize unrelated structure or create ceremonial maintainer docs"
@@ -97,6 +98,16 @@
       "assertions": [
         "Treats mols-agent-asset-validator as the primary capability",
         "Does not expand the authoring Skill into a formal validation framework"
+      ]
+    },
+    {
+      "id": "validation-driven-fix-keeps-validator-primary",
+      "mode": "negative",
+      "prompt": "adversarial eval에서 trigger false positive가 확인됐어. 그 finding 근거로 이 Skill을 수정하고 다시 검증해줘.",
+      "assertions": [
+        "Keeps mols-agent-asset-validator primary because the requested correction is driven by validation evidence and includes re-validation",
+        "May compose authoring guidance only where its responsibility independently applies",
+        "Does not turn general authoring into a second validation owner"
       ]
     },
     {
