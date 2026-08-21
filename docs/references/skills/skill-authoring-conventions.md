@@ -40,7 +40,7 @@ Prerequisite, fallback, handoff, execution order와 validation workflow는 body�
 
 ## Maintainer Documentation
 
-`docs/skills/<skill-name>/`은 source만으로 중요 intent/invariant를 복구하기 어렵거나 durable decision·recovery knowledge가 실제 maintenance cost를 낮출 때만 사용합니다. 단순하고 self-explanatory한 Skill에는 만들지 않습니다.
+Skill maintainer documentation의 placement, family ownership과 portability contract는 [Asset Capsules](../../document/asset-capsules.md)가 소유합니다.
 
 Maintainer-only knowledge를 runtime dependency로 숨기지 않습니다.
 
