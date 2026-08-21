@@ -8,7 +8,7 @@ Repository 안에 **chatbot이 context loading을 시작할 stable entrypoint �
 
 Agent harness는 보통 repository instruction, scoped guidance, Skill, Rule, project context 같은 자산을 일정한 방식으로 발견하거나 주입합니다. 일반 chatbot은 이런 discovery contract가 없거나 runtime마다 다를 수 있습니다.
 
-Repository entrypoint는 이런 환경에서 chatbot이 사용할 **첫 context hop**을 제공합니다. Chatbot은 이 entrypoint를 통해 현재 repository에서 무엇을 확인해야 하는지, 어떤 guidance나 routing surface가 있는지, task에 따라 무엇을 더 읽어야 하는지를 알 수 있습니다.
+Repository entrypoint는 이런 환경에서 chatbot이 사용할 **첫 context hop**을 제공합니다. Chatbot은 이 entrypoint를 통해 현재 repository에서 무엇을 확인해야 하는지, 어떤 guidance나 routing surface가 있는지, task에 따라 무엇을 더 읽거나 어디로 route해야 하는지를 알 수 있습니다.
 
 이 패턴은 chatbot을 완전한 agent harness로 바꾸는 것이 아니라, **초기 context loading과 routing을 repository 안에서 재현하기 위한 얇은 compatibility layer**를 제공합니다.
 
@@ -23,7 +23,7 @@ repository entrypoint
         ↓
 routing guidance / selection signals
         ↓
-task-relevant canonical context
+task-relevant context / next route
 ```
 
 두 surface의 책임을 분리합니다.
@@ -74,7 +74,7 @@ Repository-wide guidance는 `AGENTS.md`를 확인한다.
 
 ## Skills
 
-| Skill | Use when | Source |
+| Skill | Use when | Route |
 | --- | --- | --- |
 | `mols-rpi` | recursive RPI improvement가 필요할 때 | `src/.../mols-rpi/SKILL.md` |
 | `searcher` | current external research나 verification이 필요할 때 | `src/.../searcher/SKILL.md` |
@@ -82,15 +82,17 @@ Repository-wide guidance는 `AGENTS.md`를 확인한다.
 
 작은 repository라면 table이나 bullet list만으로 충분할 수 있습니다. 후보가 많거나 같은 routing metadata를 여러 consumer가 재사용하거나 자동 생성할 가치가 있을 때는 별도 [Routing & Index Assets](routing-index-assets.md) pattern을 함께 사용할 수 있습니다.
 
+`Route`는 local file path에 한정되지 않습니다. 현재 candidate를 실제로 읽거나 사용할 수 있는 source, catalog, native surface 또는 더 구체적인 router를 가리킬 수 있습니다. Authority와 runtime access가 다를 때의 일반적인 경계는 [Routing & Index Assets](routing-index-assets.md)가 다룹니다.
+
 이 예시는 고정 schema가 아닙니다. Repository가 이미 가진 instruction, routing, index, documentation 구조에 맞게 더 작거나 다른 형태로 구성할 수 있습니다.
 
-특히 `AGENTS.md`, Skill body, Rule, development policy처럼 이미 authority를 가진 내용을 entrypoint에 다시 복사하기보다 **그 owner로 route하는 방식**이 drift와 context duplication을 줄이는 데 도움이 됩니다.
+특히 `AGENTS.md`, Skill body, Rule, development policy처럼 이미 authority를 가진 내용을 entrypoint에 다시 복사하기보다 **그 owner나 적절한 next surface로 route하는 방식**이 drift와 context duplication을 줄이는 데 도움이 됩니다.
 
 ## Routable Discovery
 
 Entrypoint가 asset directory나 source path만 알려주는 것으로는 semantic routing이 성립하지 않을 수 있습니다. 여러 후보 중 task-relevant asset을 선택해야 한다면 **후보의 위치뿐 아니라 선택할 근거**도 발견 가능해야 합니다.
 
-Skill이라면 이름과 source만 나열하기보다 description, trigger, `when to use`처럼 현재 task와의 applicability를 판단할 수 있는 정보를 함께 제공하는 식입니다.
+Skill이라면 이름과 route만 나열하기보다 description, trigger, `when to use`처럼 현재 task와의 applicability를 판단할 수 있는 정보를 함께 제공하는 식입니다.
 
 ```text
 # navigation only
@@ -139,7 +141,7 @@ Bootstrap은 repository guidance 자체를 품기보다 **entrypoint 위치와 l
 bootstrap
 → root CHATBOT.md
 → routing guidance
-→ selected AGENTS.md / Skill / Rule / docs source
+→ selected context / next surface
 ```
 
 `CHATBOT.md` 자체가 작은 router가 될 수 있습니다. 별도 routing/index asset은 규모나 재사용 필요가 있을 때 선택합니다.
@@ -162,7 +164,7 @@ Discovery metadata가 자동 생성된다면 structured artifact 자체를 entry
 bootstrap
 → route/chatbot.json
 → candidate metadata
-→ selected canonical sources
+→ selected context / access surface
 ```
 
 이 경우 generated artifact를 canonical instruction owner로 오해하지 않도록 source authority를 분리하는 것이 좋습니다.
@@ -202,7 +204,7 @@ repository/
 - Entrypoint가 너무 많은 실제 지침을 직접 소유하면 기존 canonical assets와 중복되고 항상 로드되는 context도 커질 수 있습니다.
 - Bootstrap instruction과 repository entrypoint가 같은 내용을 반복하지 않도록 responsibility를 나누는 편이 유지보수하기 쉽습니다.
 - Entrypoint를 여러 개로 늘리면 locality는 좋아질 수 있지만 discovery, precedence와 stale duplication 비용도 커질 수 있습니다.
-- Chatbot runtime의 file/tool access가 제한적이면 entrypoint가 가리키는 자산을 실제로 읽을 수 있는지도 별도로 고려해야 합니다.
+- Chatbot runtime의 file/tool access가 제한적이면 entrypoint가 가리키는 route를 실제로 따라갈 수 있는지도 별도로 고려해야 합니다.
 
 ## Relationship to Other Patterns
 
@@ -214,7 +216,7 @@ repository/
 | [Layered Context Instructions](layered-context-instructions.md) | 어떤 scope mechanism에 instruction을 배치할지 다룹니다. |
 | [Progressive Context Routing](progressive-context-routing.md) | 많은 context source 중 필요한 것을 단계적으로 좁혀 로드하는 방식을 다룹니다. |
 
-Repository entrypoint는 이 pattern들의 기능을 다시 구현할 필요 없이, 해당 repository가 사용하는 mechanism으로 chatbot을 연결하는 첫 hop으로 동작할 수 있습니다.
+Repository entrypoint는 이 pattern들의 기능을 다시 구현할 필요 없이, 해당 repository가 사용하는 mechanism으로 chatbot을 연결하는 first hop으로 동작할 수 있습니다.
 
 ## Boundary
 
