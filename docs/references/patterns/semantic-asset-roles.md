@@ -33,6 +33,8 @@ Role은 자산 안에 어떤 종류의 문장이 들어 있는지가 아니라 *
 | Constraint / Control | 범위, 권한, invariant, guardrail처럼 행동을 제한하거나 조정하는 의미 |
 | Evaluation | 완료, 품질, acceptance, validation 같은 판단 기준 |
 
+역할의 경계는 내용의 주제만으로 정하지 않습니다. 같은 원칙이나 문장도 판단 재료로 제공되면 Knowledge에 가깝고, 적용되는 행동 경계를 소유하면 Constraint에 가까울 수 있습니다.
+
 필요하면 다른 역할을 추가하거나 위 역할을 더 넓게 해석할 수 있습니다. 모든 자산을 반드시 하나의 role로 분류할 필요도 없습니다.
 
 ## Composition
