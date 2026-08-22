@@ -16,7 +16,7 @@ def directory_names(path: Path) -> set[str]:
     return {entry.name for entry in path.iterdir() if entry.is_dir()}
 
 
-def test_library_workspace_is_canonical_and_target_neutral() -> None:
+def test_library_workspace_is_canonical_and_target_scoped() -> None:
     contract = load_contract()["library_workspace"]
     source = ROOT / contract["asset_root"]
     config_path = ROOT / contract["config"]
@@ -24,8 +24,7 @@ def test_library_workspace_is_canonical_and_target_neutral() -> None:
 
     assert source == config_path.parent / ".rulesync"
     assert source.is_dir()
-    assert config["targets"] == []
-    assert contract["target_neutral"] is True
+    assert config["targets"] == contract["supported_targets"]
 
     skills = source / "skills"
     assert skills.is_dir()
