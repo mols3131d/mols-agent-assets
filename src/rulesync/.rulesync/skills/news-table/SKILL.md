@@ -6,6 +6,13 @@ description: >-
   roundups, trend briefs, or topic-by-topic current-events tables, especially when the
   user requests item counts or recurring topic cadences. Do not use when news is only
   supporting evidence for broader research or when one development needs a deep dive.
+targets:
+  - claudecode
+  - codexcli
+  - copilot
+  - copilotcli
+  - antigravity-ide
+  - antigravity-cli
 ---
 
 # News Table
