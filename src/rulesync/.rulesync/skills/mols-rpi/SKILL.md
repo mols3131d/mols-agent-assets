@@ -14,6 +14,14 @@ description: >-
   when loop is merely the topic, identifier, or code concept being discussed, when the
   user only asks to repeat content without iterative work, merely because a task is long,
   or for trivial work where explicit prerequisite artifacts add no meaningful control.
+targets:
+  - claudecode
+  - codexcli
+  - copilot
+  - copilotcli
+  - antigravity-ide
+  - antigravity-cli
+  - agentsskills
 ---
 
 # Mols RPI
