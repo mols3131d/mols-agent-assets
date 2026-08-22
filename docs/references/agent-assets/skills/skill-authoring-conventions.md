@@ -18,7 +18,7 @@ Required entrypoint, path, metadata와 discovery semantics는 실제 authored so
 - Runtime-required resource는 deployable Skill package 안에, repository-only verification은 host의 `tests/`·`evals/` 같은 verification surface에 둡니다.
 - Supporting material이 host에서 별도 Skill entrypoint로 발견될 수 있는 이름이나 위치를 사용하지 않습니다.
 
-Rulesync를 canonical source로 사용하는 이 repository의 구체적인 workspace와 path는 [Rulesync](../../tooling/rulesync.md)와 [Source Authority](../../../development/source-authority.md)가 소유합니다.
+Rulesync를 canonical source로 사용하는 이 repository의 구체적인 workspace와 path는 [Rulesync](../../tooling/rulesync.md)와 [작성 원본과 권한](../../../development/source-authority.md)이 소유합니다.
 
 ## Markdown Responsibility
 
