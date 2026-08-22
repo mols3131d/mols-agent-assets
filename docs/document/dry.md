@@ -24,11 +24,11 @@
 
 #### Pattern Capsules
 
-`docs/references/patterns/*.md`의 각 pattern 문서는 하나의 독립 documentation domain입니다.
+`docs/references/patterns/<category>/` 아래의 각 pattern capsule은 하나의 독립 documentation domain입니다. Root와 category `README.md`는 분류·routing·공통 contract를 소유하며 개별 pattern의 의미 owner가 아닙니다.
 
 - 다른 pattern capsule과의 overlap은 허용합니다.
 - 같은 capsule 내부의 불필요한 중복은 DRY 위반입니다.
-- Pattern capsule의 작성, self-containment, flexibility와 ownership contract는 [Patterns](../references/patterns/README.md)가 소유합니다.
+- Pattern capsule의 작성, self-containment, flexibility, category와 ownership contract는 [Patterns](../references/patterns/README.md)가 소유합니다.
 
 #### Tooling References
 

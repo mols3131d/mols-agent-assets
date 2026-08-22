@@ -210,7 +210,7 @@ Entrypoint와 chatbot-only asset surface는 같은 위치에 있을 수도 있�
 
 | Pattern | Relationship |
 | --- | --- |
-| [Nonstandard Directory Guide](nonstandard-directory-guide.md) | `.chatbot/` 같은 repository-local nonstandard surface에 local guide가 필요할 때 참고합니다. |
+| [Nonstandard Directory Guide](../documentation/nonstandard-directory-guide.md) | `.chatbot/` 같은 repository-local nonstandard surface에 local guide가 필요할 때 참고합니다. |
 
 ## Boundary
 

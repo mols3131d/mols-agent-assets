@@ -119,7 +119,7 @@ Shared routing과 consumer-specific routing을 함께 둘 때는 실제 선택 �
 | Pattern | Relationship |
 | --- | --- |
 | [Chatbot Repository Entrypoint](chatbot-repository-entrypoint.md) | Chatbot entrypoint의 inline routing이 커지거나 reusable/generated routing surface로 분리할 가치가 있을 때 이 패턴을 사용할 수 있습니다. |
-| [Nonstandard Directory Guide](nonstandard-directory-guide.md) | `route/` 같은 repository-local routing surface에 local guide가 필요할 때 참고합니다. |
+| [Nonstandard Directory Guide](../documentation/nonstandard-directory-guide.md) | `route/` 같은 repository-local routing surface에 local guide가 필요할 때 참고합니다. |
 
 ## Boundary
 
