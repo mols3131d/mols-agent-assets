@@ -90,8 +90,8 @@ Skill과 Subagent는 서로 배타적인 대안이 아닙니다.
 대표 선택지는 다음과 같습니다.
 
 1. Parent context에 작업 과정이 남아야 하면 Skill이나 capability를 shared context에서 실행합니다.
-2. Isolation만 필요하고 runtime이 forked/isolated Skill을 지원하면 더 작은 native mechanism을 우선할 수 있습니다.
-3. 별도 context와 함께 tool, permission, specialist identity 또는 명시적인 handoff contract가 유용하면 Capability-oriented Subagent가 자연스럽습니다.
+1. Isolation만 필요하고 runtime이 forked/isolated Skill을 지원하면 더 작은 native mechanism을 우선할 수 있습니다.
+1. 별도 context와 함께 tool, permission, specialist identity 또는 명시적인 handoff contract가 유용하면 Capability-oriented Subagent가 자연스럽습니다.
 
 예를 들어 GitHub Copilot for VS Code는 현재 experimental `context: fork`로 Skill을 dedicated subagent context에서 실행하고 final result만 parent에 반환할 수 있습니다. 이는 이 pattern의 구현 예시일 뿐이며 현재 semantics는 [Agent Skills in VS Code](https://code.visualstudio.com/docs/agent-customization/agent-skills)가 소유합니다.
 
@@ -102,8 +102,8 @@ Skill과 Subagent는 서로 배타적인 대안이 아닙니다.
 Subagent를 설계할 때 다음 질문을 독립적으로 봅니다.
 
 1. 품질을 더 크게 좌우하는 것은 **올바른 판단 경계와 책임**인가, **특정 작업을 안정적으로 수행하는 capability**인가?
-2. Intermediate context를 parent에 남기는 것이 유익한가, 아니면 **격리하고 최소 충분 결과만 handoff하는 것이 더 유익한가?**
-3. Isolation이 필요하다면 현재 runtime의 더 작은 native mechanism으로 충분한가, 아니면 별도 Subagent boundary가 실질적인 이점을 주는가?
+1. Intermediate context를 parent에 남기는 것이 유익한가, 아니면 **격리하고 최소 충분 결과만 handoff하는 것이 더 유익한가?**
+1. Isolation이 필요하다면 현재 runtime의 더 작은 native mechanism으로 충분한가, 아니면 별도 Subagent boundary가 실질적인 이점을 주는가?
 
 첫 질문은 Responsibility orientation을, 두 번째와 세 번째는 Execution context와 구현 선택을 돕습니다. 어느 답도 filename, directory 또는 framework metadata만으로 고정하지 않습니다.
 
