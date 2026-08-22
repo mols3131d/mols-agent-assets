@@ -19,10 +19,9 @@ description: 문서 작업 전에 top-level docs surface와 nested directory의 
 `docs/`의 nesting은 고정된 directory taxonomy가 아니라 **책임 경계를 더 좁은 owner에게 위임할 수 있는 계층**입니다.
 
 - 이 README는 top-level surface routing과 nested ownership model만 소유하며 descendant의 내부 구조를 직접 소유하지 않습니다.
-- Directory-level `README.md`가 필요한 경우 그 directory의 scope, direct child surface 사이의 책임 경계와 local navigation·maintenance contract를 소유합니다.
-- Parent는 child가 존재하는 이유와 sibling 사이의 경계를 소유하고, child는 자기 subtree의 더 좁은 책임을 소유합니다. Deeper child의 세부 구조를 parent에 복제하지 않습니다.
-- 별도 local contract가 없다면 nesting 자체를 이유로 `README.md`를 만들지 않습니다. Self-evident structure는 filesystem과 search에 맡깁니다.
+- Parent directory의 local owner는 direct child surface가 존재하는 이유와 sibling 사이의 책임 경계를 소유합니다.
+- Child directory의 local owner는 자기 subtree의 더 좁은 contract와 direct child routing을 소유합니다. Deeper child의 세부 구조를 ancestor에 복제하지 않습니다.
 - Repository-wide documentation principle은 [`document/`](document/)가 계속 소유합니다. Local owner는 자기 scope를 구체화할 수 있지만 상위 공통 원칙을 중복 소유하거나 재정의하지 않습니다.
 - 이 ownership model은 domain별 folder, document bundle, asset capsule 또는 특정 nesting depth를 요구하지 않습니다. 그런 구조는 해당 책임에서 실제로 필요할 때만 local하게 정의합니다.
 
-Repository-wide 문서 배치와 ownership 원칙은 [Documentation](document/README.md)이 소유합니다. 특정 directory나 surface에만 적용되는 contract와 세부 규칙은 가장 가까운 local owner가 소유합니다.
+Directory-level documentation이 필요한 조건과 repository-wide 배치 원칙은 [Documentation Ownership](document/ownership.md)이 소유합니다. 특정 directory나 surface에만 적용되는 contract와 세부 규칙은 가장 가까운 local owner가 소유합니다.
