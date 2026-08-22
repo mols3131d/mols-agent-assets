@@ -47,7 +47,7 @@ runtime usage surface
 
 Per-asset targeting은 다른 configuration layer를 대체하지 않습니다. Rulesync의 per-target feature configuration, target-specific metadata section, local config, CLI override와 upstream adapter semantics는 각각 필요한 책임을 계속 소유합니다. 현재 projection 대상이 아니라는 이유만으로 유효한 target-specific metadata를 삭제하지 않습니다. 더 구체적인 설정이 필요한 경우 해당 공식 Rulesync contract를 사용하고 local shadow schema를 만들지 않습니다.
 
-Repository-local superset schema나 manual projection semantics는 만들지 않습니다. Vendor-native authored source의 선택과 배치는 [Authority Routing](../../development/authority-routing.md)을 따릅니다.
+Repository-local superset schema나 manual projection semantics는 만들지 않습니다. Vendor-native authored source의 선택과 배치는 [작성 원본과 권한](../../development/source-authority.md)을 따릅니다.
 
 ## Local Entry Points
 
@@ -98,7 +98,7 @@ Historical compatibility를 조사할 때만 해당 release/tag의 문서를 고
 
 ## Boundary
 
-- authored source placement와 target authority → [Authority Routing](../../development/authority-routing.md)
+- authored source placement와 target authority → [작성 원본과 권한](../../development/source-authority.md)
 - runtime semantics → target contract
 - Skill authoring → [Skill Authoring Conventions](../agent-assets/skills/skill-authoring-conventions.md)
 - filesystem naming → [Naming](../agent-assets/common/naming.md)
