@@ -26,6 +26,17 @@ Evaluation은 deterministic correctness만으로 충분히 판단하기 어려�
 
 `evals/` 내부 layout과 fixture ownership은 [`evals/README.md`](../../evals/README.md)가 소유합니다.
 
+## Evaluation Contract
+
+Eval을 만들기 전에 **무엇을 어떤 조건에서 증명하려는지** 먼저 고정합니다.
+
+- **Claim** — 이 eval 결과가 뒷받침할 behavior 또는 quality claim
+- **System under evaluation** — Agent Asset뿐 아니라 실제 model/runtime, projection, harness처럼 결과에 영향을 주는 실행 surface
+- **Conditions** — 중요한 tool access, context, model/runtime 설정과 필요한 budget 또는 retry 조건
+- **Success criteria** — 성공·실패를 가르는 observable outcome 또는 rubric
+
+서로 다른 model, runtime, harness 또는 조건의 결과를 직접 비교하려면 차이가 결과를 왜곡하지 않을 정도로 evaluation setup을 맞춥니다. Setup이 바뀌면 그 차이를 결과와 함께 해석합니다.
+
 ## Eval을 추가할 때
 
 다음 중 하나가 실제로 필요할 때 eval을 추가합니다.
@@ -38,23 +49,60 @@ Evaluation은 deterministic correctness만으로 충분히 판단하기 어려�
 
 단순히 case 수를 늘리기 위해 fixture를 추가하지 않습니다. 새 case는 보호하려는 behavior나 failure mode가 분명해야 합니다.
 
+### Capability와 Regression
+
+- **Capability eval**은 아직 불안정하거나 개선하려는 behavior의 현재 수준을 측정합니다. 낮은 pass rate 자체가 eval 실패를 의미하지 않습니다.
+- **Regression eval**은 이미 지켜야 하는 behavior가 계속 유지되는지 확인합니다. 반복 가능한 성공 기준과 높은 신뢰도가 필요합니다.
+
+Capability case가 충분히 안정되고 계속 보호할 가치가 생기면 regression contract로 승격할 수 있습니다. 불안정한 model judgment를 이름만 regression으로 바꿔 merge-blocking contract로 만들지 않습니다.
+
+## Case Quality
+
+- 실제 요구사항, 수동 검증, 반복된 failure에서 representative case를 우선합니다.
+- behavior가 **발생해야 하는 case와 발생하면 안 되는 case**를 함께 검토해 한쪽으로만 최적화되는 것을 피합니다.
+- task와 grader가 확인하는 조건은 서로 모순되거나 숨겨진 요구를 만들지 않아야 합니다.
+- 정상적인 Agent가 해결할 수 없는 broken fixture, 잘못된 ground truth, flaky environment는 target failure와 분리합니다.
+- 같은 case를 반복 조정하며 Asset을 맞출수록 fixture 자체에 과적합할 위험이 커집니다. 새로운 evidence가 없는 cosmetic variation은 추가하지 않습니다.
+
+## Outcome과 Trajectory
+
+기본적으로 **목표 달성 outcome을 먼저 평가**합니다. Agent가 유효한 다른 경로를 찾을 수 있는데도 특정 tool sequence나 문장 형태를 강제하지 않습니다.
+
+다만 다음처럼 중간 behavior 자체가 contract이면 trajectory도 평가할 수 있습니다.
+
+- 잘못된 tool이나 authority surface를 사용하면 안 됨
+- 필수 confirmation, scope gate, escalation을 건너뛰면 안 됨
+- 최종 문장만으로는 실제 side effect 또는 state change를 확인할 수 없음
+
+Trajectory grader는 필요한 invariant만 검사하고 하나의 정답 경로를 구현 세부로 고정하지 않습니다.
+
 ## Evidence
 
 Eval 결과는 증거의 강도를 구분해서 해석합니다.
 
 1. **Deterministic evidence** — 동일 입력에서 안정적으로 판정 가능한 contract. 필요한 경우 merge-blocking verification으로 사용할 수 있습니다.
-1. **Runtime behavioral evidence** — 실제 model/runtime을 실행해 관찰한 결과. 실행 환경과 asset revision을 함께 봅니다.
+1. **Runtime behavioral evidence** — 실제 model/runtime을 실행해 관찰한 결과. 실행 환경, harness와 asset revision을 함께 봅니다.
 1. **Stochastic/model-graded evidence** — model 생성이나 grader 변동성이 있는 결과. 기본적으로 단일 PASS/FAIL을 merge admission으로 사용하지 않습니다.
 
-반복 가능한 failure pattern이 확인되면 원인을 Asset, fixture, runtime/provider, grader로 분리합니다. 안정적인 contract로 만들 수 있을 때만 deterministic regression 또는 blocking eval로 승격합니다.
+반복 가능한 failure pattern이 확인되면 원인을 Asset, fixture, harness/runtime/provider, grader로 분리합니다. 안정적인 contract로 만들 수 있을 때만 deterministic regression 또는 blocking eval로 승격합니다.
+
+## Graders
+
+- observable state나 구조로 판정할 수 있으면 code/deterministic grader를 우선합니다.
+- semantic quality처럼 deterministic 판정이 부적절할 때 model grader를 사용합니다.
+- rubric은 한 번에 너무 많은 품질 개념을 섞지 말고 판정할 behavior를 구체적으로 적습니다.
+- grader가 판단하기 위해 필요한 source/context가 있다면 실제 grading input에 제공되어야 합니다.
+- model grader는 target과 별개의 failure source입니다. transport, parse, missing-context 같은 grader failure를 target failure로 간주하지 않습니다.
+- 중요한 model grader는 representative sample을 사람의 판단이나 더 직접적인 evidence와 비교해 주기적으로 calibration합니다.
+
+Grader를 바꾸면 같은 점수 이름이라도 이전 결과와 동일한 measurement라고 가정하지 않습니다.
 
 ## Eval Design
 
 - 먼저 보호할 behavior와 실패 조건을 명시합니다.
 - 최소한의 representative case와 필요한 adversarial case만 둡니다.
 - 문자열 일치보다 의미가 중요한 계약을 억지 deterministic regression으로 고정하지 않습니다.
-- model grader가 필요하면 rubric은 판정할 behavior만 설명하고 구현 세부를 재정의하지 않습니다.
-- stochastic comparison은 필요하면 여러 trial을 사용하고 model/runtime, fixture, asset revision을 함께 기록합니다.
+- stochastic comparison은 필요하면 여러 trial을 사용하고 model/runtime, harness, fixture, asset revision을 함께 기록합니다.
 - generated result는 기본적으로 disposable evidence로 취급합니다. durable decision이나 regression contract가 생겼을 때만 canonical surface에 반영합니다.
 
 ## Promptfoo
@@ -80,10 +128,12 @@ Promptfoo-specific config와 adapter의 실제 구현은 `evals/promptfoo/`와 `
 
 ## Review
 
-Eval 변경을 검토할 때 다음을 확인합니다.
+Eval 변경이나 결과를 검토할 때 다음을 확인합니다.
 
+- 이 eval이 뒷받침하려는 claim과 실제 tested system이 명확한가?
 - 이 case가 실제 behavior 또는 failure mode를 보호하는가?
 - deterministic test로 더 싸고 안정적으로 검증할 수 없는가?
-- fixture가 특정 model/provider의 우연한 표현에 과적합되지 않았는가?
-- grader가 contract보다 더 넓은 품질 기준을 임의로 만들고 있지 않은가?
+- outcome을 볼 수 있는데 불필요하게 특정 trajectory를 강제하고 있지 않은가?
+- fixture가 특정 model/provider의 우연한 표현이나 현재 implementation에 과적합되지 않았는가?
+- grader와 harness의 실패를 target failure로 잘못 해석하지 않았는가?
 - 결과의 증거 수준보다 강한 결론을 주장하고 있지 않은가?
