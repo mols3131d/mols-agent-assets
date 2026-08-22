@@ -4,6 +4,8 @@ import json
 import tomllib
 from pathlib import Path
 
+import yaml
+
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "evals/regression/rulesync-source-isolation.json"
 
@@ -14,6 +16,16 @@ def load_contract() -> dict:
 
 def directory_names(path: Path) -> set[str]:
     return {entry.name for entry in path.iterdir() if entry.is_dir()}
+
+
+def load_frontmatter(path: Path) -> dict:
+    lines = path.read_text(encoding="utf-8").splitlines()
+    assert lines and lines[0] == "---", path
+    try:
+        end = lines.index("---", 1)
+    except ValueError as error:
+        raise AssertionError(f"missing closing frontmatter delimiter: {path}") from error
+    return yaml.safe_load("\n".join(lines[1:end])) or {}
 
 
 def test_library_workspace_is_canonical_and_target_scoped() -> None:
@@ -31,6 +43,29 @@ def test_library_workspace_is_canonical_and_target_scoped() -> None:
     for skill_root in skills.iterdir():
         if skill_root.is_dir():
             assert (skill_root / "SKILL.md").is_file(), skill_root
+
+
+def test_library_assets_declare_explicit_targets() -> None:
+    contract = load_contract()["library_workspace"]
+    source = ROOT / contract["asset_root"]
+    supported = set(contract["supported_targets"])
+    internal = set(contract["internal_targets"])
+    allowed = supported | internal
+
+    skill_files = sorted((source / "skills").glob("*/SKILL.md"))
+    subagent_files = sorted((source / "subagents").glob("*.md"))
+    assert skill_files
+    assert subagent_files
+
+    for path in [*skill_files, *subagent_files]:
+        targets = load_frontmatter(path).get("targets")
+        assert isinstance(targets, list) and targets, path
+        assert "*" not in targets, path
+        assert not (set(targets) - allowed), path
+
+    for path in subagent_files:
+        targets = set(load_frontmatter(path)["targets"])
+        assert targets <= supported, path
 
 
 def test_repository_and_library_workspaces_stay_separate() -> None:
@@ -77,7 +112,9 @@ def test_repository_workspace_declarative_skills_are_locked() -> None:
     assert selected
     library_skills = ROOT / library["asset_root"] / "skills"
     for skill in selected:
-        assert (library_skills / skill / "SKILL.md").is_file(), skill
+        skill_file = library_skills / skill / "SKILL.md"
+        assert skill_file.is_file(), skill
+        assert "agentsskills" in load_frontmatter(skill_file)["targets"], skill
 
     locked = lock["sources"][source["source"]]
     assert lock["lockfileVersion"] == 1
