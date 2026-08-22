@@ -35,7 +35,16 @@ runtime usage surface
 
 ### Target and Schema
 
-이 저장소는 supported vendor/target matrix를 정의하지 않습니다. Target은 구체적인 projection 또는 검증 operation에서만 선택합니다. 개별 asset의 유효한 target-specific metadata는 현재 projection 대상이 아니라는 이유만으로 제거하지 않습니다.
+`src/rulesync/rulesync.jsonc`는 이 library가 적극적으로 다루는 **workspace support ceiling**을 선언합니다. 현재 target 이름과 feature 목록은 config가 authority이며 이 문서에 복제하지 않습니다.
+
+실제 target applicability는 가능한 한 **개별 asset이 소유**합니다.
+
+- Rule, Skill, Subagent의 `targets`는 그 asset이 실제로 의미 있게 projection될 수 있는 target만 선언합니다.
+- upstream Rulesync나 target runtime이 해당 asset type 또는 필요한 semantics를 지원하지 않으면 그 target을 선언하지 않습니다.
+- `targets: ["*"]` 또는 생략은 broad portability가 의도되고 현재 configured targets에서 의미가 보존될 때만 사용합니다.
+- workspace target에 포함되어 있다는 이유만으로 모든 asset이 그 target을 지원한다고 간주하지 않습니다.
+
+Per-asset targeting은 다른 configuration layer를 대체하지 않습니다. Rulesync의 per-target feature configuration, target-specific metadata section, local config, CLI override와 upstream adapter semantics는 각각 필요한 책임을 계속 소유합니다. 더 구체적인 설정이 필요한 경우 해당 공식 Rulesync contract를 사용하고 local shadow schema를 만들지 않습니다.
 
 Repository-local superset schema나 manual projection semantics는 만들지 않습니다. Vendor-native authored source의 선택과 배치는 [Authority Routing](../../development/authority-routing.md)을 따릅니다.
 
