@@ -46,15 +46,53 @@ def test_repository_and_library_workspaces_stay_separate() -> None:
 
     assert repository_source != library_source
     assert repository_config != library_config
+    assert repository["optional"] is False
+    assert repository_config.is_file()
+    if repository_source.exists():
+        assert repository_source.is_dir()
     assert library_source.is_dir()
     assert library_config.is_file()
 
-    if repository_source.exists() or repository_config.exists():
-        assert repository_source.is_dir()
-        assert repository_config.is_file()
-
     for path in contract["forbidden_library_generated_surfaces"]:
         assert not (ROOT / path).exists(), path
+
+
+def test_repository_workspace_declarative_skills_are_locked() -> None:
+    contract = load_contract()
+    repository = contract["repository_workspace"]
+    library = contract["library_workspace"]
+    config = json.loads((ROOT / repository["config"]).read_text(encoding="utf-8"))
+    lock = json.loads((ROOT / repository["lock"]).read_text(encoding="utf-8"))
+
+    assert config["targets"] == ["agentsskills"]
+    assert config["features"] == ["skills"]
+    assert len(config["sources"]) == 1
+
+    source = config["sources"][0]
+    assert source["source"] == "mols3131d/mols-agent-assets"
+    assert source["transport"] == "github"
+    assert source["ref"] == "main"
+    assert source["path"] == f'{library["asset_root"]}/skills'
+
+    selected = set(source["skills"])
+    assert selected
+    library_skills = ROOT / library["asset_root"] / "skills"
+    for skill in selected:
+        assert (library_skills / skill / "SKILL.md").is_file(), skill
+
+    locked = lock["sources"][source["source"]]
+    assert lock["lockfileVersion"] == 1
+    assert locked["requestedRef"] == source["ref"]
+    assert len(locked["resolvedRef"]) == 40
+    assert all(char in "0123456789abcdef" for char in locked["resolvedRef"])
+    assert set(locked["skills"]) == selected
+    for skill in locked["skills"].values():
+        integrity = skill["integrity"]
+        assert integrity.startswith("sha256-")
+        assert len(integrity) == len("sha256-") + 64
+
+    gitignore = (ROOT / ".gitignore").read_text(encoding="utf-8")
+    assert f'/{repository["runtime_surface"]}/' in gitignore
 
 
 def test_deployable_skill_surface_excludes_repository_verification() -> None:
@@ -87,6 +125,11 @@ def test_rulesync_toolchain_is_reproducibly_pinned() -> None:
     assert len(parts) == 3 and all(part.isdigit() for part in parts)
     assert 'shutil.which("rulesync")' in runner
     assert "rulesync@latest" not in runner
+
+    setup = mise["tasks"]["setup"]["run"]
+    assert "rulesync install --frozen" in setup
+    assert "rulesync generate" in setup
+    assert setup.index("rulesync install --frozen") < setup.index("rulesync generate")
     assert not (ROOT / "package-lock.json").exists()
 
 

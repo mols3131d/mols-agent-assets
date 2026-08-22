@@ -6,6 +6,10 @@
 /.archive/
 /.gemini/
 /.codex/
+/.agents/skills/
+/.rulesync/rules/.curated/
+/.rulesync/skills/.curated/
+/rulesync.local.jsonc
 /src/rulesync/rulesync.local.jsonc
 
 # Temporary and backup files
