@@ -90,6 +90,6 @@ Historical compatibility를 조사할 때만 해당 release/tag의 문서를 고
 
 - authored source placement와 target authority → [Authority Routing](../../development/authority-routing.md)
 - runtime semantics → target contract
-- Skill authoring → [Skill Authoring Conventions](../../agent-assets/skills/skill-authoring-conventions.md)
-- filesystem naming → [Naming](../../agent-assets/common/naming.md)
+- Skill authoring → [Skill Authoring Conventions](../agent-assets/skills/skill-authoring-conventions.md)
+- filesystem naming → [Naming](../agent-assets/common/naming.md)
 - verification → [Testing](../../development/testing.md)
