@@ -56,12 +56,15 @@ Eval을 만들기 전에 **무엇을 어떤 조건에서 증명하려는지** �
 
 Capability case가 충분히 안정되고 계속 보호할 가치가 생기면 regression contract로 승격할 수 있습니다. 불안정한 model judgment를 이름만 regression으로 바꿔 merge-blocking contract로 만들지 않습니다.
 
+여기서 regression은 **평가 목적**을 뜻합니다. 파일 배치는 별개이며, `evals/regression/`은 [`evals/README.md`](../../evals/README.md)가 정의한 cross-asset deterministic invariant에만 사용합니다.
+
 ## Case Quality
 
 - 실제 요구사항, 수동 검증, 반복된 failure에서 representative case를 우선합니다.
 - behavior가 **발생해야 하는 case와 발생하면 안 되는 case**를 함께 검토해 한쪽으로만 최적화되는 것을 피합니다.
 - task와 grader가 확인하는 조건은 서로 모순되거나 숨겨진 요구를 만들지 않아야 합니다.
 - 정상적인 Agent가 해결할 수 없는 broken fixture, 잘못된 ground truth, flaky environment는 target failure와 분리합니다.
+- 가능한 경우 known-good 또는 known-bad example로 task와 grader가 의도대로 판정하는지 sanity check합니다.
 - 같은 case를 반복 조정하며 Asset을 맞출수록 fixture 자체에 과적합할 위험이 커집니다. 새로운 evidence가 없는 cosmetic variation은 추가하지 않습니다.
 
 ## Outcome과 Trajectory
@@ -124,3 +127,5 @@ Eval 변경이나 결과를 검토할 때 다음을 확인합니다.
 - fixture가 특정 model/provider의 우연한 표현이나 현재 implementation에 과적합되지 않았는가?
 - grader와 harness의 실패를 target failure로 잘못 해석하지 않았는가?
 - 결과의 증거 수준보다 강한 결론을 주장하고 있지 않은가?
+
+특히 failure와 예상 밖의 PASS에서는 raw output 또는 필요한 trajectory를 표본 검토해 **target behavior, fixture, grader, harness 중 무엇이 결과를 만들었는지** 확인합니다.
