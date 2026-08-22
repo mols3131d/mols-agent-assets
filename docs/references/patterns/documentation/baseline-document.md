@@ -26,6 +26,7 @@ description: 자산의 원래 의도와 protected invariant를 구현 상태와 
 ├─ baseline.md
 
 # or
+
 <asset-docs>/
 └─ baseline/
    ├─ README.md
