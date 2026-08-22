@@ -1,5 +1,7 @@
 ---
 targets:
+  - claudecode
+  - codexcli
   - copilot
   - copilotcli
   - antigravity-ide
