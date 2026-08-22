@@ -2,7 +2,7 @@
 
 이 디렉터리는 여러 repository와 harness에서 참고·선택·조합·변형할 수 있는 **reusable pattern capsule**을 보관합니다.
 
-Pattern은 특정 project의 operational policy가 아니라, 반복해서 사용할 수 있는 설계 아이디어의 **본질과 적용 선택지**를 설명합니다.
+Pattern은 특정 project의 operational policy나 Agent Asset type에 종속된 작성 규칙이 아니라, 반복해서 사용할 수 있는 설계 아이디어의 **본질과 적용 선택지**를 설명합니다.
 
 ## Capsule
 
@@ -47,6 +47,7 @@ Pattern은 **본질은 분명하게, 적용은 유연하게** 작성합니다.
 - 중복 자체보다 **각 capsule이 어떤 책임을 소유하는지**를 우선 봅니다.
 - 다른 pattern의 핵심 책임을 자기 규칙처럼 소유하지 않습니다.
 - Project-local convention과 mandatory workflow는 해당 project의 operational documentation이 소유합니다.
+- Agent Asset type-specific 설계 지식은 [`docs/agent-assets/`](../agent-assets/)가 소유합니다.
 - 외부 standard나 tool behavior가 authority라면 필요에 따라 reference하고 pattern이 이를 재정의하지 않습니다.
 - 같은 capsule이나 bundle 내부의 의미 없는 반복은 피합니다.
 

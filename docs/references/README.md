@@ -1,13 +1,13 @@
 ---
-description: reusable knowledge나 source routing이 필요할 때 references가 맞는 문서 surface인지 판단하는 데 사용합니다.
+description: 외부 specification이나 tooling의 current authority를 확인해야 할 때 authoritative source routing을 찾는 데 사용합니다.
 ---
 
-# References
+# External References
 
-`docs/references/`는 **이 repository 또는 다른 프로젝트에서 참고할 문서**를 보관합니다.
+`docs/references/`는 **외부 specification과 tooling의 authoritative source를 찾기 위한 routing knowledge**를 보관합니다.
 
-Reference는 project-local operational policy의 유일한 owner일 필요가 없습니다. 다른 documentation domain과 내용이 겹칠 수 있습니다.
+이 디렉터리는 Agent Asset 자체의 설계 원칙이나 reusable pattern을 소유하지 않습니다. Agent Asset design knowledge는 [`docs/agent-assets/`](../agent-assets/), reusable pattern capsule은 [`docs/patterns/`](../patterns/)가 소유합니다.
 
-단, references 내부에서는 같은 의미를 둘 이상의 문서가 중복 소유하지 않습니다. Reference domain의 중복 경계는 [Documentation DRY policy](../document/dry.md)를 따릅니다.
+Reference는 upstream behavior를 local prose로 대체하지 않고, 작업 시점에 확인해야 할 official source와 이 repository에서 필요한 integration boundary를 연결합니다.
 
-Reference는 reusable knowledge와 source routing에 집중하고, 특정 project의 작업 절차나 asset 하나의 maintainer capsule은 각각 해당 owner에 둡니다.
+같은 external authority나 integration concern을 여러 reference가 중복 소유하지 않습니다. 중복 경계는 [Documentation DRY policy](../document/dry.md)를 따릅니다.

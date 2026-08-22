@@ -2,7 +2,7 @@
 
 `docs/<asset-type>/<owner>/**`는 **asset maintainer documentation capsule**로 취급합니다. `<owner>`는 하나의 asset이거나 같은 책임군의 family일 수 있습니다.
 
-`development`, `document`, `references`는 reserved documentation namespace이며 asset type에 포함하지 않습니다.
+`agent-assets`, `development`, `document`, `patterns`, `references`는 reserved documentation namespace이며 asset type에 포함하지 않습니다.
 
 ## Ownership
 

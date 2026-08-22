@@ -18,7 +18,9 @@
 | Surface | Meaning |
 | --- | --- |
 | `src/` | 이 repository가 관리하는 **library source**. Portable asset뿐 아니라 vendor/target/context-specific asset도 재사용·배포·변형할 가치가 있으면 포함할 수 있습니다. |
-| `docs/references/` | 여러 작업과 repository에서 다시 참고할 수 있는 specification router, convention, pattern과 reusable knowledge |
+| `docs/agent-assets/` | Agent Asset 자체를 설계·작성할 때 재사용하는 공통 원칙과 Skill-specific knowledge |
+| `docs/patterns/` | 여러 repository와 harness에서 선택·조합·변형할 수 있는 reusable design pattern capsule |
+| `docs/references/` | 외부 specification과 tooling의 current authority를 찾기 위한 reference routing |
 | `docs/<asset-type>/<owner>/` | 개별 asset 또는 family를 유지보수하기 위한 maintainer documentation capsule |
 | `route/` | canonical asset metadata에서 파생되는 cross-runtime discovery surface |
 | `inbox/` | 아직 canonical하지 않은 research, review, handoff와 기타 working artifact |
@@ -30,11 +32,13 @@
 
 ## Navigation
 
-- Agent Asset design → [Design Principles](docs/references/common/design-principles.md)
+- 이 library의 자산 사용 → [Consumption](docs/consumption.md)
+- Agent Asset 설계 지식 → [Agent Asset Design](docs/agent-assets/README.md)
+- Reusable design patterns → [Patterns](docs/patterns/README.md)
 - Agent-facing repository rules → [`AGENTS.md`](AGENTS.md)
 - Repository development → [Development](docs/development/README.md)
 - Documentation → [Documentation](docs/document/README.md)
-- Reusable references and patterns → [References](docs/references/README.md)
+- External/tooling references → [References](docs/references/README.md)
 - Rulesync source/workspace → [Rulesync](docs/references/tooling/rulesync.md)
 - Cross-runtime discovery → [`route/`](route/README.md)
 - Working artifacts → [`inbox/`](inbox/README.md)
