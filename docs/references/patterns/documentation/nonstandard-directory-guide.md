@@ -23,6 +23,6 @@ Agent에게만 필요한 behavior, instruction, path-scoped rule 같은 내용�
 
 | Pattern | Relationship |
 | --- | --- |
-| [Directory Context Capsule](directory-context-capsule.md) | Directory-local entrypoint와 주변 rules, Skills, references 등 agent-facing context를 하나의 scope-local capsule로 구성할 때 참고합니다. |
+| [Directory Context Capsule](../context-engineering/directory-context-capsule.md) | Directory-local entrypoint와 주변 rules, Skills, references 등 agent-facing context를 하나의 scope-local capsule로 구성할 때 참고합니다. |
 
 이 패턴은 비표준 directory를 만들 것을 권장하는 것이 아니라, **이미 필요한 비표준 surface를 설명 가능한 상태로 유지하기 위한 작은 보완책**입니다.
