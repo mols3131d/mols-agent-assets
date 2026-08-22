@@ -20,7 +20,7 @@ description: 에이전트 자산을 추가, 분리, 중복 제거, 단순화할 
 
 ## Local Delta
 
-Local rule이나 reference를 추가하기 전에 다음 중 하나인지 확인합니다.
+Local Agent Asset content를 추가하기 전에 다음 중 하나인지 확인합니다.
 
 - **Deviation** — upstream/default와 의도적으로 다르게 행동해야 합니다.
 - **Extension** — upstream에 없는 repository-specific behavior나 boundary가 필요합니다.
@@ -28,7 +28,7 @@ Local rule이나 reference를 추가하기 전에 다음 중 하나인지 확인
 
 셋 중 어느 것도 아니면 작성하지 않는 것이 기본입니다. Upstream detail이 판단에 필요하면 authoritative source를 링크하거나 작업 시점에 확인하고, fast-changing semantics를 local prose로 복제하지 않습니다.
 
-Local Delta가 필요해도 prose instruction이 항상 올바른 mechanism은 아닙니다. 해당 concern을 더 직접적으로 소유·검증하는 established source/target-native mechanism, selector, permission, schema, validator 또는 deterministic automation이 있고 이를 사용해도 canonical source authority와 필요한 target portability가 깨지지 않으면 그 mechanism을 우선합니다. 여러 target에 배포되는 source에서는 한 target의 편의를 별도 canonical authority로 만들지 않습니다. Semantic judgment와 예외 판단처럼 모델이 해석해야 하는 behavior는 instruction에 남깁니다.
+Local Delta가 필요해도 prose instruction이 항상 올바른 mechanism은 아닙니다. 해당 concern을 더 직접적으로 소유·검증하는 established native 또는 deterministic mechanism이 있고, 그것을 사용해도 competing authority나 필요한 portability가 생기지 않으면 그 owner를 우선합니다. 특정 target의 편의만으로 별도 canonical source를 만들지 않습니다. Semantic judgment와 예외 판단처럼 모델이 해석해야 하는 behavior는 readable instruction에 남깁니다.
 
 ## Context Test
 
@@ -61,7 +61,7 @@ AI가 자산을 빠르게 만들수록 maintainer가 **무엇이 authoritative�
 
 - 이것이 local deviation, extension 또는 ambiguity resolution인가?
 - 실제 요구, observed failure, accepted policy 또는 credible invariant가 있는가?
-- 더 직접적인 mechanism이 있는데 prose로 다시 구현하거나 canonical authority/portability를 깨는 별도 owner를 만들고 있지 않은가?
+- 더 직접적인 mechanism이 있는데 prose로 다시 구현하거나 competing authority를 만들고 있지 않은가?
 - 하나의 concern을 여러 owner가 소유하거나 서로 다른 concern이 한 owner에 섞였는가?
 - 정책 변경 시 concern별 authoritative location이 명확한가?
 - 필요한 책임과 경계를 유지하면서 이해·변경·검증 비용을 낮출 수 있는 accidental complexity가 있는가?
