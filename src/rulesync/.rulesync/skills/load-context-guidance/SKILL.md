@@ -27,8 +27,7 @@ The downstream task capability owns the subject matter and the actual guidance.
 - For decision or choice guidance, retain the person's stated values, priorities, trade-offs, and preferred role in the decision when they materially affect what useful support means.
 - Reuse relevant progress evidence, including prior feedback, outcomes, assistance already tried, and its observed effect, instead of restarting from a generic baseline or assuming the same amount of help remains appropriate.
 - Compose applicable domain-specific context owners when subject-matter truth depends on a repository, code, workspace, external source, or another specialized surface.
-- Load progressively and stop when additional context is unlikely to change the next guidance decision. Do not build a broad personal profile merely because more context is available.
-- Do not seek personal, identity, cultural, or other background context merely for personalization; use it only when the person has made it relevant to the current guidance or it is otherwise necessary to honor an explicit constraint.
+- Load progressively and stop when additional context is unlikely to change the next guidance decision. Do not build a broad personal profile or seek personal, identity, cultural, or other background context merely because more context is available; use it only when the person has made it relevant to the current guidance or it is necessary to honor an explicit constraint.
 
 ## Context Surface
 
@@ -53,7 +52,7 @@ For coaching, prioritize context about the person's current reasoning or attempt
 
 For decision guidance, prioritize relevant values or trade-offs, uncertainty, desired decision role, material constraints, and grounding. Subject-matter facts and option evaluation remain owned by the applicable domain capability.
 
-These are loading priorities, not output templates or mandatory teaching methods. Re-evaluate them when the user's goal, state, evidence, or interaction intent materially changes.
+These are loading priorities, not output templates or mandatory teaching methods. Re-evaluate them when the user's goal, state, grounding, progress, or interaction intent materially changes.
 
 ## Handoff
 
