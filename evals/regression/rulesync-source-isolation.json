@@ -1,5 +1,5 @@
 {
-  "version": 13,
+  "version": 14,
   "kind": "deterministic-regression",
   "repository_workspace": {
     "config": "rulesync.jsonc",
@@ -18,7 +18,8 @@
       "copilotcli",
       "antigravity-ide",
       "antigravity-cli"
-    ]
+    ],
+    "internal_targets": ["agentsskills"]
   },
   "forbidden_library_generated_surfaces": [
     "src/rulesync/.github",
