@@ -1,5 +1,5 @@
 ---
-description: repository 개발 작업에서 change workflow, authority routing, testing 중 적용할 local policy를 찾을 때 사용합니다.
+description: repository 개발 작업에서 change workflow, authority routing, testing, evaluation 중 적용할 local policy를 찾을 때 사용합니다.
 ---
 
 # Development
@@ -10,7 +10,8 @@ description: repository 개발 작업에서 change workflow, authority routing, 
 
 - [Change Workflow](change-workflow.md) — branch naming과 repository-local change flow
 - [Authority Routing](authority-routing.md) — source, standard, target과 local authority resolution
-- [Testing](testing.md) — repository verification 위치와 evidence 수준
+- [Testing](testing.md) — deterministic verification과 PR Gate
+- [Evaluation](evaluation.md) — Agent Asset의 behavioral eval과 evidence 수준
 
 ## Related Owners
 
