@@ -74,8 +74,9 @@ Current VS Code documentation was rechecked and still describes experimental `co
 - An earlier PR Gate found Markdown normalization only: ordered-list style and duplicate heading anchor.
 - Those formatting issues were corrected without changing the pattern design.
 - PR Gate #901 passed on the prior head.
-- During the new improve/review cycle, `main` advanced to `d6208679c3ef9a61d434e6039dfbb83472dce037`; final merge-result validation against current `main` is still required.
+- During the new improve/review cycle, `main` advanced to `d6208679c3ef9a61d434e6039dfbb83472dce037`.
+- Merge-result PR Gate #905 passed deterministic tests and changed Markdown normalization against that current `main`.
 
 ## Status
 
-`in_progress` until the current head passes merge-result validation against the latest `main`. If validation introduces no material finding, stop recursion on saturation.
+`completed`. The improve → review cycle resolved the remaining coupling finding, the next full review found no material pattern-design issue, and merge-result validation against the current `main` passed. Further edits would be churn rather than evidence-backed improvement, so recursion stops on saturation.
