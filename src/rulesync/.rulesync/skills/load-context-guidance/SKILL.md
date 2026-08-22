@@ -39,14 +39,7 @@ Do not force every dimension into an explicit question or artifact. Missing cont
 
 ## Handoff
 
-Before downstream guidance begins, confirm only what is needed to avoid a materially generic or mismatched response:
-
-- the intended outcome and useful success condition are clear enough;
-- the current state is understood well enough for the required adaptation;
-- relevant constraints, interaction preferences, and progress are retained when they matter;
-- grounding is available or delegated to its actual owner, and material uncertainty remains explicit.
-
-Then stop loading context and hand off to the task capability.
+Hand off once the smallest relevant subset of the context surface is sufficient to avoid materially generic or mismatched guidance, required domain context is available or delegated to its owner, and material uncertainty remains explicit. Do not delay downstream guidance merely to complete the context surface.
 
 ## Boundary
 
