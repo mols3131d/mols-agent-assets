@@ -12,6 +12,15 @@ description: >-
   correctness, regressions, integration, maintainability, and validation quality. Returns
   evidence-linked candidate findings and unknowns for a review lead. Do not make final
   approval or merge decisions and do not modify the reviewed target.
+claudecode:
+  tools:
+    - Read
+    - Grep
+    - Glob
+    - Bash
+  permissionMode: plan
+codexcli:
+  sandbox_mode: read-only
 copilot:
   tools:
     - read
