@@ -8,6 +8,8 @@ Status: **Experimental**.
 
 `caveman-ko` is a Korean-oriented experimental adaptation of the MIT-licensed [`JuliusBrussee/caveman`](https://github.com/JuliusBrussee/caveman) response Skill. It keeps the core idea—compress generated prose while preserving technical meaning—but intentionally diverges where local trigger, Korean-language, runtime, and clarity requirements need a different contract.
 
+Provenance baseline: `JuliusBrussee/caveman` `skills/caveman/SKILL.md` at `bd22d86b32e4a99e09ff7482a35509faac7a6f65`.
+
 The distributed package includes the upstream MIT notice in `src/rulesync/.rulesync/skills/caveman-ko/LICENSE`.
 
 ## Maintenance Boundary
