@@ -1,6 +1,13 @@
 ---
 name: clarify-code
 description: Use this skill to make existing code easier to understand and maintain without changing behavior. Trigger for requests to clarify confusing code, names, caller contracts, domain semantics, rationale, responsibilities, control flow, or unnecessary indirection. Do not use for feature implementation, correctness review, performance optimization, architecture redesign, or user-facing documentation.
+targets:
+  - claudecode
+  - codexcli
+  - copilot
+  - copilotcli
+  - antigravity-ide
+  - antigravity-cli
 ---
 
 # Clarify Code
