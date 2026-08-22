@@ -1,5 +1,5 @@
 ---
-name: load-context-notion
+name: notion-context
 description: >-
   Load live Notion structure and context for task-level work in a concrete workspace or
   object: page, database, data source, view, property, relation, template, or connected

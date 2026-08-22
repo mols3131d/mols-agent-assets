@@ -1,16 +1,16 @@
 ---
-name: load-context-tech-doc-fidelity
+name: technical-document-fidelity
 description: >-
-  Load technical-document fidelity constraints when rewriting, translating,
-  reformatting, or improving an existing technical document while preserving its
-  meaning, code, identifiers, URLs, and meaningful structure. Use when preservation
-  is a primary requirement. Do not use for repository onboarding, architecture
-  explanation, new-document authoring, or general writing without fidelity needs.
+  Preserve technical-document fidelity when rewriting, translating, reformatting, or
+  improving an existing technical document while keeping its meaning, code,
+  identifiers, URLs, and meaningful structure intact. Use when preservation is a
+  primary requirement. Do not use for repository onboarding, architecture explanation,
+  new-document authoring, or general writing without fidelity needs.
 ---
 
-# Load Context: Technical Document Fidelity
+# Technical Document Fidelity
 
-This Skill contributes **preservation context** for transforming an existing technical document. The active writing or transformation capability owns execution and output.
+This Skill defines **preservation constraints** for transforming an existing technical document. The active writing or transformation capability owns execution and output.
 
 ## Protected Content
 
@@ -38,4 +38,4 @@ Before finalizing, compare the result against the source for the protected conte
 
 ## Boundary
 
-This Skill contributes fidelity constraints only. Use repository-understanding capability when the task is to understand a codebase rather than transform an existing document.
+This Skill owns technical-document preservation constraints only. Use repository-understanding capability when the task is to understand a codebase rather than transform an existing document.

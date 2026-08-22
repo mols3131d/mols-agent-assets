@@ -1,5 +1,5 @@
 ---
-name: load-context-coding
+name: coding-context
 description: >-
   Mandatory coding-scope baseline context for engineering judgment. Always load for any
   task whose active work surface includes code or code-facing software design,

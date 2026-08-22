@@ -1,5 +1,5 @@
 ---
-name: load-context-guidance
+name: guidance-context
 description: >-
   Load adaptive context for guidance, coaching, mentoring, onboarding, teaching, or
   walkthrough tasks when how the assistant should support the person materially depends
