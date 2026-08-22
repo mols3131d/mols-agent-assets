@@ -1,26 +1,24 @@
 ---
 title: Skill Authoring Conventions
-description: Rulesync canonical Skill에 적용하는 repository-local authoring convention
+description: source framework과 target contract가 소유하지 않는 mols의 reusable Skill authoring convention
 ---
 
 # Skill Authoring Conventions
 
-이 문서는 Rulesync와 target contract가 소유하지 않는 **mols의 Skill authoring 관행**만 정의합니다.
+이 문서는 source framework와 target contract가 소유하지 않는 **mols의 Skill authoring 관행**만 정의합니다.
 
 ## Package
 
-Canonical entrypoint:
+Required entrypoint, path, metadata와 discovery semantics는 실제 authored source framework와 target contract가 소유합니다. 이 convention은 그 representation을 다시 정의하지 않습니다.
 
-```text
-src/rulesync/.rulesync/skills/<skill-name>/SKILL.md
-```
-
-기본은 single-file입니다. `SKILL.md` 하나로 activation과 runtime behavior가 충분하면 파일 길이만으로 분리하지 않습니다.
+실제 entrypoint가 정해진 뒤에는 기본적으로 single-file을 선호합니다. 하나의 entrypoint로 activation과 runtime behavior가 충분하면 파일 길이만으로 분리하지 않습니다.
 
 - chatbot/agent, flat/runtime을 별도 Skill taxonomy로 만들지 않습니다.
-- 실제 runtime resource가 필요할 때만 `references/`, `scripts/`, `assets/`, `templates/`를 추가합니다.
-- Runtime-required resource는 package 안에, repository verification은 `tests/`·`evals/`에 둡니다.
-- Nested `SKILL.md`는 별도 entrypoint로 해석될 수 있으므로 supporting template 이름으로 사용하지 않습니다.
+- 실제 runtime resource가 필요할 때만 supporting reference, script, asset 또는 template을 추가합니다.
+- Runtime-required resource는 deployable Skill package 안에, repository-only verification은 host의 `tests/`·`evals/` 같은 verification surface에 둡니다.
+- Supporting material이 host에서 별도 Skill entrypoint로 발견될 수 있는 이름이나 위치를 사용하지 않습니다.
+
+Rulesync를 canonical source로 사용하는 이 repository의 구체적인 workspace와 path는 [Rulesync](../../tooling/rulesync.md)와 [Authority Routing](../../../development/authority-routing.md)이 소유합니다.
 
 ## Markdown Responsibility
 

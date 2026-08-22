@@ -1,3 +1,7 @@
+---
+description: Agent Skills portable specification과 target별 official source를 현재 authority에 따라 찾을 때 사용하는 source registry입니다.
+---
+
 # Agent Skills Specification
 
 Agent Skills 관련 **official source registry**입니다. Specification의 field·path·validation 세부사항은 local snapshot으로 복제하지 않습니다.
