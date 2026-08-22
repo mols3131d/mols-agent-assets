@@ -10,6 +10,14 @@ description: >-
   persistence is not required; create durable target state only when the requested
   end state needs it. Do not use for authoring or materially changing asset behavior,
   or for formal validation and evaluation.
+targets:
+  - claudecode
+  - codexcli
+  - copilot
+  - copilotcli
+  - antigravity-ide
+  - antigravity-cli
+  - agentsskills
 agentsskills:
   metadata:
     references: "vercel-labs/skills:skills/find-skills/SKILL.md"
