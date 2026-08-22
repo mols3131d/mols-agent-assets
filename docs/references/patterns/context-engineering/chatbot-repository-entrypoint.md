@@ -1,3 +1,7 @@
+---
+description: Chat runtime이 repository의 context와 Agent Asset을 native하게 발견하지 못할 때 stable entrypoint와 runtime bootstrap을 연결하는 reusable pattern입니다.
+---
+
 # Chatbot Repository Entrypoint
 
 Repository 안에 **chatbot이 context loading을 시작할 stable entrypoint 하나를 두고**, runtime 밖의 bootstrap instruction이 그 entrypoint를 명시적으로 읽도록 연결해 chatbot이 agent harness와 비슷하게 repository context를 시작할 수 있게 하는 패턴입니다.
