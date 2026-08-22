@@ -3,14 +3,14 @@
   "sources": {
     "mols3131d/mols-agent-assets": {
       "requestedRef": "main",
-      "resolvedRef": "8dfc0207573a7dcb284763e9ffd7a5ad4dfc766d",
-      "resolvedAt": "2026-08-22T07:11:12.669Z",
+      "resolvedRef": "8a99c402cb507a334f3a75bbf0c283574aba54b2",
+      "resolvedAt": "2026-08-22T14:31:00.000Z",
       "skills": {
         "artifact-consistency-inspector": {
           "integrity": "sha256-89cfaf13ad70fc247b1c8e4fdd49c07563ee44d1671672a8485cbab89dc15774"
         },
-        "load-context-github": {
-          "integrity": "sha256-d43d4178dd86f8c9184ffc6abe5d502550e393fff0a9cf5765f5d2c6f87a6377"
+        "github-context": {
+          "integrity": "sha256-21e9be40b662bf6644c00fd1a035ae3a40da3cc46fb79cf3d7ba547a2316c3db"
         },
         "mols-agent-asset-find": {
           "integrity": "sha256-3161fc07de2d430335910a7457772c3a6926c3e891454e94d7661ff45a751e26"
