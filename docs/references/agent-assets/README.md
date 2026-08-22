@@ -17,6 +17,12 @@ description: Agent Asset 설계 원칙, 공통 지식과 Skill 관행 중 어떤
 
 이 README는 child inventory를 복제하지 않습니다. 구체적인 지식은 해당 문서가 소유합니다.
 
+## Ownership
+
+- Asset type에 종속되지 않는 durable design meaning은 `common/`이 소유합니다.
+- Skill에만 적용되는 durable design meaning은 `skills/`가 소유합니다.
+- 같은 의미를 `common/`과 `skills/`가 함께 소유하지 않습니다. 다른 surface에서 필요하면 authoritative owner를 link합니다.
+
 ## Boundary
 
 - 여러 repository와 harness에서 재사용할 설계 pattern → [Patterns](../patterns/README.md)

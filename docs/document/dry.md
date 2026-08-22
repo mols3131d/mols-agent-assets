@@ -1,59 +1,28 @@
 # DRY Boundaries
 
-문서 중복은 하나의 repository-wide namespace로 판정하지 않습니다. 목적이 다른 documentation domain 사이의 overlap은 허용하고, 같은 domain 안에서는 하나의 의미를 하나의 owner만 소유하게 합니다.
+문서 중복은 repository 전체를 하나의 namespace로 보고 판정하지 않습니다. **같은 scope에서 같은 의미를 둘 이상의 owner가 함께 소유하지 않는 것**을 기본 원칙으로 합니다.
 
-## Domains
+## Principle
 
-### Project Documentation
+- 하나의 durable rule, convention, rationale 또는 contract는 같은 scope 안에서 authoritative owner 하나만 둡니다.
+- Entrypoint의 짧은 routing label과 link는 원문 책임의 중복으로 보지 않습니다.
+- 서로 다른 scope의 문서는 portability, self-containment 또는 독립 사용성에 실제 도움이 될 때 필요한 만큼 overlap할 수 있습니다.
+- 단순 편의를 위한 무의미한 복제는 scope가 달라도 만들지 않습니다.
 
-`docs/references/`와 asset capsule을 제외한 repository documentation은 하나의 project documentation domain으로 봅니다.
+## Local Boundaries
 
-같은 durable rule, convention 또는 rationale을 이 domain 안의 둘 이상의 문서가 함께 소유하면 DRY 위반입니다. Entrypoint의 짧은 routing label과 link는 policy body의 중복으로 보지 않습니다.
+특정 directory나 documentation surface에만 적용되는 ownership·duplication boundary는 그 local owner가 정의합니다.
 
-### Reusable References
+`docs/document/`는 `references/`, `inbox/`, `route/` 같은 개별 directory 내부의 세부 책임 분할을 대신 소유하지 않습니다. 해당 directory의 `README.md`나 local document가 자기 범위의 owner와 중복 경계를 설명합니다.
 
-`docs/references/`는 이 repository와 다른 repository에서 재사용할 knowledge library입니다. 하위 surface의 책임에 따라 중복 경계를 나눕니다.
-
-#### Agent Asset Knowledge
-
-`docs/references/agent-assets/**`는 하나의 reusable Agent Asset design domain입니다.
-
-- `common/`과 `skills/`에서 같은 설계 의미를 둘 이상의 문서가 중복 소유하면 DRY 위반입니다.
-- Agent Asset knowledge는 project documentation이나 다른 reusable domain과 독립 사용성에 필요한 만큼 overlap할 수 있습니다.
-- 이 domain의 reusable guidance는 project-local operational authority를 자동으로 획득하지 않습니다.
-
-#### Pattern Capsules
-
-`docs/references/patterns/<category>/` 아래의 각 pattern capsule은 하나의 독립 documentation domain입니다. Root와 category `README.md`는 분류·routing·공통 contract를 소유하며 개별 pattern의 의미 owner가 아닙니다.
-
-- 다른 pattern capsule과의 overlap은 허용합니다.
-- 같은 capsule 내부의 불필요한 중복은 DRY 위반입니다.
-- Pattern capsule의 작성, self-containment, flexibility, category와 ownership contract는 [Patterns](../references/patterns/README.md)가 소유합니다.
-
-#### Tooling References
-
-`docs/references/tooling/**`는 external specification과 tooling authority routing을 위한 하나의 reference domain입니다.
-
-- 같은 external authority나 integration concern을 여러 tooling reference가 중복 소유하지 않습니다.
-- Tooling reference는 upstream behavior의 local 재정의를 기본 책임으로 삼지 않습니다.
-
-### Asset Capsules
-
-각 `docs/<asset-type>/<owner>/**`는 하나의 독립적인 documentation domain입니다. `<owner>`는 하나의 asset 또는 family일 수 있으며 `development`, `document`, `references`는 asset type이 아니라 reserved documentation namespace입니다.
-
-- 같은 capsule 내부의 중복은 DRY 위반입니다.
-- capsule과 project documentation, reusable references 또는 다른 capsule 사이의 overlap은 portability와 self-containment를 위해 허용합니다.
-- family가 공유하는 durable knowledge는 family capsule이 소유하고 member-specific capsule에 반복하지 않습니다.
-- member-specific intent, recovery 또는 invariant는 해당 asset capsule이 소유합니다. Family capsule이 모든 member 문서를 흡수하는 상위 문서가 되지 않습니다.
-
-Asset/family capsule의 portability와 ownership contract는 [Asset Capsules](asset-capsules.md)가 소유합니다.
+Asset/family documentation capsule의 repository-wide portability contract는 [Asset Capsules](asset-capsules.md)가 소유합니다.
 
 ## Review
 
-중복을 발견하면 먼저 두 문서가 같은 domain인지 판정합니다.
+중복을 발견하면 다음 순서로 판단합니다.
 
-- 같은 domain이면 authoritative owner 하나로 합칩니다.
-- 다른 domain이면 독립 사용성에 실제 도움이 되는 overlap인지 확인합니다.
-- Family 공유 knowledge라면 member별 복제보다 family capsule을 우선합니다.
-- Pattern capsule은 overlap보다 responsibility ownership을 먼저 검토합니다.
-- 단순 편의를 위한 무의미한 복제는 domain이 달라도 만들지 않습니다.
+1. 두 문서가 실제로 같은 의미를 소유하는지 확인합니다.
+1. 같은 scope라면 authoritative owner 하나로 합치고 다른 곳에서는 link나 짧은 routing만 남깁니다.
+1. 다른 scope라면 독립 사용성이나 self-containment를 위해 overlap이 필요한지 확인합니다.
+1. 특정 directory에만 해당하는 판단은 그 directory의 local owner로 돌려보냅니다.
+1. 여러 local owner에서 같은 규칙이 반복되면 repository-wide 원칙으로 승격할 가치가 있는지 검토합니다.
