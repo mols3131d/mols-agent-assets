@@ -68,6 +68,24 @@ def test_library_assets_declare_explicit_targets() -> None:
         assert targets <= supported, path
 
 
+def test_review_subagents_preserve_target_native_read_only_constraints() -> None:
+    source = ROOT / load_contract()["library_workspace"]["asset_root"] / "subagents"
+    supported = set(load_contract()["library_workspace"]["supported_targets"])
+    names = ("review-lead", "review-quality", "review-adversarial")
+    frontmatter = {name: load_frontmatter(source / f"{name}.md") for name in names}
+
+    for metadata in frontmatter.values():
+        assert set(metadata["targets"]) == supported
+        assert metadata["claudecode"]["permissionMode"] == "plan"
+        assert metadata["codexcli"]["sandbox_mode"] == "read-only"
+
+    assert "Agent" in frontmatter["review-lead"]["claudecode"]["tools"]
+    assert "Agent" not in frontmatter["review-quality"]["claudecode"]["tools"]
+    assert "Agent" not in frontmatter["review-adversarial"]["claudecode"]["tools"]
+    assert "Bash" in frontmatter["review-quality"]["claudecode"]["tools"]
+    assert "Bash" not in frontmatter["review-adversarial"]["claudecode"]["tools"]
+
+
 def test_repository_and_library_workspaces_stay_separate() -> None:
     contract = load_contract()
     repository = contract["repository_workspace"]
