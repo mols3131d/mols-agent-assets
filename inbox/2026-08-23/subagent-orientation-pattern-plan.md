@@ -11,15 +11,15 @@ Make the pattern conceptually precise and reusable while keeping it small enough
 1. Reframe the document around two independent design dimensions:
    - responsibility orientation: `Role-oriented ↔ Capability-oriented`
    - execution context: `Shared ↔ Isolated`
-2. Keep Role-oriented and Capability-oriented as emphasis, not types.
-3. Move context isolation out of the Capability-oriented definition and present it as a frequent fit and design reason.
-4. Keep `Handoff as Context Boundary`, but tighten it to minimum-sufficient context transfer.
-5. Replace `Skill vs Subagent` framing with an execution-boundary choice:
+1. Keep Role-oriented and Capability-oriented as emphasis, not types.
+1. Move context isolation out of the Capability-oriented definition and present it as a frequent fit and design reason.
+1. Keep `Handoff as Context Boundary`, but tighten it to minimum-sufficient context transfer.
+1. Replace `Skill vs Subagent` framing with an execution-boundary choice:
    - inline/shared Skill execution
    - isolated/forked Skill where the runtime supports it
    - capability-oriented Subagent when a delegated context/tool/permission/specialist boundary is useful
-6. Keep GitHub Copilot `context: fork` only as a current implementation example and link to upstream authority instead of owning its semantics.
-7. Remove duplicated explanation and implementation-detail prose that does not help a reader apply the pattern.
+1. Keep GitHub Copilot `context: fork` only as a current implementation example and link to upstream authority instead of owning its semantics.
+1. Remove duplicated explanation and implementation-detail prose that does not help a reader apply the pattern.
 
 ## Acceptance
 
