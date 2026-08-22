@@ -7,7 +7,7 @@ Based on:
 
 ## Loop 1
 
-### Findings
+### Loop 1 Findings
 
 | Finding | Disposition |
 | --- | --- |
@@ -21,7 +21,7 @@ Based on:
 
 ## Loop 2
 
-### Findings
+### Loop 2 Findings
 
 | Finding | Disposition |
 | --- | --- |
@@ -32,7 +32,7 @@ Based on:
 
 ## Loop 3
 
-### Findings
+### Loop 3 Findings
 
 | Finding | Disposition |
 | --- | --- |
