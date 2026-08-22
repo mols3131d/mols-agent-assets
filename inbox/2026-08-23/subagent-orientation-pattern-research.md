@@ -19,12 +19,12 @@ Improve `docs/references/patterns/context-engineering/subagent-orientation.md` a
 ## Findings
 
 1. Preserve the `Role-oriented ↔ Capability-oriented` continuum as the pattern's primary orientation concept.
-2. Add a separate `Shared ↔ Isolated` execution/context dimension rather than redefining Capability-oriented as isolation.
-3. Keep context isolation as a strong reason to introduce a Capability-oriented Subagent, especially for bounded work with noisy intermediate context.
-4. Treat handoff as the boundary contract: pass the minimum sufficient result, evidence, uncertainty, blocker, and side-effect/verification state needed by the caller.
-5. Reframe Skill comparison around **where a capability executes and what context crosses the boundary**, not `Skill vs Subagent` as mutually exclusive choices.
-6. Describe forked Skill execution as an implementation option/example, not part of the pattern core. Vendor-specific semantics stay with the vendor authority.
-7. Avoid claiming Subagent formats are more portable than Skills. The vendor-neutral part is the architectural idea of isolated delegated execution plus handoff, not a common Subagent schema.
+1. Add a separate `Shared ↔ Isolated` execution/context dimension rather than redefining Capability-oriented as isolation.
+1. Keep context isolation as a strong reason to introduce a Capability-oriented Subagent, especially for bounded work with noisy intermediate context.
+1. Treat handoff as the boundary contract: pass the minimum sufficient result, evidence, uncertainty, blocker, and side-effect/verification state needed by the caller.
+1. Reframe Skill comparison around **where a capability executes and what context crosses the boundary**, not `Skill vs Subagent` as mutually exclusive choices.
+1. Describe forked Skill execution as an implementation option/example, not part of the pattern core. Vendor-specific semantics stay with the vendor authority.
+1. Avoid claiming Subagent formats are more portable than Skills. The vendor-neutral part is the architectural idea of isolated delegated execution plus handoff, not a common Subagent schema.
 
 ## Uncertainty
 
