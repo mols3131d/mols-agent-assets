@@ -25,7 +25,7 @@ Condition → Action → Boundary → Validation / Stop
 ## Rules
 
 - Required behavior는 직접 씁니다. 설명이나 예시만으로 action을 암시하지 않습니다.
-- 같은 behavior는 owning scope에 한 번만 둡니다. 반복해서 강조하는 것을 authority나 reliability의 대체물로 사용하지 않습니다.
+- 같은 authored behavior는 authoritative owner에 한 번만 둡니다. Target projection이나 generated representation이 필요하더라도 이를 별도 semantic owner로 취급하지 않으며, 반복 강조를 authority나 reliability의 대체물로 사용하지 않습니다.
 - Normative instruction과 explanatory context를 구분합니다. Rationale은 상황에 따른 올바른 판단을 materially 개선할 때 남기고, directive를 장황하게 반복하지 않습니다.
 - Trigger, action, boundary와 validation은 가능한 한 가까이 둡니다.
 - Default를 하나 두고 대안은 default를 벗어나는 실제 condition이 있을 때만 노출합니다.
@@ -83,7 +83,7 @@ Template은 format 자체가 contract일 때 사용합니다. Runtime이 structu
 - 어디까지 재량이고 무엇이 true invariant인가?
 - exception, negative boundary 또는 fallback이 실제 behavior를 어떻게 바꾸는가?
 - success, failure 또는 stop을 무엇으로 확인하는가?
-- 같은 behavior가 다른 instruction에 반복되거나 충돌하지 않는가?
+- 같은 behavior가 다른 authoritative instruction에 반복되거나 충돌하지 않는가?
 - example이나 rationale이 숨은 rule을 만들고 있지 않은가?
 
 행동이나 판단을 materially 바꾸지 않는 설명은 제거 후보입니다. Conditional detail은 [Design Principles](design-principles.md)의 Progressive Disclosure를 따릅니다.
