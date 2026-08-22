@@ -37,13 +37,49 @@ Project가 다른 구조를 사용할 수는 있지만, baseline의 entrypoint�
 
 ## Recommended Contents
 
+필요한 항목만 선택하고, 자산의 복구에 실제로 도움이 되는 내용에 집중합니다.
+
 - 목적과 비전
+- 대상과 scope
+- 명시적인 non-goal 또는 범위 밖
 - 본질과 핵심 원리
 - 주요 원칙과 요구
 - 중요한 결정과 rationale
+- 품질 또는 성공 기준처럼 본질을 판정하는 기준
 - 장기 목표와 protected invariant
 
-필요한 항목만 선택하고, 자산의 복구에 실제로 도움이 되는 내용에 집중합니다.
+Scope와 non-goal은 자산이 **무엇을 하지 않아야 하는지**가 복구에 중요할 때 보존합니다. 일시적인 작업 범위나 이번 iteration의 제외 항목은 baseline에 넣지 않습니다.
+
+## Minimal Template
+
+구체적인 schema가 필요한 것은 아니지만, 작은 baseline은 다음 정도에서 시작할 수 있습니다.
+
+```markdown
+# Purpose
+
+- Target:
+- Goal:
+- Out of scope:
+
+# Requirements
+
+- MUST |
+- SHOULD |
+- MUST NOT |
+
+# Decisions
+
+- DECISION | **Choice** — rationale
+- DECISION | **Rejected approach** — rationale
+
+# Quality Criteria
+
+- Outcome quality:
+- Failure prevention:
+- Validation condition:
+```
+
+이 template은 예시이며 고정 contract가 아닙니다. `Vision`, `Protected Invariants`, `Non-Goals`처럼 복구에 더 적합한 책임으로 바꾸거나 합칠 수 있습니다. 아직 결정되지 않은 질문이나 작업 상태는 baseline 해석에 장기적으로 필요할 때만 남기고, 일반적인 open question이나 작업 로그는 별도 working surface가 소유합니다.
 
 ## Protection
 
@@ -59,6 +95,6 @@ Baseline이 커지면 주제별 파일로 나누고 entrypoint에서 연결할 �
 
 - 작업 로그, 일시적 상태, 세부 구현 기록을 baseline의 주된 내용으로 삼지 않습니다.
 - Baseline은 runtime source나 현재 구현 문서를 대체하지 않습니다.
-- 이 패턴은 특정 승인 절차, 파일 구조, 버전 관리 방식을 강제하지 않습니다.
+- 이 패턴은 특정 section schema, 승인 절차, 파일 구조, 버전 관리 방식을 강제하지 않습니다.
 
 핵심은 **자산의 원래 의도와 본질을 복구할 수 있는 보호된 기준점**을 유지하는 것입니다.
