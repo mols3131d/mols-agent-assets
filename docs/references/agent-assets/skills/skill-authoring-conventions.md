@@ -46,9 +46,11 @@ Maintainer-only knowledge를 runtime dependency로 숨기지 않습니다.
 
 ## Context-Only Naming
 
-주책임이 workflow execution이 아니라 context discovery/loading이면 `load-context-<topic>`을 사용할 수 있습니다.
+주책임이 workflow execution이 아니라 domain-specific context discovery/loading이면 `<domain>-context`를 사용합니다.
 
-범용 loader와 개인 관행을 분리해야 하면 `load-context-<topic>-<owner>`를 personal overlay로 사용할 수 있습니다. 구현·mutation·검증·최종 output이 주책임인 Skill에는 `load-context-*`를 사용하지 않습니다.
+`domain`은 context가 적용되는 문제·지식·runtime surface를 사람이 구분할 수 있을 만큼만 표현합니다. 구현·mutation·검증·최종 output이 주책임인 Skill에는 `-context`를 사용하지 않습니다.
+
+이 naming은 Skill family convention이지 별도 Agent Asset type이나 metadata schema가 아닙니다.
 
 ## Target Metadata
 
