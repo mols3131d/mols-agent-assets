@@ -1,41 +1,12 @@
 ---
 title: Baseline Directive Template
-description: 특정 Skill의 durable purpose, requirements, decisions와 quality criteria를 docs/skills/<skill-name>/baseline에 기록할 때 사용하는 선택적 maintainer template
+description: Legacy route for the former Skill baseline template; use the reusable Baseline Document pattern as the current owner.
 ---
 
-# Purpose
+# Baseline Directive Template
 
-이 스킬이 해결해야 하는 문제와 존재 이유를 설명한다.
+이 문서는 더 이상 baseline 구조나 template을 소유하지 않습니다.
 
-- 대상:
-- 목표:
-- 범위 밖:
+Current owner: [Baseline Document](../../patterns/documentation/baseline-document.md)
 
-# Requirements
-
-스킬이 반드시 만족해야 하는 요구사항을 정리한다.
-
-- MUST |
-- SHOULD |
-- MUST NOT |
-
-# Decisions
-
-현재 유효한 설계 선택과 그 이유를 정리한다.
-
-- DECISION | **선택** — 이유
-- DECISION | **제외한 접근** — 제외 이유
-
-# Quality Criteria
-
-스킬이 충분히 완성되었다고 판단할 기준을 정리한다.
-
-- 결과 품질:
-- 실패 방지:
-- 검증 조건:
-
-# Open Questions
-
-아직 확정되지 않아 후속 판단이 필요한 사항을 정리한다.
-
-- QUESTION |
+Skill-specific baseline이 필요하면 해당 asset maintainer capsule에서 실제 intent와 invariant에 맞게 작성합니다. 새 template contract는 이 파일에 추가하지 않습니다.
