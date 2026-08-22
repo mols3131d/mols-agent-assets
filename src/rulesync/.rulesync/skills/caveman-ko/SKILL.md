@@ -7,6 +7,13 @@ description: >-
   meaning and required clarity. Do not use for ordinary requests to be brief, concise,
   summarize, shorten an answer, or save tokens unless caveman-style speech is explicitly
   requested.
+targets:
+  - claudecode
+  - codexcli
+  - copilot
+  - copilotcli
+  - antigravity-ide
+  - antigravity-cli
 agentsskills:
   license: MIT
 ---
