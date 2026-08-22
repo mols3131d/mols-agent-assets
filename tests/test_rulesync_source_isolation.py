@@ -64,7 +64,7 @@ def test_repository_workspace_declarative_skills_are_locked() -> None:
     config = json.loads((ROOT / repository["config"]).read_text(encoding="utf-8"))
     lock = json.loads((ROOT / repository["lock"]).read_text(encoding="utf-8"))
 
-    assert config["targets"] == []
+    assert config["targets"] == ["agentsskills"]
     assert config["features"] == ["skills"]
     assert len(config["sources"]) == 1
 
@@ -90,6 +90,9 @@ def test_repository_workspace_declarative_skills_are_locked() -> None:
         integrity = skill["integrity"]
         assert integrity.startswith("sha256-")
         assert len(integrity) == len("sha256-") + 64
+
+    gitignore = (ROOT / ".gitignore").read_text(encoding="utf-8")
+    assert f'/{repository["runtime_surface"]}/' in gitignore
 
 
 def test_deployable_skill_surface_excludes_repository_verification() -> None:
@@ -122,7 +125,11 @@ def test_rulesync_toolchain_is_reproducibly_pinned() -> None:
     assert len(parts) == 3 and all(part.isdigit() for part in parts)
     assert 'shutil.which("rulesync")' in runner
     assert "rulesync@latest" not in runner
-    assert "rulesync install --frozen" in mise["tasks"]["setup"]["run"]
+
+    setup = mise["tasks"]["setup"]["run"]
+    assert "rulesync install --frozen" in setup
+    assert "rulesync generate" in setup
+    assert setup.index("rulesync install --frozen") < setup.index("rulesync generate")
     assert not (ROOT / "package-lock.json").exists()
 
 
