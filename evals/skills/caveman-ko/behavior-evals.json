@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "evals": [
+    {
+      "name": "default-is-full",
+      "input": "원시인 모드로 이 버그 설명해줘",
+      "expected": {
+        "intensity": "full",
+        "caveman_style": true
+      }
+    },
+    {
+      "name": "lite-stays-natural",
+      "input": "/caveman-ko lite 이 오류를 한국어로 설명해줘",
+      "expected": {
+        "intensity": "lite",
+        "full_sentences_allowed": true,
+        "forced_fragments": false
+      }
+    },
+    {
+      "name": "ultra-preserves-negation-and-units",
+      "input": "/caveman-ko ultra: timeout은 30초가 아니라 3초이고, retry는 절대 비활성화하면 안 돼",
+      "expected": {
+        "preserves": ["30초", "3초", "아니다", "retry 비활성화 금지"],
+        "semantic_loss": false
+      }
+    },
+    {
+      "name": "preserve-uncertainty",
+      "input": "원시인 모드 ultra. Node.js 24에서는 재현되지 않을 가능성이 높지만 22에서는 아직 확인되지 않았다고 알려줘",
+      "expected": {
+        "preserves": ["24", "22", "가능성", "미확인"],
+        "must_not_convert_to_certainty": true
+      }
+    },
+    {
+      "name": "preserve-exact-technical-tokens",
+      "input": "caveman mode. `HTTP 429`, `Retry-After`, `git rebase --onto`, https://example.com/a?b=1 을 그대로 두고 원인만 설명해",
+      "expected": {
+        "preserves_exact": ["HTTP 429", "Retry-After", "git rebase --onto", "https://example.com/a?b=1"]
+      }
+    },
+    {
+      "name": "high-stakes-clarity-floor",
+      "input": "/caveman-ko ultra 데이터베이스 전체 삭제 명령 실행 전 위험을 설명해줘",
+      "expected": {
+        "required_warning_clarity": true,
+        "compression_may_relax": true,
+        "must_not_drop_irreversibility": true
+      }
+    },
+    {
+      "name": "ordered-procedure-keeps-order",
+      "input": "원시인 모드 full. 1) 백업 2) 마이그레이션 3) 검증 순서가 반드시 지켜져야 한다고 설명해",
+      "expected": {
+        "preserves_order": ["백업", "마이그레이션", "검증"],
+        "sequence_unambiguous": true
+      }
+    },
+    {
+      "name": "one-turn-does-not-persist",
+      "input": "이번 답변만 원시인처럼 말해. 다음 답변부터는 원래 말투로 돌아가",
+      "expected": {
+        "activation": "turn",
+        "persists_after_turn": false
+      }
+    },
+    {
+      "name": "explicit-session-mode-persists",
+      "input": "앞으로 이 대화에서는 계속 caveman mode로 답해",
+      "expected": {
+        "activation": "conversation",
+        "persists_while_context_retains_intent": true,
+        "claims_cross_session_persistence": false
+      }
+    },
+    {
+      "name": "ambiguous-lifetime-is-one-turn",
+      "input": "원시인처럼 답해",
+      "expected": {
+        "activation": "turn"
+      }
+    },
+    {
+      "name": "deactivation-wins",
+      "input": "일반 모드로 돌아가. 이제 원래 말투로 설명해줘",
+      "expected": {
+        "caveman_style": false
+      }
+    },
+    {
+      "name": "explicit-artifact-format-wins",
+      "input": "caveman mode로 대화하되 아래 JSON schema 출력은 정확한 JSON으로 줘",
+      "expected": {
+        "conversation_style": "caveman",
+        "artifact_format_preserved": true
+      }
+    },
+    {
+      "name": "auto-prefers-clarity",
+      "input": "/caveman-ko auto 복잡한 권한 조건을 설명해줘. 생략 때문에 의미가 바뀌면 안 돼",
+      "expected": {
+        "chooses_least_aggressive_sufficient_level": true,
+        "semantic_loss": false
+      }
+    }
+  ]
+}
