@@ -43,8 +43,8 @@ Evaluation은 deterministic correctness만으로 충분히 판단하기 어려�
 Eval 결과는 증거의 강도를 구분해서 해석합니다.
 
 1. **Deterministic evidence** — 동일 입력에서 안정적으로 판정 가능한 contract. 필요한 경우 merge-blocking verification으로 사용할 수 있습니다.
-2. **Runtime behavioral evidence** — 실제 model/runtime을 실행해 관찰한 결과. 실행 환경과 asset revision을 함께 봅니다.
-3. **Stochastic/model-graded evidence** — model 생성이나 grader 변동성이 있는 결과. 기본적으로 단일 PASS/FAIL을 merge admission으로 사용하지 않습니다.
+1. **Runtime behavioral evidence** — 실제 model/runtime을 실행해 관찰한 결과. 실행 환경과 asset revision을 함께 봅니다.
+1. **Stochastic/model-graded evidence** — model 생성이나 grader 변동성이 있는 결과. 기본적으로 단일 PASS/FAIL을 merge admission으로 사용하지 않습니다.
 
 반복 가능한 failure pattern이 확인되면 원인을 Asset, fixture, runtime/provider, grader로 분리합니다. 안정적인 contract로 만들 수 있을 때만 deterministic regression 또는 blocking eval로 승격합니다.
 
