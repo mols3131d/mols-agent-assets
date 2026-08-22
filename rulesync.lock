@@ -1,0 +1,33 @@
+{
+  "lockfileVersion": 1,
+  "sources": {
+    "mols3131d/mols-agent-assets": {
+      "requestedRef": "main",
+      "resolvedRef": "8dfc0207573a7dcb284763e9ffd7a5ad4dfc766d",
+      "resolvedAt": "2026-08-22T07:11:12.669Z",
+      "skills": {
+        "artifact-consistency-inspector": {
+          "integrity": "sha256-89cfaf13ad70fc247b1c8e4fdd49c07563ee44d1671672a8485cbab89dc15774"
+        },
+        "load-context-github": {
+          "integrity": "sha256-d43d4178dd86f8c9184ffc6abe5d502550e393fff0a9cf5765f5d2c6f87a6377"
+        },
+        "mols-agent-asset-find": {
+          "integrity": "sha256-3161fc07de2d430335910a7457772c3a6926c3e891454e94d7661ff45a751e26"
+        },
+        "mols-agent-asset-validator": {
+          "integrity": "sha256-8a2c36e0a52b812741b775b0b6d5f816e70c8a711e245403430975e0ae787e52"
+        },
+        "mols-agent-asset": {
+          "integrity": "sha256-4804ac1931d7ecdb7688e9627a41d1a19c5cb525f944f44d7ba50c6f5d730368"
+        },
+        "mols-markdown-maintenance": {
+          "integrity": "sha256-4f3b75f222ca8192a23ec577a655b039f2fecad6ddebe7520d30d32612fb8572"
+        },
+        "mols-rpi": {
+          "integrity": "sha256-269ba30bfa8d978157e70e5af20d73c7c474288810b9129a5ace9ec003ff4995"
+        }
+      }
+    }
+  }
+}
