@@ -10,7 +10,7 @@ General behavior는 실제 standard, source framework, tool 또는 target/harnes
 
 ## Principle
 
-**Standard First / Local Delta Only**
+이 저장소는 **Standard First / Local Delta Only**를 기본으로 합니다.
 
 Repository-local source에 남기는 것은 다음뿐입니다.
 
@@ -73,10 +73,10 @@ Derived artifact가 필요하면 owning source에서 다시 생성하거나 해�
 새 규칙이나 asset 배치를 결정할 때는 다음 순서로 판단합니다.
 
 1. 어떤 behavior 또는 representation을 결정하는지 식별합니다.
-2. 그 concern의 current authority를 찾습니다.
-3. reusable asset이면 canonical authored representation을 하나 선택합니다.
-4. repository에는 필요한 local delta와 source placement만 기록합니다.
-5. 세부 계약은 해당 authoritative source로 route합니다.
+1. 그 concern의 current authority를 찾습니다.
+1. reusable asset이면 canonical authored representation을 하나 선택합니다.
+1. repository에는 필요한 local delta와 source placement만 기록합니다.
+1. 세부 계약은 해당 authoritative source로 route합니다.
 
 ## Boundary
 
