@@ -1,3 +1,7 @@
+---
+description: 자산의 원래 의도와 protected invariant를 구현 상태와 분리해 보존·복구할 때 참고하는 reusable baseline pattern입니다.
+---
+
 # Baseline Document
 
 자산이 개발·튜닝 과정에서 훼손되거나 변질되어도 **원래 의도와 본질을 복원할 수 있게 하는 recovery baseline** 패턴입니다.
@@ -22,7 +26,6 @@
 ├─ baseline.md
 
 # or
-
 <asset-docs>/
 └─ baseline/
    ├─ README.md
