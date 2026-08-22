@@ -67,6 +67,7 @@ Capability case가 충분히 안정되고 계속 보호할 가치가 생기면 r
 - task와 grader가 확인하는 조건은 서로 모순되거나 숨겨진 요구를 만들지 않아야 합니다.
 - 정상적인 Agent가 해결할 수 없는 broken fixture, 잘못된 ground truth, flaky environment는 target failure와 분리합니다.
 - 가능한 경우 known-good 또는 known-bad example로 task와 grader가 의도대로 판정하는지 sanity check합니다.
+- target에게 주어지는 context와 workspace에는 production behavior에 필요한 정보만 노출합니다. Eval-only assertion, expected answer, hidden reference를 target이 읽을 수 있으면 contamination 가능성을 결과와 분리합니다.
 - 같은 case를 반복 조정하며 Asset을 맞출수록 fixture 자체에 과적합할 위험이 커집니다. 새로운 evidence가 없는 cosmetic variation은 추가하지 않습니다.
 
 ## Outcome과 Trajectory
@@ -127,6 +128,7 @@ Eval 변경이나 결과를 검토할 때 다음을 확인합니다.
 - repository test로 충분한 correctness를 behavioral eval로 중복하고 있지 않은가?
 - outcome을 볼 수 있는데 불필요하게 특정 trajectory를 강제하고 있지 않은가?
 - fixture가 특정 model/provider의 우연한 표현이나 현재 implementation에 과적합되지 않았는가?
+- target이 eval-only fixture나 expected result를 볼 수 있어 점수가 오염되지 않았는가?
 - grader와 harness의 실패를 target failure로 잘못 해석하지 않았는가?
 - 결과의 증거 수준보다 강한 결론을 주장하고 있지 않은가?
 
