@@ -91,7 +91,7 @@ Skill과 Subagent는 서로 배타적인 대안이 아닙니다.
 
 1. Parent context에 작업 과정이 남아야 하면 Skill이나 capability를 shared context에서 실행합니다.
 1. Isolation만 필요하고 runtime이 forked/isolated Skill을 지원하면 더 작은 native mechanism을 우선할 수 있습니다.
-1. 별도 context와 함께 tool, permission, specialist identity 또는 명시적인 handoff contract가 유용하면 Capability-oriented Subagent가 자연스럽습니다.
+1. 별도 context와 함께 tool, permission, specialist identity 또는 명시적인 handoff contract가 유용하면 Subagent boundary가 자연스럽습니다. 그 Subagent의 Role/Capability orientation은 책임에 따라 별도로 판단합니다.
 
 예를 들어 GitHub Copilot for VS Code는 현재 experimental `context: fork`로 Skill을 dedicated subagent context에서 실행하고 final result만 parent에 반환할 수 있습니다. 이는 이 pattern의 구현 예시일 뿐이며 현재 semantics는 [Agent Skills in VS Code](https://code.visualstudio.com/docs/agent-customization/agent-skills)가 소유합니다.
 
