@@ -15,6 +15,7 @@ targets:
   - copilotcli
   - antigravity-ide
   - antigravity-cli
+  - agentsskills
 ---
 
 # Load GitHub Context
