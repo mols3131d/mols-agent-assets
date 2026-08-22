@@ -1,5 +1,5 @@
 ---
-name: template-driven-markdown
+title: Template-Driven Markdown
 description: Legacy route for the former template-driven Markdown reference; use the reusable Template / Schema / Metadata-Driven Assets pattern as the current owner.
 ---
 
