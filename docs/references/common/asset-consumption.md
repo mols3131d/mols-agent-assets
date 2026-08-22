@@ -39,7 +39,11 @@ https://raw.githubusercontent.com/mols3131d/mols-agent-assets/refs/heads/main/sr
 
 Skill에 `references/`, `scripts/` 같은 supporting files가 있으면 `SKILL.md`만으로 충분하다고 가정하지 않습니다. Agent가 필요할 때 같은 Skill directory의 참조 자산도 읽을 수 있어야 합니다.
 
-최신 상태를 따라가려면 `main` URL을 사용하고, 특정 상태를 고정해야 하면 branch 이름 대신 commit SHA를 URL에 사용합니다.
+최신 상태를 따라가려면 `main` URL을 사용합니다. 특정 상태를 고정해야 하면 commit SHA를 사용합니다.
+
+```text
+https://raw.githubusercontent.com/mols3131d/mols-agent-assets/<commit-sha>/src/rulesync/.rulesync/skills/<skill-name>/SKILL.md
+```
 
 ## Rulesync로 Skill 설치하기
 
@@ -49,9 +53,13 @@ Skill에 `references/`, `scripts/` 같은 supporting files가 있으면 `SKILL.m
 rulesync add mols3131d/mols-agent-assets --ref main --path src/rulesync/.rulesync/skills --skills <skill-name>
 ```
 
-여러 Skill은 `--skills`에 comma-separated name으로 선택합니다. `rulesync add`는 source declaration과 lock state를 만들고 선택한 Skill을 설치합니다.
+여러 Skill은 `--skills`에 comma-separated name으로 선택합니다. `rulesync add`는 source declaration과 lock state를 만들고 선택한 Skill을 설치합니다. 초기 설치 뒤에는 consumer가 사용하는 target으로 projection합니다.
 
-그다음 consumer가 사용하는 target에 맞게 projection합니다.
+```bash
+rulesync generate
+```
+
+다른 clone이나 CI에서 같은 locked source를 재현할 때는 install을 먼저 수행합니다.
 
 ```bash
 rulesync install --frozen
