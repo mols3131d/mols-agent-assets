@@ -18,6 +18,7 @@ targets:
   - copilotcli
   - antigravity-ide
   - antigravity-cli
+  - agentsskills
 ---
 
 # Mols Agent Asset
