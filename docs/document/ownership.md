@@ -1,3 +1,7 @@
+---
+description: repository-wide 문서 배치와 directory-local documentation owner를 결정할 때 사용하는 ownership policy입니다.
+---
+
 # Documentation Ownership
 
 문서는 실제 책임을 소유할 때만 둡니다. 파일이나 디렉터리가 존재한다는 이유만으로 문서를 만들지 않습니다.
