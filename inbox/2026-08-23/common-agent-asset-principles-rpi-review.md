@@ -54,8 +54,11 @@ No additional material design finding remains. The documents stay vendor-neutral
 
 ## Validation
 
-Pending latest-main reconciliation and merge-result PR Gate.
+- Latest `main` remained `143cae3483d5898feb87310d0ea0871db651c694` during merge-result validation.
+- Initial PR Gate #928 passed 201 deterministic tests and failed only changed-Markdown normalization: missing EOF newlines in three RPI artifacts and duplicate `Findings` heading anchors in this review artifact.
+- Those mechanical Markdown issues were corrected without changing the design.
+- Merge-result PR Gate #933 passed deterministic tests and changed-Markdown normalization. Rulesync source, distribution routes, and Promptfoo were correctly out of change-impact scope.
 
 ## Status
 
-`in_progress` until merge-result validation passes. If validation introduces no material finding, stop recursion on saturation.
+`completed`. Three substantive design loops converged. Mechanical normalization and validation-record updates are not additional design loops. Validation introduced no new material finding, so recursion stops on saturation.
