@@ -47,13 +47,13 @@ Therefore the local adaptation should:
 ## Findings
 
 1. **P1 — Trigger overreach.** Generic brevity is adjacent behavior, not caveman mode. Activation should require explicit caveman/primitive-style intent or direct Skill invocation.
-2. **P1 — Semantic preservation needs a clearer floor.** `ultra` can otherwise encourage dropping negation, uncertainty, units, conditions, or scope.
-3. **P1 — Persistence is overclaimed.** Persistence should be scoped to observable conversational context and explicit ongoing intent.
-4. **P1 — Upstream MIT notice is missing.** The adaptation retains substantial upstream structure/content but the current package carries only `license: MIT`, not the required upstream copyright/permission notice.
-5. **P2 — Absolute presentation rules are too broad.** Higher-authority/runtime-required content and explicit artifact style must win.
-6. **P2 — Intensity control is useful but under-specified.** Keep one public `intensity` control with `default | auto | lite | full | ultra`; do not add a larger configuration surface.
-7. **P2 — Experimental lifecycle belongs in maintainer docs.** Keep the runtime package focused and move WIP/maturity information out.
-8. **P2 — No eval surface exists.** Add compact trigger and behavior cases, especially near-miss negatives and semantic-preservation cases.
+1. **P1 — Semantic preservation needs a clearer floor.** `ultra` can otherwise encourage dropping negation, uncertainty, units, conditions, or scope.
+1. **P1 — Persistence is overclaimed.** Persistence should be scoped to observable conversational context and explicit ongoing intent.
+1. **P1 — Upstream MIT notice is missing.** The adaptation retains substantial upstream structure/content but the current package carries only `license: MIT`, not the required upstream copyright/permission notice.
+1. **P2 — Absolute presentation rules are too broad.** Higher-authority/runtime-required content and explicit artifact style must win.
+1. **P2 — Intensity control is useful but under-specified.** Keep one public `intensity` control with `default | auto | lite | full | ultra`; do not add a larger configuration surface.
+1. **P2 — Experimental lifecycle belongs in maintainer docs.** Keep the runtime package focused and move WIP/maturity information out.
+1. **P2 — No eval surface exists.** Add compact trigger and behavior cases, especially near-miss negatives and semantic-preservation cases.
 
 ## Constraints
 
