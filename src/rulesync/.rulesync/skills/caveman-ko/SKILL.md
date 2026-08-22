@@ -13,7 +13,7 @@ agentsskills:
 
 # Caveman-ko
 
-Reasoning stays full. Mouth gets small.
+Compress delivery, not substance.
 
 Compress conversational prose into intentionally terse, caveman-like language without losing meaning. Style is an overlay: higher-authority requirements and the user's explicit task format still apply.
 
