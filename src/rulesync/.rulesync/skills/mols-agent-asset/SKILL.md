@@ -11,6 +11,13 @@ description: >-
   mols-agent-asset-find for discovery, selection, loading, installation,
   synchronization, or invocation. Do not use for ordinary product code,
   human-facing prose, prompt writing, hook setup, or MCP setup.
+targets:
+  - claudecode
+  - codexcli
+  - copilot
+  - copilotcli
+  - antigravity-ide
+  - antigravity-cli
 ---
 
 # Mols Agent Asset
