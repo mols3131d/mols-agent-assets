@@ -2,10 +2,11 @@
 name: load-context-guidance
 description: >-
   Load adaptive context for guidance, coaching, mentoring, onboarding, teaching, or
-  walkthrough tasks when the response should materially adapt to the person's goal,
-  current state, constraints, grounding, interaction preferences, or progress. Do not use
-  for ordinary explanation or recommendation when those inputs would not change the
-  response, pure content transformation, or direct task execution.
+  walkthrough tasks when how the assistant should support the person materially depends
+  on their goal, current state, constraints, grounding, interaction preferences, or
+  progress. Do not use for ordinary explanation, recommendation, content transformation,
+  or direct task execution when the task can be completed without adapting how the person
+  is supported.
 ---
 
 # Load Guidance Context
