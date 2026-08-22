@@ -28,6 +28,7 @@ Repository-local eval 정책은 [Evaluation](../../development/evaluation.md), P
 - [Model-graded metrics](https://www.promptfoo.dev/docs/configuration/expected-outputs/model-graded/) — model grader 종류와 provider 설정
 - [LLM rubric](https://www.promptfoo.dev/docs/configuration/expected-outputs/model-graded/llm-rubric/) — output semantic grading
 - [Agent rubric](https://www.promptfoo.dev/docs/configuration/expected-outputs/model-graded/agent-rubric/) — workspace나 tool evidence를 포함하는 agentic grading
+- [Trajectory goal success](https://www.promptfoo.dev/docs/configuration/expected-outputs/model-graded/#trajectorygoal-success) — traced agent run의 goal outcome grading
 - [LLM as a Judge](https://www.promptfoo.dev/docs/guides/llm-as-a-judge/) — grader 설계와 재현성
 
 ## Trust and data boundaries
