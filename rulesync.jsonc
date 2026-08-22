@@ -2,5 +2,24 @@
   "$schema": "https://github.com/dyoshikawa/rulesync/releases/latest/download/config-schema.json",
   "targets": [],
   "features": ["skills"],
-  "outputRoots": ["."]
+  "outputRoots": [
+    "."
+  ],
+  "sources": [
+    {
+      "source": "mols3131d/mols-agent-assets",
+      "skills": [
+        "artifact-consistency-inspector",
+        "load-context-github",
+        "mols-agent-asset",
+        "mols-agent-asset-find",
+        "mols-agent-asset-validator",
+        "mols-markdown-maintenance",
+        "mols-rpi"
+      ],
+      "transport": "github",
+      "ref": "main",
+      "path": "src/rulesync/.rulesync/skills"
+    }
+  ]
 }
