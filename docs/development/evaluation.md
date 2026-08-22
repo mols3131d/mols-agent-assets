@@ -4,21 +4,23 @@ description: Agent Asset의 behavioral evaluation을 설계·실행·해석하�
 
 # Evaluation
 
-Evaluation은 deterministic correctness만으로 충분히 판단하기 어려운 **Agent Asset의 behavior와 품질**을 평가합니다.
+Evaluation은 repository correctness test만으로 충분히 판단하기 어려운 **Agent Asset의 behavior와 품질**을 평가합니다.
 
 `evals/`가 behavioral contract를 소유합니다. Promptfoo 같은 도구는 contract의 authority가 아니라 실행·채점 backend입니다.
 
 ## Test와 Eval
 
-- deterministic correctness를 기계적으로 판정할 수 있으면 `tests/`에서 검증합니다.
-- trigger 선택, instruction following, semantic quality, adversarial behavior, runtime/model 차이처럼 실행 결과를 평가해야 하면 `evals/`를 사용합니다.
-- 같은 계약을 deterministic assertion으로 표현할 수 있다면 model grader보다 deterministic 검증을 우선합니다.
+Test와 Eval은 **grader가 deterministic인지가 아니라 무엇을 검증하는지**로 구분합니다.
+
+- source, schema, generated artifact, repository invariant처럼 Agent behavior를 실행하지 않아도 판정할 correctness → `tests/`
+- trigger 선택, instruction following, semantic quality, adversarial behavior, runtime/model 차이처럼 Agent behavior에 대한 claim → `evals/`
+- behavioral eval도 observable outcome이나 state가 있으면 deterministic grader를 우선할 수 있습니다.
 - runtime을 실제로 실행하지 않았다면 runtime behavior가 통과했다고 주장하지 않습니다.
 
 ## Ownership
 
 - canonical Agent Asset → `src/rulesync/.rulesync/`
-- deterministic verification → `tests/`
+- repository correctness test → `tests/`
 - behavioral contract와 fixture → `evals/`
 - tool-specific eval config → `evals/promptfoo/`
 - adapter와 runner → `scripts/evals/`
@@ -83,7 +85,7 @@ Trajectory grader는 필요한 invariant만 검사하고 하나의 정답 경로
 
 Eval 결과는 증거의 강도를 구분해서 해석합니다.
 
-1. **Deterministic evidence** — 동일 입력에서 안정적으로 판정 가능한 contract. 필요한 경우 merge-blocking verification으로 사용할 수 있습니다.
+1. **Deterministic evidence** — behavioral outcome이나 invariant를 안정적으로 판정한 evidence. 필요한 경우 merge-blocking verification으로 사용할 수 있습니다.
 1. **Runtime behavioral evidence** — 실제 model/runtime을 실행해 관찰한 결과. 실행 환경, harness와 asset revision을 함께 봅니다.
 1. **Stochastic/model-graded evidence** — model 생성이나 grader 변동성이 있는 결과. 기본적으로 단일 PASS/FAIL을 merge admission으로 사용하지 않습니다.
 
@@ -122,7 +124,7 @@ Eval 변경이나 결과를 검토할 때 다음을 확인합니다.
 
 - 이 eval이 뒷받침하려는 claim과 실제 tested system이 명확한가?
 - 이 case가 실제 behavior 또는 failure mode를 보호하는가?
-- deterministic test로 더 싸고 안정적으로 검증할 수 없는가?
+- repository test로 충분한 correctness를 behavioral eval로 중복하고 있지 않은가?
 - outcome을 볼 수 있는데 불필요하게 특정 trajectory를 강제하고 있지 않은가?
 - fixture가 특정 model/provider의 우연한 표현이나 현재 implementation에 과적합되지 않았는가?
 - grader와 harness의 실패를 target failure로 잘못 해석하지 않았는가?
