@@ -7,7 +7,7 @@
 문서 규칙은 **실제로 적용되는 가장 좁은 owner**가 소유합니다.
 
 - repository 전체의 documentation principle이나 convention → `docs/document/`
-- top-level documentation layout과 주요 surface routing → `docs/README.md`
+- top-level documentation layout, 주요 surface routing과 `docs/` nested ownership model → `docs/README.md`
 - 특정 directory나 surface에만 적용되는 contract, navigation, maintenance 또는 recovery rule → 해당 directory의 `README.md` 또는 그 directory 안의 local document
 - 개별 asset 또는 family에만 적용되는 maintainer knowledge → 해당 asset documentation capsule
 
@@ -22,7 +22,7 @@
 
 ## Directory Documentation
 
-Directory-level README는 해당 directory의 contract 또는 navigation responsibility를 실제로 소유할 때 entrypoint로 둡니다.
+Directory-level README는 해당 directory의 contract 또는 navigation responsibility를 실제로 소유할 때 entrypoint로 둡니다. `docs/` 내부의 parent/child ownership mechanics는 [`docs/README.md`](../README.md)가 소유합니다.
 
 다음은 local documentation의 근거가 됩니다.
 
