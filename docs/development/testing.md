@@ -17,7 +17,7 @@ mise install
 mise run setup
 ```
 
-`mise run setup` installs all Python dependency groups, locked repository-local Rulesync assets, and Git hooks.
+`mise run setup` installs all Python dependency groups, locked repository-local Rulesync assets, generated Agent Skills, and Git hooks.
 
 ## Formatting
 
@@ -54,7 +54,7 @@ PR Gate는 `contents: read`만 사용합니다. Generated route나 Markdown drif
 
 Rulesync CLI version은 `mise.toml`에서 exact pin합니다. Repository `npm run rulesync:*` command는 `scripts/run_rulesync.py`를 통해 `src/rulesync/` workspace를 대상으로 실행합니다. Runner는 target path나 projection semantics를 재구현하지 않고 mise-managed Rulesync CLI에 위임합니다.
 
-Root repository workspace는 reusable library와 분리된 declarative consumer입니다. `rulesync.jsonc`의 선택과 `rulesync.lock`의 integrity를 deterministic regression으로 검증하고, `mise run setup`이 `rulesync install --frozen`으로 설치합니다.
+Root repository workspace는 reusable library와 분리된 declarative consumer입니다. `rulesync.jsonc`의 선택과 `rulesync.lock`의 integrity를 deterministic regression으로 검증하고, `mise run setup`이 `rulesync install --frozen` 후 `agentsskills` target을 `.agents/skills/`로 생성합니다.
 
 ## Promptfoo runtime eval PoC
 
