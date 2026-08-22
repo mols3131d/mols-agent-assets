@@ -8,6 +8,13 @@ description: >-
   needs lookup counts as concrete; re-resolve context when a follow-up switches target.
   Do not use for generic Notion explanation or broad product/public discovery with no
   workspace or object scope.
+targets:
+  - claudecode
+  - codexcli
+  - copilot
+  - copilotcli
+  - antigravity-ide
+  - antigravity-cli
 ---
 
 # Load Notion Context
