@@ -11,6 +11,7 @@ description = "Install project dependencies, Rulesync assets, and Git hooks"
 run = [
   "uv sync --all-groups",
   "rulesync install --frozen",
+  "rulesync generate",
   "lefthook install",
 ]
 
