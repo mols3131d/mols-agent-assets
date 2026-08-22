@@ -4,9 +4,9 @@ description: Agent Asset 설계 원칙, 공통 지식과 Skill 관행 중 어떤
 
 # Agent Asset Design
 
-`docs/agent-assets/`는 **Agent Asset 자체를 설계하고 작성할 때 재사용하는 지식**을 소유합니다.
+`docs/references/agent-assets/`는 **Agent Asset 자체를 설계하고 작성할 때 재사용하는 지식**을 소유합니다.
 
-이 repository의 작업 절차는 `development/`, 범용 reusable pattern은 `patterns/`, 외부 specification과 tooling의 current authority routing은 `references/`가 소유합니다.
+이 repository의 작업 절차는 `docs/development/`가 소유하고, 범용 reusable pattern과 tooling reference는 같은 `docs/references/` library의 sibling surface가 소유합니다.
 
 ## Surfaces
 
@@ -20,6 +20,6 @@ description: Agent Asset 설계 원칙, 공통 지식과 Skill 관행 중 어떤
 ## Boundary
 
 - 여러 repository와 harness에서 재사용할 설계 pattern → [Patterns](../patterns/README.md)
-- 이 repository를 개발·변경·검증하는 방법 → [Development](../development/README.md)
-- 외부 tool과 specification의 authoritative source routing → [References](../references/README.md)
-- 이 library의 자산을 consumer가 가져다 쓰는 방법 → [Consumption](../consumption.md)
+- 이 repository를 개발·변경·검증하는 방법 → [Development](../../development/README.md)
+- reusable knowledge library의 공통 contract → [References](../README.md)
+- 이 library의 자산과 지식을 consumer가 사용하는 방법 → [Consumption](../../consumption.md)
