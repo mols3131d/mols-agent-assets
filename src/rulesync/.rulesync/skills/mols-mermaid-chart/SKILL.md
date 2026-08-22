@@ -1,6 +1,13 @@
 ---
 name: mols-mermaid-chart
 description: "Use for Mermaid bar, line, XY, pie, Sankey, treemap, radar, or quadrant requests when the reader must compare numeric categories, inspect an ordered or time-based trend, explain part-to-whole composition, trace quantified flow, compare weighted hierarchy, evaluate same-scale profiles, or position items on normalized axes. Preserve source values, units, order, population, and time basis. Do not use for procedures, handoffs, states, architecture, schema, unweighted hierarchy, or event order; route those to mols-mermaid-diagram. Route whole-dashboard design to mols-markdown-dashboard."
+targets:
+  - claudecode
+  - codexcli
+  - copilot
+  - copilotcli
+  - antigravity-ide
+  - antigravity-cli
 ---
 
 # Mermaid Chart
