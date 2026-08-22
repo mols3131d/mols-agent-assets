@@ -4,7 +4,7 @@ Agent Skills 관련 **official source registry**입니다. Specification의 fiel
 
 ## Authority
 
-1. **Rulesync canonical contract** — Rulesync-managed source일 때의 canonical representation → [Rulesync](../../references/tooling/rulesync.md)
+1. **Rulesync canonical contract** — Rulesync-managed source일 때의 canonical representation → [Rulesync](../../tooling/rulesync.md)
 1. **Agent Skills open standard** — portable Agent Skills contract가 실제로 적용될 때
 1. **Target/harness official contract** — discovery, activation, permissions, packaging, host metadata 등 target-specific behavior
 1. **Repository convention** — 위 source가 소유하지 않는 local authoring 관행 → [Skill Authoring Conventions](skill-authoring-conventions.md)

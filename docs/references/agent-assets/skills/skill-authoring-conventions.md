@@ -40,7 +40,7 @@ Prerequisite, fallback, handoff, execution order와 validation workflow는 body�
 
 ## Maintainer Documentation
 
-Skill maintainer documentation의 placement, family ownership과 portability contract는 [Asset Capsules](../../document/asset-capsules.md)가 소유합니다.
+Skill maintainer documentation의 placement, family ownership과 portability contract는 [Asset Capsules](../../../document/asset-capsules.md)가 소유합니다.
 
 Maintainer-only knowledge를 runtime dependency로 숨기지 않습니다.
 
@@ -59,5 +59,5 @@ Repository-wide shared metadata를 만들기 위해 target namespace를 재사�
 ## Boundary
 
 - Agent Skills standard와 target source registry → [Agent Skills Specification](specification.md)
-- Rulesync/repository workspace boundary → [Rulesync](../../references/tooling/rulesync.md)
-- 검증 위치와 evidence 수준 → [Testing](../../development/testing.md)
+- Rulesync/repository workspace boundary → [Rulesync](../../tooling/rulesync.md)
+- 검증 위치와 evidence 수준 → [Testing](../../../development/testing.md)

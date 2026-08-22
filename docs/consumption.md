@@ -1,25 +1,42 @@
 ---
-title: Using Assets from This Repository
-description: 이 저장소가 관리하는 Agent Asset을 외부 repository나 runtime에서 발견하고 직접 사용하거나 Rulesync로 설치하는 방법
+title: Using This Repository
+description: 이 저장소가 관리하는 Agent Asset과 reusable knowledge를 외부 repository나 runtime에서 발견하고 사용하는 방법
 ---
 
-# 이 저장소의 자산 사용하기
+# 이 저장소 사용하기
 
-이 저장소는 Agent Asset의 **upstream library**입니다. Consumer는 필요한 자산만 선택해 사용하고, project나 runtime에 맞춘 변경은 consumer가 소유합니다.
+이 저장소는 Agent Asset과 reusable knowledge의 **upstream library**입니다. Consumer는 필요한 자산과 지식만 선택해 사용하고, project나 runtime에 맞춘 변경은 consumer가 소유합니다.
 
 ## 어떤 방식으로 가져올까?
 
 | 목적 | 권장 방식 |
 | --- | --- |
-| 한 번 읽거나 시험한다 | canonical source URL을 직접 사용 |
+| Agent Asset을 한 번 읽거나 시험한다 | canonical source URL을 직접 사용 |
 | 웹을 읽을 수 있는 agent가 필요한 Skill을 찾게 한다 | [`route/ROUTE.md`](../route/ROUTE.md)에서 discovery 시작 |
 | project에서 Skill을 지속적으로 사용한다 | Rulesync declarative source로 설치 |
+| reusable principle이나 pattern을 참고·채택한다 | [`docs/references/`](references/)에서 필요한 reference만 선택 |
 | 자산을 수정해서 자기 project 전용으로 쓴다 | 필요한 source만 복사하고 downstream adaptation으로 관리 |
 | Subagent를 가져온다 | canonical source를 consumer의 Rulesync 또는 vendor-native 위치로 복사 |
 
-전체 repository나 generated output을 통째로 복제하는 것보다 **필요한 자산만 선택**하는 것을 기본으로 합니다.
+전체 repository나 generated output을 통째로 복제하는 것보다 **필요한 자산과 reference만 선택**하는 것을 기본으로 합니다.
 
-## 자산 찾기
+## Reusable knowledge 사용하기
+
+Reusable knowledge는 [`docs/references/`](references/)에 있습니다.
+
+- Agent Asset 설계 지식: [`references/agent-assets/`](references/agent-assets/)
+- Reusable patterns: [`references/patterns/`](references/patterns/)
+- Tooling과 specification routing: [`references/tooling/`](references/tooling/)
+
+Reference는 다른 repository나 agent instruction에서 URL로 직접 가리키거나 필요한 내용을 downstream policy에 채택할 수 있습니다. `references/`에 있다는 사실만으로 consumer의 mandatory policy가 되지는 않으며, 실제 적용 범위와 authority는 consumer가 소유합니다.
+
+최신 상태를 그대로 참고하려면 `main`의 Markdown URL을 사용하고, 재현 가능한 기준점이 필요하면 commit SHA에 고정합니다.
+
+```text
+https://raw.githubusercontent.com/mols3131d/mols-agent-assets/refs/heads/main/docs/references/<path>.md
+```
+
+## Agent Asset 찾기
 
 Reusable authored source는 [`src/rulesync/.rulesync/`](../src/rulesync/.rulesync/)에 있습니다.
 
@@ -85,7 +102,7 @@ Skill을 직접 복사할 때는 `SKILL.md` 하나가 아니라 **Skill director
 - `route/`의 derived metadata를 자산 본문 대신 fork하지 않습니다.
 - consumer-specific 변경을 이 repository의 upstream source와 이중 authority로 관리하지 않습니다.
 
-필요한 자산을 가져온 뒤에는 consumer가 자신의 runtime support, target path, generation policy와 검증을 소유합니다.
+필요한 자산이나 reference를 가져온 뒤에는 consumer가 자신의 적용 범위, runtime support, target path, generation policy와 검증을 소유합니다.
 
 > [!IMPORTANT]
 > 이 repository는 현재 root `LICENSE`를 선언하지 않습니다. 위 내용은 기술적인 사용 경로를 설명하며, 제3자의 복사·수정·재배포 권한은 별도 license 또는 permission이 선언되기 전까지 자동으로 부여된다고 가정하지 않습니다.
