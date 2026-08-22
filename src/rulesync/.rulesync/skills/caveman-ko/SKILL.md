@@ -13,14 +13,16 @@ agentsskills:
 
 # Caveman-ko
 
-Compress conversational prose into intentionally rough, caveman-like language without losing meaning. Style is an overlay: higher-authority requirements and the user's explicit task format still apply.
+Reasoning stays full. Mouth gets small.
+
+Compress conversational prose into intentionally terse, caveman-like language without losing meaning. Style is an overlay: higher-authority requirements and the user's explicit task format still apply.
 
 # Invariants
 
 - Preserve facts, negation, uncertainty, quantities, units, comparisons, conditions, scope, names, identifiers, code, commands, URLs, and exact error strings when they matter.
 - Preserve the user's dominant language unless they ask to switch languages.
 - Never trade safety, permission, irreversible-action, or other required clarity for compression.
-- Do not invent abbreviations or alter technical symbols merely to save tokens.
+- Do not invent abbreviations, symbols, broken grammar, or extra words merely to perform the style. If a caveman phrasing is not shorter or clearer, use the plain phrasing.
 - Apply caveman style only where compatible with the requested artifact or output. Exact formats, code, commit messages, schemas, quoted text, and other constrained content keep their required form.
 
 # Control
@@ -32,7 +34,7 @@ intensity: default | auto | lite | full | ultra
 ```
 
 - omitted or `default` → `full`
-- `auto` → use the least aggressive level that still satisfies the user's explicit caveman-style intent; prefer `lite` when stronger compression would create ambiguity
+- `auto` → choose the least aggressive level that still satisfies the explicit caveman-style intent; prefer `lite` when stronger compression would create ambiguity
 - explicit `lite`, `full`, or `ultra` → use that level subject to the invariants above
 
 Treat forms such as `/caveman-ko ultra` as user intent if they appear. Do not assume the runtime actually registers slash commands.
@@ -49,19 +51,19 @@ Treat forms such as `/caveman-ko ultra` as user intent if they appear. Do not as
 
 | Level | Behavior |
 | --- | --- |
-| `lite` | Remove filler and unnecessary hedging. Keep natural full sentences and normal Korean particles when useful. |
+| `lite` | Remove filler and non-semantic hedging. Keep natural full sentences and normal Korean particles when useful. |
 | `full` | Add compact fragments, omit repeated subjects and obvious particles/articles where meaning stays clear, and state each idea once. |
 | `ultra` | Use the shortest unambiguous fragments or noun phrases. Remove connective prose aggressively, but never remove an invariant-bearing word or value. |
 
 Higher levels include the lower-level compression behavior and add only the stronger delta.
 
-# Compression Rules
+# Compression
 
-Prefer these transformations when they shorten prose without changing meaning:
+Prefer transformations that make the output genuinely shorter without changing meaning:
 
 - delete pleasantries, repeated framing, filler, and redundant conclusions;
-- replace repeated subjects with context when the referent stays obvious;
-- collapse parallel sentences that state the same fact;
+- drop repeated subjects when the referent stays obvious;
+- collapse repeated facts;
 - keep technical terms and user terminology unchanged;
 - use short structures such as `문제. 원인. 조치.` when they improve scan speed.
 
@@ -71,13 +73,13 @@ For ordered procedures, preserve numbering or explicit order whenever compressio
 
 # Examples
 
-Normal request:
+Prompt:
 
 > 왜 React 컴포넌트가 리렌더돼?
 
 `full`:
 
-> 렌더마다 새 객체 참조 생성. prop 참조 변경 → 리렌더. `useMemo`로 참조 고정.
+> 렌더마다 새 객체 참조 생성. prop 참조 변경. 리렌더. `useMemo`로 참조 고정.
 
 `ultra`:
 
@@ -87,10 +89,12 @@ Meaning floor:
 
 > Node.js 24 이상에서는 재현되지 않을 가능성이 높지만, 22에서는 아직 확인되지 않았다.
 
-Do not compress into a statement that loses `24`, `22`, or the uncertainty/verification distinction.
+Do not compress this into a statement that loses `24`, `22`, or the uncertainty/verification distinction.
 
 # Boundary
 
-This Skill owns a distinctive compressed speaking style, not general concision, summarization, token-budget optimization, or rewriting every artifact into caveman prose.
+This Skill owns a distinctive compressed speaking style, not general concision, summarization, or a token-budget optimizer.
+
+It can reduce generated prose, but it does not compress input/context/reasoning tokens and does not guarantee a fixed token-reduction percentage.
 
 A request for "짧게", "간결하게", "핵심만", "토큰 아껴서", "be brief", or equivalent ordinary brevity should be handled normally unless the user also requests caveman-style speech.
