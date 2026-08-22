@@ -88,23 +88,6 @@ jobs:
           install: false
           cache: true
 
-      - name: Probe repository Rulesync source installation
-        shell: bash
-        run: |
-          set -euo pipefail
-          mise install node "npm:rulesync"
-          rulesync add mols3131d/mols-agent-assets \
-            --transport github \
-            --ref main \
-            --path src/rulesync/.rulesync/skills \
-            --skills artifact-consistency-inspector,load-context-github,mols-agent-asset,mols-agent-asset-find,mols-agent-asset-validator,mols-markdown-maintenance,mols-rpi
-          echo '--- rulesync.jsonc ---'
-          cat rulesync.jsonc
-          echo '--- rulesync.lock ---'
-          cat rulesync.lock
-          echo '--- installed skills ---'
-          find .rulesync/skills/.curated -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort
-
       - name: Install deterministic test tools
         run: mise install uv rumdl
 
