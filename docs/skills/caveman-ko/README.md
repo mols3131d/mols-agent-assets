@@ -1,19 +1,22 @@
 ---
-description: Experimental maintainer context for the caveman-ko Skill, including maturity boundary and promotion criteria
+description: Experimental maintainer context for the caveman-ko Skill, including provenance, maturity boundary, and promotion criteria
 ---
 
 # caveman-ko
 
 Status: **Experimental**.
 
-`caveman-ko` explores an intentionally rough, highly compressed speaking style while preserving technical meaning. Experimental status describes maturity, not discovery: the Skill may remain available for explicit invocation while its trigger and behavior are still being refined.
+`caveman-ko` is a Korean-oriented experimental adaptation of the MIT-licensed [`JuliusBrussee/caveman`](https://github.com/JuliusBrussee/caveman) response Skill. It keeps the core idea—compress generated prose while preserving technical meaning—but intentionally diverges where local trigger, Korean-language, runtime, and clarity requirements need a different contract.
+
+The distributed package includes the upstream MIT notice in `src/rulesync/.rulesync/skills/caveman-ko/LICENSE`.
 
 ## Maintenance Boundary
 
 - Runtime behavior stays in `src/rulesync/.rulesync/skills/caveman-ko/SKILL.md`.
 - Repository eval fixtures stay in `evals/skills/caveman-ko/`.
-- This capsule owns maturity and maintenance context only; it is not loaded as runtime instruction.
+- This capsule owns provenance, maturity, and maintenance context only; it is not loaded as runtime instruction.
 - Ordinary brevity is intentionally outside the Skill. False triggering on requests such as "짧게", "간결하게", or "토큰 아껴서" is a regression.
+- Do not copy upstream token-reduction percentages into the local contract without local evidence. The Skill affects generated prose, not input/context/reasoning-token volume.
 
 ## Promotion Criteria
 
