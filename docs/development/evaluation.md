@@ -63,7 +63,20 @@ Promptfoo는 현재 behavioral eval 실행 backend입니다. Repository-owned fi
 
 Fixture-mode smoke는 provider/generator/assertion plumbing을 검증하는 deterministic check이며 runtime behavior evidence가 아닙니다. 실제 local-model eval과 semantic grading은 기본적으로 비차단 evidence입니다.
 
-현재 실행 명령과 environment override는 [Testing](testing.md)의 repository verification entrypoint와 `evals/promptfoo/`, `scripts/evals/`의 실행 surface를 따릅니다.
+현재 `mols-rpi` eval surface는 다음 entrypoint를 제공합니다.
+
+```bash
+mise exec -- npm run eval:promptfoo:mols-rpi:smoke
+mise exec -- npm run eval:promptfoo:mols-rpi
+```
+
+Local-model eval에는 기본적으로 Ollama를 사용합니다. 필요한 model 준비와 provider override는 실행 환경에서 명시적으로 관리합니다.
+
+- `PROMPTFOO_RUNTIME_MODEL` — 실행 대상 model
+- `PROMPTFOO_GRADER_PROVIDER` — semantic grader provider
+- `OLLAMA_BASE_URL` — Ollama endpoint
+
+Promptfoo-specific config와 adapter의 실제 구현은 `evals/promptfoo/`와 `scripts/evals/`가 소유합니다. PR Gate에서 eval surface를 어떻게 blocking verification으로 연결하는지는 [Testing](testing.md)이 소유합니다.
 
 ## Review
 
