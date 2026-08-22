@@ -10,8 +10,8 @@ description: repository 개발 작업에서 change workflow, authority routing, 
 
 - [Change Workflow](change-workflow.md) — branch naming과 repository-local change flow
 - [Authority Routing](authority-routing.md) — source, standard, target과 local authority resolution
-- [Testing](testing.md) — deterministic verification과 PR Gate
-- [Evaluation](evaluation.md) — Agent Asset의 behavioral eval과 evidence 수준
+- [Testing](testing.md) — repository correctness verification과 PR Gate
+- [Evaluation](evaluation.md) — Agent Asset behavioral evaluation과 evidence 해석
 
 ## Related Owners
 
