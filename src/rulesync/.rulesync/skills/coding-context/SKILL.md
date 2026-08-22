@@ -8,6 +8,13 @@ description: >-
   performance work, and maintainability work. Do not skip for simple or routine coding
   tasks. Do not use for pure factual lookup, repository administration with no
   code-facing work, or non-code writing where code is only incidental.
+targets:
+  - claudecode
+  - codexcli
+  - copilot
+  - copilotcli
+  - antigravity-ide
+  - antigravity-cli
 ---
 
 # Contract
