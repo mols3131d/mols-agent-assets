@@ -7,7 +7,13 @@ ROOT = Path(__file__).resolve().parents[3]
 DOCS = ROOT / "docs"
 SKILLS = ROOT / "src" / "rulesync" / ".rulesync" / "skills"
 TARGETED_TESTS = ROOT / ".github" / "workflows" / "targeted-tests.yml"
-RESERVED_DOC_NAMESPACES = {"development", "document", "references"}
+RESERVED_DOC_NAMESPACES = {
+    "agent-assets",
+    "development",
+    "document",
+    "patterns",
+    "references",
+}
 MARKDOWN_LINK = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
 
 
