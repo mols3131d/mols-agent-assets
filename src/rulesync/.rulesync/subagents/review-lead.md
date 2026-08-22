@@ -13,6 +13,15 @@ description: >-
   deduplicates, and returns one evidence-based final assessment. Use when the review
   benefits from both intended-behavior and failure-path challenge. Do not use for
   implementation or when the caller explicitly requests only one specialist perspective.
+claudecode:
+  tools:
+    - Agent
+    - Read
+    - Grep
+    - Glob
+  permissionMode: plan
+codexcli:
+  sandbox_mode: read-only
 copilot:
   tools:
     - read
