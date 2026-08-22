@@ -1,6 +1,13 @@
 ---
 name: mols-mermaid-diagram
 description: "Use for Mermaid flowchart, swimlane, sequence, state, class, ERD, architecture, C4, Gantt, timeline, mindmap, journey, requirement, Git graph, Kanban, packet, or hierarchy requests when the reader must understand relationships, procedures, branching, handoffs, message order, lifecycle, chronology, dependencies, boundaries, models, requirements, or cardinality. Do not use when numeric magnitude, trend, proportion, quantified flow, weighted hierarchy, profile, or normalized positioning is the main question; route those to mols-mermaid-chart. Route whole-dashboard design to mols-markdown-dashboard."
+targets:
+  - claudecode
+  - codexcli
+  - copilot
+  - copilotcli
+  - antigravity-ide
+  - antigravity-cli
 ---
 
 # Mermaid Diagram

@@ -8,6 +8,14 @@ description: >-
   that still needs ID/ref resolution counts as concrete; re-resolve context when a
   follow-up switches target. Do not use for generic Git/GitHub explanation or broad
   discovery/search before any concrete target is established.
+targets:
+  - claudecode
+  - codexcli
+  - copilot
+  - copilotcli
+  - antigravity-ide
+  - antigravity-cli
+  - agentsskills
 ---
 
 # Load GitHub Context

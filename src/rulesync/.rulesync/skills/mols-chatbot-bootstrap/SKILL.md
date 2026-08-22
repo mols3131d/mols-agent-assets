@@ -5,6 +5,8 @@ description: >-
   natively reach applicable AGENTS.md guidance, Skills, or path-scoped Rules. Use for the
   runtime first-hop to repository entry/router compatibility path. Do not use for unrelated
   route or index generation, tuning, validation, or CI.
+targets:
+  - agentsskills
 ---
 
 # Mols Chatbot Bootstrap

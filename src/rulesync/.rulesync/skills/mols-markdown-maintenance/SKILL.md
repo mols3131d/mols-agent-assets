@@ -8,6 +8,14 @@ description: >-
   otherwise use rumdl for standard Markdown mechanics and bundled utilities only for local
   frontmatter/index behavior. Do not use for general writing, document semantics,
   dashboard design, Mermaid authoring, or manual text cleanup that does not need tooling.
+targets:
+  - claudecode
+  - codexcli
+  - copilot
+  - copilotcli
+  - antigravity-ide
+  - antigravity-cli
+  - agentsskills
 agentsskills:
   compatibility: 'Standard formatting and Markdown lint checks require rumdl. Bundled frontmatter/index utilities require Python and PyYAML.'
   metadata:

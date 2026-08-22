@@ -1,6 +1,8 @@
 ---
 name: artifact-consistency-inspector
 description: Inspect a remote software or data repository read-only and return a compact downloadable report of evidence-backed consistency gaps between related artifacts. Use when a user provides or implies a repository, PR, revision, branch, tag, file, symbol, feature, rule, guideline, or convention and asks whether documentation, specifications, policies, contracts, configuration, schemas, implementation, migrations, or validation artifacts contradict, omit, drift from, or fail to trace to one another.
+targets:
+  - agentsskills
 agentsskills:
   metadata:
     target: "OpenAI ChatGPT"

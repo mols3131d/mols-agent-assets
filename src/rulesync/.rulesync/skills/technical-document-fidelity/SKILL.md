@@ -6,6 +6,13 @@ description: >-
   identifiers, URLs, and meaningful structure intact. Use when preservation is a
   primary requirement. Do not use for repository onboarding, architecture explanation,
   new-document authoring, or general writing without fidelity needs.
+targets:
+  - claudecode
+  - codexcli
+  - copilot
+  - copilotcli
+  - antigravity-ide
+  - antigravity-cli
 ---
 
 # Technical Document Fidelity

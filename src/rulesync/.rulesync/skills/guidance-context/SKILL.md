@@ -7,6 +7,13 @@ description: >-
   progress. Do not use for ordinary explanation, recommendation, content transformation,
   or direct task execution when the task can be completed without adapting how the person
   is supported.
+targets:
+  - claudecode
+  - codexcli
+  - copilot
+  - copilotcli
+  - antigravity-ide
+  - antigravity-cli
 ---
 
 # Load Guidance Context

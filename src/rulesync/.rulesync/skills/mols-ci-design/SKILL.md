@@ -5,6 +5,13 @@ description: >-
   implementation-ready handoff. Use for CI planning, review, or redesign involving tests,
   evals, change-impact routing, evidence boundaries, and maintenance automation. Do not
   implement workflows unless explicitly requested.
+targets:
+  - claudecode
+  - codexcli
+  - copilot
+  - copilotcli
+  - antigravity-ide
+  - antigravity-cli
 ---
 
 # Mols CI Design

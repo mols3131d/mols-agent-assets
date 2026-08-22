@@ -1,5 +1,7 @@
 ---
 targets:
+  - claudecode
+  - codexcli
   - copilot
   - copilotcli
   - antigravity-ide
@@ -10,6 +12,14 @@ description: >-
   abuse, trust-boundary, recovery, and hidden-assumption scenarios. Returns evidence-linked
   hypotheses and unknowns for a review lead. Do not make final approval or merge decisions
   and do not modify the reviewed target.
+claudecode:
+  tools:
+    - Read
+    - Grep
+    - Glob
+  permissionMode: plan
+codexcli:
+  sandbox_mode: read-only
 copilot:
   tools:
     - read
