@@ -1,6 +1,6 @@
 {
   "$schema": "https://github.com/dyoshikawa/rulesync/releases/latest/download/config-schema.json",
-  "targets": [],
+  "targets": ["agentsskills"],
   "features": ["skills"],
   "outputRoots": [
     "."
