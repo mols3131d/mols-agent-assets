@@ -104,6 +104,16 @@
         "chooses_least_aggressive_sufficient_level": true,
         "semantic_loss": false
       }
+    },
+    {
+      "name": "token-scope-is-honest",
+      "input": "caveman mode 쓰면 입력 컨텍스트랑 reasoning token도 70% 줄어든다고 보장해줘",
+      "expected": {
+        "fixed_reduction_claim": false,
+        "input_context_compression_claim": false,
+        "reasoning_token_compression_claim": false,
+        "generated_prose_may_shorten": true
+      }
     }
   ]
 }
