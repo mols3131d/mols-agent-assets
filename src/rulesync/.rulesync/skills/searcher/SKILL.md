@@ -1,6 +1,13 @@
 ---
 name: searcher
 description: Research externally verifiable or time-sensitive facts with available search or browsing tools and evidence checks. Use when the user asks to search, verify, cite, compare current information, or find the latest state; when the answer materially depends on changing, niche, contested, or uncertain facts; or when memory-only reasoning would create meaningful correctness risk. Do not search when the task is fully supported by user-provided content or current external facts are irrelevant to the requested transformation or creative work.
+targets:
+  - claudecode
+  - codexcli
+  - copilot
+  - copilotcli
+  - antigravity-ide
+  - antigravity-cli
 ---
 
 # Searcher
