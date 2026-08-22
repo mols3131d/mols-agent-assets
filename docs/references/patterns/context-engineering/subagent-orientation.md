@@ -11,15 +11,11 @@ Subagent를 서로 배타적인 유형으로 분류하지 않습니다. 대신 *
 | Responsibility orientation | `Role-oriented` | `Capability-oriented` |
 | Execution context | `Shared` | `Isolated` |
 
-두 축은 관련될 수 있지만 동일하지 않습니다. Capability-oriented 작업은 isolated context와 잘 결합되는 경우가 많지만, Role-oriented Subagent도 격리할 수 있고 Capability-oriented Subagent도 shared context에서 실행할 수 있습니다.
+두 축은 관련될 수 있지만 동일하지 않습니다. Capability-oriented 작업은 isolated context와 잘 결합되는 경우가 많지만, Role-oriented Subagent도 격리할 수 있고 Capability-oriented Subagent도 shared context에서 실행할 수 있습니다. 각 축은 개념적 방향이며 runtime은 그 사이의 다양한 형태를 구현할 수 있습니다.
 
 ## Responsibility Orientation
 
-```text
-Role-oriented  <──────────── mixed ────────────>  Capability-oriented
-```
-
-대부분의 Subagent는 두 요소를 함께 가집니다. 중요한 것은 어느 쪽이 **instruction budget, invocation contract, 책임 경계**를 더 많이 결정하는지입니다.
+대부분의 Subagent는 Role과 Capability 요소를 함께 가집니다. 중요한 것은 어느 쪽이 **instruction budget, invocation contract, 책임 경계**를 더 많이 결정하는지입니다.
 
 ### Role-oriented
 
@@ -57,10 +53,6 @@ Subagent를 반복해서 호출할 수 있는 **bounded capability 또는 specia
 Role과 Capability를 억지로 하나만 고르지 않습니다. Reviewer처럼 bounded capability를 가지면서 read-only 권한과 evidence rule을 함께 가질 수 있고, Role-oriented agent도 특정 Skill과 tool을 자주 사용할 수 있습니다.
 
 ## Execution Context
-
-```text
-Shared  <──────────── context boundary ────────────>  Isolated
-```
 
 이 축은 작업 중 생기는 context를 parent와 얼마나 공유할지 결정합니다.
 
@@ -103,7 +95,7 @@ Skill과 Subagent는 서로 배타적인 대안이 아닙니다.
 
 예를 들어 GitHub Copilot for VS Code는 현재 experimental `context: fork`로 Skill을 dedicated subagent context에서 실행하고 final result만 parent에 반환할 수 있습니다. 이는 이 pattern의 구현 예시일 뿐이며 현재 semantics는 [Agent Skills in VS Code](https://code.visualstudio.com/docs/agent-customization/agent-skills)가 소유합니다.
 
-Agent Skills 자체는 open format이므로 Subagent 형식이 Skill보다 더 portable하다고 가정하지 않습니다. Vendor-neutral하게 재사용할 수 있는 것은 **isolated delegated execution + bounded handoff라는 설계 아이디어**이며, 실제 Subagent schema, context inheritance, invocation과 permission semantics는 runtime마다 다를 수 있습니다.
+[Agent Skills](https://agentskills.io/) 자체는 open format이므로 Subagent 형식이 Skill보다 더 portable하다고 가정하지 않습니다. Vendor-neutral하게 재사용할 수 있는 것은 **isolated delegated execution + bounded handoff라는 설계 아이디어**이며, 실제 Subagent schema, context inheritance, invocation과 permission semantics는 runtime마다 다를 수 있습니다.
 
 ## Design Heuristic
 
