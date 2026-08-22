@@ -56,8 +56,20 @@ The resulting responsibility is intentionally narrow:
 - Repository structure, wording, provenance, license notice, route metadata, and fixture contents are directly inspectable evidence.
 - Trigger and behavior JSON files are **capability eval fixtures**, not proof that a particular model/runtime passes them and not a blocking regression suite.
 - No repeated live model trials are claimed by this review.
-- Repository PR Gate remains required before acceptance.
+
+### Repository validation
+
+The first merge-result PR Gate exposed Markdown-only normalization drift in the RPI artifacts: ordered-list numbering and one duplicate heading anchor. No Skill, Rulesync, route, or deterministic-test failure was found. Those Markdown issues were corrected.
+
+PR Gate run #847 then passed:
+
+- deterministic tests;
+- canonical Rulesync source validation;
+- distribution route regeneration check;
+- changed Markdown normalization.
+
+The Promptfoo smoke was correctly skipped because this change does not touch its routed `mols-rpi` eval surface. The new `caveman-ko` capability fixtures were not executed as live model/runtime trials.
 
 ## Status
 
-`in_progress` until the branch is validated against the latest `main` and PR Gate completes. If those checks pass without a new material finding, stop the recursion on saturation rather than adding another wording-only Loop.
+`completed` — two substantive RPI loops converged. The later Markdown correction was mechanical validation cleanup, not another design loop. Further iteration without new behavioral evidence would be wording-only churn, so recursion stops on saturation.
