@@ -32,7 +32,7 @@ Condition → Action → Boundary → Validation / Stop
 - `must`, `never`, `only` 같은 강한 표현은 true invariant, safety/permission boundary, required contract 또는 순서가 깨지면 실패하는 fragile operation에 사용합니다. Preference나 흔한 경로는 default와 escape condition으로 표현합니다.
 - 금지나 negative boundary를 쓸 때 다음 valid action이 명확하지 않으면 허용되는 default, fallback 또는 handoff도 함께 씁니다.
 - 같은 개념에는 같은 용어를 사용하고, 같은 단어에 서로 다른 책임을 부여하지 않습니다.
-- Runtime이 더 직접적인 schema, permission, selector, structured output 또는 deterministic validation을 제공하면 [Design Principles](design-principles.md)의 mechanism 선택을 따릅니다. Prose로 그 contract를 이중 구현하지 않습니다.
+- Machine-enforceable contract를 prose로 둘지 판단할 때 [Design Principles](design-principles.md)의 mechanism gate를 따르고, 더 직접적인 owner가 있으면 같은 contract를 instruction으로 복제하지 않습니다.
 - Validation은 관찰 가능한 결과로 씁니다. Missing evidence, failed validation, blocked authority가 중요한 경우 retry, fallback, abstain, ask, handoff 또는 stop 중 필요한 behavior를 명시합니다.
 
 `필요하면 관련 문서를 보고 적절히 처리한다`처럼 condition, owner와 expected action을 모델에게 다시 추론시키는 표현은 피합니다.
