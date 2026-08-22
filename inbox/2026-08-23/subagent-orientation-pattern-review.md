@@ -44,6 +44,12 @@ No additional material pattern-design finding remains after Loop 2.
 - Current Agent Skills and VS Code documentation were checked for portability and `context: fork` semantics.
 - Runtime-specific Subagent behavior was not generalized beyond the architectural pattern.
 
+## Validation
+
+- Initial PR Gate found Markdown normalization only: ordered-list style and duplicate heading anchor.
+- Those formatting issues were corrected without changing the pattern design.
+- Merge-result PR Gate #900 passed deterministic tests and changed Markdown normalization.
+
 ## Status
 
-`in_progress` until the branch is checked against the latest `main` and the merge-result PR Gate passes. If validation introduces no material finding, stop recursion on saturation.
+`completed`. Two substantive design loops converged and validation introduced no new material pattern finding, so recursion stops on saturation.
