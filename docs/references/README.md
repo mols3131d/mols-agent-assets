@@ -25,4 +25,10 @@ Reference는 외부 문서 링크 모음만을 의미하지 않습니다. Agent 
 
 Reference에 있다는 이유만으로 downstream project의 mandatory policy가 되지는 않습니다. Consumer는 필요한 reference를 명시적으로 채택하거나 자신의 local authority에서 route합니다.
 
-같은 responsibility를 references 내부의 둘 이상의 owner가 중복 소유하지 않습니다. 구체적인 중복 경계는 [Documentation DRY policy](../document/dry.md)를 따릅니다.
+## Ownership
+
+`references/` 내부의 responsibility와 중복 경계는 이 README와 각 child surface의 local owner가 소유합니다.
+
+- 같은 responsibility를 둘 이상의 sibling surface가 함께 소유하지 않습니다.
+- child surface 내부의 세부 ownership은 해당 child의 `README.md` 또는 local document가 정의합니다.
+- repository-wide DRY 원칙만 [Documentation DRY](../document/dry.md)를 따릅니다.

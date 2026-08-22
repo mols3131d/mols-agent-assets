@@ -21,7 +21,7 @@
 - Runtime behavior의 canonical source를 documentation으로 복제하지 않습니다. Capsule은 maintainer context이지 deployable source의 대체물이 아닙니다.
 - Runtime에 필요한 instruction, reference, script, template 또는 asset은 documentation capsule이 아니라 대응 runtime package가 소유합니다.
 
-Capsule의 duplication boundary는 [DRY Boundaries](dry.md)가 소유합니다.
+Capsule-specific duplication boundary는 이 문서의 Ownership과 Contract가 소유합니다. Repository-wide 중복 판단 원칙은 [DRY Boundaries](dry.md)를 따릅니다.
 
 ## Entrypoint
 
