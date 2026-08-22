@@ -1,83 +1,83 @@
 ---
-description: repository guidance와 Agent Asset에서 canonical source, upstream/local ownership, authored/derived boundary를 결정할 때 사용하는 policy입니다.
+description: 저장소 지침과 에이전트 자산에서 작성 원본, 표준·도구·대상별 권한, 원본과 파생 결과의 경계를 결정할 때 사용하는 정책입니다.
 ---
 
-# Source Authority
+# 작성 원본과 권한
 
-이 문서는 repository guidance와 Agent Asset의 **source of truth와 authored source ownership**을 결정합니다.
+이 문서는 저장소 지침과 에이전트 자산에서 무엇을 **작성 원본(source of truth)** 으로 삼고, 각 결정의 권한을 어디에 둘지 정합니다.
 
-General behavior는 실제 standard, source framework, tool 또는 target/harness가 소유하고, repository는 그 계약을 복제하지 않습니다. Repository-local policy는 local delta와 canonical source placement만 소유합니다.
+일반 동작은 실제 표준, 소스 프레임워크, 도구 또는 대상 런타임이 소유합니다. 저장소는 그 계약을 복제하지 않고 저장소 고유 차이와 작성 원본의 배치만 소유합니다.
 
-## Principle
+## 원칙
 
-이 저장소는 **Standard First / Local Delta Only**를 기본으로 합니다.
+기본 원칙은 **표준 우선, 로컬은 차이만(Standard First / Local Delta Only)** 입니다.
 
-Repository-local source에 남기는 것은 다음뿐입니다.
+저장소에 직접 남기는 규칙은 다음에 한정합니다.
 
-- upstream/default와 의도적으로 다른 deviation
-- upstream에 없는 repository-specific extension
-- upstream만으로 하나의 결정을 복원할 수 없는 ambiguity resolution
+- 상위 계약이나 기본값과 의도적으로 다르게 동작하는 부분
+- 상위 계약에 없는 저장소 고유 확장
+- 상위 계약만으로 결정을 하나로 복원할 수 없을 때의 모호성 해소
 
-세부 계약이 필요하면 local prose snapshot을 만들지 않고 current authoritative source로 route합니다.
+세부 계약이 필요하면 저장소 문서에 복사본을 만들지 않고 현재 권위 있는 원본으로 연결합니다.
 
-이 경계는 stale copy, authority ambiguity, 불필요한 context, target-specific behavior의 repository-wide 일반화를 줄이기 위한 것입니다. 단순히 "common practice"라는 이유만으로 local guard를 제거하지 않습니다. 실제 authority가 behavior를 충분히 결정할 때만 local copy를 없앱니다.
+이 원칙은 낡은 복제본, 권한 충돌, 불필요한 컨텍스트, 특정 대상의 동작을 저장소 전체 규칙으로 잘못 일반화하는 문제를 줄입니다. 단순히 "관행"이라는 이유로 로컬 보호 규칙을 제거하지 않습니다. 상위 권한이 동작을 충분히 결정할 때만 로컬 복제를 없앱니다.
 
-## Authority by Concern
+## 책임별 권한
 
-Authority는 하나의 전역 순위가 아니라 **결정 concern별 owner**로 해석합니다.
+권한을 하나의 전역 우선순위로 보지 않고 **무엇을 결정하느냐에 따라 소유자를 구분**합니다.
 
-| Concern | Authority |
+| 결정 대상 | 권한을 가진 곳 |
 | --- | --- |
-| canonical authored representation | 선택한 source framework 또는 vendor-native representation |
-| portable contract | 실제 적용되는 portable standard |
-| target-specific runtime behavior | 실제 target/harness의 official contract |
-| repository convention과 intentional delta | repository 또는 mols convention |
-| asset-local requirement | 해당 asset |
+| 사람이 수정할 원본 형식 | 선택한 소스 프레임워크 또는 vendor-native 형식 |
+| 여러 환경에 공통으로 적용되는 계약 | 실제 적용되는 표준 |
+| 특정 대상의 런타임 동작 | 실제 target/harness의 공식 계약 |
+| 저장소 관행과 의도적인 차이 | 저장소 또는 mols 관행 |
+| 개별 자산에만 필요한 요구사항 | 해당 자산 |
 
-먼저 어떤 concern의 결정인지 식별한 뒤 그 concern의 authority를 사용합니다. 더 local한 owner는 자기 scope의 requirement를 추가하거나 좁힐 수 있지만, upstream contract를 암묵적으로 다시 정의하지 않습니다. 의도적인 차이는 local delta로 명시합니다.
+먼저 무엇을 결정하려는지 식별하고 그 결정의 소유자를 따릅니다. 더 좁은 범위의 소유자는 자기 범위의 요구사항을 추가하거나 제한할 수 있지만, 상위 계약을 암묵적으로 다시 정의하지 않습니다. 의도적으로 다르게 동작해야 한다면 그 차이를 저장소 규칙에 명시합니다.
 
-## Canonical Source
+## 작성 원본
 
-동일한 semantic asset에는 **canonical authored source를 하나만** 둡니다.
+같은 의미의 자산에는 **사람이 직접 관리하는 작성 원본을 하나만** 둡니다.
 
-Rulesync와 vendor-native source 중 어느 쪽을 선택할지는 portability나 기능 부족 여부가 아니라 **어느 representation을 사람이 author/edit할 canonical source로 관리할지**에 따라 정합니다.
+Rulesync 형식과 vendor-native 형식 중 무엇을 선택할지는 이식성이나 기능 부족 여부가 아니라 **어느 형식을 사람이 작성하고 수정하는 원본으로 관리할지**에 따라 정합니다.
 
-- Rulesync representation을 canonical source로 선택하면 Rulesync source를 author/edit합니다.
-- vendor-native representation을 canonical source로 선택하면 vendor-native source를 author/edit합니다.
-- generated projection은 authored source가 아니며 별도 canonical authority로 승격하지 않습니다.
+- Rulesync 형식을 원본으로 선택하면 Rulesync 소스를 작성하고 수정합니다.
+- vendor-native 형식을 원본으로 선택하면 해당 vendor-native 소스를 작성하고 수정합니다.
+- 생성된 결과물은 작성 원본이 아니며 별도의 원본으로 취급하지 않습니다.
 
-Target-specific 결과물을 사람이 직접 수정해야 하는 요구가 반복된다면 generated copy를 병행 수정하지 말고 canonical representation 선택 자체가 맞는지 다시 검토합니다.
+특정 대상용 결과물을 사람이 직접 수정해야 하는 요구가 반복된다면 생성된 파일을 함께 수정하지 말고, 처음 선택한 작성 원본이 적절한지 다시 검토합니다.
 
-## Source Placement
+## 소스 배치
 
-먼저 asset이 **reusable library source인지 repository-direct runtime asset인지** 구분합니다.
+먼저 자산이 **재사용 라이브러리용인지, 이 저장소가 직접 사용하는 런타임 자산인지** 구분합니다.
 
-| Role | Canonical authored location |
+| 역할 | 작성 원본 위치 |
 | --- | --- |
-| reusable + Rulesync-authored | `src/rulesync/...` |
-| reusable + vendor-native authored | `src/<vendor>/...` |
-| repository-direct asset | framework/vendor가 정의한 native project path |
+| 재사용 + Rulesync 작성 | `src/rulesync/...` |
+| 재사용 + vendor-native 작성 | `src/<vendor>/...` |
+| 저장소에서 직접 사용하는 자산 | framework/vendor가 정의한 native project path |
 
-`src/<vendor>/`는 reusable authored source를 보관하는 repository convention이며 vendor runtime이 직접 탐색하는 project path를 대체하지 않습니다.
+`src/<vendor>/`는 재사용할 작성 원본을 보관하기 위한 저장소 관행입니다. Vendor 런타임이 직접 탐색하는 project path를 대체하지 않습니다.
 
-구체적인 내부 layout과 schema는 local superset을 만들지 않고 selected source framework 또는 vendor의 current official contract를 따릅니다.
+구체적인 내부 구조와 schema는 저장소에서 별도 확장 규격을 만들지 않고, 선택한 소스 프레임워크 또는 vendor의 현재 공식 계약을 따릅니다.
 
-## Derived State
+## 파생 결과
 
-Generated projection, derived discovery metadata, lock state와 같은 output/state는 **그 자체로 semantic authored source가 되지 않습니다**.
+생성된 projection, discovery metadata, lock state 같은 결과나 상태는 **그 자체로 사람이 관리하는 의미상의 원본이 되지 않습니다**.
 
-Derived artifact가 필요하면 owning source에서 다시 생성하거나 해당 artifact의 좁은 operational owner가 관리합니다. 같은 semantic behavior를 source와 projection 양쪽에서 독립적으로 유지하지 않습니다.
+파생 결과가 필요하면 작성 원본에서 다시 생성하거나 해당 결과의 좁은 운영 책임자가 관리합니다. 같은 동작을 작성 원본과 생성 결과 양쪽에서 독립적으로 유지하지 않습니다.
 
-## Resolution
+## 판단 절차
 
-새 규칙이나 asset 배치를 결정할 때는 다음 순서로 판단합니다.
+새 규칙이나 자산의 위치를 결정할 때는 다음 순서로 판단합니다.
 
-1. 어떤 behavior 또는 representation을 결정하는지 식별합니다.
-1. 그 concern의 current authority를 찾습니다.
-1. reusable asset이면 canonical authored representation을 하나 선택합니다.
-1. repository에는 필요한 local delta와 source placement만 기록합니다.
-1. 세부 계약은 해당 authoritative source로 route합니다.
+1. 무엇을 결정하려는지 식별합니다.
+1. 그 결정의 현재 권한이 어디에 있는지 찾습니다.
+1. 재사용 자산이면 사람이 관리할 작성 원본 형식을 하나 선택합니다.
+1. 저장소에는 필요한 차이와 원본 위치만 기록합니다.
+1. 세부 계약은 실제 권한을 가진 원본으로 연결합니다.
 
-## Boundary
+## 범위
 
-이 문서는 Rulesync schema, Agent Skills specification, vendor behavior 또는 개별 Skill workflow를 다시 설명하지 않습니다. Current operational rule, tool integration, source registry와 asset-local workflow는 각각의 좁은 owner가 소유합니다.
+이 문서는 Rulesync schema, Agent Skills specification, vendor 동작 또는 개별 Skill workflow를 다시 설명하지 않습니다. 현재 운영 규칙, 도구 통합, source registry와 개별 자산의 workflow는 각각의 더 좁은 소유자가 관리합니다.
