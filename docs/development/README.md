@@ -1,5 +1,5 @@
 ---
-description: repository 개발 작업에서 change workflow, source authority, testing, evaluation 중 적용할 local policy를 찾을 때 사용합니다.
+description: 저장소 개발 작업에서 change workflow, 작성 원본과 권한, testing, evaluation 중 적용할 local policy를 찾을 때 사용합니다.
 ---
 
 # Development
@@ -9,7 +9,7 @@ description: repository 개발 작업에서 change workflow, source authority, t
 ## Local Policies
 
 - [Change Workflow](change-workflow.md) — branch naming과 repository-local change flow
-- [Source Authority](source-authority.md) — canonical source, standard, target과 local authority resolution
+- [작성 원본과 권한](source-authority.md) — 작성 원본, 표준, 대상과 저장소 고유 권한의 경계
 - [Testing](testing.md) — repository correctness verification과 PR Gate
 - [Evaluation](evaluation.md) — Agent Asset behavioral evaluation과 evidence 해석
 
