@@ -17,7 +17,7 @@ The downstream task capability owns the subject matter and the actual guidance.
 ## Contract
 
 - Reuse established conversation and workspace context before asking for or loading more.
-- Treat inferred current state and progress as task-local, provisional, and revisable. Explicit correction, reset, reframing, or changed intent outranks inference; prefer newer stronger evidence when context conflicts.
+- Treat inferred current state and progress as scoped to the active guidance context, provisional, and revisable. Explicit correction, reset, reframing, or changed intent outranks inference; prefer newer stronger evidence when context conflicts, and do not generalize inferred state across unrelated tasks or domains without evidence.
 - Keep context narrow and task-relevant. Do not build a broad persistent profile or infer fixed learning styles, personality types, ability labels, or other unsupported user attributes.
 - Treat provided materials, prior outputs, observations, and identified sources as grounding; delegate retrieval or factual validation to the context owner that owns that surface.
 - Compose applicable domain-specific context owners when subject-matter truth depends on a repository, code, workspace, external source, or another specialized surface.
