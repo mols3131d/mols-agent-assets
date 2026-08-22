@@ -30,6 +30,7 @@ Condition → Action → Boundary → Validation / Stop
 - Trigger, action, boundary와 validation은 가능한 한 가까이 둡니다.
 - Default를 하나 두고 대안은 default를 벗어나는 실제 condition이 있을 때만 노출합니다.
 - `must`, `never`, `only` 같은 강한 표현은 true invariant, safety/permission boundary, required contract 또는 순서가 깨지면 실패하는 fragile operation에 사용합니다. Preference나 흔한 경로는 default와 escape condition으로 표현합니다.
+- 금지나 negative boundary를 쓸 때 다음 valid action이 명확하지 않으면 허용되는 default, fallback 또는 handoff도 함께 씁니다.
 - 같은 개념에는 같은 용어를 사용하고, 같은 단어에 서로 다른 책임을 부여하지 않습니다.
 - Runtime이 더 직접적인 schema, permission, selector, structured output 또는 deterministic validation을 제공하면 [Design Principles](design-principles.md)의 mechanism 선택을 따릅니다. Prose로 그 contract를 이중 구현하지 않습니다.
 - Validation은 관찰 가능한 결과로 씁니다. Missing evidence, failed validation, blocked authority가 중요한 경우 retry, fallback, abstain, ask, handoff 또는 stop 중 필요한 behavior를 명시합니다.
@@ -38,7 +39,7 @@ Condition → Action → Boundary → Validation / Stop
 
 ## Scope and Conflict
 
-Instruction은 가능한 한 **실제로 적용되는 가장 좁은 scope**에 둡니다. 넓은 scope에서 예외를 계속 추가하는 것보다, 명확한 owner와 activation boundary를 두는 편이 안정적입니다.
+Instruction은 **의도한 applicability보다 넓지 않은 scope**에 둡니다. 이것은 파일이나 directory를 가장 잘게 나누라는 뜻이 아닙니다. 같은 activation과 owner 아래 항상 함께 적용되는 coherent instruction은 함께 유지할 수 있습니다.
 
 여러 instruction source가 함께 적용될 수 있다고 해서 local 문서가 임의의 precedence를 만들지는 않습니다.
 
@@ -60,7 +61,7 @@ Outcome만으로 충분한 곳에 상세 절차를 강제하지 않고, exact pa
 
 ## Examples and Templates
 
-Example은 숨은 규칙이 아니라 **이미 명시된 contract를 더 정확히 전달하기 위한 evidence**입니다.
+Example은 숨은 규칙이 아니라 **이미 명시된 contract를 보정하거나 구체화하는 표현 수단**입니다.
 
 다음 경우에만 추가하는 것을 우선합니다.
 
@@ -80,7 +81,7 @@ Template은 format 자체가 contract일 때 사용합니다. Runtime이 structu
 - 언제 적용되고 언제 적용되지 않는가?
 - default action은 무엇인가?
 - 어디까지 재량이고 무엇이 true invariant인가?
-- exception이나 fallback이 실제 behavior를 어떻게 바꾸는가?
+- exception, negative boundary 또는 fallback이 실제 behavior를 어떻게 바꾸는가?
 - success, failure 또는 stop을 무엇으로 확인하는가?
 - 같은 behavior가 다른 instruction에 반복되거나 충돌하지 않는가?
 - example이나 rationale이 숨은 rule을 만들고 있지 않은가?
