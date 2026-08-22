@@ -7,7 +7,7 @@ description: Promptfoo eval tooling의 official source routing과 repository-loc
 
 이 reference는 Promptfoo 사용법이나 option catalog를 복제하지 않고, 자주 확인할 current official source로 라우팅합니다.
 
-Repository-local 기준은 [Testing](../../development/testing.md), 실행 config는 [`evals/promptfoo/`](../../../evals/promptfoo/), adapter와 runner는 [`scripts/evals/`](../../../scripts/evals/)에서 확인합니다.
+Repository-local eval 정책은 [Evaluation](../../development/evaluation.md), PR Gate와 deterministic verification은 [Testing](../../development/testing.md), 실행 config는 [`evals/promptfoo/`](../../../evals/promptfoo/), adapter와 runner는 [`scripts/evals/`](../../../scripts/evals/)에서 확인합니다.
 
 ## Core lookup
 
@@ -28,6 +28,7 @@ Repository-local 기준은 [Testing](../../development/testing.md), 실행 confi
 - [Model-graded metrics](https://www.promptfoo.dev/docs/configuration/expected-outputs/model-graded/) — model grader 종류와 provider 설정
 - [LLM rubric](https://www.promptfoo.dev/docs/configuration/expected-outputs/model-graded/llm-rubric/) — output semantic grading
 - [Agent rubric](https://www.promptfoo.dev/docs/configuration/expected-outputs/model-graded/agent-rubric/) — workspace나 tool evidence를 포함하는 agentic grading
+- [Trajectory goal success](https://www.promptfoo.dev/docs/configuration/expected-outputs/model-graded/#trajectorygoal-success) — traced agent run의 goal outcome grading
 - [LLM as a Judge](https://www.promptfoo.dev/docs/guides/llm-as-a-judge/) — grader 설계와 재현성
 
 ## Trust and data boundaries
