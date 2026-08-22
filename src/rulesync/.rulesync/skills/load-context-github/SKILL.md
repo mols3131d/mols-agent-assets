@@ -1,13 +1,10 @@
 ---
 name: load-context-github
 description: >-
-  Load live repository instructions and GitHub state for task-level work on a concrete
-  GitHub repository or object: repository, path, ref, PR, issue, check, workflow,
-  release, or other named target. Use for reads, reviews, changes, connector/tool
-  actions, target resolution, and follow-ups to an established target. A named target
-  that still needs ID/ref resolution counts as concrete; re-resolve context when a
-  follow-up switches target. Do not use for generic Git/GitHub explanation or broad
-  discovery/search before any concrete target is established.
+  Temporary compatibility name for `github-context` while this repository migrates its
+  frozen Rulesync self-dependency. Do not select this Skill when `github-context` is
+  available. It preserves the same GitHub context-loading behavior until the consumer
+  lock moves to the new name.
 ---
 
 # Load GitHub Context
