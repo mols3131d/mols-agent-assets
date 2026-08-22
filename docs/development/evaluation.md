@@ -67,7 +67,7 @@ Capability case가 충분히 안정되고 계속 보호할 가치가 생기면 r
 - task와 grader가 확인하는 조건은 서로 모순되거나 숨겨진 요구를 만들지 않아야 합니다.
 - 정상적인 Agent가 해결할 수 없는 broken fixture, 잘못된 ground truth, flaky environment는 target failure와 분리합니다.
 - 가능한 경우 known-good 또는 known-bad example로 task와 grader가 의도대로 판정하는지 sanity check합니다.
-- target에게 주어지는 context와 workspace에는 production behavior에 필요한 정보만 노출합니다. Eval-only assertion, expected answer, hidden reference를 target이 읽을 수 있으면 contamination 가능성을 결과와 분리합니다.
+- target의 intended context보다 eval harness가 assertion, expected answer, hidden reference를 더 노출하면 contamination 가능성을 결과와 분리합니다.
 - 같은 case를 반복 조정하며 Asset을 맞출수록 fixture 자체에 과적합할 위험이 커집니다. 새로운 evidence가 없는 cosmetic variation은 추가하지 않습니다.
 
 ## Outcome과 Trajectory
@@ -82,20 +82,11 @@ Capability case가 충분히 안정되고 계속 보호할 가치가 생기면 r
 
 Trajectory grader는 필요한 invariant만 검사하고 하나의 정답 경로를 구현 세부로 고정하지 않습니다.
 
-## Evidence
-
-Eval 결과는 증거의 강도를 구분해서 해석합니다.
-
-1. **Deterministic evidence** — behavioral outcome이나 invariant를 안정적으로 판정한 evidence. 필요한 경우 merge-blocking verification으로 사용할 수 있습니다.
-1. **Runtime behavioral evidence** — 실제 model/runtime을 실행해 관찰한 결과. 실행 환경, harness와 asset revision을 함께 봅니다.
-1. **Stochastic/model-graded evidence** — model 생성이나 grader 변동성이 있는 결과. 기본적으로 단일 PASS/FAIL을 merge admission으로 사용하지 않습니다.
-
-반복 가능한 failure pattern이 확인되면 원인을 Asset, fixture, harness/runtime/provider, grader로 분리합니다. 안정적인 contract로 만들 수 있을 때만 deterministic regression 또는 blocking eval로 승격합니다.
-
 ## Graders
 
 - observable state나 구조로 판정할 수 있으면 code/deterministic grader를 우선합니다.
 - semantic quality처럼 deterministic 판정이 부적절할 때 model grader를 사용합니다.
+- 문자열 일치보다 의미가 중요한 contract를 억지 deterministic grader로 고정하지 않습니다.
 - rubric은 한 번에 너무 많은 품질 개념을 섞지 말고 판정할 behavior를 구체적으로 적습니다.
 - grader가 판단하기 위해 필요한 source/context가 있다면 실제 grading input에 제공되어야 합니다.
 - model grader는 target과 별개의 failure source입니다. transport, parse, missing-context 같은 grader failure를 target failure로 간주하지 않습니다.
@@ -103,13 +94,18 @@ Eval 결과는 증거의 강도를 구분해서 해석합니다.
 
 Grader를 바꾸면 같은 점수 이름이라도 이전 결과와 동일한 measurement라고 가정하지 않습니다.
 
-## Eval Design
+## Evidence
 
-- 먼저 보호할 behavior와 실패 조건을 명시합니다.
-- 최소한의 representative case와 필요한 adversarial case만 둡니다.
-- 문자열 일치보다 의미가 중요한 계약을 억지 deterministic regression으로 고정하지 않습니다.
-- stochastic comparison은 필요하면 여러 trial을 사용하고 model/runtime, harness, fixture, asset revision을 함께 기록합니다.
-- generated result는 기본적으로 disposable evidence로 취급합니다. durable decision이나 regression contract가 생겼을 때만 canonical surface에 반영합니다.
+먼저 **실제 target runtime을 실행했는지**를 구분합니다.
+
+- **Fixture/plumbing evidence** — fixture, provider, adapter, assertion 연결이 작동하는지 검증합니다. Runtime behavior를 증명하지 않습니다.
+- **Runtime evidence** — 실제 model/runtime과 harness를 실행한 결과입니다. 사용한 model/runtime, harness, fixture와 Agent Asset revision을 함께 해석합니다.
+
+Runtime evidence의 신뢰도는 사용한 grader와 반복성에 따라 달라집니다. Observable outcome을 deterministic하게 판정할 수 있으면 가장 강한 merge evidence가 될 수 있습니다. Model-generated output이나 model grader에 의존하면 필요한 경우 여러 trial을 사용하고, 단일 PASS/FAIL을 기본 merge admission으로 사용하지 않습니다.
+
+반복 가능한 failure pattern이 확인되면 원인을 Asset, fixture, harness/runtime/provider, grader로 분리합니다. 안정적인 contract로 만들 수 있을 때만 blocking regression으로 승격합니다.
+
+Generated result는 기본적으로 disposable evidence입니다. Durable decision이나 regression contract가 생겼을 때만 canonical surface에 반영합니다.
 
 ## Promptfoo
 
