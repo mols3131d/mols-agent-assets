@@ -140,8 +140,6 @@ Runtime이 이미 load한 context를 제거할 수 없을 수도 있습니다. �
 ## Related Patterns
 
 - [Progressive Context Routing](progressive-context-routing.md) — discovery 이후 필요한 context만 단계적으로 좁혀 load하는 더 일반적인 routing shape를 설명합니다.
-- [Asset Configuration Surface](asset-configuration-surface.md) — argument가 아닌 repository/scope-local configuration delta를 별도 surface에서 관리할 때 사용합니다.
-- [Template / Schema / Metadata-Driven Assets](template-schema-driven-assets.md) — argument schema나 metadata에 structural contract를 가까이 두고 생성·검증에 재사용할 때 참고합니다.
 
 ## Boundary
 
