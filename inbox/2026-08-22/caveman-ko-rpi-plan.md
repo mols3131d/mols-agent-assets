@@ -12,17 +12,17 @@ Based on: `inbox/2026-08-22/caveman-ko-rpi-research.md`
 ## Work
 
 1. Rewrite `description` around explicit caveman-style intent and add a negative boundary for ordinary brevity/token-saving requests.
-2. Refactor the body around semantic preservation, intensity, and activation lifetime. Remove brittle absolute presentation rules that do not prevent a material failure.
-3. Keep one public `intensity` control: omitted/`default` → `full`, `auto` → least aggressive level that satisfies explicit intent, or explicit `lite|full|ultra`.
-4. Treat slash-like forms as user intent syntax, not proof of runtime command registration.
-5. Replace unconditional persistence with turn/conversation behavior derived from explicit user intent and observable context continuity.
-6. State that the Skill compresses generated prose only and does not promise fixed token savings or input/context/reasoning compression.
-7. Add the upstream MIT notice to the distributed Skill package and record derivation in maintainer context.
-8. Delete package WIP `README.md`; add minimal `docs/skills/caveman-ko/README.md` that owns experimental maturity, provenance, and promotion criteria.
-9. Add `evals/skills/caveman-ko/trigger-evals.json` with realistic positive and near-miss negative prompts.
-10. Add `evals/skills/caveman-ko/behavior-evals.json` for intensity, exact-token preservation, uncertainty/negation/units, high-stakes clarity, activation lifetime, deactivation, and token-scope honesty.
-11. Regenerate/update `route/skills.jsonl` from the changed canonical description.
-12. Review against repository conventions, upstream behavior, and Agent Skills guidance. If material findings remain, run another bounded loop; otherwise stop on saturation.
+1. Refactor the body around semantic preservation, intensity, and activation lifetime. Remove brittle absolute presentation rules that do not prevent a material failure.
+1. Keep one public `intensity` control: omitted/`default` → `full`, `auto` → least aggressive level that satisfies explicit intent, or explicit `lite|full|ultra`.
+1. Treat slash-like forms as user intent syntax, not proof of runtime command registration.
+1. Replace unconditional persistence with turn/conversation behavior derived from explicit user intent and observable context continuity.
+1. State that the Skill compresses generated prose only and does not promise fixed token savings or input/context/reasoning compression.
+1. Add the upstream MIT notice to the distributed Skill package and record derivation in maintainer context.
+1. Delete package WIP `README.md`; add minimal `docs/skills/caveman-ko/README.md` that owns experimental maturity, provenance, and promotion criteria.
+1. Add `evals/skills/caveman-ko/trigger-evals.json` with realistic positive and near-miss negative prompts.
+1. Add `evals/skills/caveman-ko/behavior-evals.json` for intensity, exact-token preservation, uncertainty/negation/units, high-stakes clarity, activation lifetime, deactivation, and token-scope honesty.
+1. Regenerate/update `route/skills.jsonl` from the changed canonical description.
+1. Review against repository conventions, upstream behavior, and Agent Skills guidance. If material findings remain, run another bounded loop; otherwise stop on saturation.
 
 ## Validation
 
