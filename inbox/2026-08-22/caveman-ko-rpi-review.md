@@ -20,7 +20,7 @@ Static inspection of the current Skill, repository conventions, Agent Skills gui
 | Compression can erase negation, uncertainty, numbers, units, conditions, or scope | Fixed: explicit semantic-preservation invariants and behavior fixtures added |
 | Absolute presentation/tool narration rules can conflict with higher authority or output contracts | Fixed: style is now an overlay and exact/constrained formats win |
 | WIP README mixes maintainer maturity with deployable package | Fixed: package README removed; experimental maintainer capsule added |
-| No focused regression surface | Fixed: trigger and behavior fixtures added |
+| No focused behavior evaluation surface | Fixed: trigger and behavior capability fixtures added |
 
 Loop 1 closed with material improvement, but upstream comparison exposed a new provenance/license question, so another Loop was justified.
 
@@ -30,7 +30,7 @@ Loop 1 closed with material improvement, but upstream comparison exposed a new p
 
 Compared the local Skill with `JuliusBrussee/caveman` and its MIT license. The local asset retains substantial lineage from the upstream response Skill. Upstream also makes clear that response compression does not imply input/context/reasoning-token compression or a universal reduction percentage.
 
-### Findings and disposition
+### Additional findings and disposition
 
 | Finding | Disposition |
 | --- | --- |
@@ -54,7 +54,7 @@ The resulting responsibility is intentionally narrow:
 ### Evidence boundary
 
 - Repository structure, wording, provenance, license notice, route metadata, and fixture contents are directly inspectable evidence.
-- Trigger and behavior JSON files are **eval fixtures**, not proof that a particular model/runtime passes them.
+- Trigger and behavior JSON files are **capability eval fixtures**, not proof that a particular model/runtime passes them and not a blocking regression suite.
 - No repeated live model trials are claimed by this review.
 - Repository PR Gate remains required before acceptance.
 
