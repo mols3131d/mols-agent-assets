@@ -6,6 +6,7 @@
 /.archive/
 /.gemini/
 /.codex/
+/.agents/skills/
 /.rulesync/rules/.curated/
 /.rulesync/skills/.curated/
 /rulesync.local.jsonc
