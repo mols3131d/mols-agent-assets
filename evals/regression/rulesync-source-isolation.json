@@ -1,10 +1,11 @@
 {
-  "version": 11,
+  "version": 12,
   "kind": "deterministic-regression",
   "repository_workspace": {
     "config": "rulesync.jsonc",
     "lock": "rulesync.lock",
     "asset_root": ".rulesync",
+    "runtime_surface": ".agents/skills",
     "optional": false
   },
   "library_workspace": {
