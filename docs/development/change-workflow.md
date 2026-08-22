@@ -14,7 +14,7 @@ Branch 사용 규칙은 [`AGENTS.md`](../../AGENTS.md)가 소유합니다. Repos
 
 ## Flow
 
-1. [Source Authority](source-authority.md)에 따라 변경할 canonical source를 식별합니다.
+1. [작성 원본과 권한](source-authority.md)에 따라 변경할 작성 원본을 식별합니다.
 1. 해당 source를 수정합니다.
 1. 검증 범위와 evidence 수준은 [Testing](testing.md)을 따릅니다.
 1. 작업 중 non-canonical artifact가 필요하면 [Knowledge Lifecycle](../document/knowledge-lifecycle.md)을 따릅니다.
