@@ -50,7 +50,7 @@ Copilot cloud agent, third-party coding agent, custom agent와 agent app처럼 G
 - 자동 보안 검증, agent self-review와 다른 model의 review는 기존 검증과 검토를 보강할 수 있지만 대신하지는 못합니다.
 - Agent session log, commit attribution과 GitHub audit 기록은 가능한 범위에서 추적성을 유지하는 데 사용합니다. 이를 승인으로 해석하지 않습니다.
 
-Agent가 실행 권한이나 이후 agent의 동작을 바꾸는 **통제 표면(control surface)**을 수정한다면 위험도도 높게 봅니다. GitHub Actions workflow, agent instruction, custom agent나 MCP configuration처럼 agent가 무엇을 읽고 실행하고 쓸 수 있는지 바꾸는 변경은 **수정된 통제 표면 자체에 의존하지 않는 검토 근거**를 확보해야 합니다. 최종 반영에는 사람의 명시적 승인이 필요합니다.
+Agent가 실행 권한이나 이후 agent의 동작을 바꾸는 **통제 표면(control surface)**을 수정한다면 더 높은 위험으로 취급합니다. GitHub Actions workflow, agent instruction, custom agent나 MCP configuration처럼 agent가 무엇을 읽고 실행하고 쓸 수 있는지 바꾸는 변경은 **수정된 통제 표면 자체에 의존하지 않는 검토 근거**를 확보해야 합니다. 최종 반영에는 사람의 명시적 승인이 필요합니다.
 
 ## Agent Automations
 
@@ -115,11 +115,11 @@ GitHub Actions는 automation과 checks를 실행합니다. `PR Gate`가 무엇�
 GitHub Agentic Workflows는 자연어 Markdown으로 작성하더라도 일반 문서로 보지 않습니다. Agent가 GitHub Actions 환경에서 판단하고 GitHub 작업을 제안하는 **실행 가능한 자동화 원본**입니다.
 
 - Trigger, repository permission, network access와 write surface를 명시적으로 제한합니다.
-- 기본은 read-only입니다. Write가 필요할 때만 좁은 permission과 `safe-outputs`를 허용합니다.
+- 기본은 read-only입니다. 쓰기 권한이 필요할 때만 좁은 permission과 `safe-outputs`를 허용합니다.
 - Agent runtime에 secret을 직접 노출하지 않고, 가능하면 credential을 격리된 실행 단계에 둡니다.
 - 작성 Markdown과 컴파일된 `.lock.yml`은 서로 추적할 수 있어야 합니다. `.lock.yml`은 파생 결과이며 사람이 관리하는 의미상의 원본이 아닙니다. 작성 원본의 일반 원칙은 [작성 원본과 권한](source-authority.md)을 따릅니다.
 - Agentic workflow가 Issue, comment나 PR을 만들어도 기존 Rulesets, review와 Merge policy를 우회할 수 없습니다.
-- 이 기능은 빠르게 변합니다. 문법, 지원 engine, 보안 방식과 preview 상태는 GitHub 공식 문서를 권한을 가진 원본으로 봅니다.
+- 이 기능은 빠르게 변합니다. 문법, 지원 engine, 보안 방식과 preview 상태는 GitHub 공식 문서를 기준으로 판단합니다.
 
 ## Upstream Authority
 
