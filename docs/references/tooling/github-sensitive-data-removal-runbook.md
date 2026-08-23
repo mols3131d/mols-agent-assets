@@ -788,36 +788,36 @@ Fork가 문제라면 해당 fork도 명시적으로 식별한다.
 ### Support를 사용하지 않은 경우
 
 ```text
-Status: owner-controlled cleanup complete
+Status: 소유자 통제 범위 정리 완료
 
-- Git history rewritten
-- Normal branches/tags/refs replaced
-- Repository protections restored
-- GitHub Actions / Pages / Releases checked
-- Known forks and clones checked
-- No known owner-controlled copy retains the sensitive data
+- Git history rewrite 완료
+- 일반 branch/tag/ref 교체 완료
+- Repository 보호 설정 복구 완료
+- GitHub Actions / Pages / Releases 확인 완료
+- 알려진 fork와 clone 확인 완료
+- 소유자가 통제하는 것으로 알려진 사본에는 민감정보가 남아 있지 않음
 
 Residual risk:
-- GitHub PR internal refs or cached views may still retain historical objects
-- Orphaned GitHub remote LFS objects may remain if applicable
-- Unknown third-party clones or external caches cannot be revoked
-- GitHub server-side purge was not requested
+- GitHub PR internal ref 또는 cached view에 과거 object가 남아 있을 수 있음
+- 해당하는 경우 GitHub remote의 orphaned LFS object가 남아 있을 수 있음
+- 알 수 없는 제3자 clone이나 외부 cache는 회수할 수 없음
+- GitHub server-side purge는 요청하지 않음
 ```
 
 ### GitHub Support purge까지 끝난 경우
 
 ```text
-Status: GitHub-side cleanup completed
+Status: GitHub 측 정리 완료
 
-- Owner-controlled cleanup complete
-- Affected PR references handled by GitHub
-- GitHub cached views removed
-- GitHub server-side garbage collection completed
-- LFS purge completed if applicable
+- 소유자 통제 범위 정리 완료
+- 영향받은 PR reference를 GitHub가 처리함
+- GitHub cached view 제거 완료
+- GitHub server-side garbage collection 완료
+- 해당하는 경우 LFS purge 완료
 
 Residual risk:
-- Copies already downloaded or retained by third parties remain outside GitHub's control
-- External archives, mirrors, screenshots, or caches require separate remediation
+- 제3자가 이미 내려받거나 보관한 사본은 GitHub의 통제 범위 밖임
+- 외부 archive, mirror, screenshot 또는 cache는 별도로 정리해야 함
 ```
 
 ---

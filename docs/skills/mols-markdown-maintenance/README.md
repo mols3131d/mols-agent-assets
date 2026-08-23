@@ -1,17 +1,17 @@
 # mols-markdown-maintenance Maintainer Docs
 
-`mols-markdown-maintenance` owns deterministic Markdown maintenance selection and the small local delta not already provided by the selected Markdown backend.
+`mols-markdown-maintenance`는 결정론적 Markdown 유지보수 방식의 선택과, 선택한 Markdown backend가 이미 제공하지 않는 작은 local delta를 소유합니다.
 
 ## Invariants
 
-- Repository-native Markdown tooling and configuration win when they already own the requested behavior.
-- Standard formatting, heading checks, and link checks use rumdl directly instead of local wrapper scripts.
-- Custom runtime code is limited to frontmatter schema validation and frontmatter-driven index generation.
-- Deterministic validation or parsing is not replaced by an LLM fallback when that would change semantics.
-- Missing required tooling fails explicitly.
-- Generated indexes remain projections and are regenerated from source Markdown/frontmatter.
-- Dependencies stay minimal and justified by local deterministic behavior.
+- Repository-native Markdown 도구와 설정이 요청된 동작을 이미 소유하면 이를 우선합니다.
+- 표준 formatting, heading check와 link check는 로컬 wrapper script 대신 rumdl을 직접 사용합니다.
+- Custom runtime code는 frontmatter schema validation과 frontmatter 기반 index generation으로 제한합니다.
+- 의미가 달라질 수 있는 경우 deterministic validation이나 parsing을 LLM fallback으로 대체하지 않습니다.
+- 필요한 도구가 없으면 명시적으로 실패합니다.
+- Generated index는 projection으로 유지하며 source Markdown/frontmatter에서 다시 생성합니다.
+- 의존성은 최소화하며, 로컬의 결정론적 동작으로 그 필요성이 정당화되어야 합니다.
 
 ## Maintenance
 
-Do not mirror rumdl's changing rule/configuration reference here. Keep only the ownership boundary and local invariants; consult current upstream authority when exact backend semantics matter.
+변경될 수 있는 rumdl rule/configuration reference를 이 문서에 복제하지 않습니다. 여기에는 소유권 경계와 local invariant만 유지하고, backend의 정확한 semantics가 중요할 때는 현재 upstream authority를 확인합니다.
