@@ -182,20 +182,22 @@ For an external asset, resolve **who will own future edits** before creating dur
   source-native installation mechanism, preserve provenance and revision when material, and
   do not silently fork the installed copy into the target's authored canonical tree.
 - If the caller or repository will own future edits, treat the transition as a migration.
-  Bring the asset into the chosen canonical format with that framework's native importer
-  when it can preserve the required semantics, then review the imported result before
+  Bring the asset into the chosen canonical format with that framework's native intake
+  mechanism when it can preserve the required semantics, then review the result before
   treating it as authoritative.
 
 When Rulesync is the chosen canonical framework:
 
 - use declarative `sources` for an external Rulesync-compatible dependency whose upstream
   remains authoritative;
-- prefer `rulesync import` for supported target-native assets being adopted into
-  `.rulesync/` authoring source;
+- prefer `rulesync fetch <source> --target <target>` for a remote repository containing a
+  supported target-native asset being adopted into `.rulesync/` authoring source;
+- prefer `rulesync import --targets <target>` when the target-native configuration already
+  exists in the working scope;
 - use `rulesync convert` only for direct target-to-target conversion when no canonical
   `.rulesync/` source is intended.
 
-Import or conversion success is not proof of semantic parity. If required behavior,
+Fetch, import, or conversion success is not proof of semantic parity. If required behavior,
 supporting resources, scope, precedence, or dependencies cannot be represented, do not
 force a degraded conversion. Keep the external or vendor-native authority, or route a
 material adaptation to `mols-agent-asset`.
