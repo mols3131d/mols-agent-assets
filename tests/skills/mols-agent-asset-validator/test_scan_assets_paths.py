@@ -1,9 +1,20 @@
 from __future__ import annotations
 
+import sys
 import tempfile
 from pathlib import Path
 
-from scan_assets import scan_directory
+ROOT = (
+    Path(__file__).resolve().parents[3]
+    / "src"
+    / "rulesync"
+    / ".rulesync"
+    / "skills"
+    / "mols-agent-asset-validator"
+)
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from scan_assets import scan_directory  # noqa: E402
 
 
 def test_canonical_subagent_is_classified_and_validated() -> None:
