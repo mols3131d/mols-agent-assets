@@ -21,7 +21,7 @@ mise install
 mise run setup
 ```
 
-`mise run setup`은 모든 Python 의존성 그룹, 잠금된 저장소 전용 Rulesync 자산, 생성된 Agent Skill과 Git hook을 설치합니다.
+`mise run setup`은 모든 Python 의존성 그룹, 저장소 내부의 잠금된 Rulesync 자산, 생성된 Agent Skill과 Git hook을 설치합니다.
 
 ## Formatting
 
