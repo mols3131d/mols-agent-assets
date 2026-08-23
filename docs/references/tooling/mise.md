@@ -9,10 +9,10 @@ Repository tool version authority는 root [`mise.toml`](../../../mise.toml)입�
 
 | Owner | Scope |
 | --- | --- |
-| mise | `uv`, Node.js, rumdl, Lefthook, Biome, Rulesync binary/version과 cross-tool tasks |
+| mise | `uv`, Node.js, rumdl, Lefthook, Biome, Rulesync, skills CLI binary/version과 cross-tool tasks |
 | uv | `.python-version`, `pyproject.toml`, `uv.lock`, Python environment와 Python dependencies |
 
-Python을 `mise.toml`에 중복 선언하지 않습니다. Non-Python tool을 Python dependency group에 넣지 않습니다. Rulesync는 mise의 npm backend로 exact version을 pin하며 repository runner는 `@latest`를 직접 호출하지 않습니다.
+Python을 `mise.toml`에 중복 선언하지 않습니다. Non-Python tool을 Python dependency group에 넣지 않습니다. Rulesync와 skills CLI는 mise의 npm backend로 exact version을 pin하며 repository runner는 `@latest`를 직접 호출하지 않습니다.
 
 ## Common entry points
 
@@ -45,5 +45,6 @@ mise exec -- npm run eval:promptfoo:mols-rpi
 - [Biome configuration](https://biomejs.dev/reference/configuration/)
 - [Biome CLI](https://biomejs.dev/reference/cli/)
 - [Rulesync](rulesync.md)
+- [skills CLI](skills-cli.md)
 
 Version-dependent behavior는 `mise.toml`의 pin과 current official source를 함께 확인합니다.
