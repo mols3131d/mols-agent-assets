@@ -58,7 +58,7 @@ Eval을 만들기 전에 **무엇을 어떤 조건에서 증명하려는지** �
 
 Capability case가 충분히 안정되고 계속 보호할 가치가 생기면 regression contract로 승격할 수 있습니다. 불안정한 model judgment를 이름만 regression으로 바꿔 merge-blocking contract로 만들지 않습니다.
 
-여기서 regression은 **평가 목적**을 뜻합니다. 파일 배치는 별개이며, `evals/regression/`은 [`evals/README.md`](../../evals/README.md)가 정의한 cross-asset deterministic invariant에만 사용합니다.
+여기서 regression은 **평가 목적**을 뜻하며 별도의 파일 category를 의미하지 않습니다. Agent behavior를 실행하지 않아도 판정할 repository invariant는 `tests/`에 두고, behavioral regression fixture는 해당 `evals/skills/<skill-name>/`에 둡니다.
 
 ## Case Quality
 
