@@ -9,7 +9,7 @@
 
 날짜 directory는 실제 artifact가 생길 때만 만듭니다. 빈 directory나 placeholder를 유지하지 않습니다.
 
-Artifact의 생성·승격·보존·삭제 기준과 Git history의 역할은 [Knowledge Lifecycle](../docs/document/knowledge-lifecycle.md)이 소유합니다.
+Artifact의 생성·승격·보존·삭제 기준과 Git history의 역할은 [Knowledge Lifecycle](../docs/document/lifecycle.md)이 소유합니다.
 
 ## Boundary
 
