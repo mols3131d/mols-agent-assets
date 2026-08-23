@@ -2,207 +2,271 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
-import shlex
 import shutil
 import subprocess
 import sys
-from pathlib import Path, PurePosixPath
+from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 LOCK_PATH = ROOT / "skills-lock.json"
-TARGET_CONFIG_PATH = ROOT / "src" / "rulesync" / "rulesync.jsonc"
-SUPPORTED_SOURCE_TYPES = {"github", "git", "gitlab", "local", "well-known"}
-
-TARGET_TO_AGENT = {
-    "claudecode": "claude-code",
-    "codexcli": "codex",
-    "copilot": "github-copilot",
-    "copilotcli": "github-copilot",
-    "antigravity-ide": "antigravity",
-    "antigravity-cli": "antigravity-cli",
-}
 
 
 class SkillSyncError(RuntimeError):
     pass
 
 
-def read_vendor_targets(path: Path = TARGET_CONFIG_PATH) -> list[str]:
-    text = path.read_text(encoding="utf-8")
-    match = re.search(r'"targets"\s*:\s*\[(.*?)\]', text, re.DOTALL)
-    if not match:
-        raise SkillSyncError(f"targets를 찾을 수 없습니다: {path}")
-
-    targets = re.findall(r'"([^"]+)"', match.group(1))
-    if not targets:
-        raise SkillSyncError(f"targets가 비어 있습니다: {path}")
-    return targets
+@dataclass(frozen=True)
+class LockedSkill:
+    name: str
+    source: str
+    ref: str
+    source_type: str
 
 
-def resolve_agents(targets: list[str]) -> list[str]:
-    missing = [target for target in targets if target not in TARGET_TO_AGENT]
-    if missing:
-        raise SkillSyncError(
-            f"skills CLI target mapping이 없습니다: {', '.join(missing)}"
-        )
-
-    agents: list[str] = []
-    for target in targets:
-        agent = TARGET_TO_AGENT[target]
-        if agent not in agents:
-            agents.append(agent)
-    return agents
+@dataclass(frozen=True)
+class NativeAdapter:
+    name: str
+    supported_skills: frozenset[str]
+    install_script: str
 
 
-def read_locked_skills(path: Path = LOCK_PATH) -> dict[str, dict[str, Any]]:
+@dataclass(frozen=True)
+class SyncPlan:
+    source: str
+    ref: str
+    skills: tuple[str, ...]
+    adapter: NativeAdapter
+
+
+NATIVE_ADAPTERS = {
+    "epoko77-ai/im-not-ai": NativeAdapter(
+        name="im-not-ai",
+        supported_skills=frozenset({"humanize-korean"}),
+        install_script="install.sh",
+    ),
+}
+
+
+def default_cache_root() -> Path:
+    base = os.environ.get("XDG_CACHE_HOME")
+    root = Path(base).expanduser() if base else Path.home() / ".cache"
+    return root / "mols-agent-assets" / "skill-sources"
+
+
+def normalize_github_source(source: str) -> str:
+    shorthand = re.fullmatch(r"([^/:]+)/([^/]+)", source)
+    if shorthand:
+        owner, repo = shorthand.groups()
+        repo = repo.removesuffix(".git")
+    elif source.startswith(("http://", "https://")):
+        parsed = urlparse(source)
+        parts = [part for part in parsed.path.split("/") if part]
+        if parsed.hostname != "github.com" or len(parts) != 2:
+            raise SkillSyncError(
+                f"public GitHub owner/repo source만 지원합니다: {source}"
+            )
+        owner, repo = parts[0], parts[1].removesuffix(".git")
+    else:
+        raise SkillSyncError(f"public GitHub source 형식이 아닙니다: {source}")
+
+    if not owner or not repo or owner.startswith("-") or repo.startswith("-"):
+        raise SkillSyncError(f"잘못된 GitHub source입니다: {source}")
+    return f"{owner}/{repo}"
+
+
+def read_locked_skills(path: Path = LOCK_PATH) -> list[LockedSkill]:
     data = json.loads(path.read_text(encoding="utf-8"))
     skills = data.get("skills")
     if not isinstance(data.get("version"), int) or not isinstance(skills, dict):
         raise SkillSyncError(f"지원하지 않는 skills lock 형식입니다: {path}")
-    if not all(
-        isinstance(name, str) and isinstance(entry, dict)
-        for name, entry in skills.items()
-    ):
-        raise SkillSyncError(f"잘못된 skills lock entry가 있습니다: {path}")
-    return skills
 
+    locked: list[LockedSkill] = []
+    for name, entry in sorted(skills.items()):
+        if not isinstance(name, str) or not isinstance(entry, dict):
+            raise SkillSyncError(f"잘못된 skills lock entry가 있습니다: {path}")
 
-def skill_folder(entry: dict[str, Any]) -> str | None:
-    value = entry.get("skillPath")
-    if value is None:
-        return None
-    if not isinstance(value, str) or not value:
-        raise SkillSyncError("skillPath가 문자열이 아닙니다.")
-
-    path = PurePosixPath(value)
-    if path.is_absolute() or ".." in path.parts or path.name != "SKILL.md":
-        raise SkillSyncError(f"지원하지 않는 skillPath입니다: {value}")
-
-    folder = str(path.parent)
-    return "" if folder == "." else folder
-
-
-def github_shorthand(source: str) -> str:
-    match = re.fullmatch(r"([^/:]+)/([^/]+)", source)
-    if match:
-        owner, repo = match.groups()
-        return f"{owner}/{repo.removesuffix('.git')}"
-
-    if source.startswith(("http://", "https://")):
-        parsed = urlparse(source)
-        parts = [part for part in parsed.path.split("/") if part]
-        if parsed.hostname == "github.com" and len(parts) == 2:
-            repo = parts[1].removesuffix(".git")
-            return f"{parts[0]}/{repo}"
-
-    raise SkillSyncError(
-        "GitHub skillPath 설치에는 public GitHub owner/repo source가 필요합니다."
-    )
-
-
-def build_source(entry: dict[str, Any]) -> str:
-    source_type = entry.get("sourceType")
-    if source_type not in SUPPORTED_SOURCE_TYPES:
-        raise SkillSyncError(f"지원하지 않는 sourceType입니다: {source_type!r}")
-
-    source_url = entry.get("sourceUrl")
-    source = source_url or entry.get("source")
-
-    if source_type in {"git", "gitlab"} and not source_url:
-        raise SkillSyncError(f"{source_type} source는 sourceUrl이 필요합니다.")
-    if not isinstance(source, str) or not source or source.startswith("-"):
-        raise SkillSyncError("설치 가능한 source가 lock entry에 없습니다.")
-
-    folder = skill_folder(entry)
-    if folder:
-        if source_type == "github":
-            source = f"{github_shorthand(source)}/{folder}"
-        elif source_type == "local":
-            source = str(Path(source, *PurePosixPath(folder).parts))
-        else:
+        source_type = entry.get("sourceType")
+        source = entry.get("sourceUrl") or entry.get("source")
+        ref = entry.get("ref")
+        if not isinstance(source_type, str) or not isinstance(source, str):
+            raise SkillSyncError(f"source metadata가 불완전합니다: {name}")
+        if not isinstance(ref, str) or not ref:
             raise SkillSyncError(
-                f"{source_type} source의 skillPath 설치는 지원하지 않습니다."
+                f"native Skill 동기화에는 고정된 ref가 필요합니다: {name}"
             )
 
-    ref = entry.get("ref")
-    return f"{source}#{ref}" if isinstance(ref, str) and ref else source
+        locked.append(
+            LockedSkill(
+                name=name,
+                source=source,
+                ref=ref,
+                source_type=source_type,
+            )
+        )
+    return locked
 
 
-def build_command(
-    skill_name: str,
-    entry: dict[str, Any],
-    agents: list[str],
-) -> list[str]:
-    if not skill_name or skill_name.startswith("-"):
-        raise SkillSyncError(f"잘못된 Skill 이름입니다: {skill_name!r}")
+def build_sync_plans(skills: list[LockedSkill]) -> list[SyncPlan]:
+    grouped: dict[str, dict[str, Any]] = {}
+
+    for skill in skills:
+        if skill.source_type != "github":
+            raise SkillSyncError(
+                f"native adapter가 지원하지 않는 sourceType입니다: {skill.source_type!r}"
+            )
+
+        source = normalize_github_source(skill.source)
+        adapter = NATIVE_ADAPTERS.get(source)
+        if adapter is None:
+            raise SkillSyncError(
+                f"native installer adapter가 없는 dependency입니다: {source}"
+            )
+        if skill.name not in adapter.supported_skills:
+            raise SkillSyncError(
+                f"{adapter.name} adapter가 지원하지 않는 Skill입니다: {skill.name}"
+            )
+
+        current = grouped.setdefault(
+            source,
+            {"ref": skill.ref, "skills": [], "adapter": adapter},
+        )
+        if current["ref"] != skill.ref:
+            raise SkillSyncError(
+                f"같은 source에 서로 다른 ref를 사용할 수 없습니다: {source}"
+            )
+        current["skills"].append(skill.name)
 
     return [
-        "skills",
-        "add",
-        build_source(entry),
-        "--skill",
-        skill_name,
-        "--agent",
-        *agents,
-        "--yes",
+        SyncPlan(
+            source=source,
+            ref=values["ref"],
+            skills=tuple(sorted(values["skills"])),
+            adapter=values["adapter"],
+        )
+        for source, values in sorted(grouped.items())
     ]
 
 
-def build_env(entry: dict[str, Any]) -> dict[str, str]:
-    env = os.environ.copy()
-    env["DISABLE_TELEMETRY"] = "1"
-    env["DO_NOT_TRACK"] = "1"
-    if entry.get("sourceType") == "github":
-        env["GH_HOST"] = "github.com"
-    return env
+def checkout_path(source: str, cache_root: Path) -> Path:
+    repo = source.rsplit("/", 1)[-1]
+    digest = hashlib.sha256(source.encode("utf-8")).hexdigest()[:12]
+    return cache_root / f"{repo}-{digest}"
 
 
-def sync_locked_skills(*, dry_run: bool = False) -> None:
-    agents = resolve_agents(read_vendor_targets())
-    skills = read_locked_skills()
+def run_checked(command: list[str], *, cwd: Path | None = None) -> None:
+    subprocess.run(
+        command,
+        cwd=cwd,
+        env={**os.environ, "GIT_TERMINAL_PROMPT": "0"},
+        check=True,
+    )
 
-    if not skills:
-        print("[skills-sync] 설치할 project Skill이 없습니다.")
+
+def ensure_checkout(plan: SyncPlan, cache_root: Path) -> Path:
+    if shutil.which("git") is None:
+        raise SkillSyncError("git이 없습니다.")
+
+    checkout = checkout_path(plan.source, cache_root)
+    git_dir = checkout / ".git"
+    cache_root.mkdir(parents=True, exist_ok=True)
+
+    if checkout.exists() and not git_dir.is_dir():
+        raise SkillSyncError(f"관리되지 않는 cache path가 이미 존재합니다: {checkout}")
+
+    if not checkout.exists():
+        run_checked(
+            [
+                "git",
+                "clone",
+                "--filter=blob:none",
+                "--no-checkout",
+                f"https://github.com/{plan.source}.git",
+                str(checkout),
+            ]
+        )
+
+    run_checked(
+        [
+            "git",
+            "-C",
+            str(checkout),
+            "fetch",
+            "--depth",
+            "1",
+            "--force",
+            "origin",
+            plan.ref,
+        ]
+    )
+    run_checked(
+        ["git", "-C", str(checkout), "checkout", "--detach", "--force", "FETCH_HEAD"]
+    )
+    run_checked(["git", "-C", str(checkout), "clean", "-fdx"])
+    return checkout
+
+
+def run_native_installer(plan: SyncPlan, checkout: Path) -> None:
+    if shutil.which("bash") is None:
+        raise SkillSyncError(
+            f"{plan.adapter.name} native installer는 bash가 필요합니다."
+        )
+
+    installer = checkout / plan.adapter.install_script
+    if not installer.is_file():
+        raise SkillSyncError(f"native installer를 찾을 수 없습니다: {installer}")
+
+    run_checked(["bash", plan.adapter.install_script], cwd=checkout)
+
+
+def sync_locked_skills(
+    *,
+    dry_run: bool = False,
+    lock_path: Path = LOCK_PATH,
+    cache_root: Path | None = None,
+) -> None:
+    plans = build_sync_plans(read_locked_skills(lock_path))
+    if not plans:
+        print("[skills-sync] 설치할 project Skill dependency가 없습니다.")
         return
-    if not dry_run and shutil.which("skills") is None:
-        raise SkillSyncError("skills CLI가 없습니다. 먼저 `mise install`을 실행하세요.")
 
-    failures: list[str] = []
-    for skill_name, entry in sorted(skills.items()):
-        command = build_command(skill_name, entry, agents)
-        print(f"[skills-sync] {skill_name} -> {', '.join(agents)}")
+    resolved_cache = cache_root or default_cache_root()
+    for plan in plans:
+        names = ", ".join(plan.skills)
+        print(
+            f"[skills-sync] {names}: {plan.source}@{plan.ref} "
+            f"-> native:{plan.adapter.name}"
+        )
         if dry_run:
-            print(shlex.join(command))
             continue
 
-        result = subprocess.run(
-            command,
-            cwd=ROOT,
-            env=build_env(entry),
-            check=False,
-        )
-        if result.returncode:
-            failures.append(skill_name)
-
-    if failures:
-        raise SkillSyncError(f"Skill 설치·갱신 실패: {', '.join(failures)}")
+        checkout = ensure_checkout(plan, resolved_cache)
+        run_native_installer(plan, checkout)
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="lock된 Skill을 repository vendor target에 설치·갱신합니다."
+        description=(
+            "lock된 외부 Skill dependency를 source-native installer로 설치·갱신합니다."
+        )
     )
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args(argv)
 
     try:
         sync_locked_skills(dry_run=args.dry_run)
-    except (OSError, json.JSONDecodeError, SkillSyncError) as error:
+    except (
+        OSError,
+        json.JSONDecodeError,
+        subprocess.CalledProcessError,
+        SkillSyncError,
+    ) as error:
         print(f"[skills-sync] error: {error}", file=sys.stderr)
         return 1
     return 0
