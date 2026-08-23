@@ -47,11 +47,11 @@ GitHub에서 동작하는 Copilot cloud agent, third-party coding agent, custom 
 - Agent 변경도 [VCS / Git](vcs-git.md)의 dedicated branch policy를 따릅니다. `main` 직접 수정은 허용하지 않습니다.
 - Agent가 만든 PR도 사람의 PR과 같은 Ruleset, required checks와 review boundary를 통과해야 합니다.
 - Agent라는 이유만으로 Ruleset bypass나 더 넓은 repository permission을 부여하지 않습니다.
-- GitHub가 제공하는 automatic security validation, agent self-review나 다른 model의 review는 기존 repository verification과 independent review를 보강할 수 있지만 대체하지 않습니다.
+- GitHub가 제공하는 automatic security validation, agent self-review나 다른 model의 review는 기존 repository verification과 review evidence를 보강할 수 있지만 admission rule의 의미를 바꾸지 않습니다.
 - Agent session log, commit attribution과 GitHub audit evidence를 사용할 수 있으면 추적 가능성을 유지합니다. 이를 approval로 해석하지 않습니다.
 - Agent task를 시작한 행위는 그 agent에게 Merge나 다른 finalizing operation까지 수행할 권한을 준 것으로 해석하지 않습니다.
 
-Agent가 실행 권한이나 future agent behavior를 바꾸는 control surface를 수정할 때는 일반 문서 변경보다 높은 위험으로 취급합니다. 예를 들어 GitHub Actions workflow, agent instruction, custom agent/MCP configuration처럼 **agent가 무엇을 읽고 실행하고 쓸 수 있는지 바꾸는 변경**은 독립된 human review가 필요합니다.
+Agent가 실행 권한이나 future agent behavior를 바꾸는 control surface를 수정할 때는 일반 문서 변경보다 높은 위험으로 취급합니다. 예를 들어 GitHub Actions workflow, agent instruction, custom agent/MCP configuration처럼 **agent가 무엇을 읽고 실행하고 쓸 수 있는지 바꾸는 변경**은 변경된 control surface 자체에 의존하지 않는 review evidence를 확보하고, finalization 전에 명시적인 human authorization을 받습니다.
 
 ## Pull Requests
 
@@ -68,9 +68,9 @@ PR Review는 PR의 변경에 대한 **검토 판단과 feedback을 기록하는 
 
 - `Comment`, `Approve`, `Request changes`는 review를 제출할 때 기록하는 decision입니다.
 - Automated check나 test success는 PR Review가 아니며, Review도 deterministic verification을 대체하지 않습니다.
-- AI code review는 유용한 추가 reviewer가 될 수 있지만 agent-authored change의 independent human review를 대체하지 않습니다.
+- AI code review는 유용한 추가 reviewer가 될 수 있지만, 별도 model이나 agent라는 이유만으로 independent review라고 간주하지 않습니다.
 - 같은 PR에서 AI reviewer가 소비하는 instruction, skill, workflow 또는 review configuration 자체를 변경한다면 그 AI review를 해당 control-surface 변경에 대한 독립 evidence로 간주하지 않습니다.
-- Required review 수, stale approval 처리, blocking review와 Code Owner requirement 같은 enforcement는 live Rulesets가 소유합니다.
+- Required review 수, human approval requirement, stale approval 처리, blocking review와 Code Owner requirement 같은 enforcement는 live Rulesets와 별도의 명시적 policy가 소유합니다.
 - Review 방법론이나 품질 기준 자체는 이 문서가 재정의하지 않습니다.
 
 ## PR Merge
@@ -97,7 +97,7 @@ Rulesets는 branch와 PR에 대한 GitHub-side admission/enforcement를 소유�
 GitHub Actions는 automation과 checks를 실행하는 mechanism입니다. `PR Gate`의 verification 의미와 merge-blocking evidence는 [Testing](testing.md)이 소유하고, stochastic model/runtime evaluation evidence는 [Evaluation](evaluation.md)이 소유합니다.
 
 - Workflow permission은 필요한 최소 범위로 제한합니다. Agent나 automation 편의를 위해 broad write permission을 기본값으로 두지 않습니다.
-- Agent가 생성하거나 수정한 workflow는 privileged execution surface로 취급하고, human review 없이 secrets나 write-capable workflow가 실행되도록 만들지 않습니다.
+- Agent가 생성하거나 수정한 workflow는 privileged execution surface로 취급하고, 명시적인 human authorization 없이 secrets나 write-capable workflow가 실행되도록 만들지 않습니다.
 - Untrusted Issue, PR, comment나 외부 content를 agent/action input으로 사용할 때 그 content가 permission이나 instruction authority를 획득하지 않게 합니다.
 - Secret과 credential은 필요한 실행 단계에만 제공하고 agent reasoning/runtime에 불필요하게 노출하지 않습니다.
 - `main`에 write-back하는 CI를 두지 않는 repository policy와 PR Gate의 구체적인 실행 규칙은 [Testing](testing.md)을 따릅니다.
