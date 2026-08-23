@@ -17,10 +17,10 @@ def sync_dependencies():
     subprocess.run(["uv", "sync"], check=True)
 
 
-def update_agent_skills():
+def sync_agent_skills():
     """repository task로 외부 Agent Skill dependency를 동기화합니다."""
     if not check_command("mise"):
-        print("[2/2] Warning: 'mise' command not found. Skipping skill updates.")
+        print("[2/2] Warning: 'mise' command not found. Skipping skill sync.")
         return
     print("[2/2] Syncing locked agent skill dependencies...")
     try:
@@ -35,7 +35,7 @@ def main():
     print("===========================================")
     try:
         sync_dependencies()
-        update_agent_skills()
+        sync_agent_skills()
     except subprocess.CalledProcessError as error:
         print(
             f"\nError: Initialization failed during subprocess execution: {error}",
