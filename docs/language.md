@@ -1,5 +1,5 @@
 ---
-description: Defines language policy by repository communication and Agent Asset role.
+description: repository communication과 Agent Asset 역할별 언어 정책을 정의합니다.
 ---
 
 # Language
@@ -20,12 +20,13 @@ description: Defines language policy by repository communication and Agent Asset
 - **GitHub** — 사람이 작성하는 PR, issue, discussion, review, comment와 release note
 - **Agent Assets Used to Manage This Repository** — 이 repository와 **Agent Assets Managed by This Repository**를 생성·수정·검증·관리하기 위해 직접 사용하는 instruction, Skill, Rule, Command, Hook과 지원 자료
 
-Branch, tag, label, field 같은 identifier와 metadata는 아래의 구조 규칙을 따릅니다. 자동 생성된 메시지나 외부 source에서 보존해야 하는 text는 해당 source의 규칙을 따릅니다.
+Branch, tag, label, field 같은 identifier와 metadata의 구조적 요소는 아래 규칙을 따릅니다. 자동 생성된 메시지나 외부 source에서 보존해야 하는 text는 해당 source의 규칙을 따릅니다.
 
 ## Rules
 
 - 일반적인 설명, 안내와 근거는 한국어로 작성합니다.
-- Field name, heading, metadata, identifier, key, option, enum처럼 구조적이거나 기계적으로 해석되는 요소는 영어를 사용합니다.
+- Field name, heading, metadata key, identifier, key, option, enum처럼 구조적이거나 기계적으로 해석되는 이름과 값은 영어를 사용합니다.
+- `description`, `summary`, `notes`처럼 사람이 읽는 서술형 metadata value는 일반 서술과 같은 언어 규칙을 적용합니다.
 - Standard, specification, product, tool, framework, API, protocol과 같은 표준·기술 명칭은 통용되는 영어 명칭을 사용합니다.
 - 한국어로 번역하거나 음역했을 때 매우 어색하거나 의미가 덜 정확해지는 영어 표현과 단어는 영어를 유지합니다.
 - 자연스러운 한국어 표현이 있는 일반 문장까지 불필요하게 영어로 바꾸지 않습니다.
