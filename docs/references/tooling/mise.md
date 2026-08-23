@@ -25,7 +25,7 @@ mise run test
 mise run format
 ```
 
-외부 Skill dependency의 설치·갱신 경계는 [skills CLI](skills-cli.md)가 소유합니다.
+외부 Skill dependency의 lock과 source-native 동기화 경계는 [skills CLI](skills-cli.md)를 따릅니다.
 
 Promptfoo처럼 Node runtime이 필요한 기존 command는 mise environment에서 실행합니다.
 
@@ -41,7 +41,7 @@ mise exec -- npm run eval:promptfoo:mols-rpi
 - [mise tasks](https://mise.jdx.dev/tasks/)
 - [mise CI](https://mise.jdx.dev/continuous-integration.html)
 - [uv Python versions](https://docs.astral.sh/uv/concepts/python-versions/)
-- [uv projects](https://docs.astral.sh/uv/concepts/projects/)
+- [uv projects](https://docs.astral.sh/uv/projects/)
 - [rumdl installation](https://github.com/rvben/rumdl#installation)
 - [Lefthook with mise](https://lefthook.dev/installation/mise/)
 - [Lefthook install](https://lefthook.dev/usage/commands/install/)
