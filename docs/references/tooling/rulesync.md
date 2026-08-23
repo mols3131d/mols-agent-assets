@@ -33,19 +33,22 @@ runtime usage surface
 - Generated vendor projection과 Rulesync lock state는 reusable source가 아닙니다.
 - `route/`는 library metadata에서 파생되는 cross-runtime discovery surface이며 canonical body를 대체하지 않습니다. 세부 contract는 [`route/README.md`](../../../route/README.md)가 소유합니다.
 
-### External Sources, Import, and Convert
+### External Sources, Fetch, Import, and Convert
 
-Rulesync가 외부 자산을 다루는 경로는 목적에 따라 구분합니다.
+Rulesync가 외부 자산을 다루는 경로는 **원본 형식과 목적**에 따라 구분합니다.
 
 | 목적 | Rulesync 경로 | Authority |
 | --- | --- | --- |
 | 외부 Rulesync-compatible Rule·Skill을 dependency로 사용 | declarative `sources` / `add` / `install` | upstream source |
-| 기존 target-native 자산을 Rulesync 작성 원본으로 흡수 | `import --targets <target>` | 검토 후 채택한 `.rulesync/` source |
+| remote repository의 target-native 자산을 Rulesync 작성 원본으로 흡수 | `fetch <source> --target <target>` | 검토 후 채택한 `.rulesync/` source |
+| 이미 작업 공간에 있는 target-native 자산을 Rulesync 작성 원본으로 흡수 | `import --targets <target>` | 검토 후 채택한 `.rulesync/` source |
 | Canonical source 없이 target 형식끼리 일회성 변환 | `convert --from <target> --to <target>` | 변환의 실제 source |
 
-`import`는 migration 도구입니다. Import가 성공했다는 사실만으로 원본과 완전한 semantic parity를 보장하지 않으므로, target/feature별 지원 범위와 supporting resource 보존 여부를 확인하고 결과를 검토합니다. 표현할 수 없는 동작을 local shadow schema나 임의 wrapper로 보완해 Rulesync-compatible인 것처럼 만들지 않습니다.
+`fetch --target`과 `import`는 source 위치가 다릅니다. `fetch --target`은 remote repository의 파일을 지정한 target 형식으로 해석해 Rulesync source로 가져오고, `import`는 현재 작업 공간에 이미 존재하는 target configuration을 읽습니다. External revision이 중요하면 fetch 시 ref를 고정하고 provenance를 보존합니다.
 
-외부 자산을 dependency로 사용할지 작성 원본으로 흡수할지에 대한 정책은 [작성 원본과 권한](../../development/source-authority.md)이 소유합니다. 이 문서는 Rulesync에서 각 선택을 어떤 공식 경로로 수행하는지만 설명합니다.
+Fetch/import가 성공했다는 사실만으로 원본과 완전한 semantic parity를 보장하지 않습니다. Target/feature별 지원 범위와 supporting resource 보존 여부를 확인하고 결과를 검토합니다. 표현할 수 없는 동작을 local shadow schema나 임의 wrapper로 보완해 Rulesync-compatible인 것처럼 만들지 않습니다.
+
+Rulesync의 `fetch`는 현재 upstream에서 development 상태로 명시되어 있으므로 사용 시 현재 release의 contract를 다시 확인합니다. 외부 자산을 dependency로 사용할지 작성 원본으로 흡수할지에 대한 정책은 [작성 원본과 권한](../../development/source-authority.md)이 소유합니다.
 
 ### Target and Schema
 
@@ -81,7 +84,7 @@ Repository-local superset schema나 manual projection semantics는 만들지 않
 | Rulesync 문서 탐색 시작 | [Documentation](https://rulesync.dyoshikawa.com/) · [Repository](https://github.com/dyoshikawa/rulesync) |
 | `rulesync.jsonc`, target/feature와 configuration field | [Configuration](https://github.com/dyoshikawa/rulesync/blob/main/docs/guide/configuration.md) · [Latest config schema](https://github.com/dyoshikawa/rulesync/releases/latest/download/config-schema.json) |
 | Rules, Skills, Subagents 등 source/target file shape | [File Formats](https://github.com/dyoshikawa/rulesync/blob/main/docs/reference/file-formats.md) |
-| `doctor`, `generate`, `import`, `convert`, `install`, `fetch`, `docs` 등 command와 option | [CLI Commands](https://github.com/dyoshikawa/rulesync/blob/main/docs/reference/cli-commands.md) |
+| `doctor`, `generate`, `fetch`, `import`, `convert`, `install`, `docs` 등 command와 option | [CLI Commands](https://github.com/dyoshikawa/rulesync/blob/main/docs/reference/cli-commands.md) |
 | target 이름과 feature support | [Supported Tools](https://github.com/dyoshikawa/rulesync/blob/main/docs/reference/supported-tools.md) |
 | 특정 target adapter의 상세 동작 | [Tool Documentation](https://github.com/dyoshikawa/rulesync/tree/main/docs/tools) |
 | 예상과 다른 동작·자주 묻는 문제 | [FAQ](https://github.com/dyoshikawa/rulesync/blob/main/docs/faq.md) |
@@ -90,7 +93,8 @@ Repository-local superset schema나 manual projection semantics는 만들지 않
 ## Situational References
 
 - 외부 Rulesync-compatible Rule·Skill을 dependency로 선언하고 설치한다 → [Declarative Sources](https://github.com/dyoshikawa/rulesync/blob/main/docs/guide/declarative-sources.md)
-- 기존 target-native 자산을 `.rulesync/`로 가져오거나 target 간 직접 변환한다 → [CLI Commands](https://github.com/dyoshikawa/rulesync/blob/main/docs/reference/cli-commands.md)
+- remote repository의 target-native 자산을 Rulesync source로 가져온다 → [CLI Commands: Fetch](https://github.com/dyoshikawa/rulesync/blob/main/docs/reference/cli-commands.md#fetch-command)
+- 이미 존재하는 target-native configuration을 `.rulesync/`로 가져오거나 target 간 직접 변환한다 → [CLI Commands](https://github.com/dyoshikawa/rulesync/blob/main/docs/reference/cli-commands.md)
 - 실제 write 없이 generation 결과를 확인한다 → [Dry Run](https://github.com/dyoshikawa/rulesync/blob/main/docs/guide/dry-run.md)
 - input/output root 구성을 바꾼다 → [Separate Input Root](https://github.com/dyoshikawa/rulesync/blob/main/docs/guide/separate-input-root.md)
 - global configuration을 사용한다 → [Global Mode](https://github.com/dyoshikawa/rulesync/blob/main/docs/guide/global-mode.md)
