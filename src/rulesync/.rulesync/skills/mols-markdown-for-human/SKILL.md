@@ -10,6 +10,7 @@ targets:
   - copilotcli
   - antigravity-ide
   - antigravity-cli
+  - agentsskills
 agentsskills:
   metadata:
     version: "3.1.1"

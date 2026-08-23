@@ -3,29 +3,29 @@
   "sources": {
     "mols3131d/mols-agent-assets": {
       "requestedRef": "main",
-      "resolvedRef": "8a99c402cb507a334f3a75bbf0c283574aba54b2",
-      "resolvedAt": "2026-08-22T14:31:00.000Z",
+      "resolvedRef": "a87651fd19bbe66d6024d4a6f59af3352709530c",
+      "resolvedAt": "2026-08-23T14:59:00.000Z",
       "skills": {
-        "artifact-consistency-inspector": {
-          "integrity": "sha256-89cfaf13ad70fc247b1c8e4fdd49c07563ee44d1671672a8485cbab89dc15774"
-        },
-        "github-context": {
-          "integrity": "sha256-21e9be40b662bf6644c00fd1a035ae3a40da3cc46fb79cf3d7ba547a2316c3db"
+        "mols-agent-asset": {
+          "integrity": "sha256-124fdbded5fa2d787da6c207c1bbe3db428cc2395b586e8ad25d91936465e0eb"
         },
         "mols-agent-asset-find": {
-          "integrity": "sha256-3161fc07de2d430335910a7457772c3a6926c3e891454e94d7661ff45a751e26"
+          "integrity": "sha256-3032eee88296df895e0053af2108aa2d33af6a0d7299bf9b33aa07b94fc2f855"
         },
         "mols-agent-asset-validator": {
-          "integrity": "sha256-8a2c36e0a52b812741b775b0b6d5f816e70c8a711e245403430975e0ae787e52"
+          "integrity": "sha256-3656ca7d568fbc51286cc262210c7499346909c796e2825c5910f421ec16f940"
         },
-        "mols-agent-asset": {
-          "integrity": "sha256-4804ac1931d7ecdb7688e9627a41d1a19c5cb525f944f44d7ba50c6f5d730368"
+        "mols-markdown-for-human": {
+          "integrity": "sha256-d12d681eaad30d33946ef7493e244320e6113accf2a6d1a4ba8962600294a5e0"
         },
         "mols-markdown-maintenance": {
-          "integrity": "sha256-4f3b75f222ca8192a23ec577a655b039f2fecad6ddebe7520d30d32612fb8572"
+          "integrity": "sha256-c69b970654ba4296b10022c6fae3a5440e2ee0ae128bae199cb9cf1af65a226b"
         },
-        "mols-rpi": {
-          "integrity": "sha256-269ba30bfa8d978157e70e5af20d73c7c474288810b9129a5ace9ec003ff4995"
+        "mols-mermaid-chart": {
+          "integrity": "sha256-983ff55d920be723a2f86db8bc71615f0c8b7ecb9d6b64c7d96b2ab314cbf563"
+        },
+        "mols-mermaid-diagram": {
+          "integrity": "sha256-5e41b2e1b78fb87734f2820f6bb880f5366bcd2c26da9f7d6dc62175000bdad1"
         }
       }
     }

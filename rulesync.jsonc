@@ -9,13 +9,13 @@
     {
       "source": "mols3131d/mols-agent-assets",
       "skills": [
-        "artifact-consistency-inspector",
-        "github-context",
         "mols-agent-asset",
         "mols-agent-asset-find",
         "mols-agent-asset-validator",
+        "mols-markdown-for-human",
         "mols-markdown-maintenance",
-        "mols-rpi"
+        "mols-mermaid-chart",
+        "mols-mermaid-diagram"
       ],
       "transport": "github",
       "ref": "main",
