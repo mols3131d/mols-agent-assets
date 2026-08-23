@@ -81,6 +81,16 @@ def normalize_github_source(source: str) -> str:
     return f"{owner}/{repo}"
 
 
+def validate_ref(ref: Any, skill_name: str) -> str:
+    if not isinstance(ref, str) or not ref:
+        raise SkillSyncError(
+            f"native Skill 동기화에는 고정된 ref가 필요합니다: {skill_name}"
+        )
+    if ref.startswith("-") or any(char in ref for char in ("\0", "\n", "\r")):
+        raise SkillSyncError(f"지원하지 않는 ref입니다: {ref!r}")
+    return ref
+
+
 def read_locked_skills(path: Path = LOCK_PATH) -> list[LockedSkill]:
     data = json.loads(path.read_text(encoding="utf-8"))
     skills = data.get("skills")
@@ -94,19 +104,14 @@ def read_locked_skills(path: Path = LOCK_PATH) -> list[LockedSkill]:
 
         source_type = entry.get("sourceType")
         source = entry.get("sourceUrl") or entry.get("source")
-        ref = entry.get("ref")
         if not isinstance(source_type, str) or not isinstance(source, str):
             raise SkillSyncError(f"source metadata가 불완전합니다: {name}")
-        if not isinstance(ref, str) or not ref:
-            raise SkillSyncError(
-                f"native Skill 동기화에는 고정된 ref가 필요합니다: {name}"
-            )
 
         locked.append(
             LockedSkill(
                 name=name,
                 source=source,
-                ref=ref,
+                ref=validate_ref(entry.get("ref"), name),
                 source_type=source_type,
             )
         )
@@ -175,6 +180,7 @@ def ensure_checkout(plan: SyncPlan, cache_root: Path) -> Path:
 
     checkout = checkout_path(plan.source, cache_root)
     git_dir = checkout / ".git"
+    source_url = f"https://github.com/{plan.source}.git"
     cache_root.mkdir(parents=True, exist_ok=True)
 
     if checkout.exists() and not git_dir.is_dir():
@@ -187,11 +193,14 @@ def ensure_checkout(plan: SyncPlan, cache_root: Path) -> Path:
                 "clone",
                 "--filter=blob:none",
                 "--no-checkout",
-                f"https://github.com/{plan.source}.git",
+                source_url,
                 str(checkout),
             ]
         )
 
+    run_checked(
+        ["git", "-C", str(checkout), "remote", "set-url", "origin", source_url]
+    )
     run_checked(
         [
             "git",
