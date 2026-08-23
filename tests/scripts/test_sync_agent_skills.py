@@ -93,6 +93,28 @@ def test_read_locked_skills_requires_ref(tmp_path: Path):
         sync.read_locked_skills(lock)
 
 
+def test_read_locked_skills_rejects_option_like_ref(tmp_path: Path):
+    lock = tmp_path / "skills-lock.json"
+    lock.write_text(
+        json.dumps(
+            {
+                "version": 1,
+                "skills": {
+                    "humanize-korean": {
+                        "source": "epoko77-ai/im-not-ai",
+                        "sourceType": "github",
+                        "ref": "--upload-pack=evil",
+                    }
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(sync.SkillSyncError, match="지원하지 않는 ref"):
+        sync.read_locked_skills(lock)
+
+
 def test_checkout_path_is_stable_and_source_scoped(tmp_path: Path):
     first = sync.checkout_path("epoko77-ai/im-not-ai", tmp_path)
     second = sync.checkout_path("epoko77-ai/im-not-ai", tmp_path)
@@ -143,7 +165,9 @@ def test_dry_run_is_lock_read_only(tmp_path: Path, monkeypatch, capsys):
     assert "native:im-not-ai" in capsys.readouterr().out
 
 
-def test_ensure_checkout_fetches_exact_locked_ref(tmp_path: Path, monkeypatch):
+def test_ensure_checkout_pins_origin_and_fetches_exact_locked_ref(
+    tmp_path: Path, monkeypatch
+):
     plan = sync.build_sync_plans([locked_skill()])[0]
     calls: list[tuple[list[str], Path | None]] = []
 
@@ -155,9 +179,20 @@ def test_ensure_checkout_fetches_exact_locked_ref(tmp_path: Path, monkeypatch):
     )
 
     checkout = sync.ensure_checkout(plan, tmp_path)
+    commands = [command for command, _cwd in calls]
+    source_url = "https://github.com/epoko77-ai/im-not-ai.git"
 
     assert checkout == sync.checkout_path(plan.source, tmp_path)
     assert calls[0][0][:3] == ["git", "clone", "--filter=blob:none"]
+    assert [
+        "git",
+        "-C",
+        str(checkout),
+        "remote",
+        "set-url",
+        "origin",
+        source_url,
+    ] in commands
     assert [
         "git",
         "-C",
@@ -168,7 +203,7 @@ def test_ensure_checkout_fetches_exact_locked_ref(tmp_path: Path, monkeypatch):
         "--force",
         "origin",
         "v2.3.0",
-    ] in [command for command, _cwd in calls]
+    ] in commands
 
 
 def test_native_installer_delegates_vendor_detection_to_upstream(
