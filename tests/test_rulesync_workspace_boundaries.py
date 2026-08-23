@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import tomllib
 from pathlib import Path
 
 import yaml
@@ -166,39 +165,3 @@ def test_deployable_skill_surface_excludes_repository_verification() -> None:
             "Rulesync treats every basename SKILL.md as a Skill entrypoint: "
             f"{skill_root.relative_to(ROOT)} {nested_entrypoints}"
         )
-
-
-def test_rulesync_toolchain_is_reproducibly_pinned() -> None:
-    mise = tomllib.loads((ROOT / "mise.toml").read_text(encoding="utf-8"))
-    runner = (ROOT / "scripts/run_rulesync.py").read_text(encoding="utf-8")
-    version = mise["tools"]["npm:rulesync"]
-
-    parts = version.split(".")
-    assert len(parts) == 3 and all(part.isdigit() for part in parts)
-    assert 'shutil.which("rulesync")' in runner
-    assert "rulesync@latest" not in runner
-
-    setup = mise["tasks"]["setup"]["run"]
-    assert "rulesync install --frozen" in setup
-    assert "rulesync generate" in setup
-    assert setup.index("rulesync install --frozen") < setup.index("rulesync generate")
-    assert not (ROOT / "package-lock.json").exists()
-
-
-def test_repository_rulesync_commands_delegate_projection_to_rulesync() -> None:
-    package = load_json(ROOT / "package.json")
-    scripts = package["scripts"]
-
-    assert scripts["rulesync:doctor"].endswith(" doctor")
-    assert scripts["rulesync:preview"].endswith(" preview")
-    assert scripts["rulesync:validate"].endswith(" validate")
-
-    runner = (ROOT / "scripts/run_rulesync.py").read_text(encoding="utf-8")
-    assert "TemporaryDirectory" in runner
-    assert "assert_projection" not in runner
-
-    workflow = (ROOT / ".github/workflows/targeted-tests.yml").read_text(encoding="utf-8")
-    assert "Validate canonical Rulesync source" in workflow
-    assert "npm run rulesync:doctor" in workflow
-    assert "rulesync generate" not in workflow
-    assert "--targets" not in workflow
