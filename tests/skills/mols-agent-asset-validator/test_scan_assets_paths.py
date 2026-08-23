@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import sys
 import tempfile
 from pathlib import Path
@@ -14,7 +15,7 @@ ROOT = (
 )
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from scan_assets import scan_directory  # noqa: E402
+from scan_assets import output_mutates_target, scan_directory  # noqa: E402
 
 
 def test_canonical_subagent_is_classified_and_validated() -> None:
@@ -105,3 +106,38 @@ def test_declared_subagent_path_is_tracked_as_relationship() -> None:
             and item["to"] == "subagents/review.md"
             for item in result["relationships"]
         )
+
+
+def test_detected_secret_is_redacted_from_result() -> None:
+    with tempfile.TemporaryDirectory() as temp_dir:
+        root = Path(temp_dir)
+        token = "sk-" + "abcdefghijklmnopqrstuvwx"
+        (root / "SKILL.md").write_text(
+            f"---\nname: secret-skill\ndescription: {token}\n---\n\n# Secret\n",
+            encoding="utf-8",
+        )
+
+        result = scan_directory(root)
+        rendered = json.dumps(result)
+
+        assert result["summary"]["critical"] == 1
+        assert token not in rendered
+        assert "[REDACTED]" in rendered
+
+
+def test_output_path_cannot_mutate_scanned_directory() -> None:
+    with tempfile.TemporaryDirectory() as temp_dir:
+        root = Path(temp_dir) / "package"
+        root.mkdir()
+
+        assert output_mutates_target(root / "scan.json", root)
+        assert not output_mutates_target(Path(temp_dir) / "scan.json", root)
+
+
+def test_output_path_cannot_overwrite_scanned_file() -> None:
+    with tempfile.TemporaryDirectory() as temp_dir:
+        target = Path(temp_dir) / "asset.zip"
+        target.write_bytes(b"placeholder")
+
+        assert output_mutates_target(target, target)
+        assert not output_mutates_target(Path(temp_dir) / "scan.json", target)
