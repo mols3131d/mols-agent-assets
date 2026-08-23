@@ -10,6 +10,7 @@ REPOSITORY_CONFIG = ROOT / "rulesync.jsonc"
 REPOSITORY_LOCK = ROOT / "rulesync.lock"
 LIBRARY_CONFIG = ROOT / "src" / "rulesync" / "rulesync.jsonc"
 LIBRARY_SOURCE = ROOT / "src" / "rulesync" / ".rulesync"
+INTERNAL_SKILL_TARGET = "agentsskills"
 FORBIDDEN_LIBRARY_GENERATED_SURFACES = (
     ROOT / "src" / "rulesync" / ".github",
     ROOT / "src" / "rulesync" / ".agents",
@@ -57,7 +58,7 @@ def test_library_workspace_is_canonical_and_target_scoped() -> None:
 
 def test_library_assets_declare_explicit_targets() -> None:
     supported = configured_targets(LIBRARY_CONFIG)
-    allowed = supported | configured_targets(REPOSITORY_CONFIG)
+    allowed = supported | {INTERNAL_SKILL_TARGET}
 
     skill_files = sorted((LIBRARY_SOURCE / "skills").glob("*/SKILL.md"))
     subagent_files = sorted((LIBRARY_SOURCE / "subagents").glob("*.md"))
@@ -107,7 +108,7 @@ def test_repository_workspace_declarative_skills_are_locked() -> None:
     config = load_json(REPOSITORY_CONFIG)
     lock = load_json(REPOSITORY_LOCK)
 
-    assert config["targets"] == ["agentsskills"]
+    assert config["targets"] == [INTERNAL_SKILL_TARGET]
     assert config["features"] == ["skills"]
     assert len(config["sources"]) == 1
 
@@ -123,7 +124,7 @@ def test_repository_workspace_declarative_skills_are_locked() -> None:
     for skill in selected:
         skill_file = library_skills / skill / "SKILL.md"
         assert skill_file.is_file(), skill
-        assert "agentsskills" in load_frontmatter(skill_file)["targets"], skill
+        assert INTERNAL_SKILL_TARGET in load_frontmatter(skill_file)["targets"], skill
 
     locked = lock["sources"][source["source"]]
     assert lock["lockfileVersion"] == 1
