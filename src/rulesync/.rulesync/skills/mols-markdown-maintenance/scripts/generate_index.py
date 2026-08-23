@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# /// script
+# dependencies = [
+#   "pyyaml>=6.0.2",
+# ]
+# ///
 """Generate indexes from Markdown YAML frontmatter."""
 
 from __future__ import annotations
@@ -37,7 +42,6 @@ def _collect_entries(
                 continue
 
             rel_parts = path.relative_to(directory).parts
-            # max_depth 계산: 하위 폴더 단계 수 (파일명 제외)
             depth = len(rel_parts) - 1
             if max_depth is not None and depth > max_depth:
                 continue
