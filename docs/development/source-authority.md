@@ -57,7 +57,7 @@ Rulesync 형식과 벤더 고유 형식 중 무엇을 선택할지는 이식성�
 - 외부 Skill을 Rulesync로 가져오는 것이 단순하고 원본 구조를 충실히 보존하면 Rulesync declarative source를 사용할 수 있습니다.
 - Rulesync를 거치기 위해 불필요한 repackaging, 변환, resource 손실 보완, 별도 adaptation이 필요하거나 설치·업데이트 경로가 더 복잡해지면 `skills add` 같은 Skill-native installer를 사용할 수 있습니다. **Rulesync로 가능하다는 이유만으로 Rulesync를 강제하지 않습니다.**
 - 대상 런타임이나 source framework가 더 적합한 native 설치·등록 방식을 제공하면 같은 기준으로 선택할 수 있습니다.
-- 재현 가능한 상태가 필요하면 upstream revision과 installer version을 고정하고 provenance를 보존합니다.
+- 재현 가능한 상태가 필요하면 해당 installer가 제공하는 lock과 upstream revision·provenance를 보존합니다.
 - 설치된 copy, generated projection, lock과 source metadata는 dependency state이며 로컬 작성 원본으로 수정하지 않습니다.
 - 필요한 resource나 semantics를 설치 경로가 보존하지 못하면 일부만 가져와 호환되는 것처럼 만들지 않습니다.
 
