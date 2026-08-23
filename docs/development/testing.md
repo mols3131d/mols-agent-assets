@@ -21,7 +21,7 @@ mise install
 mise run setup
 ```
 
-`mise run setup`은 모든 Python 의존성 그룹, 저장소 내부의 잠금된 Rulesync 자산, 생성된 Agent Skill, `skills-lock.json`의 외부 Skill dependency와 Git hook을 설치합니다. 외부 Skill의 vendor별 설치·갱신은 `mise run skills-sync`와 같은 구현을 사용합니다.
+`mise run setup`은 모든 Python 의존성 그룹, 저장소 내부의 잠금된 Rulesync 자산, 생성된 Agent Skill, `skills-lock.json`의 외부 Skill dependency와 Git hook을 설치합니다. 외부 Skill은 `mise run skills-sync`와 같은 read-only sync 구현을 사용하며, vendor별 payload와 설치 방식은 source-native installer가 소유합니다.
 
 ## Formatting
 
