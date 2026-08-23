@@ -26,6 +26,7 @@ Rulesync declarative source가 원본 구조와 필요한 resource를 그대로 
 
 - `skills` CLI version은 [`mise.toml`](../../../mise.toml)이 고정합니다.
 - 이 저장소에서 직접 사용하는 외부 Skill과 revision은 setup command가 선언합니다.
+- `skills`가 만드는 local lock은 재생성 가능한 dependency state이며 이 저장소의 작성 원본이 아닙니다.
 - 외부 Skill의 본문을 repository-owned canonical asset처럼 복제하거나 수정하지 않습니다.
 - upstream을 계속 authority로 둘 수 없는 수준의 변경이 필요하면 dependency 설치가 아니라 migration/adaptation으로 다시 판단합니다.
 
