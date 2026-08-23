@@ -31,6 +31,7 @@ jobs:
           set -euo pipefail
 
           tooling=false
+          external_skills=false
           rulesync=false
           routes=false
           markdown=false
@@ -41,12 +42,17 @@ jobs:
             case "$path" in
               .github/workflows/targeted-tests.yml)
                 tooling=true
+                external_skills=true
                 rulesync=true
                 routes=true
                 markdown=true
                 promptfoo=true
                 ;;
-              mise.toml|biome.json|lefthook.yml|.python-version|.vscode/tasks.json|pyproject.toml|uv.lock|package.json)
+              mise.toml)
+                tooling=true
+                external_skills=true
+                ;;
+              biome.json|lefthook.yml|.python-version|.vscode/tasks.json|pyproject.toml|uv.lock|package.json)
                 tooling=true
                 ;;
             esac
@@ -77,6 +83,7 @@ jobs:
           done
 
           echo "tooling=$tooling" >> "$GITHUB_OUTPUT"
+          echo "external_skills=$external_skills" >> "$GITHUB_OUTPUT"
           echo "rulesync=$rulesync" >> "$GITHUB_OUTPUT"
           echo "routes=$routes" >> "$GITHUB_OUTPUT"
           echo "markdown=$markdown" >> "$GITHUB_OUTPUT"
@@ -96,6 +103,27 @@ jobs:
         run: |
           mise install
           mise run check
+
+      - name: Validate external Skill setup
+        if: steps.scope.outputs.external_skills == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mise run external-skills
+          skills list --json --agent codex > /tmp/project-skills.json
+          uv run --no-project python - <<'PY'
+          import json
+          from pathlib import Path
+
+          skills = json.loads(Path("/tmp/project-skills.json").read_text())
+          skill = next((item for item in skills if item["name"] == "humanize-korean"), None)
+          if skill is None:
+              raise SystemExit("humanize-korean was not installed")
+
+          quick_rules = Path(skill["path"]) / "references" / "quick-rules.md"
+          if not quick_rules.is_file():
+              raise SystemExit("humanize-korean references were not materialized")
+          PY
 
       - name: Run deterministic tests
         run: uv run --locked --no-default-groups --group test pytest -q tests
