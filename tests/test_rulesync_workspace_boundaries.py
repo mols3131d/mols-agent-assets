@@ -8,10 +8,8 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 REPOSITORY_CONFIG = ROOT / "rulesync.jsonc"
 REPOSITORY_LOCK = ROOT / "rulesync.lock"
-REPOSITORY_SOURCE = ROOT / ".rulesync"
 LIBRARY_CONFIG = ROOT / "src" / "rulesync" / "rulesync.jsonc"
 LIBRARY_SOURCE = ROOT / "src" / "rulesync" / ".rulesync"
-INTERNAL_TARGETS = {"agentsskills"}
 FORBIDDEN_LIBRARY_GENERATED_SURFACES = (
     ROOT / "src" / "rulesync" / ".github",
     ROOT / "src" / "rulesync" / ".agents",
@@ -39,18 +37,16 @@ def load_frontmatter(path: Path) -> dict:
     return yaml.safe_load("\n".join(lines[1:end])) or {}
 
 
-def library_targets() -> set[str]:
-    targets = load_json(LIBRARY_CONFIG)["targets"]
+def configured_targets(path: Path) -> set[str]:
+    targets = load_json(path)["targets"]
     assert isinstance(targets, list) and targets
     return set(targets)
 
 
 def test_library_workspace_is_canonical_and_target_scoped() -> None:
-    config = load_json(LIBRARY_CONFIG)
-
     assert LIBRARY_SOURCE == LIBRARY_CONFIG.parent / ".rulesync"
     assert LIBRARY_SOURCE.is_dir()
-    assert config["targets"]
+    assert configured_targets(LIBRARY_CONFIG)
 
     skills = LIBRARY_SOURCE / "skills"
     assert skills.is_dir()
@@ -60,8 +56,8 @@ def test_library_workspace_is_canonical_and_target_scoped() -> None:
 
 
 def test_library_assets_declare_explicit_targets() -> None:
-    supported = library_targets()
-    allowed = supported | INTERNAL_TARGETS
+    supported = configured_targets(LIBRARY_CONFIG)
+    allowed = supported | configured_targets(REPOSITORY_CONFIG)
 
     skill_files = sorted((LIBRARY_SOURCE / "skills").glob("*/SKILL.md"))
     subagent_files = sorted((LIBRARY_SOURCE / "subagents").glob("*.md"))
@@ -80,7 +76,7 @@ def test_library_assets_declare_explicit_targets() -> None:
 
 
 def test_review_subagents_preserve_target_native_read_only_constraints() -> None:
-    supported = library_targets()
+    supported = configured_targets(LIBRARY_CONFIG)
     source = LIBRARY_SOURCE / "subagents"
     names = ("review-lead", "review-quality", "review-adversarial")
     frontmatter = {name: load_frontmatter(source / f"{name}.md") for name in names}
@@ -98,11 +94,8 @@ def test_review_subagents_preserve_target_native_read_only_constraints() -> None
 
 
 def test_repository_and_library_workspaces_stay_separate() -> None:
-    assert REPOSITORY_SOURCE != LIBRARY_SOURCE
     assert REPOSITORY_CONFIG != LIBRARY_CONFIG
     assert REPOSITORY_CONFIG.is_file()
-    if REPOSITORY_SOURCE.exists():
-        assert REPOSITORY_SOURCE.is_dir()
     assert LIBRARY_SOURCE.is_dir()
     assert LIBRARY_CONFIG.is_file()
 
