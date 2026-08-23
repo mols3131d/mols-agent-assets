@@ -13,7 +13,7 @@ description: repository-wide 문서 배치와 directory-local documentation owne
 - repository 전체의 documentation principle이나 convention → `docs/document/`
 - top-level documentation layout, 주요 surface routing과 `docs/` nested ownership model → `docs/README.md`
 - 특정 directory나 surface에만 적용되는 contract, navigation, maintenance 또는 recovery rule → 해당 directory의 `README.md` 또는 그 directory 안의 local document
-- 개별 asset 또는 family에만 적용되는 maintainer knowledge → 해당 asset documentation capsule
+- 개별 asset 또는 family에만 적용되는 maintainer knowledge → 해당 asset maintainer documentation
 
 `docs/document/`를 directory별 local contract의 registry로 사용하지 않습니다. 같은 local rule이 여러 directory에서 반복되기 시작하면 실제로 repository-wide 원칙인지 먼저 판단하고, 그렇다면 공통 owner로 승격합니다.
 
@@ -36,4 +36,4 @@ Directory-level README는 해당 directory의 contract 또는 navigation respons
 
 Sibling 파일 목록만 복제하는 index는 만들지 않습니다. 쉽게 재생성되는 inventory는 filesystem과 search에 맡깁니다.
 
-문서의 공통 중복 원칙은 [DRY Boundaries](dry.md)가 소유하고, directory-local 중복 경계는 해당 local owner가 소유합니다.
+문서의 공통 중복 원칙은 [Duplication Boundaries](duplication-boundaries.md)가 소유하고, directory-local 중복 경계는 해당 local owner가 소유합니다.
