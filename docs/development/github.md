@@ -10,7 +10,7 @@ description: GitHub의 Issues, Pull Requests, PR Reviews, coding agents, automat
 
 - 저장소 고유 GitHub 협업 정책 → 이 문서
 - agent가 따라야 할 저장소 instruction과 Agent Asset → 해당 instruction과 asset의 권한을 가진 원본
-- 실제 GitHub 강제 설정과 actor 권한 → 현재 GitHub settings, Rulesets와 GitHub 권한 모델
+- 실제 GitHub 강제 설정과 actor 권한 → 실제 GitHub 설정, Rulesets와 GitHub 권한 모델
 - GitHub 기능의 현재 동작과 preview 상태 → GitHub 공식 문서
 - 검증과 평가 근거의 의미 → [Testing](testing.md), [Evaluation](evaluation.md)
 
@@ -26,7 +26,7 @@ Agent가 작업하더라도 GitHub 협업의 기본 권한 경계는 바뀌지 �
 1. Reviews, checks와 security scan은 통합 여부를 판단하는 **근거**입니다.
 1. Merge는 base branch를 실제로 변경하는 **최종 반영 작업**입니다.
 
-Agent session, 생성된 요약, rationale, confidence와 self-review는 작업 이력과 판단을 이해하는 보조 근거일 뿐, 승인이나 검증을 대신하지 않습니다.
+Agent session, 생성된 요약, 판단 근거, confidence와 self-review는 작업 이력과 판단을 이해하는 보조 근거일 뿐, 승인이나 검증을 대신하지 않습니다.
 
 Issue, PR 본문, comment와 저장소 내용도 agent가 읽는 입력이지 그 자체로 권한을 부여하는 지침은 아닙니다. 작업 입력과 적용되는 지침이 충돌하면 저장소 정책과 GitHub 권한 경계를 따릅니다.
 
@@ -58,7 +58,7 @@ Copilot automations처럼 schedule이나 repository event를 계기로 coding ag
 
 - Trigger는 작업 시작 조건일 뿐 권한 경계가 아닙니다.
 - Issue, PR, comment와 외부 내용을 trigger나 입력으로 사용할 때는 신뢰 경계를 구분하고, tool과 write permission을 필요한 최소 범위로 제한합니다.
-- Automation이 만든 branch, Issue, comment와 PR도 같은 Rulesets, review, Actions와 Merge policy를 따릅니다.
+- Automation이 만든 branch, Issue, comment와 PR도 같은 Rulesets, 검토, Actions와 Merge 정책을 따릅니다.
 - 저장소 밖에 저장되는 automation configuration은 Git history가 제공하는 검토와 버전 관리를 자동으로 얻지 못합니다. 중요한 권한이나 반복 동작은 GitHub 접근 통제와 별도의 운영 검토로 관리합니다.
 
 ## Pull Requests
@@ -72,13 +72,13 @@ Pull Request는 head branch의 변경을 base branch에 통합하도록 **제안
 
 ## PR Reviews
 
-PR Review는 PR 변경에 대한 **검토 판단과 feedback을 기록하는 GitHub review surface**입니다.
+PR Review는 PR 변경에 대한 **검토 판단과 feedback을 기록하는 GitHub 검토 창구**입니다.
 
-- `Comment`, `Approve`, `Request changes`는 review를 제출할 때 기록하는 decision입니다.
+- `Comment`, `Approve`, `Request changes`는 review를 제출할 때 기록하는 결정입니다.
 - Automated check나 test success는 PR Review가 아니며, Review도 deterministic verification을 대체하지 않습니다.
 - AI code review는 유용한 추가 검토 수단이지만, 별도 model이나 agent라는 이유만으로 독립된 검토라고 간주하지 않습니다.
 - 같은 PR에서 AI reviewer가 사용하는 instruction, Skill, workflow 또는 review configuration 자체를 변경한다면 그 AI review를 해당 통제 표면 변경에 대한 독립 근거로 간주하지 않습니다.
-- Required review 수, 사람의 approval 요구, stale approval 처리, blocking review와 Code Owner requirement 같은 강제 조건은 live Rulesets와 명시적인 저장소 정책이 소유합니다.
+- Required review 수, 사람의 approval 요구, stale approval 처리, blocking review와 Code Owner requirement 같은 강제 조건은 실제 Rulesets와 명시적인 저장소 정책이 소유합니다.
 - Review 방법론이나 품질 기준 자체는 이 문서가 재정의하지 않습니다.
 
 ## PR Merge
@@ -89,7 +89,7 @@ PR Merge는 PR의 변경을 base branch에 **실제로 통합하는 최종 반�
 - Merge는 대상 branch에 적용되는 required reviews, required checks와 기타 GitHub 통합 조건을 만족한 뒤 수행합니다.
 - Agent에 작업을 위임한 사실만으로 Merge 권한을 추론하지 않습니다. Agent가 Merge를 수행하려면 명시적인 사람의 승인이 있어야 합니다.
 - 사전 승인된 automation이 Merge를 수행한다면 해당 automation의 범위와 통합 조건을 별도로 정의하고 GitHub에서 강제되는 통제로 제한합니다.
-- 이 저장소의 `main` PR은 **squash merge**를 사용합니다. 실제 GitHub settings가 이 정책을 enforce해야 합니다.
+- 이 저장소의 `main` PR은 **squash merge**를 사용합니다. 실제 GitHub 설정이 이 정책을 강제해야 합니다.
 
 ## Rulesets
 
@@ -102,11 +102,11 @@ Rulesets는 branch와 PR의 통합 조건을 GitHub에서 강제하는 수단입
 
 ## GitHub Actions
 
-GitHub Actions는 automation과 checks를 실행하는 기반입니다. `PR Gate`의 검증 의미와 merge를 막는 근거는 [Testing](testing.md)이 소유하고, stochastic model/runtime evaluation evidence는 [Evaluation](evaluation.md)이 소유합니다.
+GitHub Actions는 automation과 checks를 실행하는 기반입니다. `PR Gate`의 검증 의미와 merge를 막는 근거는 [Testing](testing.md)이 소유하고, stochastic model/runtime 평가 근거는 [Evaluation](evaluation.md)이 소유합니다.
 
 - Workflow permission은 필요한 최소 범위로 제한합니다. Agent나 automation 편의를 위해 넓은 write permission을 기본값으로 두지 않습니다.
 - Agent가 생성하거나 수정한 workflow는 권한 있는 실행 표면으로 취급합니다. 명시적인 사람의 승인 없이 secret이나 쓰기 권한이 있는 workflow가 실행되도록 만들지 않습니다.
-- 신뢰하지 않는 Issue, PR, comment나 외부 내용을 agent나 action의 입력으로 사용해도 그 내용 자체가 권한이나 권한 있는 지침을 얻지 않게 합니다.
+- 신뢰하지 않는 Issue, PR, comment나 외부 내용을 agent나 action의 입력으로 사용해도 그 내용 자체가 권한을 부여하거나 적용되는 지침으로 해석되지 않게 합니다.
 - Secret과 credential은 필요한 실행 단계에만 제공하고 agent 실행 환경에 불필요하게 노출하지 않습니다.
 - `main`에 write-back하는 CI를 두지 않는 저장소 정책과 PR Gate의 구체적인 실행 규칙은 [Testing](testing.md)을 따릅니다.
 
