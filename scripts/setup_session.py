@@ -18,11 +18,11 @@ def sync_dependencies():
 
 
 def update_agent_skills():
-    """repository task로 외부 Agent Skill을 vendor target에 동기화합니다."""
+    """repository task로 외부 Agent Skill dependency를 동기화합니다."""
     if not check_command("mise"):
         print("[2/2] Warning: 'mise' command not found. Skipping skill updates.")
         return
-    print("[2/2] Syncing locked agent skills to repository vendor targets...")
+    print("[2/2] Syncing locked agent skill dependencies...")
     try:
         subprocess.run(["mise", "run", "skills-sync"], check=True)
     except subprocess.CalledProcessError:
