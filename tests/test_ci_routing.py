@@ -19,6 +19,7 @@ def test_pr_gate_is_stable_read_only_and_runs_full_deterministic_suite() -> None
     assert "permissions:\n  contents: read" in workflow
     assert "git push" not in workflow
     assert "contents: write" not in workflow
+    assert "mise run check" in workflow
     assert "uv run --locked" in workflow
     assert "uv run --frozen" not in workflow
     assert "pytest -q tests" in workflow
