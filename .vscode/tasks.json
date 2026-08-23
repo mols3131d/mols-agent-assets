@@ -35,15 +35,15 @@
       "detail": "Runs repository tests through uv."
     },
     {
-      "label": "Update Agent Skills",
+      "label": "Sync Agent Skills",
       "type": "shell",
-      "command": "mise exec -- npx skills update -p -g -y",
+      "command": "mise run skills-sync",
       "problemMatcher": [],
       "group": {
         "kind": "build",
         "isDefault": false
       },
-      "detail": "Runs the skill updater with the mise-managed Node runtime."
+      "detail": "Installs or updates locked project Skills for the repository vendor targets."
     }
   ]
 }

@@ -9,11 +9,15 @@ description: 외부 Agent Skill dependency에 skills CLI를 사용할 때의 rep
 
 ## Repository Integration
 
-- 외부 Skill은 `npx skills add`로 추가합니다.
-- project dependency의 선택과 revision은 root [`skills-lock.json`](../../../skills-lock.json)에 기록하고 commit합니다.
-- 추가·갱신은 skills CLI가 lock을 갱신하게 하며 같은 선택을 별도 manifest나 task에 다시 선언하지 않습니다.
-- 설치된 copy는 dependency state이며 repository-owned canonical asset처럼 수정하지 않습니다.
+- 외부 Skill의 선택과 revision은 root [`skills-lock.json`](../../../skills-lock.json)에 기록하고 commit합니다. Lock은 upstream skills CLI 형식을 그대로 유지하며 repository 전용 target field를 추가하지 않습니다.
+- skills CLI 버전은 [`mise.toml`](../../../mise.toml)에 고정합니다.
+- Repository에서 사용하는 reusable vendor target 범위는 [`src/rulesync/rulesync.jsonc`](../../../src/rulesync/rulesync.jsonc)의 `targets`를 사용합니다. 별도 install manifest에 같은 목록을 복제하지 않습니다.
+- [`scripts/sync_agent_skills.py`](../../../scripts/sync_agent_skills.py)는 lock의 Skill과 revision을 읽고 Rulesync target ID를 skills CLI agent ID로 변환해 명시적인 `skills add --agent ...`를 실행합니다. 새로운 target에 대응하는 mapping이 없으면 누락시키지 않고 실패합니다.
+- Agent와 사람은 project dependency를 materialize하거나 갱신할 때 `mise run skills-sync`를 사용합니다. `mise run setup`, session setup과 VS Code의 `Sync Agent Skills` task도 같은 구현을 사용합니다.
+- 자동 동기화에서는 telemetry를 비활성화합니다. 설치된 copy와 symlink는 dependency state이며 repository-owned canonical asset처럼 수정하지 않습니다.
 - upstream을 계속 authority로 둘 수 없는 수준의 변경이 필요하면 dependency 설치가 아니라 migration/adaptation으로 다시 판단합니다.
+
+이 wrapper는 **dependency 선택을 다시 정의하지 않습니다**. `skills-lock.json`이 무엇을 어느 revision에서 설치할지 소유하고, `src/rulesync/rulesync.jsonc`이 repository vendor 범위를 소유하며, wrapper는 두 upstream schema 사이의 target ID 차이와 실행만 소유합니다.
 
 ## Official Sources
 

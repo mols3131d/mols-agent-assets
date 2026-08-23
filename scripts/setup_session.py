@@ -4,12 +4,12 @@ import sys
 
 
 def check_command(cmd: str) -> bool:
-    """Check if command exists in system PATH."""
+    """명령이 PATH에 있는지 확인합니다."""
     return shutil.which(cmd) is not None
 
 
 def sync_dependencies():
-    """Sync dependencies using uv."""
+    """uv로 Python 의존성을 동기화합니다."""
     if not check_command("uv"):
         print("[1/2] Warning: 'uv' command not found. Skipping dependency sync.")
         return
@@ -18,15 +18,12 @@ def sync_dependencies():
 
 
 def update_agent_skills():
-    """Update project agent skills via npx."""
-    if not check_command("npx"):
-        print("[2/2] Warning: 'npx' command not found. Skipping skill updates.")
+    """repository task로 외부 Agent Skill을 vendor target에 동기화합니다."""
+    if not check_command("mise"):
+        print("[2/2] Warning: 'mise' command not found. Skipping skill updates.")
         return
-    print("[2/2] Fetching latest agent skill updates...")
-    try:
-        subprocess.run(["npx", "skills", "update", "-p", "-y"], check=True)
-    except subprocess.CalledProcessError:
-        print("Warning: skills update encountered an issue, skipping.")
+    print("[2/2] Syncing locked agent skills to repository vendor targets...")
+    subprocess.run(["mise", "run", "skills-sync"], check=True)
 
 
 def main():
@@ -36,9 +33,9 @@ def main():
     try:
         sync_dependencies()
         update_agent_skills()
-    except subprocess.CalledProcessError as e:
+    except subprocess.CalledProcessError as error:
         print(
-            f"\nError: Initialization failed during subprocess execution: {e}",
+            f"\nError: Initialization failed during subprocess execution: {error}",
             file=sys.stderr,
         )
         sys.exit(1)
