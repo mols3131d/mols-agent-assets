@@ -43,7 +43,7 @@
         "kind": "build",
         "isDefault": false
       },
-      "detail": "Installs or updates locked project Skills for the repository vendor targets."
+      "detail": "Syncs locked external Skills through source-native installers."
     }
   ]
 }
