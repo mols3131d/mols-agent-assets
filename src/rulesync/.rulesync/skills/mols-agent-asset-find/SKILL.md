@@ -178,18 +178,23 @@ incomplete or unsupported rather than claiming it succeeded.
 
 For an external asset, resolve **who will own future edits** before creating durable state.
 
-- If upstream remains authoritative, treat the asset as a dependency. Use the target- or
-  source-native installation mechanism, preserve provenance and revision when material, and
-  do not silently fork the installed copy into the target's authored canonical tree.
+- If upstream remains authoritative, treat the asset as a dependency. Choose the smallest
+  faithful installation path instead of forcing one framework. Preserve provenance and
+  revision when material, and do not silently fork the installed copy into an authored
+  canonical tree.
 - If the caller or repository will own future edits, treat the transition as a migration.
   Bring the asset into the chosen canonical format with that framework's native intake
   mechanism when it can preserve the required semantics, then review the result before
   treating it as authoritative.
 
-When Rulesync is the chosen canonical framework:
+For an upstream-owned external Skill, use Rulesync declarative `sources` when doing so is
+both faithful and simpler. If Rulesync requires unnecessary repackaging, adaptation,
+resource-loss workarounds, or a more complex install/update path, use a Skill-native
+installer such as `skills add` instead. Rulesync compatibility alone is not a reason to
+force Rulesync.
 
-- use declarative `sources` for an external Rulesync-compatible dependency whose upstream
-  remains authoritative;
+When Rulesync is the chosen canonical framework for an adopted asset:
+
 - prefer `rulesync fetch <source> --target <target>` for a remote repository containing a
   supported target-native asset being adopted into `.rulesync/` authoring source;
 - prefer `rulesync import --targets <target>` when the target-native configuration already
@@ -197,10 +202,10 @@ When Rulesync is the chosen canonical framework:
 - use `rulesync convert` only for direct target-to-target conversion when no canonical
   `.rulesync/` source is intended.
 
-Fetch, import, or conversion success is not proof of semantic parity. If required behavior,
-supporting resources, scope, precedence, or dependencies cannot be represented, do not
-force a degraded conversion. Keep the external or vendor-native authority, or route a
-material adaptation to `mols-agent-asset`.
+Installation, fetch, import, or conversion success is not proof of semantic parity. If
+required behavior, supporting resources, scope, precedence, or dependencies cannot be
+represented, do not force a degraded conversion. Keep the external or vendor-native
+authority, or route a material adaptation to `mols-agent-asset`.
 
 # Preserve Asset Semantics
 
