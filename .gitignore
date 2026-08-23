@@ -11,6 +11,7 @@
 /.rulesync/skills/.curated/
 /rulesync.local.jsonc
 /src/rulesync/rulesync.local.jsonc
+/skills-lock.json
 
 # Temporary and backup files
 *.tmp
