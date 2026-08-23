@@ -530,7 +530,7 @@ def main() -> int:
             raise ScanError("output path must not overwrite or be inside the scan target")
         result = scan_target(args.target)
     except (OSError, ScanError, zipfile.BadZipFile) as exc:
-        print(json.dumps({"error": str(exc)}, ensure_ascii=False, indent=2), file=sys.stderr)
+        print(json.dumps({"error": redact_secrets(str(exc))}, ensure_ascii=False, indent=2), file=sys.stderr)
         return 2
 
     rendered = json.dumps(result, ensure_ascii=False, indent=2)
