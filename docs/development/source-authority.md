@@ -48,6 +48,27 @@ Rulesync 형식과 벤더 고유 형식 중 무엇을 선택할지는 이식성�
 
 특정 대상용 결과물을 사람이 직접 수정해야 하는 요구가 반복된다면 생성된 파일을 함께 수정하지 말고, 처음 선택한 작성 원본이 적절한지 다시 검토합니다.
 
+## 외부 자산 도입
+
+외부 자산을 가져올 때는 먼저 **외부 원본을 계속 권한으로 둘지, 이 저장소가 작성 권한을 인수할지** 결정합니다. 설치와 흡수를 같은 작업으로 취급하지 않습니다.
+
+외부 원본을 계속 권한으로 두는 자산은 dependency로 사용합니다.
+
+- 대상 런타임이나 source framework가 제공하는 설치·등록 방식을 우선합니다.
+- 재현 가능한 상태가 필요하면 upstream revision을 고정하고 provenance를 보존합니다.
+- 설치된 copy, generated projection, lock과 source metadata는 dependency state이며 로컬 작성 원본으로 수정하지 않습니다.
+- 필요한 resource나 semantics를 설치 경로가 보존하지 못하면 일부만 가져와 호환되는 것처럼 만들지 않습니다.
+
+이 저장소가 이후 변경을 소유할 자산은 **migration으로 흡수**합니다.
+
+- 선택한 작성 framework가 source 형식의 native intake를 지원하면 이를 우선합니다.
+- Rulesync를 작성 원본으로 선택하고 외부 Git repository가 지원되는 target-native 형식이면 `rulesync fetch <source> --target <target>`으로 가져옵니다. 이미 작업 공간에 존재하는 target-native configuration을 흡수할 때는 `rulesync import --targets <target>`을 사용합니다.
+- Fetch/import 결과는 변환되었다는 이유만으로 신뢰하거나 즉시 canonical로 간주하지 않습니다. 필요한 semantics, supporting resources, attribution과 license, upstream revision을 확인한 뒤 의도적으로 채택합니다.
+- Canonical source를 만들지 않는 일회성 target 간 변환에는 `rulesync convert` 같은 direct conversion을 사용할 수 있지만, 이를 작성 원본 도입 경로로 간주하지 않습니다.
+- Intake가 필요한 동작이나 dependency를 표현하지 못하면 강제로 Rulesync에 맞추지 않습니다. 벤더 고유 형식을 작성 원본으로 유지하거나 필요한 범위만 명시적으로 adaptation합니다.
+
+외부 자산의 설치 방식과 importer의 세부 지원 범위는 빠르게 변할 수 있으므로 해당 도구와 runtime의 현재 공식 계약을 따릅니다.
+
 ## 원본 배치
 
 먼저 자산이 **재사용 라이브러리용인지, 이 저장소가 직접 사용하는 런타임 자산인지** 구분합니다.
