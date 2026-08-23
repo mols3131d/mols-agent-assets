@@ -8,6 +8,7 @@ targets:
   - copilotcli
   - antigravity-ide
   - antigravity-cli
+  - agentsskills
 ---
 
 # Mermaid Chart
