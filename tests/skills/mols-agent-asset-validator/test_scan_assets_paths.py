@@ -134,6 +134,16 @@ def test_single_file_target_is_scanned(tmp_path: Path) -> None:
     assert result["target"] == str(target)
 
 
+def test_single_subagent_file_preserves_container_context(tmp_path: Path) -> None:
+    target = tmp_path / "subagents/review.md"
+    write(target, "---\nname: review\ndescription: Review.\n---\n\n# Review\n")
+
+    result = scan_target(target)
+
+    assert result["asset_counts"] == {"subagent": 1}
+    assert result["inventory"][0]["path"] == "subagents/review.md"
+
+
 def test_output_path_cannot_mutate_scanned_directory(tmp_path: Path) -> None:
     root = tmp_path / "package"
     root.mkdir()
