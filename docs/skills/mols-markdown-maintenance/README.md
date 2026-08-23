@@ -10,7 +10,7 @@
 - 의미가 달라질 수 있는 경우 deterministic validation이나 parsing을 LLM fallback으로 대체하지 않습니다.
 - 필요한 도구가 없으면 명시적으로 실패합니다.
 - Generated index는 projection으로 유지하며 source Markdown/frontmatter에서 다시 생성합니다.
-- 의존성은 최소화하고 로컬 결정론적 동작으로 필요성을 설명할 수 있어야 합니다.
+- 의존성은 최소화하며, 로컬의 결정론적 동작으로 그 필요성이 정당화되어야 합니다.
 
 ## Maintenance
 
