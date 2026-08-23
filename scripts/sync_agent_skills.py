@@ -87,8 +87,10 @@ def skill_folder(entry: dict[str, Any]) -> str | None:
 
 
 def github_shorthand(source: str) -> str:
-    if re.fullmatch(r"[^/:]+/[^/]+", source):
-        return source
+    match = re.fullmatch(r"([^/:]+)/([^/]+)", source)
+    if match:
+        owner, repo = match.groups()
+        return f"{owner}/{repo.removesuffix('.git')}"
 
     if source.startswith(("http://", "https://")):
         parsed = urlparse(source)
