@@ -52,6 +52,9 @@ jobs:
                 tooling=true
                 external_skills=true
                 ;;
+              skills-lock.json)
+                external_skills=true
+                ;;
               biome.json|lefthook.yml|.python-version|.vscode/tasks.json|pyproject.toml|uv.lock|package.json)
                 tooling=true
                 ;;
@@ -104,12 +107,16 @@ jobs:
           mise install
           mise run check
 
-      - name: Validate external Skill setup
+      - name: Validate external Skill lock
         if: steps.scope.outputs.external_skills == 'true'
         shell: bash
+        env:
+          DISABLE_TELEMETRY: "1"
         run: |
           set -euo pipefail
-          mise run external-skills
+          mise install "npm:skills"
+          skills experimental_install
+          git diff --exit-code -- skills-lock.json
           skills list --json --agent codex > /tmp/project-skills.json
           uv run --no-project python - <<'PY'
           import json
