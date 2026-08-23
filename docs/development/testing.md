@@ -21,7 +21,7 @@ mise install
 mise run setup
 ```
 
-`mise run setup` installs all Python dependency groups, locked repository-local Rulesync assets, pinned external Agent Skill dependencies, generated Agent Skills, and Git hooks. External Skill dependency selection and installer options are owned by the dedicated mise task referenced from `setup`.
+`mise run setup` installs all Python dependency groups, locked repository-local Rulesync assets, external Agent Skill dependencies from `skills-lock.json`, generated Agent Skills, and Git hooks.
 
 ## Formatting
 
@@ -47,7 +47,7 @@ PR Gate는 root `tests/` 전체를 항상 `uv --locked` semantics로 실행합�
 추가 비용이 있는 검증만 change impact에 따라 실행합니다.
 
 - tooling configuration → `mise run check`
-- external Skill setup → pinned installer task 실행
+- external Skill lock → lock 복원, lock drift, required resource materialization 확인
 - canonical Rulesync source → Markdown normalization + `rulesync:doctor`
 - Skill route inputs → distribution route regeneration 후 committed output과 diff 확인
 - changed Markdown → rumdl normalization 후 diff 확인
