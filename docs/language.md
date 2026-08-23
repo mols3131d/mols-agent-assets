@@ -32,7 +32,7 @@ Skill, Rule, Command, Hook, agent instruction, runtime resource, template, scrip
 
 ## Mixing Rules
 
-한국어를 기본 서술 언어로 사용하되, 구조적 이름과 표준·기술 명칭은 필요한 영어 표기를 유지합니다.
+한국어 중심 영역에서는 일반 서술은 한국어로 작성하되, 구조적 이름과 표준·기술 명칭은 필요한 영어 표기를 유지합니다.
 
 - **일반 서술** — 설명, 안내와 근거는 한국어로 작성합니다.
 - **구조적 이름과 값** — field name, heading, metadata key, identifier, key, option, enum처럼 구조적이거나 기계적으로 해석되는 이름과 값은 영어를 사용합니다.
