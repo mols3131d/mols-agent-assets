@@ -42,10 +42,10 @@ Git 환경에서는 `git worktree`가 같은 repository history를 공유하면�
 
 - `main`은 직접 수정하지 않습니다.
 - 변경은 dedicated branch에서 수행합니다.
-- 기본 target branch는 `main`입니다. 실제 작업 base는 작업 시작 시 확인한 **base ref와 commit**으로 식별합니다.
-- 최신 target에서 시작해야 하는 작업은 remote target의 최신성을 확인합니다. 확인할 수 없으면 확인한 base commit과 최신성 불확실성을 보존하고 오래된 로컬 state를 최신이라고 단정하지 않습니다.
-- PR head, feature branch, prepared snapshot이나 특정 commit처럼 다른 base가 명시되거나 runtime이 작업 기준을 이미 확정한 경우에는 그 base를 보존합니다. 최신 `main`으로 임의 이동하지 않습니다.
-- 다른 base가 필요한 stacked change도 해당 target을 따릅니다.
+- 기본 target branch는 `main`입니다. 실제 작업 base는 **base commit**으로 고정하고, 대응하는 ref가 있으면 함께 식별합니다.
+- 최신 target에서 시작해야 하는 작업은 remote target의 최신 commit을 확인합니다. 확인할 수 없으면 확인한 base commit과 최신성 불확실성을 보존하고 오래된 로컬 state를 최신이라고 단정하지 않습니다.
+- PR head, feature branch, stacked change, prepared snapshot이나 특정 commit처럼 다른 base가 명시되거나 runtime이 작업 기준을 이미 확정한 경우에는 그 base commit을 보존합니다. 최신 `main`으로 임의 이동하지 않습니다.
+- 장시간 작업 중 target ref가 이동해도 active base commit을 자동으로 바꾸지 않습니다. 새 base와 동기화할 필요가 있으면 별도의 merge, rebase 또는 재계획 대상으로 판단합니다.
 - 서로 독립적으로 검토하거나 폐기할 수 있는 변경은 branch도 분리합니다. Agent session, model, RPI 단계 같은 실행 세부사항만을 이유로 branch를 추가하지 않습니다.
 - `main`으로의 integration은 [GitHub](github.md)의 Pull Request와 Merge 정책을 따릅니다.
 
@@ -70,8 +70,8 @@ Runtime이나 hosting platform이 branch를 생성하고 naming을 소유하면 
 History 재작성은 작업 편의를 위한 기본 동작이 아닙니다.
 
 - `main` history는 재작성하지 않습니다.
-- `amend`, `rebase`와 branch reset은 현재 작업이 독점적으로 소유하는 dedicated branch에서만 수행합니다.
-- 다른 작업 주체가 branch를 사용하거나 그 tip을 기준으로 작업했을 가능성이 있으면 fast-forward가 아닌 재작성을 임의로 수행하지 않습니다.
+- `amend`, `rebase`와 branch reset은 기본적으로 현재 작업이 독점적으로 소유하는 dedicated branch에서 수행합니다. 공유 branch를 재작성해야 한다면 관련 작업 주체와 명시적으로 조정하고 필요한 권한을 확인합니다.
+- 다른 작업 주체가 branch를 사용하거나 그 tip을 기준으로 작업했을 가능성이 있는데 조정되지 않았다면 fast-forward가 아닌 재작성을 수행하지 않습니다.
 - 이미 공개된 remote branch를 재작성해야 한다면 먼저 예상 remote tip을 확인하고 실제 repository 정책이 허용하는 범위에서 원격 ref의 기대값을 검증하는 방식으로 갱신합니다. Git CLI에서는 무조건적인 `--force`보다 `--force-with-lease`를 우선합니다.
 - Commit 수를 줄이거나 history를 보기 좋게 만들기 위한 이유만으로 공유 branch를 재작성하지 않습니다. 최종 Merge 방식은 [GitHub](github.md)가 소유합니다.
 
