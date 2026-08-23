@@ -27,7 +27,7 @@ def test_resolve_agents_rejects_unmapped_target():
         sync.resolve_agents(["new-vendor"])
 
 
-def test_build_command_preserves_lock_source_revision_and_skill():
+def test_build_command_preserves_lock_path_revision_and_skill():
     assert sync.build_command(
         "humanize-korean",
         {
@@ -40,15 +40,31 @@ def test_build_command_preserves_lock_source_revision_and_skill():
     ) == [
         "skills",
         "add",
-        "epoko77-ai/im-not-ai#v2.3.0",
+        "epoko77-ai/im-not-ai/codex/skills/humanize-korean#v2.3.0",
         "--skill",
         "humanize-korean",
         "--agent",
         "claude-code",
         "codex",
         "--yes",
-        "--full-depth",
     ]
+
+
+def test_build_source_rejects_ambiguous_skill_path_source():
+    with pytest.raises(sync.SkillSyncError, match="skillPath 설치는 지원하지 않습니다"):
+        sync.build_source(
+            {
+                "source": "example/repo",
+                "sourceType": "git",
+                "sourceUrl": "https://example.com/example/repo.git",
+                "skillPath": "skills/example/SKILL.md",
+            }
+        )
+
+
+def test_skill_folder_rejects_path_traversal():
+    with pytest.raises(sync.SkillSyncError, match="지원하지 않는 skillPath"):
+        sync.skill_folder({"skillPath": "../outside/SKILL.md"})
 
 
 def test_repository_vendor_targets_are_supported():

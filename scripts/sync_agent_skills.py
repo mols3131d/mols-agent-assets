@@ -9,7 +9,7 @@ import shlex
 import shutil
 import subprocess
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -70,6 +70,21 @@ def read_locked_skills(path: Path = LOCK_PATH) -> dict[str, dict[str, Any]]:
     return skills
 
 
+def skill_folder(entry: dict[str, Any]) -> str | None:
+    value = entry.get("skillPath")
+    if value is None:
+        return None
+    if not isinstance(value, str) or not value:
+        raise SkillSyncError("skillPath가 문자열이 아닙니다.")
+
+    path = PurePosixPath(value)
+    if path.is_absolute() or ".." in path.parts or path.name != "SKILL.md":
+        raise SkillSyncError(f"지원하지 않는 skillPath입니다: {value}")
+
+    folder = str(path.parent)
+    return "" if folder == "." else folder
+
+
 def build_source(entry: dict[str, Any]) -> str:
     source_type = entry.get("sourceType")
     source_url = entry.get("sourceUrl")
@@ -79,6 +94,19 @@ def build_source(entry: dict[str, Any]) -> str:
         raise SkillSyncError(f"{source_type} source는 sourceUrl이 필요합니다.")
     if not isinstance(source, str) or not source or source.startswith("-"):
         raise SkillSyncError("설치 가능한 source가 lock entry에 없습니다.")
+
+    folder = skill_folder(entry)
+    if folder:
+        if source_type == "github":
+            if source.startswith(("git@", "ssh://")) or source.endswith(".git"):
+                raise SkillSyncError("GitHub skillPath 설치에는 path를 표현할 source가 필요합니다.")
+            source = f"{source.rstrip('/')}/{folder}"
+        elif source_type == "local":
+            source = str(Path(source, *PurePosixPath(folder).parts))
+        else:
+            raise SkillSyncError(
+                f"{source_type or 'unknown'} source의 skillPath 설치는 지원하지 않습니다."
+            )
 
     ref = entry.get("ref")
     return f"{source}#{ref}" if isinstance(ref, str) and ref else source
@@ -92,7 +120,7 @@ def build_command(
     if not skill_name or skill_name.startswith("-"):
         raise SkillSyncError(f"잘못된 Skill 이름입니다: {skill_name!r}")
 
-    command = [
+    return [
         "skills",
         "add",
         build_source(entry),
@@ -102,9 +130,6 @@ def build_command(
         *agents,
         "--yes",
     ]
-    if entry.get("skillPath"):
-        command.append("--full-depth")
-    return command
 
 
 def sync_locked_skills(*, dry_run: bool = False) -> None:
