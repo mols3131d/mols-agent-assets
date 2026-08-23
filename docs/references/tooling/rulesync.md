@@ -44,6 +44,8 @@ Rulesync가 외부 자산을 다루는 경로는 **원본 형식과 목적**에 
 | 이미 작업 공간에 있는 target-native 자산을 Rulesync 작성 원본으로 흡수 | `import --targets <target>` | 검토 후 채택한 `.rulesync/` source |
 | Canonical source 없이 target 형식끼리 일회성 변환 | `convert --from <target> --to <target>` | 변환의 실제 source |
 
+Declarative source는 외부 Skill dependency의 유일한 설치 경로가 아닙니다. Rulesync를 거치는 편이 불필요하게 복잡하거나 원본 package/resource를 충실히 보존하기 어렵다면 [skills CLI](skills-cli.md) 같은 Skill-native installer로 route합니다. 구체적인 선택 기준은 [작성 원본과 권한](../../development/source-authority.md)이 소유합니다.
+
 `fetch --target`과 `import`는 source 위치가 다릅니다. `fetch --target`은 remote repository의 파일을 지정한 target 형식으로 해석해 Rulesync source로 가져오고, `import`는 현재 작업 공간에 이미 존재하는 target configuration을 읽습니다. External revision이 중요하면 fetch 시 ref를 고정하고 provenance를 보존합니다.
 
 Fetch/import가 성공했다는 사실만으로 원본과 완전한 semantic parity를 보장하지 않습니다. Target/feature별 지원 범위와 supporting resource 보존 여부를 확인하고 결과를 검토합니다. 표현할 수 없는 동작을 local shadow schema나 임의 wrapper로 보완해 Rulesync-compatible인 것처럼 만들지 않습니다.
@@ -93,6 +95,7 @@ Repository-local superset schema나 manual projection semantics는 만들지 않
 ## Situational References
 
 - 외부 Rulesync-compatible Rule·Skill을 dependency로 선언하고 설치한다 → [Declarative Sources](https://github.com/dyoshikawa/rulesync/blob/main/docs/guide/declarative-sources.md)
+- Rulesync 경유가 비효율적인 외부 Skill dependency를 설치한다 → [skills CLI](skills-cli.md)
 - remote repository의 target-native 자산을 Rulesync source로 가져온다 → [CLI Commands: Fetch](https://github.com/dyoshikawa/rulesync/blob/main/docs/reference/cli-commands.md#fetch-command)
 - 이미 존재하는 target-native configuration을 `.rulesync/`로 가져오거나 target 간 직접 변환한다 → [CLI Commands](https://github.com/dyoshikawa/rulesync/blob/main/docs/reference/cli-commands.md)
 - 실제 write 없이 generation 결과를 확인한다 → [Dry Run](https://github.com/dyoshikawa/rulesync/blob/main/docs/guide/dry-run.md)
