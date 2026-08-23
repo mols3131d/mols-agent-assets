@@ -18,13 +18,13 @@ description: GitHub의 Issues, Pull Requests, PR Reviews, coding agents, automat
 
 ## Agent Collaboration
 
-Agent가 작업해도 GitHub 협업의 기본 권한 경계는 같습니다.
+Agent가 작업해도 GitHub object와 operation의 권한 경계는 같습니다. 다음은 작업 순서를 정의하는 workflow가 아니라 각 surface의 책임 구분입니다.
 
-1. Issue, prompt와 PR comment로 작업을 **위임하거나 범위를 구체화**합니다.
-1. Dedicated branch에서 변경을 **격리**합니다.
-1. Pull Request로 base branch 반영을 **제안하고 검토**합니다.
-1. Reviews, checks와 security scan은 반영 여부를 판단하는 **근거**입니다.
-1. Merge가 base branch를 실제로 바꾸는 **최종 반영 작업**입니다.
+- Issue, prompt와 PR comment는 작업을 **위임하거나 범위를 구체화하는 입력**입니다.
+- Pull Request는 base branch 반영을 **제안하고 검토하는 인계점**입니다.
+- Reviews, checks와 security scan은 반영 여부를 판단하는 **근거**입니다.
+- Merge는 base branch를 실제로 바꾸는 **최종 반영 작업**입니다.
+- Working state, worktree, base, branch와 Git history는 [VCS / Git](vcs-git.md)이 소유합니다.
 
 Agent session에서 남긴 요약, 판단 근거, confidence와 self-review는 작업을 이해하는 보조 근거입니다. 승인이나 검증을 대신할 수는 없습니다.
 
@@ -44,7 +44,7 @@ Issue는 idea, feedback, task, bug처럼 **논의하거나 추적할 작업 항�
 
 Copilot cloud agent, third-party coding agent, custom agent와 agent app처럼 GitHub에서 동작하는 agent는 이 저장소에서 **변경을 제안하고 구현하는 자동화된 기여자**로 취급합니다. 특정 제공자나 model에 따라 통합 승인 규칙을 달리하지 않습니다.
 
-- Agent 변경도 [VCS / Git](vcs-git.md)의 dedicated branch policy를 따르며 `main`을 직접 수정하지 않습니다.
+- Agent의 working state, worktree, base, branch와 history는 [VCS / Git](vcs-git.md)의 정책을 따릅니다.
 - Agent가 만든 PR도 사람이 만든 PR과 같은 Rulesets, required checks와 검토 조건을 통과해야 합니다.
 - Agent라는 이유만으로 Ruleset bypass나 더 넓은 저장소 권한을 부여하지 않습니다.
 - 자동 보안 검증, agent self-review와 다른 model의 review는 기존 검증과 검토를 보강할 수 있지만 대신하지는 못합니다.
@@ -65,7 +65,7 @@ Copilot automations처럼 schedule이나 repository event로 coding agent 작업
 
 Pull Request는 head branch의 변경을 base branch에 **반영하도록 제안하고 검토하는 GitHub object**입니다. 비동기 agent 작업 결과를 넘겨받는 인계점 역할도 합니다.
 
-- `main` 대상 변경은 [VCS / Git](vcs-git.md)의 dedicated branch policy를 따르고 PR로 제안합니다.
+- `main` 대상 변경은 [VCS / Git](vcs-git.md)의 정책에 따라 준비하고 PR로 제안합니다.
 - PR 생성, agent 작업 완료나 draft 해제만으로 검토가 승인되거나 merge 가능한 상태가 되지는 않습니다.
 - PR 요약과 agent 설명은 diff와 검증 결과를 이해하는 보조 정보입니다. 실제 제안된 변경은 head/base diff로 판단합니다.
 - 대화, reviews, checks, agent session과 security result가 한 PR에 함께 보여도 각각의 책임과 근거 수준은 구분합니다.
@@ -136,7 +136,7 @@ GitHub Agentic Workflows는 자연어 Markdown으로 작성하더라도 일반 �
 
 ## Boundary
 
-- branch policy, naming과 commit convention → [VCS / Git](vcs-git.md)
+- working state, worktree, base, branch policy와 naming, Git history와 commit convention → [VCS / Git](vcs-git.md)
 - 작성 원본과 저장소 권한 결정 → [작성 원본과 권한](source-authority.md)
 - 저장소 정확성 검증과 PR Gate → [Testing](testing.md)
 - behavioral evaluation과 근거 해석 → [Evaluation](evaluation.md)
