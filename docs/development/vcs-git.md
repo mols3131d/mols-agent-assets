@@ -97,7 +97,7 @@ Vendor별 branch 생성, cleanup, handoff와 session lifecycle은 빠르게 바�
 
 ## Boundary
 
-- Issues, Pull Requests, PR Reviews, PR Merge, Rulesets와 Actions → [GitHub](github.md)
+- GitHub Issues, Pull Requests, PR Reviews, Merge, GitHub-side coding agent·automation 협업과 권한, GitHub Agentic Workflows, Rulesets와 Actions → [GitHub](github.md)
 - 변경 대상의 작성 원본 선택 → [작성 원본과 권한](source-authority.md)
 - verification과 merge-blocking evidence → [Testing](testing.md)
 
