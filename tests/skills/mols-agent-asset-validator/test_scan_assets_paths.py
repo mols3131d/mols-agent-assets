@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 import sys
-import tempfile
 from pathlib import Path
 
 ROOT = (
@@ -18,172 +17,134 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from scan_assets import output_mutates_target, scan_directory, scan_target  # noqa: E402
 
 
-def test_canonical_subagent_is_classified_and_validated() -> None:
-    with tempfile.TemporaryDirectory() as temp_dir:
-        root = Path(temp_dir)
-        (root / "subagents").mkdir()
-        (root / "subagents" / "review.md").write_text(
-            "---\nname: review\ndescription: Review.\n---\n\n# Review\n",
-            encoding="utf-8",
-        )
-
-        result = scan_directory(root)
-
-        assert result["asset_counts"]["subagent"] == 1
-        assert not any(
-            item["category"] == "frontmatter" for item in result["findings"]
-        )
+def write(path: Path, content: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(content, encoding="utf-8")
 
 
-def test_subagent_without_frontmatter_is_major() -> None:
-    with tempfile.TemporaryDirectory() as temp_dir:
-        root = Path(temp_dir)
-        (root / "subagents").mkdir()
-        (root / "subagents" / "review.md").write_text("# Review\n", encoding="utf-8")
+def test_canonical_subagent_is_classified_and_validated(tmp_path: Path) -> None:
+    write(
+        tmp_path / "subagents/review.md",
+        "---\nname: review\ndescription: Review.\n---\n\n# Review\n",
+    )
 
-        result = scan_directory(root)
+    result = scan_directory(tmp_path)
 
-        assert any(
-            item["category"] == "frontmatter"
-            and item["path"] == "subagents/review.md"
-            for item in result["findings"]
-        )
-        assert result["summary"]["disposition"] == "revise"
+    assert result["asset_counts"]["subagent"] == 1
+    assert not any(item["category"] == "frontmatter" for item in result["findings"])
 
 
-def test_classification_ignores_parent_directories_outside_target() -> None:
-    with tempfile.TemporaryDirectory() as temp_dir:
-        root = Path(temp_dir) / "tests" / "package"
-        root.mkdir(parents=True)
-        (root / "config.json").write_text("{}\n", encoding="utf-8")
+def test_subagent_without_frontmatter_is_major(tmp_path: Path) -> None:
+    write(tmp_path / "subagents/review.md", "# Review\n")
 
-        result = scan_directory(root)
+    result = scan_directory(tmp_path)
 
-        assert result["asset_counts"] == {"config": 1}
-
-
-def test_reference_frontmatter_name_does_not_collide_with_skill_identity() -> None:
-    with tempfile.TemporaryDirectory() as temp_dir:
-        root = Path(temp_dir)
-        (root / "references").mkdir()
-        (root / "SKILL.md").write_text(
-            "---\nname: shared\ndescription: Skill.\n---\n\n# Skill\n",
-            encoding="utf-8",
-        )
-        (root / "references" / "note.md").write_text(
-            "---\nname: shared\ndescription: Note.\n---\n\n# Note\n",
-            encoding="utf-8",
-        )
-
-        result = scan_directory(root)
-
-        assert not any(
-            item["category"] == "identity"
-            and "duplicate" in item["message"]
-            for item in result["findings"]
-        )
+    assert any(
+        item["category"] == "frontmatter" and item["path"] == "subagents/review.md"
+        for item in result["findings"]
+    )
+    assert result["summary"]["disposition"] == "revise"
 
 
-def test_identity_names_are_scoped_by_asset_type() -> None:
-    with tempfile.TemporaryDirectory() as temp_dir:
-        root = Path(temp_dir)
-        (root / "subagents").mkdir()
-        (root / "SKILL.md").write_text(
-            "---\nname: shared\ndescription: Skill.\n---\n\n# Skill\n",
-            encoding="utf-8",
-        )
-        (root / "subagents" / "shared.md").write_text(
-            "---\nname: shared\ndescription: Subagent.\n---\n\n# Subagent\n",
-            encoding="utf-8",
-        )
+def test_classification_ignores_parent_directories_outside_target(tmp_path: Path) -> None:
+    root = tmp_path / "tests/package"
+    write(root / "config.json", "{}\n")
 
-        result = scan_directory(root)
+    result = scan_directory(root)
 
-        assert not any(item["category"] == "identity" for item in result["findings"])
+    assert result["asset_counts"] == {"config": 1}
 
 
-def test_agent_directory_document_is_not_forced_to_be_agent_identity() -> None:
-    with tempfile.TemporaryDirectory() as temp_dir:
-        root = Path(temp_dir)
-        (root / "agents").mkdir()
-        (root / "agents" / "README.md").write_text("# Agents\n", encoding="utf-8")
+def test_reference_frontmatter_name_does_not_collide_with_skill_identity(tmp_path: Path) -> None:
+    write(tmp_path / "SKILL.md", "---\nname: shared\ndescription: Skill.\n---\n\n# Skill\n")
+    write(
+        tmp_path / "references/note.md",
+        "---\nname: shared\ndescription: Note.\n---\n\n# Note\n",
+    )
 
-        result = scan_directory(root)
+    result = scan_directory(tmp_path)
 
-        assert not any(
-            item["category"] == "frontmatter" for item in result["findings"]
-        )
-
-
-def test_declared_subagent_path_is_tracked_as_relationship() -> None:
-    with tempfile.TemporaryDirectory() as temp_dir:
-        root = Path(temp_dir)
-        (root / "subagents").mkdir()
-        (root / "subagents" / "review.md").write_text(
-            "---\nname: review\ndescription: Review.\n---\n\n# Review\n",
-            encoding="utf-8",
-        )
-        (root / "SKILL.md").write_text(
-            "---\nname: example-skill\ndescription: Example.\n---\n\n"
-            "Use `subagents/review.md`.\n",
-            encoding="utf-8",
-        )
-
-        result = scan_directory(root)
-
-        assert any(
-            item["from"] == "SKILL.md"
-            and item["type"] == "reads"
-            and item["to"] == "subagents/review.md"
-            for item in result["relationships"]
-        )
+    assert not any(
+        item["category"] == "identity" and "duplicate" in item["message"]
+        for item in result["findings"]
+    )
 
 
-def test_detected_secret_is_redacted_from_result() -> None:
-    with tempfile.TemporaryDirectory() as temp_dir:
-        root = Path(temp_dir)
-        token = "sk-" + "abcdefghijklmnopqrstuvwx"
-        (root / "SKILL.md").write_text(
-            f"---\nname: secret-skill\ndescription: {token}\n---\n\n# Secret\n",
-            encoding="utf-8",
-        )
+def test_identity_names_are_scoped_by_asset_type(tmp_path: Path) -> None:
+    write(tmp_path / "SKILL.md", "---\nname: shared\ndescription: Skill.\n---\n\n# Skill\n")
+    write(
+        tmp_path / "subagents/shared.md",
+        "---\nname: shared\ndescription: Subagent.\n---\n\n# Subagent\n",
+    )
 
-        result = scan_directory(root)
-        rendered = json.dumps(result)
+    result = scan_directory(tmp_path)
 
-        assert result["summary"]["critical"] == 1
-        assert token not in rendered
-        assert "[REDACTED]" in rendered
+    assert not any(item["category"] == "identity" for item in result["findings"])
 
 
-def test_single_file_target_is_scanned() -> None:
-    with tempfile.TemporaryDirectory() as temp_dir:
-        target = Path(temp_dir) / "SKILL.md"
-        target.write_text(
-            "---\nname: single-skill\ndescription: Single.\n---\n\n# Single\n",
-            encoding="utf-8",
-        )
+def test_agent_directory_document_is_not_forced_to_be_agent_identity(tmp_path: Path) -> None:
+    write(tmp_path / "agents/README.md", "# Agents\n")
 
-        result = scan_target(target)
+    result = scan_directory(tmp_path)
 
-        assert result["summary"]["files"] == 1
-        assert result["asset_counts"] == {"skill": 1}
-        assert result["target"] == str(target)
+    assert not any(item["category"] == "frontmatter" for item in result["findings"])
 
 
-def test_output_path_cannot_mutate_scanned_directory() -> None:
-    with tempfile.TemporaryDirectory() as temp_dir:
-        root = Path(temp_dir) / "package"
-        root.mkdir()
+def test_declared_subagent_path_is_tracked_as_relationship(tmp_path: Path) -> None:
+    write(
+        tmp_path / "subagents/review.md",
+        "---\nname: review\ndescription: Review.\n---\n\n# Review\n",
+    )
+    write(
+        tmp_path / "SKILL.md",
+        "---\nname: example-skill\ndescription: Example.\n---\n\nUse `subagents/review.md`.\n",
+    )
 
-        assert output_mutates_target(root / "scan.json", root)
-        assert not output_mutates_target(Path(temp_dir) / "scan.json", root)
+    result = scan_directory(tmp_path)
+
+    assert any(
+        item == {"from": "SKILL.md", "type": "reads", "to": "subagents/review.md"}
+        for item in result["relationships"]
+    )
 
 
-def test_output_path_cannot_overwrite_scanned_file() -> None:
-    with tempfile.TemporaryDirectory() as temp_dir:
-        target = Path(temp_dir) / "asset.zip"
-        target.write_bytes(b"placeholder")
+def test_detected_secret_is_redacted_from_result(tmp_path: Path) -> None:
+    token = "sk-" + "abcdefghijklmnopqrstuvwx"
+    write(
+        tmp_path / "SKILL.md",
+        f"---\nname: secret-skill\ndescription: {token}\n---\n\n# Secret\n",
+    )
 
-        assert output_mutates_target(target, target)
-        assert not output_mutates_target(Path(temp_dir) / "scan.json", target)
+    result = scan_directory(tmp_path)
+    rendered = json.dumps(result)
+
+    assert result["summary"]["critical"] == 1
+    assert token not in rendered
+    assert "[REDACTED]" in rendered
+
+
+def test_single_file_target_is_scanned(tmp_path: Path) -> None:
+    target = tmp_path / "SKILL.md"
+    write(target, "---\nname: single-skill\ndescription: Single.\n---\n\n# Single\n")
+
+    result = scan_target(target)
+
+    assert result["summary"]["files"] == 1
+    assert result["asset_counts"] == {"skill": 1}
+    assert result["target"] == str(target)
+
+
+def test_output_path_cannot_mutate_scanned_directory(tmp_path: Path) -> None:
+    root = tmp_path / "package"
+    root.mkdir()
+
+    assert output_mutates_target(root / "scan.json", root)
+    assert not output_mutates_target(tmp_path / "scan.json", root)
+
+
+def test_output_path_cannot_overwrite_scanned_file(tmp_path: Path) -> None:
+    target = tmp_path / "asset.zip"
+    target.write_bytes(b"placeholder")
+
+    assert output_mutates_target(target, target)
+    assert not output_mutates_target(tmp_path / "scan.json", target)
