@@ -14,6 +14,7 @@ description: 외부 Agent Skill dependency의 lock, source-native 설치와 repo
 - [`scripts/sync_agent_skills.py`](../../../scripts/sync_agent_skills.py)는 lock의 source와 revision을 **읽기만** 합니다. 설치 상태를 맞추는 과정에서 `skills-lock.json`을 다시 쓰지 않습니다.
 - 한 source가 vendor별로 서로 다른 payload나 추가 runtime 자산을 제공하면 generic `skills add --agent ...`로 같은 payload를 여러 target에 강제하지 않습니다. 해당 source의 native installer가 더 충실한 경우 adapter는 그 installer에 vendor 감지와 설치를 위임합니다.
 - 현재 `epoko77-ai/im-not-ai`의 `humanize-korean` dependency는 고정된 lock ref를 user cache에 checkout한 뒤 upstream `install.sh`를 실행합니다. Claude Code, Codex CLI, Gemini CLI의 payload와 지원 범위는 upstream installer가 결정합니다. GitHub Copilot처럼 upstream이 지원 대상으로 선언하지 않은 vendor에는 임의로 설치하지 않습니다.
+- `skills-sync`는 dependency source cache와 upstream installer가 정의한 user-level vendor 설치 상태를 변경할 수 있습니다. 이는 외부 Skill을 실제 runtime에서 사용할 수 있게 만드는 의도된 side effect이며, repository의 authored source를 변경하는 작업은 아닙니다.
 - Agent와 사람은 dependency를 materialize하거나 lock된 revision으로 다시 맞출 때 `mise run skills-sync`를 사용합니다. `mise run setup`, session setup과 VS Code의 `Sync Agent Skills` task도 같은 구현을 사용합니다.
 - 새로운 dependency에 native adapter가 없으면 추측해서 설치하지 않고 실패합니다. 이 경우 [작성 원본과 권한](../../development/source-authority.md)에 따라 generic skills CLI 설치가 충분한지, source-native installer가 필요한지 먼저 결정합니다.
 - 설치된 copy, symlink, source cache는 dependency state이며 repository-owned canonical asset처럼 수정하지 않습니다.
