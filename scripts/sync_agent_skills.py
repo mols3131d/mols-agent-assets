@@ -11,6 +11,7 @@ import subprocess
 import sys
 from pathlib import Path, PurePosixPath
 from typing import Any
+from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 LOCK_PATH = ROOT / "skills-lock.json"
@@ -85,6 +86,22 @@ def skill_folder(entry: dict[str, Any]) -> str | None:
     return "" if folder == "." else folder
 
 
+def github_shorthand(source: str) -> str:
+    if re.fullmatch(r"[^/:]+/[^/]+", source):
+        return source
+
+    if source.startswith(("http://", "https://")):
+        parsed = urlparse(source)
+        parts = [part for part in parsed.path.split("/") if part]
+        if parsed.hostname == "github.com" and len(parts) == 2:
+            repo = parts[1].removesuffix(".git")
+            return f"{parts[0]}/{repo}"
+
+    raise SkillSyncError(
+        "GitHub skillPath 설치에는 public GitHub owner/repo source가 필요합니다."
+    )
+
+
 def build_source(entry: dict[str, Any]) -> str:
     source_type = entry.get("sourceType")
     source_url = entry.get("sourceUrl")
@@ -98,9 +115,7 @@ def build_source(entry: dict[str, Any]) -> str:
     folder = skill_folder(entry)
     if folder:
         if source_type == "github":
-            if source.startswith(("git@", "ssh://")) or source.endswith(".git"):
-                raise SkillSyncError("GitHub skillPath 설치에는 path를 표현할 source가 필요합니다.")
-            source = f"{source.rstrip('/')}/{folder}"
+            source = f"{github_shorthand(source)}/{folder}"
         elif source_type == "local":
             source = str(Path(source, *PurePosixPath(folder).parts))
         else:
@@ -132,6 +147,15 @@ def build_command(
     ]
 
 
+def build_env(entry: dict[str, Any]) -> dict[str, str]:
+    env = os.environ.copy()
+    env["DISABLE_TELEMETRY"] = "1"
+    env["DO_NOT_TRACK"] = "1"
+    if entry.get("sourceType") == "github":
+        env["GH_HOST"] = "github.com"
+    return env
+
+
 def sync_locked_skills(*, dry_run: bool = False) -> None:
     agents = resolve_agents(read_vendor_targets())
     skills = read_locked_skills()
@@ -142,10 +166,6 @@ def sync_locked_skills(*, dry_run: bool = False) -> None:
     if not dry_run and shutil.which("skills") is None:
         raise SkillSyncError("skills CLI가 없습니다. 먼저 `mise install`을 실행하세요.")
 
-    env = os.environ.copy()
-    env["DISABLE_TELEMETRY"] = "1"
-    env["DO_NOT_TRACK"] = "1"
-
     failures: list[str] = []
     for skill_name, entry in sorted(skills.items()):
         command = build_command(skill_name, entry, agents)
@@ -154,7 +174,13 @@ def sync_locked_skills(*, dry_run: bool = False) -> None:
             print(shlex.join(command))
             continue
 
-        if subprocess.run(command, cwd=ROOT, env=env, check=False).returncode:
+        result = subprocess.run(
+            command,
+            cwd=ROOT,
+            env=build_env(entry),
+            check=False,
+        )
+        if result.returncode:
             failures.append(skill_name)
 
     if failures:
