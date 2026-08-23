@@ -73,6 +73,16 @@ def test_build_source_rejects_ambiguous_skill_path_source():
         )
 
 
+def test_build_source_rejects_unsupported_source_type():
+    with pytest.raises(sync.SkillSyncError, match="지원하지 않는 sourceType"):
+        sync.build_source(
+            {
+                "source": "example-package",
+                "sourceType": "node_modules",
+            }
+        )
+
+
 def test_github_shorthand_rejects_non_public_github_source():
     with pytest.raises(sync.SkillSyncError, match="public GitHub owner/repo"):
         sync.github_shorthand("https://ghe.example.com/owner/repo")
