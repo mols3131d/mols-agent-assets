@@ -4,6 +4,7 @@
 /.tmp/
 /.trash/
 /.archive/
+/_workspace/
 /.gemini/
 /.codex/
 /.agents/skills/
