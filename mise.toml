@@ -37,7 +37,6 @@ run = [
   "uv lock --check",
   "lefthook validate",
   "biome check biome.json package.json .vscode/tasks.json",
-  "rulesync install --frozen",
 ]
 
 [tasks.test]
