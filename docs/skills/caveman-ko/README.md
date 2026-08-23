@@ -6,7 +6,7 @@ description: caveman-ko Skill의 출처, 성숙도 경계와 승격 기준을 �
 
 Status: **Experimental**.
 
-`caveman-ko`는 MIT 라이선스의 [`JuliusBrussee/caveman`](https://github.com/JuliusBrussee/caveman) 응답 Skill을 한국어 사용 환경에 맞게 실험적으로 조정한 자산입니다. 생성 문장을 압축하면서 기술적 의미를 보존한다는 핵심 아이디어는 유지하되, 이 저장소의 trigger 조건, 한국어 표현, runtime과 명확성 요구에 다른 계약이 필요할 때는 의도적으로 upstream과 다르게 동작합니다.
+`caveman-ko`는 MIT 라이선스의 [`JuliusBrussee/caveman`](https://github.com/JuliusBrussee/caveman) 응답 Skill을 한국어 사용 환경에 맞게 실험적으로 조정한 자산입니다. 생성 문장을 압축하면서 기술적 의미를 보존한다는 핵심 아이디어는 유지하되, 로컬 trigger 조건, 한국어 표현, runtime과 명확성 요구에 다른 계약이 필요할 때는 의도적으로 upstream과 다르게 동작합니다.
 
 Provenance baseline: `JuliusBrussee/caveman` `skills/caveman/SKILL.md` at `bd22d86b32e4a99e09ff7482a35509faac7a6f65`.
 
@@ -19,7 +19,7 @@ Provenance baseline: `JuliusBrussee/caveman` `skills/caveman/SKILL.md` at `bd22d
 - 현재 trigger와 동작 fixture는 실험 단계 Skill을 위한 **capability eval contract**입니다. 특정 model/runtime이 이를 통과한다는 근거나 blocking regression suite를 의미하지 않습니다.
 - 이 capsule은 출처, 성숙도와 유지보수 문맥만 소유하며 runtime instruction으로 로드하지 않습니다.
 - 일반적인 간결성 요청은 의도적으로 이 Skill의 범위 밖입니다. "짧게", "간결하게", "토큰 아껴서" 같은 요청만으로 trigger되면 실패 사례입니다.
-- 로컬 근거 없이 upstream의 token-reduction percentage를 로컬 계약에 복사하지 않습니다. 이 Skill은 생성되는 문장에 영향을 주며 input/context/reasoning token volume을 줄인다고 주장하지 않습니다.
+- 로컬 근거 없이 upstream의 token-reduction percentage를 로컬 계약에 복사하지 않습니다. 이 Skill은 생성되는 문장에만 영향을 주며 input/context/reasoning token volume에는 영향을 주지 않습니다.
 
 ## Promotion Criteria
 
