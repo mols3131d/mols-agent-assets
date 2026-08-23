@@ -20,6 +20,7 @@ Runtime이 편의를 위해 branch나 worktree를 자동으로 만들더라도 �
 
 Git으로 변경하기 전에 **현재 repository, worktree, branch 또는 ref, base commit과 working tree 상태를 식별**합니다. Agent도 작업 공간이 `clean` 상태라고 가정하지 않습니다.
 
+- 작업 공간에 여러 Git root가 있으면 각 repository의 ref, base commit, working state와 변경 ownership을 따로 확인합니다. 한 repository에서 확인한 상태를 다른 repository에 일반화하지 않습니다.
 - 이미 존재하는 수정, untracked file과 commit은 이번 작업의 소유라고 확인되기 전까지 보존합니다.
 - 환경을 `clean` 상태로 만들기 위해 다른 작업을 reset하거나 버리거나 삭제하거나 임의로 stash하지 않습니다.
 - `reset --hard`, `switch --discard-changes`, `checkout -f`, `clean`, stash 삭제와 강제 branch reset처럼 작업을 잃을 수 있는 조작은 이번 작업이 해당 상태를 소유하고 있거나 별도 권한이 있을 때만 사용합니다.
@@ -41,15 +42,16 @@ Git 환경에서는 `git worktree`가 같은 repository history를 공유하면�
 
 - `main`은 직접 수정하지 않습니다.
 - 변경은 dedicated branch에서 수행합니다.
-- 기본 base는 최신 `main`입니다. 여기서 최신은 단순히 로컬 `main`이라고 가정하지 않고 작업 시작 시점에 확인한 최신 대상 commit을 의미합니다.
-- 최신 원격 상태를 확인할 수 없으면 확인한 base commit과 최신성 불확실성을 보존합니다. 오래된 로컬 상태를 최신 `main`으로 단정하지 않습니다.
-- 다른 base가 명시적으로 필요한 작업이나 stacked change는 해당 target을 따릅니다.
+- 기본 target branch는 `main`입니다. 실제 작업 base는 작업 시작 시 확인한 **base ref와 commit**으로 식별합니다.
+- 최신 target에서 시작해야 하는 작업은 remote target의 최신성을 확인합니다. 확인할 수 없으면 확인한 base commit과 최신성 불확실성을 보존하고 오래된 로컬 state를 최신이라고 단정하지 않습니다.
+- PR head, feature branch, prepared snapshot이나 특정 commit처럼 다른 base가 명시되거나 runtime이 작업 기준을 이미 확정한 경우에는 그 base를 보존합니다. 최신 `main`으로 임의 이동하지 않습니다.
+- 다른 base가 필요한 stacked change도 해당 target을 따릅니다.
 - 서로 독립적으로 검토하거나 폐기할 수 있는 변경은 branch도 분리합니다. Agent session, model, RPI 단계 같은 실행 세부사항만을 이유로 branch를 추가하지 않습니다.
 - `main`으로의 integration은 [GitHub](github.md)의 Pull Request와 Merge 정책을 따릅니다.
 
 ## Branch Naming
 
-기본 branch 이름:
+직접 생성하고 이름을 제어할 수 있는 branch의 기본 이름:
 
 ```text
 <owner>/<type>/<topic>
@@ -60,6 +62,8 @@ Git 환경에서는 `git worktree`가 같은 repository history를 공유하면�
 - `topic`: 변경 대상을 나타내는 간결한 kebab-case 이름
 
 각 segment는 특별한 이유가 없으면 lowercase와 kebab-case를 사용합니다. Branch 이름은 **누가 어떤 종류의 무엇을 바꾸는지**를 빠르게 식별하는 데 필요한 정보만 담고 model 이름, session ID나 작업 단계 같은 일시적 metadata를 넣지 않습니다.
+
+Runtime이나 hosting platform이 branch를 생성하고 naming을 소유하면 해당 native naming을 허용합니다. Convention을 맞추기 위해 runtime lifecycle이나 추적성을 깨는 rename을 요구하지 않으며, 대신 작업과 실제 branch/ref의 대응을 식별할 수 있어야 합니다.
 
 ## History Safety
 
@@ -84,8 +88,10 @@ History 재작성은 작업 편의를 위한 기본 동작이 아닙니다.
 - [Git worktree](https://git-scm.com/docs/git-worktree) — 여러 working tree, shared ref와 worktree-specific state
 - [Git switch](https://git-scm.com/docs/git-switch) — branch 전환, detached `HEAD`와 local change 보존 semantics
 - [Git push](https://git-scm.com/docs/git-push) — fast-forward와 `--force-with-lease`
-- [OpenAI Codex](https://openai.com/codex/) — multi-agent 작업에서 worktree isolation을 사용하는 현재 사례
-- [Claude Code worktrees](https://code.claude.com/docs/en/worktrees) — 병렬 agent session과 subagent를 worktree로 격리하는 현재 사례
+- [OpenAI Codex](https://openai.com/codex/) — multi-agent 작업의 worktree와 cloud environment 사례
+- [Claude Code worktrees](https://code.claude.com/docs/en/worktrees) — 병렬 session과 subagent의 worktree 격리, base 선택 사례
+- [Cursor worktrees](https://cursor.com/docs/configuration/worktrees) — 병렬 agent와 model candidate를 worktree로 격리하는 사례
+- [GitHub Copilot cloud agent risks and mitigations](https://docs.github.com/en/copilot/concepts/agents/cloud-agent/risks-and-mitigations) — runtime이 생성하는 전용 branch와 write boundary 사례
 
 Vendor별 branch 생성, cleanup, handoff와 session lifecycle은 빠르게 바뀔 수 있으므로 이 문서에 복제하지 않고 해당 runtime 공식 문서를 따릅니다.
 
