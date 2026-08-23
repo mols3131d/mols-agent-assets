@@ -1,3 +1,7 @@
+---
+description: repository에 남기는 durable knowledge, working artifact, archive와 Git history의 역할과 승격 기준을 정의합니다.
+---
+
 # Knowledge Lifecycle
 
 Repository에 남기는 정보는 현재 authority와 보존 목적에 따라 구분합니다.

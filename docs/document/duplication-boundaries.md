@@ -1,4 +1,8 @@
-# DRY Boundaries
+---
+description: 문서 중복을 owner와 scope 경계에서 판단하고 authoritative source를 하나로 유지하는 원칙을 정의합니다.
+---
+
+# Duplication Boundaries
 
 문서 중복은 repository 전체를 하나의 namespace로 보고 판정하지 않습니다. **같은 scope에서 같은 의미를 둘 이상의 owner가 함께 소유하지 않는 것**을 기본 원칙으로 합니다.
 
@@ -15,7 +19,7 @@
 
 `docs/document/`는 `references/`, `inbox/`, `route/` 같은 개별 directory 내부의 세부 책임 분할을 대신 소유하지 않습니다. 해당 directory의 `README.md`나 local document가 자기 범위의 owner와 중복 경계를 설명합니다.
 
-Asset/family documentation capsule의 repository-wide portability contract는 [Asset Capsules](asset-capsules.md)가 소유합니다.
+Asset/family maintainer documentation의 repository-wide portability contract는 [Asset Maintainer Documentation](asset-maintainer-documentation.md)이 소유합니다.
 
 ## Review
 

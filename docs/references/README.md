@@ -19,7 +19,7 @@ Reference는 외부 문서 링크 모음만을 의미하지 않습니다. Agent 
 ## Boundary
 
 - 이 repository에만 적용되는 개발·운영 규칙은 [`development/`](../development/) 또는 [`document/`](../document/) 같은 project-local owner가 소유합니다.
-- 개별 asset 또는 family의 maintainer-only knowledge는 `docs/<asset-type>/<owner>/` capsule이 소유합니다.
+- 개별 asset 또는 family의 maintainer-only knowledge는 `docs/<asset-type>/<owner>/`의 maintainer documentation이 소유합니다.
 - Runtime에서 직접 소비하는 Agent Asset source는 `src/`가 소유합니다.
 - 이 library의 자산과 reference를 consumer가 가져다 쓰는 방법은 [Consumption](../consumption.md)이 소유합니다.
 
@@ -31,4 +31,4 @@ Reference에 있다는 이유만으로 downstream project의 mandatory policy가
 
 - 같은 responsibility를 둘 이상의 sibling surface가 함께 소유하지 않습니다.
 - child surface 내부의 세부 ownership은 해당 child의 `README.md` 또는 local document가 정의합니다.
-- repository-wide DRY 원칙만 [Documentation DRY](../document/dry.md)를 따릅니다.
+- repository-wide 중복 원칙만 [Duplication Boundaries](../document/duplication-boundaries.md)를 따릅니다.
