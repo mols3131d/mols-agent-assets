@@ -15,7 +15,7 @@ ROOT = (
 )
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from scan_assets import output_mutates_target, scan_directory  # noqa: E402
+from scan_assets import output_mutates_target, scan_directory, scan_target  # noqa: E402
 
 
 def test_canonical_subagent_is_classified_and_validated() -> None:
@@ -79,8 +79,39 @@ def test_reference_frontmatter_name_does_not_collide_with_skill_identity() -> No
 
         assert not any(
             item["category"] == "identity"
-            and "duplicate frontmatter name" in item["message"]
+            and "duplicate" in item["message"]
             for item in result["findings"]
+        )
+
+
+def test_identity_names_are_scoped_by_asset_type() -> None:
+    with tempfile.TemporaryDirectory() as temp_dir:
+        root = Path(temp_dir)
+        (root / "subagents").mkdir()
+        (root / "SKILL.md").write_text(
+            "---\nname: shared\ndescription: Skill.\n---\n\n# Skill\n",
+            encoding="utf-8",
+        )
+        (root / "subagents" / "shared.md").write_text(
+            "---\nname: shared\ndescription: Subagent.\n---\n\n# Subagent\n",
+            encoding="utf-8",
+        )
+
+        result = scan_directory(root)
+
+        assert not any(item["category"] == "identity" for item in result["findings"])
+
+
+def test_agent_directory_document_is_not_forced_to_be_agent_identity() -> None:
+    with tempfile.TemporaryDirectory() as temp_dir:
+        root = Path(temp_dir)
+        (root / "agents").mkdir()
+        (root / "agents" / "README.md").write_text("# Agents\n", encoding="utf-8")
+
+        result = scan_directory(root)
+
+        assert not any(
+            item["category"] == "frontmatter" for item in result["findings"]
         )
 
 
@@ -123,6 +154,21 @@ def test_detected_secret_is_redacted_from_result() -> None:
         assert result["summary"]["critical"] == 1
         assert token not in rendered
         assert "[REDACTED]" in rendered
+
+
+def test_single_file_target_is_scanned() -> None:
+    with tempfile.TemporaryDirectory() as temp_dir:
+        target = Path(temp_dir) / "SKILL.md"
+        target.write_text(
+            "---\nname: single-skill\ndescription: Single.\n---\n\n# Single\n",
+            encoding="utf-8",
+        )
+
+        result = scan_target(target)
+
+        assert result["summary"]["files"] == 1
+        assert result["asset_counts"] == {"skill": 1}
+        assert result["target"] == str(target)
 
 
 def test_output_path_cannot_mutate_scanned_directory() -> None:
