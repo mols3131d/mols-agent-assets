@@ -1,5 +1,5 @@
 ---
-description: repository-wide 문서 배치, ownership, DRY, frontmatter, knowledge lifecycle과 asset capsule 원칙이 필요할 때 해당 documentation policy를 찾는 데 사용합니다.
+description: repository-wide 문서 배치, ownership, duplication boundary, frontmatter, knowledge lifecycle과 asset maintainer documentation 원칙이 필요할 때 해당 documentation policy를 찾는 데 사용합니다.
 ---
 
 # Documentation
@@ -11,9 +11,9 @@ description: repository-wide 문서 배치, ownership, DRY, frontmatter, knowled
 ## Policies
 
 - [Ownership](ownership.md) — repository-wide 원칙과 directory-local documentation의 책임 경계
-- [DRY Boundaries](dry.md) — 문서 owner와 scope를 기준으로 중복을 판단하는 공통 원칙
+- [Duplication Boundaries](duplication-boundaries.md) — 문서 owner와 scope를 기준으로 중복을 판단하는 공통 원칙
 - [Frontmatter](frontmatter.md) — repository 문서의 frontmatter authority와 Front Matter CMS reference routing
-- [Knowledge Lifecycle](knowledge-lifecycle.md) — durable knowledge, inbox, archive와 Git history의 역할
-- [Asset Capsules](asset-capsules.md) — portable asset documentation의 repository-wide contract
+- [Knowledge Lifecycle](lifecycle.md) — durable knowledge, inbox, archive와 Git history의 역할
+- [Asset Maintainer Documentation](asset-maintainer-documentation.md) — asset 또는 family의 portable maintainer documentation contract
 
 Top-level documentation layout은 [`docs/README.md`](../README.md)에서 시작합니다.
