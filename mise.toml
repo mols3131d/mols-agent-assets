@@ -7,13 +7,18 @@ lefthook = "2.1.10"
 "npm:rulesync" = "16.5.0"
 "npm:skills" = "1.5.23"
 
+[tasks.external-skills]
+description = "Install pinned external Agent Skill dependencies"
+env = { DISABLE_TELEMETRY = "1" }
+run = "skills add https://github.com/epoko77-ai/im-not-ai/tree/0ac1e84f92334f9696e69184478f91c1c6f1dc5e/codex/skills/humanize-korean --agent codex --yes"
+
 [tasks.setup]
 description = "Install project dependencies, Agent Skills, and Git hooks"
 run = [
   "uv sync --all-groups",
   "rulesync install --frozen",
   "rulesync generate",
-  "skills add https://github.com/epoko77-ai/im-not-ai/tree/0ac1e84f92334f9696e69184478f91c1c6f1dc5e/codex/skills/humanize-korean --agent codex --yes",
+  { task = "external-skills" },
   "lefthook install",
 ]
 
