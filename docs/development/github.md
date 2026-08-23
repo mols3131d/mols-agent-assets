@@ -37,7 +37,7 @@ Issue는 idea, feedback, task, bug처럼 **논의하거나 추적할 work item**
 - 모든 change에 Issue를 선행 조건으로 요구하지 않습니다.
 - Issue와 Pull Request는 서로 다른 object입니다.
 - PR에서 Issue를 link할 수 있지만, link는 traceability를 제공할 뿐 Issue를 PR lifecycle의 필수 단계로 만들지 않습니다.
-- Issue를 coding agent에 assign하거나 Issue 내용으로 agent task를 시작해도 구현·review·merge 권한이 추가로 부여되지는 않습니다.
+- Issue를 coding agent에 assign하거나 Issue 내용으로 agent task를 시작해도 저장소 권한이 넓어지거나 Merge 권한이 함께 부여되지는 않습니다.
 - 비동기 agent 작업에 Issue를 사용한다면 원하는 결과와 중요한 완료 조건이 agent가 독립적으로 작업할 수 있을 만큼 명확해야 합니다.
 
 ## Coding Agents
@@ -49,7 +49,6 @@ GitHub에서 동작하는 Copilot cloud agent, third-party coding agent, custom 
 - Agent라는 이유만으로 Ruleset bypass나 더 넓은 repository permission을 부여하지 않습니다.
 - GitHub가 제공하는 automatic security validation, agent self-review나 다른 model의 review는 기존 검증과 검토 근거를 보강할 수 있지만 통합 승인 규칙의 의미를 바꾸지 않습니다.
 - Agent session log, commit attribution과 GitHub audit evidence를 사용할 수 있으면 추적 가능성을 유지합니다. 이를 승인으로 해석하지 않습니다.
-- Agent task를 시작한 행위는 그 agent에게 Merge나 다른 최종 반영 작업까지 수행할 권한을 준 것으로 해석하지 않습니다.
 
 Agent가 실행 권한이나 이후 agent의 동작을 바꾸는 **통제 표면(control surface)**을 수정할 때는 일반 문서 변경보다 높은 위험으로 취급합니다. GitHub Actions workflow, agent instruction, custom agent/MCP configuration처럼 agent가 무엇을 읽고 실행하고 쓸 수 있는지 바꾸는 변경은 수정된 통제 표면 자체에 의존하지 않는 검토 근거를 확보하고, 최종 반영 전에 명시적인 사람의 승인을 받습니다.
 
