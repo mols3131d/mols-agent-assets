@@ -8,7 +8,7 @@ description: repository의 deterministic verification, tool validation, PR Gate�
 
 Repository tool versions and cross-tool task entry points are pinned in `mise.toml`.
 
-- mise owns `uv`, Node.js, rumdl, Lefthook, Biome, Rulesync, and repository-level tasks.
+- mise owns `uv`, Node.js, rumdl, Lefthook, Biome, Rulesync, skills CLI, and repository-level tasks.
 - uv owns the Python version from `.python-version`, Python dependencies from `pyproject.toml`, the environment, and `uv.lock`.
 - Ruff remains a Python development dependency and runs through uv.
 
@@ -21,7 +21,7 @@ mise install
 mise run setup
 ```
 
-`mise run setup` installs all Python dependency groups, locked repository-local Rulesync assets, generated Agent Skills, and Git hooks.
+`mise run setup` installs all Python dependency groups, locked repository-local Rulesync assets, pinned external Agent Skill dependencies, generated Agent Skills, and Git hooks. External Skill dependency selection and installer options are owned by the dedicated mise task referenced from `setup`.
 
 ## Formatting
 
@@ -47,6 +47,7 @@ PR Gate는 root `tests/` 전체를 항상 `uv --locked` semantics로 실행합�
 추가 비용이 있는 검증만 change impact에 따라 실행합니다.
 
 - tooling configuration → `mise run check`
+- external Skill setup → pinned installer task 실행
 - canonical Rulesync source → Markdown normalization + `rulesync:doctor`
 - Skill route inputs → distribution route regeneration 후 committed output과 diff 확인
 - changed Markdown → rumdl normalization 후 diff 확인
@@ -60,7 +61,7 @@ PR Gate는 `contents: read`만 사용합니다. Generated route나 Markdown drif
 
 Rulesync CLI version은 `mise.toml`에서 exact pin합니다. Repository `npm run rulesync:*` command는 `scripts/run_rulesync.py`를 통해 `src/rulesync/` workspace를 대상으로 실행합니다. Runner는 target path나 projection semantics를 재구현하지 않고 mise-managed Rulesync CLI에 위임합니다.
 
-Root repository workspace는 reusable library와 분리된 declarative consumer입니다. `rulesync.jsonc`의 선택과 `rulesync.lock`의 integrity를 deterministic regression으로 검증하고, `mise run setup`이 `rulesync install --frozen` 후 `agentsskills` target을 `.agents/skills/`로 생성합니다.
+Root repository workspace는 reusable library와 분리된 declarative consumer입니다. `rulesync.jsonc`의 선택과 `rulesync.lock`의 integrity를 deterministic regression으로 검증하고, `mise run setup`이 `rulesync install --frozen` 후 repository-local projection을 생성합니다.
 
 ## Evaluation integration
 
