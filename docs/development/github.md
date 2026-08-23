@@ -1,5 +1,5 @@
 ---
-description: GitHub Issues, Pull Requests, PR Reviews, coding agents, GitHub Agentic Workflows, merge, Rulesets와 Actions의 repository-local policy와 authority boundary를 확인할 때 사용합니다.
+description: GitHub Issues, Pull Requests, PR Reviews, coding agents, agent automations, GitHub Agentic Workflows, merge, Rulesets와 Actions의 repository-local policy와 authority boundary를 확인할 때 사용합니다.
 ---
 
 # GitHub
@@ -52,6 +52,16 @@ GitHub에서 동작하는 Copilot cloud agent, third-party coding agent, custom 
 - Agent task를 시작한 행위는 그 agent에게 Merge나 다른 최종 반영 작업까지 수행할 권한을 준 것으로 해석하지 않습니다.
 
 Agent가 실행 권한이나 이후 agent의 동작을 바꾸는 **통제 표면(control surface)**을 수정할 때는 일반 문서 변경보다 높은 위험으로 취급합니다. GitHub Actions workflow, agent instruction, custom agent/MCP configuration처럼 agent가 무엇을 읽고 실행하고 쓸 수 있는지 바꾸는 변경은 수정된 통제 표면 자체에 의존하지 않는 검토 근거를 확보하고, 최종 반영 전에 명시적인 사람의 승인을 받습니다.
+
+## Agent Automations
+
+Copilot automations처럼 schedule이나 repository event를 계기로 coding agent 작업을 자동으로 시작하는 기능은 **작업 시작의 자동화**로 취급합니다. 반복되거나 사람 없이 시작된다는 이유로 권한이 추가되지는 않습니다.
+
+- Trigger는 작업 시작 조건일 뿐 permission boundary가 아닙니다.
+- Issue, PR, comment와 외부 content를 trigger나 입력으로 사용할 때 신뢰 경계를 명시하고, tool과 write permission은 작업에 필요한 최소 범위로 제한합니다.
+- Automation이 기록하는 rationale, confidence와 제안 승인 같은 정보는 운영과 audit을 위한 근거이며 server-side security control을 대신하지 않습니다.
+- Automation이 만든 branch, Issue, comment와 PR도 같은 Ruleset, review, Actions와 Merge policy를 따릅니다.
+- 저장소 content와 별도로 저장되는 automation configuration은 Git history의 검토·versioning을 자동으로 얻지 못하므로, 중요한 권한이나 반복 동작은 GitHub의 접근 통제와 별도의 운영 검토로 관리합니다.
 
 ## Pull Requests
 
@@ -121,6 +131,7 @@ GitHub Agentic Workflows를 도입한다면 자연어 Markdown이라고 해서 �
 - [Merge and close pull requests](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests)
 - [Available rules for rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets)
 - [Risks and mitigations for GitHub Copilot cloud agent](https://docs.github.com/en/copilot/concepts/agents/cloud-agent/risks-and-mitigations)
+- [About Copilot automations](https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-automations)
 - [About third-party coding agents](https://docs.github.com/en/copilot/concepts/agents/about-third-party-coding-agents)
 - [About GitHub Agentic Workflows](https://docs.github.com/en/copilot/concepts/agents/about-github-agentic-workflows)
 - [Adding repository custom instructions for GitHub Copilot](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions)
