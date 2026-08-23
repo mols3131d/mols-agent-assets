@@ -3,29 +3,29 @@
   "sources": {
     "mols3131d/mols-agent-assets": {
       "requestedRef": "main",
-      "resolvedRef": "8a99c402cb507a334f3a75bbf0c283574aba54b2",
-      "resolvedAt": "2026-08-22T14:31:00.000Z",
+      "resolvedRef": "7515d4e0a0b654a0611ce3ccf553f9270bdeed37",
+      "resolvedAt": "2026-08-23T14:41:00.000Z",
       "skills": {
-        "artifact-consistency-inspector": {
-          "integrity": "sha256-89cfaf13ad70fc247b1c8e4fdd49c07563ee44d1671672a8485cbab89dc15774"
-        },
-        "github-context": {
-          "integrity": "sha256-21e9be40b662bf6644c00fd1a035ae3a40da3cc46fb79cf3d7ba547a2316c3db"
+        "mols-agent-asset": {
+          "integrity": "sha256-0000000000000000000000000000000000000000000000000000000000000000"
         },
         "mols-agent-asset-find": {
-          "integrity": "sha256-3161fc07de2d430335910a7457772c3a6926c3e891454e94d7661ff45a751e26"
+          "integrity": "sha256-0000000000000000000000000000000000000000000000000000000000000000"
         },
         "mols-agent-asset-validator": {
-          "integrity": "sha256-8a2c36e0a52b812741b775b0b6d5f816e70c8a711e245403430975e0ae787e52"
+          "integrity": "sha256-0000000000000000000000000000000000000000000000000000000000000000"
         },
-        "mols-agent-asset": {
-          "integrity": "sha256-4804ac1931d7ecdb7688e9627a41d1a19c5cb525f944f44d7ba50c6f5d730368"
+        "mols-markdown-for-human": {
+          "integrity": "sha256-0000000000000000000000000000000000000000000000000000000000000000"
         },
         "mols-markdown-maintenance": {
-          "integrity": "sha256-4f3b75f222ca8192a23ec577a655b039f2fecad6ddebe7520d30d32612fb8572"
+          "integrity": "sha256-0000000000000000000000000000000000000000000000000000000000000000"
         },
-        "mols-rpi": {
-          "integrity": "sha256-269ba30bfa8d978157e70e5af20d73c7c474288810b9129a5ace9ec003ff4995"
+        "mols-mermaid-chart": {
+          "integrity": "sha256-0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "mols-mermaid-diagram": {
+          "integrity": "sha256-0000000000000000000000000000000000000000000000000000000000000000"
         }
       }
     }
