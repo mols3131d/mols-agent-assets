@@ -44,7 +44,6 @@ Issue는 idea, feedback, task, bug처럼 **논의하거나 추적할 작업 항�
 
 Copilot cloud agent, third-party coding agent, custom agent와 agent app처럼 GitHub에서 동작하는 agent는 이 저장소에서 **변경을 제안하고 구현하는 자동화된 기여자**로 취급합니다. 특정 제공자나 model에 따라 통합 승인 규칙을 달리하지 않습니다.
 
-- Agent의 working state, worktree, base, branch와 history는 [VCS / Git](vcs-git.md)의 정책을 따릅니다.
 - Agent가 만든 PR도 사람이 만든 PR과 같은 Rulesets, required checks와 검토 조건을 통과해야 합니다.
 - Agent라는 이유만으로 Ruleset bypass나 더 넓은 저장소 권한을 부여하지 않습니다.
 - 자동 보안 검증, agent self-review와 다른 model의 review는 기존 검증과 검토를 보강할 수 있지만 대신하지는 못합니다.
