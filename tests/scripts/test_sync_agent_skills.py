@@ -50,6 +50,17 @@ def test_build_command_preserves_lock_path_revision_and_skill():
     ]
 
 
+def test_build_source_normalizes_public_github_url_before_subpath():
+    assert sync.build_source(
+        {
+            "source": "https://github.com/epoko77-ai/im-not-ai",
+            "ref": "v2.3.0",
+            "sourceType": "github",
+            "skillPath": "codex/skills/humanize-korean/SKILL.md",
+        }
+    ) == "epoko77-ai/im-not-ai/codex/skills/humanize-korean#v2.3.0"
+
+
 def test_build_source_rejects_ambiguous_skill_path_source():
     with pytest.raises(sync.SkillSyncError, match="skillPath 설치는 지원하지 않습니다"):
         sync.build_source(
@@ -62,9 +73,24 @@ def test_build_source_rejects_ambiguous_skill_path_source():
         )
 
 
+def test_github_shorthand_rejects_non_public_github_source():
+    with pytest.raises(sync.SkillSyncError, match="public GitHub owner/repo"):
+        sync.github_shorthand("https://ghe.example.com/owner/repo")
+
+
 def test_skill_folder_rejects_path_traversal():
     with pytest.raises(sync.SkillSyncError, match="지원하지 않는 skillPath"):
         sync.skill_folder({"skillPath": "../outside/SKILL.md"})
+
+
+def test_build_env_pins_public_github_and_disables_telemetry(monkeypatch):
+    monkeypatch.setenv("GH_HOST", "ghe.example.com")
+
+    env = sync.build_env({"sourceType": "github"})
+
+    assert env["GH_HOST"] == "github.com"
+    assert env["DISABLE_TELEMETRY"] == "1"
+    assert env["DO_NOT_TRACK"] == "1"
 
 
 def test_repository_vendor_targets_are_supported():
