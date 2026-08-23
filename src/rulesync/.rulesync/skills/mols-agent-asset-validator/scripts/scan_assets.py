@@ -68,6 +68,30 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def redact_secrets(text: str) -> str:
+    for pattern in SECRET_PATTERNS.values():
+        text = pattern.sub("[REDACTED]", text)
+    return text
+
+
+def sanitize_output(value: object) -> object:
+    if isinstance(value, str):
+        return redact_secrets(value)
+    if isinstance(value, list):
+        return [sanitize_output(item) for item in value]
+    if isinstance(value, dict):
+        return {key: sanitize_output(item) for key, item in value.items()}
+    return value
+
+
+def output_mutates_target(output: Path, target: Path) -> bool:
+    output_path = output.resolve()
+    target_path = target.resolve()
+    if target.is_dir():
+        return output_path == target_path or output_path.is_relative_to(target_path)
+    return output_path == target_path
+
+
 def is_safe_zip_member(name: str) -> bool:
     path = PurePosixPath(name)
     return not path.is_absolute() and ".." not in path.parts
@@ -422,7 +446,7 @@ def scan_directory(root: Path) -> dict[str, object]:
     total_normative = sum(int(item.get("normative_lines", 0)) for item in text_items)
     longest = max(text_items, key=lambda item: int(item.get("lines", 0)), default=None)
 
-    return {
+    result = {
         "scanner": "mols-agent-asset-validator/scripts/scan_assets.py",
         "evidence_level": "verified",
         "target": str(root),
@@ -454,6 +478,7 @@ def scan_directory(root: Path) -> dict[str, object]:
             "YAML syntax is not parsed because the scanner intentionally uses only the Python standard library."
         ],
     }
+    return sanitize_output(result)
 
 
 def scan_target(target: Path) -> dict[str, object]:
@@ -467,7 +492,7 @@ def scan_target(target: Path) -> dict[str, object]:
             result = scan_directory(extracted)
             result["archive"] = {"path": str(target), "sha256": sha256(target)}
             result["target"] = str(target)
-            return result
+            return sanitize_output(result)
     raise ScanError("target must be a directory or ZIP archive")
 
 
@@ -479,6 +504,8 @@ def main() -> int:
     args = parser.parse_args()
 
     try:
+        if args.output and output_mutates_target(args.output, args.target):
+            raise ScanError("output path must not overwrite or be inside the scan target")
         result = scan_target(args.target)
     except (OSError, ScanError, zipfile.BadZipFile) as exc:
         print(json.dumps({"error": str(exc)}, ensure_ascii=False, indent=2), file=sys.stderr)
