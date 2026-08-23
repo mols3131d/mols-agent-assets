@@ -16,6 +16,7 @@ from urllib.parse import urlparse
 ROOT = Path(__file__).resolve().parents[1]
 LOCK_PATH = ROOT / "skills-lock.json"
 TARGET_CONFIG_PATH = ROOT / "src" / "rulesync" / "rulesync.jsonc"
+SUPPORTED_SOURCE_TYPES = {"github", "git", "gitlab", "local", "well-known"}
 
 TARGET_TO_AGENT = {
     "claudecode": "claude-code",
@@ -106,6 +107,9 @@ def github_shorthand(source: str) -> str:
 
 def build_source(entry: dict[str, Any]) -> str:
     source_type = entry.get("sourceType")
+    if source_type not in SUPPORTED_SOURCE_TYPES:
+        raise SkillSyncError(f"지원하지 않는 sourceType입니다: {source_type!r}")
+
     source_url = entry.get("sourceUrl")
     source = source_url or entry.get("source")
 
@@ -122,7 +126,7 @@ def build_source(entry: dict[str, Any]) -> str:
             source = str(Path(source, *PurePosixPath(folder).parts))
         else:
             raise SkillSyncError(
-                f"{source_type or 'unknown'} source의 skillPath 설치는 지원하지 않습니다."
+                f"{source_type} source의 skillPath 설치는 지원하지 않습니다."
             )
 
     ref = entry.get("ref")
