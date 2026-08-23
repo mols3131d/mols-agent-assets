@@ -23,7 +23,10 @@ def update_agent_skills():
         print("[2/2] Warning: 'mise' command not found. Skipping skill updates.")
         return
     print("[2/2] Syncing locked agent skills to repository vendor targets...")
-    subprocess.run(["mise", "run", "skills-sync"], check=True)
+    try:
+        subprocess.run(["mise", "run", "skills-sync"], check=True)
+    except subprocess.CalledProcessError:
+        print("Warning: skill sync encountered an issue, skipping.")
 
 
 def main():
