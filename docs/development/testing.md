@@ -40,7 +40,7 @@ mise run test
 
 ## PR Gate
 
-`main` 대상 모든 PR은 하나의 안정적인 `PR Gate` job을 실행합니다. Workflow 수준 path filter를 두지 않아 required check가 skip 상태로 남지 않게 합니다.
+`main` 대상 모든 PR은 하나의 고정된 `PR Gate` job을 실행합니다. Workflow 수준 path filter를 두지 않아 required check가 skip 상태로 남지 않게 합니다.
 
 PR Gate는 root `tests/` 전체를 항상 `uv --locked` semantics로 실행합니다. 현재 결정론적 test suite가 충분히 작으므로 test 선택 routing보다 전체 suite를 안전한 기본값으로 사용합니다.
 
