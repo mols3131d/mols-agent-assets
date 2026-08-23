@@ -29,6 +29,18 @@ ASSET_NAMES = {
     "AGENTS.md": "instruction",
     "DIRECTIVE.md": "instruction",
 }
+CONTEXT_DIRS = {
+    "agents",
+    "subagents",
+    "prompts",
+    "instructions",
+    "evals",
+    "tests",
+    "references",
+    "templates",
+    "schemas",
+    "scripts",
+}
 FRONTMATTER_PATTERN = re.compile(r"\A---\n(?P<body>.*?)\n---(?:\n|\Z)", re.DOTALL)
 MARKDOWN_LINK_PATTERN = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
 DECLARED_PATH_PATTERN = re.compile(r"`((?:agents|subagents|references|schemas|scripts|evals|templates|docs)/[^`\s]+)`")
@@ -179,6 +191,13 @@ def is_identity_asset(path: Path, root: Path) -> bool:
     if asset_type == "agent":
         return path.name.endswith(".agent.md")
     return asset_type == "subagent" and path.suffix.lower() == ".md"
+
+
+def single_file_root(path: Path) -> Path:
+    parent = path.parent
+    if parent.name.lower() in CONTEXT_DIRS:
+        return parent.parent
+    return parent
 
 
 def read_text(path: Path, findings: list[Finding], root: Path) -> str | None:
@@ -514,7 +533,7 @@ def scan_target(target: Path) -> dict[str, object]:
             return sanitize_output(result)
     if target.is_file():
         resolved = target.resolve()
-        return scan_directory(resolved.parent, entries=[resolved], target=target)
+        return scan_directory(single_file_root(resolved), entries=[resolved], target=target)
     raise ScanError("target must be a file, directory, or ZIP archive")
 
 
