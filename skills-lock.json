@@ -1,4 +1,12 @@
 {
   "version": 1,
-  "skills": {}
+  "skills": {
+    "humanize-korean": {
+      "source": "epoko77-ai/im-not-ai",
+      "ref": "v2.3.0",
+      "sourceType": "github",
+      "skillPath": "codex/skills/humanize-korean/SKILL.md",
+      "computedHash": "pending"
+    }
+  }
 }
