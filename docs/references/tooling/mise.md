@@ -41,7 +41,7 @@ mise exec -- npm run eval:promptfoo:mols-rpi
 - [mise tasks](https://mise.jdx.dev/tasks/)
 - [mise CI](https://mise.jdx.dev/continuous-integration.html)
 - [uv Python versions](https://docs.astral.sh/uv/concepts/python-versions/)
-- [uv projects](https://docs.astral.sh/uv/projects/)
+- [uv projects](https://docs.astral.sh/uv/concepts/projects/)
 - [rumdl installation](https://github.com/rvben/rumdl#installation)
 - [Lefthook with mise](https://lefthook.dev/installation/mise/)
 - [Lefthook install](https://lefthook.dev/usage/commands/install/)
