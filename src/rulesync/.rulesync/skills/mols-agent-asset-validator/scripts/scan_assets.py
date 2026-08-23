@@ -29,9 +29,21 @@ ASSET_NAMES = {
     "AGENTS.md": "instruction",
     "DIRECTIVE.md": "instruction",
 }
+CONTEXT_DIRS = {
+    "agents",
+    "subagents",
+    "prompts",
+    "instructions",
+    "evals",
+    "tests",
+    "references",
+    "templates",
+    "schemas",
+    "scripts",
+}
 FRONTMATTER_PATTERN = re.compile(r"\A---\n(?P<body>.*?)\n---(?:\n|\Z)", re.DOTALL)
 MARKDOWN_LINK_PATTERN = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
-DECLARED_PATH_PATTERN = re.compile(r"`((?:agents|references|schemas|scripts|evals|templates|docs)/[^`\s]+)`")
+DECLARED_PATH_PATTERN = re.compile(r"`((?:agents|subagents|references|schemas|scripts|evals|templates|docs)/[^`\s]+)`")
 HEADING_PATTERN = re.compile(r"^(#{1,6})\s+\S")
 NORMATIVE_PATTERN = re.compile(r"\b(?:must|should|never|always|required|forbidden)\b|(?:반드시|항상|절대|금지|해야 한다|해야한다|필수)", re.IGNORECASE)
 NAME_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
@@ -67,6 +79,34 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def redact_secrets(text: str) -> str:
+    for pattern in SECRET_PATTERNS.values():
+        text = pattern.sub("[REDACTED]", text)
+    return text
+
+
+def sanitize_value(value: object) -> object:
+    if isinstance(value, str):
+        return redact_secrets(value)
+    if isinstance(value, list):
+        return [sanitize_value(item) for item in value]
+    if isinstance(value, dict):
+        return {redact_secrets(str(key)): sanitize_value(item) for key, item in value.items()}
+    return value
+
+
+def sanitize_output(result: dict[str, object]) -> dict[str, object]:
+    return {redact_secrets(key): sanitize_value(value) for key, value in result.items()}
+
+
+def output_mutates_target(output: Path, target: Path) -> bool:
+    output_path = output.resolve()
+    target_path = target.resolve()
+    if target.is_dir():
+        return output_path == target_path or output_path.is_relative_to(target_path)
+    return output_path == target_path
+
+
 def is_safe_zip_member(name: str) -> bool:
     path = PurePosixPath(name)
     return not path.is_absolute() and ".." not in path.parts
@@ -96,10 +136,19 @@ def extract_zip_safely(archive: Path, destination: Path) -> None:
         handle.extractall(destination)
 
 
-def iter_files(root: Path) -> Iterable[Path]:
+def iter_entries(root: Path) -> Iterable[Path]:
     for current, dirs, files in os.walk(root):
-        dirs[:] = sorted(name for name in dirs if name not in IGNORED_DIRS)
         current_path = Path(current)
+        next_dirs: list[str] = []
+        for name in sorted(dirs):
+            if name in IGNORED_DIRS:
+                continue
+            path = current_path / name
+            if path.is_symlink():
+                yield path
+            else:
+                next_dirs.append(name)
+        dirs[:] = next_dirs
         for name in sorted(files):
             yield current_path / name
 
@@ -108,10 +157,12 @@ def relative(path: Path, root: Path) -> str:
     return path.relative_to(root).as_posix()
 
 
-def classify(path: Path) -> str:
+def classify(path: Path, root: Path) -> str:
     if path.name in ASSET_NAMES:
         return ASSET_NAMES[path.name]
-    parts = {part.lower() for part in path.parts}
+    parts = {part.lower() for part in path.relative_to(root).parts[:-1]}
+    if "subagents" in parts:
+        return "subagent"
     if "agents" in parts or path.name.endswith(".agent.md"):
         return "agent"
     if "prompts" in parts or path.name.endswith(".prompt.md"):
@@ -131,6 +182,22 @@ def classify(path: Path) -> str:
     if path.suffix in {".json", ".yaml", ".yml", ".toml"}:
         return "config"
     return "other"
+
+
+def is_identity_asset(path: Path, root: Path) -> bool:
+    asset_type = classify(path, root)
+    if asset_type == "skill":
+        return True
+    if asset_type == "agent":
+        return path.name.endswith(".agent.md")
+    return asset_type == "subagent" and path.suffix.lower() == ".md"
+
+
+def single_file_root(path: Path) -> Path:
+    parent = path.parent
+    if parent.name.lower() in CONTEXT_DIRS:
+        return parent.parent
+    return parent
 
 
 def read_text(path: Path, findings: list[Finding], root: Path) -> str | None:
@@ -158,7 +225,6 @@ def parse_frontmatter(text: str) -> dict[str, str] | None:
         key, value = line.split(":", 1)
         result[key.strip()] = value.strip().strip('"\'')
     return result
-
 
 
 def normalized_normative_lines(text: str) -> list[str]:
@@ -255,9 +321,10 @@ def check_markdown_links(path: Path, text: str, root: Path, findings: list[Findi
 
 def check_text_file(path: Path, text: str, root: Path, findings: list[Finding]) -> dict[str, object]:
     rel = relative(path, root)
+    asset_type = classify(path, root)
     metadata: dict[str, object] = {
         "path": rel,
-        "asset_type": classify(path),
+        "asset_type": asset_type,
         "size": path.stat().st_size,
         "lines": len(text.splitlines()),
     }
@@ -279,21 +346,21 @@ def check_text_file(path: Path, text: str, root: Path, findings: list[Finding]) 
         normative = normalized_normative_lines(text)
         metadata["normative_lines"] = len(normative)
         metadata["normative_density"] = round(len(normative) / max(1, len(text.splitlines())), 4)
-        if len(text.splitlines()) > 500 and (path.name == "SKILL.md" or classify(path) in {"agent", "instruction", "prompt"}):
+        if len(text.splitlines()) > 500 and asset_type in {"skill", "agent", "subagent", "instruction", "prompt"}:
             findings.append(Finding("minor", "context-cost", rel, "agent-facing text exceeds 500 lines; review progressive disclosure and relevance"))
         if len(text.splitlines()) > 100 and metadata["normative_density"] > 0.35:
             findings.append(Finding("note", "instruction-bottleneck", rel, "high normative-line density is a heuristic signal requiring semantic review", evidence_level="inferred"))
         frontmatter = parse_frontmatter(text)
-        known_agent_asset = path.name == "SKILL.md" or path.name.endswith(".agent.md")
-        if known_agent_asset and not frontmatter:
+        identity_asset = is_identity_asset(path, root)
+        if identity_asset and not frontmatter:
             findings.append(Finding("major", "frontmatter", rel, "agent asset is missing frontmatter"))
         if frontmatter:
             metadata["frontmatter"] = frontmatter
-            if known_agent_asset:
+            if identity_asset:
                 for key in ("name", "description"):
                     if not frontmatter.get(key):
                         findings.append(Finding("major", "frontmatter", rel, f"frontmatter missing {key}"))
-                if path.name == "SKILL.md" and frontmatter.get("name") and not NAME_PATTERN.fullmatch(frontmatter["name"]):
+                if asset_type == "skill" and frontmatter.get("name") and not NAME_PATTERN.fullmatch(frontmatter["name"]):
                     findings.append(Finding("major", "identity", rel, "Skill frontmatter name must be kebab-case"))
     for name, pattern in SECRET_PATTERNS.items():
         if pattern.search(text):
@@ -326,28 +393,33 @@ def check_python(path: Path, root: Path, findings: list[Finding]) -> None:
         findings.append(Finding("major", "python", rel, f"Python compile failure: {exc.msg}"))
 
 
-def scan_directory(root: Path) -> dict[str, object]:
+def scan_directory(
+    root: Path,
+    entries: Iterable[Path] | None = None,
+    target: Path | None = None,
+) -> dict[str, object]:
     findings: list[Finding] = []
     inventory: list[dict[str, object]] = []
     relationships: list[dict[str, str]] = []
-    frontmatter_names: dict[str, list[str]] = {}
+    frontmatter_names: dict[tuple[str, str], list[str]] = {}
     normative_occurrences: dict[str, set[str]] = {}
 
     if not root.is_dir():
-        raise ScanError(f"target is not a directory: {root}")
+        raise ScanError(f"target root is not a directory: {root}")
 
-    files = list(iter_files(root))
-    if not files:
+    scan_entries = list(iter_entries(root) if entries is None else entries)
+    if not scan_entries:
         findings.append(Finding("major", "package", ".", "target contains no files"))
 
-    for path in files:
+    for path in scan_entries:
         rel = relative(path, root)
         if path.is_symlink():
             findings.append(Finding("major", "package", rel, "symlink found; review target and archive semantics"))
             continue
+        asset_type = classify(path, root)
         item: dict[str, object] = {
             "path": rel,
-            "asset_type": classify(path),
+            "asset_type": asset_type,
             "size": path.stat().st_size,
             "sha256": sha256(path),
         }
@@ -361,16 +433,16 @@ def scan_directory(root: Path) -> dict[str, object]:
                     normative_occurrences.setdefault(normalized, set()).add(rel)
                 if path.suffix.lower() == ".md":
                     for raw_target in MARKDOWN_LINK_PATTERN.findall(text):
-                        target = relation_target(path, raw_target, root)
-                        if target:
-                            relationships.append({"from": rel, "type": "reads", "to": target})
+                        relation = relation_target(path, raw_target, root)
+                        if relation:
+                            relationships.append({"from": rel, "type": "reads", "to": relation})
                     for raw_target in DECLARED_PATH_PATTERN.findall(text):
-                        target = relation_target(path, raw_target, root)
-                        if target:
-                            relationships.append({"from": rel, "type": "reads", "to": target})
+                        relation = relation_target(path, raw_target, root)
+                        if relation:
+                            relationships.append({"from": rel, "type": "reads", "to": relation})
                 frontmatter = item.get("frontmatter")
-                if isinstance(frontmatter, dict) and isinstance(frontmatter.get("name"), str):
-                    frontmatter_names.setdefault(frontmatter["name"], []).append(rel)
+                if is_identity_asset(path, root) and isinstance(frontmatter, dict) and isinstance(frontmatter.get("name"), str):
+                    frontmatter_names.setdefault((asset_type, frontmatter["name"]), []).append(rel)
         if path.suffix.lower() == ".json":
             check_json(path, root, findings)
         if path.suffix.lower() == ".toml":
@@ -379,9 +451,9 @@ def scan_directory(root: Path) -> dict[str, object]:
             check_python(path, root, findings)
         inventory.append(item)
 
-    for name, paths in sorted(frontmatter_names.items()):
+    for (asset_type, name), paths in sorted(frontmatter_names.items()):
         if len(paths) > 1:
-            findings.append(Finding("major", "identity", ", ".join(paths), f"duplicate frontmatter name: {name}"))
+            findings.append(Finding("major", "identity", ", ".join(paths), f"duplicate {asset_type} frontmatter name: {name}"))
 
     duplicate_normative_groups = 0
     for normalized, paths in sorted(normative_occurrences.items()):
@@ -409,10 +481,10 @@ def scan_directory(root: Path) -> dict[str, object]:
     total_normative = sum(int(item.get("normative_lines", 0)) for item in text_items)
     longest = max(text_items, key=lambda item: int(item.get("lines", 0)), default=None)
 
-    return {
+    result = {
         "scanner": "mols-agent-asset-validator/scripts/scan_assets.py",
         "evidence_level": "verified",
-        "target": str(root),
+        "target": str(root if target is None else target),
         "inventory": inventory,
         "relationships": relationships,
         "asset_counts": counts,
@@ -441,9 +513,13 @@ def scan_directory(root: Path) -> dict[str, object]:
             "YAML syntax is not parsed because the scanner intentionally uses only the Python standard library."
         ],
     }
+    return sanitize_output(result)
 
 
 def scan_target(target: Path) -> dict[str, object]:
+    target = target.absolute()
+    if target.is_symlink():
+        return scan_directory(target.parent, entries=[target], target=target)
     if target.is_dir():
         return scan_directory(target.resolve())
     if target.is_file() and target.suffix.lower() == ".zip":
@@ -454,8 +530,11 @@ def scan_target(target: Path) -> dict[str, object]:
             result = scan_directory(extracted)
             result["archive"] = {"path": str(target), "sha256": sha256(target)}
             result["target"] = str(target)
-            return result
-    raise ScanError("target must be a directory or ZIP archive")
+            return sanitize_output(result)
+    if target.is_file():
+        resolved = target.resolve()
+        return scan_directory(single_file_root(resolved), entries=[resolved], target=target)
+    raise ScanError("target must be a file, directory, or ZIP archive")
 
 
 def main() -> int:
@@ -466,9 +545,11 @@ def main() -> int:
     args = parser.parse_args()
 
     try:
+        if args.output and output_mutates_target(args.output, args.target):
+            raise ScanError("output path must not overwrite or be inside the scan target")
         result = scan_target(args.target)
     except (OSError, ScanError, zipfile.BadZipFile) as exc:
-        print(json.dumps({"error": str(exc)}, ensure_ascii=False, indent=2), file=sys.stderr)
+        print(json.dumps({"error": redact_secrets(str(exc))}, ensure_ascii=False, indent=2), file=sys.stderr)
         return 2
 
     rendered = json.dumps(result, ensure_ascii=False, indent=2)
