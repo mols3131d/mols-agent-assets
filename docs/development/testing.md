@@ -6,13 +6,13 @@ description: repository의 deterministic verification, tool validation, PR Gate�
 
 ## Tool ownership
 
-Repository tool versions and cross-tool task entry points are pinned in `mise.toml`.
+Repository에서 사용하는 도구 버전과 여러 도구를 아우르는 task entrypoint는 `mise.toml`에 고정합니다.
 
-- mise owns `uv`, Node.js, rumdl, Lefthook, Biome, Rulesync, and repository-level tasks.
-- uv owns the Python version from `.python-version`, Python dependencies from `pyproject.toml`, the environment, and `uv.lock`.
-- Ruff remains a Python development dependency and runs through uv.
+- mise는 `uv`, Node.js, rumdl, Lefthook, Biome, Rulesync와 repository-level task를 소유합니다.
+- uv는 `.python-version`의 Python version, `pyproject.toml`의 Python dependency, environment와 `uv.lock`을 소유합니다.
+- Ruff는 Python development dependency로 유지하며 uv를 통해 실행합니다.
 
-Python is intentionally not declared in `mise.toml`; `uv run` provisions and uses the project Python when required.
+Python은 의도적으로 `mise.toml`에 선언하지 않습니다. 필요할 때 `uv run`이 project Python을 준비하고 사용합니다.
 
 ## Setup
 
@@ -21,7 +21,7 @@ mise install
 mise run setup
 ```
 
-`mise run setup` installs all Python dependency groups, locked repository-local Rulesync assets, generated Agent Skills, and Git hooks.
+`mise run setup`은 모든 Python dependency group, lock된 repository-local Rulesync asset, 생성된 Agent Skill과 Git hook을 설치합니다.
 
 ## Formatting
 
@@ -29,7 +29,7 @@ mise run setup
 mise run format
 ```
 
-The format task runs Ruff, rumdl, and Biome through their owning runtimes.
+Format task는 각 도구를 소유하는 runtime을 통해 Ruff, rumdl과 Biome을 실행합니다.
 
 ## Validation
 
