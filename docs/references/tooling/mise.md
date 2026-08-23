@@ -41,7 +41,7 @@ mise exec -- npm run eval:promptfoo:mols-rpi
 - [uv projects](https://docs.astral.sh/uv/concepts/projects/)
 - [rumdl installation](https://github.com/rvben/rumdl#installation)
 - [Lefthook with mise](https://lefthook.dev/installation/mise/)
-- [Lefthook install](https://lefthook.dev/usage/commands/)
+- [Lefthook install](https://lefthook.dev/usage/commands/install/)
 - [Biome configuration](https://biomejs.dev/reference/configuration/)
 - [Biome CLI](https://biomejs.dev/reference/cli/)
 - [Rulesync](rulesync.md)
