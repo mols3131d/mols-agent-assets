@@ -61,10 +61,11 @@ Rulesync 형식과 벤더 고유 형식 중 무엇을 선택할지는 이식성�
 
 이 저장소가 이후 변경을 소유할 자산은 **migration으로 흡수**합니다.
 
-- 선택한 작성 framework가 기존 target 형식의 import를 지원하면 framework-native importer를 우선합니다. Rulesync를 작성 원본으로 선택한 경우 지원되는 source는 `rulesync import`로 가져온 뒤 결과를 검토·조정합니다.
-- Import 결과는 변환되었다는 이유만으로 신뢰하거나 즉시 canonical로 간주하지 않습니다. 필요한 semantics, supporting resources, attribution과 license, upstream revision을 확인한 뒤 의도적으로 채택합니다.
+- 선택한 작성 framework가 source 형식의 native intake를 지원하면 이를 우선합니다.
+- Rulesync를 작성 원본으로 선택하고 외부 Git repository가 지원되는 target-native 형식이면 `rulesync fetch <source> --target <target>`으로 가져옵니다. 이미 작업 공간에 존재하는 target-native configuration을 흡수할 때는 `rulesync import --targets <target>`을 사용합니다.
+- Fetch/import 결과는 변환되었다는 이유만으로 신뢰하거나 즉시 canonical로 간주하지 않습니다. 필요한 semantics, supporting resources, attribution과 license, upstream revision을 확인한 뒤 의도적으로 채택합니다.
 - Canonical source를 만들지 않는 일회성 target 간 변환에는 `rulesync convert` 같은 direct conversion을 사용할 수 있지만, 이를 작성 원본 도입 경로로 간주하지 않습니다.
-- Import가 필요한 동작이나 dependency를 표현하지 못하면 강제로 Rulesync에 맞추지 않습니다. 벤더 고유 형식을 작성 원본으로 유지하거나 필요한 범위만 명시적으로 adaptation합니다.
+- Intake가 필요한 동작이나 dependency를 표현하지 못하면 강제로 Rulesync에 맞추지 않습니다. 벤더 고유 형식을 작성 원본으로 유지하거나 필요한 범위만 명시적으로 adaptation합니다.
 
 외부 자산의 설치 방식과 importer의 세부 지원 범위는 빠르게 변할 수 있으므로 해당 도구와 runtime의 현재 공식 계약을 따릅니다.
 
