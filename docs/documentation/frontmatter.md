@@ -34,8 +34,10 @@ description: Markdown 문서의 frontmatter 적용 범위, 예외, description�
 
 ## Directory Entrypoint
 
-`README.md`처럼 directory의 entrypoint 역할을 하는 문서는 frontmatter에 **해당 directory의 metadata**를 담습니다.
+`README.md`, `index.md`처럼 directory의 entrypoint 역할을 하는 문서는 frontmatter에 **해당 directory의 metadata**를 담을 수 있습니다.
 
-`description`은 README 파일 자체를 설명하기보다 directory를 언제 탐색해야 하는지와, 선택에 필요할 때 그 directory의 책임·범위를 나타냅니다.
+Directory metadata를 projection할 때는 repository가 정한 entrypoint 후보의 우선순위를 따릅니다. 이 repository의 docs index는 기본적으로 `README.md`를 먼저 보고, usable frontmatter가 없으면 `index.md`를 fallback으로 사용합니다. 같은 directory의 여러 entrypoint metadata를 임의로 합치지 않습니다.
+
+`description`은 entrypoint 파일 자체를 설명하기보다 directory를 언제 탐색해야 하는지와, 선택에 필요할 때 그 directory의 책임·범위를 나타냅니다.
 
 Front Matter CMS의 설정, 공식 옵션, source routing은 [Front Matter CMS](../references/tooling/front-matter-cms.md)를 참고합니다.
