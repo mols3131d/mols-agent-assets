@@ -28,6 +28,7 @@ def test_generate_docs_indexes_does_not_route_index_only_directories(tmp_path):
 
     assert _read_tsv(docs / "INDEX.tsv") == [
         {"path": "references/", "description": ""},
+        {"path": "references/guide.md", "description": "Guide."},
     ]
     assert not (docs / "index-only" / "INDEX.tsv").exists()
     assert not (docs / "system-only" / "INDEX.tsv").exists()

@@ -17,7 +17,7 @@ def _read_tsv(path):
         return list(csv.DictReader(handle, delimiter="\t"))
 
 
-def test_generate_docs_indexes_projects_one_hop_breadth_first(tmp_path):
+def test_generate_docs_indexes_projects_directories_and_all_descendant_files(tmp_path):
     docs = tmp_path / "docs"
     _write(
         docs / "guide.md",
@@ -51,40 +51,67 @@ def test_generate_docs_indexes_projects_one_hop_breadth_first(tmp_path):
         {"path": "ARCHITECTURE.md", "description": ""},
         {"path": "guide.md", "description": "Guide description."},
         {"path": "references/", "description": "Reference docs."},
+        {"path": "references/nested/", "description": "Nested references."},
+        {"path": "references/nested/deep.md", "description": "Deep reference."},
+        {"path": "references/reference.md", "description": "Reference."},
     ]
     assert _read_tsv(docs / "references" / "INDEX.tsv") == [
         {"path": "nested/", "description": "Nested references."},
+        {"path": "nested/deep.md", "description": "Deep reference."},
         {"path": "reference.md", "description": "Reference."},
     ]
     assert not (docs / "references" / "nested" / "INDEX.tsv").exists()
 
 
-def test_generate_docs_indexes_depth_controls_recursive_materialization(tmp_path):
+def test_generate_docs_indexes_depth_limits_each_index_subtree(tmp_path):
+    docs = tmp_path / "docs"
+    _write(
+        docs / "references" / "nested" / "deep.md",
+        "---\ndescription: Deep.\n---\n# Deep\n",
+    )
+    _write(
+        docs / "references" / "reference.md",
+        "---\ndescription: Reference.\n---\n# Reference\n",
+    )
+
+    assert generate_docs_indexes(docs, index_depth=0, depth=1) == []
+
+    assert _read_tsv(docs / "INDEX.tsv") == [
+        {"path": "references/", "description": ""},
+        {"path": "references/nested/", "description": ""},
+        {"path": "references/reference.md", "description": "Reference."},
+    ]
+    assert not (docs / "references" / "INDEX.tsv").exists()
+
+
+def test_generate_docs_indexes_index_depth_controls_materialization_only(tmp_path):
     docs = tmp_path / "docs"
     _write(
         docs / "references" / "nested" / "deep" / "guide.md",
         "---\ndescription: Guide.\n---\n# Guide\n",
     )
 
-    assert generate_docs_indexes(docs, depth=2) == []
+    assert generate_docs_indexes(docs, index_depth=2) == []
 
     assert (docs / "INDEX.tsv").exists()
     assert (docs / "references" / "INDEX.tsv").exists()
     assert (docs / "references" / "nested" / "INDEX.tsv").exists()
     assert not (docs / "references" / "nested" / "deep" / "INDEX.tsv").exists()
-    assert _read_tsv(docs / "references" / "nested" / "INDEX.tsv") == [
-        {"path": "deep/", "description": ""},
+    assert _read_tsv(docs / "references" / "INDEX.tsv") == [
+        {"path": "nested/", "description": ""},
+        {"path": "nested/deep/", "description": ""},
+        {"path": "nested/deep/guide.md", "description": "Guide."},
     ]
 
 
-def test_generate_docs_indexes_depth_minus_one_is_unlimited(tmp_path):
+def test_generate_docs_indexes_index_depth_minus_one_is_unlimited(tmp_path):
     docs = tmp_path / "docs"
     _write(
         docs / "one" / "two" / "three" / "guide.md",
         "---\ndescription: Guide.\n---\n# Guide\n",
     )
 
-    assert generate_docs_indexes(docs, depth=-1) == []
+    assert generate_docs_indexes(docs, index_depth=-1) == []
 
     assert (docs / "INDEX.tsv").exists()
     assert (docs / "one" / "INDEX.tsv").exists()
@@ -92,11 +119,13 @@ def test_generate_docs_indexes_depth_minus_one_is_unlimited(tmp_path):
     assert (docs / "one" / "two" / "three" / "INDEX.tsv").exists()
 
 
-def test_generate_docs_indexes_rejects_invalid_depth(tmp_path):
+def test_generate_docs_indexes_rejects_invalid_depths(tmp_path):
     docs = tmp_path / "docs"
     docs.mkdir()
 
-    with pytest.raises(ValueError, match="-1 or greater"):
+    with pytest.raises(ValueError, match="index_depth"):
+        generate_docs_indexes(docs, index_depth=-2)
+    with pytest.raises(ValueError, match="depth"):
         generate_docs_indexes(docs, depth=-2)
 
 
@@ -116,6 +145,7 @@ def test_generate_docs_indexes_directory_entry_falls_back_to_index(tmp_path):
 
     assert _read_tsv(docs / "INDEX.tsv") == [
         {"path": "references/", "description": "Index fallback."},
+        {"path": "references/guide.md", "description": "Guide."},
     ]
     assert _read_tsv(docs / "references" / "INDEX.tsv") == [
         {"path": "guide.md", "description": "Guide."},
@@ -141,6 +171,7 @@ def test_generate_docs_indexes_directory_entry_precedence_does_not_merge(tmp_pat
 
     assert _read_tsv(docs / "INDEX.tsv") == [
         {"path": "references/", "description": ""},
+        {"path": "references/guide.md", "description": "Guide."},
     ]
 
 
@@ -155,15 +186,16 @@ def test_generate_docs_indexes_keeps_directory_without_entry_description_blank(t
 
     assert _read_tsv(docs / "skills" / "INDEX.tsv") == [
         {"path": "nested/", "description": ""},
+        {"path": "nested/guide.md", "description": "Guide."},
     ]
 
 
-def test_generate_docs_indexes_excludes_non_markdown_child_routes(tmp_path):
+def test_generate_docs_indexes_excludes_non_markdown_directories_recursively(tmp_path):
     docs = tmp_path / "docs"
     _write(docs / "assets" / "logo.png", "not really an image")
     _write(docs / "hidden" / ".private.md", "# Hidden\n")
     _write(
-        docs / "references" / "guide.md",
+        docs / "references" / "nested" / "guide.md",
         "---\ndescription: Guide.\n---\n# Guide\n",
     )
 
@@ -171,12 +203,14 @@ def test_generate_docs_indexes_excludes_non_markdown_child_routes(tmp_path):
 
     assert _read_tsv(docs / "INDEX.tsv") == [
         {"path": "references/", "description": ""},
+        {"path": "references/nested/", "description": ""},
+        {"path": "references/nested/guide.md", "description": "Guide."},
     ]
     assert not (docs / "assets" / "INDEX.tsv").exists()
     assert not (docs / "hidden" / "INDEX.tsv").exists()
 
 
-def test_generate_docs_indexes_removes_indexes_beyond_depth(tmp_path):
+def test_generate_docs_indexes_removes_indexes_beyond_index_depth(tmp_path):
     docs = tmp_path / "docs"
     _write(
         docs / "references" / "nested" / "guide.md",

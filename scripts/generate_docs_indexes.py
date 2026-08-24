@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate breadth-first repository-local ``docs/**/INDEX.tsv`` files."""
+"""Generate recursive repository-local ``docs/**/INDEX.tsv`` files."""
 
 from __future__ import annotations
 
@@ -19,7 +19,8 @@ from generate_index import generate_index  # noqa: E402
 DOCS_ROOT = ROOT / "docs"
 INDEX_NAME = "INDEX.tsv"
 HEADER = "path\tdescription\n"
-DEFAULT_DEPTH = 1
+DEFAULT_INDEX_DEPTH = 1
+DEFAULT_DEPTH = -1
 DEFAULT_DIRECTORY_ENTRY_FILES = ("README.md", "index.md")
 BASE_EXCLUDE = ("AGENTS.md",)
 EXCLUDE_GLOBS = [".*.md", "__*__.md"]
@@ -50,9 +51,9 @@ def _route_children(directory: Path) -> list[Path]:
     ]
 
 
-def _index_targets(docs_root: Path, depth: int) -> list[Path]:
-    if depth < -1:
-        raise ValueError("depth must be -1 or greater")
+def _index_targets(docs_root: Path, index_depth: int) -> list[Path]:
+    if index_depth < -1:
+        raise ValueError("index_depth must be -1 or greater")
 
     targets: list[Path] = []
     queue = deque([(docs_root, 0)])
@@ -60,7 +61,7 @@ def _index_targets(docs_root: Path, depth: int) -> list[Path]:
         directory, current_depth = queue.popleft()
         targets.append(directory)
 
-        if depth != -1 and current_depth >= depth:
+        if index_depth != -1 and current_depth >= index_depth:
             continue
 
         queue.extend((child, current_depth + 1) for child in _route_children(directory))
@@ -68,20 +69,30 @@ def _index_targets(docs_root: Path, depth: int) -> list[Path]:
     return targets
 
 
-def _desired_index(directory: Path, entry_files: tuple[str, ...]) -> str | None:
-    route_children = set(_route_children(directory))
-    excluded_directories = [
-        child.name
-        for child in directory.iterdir()
-        if child.is_dir() and child not in route_children
+def _non_route_directory_globs(directory: Path) -> list[str]:
+    return [
+        path.relative_to(directory).as_posix()
+        for path in directory.rglob("*")
+        if path.is_dir() and not _has_markdown_content(path)
     ]
+
+
+def _desired_index(
+    directory: Path,
+    entry_files: tuple[str, ...],
+    depth: int,
+) -> str | None:
+    if depth < -1:
+        raise ValueError("depth must be -1 or greater")
+
+    max_depth = None if depth == -1 else depth
     content = generate_index(
         directory,
         format="tsv",
         fields=["path", "description"],
-        max_depth=0,
-        exclude=[*BASE_EXCLUDE, *entry_files, *excluded_directories],
-        exclude_globs=EXCLUDE_GLOBS,
+        max_depth=max_depth,
+        exclude=[*BASE_EXCLUDE, *entry_files],
+        exclude_globs=[*EXCLUDE_GLOBS, *_non_route_directory_globs(directory)],
         include_without_frontmatter=True,
         include_directories=True,
         directory_entry_files=list(entry_files),
@@ -92,12 +103,15 @@ def _desired_index(directory: Path, entry_files: tuple[str, ...]) -> str | None:
 def generate_docs_indexes(
     docs_root: Path = DOCS_ROOT,
     check: bool = False,
+    index_depth: int = DEFAULT_INDEX_DEPTH,
     depth: int = DEFAULT_DEPTH,
     directory_entry_files: tuple[str, ...] | list[str] = DEFAULT_DIRECTORY_ENTRY_FILES,
 ) -> list[str]:
-    """Generate breadth-first docs indexes or report drift when ``check`` is true."""
+    """Generate recursive docs indexes or report drift when ``check`` is true."""
     if not docs_root.is_dir():
         raise NotADirectoryError(docs_root)
+    if index_depth < -1:
+        raise ValueError("index_depth must be -1 or greater")
     if depth < -1:
         raise ValueError("depth must be -1 or greater")
 
@@ -108,10 +122,10 @@ def generate_docs_indexes(
     drift: list[str] = []
     target_indexes: set[Path] = set()
 
-    for directory in _index_targets(docs_root, depth):
+    for directory in _index_targets(docs_root, index_depth):
         index_path = directory / INDEX_NAME
         target_indexes.add(index_path)
-        desired = _desired_index(directory, entry_files)
+        desired = _desired_index(directory, entry_files, depth)
         relative = index_path.relative_to(docs_root.parent).as_posix()
 
         if desired is None:
@@ -152,10 +166,16 @@ def main(argv: list[str] | None = None) -> int:
         help="Report generated-index drift without modifying files",
     )
     parser.add_argument(
+        "--index-depth",
+        type=int,
+        default=DEFAULT_INDEX_DEPTH,
+        help="Maximum depth where INDEX files are materialized (0=root only, -1=unlimited)",
+    )
+    parser.add_argument(
         "--depth",
         type=int,
         default=DEFAULT_DEPTH,
-        help="Maximum INDEX directory depth (0=root only, -1=unlimited)",
+        help="Maximum subtree depth included in each INDEX (0=current directory entries, -1=unlimited)",
     )
     parser.add_argument(
         "--directory-entry-files",
@@ -165,11 +185,14 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
+    if args.index_depth < -1:
+        parser.error("--index-depth must be -1 or greater")
     if args.depth < -1:
         parser.error("--depth must be -1 or greater")
 
     drift = generate_docs_indexes(
         check=args.check,
+        index_depth=args.index_depth,
         depth=args.depth,
         directory_entry_files=args.directory_entry_files,
     )
