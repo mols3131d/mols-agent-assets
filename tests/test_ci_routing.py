@@ -4,6 +4,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = ROOT / ".github" / "workflows" / "targeted-tests.yml"
+MISE = ROOT / "mise.toml"
 
 
 def workflow_text() -> str:
@@ -25,15 +26,15 @@ def test_pr_gate_is_stable_read_only_and_runs_full_deterministic_suite() -> None
     assert "pytest -q tests" in workflow
 
 
-def test_eval_changes_run_promptfoo_smoke() -> None:
+def test_behavioral_eval_is_local_not_pr_gate() -> None:
     workflow = workflow_text()
+    mise = MISE.read_text(encoding="utf-8")
 
-    assert "fetch-depth: 2" in workflow
-    assert "evals/skills/mols-rpi/*" in workflow
-    assert "scripts/evals/*" in workflow
-    assert "promptfoo=true" in workflow
-    assert "Run mols-rpi Promptfoo smoke" in workflow
-    assert "npm run eval:promptfoo:mols-rpi:smoke" in workflow
+    assert "promptfoo" not in workflow.lower()
+    assert "[tasks.eval-mols-rpi-smoke]" in mise
+    assert "npm run eval:promptfoo:mols-rpi:smoke" in mise
+    assert "[tasks.eval-mols-rpi]" in mise
+    assert "npm run eval:promptfoo:mols-rpi" in mise
 
 
 def test_canonical_skill_changes_validate_distribution_routes() -> None:
