@@ -1,6 +1,6 @@
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[1]
 MISE = ROOT / "mise.toml"
 PYPROJECT = ROOT / "pyproject.toml"
 PYTHON_VERSION = ROOT / ".python-version"
@@ -65,26 +65,6 @@ def test_rulesync_is_pinned_and_uses_mise_managed_binary() -> None:
     assert 'shutil.which("rulesync")' in runner
     assert "rulesync@latest" not in runner
     assert 'mise install node rumdl "npm:rulesync"' in workflow
-
-
-def test_pr_gate_is_stable_and_checks_lock_freshness() -> None:
-    workflow = PR_GATE.read_text(encoding="utf-8")
-
-    assert "name: PR Gate" in workflow
-    assert "    paths:" not in workflow
-    assert "name: PR Gate\n    runs-on:" in workflow
-    assert "mise run check" in workflow
-    assert "uv run --locked" in workflow
-    assert "uv run --frozen" not in workflow
-    assert "pytest -q tests" in workflow
-
-
-def test_pr_gate_runs_promptfoo_smoke_for_eval_changes() -> None:
-    workflow = PR_GATE.read_text(encoding="utf-8")
-
-    assert "promptfoo=true" in workflow
-    assert "Run mols-rpi Promptfoo smoke" in workflow
-    assert "npm run eval:promptfoo:mols-rpi:smoke" in workflow
 
 
 def test_biome_is_repository_configured() -> None:

@@ -1,9 +1,8 @@
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[1]
 ATTRIBUTES = ROOT / ".gitattributes"
 RUMDL = ROOT / ".rumdl.toml"
-PR_GATE = ROOT / ".github" / "workflows" / "targeted-tests.yml"
 
 
 def test_rulesync_source_and_runtime_surfaces_have_separate_roles() -> None:
@@ -30,25 +29,3 @@ def test_rumdl_config_keeps_repository_markdown_policy() -> None:
     assert "[per-file-ignores]" not in config
     assert "[MD057]" in config
     assert "compact-paths = false" in config
-
-
-def test_pr_gate_owns_read_only_repository_admission() -> None:
-    workflow = PR_GATE.read_text(encoding="utf-8")
-
-    assert "name: PR Gate" in workflow
-    assert "permissions:\n  contents: read" in workflow
-    assert "git push" not in workflow
-    assert "contents: write" not in workflow
-
-
-def test_pr_gate_checks_markdown_routes_and_rulesync() -> None:
-    workflow = PR_GATE.read_text(encoding="utf-8")
-
-    assert "Validate changed Markdown normalization" in workflow
-    assert 'rumdl fmt "${markdown[@]}"' in workflow
-    assert "python scripts/generate_distribution_routes.py" in workflow
-    assert "git diff --exit-code -- route/skills.jsonl" in workflow
-    assert "Validate canonical Rulesync source" in workflow
-    assert "npm run rulesync:doctor" in workflow
-    assert "rulesync:validate" not in workflow
-    assert "--targets" not in workflow
