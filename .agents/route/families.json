@@ -1,0 +1,30 @@
+{
+  "agent-assets": {
+    "description": "Agent Asset 작성·탐색·검증",
+    "skills": [
+      "mols-agent-asset",
+      "mols-agent-asset-find",
+      "mols-agent-asset-validator"
+    ]
+  },
+  "markdown": {
+    "description": "Markdown 작성·정비",
+    "skills": [
+      "mols-markdown-for-human",
+      "mols-markdown-maintenance"
+    ]
+  },
+  "mermaid": {
+    "description": "Mermaid diagram·chart",
+    "skills": [
+      "mols-mermaid-chart",
+      "mols-mermaid-diagram"
+    ]
+  },
+  "writing": {
+    "description": "한국어 문체·윤문",
+    "skills": [
+      "humanize-korean"
+    ]
+  }
+}

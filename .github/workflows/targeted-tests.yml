@@ -29,13 +29,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-
           tooling=false
           rulesync=false
           routes=false
           markdown=false
           promptfoo=false
-
           mapfile -d '' files < <(git diff --name-only -z HEAD^1 HEAD)
           for path in "${files[@]}"; do
             case "$path" in
@@ -50,32 +48,27 @@ jobs:
                 tooling=true
                 ;;
             esac
-
             case "$path" in
               src/rulesync/*|scripts/run_rulesync.py|package.json|mise.toml|.gitattributes|.rumdl.toml)
                 rulesync=true
                 ;;
             esac
-
             case "$path" in
-              src/rulesync/.rulesync/skills/*/SKILL.md|scripts/generate_distribution_routes.py|route/skills.jsonl)
+              src/rulesync/.rulesync/skills/*/SKILL.md|scripts/generate_distribution_routes.py|route/skills.jsonl|rulesync.lock|rulesync.jsonc|skills-lock.json|.agents/route/*|scripts/generate_repository_routes.py|tests/scripts/test_generate_repository_routes.py)
                 routes=true
                 ;;
             esac
-
             case "$path" in
               *.md)
                 markdown=true
                 ;;
             esac
-
             case "$path" in
               evals/promptfoo/*|evals/skills/mols-rpi/*|scripts/evals/*|src/rulesync/.rulesync/skills/mols-rpi/*|package.json|mise.toml)
                 promptfoo=true
                 ;;
             esac
           done
-
           echo "tooling=$tooling" >> "$GITHUB_OUTPUT"
           echo "rulesync=$rulesync" >> "$GITHUB_OUTPUT"
           echo "routes=$routes" >> "$GITHUB_OUTPUT"
@@ -113,11 +106,14 @@ jobs:
           fi
           npm run rulesync:doctor
 
-      - name: Validate distribution routes
+      - name: Validate generated routes
         if: steps.scope.outputs.routes == 'true'
+        shell: bash
         run: |
+          set -euo pipefail
           uv run --no-project --with "pyyaml>=6.0.2" python scripts/generate_distribution_routes.py
-          git diff --exit-code -- route/skills.jsonl
+          uv run --no-project --with "pyyaml>=6.0.2" python scripts/generate_repository_routes.py
+          git diff --exit-code -- route/skills.jsonl .agents/route/*.jsonl
 
       - name: Validate changed Markdown normalization
         if: steps.scope.outputs.markdown == 'true'
