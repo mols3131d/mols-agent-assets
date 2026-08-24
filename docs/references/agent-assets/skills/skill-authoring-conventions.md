@@ -81,7 +81,7 @@ Skill의 조건부 보조 resource에는 [Agent Asset Design Principles](../comm
 ## Boundary
 
 - 공통 Agent Asset 설계 → [Agent Asset Design Principles](../common/design-principles.md)
-- Behavioral instruction 표현 → [Instruction Authoring](../common/instruction-authoring.md)
+- Behavioral instruction 설계 → [Instruction Design](../common/instruction-design.md)
 - Standard와 target/source registry → [Agent Skills Specification](specification.md)
 - General Agent Asset naming → [Agent Asset Naming Convention](../common/naming.md)
 - Progressive context routing → [Progressive Context Routing](../../patterns/context-engineering/progressive-context-routing.md)
