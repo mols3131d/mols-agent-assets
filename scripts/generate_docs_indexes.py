@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import argparse
+import csv
+import io
 import sys
 from pathlib import Path
 
@@ -13,6 +15,7 @@ INDEX_TOOL_DIR = (
 )
 sys.path.insert(0, str(INDEX_TOOL_DIR))
 
+from frontmatter import parse_frontmatter_document  # noqa: E402
 from generate_index import generate_index  # noqa: E402
 
 DOCS_ROOT = ROOT / "docs"
@@ -32,6 +35,37 @@ def _index_targets(docs_root: Path) -> list[Path]:
     return targets
 
 
+def _directory_description(directory: Path) -> str:
+    readme = directory / "README.md"
+    if not readme.is_file():
+        return ""
+    parsed = parse_frontmatter_document(readme.read_text(encoding="utf-8"))
+    if parsed is None:
+        return ""
+    frontmatter, _ = parsed
+    value = frontmatter.get("description")
+    return "" if value is None else str(value)
+
+
+def _enrich_directory_descriptions(content: str, directory: Path) -> str:
+    rows = list(csv.DictReader(io.StringIO(content), delimiter="\t"))
+    for row in rows:
+        path = row.get("path", "")
+        if path.endswith("/"):
+            row["description"] = _directory_description(directory / path.rstrip("/"))
+
+    output = io.StringIO(newline="")
+    writer = csv.DictWriter(
+        output,
+        fieldnames=["path", "description"],
+        delimiter="\t",
+        lineterminator="\n",
+    )
+    writer.writeheader()
+    writer.writerows(rows)
+    return output.getvalue()
+
+
 def _desired_index(directory: Path) -> str | None:
     content = generate_index(
         directory,
@@ -41,7 +75,9 @@ def _desired_index(directory: Path) -> str | None:
         exclude=EXCLUDE,
         exclude_globs=EXCLUDE_GLOBS,
         include_without_frontmatter=True,
+        include_directories=True,
     )
+    content = _enrich_directory_descriptions(content, directory)
     return None if content == HEADER else content
 
 
