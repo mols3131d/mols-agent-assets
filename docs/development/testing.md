@@ -64,9 +64,8 @@ PR Gate는 root `tests/` 전체를 항상 `uv --locked` semantics로 실행합�
 - canonical Rulesync source → Markdown normalization + `rulesync:doctor`
 - Skill route inputs → distribution route regeneration 후 committed output과 diff 확인
 - changed Markdown → rumdl normalization 후 diff 확인
-- behavioral eval surface → deterministic fixture/plumbing check만 필요한 경우 blocking verification으로 실행
 
-확률적 model/runtime eval의 근거 수준과 merge admission 기준은 [Evaluation](evaluation.md)이 소유합니다.
+Promptfoo와 실제 model/runtime을 사용하는 behavioral evaluation은 PR Gate에서 실행하지 않습니다. Eval config, fixture, adapter, assertion, runner의 repository correctness는 root deterministic test suite가 검증하고, behavioral evidence 생성은 local evaluation entrypoint에 맡깁니다.
 
 PR Gate는 `contents: read`만 사용합니다. 생성된 route나 Markdown drift가 있으면 CI가 수정해 push하지 않고 실패시켜 source branch에서 바로잡게 합니다. 따라서 merge 이후 `main`에 직접 write-back하는 CI는 두지 않습니다.
 
@@ -76,11 +75,18 @@ Rulesync CLI 버전은 `mise.toml`에 정확히 고정합니다. Repository `npm
 
 Root repository workspace는 reusable library와 분리된 declarative consumer입니다. `rulesync.jsonc`의 선택과 `rulesync.lock`의 무결성을 deterministic regression으로 검증하고, `mise run setup`이 `rulesync install --frozen` 후 `agentsskills` target을 `.agents/skills/`로 생성합니다.
 
-## Evaluation integration
+## Evaluation
 
 동작 계약, fixture 설계, Promptfoo의 역할, runtime/model 근거 해석은 [Evaluation](evaluation.md)이 소유합니다.
 
-PR Gate가 실행하는 fixture-mode smoke는 provider/generator/assertion 연결을 확인하는 deterministic check일 뿐 runtime 동작의 근거가 아닙니다.
+Promptfoo는 local evaluation backend입니다. 저장소 수준 entrypoint는 `mise.toml`이 소유하며 현재 mols-rpi eval은 다음처럼 실행합니다.
+
+```bash
+mise run eval-mols-rpi-smoke
+mise run eval-mols-rpi
+```
+
+첫 명령은 fixture/provider/assertion의 Promptfoo integration을 직접 실행해 보는 local smoke이고, 두 번째는 설정된 runtime/model을 사용하는 behavioral evaluation입니다. 둘 다 PR Gate의 blocking evidence가 아닙니다.
 
 ## 기본 명령
 
