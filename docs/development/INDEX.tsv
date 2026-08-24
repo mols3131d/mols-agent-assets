@@ -1,0 +1,6 @@
+path	description
+evaluation.md	Agent Asset의 behavioral evaluation을 설계·실행·해석하고 deterministic test, runtime evidence, regression contract를 구분할 때 사용하는 repository-local policy입니다.
+github.md	GitHub의 Issues, Pull Requests, PR Reviews, coding agents, automations, GitHub Agentic Workflows, Rulesets, Actions와 Merge에 적용되는 저장소 협업 정책과 권한 경계를 확인할 때 사용합니다.
+source-authority.md	저장소 지침과 에이전트 자산에서 작성 원본, 표준·도구·대상별 권한, 원본과 파생 결과의 경계를 결정할 때 사용하는 정책입니다.
+testing.md	저장소의 결정론적 검증, 도구 검증, PR Gate와 merge를 차단하는 테스트 근거를 확인할 때 사용하는 정책입니다.
+vcs-git.md	저장소 고유 branch 정책, 병렬 작업 격리, branch naming, Git history 안전성과 commit convention을 확인할 때 사용합니다.

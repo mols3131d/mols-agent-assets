@@ -1,0 +1,2 @@
+path	description
+filesystem-legible-structure.md	구조 적합성과 convention을 해치지 않으면서 filesystem의 이름·배치·계층을 repository orientation과 navigation 단서로 활용하는 패턴입니다.

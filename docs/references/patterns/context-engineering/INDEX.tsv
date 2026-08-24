@@ -1,0 +1,12 @@
+path	description
+argument-driven-assets.md	
+asset-configuration-surface.md	
+chatbot-asset-directory.md	
+chatbot-repository-entrypoint.md	Repository-native context discovery가 부족한 chat runtime에서 stable entrypoint와 runtime bootstrap을 연결할 때 참고하는 reusable compatibility pattern입니다.
+directory-context-capsule.md	
+layered-context-instructions.md	
+progressive-context-routing.md	
+routing-index-assets.md	
+skill-source-workspace.md	
+subagent-orientation.md	Subagent를 엄격한 유형으로 분류하지 않고 responsibility orientation과 execution context라는 두 설계 축으로 판단할 때 사용하는 reusable pattern입니다.
+template-schema-driven-assets.md	Template, schema 또는 metadata를 structural owner로 사용해 생성·검증 가능한 자산 구조를 설계할 때 참고하는 reusable pattern입니다.
