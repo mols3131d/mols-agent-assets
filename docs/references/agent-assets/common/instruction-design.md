@@ -14,11 +14,11 @@ Instruction은 모델이 행동 계약을 다시 추론하지 않게 써야 합�
 모든 instruction에 아래 요소를 전부 적을 필요는 없습니다. 다만 중요한 행동은 필요한 요소만으로도 다음 계약이 분명해야 합니다.
 
 ```text
-Condition → Outcome / Action → Boundary → Validation / Stop
+Condition → Behavior → Boundary → Validation / Stop
 ```
 
 - **Condition** — 언제 적용되고 언제 적용되지 않는가
-- **Outcome / Action** — 어떤 결과가 필요하거나 기본적으로 무엇을 해야 하는가
+- **Behavior** — 어떤 결과가 필요하거나 기본적으로 무엇을 해야 하는가
 - **Boundary** — 무엇을 보존·금지하고 어디까지 재량과 권한이 있는가
 - **Validation / Stop** — 무엇으로 성공·실패를 확인하고 언제 fallback, handoff 또는 중단하는가
 
@@ -29,11 +29,10 @@ Condition → Outcome / Action → Boundary → Validation / Stop
 - 필수 행동은 직접 씁니다. 설명, rationale 또는 example만으로 action을 암시하지 않습니다.
 - 같은 행동은 authoritative owner 한 곳에서만 정의합니다. Generated representation과 target projection은 파생 표현이지 별도 semantic owner가 아닙니다. 같은 내용을 반복해서 적는다고 신뢰성이 높아지는 것도 아닙니다.
 - 규범적 instruction과 설명용 context를 구분합니다. Rationale은 상황에 따른 판단을 실질적으로 개선할 때만 남기고 지시를 다시 설명하지 않습니다.
-- 서로 의존하는 condition, outcome/action, boundary와 validation은 가능한 한 가까이 둡니다. 떨어뜨려 놓고 모델이 관계를 다시 추론하게 하지 않습니다.
+- 서로 의존하는 condition, behavior, boundary와 validation은 가능한 한 가까이 둡니다. 떨어뜨려 놓고 모델이 관계를 다시 추론하게 하지 않습니다.
 - 기본 경로는 하나를 명확히 두고, 대안은 기본 경로를 벗어나는 실제 condition이 있을 때만 노출합니다.
 - `must`, `never`, `only` 같은 강한 표현은 true invariant, 안전·권한 경계, 필수 contract 또는 순서가 깨지면 실패하는 작업에 사용합니다. 선호나 흔한 경로는 default와 escape condition으로 표현합니다.
 - 금지나 negative boundary를 쓸 때 다음 행동이 분명하지 않으면 허용되는 default, fallback 또는 handoff도 함께 씁니다.
-- Instruction은 없는 권한을 만들어내지 못합니다. 권한이나 side effect가 중요한 행동은 **무엇을 계속 수행할 수 있는지와 어디서 승인·handoff·중단이 필요한지**를 함께 씁니다.
 - 같은 개념에는 같은 용어를 사용하고, 같은 단어에 서로 다른 책임을 부여하지 않습니다.
 - 기계적으로 강제할 수 있는 contract를 prose로 다시 쓰지 않습니다. [Agent Asset Design Principles](design-principles.md)의 mechanism gate를 따르고, 더 직접적인 owner가 있으면 그곳에 맡깁니다.
 
@@ -58,6 +57,7 @@ Instruction은 **의도한 범위보다 넓게 적용되지 않도록 둡니다.
 적용 범위와 authority는 별개입니다. Instruction의 위치나 문구가 권한을 새로 만들지는 않습니다.
 
 - 적용되는 standard, source framework, runtime 또는 project authority가 scope·precedence·permission을 정의하면 그 contract를 따릅니다.
+- 권한이나 side effect가 중요한 행동은 무엇을 계속 수행할 수 있는지와 어디서 승인·handoff·중단이 필요한지 명시합니다.
 - 일반적인 precedence가 보장되지 않으면 충돌하는 instruction을 제거하거나 scope를 분리합니다.
 - 충돌을 제거할 권한이 없고 행동이 실질적으로 달라질 수 있으면 임의로 하나를 승자로 만들지 않습니다. 충돌을 드러내고 필요한 handoff 또는 중단을 명시합니다.
 - Source와 projection의 authority는 [작성 원본과 권한](../../../development/source-authority.md)을 따릅니다.
@@ -91,7 +91,7 @@ Repository의 deterministic verification, behavioral evaluation과 evidence leve
 
 - [Agent Asset Design Principles](design-principles.md)의 Local Delta와 mechanism gate를 통과하는가?
 - 언제 적용되고 언제 적용되지 않는가?
-- 필요한 outcome 또는 default action은 무엇인가?
+- 필요한 behavior는 무엇인가?
 - 어디까지 재량이며 무엇이 true invariant 또는 permission boundary인가?
 - 예외나 negative boundary를 만났을 때 다음에 허용되는 행동이 분명한가?
 - success, failure와 stop을 무엇으로 확인하는가?
