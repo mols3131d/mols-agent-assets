@@ -1,5 +1,5 @@
 ---
-description: 저장소의 결정론적 검증, 도구 검증, PR Gate와 merge를 차단하는 테스트 근거를 확인할 때 사용하는 정책입니다.
+description: 저장소의 결정론적 검증, 로컬 도구 검증, PR Gate와 merge를 차단하는 테스트 근거를 확인할 때 사용하는 정책입니다.
 ---
 
 # Testing
@@ -43,7 +43,7 @@ mise run generated-sync
 
 Pre-commit hook은 formatter가 staged file을 다시 stage하기 전에 staged 변경에 영향받는 projection만 재생성하고 해당 generated output을 함께 stage합니다. 관련 source나 generated output에 별도의 unstaged 또는 untracked 변경이 있으면 working tree의 다른 작업을 섞지 않도록 자동 동기화를 중단합니다.
 
-CI는 이 write-side automation을 대신하지 않습니다. PR Gate는 계속 read-only로 projection drift를 검증하며 generated file을 commit하거나 push하지 않습니다.
+CI는 이 write-side automation을 다시 실행하지 않습니다. Generator와 hook의 선택·안전·staging 동작은 deterministic regression test가 검증하고, 실제 projection 갱신은 local write path가 소유합니다.
 
 ## Validation
 
@@ -56,18 +56,11 @@ mise run test
 
 `main` 대상 모든 PR은 하나의 고정된 `PR Gate` job을 실행합니다. Workflow 수준 path filter를 두지 않아 required check가 skip 상태로 남지 않게 합니다.
 
-PR Gate는 root `tests/` 전체를 항상 `uv --locked` semantics로 실행합니다. 현재 결정론적 test suite가 충분히 작으므로 test 선택 routing보다 전체 suite를 안전한 기본값으로 사용합니다.
+PR Gate의 책임은 root `tests/` 전체를 고정된 Python과 uv 환경에서 `uv --locked` semantics로 실행하는 것뿐입니다. 현재 결정론적 test suite가 충분히 작으므로 test 선택 routing보다 전체 suite를 안전한 기본값으로 사용합니다.
 
-추가 비용이 있는 검증만 변경 영향에 따라 실행합니다.
+Formatting, Rulesync doctor, generated route/index 재생성, repository toolchain validation, Promptfoo와 model/runtime evaluation은 PR Gate에서 반복하지 않습니다. 이들은 각각 local hook·task가 실행 책임을 가지며, 자동화 자체의 correctness는 root deterministic tests가 보호합니다.
 
-- tooling configuration → `mise run check`
-- canonical Rulesync source → Markdown normalization + `rulesync:doctor`
-- Skill route inputs → distribution route regeneration 후 committed output과 diff 확인
-- changed Markdown → rumdl normalization 후 diff 확인
-
-Promptfoo와 실제 model/runtime을 사용하는 behavioral evaluation은 PR Gate에서 실행하지 않습니다. Eval config, fixture, adapter, assertion, runner의 repository correctness는 root deterministic test suite가 검증하고, behavioral evidence 생성은 local evaluation entrypoint에 맡깁니다.
-
-PR Gate는 `contents: read`만 사용합니다. 생성된 route나 Markdown drift가 있으면 CI가 수정해 push하지 않고 실패시켜 source branch에서 바로잡게 합니다. 따라서 merge 이후 `main`에 직접 write-back하는 CI는 두지 않습니다.
+PR Gate는 `contents: read`만 사용하고 repository에 write-back하지 않습니다.
 
 ## Rulesync 검증
 
