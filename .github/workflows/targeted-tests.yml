@@ -123,17 +123,9 @@ jobs:
           uv run --no-project --with "pyyaml>=6.0.2" python scripts/generate_repository_routes.py
           git diff --exit-code -- route/skills.jsonl .agents/route/*.jsonl
 
-      - name: Generate docs indexes for bootstrap
+      - name: Validate generated docs indexes
         if: steps.scope.outputs.docs_indexes == 'true'
-        run: uv run --locked --no-default-groups --group test python scripts/generate_docs_indexes.py
-
-      - name: Upload docs indexes bootstrap
-        if: steps.scope.outputs.docs_indexes == 'true'
-        uses: actions/upload-artifact@v4
-        with:
-          name: docs-indexes
-          path: docs/**/INDEX.tsv
-          if-no-files-found: error
+        run: uv run --locked --no-default-groups --group test python scripts/generate_docs_indexes.py --check
 
       - name: Validate changed Markdown normalization
         if: steps.scope.outputs.markdown == 'true'
