@@ -29,6 +29,6 @@ description: Agent Asset 자체의 공통 설계 의미와 Skill-specific specif
 - 여러 repository와 harness에서 재사용할 설계 pattern → [Patterns](../patterns/README.md)
 - 이 repository를 개발·변경·검증하는 방법 → [Development](../../development/README.md)
 - reusable knowledge library의 공통 contract → [References](../README.md)
-- 이 library의 자산과 지식을 consumer가 사용하는 방법 → [Consumption](../../consumption.md)
+- 이 library의 자산과 지식을 consumer가 사용하는 방법 → [Using This Repository](../../using-this-repository.md)
 
 Agent Asset reference와 pattern의 경계는 **대상 파일 형식이 아니라 책임**으로 판단합니다. Asset 자체의 의미·authoring convention·authority routing은 이 surface에 남기고, 반복되는 문제에 대한 구성 방식이나 solution shape는 pattern으로 둡니다.

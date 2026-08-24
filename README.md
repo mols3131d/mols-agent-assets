@@ -30,13 +30,13 @@
 
 ## Navigation
 
-- 이 library의 자산과 지식 사용 → [Consumption](docs/consumption.md)
+- 이 library의 자산과 지식 사용 → [Using This Repository](docs/using-this-repository.md)
 - Reusable knowledge → [References](docs/references/README.md)
 - Agent Asset 설계 지식 → [Agent Asset Design](docs/references/agent-assets/README.md)
 - Reusable design patterns → [Patterns](docs/references/patterns/README.md)
 - Agent-facing repository rules → [`AGENTS.md`](AGENTS.md)
 - Repository development → [Development](docs/development/README.md)
-- Documentation → [Documentation](docs/document/README.md)
+- Documentation → [Documentation](docs/documentation/README.md)
 - Rulesync source/workspace → [Rulesync](docs/references/tooling/rulesync.md)
 - Cross-runtime discovery → [`route/`](route/README.md)
 - Working artifacts → [`inbox/`](inbox/README.md)

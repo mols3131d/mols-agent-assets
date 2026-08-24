@@ -17,7 +17,7 @@ description: 저장소 개발 작업에서 VCS/Git, GitHub, 작성 원본과 권
 ## Related Owners
 
 - Repository agent rules → [`AGENTS.md`](../../AGENTS.md)
-- Documentation rules and conventions → [`docs/document/`](../document/)
+- Documentation rules and conventions → [`docs/documentation/`](../documentation/)
 - Reusable knowledge → [References](../references/README.md)
 - Agent Asset design knowledge → [Agent Assets](../references/agent-assets/README.md)
 - Rulesync source/workspace boundary → [Rulesync](../references/tooling/rulesync.md)

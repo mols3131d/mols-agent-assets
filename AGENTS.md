@@ -7,5 +7,5 @@
 - Generated vendor projection과 Rulesync lock state는 reusable authored source로 commit하지 않습니다.
 - `skills-lock.json`의 외부 Skill dependency가 필요하거나 현재 설치가 lock 상태를 반영하는지 불명확하면 installer를 직접 조합하지 말고 `mise run skills-sync`를 사용합니다. 이 task는 lock의 source/revision을 읽되 lock을 수정하지 않으며, vendor별 payload·설치 방식은 해당 dependency의 native installer에 위임합니다.
 - Cross-runtime Skill discovery fallback은 `route/README.md`를 따릅니다.
-- Repository 개발 규칙은 `docs/development/README.md`, 문서 규칙과 artifact lifecycle은 `docs/document/README.md`를 entrypoint로 사용합니다.
+- Repository 개발 규칙은 `docs/development/README.md`, 문서 규칙과 artifact lifecycle은 `docs/documentation/README.md`를 entrypoint로 사용합니다.
 - Repository verification은 `docs/development/testing.md`를 따릅니다.

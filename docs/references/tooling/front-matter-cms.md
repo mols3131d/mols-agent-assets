@@ -5,7 +5,7 @@ description: Front Matter CMS 설정, 공식 옵션, frontmatter.json 변경 근
 
 # Front Matter CMS
 
-Configuration authority는 root [`frontmatter.json`](../../../frontmatter.json)입니다. 문서 frontmatter의 작성 규칙은 [Frontmatter](../../document/frontmatter.md)가 소유합니다.
+Configuration authority는 root [`frontmatter.json`](../../../frontmatter.json)입니다. 문서 frontmatter의 작성 규칙은 [Frontmatter](../../documentation/frontmatter.md)가 소유합니다.
 
 이 reference는 product option catalog를 복제하지 않습니다. 설정 변경 시 current configuration을 먼저 읽고 필요한 option semantics는 official source에서 확인합니다.
 
