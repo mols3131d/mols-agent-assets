@@ -91,7 +91,7 @@ def _collect_entries(
                 + ", ".join(missing)
             )
         entries.append(
-            {"path": relative_path, "file": relative_path, **frontmatter}
+            {**frontmatter, "path": relative_path, "file": relative_path}
         )
 
     for field in unique_fields or []:
@@ -272,7 +272,7 @@ def generate_index(
         raise NotADirectoryError(directory)
     if format not in SUPPORTED_FORMATS:
         raise ValueError(f"unsupported format: {format}")
-    if group_by and format not in {"list"}:
+    if group_by and format != "list":
         raise ValueError("group_by is only supported with format='list'")
     if group_sort not in GROUP_SORTS:
         raise ValueError(f"unsupported group sort: {group_sort}")
