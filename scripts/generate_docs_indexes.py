@@ -4,12 +4,9 @@
 from __future__ import annotations
 
 import argparse
-import csv
-import io
 import sys
 from collections import deque
 from pathlib import Path
-from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 INDEX_TOOL_DIR = (
@@ -17,7 +14,6 @@ INDEX_TOOL_DIR = (
 )
 sys.path.insert(0, str(INDEX_TOOL_DIR))
 
-from frontmatter import parse_frontmatter_document  # noqa: E402
 from generate_index import generate_index  # noqa: E402
 
 DOCS_ROOT = ROOT / "docs"
@@ -29,23 +25,30 @@ BASE_EXCLUDE = ("AGENTS.md",)
 EXCLUDE_GLOBS = [".*.md", "__*__.md"]
 
 
-def _stringify(value: Any) -> str:
-    if value is None:
-        return ""
-    if isinstance(value, list):
-        return ", ".join(_stringify(item) for item in value)
-    if isinstance(value, dict):
-        return ", ".join(f"{key}: {_stringify(item)}" for key, item in value.items())
-    return str(value)
+def _is_route_markdown(path: Path) -> bool:
+    name = path.name
+    if name in BASE_EXCLUDE or name.startswith("."):
+        return False
+    if name.startswith("__") and name.endswith("__.md"):
+        return False
+    return path.is_file() and path.suffix == ".md"
 
 
 def _has_markdown_content(directory: Path) -> bool:
-    return any(path.is_file() for path in directory.rglob("*.md"))
+    return any(_is_route_markdown(path) for path in directory.rglob("*.md"))
 
 
-def _index_targets(docs_root: Path, depth: int | None) -> list[Path]:
-    if depth is not None and depth < 0:
-        raise ValueError("depth must be >= 0 or None")
+def _route_children(directory: Path) -> list[Path]:
+    return [
+        child
+        for child in sorted(directory.iterdir())
+        if child.is_dir() and _has_markdown_content(child)
+    ]
+
+
+def _index_targets(docs_root: Path, depth: int) -> list[Path]:
+    if depth < -1:
+        raise ValueError("depth must be -1 or greater")
 
     targets: list[Path] = []
     queue = deque([(docs_root, 0)])
@@ -53,88 +56,51 @@ def _index_targets(docs_root: Path, depth: int | None) -> list[Path]:
         directory, current_depth = queue.popleft()
         targets.append(directory)
 
-        if depth is not None and current_depth >= depth:
+        if depth != -1 and current_depth >= depth:
             continue
 
-        for child in sorted(directory.iterdir()):
-            if child.is_dir() and _has_markdown_content(child):
-                queue.append((child, current_depth + 1))
+        queue.extend((child, current_depth + 1) for child in _route_children(directory))
 
     return targets
 
 
-def _directory_frontmatter(
-    directory: Path,
-    entry_files: tuple[str, ...],
-) -> dict[str, object]:
-    for filename in entry_files:
-        entry = directory / filename
-        if not entry.is_file():
-            continue
-        parsed = parse_frontmatter_document(entry.read_text(encoding="utf-8"))
-        if parsed is not None:
-            frontmatter, _ = parsed
-            return frontmatter
-    return {}
-
-
-def _enrich_directory_frontmatter(
-    content: str,
-    directory: Path,
-    entry_files: tuple[str, ...],
-) -> str:
-    reader = csv.DictReader(io.StringIO(content), delimiter="\t")
-    rows = list(reader)
-    fieldnames = reader.fieldnames or ["path", "description"]
-
-    for row in rows:
-        path = row.get("path", "")
-        if not path.endswith("/"):
-            continue
-        frontmatter = _directory_frontmatter(directory / path.rstrip("/"), entry_files)
-        for field in fieldnames:
-            if field in {"path", "file"} or field not in frontmatter:
-                continue
-            row[field] = _stringify(frontmatter[field])
-
-    output = io.StringIO(newline="")
-    writer = csv.DictWriter(
-        output,
-        fieldnames=fieldnames,
-        delimiter="\t",
-        lineterminator="\n",
-    )
-    writer.writeheader()
-    writer.writerows(rows)
-    return output.getvalue()
-
-
 def _desired_index(directory: Path, entry_files: tuple[str, ...]) -> str | None:
+    route_children = set(_route_children(directory))
+    excluded_directories = [
+        child.name
+        for child in directory.iterdir()
+        if child.is_dir() and child not in route_children
+    ]
     content = generate_index(
         directory,
         format="tsv",
         fields=["path", "description"],
         max_depth=0,
-        exclude=[*BASE_EXCLUDE, *entry_files],
+        exclude=[*BASE_EXCLUDE, *entry_files, *excluded_directories],
         exclude_globs=EXCLUDE_GLOBS,
         include_without_frontmatter=True,
         include_directories=True,
+        directory_entry_files=list(entry_files),
     )
-    content = _enrich_directory_frontmatter(content, directory, entry_files)
     return None if content == HEADER else content
 
 
 def generate_docs_indexes(
     docs_root: Path = DOCS_ROOT,
     check: bool = False,
-    depth: int | None = DEFAULT_DEPTH,
+    depth: int = DEFAULT_DEPTH,
     directory_entry_files: tuple[str, ...] | list[str] = DEFAULT_DIRECTORY_ENTRY_FILES,
 ) -> list[str]:
     """Generate breadth-first docs indexes or report drift when ``check`` is true."""
     if not docs_root.is_dir():
         raise NotADirectoryError(docs_root)
+    if depth < -1:
+        raise ValueError("depth must be -1 or greater")
 
     entry_files = tuple(directory_entry_files)
+    if not entry_files:
+        raise ValueError("directory_entry_files must not be empty")
+
     drift: list[str] = []
     target_indexes: set[Path] = set()
 
@@ -197,11 +163,10 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.depth < -1:
         parser.error("--depth must be -1 or greater")
-    depth = None if args.depth == -1 else args.depth
 
     drift = generate_docs_indexes(
         check=args.check,
-        depth=depth,
+        depth=args.depth,
         directory_entry_files=args.directory_entry_files,
     )
     if drift:
