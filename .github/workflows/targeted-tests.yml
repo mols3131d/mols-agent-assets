@@ -33,6 +33,7 @@ jobs:
           rulesync=false
           routes=false
           markdown=false
+          docs_indexes=false
           promptfoo=false
           mapfile -d '' files < <(git diff --name-only -z HEAD^1 HEAD)
           for path in "${files[@]}"; do
@@ -42,6 +43,7 @@ jobs:
                 rulesync=true
                 routes=true
                 markdown=true
+                docs_indexes=true
                 promptfoo=true
                 ;;
               mise.toml|biome.json|lefthook.yml|.python-version|.vscode/tasks.json|pyproject.toml|uv.lock|package.json)
@@ -64,6 +66,11 @@ jobs:
                 ;;
             esac
             case "$path" in
+              docs/*.md|docs/**/*.md|docs/**/INDEX.tsv|scripts/generate_docs_indexes.py|src/rulesync/.rulesync/skills/mols-markdown-maintenance/scripts/generate_index.py|tests/scripts/test_generate_docs_indexes.py|tests/skills/mols-markdown-maintenance/test_generate_index*.py)
+                docs_indexes=true
+                ;;
+            esac
+            case "$path" in
               evals/promptfoo/*|evals/skills/mols-rpi/*|scripts/evals/*|src/rulesync/.rulesync/skills/mols-rpi/*|package.json|mise.toml)
                 promptfoo=true
                 ;;
@@ -73,6 +80,7 @@ jobs:
           echo "rulesync=$rulesync" >> "$GITHUB_OUTPUT"
           echo "routes=$routes" >> "$GITHUB_OUTPUT"
           echo "markdown=$markdown" >> "$GITHUB_OUTPUT"
+          echo "docs_indexes=$docs_indexes" >> "$GITHUB_OUTPUT"
           echo "promptfoo=$promptfoo" >> "$GITHUB_OUTPUT"
 
       - name: Set up mise
@@ -114,6 +122,18 @@ jobs:
           uv run --no-project --with "pyyaml>=6.0.2" python scripts/generate_distribution_routes.py
           uv run --no-project --with "pyyaml>=6.0.2" python scripts/generate_repository_routes.py
           git diff --exit-code -- route/skills.jsonl .agents/route/*.jsonl
+
+      - name: Generate docs indexes for bootstrap
+        if: steps.scope.outputs.docs_indexes == 'true'
+        run: uv run --locked --no-default-groups --group test python scripts/generate_docs_indexes.py
+
+      - name: Upload docs indexes bootstrap
+        if: steps.scope.outputs.docs_indexes == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-indexes
+          path: docs/**/INDEX.tsv
+          if-no-files-found: error
 
       - name: Validate changed Markdown normalization
         if: steps.scope.outputs.markdown == 'true'
