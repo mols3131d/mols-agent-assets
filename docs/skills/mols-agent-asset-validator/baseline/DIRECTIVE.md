@@ -1,3 +1,7 @@
+---
+description: mols-agent-asset-validator의 검증 범위, evidence 상태, loop·review·runtime 원칙을 변경하거나 복구할 때 보존해야 할 핵심 invariant를 확인하는 protected baseline입니다.
+---
+
 # Directive
 
 에이전트 자산을 구조, 의미, routing, behavior, adversarial, orchestration, runtime과 성능 비용으로 검증한다.

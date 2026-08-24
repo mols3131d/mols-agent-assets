@@ -1,3 +1,7 @@
+---
+description: reusable Agent Asset core를 복제하지 않고 project·repository·scope별 customization delta를 분리해 관리할 때 참고하는 pattern으로, configuration surface의 scope와 merge·precedence 경계를 다룹니다.
+---
+
 # Asset Configuration Surface
 
 재사용 가능한 asset의 core와 project, repository 또는 scope별 customization을 분리해 관리하는 패턴입니다.

@@ -1,3 +1,7 @@
+---
+description: 큰 context surface에서 후보를 얕게 발견한 뒤 candidate-local context를 단계적으로 로드하며 applicability와 다음 route를 좁힐 때 참고하는 pattern으로, progressive disclosure와 routing gate를 다룹니다.
+---
+
 # Progressive Context Routing
 
 후보를 한 번에 확정하거나 모든 context를 처음부터 읽기보다, **얕은 discovery에서 더 구체적인 context로 점진적으로 이동하며 applicability와 다음 route를 좁혀 가는** 패턴입니다.

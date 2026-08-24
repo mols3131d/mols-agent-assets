@@ -1,3 +1,3 @@
 path	description
 baseline-document.md	자산의 원래 의도와 protected invariant를 구현 상태와 분리해 보존·복구할 때 참고하는 reusable baseline pattern입니다.
-nonstandard-directory-guide.md	
+nonstandard-directory-guide.md	이름만으로 목적을 알기 어려운 repository-local directory나 asset surface에 작은 guide가 필요한지 판단할 때 참고하는 pattern으로, 사람이 알아야 할 목적·scope·authority·navigation과 agent-only guidance의 경계를 다룹니다.

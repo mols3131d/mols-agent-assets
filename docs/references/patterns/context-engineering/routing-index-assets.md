@@ -1,3 +1,7 @@
+---
+description: 문서·Agent Asset·코드 같은 큰 정보 표면에 별도 index/router를 두어 후보를 찾고 현재 task에 맞는 다음 context를 선택하게 할 때 참고하는 pattern으로, index와 routing의 역할·signal·authority boundary를 다룹니다.
+---
+
 # Routing & Index Assets
 
 필요한 정보나 자산으로 빠르게 연결하고 **현재 작업에 필요한 context만 효율적으로 선택·로드**하기 위해, 내용 자체와 분리된 discovery / routing asset을 두는 패턴입니다.

@@ -1,3 +1,7 @@
+---
+description: coding agent와 다른 chatbot 전용 guidance·Skill·work profile·compatibility asset을 repository에서 분리해 관리할 때 참고하는 pattern으로, chatbot-only asset surface의 ownership과 discovery boundary를 다룹니다.
+---
+
 # Chatbot Asset Surface
 
 Repository 안에 **chatbot-only asset surface**를 두어, coding agent와 다른 chatbot 전용 guidance, work profile, Skill, command, compatibility asset을 함께 관리하는 패턴입니다.
