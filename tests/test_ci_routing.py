@@ -11,19 +11,32 @@ def workflow_text() -> str:
     return WORKFLOW.read_text(encoding="utf-8")
 
 
-def test_pr_gate_is_stable_read_only_and_runs_full_deterministic_suite() -> None:
+def test_pr_gate_is_minimal_read_only_deterministic_gate() -> None:
     workflow = workflow_text()
 
     assert "name: PR Gate" in workflow
     assert "    paths:" not in workflow
-    assert "name: PR Gate\n    runs-on:" in workflow
     assert "permissions:\n  contents: read" in workflow
     assert "git push" not in workflow
     assert "contents: write" not in workflow
-    assert "mise run check" in workflow
+    assert "actions/setup-python@v6" in workflow
+    assert "astral-sh/setup-uv@v9" in workflow
+    assert 'version: "0.12.1"' in workflow
+    assert "enable-cache: true" in workflow
     assert "uv run --locked" in workflow
-    assert "uv run --frozen" not in workflow
     assert "pytest -q tests" in workflow
+
+    for delegated_surface in (
+        "Classify change impact",
+        "mise run check",
+        "rulesync:doctor",
+        "generate_distribution_routes.py",
+        "generate_repository_routes.py",
+        "generate_docs_indexes.py",
+        "rumdl fmt",
+        "promptfoo",
+    ):
+        assert delegated_surface.lower() not in workflow.lower()
 
 
 def test_behavioral_eval_is_local_not_pr_gate() -> None:
@@ -35,23 +48,3 @@ def test_behavioral_eval_is_local_not_pr_gate() -> None:
     assert "npm run eval:promptfoo:mols-rpi:smoke" in mise
     assert "[tasks.eval-mols-rpi]" in mise
     assert "npm run eval:promptfoo:mols-rpi" in mise
-
-
-def test_canonical_skill_changes_validate_distribution_routes() -> None:
-    workflow = workflow_text()
-
-    assert "src/rulesync/.rulesync/skills/*/SKILL.md" in workflow
-    assert "routes=true" in workflow
-    assert "python scripts/generate_distribution_routes.py" in workflow
-    assert "git diff --exit-code -- route/skills.jsonl" in workflow
-
-
-def test_markdown_and_rulesync_changes_use_read_only_validation() -> None:
-    workflow = workflow_text()
-
-    assert "Validate changed Markdown normalization" in workflow
-    assert 'rumdl fmt "${markdown[@]}"' in workflow
-    assert "Validate canonical Rulesync source" in workflow
-    assert "npm run rulesync:doctor" in workflow
-    assert "rulesync:validate" not in workflow
-    assert "--targets" not in workflow
