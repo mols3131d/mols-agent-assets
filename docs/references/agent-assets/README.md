@@ -12,7 +12,7 @@ description: Agent Asset 자체의 공통 설계 의미와 Skill-specific specif
 
 | Path | Responsibility |
 | --- | --- |
-| [`common/`](common/) | asset type에 종속되지 않는 설계 원칙, instruction authoring과 naming |
+| [`common/`](common/) | asset type에 종속되지 않는 설계 원칙, instruction 설계와 naming |
 | [`skills/`](skills/) | Skill-specific specification routing과 mols authoring convention |
 
 이 README는 child inventory를 복제하지 않습니다. 구체적인 지식은 해당 문서가 소유합니다.
