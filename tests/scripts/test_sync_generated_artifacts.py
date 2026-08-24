@@ -68,32 +68,42 @@ def test_repository_route_source_matching(path, expected):
     assert sync._is_repository_route_source(path) is expected
 
 
-def test_select_projections_from_source_paths():
-    paths = {
-        "docs/guide.md",
-        "src/rulesync/.rulesync/skills/example/SKILL.md",
-        "skills-lock.json",
-    }
+@pytest.mark.parametrize(
+    ("path", "expected"),
+    [
+        ("docs/guide.md", ["docs-indexes"]),
+        (
+            "src/rulesync/.rulesync/skills/example/SKILL.md",
+            ["distribution-route"],
+        ),
+        ("skills-lock.json", ["repository-routes"]),
+    ],
+)
+def test_source_path_selects_only_its_projection_owner(path, expected):
+    assert [projection.name for projection in sync.select_projections({path})] == expected
 
-    assert [projection.name for projection in sync.select_projections(paths)] == [
-        "docs-indexes",
-        "distribution-route",
-        "repository-routes",
-    ]
+
+@pytest.mark.parametrize(
+    ("path", "expected"),
+    [
+        ("docs/INDEX.tsv", ["docs-indexes"]),
+        ("route/skills.jsonl", ["distribution-route"]),
+        (".agents/route/routes.jsonl", ["repository-routes"]),
+    ],
+)
+def test_generated_output_selects_its_projection_owner(path, expected):
+    assert [projection.name for projection in sync.select_projections({path})] == expected
 
 
-def test_generated_output_paths_select_their_projection_owner():
-    paths = {
-        "docs/INDEX.tsv",
-        "route/skills.jsonl",
-        ".agents/route/routes.jsonl",
-    }
+def test_sync_staged_is_noop_when_no_projection_is_affected(monkeypatch, tmp_path):
+    monkeypatch.setattr(sync, "staged_paths", lambda root: {"README.md"})
 
-    assert [projection.name for projection in sync.select_projections(paths)] == [
-        "docs-indexes",
-        "distribution-route",
-        "repository-routes",
-    ]
+    def fail_if_called(root):
+        raise AssertionError("dirty state should not be inspected for an irrelevant commit")
+
+    monkeypatch.setattr(sync, "dirty_worktree_paths", fail_if_called)
+
+    assert sync.sync_staged(tmp_path) == ()
 
 
 def test_conflicting_paths_are_scoped_to_affected_projection():
