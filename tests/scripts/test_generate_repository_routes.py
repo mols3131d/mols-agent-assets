@@ -51,6 +51,15 @@ def test_unknown_family_skill_is_rejected(tmp_path, monkeypatch):
         routes.build_outputs({"alpha": skill_row("alpha")}, {"first": {"description": "First family", "skills": ["missing"]}})
 
 
+def test_reserved_family_name_is_rejected(tmp_path, monkeypatch):
+    families = tmp_path / "families.json"
+    families.write_text('{"all":{"description":"reserved","skills":[]}}', encoding="utf-8")
+    monkeypatch.setattr(routes, "FAMILIES_PATH", families)
+
+    with pytest.raises(routes.RouteGenerationError, match="예약된 route 이름"):
+        routes.read_families()
+
+
 def test_load_skill_rows_rejects_name_drift():
     text = "---\nname: beta\ndescription: Beta description\n---\n"
     with pytest.raises(routes.RouteGenerationError, match="lock 이름과 Skill 이름"):
