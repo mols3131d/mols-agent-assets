@@ -21,6 +21,7 @@ ROUTES_PATH = ROUTE_DIR / "routes.jsonl"
 ALL_PATH = ROUTE_DIR / "all.jsonl"
 UNCATEGORIZED_PATH = ROUTE_DIR / "uncategorized.jsonl"
 FAMILY_NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+RESERVED_ROUTE_NAMES = {"all", "routes", "uncategorized"}
 
 
 class RouteGenerationError(RuntimeError):
@@ -162,6 +163,8 @@ def read_families() -> dict[str, dict[str, object]]:
     for family, entry in data.items():
         if not isinstance(family, str) or not FAMILY_NAME_RE.fullmatch(family):
             raise RouteGenerationError(f"잘못된 family 이름입니다: {family!r}")
+        if family in RESERVED_ROUTE_NAMES:
+            raise RouteGenerationError(f"예약된 route 이름은 family로 사용할 수 없습니다: {family}")
         if not isinstance(entry, dict):
             raise RouteGenerationError(f"잘못된 family entry입니다: {family}")
         if not isinstance(entry.get("description"), str) or not entry["description"]:
