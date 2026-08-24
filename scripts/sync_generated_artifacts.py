@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate committed projections and stage affected outputs for pre-commit."""
+"""Commit되는 projection을 재생성하고 pre-commit에서 영향받는 output을 stage한다."""
 
 from __future__ import annotations
 
@@ -33,12 +33,12 @@ _REPOSITORY_ROUTE_SOURCES = {
 
 
 class GeneratedArtifactSyncError(RuntimeError):
-    """Raised when generated artifacts cannot be synchronized safely."""
+    """Generated projection을 안전하게 동기화할 수 없을 때 사용한다."""
 
 
 @dataclass(frozen=True)
 class Projection:
-    """One committed projection and the source surface that owns it."""
+    """하나의 committed projection과 이를 소유하는 source surface를 묶는다."""
 
     name: str
     source_matches: Callable[[str], bool]
@@ -268,7 +268,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--staged",
         action="store_true",
-        help="Regenerate affected projections from staged changes and stage outputs.",
+        help="staged 변경에 영향받는 projection만 재생성하고 output을 stage한다.",
     )
     args = parser.parse_args(argv)
 
