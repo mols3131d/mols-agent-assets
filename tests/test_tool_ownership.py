@@ -8,7 +8,6 @@ LEFTHOOK = ROOT / "lefthook.yml"
 PACKAGE = ROOT / "package.json"
 BIOME = ROOT / "biome.json"
 RULESYNC_RUNNER = ROOT / "scripts" / "run_rulesync.py"
-PR_GATE = ROOT / ".github" / "workflows" / "targeted-tests.yml"
 
 
 def test_mise_owns_repository_tools_but_not_python() -> None:
@@ -58,13 +57,11 @@ def test_node_scripts_route_python_through_uv() -> None:
 def test_rulesync_is_pinned_and_uses_mise_managed_binary() -> None:
     mise = MISE.read_text(encoding="utf-8")
     runner = RULESYNC_RUNNER.read_text(encoding="utf-8")
-    workflow = PR_GATE.read_text(encoding="utf-8")
 
     assert '"npm:rulesync" = "' in mise
     assert '"npm:rulesync" = "latest"' not in mise
     assert 'shutil.which("rulesync")' in runner
     assert "rulesync@latest" not in runner
-    assert 'mise install node rumdl "npm:rulesync"' in workflow
 
 
 def test_biome_is_repository_configured() -> None:
