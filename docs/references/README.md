@@ -12,7 +12,7 @@ Reference는 외부 문서 링크 모음만을 의미하지 않습니다. Agent 
 
 | Path | Responsibility |
 | --- | --- |
-| [`agent-assets/`](agent-assets/) | Agent Asset 자체의 설계 원칙, instruction authoring, naming과 Skill-specific knowledge |
+| [`agent-assets/`](agent-assets/) | Agent Asset 자체의 설계 원칙, instruction 설계, naming과 Skill-specific knowledge |
 | [`patterns/`](patterns/) | 여러 repository와 harness에서 선택·조합·변형할 수 있는 reusable pattern capsule |
 | [`tooling/`](tooling/) | Rulesync, Promptfoo 등 외부 tooling과 specification의 current authority routing 및 필요한 integration knowledge |
 
