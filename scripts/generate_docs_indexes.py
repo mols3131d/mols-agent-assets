@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate repository-local ``docs/**/INDEX.tsv`` files."""
+"""Generate repository-local ``docs/INDEX.tsv`` and ``docs/*/INDEX.tsv`` files."""
 
 from __future__ import annotations
 
@@ -22,10 +22,14 @@ EXCLUDE = ["README.md", "AGENTS.md"]
 EXCLUDE_GLOBS = [".*.md", "__*__.md"]
 
 
-def _candidate_directories(docs_root: Path) -> list[Path]:
-    directories = {path.parent for path in docs_root.rglob("*.md")}
-    directories.update(path.parent for path in docs_root.rglob(INDEX_NAME))
-    return sorted(directories)
+def _index_targets(docs_root: Path) -> list[Path]:
+    targets = [docs_root]
+    targets.extend(
+        path
+        for path in sorted(docs_root.iterdir())
+        if path.is_dir() and any(path.rglob("*.md"))
+    )
+    return targets
 
 
 def _desired_index(directory: Path) -> str | None:
@@ -33,8 +37,7 @@ def _desired_index(directory: Path) -> str | None:
         directory,
         format="tsv",
         fields=["path", "description"],
-        globs=["*.md"],
-        max_depth=0,
+        max_depth=None,
         exclude=EXCLUDE,
         exclude_globs=EXCLUDE_GLOBS,
         include_without_frontmatter=True,
@@ -43,13 +46,16 @@ def _desired_index(directory: Path) -> str | None:
 
 
 def generate_docs_indexes(docs_root: Path = DOCS_ROOT, check: bool = False) -> list[str]:
-    """Generate indexes or return drift messages when ``check`` is true."""
+    """Generate scoped docs indexes or return drift messages when ``check`` is true."""
     if not docs_root.is_dir():
         raise NotADirectoryError(docs_root)
 
     drift: list[str] = []
-    for directory in _candidate_directories(docs_root):
+    target_indexes: set[Path] = set()
+
+    for directory in _index_targets(docs_root):
         index_path = directory / INDEX_NAME
+        target_indexes.add(index_path)
         desired = _desired_index(directory)
         relative = index_path.relative_to(docs_root.parent).as_posix()
 
@@ -65,9 +71,20 @@ def generate_docs_indexes(docs_root: Path = DOCS_ROOT, check: bool = False) -> l
         if current == desired:
             continue
         if check:
-            drift.append(f"outdated: {relative}" if current is not None else f"missing: {relative}")
+            drift.append(
+                f"outdated: {relative}" if current is not None else f"missing: {relative}"
+            )
         else:
             index_path.write_text(desired, encoding="utf-8")
+
+    for index_path in sorted(docs_root.rglob(INDEX_NAME)):
+        if index_path in target_indexes:
+            continue
+        relative = index_path.relative_to(docs_root.parent).as_posix()
+        if check:
+            drift.append(f"stale: {relative}")
+        else:
+            index_path.unlink()
 
     return drift
 
