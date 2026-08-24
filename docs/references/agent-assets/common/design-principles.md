@@ -70,7 +70,7 @@ AI가 자산을 빠르게 만들수록 maintainer가 **무엇이 authoritative�
 
 ## Boundary
 
-- 선택된 behavior를 instruction으로 표현하는 방법 → [Instruction Authoring](instruction-authoring.md)
+- 선택된 behavior를 instruction으로 표현하는 방법 → [Instruction Design](instruction-design.md)
 - Skill-specific package, discovery와 body convention → [Skill Authoring Conventions](../skills/skill-authoring-conventions.md)
 - 반복되는 문제에 대한 reusable solution shape → [Patterns](../../patterns/README.md)
 - source framework와 target/runtime의 구체적인 representation·precedence·loading semantics → 해당 authoritative contract
