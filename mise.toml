@@ -56,9 +56,9 @@ description = "Run repository tests"
 run = "uv run pytest"
 
 [tasks.eval-mols-rpi-smoke]
-description = "Run the local Promptfoo fixture smoke for mols-rpi"
+description = "mols-rpi Promptfoo fixture smoke를 local에서 실행"
 run = "npm run eval:promptfoo:mols-rpi:smoke"
 
 [tasks.eval-mols-rpi]
-description = "Run the local Promptfoo runtime evaluation for mols-rpi"
+description = "mols-rpi Promptfoo runtime evaluation을 local에서 실행"
 run = "npm run eval:promptfoo:mols-rpi"
