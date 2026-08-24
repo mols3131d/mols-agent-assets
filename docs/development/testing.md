@@ -8,7 +8,7 @@ description: 저장소의 결정론적 검증, 도구 검증, PR Gate와 merge�
 
 저장소에서 사용하는 도구 버전과 여러 도구를 아우르는 작업 진입점은 `mise.toml`에 고정합니다.
 
-- mise는 `uv`, Node.js, rumdl, Lefthook, Biome, Rulesync와 저장소 수준 작업을 소유합니다.
+- mise는 `uv`, Node.js, rumdl, Lefthook, Biome, Rulesync, skills CLI와 저장소 수준 작업을 소유합니다.
 - uv는 `.python-version`의 Python 버전, `pyproject.toml`의 Python 의존성, 환경과 `uv.lock`을 소유합니다.
 - Ruff는 Python 개발 의존성으로 유지하며 uv를 통해 실행합니다.
 
@@ -21,7 +21,7 @@ mise install
 mise run setup
 ```
 
-`mise run setup`은 모든 Python 의존성 그룹, 저장소 내부의 잠금된 Rulesync 자산, 생성된 Agent Skill과 Git hook을 설치합니다.
+`mise run setup`은 모든 Python 의존성 그룹, 저장소 내부의 잠금된 Rulesync 자산, 생성된 Agent Skill, `skills-lock.json`의 외부 Skill dependency와 Git hook을 설치합니다. 외부 Skill은 `mise run skills-sync`와 같은 read-only sync 구현을 사용하며, vendor별 payload와 설치 방식은 source-native installer가 소유합니다.
 
 ## Formatting
 
