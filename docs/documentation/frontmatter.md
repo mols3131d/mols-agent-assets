@@ -16,7 +16,7 @@ description: Markdown 문서의 frontmatter 적용 범위, 예외, description�
 
 ## Description
 
-`description`은 문서를 열기 전에 후보를 구분하고 선택할 수 있게 하는 **discovery와 routing metadata**입니다. 이 repository의 `docs/**/INDEX.tsv` 같은 projection에서도 사용됩니다.
+`description`은 문서를 열기 전에 후보를 구분하고 선택할 수 있게 하는 **discovery와 routing metadata**입니다. 이 repository의 generated docs `INDEX.tsv` projection에서도 사용됩니다.
 
 가장 중요한 신호는 **언제 이 문서를 찾는가**입니다. 어떤 작업, 문제나 판단에서 관련되는지 드러내고, 후보를 구분하는 데 도움이 되면 문서가 맡는 핵심 책임이나 인접 문서와의 경계를 짧게 덧붙입니다. 문서 선택에 유용한 domain term, 대상과 주요 concern은 자연스럽게 포함합니다.
 
@@ -36,7 +36,7 @@ description: Markdown 문서의 frontmatter 적용 범위, 예외, description�
 
 `README.md`, `index.md`처럼 directory의 entrypoint 역할을 하는 문서는 frontmatter에 **해당 directory의 metadata**를 담을 수 있습니다.
 
-Directory metadata를 projection할 때는 repository가 정한 entrypoint 후보의 우선순위를 따릅니다. 이 repository의 docs index는 기본적으로 `README.md`를 먼저 보고, usable frontmatter가 없으면 `index.md`를 fallback으로 사용합니다. 같은 directory의 여러 entrypoint metadata를 임의로 합치지 않습니다.
+Directory metadata를 projection할 때는 repository가 정한 entrypoint 후보의 우선순위를 따릅니다. 이 repository의 docs index는 기본적으로 `README.md`를 먼저 보고, 파일이 없거나 YAML frontmatter 자체가 없으면 `index.md`로 넘어갑니다. 앞선 entrypoint에 frontmatter가 있으면 일부 field가 비어 있어도 뒤 entrypoint와 metadata를 임의로 합치지 않습니다.
 
 `description`은 entrypoint 파일 자체를 설명하기보다 directory를 언제 탐색해야 하는지와, 선택에 필요할 때 그 directory의 책임·범위를 나타냅니다.
 
