@@ -1,3 +1,7 @@
+---
+description: 특정 directory에서만 필요한 agent guidance와 context를 가까운 entrypoint에 묶어 scope-local하게 발견·로드하도록 설계할 때 참고하는 pattern으로, directory context boundary와 local routing 책임을 다룹니다.
+---
+
 # Directory Context Capsule
 
 하나의 directory를 **agent가 사용하는 context boundary**로 보고, 가까운 entrypoint와 해당 scope의 agent-facing context를 함께 두는 패턴입니다.

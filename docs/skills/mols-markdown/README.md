@@ -1,6 +1,6 @@
 ---
 title: mols-markdown family
-description: Markdown 표현·specialized projection·deterministic maintenance Skill의 maintainer boundary
+description: mols-markdown family에서 사람이 읽는 Markdown, dashboard, deterministic maintenance 중 어느 Skill이 책임지는지 선택하거나 family boundary를 유지보수할 때 사용하는 entrypoint입니다.
 ---
 
 # mols-markdown

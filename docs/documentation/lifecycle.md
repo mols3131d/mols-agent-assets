@@ -1,5 +1,5 @@
 ---
-description: repository에 남기는 durable knowledge, working artifact, archive와 Git history의 역할과 승격 기준을 정의합니다.
+description: research·review·draft 같은 작업 산출물과 durable knowledge를 canonical source, inbox, archive, Git history 중 어디에 남길지 판단할 때 사용합니다.
 ---
 
 # Knowledge Lifecycle

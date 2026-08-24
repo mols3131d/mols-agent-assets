@@ -1,3 +1,7 @@
+---
+description: clarify-code의 routing, scope, public argument, documentation·validation 전략을 변경하거나 복구할 때 원래 설계 결정을 확인하는 protected baseline 기록입니다.
+---
+
 # Clarify Code 결정 기록
 
 ## 채택

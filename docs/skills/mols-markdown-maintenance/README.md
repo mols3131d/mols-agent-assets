@@ -1,3 +1,7 @@
+---
+description: mols-markdown-maintenance를 변경하거나 유지할 때 repository-native Markdown tooling 우선순위, custom frontmatter/index delta와 유지보수 invariant를 확인하는 maintainer documentation entrypoint입니다.
+---
+
 # mols-markdown-maintenance Maintainer Docs
 
 `mols-markdown-maintenance`는 결정론적 Markdown 유지보수 방식의 선택과, 선택한 Markdown backend가 이미 제공하지 않는 작은 local delta를 소유합니다.

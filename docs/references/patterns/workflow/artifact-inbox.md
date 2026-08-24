@@ -1,3 +1,7 @@
+---
+description: report·research·review·handoff·draft 같은 working/non-canonical artifact를 canonical source와 분리해 보관할 때 참고하는 pattern으로, inbox의 scope와 승격·유지·삭제 lifecycle 경계를 다룹니다.
+---
+
 # Artifact Inbox
 
 작업 중 생성되는 report, research, review, handoff, draft 같은 **working / non-canonical artifact**를 canonical surface와 분리해 두는 패턴입니다.

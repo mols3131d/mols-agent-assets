@@ -1,2 +1,2 @@
 path	description
-DIRECTIVE.md	
+DIRECTIVE.md	mols-agent-asset-validator의 검증 범위, evidence 상태, loop·review·runtime 원칙을 변경하거나 복구할 때 보존해야 할 핵심 invariant를 확인하는 protected baseline입니다.

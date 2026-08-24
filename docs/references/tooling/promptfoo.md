@@ -1,6 +1,6 @@
 ---
 title: Promptfoo
-description: Promptfoo eval tooling의 official source routing과 repository-local entry points
+description: Promptfoo config·assertion·provider·model grading·debugging의 current official source와 이 저장소의 eval policy·config·runner entrypoint를 찾을 때 사용합니다.
 ---
 
 # Promptfoo

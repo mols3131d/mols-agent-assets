@@ -1,3 +1,7 @@
+---
+description: Skill runtime source와 maintainer docs·tests·eval context를 한 source workspace에서 함께 보존·이동해야 할 때 참고하는 pattern으로, runtime surface와 maintainer-only surface의 경계를 다룹니다.
+---
+
 # Skill Source Workspace
 
 일반 project repository에서 Skill runtime source와 maintainer context를 함께 관리하여 **재사용·이동·조정하기 쉬운 source workspace**를 구성하는 패턴입니다.

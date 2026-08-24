@@ -1,3 +1,7 @@
+---
+description: 같은 Agent Asset core를 runtime·target·사용 목적별로 복제하지 않고 argument로 behavior와 conditional context를 선택하게 설계할 때 참고하는 pattern으로, argument contract와 progressive disclosure의 경계를 다룹니다.
+---
+
 # Argument-Driven Assets
 
 재사용 가능한 asset의 변형 가능한 행동을 작은 **argument surface**로 노출하고, 선택된 argument 값에 필요한 behavior와 context만 적용하는 패턴입니다.

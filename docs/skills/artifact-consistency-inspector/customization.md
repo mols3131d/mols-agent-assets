@@ -1,3 +1,7 @@
+---
+description: artifact-consistency-inspector를 project에 맞게 조정할 때 변경 가능한 항목과 반드시 보존할 runtime·report invariant, rename 및 frontmatter 동기화 규칙을 확인하는 maintainer 문서입니다.
+---
+
 # Customization Guide
 
 이 문서는 `artifact-consistency-inspector`의 maintainer-only customization contract다.

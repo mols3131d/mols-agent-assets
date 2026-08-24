@@ -1,3 +1,7 @@
+---
+description: mols-markdown-dashboard를 변경·검증·복구할 때 maintenance protocol, package-local quality gate, recovery checklist와 refactoring rule을 확인하는 maintainer 문서입니다.
+---
+
 # Maintenance
 
 ## Change Protocol

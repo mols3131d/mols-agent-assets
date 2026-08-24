@@ -1,3 +1,7 @@
+---
+description: repository·subtree·path·task intent에 따라 instruction과 context를 서로 다른 scope mechanism에 배치할 때 참고하는 pattern으로, 자동 주입과 context 절약을 위한 structural scope와 semantic routing의 책임을 구분합니다.
+---
+
 # Layered Context Instructions
 
 지침과 context를 적용 범위에 따라 다른 mechanism으로 배치해 **자동 주입을 유지하면서 불필요한 context load를 줄이는** 패턴입니다.

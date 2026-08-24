@@ -1,3 +1,7 @@
+---
+description: 이름만으로 목적을 알기 어려운 repository-local directory나 asset surface에 작은 guide가 필요한지 판단할 때 참고하는 pattern으로, 사람이 알아야 할 목적·scope·authority·navigation과 agent-only guidance의 경계를 다룹니다.
+---
+
 # Nonstandard Directory Guide
 
 비표준 repository-local directory나 asset surface는 이름만으로 의미가 충분히 드러나지 않을 수 있습니다.

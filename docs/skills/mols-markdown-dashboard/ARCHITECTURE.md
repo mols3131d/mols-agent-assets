@@ -1,3 +1,7 @@
+---
+description: mols-markdown-dashboard의 구현 구조와 data flow를 이해하거나 변경 영향을 판단할 때 component responsibility, design boundary, failure safety와 exit code를 확인하는 maintainer 문서입니다.
+---
+
 # Architecture
 
 ## Data Flow

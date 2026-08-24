@@ -1,3 +1,7 @@
+---
+description: mols-markdown-dashboard의 baseline, architecture와 maintenance 문서를 찾아 현재 구현을 이해·변경·복구할 때 사용하는 maintainer documentation entrypoint입니다.
+---
+
 # mols-markdown-dashboard Maintainer Docs
 
 이 디렉터리는 `mols-markdown-dashboard`의 maintainer documentation capsule입니다.

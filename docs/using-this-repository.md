@@ -1,6 +1,6 @@
 ---
 title: Using This Repository
-description: 이 저장소가 관리하는 Agent Asset과 reusable knowledge를 외부 repository나 runtime에서 발견하고 사용하는 방법
+description: 이 저장소의 Agent Asset이나 reusable knowledge를 외부 repository·runtime에서 찾고, 직접 사용·설치·고정·가져오는 방법을 선택할 때 사용합니다.
 ---
 
 # 이 저장소 사용하기
