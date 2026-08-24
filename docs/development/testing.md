@@ -31,6 +31,20 @@ mise run format
 
 `format` task는 각 도구를 소유하는 runtime을 통해 Ruff, rumdl과 Biome을 실행합니다.
 
+## Generated projections
+
+Commit되는 index와 route는 작성 원본에서 다시 만들 수 있는 projection입니다. 직접 수정하지 않고 다음 entrypoint로 재생성합니다.
+
+```bash
+mise run generated-sync
+```
+
+현재 이 task는 `docs/**/INDEX.tsv`, `route/skills.jsonl`, `.agents/route/*.jsonl`을 각 작성 원본에서 재생성합니다.
+
+Pre-commit hook은 formatter가 staged file을 다시 stage하기 전에 staged 변경에 영향받는 projection만 재생성하고 해당 generated output을 함께 stage합니다. 관련 source나 generated output에 별도의 unstaged 또는 untracked 변경이 있으면 working tree의 다른 작업을 섞지 않도록 자동 동기화를 중단합니다.
+
+CI는 이 write-side automation을 대신하지 않습니다. PR Gate는 계속 read-only로 projection drift를 검증하며 generated file을 commit하거나 push하지 않습니다.
+
 ## Validation
 
 ```bash

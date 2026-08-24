@@ -1,0 +1,168 @@
+from __future__ import annotations
+
+import subprocess
+
+import pytest
+
+from scripts import sync_generated_artifacts as sync
+
+
+def _run_git(root, *args):
+    return subprocess.run(
+        ["git", *args],
+        cwd=root,
+        check=True,
+        stdout=subprocess.PIPE,
+        text=True,
+    )
+
+
+@pytest.mark.parametrize(
+    ("path", "expected"),
+    [
+        ("docs/guide.md", True),
+        ("docs/references/README.md", True),
+        ("docs/references/index.md", True),
+        ("docs/AGENTS.md", False),
+        ("docs/references/.private.md", False),
+        ("docs/references/__system__.md", False),
+        ("docs/references/INDEX.md", False),
+        ("scripts/generate_docs_indexes.py", True),
+        (
+            "src/rulesync/.rulesync/skills/mols-markdown-maintenance/"
+            "scripts/generate_index.py",
+            True,
+        ),
+        ("README.md", False),
+    ],
+)
+def test_docs_index_source_matching(path, expected):
+    assert sync._is_docs_index_source(path) is expected
+
+
+def test_select_projections_uses_source_and_generated_output_paths():
+    paths = {
+        "docs/guide.md",
+        "route/skills.jsonl",
+        ".agents/route/routes.jsonl",
+    }
+
+    assert [projection.name for projection in sync.select_projections(paths)] == [
+        "docs-indexes",
+        "distribution-route",
+        "repository-routes",
+    ]
+
+
+def test_conflicting_paths_are_scoped_to_affected_projection():
+    affected = sync.select_projections({"docs/guide.md"})
+
+    assert sync.conflicting_paths(
+        {"docs/other.md", "src/rulesync/.rulesync/skills/foo/SKILL.md"},
+        affected,
+    ) == {"docs-indexes": ["docs/other.md"]}
+
+
+def test_sync_staged_generates_then_stages_affected_projection(
+    monkeypatch,
+    tmp_path,
+):
+    events = []
+    projection = sync.Projection(
+        name="example",
+        source_matches=lambda path: path == "source.md",
+        output_matches=lambda path: path == "generated.txt",
+        generate=lambda: events.append("generate"),
+    )
+    monkeypatch.setattr(sync, "staged_paths", lambda root: {"source.md"})
+    monkeypatch.setattr(sync, "dirty_worktree_paths", lambda root: set())
+    monkeypatch.setattr(
+        sync,
+        "_stage_projection_outputs",
+        lambda projection, root: events.append(f"stage:{projection.name}"),
+    )
+
+    assert sync.sync_staged(tmp_path, (projection,)) == ("example",)
+    assert events == ["generate", "stage:example"]
+
+
+def test_sync_staged_refuses_related_unstaged_changes_before_generation(
+    monkeypatch,
+    tmp_path,
+):
+    events = []
+    projection = sync.Projection(
+        name="example",
+        source_matches=lambda path: path.endswith(".md"),
+        output_matches=lambda path: path == "generated.txt",
+        generate=lambda: events.append("generate"),
+    )
+    monkeypatch.setattr(sync, "staged_paths", lambda root: {"source.md"})
+    monkeypatch.setattr(
+        sync,
+        "dirty_worktree_paths",
+        lambda root: {"other.md"},
+    )
+
+    with pytest.raises(sync.GeneratedArtifactSyncError, match="other.md"):
+        sync.sync_staged(tmp_path, (projection,))
+
+    assert events == []
+
+
+def test_git_state_detects_partial_staging_and_untracked_sources(tmp_path):
+    _run_git(tmp_path, "init", "-q")
+    _run_git(tmp_path, "config", "user.name", "Test")
+    _run_git(tmp_path, "config", "user.email", "test@example.com")
+
+    docs = tmp_path / "docs"
+    docs.mkdir()
+    guide = docs / "guide.md"
+    guide.write_text("initial\n", encoding="utf-8")
+    _run_git(tmp_path, "add", "docs/guide.md")
+    _run_git(tmp_path, "commit", "-qm", "initial")
+
+    guide.write_text("staged\n", encoding="utf-8")
+    _run_git(tmp_path, "add", "docs/guide.md")
+    guide.write_text("unstaged\n", encoding="utf-8")
+    (docs / "new.md").write_text("new\n", encoding="utf-8")
+
+    assert sync.staged_paths(tmp_path) == {"docs/guide.md"}
+    assert sync.dirty_worktree_paths(tmp_path) == {
+        "docs/guide.md",
+        "docs/new.md",
+    }
+
+
+def test_stage_projection_outputs_does_not_stage_unrelated_changes(tmp_path):
+    _run_git(tmp_path, "init", "-q")
+    _run_git(tmp_path, "config", "user.name", "Test")
+    _run_git(tmp_path, "config", "user.email", "test@example.com")
+
+    docs = tmp_path / "docs"
+    docs.mkdir()
+    index = docs / "INDEX.tsv"
+    index.write_text("old\n", encoding="utf-8")
+    note = tmp_path / "note.txt"
+    note.write_text("old\n", encoding="utf-8")
+    _run_git(tmp_path, "add", ".")
+    _run_git(tmp_path, "commit", "-qm", "initial")
+
+    index.write_text("new\n", encoding="utf-8")
+    note.write_text("new\n", encoding="utf-8")
+
+    projection = sync.Projection(
+        name="docs-indexes",
+        source_matches=lambda path: False,
+        output_matches=sync._is_docs_index_output,
+        generate=lambda: None,
+    )
+    sync._stage_projection_outputs(projection, tmp_path)
+
+    staged = _run_git(
+        tmp_path,
+        "diff",
+        "--cached",
+        "--name-only",
+    ).stdout.splitlines()
+    assert staged == ["docs/INDEX.tsv"]
