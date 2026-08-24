@@ -19,7 +19,7 @@ def test_pr_gate_is_minimal_read_only_deterministic_gate() -> None:
     assert "permissions:\n  contents: read" in workflow
     assert "git push" not in workflow
     assert "contents: write" not in workflow
-    assert "actions/setup-python@v6" in workflow
+    assert "actions/setup-python" not in workflow
     assert "astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9" in workflow
     assert 'version: "0.12.1"' in workflow
     assert "enable-cache: true" in workflow
