@@ -43,6 +43,19 @@ def test_generate_index_keeps_file_as_path_compatibility_alias(tmp_path):
     ]
 
 
+def test_generate_index_filesystem_path_overrides_frontmatter_path_fields(tmp_path):
+    _write(
+        tmp_path / "guide.md",
+        "---\npath: wrong.md\nfile: wrong.md\ndescription: Guide.\n---\n# Guide\n",
+    )
+
+    result = generate_index(tmp_path, fields=["path", "file", "description"])
+
+    assert list(csv.DictReader(io.StringIO(result))) == [
+        {"path": "guide.md", "file": "guide.md", "description": "Guide."}
+    ]
+
+
 def test_generate_index_supports_exact_and_glob_exclusions(tmp_path):
     _write(tmp_path / "README.md", "# Readme\n")
     _write(tmp_path / "AGENTS.md", "# Agents\n")
