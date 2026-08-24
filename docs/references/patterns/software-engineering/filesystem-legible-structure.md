@@ -1,5 +1,5 @@
 ---
-description: repository의 file·directory 이름, 배치, 계층으로 탐색성을 높일지 판단할 때 참고하며, filesystem legibility와 구조·convention·operability 사이의 경계를 다루는 패턴입니다.
+description: repository의 file·directory 이름, 배치, 계층을 활용해 탐색성을 높일지 판단할 때 참고하며, filesystem legibility와 구조·convention·operability 사이의 경계를 다루는 패턴입니다.
 ---
 
 # Filesystem-Legible Structure
@@ -30,9 +30,9 @@ FS에서 보이는 경계와 이름은 **탐색 단서이지 그 자체로 archi
 
 ## Application
 
-Legibility를 개선할 때는 **탐색 문제와 구조 문제를 먼저 구분하고, 가장 싼 수단부터** 봅니다.
+Legibility를 개선할 때는 **탐색 문제와 구조 문제를 먼저 구분한 뒤, 가장 싼 수단부터** 봅니다.
 
-탐색이 어렵다고 바로 filesystem을 재구성하지 않습니다. 먼저 문제가 실제 responsibility나 structure의 배치에서 오는지, search·symbol navigation·dependency view·index 같은 탐색 수단의 한계에서 오는지 구분합니다. 후자라면 source structure를 바꾸기보다 더 싼 navigation aid를 우선합니다.
+탐색이 어렵다고 바로 filesystem을 재구성하지 않습니다. 먼저 원인이 실제 responsibility나 structure의 배치인지, search·symbol navigation·dependency view·index 같은 탐색 수단의 한계인지 구분합니다. 후자라면 source structure를 바꾸기보다 더 싼 탐색 보조 수단을 우선합니다.
 
 그다음에는 다음 순서로 봅니다.
 
