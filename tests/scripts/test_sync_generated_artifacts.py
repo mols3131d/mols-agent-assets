@@ -86,6 +86,48 @@ def test_sync_staged_generates_then_stages_affected_projection(
     assert events == ["generate", "stage:example"]
 
 
+def test_sync_staged_delays_staging_until_all_generators_succeed(
+    monkeypatch,
+    tmp_path,
+):
+    events = []
+
+    def fail():
+        events.append("generate:second")
+        raise RuntimeError("boom")
+
+    projections = (
+        sync.Projection(
+            name="first",
+            source_matches=lambda path: path == "first.md",
+            output_matches=lambda path: path == "first.txt",
+            generate=lambda: events.append("generate:first"),
+        ),
+        sync.Projection(
+            name="second",
+            source_matches=lambda path: path == "second.md",
+            output_matches=lambda path: path == "second.txt",
+            generate=fail,
+        ),
+    )
+    monkeypatch.setattr(
+        sync,
+        "staged_paths",
+        lambda root: {"first.md", "second.md"},
+    )
+    monkeypatch.setattr(sync, "dirty_worktree_paths", lambda root: set())
+    monkeypatch.setattr(
+        sync,
+        "_stage_projection_outputs",
+        lambda projection, root: events.append(f"stage:{projection.name}"),
+    )
+
+    with pytest.raises(RuntimeError, match="boom"):
+        sync.sync_staged(tmp_path, projections)
+
+    assert events == ["generate:first", "generate:second"]
+
+
 def test_sync_staged_refuses_related_unstaged_changes_before_generation(
     monkeypatch,
     tmp_path,
@@ -134,21 +176,29 @@ def test_git_state_detects_partial_staging_and_untracked_sources(tmp_path):
     }
 
 
-def test_stage_projection_outputs_does_not_stage_unrelated_changes(tmp_path):
+def test_stage_projection_outputs_handles_new_modified_and_deleted_outputs(
+    tmp_path,
+):
     _run_git(tmp_path, "init", "-q")
     _run_git(tmp_path, "config", "user.name", "Test")
     _run_git(tmp_path, "config", "user.email", "test@example.com")
 
     docs = tmp_path / "docs"
-    docs.mkdir()
+    stale = docs / "stale" / "INDEX.tsv"
+    stale.parent.mkdir(parents=True)
     index = docs / "INDEX.tsv"
     index.write_text("old\n", encoding="utf-8")
+    stale.write_text("stale\n", encoding="utf-8")
     note = tmp_path / "note.txt"
     note.write_text("old\n", encoding="utf-8")
     _run_git(tmp_path, "add", ".")
     _run_git(tmp_path, "commit", "-qm", "initial")
 
     index.write_text("new\n", encoding="utf-8")
+    stale.unlink()
+    new_index = docs / "new" / "INDEX.tsv"
+    new_index.parent.mkdir()
+    new_index.write_text("new\n", encoding="utf-8")
     note.write_text("new\n", encoding="utf-8")
 
     projection = sync.Projection(
@@ -165,4 +215,8 @@ def test_stage_projection_outputs_does_not_stage_unrelated_changes(tmp_path):
         "--cached",
         "--name-only",
     ).stdout.splitlines()
-    assert staged == ["docs/INDEX.tsv"]
+    assert staged == [
+        "docs/INDEX.tsv",
+        "docs/new/INDEX.tsv",
+        "docs/stale/INDEX.tsv",
+    ]

@@ -249,6 +249,7 @@ def sync_staged(
 
     for projection in affected:
         projection.generate()
+    for projection in affected:
         _stage_projection_outputs(projection, root)
 
     return tuple(projection.name for projection in affected)
