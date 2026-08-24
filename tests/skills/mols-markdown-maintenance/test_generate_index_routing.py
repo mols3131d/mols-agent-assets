@@ -140,6 +140,38 @@ def test_generate_index_can_mix_files_and_directories(tmp_path):
     ]
 
 
+def test_generate_index_directory_entry_files_use_ordered_frontmatter(tmp_path):
+    _write(tmp_path / "alpha" / "README.md", "# No frontmatter\n")
+    _write(
+        tmp_path / "alpha" / "index.md",
+        "---\ndescription: Alpha fallback.\n---\n# Alpha\n",
+    )
+    _write(
+        tmp_path / "beta" / "README.md",
+        "---\ntitle: Beta\n---\n# Beta\n",
+    )
+    _write(
+        tmp_path / "beta" / "index.md",
+        "---\ndescription: Must not merge.\n---\n# Beta index\n",
+    )
+
+    result = generate_index(
+        tmp_path,
+        format="tsv",
+        fields=["path", "description"],
+        max_depth=0,
+        include_files=False,
+        include_directories=True,
+        directory_entry_files=["README.md", "index.md"],
+    )
+
+    rows = list(csv.DictReader(io.StringIO(result), delimiter="\t"))
+    assert rows == [
+        {"path": "alpha/", "description": "Alpha fallback."},
+        {"path": "beta/", "description": ""},
+    ]
+
+
 def test_generate_index_rejects_extensions_when_files_are_disabled(tmp_path):
     with pytest.raises(ValueError, match="include_files"):
         generate_index(
@@ -147,6 +179,13 @@ def test_generate_index_rejects_extensions_when_files_are_disabled(tmp_path):
             include_files=False,
             file_extensions=[".md"],
         )
+
+
+def test_generate_index_rejects_directory_entry_files_when_directories_are_disabled(
+    tmp_path,
+):
+    with pytest.raises(ValueError, match="include_directories"):
+        generate_index(tmp_path, directory_entry_files=["README.md"])
 
 
 def test_generate_index_cli_writes_tsv_with_exclusions(tmp_path):
@@ -186,10 +225,12 @@ def test_generate_index_cli_writes_tsv_with_exclusions(tmp_path):
     )
 
 
-def test_generate_index_cli_supports_directory_only_projection(tmp_path):
-    (tmp_path / "alpha").mkdir()
+def test_generate_index_cli_supports_directory_entrypoint_projection(tmp_path):
+    _write(
+        tmp_path / "alpha" / "README.md",
+        "---\ndescription: Alpha.\n---\n# Alpha\n",
+    )
     (tmp_path / "beta").mkdir()
-    _write(tmp_path / "guide.md", "---\ndescription: Guide.\n---\n")
     output = tmp_path / "INDEX.tsv"
 
     assert (
@@ -203,6 +244,9 @@ def test_generate_index_cli_supports_directory_only_projection(tmp_path):
                 "description",
                 "--no-files",
                 "--directories",
+                "--directory-entry-files",
+                "README.md",
+                "index.md",
                 "--output",
                 str(output),
             ]
@@ -210,5 +254,5 @@ def test_generate_index_cli_supports_directory_only_projection(tmp_path):
         == 0
     )
     assert output.read_text(encoding="utf-8") == (
-        "path\tdescription\nalpha/\t\nbeta/\t\n"
+        "path\tdescription\nalpha/\tAlpha.\nbeta/\t\n"
     )
