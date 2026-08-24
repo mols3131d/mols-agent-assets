@@ -27,8 +27,16 @@ def test_generate_docs_indexes_projects_global_and_first_level_subtrees(tmp_path
     _write(docs / ".private.md", "# Hidden\n")
     _write(docs / "__system__.md", "# System\n")
     _write(
+        docs / "references" / "README.md",
+        "---\ndescription: Reference docs.\n---\n# References\n",
+    )
+    _write(
         docs / "references" / "reference.md",
         "---\ndescription: Reference.\n---\n# Reference\n",
+    )
+    _write(
+        docs / "references" / "nested" / "README.md",
+        "---\ndescription: Nested references.\n---\n# Nested\n",
     )
     _write(
         docs / "references" / "nested" / "deep.md",
@@ -40,14 +48,32 @@ def test_generate_docs_indexes_projects_global_and_first_level_subtrees(tmp_path
     assert _read_tsv(docs / "INDEX.tsv") == [
         {"path": "ARCHITECTURE.md", "description": ""},
         {"path": "guide.md", "description": "Guide description."},
+        {"path": "references/", "description": "Reference docs."},
+        {"path": "references/nested/", "description": "Nested references."},
         {"path": "references/nested/deep.md", "description": "Deep reference."},
         {"path": "references/reference.md", "description": "Reference."},
     ]
     assert _read_tsv(docs / "references" / "INDEX.tsv") == [
+        {"path": "nested/", "description": "Nested references."},
         {"path": "nested/deep.md", "description": "Deep reference."},
         {"path": "reference.md", "description": "Reference."},
     ]
     assert not (docs / "references" / "nested" / "INDEX.tsv").exists()
+
+
+def test_generate_docs_indexes_keeps_directory_without_readme_description_blank(tmp_path):
+    docs = tmp_path / "docs"
+    _write(
+        docs / "skills" / "nested" / "guide.md",
+        "---\ndescription: Guide.\n---\n# Guide\n",
+    )
+
+    assert generate_docs_indexes(docs) == []
+
+    assert _read_tsv(docs / "skills" / "INDEX.tsv") == [
+        {"path": "nested/", "description": ""},
+        {"path": "nested/guide.md", "description": "Guide."},
+    ]
 
 
 def test_generate_docs_indexes_removes_deeper_indexes(tmp_path):
