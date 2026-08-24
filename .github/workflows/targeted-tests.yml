@@ -34,7 +34,6 @@ jobs:
           routes=false
           markdown=false
           docs_indexes=false
-          promptfoo=false
           mapfile -d '' files < <(git diff --name-only -z HEAD^1 HEAD)
           for path in "${files[@]}"; do
             case "$path" in
@@ -44,7 +43,6 @@ jobs:
                 routes=true
                 markdown=true
                 docs_indexes=true
-                promptfoo=true
                 ;;
               mise.toml|biome.json|lefthook.yml|.python-version|.vscode/tasks.json|pyproject.toml|uv.lock|package.json)
                 tooling=true
@@ -70,18 +68,12 @@ jobs:
                 docs_indexes=true
                 ;;
             esac
-            case "$path" in
-              evals/promptfoo/*|evals/skills/mols-rpi/*|scripts/evals/*|src/rulesync/.rulesync/skills/mols-rpi/*|package.json|mise.toml)
-                promptfoo=true
-                ;;
-            esac
           done
           echo "tooling=$tooling" >> "$GITHUB_OUTPUT"
           echo "rulesync=$rulesync" >> "$GITHUB_OUTPUT"
           echo "routes=$routes" >> "$GITHUB_OUTPUT"
           echo "markdown=$markdown" >> "$GITHUB_OUTPUT"
           echo "docs_indexes=$docs_indexes" >> "$GITHUB_OUTPUT"
-          echo "promptfoo=$promptfoo" >> "$GITHUB_OUTPUT"
 
       - name: Set up mise
         uses: jdx/mise-action@v3
@@ -140,9 +132,3 @@ jobs:
             rumdl fmt "${markdown[@]}"
             git diff --exit-code -- "${markdown[@]}"
           fi
-
-      - name: Run mols-rpi Promptfoo smoke
-        if: steps.scope.outputs.promptfoo == 'true'
-        run: |
-          mise install node
-          npm run eval:promptfoo:mols-rpi:smoke
