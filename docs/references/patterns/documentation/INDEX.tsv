@@ -1,0 +1,3 @@
+path	description
+baseline-document.md	자산의 원래 의도와 protected invariant를 구현 상태와 분리해 보존·복구할 때 참고하는 reusable baseline pattern입니다.
+nonstandard-directory-guide.md	

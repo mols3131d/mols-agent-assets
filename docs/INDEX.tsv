@@ -1,0 +1,3 @@
+path	description
+language.md	repository communication과 Agent Asset 역할별 언어 정책을 정의합니다.
+using-this-repository.md	이 저장소가 관리하는 Agent Asset과 reusable knowledge를 외부 repository나 runtime에서 발견하고 사용하는 방법
