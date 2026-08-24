@@ -27,11 +27,15 @@ EXCLUDE_GLOBS = [".*.md", "__*__.md"]
 
 def _is_route_markdown(path: Path) -> bool:
     name = path.name
+    if not path.is_file() or path.suffix != ".md":
+        return False
     if name in BASE_EXCLUDE or name.startswith("."):
+        return False
+    if name.upper().startswith("INDEX") or name.startswith("__index__"):
         return False
     if name.startswith("__") and name.endswith("__.md"):
         return False
-    return path.is_file() and path.suffix == ".md"
+    return True
 
 
 def _has_markdown_content(directory: Path) -> bool:
