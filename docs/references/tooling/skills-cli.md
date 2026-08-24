@@ -1,6 +1,6 @@
 ---
 title: skills CLI
-description: 외부 Agent Skill dependency의 lock, source-native 설치와 repository integration 경계
+description: 외부 Agent Skill dependency를 lock·sync·install·update할 때 skills CLI, source-native installer와 Rulesync 사이의 책임 경계를 확인할 때 사용합니다.
 ---
 
 # skills CLI

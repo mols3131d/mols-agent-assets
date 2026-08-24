@@ -1,6 +1,6 @@
 ---
 title: mols-mermaid family
-description: Mermaid diagram과 chart Skill의 maintainer boundary
+description: mols-mermaid family에서 관계·절차·구조는 diagram, 정량 비교·추세·구성은 chart 중 어느 Skill로 라우팅할지 판단하거나 family boundary를 유지보수할 때 사용하는 entrypoint입니다.
 ---
 
 # mols-mermaid

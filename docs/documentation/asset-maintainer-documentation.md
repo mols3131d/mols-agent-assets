@@ -1,5 +1,5 @@
 ---
-description: 개별 Agent Asset 또는 family의 maintainer documentation을 어디에 두고 어떤 책임을 갖게 할지 정의합니다.
+description: 개별 Agent Asset 또는 family의 maintainer documentation을 어디에 두고, runtime source·family docs·repository-local docs와 책임을 어떻게 나눌지 결정할 때 사용합니다.
 ---
 
 # Asset Maintainer Documentation

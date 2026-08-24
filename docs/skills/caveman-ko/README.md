@@ -1,5 +1,5 @@
 ---
-description: caveman-ko Skill의 출처, 성숙도 경계와 승격 기준을 보존하는 실험 단계 유지보수 문맥입니다.
+description: caveman-ko를 유지보수하거나 승격할 때 upstream provenance, Experimental 경계, runtime·eval 책임과 promotion criteria를 확인하는 maintainer entrypoint입니다.
 ---
 
 # caveman-ko

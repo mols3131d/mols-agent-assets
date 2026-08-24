@@ -1,5 +1,5 @@
 ---
-description: 문서 중복을 owner와 scope 경계에서 판단하고 authoritative source를 하나로 유지하는 원칙을 정의합니다.
+description: 두 문서의 내용이 중복인지, 어느 owner가 authoritative source가 되어야 하는지, scope가 다른 overlap을 허용할지 판단할 때 사용합니다.
 ---
 
 # Duplication Boundaries

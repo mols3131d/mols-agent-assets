@@ -1,5 +1,5 @@
 ---
-description: repository communication과 Agent Asset 역할별 언어 정책을 정의합니다.
+description: README·docs·comments·Git/GitHub communication과 Agent Asset에서 한국어와 영어를 어떻게 사용할지 판단할 때 적용하는 repository 언어 정책입니다.
 ---
 
 # Language

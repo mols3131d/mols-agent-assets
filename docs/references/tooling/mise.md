@@ -1,6 +1,6 @@
 ---
 title: mise
-description: 이 저장소의 mise와 uv tool ownership 및 official source routing
+description: 이 저장소에서 tool version·task entrypoint를 어디에 고정할지, mise와 uv의 ownership을 어떻게 나눌지 확인하거나 setup·check·test·format 명령을 찾을 때 사용합니다.
 ---
 
 # mise

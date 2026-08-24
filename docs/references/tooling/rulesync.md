@@ -1,6 +1,6 @@
 ---
 title: Rulesync
-description: 이 저장소의 Rulesync integration boundary와 current official documentation을 빠르게 찾기 위한 reference
+description: Rulesync 자산의 authoring workspace·target·source/derived boundary를 판단하거나 fetch·import·generate 같은 current CLI·schema·target 문서를 찾을 때 사용합니다.
 ---
 
 # Rulesync

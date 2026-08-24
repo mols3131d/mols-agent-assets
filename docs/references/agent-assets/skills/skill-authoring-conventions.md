@@ -1,6 +1,6 @@
 ---
 title: Skill Authoring Conventions
-description: Agent Skills 표준, 작성 프레임워크와 대상 계약 이후에도 남는 mols의 재사용 Skill 작성 관행을 정의합니다.
+description: Agent Skill을 작성·리팩터링할 때 공통 표준·작성 프레임워크·target contract 이후에도 적용되는 mols의 package, description, context와 metadata 관행을 확인할 때 사용합니다.
 ---
 
 # Skill Authoring Conventions
