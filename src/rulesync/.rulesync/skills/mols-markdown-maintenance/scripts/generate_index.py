@@ -58,9 +58,23 @@ def _file_patterns(
     return DEFAULT_FILE_GLOBS
 
 
-def _path_depth(path: Path, directory: Path, *, is_directory: bool) -> int:
-    parts = path.relative_to(directory).parts
-    return len(parts) - (1 if is_directory else 1)
+def _path_depth(path: Path, directory: Path) -> int:
+    return len(path.relative_to(directory).parts) - 1
+
+
+def _frontmatter_from_entrypoint(
+    directory: Path,
+    entry_files: tuple[str, ...],
+) -> dict[str, Any]:
+    for filename in entry_files:
+        entry = directory / filename
+        if not entry.is_file():
+            continue
+        parsed = parse_frontmatter_document(entry.read_text(encoding="utf-8"))
+        if parsed is not None:
+            frontmatter, _ = parsed
+            return frontmatter
+    return {}
 
 
 def _collect_entries(
@@ -75,8 +89,10 @@ def _collect_entries(
     include_files: bool = True,
     file_extensions: list[str] | None = None,
     include_directories: bool = False,
+    directory_entry_files: list[str] | None = None,
 ) -> list[dict[str, Any]]:
     extensions = _normalize_extensions(file_extensions)
+    entry_files = tuple(directory_entry_files or [])
     found_paths: set[Path] = set()
 
     if include_files:
@@ -93,7 +109,7 @@ def _collect_entries(
                 if _is_excluded(path, relative_path, exclude, exclude_globs):
                     continue
 
-                depth = _path_depth(path, directory, is_directory=False)
+                depth = _path_depth(path, directory)
                 if max_depth is not None and depth > max_depth:
                     continue
 
@@ -107,7 +123,7 @@ def _collect_entries(
             if _is_excluded(path, relative_path, exclude, exclude_globs):
                 continue
 
-            depth = _path_depth(path, directory, is_directory=True)
+            depth = _path_depth(path, directory)
             if max_depth is not None and depth > max_depth:
                 continue
 
@@ -117,7 +133,14 @@ def _collect_entries(
     for path in sorted(found_paths):
         relative_path = path.relative_to(directory).as_posix()
         if path.is_dir():
-            entries.append({"path": f"{relative_path}/", "file": f"{relative_path}/"})
+            frontmatter = _frontmatter_from_entrypoint(path, entry_files)
+            entries.append(
+                {
+                    **frontmatter,
+                    "path": f"{relative_path}/",
+                    "file": f"{relative_path}/",
+                }
+            )
             continue
 
         parsed = parse_frontmatter_document(path.read_text(encoding="utf-8"))
@@ -320,6 +343,7 @@ def generate_index(
     include_files: bool = True,
     file_extensions: list[str] | None = None,
     include_directories: bool = False,
+    directory_entry_files: list[str] | None = None,
 ) -> str:
     """Generate an index string from selected filesystem entries below ``directory``."""
     if not directory.is_dir():
@@ -332,6 +356,8 @@ def generate_index(
         raise ValueError(f"unsupported group sort: {group_sort}")
     if not include_files and file_extensions:
         raise ValueError("file_extensions requires include_files=True")
+    if not include_directories and directory_entry_files:
+        raise ValueError("directory_entry_files requires include_directories=True")
 
     entries = _collect_entries(
         directory,
@@ -345,6 +371,7 @@ def generate_index(
         include_files=include_files,
         file_extensions=file_extensions,
         include_directories=include_directories,
+        directory_entry_files=directory_entry_files,
     )
     selected_fields = fields if fields else list(CSV_FIELDS)
     if format == "csv":
@@ -387,6 +414,12 @@ def main(argv: list[str] | None = None) -> int:
         action=argparse.BooleanOptionalAction,
         default=False,
         help="Include directories as path entries ending with '/'",
+    )
+    parser.add_argument(
+        "--directory-entry-files",
+        nargs="+",
+        default=[],
+        help="Ordered entrypoint filenames whose frontmatter supplies directory metadata",
     )
     parser.add_argument(
         "--max-depth",
@@ -449,6 +482,7 @@ def main(argv: list[str] | None = None) -> int:
         include_files=args.files,
         file_extensions=args.file_extensions,
         include_directories=args.directories,
+        directory_entry_files=args.directory_entry_files,
     )
     if args.output:
         args.output.write_text(result, encoding="utf-8")
