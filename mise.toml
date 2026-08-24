@@ -5,15 +5,21 @@ rumdl = "0.2.54"
 lefthook = "2.1.10"
 "npm:@biomejs/biome" = "2.5.6"
 "npm:rulesync" = "16.5.0"
+"npm:skills" = "1.5.23"
 
 [tasks.setup]
-description = "Install project dependencies, Rulesync assets, and Git hooks"
+description = "Install project dependencies, Agent Skills, and Git hooks"
 run = [
   "uv sync --all-groups",
   "rulesync install --frozen",
   "rulesync generate",
+  "uv run python scripts/sync_agent_skills.py",
   "lefthook install",
 ]
+
+[tasks.skills-sync]
+description = "Sync locked external Skills through source-native installers"
+run = "uv run python scripts/sync_agent_skills.py"
 
 [tasks.format]
 description = "Format repository source"
@@ -34,6 +40,8 @@ run = [
   "lefthook version",
   "biome --version",
   "rulesync --version",
+  "skills --version",
+  "uv run python scripts/sync_agent_skills.py --dry-run",
   "uv lock --check",
   "lefthook validate",
   "biome check biome.json package.json .vscode/tasks.json",
