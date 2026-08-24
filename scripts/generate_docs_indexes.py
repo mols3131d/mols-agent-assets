@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate repository-local ``docs/INDEX.tsv`` and ``docs/*/INDEX.tsv`` files."""
+"""Generate breadth-first repository-local ``docs/**/INDEX.tsv`` files."""
 
 from __future__ import annotations
 
@@ -7,6 +7,7 @@ import argparse
 import csv
 import io
 import sys
+from collections import deque
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -21,38 +22,64 @@ from generate_index import generate_index  # noqa: E402
 DOCS_ROOT = ROOT / "docs"
 INDEX_NAME = "INDEX.tsv"
 HEADER = "path\tdescription\n"
-EXCLUDE = ["README.md", "AGENTS.md"]
+DEFAULT_DEPTH = 1
+DEFAULT_DIRECTORY_ENTRY_FILES = ("README.md", "index.md")
+BASE_EXCLUDE = ("AGENTS.md",)
 EXCLUDE_GLOBS = [".*.md", "__*__.md"]
 
 
-def _index_targets(docs_root: Path) -> list[Path]:
-    targets = [docs_root]
-    targets.extend(
-        path
-        for path in sorted(docs_root.iterdir())
-        if path.is_dir() and any(path.rglob("*.md"))
-    )
+def _has_markdown_content(directory: Path) -> bool:
+    return any(path.is_file() for path in directory.rglob("*.md"))
+
+
+def _index_targets(docs_root: Path, depth: int | None) -> list[Path]:
+    if depth is not None and depth < 0:
+        raise ValueError("depth must be >= 0 or None")
+
+    targets: list[Path] = []
+    queue = deque([(docs_root, 0)])
+    while queue:
+        directory, current_depth = queue.popleft()
+        targets.append(directory)
+
+        if depth is not None and current_depth >= depth:
+            continue
+
+        for child in sorted(directory.iterdir()):
+            if child.is_dir() and _has_markdown_content(child):
+                queue.append((child, current_depth + 1))
+
     return targets
 
 
-def _directory_description(directory: Path) -> str:
-    readme = directory / "README.md"
-    if not readme.is_file():
-        return ""
-    parsed = parse_frontmatter_document(readme.read_text(encoding="utf-8"))
-    if parsed is None:
-        return ""
-    frontmatter, _ = parsed
-    value = frontmatter.get("description")
-    return "" if value is None else str(value)
+def _directory_frontmatter(
+    directory: Path,
+    entry_files: tuple[str, ...],
+) -> dict[str, object]:
+    for filename in entry_files:
+        entry = directory / filename
+        if not entry.is_file():
+            continue
+        parsed = parse_frontmatter_document(entry.read_text(encoding="utf-8"))
+        if parsed is not None:
+            frontmatter, _ = parsed
+            return frontmatter
+    return {}
 
 
-def _enrich_directory_descriptions(content: str, directory: Path) -> str:
+def _enrich_directory_descriptions(
+    content: str,
+    directory: Path,
+    entry_files: tuple[str, ...],
+) -> str:
     rows = list(csv.DictReader(io.StringIO(content), delimiter="\t"))
     for row in rows:
         path = row.get("path", "")
-        if path.endswith("/"):
-            row["description"] = _directory_description(directory / path.rstrip("/"))
+        if not path.endswith("/"):
+            continue
+        frontmatter = _directory_frontmatter(directory / path.rstrip("/"), entry_files)
+        value = frontmatter.get("description")
+        row["description"] = "" if value is None else str(value)
 
     output = io.StringIO(newline="")
     writer = csv.DictWriter(
@@ -66,33 +93,39 @@ def _enrich_directory_descriptions(content: str, directory: Path) -> str:
     return output.getvalue()
 
 
-def _desired_index(directory: Path) -> str | None:
+def _desired_index(directory: Path, entry_files: tuple[str, ...]) -> str | None:
     content = generate_index(
         directory,
         format="tsv",
         fields=["path", "description"],
-        max_depth=None,
-        exclude=EXCLUDE,
+        max_depth=0,
+        exclude=[*BASE_EXCLUDE, *entry_files],
         exclude_globs=EXCLUDE_GLOBS,
         include_without_frontmatter=True,
         include_directories=True,
     )
-    content = _enrich_directory_descriptions(content, directory)
+    content = _enrich_directory_descriptions(content, directory, entry_files)
     return None if content == HEADER else content
 
 
-def generate_docs_indexes(docs_root: Path = DOCS_ROOT, check: bool = False) -> list[str]:
-    """Generate scoped docs indexes or return drift messages when ``check`` is true."""
+def generate_docs_indexes(
+    docs_root: Path = DOCS_ROOT,
+    check: bool = False,
+    depth: int | None = DEFAULT_DEPTH,
+    directory_entry_files: tuple[str, ...] | list[str] = DEFAULT_DIRECTORY_ENTRY_FILES,
+) -> list[str]:
+    """Generate breadth-first docs indexes or report drift when ``check`` is true."""
     if not docs_root.is_dir():
         raise NotADirectoryError(docs_root)
 
+    entry_files = tuple(directory_entry_files)
     drift: list[str] = []
     target_indexes: set[Path] = set()
 
-    for directory in _index_targets(docs_root):
+    for directory in _index_targets(docs_root, depth):
         index_path = directory / INDEX_NAME
         target_indexes.add(index_path)
-        desired = _desired_index(directory)
+        desired = _desired_index(directory, entry_files)
         relative = index_path.relative_to(docs_root.parent).as_posix()
 
         if desired is None:
@@ -132,9 +165,29 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Report generated-index drift without modifying files",
     )
+    parser.add_argument(
+        "--depth",
+        type=int,
+        default=DEFAULT_DEPTH,
+        help="Maximum INDEX directory depth (0=root only, -1=unlimited)",
+    )
+    parser.add_argument(
+        "--directory-entry-files",
+        nargs="+",
+        default=list(DEFAULT_DIRECTORY_ENTRY_FILES),
+        help="Ordered directory entrypoint filenames whose frontmatter supplies directory metadata",
+    )
     args = parser.parse_args(argv)
 
-    drift = generate_docs_indexes(check=args.check)
+    if args.depth < -1:
+        parser.error("--depth must be -1 or greater")
+    depth = None if args.depth == -1 else args.depth
+
+    drift = generate_docs_indexes(
+        check=args.check,
+        depth=depth,
+        directory_entry_files=args.directory_entry_files,
+    )
     if drift:
         for item in drift:
             print(item, file=sys.stderr)
