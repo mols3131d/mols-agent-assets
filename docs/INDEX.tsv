@@ -1,7 +1,69 @@
 path	description
 development/	저장소 개발 작업에서 VCS/Git, GitHub, 작성 원본과 권한, testing, evaluation 중 적용할 local policy를 찾을 때 사용합니다.
+development/evaluation.md	Agent Asset의 behavioral evaluation을 설계·실행·해석하고 deterministic test, runtime evidence, regression contract를 구분할 때 사용하는 repository-local policy입니다.
+development/github.md	GitHub의 Issues, Pull Requests, PR Reviews, coding agents, automations, GitHub Agentic Workflows, Rulesets, Actions와 Merge에 적용되는 저장소 협업 정책과 권한 경계를 확인할 때 사용합니다.
+development/source-authority.md	저장소 지침과 에이전트 자산에서 작성 원본, 표준·도구·대상별 권한, 원본과 파생 결과의 경계를 결정할 때 사용하는 정책입니다.
+development/testing.md	저장소의 결정론적 검증, 도구 검증, PR Gate와 merge를 차단하는 테스트 근거를 확인할 때 사용하는 정책입니다.
+development/vcs-git.md	저장소 고유 branch 정책, 병렬 작업 격리, branch naming, Git history 안전성과 commit convention을 확인할 때 사용합니다.
 documentation/	repository-wide 문서 배치, ownership, duplication boundary, frontmatter, knowledge lifecycle과 asset maintainer documentation 원칙이 필요할 때 해당 documentation policy를 찾는 데 사용합니다.
+documentation/asset-maintainer-documentation.md	개별 Agent Asset 또는 family의 maintainer documentation을 어디에 두고, runtime source·family docs·repository-local docs와 책임을 어떻게 나눌지 결정할 때 사용합니다.
+documentation/duplication-boundaries.md	두 문서의 내용이 중복인지, 어느 owner가 authoritative source가 되어야 하는지, scope가 다른 overlap을 허용할지 판단할 때 사용합니다.
+documentation/frontmatter.md	Markdown 문서의 frontmatter 적용 범위, 예외, description의 탐색·routing 역할, directory entrypoint metadata 원칙과 관련 도구를 확인할 때 사용합니다.
+documentation/lifecycle.md	research·review·draft 같은 작업 산출물과 durable knowledge를 canonical source, inbox, archive, Git history 중 어디에 남길지 판단할 때 사용합니다.
+documentation/ownership.md	repository-wide 문서 배치와 directory-local documentation owner를 결정할 때 사용하는 ownership policy입니다.
 language.md	README·docs·comments·Git/GitHub communication과 Agent Asset에서 한국어와 영어를 어떻게 사용할지 판단할 때 적용하는 repository 언어 정책입니다.
 references/	이 repository와 다른 repository에서 반복해서 참고·적용할 reusable knowledge를 찾고 선택할 때 사용하는 entrypoint입니다.
+references/agent-assets/	Agent Asset 자체의 공통 설계 의미와 Skill-specific specification·authoring convention 중 어떤 reference를 볼지 선택할 때 사용합니다.
+references/agent-assets/common/	
+references/agent-assets/common/design-principles.md	에이전트 자산을 추가, 분리, 중복 제거, 단순화할 때 적용하는 공통 판단 순서
+references/agent-assets/common/instruction-design.md	에이전트 instruction이 언제 적용되고 무엇을 하며 어디까지 판단·행동할 수 있는지, 무엇으로 검증하고 언제 멈출지를 설계하는 공통 원칙
+references/agent-assets/common/naming.md	flat namespace에서 관리 편의와 이름 충돌 방지를 위한 최소 naming convention
+references/agent-assets/skills/	
+references/agent-assets/skills/skill-authoring-conventions.md	Agent Skill을 작성·리팩터링할 때 공통 표준·작성 프레임워크·target contract 이후에도 적용되는 mols의 package, description, context와 metadata 관행을 확인할 때 사용합니다.
+references/agent-assets/skills/specification.md	Agent Skills 작업에서 공통 표준, 작성 프레임워크, 대상별 확장과 creator guidance의 현재 공식 원본을 concern별로 찾는 registry입니다.
+references/patterns/	Agentic development에서 context engineering, documentation, workflow, software engineering 중 참고할 reusable pattern 영역을 선택할 때 사용하는 entrypoint입니다.
+references/patterns/context-engineering/	Agent Asset, instruction, routing, discovery, scoped context와 context harness 설계 패턴을 찾을 때 사용하는 directory entrypoint입니다.
+references/patterns/context-engineering/argument-driven-assets.md	같은 Agent Asset core를 runtime·target·사용 목적별로 복제하지 않고 argument로 behavior와 conditional context를 선택하게 설계할 때 참고하는 pattern으로, argument contract와 progressive disclosure의 경계를 다룹니다.
+references/patterns/context-engineering/asset-configuration-surface.md	reusable Agent Asset core를 복제하지 않고 project·repository·scope별 customization delta를 분리해 관리할 때 참고하는 pattern으로, configuration surface의 scope와 merge·precedence 경계를 다룹니다.
+references/patterns/context-engineering/chatbot-asset-directory.md	coding agent와 다른 chatbot 전용 guidance·Skill·work profile·compatibility asset을 repository에서 분리해 관리할 때 참고하는 pattern으로, chatbot-only asset surface의 ownership과 discovery boundary를 다룹니다.
+references/patterns/context-engineering/chatbot-repository-entrypoint.md	Repository-native context discovery가 부족한 chat runtime에서 stable entrypoint와 runtime bootstrap을 연결할 때 참고하는 reusable compatibility pattern입니다.
+references/patterns/context-engineering/directory-context-capsule.md	특정 directory에서만 필요한 agent guidance와 context를 가까운 entrypoint에 묶어 scope-local하게 발견·로드하도록 설계할 때 참고하는 pattern으로, directory context boundary와 local routing 책임을 다룹니다.
+references/patterns/context-engineering/layered-context-instructions.md	repository·subtree·path·task intent에 따라 instruction과 context를 서로 다른 scope mechanism에 배치할 때 참고하는 pattern으로, 자동 주입과 context 절약을 위한 structural scope와 semantic routing의 책임을 구분합니다.
+references/patterns/context-engineering/progressive-context-routing.md	큰 context surface에서 후보를 얕게 발견한 뒤 candidate-local context를 단계적으로 로드하며 applicability와 다음 route를 좁힐 때 참고하는 pattern으로, progressive disclosure와 routing gate를 다룹니다.
+references/patterns/context-engineering/routing-index-assets.md	문서·Agent Asset·코드 같은 큰 정보 표면에 별도 index/router를 두어 후보를 찾고 현재 task에 맞는 다음 context를 선택하게 할 때 참고하는 pattern으로, index와 routing의 역할·signal·authority boundary를 다룹니다.
+references/patterns/context-engineering/skill-source-workspace.md	Skill runtime source와 maintainer docs·tests·eval context를 한 source workspace에서 함께 보존·이동해야 할 때 참고하는 pattern으로, runtime surface와 maintainer-only surface의 경계를 다룹니다.
+references/patterns/context-engineering/subagent-orientation.md	Subagent를 엄격한 유형으로 분류하지 않고 responsibility orientation과 execution context라는 두 설계 축으로 판단할 때 사용하는 reusable pattern입니다.
+references/patterns/context-engineering/template-schema-driven-assets.md	Template, schema 또는 metadata를 structural owner로 사용해 생성·검증 가능한 자산 구조를 설계할 때 참고하는 reusable pattern입니다.
+references/patterns/documentation/	개발·기술 문서, baseline, directory guide와 durable documentation 구조 패턴을 찾을 때 사용하는 directory entrypoint입니다.
+references/patterns/documentation/baseline-document.md	자산의 원래 의도와 protected invariant를 구현 상태와 분리해 보존·복구할 때 참고하는 reusable baseline pattern입니다.
+references/patterns/documentation/nonstandard-directory-guide.md	이름만으로 목적을 알기 어려운 repository-local directory나 asset surface에 작은 guide가 필요한지 판단할 때 참고하는 pattern으로, 사람이 알아야 할 목적·scope·authority·navigation과 agent-only guidance의 경계를 다룹니다.
+references/patterns/software-engineering/	Repository/code 구조, architecture, implementation, testing, reliability 등 reusable software-engineering pattern을 찾을 때 사용하는 directory entrypoint입니다.
+references/patterns/software-engineering/filesystem-legible-structure.md	repository의 file·directory 이름, 배치, 계층을 바꿔 탐색성을 높일지 판단할 때 참고하며, filesystem legibility와 구조·convention·operability의 우선순위 경계를 다루는 패턴입니다.
+references/patterns/workflow/	Agentic work의 실행 흐름, working artifact, handoff와 lifecycle surface 패턴을 찾을 때 사용하는 directory entrypoint입니다.
+references/patterns/workflow/artifact-inbox.md	report·research·review·handoff·draft 같은 working/non-canonical artifact를 canonical source와 분리해 보관할 때 참고하는 pattern으로, inbox의 scope와 승격·유지·삭제 lifecycle 경계를 다룹니다.
+references/tooling/	외부 tooling과 specification의 authority routing, integration knowledge와 중복 경계를 찾을 때 사용하는 directory entrypoint입니다.
+references/tooling/front-matter-cms.md	Front Matter CMS 설정, 공식 옵션, frontmatter.json 변경 근거를 확인할 때 사용합니다.
+references/tooling/github-sensitive-data-removal-runbook.md	GitHub repository에 노출된 회전·폐기 불가능한 민감정보를 Git history rewrite, GitHub 저장면 정리, fork/clone 대응과 Support purge까지 최대한 제거할 때 사용하는 재사용 런북입니다.
+references/tooling/mise.md	이 저장소에서 tool version·task entrypoint를 어디에 고정할지, mise와 uv의 ownership을 어떻게 나눌지 확인하거나 setup·check·test·format 명령을 찾을 때 사용합니다.
+references/tooling/promptfoo.md	Promptfoo config·assertion·provider·model grading·debugging의 current official source와 이 저장소의 eval policy·config·runner entrypoint를 찾을 때 사용합니다.
+references/tooling/rulesync.md	Rulesync 자산의 authoring workspace·target·source/derived boundary를 판단하거나 fetch·import·generate 같은 current CLI·schema·target 문서를 찾을 때 사용합니다.
+references/tooling/skills-cli.md	외부 Agent Skill dependency를 lock·sync·install·update할 때 skills CLI, source-native installer와 Rulesync 사이의 책임 경계를 확인할 때 사용합니다.
 skills/	
+skills/artifact-consistency-inspector/	
+skills/artifact-consistency-inspector/customization.md	artifact-consistency-inspector를 project에 맞게 조정할 때 변경 가능한 항목과 반드시 보존할 runtime·report invariant, rename 및 frontmatter 동기화 규칙을 확인하는 maintainer 문서입니다.
+skills/caveman-ko/	caveman-ko를 유지보수하거나 승격할 때 upstream provenance, Experimental 경계, runtime·eval 책임과 promotion criteria를 확인하는 maintainer entrypoint입니다.
+skills/clarify-code/	
+skills/clarify-code/baseline/	
+skills/clarify-code/baseline/decisions.md	clarify-code의 routing, scope, public argument, documentation·validation 전략을 변경하거나 복구할 때 원래 설계 결정을 확인하는 protected baseline 기록입니다.
+skills/mols-agent-asset-validator/	
+skills/mols-agent-asset-validator/baseline/	
+skills/mols-agent-asset-validator/baseline/DIRECTIVE.md	mols-agent-asset-validator의 검증 범위, evidence 상태, loop·review·runtime 원칙을 변경하거나 복구할 때 보존해야 할 핵심 invariant를 확인하는 protected baseline입니다.
+skills/mols-markdown/	mols-markdown family에서 사람이 읽는 Markdown, dashboard, deterministic maintenance 중 어느 Skill이 책임지는지 선택하거나 family boundary를 유지보수할 때 사용하는 entrypoint입니다.
+skills/mols-markdown-dashboard/	mols-markdown-dashboard의 baseline, architecture와 maintenance 문서를 찾아 현재 구현을 이해·변경·복구할 때 사용하는 maintainer documentation entrypoint입니다.
+skills/mols-markdown-dashboard/ARCHITECTURE.md	mols-markdown-dashboard의 구현 구조와 data flow를 이해하거나 변경 영향을 판단할 때 component responsibility, design boundary, failure safety와 exit code를 확인하는 maintainer 문서입니다.
+skills/mols-markdown-dashboard/MAINTENANCE.md	mols-markdown-dashboard를 변경·검증·복구할 때 maintenance protocol, package-local quality gate, recovery checklist와 refactoring rule을 확인하는 maintainer 문서입니다.
+skills/mols-markdown-dashboard/baseline/	
+skills/mols-markdown-dashboard/baseline/DIRECTIVE.md	스킬이 후속 수정에서 훼손되지 않도록 핵심 요구사항과 결정사항을 보존한다.
+skills/mols-markdown-maintenance/	mols-markdown-maintenance를 변경하거나 유지할 때 repository-native Markdown tooling 우선순위, custom frontmatter/index delta와 유지보수 invariant를 확인하는 maintainer documentation entrypoint입니다.
+skills/mols-mermaid/	mols-mermaid family에서 관계·절차·구조는 diagram, 정량 비교·추세·구성은 chart 중 어느 Skill로 라우팅할지 판단하거나 family boundary를 유지보수할 때 사용하는 entrypoint입니다.
 using-this-repository.md	이 저장소의 Agent Asset이나 reusable knowledge를 외부 repository·runtime에서 찾고, 직접 사용·설치·고정·가져오는 방법을 선택할 때 사용합니다.
