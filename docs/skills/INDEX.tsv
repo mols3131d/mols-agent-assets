@@ -1,0 +1,9 @@
+path	description
+artifact-consistency-inspector/	
+caveman-ko/	caveman-ko를 유지보수하거나 승격할 때 upstream provenance, Experimental 경계, runtime·eval 책임과 promotion criteria를 확인하는 maintainer entrypoint입니다.
+clarify-code/	
+mols-agent-asset-validator/	
+mols-markdown/	mols-markdown family에서 사람이 읽는 Markdown, dashboard, deterministic maintenance 중 어느 Skill이 책임지는지 선택하거나 family boundary를 유지보수할 때 사용하는 entrypoint입니다.
+mols-markdown-dashboard/	mols-markdown-dashboard의 baseline, architecture와 maintenance 문서를 찾아 현재 구현을 이해·변경·복구할 때 사용하는 maintainer documentation entrypoint입니다.
+mols-markdown-maintenance/	mols-markdown-maintenance를 변경하거나 유지할 때 repository-native Markdown tooling 우선순위, custom frontmatter/index delta와 유지보수 invariant를 확인하는 maintainer documentation entrypoint입니다.
+mols-mermaid/	mols-mermaid family에서 관계·절차·구조는 diagram, 정량 비교·추세·구성은 chart 중 어느 Skill로 라우팅할지 판단하거나 family boundary를 유지보수할 때 사용하는 entrypoint입니다.

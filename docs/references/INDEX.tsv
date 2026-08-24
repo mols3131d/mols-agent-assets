@@ -1,0 +1,4 @@
+path	description
+agent-assets/	Agent Asset 자체의 공통 설계 의미와 Skill-specific specification·authoring convention 중 어떤 reference를 볼지 선택할 때 사용합니다.
+patterns/	Agentic development에서 context engineering, documentation, workflow, software engineering 중 참고할 reusable pattern 영역을 선택할 때 사용하는 entrypoint입니다.
+tooling/	외부 tooling과 specification의 authority routing, integration knowledge와 중복 경계를 찾을 때 사용하는 directory entrypoint입니다.

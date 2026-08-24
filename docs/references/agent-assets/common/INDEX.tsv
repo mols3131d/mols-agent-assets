@@ -1,4 +1,0 @@
-path	description
-design-principles.md	에이전트 자산을 추가, 분리, 중복 제거, 단순화할 때 적용하는 공통 판단 순서
-instruction-design.md	에이전트 instruction이 언제 적용되고 무엇을 하며 어디까지 판단·행동할 수 있는지, 무엇으로 검증하고 언제 멈출지를 설계하는 공통 원칙
-naming.md	flat namespace에서 관리 편의와 이름 충돌 방지를 위한 최소 naming convention
