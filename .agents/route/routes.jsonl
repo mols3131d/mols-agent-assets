@@ -1,0 +1,6 @@
+{"name":"agent-assets","description":"Agent Asset 작성·탐색·검증","source":"agent-assets.jsonl"}
+{"name":"markdown","description":"Markdown 작성·정비","source":"markdown.jsonl"}
+{"name":"mermaid","description":"Mermaid diagram·chart","source":"mermaid.jsonl"}
+{"name":"writing","description":"한국어 문체·윤문","source":"writing.jsonl"}
+{"name":"uncategorized","description":"아직 family에 배정되지 않은 Skill","source":"uncategorized.jsonl"}
+{"name":"all","description":"전체 lock-backed Skill fallback","source":"all.jsonl"}
