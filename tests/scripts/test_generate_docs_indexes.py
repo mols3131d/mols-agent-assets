@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import csv
 
+import pytest
+
 from scripts.generate_docs_indexes import generate_docs_indexes
 
 
@@ -75,6 +77,29 @@ def test_generate_docs_indexes_depth_controls_recursive_materialization(tmp_path
     ]
 
 
+def test_generate_docs_indexes_depth_minus_one_is_unlimited(tmp_path):
+    docs = tmp_path / "docs"
+    _write(
+        docs / "one" / "two" / "three" / "guide.md",
+        "---\ndescription: Guide.\n---\n# Guide\n",
+    )
+
+    assert generate_docs_indexes(docs, depth=-1) == []
+
+    assert (docs / "INDEX.tsv").exists()
+    assert (docs / "one" / "INDEX.tsv").exists()
+    assert (docs / "one" / "two" / "INDEX.tsv").exists()
+    assert (docs / "one" / "two" / "three" / "INDEX.tsv").exists()
+
+
+def test_generate_docs_indexes_rejects_invalid_depth(tmp_path):
+    docs = tmp_path / "docs"
+    docs.mkdir()
+
+    with pytest.raises(ValueError, match="-1 or greater"):
+        generate_docs_indexes(docs, depth=-2)
+
+
 def test_generate_docs_indexes_directory_entry_falls_back_to_index(tmp_path):
     docs = tmp_path / "docs"
     _write(docs / "references" / "README.md", "# No frontmatter\n")
@@ -97,15 +122,15 @@ def test_generate_docs_indexes_directory_entry_falls_back_to_index(tmp_path):
     ]
 
 
-def test_generate_docs_indexes_directory_entry_precedence_prefers_readme(tmp_path):
+def test_generate_docs_indexes_directory_entry_precedence_does_not_merge(tmp_path):
     docs = tmp_path / "docs"
     _write(
         docs / "references" / "README.md",
-        "---\ndescription: README wins.\n---\n# Readme\n",
+        "---\ntitle: References\n---\n# Readme\n",
     )
     _write(
         docs / "references" / "index.md",
-        "---\ndescription: Index fallback.\n---\n# Index\n",
+        "---\ndescription: Must not merge.\n---\n# Index\n",
     )
     _write(
         docs / "references" / "guide.md",
@@ -115,7 +140,7 @@ def test_generate_docs_indexes_directory_entry_precedence_prefers_readme(tmp_pat
     assert generate_docs_indexes(docs) == []
 
     assert _read_tsv(docs / "INDEX.tsv") == [
-        {"path": "references/", "description": "README wins."},
+        {"path": "references/", "description": ""},
     ]
 
 
@@ -131,6 +156,24 @@ def test_generate_docs_indexes_keeps_directory_without_entry_description_blank(t
     assert _read_tsv(docs / "skills" / "INDEX.tsv") == [
         {"path": "nested/", "description": ""},
     ]
+
+
+def test_generate_docs_indexes_excludes_non_markdown_child_routes(tmp_path):
+    docs = tmp_path / "docs"
+    _write(docs / "assets" / "logo.png", "not really an image")
+    _write(docs / "hidden" / ".private.md", "# Hidden\n")
+    _write(
+        docs / "references" / "guide.md",
+        "---\ndescription: Guide.\n---\n# Guide\n",
+    )
+
+    assert generate_docs_indexes(docs) == []
+
+    assert _read_tsv(docs / "INDEX.tsv") == [
+        {"path": "references/", "description": ""},
+    ]
+    assert not (docs / "assets" / "INDEX.tsv").exists()
+    assert not (docs / "hidden" / "INDEX.tsv").exists()
 
 
 def test_generate_docs_indexes_removes_indexes_beyond_depth(tmp_path):
