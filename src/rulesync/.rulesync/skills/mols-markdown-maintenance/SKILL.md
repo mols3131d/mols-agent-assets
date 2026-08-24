@@ -51,7 +51,7 @@ Use the target repository's rumdl configuration when it represents accepted proj
 ## Frontmatter and Index
 
 - `validate_frontmatter.py --help` owns schema, required-field, and exact-value options.
-- `generate_index.py --help` owns output format, field, glob, grouping, depth, required-field, unique-field, and output-path options.
+- `generate_index.py --help` owns output format, field, file/directory selection, file-extension, glob, grouping, depth, required-field, unique-field, and output-path options.
 - Preserve an existing index path, format, field selection, grouping, and validation flags unless the request changes them.
 - Exclude generated index files from their own source set.
 - Review generated output and format Markdown output when appropriate.
