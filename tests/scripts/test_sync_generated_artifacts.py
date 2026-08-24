@@ -40,9 +40,51 @@ def test_docs_index_source_matching(path, expected):
     assert sync._is_docs_index_source(path) is expected
 
 
-def test_select_projections_uses_source_and_generated_output_paths():
+@pytest.mark.parametrize(
+    ("path", "expected"),
+    [
+        ("src/rulesync/.rulesync/skills/example/SKILL.md", True),
+        ("src/rulesync/.rulesync/skills/example/references/guide.md", False),
+        ("scripts/generate_distribution_routes.py", True),
+        ("rulesync.lock", False),
+    ],
+)
+def test_distribution_route_source_matching(path, expected):
+    assert sync._is_distribution_route_source(path) is expected
+
+
+@pytest.mark.parametrize(
+    ("path", "expected"),
+    [
+        ("rulesync.lock", True),
+        ("rulesync.jsonc", True),
+        ("skills-lock.json", True),
+        (".agents/route/families.json", True),
+        ("scripts/generate_repository_routes.py", True),
+        ("src/rulesync/.rulesync/skills/example/SKILL.md", False),
+    ],
+)
+def test_repository_route_source_matching(path, expected):
+    assert sync._is_repository_route_source(path) is expected
+
+
+def test_select_projections_from_source_paths():
     paths = {
         "docs/guide.md",
+        "src/rulesync/.rulesync/skills/example/SKILL.md",
+        "skills-lock.json",
+    }
+
+    assert [projection.name for projection in sync.select_projections(paths)] == [
+        "docs-indexes",
+        "distribution-route",
+        "repository-routes",
+    ]
+
+
+def test_generated_output_paths_select_their_projection_owner():
+    paths = {
+        "docs/INDEX.tsv",
         "route/skills.jsonl",
         ".agents/route/routes.jsonl",
     }
