@@ -16,6 +16,7 @@ CORE_FIELDS = ("title", "description", "tags", "status")
 CSV_FIELDS = ("file", *CORE_FIELDS)
 SUPPORTED_FORMATS = ("csv", "tsv", "table", "list")
 GROUP_SORTS = ("alpha", "input")
+DEFAULT_FILE_GLOBS = ("*.md", "**/*.md")
 
 
 def _is_excluded(
@@ -32,6 +33,36 @@ def _is_excluded(
     )
 
 
+def _normalize_extensions(extensions: list[str] | None) -> tuple[str, ...]:
+    normalized = []
+    for extension in extensions or []:
+        value = extension.strip()
+        if not value:
+            raise ValueError("file extensions must not be empty")
+        normalized.append(value if value.startswith(".") else f".{value}")
+    return tuple(dict.fromkeys(normalized))
+
+
+def _matches_extension(path: Path, extensions: tuple[str, ...]) -> bool:
+    return not extensions or path.name.endswith(extensions)
+
+
+def _file_patterns(
+    globs: list[str] | None,
+    extensions: tuple[str, ...],
+) -> tuple[str, ...] | list[str]:
+    if globs:
+        return globs
+    if extensions:
+        return ("*", "**/*")
+    return DEFAULT_FILE_GLOBS
+
+
+def _path_depth(path: Path, directory: Path, *, is_directory: bool) -> int:
+    parts = path.relative_to(directory).parts
+    return len(parts) - (1 if is_directory else 1)
+
+
 def _collect_entries(
     directory: Path,
     globs: list[str] | None = None,
@@ -41,26 +72,42 @@ def _collect_entries(
     exclude: list[str] | None = None,
     exclude_globs: list[str] | None = None,
     include_without_frontmatter: bool = False,
+    include_files: bool = True,
+    file_extensions: list[str] | None = None,
+    include_directories: bool = False,
 ) -> list[dict[str, Any]]:
-    patterns = globs if globs else ["*.md", "**/*.md"]
+    extensions = _normalize_extensions(file_extensions)
     found_paths: set[Path] = set()
 
-    for pattern in patterns:
-        for path in directory.glob(pattern):
-            if not path.is_file():
-                continue
-            if path.name.upper().startswith("INDEX") or path.name.startswith(
-                "__index__"
-            ):
-                continue
+    if include_files:
+        for pattern in _file_patterns(globs, extensions):
+            for path in directory.glob(pattern):
+                if not path.is_file() or not _matches_extension(path, extensions):
+                    continue
+                if path.name.upper().startswith("INDEX") or path.name.startswith(
+                    "__index__"
+                ):
+                    continue
 
+                relative_path = path.relative_to(directory).as_posix()
+                if _is_excluded(path, relative_path, exclude, exclude_globs):
+                    continue
+
+                depth = _path_depth(path, directory, is_directory=False)
+                if max_depth is not None and depth > max_depth:
+                    continue
+
+                found_paths.add(path)
+
+    if include_directories:
+        for path in directory.glob("**/*"):
+            if not path.is_dir():
+                continue
             relative_path = path.relative_to(directory).as_posix()
             if _is_excluded(path, relative_path, exclude, exclude_globs):
                 continue
 
-            rel_parts = path.relative_to(directory).parts
-            # max_depth 계산: 하위 폴더 단계 수 (파일명 제외)
-            depth = len(rel_parts) - 1
+            depth = _path_depth(path, directory, is_directory=True)
             if max_depth is not None and depth > max_depth:
                 continue
 
@@ -69,6 +116,10 @@ def _collect_entries(
     entries = []
     for path in sorted(found_paths):
         relative_path = path.relative_to(directory).as_posix()
+        if path.is_dir():
+            entries.append({"path": f"{relative_path}/", "file": f"{relative_path}/"})
+            continue
+
         parsed = parse_frontmatter_document(path.read_text(encoding="utf-8"))
         if parsed is None:
             if required_fields:
@@ -266,8 +317,11 @@ def generate_index(
     exclude: list[str] | None = None,
     exclude_globs: list[str] | None = None,
     include_without_frontmatter: bool = False,
+    include_files: bool = True,
+    file_extensions: list[str] | None = None,
+    include_directories: bool = False,
 ) -> str:
-    """Generate an index string from Markdown files below ``directory``."""
+    """Generate an index string from selected filesystem entries below ``directory``."""
     if not directory.is_dir():
         raise NotADirectoryError(directory)
     if format not in SUPPORTED_FORMATS:
@@ -276,6 +330,8 @@ def generate_index(
         raise ValueError("group_by is only supported with format='list'")
     if group_sort not in GROUP_SORTS:
         raise ValueError(f"unsupported group sort: {group_sort}")
+    if not include_files and file_extensions:
+        raise ValueError("file_extensions requires include_files=True")
 
     entries = _collect_entries(
         directory,
@@ -286,6 +342,9 @@ def generate_index(
         exclude=exclude,
         exclude_globs=exclude_globs,
         include_without_frontmatter=include_without_frontmatter,
+        include_files=include_files,
+        file_extensions=file_extensions,
+        include_directories=include_directories,
     )
     selected_fields = fields if fields else list(CSV_FIELDS)
     if format == "csv":
@@ -312,10 +371,28 @@ def main(argv: list[str] | None = None) -> int:
         help="Glob patterns to search (e.g. --globs '*.md' 'workflows/**/*.md')",
     )
     parser.add_argument(
+        "--files",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Include files (default: enabled; use --no-files for directory-only indexes)",
+    )
+    parser.add_argument(
+        "--file-extensions",
+        nargs="+",
+        default=[],
+        help="Filter files by one or more suffixes (e.g. .md .mdx .skill.md)",
+    )
+    parser.add_argument(
+        "--directories",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help="Include directories as path entries ending with '/'",
+    )
+    parser.add_argument(
         "--max-depth",
         type=int,
         default=0,
-        help="Maximum directory depth to scan (0 = directory root only)",
+        help="Maximum directory depth to scan (0 = directory root entries only)",
     )
     parser.add_argument("--output", type=Path)
     parser.add_argument("--group-by", nargs="+", default=[])
@@ -340,18 +417,18 @@ def main(argv: list[str] | None = None) -> int:
         "--exclude",
         nargs="+",
         default=[],
-        help="Exclude files by exact basename",
+        help="Exclude entries by exact basename",
     )
     parser.add_argument(
         "--exclude-glob",
         nargs="+",
         default=[],
-        help="Exclude files when basename or relative path matches a glob",
+        help="Exclude entries when basename or relative path matches a glob",
     )
     parser.add_argument(
         "--include-without-frontmatter",
         action="store_true",
-        help="Include matching Markdown files without YAML frontmatter",
+        help="Include matching files without YAML frontmatter",
     )
     args = parser.parse_args(argv)
     result = generate_index(
@@ -369,6 +446,9 @@ def main(argv: list[str] | None = None) -> int:
         exclude=args.exclude,
         exclude_globs=args.exclude_glob,
         include_without_frontmatter=args.include_without_frontmatter,
+        include_files=args.files,
+        file_extensions=args.file_extensions,
+        include_directories=args.directories,
     )
     if args.output:
         args.output.write_text(result, encoding="utf-8")
