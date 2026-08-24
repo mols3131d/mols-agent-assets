@@ -9,6 +9,7 @@ import io
 import sys
 from collections import deque
 from pathlib import Path
+from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 INDEX_TOOL_DIR = (
@@ -26,6 +27,16 @@ DEFAULT_DEPTH = 1
 DEFAULT_DIRECTORY_ENTRY_FILES = ("README.md", "index.md")
 BASE_EXCLUDE = ("AGENTS.md",)
 EXCLUDE_GLOBS = [".*.md", "__*__.md"]
+
+
+def _stringify(value: Any) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, list):
+        return ", ".join(_stringify(item) for item in value)
+    if isinstance(value, dict):
+        return ", ".join(f"{key}: {_stringify(item)}" for key, item in value.items())
+    return str(value)
 
 
 def _has_markdown_content(directory: Path) -> bool:
@@ -67,24 +78,29 @@ def _directory_frontmatter(
     return {}
 
 
-def _enrich_directory_descriptions(
+def _enrich_directory_frontmatter(
     content: str,
     directory: Path,
     entry_files: tuple[str, ...],
 ) -> str:
-    rows = list(csv.DictReader(io.StringIO(content), delimiter="\t"))
+    reader = csv.DictReader(io.StringIO(content), delimiter="\t")
+    rows = list(reader)
+    fieldnames = reader.fieldnames or ["path", "description"]
+
     for row in rows:
         path = row.get("path", "")
         if not path.endswith("/"):
             continue
         frontmatter = _directory_frontmatter(directory / path.rstrip("/"), entry_files)
-        value = frontmatter.get("description")
-        row["description"] = "" if value is None else str(value)
+        for field in fieldnames:
+            if field in {"path", "file"} or field not in frontmatter:
+                continue
+            row[field] = _stringify(frontmatter[field])
 
     output = io.StringIO(newline="")
     writer = csv.DictWriter(
         output,
-        fieldnames=["path", "description"],
+        fieldnames=fieldnames,
         delimiter="\t",
         lineterminator="\n",
     )
@@ -104,7 +120,7 @@ def _desired_index(directory: Path, entry_files: tuple[str, ...]) -> str | None:
         include_without_frontmatter=True,
         include_directories=True,
     )
-    content = _enrich_directory_descriptions(content, directory, entry_files)
+    content = _enrich_directory_frontmatter(content, directory, entry_files)
     return None if content == HEADER else content
 
 
