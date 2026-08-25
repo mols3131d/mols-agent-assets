@@ -1,6 +1,6 @@
 ---
 name: mols-mermaid-diagram
-description: "Use for Mermaid requests where the primary question is structural: relationships, procedures, branching, handoffs, message order, lifecycle, chronology, dependencies, boundaries, models, requirements, cardinality, or unweighted hierarchy, including named Mermaid diagram types whose purpose is primarily non-quantitative. Typical forms include flowchart, sequence, state, ERD, architecture, timeline, mindmap, and related diagram types. Do not use when numeric magnitude, trend, proportion, quantified flow, weighted hierarchy, profile, or normalized positioning is the main question; route those to mols-mermaid-chart. Route whole-dashboard design to mols-markdown-dashboard."
+description: "Use for Mermaid diagrams whose main job is to explain structure or relationships: procedures, branching, handoffs, message order, lifecycle, chronology, dependencies, boundaries, models, requirements, cardinality, or unweighted hierarchy. Also use when the user names a non-quantitative Mermaid diagram type. Do not use when numeric magnitude, trend, proportion, quantified flow, weighted hierarchy, profile, or normalized positioning is the main question; route those to mols-mermaid-chart. Route whole-dashboard design to mols-markdown-dashboard."
 targets:
   - claudecode
   - codexcli
