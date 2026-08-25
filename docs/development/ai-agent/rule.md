@@ -27,14 +27,13 @@ Rule을 우선 검토하는 경우:
 
 ## Authoring Policy
 
-이 repository에서 직접 작성하고 관리하는 reusable Rule의 canonical source는 **Rulesync**입니다.
+이 repository에서 여러 target에 재사용할 Rule을 직접 작성·관리할 때 기본 canonical authoring surface는 **Rulesync**입니다.
 
-- Rulesync source를 사람이 수정하는 작성 원본으로 둡니다.
+- Rulesync source를 작성 원본으로 선택했다면 그 source만 사람이 수정합니다.
 - 생성된 vendor projection은 파생 결과이며 별도의 policy authority로 관리하지 않습니다.
 - target별 selector, attachment, precedence와 지원 범위는 실제 Rulesync와 target runtime contract를 따릅니다.
 - 같은 requirement가 여러 곳에 보인다는 이유만으로 즉시 deduplicate하지 않습니다. scope, selector, inheritance 또는 projection 차이가 실제 적용에 필요한지 먼저 확인합니다.
-
-작성 원본과 vendor-native source를 선택하는 일반 원칙은 [작성 원본과 권한](../source-authority.md)이 소유합니다.
+- 특정 vendor-native source가 실제 책임을 더 정확하게 보존해야 하는 경우에는 [작성 원본과 권한](../source-authority.md)의 기준으로 source를 선택합니다.
 
 ## Design Guidance
 
@@ -48,6 +47,7 @@ Rule을 우선 검토하는 경우:
 ## Boundary
 
 - Rule의 source/target authority와 projection → [Rulesync](../../references/tooling/rulesync.md)
+- 작성 원본 선택 → [작성 원본과 권한](../source-authority.md)
 - Agent Asset 공통 설계 → [Agent Assets](../../references/agent-assets/README.md)
 - Rule authoring 또는 material change 작업의 세부 판단은 repository Skill `mols-agent-asset`의 Rule guidance를 사용합니다.
 - 실제 runtime selection과 precedence는 static 문서만으로 검증되었다고 간주하지 않습니다.
