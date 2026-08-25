@@ -1,6 +1,6 @@
 # Mermaid Verification
 
-Source semantics, Mermaid syntax, target renderer support와 rendered image를 서로 다른 단계로 검증한다.
+Source semantics, Mermaid syntax, target renderer support와 rendered output을 서로 다른 단계로 검증한다.
 
 ## Authority
 
@@ -16,7 +16,7 @@ Diagram source와 renderer는 별도 trust boundary로 취급한다.
 - 출처가 명확히 신뢰되지 않은 Mermaid source를 render할 때 renderer의 security posture를 단순히 render 성공을 위해 완화하지 않는다.
 - untrusted source를 처리해야 하면 현재 지원되는 patched renderer와 target의 안전한 기본 설정을 우선하고, 필요하면 host가 제공하는 더 강한 isolation을 사용한다. 안전 상태를 확인할 수 없으면 source review까지만 수행한다.
 - untrusted diagram config를 host-level renderer initialization이나 global configuration API에 그대로 전달하지 않는다.
-- 외부 renderer에는 **외부 공개가 허용된 내용만** 전송한다. secret, credential, restricted/non-public content, 내부 구조 또는 disclosure 여부가 불명확한 source는 보내지 않는다.
+- 외부 renderer에는 **외부 공개가 허용된 내용만** 전송한다. secret, credential, restricted/non-public content, 외부 공개가 허용되지 않은 내부 구조나 disclosure 여부가 불명확한 source는 보내지 않는다.
 - external link, icon pack 또는 network-backed asset을 활성화해야 하는 source는 target policy와 trust를 먼저 확인한다.
 
 ## Level 1: Source Review
