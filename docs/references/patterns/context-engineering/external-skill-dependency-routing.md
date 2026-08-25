@@ -1,5 +1,5 @@
 ---
-description: 외부 Agent Skill dependency를 사용할 때 Rulesync declarative sources와 skills CLI 중 어떤 경로가 원본 동작·lock·update·runtime 배포를 더 충실하게 보존하는지 판단할 때 참고하는 pattern입니다.
+description: 외부 Agent Skill dependency를 사용할 때 Rulesync declarative sources와 skills CLI 중 어떤 경로가 source semantics·lock·update·runtime delivery를 더 충실하게 보존하는지 판단할 때 참고하는 pattern입니다.
 ---
 
 # External Skill Dependency Routing
