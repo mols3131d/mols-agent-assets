@@ -14,7 +14,7 @@ description: 이 저장소의 Agent Asset이나 reusable knowledge를 외부 rep
 | Agent Asset을 한 번 읽거나 시험한다 | canonical source URL을 직접 사용 |
 | 이 repository가 작성한 Skill을 agent가 찾게 한다 | [`route/ROUTE.md`](../route/ROUTE.md)에서 discovery 시작 |
 | 자주 다시 쓰는 외부 Skill source를 찾는다 | [`catalog/skills.json`](../catalog/skills.json)에서 source를 선택하고 upstream installer contract를 따른다 |
-| project에서 Skill을 지속적으로 사용한다 | 적합한 dependency 경로로 설치하고 해당 lock/update contract를 따른다 |
+| project에서 Skill을 지속적으로 사용한다 | source semantics를 보존하는 dependency 경로와 해당 lock/update contract를 따른다 |
 | reusable principle이나 pattern을 참고·채택한다 | [`docs/references/`](references/)에서 필요한 reference만 선택 |
 | catalog에서 pattern 영역을 빠르게 찾는다 | [`catalog/patterns/`](../catalog/patterns/)에서 canonical pattern library로 이동 |
 | 자산을 수정해서 자기 project 전용으로 쓴다 | 필요한 source만 복사하고 downstream adaptation으로 관리 |
@@ -66,9 +66,11 @@ Skill에 `references/`, `scripts/` 같은 supporting files가 있으면 `SKILL.m
 https://raw.githubusercontent.com/mols3131d/mols-agent-assets/<commit-sha>/src/rulesync/.rulesync/skills/<skill-name>/SKILL.md
 ```
 
-## Rulesync로 Skill 설치하기
+## 이 repository의 Skill을 Rulesync로 설치하기
 
-지속적으로 사용할 Skill은 consumer repository의 Rulesync source로 선언하는 것을 권장합니다. Consumer에 `rulesync.jsonc`가 없다면 먼저 `rulesync init`으로 workspace를 준비합니다.
+이 repository가 작성한 Skill을 consumer repository에서 지속적으로 사용한다면 Rulesync declarative source로 설치하는 것이 자연스럽습니다. 외부 catalog의 Skill은 이 절차로 일반화하지 않고 upstream 구조와 runtime 요구사항에 맞는 dependency 경로를 선택합니다. 판단 기준은 [External Skill Dependency Routing](references/patterns/context-engineering/external-skill-dependency-routing.md)을 참고합니다.
+
+Consumer에 `rulesync.jsonc`가 없다면 먼저 `rulesync init`으로 workspace를 준비합니다.
 
 ```bash
 rulesync add mols3131d/mols-agent-assets --ref main --path src/rulesync/.rulesync/skills --skills <skill-name>
