@@ -1,14 +1,15 @@
 # Catalog
 
-이 디렉토리는 여러 프로젝트에서 자주 재사용하는 외부 Agent Skill source를 기록합니다.
+이 디렉토리는 여러 프로젝트에서 다시 찾아 쓰기 좋은 reusable asset의 **curated discovery surface**입니다. 실제 작성 원본, 설치 상태와 dependency lock은 각 asset을 소유하는 canonical surface에 둡니다.
 
-`skills.json`은 설치 상태나 dependency lock이 아니라 **다시 찾고 설치하기 위한 curated catalog**입니다. 실제 설치 방식, target, scope와 update 동작은 사용할 시점의 upstream 및 `skills` CLI contract를 따릅니다.
+## Areas
 
-## Files
+- `skills.json` — 자주 재사용하는 외부 Agent Skill source 목록
+- `patterns/` — 이 repository의 reusable pattern library를 찾기 위한 entrypoint
 
-- `skills.json` — 자주 재사용하는 외부 Skill source 목록
+## Skills
 
-## Entry
+`skills.json`은 설치 상태나 dependency lock이 아니라 다시 찾고 설치하기 위한 catalog입니다. 실제 설치 방식, target, scope와 update 동작은 사용할 시점의 upstream 및 installer contract를 따릅니다.
 
 각 항목은 필요한 최소 정보만 가집니다.
 
@@ -17,3 +18,7 @@
 - `description` — 선택할 때 참고하는 짧은 설명
 
 고정 revision, 설치 경로, target별 상태와 computed hash 같은 lock 정보는 여기에 두지 않습니다. 특정 repository가 실제 dependency로 사용하는 Skill의 상태는 해당 dependency 관리 surface가 소유합니다.
+
+## Patterns
+
+Pattern 본문과 category 구조의 canonical source는 [`docs/references/patterns/`](../docs/references/patterns/)가 소유합니다. [`patterns/`](patterns/)는 이를 복제하지 않고 catalog에서 찾기 위한 entrypoint만 제공합니다.
