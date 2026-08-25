@@ -14,7 +14,7 @@ Rulesync와 skills CLI는 경쟁 도구가 아니라 서로 다른 상황에 맞
 
 ## Core
 
-- 외부 upstream을 계속 권한 있는 원본으로 둘 자산은 local authored source로 흡수하지 않고 dependency로 관리합니다.
+- 외부 upstream을 계속 원본으로 유지할 자산은 이 저장소의 작성 원본으로 흡수하지 않고 dependency로 관리합니다.
 - 같은 dependency의 선택과 lock/update는 한 경로에서만 관리합니다.
 - 도구의 지원 여부보다 **필요한 파일과 동작이 빠짐없이 보존되는지**, **원하는 설치·업데이트 방식과 잘 맞는지**를 먼저 봅니다.
 - 같은 결과를 보존한다면 더 단순한 경로를 선택합니다.
@@ -24,16 +24,16 @@ Rulesync와 skills CLI는 경쟁 도구가 아니라 서로 다른 상황에 맞
 | 상황 | 보통 선택 | 이유 |
 | --- | --- | --- |
 | Skill directory가 필요한 resource를 자체 포함하고 Rulesync가 손실 없이 가져올 수 있음 | Rulesync declarative sources | 외부 Skill을 Rulesync의 source·lock·install·generate 흐름에서 함께 관리하기 쉬움 |
-| Repository가 이미 Rulesync로 여러 target에 자산을 생성하고 외부 Skill도 같은 흐름에 두고 싶음 | Rulesync declarative sources | 기존 Rulesync 배포 흐름을 그대로 활용할 수 있음 |
+| 저장소가 이미 Rulesync로 여러 target에 자산을 생성하고 외부 Skill도 같은 흐름에 두고 싶음 | Rulesync declarative sources | 기존 Rulesync 배포 흐름을 그대로 활용할 수 있음 |
 | 표준 Skill을 runtime의 project/global Skill 위치에 직접 설치하는 것이 목적 | skills CLI | target, scope, install, update를 Agent Skill 설치 흐름에서 직접 다룸 |
 | Rulesync 변환이나 generation 없이 여러 agent에 표준 Skill을 설치하고 싶음 | skills CLI | 불필요한 중간 표현을 만들지 않음 |
 | Skill 밖의 resource, symlink, 별도 agent·command·extension 또는 source-native installer가 필요함 | 설치 결과를 먼저 검증 | 어느 도구도 원본 동작을 온전히 보존하지 못하면 source-native 경로를 유지할 수 있음 |
 
-Rulesync를 쓰고 있다는 이유만으로 모든 외부 Skill을 Rulesync source로 바꾸지 않습니다. 반대로 표준 Agent Skill이라는 이유만으로 항상 skills CLI를 선택하지도 않습니다.
+Rulesync를 쓰고 있다는 이유만으로 모든 외부 Skill을 Rulesync source로 옮기지 않습니다. 반대로 표준 Agent Skill이라는 이유만으로 항상 skills CLI를 선택하지도 않습니다.
 
 ## Rulesync Example
 
-다음처럼 Skill directory 자체가 실행에 필요한 내용을 완결하고 repository가 Rulesync generation을 사용한다면 declarative source가 자연스럽습니다.
+다음처럼 Skill directory 자체가 실행에 필요한 내용을 완결하고 저장소가 Rulesync generation을 사용한다면 declarative source가 자연스럽습니다.
 
 ```text
 upstream/
