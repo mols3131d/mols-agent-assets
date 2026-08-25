@@ -70,10 +70,12 @@ skills add
     ↓
 project or global Skill installation
     ↓
-skills-lock.json
+skills-managed dependency state
     ↓
 skills update
 ```
+
+Project-scoped dependency에서는 `skills-lock.json` 같은 local lock이 dependency state의 일부가 될 수 있습니다. Global installation의 상태 위치와 update semantics까지 이 패턴에서 하나의 파일로 일반화하지 않습니다.
 
 특히 project/global scope, target agent와 표준 Skill installation 자체가 dependency lifecycle의 중심이라면 Rulesync를 중간에 추가할 이유가 줄어듭니다.
 
