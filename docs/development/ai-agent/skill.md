@@ -15,7 +15,7 @@ Skill은 **task intent에 따라 선택적으로 불러오는 지침, workflow �
 | 구분 | Policy |
 | --- | --- |
 | 이 repository에서 직접 작성·관리하는 reusable Skill | **Rulesync Skill**을 canonical source로 사용 |
-| 외부에서 가져와 dependency로 사용하는 Skill | 필요하면 **Skills CLI**로 설치 가능 |
+| 외부에서 가져와 dependency로 사용하는 Skill | 필요하면 **[skills CLI](../../references/tooling/skills-cli.md)**로 설치 가능 |
 
 직접 관리하는 Skill은 Rulesync source를 수정하며 generated vendor projection을 별도의 작성 원본으로 다루지 않습니다.
 
@@ -55,7 +55,8 @@ Skill은 catalog 전체를 선로드하기보다 `name`과 `description` 같은 
 
 공통 `SKILL.md` package contract가 필요하면 [Agent Skills Specification](../../references/agent-assets/skills/specification.md)을 통해 현재 표준을 확인합니다. 이 repository는 표준 field, path, limit 또는 vendor별 runtime behavior를 별도 local schema로 복제하지 않습니다.
 
-- canonical authored representation → Rulesync 또는 선택한 source framework
+- repository-authored canonical Skill → Rulesync source
+- external dependency authority → upstream source와 installer/lock state
 - 공통 Skill package contract → applicable Agent Skills standard
 - target-specific discovery, metadata, permissions, runtime behavior → 해당 target/harness
 - repository-local authoring convention → [Skill Authoring Conventions](../../references/agent-assets/skills/skill-authoring-conventions.md)
@@ -63,6 +64,7 @@ Skill은 catalog 전체를 선로드하기보다 `name`과 `description` 같은 
 ## Boundary
 
 - Rulesync workspace와 projection → [Rulesync](../../references/tooling/rulesync.md)
-- external Skill dependency 설치 판단 → [작성 원본과 권한](../source-authority.md)
+- external Skill dependency와 skills CLI → [skills CLI](../../references/tooling/skills-cli.md)
+- 작성 원본과 dependency authority → [작성 원본과 권한](../source-authority.md)
 - Skill specification source routing → [Agent Skills Specification](../../references/agent-assets/skills/specification.md)
 - behavioral verification → [Evaluation](../evaluation.md)
