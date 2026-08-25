@@ -5,7 +5,7 @@
 ```mermaid
 C4Context
     title System context
-    Person(operator, "Operator", "Reviews incidents")
+    Person(operator, "Operator", "Reviews results")
     System(pipeline, "Data Pipeline", "Loads and validates data")
     System_Ext(source, "Source System", "Provides input files")
 
@@ -38,18 +38,18 @@ C4Container
 
 ```mermaid
 C4Context
-    title Reliability control plane
-    Person(operator, "Operator", "Reviews evidence")
-    System_Boundary(control_plane, "Reliability Control Plane") {
-        System(lifecycle, "Lifecycle Analysis", "Detects incidents and drafts remediation")
+    title Operations control plane
+    Person(operator, "Operator", "Reviews operational evidence")
+    System_Boundary(control_plane, "Operations Control Plane") {
+        System(coordinator, "Job Coordinator", "Tracks work and coordinates actions")
     }
     System_Ext(data, "Source Data", "Provides source and analytical artifacts")
-    System_Ext(recovery, "Recovery API", "Runs approved backfills")
+    System_Ext(action_api, "Action API", "Runs approved actions")
 
-    Rel(operator, lifecycle, "Reviews incident evidence")
-    Rel(data, lifecycle, "Provides read-only inputs")
-    Rel(operator, recovery, "Approves and requests recovery")
-    Rel(recovery, lifecycle, "Returns recovery result")
+    Rel(operator, coordinator, "Reviews operational evidence")
+    Rel(data, coordinator, "Provides read-only inputs")
+    Rel(operator, action_api, "Approves and requests action")
+    Rel(action_api, coordinator, "Returns action result")
 ```
 
 ## Advanced: Component And Dynamic Views
@@ -94,13 +94,13 @@ C4Deployment
     title Data platform deployment
 
     Deployment_Node(client, "Operator workstation", "Web browser") {
-        Container(ui, "Operations UI", "Browser", "Reviews incidents")
+        Container(ui, "Operations UI", "Browser", "Reviews jobs and results")
     }
 
     Deployment_Node(cloud, "Cloud environment", "Managed platform") {
         Deployment_Node(apps, "Application cluster", "Containers") {
-            Container(api, "Reliability API", "Python", "Serves lifecycle operations")
-            Container(worker, "Recovery Worker", "Python", "Runs approved backfills")
+            Container(api, "Operations API", "Python", "Serves workflow operations")
+            Container(worker, "Action Worker", "Python", "Runs approved actions")
         }
         Deployment_Node(data, "Data services", "Managed storage") {
             ContainerDb(store, "Evidence Store", "Database", "Stores reports and decisions")
