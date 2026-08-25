@@ -14,18 +14,13 @@
 각 항목은 필요한 최소 정보만 가집니다.
 
 - `name` — catalog에서 식별할 이름
-- `source` — upstream locator. 형식은 GitHub에 한정하지 않으며 선택한 installer가 해석하는 source contract를 따릅니다.
+- `source` — asset의 canonical upstream URL. GitHub에 한정하지 않습니다.
 - `description` — 선택할 때 참고하는 짧은 설명
-- `installers` — 이 entry에 사용할 수 있는 installer 이름
+- `installers` — 이 source를 사용할 수 있는 installer 이름
 
-현재 installer 식별자는 다음 두 개를 사용합니다.
+현재 installer 식별자는 `skills`와 `rulesync`를 사용합니다. Installer는 `source` URL을 자신의 source contract에 맞게 처리하며, CLI syntax, target, scope, revision, lock과 update 옵션은 해당 installer가 소유합니다.
 
-- `skills` — skills CLI
-- `rulesync` — Rulesync
-
-Catalog는 installer별 명령 문자열을 저장하지 않습니다. 설치할 때는 entry의 `source`를 선택한 installer에 전달하고, target, scope, revision, lock과 update 옵션은 해당 installer의 현재 contract를 따릅니다.
-
-같은 dependency의 설치·update 상태를 여러 installer가 동시에 소유하지 않습니다. 특정 source가 한 installer에서 요구하는 형태와 맞지 않으면 그 installer를 `installers`에 넣지 않습니다.
+같은 dependency의 설치·update 상태를 여러 installer가 동시에 소유하지 않습니다. 특정 source가 한 installer와 호환되지 않으면 그 installer를 `installers`에 넣지 않습니다.
 
 고정 revision, 설치 경로, target별 상태와 computed hash 같은 lock 정보도 catalog에 두지 않습니다. 특정 repository가 실제 dependency로 사용하는 Skill의 상태는 해당 dependency 관리 surface가 소유합니다.
 
