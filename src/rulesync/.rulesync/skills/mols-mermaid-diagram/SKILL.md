@@ -1,6 +1,6 @@
 ---
 name: mols-mermaid-diagram
-description: "Use for Mermaid flowchart, swimlane, sequence, state, class, ERD, architecture, C4, Gantt, timeline, mindmap, journey, requirement, Git graph, Kanban, packet, or hierarchy requests when the reader must understand relationships, procedures, branching, handoffs, message order, lifecycle, chronology, dependencies, boundaries, models, requirements, or cardinality. Do not use when numeric magnitude, trend, proportion, quantified flow, weighted hierarchy, profile, or normalized positioning is the main question; route those to mols-mermaid-chart. Route whole-dashboard design to mols-markdown-dashboard."
+description: "Use for Mermaid requests where the primary question is structural: relationships, procedures, branching, handoffs, message order, lifecycle, chronology, dependencies, boundaries, models, requirements, cardinality, or unweighted hierarchy, including named Mermaid diagram types whose purpose is primarily non-quantitative. Typical forms include flowchart, sequence, state, ERD, architecture, timeline, mindmap, and related diagram types. Do not use when numeric magnitude, trend, proportion, quantified flow, weighted hierarchy, profile, or normalized positioning is the main question; route those to mols-mermaid-chart. Route whole-dashboard design to mols-markdown-dashboard."
 targets:
   - claudecode
   - codexcli
@@ -25,6 +25,7 @@ Mermaid로 **관계·절차·책임·상태·시간·구조를 빠르고 쉽게 
 - 단계, 분기, dependency, ownership handoff 또는 message order를 설명한다.
 - lifecycle state와 transition, 사건 chronology 또는 일정 구조를 표현한다.
 - hierarchy, domain model, requirement traceability 또는 database cardinality를 설명한다.
+- 사용자가 Mermaid의 특정 diagram type을 지목했고 중심 질문이 정량 비교보다 구조·관계에 가깝다.
 
 다음은 다른 표현으로 보낸다.
 
@@ -39,20 +40,29 @@ Mermaid로 **관계·절차·책임·상태·시간·구조를 빠르고 쉽게 
 
 ## Reference Routing
 
+현재 Mermaid syntax, type·feature 지원 여부와 version semantics는 **실제 target renderer와 Mermaid 공식 문서**가 소유한다. 이 Skill의 reference와 example은 type 선택, 의미 보존, portability와 local design pattern을 보조하며 최신 Mermaid 문법 catalog의 정본이 아니다.
+
 - 새 diagram을 만들거나 type·구조를 바꿀 때 [Mermaid Diagram Reference](references/mermaid-diagrams.md)를 읽는다.
 - theme, 강조 또는 기존 diagram의 visual language를 다룰 때만 [Style Policy](references/style-policy.md)를 읽는다.
-- 문법이 필요하면 [Examples](references/examples/README.md)에서 선택한 type의 문서만 읽는다.
-- render, export, syntax error 또는 compatibility 확인이 필요할 때 [Verification](references/mermaid-verification.md)을 읽는다.
+- 문법 예제가 필요하면 [Examples](references/examples/README.md)에서 선택한 type의 문서만 읽는다.
+- render, export, syntax error, compatibility 또는 renderer trust boundary를 확인할 때 [Verification](references/mermaid-verification.md)을 읽는다.
 - 수치 비교·추세·비율·양적 이동·계층 규모·다차원 profile이 핵심이면 `mols-mermaid-chart`를 사용한다. Histogram, box plot, scatter는 전문 chart 도구를 사용한다.
 
 ## Workflow
 
 1. 독자가 diagram으로 답해야 하는 질문을 한 문장으로 정의한다.
-1. 중심 구조와 target renderer 지원 여부에 맞는 type을 선택한다.
-1. 핵심 entity, participant, state, boundary와 relationship만 먼저 작성한다.
+1. 중심 구조에 가장 직접적인 type을 고르고, portability나 최신 기능이 중요하면 target renderer 지원을 확인한다.
+1. source가 뒷받침하는 핵심 entity, participant, state, boundary와 relationship만 먼저 작성한다.
 1. 하나의 diagram에는 하나의 핵심 질문만 두고, 복잡하면 overview와 detail로 분리한다.
 1. inline Markdown, `.mmd` 또는 rendered artifact 중 필요한 output만 만든다.
-1. 필요한 수준까지 검증하고 renderer 제약 또는 fallback을 보고한다.
+1. 필요한 수준까지 검증하고 renderer 제약, fallback 또는 검증하지 못한 부분을 보고한다.
+
+## Semantic Fidelity
+
+- source에 없는 relationship, direction, order, ownership, cardinality, state, dependency 또는 causal claim을 사실처럼 추가하지 않는다.
+- layout과 grouping은 readability를 위해 조정할 수 있지만 새로운 domain fact를 암시해서는 안 된다.
+- 요청상 추론이 필요하면 diagram의 source fact와 구분되도록 label 또는 주변 설명에서 assumption·inference임을 드러낸다.
+- 모호함을 보기 좋은 edge나 state로 메우지 않는다. 생략, 중립적 표현 또는 명시적 불확실성을 우선한다.
 
 ## Editing Rules
 

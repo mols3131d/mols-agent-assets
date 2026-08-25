@@ -1,64 +1,35 @@
 # Mermaid Diagram 예제
 
-Mermaid 공식 syntax의 **비차트 유형 24개를 모두 포함**한다. 각 문서는 기본 예제와 심화 패턴 또는 compatibility guidance를 제공한다. 수치 chart 6개는 `mols-mermaid-chart` Skill에 둔다.
+이 디렉터리는 Mermaid 공식 syntax 전체를 복제하는 catalog가 아니라, **`mols-mermaid-diagram`의 local design pattern을 보여주는 예제 모음**이다. 정확한 현재 syntax, type 지원 여부와 minimum version은 [Mermaid 공식 문서](https://mermaid.js.org/)와 실제 target renderer를 기준으로 확인한다.
 
-| 유형 | 예제 | 지원 상태 | 적합한 용도 |
-| --- | --- | --- | --- |
-| Flowchart | [Flowchart](flowchart.md) | Core | 프로세스, 분기, 의존성 |
-| Swimlanes | [Swimlanes](swimlanes.md) | v11.16+ beta | 책임과 handoff |
-| Sequence Diagram | [Sequence Diagram](sequence-diagram.md) | Core | 시간 순 메시지 |
-| Class Diagram | [Class Diagram](class-diagram.md) | Core | 타입과 관계 |
-| State Diagram | [State Diagram](state-diagram.md) | Core | 생명주기와 상태 전이 |
-| ER Diagram | [ER Diagram](er-diagram.md) | Core | 스키마와 cardinality |
-| User Journey | [User Journey](user-journey.md) | Extended | 경험 단계와 actor |
-| Gantt | [Gantt](gantt.md) | Core | 기간과 의존성 |
-| Requirement Diagram | [Requirement Diagram](requirement-diagram.md) | Extended | 요구사항 추적성 |
-| Git Graph | [Git Graph](git-graph.md) | Extended | 브랜치 전략 |
-| C4 | [C4](c4-context.md) | Experimental | 아키텍처 zoom level |
-| Mindmap | [Mindmap](mindmap.md) | Core | 개념 계층 |
-| Timeline | [Timeline](timeline.md) | Extended | 시간 순 사건 |
-| ZenUML | [ZenUML](zenuml.md) | External/experimental; 전용 source fence + fallback | 코드형 상호작용 |
-| Block Diagram | [Block Diagram](block-diagram.md) | Extended | 수동 grid layout |
-| Packet | [Packet](packet-diagram.md) | v11.0+ | bit field |
-| Kanban | [Kanban](kanban.md) | Extended | 작업 상태 |
-| Architecture | [Architecture](architecture-diagram.md) | v11.1+ beta | 서비스 topology |
-| Event Modeling | [Event Modeling](event-modeling.md) | v11.15+ | command, event, read model |
-| Venn | [Venn](venn.md) | v11.12.3+ beta | 집합 교차 관계 |
-| Ishikawa | [Ishikawa](ishikawa.md) | v11.13+ beta | 원인 탐색 |
-| Wardley | [Wardley](wardley.md) | v11.14+ beta | 가치 사슬과 evolution |
-| Cynefin | [Cynefin](cynefin.md) | v11.16+ beta | 복잡성 domain |
-| TreeView | [TreeView](tree-view.md) | v11.14+ beta | 디렉터리 계층 |
+예제에 없는 Mermaid type도 Skill의 구조적 책임에 해당하고 target이 지원하면 사용할 수 있다. 반대로 예제가 존재해도 target renderer가 지원하지 않으면 그대로 복사하지 않는다.
 
-선택한 유형의 문서만 읽고 전체 예제 catalog를 한 번에 context에 넣지 않는다.
+## 질문별 예제 찾기
 
-## 난이도 기준
+| 중심 질문 | 예제 |
+| --- | --- |
+| 절차·분기·ownership | [Flowchart](flowchart.md), [Swimlanes](swimlanes.md) |
+| message order | [Sequence Diagram](sequence-diagram.md), [ZenUML](zenuml.md) |
+| lifecycle | [State Diagram](state-diagram.md) |
+| domain model·schema | [Class Diagram](class-diagram.md), [ER Diagram](er-diagram.md) |
+| architecture·boundary | [Architecture](architecture-diagram.md), [C4](c4-context.md), [Block Diagram](block-diagram.md) |
+| chronology·planning·work | [Timeline](timeline.md), [Gantt](gantt.md), [Git Graph](git-graph.md), [Kanban](kanban.md) |
+| hierarchy·experience·requirements | [Mindmap](mindmap.md), [TreeView](tree-view.md), [User Journey](user-journey.md), [Requirement Diagram](requirement-diagram.md) |
+| specialized relationship·sensemaking | [Packet](packet-diagram.md), [Event Modeling](event-modeling.md), [Venn](venn.md), [Ishikawa](ishikawa.md), [Wardley](wardley.md), [Cynefin](cynefin.md) |
 
-- **Basic**은 선언과 핵심 문법을 최소 요소로 보여준다.
-- **Intermediate**는 단일 option, label 또는 presentation 기능을 추가한다.
-- **Advanced**는 실제 문제를 해결하도록 boundary, branching, multiple series/actors, metadata, annotation, feedback 또는 data-integrity constraint 중 최소 두 가지를 결합한다.
+선택한 유형의 문서만 읽고 전체 예제 모음을 한 번에 context에 넣지 않는다.
+
+## 예제의 역할
+
+- **Basic**은 해당 notation의 핵심 구조를 최소 요소로 보여준다.
+- **Intermediate**는 실제 판단에 도움이 되는 option, label 또는 presentation 기능을 추가한다.
+- **Advanced/Improvement**는 boundary, branching, multiple actors, metadata, annotation, recovery path 또는 fidelity constraint처럼 실제 문제 해결에 필요한 요소를 결합한다.
 - Advanced가 단순히 줄 수만 늘어나지 않도록, 무엇을 더 잘 판단하게 하는지 설명한다.
+- 예제는 복사 시작점일 뿐이며 실제 문서의 domain, terminology, evidence와 target renderer에 맞게 다시 설계한다.
 
-## 예제 범위
+## Upstream 변화 다루기
 
-- Mermaid 공식 Diagram Syntax navigation에 새 유형이 추가되면 index와 example file을 함께 갱신한다.
-- 각 유형은 최소 **Basic** 예제 1개와 **Advanced/Improvement** 예제 또는 명시적 fallback을 가진다.
-- `-beta`, external plugin, experimental 유형은 target renderer에서 실제 지원을 확인한다. External plugin source는 일반 `mermaid` fence로 감싸지 않고 portable fallback을 함께 둔다.
-- 예제는 복사 시작점이며 실제 문서의 domain, terminology, evidence에 맞게 다시 설계한다.
-
-## 버전별 지원 범위
-
-| 기능 | 최소 버전 | 예제 |
-| --- | ---: | --- |
-| Architecture diagram | 11.1.0 | [Architecture](architecture-diagram.md) |
-| Packet bit-count syntax | 11.7.0 | [Packet](packet-diagram.md) |
-| Venn | 11.12.3 | [Venn](venn.md) |
-| Ishikawa | 11.13.0 | [Ishikawa](ishikawa.md) |
-| Wardley and TreeView | 11.14.0 | [Wardley](wardley.md), [TreeView](tree-view.md) |
-| Event Modeling | 11.15.0 | [Event Modeling](event-modeling.md) |
-| Flowchart datastore shape | 11.15.0 | [Flowchart](flowchart.md) |
-| Class nested namespaces | 11.15.0 | [Class](class-diagram.md) |
-| Sequence custom autonumber | 11.15.0 | [Sequence](sequence-diagram.md) |
-| Swimlanes and Cynefin | 11.16.0 | [Swimlanes](swimlanes.md), [Cynefin](cynefin.md) |
-| ER nullable attribute type | 11.16.0 | [ER](er-diagram.md) |
-
-최소 버전은 feature gate일 뿐 권장 pin이 아니다. 실제 사용에서는 대상 환경이 지원하는 최신 patched release를 우선한다.
+- 이 index는 Mermaid의 전체 type 목록, support tier 또는 version matrix를 유지하지 않는다.
+- 예제가 version-sensitive, beta, experimental 또는 external integration syntax를 사용하면 복사 전에 공식 문서와 target renderer에서 현재 지원을 확인한다.
+- Mermaid에 새 type이 추가됐다는 이유만으로 local example을 자동으로 추가하지 않는다. 반복되는 local design 판단이나 fallback guidance가 있을 때만 예제를 추가한다.
+- local example의 syntax가 upstream과 달라졌다면 현재 공식 문서에 맞게 고치거나, local value가 없다면 example을 줄이거나 제거한다.
