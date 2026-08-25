@@ -1,0 +1,32 @@
+name: PR160 Final Refresh
+
+on:
+  push:
+    branches:
+      - mols/chore/chatbot-skill-sync
+
+permissions:
+  contents: read
+
+jobs:
+  refresh:
+    runs-on: ubuntu-slim
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.1"
+
+      - name: Refresh lock and routes
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes rulesync@16.5.0 install --update --token "${{ github.token }}"
+          uv run --no-project --with "pyyaml>=6.0.2" python scripts/generate_repository_routes.py
+          git diff -- rulesync.lock .agents/route/*.jsonl
