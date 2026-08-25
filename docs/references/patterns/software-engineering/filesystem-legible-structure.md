@@ -1,5 +1,5 @@
 ---
-description: repository의 file·directory 이름, 배치, 계층을 활용해 탐색성을 높일지 판단할 때 참고하며, filesystem legibility와 구조·convention·operability 사이의 경계를 다루는 패턴입니다.
+description: repository의 file·directory 이름, 배치, 계층을 바꿔 탐색성을 높일지 판단할 때 참고하며, filesystem legibility와 구조·convention·operability의 우선순위 경계를 다루는 패턴입니다.
 ---
 
 # Filesystem-Legible Structure
