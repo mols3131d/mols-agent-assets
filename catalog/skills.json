@@ -13,7 +13,7 @@
     {
       "name": "im-not-ai",
       "source": "epoko77-ai/im-not-ai",
-      "description": "AI 특유의 문체를 줄이고 자연스러운 글쓰기를 돕는 Skill 모음."
+      "description": "한국어 텍스트의 번역투와 AI식 문체를 진단하고 의미를 보존하며 자연스럽게 윤문하는 Skill."
     }
   ]
 }
