@@ -19,6 +19,7 @@
 | --- | --- |
 | `src/` | 이 repository가 관리하는 **Agent Asset library source**. Portable asset뿐 아니라 vendor/target/context-specific asset도 재사용·배포·변형할 가치가 있으면 포함할 수 있습니다. |
 | `docs/references/` | 이 repository와 다른 repository에서 재사용할 **knowledge library**. Agent Asset 설계 지식, reusable pattern, tooling/specification authority routing 등을 포함합니다. |
+| `catalog/` | 자주 다시 찾는 외부 Agent Skill source와 canonical pattern entrypoint를 모아두는 **curated discovery surface**. 작성 원본, 설치 상태와 dependency lock은 소유하지 않습니다. |
 | `docs/<asset-type>/<owner>/` | 개별 asset 또는 family를 유지보수하기 위한 maintainer documentation capsule |
 | `route/` | canonical asset metadata에서 파생되는 cross-runtime discovery surface |
 | `inbox/` | 아직 canonical하지 않은 research, review, handoff와 기타 working artifact |
@@ -31,6 +32,7 @@
 ## Navigation
 
 - 이 library의 자산과 지식 사용 → [Using This Repository](docs/using-this-repository.md)
+- Curated reusable catalog → [`catalog/`](catalog/README.md)
 - Reusable knowledge → [References](docs/references/README.md)
 - Agent Asset 설계 지식 → [Agent Asset Design](docs/references/agent-assets/README.md)
 - Reusable design patterns → [Patterns](docs/references/patterns/README.md)
