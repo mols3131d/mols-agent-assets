@@ -6,27 +6,31 @@ on:
       - mols/chore/chatbot-skill-sync
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   refresh:
+    if: ${{ github.event.head_commit.message != 'chore: sync PR160 lock to final main' }}
     runs-on: ubuntu-slim
     timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v7
-        with:
-          persist-credentials: false
 
       - name: Set up uv
         uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
         with:
           version: "0.12.1"
 
-      - name: Refresh lock and routes
+      - name: Refresh and commit lock and routes
         shell: bash
         run: |
           set -euo pipefail
           npx --yes rulesync@16.5.0 install --update --token "${{ github.token }}"
           uv run --no-project --with "pyyaml>=6.0.2" python scripts/generate_repository_routes.py
-          git diff -- rulesync.lock .agents/route/*.jsonl
+          git diff --exit-code --quiet -- rulesync.lock .agents/route/*.jsonl && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add rulesync.lock .agents/route/*.jsonl
+          git commit -m "chore: sync PR160 lock to final main"
+          git push origin HEAD:mols/chore/chatbot-skill-sync
