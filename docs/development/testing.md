@@ -62,6 +62,18 @@ Formatting, Rulesync doctor, generated route/index 재생성, repository toolcha
 
 PR Gate는 `contents: read`만 사용하고 repository에 write-back하지 않습니다.
 
+## Optional Validation
+
+PR Gate에 상시 넣을 필요는 없지만 필요할 때 독립적으로 다시 확인할 수 있어야 하는 검증은 `Optional Validation` workflow에 둡니다.
+
+현재 수동 실행에서 다음 검증을 각각 선택할 수 있으며 기본값은 모두 OFF입니다.
+
+- `docs_indexes` — committed docs index drift 확인
+- `routes` — distribution/repository route를 재생성하고 committed output과 비교
+- `rulesync` — canonical Rulesync source에 strict doctor 실행
+
+선택하지 않은 검증은 실행하지 않습니다. Markdown formatter, 전체 `mise run check`, Promptfoo와 model/runtime evaluation은 이 workflow에도 넣지 않습니다.
+
 ## Rulesync 검증
 
 Rulesync CLI 버전은 `mise.toml`에 정확히 고정합니다. Repository `npm run rulesync:*` command는 `scripts/run_rulesync.py`를 통해 `src/rulesync/` workspace를 대상으로 실행합니다. Runner는 target path나 projection semantics를 재구현하지 않고 mise-managed Rulesync CLI에 위임합니다.
