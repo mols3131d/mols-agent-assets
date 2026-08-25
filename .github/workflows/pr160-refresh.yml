@@ -1,0 +1,32 @@
+name: PR160 Refresh
+
+on:
+  push:
+    branches:
+      - mols/chore/chatbot-skill-sync
+
+permissions:
+  contents: read
+
+jobs:
+  refresh:
+    runs-on: ubuntu-slim
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24.19.0"
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9
+        with:
+          version: "0.12.1"
+      - name: Refresh Rulesync lock and repository routes
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes rulesync@16.5.0 install --update
+          uv run --no-project --with "pyyaml>=6.0.2" python scripts/generate_repository_routes.py
+          echo '=== RULESYNC_LOCK ==='
+          cat rulesync.lock
+          echo '=== ROUTE_DIFF ==='
+          git diff -- rulesync.lock .agents/route/*.jsonl
