@@ -1,4 +1,4 @@
-name: PR160 Refresh
+name: PR160 Verify
 
 on:
   push:
@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 jobs:
-  refresh:
+  verify:
     runs-on: ubuntu-slim
     timeout-minutes: 5
     steps:
@@ -22,15 +22,10 @@ jobs:
       - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9
         with:
           version: "0.12.1"
-      - name: Refresh Rulesync lock and repository routes
+      - name: Verify frozen lock and generated repository routes
         shell: bash
         run: |
           set -euo pipefail
-          npx --yes rulesync@16.5.0 install --update --token "${{ github.token }}"
+          npx --yes rulesync@16.5.0 install --frozen --token "${{ github.token }}"
           uv run --no-project --with "pyyaml>=6.0.2" python scripts/generate_repository_routes.py
-          echo '=== RULESYNC_LOCK ==='
-          cat rulesync.lock
-          for path in .agents/route/*.jsonl; do
-            echo "=== ROUTE:${path} ==="
-            cat "$path"
-          done
+          git diff --exit-code -- rulesync.lock .agents/route/*.jsonl
