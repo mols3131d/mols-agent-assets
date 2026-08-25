@@ -23,10 +23,8 @@ Rulesync와 skills CLI는 경쟁 도구가 아니라 서로 다른 상황에 맞
 
 | 상황 | 보통 선택 | 이유 |
 | --- | --- | --- |
-| Skill directory가 필요한 resource를 자체 포함하고 Rulesync가 손실 없이 가져올 수 있음 | Rulesync declarative sources | 외부 Skill을 Rulesync의 source·lock·install·generate 흐름에서 함께 관리하기 쉬움 |
-| 저장소가 이미 Rulesync로 여러 target에 자산을 생성하고 외부 Skill도 같은 흐름에 두고 싶음 | Rulesync declarative sources | 기존 Rulesync 배포 흐름을 그대로 활용할 수 있음 |
-| 표준 Skill을 runtime의 project/global Skill 위치에 직접 설치하는 것이 목적 | skills CLI | target, scope, install, update를 Agent Skill 설치 흐름에서 직접 다룸 |
-| Rulesync 변환이나 generation 없이 여러 agent에 표준 Skill을 설치하고 싶음 | skills CLI | 불필요한 중간 표현을 만들지 않음 |
+| Skill이 필요한 resource를 자체 포함하고 Rulesync의 install·generate 흐름에 두는 것이 자연스러움 | Rulesync declarative sources | source, lock, install과 여러 target 배포를 한 흐름에서 관리하기 쉬움 |
+| 표준 Skill을 runtime의 project/global 위치에 직접 설치하고 Rulesync generation이 필요하지 않음 | skills CLI | target, scope, install, update를 Agent Skill 설치 흐름에서 직접 다룸 |
 | Skill 밖의 resource, symlink, 별도 agent·command·extension 또는 source-native installer가 필요함 | 설치 결과를 먼저 검증 | 어느 도구도 원본 동작을 온전히 보존하지 못하면 source-native 경로를 유지할 수 있음 |
 
 Rulesync를 쓰고 있다는 이유만으로 모든 외부 Skill을 Rulesync source로 옮기지 않습니다. 반대로 표준 Agent Skill이라는 이유만으로 항상 skills CLI를 선택하지도 않습니다.
