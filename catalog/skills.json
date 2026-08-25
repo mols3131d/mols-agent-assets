@@ -3,17 +3,29 @@
     {
       "name": "caveman",
       "source": "JuliusBrussee/caveman",
-      "description": "대화 출력을 압축하면서 기술 정보는 보존하는 Skill 모음."
+      "description": "대화 출력을 압축하면서 기술 정보는 보존하는 Skill 모음.",
+      "install": {
+        "skills": "npx skills add JuliusBrussee/caveman",
+        "rulesync": "rulesync add JuliusBrussee/caveman"
+      }
     },
     {
       "name": "ponytail",
       "source": "DietrichGebert/ponytail",
-      "description": "필요 이상의 구현을 줄이고 가장 단순한 안전한 해법을 우선하는 Skill 모음."
+      "description": "필요 이상의 구현을 줄이고 가장 단순한 안전한 해법을 우선하는 Skill 모음.",
+      "install": {
+        "skills": "npx skills add DietrichGebert/ponytail",
+        "rulesync": "rulesync add DietrichGebert/ponytail"
+      }
     },
     {
       "name": "im-not-ai",
       "source": "epoko77-ai/im-not-ai",
-      "description": "한국어 텍스트의 번역투와 AI식 문체를 진단하고 의미를 보존하며 자연스럽게 윤문하는 Skill."
+      "description": "한국어 텍스트의 번역투와 AI식 문체를 진단하고 의미를 보존하며 자연스럽게 윤문하는 Skill.",
+      "install": {
+        "skills": "npx skills add epoko77-ai/im-not-ai",
+        "rulesync": "rulesync add epoko77-ai/im-not-ai"
+      }
     }
   ]
 }
