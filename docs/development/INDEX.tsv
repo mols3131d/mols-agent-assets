@@ -1,4 +1,7 @@
 path	description
+ai-agent/	AI agent용 repository instruction surface를 선택하고 Rule과 Skill의 책임 경계를 찾을 때 사용하는 development entrypoint입니다.
+ai-agent/rule.md	AI agent 지침을 path, glob, 파일 종류 같은 구조적 범위에 적용할 때 Rule을 선택하고 작성 원본과 적용 경계를 판단하는 정책입니다.
+ai-agent/skill.md	AI agent가 task intent에 따라 선택하는 Skill의 역할과 이 repository의 Rulesync authoring 및 Skills CLI dependency 정책을 판단할 때 사용하는 문서입니다.
 evaluation.md	Agent Asset의 behavioral evaluation을 설계·실행·해석하고 deterministic test, runtime evidence, regression contract를 구분할 때 사용하는 repository-local policy입니다.
 github.md	GitHub의 Issues, Pull Requests, PR Reviews, coding agents, automations, GitHub Agentic Workflows, Rulesets, Actions와 Merge에 적용되는 저장소 협업 정책과 권한 경계를 확인할 때 사용합니다.
 source-authority.md	저장소 지침과 에이전트 자산에서 작성 원본, 표준·도구·대상별 권한, 원본과 파생 결과의 경계를 결정할 때 사용하는 정책입니다.
