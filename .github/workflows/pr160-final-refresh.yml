@@ -10,7 +10,6 @@ permissions:
 
 jobs:
   refresh:
-    if: ${{ github.event.head_commit.message != 'chore: sync PR160 lock to final main' }}
     runs-on: ubuntu-slim
     timeout-minutes: 10
     steps:
@@ -28,7 +27,9 @@ jobs:
           set -euo pipefail
           npx --yes rulesync@16.5.0 install --update --token "${{ github.token }}"
           uv run --no-project --with "pyyaml>=6.0.2" python scripts/generate_repository_routes.py
-          git diff --exit-code --quiet -- rulesync.lock .agents/route/*.jsonl && exit 0
+          if git diff --exit-code --quiet -- rulesync.lock .agents/route/*.jsonl; then
+            exit 0
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add rulesync.lock .agents/route/*.jsonl
