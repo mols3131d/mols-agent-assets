@@ -16,13 +16,10 @@ from scripts.generate_docs_indexes import generate_docs_indexes
 
 ROOT = Path(__file__).resolve().parents[1]
 
-_DOCS_INDEX_TOOL_SOURCES = {
-    "scripts/generate_docs_indexes.py",
-    (
-        "src/rulesync/.rulesync/skills/mols-markdown-maintenance/"
-        "scripts/generate_index.py"
-    ),
-}
+_DOCS_INDEX_TOOL_SOURCES = {"scripts/generate_docs_indexes.py"}
+_DOCS_INDEX_TOOL_PREFIX = (
+    "src/rulesync/.rulesync/skills/mols-markdown-maintenance/scripts/"
+)
 _REPOSITORY_ROUTE_SOURCES = {
     "rulesync.lock",
     "rulesync.jsonc",
@@ -51,6 +48,8 @@ class Projection:
 
 def _is_docs_index_source(path: str) -> bool:
     if path in _DOCS_INDEX_TOOL_SOURCES:
+        return True
+    if path.startswith(_DOCS_INDEX_TOOL_PREFIX) and path.endswith(".py"):
         return True
     if not path.startswith("docs/") or not path.endswith(".md"):
         return False
