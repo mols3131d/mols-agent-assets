@@ -3,10 +3,10 @@
   "skills": {
     "humanize-korean": {
       "source": "epoko77-ai/im-not-ai",
-      "ref": "v2.3.0",
+      "ref": "v2.3.2",
       "sourceType": "github",
       "skillPath": "codex/skills/humanize-korean/SKILL.md",
-      "computedHash": "ee995461e53f05b660ad07765835909f5469d46f6a40ee00d4aea99dc56f4275"
+      "computedHash": "66b5c4b585e3c6cac6c3909ee241c85436ef2668498b5e3d9c1ad1b3a759fd14"
     }
   }
 }
