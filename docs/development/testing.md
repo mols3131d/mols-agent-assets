@@ -1,5 +1,5 @@
 ---
-description: 저장소의 결정론적 검증, 로컬 도구 검증, PR Gate와 merge를 차단하는 테스트 근거를 확인할 때 사용하는 정책입니다.
+description: 저장소의 결정론적 검증, 도구 검증, PR Gate와 merge를 차단하는 테스트 근거를 확인할 때 사용하는 정책입니다.
 ---
 
 # Testing
