@@ -30,9 +30,9 @@ FS에서 보이는 경계와 이름은 **탐색 단서이지 그 자체로 archi
 
 ## Application
 
-Legibility를 개선할 때는 **탐색 문제와 구조 문제를 먼저 구분한 뒤, 가장 싼 수단부터** 봅니다.
+Legibility를 개선할 때는 **탐색이 어려운 주된 원인을 먼저 확인하고, 가장 싼 수단부터** 봅니다.
 
-탐색이 어렵다고 바로 filesystem을 재구성하지 않습니다. 먼저 원인이 실제 responsibility나 structure의 배치인지, search·symbol navigation·dependency view·index 같은 탐색 수단의 한계인지 구분합니다. 후자라면 source structure를 바꾸기보다 더 싼 탐색 보조 수단을 우선합니다.
+탐색이 어렵다고 바로 filesystem을 재구성하지 않습니다. 먼저 어려움의 주된 원인이 책임·구조의 배치에 있는지, search·symbol navigation·dependency view·index 같은 탐색 수단에 있는지 확인합니다. 탐색 수단의 한계가 주된 원인이라면 기존 구조를 바꾸기보다 더 싼 탐색 보조 수단을 우선합니다.
 
 그다음에는 다음 순서로 봅니다.
 
