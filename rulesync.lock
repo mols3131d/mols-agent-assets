@@ -3,8 +3,8 @@
   "sources": {
     "mols3131d/mols-agent-assets": {
       "requestedRef": "main",
-      "resolvedRef": "201a95219df8c293a5d58393f111d5163e871331",
-      "resolvedAt": "2026-08-25T19:55:42.860Z",
+      "resolvedRef": "38b0da99b00510d8479dd584479045fc6d742d11",
+      "resolvedAt": "2026-08-25T20:29:44.108Z",
       "skills": {
         "artifact-consistency-inspector": {
           "integrity": "sha256-6cb2ff6eafb3ea0d0d7974bdb8068d0f8098d9a40321ab808509b6bf8cd2d43b"
