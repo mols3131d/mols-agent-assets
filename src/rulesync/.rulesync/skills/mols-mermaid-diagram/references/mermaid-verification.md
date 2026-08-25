@@ -1,36 +1,51 @@
 # Mermaid Verification
 
-Source syntax, renderer support와 rendered image를 서로 다른 단계로 검증한다.
+Source semantics, Mermaid syntax, target renderer support와 rendered output을 서로 다른 단계로 검증한다.
 
-## Baseline
+## Authority
 
-- Example의 minimum version은 feature gate이며 dependency pin 권장이 아니다.
-- target renderer, embedded Mermaid와 documentation version을 구분한다.
-- renderer가 없으면 render 성공을 주장하지 않는다.
-- version 변경 후에는 대표 example을 다시 render한다.
+- 실제 render 지원의 source of truth는 target renderer와 그 renderer가 사용하는 Mermaid version이다.
+- 현재 syntax, configuration과 version-specific feature는 [Mermaid 공식 문서](https://mermaid.js.org/)에서 확인한다.
+- Local example의 version 표기나 과거 render 성공을 현재 compatibility 증거로 사용하지 않는다.
+- renderer가 없거나 실행하지 못했으면 render 성공을 주장하지 않는다.
+
+## Trust Boundary
+
+Diagram source와 renderer는 별도 trust boundary로 취급한다.
+
+- 출처가 명확히 신뢰되지 않은 Mermaid source를 render할 때 renderer의 security posture를 단순히 render 성공을 위해 완화하지 않는다.
+- untrusted source를 처리해야 하면 현재 지원되는 patched renderer와 target의 안전한 기본 설정을 우선하고, 필요하면 host가 제공하는 더 강한 isolation을 사용한다. 안전 상태를 확인할 수 없으면 source review까지만 수행한다.
+- untrusted diagram config를 host-level renderer initialization이나 global configuration API에 그대로 전달하지 않는다.
+- 외부 renderer에는 **외부 공개가 허용된 내용만** 전송한다. secret, credential, restricted/non-public content, 외부 공개가 허용되지 않은 내부 구조나 disclosure 여부가 불명확한 source는 보내지 않는다.
+- external link, icon pack 또는 network-backed asset을 활성화해야 하는 source는 target policy와 trust를 먼저 확인한다.
 
 ## Level 1: Source Review
 
 항상 수행한다.
 
-- declaration과 type별 arrow·relationship syntax를 확인한다.
-- participant, node ID, class와 subgraph reference가 선언됐는지 확인한다.
-- fragment, state block, class body와 note가 닫혔는지 확인한다.
-- special character가 있는 label을 quote한다.
-- experimental type, frontmatter, animation과 icon pack의 renderer 지원을 확인한다.
-- relative link와 output filename이 실제 위치와 일치하는지 확인한다.
+- diagram의 중심 질문과 source facts가 일치하는지 확인한다.
+- declaration, relationship, arrow, block와 escaping을 선택한 diagram type의 현재 grammar로 확인한다.
+- participant, node, state와 other reference의 validity는 type-specific grammar로 확인한다. implicit declaration을 허용하는 type에 명시적 선행 선언을 강제하지 않는다.
+- `end`, braces, indentation, fragment와 note처럼 type이 요구하는 block boundary를 확인한다.
+- special character와 Markdown text는 해당 type의 quoting·escaping 규칙을 따른다.
+- source에 없던 direction, order, ownership, cardinality, transition 또는 causal claim이 추가되지 않았는지 확인한다.
+- beta, experimental, external integration 또는 최근 syntax는 target renderer 지원을 확인한다.
+- security-sensitive config, external URL과 network-backed resource가 있으면 trust boundary를 함께 확인한다.
+- relative link와 output filename을 생성했다면 실제 위치와 일치하는지 확인한다.
 
 ## Level 2: Renderer Validation
 
-`.mmd` 또는 rendered artifact를 만들거나 renderer가 사용 가능할 때 수행한다.
+`.mmd` 또는 rendered artifact를 만들거나 renderer가 사용 가능하고 compatibility claim이 중요할 때 수행한다.
 
 ### Local Mermaid CLI
 
-`mmdc --version` 성공만으로 export 환경이 완전하다고 판단하지 않는다. Node package와 headless browser가 모두 필요하다.
+`mmdc --version` 성공만으로 export 환경이 완전하다고 판단하지 않는다. CLI, Node runtime와 headless browser 등 실제 render dependency가 모두 동작해야 한다.
 
 ```bash
 mmdc -i diagram.mmd -o /tmp/diagram-check.svg
 ```
+
+필요한 최종 형식만 export한다.
 
 ```bash
 mmdc -i diagram.mmd -o diagram.png -w 2048 --backgroundColor white
@@ -38,11 +53,11 @@ mmdc -i diagram.mmd -o diagram.svg
 mmdc -i diagram.mmd -o diagram.pdf
 ```
 
-Chrome/Puppeteer 오류는 environment setup failure다. 올바른 source를 임의로 수정하지 않는다. CLI theme은 설치된 version의 지원 목록을 확인한다.
+Browser/Puppeteer 오류는 environment setup failure다. 올바른 source를 임의로 수정하지 않는다. CLI option과 theme 지원은 설치된 version의 현재 문서를 확인한다.
 
-### Kroki Fallback
+### External Renderer Fallback
 
-Network access가 허용되고 private content가 아닐 때만 사용한다.
+Network access가 허용되고 source가 외부 공개 가능한 경우에만 external renderer를 사용할 수 있다. 예를 들어 Kroki를 사용할 때도 같은 disclosure boundary를 적용한다.
 
 ```bash
 curl -fSs -X POST \
@@ -52,31 +67,34 @@ curl -fSs -X POST \
   -o diagram.svg
 ```
 
-Type이 지원되지 않으면 core type 또는 text/table fallback으로 전환한다.
+Target이 선택한 type을 지원하지 않으면 같은 의미를 보존하는 더 널리 지원되는 Mermaid type 또는 text/table fallback으로 전환한다.
 
 ## Level 3: Visual Review
 
 | Check | Signal | Minimal Fix |
 | --- | --- | --- |
-| Label clipping | text가 잘리거나 줄이 비정상 | label 축약 또는 `<br/>` |
-| Excess density | node와 edge가 한곳에 몰림 | direction, grouping, detail 분리 |
+| Label clipping | text가 잘리거나 줄이 비정상 | label 축약 또는 type-supported line break |
+| Excess density | node와 relationship이 한곳에 몰림 | direction, grouping, detail 분리 |
 | Wrong aspect | 지나치게 넓거나 높음 | direction 변경 또는 detail 분리 |
-| Edge spaghetti | 경로 추적이 어려움 | 선언 순서, boundary, diagram 분리 |
+| Edge spaghetti | 경로 추적이 어려움 | declaration order, boundary, diagram 분리 |
 | Wrong type | 정보 구조와 type이 맞지 않음 | 더 직접적인 type으로 교체 |
 | Low contrast | text와 fill 구분이 어려움 | custom style 축소 또는 theme 변경 |
 
-수정 후 renderer validation을 다시 수행한다. 반복해도 해결되지 않으면 제약을 명시한다.
+수정 후 필요한 renderer validation을 다시 수행한다. 반복해도 해결되지 않으면 남은 제약을 명시한다.
 
 ## Editing Existing Work
 
 - label 변경은 해당 text만 수정한다.
-- node·edge 추가/삭제는 관련 declaration과 relationship만 수정한다.
+- node·relationship 추가/삭제는 관련 declaration과 relationship만 수정한다.
 - direction·grouping·color 변경은 요청 범위에 필요한 최소 source만 수정한다.
 - 사용자 피드백을 이유로 source 전체를 재작성하지 않는다.
+- renderer 문제를 해결한다는 이유로 source semantics를 바꾸지 않는다.
 
 ## Failure Reporting
 
-- **Syntax failure**: error location과 수정한 source를 보고한다.
-- **Renderer setup failure**: missing CLI/browser/network를 보고하고 source-only 결과를 제공한다.
-- **Unsupported type**: core type 또는 text/table fallback으로 전환한다.
+- **Semantic failure**: source와 diagram의 relationship, direction, order 또는 cardinality가 달라진 지점을 보고하고 수정한다.
+- **Syntax failure**: 선택한 type의 grammar 기준 error location과 수정한 source를 보고한다.
+- **Renderer setup failure**: missing CLI/browser/network 등 환경 문제를 보고하고 source-only 결과를 제공한다.
+- **Unsupported type or feature**: target renderer 제약을 밝히고 의미를 보존하는 fallback으로 전환한다.
+- **Trust or disclosure blocker**: 안전하게 render하거나 외부 전송할 수 없음을 밝히고 source review까지만 수행한다.
 - **Visual limitation**: 남은 readability 문제와 분할 지점을 명시한다.

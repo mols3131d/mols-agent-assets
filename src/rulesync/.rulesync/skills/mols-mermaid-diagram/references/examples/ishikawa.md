@@ -1,6 +1,6 @@
 # Ishikawa Diagram
 
-> Mermaid v11.13.0+의 `ishikawa-beta` 문법이다.
+`ishikawa-beta`는 version-sensitive Mermaid syntax다. 정확한 현재 지원 범위와 declaration은 공식 Mermaid 문서와 target renderer에서 확인한다.
 
 문제 결과와 잠재 원인을 category별로 탐색할 때 사용한다.
 

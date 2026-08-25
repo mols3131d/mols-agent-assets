@@ -1,12 +1,12 @@
 # ZenUML
 
-> ZenUML은 Mermaid core에 항상 포함되는 타입이 아니다. renderer가 `@mermaid-js/mermaid-zenuml`을 등록하지 않았다면 `UnknownDiagramError`가 발생한다. 따라서 ZenUML 원문은 `zenuml` fence로 제공하고, 일반 Mermaid renderer용 `sequenceDiagram` fallback을 함께 제공한다.
+ZenUML은 code-like interaction, nesting과 exception 흐름을 sequence 형태로 표현할 때 사용한다. 지원 방식은 Mermaid version과 embedding renderer에 따라 달라질 수 있으므로 **현재 공식 Mermaid 문서와 target renderer에서 실제 지원을 확인한다.**
 
-code-like interaction, nesting과 exception 흐름을 sequence 형태로 표현할 때 `zenuml`을 사용한다.
+Target이 ZenUML을 지원하면 일반 Mermaid source로 `zenuml` declaration을 사용한다. 지원 여부가 불확실하거나 portable Markdown이 우선이면 `sequenceDiagram` fallback을 기본으로 사용한다.
 
 ## Basic: ZenUML Source
 
-```zenuml
+```mermaid
 zenuml
     title Authentication
     U as User
@@ -18,7 +18,7 @@ zenuml
     A->U: Token
 ```
 
-## Basic: Portable Mermaid Fallback
+## Basic: Portable Fallback
 
 ```mermaid
 sequenceDiagram
@@ -34,7 +34,7 @@ sequenceDiagram
 
 ## Advanced: ZenUML Source
 
-```zenuml
+```mermaid
 zenuml
     title Recovery request
     @Actor Operator
@@ -60,7 +60,7 @@ zenuml
     }
 ```
 
-## Advanced: Portable Mermaid Fallback
+## Advanced: Portable Fallback
 
 ```mermaid
 sequenceDiagram
@@ -91,7 +91,7 @@ sequenceDiagram
 
 ## Rules
 
-- standard `sequenceDiagram`과 ZenUML 문법을 한 block 안에서 섞지 않는다.
-- nested sync call, `if`, loop, `try/catch/finally`가 실제 이해를 높일 때만 사용한다.
-- plugin 지원을 확인할 수 없으면 portable fallback을 기본 출력으로 사용한다.
-- ZenUML source를 Mermaid fence로 감싸는 것은 target renderer가 plugin을 지원한다고 확인된 경우에만 허용한다.
+- standard `sequenceDiagram`과 ZenUML 문법을 한 diagram 안에서 섞지 않는다.
+- nested sync call, `if`, loop, `try/catch/finally`가 실제 이해를 높일 때만 ZenUML을 사용한다.
+- target이 ZenUML을 지원한다고 확인하지 못했고 portability가 중요하면 `sequenceDiagram` fallback을 사용한다.
+- ZenUML의 정확한 participant, annotation과 control-flow syntax는 local example보다 현재 공식 문서를 우선한다.

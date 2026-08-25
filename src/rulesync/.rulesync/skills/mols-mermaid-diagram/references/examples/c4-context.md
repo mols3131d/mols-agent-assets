@@ -5,7 +5,7 @@
 ```mermaid
 C4Context
     title System context
-    Person(operator, "Operator", "Reviews incidents")
+    Person(operator, "Operator", "Reviews results")
     System(pipeline, "Data Pipeline", "Loads and validates data")
     System_Ext(source, "Source System", "Provides input files")
 
@@ -38,23 +38,23 @@ C4Container
 
 ```mermaid
 C4Context
-    title Reliability control plane
-    Person(operator, "Operator", "Reviews evidence")
-    System_Boundary(control_plane, "Reliability Control Plane") {
-        System(lifecycle, "Lifecycle Analysis", "Detects incidents and drafts remediation")
+    title Operations control plane
+    Person(operator, "Operator", "Reviews operational evidence")
+    System_Boundary(control_plane, "Operations Control Plane") {
+        System(coordinator, "Job Coordinator", "Tracks work and coordinates actions")
     }
-    System_Ext(data, "HMDA Data", "Provides source and analytical artifacts")
-    System_Ext(recovery, "Recovery API", "Runs approved backfills")
+    System_Ext(data, "Source Data", "Provides source and analytical artifacts")
+    System_Ext(action_api, "Action API", "Runs approved actions")
 
-    Rel(operator, lifecycle, "Reviews incident evidence")
-    Rel(data, lifecycle, "Provides read-only inputs")
-    Rel(operator, recovery, "Approves and requests recovery")
-    Rel(recovery, lifecycle, "Returns recovery result")
+    Rel(operator, coordinator, "Reviews operational evidence")
+    Rel(data, coordinator, "Provides read-only inputs")
+    Rel(operator, action_api, "Approves and requests action")
+    Rel(action_api, coordinator, "Returns action result")
 ```
 
 ## Advanced: Component And Dynamic Views
 
-C4는 Context, Container, Component, Dynamic, Deployment의 다섯 view를 지원하지만 experimental이다. 같은 질문을 여러 view에 반복하지 않고 zoom level을 명확히 한다.
+C4는 여러 zoom/view를 지원할 수 있지만 exact support는 target renderer와 현재 Mermaid 문서를 확인한다. 같은 질문을 여러 view에 반복하지 않고 zoom level을 명확히 한다.
 
 ```mermaid
 C4Component
@@ -94,13 +94,13 @@ C4Deployment
     title Data platform deployment
 
     Deployment_Node(client, "Operator workstation", "Web browser") {
-        Container(ui, "Operations UI", "Browser", "Reviews incidents")
+        Container(ui, "Operations UI", "Browser", "Reviews jobs and results")
     }
 
     Deployment_Node(cloud, "Cloud environment", "Managed platform") {
         Deployment_Node(apps, "Application cluster", "Containers") {
-            Container(api, "Reliability API", "Python", "Serves lifecycle operations")
-            Container(worker, "Recovery Worker", "Python", "Runs approved backfills")
+            Container(api, "Operations API", "Python", "Serves workflow operations")
+            Container(worker, "Action Worker", "Python", "Runs approved actions")
         }
         Deployment_Node(data, "Data services", "Managed storage") {
             ContainerDb(store, "Evidence Store", "Database", "Stores reports and decisions")
@@ -113,4 +113,4 @@ C4Deployment
     Rel(worker, store, "Records result", "SQL")
 ```
 
-C4는 experimental이므로 target renderer에서 실제 render를 확인하고, portable 문서에는 architecture 또는 flowchart fallback을 제공한다.
+C4 support는 target-dependent하다. 실제 render를 확인하지 못했다면 support를 단정하지 않고, portable 문서에는 architecture, flowchart 또는 text fallback을 제공한다.
