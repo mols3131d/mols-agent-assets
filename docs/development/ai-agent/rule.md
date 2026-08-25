@@ -8,6 +8,13 @@ Rule은 **task intent가 아니라 repository 구조를 기준으로 적용 범�
 
 이 repository에서는 공통 하위 디렉터리, 파일 종류, 확장자처럼 여러 위치에 반복되는 범위를 하나의 selector로 표현할 수 있을 때 Rule을 사용합니다. 특정 runtime의 selector 문법이나 precedence는 해당 runtime 또는 Rulesync의 current contract를 따릅니다.
 
+Rule과 Skill은 **담고 있는 내용이 아니라 적용 방식으로 구분**합니다. Skill 중에도 workflow나 capability뿐 아니라 Rule처럼 정책, 제약, 판단 기준 같은 지침을 제공하는 것이 있습니다. 이 repository는 이런 **instruction-oriented Skill**도 적극적으로 사용합니다.
+
+- path, glob, 파일 종류처럼 구조적 조건이 적용 여부를 결정하면 Rule입니다.
+- task intent와 의미적 relevance가 적용 여부를 결정하면, 내용이 지침 중심이어도 Skill입니다.
+
+따라서 "지침이면 Rule, workflow면 Skill"로 구분하지 않습니다.
+
 ## When to Use
 
 Rule을 우선 검토하는 경우:
@@ -23,7 +30,7 @@ Rule을 우선 검토하는 경우:
 | --- | --- |
 | repository 전체에 항상 필요한 지침 | root `AGENTS.md` |
 | 하나의 디렉터리 계층에 자연스럽게 상속되는 지침 | 해당 범위의 `AGENTS.md` |
-| 작업 의미에 따라 선택해야 하는 지침이나 workflow | [Skill](skill.md) |
+| 작업 의미에 따라 선택해야 하는 지침, workflow 또는 capability | [Skill](skill.md) |
 
 ## Authoring Policy
 
