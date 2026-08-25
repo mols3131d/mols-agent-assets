@@ -31,6 +31,20 @@ mise run format
 
 `format` task는 각 도구를 소유하는 runtime을 통해 Ruff, rumdl과 Biome을 실행합니다.
 
+## Generated projections
+
+Commit되는 index와 route는 작성 원본에서 다시 만들 수 있는 projection입니다. 직접 수정하지 않고 다음 entrypoint로 재생성합니다.
+
+```bash
+mise run generated-sync
+```
+
+현재 이 task는 `docs/**/INDEX.tsv`, `route/skills.jsonl`, `.agents/route/*.jsonl`을 각 작성 원본에서 재생성합니다.
+
+Pre-commit hook은 formatter가 staged file을 다시 stage하기 전에 staged 변경에 영향받는 projection만 재생성하고 해당 generated output을 함께 stage합니다. 관련 source나 generated output에 별도의 unstaged 또는 untracked 변경이 있으면 working tree의 다른 작업을 섞지 않도록 자동 동기화를 중단합니다.
+
+CI는 이 write-side automation을 다시 실행하지 않습니다. Generator와 hook의 선택·안전·staging 동작은 deterministic regression test가 검증하고, 실제 projection 갱신은 local write path가 소유합니다.
+
 ## Validation
 
 ```bash
@@ -42,19 +56,23 @@ mise run test
 
 `main` 대상 모든 PR은 하나의 고정된 `PR Gate` job을 실행합니다. Workflow 수준 path filter를 두지 않아 required check가 skip 상태로 남지 않게 합니다.
 
-PR Gate는 root `tests/` 전체를 항상 `uv --locked` semantics로 실행합니다. 현재 결정론적 test suite가 충분히 작으므로 test 선택 routing보다 전체 suite를 안전한 기본값으로 사용합니다.
+PR Gate의 책임은 root `tests/` 전체를 고정된 Python과 uv 환경에서 `uv --locked` semantics로 실행하는 것뿐입니다. 현재 결정론적 test suite가 충분히 작으므로 test 선택 routing보다 전체 suite를 안전한 기본값으로 사용합니다.
 
-추가 비용이 있는 검증만 변경 영향에 따라 실행합니다.
+Formatting, Rulesync doctor, generated route/index 재생성, repository toolchain validation, Promptfoo와 model/runtime evaluation은 PR Gate에서 반복하지 않습니다. 이들은 각각 local hook·task가 실행 책임을 가지며, 자동화 자체의 correctness는 root deterministic tests가 보호합니다.
 
-- tooling configuration → `mise run check`
-- canonical Rulesync source → Markdown normalization + `rulesync:doctor`
-- Skill route inputs → distribution route regeneration 후 committed output과 diff 확인
-- changed Markdown → rumdl normalization 후 diff 확인
-- behavioral eval surface → deterministic fixture/plumbing check만 필요한 경우 blocking verification으로 실행
+PR Gate는 `contents: read`만 사용하고 repository에 write-back하지 않습니다.
 
-확률적 model/runtime eval의 근거 수준과 merge admission 기준은 [Evaluation](evaluation.md)이 소유합니다.
+## Optional Validation
 
-PR Gate는 `contents: read`만 사용합니다. 생성된 route나 Markdown drift가 있으면 CI가 수정해 push하지 않고 실패시켜 source branch에서 바로잡게 합니다. 따라서 merge 이후 `main`에 직접 write-back하는 CI는 두지 않습니다.
+PR Gate에 상시 넣을 필요는 없지만 필요할 때 독립적으로 다시 확인할 수 있어야 하는 검증은 `Optional Validation` workflow에 둡니다.
+
+현재 수동 실행에서 다음 검증을 각각 선택할 수 있으며 기본값은 모두 OFF입니다.
+
+- `docs_indexes` — committed docs index drift 확인
+- `routes` — distribution/repository route를 재생성하고 committed output과 비교
+- `rulesync` — canonical Rulesync source에 strict doctor 실행
+
+선택하지 않은 검증은 실행하지 않습니다. Markdown formatter, 전체 `mise run check`, Promptfoo와 model/runtime evaluation은 이 workflow에도 넣지 않습니다.
 
 ## Rulesync 검증
 
@@ -62,11 +80,18 @@ Rulesync CLI 버전은 `mise.toml`에 정확히 고정합니다. Repository `npm
 
 Root repository workspace는 reusable library와 분리된 declarative consumer입니다. `rulesync.jsonc`의 선택과 `rulesync.lock`의 무결성을 deterministic regression으로 검증하고, `mise run setup`이 `rulesync install --frozen` 후 `agentsskills` target을 `.agents/skills/`로 생성합니다.
 
-## Evaluation integration
+## Evaluation
 
 동작 계약, fixture 설계, Promptfoo의 역할, runtime/model 근거 해석은 [Evaluation](evaluation.md)이 소유합니다.
 
-PR Gate가 실행하는 fixture-mode smoke는 provider/generator/assertion 연결을 확인하는 deterministic check일 뿐 runtime 동작의 근거가 아닙니다.
+Promptfoo는 local evaluation backend입니다. 저장소 수준 entrypoint는 `mise.toml`이 소유하며 현재 mols-rpi eval은 다음처럼 실행합니다.
+
+```bash
+mise run eval-mols-rpi-smoke
+mise run eval-mols-rpi
+```
+
+첫 명령은 fixture/provider/assertion의 Promptfoo integration을 직접 실행해 보는 local smoke이고, 두 번째는 설정된 runtime/model을 사용하는 behavioral evaluation입니다. 둘 다 PR Gate의 blocking evidence가 아닙니다.
 
 ## 기본 명령
 

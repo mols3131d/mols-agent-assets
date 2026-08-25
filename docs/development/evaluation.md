@@ -109,11 +109,13 @@ Generated result는 기본적으로 disposable evidence입니다. Durable decisi
 
 ## Promptfoo
 
-Promptfoo는 현재 behavioral eval 실행 backend입니다. Repository-owned fixture를 Promptfoo 전용 contract로 복제하지 않습니다.
+Promptfoo는 현재 behavioral eval 실행 backend이며 기본 실행 위치는 local environment입니다. Repository-owned fixture를 Promptfoo 전용 contract로 복제하지 않습니다.
 
-Fixture-mode smoke는 provider/generator/assertion plumbing을 검증하는 deterministic check이며 runtime behavior evidence가 아닙니다. 실제 model/runtime eval과 semantic grading은 기본적으로 비차단 evidence입니다.
+PR Gate는 Promptfoo CLI나 model/runtime을 설치·실행하지 않습니다. Eval config, fixture, adapter, assertion, runner의 구조적 correctness는 root deterministic test suite가 검증합니다. Promptfoo integration smoke와 실제 model/runtime eval은 repository-owned local entrypoint로 실행하고 결과를 behavioral evidence로 해석합니다.
 
-Promptfoo-specific config와 실행 adapter는 `evals/promptfoo/`와 `scripts/evals/`가 소유합니다. Tool 사용법과 current upstream source는 [Promptfoo](../references/tooling/promptfoo.md), PR Gate 연결은 [Testing](testing.md)을 따릅니다.
+Fixture-mode smoke는 provider/generator/assertion plumbing을 Promptfoo 자체를 통해 확인하는 local integration check이며 runtime behavior evidence가 아닙니다. 실제 model/runtime eval과 semantic grading은 기본적으로 비차단 evidence입니다.
+
+Promptfoo-specific config와 실행 adapter는 `evals/promptfoo/`와 `scripts/evals/`가 소유합니다. 저장소 수준 실행 entrypoint는 `mise.toml`이 소유합니다. Tool 사용법과 current upstream source는 [Promptfoo](../references/tooling/promptfoo.md), PR Gate의 deterministic validation은 [Testing](testing.md)을 따릅니다.
 
 ## Review
 

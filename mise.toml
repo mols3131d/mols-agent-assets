@@ -21,6 +21,10 @@ run = [
 description = "Sync locked external Skills through source-native installers"
 run = "uv run python scripts/sync_agent_skills.py"
 
+[tasks.generated-sync]
+description = "Regenerate committed indexes and routes"
+run = "uv run python -m scripts.sync_generated_artifacts"
+
 [tasks.format]
 description = "Format repository source"
 run = [
@@ -50,3 +54,11 @@ run = [
 [tasks.test]
 description = "Run repository tests"
 run = "uv run pytest"
+
+[tasks.eval-mols-rpi-smoke]
+description = "mols-rpi Promptfoo fixture smoke를 local에서 실행"
+run = "npm run eval:promptfoo:mols-rpi:smoke"
+
+[tasks.eval-mols-rpi]
+description = "mols-rpi Promptfoo runtime evaluation을 local에서 실행"
+run = "npm run eval:promptfoo:mols-rpi"

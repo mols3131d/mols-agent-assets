@@ -16,133 +16,18 @@ jobs:
   pr-gate:
     name: PR Gate
     runs-on: ubuntu-slim
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
       - name: Checkout PR merge
         uses: actions/checkout@v7
         with:
-          fetch-depth: 2
           persist-credentials: false
 
-      - name: Classify change impact
-        id: scope
-        shell: bash
-        run: |
-          set -euo pipefail
-          tooling=false
-          rulesync=false
-          routes=false
-          markdown=false
-          docs_indexes=false
-          promptfoo=false
-          mapfile -d '' files < <(git diff --name-only -z HEAD^1 HEAD)
-          for path in "${files[@]}"; do
-            case "$path" in
-              .github/workflows/targeted-tests.yml)
-                tooling=true
-                rulesync=true
-                routes=true
-                markdown=true
-                docs_indexes=true
-                promptfoo=true
-                ;;
-              mise.toml|biome.json|lefthook.yml|.python-version|.vscode/tasks.json|pyproject.toml|uv.lock|package.json)
-                tooling=true
-                ;;
-            esac
-            case "$path" in
-              src/rulesync/*|scripts/run_rulesync.py|package.json|mise.toml|.gitattributes|.rumdl.toml)
-                rulesync=true
-                ;;
-            esac
-            case "$path" in
-              src/rulesync/.rulesync/skills/*/SKILL.md|scripts/generate_distribution_routes.py|route/skills.jsonl|rulesync.lock|rulesync.jsonc|skills-lock.json|.agents/route/*|scripts/generate_repository_routes.py|tests/scripts/test_generate_repository_routes.py)
-                routes=true
-                ;;
-            esac
-            case "$path" in
-              *.md)
-                markdown=true
-                ;;
-            esac
-            case "$path" in
-              docs/*.md|docs/**/*.md|docs/**/INDEX.tsv|scripts/generate_docs_indexes.py|src/rulesync/.rulesync/skills/mols-markdown-maintenance/scripts/generate_index.py|tests/scripts/test_generate_docs_indexes.py|tests/skills/mols-markdown-maintenance/test_generate_index*.py)
-                docs_indexes=true
-                ;;
-            esac
-            case "$path" in
-              evals/promptfoo/*|evals/skills/mols-rpi/*|scripts/evals/*|src/rulesync/.rulesync/skills/mols-rpi/*|package.json|mise.toml)
-                promptfoo=true
-                ;;
-            esac
-          done
-          echo "tooling=$tooling" >> "$GITHUB_OUTPUT"
-          echo "rulesync=$rulesync" >> "$GITHUB_OUTPUT"
-          echo "routes=$routes" >> "$GITHUB_OUTPUT"
-          echo "markdown=$markdown" >> "$GITHUB_OUTPUT"
-          echo "docs_indexes=$docs_indexes" >> "$GITHUB_OUTPUT"
-          echo "promptfoo=$promptfoo" >> "$GITHUB_OUTPUT"
-
-      - name: Set up mise
-        uses: jdx/mise-action@v3
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
         with:
-          install: false
-          cache: true
-
-      - name: Install deterministic test tools
-        run: mise install uv rumdl
-
-      - name: Validate repository tooling
-        if: steps.scope.outputs.tooling == 'true'
-        run: |
-          mise install
-          mise run check
+          version: "0.12.1"
+          enable-cache: true
 
       - name: Run deterministic tests
         run: uv run --locked --no-default-groups --group test pytest -q tests
-
-      - name: Validate canonical Rulesync source
-        if: steps.scope.outputs.rulesync == 'true'
-        shell: bash
-        run: |
-          set -euo pipefail
-          mise install node rumdl "npm:rulesync"
-          mapfile -d '' markdown < <(git ls-files -z -- 'src/rulesync/**/*.md')
-          if ((${#markdown[@]})); then
-            rumdl fmt "${markdown[@]}"
-            git diff --exit-code -- "${markdown[@]}"
-          fi
-          npm run rulesync:doctor
-
-      - name: Validate generated routes
-        if: steps.scope.outputs.routes == 'true'
-        shell: bash
-        run: |
-          set -euo pipefail
-          uv run --no-project --with "pyyaml>=6.0.2" python scripts/generate_distribution_routes.py
-          uv run --no-project --with "pyyaml>=6.0.2" python scripts/generate_repository_routes.py
-          git diff --exit-code -- route/skills.jsonl .agents/route/*.jsonl
-
-      - name: Validate generated docs indexes
-        if: steps.scope.outputs.docs_indexes == 'true'
-        run: uv run --locked --no-default-groups --group test python scripts/generate_docs_indexes.py --check
-
-      - name: Validate changed Markdown normalization
-        if: steps.scope.outputs.markdown == 'true'
-        shell: bash
-        run: |
-          set -euo pipefail
-          mise install rumdl
-          mapfile -d '' markdown < <(
-            git diff --name-only -z --diff-filter=ACMR HEAD^1 HEAD -- '*.md'
-          )
-          if ((${#markdown[@]})); then
-            rumdl fmt "${markdown[@]}"
-            git diff --exit-code -- "${markdown[@]}"
-          fi
-
-      - name: Run mols-rpi Promptfoo smoke
-        if: steps.scope.outputs.promptfoo == 'true'
-        run: |
-          mise install node
-          npm run eval:promptfoo:mols-rpi:smoke
