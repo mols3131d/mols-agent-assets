@@ -14,6 +14,8 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v6
         with:
           node-version: "24.19.0"
@@ -24,9 +26,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          npx --yes rulesync@16.5.0 install --update
+          npx --yes rulesync@16.5.0 install --update --token "${{ github.token }}"
           uv run --no-project --with "pyyaml>=6.0.2" python scripts/generate_repository_routes.py
           echo '=== RULESYNC_LOCK ==='
           cat rulesync.lock
-          echo '=== ROUTE_DIFF ==='
-          git diff -- rulesync.lock .agents/route/*.jsonl
+          for path in .agents/route/*.jsonl; do
+            echo "=== ROUTE:${path} ==="
+            cat "$path"
+          done
