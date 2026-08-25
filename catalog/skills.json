@@ -1,0 +1,19 @@
+{
+  "skills": [
+    {
+      "name": "caveman",
+      "source": "JuliusBrussee/caveman",
+      "description": "대화 출력을 압축하면서 기술 정보는 보존하는 Skill 모음."
+    },
+    {
+      "name": "ponytail",
+      "source": "DietrichGebert/ponytail",
+      "description": "필요 이상의 구현을 줄이고 가장 단순한 안전한 해법을 우선하는 Skill 모음."
+    },
+    {
+      "name": "im-not-ai",
+      "source": "epoko77-ai/im-not-ai",
+      "description": "AI 특유의 문체를 줄이고 자연스러운 글쓰기를 돕는 Skill 모음."
+    }
+  ]
+}
