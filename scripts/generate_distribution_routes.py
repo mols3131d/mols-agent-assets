@@ -90,9 +90,10 @@ def render_asset_route(
 
 
 def render_skill_route(
-    directory: Path = CANONICAL_SKILLS,
+    directory: Path | None = None,
     source_template: str = SKILL_SOURCE_TEMPLATE,
 ) -> str:
+    directory = CANONICAL_SKILLS if directory is None else directory
     return render_asset_route(
         directory.glob("*/SKILL.md"),
         lambda path: source_template.format(directory=path.parent.name),
@@ -102,9 +103,10 @@ def render_skill_route(
 
 
 def render_subagent_route(
-    directory: Path = CANONICAL_SUBAGENTS,
+    directory: Path | None = None,
     source_template: str = SUBAGENT_SOURCE_TEMPLATE,
 ) -> str:
+    directory = CANONICAL_SUBAGENTS if directory is None else directory
     return render_asset_route(
         directory.glob("*.md"),
         lambda path: source_template.format(filename=path.name),
