@@ -39,7 +39,7 @@ Commit되는 index와 route는 작성 원본에서 다시 만들 수 있는 proj
 mise run generated-sync
 ```
 
-현재 이 task는 `docs/**/INDEX.tsv`, `route/skills.jsonl`, `.agents/route/*.jsonl`을 각 작성 원본에서 재생성합니다.
+현재 이 task는 `docs/**/INDEX.tsv`, 이 repository가 제공하는 Agent Asset의 `route/*.jsonl`, 이 repository가 사용하는 lock-backed Skill의 `.agents/route/*.jsonl`을 각 작성 원본에서 재생성합니다.
 
 Pre-commit hook은 formatter가 staged file을 다시 stage하기 전에 staged 변경에 영향받는 projection만 재생성하고 해당 generated output을 함께 stage합니다. 관련 source나 generated output에 별도의 unstaged 또는 untracked 변경이 있으면 working tree의 다른 작업을 섞지 않도록 자동 동기화를 중단합니다.
 
