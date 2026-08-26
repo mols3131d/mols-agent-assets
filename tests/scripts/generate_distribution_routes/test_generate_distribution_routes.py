@@ -122,16 +122,31 @@ def test_route_entrypoint_targets_distribution_route_index():
     assert expected_url in entrypoint
 
 
-def test_committed_distribution_routes_are_current():
-    expected = {
-        generate_distribution_routes.DISTRIBUTION_ROUTES_PATH:
-            generate_distribution_routes.render_routes(),
-        generate_distribution_routes.DISTRIBUTION_SKILL_ROUTE:
-            generate_distribution_routes.render_skill_route(),
-        generate_distribution_routes.DISTRIBUTION_SUBAGENT_ROUTE:
-            generate_distribution_routes.render_subagent_route(),
+def test_generate_returns_all_distribution_routes():
+    assert set(generate_distribution_routes.generate()) == {
+        generate_distribution_routes.DISTRIBUTION_ROUTES_PATH,
+        generate_distribution_routes.DISTRIBUTION_SKILL_ROUTE,
+        generate_distribution_routes.DISTRIBUTION_SUBAGENT_ROUTE,
     }
-    for path, content in expected.items():
+
+
+def test_write_outputs_removes_retired_jsonl(tmp_path, monkeypatch):
+    monkeypatch.setattr(generate_distribution_routes, "DISTRIBUTION_ROUTE_DIR", tmp_path)
+    stale = tmp_path / "retired.jsonl"
+    stale.write_text("stale\n", encoding="utf-8")
+    readme = tmp_path / "README.md"
+    readme.write_text("keep\n", encoding="utf-8")
+    current = tmp_path / "current.jsonl"
+
+    generate_distribution_routes.write_outputs({current: "current\n"})
+
+    assert current.read_text(encoding="utf-8") == "current\n"
+    assert not stale.exists()
+    assert readme.exists()
+
+
+def test_committed_distribution_routes_are_current():
+    for path, content in generate_distribution_routes.generate().items():
         assert path.read_text(encoding="utf-8") == content
 
 
