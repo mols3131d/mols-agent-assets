@@ -18,7 +18,7 @@
 - `description` — 선택할 때 참고하는 짧은 설명
 - `installers` — 이 source를 사용할 수 있는 installer 이름
 
-현재 installer 식별자는 `skills`와 `rulesync`를 사용합니다. Installer는 `source` URL을 자신의 source contract에 맞게 처리하며, CLI syntax, target, scope, revision, lock과 update 옵션은 해당 installer가 소유합니다.
+현재 installer 식별자는 `skills cli`와 `rulesync`를 사용합니다. Installer는 `source` URL을 자신의 source contract에 맞게 처리하며, CLI syntax, target, scope, revision, lock과 update 옵션은 해당 installer가 소유합니다.
 
 같은 dependency의 설치·update 상태를 여러 installer가 동시에 소유하지 않습니다. 특정 source가 한 installer와 호환되지 않으면 그 installer를 `installers`에 넣지 않습니다.
 
