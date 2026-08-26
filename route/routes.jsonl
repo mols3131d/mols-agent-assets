@@ -1,0 +1,3 @@
+{"_meta":{"kind":"routes","instructions":"Select only task-relevant Agent Asset routes by name and description, then load every selected source before continuing discovery. Follow each selected route's own instructions. If no route matches, continue without loading one. Re-evaluate route selection when the task materially changes."}}
+{"name":"skills","description":"작업 수행 방법을 선택·보강하는 reusable Skill","source":"https://raw.githubusercontent.com/mols3131d/mols-agent-assets/refs/heads/main/route/skills.jsonl"}
+{"name":"subagents","description":"전문 역할로 위임하거나 독립 검토할 때 사용하는 reusable Subagent","source":"https://raw.githubusercontent.com/mols3131d/mols-agent-assets/refs/heads/main/route/subagents.jsonl"}

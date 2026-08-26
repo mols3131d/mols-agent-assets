@@ -21,7 +21,8 @@
 | `docs/references/` | 이 repository와 다른 repository에서 재사용할 **knowledge library**. Agent Asset 설계 지식, reusable pattern, tooling/specification authority routing 등을 포함합니다. |
 | `catalog/` | 자주 다시 찾는 외부 Agent Skill source와 canonical pattern library로 연결하는 entrypoint를 모아두는 **curated discovery surface**. 작성 원본, 설치 상태와 dependency lock은 소유하지 않습니다. |
 | `docs/<asset-type>/<owner>/` | 개별 asset 또는 family를 유지보수하기 위한 maintainer documentation capsule |
-| `route/` | canonical asset metadata에서 파생되는 cross-runtime discovery surface |
+| `route/` | 이 repository가 **제공하는 Agent Asset**의 canonical metadata에서 파생되는 cross-runtime discovery surface |
+| `.agents/route/` | 이 repository를 관리·개발할 때 **사용하는 Agent Asset**의 repository-local discovery surface |
 | `inbox/` | 아직 canonical하지 않은 research, review, handoff와 기타 working artifact |
 | framework/vendor native project path | **이 repository 자체가 직접 소비하는** runtime-local asset |
 
@@ -41,4 +42,5 @@
 - Documentation → [Documentation](docs/documentation/README.md)
 - Rulesync source/workspace → [Rulesync](docs/references/tooling/rulesync.md)
 - Cross-runtime discovery → [`route/`](route/README.md)
+- Repository-local Agent Asset routing → [`.agents/route/`](.agents/route/ROUTE.md)
 - Working artifacts → [`inbox/`](inbox/README.md)

@@ -27,6 +27,7 @@ _REPOSITORY_ROUTE_SOURCES = {
     ".agents/route/families.json",
     "scripts/generate_repository_routes.py",
 }
+_SUBAGENT_SOURCE_PREFIX = "src/rulesync/.rulesync/subagents/"
 
 
 class GeneratedArtifactSyncError(RuntimeError):
@@ -73,14 +74,20 @@ def _is_docs_index_output(path: str) -> bool:
 
 
 def _is_distribution_route_source(path: str) -> bool:
-    return path == "scripts/generate_distribution_routes.py" or (
-        path.startswith("src/rulesync/.rulesync/skills/")
-        and path.endswith("/SKILL.md")
-    )
+    if path == "scripts/generate_distribution_routes.py":
+        return True
+    if path.startswith("src/rulesync/.rulesync/skills/") and path.endswith(
+        "/SKILL.md"
+    ):
+        return True
+    if not path.startswith(_SUBAGENT_SOURCE_PREFIX) or not path.endswith(".md"):
+        return False
+    return "/" not in path.removeprefix(_SUBAGENT_SOURCE_PREFIX)
 
 
 def _is_distribution_route_output(path: str) -> bool:
-    return path == "route/skills.jsonl"
+    candidate = PurePosixPath(path)
+    return candidate.parent == PurePosixPath("route") and candidate.suffix == ".jsonl"
 
 
 def _is_repository_route_source(path: str) -> bool:
@@ -95,7 +102,7 @@ def _generate_docs_indexes() -> None:
     generate_docs_indexes()
 
 
-def _generate_distribution_route() -> None:
+def _generate_distribution_routes() -> None:
     generate_distribution_routes.main()
 
 
@@ -112,10 +119,10 @@ PROJECTIONS = (
         generate=_generate_docs_indexes,
     ),
     Projection(
-        name="distribution-route",
+        name="distribution-routes",
         source_matches=_is_distribution_route_source,
         output_matches=_is_distribution_route_output,
-        generate=_generate_distribution_route,
+        generate=_generate_distribution_routes,
     ),
     Projection(
         name="repository-routes",

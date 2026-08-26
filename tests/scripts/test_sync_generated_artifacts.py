@@ -45,6 +45,8 @@ def test_docs_index_source_matching(path, expected):
     [
         ("src/rulesync/.rulesync/skills/example/SKILL.md", True),
         ("src/rulesync/.rulesync/skills/example/references/guide.md", False),
+        ("src/rulesync/.rulesync/subagents/review.md", True),
+        ("src/rulesync/.rulesync/subagents/references/guide.md", False),
         ("scripts/generate_distribution_routes.py", True),
         ("rulesync.lock", False),
     ],
@@ -74,7 +76,11 @@ def test_repository_route_source_matching(path, expected):
         ("docs/guide.md", ["docs-indexes"]),
         (
             "src/rulesync/.rulesync/skills/example/SKILL.md",
-            ["distribution-route"],
+            ["distribution-routes"],
+        ),
+        (
+            "src/rulesync/.rulesync/subagents/review.md",
+            ["distribution-routes"],
         ),
         ("skills-lock.json", ["repository-routes"]),
     ],
@@ -87,7 +93,9 @@ def test_source_path_selects_only_its_projection_owner(path, expected):
     ("path", "expected"),
     [
         ("docs/INDEX.tsv", ["docs-indexes"]),
-        ("route/skills.jsonl", ["distribution-route"]),
+        ("route/routes.jsonl", ["distribution-routes"]),
+        ("route/skills.jsonl", ["distribution-routes"]),
+        ("route/subagents.jsonl", ["distribution-routes"]),
         (".agents/route/routes.jsonl", ["repository-routes"]),
     ],
 )

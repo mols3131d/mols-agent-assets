@@ -51,7 +51,7 @@ jobs:
           set -euo pipefail
           uv run --no-project --with "pyyaml>=6.0.2" python scripts/generate_distribution_routes.py
           uv run --no-project --with "pyyaml>=6.0.2" python scripts/generate_repository_routes.py
-          git diff --exit-code -- route/skills.jsonl .agents/route/*.jsonl
+          git diff --exit-code -- route/*.jsonl .agents/route/*.jsonl
 
       - name: Set up mise
         if: ${{ inputs.rulesync }}
