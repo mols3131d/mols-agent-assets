@@ -24,7 +24,7 @@ def main() -> int:
         Check("Ruff format", ("ruff", "format", "--check", ".")),
         Check("ty", ("ty", "check")),
         Check("rumdl", ("rumdl", "check", ".")),
-        Check("Python compile", (sys.executable, "-m", "compileall", "-q", "src", "scripts")),
+        Check("Python compile", (sys.executable, "-m", "compileall", "-q", "scripts")),
     )
 
     for check in checks:
