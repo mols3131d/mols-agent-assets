@@ -11,4 +11,4 @@ SKILL_ROOT = (
     / "skills"
     / "mols-markdown-dashboard"
 )
-sys.path.insert(0, str(SKILL_ROOT / "src"))
+sys.path.insert(0, str(SKILL_ROOT / "scripts"))
