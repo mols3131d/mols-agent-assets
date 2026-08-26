@@ -30,6 +30,7 @@ def test_optional_validation_keeps_heavy_or_unrelated_checks_out() -> None:
     assert "generate_docs_indexes.py --check" in workflow
     assert "generate_distribution_routes.py" in workflow
     assert "generate_repository_routes.py" in workflow
+    assert "git diff --exit-code -- route/*.jsonl .agents/route/*.jsonl" in workflow
     assert "rulesync:doctor" in workflow
     assert "promptfoo" not in workflow
     assert "rumdl" not in workflow
