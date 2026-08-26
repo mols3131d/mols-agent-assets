@@ -27,11 +27,6 @@ _REPOSITORY_ROUTE_SOURCES = {
     ".agents/route/families.json",
     "scripts/generate_repository_routes.py",
 }
-_DISTRIBUTION_ROUTE_OUTPUTS = {
-    "route/routes.jsonl",
-    "route/skills.jsonl",
-    "route/subagents.jsonl",
-}
 _SUBAGENT_SOURCE_PREFIX = "src/rulesync/.rulesync/subagents/"
 
 
@@ -91,7 +86,8 @@ def _is_distribution_route_source(path: str) -> bool:
 
 
 def _is_distribution_route_output(path: str) -> bool:
-    return path in _DISTRIBUTION_ROUTE_OUTPUTS
+    candidate = PurePosixPath(path)
+    return candidate.parent == PurePosixPath("route") and candidate.suffix == ".jsonl"
 
 
 def _is_repository_route_source(path: str) -> bool:
