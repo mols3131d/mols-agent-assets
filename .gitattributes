@@ -5,4 +5,4 @@
 src/rulesync/** rulesync-source
 
 # Derived cross-runtime discovery metadata
-route/skills.jsonl linguist-generated
+route/*.jsonl linguist-generated
