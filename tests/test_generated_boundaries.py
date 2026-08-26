@@ -8,7 +8,7 @@ RUMDL = ROOT / ".rumdl.toml"
 def test_rulesync_source_and_runtime_surfaces_have_separate_roles() -> None:
     attributes = ATTRIBUTES.read_text(encoding="utf-8")
     assert "src/rulesync/** rulesync-source" in attributes
-    assert "route/skills.jsonl linguist-generated" in attributes
+    assert "route/*.jsonl linguist-generated" in attributes
     generated_index = "src/rulesync/.rulesync/skills/INDEX.jsonl linguist-generated"
     assert generated_index not in attributes
     for forbidden in [
@@ -17,6 +17,7 @@ def test_rulesync_source_and_runtime_surfaces_have_separate_roles() -> None:
         ".agents/rules/** linguist-generated",
         ".agents/skills/** linguist-generated",
         ".agents/agents/** linguist-generated",
+        ".agents/route/** linguist-generated",
         ".agents/routes/** linguist-generated",
     ]:
         assert forbidden not in attributes
