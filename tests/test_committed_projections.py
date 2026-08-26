@@ -41,6 +41,7 @@ def test_committed_repository_routes_match_lock_and_families() -> None:
     expected_route_rows = [
         {
             "name": family,
+            "kind": routes.ROUTE_KIND,
             "description": str(families[family]["description"]),
             "source": f"{family}.jsonl",
         }
@@ -50,11 +51,13 @@ def test_committed_repository_routes_match_lock_and_families() -> None:
         [
             {
                 "name": "uncategorized",
+                "kind": routes.ROUTE_KIND,
                 "description": "아직 family에 배정되지 않은 Skill",
                 "source": "uncategorized.jsonl",
             },
             {
                 "name": "all",
+                "kind": routes.ROUTE_KIND,
                 "description": "전체 lock-backed Skill fallback",
                 "source": "all.jsonl",
             },
