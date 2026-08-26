@@ -133,13 +133,28 @@ def render_routes() -> str:
     )
 
 
+def generate() -> dict[Path, str]:
+    return {
+        DISTRIBUTION_ROUTES_PATH: render_routes(),
+        DISTRIBUTION_SKILL_ROUTE: render_skill_route(),
+        DISTRIBUTION_SUBAGENT_ROUTE: render_subagent_route(),
+    }
+
+
+def write_outputs(outputs: dict[Path, str]) -> None:
+    DISTRIBUTION_ROUTE_DIR.mkdir(parents=True, exist_ok=True)
+    generated_paths = set(outputs)
+    for path in DISTRIBUTION_ROUTE_DIR.glob("*.jsonl"):
+        if path not in generated_paths:
+            path.unlink()
+    for path, content in outputs.items():
+        path.write_text(content, encoding="utf-8")
+
+
 def main() -> None:
     if DISTRIBUTION_ROUTE_DIR == REPOSITORY_LOCAL_ROUTE_DIR:
         raise AssertionError("distribution and repository-local route surfaces must differ")
-    DISTRIBUTION_ROUTE_DIR.mkdir(parents=True, exist_ok=True)
-    DISTRIBUTION_ROUTES_PATH.write_text(render_routes(), encoding="utf-8")
-    DISTRIBUTION_SKILL_ROUTE.write_text(render_skill_route(), encoding="utf-8")
-    DISTRIBUTION_SUBAGENT_ROUTE.write_text(render_subagent_route(), encoding="utf-8")
+    write_outputs(generate())
 
 
 if __name__ == "__main__":
