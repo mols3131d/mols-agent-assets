@@ -113,19 +113,10 @@ def render_subagent_route(
     )
 
 
-def render_routes() -> str:
+def render_routes(route_rows: Iterable[dict[str, str]]) -> str:
     rows = [
         {"_meta": {"kind": "routes", "instructions": ROUTE_INSTRUCTION}},
-        {
-            "name": "skills",
-            "description": "이 repository가 제공하는 reusable Skill",
-            "source": f"{RAW_ROOT}/route/skills.jsonl",
-        },
-        {
-            "name": "subagents",
-            "description": "이 repository가 제공하는 reusable Subagent",
-            "source": f"{RAW_ROOT}/route/subagents.jsonl",
-        },
+        *route_rows,
     ]
     return "".join(
         json.dumps(row, ensure_ascii=False, separators=(",", ":")) + "\n"
@@ -134,10 +125,32 @@ def render_routes() -> str:
 
 
 def generate() -> dict[Path, str]:
+    route_rows: list[dict[str, str]] = []
+    asset_outputs: dict[Path, str] = {}
+
+    if next(CANONICAL_SKILLS.glob("*/SKILL.md"), None) is not None:
+        route_rows.append(
+            {
+                "name": "skills",
+                "description": "이 repository가 제공하는 reusable Skill",
+                "source": f"{RAW_ROOT}/route/skills.jsonl",
+            }
+        )
+        asset_outputs[DISTRIBUTION_SKILL_ROUTE] = render_skill_route()
+
+    if next(CANONICAL_SUBAGENTS.glob("*.md"), None) is not None:
+        route_rows.append(
+            {
+                "name": "subagents",
+                "description": "이 repository가 제공하는 reusable Subagent",
+                "source": f"{RAW_ROOT}/route/subagents.jsonl",
+            }
+        )
+        asset_outputs[DISTRIBUTION_SUBAGENT_ROUTE] = render_subagent_route()
+
     return {
-        DISTRIBUTION_ROUTES_PATH: render_routes(),
-        DISTRIBUTION_SKILL_ROUTE: render_skill_route(),
-        DISTRIBUTION_SUBAGENT_ROUTE: render_subagent_route(),
+        DISTRIBUTION_ROUTES_PATH: render_routes(route_rows),
+        **asset_outputs,
     }
 
 
