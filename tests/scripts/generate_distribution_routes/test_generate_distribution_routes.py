@@ -72,18 +72,7 @@ def test_render_subagent_route_uses_meta_sorted_entries_and_canonical_sources(tm
 
 
 def test_render_routes_indexes_provided_agent_asset_kinds():
-    rows = [
-        json.loads(line)
-        for line in generate_distribution_routes.render_routes().splitlines()
-    ]
-
-    assert rows[0] == {
-        "_meta": {
-            "kind": "routes",
-            "instructions": generate_distribution_routes.ROUTE_INSTRUCTION,
-        }
-    }
-    assert rows[1:] == [
+    route_rows = [
         {
             "name": "skills",
             "description": "이 repository가 제공하는 reusable Skill",
@@ -95,6 +84,18 @@ def test_render_routes_indexes_provided_agent_asset_kinds():
             "source": f"{generate_distribution_routes.RAW_ROOT}/route/subagents.jsonl",
         },
     ]
+    rows = [
+        json.loads(line)
+        for line in generate_distribution_routes.render_routes(route_rows).splitlines()
+    ]
+
+    assert rows[0] == {
+        "_meta": {
+            "kind": "routes",
+            "instructions": generate_distribution_routes.ROUTE_INSTRUCTION,
+        }
+    }
+    assert rows[1:] == route_rows
 
 
 def test_distribution_and_repository_local_route_surfaces_are_distinct():
@@ -128,6 +129,52 @@ def test_generate_returns_all_distribution_routes():
         generate_distribution_routes.DISTRIBUTION_SKILL_ROUTE,
         generate_distribution_routes.DISTRIBUTION_SUBAGENT_ROUTE,
     }
+
+
+def test_generate_omits_empty_asset_kind_route(tmp_path, monkeypatch):
+    skills = tmp_path / "skills"
+    subagents = tmp_path / "subagents"
+    subagents.mkdir()
+    write_asset(skills / "alpha" / "SKILL.md", "alpha", "Alpha skill")
+    monkeypatch.setattr(generate_distribution_routes, "CANONICAL_SKILLS", skills)
+    monkeypatch.setattr(generate_distribution_routes, "CANONICAL_SUBAGENTS", subagents)
+
+    outputs = generate_distribution_routes.generate()
+    route_rows = [
+        json.loads(line)
+        for line in outputs[generate_distribution_routes.DISTRIBUTION_ROUTES_PATH].splitlines()
+    ]
+
+    assert set(outputs) == {
+        generate_distribution_routes.DISTRIBUTION_ROUTES_PATH,
+        generate_distribution_routes.DISTRIBUTION_SKILL_ROUTE,
+    }
+    assert [row["name"] for row in route_rows[1:]] == ["skills"]
+
+
+def test_generate_keeps_only_route_index_when_no_asset_kind_exists(tmp_path, monkeypatch):
+    skills = tmp_path / "skills"
+    subagents = tmp_path / "subagents"
+    skills.mkdir()
+    subagents.mkdir()
+    monkeypatch.setattr(generate_distribution_routes, "CANONICAL_SKILLS", skills)
+    monkeypatch.setattr(generate_distribution_routes, "CANONICAL_SUBAGENTS", subagents)
+
+    outputs = generate_distribution_routes.generate()
+    rows = [
+        json.loads(line)
+        for line in outputs[generate_distribution_routes.DISTRIBUTION_ROUTES_PATH].splitlines()
+    ]
+
+    assert set(outputs) == {generate_distribution_routes.DISTRIBUTION_ROUTES_PATH}
+    assert rows == [
+        {
+            "_meta": {
+                "kind": "routes",
+                "instructions": generate_distribution_routes.ROUTE_INSTRUCTION,
+            }
+        }
+    ]
 
 
 def test_write_outputs_removes_retired_jsonl(tmp_path, monkeypatch):
