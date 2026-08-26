@@ -134,7 +134,7 @@ def generate() -> dict[Path, str]:
         route_rows.append(
             {
                 "name": "skills",
-                "description": "이 repository가 제공하는 reusable Skill",
+                "description": "작업 수행 방법을 선택·보강하는 reusable Skill",
                 "source": f"{RAW_ROOT}/route/skills.jsonl",
             }
         )
@@ -144,7 +144,7 @@ def generate() -> dict[Path, str]:
         route_rows.append(
             {
                 "name": "subagents",
-                "description": "이 repository가 제공하는 reusable Subagent",
+                "description": "전문 역할로 위임하거나 독립 검토할 때 사용하는 reusable Subagent",
                 "source": f"{RAW_ROOT}/route/subagents.jsonl",
             }
         )
