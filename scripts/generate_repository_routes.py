@@ -1,4 +1,4 @@
-"""Generate repository-local Skill discovery routes from lock-backed dependencies."""
+"""Generate repository-local Agent Asset routes for lock-backed Skill dependencies."""
 
 from __future__ import annotations
 
@@ -22,6 +22,7 @@ ALL_PATH = ROUTE_DIR / "all.jsonl"
 UNCATEGORIZED_PATH = ROUTE_DIR / "uncategorized.jsonl"
 FAMILY_NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 RESERVED_ROUTE_NAMES = {"all", "routes", "uncategorized"}
+ROUTE_KIND = "skills"
 
 
 class RouteGenerationError(RuntimeError):
@@ -202,12 +203,29 @@ def build_outputs(skill_rows: dict[str, dict[str, str]], families: dict[str, dic
             raise RouteGenerationError(f"lock에 없는 Skill이 family에 있습니다: {family}: {sorted(unknown)}")
         categorized.update(skill_names)
         outputs[ROUTE_DIR / f"{family}.jsonl"] = render_jsonl([skill_rows[name] for name in sorted(skill_names)])
-        route_rows.append({"name": family, "description": str(entry["description"]), "source": f"{family}.jsonl"})
+        route_rows.append(
+            {
+                "name": family,
+                "kind": ROUTE_KIND,
+                "description": str(entry["description"]),
+                "source": f"{family}.jsonl",
+            }
+        )
     outputs[UNCATEGORIZED_PATH] = render_jsonl([skill_rows[name] for name in sorted(all_names - categorized)])
     outputs[ALL_PATH] = render_jsonl([skill_rows[name] for name in sorted(all_names)])
     route_rows.extend([
-        {"name": "uncategorized", "description": "아직 family에 배정되지 않은 Skill", "source": "uncategorized.jsonl"},
-        {"name": "all", "description": "전체 lock-backed Skill fallback", "source": "all.jsonl"},
+        {
+            "name": "uncategorized",
+            "kind": ROUTE_KIND,
+            "description": "아직 family에 배정되지 않은 Skill",
+            "source": "uncategorized.jsonl",
+        },
+        {
+            "name": "all",
+            "kind": ROUTE_KIND,
+            "description": "전체 lock-backed Skill fallback",
+            "source": "all.jsonl",
+        },
     ])
     outputs[ROUTES_PATH] = render_jsonl(route_rows)
     return outputs
