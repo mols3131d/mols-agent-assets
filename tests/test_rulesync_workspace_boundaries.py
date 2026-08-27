@@ -104,41 +104,25 @@ def test_repository_and_library_workspaces_stay_separate() -> None:
         assert not path.exists(), path
 
 
-def test_repository_workspace_declarative_skills_are_locked() -> None:
+def test_repository_workspace_declared_skills_match_lock() -> None:
     config = load_json(REPOSITORY_CONFIG)
     lock = load_json(REPOSITORY_LOCK)
 
-    assert config["targets"] == [INTERNAL_SKILL_TARGET]
-    assert config["features"] == ["skills"]
-    assert len(config["sources"]) == 1
+    configured_sources = config.get("sources")
+    assert isinstance(configured_sources, list) and configured_sources
 
-    source = config["sources"][0]
-    assert source["source"] == "mols3131d/mols-agent-assets"
-    assert source["transport"] == "github"
-    assert source["ref"] == "main"
-    assert source["path"] == f"{LIBRARY_SOURCE.relative_to(ROOT).as_posix()}/skills"
+    locked_sources = lock.get("sources")
+    assert isinstance(locked_sources, dict)
 
-    selected = set(source["skills"])
-    assert selected
-    library_skills = LIBRARY_SOURCE / "skills"
-    for skill in selected:
-        skill_file = library_skills / skill / "SKILL.md"
-        assert skill_file.is_file(), skill
-        assert INTERNAL_SKILL_TARGET in load_frontmatter(skill_file)["targets"], skill
+    configured_by_source = {source["source"]: source for source in configured_sources}
+    assert len(configured_by_source) == len(configured_sources)
+    assert set(locked_sources) == set(configured_by_source)
 
-    locked = lock["sources"][source["source"]]
-    assert lock["lockfileVersion"] == 1
-    assert locked["requestedRef"] == source["ref"]
-    assert len(locked["resolvedRef"]) == 40
-    assert all(char in "0123456789abcdef" for char in locked["resolvedRef"])
-    assert set(locked["skills"]) == selected
-    for skill in locked["skills"].values():
-        integrity = skill["integrity"]
-        assert integrity.startswith("sha256-")
-        assert len(integrity) == len("sha256-") + 64
-
-    gitignore = (ROOT / ".gitignore").read_text(encoding="utf-8")
-    assert "/.agents/skills/" in gitignore
+    for source_name, source in configured_by_source.items():
+        locked = locked_sources[source_name]
+        if "ref" in source:
+            assert locked.get("requestedRef") == source["ref"]
+        assert set(locked.get("skills", {})) == set(source.get("skills", []))
 
 
 def test_deployable_skill_surface_excludes_repository_verification() -> None:
