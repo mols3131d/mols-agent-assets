@@ -2,6 +2,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ATTRIBUTES = ROOT / ".gitattributes"
+GITIGNORE = ROOT / ".gitignore"
 RUMDL = ROOT / ".rumdl.toml"
 
 
@@ -21,6 +22,15 @@ def test_rulesync_source_and_runtime_surfaces_have_separate_roles() -> None:
         ".agents/routes/** linguist-generated",
     ]:
         assert forbidden not in attributes
+
+
+def test_repository_runtime_skill_projection_is_ignored() -> None:
+    ignored = {
+        line.strip()
+        for line in GITIGNORE.read_text(encoding="utf-8").splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    }
+    assert "/.agents/skills/" in ignored
 
 
 def test_rumdl_config_keeps_repository_markdown_policy() -> None:
