@@ -21,7 +21,7 @@ mise install
 mise run setup
 ```
 
-`mise run setup`은 모든 Python 의존성 그룹, 저장소 내부의 잠금된 Rulesync 자산, 생성된 Agent Skill, `skills-lock.json`의 외부 Skill dependency와 Git hook을 설치합니다. 외부 Skill은 `mise run skills-sync`와 같은 read-only sync 구현을 사용하며, vendor별 payload와 설치 방식은 source-native installer가 소유합니다.
+`mise run setup`은 모든 Python 의존성 그룹, 저장소 내부의 잠금된 Rulesync 자산, 생성된 Agent Skill, `skills-lock.json`의 외부 Skill dependency와 Git hook을 설치합니다. 외부 Skill은 `mise run skills-sync`와 같은 read-only sync 구현을 사용하며, vendor별 payload·설치 방식은 source-native installer가 소유합니다.
 
 ## Formatting
 
@@ -31,6 +31,8 @@ mise run format
 
 `format` task는 각 도구를 소유하는 runtime을 통해 Ruff, rumdl과 Biome을 실행합니다.
 
+Pre-commit hook은 formatter를 실행하거나 수정된 working-tree 내용을 자동 stage하지 않습니다. 부분 staging과 별도 local 변경을 보존하기 위해 formatting은 명시적인 `mise run format`이 소유합니다.
+
 ## Generated projections
 
 Commit되는 index와 route는 작성 원본에서 다시 만들 수 있는 projection입니다. 직접 수정하지 않고 다음 entrypoint로 재생성합니다.
@@ -39,9 +41,7 @@ Commit되는 index와 route는 작성 원본에서 다시 만들 수 있는 proj
 mise run generated-sync
 ```
 
-현재 이 task는 `docs/**/INDEX.tsv`, 이 repository가 제공하는 Agent Asset의 `route/*.jsonl`, 이 repository가 사용하는 lock-backed Skill의 `.agents/route/*.jsonl`을 각 작성 원본에서 재생성합니다.
-
-Pre-commit hook은 formatter가 staged file을 다시 stage하기 전에 staged 변경에 영향받는 projection만 재생성하고 해당 generated output을 함께 stage합니다. 관련 source나 generated output에 별도의 unstaged 또는 untracked 변경이 있으면 working tree의 다른 작업을 섞지 않도록 자동 동기화를 중단합니다.
+Pre-commit hook은 staged 변경에 영향받는 projection만 재생성하고 해당 generated output을 함께 stage합니다. 관련 source나 generated output에 별도의 unstaged 또는 untracked 변경이 있으면 working tree의 다른 작업을 섞지 않도록 자동 동기화를 중단합니다.
 
 CI는 이 write-side automation을 다시 실행하지 않습니다. Generator와 hook의 선택·안전·staging 동작은 해당 script의 deterministic test가 검증하고, 실제 projection 갱신은 local write path가 소유합니다.
 
@@ -56,13 +56,15 @@ Deterministic test는 이 repository가 구현한 **실행 가능한 동작**을
 
 현재 설정값을 그대로 다시 적는 snapshot test는 두지 않습니다. `.gitignore`, `.gitattributes`, tool version, workflow 문자열, 문서 배치·표현, Rulesync manifest/lock schema 같은 값은 각각 해당 config, 문서, upstream tool 또는 review가 소유합니다. 변경 가능한 선택값을 pytest assertion으로 한 번 더 고정하지 않습니다.
 
+CI와 Git hook에서 project Python을 사용할 때는 `uv.lock`을 암묵적으로 갱신하지 않는 `--locked` 실행을 사용합니다.
+
 ## PR Gate
 
 `main` 대상 모든 PR은 하나의 고정된 `PR Gate` job을 실행합니다. Workflow 수준 path filter를 두지 않아 required check가 skip 상태로 남지 않게 합니다.
 
 PR Gate의 책임은 `tests/` 전체를 고정된 Python과 uv 환경에서 `uv --locked` semantics로 실행하는 것뿐입니다. Test selection routing보다 실행 가능한 repository logic의 전체 deterministic suite를 안전한 기본값으로 사용합니다.
 
-Formatting, Rulesync doctor, generated route/index drift 확인, repository toolchain validation, Promptfoo와 model/runtime evaluation은 PR Gate에서 반복하지 않습니다. 각각 local hook·task 또는 Optional Validation이 실행 책임을 가집니다.
+Formatting, Rulesync doctor, generated route/index drift 확인, repository toolchain validation, Promptfoo와 model/runtime evaluation은 PR Gate에서 반복하지 않습니다. 각각 local task 또는 Optional Validation이 실행 책임을 가집니다.
 
 PR Gate는 `contents: read`만 사용하고 repository에 write-back하지 않습니다.
 
