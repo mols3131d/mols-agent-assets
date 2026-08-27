@@ -35,6 +35,10 @@ run = [
   "biome format --write .",
 ]
 
+[tasks.format-changed]
+description = "Format modified and untracked repository files"
+run = "uv run --locked --no-default-groups --group dev python scripts/format_changed.py"
+
 [tasks.check]
 description = "Validate the repository toolchain and lock state"
 run = [
