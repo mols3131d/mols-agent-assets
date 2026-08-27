@@ -11,6 +11,14 @@ REPOSITORY_LOCK = ROOT / "rulesync.lock"
 LIBRARY_CONFIG = ROOT / "src" / "rulesync" / "rulesync.jsonc"
 LIBRARY_SOURCE = ROOT / "src" / "rulesync" / ".rulesync"
 INTERNAL_SKILL_TARGET = "agentsskills"
+REPOSITORY_TARGETS = (
+    "claudecode",
+    "codexcli",
+    "copilot",
+    "copilotcli",
+    "antigravity-ide",
+    "antigravity-cli",
+)
 FORBIDDEN_LIBRARY_GENERATED_SURFACES = (
     ROOT / "src" / "rulesync" / ".github",
     ROOT / "src" / "rulesync" / ".agents",
@@ -108,7 +116,7 @@ def test_repository_workspace_declarative_skills_are_locked() -> None:
     config = load_json(REPOSITORY_CONFIG)
     lock = load_json(REPOSITORY_LOCK)
 
-    assert config["targets"] == [INTERNAL_SKILL_TARGET]
+    assert config["targets"] == list(REPOSITORY_TARGETS)
     assert config["features"] == ["skills"]
     assert len(config["sources"]) == 1
 
@@ -124,7 +132,8 @@ def test_repository_workspace_declarative_skills_are_locked() -> None:
     for skill in selected:
         skill_file = library_skills / skill / "SKILL.md"
         assert skill_file.is_file(), skill
-        assert INTERNAL_SKILL_TARGET in load_frontmatter(skill_file)["targets"], skill
+        skill_targets = set(load_frontmatter(skill_file)["targets"])
+        assert set(REPOSITORY_TARGETS) <= skill_targets, skill
 
     locked = lock["sources"][source["source"]]
     assert lock["lockfileVersion"] == 1
