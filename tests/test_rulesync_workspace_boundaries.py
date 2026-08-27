@@ -11,6 +11,14 @@ REPOSITORY_LOCK = ROOT / "rulesync.lock"
 LIBRARY_CONFIG = ROOT / "src" / "rulesync" / "rulesync.jsonc"
 LIBRARY_SOURCE = ROOT / "src" / "rulesync" / ".rulesync"
 INTERNAL_SKILL_TARGET = "agentsskills"
+REPOSITORY_TARGETS = (
+    "claudecode",
+    "codexcli",
+    "copilot",
+    "copilotcli",
+    "antigravity-ide",
+    "antigravity-cli",
+)
 FORBIDDEN_LIBRARY_GENERATED_SURFACES = (
     ROOT / "src" / "rulesync" / ".github",
     ROOT / "src" / "rulesync" / ".agents",
@@ -108,7 +116,7 @@ def test_repository_workspace_declarative_skills_are_locked() -> None:
     config = load_json(REPOSITORY_CONFIG)
     lock = load_json(REPOSITORY_LOCK)
 
-    assert config["targets"] == [INTERNAL_SKILL_TARGET]
+    assert config["targets"] == list(REPOSITORY_TARGETS)
     assert config["features"] == ["skills"]
     assert len(config["sources"]) == 1
 
