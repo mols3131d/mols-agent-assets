@@ -16,7 +16,7 @@ description: 외부 tooling과 specification의 authority routing, integration k
 ## Boundary
 
 - 이 repository에만 적용되는 development workflow와 operational rule은 [`docs/development/`](../../development/)가 소유합니다.
-- 여러 repository에서 재사용할 설계 pattern은 [`patterns/`](../patterns/)가 소유합니다.
+- 여러 repository에서 재사용할 설계 pattern은 [`catalog/patterns/`](../../../catalog/patterns/)가 소유합니다.
 - `references/` 전체의 공통 ownership contract는 [References](../README.md)가 소유합니다.
 
 이 README는 tool inventory를 복제하지 않습니다. Filesystem과 search로 찾을 수 있는 목록보다 이 directory의 책임과 ownership boundary만 소유합니다.

@@ -4,20 +4,20 @@ description: 이 repository와 다른 repository에서 반복해서 참고·적�
 
 # References
 
-`docs/references/`는 **이 repository와 다른 repository에서 재사용할 가치가 있는 knowledge library**입니다.
+`docs/references/`는 **이 repository와 다른 repository에서 재사용할 reference knowledge library**입니다.
 
-Reference는 외부 문서 링크 모음만을 의미하지 않습니다. Agent Asset 설계 지식, reusable pattern, tooling과 specification의 authority routing처럼 여러 context에서 반복해서 설명·구축하기 아까운 지식을 이곳에서 관리합니다.
+Reference는 외부 문서 링크 모음만을 의미하지 않습니다. Agent Asset 설계 지식과 tooling·specification의 authority routing처럼 여러 context에서 반복해서 설명하기 아까운 reference knowledge를 이곳에서 관리합니다.
 
 ## Surfaces
 
 | Path | Responsibility |
 | --- | --- |
 | [`agent-assets/`](agent-assets/) | Agent Asset 자체의 설계 원칙, instruction 설계, naming과 Skill-specific knowledge |
-| [`patterns/`](patterns/) | 여러 repository와 harness에서 선택·조합·변형할 수 있는 reusable pattern capsule |
 | [`tooling/`](tooling/) | Rulesync, Promptfoo 등 외부 tooling과 specification의 current authority routing 및 필요한 integration knowledge |
 
 ## Boundary
 
+- 여러 repository와 harness에서 선택·조합·변형할 reusable solution pattern은 [`catalog/patterns/`](../../catalog/patterns/)가 소유합니다.
 - 이 repository에만 적용되는 개발·운영 규칙은 [`development/`](../development/) 또는 [`documentation/`](../documentation/) 같은 project-local owner가 소유합니다.
 - 개별 asset 또는 family의 maintainer-only knowledge는 `docs/<asset-type>/<owner>/`의 maintainer documentation이 소유합니다.
 - Runtime에서 직접 소비하는 Agent Asset source는 `src/`가 소유합니다.

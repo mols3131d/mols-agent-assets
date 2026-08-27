@@ -12,7 +12,7 @@ description: 문서 작업 전에 top-level docs surface와 nested directory의 
 | [`language.md`](language.md) | repository communication과 Agent Asset 역할별 language policy |
 | [`development/`](development/) | 이 repository의 개발 규칙과 관행 |
 | [`documentation/`](documentation/) | 이 repository 전체에 적용되는 문서 원칙과 관행 |
-| [`references/`](references/) | 이 repository와 다른 repository에서 재사용할 Agent Asset 설계 지식, pattern, tooling/specification reference |
+| [`references/`](references/) | 이 repository와 다른 repository에서 재사용할 Agent Asset 설계 지식과 tooling/specification reference |
 | `<asset-type>/<owner>/` | 하나의 asset 또는 family에 대한 portable maintainer documentation |
 
 ## Nested Directory Ownership

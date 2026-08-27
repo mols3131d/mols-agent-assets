@@ -18,8 +18,8 @@
 | Surface | Meaning |
 | --- | --- |
 | `src/` | 이 repository가 관리하는 **Agent Asset library source**. Portable asset뿐 아니라 vendor/target/context-specific asset도 재사용·배포·변형할 가치가 있으면 포함할 수 있습니다. |
-| `docs/references/` | 이 repository와 다른 repository에서 재사용할 **knowledge library**. Agent Asset 설계 지식, reusable pattern, tooling/specification authority routing 등을 포함합니다. |
-| `catalog/` | 자주 다시 찾는 외부 Agent Skill source와 canonical pattern library로 연결하는 entrypoint를 모아두는 **curated discovery surface**. 작성 원본, 설치 상태와 dependency lock은 소유하지 않습니다. |
+| `docs/references/` | 이 repository와 다른 repository에서 재사용할 **reference knowledge**. Agent Asset 설계 지식과 tooling/specification authority routing 등을 포함합니다. |
+| `catalog/` | 자주 다시 찾는 외부 Agent Skill source의 **curated discovery surface**와 이 repository가 소유하는 **canonical pattern library**. |
 | `docs/<asset-type>/<owner>/` | 개별 asset 또는 family를 유지보수하기 위한 maintainer documentation capsule |
 | `route/` | 이 repository가 **제공하는 Agent Asset**의 canonical metadata에서 파생되는 cross-runtime discovery surface |
 | `.agents/route/` | 이 repository를 관리·개발할 때 **사용하는 Agent Asset**의 repository-local discovery surface |
@@ -33,10 +33,10 @@
 ## Navigation
 
 - 이 library의 자산과 지식 사용 → [Using This Repository](docs/using-this-repository.md)
-- Curated reusable catalog → [`catalog/`](catalog/README.md)
-- Reusable knowledge → [References](docs/references/README.md)
+- Catalog → [`catalog/`](catalog/README.md)
+- Reusable knowledge references → [References](docs/references/README.md)
 - Agent Asset 설계 지식 → [Agent Asset Design](docs/references/agent-assets/README.md)
-- Reusable design patterns → [Patterns](docs/references/patterns/README.md)
+- Reusable design patterns → [Patterns](catalog/patterns/README.md)
 - Agent-facing repository rules → [`AGENTS.md`](AGENTS.md)
 - Repository development → [Development](docs/development/README.md)
 - Documentation → [Documentation](docs/documentation/README.md)
