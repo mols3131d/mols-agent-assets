@@ -1,11 +1,11 @@
 # Catalog
 
-이 디렉토리는 여러 프로젝트에서 다시 찾아 쓰기 좋은 reusable asset의 **curated discovery surface**입니다. 실제 작성 원본, 설치 상태와 dependency lock은 각 asset을 소유하는 canonical surface에 둡니다.
+이 디렉토리는 여러 프로젝트에서 다시 찾아 쓰기 좋은 reusable source를 모으는 **catalog surface**입니다. Surface별 authority는 다르게 둡니다. 외부 Skill은 discovery entry만 소유하고, reusable pattern은 이곳이 canonical source를 소유합니다.
 
 ## Areas
 
 - `skills.json` — 자주 재사용하는 외부 Agent Skill source와 사용할 수 있는 installer 목록
-- `patterns/` — 이 repository의 reusable pattern library를 찾기 위한 entrypoint
+- `patterns/` — 이 repository가 직접 관리하는 canonical reusable pattern library
 
 ## Skills
 
@@ -26,4 +26,4 @@
 
 ## Patterns
 
-Pattern 본문과 category 구조의 canonical source는 [`docs/references/patterns/`](../docs/references/patterns/)가 소유합니다. [`patterns/`](patterns/)는 이를 복제하지 않고 catalog에서 찾기 위한 entrypoint만 제공합니다.
+[`patterns/`](patterns/)는 reusable pattern의 본문, category 구조와 공통 작성 contract를 직접 소유하는 canonical library입니다. Pattern을 찾거나 새 pattern을 추가·수정할 때 이 surface에서 시작합니다.

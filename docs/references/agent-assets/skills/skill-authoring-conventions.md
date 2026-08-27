@@ -58,7 +58,7 @@ Single-file Skill에서는 여러 top-level `#` heading을 **독립적인 Markdo
 
 Skill의 조건부 보조 resource에는 [Agent Asset Design Principles](../common/design-principles.md)의 Progressive Disclosure를 적용합니다. Resource를 분리했다면 핵심 본문의 가장 가까운 decision point에서 **무엇을 언제 읽는지** 발견할 수 있게 합니다.
 
-더 일반적인 routing shape는 [Progressive Context Routing](../../patterns/context-engineering/progressive-context-routing.md)이 소유합니다.
+더 일반적인 routing shape는 [Progressive Context Routing](../../../../catalog/patterns/context-engineering/progressive-context-routing.md)이 소유합니다.
 
 ## Context-Only Naming
 
@@ -84,8 +84,8 @@ Skill의 조건부 보조 resource에는 [Agent Asset Design Principles](../comm
 - Behavioral instruction 설계 → [Instruction Design](../common/instruction-design.md)
 - Standard와 target/source registry → [Agent Skills Specification](specification.md)
 - General Agent Asset naming → [Agent Asset Naming Convention](../common/naming.md)
-- Progressive context routing → [Progressive Context Routing](../../patterns/context-engineering/progressive-context-routing.md)
-- Argument와 argument-gated disclosure → [Argument-Driven Assets](../../patterns/context-engineering/argument-driven-assets.md)
+- Progressive context routing → [Progressive Context Routing](../../../../catalog/patterns/context-engineering/progressive-context-routing.md)
+- Argument와 argument-gated disclosure → [Argument-Driven Assets](../../../../catalog/patterns/context-engineering/argument-driven-assets.md)
 - Maintainer documentation → [Asset Maintainer Documentation](../../../documentation/asset-maintainer-documentation.md)
 - 작성 원본과 권한 → [작성 원본과 권한](../../../development/source-authority.md)
 - Deterministic verification → [Testing](../../../development/testing.md)
