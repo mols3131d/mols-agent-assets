@@ -132,8 +132,7 @@ def test_repository_workspace_declarative_skills_are_locked() -> None:
     for skill in selected:
         skill_file = library_skills / skill / "SKILL.md"
         assert skill_file.is_file(), skill
-        skill_targets = set(load_frontmatter(skill_file)["targets"])
-        assert set(REPOSITORY_TARGETS) <= skill_targets, skill
+        assert INTERNAL_SKILL_TARGET in load_frontmatter(skill_file)["targets"], skill
 
     locked = lock["sources"][source["source"]]
     assert lock["lockfileVersion"] == 1
