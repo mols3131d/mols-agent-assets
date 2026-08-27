@@ -25,13 +25,21 @@ mise run setup
 
 ## Formatting
 
+일상 작업에서는 현재 변경만 포맷합니다.
+
+```bash
+mise run format-changed
+```
+
+`format-changed`는 `HEAD` 대비 staged·unstaged 변경과 untracked file 가운데 Ruff, rumdl 또는 Biome 대상 파일만 수정합니다. 삭제된 파일과 변경되지 않은 파일은 건드리지 않습니다.
+
+저장소 전체를 명시적으로 정리할 때만 다음을 사용합니다.
+
 ```bash
 mise run format
 ```
 
-`format` task는 각 도구를 소유하는 runtime을 통해 Ruff, rumdl과 Biome을 실행합니다.
-
-Pre-commit hook은 formatter를 실행하거나 수정된 working-tree 내용을 자동 stage하지 않습니다. 부분 staging과 별도 local 변경을 보존하기 위해 formatting은 명시적인 `mise run format`이 소유합니다.
+두 task 모두 각 도구를 소유하는 runtime을 통해 Ruff, rumdl과 Biome을 실행합니다. Pre-commit hook은 formatter를 실행하거나 수정된 working-tree 내용을 자동 stage하지 않습니다.
 
 ## Generated projections
 
