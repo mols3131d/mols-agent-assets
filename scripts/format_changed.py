@@ -72,7 +72,8 @@ def format_changed(root: Path = ROOT) -> tuple[str, ...]:
     if biome:
         _run(root, "biome", "format", "--write", *biome)
 
-    return paths
+    formatted = sorted({*python, *markdown, *biome})
+    return tuple(path.removeprefix("./") for path in formatted)
 
 
 def main() -> None:
