@@ -26,7 +26,7 @@ description = "Regenerate committed indexes and routes"
 run = "uv run python -m scripts.sync_generated_artifacts"
 
 [tasks.format]
-description = "Format repository source"
+description = "Format the entire repository"
 run = [
   "uv run ruff format .",
   "uv run ruff check --fix .",
