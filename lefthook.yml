@@ -1,35 +1,16 @@
-glob_matcher: doublestar
 no_tty: true
 
 pre-commit:
-  parallel: false
   commands:
     generated-artifacts:
-      priority: 1
-      run: mise exec -- uv run python -m scripts.sync_generated_artifacts --staged
-    rumdl:
-      priority: 2
-      glob: "**/*.md"
-      run: mise exec -- rumdl fmt {staged_files} && mise exec -- rumdl check --fix {staged_files}
-      stage_fixed: true
-    ruff:
-      priority: 2
-      glob: "**/*.py"
-      run: mise exec -- uv run ruff check --fix {staged_files} && mise exec -- uv run ruff format {staged_files}
-      stage_fixed: true
-    biome:
-      priority: 2
-      glob: "**/*.{json,jsonc,js,jsx,ts,tsx,mjs,cjs,mts,cts}"
-      run: mise exec -- biome check --write {staged_files}
-      stage_fixed: true
+      run: mise exec -- uv run --locked --no-default-groups --group test python -m scripts.sync_generated_artifacts --staged
 
 commit-msg:
   commands:
     conventional:
-      run: mise exec -- uv run python scripts/validate_commit_msg.py "{1}"
+      run: mise exec -- uv run --locked --no-default-groups python scripts/validate_commit_msg.py "{1}"
 
 pre-push:
   commands:
     repository-tests:
-      # Root tests/ is the default correctness gate; skill-local .tests/ is tuning-only.
-      run: mise exec -- uv run pytest
+      run: mise exec -- uv run --locked --no-default-groups --group test pytest -q tests
