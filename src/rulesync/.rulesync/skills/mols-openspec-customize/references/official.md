@@ -54,14 +54,14 @@ Do not present `README.md`, `docs/`, examples, tuning notes, or other companion
 files as official schema inputs unless OpenSpec documents them as such.
 
 Current upstream implementation is compatible with colocated regular maintainer
-files: schema resolution is anchored by `schema.yaml`, schema validation checks the
-schema definition and referenced templates, and schema forking recursively copies
-the directory tree. Treat that as current implementation evidence, not a stable
-extension contract.
+files: schema resolution is anchored by `schema.yaml`, validation checks the schema
+definition and referenced templates, and forking recursively copies the directory
+tree. Treat that as current implementation evidence, not a stable extension
+contract.
 
 Schema commands are currently marked experimental. Re-check current documentation,
 implementation, or installed CLI before depending on companion-file handling.
 
-A forked schema is also a snapshot: normal OpenSpec update flows do not merge later
+A forked schema is a snapshot: normal OpenSpec update flows do not merge later
 built-in schema improvements into the project copy. Treat upstream comparison and
 porting as explicit maintenance decisions.
