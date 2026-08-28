@@ -29,6 +29,8 @@ status, or generated surfaces can affect the result.
 | `schema.yaml` reference | <https://openspec.dev/docs/schemas/schema-yaml> |
 | CLI reference | <https://openspec.dev/docs/cli> |
 | Upstream repository | <https://github.com/Fission-AI/OpenSpec> |
+| Schema command implementation | <https://github.com/Fission-AI/OpenSpec/blob/main/src/commands/schema.ts> |
+| Schema resolver implementation | <https://github.com/Fission-AI/OpenSpec/blob/main/src/core/artifact-graph/resolver.ts> |
 
 ## Responsibility map
 
@@ -41,3 +43,28 @@ boundary clear:
   runs and selects project-level OpenSpec behavior exposed by its current contract.
 - **Schemas** own the planning artifact graph, templates, and schema-level workflow
   instructions.
+
+## Schema package boundary
+
+Official documentation describes a schema's semantic surface as a directory with
+`schema.yaml` and the templates referenced by it. Project schemas live under
+`openspec/schemas/<name>/` and are normally versioned with the project.
+
+Do not present `README.md`, `docs/`, examples, tuning notes, or other companion
+files as official schema inputs unless OpenSpec documents them as such.
+
+At the time this reference was authored, upstream implementation:
+
+- resolves a schema from a directory containing `schema.yaml`;
+- validates `schema.yaml` and its referenced template files rather than rejecting
+  unrelated regular files in the schema directory;
+- recursively copies the schema directory when forking.
+
+This makes colocated maintainer documentation a usable project convention today,
+but not an OpenSpec schema contract. Schema commands are currently marked
+experimental, so re-check current documentation or implementation before relying on
+companion-file behavior.
+
+A forked schema is also a snapshot: normal OpenSpec update flows do not merge later
+built-in schema improvements into the project copy. Treat upstream comparison and
+porting as explicit maintenance decisions.
