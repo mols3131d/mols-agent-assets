@@ -37,12 +37,20 @@ OpenSpec when OpenSpec does not need it.
 Improve an existing OpenSpec owner before adding a parallel config or schema.
 Preserve repository policy owners and add only the delta the workflow needs.
 
-When a custom schema becomes a durable team-owned surface, apply the maintainable
-schema package pattern only as far as useful. A small `README.md` can make purpose,
-intentional differences, and maintenance boundaries discoverable. Add `docs/` only
-for durable tuning rationale, representative scenarios, or upstream notes that
-justify their own surface. Companion files are maintainer material, not runtime
-instructions.
+When a custom schema becomes a durable team-owned surface, add optional maintenance
+material only where it reduces real cost:
+
+- `README.md` for user-facing introduction, schema overview, entrypoint navigation,
+  and concise maintainer orientation;
+- `AGENTS.md` for schema-local agent-only editing or tuning instructions when the
+  active harness and repository actually use that surface;
+- `docs/` for durable detail such as representative scenarios, accepted tuning
+  rationale, or upstream porting history that would overload the README.
+
+Do not create these files as ceremony. A simple schema may need none of them. Follow
+the ownership and DRY boundaries in [Patterns](patterns.md): shared human/agent
+knowledge belongs in `README.md`, `docs/`, or another canonical project source;
+`AGENTS.md` should link rather than duplicate it.
 
 ## Dogfood and tune
 
@@ -75,8 +83,9 @@ Stop the tuning loop when:
 - remaining failures belong to another owner outside the customization;
 - relevant validation and resolution checks pass when available;
 - duplicate project guidance has not accumulated;
-- maintainers can understand a non-trivial schema's purpose, intentional
-  differences, and meaningful fork provenance.
+- users and maintainers can understand a non-trivial schema from its selected
+  maintenance surfaces without needing duplicated explanations;
+- meaningful fork provenance is discoverable when future upgrades depend on it.
 
 Do not continue tuning merely because another wording variant exists. Reopen it when
 new project evidence exposes a material failure or an OpenSpec upgrade changes the
