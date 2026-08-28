@@ -37,20 +37,13 @@ OpenSpec when OpenSpec does not need it.
 Improve an existing OpenSpec owner before adding a parallel config or schema.
 Preserve repository policy owners and add only the delta the workflow needs.
 
-When a custom schema becomes a durable team-owned surface, add optional maintenance
-material only where it reduces real cost:
+When a custom schema becomes a durable team-owned surface, apply the optional
+maintenance surfaces from [Patterns](patterns.md) only when they reduce real cost.
+In particular, use `AGENTS.md` as the schema-maintenance agent entrypoint when local
+agent guidance is useful; keep user introduction and navigation in `README.md`, and
+move durable detail into `docs/` instead of duplicating it across surfaces.
 
-- `README.md` for user-facing introduction, schema overview, entrypoint navigation,
-  and concise maintainer orientation;
-- `AGENTS.md` for schema-local agent-only editing or tuning instructions when the
-  active harness and repository actually use that surface;
-- `docs/` for durable detail such as representative scenarios, accepted tuning
-  rationale, or upstream porting history that would overload the README.
-
-Do not create these files as ceremony. A simple schema may need none of them. Follow
-the ownership and DRY boundaries in [Patterns](patterns.md): shared human/agent
-knowledge belongs in `README.md`, `docs/`, or another canonical project source;
-`AGENTS.md` should link rather than duplicate it.
+Do not create companion files as ceremony. A simple schema may need none of them.
 
 ## Dogfood and tune
 
