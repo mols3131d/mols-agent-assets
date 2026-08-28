@@ -40,8 +40,9 @@ Preserve repository policy owners and add only the delta the workflow needs.
 When a custom schema becomes a durable team-owned surface, apply the maintainable
 schema package pattern only as far as useful. A small `README.md` can make purpose,
 intentional differences, and maintenance boundaries discoverable. Add `docs/` only
-for durable scenarios, tuning rationale, or upstream notes that justify their own
-surface. Do not assume companion files are runtime instructions.
+for durable tuning rationale, representative scenarios, or upstream notes that
+justify their own surface. Companion files are maintainer material, not runtime
+instructions.
 
 ## Dogfood and tune
 
