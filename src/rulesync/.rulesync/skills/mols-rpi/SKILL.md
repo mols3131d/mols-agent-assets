@@ -308,12 +308,12 @@ explicit value constrains the primary evidence surface only when compatible with
 verification, and higher-authority requirements. `mixed` does not require equal effort or
 mechanical alternation between internal and external sources.
 
-Research is an **adaptive evidence loop**, not a fixed retrieval checklist. Start from the
+Research is an **adaptive evidence search**, not a fixed retrieval checklist. Start from the
 smallest set of material questions or assumptions whose answers could change the current
-decision, Scope, Plan, or Review. Then choose the next evidence action by expected
-information gain rather than by a predetermined source sequence. These stage-local evidence
-moves do not increment `loops_used`; Run and Loop accounting changes only when a
-substantive Review closes.
+decision, Scope, Plan, Review, acceptance condition, or verification claim. Then choose the
+next evidence action by expected information gain rather than by a predetermined source
+sequence. These stage-local evidence moves do not increment `loops_used`; Run and Loop
+accounting changes only when a substantive Review closes.
 
 After material evidence arrives, update the research state and choose deliberately among:
 
@@ -324,7 +324,8 @@ After material evidence arrives, update the research state and choose deliberate
 - **switch** source, tool, query, or perspective when the current path is low-yield,
   repetitive, or biased toward the same evidence;
 - **stop** when remaining uncertainty cannot materially change the current downstream
-  decision or another search has no credible information gain.
+  decision, acceptance condition, or verification claim, or another search has no credible
+  information gain.
 
 Prefer repository or workspace evidence for local truth and external evidence for
 freshness, standards, vendor behavior, alternatives, or independent challenge. Allocate
@@ -401,6 +402,11 @@ Challenge, Reconcile, and Dispatch are Review-local operations, not separate Loo
    Scope deltas or proposed expansions, dispositions that affect the result, and the next
    owner. Do not use reviewer majority, rhetorical force, or repeated criticism as a
    substitute for evidence.
+
+Do not accept a terminal result while an `absorb` finding still requires unverified change,
+or while an `unresolved` material candidate can still change acceptance. Route it to the
+earliest stale prerequisite or owning concern; if no trustworthy path exists, classify the
+Run as blocked instead of silently accepting the result.
 
 Review dispatches reconciled findings; the owning concern defines how the transition is
 executed:
