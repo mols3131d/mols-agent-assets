@@ -26,9 +26,8 @@ For each requested behavior, record:
 1. whether OpenSpec actually needs to consume it;
 1. the concrete project value or rule OpenSpec needs.
 
-Then use the canonical OpenSpec customization pattern to choose the smallest
-supported customization surface. Confirm exact fields and commands in current
-official OpenSpec material.
+Then use [Patterns](patterns.md) to choose the smallest supported customization
+surface. Confirm exact fields and commands through [Official](official.md).
 
 If OpenSpec does not need the information, leave it with the existing repository
 owner instead of creating another copy.
