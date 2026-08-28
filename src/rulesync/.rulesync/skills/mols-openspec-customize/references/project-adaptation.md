@@ -14,108 +14,85 @@ change the customization decision:
 - current OpenSpec integration or generated workflow surfaces when relevant;
 - canonical development, testing, architecture, documentation, security, or
   contribution guidance the requested workflow must respect;
-- existing specs or workflow artifacts when they reveal established project intent;
-- prior tuning notes or representative examples when the project already maintains
-  them.
+- existing specs, workflow artifacts, prior tuning notes, or representative cases
+  when they reveal established project intent.
 
-Stop when more repository context is unlikely to change the decision.
+Stop when more context is unlikely to change the decision.
 
 ## Derive project deltas
 
-For each requested behavior, record:
+For each requested behavior, identify:
 
 1. the repository or dogfood evidence that requires it;
-1. the current canonical owner of that policy, fact, or failure mode;
+1. the canonical owner of that policy, fact, or failure mode;
 1. whether OpenSpec actually needs to consume or structurally encode it;
-1. the concrete project value or rule OpenSpec needs.
+1. the concrete project delta OpenSpec needs.
 
-Then use [Patterns](patterns.md) to choose the smallest supported customization
-surface. Confirm exact fields and commands through [Official](official.md).
-
-If OpenSpec does not need the information, leave it with the existing repository
-owner instead of creating another copy.
+Use [Patterns](patterns.md) to choose the smallest supported surface and
+[Official](official.md) to confirm exact mechanics. Leave information outside
+OpenSpec when OpenSpec does not need it.
 
 ## Adapt minimally
 
-- Improve an existing OpenSpec owner before adding a parallel config or schema.
-- Preserve canonical repository policy owners.
-- Add only the OpenSpec delta needed for the workflow to consume project policy.
-- Keep concrete project values project-specific; do not promote them into the
-  reusable pattern without evidence from repeated cases.
-- When a custom schema becomes a durable team-owned surface, make its purpose and
-  maintenance boundary discoverable without turning maintainer documentation into
-  runtime instruction.
+Improve an existing OpenSpec owner before adding a parallel config or schema.
+Preserve repository policy owners and add only the delta the workflow needs.
 
-For a non-trivial project schema, consider a small nearby `README.md`. Add a
-schema-local `docs/` directory only when durable tuning rationale, representative
-scenarios, or upstream-port notes need more space. Treat both as project convention,
-not OpenSpec schema semantics, and re-check current companion-file behavior when
-schema tooling changes.
+When a custom schema becomes a durable team-owned surface, apply the maintainable
+schema package pattern only as far as useful. A small `README.md` can make purpose,
+intentional differences, and maintenance boundaries discoverable. Add `docs/` only
+for durable scenarios, tuning rationale, or upstream notes that justify their own
+surface. Do not assume companion files are runtime instructions.
 
 ## Dogfood and tune
 
-When the goal includes tuning, establish a small project-representative dogfood set
-before repeated edits. Select cases for information value rather than a fixed quota:
-normal work, a case that stresses the intended customization, and a near-miss or
-edge case when overfitting is plausible.
+When tuning is part of the goal, establish a small representative dogfood set before
+repeated edits. Select cases for information value rather than a quota.
 
-Iterate as follows:
+For each iteration:
 
-1. Run or inspect the relevant OpenSpec workflow with the current customization.
-1. Capture only material friction: wrong artifact shape, missing project context,
+1. run or inspect the relevant workflow with the current customization;
+1. capture only material friction: wrong artifact shape, missing project context,
    redundant guidance, dependency problems, repeated manual correction, or
-   maintainer confusion.
-1. Trace the friction to its narrowest owner using [Patterns](patterns.md).
-1. Tune that owner with the smallest coherent change.
-1. Validate the changed structure or resolution with the current OpenSpec tooling.
-1. Re-run the affected dogfood case and enough of the representative set to detect
-   a likely regression.
-1. Keep the change only when evidence improves project fit without creating a more
+   maintainer confusion;
+1. trace the friction to its narrowest owner using [Patterns](patterns.md);
+1. make the smallest coherent change there;
+1. validate the changed structure or resolution with current OpenSpec tooling;
+1. rerun the affected case and enough of the representative set to detect a likely
+   regression;
+1. keep the change only when evidence improves project fit without creating a more
    expensive competing owner.
 
-Do not make every dogfood observation durable. Preserve only rationale, scenarios,
-provenance, or constraints that future maintainers need to reproduce a decision.
-Transient run logs belong in the project's existing working-artifact surface, if it
-has one.
+Do not persist every dogfood run. Preserve only rationale, representative scenarios,
+provenance, or constraints future maintainers need to reproduce a decision. Put
+transient logs in the project's existing working-artifact surface when one exists.
 
-## Stabilize deliberately
+## Stabilize
 
-Treat a customization as stable enough to hand off when:
+Stop the tuning loop when:
 
-- the representative project cases no longer expose a material customization gap;
-- remaining failures belong to implementation, repository policy, model/runtime
-  behavior, or another owner outside the customization;
-- schema/config validation and relevant resolution checks pass when available;
-- the customization has not accumulated duplicate project guidance;
-- a non-trivial schema's purpose, intentional differences, and meaningful fork
-  provenance are understandable to its maintainers.
+- representative cases no longer expose a material customization gap;
+- remaining failures belong to another owner outside the customization;
+- relevant validation and resolution checks pass when available;
+- duplicate project guidance has not accumulated;
+- maintainers can understand a non-trivial schema's purpose, intentional
+  differences, and meaningful fork provenance.
 
-Do not keep tuning merely because another wording variant exists. Reopen the loop
-when new project evidence exposes a material failure or an OpenSpec upgrade changes
-the governing contract.
+Do not continue tuning merely because another wording variant exists. Reopen it when
+new project evidence exposes a material failure or an OpenSpec upgrade changes the
+governing contract.
 
-## Verify
+## Verify and report
 
-Match evidence to the changed surface:
-
-- inspect resolved instructions when configuration should change agent input;
-- validate a changed schema before relying on it;
-- inspect schema or template resolution when precedence matters;
-- compare resulting instructions or artifacts with the repository policy the
-  customization was meant to preserve;
-- use representative project runs when the claim is about output quality or
-  workflow fit rather than parseability.
+Match evidence to the claim: inspect resolved instructions for agent input, validate
+schema structure, inspect schema/template resolution for precedence, and use
+representative project runs for output quality or workflow fit.
 
 Use exact CLI syntax from the current official documentation or installed version.
-
-## Report
-
-Keep three kinds of reasoning separable when they are material:
+When several kinds of reasoning matter, keep them separable:
 
 - **Official** — the supported OpenSpec mechanism used;
-- **Pattern** — the reusable reason for choosing or tuning that mechanism;
-- **Project** — the repository and dogfood evidence that determines the concrete
-  value, rule, or schema change.
+- **Pattern** — the reusable reason for choosing or tuning it;
+- **Project** — the repository and dogfood evidence determining the concrete delta.
 
 Record unresolved repository or OpenSpec-version uncertainty instead of inventing a
 default.
