@@ -120,6 +120,13 @@ Routing signal은 frontmatter, manifest, index, rule, directory entrypoint, meta
 - 적절한 loading granularity는 model capability, context window, asset 크기, retrieval cost, task 중요도에 따라 달라질 수 있습니다.
 - 목표는 단계를 늘리는 것이 아니라 **필요한 context를 필요한 시점에 적절한 범위로 가져오는 것**입니다.
 
+## Mitigation
+
+- 독립적으로 선택하거나 갱신하거나 로드할 이유가 있을 때만 instruction을 분리합니다. 거의 항상 함께 적용되는 내용은 같은 context에 두거나 더 공통적인 layer가 소유하는 편이 단순할 수 있습니다.
+- Candidate metadata와 entry guidance는 짧되 서로의 책임과 적용 범위를 구분할 수 있을 만큼 구체적으로 유지합니다.
+- Routing 근거가 약하거나 여러 candidate가 비슷하게 맞으면 하나를 성급히 확정하기보다 후보를 일부 유지하거나 discovery 범위를 다시 넓힙니다.
+- 중복되거나 오래되었거나 거의 선택되지 않는 routing document는 주기적으로 합치거나 제거해 candidate surface를 필요한 수준으로 유지합니다.
+
 ## Boundary
 
 이 패턴은 **discovery 이후 context를 점진적으로 좁히고 로드하는 routing shape**를 설명합니다.
