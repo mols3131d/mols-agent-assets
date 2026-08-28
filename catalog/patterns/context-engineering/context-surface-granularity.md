@@ -42,7 +42,7 @@ Context를 적절히 나누면 scope locality, selective loading, reuse와 owner
 | Surface를 지나치게 세분화함 | 관리 지점과 dependency가 늘고 작은 변경에도 여러 owner를 따라가야 할 수 있습니다. **독립적인 applicability, loading, reuse, ownership 또는 lifecycle이 없다면 합치거나 분리하지 않습니다.** |
 | 비슷한 candidate가 많아짐 | Routing signal이 겹치면서 잘못 선택하거나 필요한 context를 놓칠 가능성이 커질 수 있습니다. **책임과 적용 범위를 구분할 수 있게 하고, 실제 차이가 약한 candidate는 통합합니다.** |
 | Router, index, layer가 연쇄적으로 늘어남 | Context를 읽기 전에 discovery와 resolution 자체가 새로운 비용과 failure point가 될 수 있습니다. **더 직접적인 route로 충분하면 중간 surface를 만들지 않거나 줄입니다.** |
-| 오래되거나 거의 사용하지 않는 surface가 남음 | Stale metadata, route와 assumptions가 현재 source보다 오래 살아남을 수 있습니다. **중복·obsolete·저활용 surface를 갱신할 가치가 없다면 합치거나 제거합니다.** |
+| 오래되거나 가치가 불명확한 surface가 남음 | Stale metadata, route와 assumptions가 현재 source보다 오래 살아남을 수 있습니다. **사용 빈도만으로 제거하지 않고 독립적인 가치와 중요도를 확인하되, 중복·obsolete하거나 별도 owner로 남을 이유가 없으면 합치거나 제거합니다.** |
 | 너무 많은 책임을 하나에 모음 | 항상 불필요한 context가 함께 로드되거나 독립적인 책임의 변경이 서로 결합될 수 있습니다. **선택적 loading, 재사용 또는 독립 변경의 실질적 이점이 생기면 그때 분리합니다.** |
 
 즉 작은 surface가 항상 좋은 것도, 큰 surface가 항상 나쁜 것도 아닙니다. **분리로 얻는 locality와 선택성이 분리 후 필요한 discovery·coordination 비용을 정당화하는지**를 봅니다.
