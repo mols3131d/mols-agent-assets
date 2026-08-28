@@ -64,4 +64,4 @@ jobs:
         if: ${{ inputs.rulesync }}
         run: |
           mise install uv node "npm:rulesync"
-          mise exec -- uv run --locked --no-default-groups python scripts/run_rulesync.py doctor
+          npm run rulesync:doctor
