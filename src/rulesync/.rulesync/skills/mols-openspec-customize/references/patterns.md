@@ -67,18 +67,15 @@ to understand from `schema.yaml` alone. Keep it focused on maintainer needs:
 - artifact flow and intentional differences;
 - source or fork baseline when useful for future upgrades;
 - project-specific invariants not obvious from the runtime files;
-- how maintainers verify and dogfood changes with the current OpenSpec tooling.
+- how maintainers verify and dogfood changes with current OpenSpec tooling.
 
-Use `docs/` only when durable material outgrows the README. For example:
+Use `docs/` only when durable material outgrows the README. It can hold, for
+example, representative dogfood scenarios, accepted tuning decisions, or upstream
+porting notes. Omit files that do not earn their maintenance cost.
 
-- representative dogfood scenarios and what each case exercises;
-- accepted tuning findings, decisions, and rejected alternatives worth remembering;
-- fork provenance and upstream-port notes when drift is a real maintenance concern.
-
-Omit files that do not earn their maintenance cost. Do not store every experiment
-log, and do not assume OpenSpec loads companion documentation. If information must
-affect runtime behavior, put it in the OpenSpec surface that actually owns that
-behavior.
+Do not store every experiment log, and do not assume OpenSpec loads companion
+documentation. If information must affect runtime behavior, put it in the OpenSpec
+surface that actually owns that behavior.
 
 ## Preserve project authority
 
