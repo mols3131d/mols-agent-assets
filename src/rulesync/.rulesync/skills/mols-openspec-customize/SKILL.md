@@ -46,11 +46,11 @@ project's policy or one successful dogfood case into a reusable pattern by defau
 Load only what the request needs:
 
 - [Official](references/official.md) — current OpenSpec mechanisms, official source
-  map, and boundaries around schema package behavior.
-- [Patterns](references/patterns.md) — reusable OpenSpec customization,
-  maintainability, dogfooding, and tuning patterns.
-- [Project adaptation](references/project-adaptation.md) — how to fit and iteratively
-  tune OpenSpec for a concrete project or repository.
+  map, and schema package boundaries.
+- [Patterns](references/patterns.md) — reusable customization, schema maintenance,
+  dogfooding, and tuning patterns.
+- [Project adaptation](references/project-adaptation.md) — concrete repository
+  adaptation and evidence-driven iteration.
 
 Load multiple references when their responsibilities independently apply. For a
 concrete repository, load its applicable live instructions and current OpenSpec
@@ -63,14 +63,13 @@ state before making project-specific recommendations or mutations.
 1. Load only the corresponding references and authority.
 1. Separate sourced OpenSpec facts, reusable design judgment, and project-specific
    evidence.
-1. For project adaptation, inspect the repository and current OpenSpec state before
-   choosing a customization surface.
+1. Inspect a concrete repository before choosing or tuning its customization
+   surface.
 1. Make or recommend the smallest coherent change.
-1. When tuning is requested or materially useful, dogfood the changed surface on
-   representative project work, classify observed friction, and tune the owning
-   surface rather than layering compensating instructions elsewhere.
-1. Verify the affected instructions, schema, templates, or resolution with the
-   current CLI when the claim depends on runtime behavior.
+1. When tuning matters, use representative project work to locate material friction
+   and change its owning surface rather than layering compensating instructions.
+1. Verify the affected instructions, schema, templates, or resolution with current
+   OpenSpec tooling when the claim depends on runtime behavior.
 1. When several concerns are material, report **Official**, **Pattern**, and
    **Project** decisions separately.
 
@@ -79,8 +78,7 @@ state before making project-specific recommendations or mutations.
 - Exact OpenSpec behavior is backed by current official material or observed CLI
   evidence.
 - Reusable patterns are not presented as OpenSpec requirements.
-- Project choices and tuning decisions come from repository or dogfood evidence,
-  not this Skill.
+- Project choices and tuning decisions come from repository or dogfood evidence.
 - OpenSpec receives only context or structure it actually needs.
 - Tuning addresses an observed owner instead of accumulating duplicate guidance.
 - Verification claims do not exceed what was inspected or run.
