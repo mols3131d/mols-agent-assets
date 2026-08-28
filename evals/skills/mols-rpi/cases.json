@@ -243,7 +243,7 @@
     {
       "id": "mixed-research-is-not-fixed-alternation",
       "mode": "adaptive-research",
-      "prompt": "mixed research니까 내부 자료 하나, 웹 자료 하나씩 번갈아가며 같은 비중으로 조사해.",
+      "prompt": "mixed research라면 내부 자료와 외부 자료를 항상 하나씩 번갈아 같은 비중으로 봐야 하는 거야?",
       "assertions": [
         "Does not treat mixed Research as an equal quota or mechanical alternation requirement",
         "Prefers repository or workspace evidence for local truth and external evidence for freshness, standards, vendor behavior, alternatives, or independent challenge",
