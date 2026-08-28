@@ -64,8 +64,8 @@ def format_changed(root: Path = ROOT) -> tuple[str, ...]:
     biome = select_paths(paths, BIOME_SUFFIXES)
 
     if python:
-        _run(root, "ruff", "format", *python)
         _run(root, "ruff", "check", "--fix", *python)
+        _run(root, "ruff", "format", *python)
     if markdown:
         _run(root, "rumdl", "fmt", *markdown)
         _run(root, "rumdl", "check", "--fix", *markdown)
