@@ -70,6 +70,7 @@ Skill은 의미 기반 routing의 유일한 수단도 아닙니다. 별도 routi
 - Skill의 discovery signal이 지나치게 넓으면 불필요한 context가 로드되고, 너무 좁으면 필요한 지침이 누락될 수 있습니다.
 - harness가 같은 mechanism을 지원하지 않으면 해당 runtime의 동등한 scope 또는 routing mechanism으로 조정할 수 있습니다.
 - 후보가 많아 별도 discovery/routing surface가 필요하면 [Routing & Index Assets](routing-index-assets.md) 패턴을 함께 참고할 수 있습니다.
+- Layer나 instruction surface 자체를 얼마나 나눌지는 [Context Surface Granularity](context-surface-granularity.md)에서 공통적인 관리·routing·resolution 비용과 함께 다룹니다.
 
 ## Boundary
 

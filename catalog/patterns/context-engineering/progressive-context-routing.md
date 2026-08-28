@@ -111,13 +111,12 @@ Routing signal은 frontmatter, manifest, index, rule, directory entrypoint, meta
 
 ## Considerations
 
-- **초기 후보 제외** — 위험: 관련 candidate를 너무 일찍 제외하면 이후의 더 풍부한 context로 복구하지 못할 수 있습니다. 대응: routing 근거가 약하면 후보를 일부 유지하거나 discovery 범위를 다시 넓힙니다.
-- **과도한 instruction 분절** — 위험: instruction이나 routing document를 지나치게 잘게 나누고 많이 두면 관리 비용과 discovery·routing 비용이 커지고, 책임 경계가 겹칠수록 routing ambiguity와 잘못된 선택 가능성도 높아질 수 있습니다. 대응: 독립적으로 선택·갱신·로드할 이유가 있을 때만 분리하고, 거의 항상 함께 적용되는 내용은 같은 context나 더 공통적인 layer가 소유하도록 합니다.
-- **불명확한 routing signal** — 위험: 비슷한 candidate가 많거나 metadata가 모호하면 올바른 후보를 구분하기 어려워집니다. 대응: metadata와 entry guidance는 짧게 유지하되 서로의 책임과 적용 범위를 구분할 수 있을 만큼 구체적으로 작성합니다.
-- **항상 적용되어야 하는 context** — 위험: authority, security, repository-wide invariant를 candidate routing 뒤에 두면 routing 실패가 필수 context 누락으로 이어질 수 있습니다. 대응: 이런 context는 candidate routing 성공 여부에 의존시키지 않습니다.
-- **과도한 routing 단계** — 위험: 단계가 많아지면 context 절약보다 retrieval·판단 비용과 latency가 커질 수 있습니다. 대응: 필요한 만큼만 단계를 두고, 작은 repository나 짧은 source에서는 바로 읽는 단순한 경로를 선호합니다.
-- **stale routing surface** — 위험: metadata와 underlying source가 따로 관리되거나 오래된 candidate가 계속 남으면 routing 품질과 관리성이 함께 떨어질 수 있습니다. 대응: 중복되거나 오래되었거나 거의 선택되지 않는 routing document를 합치거나 제거해 candidate surface를 필요한 수준으로 유지합니다.
-- **비대한 local gate** — 위험: local gate 자체가 긴 두 번째 instruction body가 되면 progressive loading의 이점이 줄어듭니다. 대응: gate는 applicability와 다음 context를 판단하는 데 필요한 정보만 유지합니다.
+- **초기 후보 제외** — 관련 candidate를 너무 일찍 제외하면 이후의 더 풍부한 context로 복구하지 못할 수 있습니다. Routing 근거가 약하면 후보를 일부 유지하거나 discovery 범위를 다시 넓힙니다.
+- **항상 적용되어야 하는 context** — authority, security, repository-wide invariant를 candidate routing 뒤에 두면 routing 실패가 필수 context 누락으로 이어질 수 있습니다. 이런 context는 candidate routing 성공 여부에 의존시키지 않습니다.
+- **과도한 routing 단계** — 단계가 많아지면 context 절약보다 retrieval·판단 비용과 latency가 커질 수 있습니다. 필요한 만큼만 단계를 두고, 짧은 source에서는 바로 읽는 단순한 경로를 선호합니다.
+- **비대한 local gate** — local gate 자체가 긴 두 번째 instruction body가 되면 progressive loading의 이점이 줄어듭니다. Gate는 applicability와 다음 context를 판단하는 데 필요한 정보만 유지합니다.
+
+Candidate, instruction, router 같은 context surface를 얼마나 분리할지와 그에 따른 관리·routing ambiguity는 [Context Surface Granularity](context-surface-granularity.md)에서 별도로 다룹니다.
 
 적절한 loading granularity는 model capability, context window, asset 크기, retrieval cost, task 중요도에 따라 달라질 수 있습니다. 목표는 단계를 늘리는 것이 아니라 **필요한 context를 필요한 시점에 적절한 범위로 가져오는 것**입니다.
 
