@@ -19,98 +19,83 @@ targets:
 
 # Mols OpenSpec Customize
 
-Customize OpenSpec without mixing vendor contract, reusable design judgment, and
+Customize OpenSpec without mixing vendor contract, reusable pattern, and
 project-local decisions.
 
 ## Contract
 
-Keep these concerns distinct even when one task needs all three:
+Keep three concerns distinct even when one task needs all of them:
 
-1. **Official OpenSpec mechanisms** — what OpenSpec currently supports and the
-   authoritative documentation for exact behavior.
-1. **Customization patterns** — reusable design guidance for choosing and composing
-   those mechanisms.
-1. **Project adaptation** — decisions derived from the concrete repository,
-   existing OpenSpec state, and local authority.
+1. **Official OpenSpec mechanisms** — what OpenSpec currently supports and where
+   its authoritative documentation lives.
+1. **Customization patterns** — reusable design guidance owned by the repository's
+   canonical pattern library.
+1. **Project adaptation** — choices derived from the concrete repository, existing
+   OpenSpec state, and local authority.
 
-Official OpenSpec sources own fields, commands, paths, precedence, and runtime
-semantics. Patterns in this Skill are advisory. Project instructions and repository
-state own project-specific choices.
+OpenSpec owns its commands, fields, paths, precedence, and runtime semantics. The
+pattern library owns reusable design guidance. The target repository owns
+project-specific policy and values.
 
-Do not copy fast-changing OpenSpec contracts into local guidance when a current
-official source can own them. Do not promote one project's policy into a reusable
-pattern merely because it worked once.
+Do not copy fast-changing OpenSpec contracts into this Skill. Do not turn one
+project's policy into a reusable pattern by default.
 
 ## Route
 
-Read only the reference needed for the current request:
+Load only what the request needs:
 
-- [Official](references/official.md) — use when the task asks what OpenSpec supports,
-  how a customization mechanism works, or when exact current commands, fields,
-  paths, or semantics matter.
-- [Patterns](references/patterns.md) — use when designing or reviewing a reusable
-  OpenSpec customization approach.
-- [Project adaptation](references/project-adaptation.md) — use when a concrete
-  project or repository must be inspected and OpenSpec should be fitted to it.
+- [Official](references/official.md) — current OpenSpec mechanisms and official
+  source map.
+- [OpenSpec Customization Pattern](https://raw.githubusercontent.com/mols3131d/mols-agent-assets/refs/heads/main/catalog/patterns/workflow/openspec-customization.md)
+  — reusable customization pattern. Treat that catalog document as canonical.
+- [Project adaptation](references/project-adaptation.md) — how to fit OpenSpec to a
+  concrete project or repository.
 
-Load multiple references when their responsibilities independently apply. When a
-concrete repository is involved, load its applicable live instructions and current
-OpenSpec files before making project-specific recommendations or mutations.
+Load multiple sources when their responsibilities independently apply. For a
+concrete repository, load its applicable live instructions and current OpenSpec
+state before making project-specific recommendations or mutations.
 
 ## Decide
 
-Choose the smallest OpenSpec customization surface that owns the requested effect.
-Use the current official documentation to confirm exact mechanics.
+Choose the smallest surface that owns the requested effect, then confirm exact
+mechanics in the current official documentation:
 
-As a decision boundary:
+- workflow selection or delivery → profile;
+- additive context, artifact rules, operation guidance, or schema selection →
+  project configuration when supported;
+- different artifacts, dependencies, templates, or schema-level instructions →
+  custom schema;
+- repository policy OpenSpec does not need to inject → existing repository owner.
 
-- workflow selection or delivery belongs to the profile surface;
-- additive project context, artifact-specific rules, operation guidance, and schema
-  selection belong to project configuration when the official contract supports
-  them;
-- artifact set, dependency flow, templates, or workflow instructions that require
-  structural replacement belong to a custom schema;
-- repository policy that does not need OpenSpec injection should remain with its
-  existing project owner.
-
-Prefer an additive configuration change before a schema fork when both can express
-the same intent. Prefer the repository's existing authority over duplicating policy
-inside OpenSpec.
+Prefer configuration before a schema fork when both can express the same intent.
+Prefer existing repository authority over policy duplication inside OpenSpec.
 
 ## Workflow
 
 1. Classify the request as official mechanism, reusable pattern, project adaptation,
    or a combination.
-1. Load only the corresponding references and current authority.
-1. Separate sourced OpenSpec facts from local design judgment.
+1. Load only the corresponding authority.
+1. Separate sourced OpenSpec facts from reusable design judgment.
 1. For project adaptation, inspect the repository before choosing a customization
    surface.
-1. Make or recommend the smallest coherent change that satisfies the requested
-   behavior.
-1. Verify the affected OpenSpec output or schema with the current CLI when runtime
-   evidence is available and the claim depends on it.
-1. Report official behavior, reusable pattern decisions, and project-specific
-   decisions separately when more than one is material.
+1. Make or recommend the smallest coherent change.
+1. Verify the affected instructions, schema, or resolution with the current CLI
+   when the claim depends on runtime behavior.
+1. When several concerns are material, report **Official**, **Pattern**, and
+   **Project** decisions separately.
 
 ## Self-check
 
-Before finalizing, verify that:
-
-- exact OpenSpec behavior is supported by a current official source or observed CLI
-  evidence;
-- reusable patterns are not presented as official OpenSpec requirements;
-- project-specific choices are grounded in the target repository rather than
-  assumed from this Skill;
-- configuration contains only context OpenSpec actually needs;
-- schema customization is used only when lighter configuration cannot express the
-  required structural change;
-- canonical repository policy has not been duplicated without a concrete OpenSpec
-  need;
-- verification claims do not exceed what was actually inspected or run.
+- Exact OpenSpec behavior is backed by current official material or observed CLI
+  evidence.
+- Reusable patterns are not presented as OpenSpec requirements.
+- Project choices come from the target repository, not this Skill.
+- OpenSpec configuration contains only context OpenSpec actually needs.
+- Schema customization is not used when lighter configuration is enough.
+- Verification claims do not exceed what was inspected or run.
 
 ## Boundary
 
-This Skill does not own ordinary OpenSpec change authoring, implementation of an
-OpenSpec change, generic repository instruction authoring, or installation of
-OpenSpec itself unless those tasks are directly required to complete a
-customization request.
+This Skill does not own ordinary OpenSpec change authoring, implementation of a
+change, generic repository instruction authoring, or OpenSpec installation unless
+one is directly required by a customization request.
