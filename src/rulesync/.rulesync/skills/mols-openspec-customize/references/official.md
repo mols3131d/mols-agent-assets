@@ -53,17 +53,14 @@ Official documentation describes a schema's semantic surface as a directory with
 Do not present `README.md`, `docs/`, examples, tuning notes, or other companion
 files as official schema inputs unless OpenSpec documents them as such.
 
-At the time this reference was authored, upstream implementation:
+Current upstream implementation is compatible with colocated regular maintainer
+files: schema resolution is anchored by `schema.yaml`, schema validation checks the
+schema definition and referenced templates, and schema forking recursively copies
+the directory tree. Treat that as current implementation evidence, not a stable
+extension contract.
 
-- resolves a schema from a directory containing `schema.yaml`;
-- validates `schema.yaml` and its referenced template files rather than rejecting
-  unrelated regular files in the schema directory;
-- recursively copies the schema directory when forking.
-
-This makes colocated maintainer documentation a usable project convention today,
-but not an OpenSpec schema contract. Schema commands are currently marked
-experimental, so re-check current documentation or implementation before relying on
-companion-file behavior.
+Schema commands are currently marked experimental. Re-check current documentation,
+implementation, or installed CLI before depending on companion-file handling.
 
 A forked schema is also a snapshot: normal OpenSpec update flows do not merge later
 built-in schema improvements into the project copy. Treat upstream comparison and
