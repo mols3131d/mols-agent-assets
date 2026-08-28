@@ -382,22 +382,27 @@ Challenge, Reconcile, and Dispatch are Review-local operations, not separate Loo
 1. **Verify.** Compare the current result with the Goal, Active Scope, applicable
    prerequisite artifacts, acceptance conditions, and relevant validation. Separate what
    is directly verified from what remains inferred or unknown.
-1. **Challenge.** When material risk, uncertainty, semantic judgment, or a consequential
+1. **Challenge.** When a material risk, uncertainty, semantic judgment, or consequential
    assumption remains, conduct an adversarial pass from a materially different lens. Seek
    the strongest plausible failure, counterexample, missed constraint, regression,
-   unsupported claim, simpler competing approach, or boundary violation. Scale challenge
-   effort to the stakes; do not manufacture critique when direct evidence already closes
-   the material question.
+   unsupported claim, weak or misleading validation, simpler competing approach, or
+   boundary violation. Scale challenge effort to the stakes; do not manufacture critique
+   when direct evidence already closes the material question.
 1. **Reconcile.** Treat every challenge result as a candidate finding, not as an instruction
-   to change the work. Compare it with supporting and counterevidence, the Goal, Scope,
-   acceptance conditions, and governing authority. Give each material candidate one
-   disposition:
-   - `absorb` — supported and material; route the required change to the earliest stale
-     prerequisite or owning control concern;
+   to change the work. Separate the claim from any proposed cause or remedy. If a challenge
+   bundles materially distinct claims, split them before disposition; a valid failure does
+   not make the reviewer's diagnosis or proposed fix valid. Compare each material claim with
+   supporting and counterevidence, the Goal, Scope, acceptance conditions, and governing
+   authority, then assign one disposition:
+   - `absorb` — supported and material; derive the smallest evidence-supported required
+     change and route it to the earliest stale prerequisite or owning control concern;
    - `reject` — unsupported, immaterial, duplicate, or incompatible with stronger evidence
      or authority; do not change the work merely to satisfy the critique;
-   - `unresolved` — plausible and material but evidence is insufficient; route the specific
-     uncertainty to Research or classify a blocker when trustworthy evidence is unavailable.
+   - `unresolved` — plausible and material but evidence is insufficient; identify the
+     missing evidence and route that uncertainty to Research, or classify a blocker when
+     trustworthy evidence is unavailable.
+   Record a concise evidence basis for every material disposition; do not silently discard
+   a challenge because its proposed remedy is poor or inconvenient.
 1. **Dispatch.** Record only material deviations, gaps, regressions, unresolved uncertainty,
    Scope deltas or proposed expansions, dispositions that affect the result, and the next
    owner. Do not use reviewer majority, rhetorical force, or repeated criticism as a
