@@ -41,6 +41,3 @@ boundary clear:
   runs and selects project-level OpenSpec behavior exposed by its current contract.
 - **Schemas** own the planning artifact graph, templates, and schema-level workflow
   instructions.
-
-When a requested effect could fit more than one surface, prefer the lighter surface
-that expresses it without duplicating or fighting another owner.
