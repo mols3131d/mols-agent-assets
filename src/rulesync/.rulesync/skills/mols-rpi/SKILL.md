@@ -315,6 +315,11 @@ next evidence action by expected information gain rather than by a predetermined
 sequence. These stage-local evidence moves do not increment `loops_used`; Run and Loop
 accounting changes only when a substantive Review closes.
 
+Do not use stage-local evidence search as a hidden Loop. Keep it bounded by expected
+information gain and available task or runtime budget. When a material question remains
+open but further in-stage search is no longer proportionate or available, preserve the
+uncertainty and reach Review; do not spin indefinitely to avoid a counted Loop or blocker.
+
 After material evidence arrives, update the research state and choose deliberately among:
 
 - **broaden** when the landscape or plausible alternatives are still unclear;
@@ -377,7 +382,10 @@ what happened, attacks the strongest material weak points, reconciles those chal
 and only then chooses the next transition.
 
 For each substantive Review, perform the smallest useful form of this cycle. Verify,
-Challenge, Reconcile, and Dispatch are Review-local operations, not separate Loops:
+Challenge, Reconcile, and Dispatch are Review-local operations, not separate Loops. Do not
+recursively restart Challenge or Reconcile inside the same Review to chase every new angle;
+a new material evidence or plan gap is a Dispatch result, and the next counted Loop begins
+at the earliest stale prerequisite.
 
 1. **Verify.** Compare the current result with the Goal, Active Scope, applicable
    prerequisite artifacts, acceptance conditions, and relevant validation. Separate what
