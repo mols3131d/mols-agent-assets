@@ -1,10 +1,11 @@
 # Catalog
 
-이 디렉토리는 여러 프로젝트에서 다시 찾아 쓰기 좋은 reusable source를 모으는 **catalog surface**입니다. Surface별 authority는 다르게 둡니다. 외부 Skill은 discovery entry만 소유하고, reusable pattern은 이곳이 canonical source를 소유합니다.
+이 디렉토리는 여러 프로젝트에서 다시 찾아 쓰기 좋은 reusable source를 모으는 **catalog surface**입니다. Surface별 authority는 다르게 둡니다. 외부 Skill과 Plugin은 discovery entry만 소유하고, reusable pattern은 이곳이 canonical source를 소유합니다.
 
 ## Areas
 
 - `skills.json` — 자주 재사용하는 외부 Agent Skill source와 사용할 수 있는 installer 목록
+- `plugins.json` — 다시 찾아 쓰기 좋은 외부 Plugin source와 지원 platform 목록
 - `patterns/` — 이 repository가 직접 관리하는 canonical reusable pattern library
 
 ## Skills
@@ -23,6 +24,14 @@
 같은 dependency의 설치·update 상태를 여러 installer가 동시에 소유하지 않습니다. 특정 source가 한 installer와 호환되지 않으면 그 installer를 `installers`에 넣지 않습니다.
 
 고정 revision, 설치 경로, target별 상태와 computed hash 같은 lock 정보도 catalog에 두지 않습니다. 특정 repository가 실제 dependency로 사용하는 Skill의 상태는 해당 dependency 관리 surface가 소유합니다.
+
+## Plugins
+
+`plugins.json`도 설치 상태나 package registry가 아니라 외부 Plugin을 다시 찾기 위한 discovery catalog입니다.
+
+각 항목은 `name`, canonical upstream `source`, 짧은 `description`, 사용할 수 있는 `platforms`만 기록합니다. 설치 명령, version, marketplace ID, update 방식과 설치 경로는 복제하지 않고 upstream과 각 platform이 소유합니다.
+
+같은 upstream이 Skill과 Plugin package를 함께 제공하면 `skills.json`과 `plugins.json` 양쪽에 discovery entry가 존재할 수 있습니다. 두 catalog는 각 사용 surface만 설명하고 dependency 상태를 공동 소유하지 않습니다.
 
 ## Patterns
 

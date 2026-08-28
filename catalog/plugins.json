@@ -1,0 +1,10 @@
+{
+  "plugins": [
+    {
+      "name": "diagram-design",
+      "source": "https://github.com/cathrynlavery/diagram-design",
+      "description": "Claude Code, Codex 등에서 editorial diagram 생성을 제공하는 plugin package.",
+      "platforms": ["claude-code", "codex", "factory-droid", "pi"]
+    }
+  ]
+}
