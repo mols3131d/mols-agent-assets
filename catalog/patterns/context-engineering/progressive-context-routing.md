@@ -111,7 +111,10 @@ Routing signal은 frontmatter, manifest, index, rule, directory entrypoint, meta
 
 ## Considerations
 
-- Routing layer가 너무 세밀하면 context 절약보다 관리 복잡도가 커질 수 있습니다.
+- 초기 routing에서 관련 candidate를 너무 일찍 제외하면 이후의 더 풍부한 context로 복구하지 못할 수 있습니다. 불확실한 경우 후보를 유지하거나 discovery를 다시 넓힐 수 있는 여지를 둡니다.
+- Instruction이나 routing document를 지나치게 잘게 나누고 많이 두면 관리 비용과 discovery·routing 비용이 커집니다. 책임 경계가 겹치는 candidate가 많아질수록 routing ambiguity와 잘못된 선택 가능성도 높아질 수 있으므로, 분리 자체보다 명확한 책임 경계를 우선합니다.
+- 항상 적용되어야 하는 authority, security, repository-wide invariant 같은 context는 candidate routing 성공 여부에 의존시키지 않습니다.
+- Routing 단계가 많아지면 context 절약보다 retrieval·판단 비용과 latency가 커질 수 있으므로 필요한 만큼만 둡니다.
 - Metadata와 underlying source가 따로 관리되면 stale routing 가능성을 고려합니다.
 - Local gate 자체가 긴 두 번째 instruction body가 되면 progressive loading의 이점이 줄어듭니다.
 - 적절한 loading granularity는 model capability, context window, asset 크기, retrieval cost, task 중요도에 따라 달라질 수 있습니다.
