@@ -111,11 +111,14 @@ Routing signal은 frontmatter, manifest, index, rule, directory entrypoint, meta
 
 ## Considerations
 
-- Routing layer가 너무 세밀하면 context 절약보다 관리 복잡도가 커질 수 있습니다.
-- Metadata와 underlying source가 따로 관리되면 stale routing 가능성을 고려합니다.
-- Local gate 자체가 긴 두 번째 instruction body가 되면 progressive loading의 이점이 줄어듭니다.
-- 적절한 loading granularity는 model capability, context window, asset 크기, retrieval cost, task 중요도에 따라 달라질 수 있습니다.
-- 목표는 단계를 늘리는 것이 아니라 **필요한 context를 필요한 시점에 적절한 범위로 가져오는 것**입니다.
+- **초기 후보 제외** — 관련 candidate를 너무 일찍 제외하면 이후의 더 풍부한 context로 복구하지 못할 수 있습니다. Routing 근거가 약하면 후보를 일부 유지하거나 discovery 범위를 다시 넓힙니다.
+- **항상 적용되어야 하는 context** — authority, security, repository-wide invariant를 candidate routing 뒤에 두면 routing 실패가 필수 context 누락으로 이어질 수 있습니다. 이런 context는 candidate routing 성공 여부에 의존시키지 않습니다.
+- **과도한 routing 단계** — 단계가 많아지면 context 절약보다 retrieval·판단 비용과 latency가 커질 수 있습니다. 필요한 만큼만 단계를 두고, 짧은 source에서는 바로 읽는 단순한 경로를 선호합니다.
+- **비대한 local gate** — local gate 자체가 긴 두 번째 instruction body가 되면 progressive loading의 이점이 줄어듭니다. Gate는 applicability와 다음 context를 판단하는 데 필요한 정보만 유지합니다.
+
+Candidate, instruction, router 같은 context surface를 얼마나 분리할지와 그에 따른 관리·routing ambiguity는 [Context Surface Granularity](context-surface-granularity.md)에서 별도로 다룹니다.
+
+적절한 loading granularity는 model capability, context window, asset 크기, retrieval cost, task 중요도에 따라 달라질 수 있습니다. 목표는 단계를 늘리는 것이 아니라 **필요한 context를 필요한 시점에 적절한 범위로 가져오는 것**입니다.
 
 ## Boundary
 

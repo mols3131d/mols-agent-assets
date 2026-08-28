@@ -109,6 +109,7 @@ explicit invocation config
 - Structured configuration이 중요하면 schema나 validation을 함께 둘 수 있습니다.
 - 필요한 configuration만 resolve하거나 load하면 context 효율을 높일 수 있습니다.
 - Zero-config asset도, project-specific parameter가 필요한 asset도 가능합니다. Configuration requirement가 숨겨진 관행보다 이해 가능한 extension point로 드러나는 것이 중요합니다.
+- Configuration source나 layer를 얼마나 세분화할지는 [Context Surface Granularity](context-surface-granularity.md)에서 공통적인 관리·resolution 비용과 함께 다룹니다.
 
 ## Boundary
 
