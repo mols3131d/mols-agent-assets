@@ -43,7 +43,7 @@ canonical owner and inject only the delta OpenSpec actually needs.
 Treat a non-trivial project schema as a small maintained package while keeping
 OpenSpec runtime inputs distinct from maintainer material.
 
-A useful team-owned shape can be:
+For a schema that is actively shared or tuned, a useful shape can be:
 
 ```text
 openspec/schemas/<name>/
@@ -56,7 +56,7 @@ openspec/schemas/<name>/
     └── upstream.md
 ```
 
-The extra files are optional examples, not a required layout. Under the current
+The extra files and names are examples, not a required layout. Under the current
 contract, only `schema.yaml` and referenced templates are schema semantics;
 `README.md` and `docs/` are project-owned companion surfaces.
 
@@ -69,18 +69,16 @@ to understand from `schema.yaml` alone. Keep it focused on maintainer needs:
 - project-specific invariants not obvious from the runtime files;
 - how maintainers verify and dogfood changes with the current OpenSpec tooling.
 
-Use `docs/` only when durable material outgrows the README. Typical roles are:
+Use `docs/` only when durable material outgrows the README. For example:
 
-- `scenarios.md` — a small representative dogfood set and what each case is meant
-  to exercise;
-- `tuning.md` — accepted findings, decisions, and rejected alternatives worth
-  remembering, not every experiment log;
-- `upstream.md` — fork provenance and porting notes when upstream drift is a real
-  maintenance concern.
+- representative dogfood scenarios and what each case exercises;
+- accepted tuning findings, decisions, and rejected alternatives worth remembering;
+- fork provenance and upstream-port notes when drift is a real maintenance concern.
 
-Omit files that do not earn their maintenance cost. Do not assume OpenSpec loads
-companion documentation. If information must affect runtime behavior, put it in the
-OpenSpec surface that actually owns that behavior.
+Omit files that do not earn their maintenance cost. Do not store every experiment
+log, and do not assume OpenSpec loads companion documentation. If information must
+affect runtime behavior, put it in the OpenSpec surface that actually owns that
+behavior.
 
 ## Preserve project authority
 
