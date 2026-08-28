@@ -311,7 +311,9 @@ mechanical alternation between internal and external sources.
 Research is an **adaptive evidence loop**, not a fixed retrieval checklist. Start from the
 smallest set of material questions or assumptions whose answers could change the current
 decision, Scope, Plan, or Review. Then choose the next evidence action by expected
-information gain rather than by a predetermined source sequence.
+information gain rather than by a predetermined source sequence. These stage-local evidence
+moves do not increment `loops_used`; Run and Loop accounting changes only when a
+substantive Review closes.
 
 After material evidence arrives, update the research state and choose deliberately among:
 
@@ -364,7 +366,7 @@ equivalent. Before destructive, irreversible, or externally consequential action
 the exact target and applicable approval gate.
 
 If Work requires a material new assumption, approach, or Scope outside the accepted Plan,
-stop affected Work and return to Review. Review classifies the gap and delegates any
+stop affected Work and return to Review. Review reconciles the gap and delegates any
 boundary change to Scope Control.
 
 ### Review
@@ -373,7 +375,8 @@ Review is an **adaptive evaluator and control gate**, not a static checklist. It
 what happened, attacks the strongest material weak points, reconciles those challenges,
 and only then chooses the next transition.
 
-For each substantive Review, perform the smallest useful form of this cycle:
+For each substantive Review, perform the smallest useful form of this cycle. Verify,
+Challenge, Reconcile, and Dispatch are Review-local operations, not separate Loops:
 
 1. **Verify.** Compare the current result with the Goal, Active Scope, applicable
    prerequisite artifacts, acceptance conditions, and relevant validation. Separate what
