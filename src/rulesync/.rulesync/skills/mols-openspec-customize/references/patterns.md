@@ -5,15 +5,13 @@ fields, commands, paths, and supported behavior through [Official](official.md).
 
 ## Config before schema
 
-Prefer project configuration when the existing workflow structure can stay intact
-and the change only adds context, artifact guidance, operation guidance, or another
+Prefer project configuration when the existing workflow can stay intact and the
+change only adds context, artifact guidance, operation guidance, or another
 project-level option supported by OpenSpec.
 
-Use a custom schema when the planning artifact set, dependency flow, templates, or
-schema-level workflow instructions must materially differ.
-
-A schema fork creates another schema snapshot to own, so do not use it for a change
-that additive configuration can express.
+Use a custom schema when the artifact set, dependency flow, templates, or
+schema-level instructions must materially differ. A schema fork creates another
+snapshot to own, so do not fork for a change additive configuration can express.
 
 ## Narrowest surface
 
@@ -22,31 +20,30 @@ Put a customization on the smallest supported surface that needs it.
 | Needed effect | First surface to consider |
 | --- | --- |
 | Choose installed workflows or delivery form | Profile |
-| Add broadly applicable project planning context | Project configuration |
-| Add guidance for one planning artifact | Artifact-scoped project rule |
+| Add broad project planning context | Project configuration |
+| Add guidance for one artifact | Artifact-scoped project rule |
 | Add apply or archive guidance | Operation guidance |
 | Select a project schema | Project configuration |
 | Change artifacts, dependencies, templates, or schema instructions | Custom schema |
-| Preserve repository policy OpenSpec does not need to inject | Existing repository owner |
+| Preserve policy OpenSpec does not need to inject | Existing repository owner |
 
-The table is a selection heuristic, not a replacement for OpenSpec's current
-contract.
+This is a selection heuristic, not a replacement for OpenSpec's current contract.
 
 ## Delta-only context
 
-Do not turn OpenSpec configuration into a second project handbook.
+Do not turn OpenSpec configuration into a second project handbook. Keep only
+context that should materially shape OpenSpec output, and put narrow rules on
+narrow surfaces.
 
-Keep only context that should materially shape OpenSpec workflow output. Put narrow
-rules on narrow surfaces. When the active agent can reliably load existing
-repository guidance, prefer that canonical owner and inject only the delta OpenSpec
-actually needs.
+When the active agent can reliably load existing repository guidance, prefer that
+canonical owner and inject only the delta OpenSpec actually needs.
 
 ## Maintainable schema package
 
-Treat a non-trivial project schema as a small maintained package, while keeping
+Treat a non-trivial project schema as a small maintained package while keeping
 OpenSpec runtime inputs distinct from maintainer material.
 
-A typical team-owned layout can be:
+A useful team-owned shape can be:
 
 ```text
 openspec/schemas/<name>/
@@ -54,27 +51,36 @@ openspec/schemas/<name>/
 ├── templates/
 ├── README.md
 └── docs/
-    └── ...
+    ├── scenarios.md
+    ├── tuning.md
+    └── upstream.md
 ```
 
-Only `schema.yaml` and referenced templates are OpenSpec schema semantics unless the
-current official contract says otherwise. `README.md` and `docs/` are optional
-project-owned companion surfaces.
+The extra files are optional examples, not a required layout. Under the current
+contract, only `schema.yaml` and referenced templates are schema semantics;
+`README.md` and `docs/` are project-owned companion surfaces.
 
-Use a nearby `README.md` when the schema is shared, substantially different from its
-source, or hard to understand from `schema.yaml` alone. Keep it small and useful to
-a maintainer, for example:
+Use `README.md` when the schema is shared, substantially customized, or difficult
+to understand from `schema.yaml` alone. Keep it focused on maintainer needs:
 
 - purpose and when to use or avoid the schema;
-- artifact flow and important intentional differences;
-- source or fork baseline when that matters for future upgrades;
-- project-specific invariants not obvious from the files;
-- how maintainers verify and dogfood changes using the current OpenSpec tooling.
+- artifact flow and intentional differences;
+- source or fork baseline when useful for future upgrades;
+- project-specific invariants not obvious from the runtime files;
+- how maintainers verify and dogfood changes with the current OpenSpec tooling.
 
-Add `docs/` only when durable rationale, representative scenarios, tuning evidence,
-or upstream-port notes no longer fit cleanly in the README. Do not create a docs
-hierarchy merely because the schema is custom, and do not dump transient run logs
-into durable schema documentation.
+Use `docs/` only when durable material outgrows the README. Typical roles are:
+
+- `scenarios.md` — a small representative dogfood set and what each case is meant
+  to exercise;
+- `tuning.md` — accepted findings, decisions, and rejected alternatives worth
+  remembering, not every experiment log;
+- `upstream.md` — fork provenance and porting notes when upstream drift is a real
+  maintenance concern.
+
+Omit files that do not earn their maintenance cost. Do not assume OpenSpec loads
+companion documentation. If information must affect runtime behavior, put it in the
+OpenSpec surface that actually owns that behavior.
 
 ## Preserve project authority
 
@@ -89,31 +95,28 @@ OpenSpec needs a deliberate operational copy.
 ## Treat schema forks as owned snapshots
 
 A project-local custom schema is an intentionally owned copy. Do not assume normal
-OpenSpec updates will merge future built-in schema improvements into it.
+OpenSpec updates will merge later built-in improvements into it.
 
-Keep shared project schemas versioned with the project. When future upstream
-improvements matter, compare deliberately and port only changes that still fit the
-project. Record a useful fork baseline or provenance when it materially lowers that
-future maintenance cost.
+Keep shared schemas versioned with the project. Compare upstream deliberately and
+port only changes that still fit. Record fork provenance only when it materially
+reduces future maintenance cost.
 
 ## Dogfood before stabilizing
 
-Tune a customization against real project work before treating it as settled.
+Tune against real project work before treating a customization as settled. Use a
+small representative set chosen for information value: ordinary work, a case that
+stresses the intended customization, and a near-miss or edge case when overfitting
+is plausible.
 
-Use a small representative set of changes that exercises the behavior the
-customization is meant to improve. Include ordinary work and, when relevant, a
-near-miss or edge case that could reveal over-broad instructions.
-
-For each meaningful friction point:
+For each material friction point:
 
 1. capture the observed instruction, artifact, workflow behavior, or maintainer
    difficulty;
 1. state the expected behavior and why the project needs it;
-1. classify the actual owner: project config, schema graph, template, schema
-   instruction, repository policy, or a problem outside OpenSpec;
+1. classify the narrowest owner: project config, schema graph, template, schema
+   instruction, repository policy, or something outside OpenSpec;
 1. make the smallest change at that owner;
-1. rerun the relevant case and check for regressions in the other representative
-   cases.
+1. rerun the relevant case and check likely regressions in the representative set.
 
 Do not compensate for a template problem with global context, or for a repository
 policy problem with duplicated schema instructions.
@@ -121,27 +124,19 @@ policy problem with duplicated schema instructions.
 ## Tune from evidence, not taste
 
 Prefer observable failure modes over vague goals such as "make the model smarter"
-or "improve the prompt."
+or "improve the prompt." Useful signals include repeated omissions, irrelevant
+boilerplate, bad dependency timing, template editing friction, recurring manual
+correction, or an improvement in one case that harms another.
 
-Useful tuning evidence includes:
-
-- an artifact repeatedly omits required project information;
-- an instruction causes irrelevant sections or boilerplate;
-- a dependency is requested too early or too late;
-- a template shape consistently creates editing friction;
-- the same project rule must be restated manually during normal use;
-- a customization helps one case but harms another representative case.
-
-Change one meaningful owner at a time when practical so the effect stays
-attributable. Preserve a baseline when comparing material workflow changes. Stop
-adding guidance when remaining failures belong outside OpenSpec or further tuning
-has no credible benefit.
+Change one meaningful owner at a time when practical so effects stay attributable.
+Preserve a baseline for material workflow comparisons. Stop adding guidance when
+remaining failures belong outside OpenSpec or further tuning has no credible
+benefit.
 
 ## Verify resolved behavior
 
-Static YAML review proves less than resolved workflow behavior.
-
-Use layered evidence appropriate to the claim:
+Static YAML review proves less than resolved workflow behavior. Use evidence
+appropriate to the claim:
 
 1. schema/config validation for machine-checkable structure;
 1. schema, template, or instruction resolution for what OpenSpec actually selects;
@@ -149,5 +144,5 @@ Use layered evidence appropriate to the claim:
 1. maintainer review for whether the customization remains understandable and
    upgradeable.
 
-Use the current official CLI syntax rather than freezing experimental command
-behavior into this pattern.
+Use current official CLI syntax rather than freezing experimental command behavior
+into this pattern.
