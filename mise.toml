@@ -26,14 +26,18 @@ description = "Regenerate committed indexes and routes"
 run = "uv run python -m scripts.sync_generated_artifacts"
 
 [tasks.format]
-description = "Format repository source"
+description = "Format the entire repository"
 run = [
-  "uv run ruff format .",
   "uv run ruff check --fix .",
+  "uv run ruff format .",
   "rumdl fmt .",
   "rumdl check --fix .",
   "biome format --write .",
 ]
+
+[tasks.format-changed]
+description = "Format modified and untracked repository files"
+run = "uv run --locked --no-default-groups --group dev python scripts/format_changed.py"
 
 [tasks.check]
 description = "Validate the repository toolchain and lock state"

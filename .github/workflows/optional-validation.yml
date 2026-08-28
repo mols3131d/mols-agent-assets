@@ -49,8 +49,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          uv run --no-project --with "pyyaml>=6.0.2" python scripts/generate_distribution_routes.py
-          uv run --no-project --with "pyyaml>=6.0.2" python scripts/generate_repository_routes.py
+          uv run --locked --no-default-groups --group test python scripts/generate_distribution_routes.py
+          uv run --locked --no-default-groups --group test python scripts/generate_repository_routes.py
           git diff --exit-code -- route/*.jsonl .agents/route/*.jsonl
 
       - name: Set up mise
