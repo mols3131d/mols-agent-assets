@@ -64,12 +64,12 @@ PR conversation comment의 optional workflow status는 다음 의미로 사용�
 
 같은 finding을 review body와 inline comment에 완전히 중복하지 않습니다. Line-specific finding은 inline comment에 두고, review body에는 cross-cutting finding이나 전체 판단에 필요한 요약을 둡니다.
 
-현재 repository-local authoring template이 다루는 Issue, Pull Request, PR Review와 PR comment에서 추가 provenance가 필요할 때 `author`와 `revision`을 사용합니다.
+현재 repository-local authoring template이 다루는 Issue, Pull Request, PR Review와 PR comment에서는 `author`와 `revision`으로 필요한 provenance를 기록합니다.
 
-- `author` — GitHub 작성자만으로 실제 작성 주체를 구별할 수 없는 agent 주도 작성의 provenance입니다. 각 항목은 `<user-id>:<provider>-<service>` 형식을 사용합니다.
+- `author` — agent가 최종 GitHub text의 내용이나 구조를 실질적으로 작성하거나 재작성했다면 반드시 기록합니다. GitHub object가 사람의 account나 credential로 생성되어도 같습니다. 사람이 완성한 text를 agent가 그대로 게시하거나, 사람이 이미 정한 title·state·label 같은 값을 그대로 설정하는 기계적 mutation만 수행한 경우는 agent 주도 작성으로 보지 않습니다. 각 항목은 `<user-id>:<provider>-<service>` 형식을 사용합니다.
 - `revision` — Pull Request description이나 PR Review가 의존하는 exact diff pair입니다. `base`와 `head`를 함께 full commit SHA로 기록합니다. PR description을 새 pair 기준으로 갱신하면 함께 갱신하고, 이미 제출된 review의 pair는 이후 head가 바뀌어도 변경하지 않습니다.
 
-`revision`은 Pull Request와 PR Review에만 사용합니다. Issue와 PR comment에는 필요한 경우 `author`만 사용합니다. Metadata의 공통 Markdown rendering convention은 [GitHub Authoring Templates](../../.github/templates/README.md)가, 실제 field presence와 위치는 각 template file이 소유합니다.
+`author`는 Issue, Pull Request, PR Review, PR conversation comment와 PR inline review comment에 적용하며 위 조건에서 필수입니다. `revision`은 Pull Request와 PR Review에만 사용합니다. 각 field의 의미와 적용 조건은 이 문서가 소유하고, Metadata의 공통 Markdown rendering convention과 surface별 표현 구조는 [GitHub Authoring Templates](../../.github/templates/README.md)와 해당 template file이 소유합니다.
 
 ## Issues
 
