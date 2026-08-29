@@ -206,8 +206,8 @@ Core `SKILL.md`는 Positive Signals와 evidence gate 때문에 조금 커졌지�
 
 ### Verified
 
-- latest implementation PR Gate — **success**
-- deterministic test suite — **224 passed**
+- implementation PR Gate — **success, 224 passed**
+- final head PR Gate after Review artifact — **success, 224 passed**
 - frontmatter `description` — unchanged in this loop
 - generated route delta — not required by this loop
 - Skill/reference/eval static inspection — complete
