@@ -24,6 +24,23 @@
 
 실제 score를 계산하지 않는다. 설명을 추가하지 않는 것, redundant prose를 제거하는 것, stale prose를 현재 의미에 맞게 고치는 것도 정상적인 결과다.
 
+다만 이 판단은 comment를 피하기 위한 억제 gate가 아니다. **실행 코드가 이미 적절하고, durable한 caller/maintainer 의미가 code만으로 안정적으로 드러나지 않으며, 같은 의미가 가까운 surface에 없다면 explanation을 추가하거나 개선하는 쪽이 기본이다.** 사용자가 comment나 docstring을 직접 요청하지 않았어도 target을 이해하는 과정에서 이런 의미를 발견하면 같은 기준을 적용한다.
+
+## Positive Signals
+
+다음 조건에서는 no-op보다 explanation을 우선한다. 단, executable code가 이미 적절하고 같은 의미가 다른 가까운 owner에 충분히 존재한다면 중복하지 않는다.
+
+| Signal | Default surface |
+| --- | --- |
+| caller가 사용 전에 알아야 하는 hidden contract나 non-obvious call semantics | docstring |
+| 현재 구현을 안전하게 바꾸려면 알아야 하는 invariant 또는 local constraint | code-local comment |
+| statement/order를 바꾸면 결과·error semantics가 깨지는 ordering consequence | code-local comment |
+| 외부 system/protocol 제약 때문에 의도적으로 특이한 구현을 유지해야 함 | code-local comment |
+| 미래 maintainer가 자연스럽게 시도할 대안이 현재 constraint를 깨뜨림 | code-local comment |
+| 개별 symbol보다 file 전체에 안정적으로 적용되는 local convention | module-level explanation |
+
+Positive signal이 확인되면 설명의 존재 여부를 실제로 확인한다. 적절한 explanation이 없으면 가장 작은 설명을 추가하고, 이미 있다면 현재 code/contract와 일치하는지 개선 여부를 판단한다. 단순히 “code가 읽힌다”는 이유만으로 durable hidden meaning을 설명하지 않고 끝내지 않는다.
+
 ## Docstrings
 
 Docstring은 caller가 **사용 전에 알아야 하지만 name, signature, type만으로 드러나지 않는 contract**를 보완한다.
@@ -59,7 +76,7 @@ def load_partition(path: Path) -> LoadResult:
 
 Comment는 maintainer가 code를 수정할 때 code만으로 안정적으로 복원하기 어려운 **constraint, consequence와 rationale**를 설명한다.
 
-좋은 대상:
+아래 의미가 현재도 유효하고 code가 이미 구조적으로 적절하며 가까운 explanation이 없다면 comment를 추가하거나 개선하는 것을 기본으로 한다.
 
 - 이 지점에서 반드시 유지해야 하는 invariant 또는 local constraint
 - 비자명한 failure consequence나 예외 처리 이유
@@ -145,6 +162,7 @@ source file 안의 모든 text가 단순 설명은 아니다.
 
 설명을 추가하거나 수정한 뒤 확인한다.
 
+- target 안에 durable한 hidden contract·constraint·consequence·rationale가 남아 있는데 explanation을 놓치지 않았는가?
 - 이 설명이 없으면 reader는 무엇을 추론하거나 찾아야 하는가?
 - 설명이 그 비용을 실제로 줄이고 code/name/type을 반복하지 않는가?
 - code 자체를 refactor해야 하는 문제를 prose로 보상하고 있지 않은가?
@@ -153,4 +171,4 @@ source file 안의 모든 text가 단순 설명은 아니다.
 - volatile identifier·algorithm step·history에 불필요하게 결합되어 쉽게 stale 되지 않는가?
 - machine-consumed text나 durable negative knowledge를 잘못 다루고 있지 않은가?
 
-불필요하거나 쉽게 stale 되는 설명은 줄이거나 제거한다.
+필요한 durable meaning이 아직 숨겨져 있으면 적절한 explanation을 보완한다. 반대로 불필요하거나 쉽게 stale 되는 설명은 줄이거나 제거한다.
