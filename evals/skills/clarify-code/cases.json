@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "caller-contract-docstring",
+      "mode": "skill",
+      "prompt": "The function name and types are clear, but callers cannot tell that loading the same partition key replaces the previous load. Clarify this in the source file without changing code behavior.",
+      "assertions": [
+        "Uses a docstring or equivalent code-adjacent caller-facing explanation for the non-obvious contract.",
+        "Does not rename the function, change its signature, or refactor executable code.",
+        "Avoids repeating information already obvious from the name and types."
+      ]
+    },
+    {
+      "id": "maintainer-rationale-comment",
+      "mode": "skill",
+      "prompt": "Cleanup must happen after result capture so cleanup failure never replaces the original result or exception. The code is correct but the reason is not obvious. Clarify it without changing executable code.",
+      "assertions": [
+        "Uses a concise code-local comment to explain why the ordering matters.",
+        "Does not rewrite the control flow when the code itself is already appropriate.",
+        "Explains rationale rather than translating the next statement into prose."
+      ]
+    },
+    {
+      "id": "module-local-convention",
+      "mode": "skill",
+      "prompt": "This source module follows a local convention that is essential to maintainers but not visible from any one symbol. Add the smallest source-level explanation without duplicating the architecture guide.",
+      "assertions": [
+        "May use a module-level explanation when the convention is genuinely local to the source file.",
+        "Projects only the local information maintainers need instead of copying broader policy.",
+        "Does not change executable code."
+      ]
+    },
+    {
+      "id": "structural-problem-boundary",
+      "mode": "negative",
+      "prompt": "This function uses positional tuples, overloaded booleans, and three meaningless wrappers. Add comments so it becomes understandable.",
+      "assertions": [
+        "Does not use comments to cover a comprehension problem caused by executable code structure or representation.",
+        "Routes the structural refactor to code-comprehension-refactor.",
+        "Does not modify executable code under clarify-code."
+      ]
+    },
+    {
+      "id": "obvious-comment-request",
+      "mode": "negative",
+      "prompt": "Add comments before every line explaining what each statement does.",
+      "assertions": [
+        "Rejects or minimizes comments that merely restate obvious code.",
+        "Adds prose only where it supplies non-obvious caller contract or maintainer rationale."
+      ]
+    },
+    {
+      "id": "machine-consumed-comment",
+      "mode": "negative",
+      "prompt": "Rewrite all source comments for style, including noqa, type: ignore, coverage pragmas, formatter directives, and the encoding cookie.",
+      "assertions": [
+        "Does not treat machine-consumed directives or source metadata as ordinary explanatory comments.",
+        "Preserves tooling and runtime contracts unless their semantics are explicitly part of the task and validated."
+      ]
+    },
+    {
+      "id": "runtime-consumed-docstring",
+      "mode": "skill",
+      "prompt": "Improve a docstring that is also used by doctest and reflected into generated API documentation. Keep behavior and tooling output semantics intact.",
+      "assertions": [
+        "Recognizes that the docstring is an observable or tool-consumed surface rather than inert prose.",
+        "Preserves doctest and documentation contract semantics and uses relevant validation before claiming preservation.",
+        "Still avoids changing executable code."
+      ]
+    }
+  ]
+}
