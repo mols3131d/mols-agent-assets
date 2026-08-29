@@ -47,6 +47,8 @@
 {% if author %}
 ```yaml
 author:
-{% for item in author %}  - {{ item }}
-{% endfor %}```
+{% for item in author %}
+  - {{ item }}
+{% endfor %}
+```
 {% endif %}
