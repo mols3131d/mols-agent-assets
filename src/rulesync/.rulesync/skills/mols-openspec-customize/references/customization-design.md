@@ -14,8 +14,8 @@ Use this reference to decide **what should own a customization**. It provides
 reusable design judgment across projects; it does not define OpenSpec's exact
 current fields, commands, paths, or version-specific behavior.
 
-Consult [Official customization](official-customization.md) only when the decision
-depends on exact OpenSpec support or semantics.
+Consult [Official contract](official-contract.md) only when the decision depends on
+exact OpenSpec support or semantics.
 
 ## Start with the lightest sufficient surface
 
@@ -43,7 +43,7 @@ Put a customization on the smallest surface that actually needs it.
 
 This is a selection heuristic, not a frozen vendor contract. If exact support,
 precedence, or field semantics can change the answer, verify them through
-[Official customization](official-customization.md).
+[Official contract](official-contract.md).
 
 ## Keep OpenSpec context delta-only
 
@@ -76,7 +76,7 @@ derive the actual project delta from live evidence rather than guessing it here.
 - If an existing customization needs real-work evaluation, regression checking, or
   evidence-driven iteration, use [Dogfood and tuning](dogfood-and-tuning.md).
 - If exact OpenSpec behavior affects the decision, use
-  [Official customization](official-customization.md).
+  [Official contract](official-contract.md).
 
 Do not load those references merely because they exist; load them only when their
 separate concern becomes material.
