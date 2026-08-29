@@ -41,6 +41,10 @@
 {% if review_focus %}
 ## Review Focus
 
+<!--
+특히 확인할 결정, trade-off나 위험을 강조한다. 이 section은 review 범위를 제한하지 않는다.
+-->
+
 {% for item in review_focus %}
 - {{ item }}
 {% endfor %}
