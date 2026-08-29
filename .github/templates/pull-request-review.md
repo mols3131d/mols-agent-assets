@@ -29,7 +29,7 @@ Line-specific finding은 inline review comment에 두고 여기서 완전히 반
 둘 다 없을 때만 `No findings identified in the reviewed scope.`를 사용한다.
 Required Change는 필요한 결과나 제약을 적고, 특정 구현이 필수가 아니면 해결 방법을 과도하게 지정하지 않는다.
 
-Importance:
+`finding.importance`는 다음 marker와 label을 그대로 사용한다.
 🔴 Critical — 보안·권한·데이터 손실이나 광범위한 장애처럼 즉시 차단해야 하는 문제
 🟠 High — correctness, security 또는 repository contract를 실질적으로 깨뜨려 merge 전에 수정해야 하는 문제
 🟡 Medium — 범위가 제한적이지만 실제 결함이나 의미 있는 운영·유지보수 위험을 만드는 문제
