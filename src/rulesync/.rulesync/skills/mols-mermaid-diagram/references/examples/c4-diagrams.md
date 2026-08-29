@@ -4,10 +4,10 @@
 
 C4는 software architecture를 **abstraction level과 scope를 유지하면서 여러 view로 설명**할 때 사용한다. Mermaid는 `C4Context`, `C4Container`, `C4Component`, `C4Dynamic`, `C4Deployment`를 지원하지만, 이들을 모두 같은 종류의 zoom level로 취급하지 않는다.
 
-- **Static zoom**: Context → Container → Component
+- **Mermaid가 지원하는 static zoom**: Context → Container → Component
 - **Supporting view**: Dynamic, Deployment
 
-질문에 필요한 view만 사용한다. 모든 level을 completeness를 위해 만들지 않는다.
+C4 모델의 core static hierarchy에는 Code level도 있지만 Mermaid C4 syntax는 별도 Code view를 지원하지 않는다. 질문에 필요한 view만 사용하고, 모든 level을 completeness를 위해 만들거나 unsupported view를 local syntax로 발명하지 않는다.
 
 ## System Context
 
@@ -46,7 +46,7 @@ C4Container
     Rel(source, ingest, "Sends source files")
     Rel(ingest, transform, "Writes staged data")
     Rel(transform, quality, "Publishes model metadata")
-    Rel(quality, store, "Approves curated data")
+    Rel(quality, store, "Publishes approved result")
     Rel(operator, quality, "Reviews validation results")
 ```
 
@@ -103,6 +103,8 @@ Mermaid의 `RelIndex(index, ...)`는 **`index` 인자를 sequence number로 사�
 
 Deployment는 static zoom level이 아니라 **특정 deployment environment에서 system/container instance가 infrastructure에 어떻게 배치되는지** 보여주는 supporting view다. Production, staging, development처럼 environment scope를 먼저 명확히 한다.
 
+아래 예제의 production node와 placement는 Container view에서 자동으로 추론한 정보가 아니라, **별도의 deployment source가 이를 뒷받침한다고 가정한 추가 사실**이다.
+
 ```mermaid
 C4Deployment
     title Data pipeline — production deployment
@@ -135,7 +137,7 @@ Zoom을 바꿀 때 relationship endpoint가 더 구체적인 element로 바뀔 �
 
 Mermaid C4는 fully automated layout을 사용하지 않으며 **statement order가 shape position에 영향을 줄 수 있다.** 이 특성은 presentation layer다.
 
-- declaration order를 chronology, priority, ownership 또는 dependency semantics로 해석하지 않는다.
+- statement order를 chronology, priority, ownership 또는 dependency semantics로 해석하지 않는다.
 - readability를 위해 statement order를 조정할 수 있지만 relationship meaning은 바꾸지 않는다.
 - Mermaid 공식 C4 구현은 `Lay_U`, `Lay_D`, `Lay_L`, `Lay_R` 같은 layout statement를 지원하지 않는다.
 - `UpdateLayoutConfig`는 row당 shape·boundary 수를 조정하는 제한된 tuning으로만 사용한다. 잘못된 scope나 과도한 element 수를 layout config로 숨기지 않는다.
@@ -143,7 +145,7 @@ Mermaid C4는 fully automated layout을 사용하지 않으며 **statement order
 
 ## Rules
 
-- 먼저 **static abstraction level(Context / Container / Component)**을 정한다.
+- 먼저 **Mermaid가 지원하는 static abstraction level(Context / Container / Component)**을 정한다.
 - Runtime interaction이 질문이면 기존 static model을 기반으로 Dynamic을 추가한다.
 - 실제 deployment placement가 질문이면 environment를 정한 뒤 Deployment를 추가한다.
 - 상위 view의 모든 element를 completeness를 위해 반복하지 않되, 현재 view의 직접 relationship을 이해하는 데 필요한 supporting element는 유지한다.
