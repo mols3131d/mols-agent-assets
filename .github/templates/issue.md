@@ -1,4 +1,4 @@
-## 📌 Summary
+## Summary
 
 <!--
 문제나 필요를 한눈에 이해할 수 있게 설명한다.
@@ -9,17 +9,17 @@ Agent에게 독립 작업을 위임한다면 중요한 완료 조건과 경계�
 {{ summary }}
 
 {% if context %}
-## 🧭 Context
+## Context
 
 {{ context }}
 {% endif %}
 
-## 🎯 Desired Outcome
+## Desired Outcome
 
 {{ desired_outcome }}
 
 {% if boundaries %}
-## 🚧 Boundaries
+## Boundaries
 
 {% for boundary in boundaries %}
 - {{ boundary }}
@@ -27,7 +27,7 @@ Agent에게 독립 작업을 위임한다면 중요한 완료 조건과 경계�
 {% endif %}
 
 {% if acceptance_criteria %}
-## 📋 Acceptance Criteria
+## Acceptance Criteria
 
 {% for criterion in acceptance_criteria %}
 - [ ] {{ criterion }}
@@ -35,7 +35,7 @@ Agent에게 독립 작업을 위임한다면 중요한 완료 조건과 경계�
 {% endif %}
 
 {% if reproduction %}
-## 🧪 Reproduction
+## Reproduction
 
 {% for step in reproduction.steps %}
 1. {{ step }}
@@ -46,7 +46,7 @@ Agent에게 독립 작업을 위임한다면 중요한 완료 조건과 경계�
 {% endif %}
 
 {% if references %}
-## 🔗 References
+## References
 
 {% for reference in references %}
 - {{ reference }}
