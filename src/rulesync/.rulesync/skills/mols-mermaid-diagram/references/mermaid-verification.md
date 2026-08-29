@@ -30,7 +30,7 @@ Diagram source와 renderer는 별도 trust boundary로 취급한다.
 - `end`, braces, indentation, fragment와 note처럼 type이 요구하는 block boundary를 확인한다.
 - special character와 Markdown text는 해당 type의 quoting·escaping 규칙을 따른다.
 - source에 없던 direction, order, ownership, cardinality, transition 또는 causal claim이 추가되지 않았는지 확인한다.
-- structural simplification을 수행했다면 merge, collapse와 omission이 source relationship·condition·boundary를 없애거나 더 강한 주장으로 바꾸지 않았는지 대조한다.
+- structural simplification을 수행했다면 merge, collapse와 omission이 source의 **identity, responsibility, ownership, state, provenance, relationship, condition과 boundary**를 없애거나 더 강한 주장으로 바꾸지 않았는지 대조한다.
 - 큰 structural rewrite라면 결과에 보고한 merged / collapsed / omitted 항목이 실제 변경과 일치하는지 확인한다.
 - beta, experimental, external integration 또는 최근 syntax는 target renderer 지원을 확인한다.
 - security-sensitive config, external URL과 network-backed resource가 있으면 trust boundary를 함께 확인한다.
