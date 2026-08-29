@@ -18,8 +18,8 @@
 ## TODO
 
 ### 절차·분기·ownership
-- [ ] `flowchart.md`
-- [ ] `swimlanes.md`
+- [x] `flowchart.md`
+- [x] `swimlanes.md`
 
 ### message order
 - [ ] `sequence-diagram.md`
@@ -53,13 +53,13 @@
 - [x] `packet-diagram.md`
 - [x] `event-modeling.md`
 - [x] `venn.md`
-- [ ] `ishikawa.md`
-- [ ] `wardley.md`
-- [ ] `cynefin.md`
+- [x] `ishikawa.md`
+- [x] `wardley.md`
+- [x] `cynefin.md`
 
 ## Current
 
-- 진행: **14/24 완료**, 10개 남음
+- 진행: **19/24 완료**, 5개 남음
 - Batch 운영: 최대 5개씩 진행, 파일별 RPI는 독립·순차 수행
 - 완료: `architecture-diagram.md`
 - 완료: `c4-diagrams.md` — 리뷰 → 개선 → 재리뷰 완료
@@ -75,4 +75,9 @@
 - 완료: `packet-diagram.md` — 심층 RPI 완료; official docs·11.17.2 parser/tests를 교차 검토하고 contiguous bit arithmetic, fixed/variable boundary, reserved-gap honesty, row-wrap semantics, bit numbering·byte order와 excerpt fallback을 재설계
 - 완료: `event-modeling.md` — 심층 RPI 완료; official docs·11.17.2 grammar/validator/DB/tests와 current namespace/data-render issues를 교차 검토하고 timeframe identity, declaration-order inference, reset/source control, entity-type source validation, namespace·data renderer sensitivity를 재설계
 - 완료: `venn.md` — 심층 RPI 완료; official docs·11.17.2 parser/DB/renderer와 current text/many-set issues를 교차 검토하고 `union`≠set union, set identity, size/population honesty, higher-arity synthetic pairwise layout, text/density와 quantitative fallback을 재설계
-- 다음 batch: `ishikawa.md` → `wardley.md` → `cynefin.md` → `flowchart.md` → `swimlanes.md`
+- 완료: `ishikawa.md` — 심층 RPI 완료; official docs·11.17.2 Jison/DB/tests를 교차 검토하고 effect/cause authority, raw indentation hierarchy, hypothesis/evidence, category discipline, one-effect boundary와 renderer layout semantics를 재설계
+- 완료: `wardley.md` — 심층 RPI 완료; Wardley Mapping source와 Mermaid 11.17.2 parser/DB/builder/tests를 교차 검토하고 user/need anchor, value-chain dependency, `[visibility,evolution]`, stable identity, evolve/sourcing/inertia, pipeline·scenario·viewport semantics를 재설계
+- 완료: `cynefin.md` — 심층 RPI 완료; Cynefin current framing·Mermaid official docs·11.17.2 DB/renderer와 upstream framework-correction issues를 교차 검토하고 contextual sense-making, Aporetic↔`confusion` notation boundary, repeated-domain data loss, transition identity, fixed placement·overflow·self-loop semantics를 재설계
+- 완료: `flowchart.md` — 심층 RPI 완료; Mermaid official Flowchart docs와 local diagram principles를 교차 검토하고 dominant edge semantics, stable identity, decision honesty, subgraph semantic/layout boundary, external-edge direction limitation, overview/detail fidelity, shape·animation 의미 경계를 재설계
+- 완료: `swimlanes.md` — 심층 RPI 완료; official docs·11.17.2 layout-variant implementation과 current upstream churn을 교차 검토하고 Flowchart semantic reuse, one partition criterion, lane membership/decision authority, cross-lane handoff, direction/lane-order presentation과 beta render gate를 재설계
+- 다음 batch: `sequence-diagram.md` → `zenuml.md` → `state-diagram.md` → `class-diagram.md` → `er-diagram.md`
