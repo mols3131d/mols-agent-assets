@@ -2,7 +2,16 @@
 
 이 Skill의 refactor는 comprehension을 개선하지만 **observable behavior와 relevant usage contract를 바꾸는 작업이 아니다.** Validation은 test count가 아니라 무엇을 preserved해야 하고 어떤 evidence가 그 claim을 실제로 지지하는지 확인한다.
 
-Core `SKILL.md`가 common-path preservation gate를 소유한다. 이 reference는 tests/contract가 불완전·충돌하거나 dynamic usage, characterization, material performance 또는 before/after equivalence가 단순하지 않을 때 사용한다.
+Core `SKILL.md`가 common-path preservation gate를 소유한다. 이 reference는 candidate transformation의 preservation precondition/evidence가 mutation 전에 불명확하거나, tests/contract가 불완전·충돌하거나, dynamic usage·characterization·material performance·before/after equivalence가 단순하지 않을 때 사용한다.
+
+## Use Before and After
+
+Validation은 after-check 전용 단계가 아니다.
+
+- **Before mutation** — candidate transformation이 어떤 observable/usage surface를 깨뜨릴 수 있는지와 필요한 precondition/evidence를 확인한다.
+- **After mutation** — 같은 preservation envelope가 실제로 유지됐는지 가장 적절한 evidence로 다시 확인한다.
+
+Before에서 material blocker가 확인되면 mutation부터 강행한 뒤 test로 되돌아보지 않는다. Safer transformation, authorized scope change, handoff 또는 no-op을 먼저 선택한다.
 
 ## Preservation Envelope
 
@@ -21,6 +30,8 @@ Core `SKILL.md`가 common-path preservation gate를 소유한다. 이 reference�
 | Performance | hot-path latency, algorithmic complexity, allocation, I/O/query count 등 task에 material한 특성 |
 
 모든 항목을 기계적으로 측정하지 않는다. Candidate transformation이 실제로 건드릴 수 있고 caller/runtime/tooling이 의존할 수 있는 surface를 먼저 식별한다.
+
+Behavior preservation을 위해 함께 변경해야 하는 consumer나 registration이 write scope 밖이면 target만 바꾸지 않는다. 현재 authority가 허용하는 최소 scope expansion, existing contract 유지 또는 handoff/no-op 중 가능한 경로를 선택한다.
 
 ## Evidence Is Not Automatically Specification
 
