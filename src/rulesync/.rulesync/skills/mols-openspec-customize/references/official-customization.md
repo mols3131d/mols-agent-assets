@@ -10,9 +10,8 @@ description: >-
 
 # Official OpenSpec Customization
 
-Use this reference only when the answer depends on **what OpenSpec actually supports
-or does**. It routes exact contract questions to the appropriate OpenSpec authority;
-it is not the default reference for every customization task.
+Use this reference for **exact OpenSpec contract questions**. It answers what
+OpenSpec supports or does; it is not the default reference for customization design.
 
 ## Which source answers the question?
 
