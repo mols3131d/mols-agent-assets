@@ -1,25 +1,25 @@
-## Summary
+## 📌 Summary
 
 <!--
-무엇이 문제이거나 필요한가? 원하는 변화는 무엇인가?
-구현 방법보다 문제와 기대 결과를 먼저 설명한다.
-Agent에게 독립 작업을 위임하는 Issue라면 중요한 완료 조건과 넘지 말아야 할 경계를 충분히 명확히 하되 구현 절차를 과도하게 지정하지 않는다.
+문제나 필요를 한눈에 이해할 수 있게 설명한다.
+구현 방법보다 원하는 변화와 기대 결과를 먼저 쓴다.
+Agent에게 독립 작업을 위임한다면 중요한 완료 조건과 경계를 명확히 하되 구현 절차는 과도하게 지정하지 않는다.
 -->
 
 {{ summary }}
 
 {% if context %}
-## Context
+## 🧭 Context
 
 {{ context }}
 {% endif %}
 
-## Desired Outcome
+## 🎯 Desired Outcome
 
 {{ desired_outcome }}
 
 {% if boundaries %}
-## Boundaries
+## 🚧 Boundaries
 
 {% for boundary in boundaries %}
 - {{ boundary }}
@@ -27,7 +27,7 @@ Agent에게 독립 작업을 위임하는 Issue라면 중요한 완료 조건과
 {% endif %}
 
 {% if acceptance_criteria %}
-## Acceptance Criteria
+## ✅ Acceptance Criteria
 
 {% for criterion in acceptance_criteria %}
 - [ ] {{ criterion }}
@@ -35,7 +35,7 @@ Agent에게 독립 작업을 위임하는 Issue라면 중요한 완료 조건과
 {% endif %}
 
 {% if reproduction %}
-## Reproduction
+## 🧪 Reproduction
 
 {% for step in reproduction.steps %}
 1. {{ step }}
@@ -46,7 +46,7 @@ Agent에게 독립 작업을 위임하는 Issue라면 중요한 완료 조건과
 {% endif %}
 
 {% if references %}
-## References
+## 🔗 References
 
 {% for reference in references %}
 - {{ reference }}
