@@ -17,28 +17,7 @@ targets:
 
 Mermaid로 **관계·절차·책임·상태·시간·구조를 빠르고 쉽게 읽을 수 있는 diagram-as-code**를 생성하거나 개선한다.
 
-## Activation
-
-다음 조건 중 하나가 핵심이면 이 Skill을 사용한다.
-
-- entity, component, actor 또는 system 사이의 **관계와 boundary**를 보여준다.
-- 단계, 분기, dependency, ownership handoff 또는 message order를 설명한다.
-- lifecycle state와 transition, 사건 chronology 또는 일정 구조를 표현한다.
-- hierarchy, domain model, requirement traceability 또는 database cardinality를 설명한다.
-- 사용자가 Mermaid의 특정 diagram type을 지목했고 중심 질문이 정량 비교보다 구조·관계에 가깝다.
-
-다음은 다른 표현으로 보낸다.
-
-| 중심 질문 | Route |
-| --- | --- |
-| 사건이 어떤 순서로 일어나는가? | `mols-mermaid-diagram` |
-| metric이 시간에 따라 어떻게 변하는가? | `mols-mermaid-chart` |
-| hierarchy의 구조는 무엇인가? | `mols-mermaid-diagram` |
-| hierarchy별 값의 크기는 얼마인가? | `mols-mermaid-chart` |
-| dashboard 전체를 어떻게 구성하는가? | `mols-markdown-dashboard` |
-| 단일 차원의 짧은 목록이나 비교인가? | Markdown list 또는 table |
-
-## Reference Routing
+## References
 
 현재 Mermaid syntax, type·feature 지원 여부와 version semantics는 **실제 target renderer와 Mermaid 공식 문서**가 소유한다. 이 Skill의 reference와 example은 type 선택, 의미 보존, portability와 local design pattern을 보조하며 최신 Mermaid 문법 catalog의 정본이 아니다.
 
@@ -46,7 +25,6 @@ Mermaid로 **관계·절차·책임·상태·시간·구조를 빠르고 쉽게 
 - theme, 강조 또는 기존 diagram의 visual language를 다룰 때만 [Style Policy](references/style-policy.md)를 읽는다.
 - 문법 예제가 필요하면 [Examples](references/examples/README.md)에서 선택한 type의 문서만 읽는다.
 - render, export, syntax error, compatibility 또는 renderer trust boundary를 확인할 때 [Verification](references/mermaid-verification.md)을 읽는다.
-- 수치 비교·추세·비율·양적 이동·계층 규모·다차원 profile이 핵심이면 `mols-mermaid-chart`를 사용한다. Histogram, box plot, scatter는 전문 chart 도구를 사용한다.
 
 ## Workflow
 
