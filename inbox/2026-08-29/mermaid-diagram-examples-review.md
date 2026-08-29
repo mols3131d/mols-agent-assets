@@ -56,5 +56,5 @@
 ## Current
 
 - 완료: `architecture-diagram.md`
-- 완료: `c4-diagrams.md`
+- 완료: `c4-diagrams.md` — 리뷰 → 개선 → 재리뷰 완료
 - 다음: `block-diagram.md` 리뷰
