@@ -88,6 +88,7 @@ No findings identified in the reviewed scope.
 {% endfor %}
 {% endif %}
 
+<!-- Agent가 최종 PR Review text를 실질적으로 작성하거나 재작성했다면 `author`는 필수입니다. -->
 {% if author or revision %}
 ```yaml
 {% if author %}

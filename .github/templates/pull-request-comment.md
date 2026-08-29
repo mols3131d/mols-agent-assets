@@ -27,6 +27,7 @@ Next Actions는 실제 후속 행동이 있을 때만 남기고, Evidence는 판
 {% endfor %}
 {% endif %}
 
+<!-- Agent가 최종 PR conversation text를 실질적으로 작성하거나 재작성했다면 `author`는 필수입니다. -->
 {% if author %}
 ```yaml
 author:

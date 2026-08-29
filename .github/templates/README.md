@@ -41,7 +41,9 @@ Notation은 agent의 사고 과정이나 작업 순서를 강제하지 않습니
 
 Metadata를 사용하는 template은 **본문 마지막의 fenced `yaml` block 한 곳**에만 렌더링합니다. Front Matter나 GitHub object metadata로 취급하지 않으며 별도 `Metadata` heading도 만들지 않습니다.
 
-현재 template family가 사용하는 metadata field는 `author`와 `revision`입니다. 각 field의 의미와 적용 surface는 [`docs/development/github.md`](../../docs/development/github.md)가, 실제 field presence는 각 template file이 소유합니다. Metadata가 필요 없으면 block 전체를 생략합니다.
+현재 template family가 사용하는 metadata field는 `author`와 `revision`입니다. 각 field의 의미와 적용 조건은 [`docs/development/github.md`](../../docs/development/github.md)가 소유하고, 각 template은 자기 surface에서 지원하는 field와 rendering structure를 소유합니다.
+
+Agent가 최종 GitHub text의 내용이나 구조를 실질적으로 작성하거나 재작성했다면 `author` 값을 제공해야 합니다. 사람이 작성한 완성 text를 agent가 그대로 게시하는 경우처럼 세부 경계는 `github.md`의 provenance 규칙을 따릅니다.
 
 공통 rendering shape는 다음과 같으며 각 template은 실제로 사용하는 field만 남깁니다.
 

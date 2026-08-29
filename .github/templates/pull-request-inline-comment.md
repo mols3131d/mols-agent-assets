@@ -33,6 +33,7 @@ Suggestion은 optional 대안이나 구현 예시에만 사용하며 Required Ch
 **Suggestion:** {{ suggestion }}
 {% endif %}
 
+<!-- Agent가 최종 inline review text를 실질적으로 작성하거나 재작성했다면 `author`는 필수입니다. -->
 {% if author %}
 ```yaml
 author:

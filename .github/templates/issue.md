@@ -59,6 +59,7 @@ Agent에게 독립 작업을 위임한다면 완료 조건과 경계를 분명�
 {% endfor %}
 {% endif %}
 
+<!-- Agent가 최종 Issue text를 실질적으로 작성하거나 재작성했다면 `author`는 필수입니다. -->
 {% if author %}
 ```yaml
 author:
