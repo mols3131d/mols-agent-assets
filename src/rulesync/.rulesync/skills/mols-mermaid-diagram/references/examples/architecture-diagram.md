@@ -100,7 +100,7 @@ Layout config는 spacing과 force-directed layout을 조정할 뿐 topology를 �
 - arrow가 relationship direction을 소유한다. `L`, `R`, `T`, `B`는 edge attachment side일 뿐 data flow, dependency direction 또는 실제 network port를 의미하지 않는다.
 - `align`과 layout config는 presentation layer다. 이 값으로 source에 없는 order, priority, ownership 또는 placement semantics를 만들지 않는다.
 - `{group}` modifier는 boundary crossing을 시각적으로 명확히 할 필요가 있을 때만 사용한다.
-- `junction`은 connection·fan-out 구조를 정리하는 특수 node로 사용하고, source에 없는 실제 service나 infrastructure component처럼 해석하지 않는다.
+- `junction`은 connection·fan-out 구조를 정리하는 특수 node이며 실제 service나 infrastructure component처럼 해석하지 않는다.
 - external icon pack은 renderer configuration과 trust boundary가 확인된 경우에만 사용한다.
 - topology가 복잡해 relationship 추적이 어렵거나 portrait viewport에서 과도한 horizontal spread가 생기면 config를 계속 조정하기보다 overview/detail 분리를 검토한다.
 
@@ -127,4 +127,4 @@ flowchart TB
     end
 ```
 
-Fallback에서도 source에 없는 boundary나 dependency를 새로 만들지 않는다. Architecture의 junction이 단순 connection aid였다면 직접 edge로 collapse할 수 있지만, 독립적인 domain meaning이 있다면 생략하지 않는다.
+Fallback에서도 source에 없는 boundary나 dependency를 새로 만들지 않는다. Architecture의 junction이 connection aid였다면 equivalent direct edge로 collapse할 수 있지만, junction이 표현하던 branching connectivity는 그대로 보존한다.
