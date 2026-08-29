@@ -1,18 +1,15 @@
 ## Summary
 
 <!--
-왜 이 변경이 필요한가? 병합 후 무엇이 달라지는가?
-핵심부터 설명하고 구현 상세는 Changes에 둔다.
+왜 필요한 변경이며 merge 후 무엇이 달라지는지 먼저 설명한다.
+구현 상세는 Changes에 둔다.
 -->
 
 {{ summary }}
 
 ## Changes
 
-<!--
-검토자가 diff에서 확인해야 할 최종 변화는 무엇인가?
-파일 목록을 다시 쓰기보다 동작, 계약, 구조의 변화에 집중한다.
--->
+<!-- 파일 목록을 반복하기보다 검토자가 확인해야 할 동작, 계약과 구조의 변화를 적는다. -->
 
 {% for change in changes %}
 - {{ change }}
@@ -21,40 +18,45 @@
 ## Validation
 
 <!--
-실제로 무엇을 확인했고 결과는 어땠는가?
+직접 확인한 check와 근거만 적는다.
 중요한 미수행 검증은 숨기지 말고 ⚪ Not Verified로 남긴다.
 상태: ✅ Pass / ❌ Fail / ⚪ Not Verified
+기본적으로 ❌ Fail → ⚪ Not Verified → ✅ Pass 순으로 두어 주의가 필요한 결과를 먼저 보이게 한다. 실행 순서가 판단에 중요하면 그 순서를 우선한다.
 -->
 
 {% for check in validation %}
 - {{ check.status }} — `{{ check.name }}`: {{ check.evidence }}
 {% endfor %}
 
-{% if boundaries %}
-## Boundaries
+{% if risks %}
+## Risks
 
-{% for boundary in boundaries %}
-- {{ boundary }}
+<!--
+`risk.importance`는 `🔴 Critical` / `🟠 High` / `🟡 Medium` / `🔵 Low` 중 하나를 그대로 사용한다.
+기본적으로 importance가 높은 risk부터 정렬한다. 인과관계나 진행 순서가 판단에 중요하면 그 순서를 우선한다.
+현재 변경에서 실제로 고려해야 할 risk만 적고 finding이나 Validation을 반복하지 않는다.
+-->
+
+{% for risk in risks %}
+- {{ risk.importance }} — {{ risk.description }}
 {% endfor %}
 {% endif %}
 
 {% if review_focus %}
 ## Review Focus
 
-<!--
-특히 확인할 결정, trade-off나 위험을 강조한다. 이 section은 review 범위를 제한하지 않는다.
--->
+<!-- 앞의 변경, 검증과 risk를 바탕으로 특히 확인할 결정이나 trade-off를 적는다. Review 범위를 제한하지 않는다. -->
 
 {% for item in review_focus %}
 - {{ item }}
 {% endfor %}
 {% endif %}
 
-{% if risks %}
-## Risks
+{% if boundaries %}
+## Boundaries
 
-{% for risk in risks %}
-- ⚠️ {{ risk }}
+{% for boundary in boundaries %}
+- {{ boundary }}
 {% endfor %}
 {% endif %}
 
