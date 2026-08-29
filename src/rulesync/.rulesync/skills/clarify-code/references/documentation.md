@@ -41,6 +41,8 @@ Candidate meaning을 확인할 때 상황에 따라 다음 evidence가 유용할
 - 같은 semantic owner의 현재 source documentation
 - 현재 task에서 사용자가 명시적으로 제공한 domain·operational fact
 
+수정 대상의 기존 comment/doc text는 candidate context일 수 있지만 **자기 claim을 스스로 증명하지 않는다.** Project/runtime authority가 그 surface 자체를 canonical contract로 정의한 경우가 아니라면 target prose만을 sole evidence로 사용하지 않는다.
+
 User-provided current fact는 usable evidence candidate지만 unconditional semantic authority는 아니다. Observable behavior나 applicable canonical/current contract와 material하게 충돌하면 그대로 source prose로 canonize하지 않고 inconsistency 또는 uncertainty로 다룬다.
 
 Git history, issue와 old discussion은 candidate rationale를 발견하는 supporting context일 수 있지만 current invariant의 단독 authority는 아니다. Historical reason을 explanation으로 남기려면 현재 code/contract에서도 여전히 유효한지 확인한다.
@@ -91,6 +93,8 @@ Python example은 information placement를 보여주는 예시일 뿐 다른 언
 Comment는 core의 maintainer-facing signal에 해당하는 **constraint, consequence와 rationale**를 가장 가까운 적절한 scope에서 전달한다. Code가 이미 구조적으로 적절하고 해당 meaning의 local projection이 필요하다면 가장 작은 comment를 추가하거나 기존 comment를 개선한다.
 
 Caller가 사용 전에 알아야 하는 contract를 implementation body comment에만 숨기지 않는다. 반대로 caller가 의존하지 않는 implementation-only ordering이나 workaround rationale를 public API documentation으로 승격하지 않는다.
+
+Structural opacity와 independent rationale가 함께 존재할 수 있다. 이 경우 comment로 structure를 line-by-line 해설하지 않되, 별도로 확인된 durable constraint나 rationale까지 제거하지 않는다.
 
 Rejected alternative는 durable negative knowledge가 될 수 있다. 과거에 다른 방법을 검토했다는 history 자체를 기록하지 않는다. 미래 maintainer가 자연스럽게 다시 시도할 가능성이 높고 **현재 constraint가 여전히 유효하다는 evidence가 있을 때**만 잘못된 대안과 연결되는 이유를 설명한다.
 
@@ -175,6 +179,7 @@ source file 안의 모든 text가 단순 설명은 아니다.
 설명을 추가하거나 수정한 뒤 확인한다.
 
 - 이 explanation의 non-obvious semantic claim을 지지하는 current evidence는 무엇인가?
+- target prose 자체를 authority 확인 없이 sole evidence로 사용하고 있지 않은가?
 - user-provided fact를 포함해 **그 claim에 관련된** evidence source 사이의 material conflict가 해소됐는가?
 - evidence-backed durable contract·constraint·consequence·rationale가 남아 있는데 explanation을 놓치지 않았는가?
 - 이 설명이 없으면 reader는 무엇을 추론하거나 찾아야 하는가?
