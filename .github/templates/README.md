@@ -49,7 +49,7 @@ Metadata는 필요한 경우 **본문 마지막의 fenced `yaml` block 한 곳**
 - `author` — GitHub 작성자만으로 실제 작성 주체를 구별할 수 없는 agent 주도 작성의 provenance입니다. 각 항목은 `<user-id>:<provider>-<service>` 형식을 사용합니다.
 - `revision` — Pull Request description이나 PR Review가 exact diff pair에 의존할 때 사용하는 provenance입니다. `base`와 `head`를 함께 full commit SHA로 기록합니다. PR description을 새 pair 기준으로 갱신하면 함께 갱신하고, 이미 제출된 review의 pair는 이후 head가 바뀌어도 변경하지 않습니다.
 
-Issue와 일반 comment에는 exact revision pair가 판단에 특별히 필요하지 않으면 `revision`을 추가하지 않습니다. Metadata가 필요 없으면 block 전체를 생략합니다.
+`revision`은 Pull Request와 PR Review template에서만 사용합니다. Issue, PR conversation comment와 inline review comment의 metadata는 필요한 경우 `author`만 사용합니다. Metadata가 필요 없으면 block 전체를 생략합니다.
 
 ```yaml
 author:
