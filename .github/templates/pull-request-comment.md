@@ -6,7 +6,7 @@ Evidence와 Next Actions는 판단이나 후속 작업에 실제로 필요할 �
 {{ message }}
 
 {% if evidence %}
-## 🔎 Evidence
+## Evidence
 
 {% for item in evidence %}
 - {{ item }}
@@ -14,7 +14,7 @@ Evidence와 Next Actions는 판단이나 후속 작업에 실제로 필요할 �
 {% endif %}
 
 {% if next_actions %}
-## ➡️ Next Actions
+## Next Actions
 
 {% for action in next_actions %}
 - [ ] {{ action }}
