@@ -10,6 +10,12 @@ flowchart LR
     revise --> validate
 ```
 
+## Decision Branches
+
+- decision의 outgoing edge가 서로 다른 condition이나 outcome을 뜻하면 각 branch를 label로 구분한다.
+- 하나의 decision에서 branch가 4개 이상이면 복합 rule을 한 node에 숨기지 않았는지 확인하고, nested decision, rule table 또는 detail diagram으로 분해를 검토한다.
+- branch 수는 readability trigger일 뿐 validity limit가 아니다. 실제 source rule이 여러 outcome을 요구하면 의미를 줄이지 않는다.
+
 ## Viewport-Aware Composition
 
 같은 수준의 group마다 내부 flow가 `LR`로 자연스럽더라도 모든 group을 하나의 긴 수평 chain으로 펼치지 않는다. width:height가 약 3:4인 portrait reading viewport를 기본으로 보고, group 내부 direction은 유지하면서 peer group을 세로로 쌓아 vertical scroll로 읽히게 한다.
@@ -75,14 +81,13 @@ flowchart LR
 
 ### After: Overview
 
-전체 boundary와 주요 handoff만 overview flowchart로 남긴다.
+전체 boundary와 source에 존재하는 주요 handoff만 overview flowchart로 추상화한다. Conditional handoff는 조건을 잃지 않는다.
 
 ```mermaid
 flowchart LR
     source[Source] --> transform[Transform]
     transform --> quality[Quality]
-    quality --> delivery[Delivery]
-    quality -.-> source
+    quality -->|Pass| delivery[Delivery]
 ```
 
 ### After: Four Detail Diagrams
@@ -125,6 +130,8 @@ flowchart LR
         package[Package] --> publish[Publish]
     end
 ```
+
+Overview는 group-level abstraction을 만들 수 있지만, 원본에 없던 feedback path나 branch를 새로 추가하지 않는다.
 
 ## Subgraph Grouping
 
