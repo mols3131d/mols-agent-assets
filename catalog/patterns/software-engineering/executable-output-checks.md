@@ -216,41 +216,67 @@ Check는 한 번 추가하면 끝나는 자산이 아닙니다. 다음 비용이
 
 ## Limits and Responses
 
+Executable check는 **관찰 가능한 증거를 만드는 surface이지, 그 자체가 truth나 policy는 아닙니다.** 가장 위험한 실패는 check가 틀렸는데도 deterministic하게 통과하거나, 일부만 보고 전체를 보증한다고 오해하는 경우입니다.
+
 ### 기계적으로 검사되는 것만 중요해질 수 있습니다
 
 자동화하기 쉬운 항목이 실제 software quality 전체를 대표하지는 않습니다. Design, cohesion, naming, simplicity 같은 판단은 review가 계속 필요합니다.
 
 **대응:** check가 담당하는 범위를 machine-observable property로 좁게 보고, 결과가 깨끗하다고 해서 output 전체의 품질이 보장된다고 해석하지 않습니다.
 
-### Check가 계속 늘어나면 관리 비용이 더 커질 수 있습니다
+### Deterministic한 Check도 잘못된 모델을 구현할 수 있습니다
 
-작은 script, lint rule, test와 warning도 쌓이면 또 하나의 복잡한 subsystem이 될 수 있습니다.
+같은 입력에서 항상 같은 결과가 나온다는 사실은 check의 판정 기준이 옳다는 뜻이 아닙니다. 잘못 이해한 요구사항, 오래된 assumption, 우연한 repository 구조를 안정된 rule처럼 코드화하면 **일관되게 틀린 feedback**을 만들 수 있습니다.
 
-**대응:** 새로운 check보다 기존 mechanism으로 표현할 수 있는지 먼저 비교하고, 가치가 낮거나 중복되는 check는 만들지 않거나 정리합니다.
+**대응:** 무엇을 보호하려는 check인지 output property를 설명할 수 있게 두고, checker 변경도 그 property가 여전히 타당한지 함께 review합니다. Reproducibility를 validity와 같은 의미로 취급하지 않습니다.
 
-### Feedback 강도가 문제보다 클 수 있습니다
+### Check가 보는 범위를 전체 Coverage로 오해할 수 있습니다
 
-유용한 signal까지 모두 blocking으로 만들면 예외 처리와 우회 구현이 늘고 개발 흐름이 불필요하게 경직될 수 있습니다.
+Targeted script나 incremental check는 빠른 대신 일부 path, file type, state만 볼 수 있습니다. 한 surface에서 통과했다는 사실이 다른 실행 경로나 repository 전체에서도 같은 성질이 유지된다는 뜻은 아닐 수 있습니다.
 
-**대응:** 정보, 경고, 차단 중 문제의 확실성과 비용에 맞는 수준을 선택하고 필요에 따라 강도를 바꿀 수 있게 둡니다.
+**대응:** check가 관찰하는 범위를 결과와 문맥에서 이해할 수 있게 하고, 누락 비용이 큰 경우에만 더 넓은 audit나 별도 verification을 보완적으로 고려합니다. 좁은 check를 전체 보증처럼 표현하지 않습니다.
+
+### Check가 오래된 결정을 고착시킬 수 있습니다
+
+처음에는 유효했던 boundary나 convention도 architecture, product 요구, tooling이 바뀌면 더 이상 최선이 아닐 수 있습니다. Check가 오래 남으면 과거의 선택이 현재의 불변 조건처럼 보이고 합리적인 변화까지 막을 수 있습니다.
+
+**대응:** 예외가 반복되거나 check 때문에 자연스러운 변경이 계속 우회된다면 implementation보다 보호하려는 property 자체가 아직 유효한지 먼저 다시 봅니다. 필요하면 warning으로 낮추거나 범위를 바꾸거나 제거합니다.
+
+### 예외 목록이 또 하나의 숨은 Policy가 될 수 있습니다
+
+Allowlist, ignore path, suppression과 special case가 계속 늘어나면 check의 실제 의미가 본문보다 예외 목록에 숨어버릴 수 있습니다. 이 상태에서는 새 contributor나 agent가 왜 어떤 위반은 허용되고 다른 위반은 막히는지 이해하기 어렵습니다.
+
+**대응:** 예외는 이유를 이해할 수 있게 두고 가능한 한 좁게 유지합니다. 예외가 반복되는 종류나 넓은 영역을 차지하기 시작하면 예외를 더 추가하기보다 check의 모델이나 적용 범위를 다시 설계하는 편이 나을 수 있습니다.
+
+### Check가 계속 늘어나면 관리 비용과 Noise가 더 커질 수 있습니다
+
+작은 script, lint rule, test와 warning도 쌓이면 또 하나의 복잡한 subsystem이 될 수 있습니다. 특히 의미가 약한 warning이 많아지면 중요한 signal까지 습관적으로 무시될 수 있습니다.
+
+**대응:** 새로운 check보다 기존 mechanism으로 표현할 수 있는지 먼저 비교하고, 가치가 낮거나 중복되는 check는 만들지 않거나 정리합니다. 반복해서 무시되는 signal은 사람의 주의를 요구하기보다 삭제·통합·강도 조정을 검토합니다.
+
+### Feedback 강도가 판정 신뢰도보다 클 수 있습니다
+
+유용한 signal까지 모두 blocking으로 만들면 예외 처리와 우회 구현이 늘고 개발 흐름이 불필요하게 경직될 수 있습니다. 반대로 실제로 반드시 지켜야 하는 안정된 property를 계속 warning으로만 두면 중요한 실패를 놓칠 수 있습니다.
+
+**대응:** 정보, 경고, 차단 중 **판정 신뢰도와 위반 비용에 비례하는 수준**을 선택합니다. Check의 구현 여부와 severity를 한 결정으로 묶지 않고, 운영하면서 강도를 바꿀 수 있게 둡니다.
 
 ### Check를 통과하기 위한 우회가 생길 수 있습니다
 
-좁은 syntactic rule은 실제 품질보다 check 통과만 최적화하는 결과를 만들 수 있습니다.
+좁은 syntactic rule은 실제 품질보다 check 통과만 최적화하는 결과를 만들 수 있습니다. Rule을 피해 wrapper를 하나 더 만들거나 이름만 바꾸는 식의 변화가 반복되면 metric이나 check가 목표를 대신하기 시작한 신호일 수 있습니다.
 
-**대응:** 가능한 한 보호하려는 output property를 직접 관찰하고, 예외와 wrapper가 계속 늘어난다면 check가 실제 문제를 잘 모델링하는지 다시 봅니다.
+**대응:** 가능한 한 보호하려는 output property를 직접 관찰하고, 예외와 wrapper가 계속 늘어난다면 check가 실제 문제를 잘 모델링하는지 다시 봅니다. Passing 자체를 품질 목표로 삼지 않습니다.
 
 ### Agent가 Check 자체도 수정할 수 있습니다
 
-Agent가 output과 checker를 함께 수정할 수 있다면 warning을 없애거나 test를 약하게 만드는 변경도 가능합니다. 일반 품질 feedback에서는 review로 충분할 수 있지만, 이것만으로 독립적인 assurance가 생기는 것은 아닙니다.
+Agent가 output과 checker를 함께 수정할 수 있다면 warning을 없애거나 test를 약하게 만드는 변경도 가능합니다. 일반 품질 feedback에서는 review로 충분할 수 있지만, executable check만으로 독립적인 assurance가 생기는 것은 아닙니다.
 
 **대응:** 보안, 규정, 고위험 constraint처럼 독립적인 보호가 필요한 문제는 repository permission, protected workflow, review ownership 등 해당 위험을 실제로 통제하는 mechanism에서 다룹니다.
 
 ### 실행 비용이 발견 가치보다 커질 수 있습니다
 
-전체 repository를 매번 스캔하는 check는 작은 변경에 비해 지나치게 비쌀 수 있습니다.
+전체 repository를 매번 스캔하는 check는 작은 변경에 비해 지나치게 비쌀 수 있습니다. 느린 feedback은 agent와 사람 모두에게 iteration cost를 키우고, 결국 check를 건너뛰는 동기를 만들 수도 있습니다.
 
-**대응:** targeted check, on-demand command, periodic audit처럼 더 싼 실행 시점을 비교하고, 항상 실행할 필요가 없는 check를 상시 gate로 만들지 않습니다.
+**대응:** targeted check, on-demand command, periodic audit처럼 더 싼 실행 시점을 비교하고, 항상 실행할 필요가 없는 check를 상시 gate로 만들지 않습니다. 더 싼 native mechanism이 같은 property를 보장하게 되면 custom check를 제거하는 것도 정상적인 선택입니다.
 
 ## Related Patterns
 
@@ -264,4 +290,4 @@ Agent가 output과 checker를 함께 수정할 수 있다면 warning을 없애�
 
 ## Short Form
 
-> **작업 결과에서 반복적으로 문제를 만드는 machine-observable property를 가장 단순한 executable check로 드러내고, 상황에 맞는 위치와 강도로 feedback합니다. Check가 문제보다 비싸지면 약화·이동·제거할 수 있습니다.**
+> **작업 결과에서 반복적으로 문제를 만드는 machine-observable property를 가장 단순한 executable check로 드러내고, 상황에 맞는 위치와 강도로 feedback합니다. Check는 truth나 policy 자체가 아니며, 문제보다 비싸지면 약화·이동·제거할 수 있습니다.**
