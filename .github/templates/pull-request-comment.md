@@ -1,3 +1,8 @@
+<!--
+첫 문장에서 comment의 목적과 현재 결론을 바로 전달한다.
+Evidence와 Next Actions는 판단이나 후속 작업에 실제로 필요할 때만 남긴다.
+-->
+
 {{ message }}
 
 {% if evidence %}
@@ -19,6 +24,8 @@
 {% if author %}
 ```yaml
 author:
-{% for item in author %}  - {{ item }}
-{% endfor %}```
+{% for item in author %}
+  - {{ item }}
+{% endfor %}
+```
 {% endif %}
