@@ -71,14 +71,14 @@ stateDiagram-v2
 
 ### Overview
 
-내부 상태를 숨기고 이미 존재하는 상위 lifecycle boundary와 전이만 요약한다.
+복잡한 내부 구조를 생략하더라도 원본에 있던 concrete transition을 그대로 사용한다.
 
 ```mermaid
 stateDiagram-v2
-    Source --> Transform
-    Transform --> Quality
-    Quality --> Delivery: approved
-    Quality --> Transform: rejected
+    Registered --> Normalizing
+    Enriched --> Checking
+    Approved --> Packaging
+    Rejected --> Normalizing
 ```
 
 ### Detail
@@ -96,5 +96,5 @@ stateDiagram-v2
 
 - state와 transition은 source가 실제로 뒷받침하는 lifecycle 의미만 표현한다.
 - `[*]`는 단순한 layout marker가 아니라 entry 또는 exit semantics이므로 근거 없이 추가하지 않는다.
-- overview에서 composite state로 추상화하더라도 detail과 모순되는 transition을 만들지 않는다.
+- overview는 state를 생략할 수 있지만 concrete transition을 더 넓은 macro transition으로 일반화하지 않는다.
 - split 과정에서 편의를 위해 terminal state, recovery path 또는 transition을 발명하지 않는다.
