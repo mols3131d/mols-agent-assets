@@ -1,6 +1,6 @@
 # Validation
 
-Runtime clarification은 maintained evidence를 의도적으로 바꿀 수 있지만 **observable behavior와 기존 caller/consumer contract는 보존**해야 한다. 가능하면 변경 전후에 같은 작은 executable scenario를 사용한다.
+Runtime clarification은 future execution에 유지할 evidence를 의도적으로 바꿀 수 있지만 **observable behavior와 기존 caller/consumer contract는 보존**해야 한다. 가능하면 변경 전후에 같은 작은 executable scenario를 사용한다.
 
 ## Behavior Envelope
 
@@ -20,7 +20,7 @@ Runtime clarification은 maintained evidence를 의도적으로 바꿀 수 있�
 
 ## Baseline Observation
 
-Maintained evidence를 수정하기 전에 가능한 경우 [Observation](observation.md)에 따라 현재 behavior와 evidence를 먼저 본다.
+Future runtime evidence를 수정하기 전에 가능한 경우 [Observation](observation.md)에 따라 현재 behavior와 evidence를 먼저 본다.
 
 Baseline은 최소한 다음을 구분할 수 있어야 한다.
 
@@ -30,11 +30,11 @@ Baseline은 최소한 다음을 구분할 수 있어야 한다.
 - 질문과 관련된 state delta, artifact, history 또는 path evidence가 무엇인가
 - 현재 reconstruction이 정확히 어디서 끊기는가
 
-현재 evidence만으로 질문이 충분히 풀리고 maintained change가 필요하지 않으면 변경하지 않는다.
+현재 evidence만으로 질문이 충분히 풀리고 future execution에 유지할 변경이 필요하지 않으면 수정하지 않는다.
 
 ## Before And After
 
-Maintained clarification을 적용했다면:
+Runtime clarification을 적용했다면:
 
 1. 변경 전 사용한 동일하거나 의미상 동등한 좁은 executable scenario를 다시 실행한다.
 1. return, exception, state와 side effect가 의도치 않게 달라지지 않았는지 확인한다.
@@ -78,6 +78,8 @@ Future reconstruction이 특정 evidence availability에 의존하면 필요한 
 
 제약을 제거할 필요가 항상 있는 것은 아니다. 다만 limitation이 reconstruction claim을 약화시키면 그 사실을 숨기지 않는다.
 
+Coverage, trace, test result와 execution history의 해석 한계는 [Observation](observation.md#path-evidence-is-not-reason-evidence)를 그대로 적용한다. Validation에서 이를 별도 contract로 다시 정의하지 않는다.
+
 ## Validate Meaning
 
 로그 문자열이나 formatter 자체보다 의미를 검증한다.
@@ -91,14 +93,6 @@ Future reconstruction이 특정 evidence availability에 의존하면 필요한 
 - 민감하거나 과도한 데이터가 추가되지 않았는가?
 
 정확한 formatting이나 incidental wording을 contract로 고정하지 않는다. 기존 test나 외부 consumer가 이미 log/event/metadata contract를 명시한 경우에는 그 contract를 따른다.
-
-## Coverage And Trace Limits
-
-기존 coverage나 trace를 validation evidence로 사용할 때 그 범위를 넘겨 해석하지 않는다.
-
-- coverage는 실행 여부나 branch transition을 확인할 수 있지만 decision reason이나 correctness를 자동으로 증명하지 않는다.
-- trace는 instrumentation과 sampling 범위 안에서 observed path를 보여준다.
-- timestamp proximity는 causal relation의 충분한 증거가 아니다.
 
 ## Validation Gaps
 
