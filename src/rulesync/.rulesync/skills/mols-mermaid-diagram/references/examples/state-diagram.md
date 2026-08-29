@@ -37,13 +37,11 @@ stateDiagram-v2
     Approved --> [*]
 ```
 
-## Splitting A Large State Diagram Package
+## Splitting Large State Diagrams
 
-큰 state diagram은 상태를 임의로 반으로 자르지 않고, 같은 수준의 lifecycle 책임을 가진 네 상태 영역을 package로 분리한다.
+state와 transition이 많아 lifecycle을 추적하기 어려우면 **composite state 또는 lifecycle responsibility**를 기준으로 overview와 detail을 분리한다. Split은 기존 state machine을 다른 zoom level로 표현하는 작업이며 새로운 entry, exit 또는 transition을 만드는 작업이 아니다.
 
-### Before: Four Equal Areas In One Diagram
-
-네 영역의 상태와 전체 전이를 한 diagram에서 먼저 보여준다.
+### Before
 
 ```mermaid
 stateDiagram-v2
@@ -71,58 +69,32 @@ stateDiagram-v2
     Rejected --> Normalizing
 ```
 
-### After: Overview
+### Overview
 
-네 영역 사이의 주요 상태 전이만 overview로 남긴다.
+내부 상태를 숨기고 이미 존재하는 상위 lifecycle boundary와 전이만 요약한다.
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Source
     Source --> Transform
     Transform --> Quality
     Quality --> Delivery: approved
     Quality --> Transform: rejected
-    Delivery --> [*]
 ```
 
-### After: Four Detail Diagrams
+### Detail
 
-overview의 네 영역을 각각 하나의 detail state diagram으로 확장한다. 영역을 합치거나 lifecycle의 중간 상태를 임의로 잘라내지 않는다.
-
-#### Source Detail
-
-```mermaid
-stateDiagram-v2
-    [*] --> Received
-    Received --> Registered
-    Registered --> [*]
-```
-
-#### Transform Detail
-
-```mermaid
-stateDiagram-v2
-    [*] --> Normalizing
-    Normalizing --> Enriched
-    Enriched --> [*]
-```
-
-#### Quality Detail
+특정 composite state를 확대할 때 원본에 있던 내부 state와 transition만 유지한다.
 
 ```mermaid
 stateDiagram-v2
     [*] --> Checking
-    Checking --> Approved: checks pass
-    Checking --> Rejected: checks fail
-    Approved --> [*]
-    Rejected --> [*]
+    Checking --> Approved
+    Checking --> Rejected
 ```
 
-#### Delivery Detail
+## Rules
 
-```mermaid
-stateDiagram-v2
-    [*] --> Packaging
-    Packaging --> Published
-    Published --> [*]
-```
+- state와 transition은 source가 실제로 뒷받침하는 lifecycle 의미만 표현한다.
+- `[*]`는 단순한 layout marker가 아니라 entry 또는 exit semantics이므로 근거 없이 추가하지 않는다.
+- overview에서 composite state로 추상화하더라도 detail과 모순되는 transition을 만들지 않는다.
+- split 과정에서 편의를 위해 terminal state, recovery path 또는 transition을 발명하지 않는다.
