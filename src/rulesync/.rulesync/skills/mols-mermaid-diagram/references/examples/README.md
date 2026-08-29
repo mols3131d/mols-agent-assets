@@ -12,7 +12,7 @@
 | message order | [Sequence Diagram](sequence-diagram.md), [ZenUML](zenuml.md) |
 | lifecycle | [State Diagram](state-diagram.md) |
 | domain model·schema | [Class Diagram](class-diagram.md), [ER Diagram](er-diagram.md) |
-| architecture·boundary | [Architecture](architecture-diagram.md), [C4](c4-context.md), [Block Diagram](block-diagram.md) |
+| architecture·boundary | [Architecture](architecture-diagram.md), [C4](c4-diagrams.md), [Block Diagram](block-diagram.md) |
 | chronology·planning·work | [Timeline](timeline.md), [Gantt](gantt.md), [Git Graph](git-graph.md), [Kanban](kanban.md) |
 | hierarchy·experience·requirements | [Mindmap](mindmap.md), [TreeView](tree-view.md), [User Journey](user-journey.md), [Requirement Diagram](requirement-diagram.md) |
 | specialized relationship·sensemaking | [Packet](packet-diagram.md), [Event Modeling](event-modeling.md), [Venn](venn.md), [Ishikawa](ishikawa.md), [Wardley](wardley.md), [Cynefin](cynefin.md) |
