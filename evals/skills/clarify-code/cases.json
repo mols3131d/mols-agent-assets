@@ -1,0 +1,174 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "caller-contract-docstring",
+      "mode": "skill",
+      "prompt": "The function name and types are clear, but callers cannot tell that loading the same partition key replaces the previous load. Clarify this in the source file without changing code behavior.",
+      "assertions": [
+        "Uses a docstring or equivalent code-adjacent caller-facing declaration documentation surface for the non-obvious contract.",
+        "Does not rename the function, change its signature, or refactor executable code.",
+        "Avoids repeating information already obvious from the name and types."
+      ]
+    },
+    {
+      "id": "maintainer-rationale-comment",
+      "mode": "skill",
+      "prompt": "Cleanup must happen after result capture so cleanup failure never replaces the original result or exception. The code is correct but the reason is not obvious. Clarify it without changing executable code.",
+      "assertions": [
+        "Uses a concise code-local comment to explain why the implementation ordering matters.",
+        "Does not rewrite the control flow when the code itself is already appropriate.",
+        "Explains rationale rather than translating the next statement into prose."
+      ]
+    },
+    {
+      "id": "module-local-convention",
+      "mode": "skill",
+      "prompt": "This source module follows a local convention that is essential to maintainers but not visible from any one symbol. Add the smallest source-level explanation without duplicating the architecture guide.",
+      "assertions": [
+        "May use a module- or package-level explanation when the convention genuinely applies to that wider source scope.",
+        "Projects only the local information maintainers need instead of copying broader policy.",
+        "Does not change executable code."
+      ]
+    },
+    {
+      "id": "structural-problem-boundary",
+      "mode": "negative",
+      "prompt": "This function uses positional tuples, overloaded booleans, and three meaningless wrappers. Add comments so it becomes understandable.",
+      "assertions": [
+        "Does not use comments to cover a comprehension problem caused by executable code structure or representation.",
+        "Identifies the structural concern as mols-code-comprehension-refactor responsibility or a handoff candidate rather than performing that refactor under clarify-code.",
+        "Does not modify executable code under clarify-code."
+      ]
+    },
+    {
+      "id": "obvious-comment-request",
+      "mode": "negative",
+      "prompt": "Add comments before every line explaining what each statement does.",
+      "assertions": [
+        "Rejects or minimizes comments that merely restate obvious code.",
+        "Adds prose only where it supplies non-obvious caller contract or maintainer rationale."
+      ]
+    },
+    {
+      "id": "machine-consumed-comment",
+      "mode": "negative",
+      "prompt": "Rewrite all source comments for style, including noqa, type: ignore, coverage pragmas, formatter directives, and the encoding cookie.",
+      "assertions": [
+        "Does not treat machine-consumed directives or source metadata as ordinary explanatory comments.",
+        "Preserves tooling and runtime contracts unless their semantics are explicitly part of the task and validated."
+      ]
+    },
+    {
+      "id": "runtime-consumed-docstring",
+      "mode": "skill",
+      "prompt": "Improve a docstring that is also used by doctest and reflected into generated API documentation. Keep behavior and tooling output semantics intact.",
+      "assertions": [
+        "Recognizes that the docstring is an observable or tool-consumed surface rather than inert prose.",
+        "Preserves doctest and documentation contract semantics and uses relevant validation before claiming preservation.",
+        "Still avoids changing executable code."
+      ]
+    },
+    {
+      "id": "no-net-value-comment",
+      "mode": "negative",
+      "prompt": "The code and naming are already clear. Add one more explanatory comment for readability without changing the code.",
+      "assertions": [
+        "May choose a no-op when the requested comment would not remove non-obvious inference, search, or misunderstanding cost.",
+        "Does not treat comment quantity as a readability or quality proxy.",
+        "Does not invent rationale or contracts that are not supported by the code or context."
+      ]
+    },
+    {
+      "id": "durable-rejected-alternative",
+      "mode": "skill",
+      "prompt": "A simpler caching approach looks tempting, but it would hide permission changes that must become visible within the same request. The implementation is already correct. Clarify this for future maintainers without changing executable code.",
+      "assertions": [
+        "Adds or improves a code-local comment that preserves the current constraint and consequence because it prevents a likely but invalid future change.",
+        "Explains the current invariant rather than recording discussion history or a rejected proposal log.",
+        "Keeps the explanation tied to the narrow surface where the caching decision matters."
+      ]
+    },
+    {
+      "id": "placement-scope",
+      "mode": "skill",
+      "prompt": "Only one branch requires validation to happen before cleanup, but I want a long module docstring saying validation must always precede cleanup. Clarify the reason without changing code.",
+      "assertions": [
+        "Does not broaden a branch-local ordering constraint into a module-wide rule.",
+        "Prefers an explanation near the affected branch or ordering when that is the actual semantic scope.",
+        "Keeps broader module-level documentation free of a false global invariant."
+      ]
+    },
+    {
+      "id": "stale-implementation-narration",
+      "mode": "skill",
+      "prompt": "A comment still names an old variable and describes a previous three-step algorithm, but the real invariant that cleanup must not replace the original error is still valid. Improve the explanation without changing executable code.",
+      "assertions": [
+        "Does not treat the existing stale narration as sufficient evidence for its own obsolete implementation claims.",
+        "Rewrites or reduces the comment around the current durable invariant and consequence, or removes obsolete details that add no value.",
+        "Does not change executable code while correcting the explanation."
+      ]
+    },
+    {
+      "id": "implicit-maintainer-comment-discovery",
+      "mode": "skill",
+      "prompt": "Make this source easier for future maintainers without changing executable code. The implementation captures an outcome, then runs staging cleanup. There is no explanatory comment. A nearby regression test named `test_cleanup_failure_preserves_original_exception` asserts that when the main operation raises and cleanup also fails, the original exception is still the one observed by the caller. Choose the smallest source-level clarification that is warranted.",
+      "assertions": [
+        "Uses the nearby regression test as evidence for the hidden implementation ordering or failure consequence instead of requiring the user to state the rationale directly.",
+        "Adds or improves a code-local comment explaining the evidence-backed maintainer consequence even though the prompt does not explicitly request a comment.",
+        "Does not refactor executable code or narrate obvious statements."
+      ]
+    },
+    {
+      "id": "selective-positive-comment",
+      "mode": "skill",
+      "prompt": "Review this source for maintainability without changing executable code. `user = load_user(id)` is self-explanatory. The current operational requirement is that a later permission lookup must bypass the request cache because permission revocations must become visible before the request completes. The implementation already performs that uncached lookup, and no applicable current contract or test conflicts with the requirement.",
+      "assertions": [
+        "Uses the explicitly provided current visibility constraint as evidence when it does not conflict with applicable current behavior or contract.",
+        "Leaves the self-explanatory user load without a redundant comment.",
+        "Adds or improves a comment near the uncached permission lookup that explains only the supported current visibility constraint or consequence without inventing extra rationale."
+      ]
+    },
+    {
+      "id": "unsupported-rationale-no-fabrication",
+      "mode": "negative",
+      "prompt": "Clarify this unusual source for future maintainers without changing executable code. One lookup explicitly disables caching, but the caller, tests, current configuration, API contract, and nearby source documentation do not explain why. There is no confirmed performance, consistency, or permission-visibility requirement. Add only explanation that can be supported by the available context.",
+      "assertions": [
+        "Does not invent a plausible caching, performance, race-condition, consistency, or permission rationale from the unusual code shape alone.",
+        "Does not add an unsupported permanent source comment merely to satisfy the request for clarification.",
+        "May report that the material rationale could not be established while leaving executable code unchanged."
+      ]
+    },
+    {
+      "id": "caller-visible-protocol-doc-surface",
+      "mode": "skill",
+      "prompt": "This is Go code. An exported function `Send` may only be called after the protocol handshake is complete, and callers must know this before invoking it. The implementation is already correct. Add the smallest source-level clarification without changing executable code.",
+      "assertions": [
+        "Treats the handshake requirement as caller-visible contract information rather than maintainer-only implementation rationale.",
+        "Uses the language- and repository-native caller-facing declaration documentation surface, such as a Go declaration doc comment, instead of hiding the requirement only in a function-body comment.",
+        "Does not impose Python docstring syntax or modify executable code."
+      ]
+    },
+    {
+      "id": "conflicting-evidence-no-canonization",
+      "mode": "skill",
+      "prompt": "Clarify only what the source can currently support without changing executable code. Two currently applicable canonical sources conflict about request-level permission semantics: the public contract says permission revocations must become visible before the request completes, while the current security protocol specification says each request must use one permission snapshot from start to finish. Neither source is marked obsolete or subordinate, and nearby tests reflect both expectations. Separately, both canonical sources agree that completing this operation invalidates the caller's temporary session token, and that caller-visible side effect is not documented near the declaration. Do not decide which permission contract should change.",
+      "assertions": [
+        "Recognizes the material conflict about permission semantics instead of selecting one authority for convenience.",
+        "Does not canonize either disputed immediate-visibility or request-snapshot semantics into permanent source prose while ownership remains unresolved.",
+        "Still documents or improves the independently agreed caller-visible session-token invalidation in the appropriate caller-facing declaration documentation surface rather than turning the unrelated conflict into a global no-op.",
+        "Leaves executable code unchanged and reports the unresolved permission-contract conflict or required handoff without fabricating certainty."
+      ]
+    },
+    {
+      "id": "mixed-structural-and-rationale",
+      "mode": "skill",
+      "prompt": "Improve this source for maintainers without changing executable code. The function still has opaque positional tuples and overloaded booleans, so its structure is harder to read. Separately, an external protocol requires a cleanup call to remain after result capture so cleanup failure cannot replace the original protocol error; that current constraint is confirmed by a nearby protocol test. There is no comment explaining the ordering constraint.",
+      "assertions": [
+        "Does not narrate the opaque tuples or overloaded booleans with comments as a substitute for structural refactoring.",
+        "Treats the structural comprehension problem as a separate mols-code-comprehension-refactor responsibility without performing executable changes under clarify-code.",
+        "Still adds or improves the smallest code-local comment for the independently evidence-backed cleanup ordering constraint instead of handing off the entire clarification task."
+      ]
+    }
+  ]
+}

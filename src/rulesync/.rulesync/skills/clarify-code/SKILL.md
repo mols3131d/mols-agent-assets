@@ -1,6 +1,6 @@
 ---
 name: clarify-code
-description: Use this skill to make existing code easier to understand and maintain without changing behavior. Trigger for requests to clarify confusing code, names, caller contracts, domain semantics, rationale, responsibilities, control flow, or unnecessary indirection. Do not use for feature implementation, correctness review, performance optimization, architecture redesign, or user-facing documentation.
+description: Use this skill to make code easier to understand by improving code-adjacent explanatory text such as declaration documentation (including docstrings or doc comments), implementation comments, and source-level module/package explanations without changing executable code. Trigger when caller contracts, rationale, invariants, ordering, side effects, unusual implementation choices, or other non-obvious meaning should be explained inside source files. Do not use to rename symbols, change types or signatures, restructure control or state flow, change representations, or remove indirection; use mols-code-comprehension-refactor for executable changes. Do not use for standalone user-facing documentation outside source files.
 targets:
   - claudecode
   - codexcli
@@ -12,9 +12,9 @@ targets:
 
 # Clarify Code
 
-기능을 추가하지 않고 코드 이해 부채를 줄인다. 오해 비용이 가장 큰 reading bottleneck을 가장 작은 안전한 변경으로 해소한다.
+실행 코드를 바꾸지 않고 **코드 파일 안에서 함께 유지되는 설명**을 개선해 caller와 maintainer의 이해 비용을 줄인다.
 
-호출자는 구현을 읽지 않고 필요한 contract를 알 수 있어야 하고, 유지보수자는 코드에서 의도와 제약을 복원할 수 있어야 한다.
+주된 surface는 caller-facing declaration documentation, code-local comment와 source-level module/package explanation이다. 코드 구조 자체의 이해 비용은 prose로 대체하지 않고 `mols-code-comprehension-refactor`의 책임으로 분리한다.
 
 ## Arguments
 
@@ -26,39 +26,69 @@ validation: auto
 
 | Argument | `auto` 동작 |
 | --- | --- |
-| `--target <value\|auto>` | 요청, 선택 영역 또는 현재 변경에서 개선 대상을 식별한다. |
-| `--scope <value,...\|auto>` | target과 실제 사용 surface, 관련 test, 공유 contract까지만 포함한다. |
-| `--validation <command\|auto\|none>` | behavior 보존을 확인할 가장 작은 기존 validation을 선택한다. |
+| `--target <value\|auto>` | 요청, 선택 영역 또는 현재 변경에서 설명이 필요한 code-adjacent surface를 식별한다. |
+| `--scope <value,...\|auto>` | 설명을 수정할 mutation scope를 target과 필요한 source surface로 제한한다. Explanation의 사실성을 확인하는 evidence read도 적용되는 user/repository scope와 authority 안에서 가장 좁게 수행하며, 읽은 surface에 write authority가 생기지는 않는다. |
+| `--validation <command\|auto\|none>` | documentation comment, docstring, doctest, directive처럼 explanation text가 tool/runtime에 소비될 가능성이 있을 때 필요한 최소 validation을 선택한다. |
 
-명시된 argument를 우선한다. 범위나 기존 동작이 불명확하면 추측으로 확대하지 않는다.
+명시된 argument를 우선한다. 넓은 정책이나 사용자 문서까지 추측으로 확대하지 않는다.
+
+## Default Explanation Decisions
+
+아래와 같은 의미가 code만으로 안정적으로 드러나지 않으면 explanation 후보로 본다. 코드 구조가 별도 comprehension problem이어도 그와 독립적인 durable meaning은 따로 판단한다.
+
+- hidden caller contract 또는 non-obvious call semantics
+- maintainer가 보존해야 하는 invariant 또는 local constraint
+- ordering 또는 failure consequence
+- external system·protocol constraint
+- 현재 constraint 때문에 잘못되는 durable rejected alternative
+- 개별 symbol보다 file/package 전체에 안정적으로 적용되는 local convention
+
+Surface는 signal 이름이 아니라 **reader와 semantic scope**로 선택한다.
+
+| Reader / scope | Default surface |
+| --- | --- |
+| caller가 사용 전에 알아야 하는 contract, side effect, exception/failure semantics, caller-visible protocol constraint | repository/language-native caller-facing declaration documentation surface |
+| maintainer가 구현 변경 시 보존해야 하는 local invariant, ordering/failure consequence, implementation constraint, durable rejected alternative | code-local comment |
+| 한 symbol보다 file/package 전체에 안정적으로 적용되는 local convention | source-level module/package documentation surface |
+
+Python docstring, Go/Rust/Java documentation comment처럼 구체적인 syntax는 현재 language와 repository convention을 따른다. 사용자가 comment나 docstring을 직접 요청하지 않았어도 같은 판단을 적용하며, explanation 수 자체를 품질 지표로 사용하지 않는다.
 
 ## Workflow
 
-1. 적용되는 repository/source instructions와 target, caller·entrypoint, 관련 test를 읽는다. 공유 contract가 걸릴 때만 범위를 넓힌다.
-1. 보존할 observable behavior와 caller-visible contract를 확인한다.
-1. 가장 중요한 reading bottleneck 하나를 진단한다. 오해가 misuse, destructive side effect, 잘못된 ordering 또는 invariant 위반을 만들 수 있으면 단순한 시각적 복잡성보다 우선한다.
-1. 가장 작은 해법을 선택한다. 내부 이름과 코드 구조로 명확해질 수 있으면 prose보다 먼저 개선하되, caller-visible API는 contract 변경 없이 rename하지 않는다.
-1. caller가 알아야 할 숨은 의미는 docstring, maintainer가 알아야 할 code-local 이유는 comment로 보완한다. 넓은 정책은 canonical owner에 둔다.
-1. 선택한 병목만 수정하고 unrelated cleanup이나 미래용 abstraction을 섞지 않는다.
-1. 가능한 경우 같은 validation을 변경 전후에 적용해 behavior 보존을 확인한다.
-1. caller와 maintainer 관점에서 다시 읽고 중복 prose와 indirection을 제거한 뒤, 변경·보존 근거·validation·risk만 짧게 보고한다.
+1. 적용되는 repository/source instructions와 target code, 가까운 caller·maintainer context를 읽는다.
+1. 독자가 code만으로 복원하기 어려운 의미와 그 때문에 생기는 추론·탐색·오해 비용을 확인하고, 그 의미가 caller-facing인지 maintainer-only인지와 실제 semantic scope를 판단한다.
+1. **Prose가 맡을 concern을 분리한다.** 이름, representation, control/state flow, responsibility 또는 indirection 자체가 이해 비용의 원인이면 그 structural concern을 prose로 해설해 덮지 않고 `mols-code-comprehension-refactor`의 책임으로 분리한다. 같은 target에 독립적인 caller contract·constraint·consequence·rationale가 있으면 해당 prose concern은 계속 처리한다. 사용자가 executable change를 허용하지 않았다면 sibling refactor를 임의로 수행하지 않고 structural limitation이나 handoff candidate만 보고한다.
+1. **Evidence before Explanation.** Candidate meaning을 source prose로 고정하기 전에 target behavior, caller, test, canonical contract/spec, current config·schema·protocol, 그리고 현재 task에서 명시적으로 제공된 domain·operational fact 등 필요한 가장 좁은 current evidence로 확인한다. User-provided fact도 evidence candidate지만 applicable canonical/current evidence와 material하게 충돌하면 그대로 canonize하지 않는다. 수정 대상의 기존 explanation은 candidate context일 뿐이며, 그 surface 자체가 canonical contract라는 authority가 확인되지 않는 한 자기 claim의 유일한 evidence로 사용하지 않는다. Evidence read는 적용되는 explicit scope와 authority를 넘지 않으며, 필요한 evidence가 그 밖에 있다면 조용히 범위를 넓히지 않고 uncertainty나 필요한 handoff를 남긴다.
+1. Current evidence가 지지하는 의미만 설명한다. Git history나 old discussion은 candidate rationale를 찾는 supporting context일 수 있지만 current invariant의 단독 근거가 아니다. **설명하려는 claim 자체**에 material conflict가 있으면 하나를 편의상 선택하거나 그 disputed claim을 permanent explanation으로 굳히지 않는다. Conflict와 무관하게 확인된 current meaning은 필요한 경우 별도로 설명할 수 있다. 현재 constraint·consequence만 확인되고 historical reason은 확인되지 않으면 확인 가능한 현재 의미만 남긴다.
+1. 같은 semantic이 적절한 owner에 이미 충분히 있는지 확인한다. 그래도 해당 caller나 maintainer가 그 지점에서 알아야 하는 local projection이 필요하거나 explanation이 없다면 가장 작은 설명을 추가·개선한다. 반대로 code, name, type이 이미 충분하거나 prose가 읽기·유지 비용만 늘리면 추가하지 않거나 불필요한 설명을 제거한다.
+1. reader와 semantic scope에 맞는 language/repository-native surface를 선택한다. Placement, owner, contract projection 또는 evidence conflict가 단순하지 않으면 [Documentation](references/documentation.md)을 따른다.
+1. 선택한 설명 surface만 수정한다. 실행 statement, identifier, signature, type, control flow와 data representation은 변경하지 않는다.
+1. 설명이 runtime, tooling 또는 validation에 소비되는지 확인한다. doctest, reflection-dependent docstring, documentation directive, pragma, linter/type-check directive, magic comment는 일반 prose처럼 수정하지 않는다.
+1. 코드와 설명을 다시 읽어 unsupported claim, 중복, stale claim과 구현을 그대로 번역한 문장을 제거한다. 변경한 설명, 보존한 code boundary, 수행한 validation과 남은 uncertainty만 짧게 보고한다.
 
-주된 병목이 해소되면 중단한다. 변경할 가치가 없으면 수정하지 않는다.
+Evidence-backed durable meaning이 남아 있는데 explanation을 피하기 위해 no-op으로 조기 종료하지 않는다. 반대로 설명하려는 semantic claim을 뒷받침할 evidence가 없거나 그 claim의 material conflict가 해소되지 않았거나 필요한 evidence가 허용된 scope 밖에 있거나 추가 prose가 제거하는 이해 비용보다 읽기·유지 비용이 크면 그 claim을 invent하지 않고 중단할 수 있다.
 
 ## Progressive Disclosure
 
-현재 판단에 필요한 reference만 읽고, 관련 없는 reference는 로드하지 않는다.
+다음 판단이 실제로 필요할 때만 [Documentation](references/documentation.md)을 읽는다.
 
-- 병목 종류나 최소 intervention이 불명확하거나 rename·extraction을 고려하면 [Diagnosis](references/diagnosis.md)를 읽는다.
-- docstring이나 comment를 추가·수정하려면 [Documentation](references/documentation.md)을 읽는다.
-- 코드 구조를 바꾸거나 behavior 보존 근거가 불명확하면 [Validation](references/validation.md)을 읽는다.
+- caller-facing declaration documentation의 ecosystem-specific surface가 불명확함
+- explanation의 placement, scope 또는 semantic owner가 불명확함
+- evidence source가 충돌하거나 historical/indirect evidence의 의미를 구분해야 함
+- canonical policy/contract의 local projection을 판단해야 함
+- rejected alternative, history 또는 stale explanation이 얽힘
+- source-level module/package explanation이 적절한지 판단해야 함
+- machine/runtime/tool-consumed text를 수정할 가능성이 있음
 
 ## Boundaries
 
-- 기능, public contract, 성능 목표 또는 architecture를 clarification 명목으로 변경하지 않는다.
-- 이름이나 코드 구조로 표현 가능한 내용을 prose로 반복하지 않는다.
-- line count만 줄이는 helper, one-use abstraction, future extension point를 만들지 않는다.
-- 광범위한 style·formatting·rename을 섞지 않는다.
-- test를 약화하거나 기존 failure를 숨겨 behavior 보존을 증명하지 않는다.
-- correctness review를 대신하지 않는다. defect 의심은 별도 작업으로 분리한다.
+- 실행 코드, identifier, type, signature, representation, control/state flow 또는 abstraction을 clarification 명목으로 변경하지 않는다.
+- 코드 자체를 리팩터링해야 이해 비용이 줄어드는 concern은 `mols-code-comprehension-refactor` 책임으로 분리하되, 별도의 evidence-backed prose concern까지 함께 버리지 않는다.
+- 함수 이름, type annotation, 다음 statement처럼 code가 이미 직접 표현하는 내용을 prose로 반복하지 않는다.
+- unusual code shape, naming, history 또는 관례만 보고 확인되지 않은 rationale를 만들어내지 않는다.
+- 넓은 architecture·domain policy를 code-adjacent prose에 복제하지 않는다. caller나 maintainer에게 필요한 local projection만 남긴다.
+- evidence 확인을 위한 read도 적용되는 explicit scope와 authority를 넘지 않으며, 읽은 surface를 수정할 권한이 생기지 않는다.
+- standalone guide, README, API manual 같은 source 밖의 user-facing documentation은 이 skill의 scope가 아니다.
+- `noqa`, `type: ignore`, coverage pragma, formatter directive, shebang, encoding cookie와 같은 machine-consumed comment를 일반 설명 comment로 취급하지 않는다.
+- caller-facing declaration documentation이 reflection, documentation generation, doctest 또는 framework behavior의 contract라면 observable surface를 보존한다.
 - 실행하지 않은 validation을 수행했다고 보고하지 않는다.

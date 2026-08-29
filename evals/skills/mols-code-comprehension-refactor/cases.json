@@ -1,0 +1,163 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "compact-positional-contract",
+      "mode": "skill",
+      "prompt": "This five-line contract object is short, but each tuple position and boolean flag must be decoded from another definition. Make it easier to understand without changing behavior.",
+      "assertions": [
+        "Treats the compact representation as a possible comprehension bottleneck even though the code is short.",
+        "Prefers a behavior-preserving representation change that exposes roles or domain meaning when such a change is locally safe.",
+        "Does not claim that more lines or a new class are inherently better."
+      ]
+    },
+    {
+      "id": "boolean-sentinel-config",
+      "mode": "skill",
+      "prompt": "A local configuration uses several booleans and None as overloaded mode signals. Refactor it only if understanding can be improved without changing callers or runtime behavior.",
+      "assertions": [
+        "Recognizes hidden flag or sentinel conventions as reconstruction cost.",
+        "Considers named or domain-shaped existing representations before adding new abstractions.",
+        "Preserves caller-visible contracts and observable behavior."
+      ]
+    },
+    {
+      "id": "meaningless-wrapper-chain",
+      "mode": "skill",
+      "prompt": "Understanding this path requires opening three one-line wrappers that only rename the next call. Simplify the code without changing behavior.",
+      "assertions": [
+        "Evaluates indirection by semantic gain rather than hop count alone.",
+        "May inline or merge wrappers that add no meaningful boundary or invariant.",
+        "Does not remove a wrapper if it owns a real contract, policy, registration, or compatibility boundary."
+      ]
+    },
+    {
+      "id": "control-state-reasoning",
+      "mode": "skill",
+      "prompt": "A function has nested negative conditions and a mode flag whose meaning changes after mutation. Make it easier to reason about without changing outputs, exceptions, state changes, or timing-sensitive behavior.",
+      "assertions": [
+        "Identifies control-flow and state or temporal reasoning as comprehension costs.",
+        "Uses a bounded local refactor such as clearer conditions, state ownership, or phase separation only when behavior is preserved.",
+        "Includes validation of relevant state, side effects, and ordering."
+      ]
+    },
+    {
+      "id": "valuable-domain-abstraction",
+      "mode": "negative",
+      "prompt": "The call site is policy.can_publish(change), and that method centralizes a stable authorization invariant used by many callers. Make the code more explicit by inlining it everywhere.",
+      "assertions": [
+        "Does not inline a stable domain abstraction merely to expose implementation details.",
+        "Recognizes invariant ownership and repeated reasoning reduction as semantic value.",
+        "Explains that explicitness is not automatically lower comprehension cost."
+      ]
+    },
+    {
+      "id": "already-clear-compact-code",
+      "mode": "negative",
+      "prompt": "RetryPolicy(max_attempts=3, backoff=EXPONENTIAL, retry_on=TRANSIENT_ERRORS) is compact. Refactor it so it is easier to understand.",
+      "assertions": [
+        "Does not expand already domain-shaped code solely because it is compact.",
+        "Avoids adding helpers, classes, comments, or intermediate values without a material comprehension benefit.",
+        "May conclude that no refactor is warranted."
+      ]
+    },
+    {
+      "id": "performance-sensitive-hot-path",
+      "mode": "skill",
+      "prompt": "This parser hot loop is difficult to read, but latency and allocations are important and there is an existing benchmark. Improve comprehension without affecting behavior or performance.",
+      "assertions": [
+        "Treats material performance characteristics as part of the preservation envelope.",
+        "Uses the existing benchmark or equivalent evidence before claiming performance preservation.",
+        "Avoids a readability refactor that predictably adds material work, allocation, I/O, or worse complexity."
+      ]
+    },
+    {
+      "id": "performance-sensitive-no-equivalence-evidence",
+      "mode": "negative",
+      "prompt": "This allocation-sensitive parser loop is hard to read, but there is no benchmark or profiler evidence. A proposed readability refactor would replace reused tuple state with freshly allocated domain objects on every iteration. Improve comprehension only if material performance can still be preserved.",
+      "assertions": [
+        "Treats the known allocation sensitivity as part of the preservation envelope even though no benchmark is available.",
+        "Does not apply the predictably allocation-heavier refactor or claim performance equivalence without supporting evidence.",
+        "Prefers a lower-risk comprehension change that does not plausibly add material work, or reports the evidence gap and leaves the hot path unchanged rather than adding a ceremonial benchmark."
+      ]
+    },
+    {
+      "id": "comment-only-request",
+      "mode": "negative",
+      "prompt": "The implementation is already clear; I only want the docstring to explain overwrite semantics and a comment to explain why cleanup happens in this order.",
+      "assertions": [
+        "Routes the request to clarify-code rather than changing executable code.",
+        "Does not invent a structural refactor when only code-adjacent explanation is requested."
+      ]
+    },
+    {
+      "id": "architecture-redesign-boundary",
+      "mode": "negative",
+      "prompt": "Replace this service architecture with a new event-driven component model because the current architecture is hard to understand.",
+      "assertions": [
+        "Does not treat system architecture redesign as a code comprehension refactor.",
+        "Keeps the skill scoped to behavior-preserving code-level refactoring."
+      ]
+    },
+    {
+      "id": "lexical-domain-rename",
+      "mode": "skill",
+      "prompt": "Inside one parser, the variable `cfg` carries a repository concept that callers, types, and nearby code consistently call `retry_policy`. It is an internal local name, and the relevant scope shows no config, reflection, generated-code, or string lookup that depends on `cfg`. Reduce comprehension cost without changing behavior.",
+      "assertions": [
+        "Recognizes lexical or domain decoding as a real comprehension cost rather than requiring a larger structural smell.",
+        "Prefers the established repository term such as `retry_policy` instead of inventing a new synonym or abstraction.",
+        "Keeps the change local and behavior-preserving rather than treating longer names as inherently better."
+      ]
+    },
+    {
+      "id": "dynamic-usage-rename-boundary",
+      "mode": "negative",
+      "prompt": "A private-looking method `_load` has a vague name. Its unit tests still pass if it is renamed, but the current plugin manifest contains `handler_name: _load`, and the framework resolves that method by string at runtime. Improve comprehension without breaking behavior.",
+      "assertions": [
+        "Treats the manifest and string-based framework lookup as a relevant usage contract even though the method is private-looking.",
+        "Does not treat green unit tests or a static source-reference search as complete proof that the rename is safe.",
+        "Renames only if every applicable registration can be updated and validated within scope; otherwise keeps the contract or reports the blocked rename rather than breaking runtime discovery."
+      ]
+    },
+    {
+      "id": "tests-not-complete-spec",
+      "mode": "negative",
+      "prompt": "A proposed readability simplification wraps `SpecificError` in a generic error and moves an audit event after cleanup. The local unit tests still pass because they only assert the returned mapping, but the current caller contract requires `SpecificError` to escape unchanged and the integration contract requires the audit event before cleanup. Make the code easier to understand without changing behavior.",
+      "assertions": [
+        "Does not accept passing local tests as sufficient evidence for a transformation that violates current caller or integration contracts.",
+        "Preserves exception semantics and audit ordering or chooses a different smaller refactor or no-op.",
+        "Separates preservation evidence from test coverage rather than weakening the tests or redefining the current contract."
+      ]
+    },
+    {
+      "id": "coupled-root-cause",
+      "mode": "skill",
+      "prompt": "A local record is encoded as `entry = (x, kind, False, None)`, and nearby code uses `x` and positional indexes, so maintainers repeatedly reconstruct one hidden field rule. The repository already provides `FieldSpec(name, type, required, default)` for this exact domain concept. Improve comprehension without unrelated cleanup.",
+      "assertions": [
+        "Treats the naming and positional representation as one coherent root-cause cluster when both encode the same hidden rule.",
+        "May perform the tightly coupled representation and local naming edits needed to expose the existing domain concept.",
+        "Reuses the established `FieldSpec` surface and does not expand into unrelated renames, extra abstractions, or cleanup."
+      ]
+    },
+    {
+      "id": "characterization-observed-not-normative",
+      "mode": "skill",
+      "prompt": "A legacy parser returns an empty list for malformed blank input. There is no current contract saying whether that behavior is intended, and the path has no existing test. Perform only a behavior-preserving comprehension refactor; add a small characterization safeguard if needed, but do not decide or fix the blank-input semantics.",
+      "assertions": [
+        "May use a characterization test to capture the observed blank-input baseline when that evidence is needed for a safe refactor.",
+        "Does not describe the observed empty-list behavior as a newly established desired or normative requirement without separate contract evidence.",
+        "Preserves the current behavior during this refactor and separates any suspected correctness question from the comprehension change."
+      ]
+    },
+    {
+      "id": "mixed-structural-and-prose",
+      "mode": "skill",
+      "prompt": "This function has an overloaded boolean/positional configuration that is an executable comprehension bottleneck. Separately, a current protocol test proves that cleanup must stay after result capture so cleanup failure cannot replace the original protocol error, but there is no comment explaining that rationale. Improve the code without changing behavior.",
+      "assertions": [
+        "Still performs or proposes the smallest safe executable refactor for the structural configuration problem instead of handing off the whole task.",
+        "Treats the independent rationale/comment need as clarify-code responsibility rather than using comments as a substitute for the structural refactor.",
+        "Preserves the protocol-tested ordering and does not absorb a correctness or behavioral change into the readability work."
+      ]
+    }
+  ]
+}
