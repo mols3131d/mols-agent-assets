@@ -54,6 +54,7 @@ eventmodeling
 
 - `rf` 뒤에 새 flow를 시작하는 이유가 source model에 있어야 한다.
 - `->>`는 referenced Time Frame identity를 정확히 보존한다. 존재하지 않거나 잘못 renumber된 frame을 가리키지 않는지 확인한다.
+- Explicit source는 DSL이 허용하는 entity-type flow도 따라야 한다. Source model의 관계를 notation에 맞추려고 command/event/read-model/UI/processor 역할을 임의로 바꾸지 않는다.
 - Multiple source relation은 “모두 필요”, “OR”, “AND” 같은 논리 조건을 자동으로 정의하지 않는다. 그런 rule이 중요하면 주변 prose나 별도 rule representation으로 설명한다.
 
 ## Entity Types And Namespaces
@@ -100,7 +101,7 @@ Event Modeling은 syntax validity와 **inference fidelity**를 따로 검증한�
 1. Declaration order를 숫자 순서와 혼동하지 않았는가.
 1. 자동으로 추론된 relation이 source-backed이며 재배치로 의도치 않게 바뀌지 않았는가.
 1. Inference를 끊어야 하는 곳에 `rf`가 있고 단순 spacing 용도로 남용하지 않았는가.
-1. Multiple source `->>`가 source model의 실제 relation을 보존하는가.
+1. Explicit/multiple source `->>`가 source model의 실제 relation과 DSL의 entity-type flow를 모두 보존하는가.
 1. UI, processor, command, read model과 event type을 역할에 맞게 사용했는가.
 1. Namespace가 실제 model grouping이며 renderer의 current swimlane behavior를 확인했는가.
 1. Inline/data block을 authoritative schema나 validated payload처럼 과해석하지 않았는가.
