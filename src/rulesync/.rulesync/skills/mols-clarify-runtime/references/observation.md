@@ -4,16 +4,18 @@ Runtime behavior를 이해하려고 바로 maintained logging이나 instrumentat
 
 ## Choose The Smallest Executable Scenario
 
-가능하면 이미 존재하고 재현 가능한 실행을 사용한다.
+가능하면 이미 존재하고 재현 가능하며 **현재 권한과 environment에서 안전하게 실행할 수 있는 scenario**를 사용한다.
 
-우선순위는 고정 규칙이 아니라 일반적인 선택 순서다.
+일반적인 선택 순서:
 
-1. 질문을 직접 재현하는 기존 test case
-1. 관련 command, task, request 또는 entrypoint의 좁은 실행
+1. 질문을 직접 재현하는 기존 isolated test case
+1. 안전하게 실행 가능한 관련 command, task, request 또는 entrypoint
 1. framework가 이미 보존한 execution history나 report
 1. 더 넓은 integration 실행
 
-전체 suite나 application을 돌리는 것보다 질문에 필요한 input과 boundary만 실행할 수 있으면 그것을 우선한다.
+전체 suite나 application을 돌리는 것보다 질문에 필요한 input과 boundary만 실행할 수 있으면 그것을 우선한다. 반대로 더 작은 command라도 destructive mutation, 외부 호출, 비용 발생 또는 production 영향이 있으면 “작다”는 이유로 실행하지 않는다.
+
+Observation은 실행 권한을 새로 만들지 않는다. 안전하거나 허가된 실행이 없으면 existing history/result/artifact 같은 read-only evidence를 사용하고 limitation을 남긴다.
 
 새 test를 설계하거나 acceptance criteria를 만드는 것은 이 Skill의 책임이 아니다. 기존 test가 없고 별도 재현 설계가 필요하면 testing 또는 debugging 책임으로 넘긴다.
 
@@ -133,7 +135,8 @@ Source edit를 disposable probe로 쓰는 것은 기본값이 아니다. 필요�
 
 - 현재 task와 workspace가 source edit를 허용한다.
 - 기존 surface만으로 질문을 좁힐 수 없다.
-- probe가 domain behavior를 바꾸지 않으며 timing/concurrency 영향 위험이 낮다.
+- probe가 domain behavior, caller-visible output 또는 external state를 바꾸지 않는다.
+- timing/concurrency 영향 위험이 낮다.
 - final acceptance 전에 제거하고 working diff와 behavior를 다시 확인할 수 있다.
 
 새 debugger, coverage, tracing 또는 logging framework를 clarification만을 위해 도입하지 않는다. Probe 때문에 execution이 달라질 수 있으면 관찰 결과를 stable fact로 단정하지 않는다.
