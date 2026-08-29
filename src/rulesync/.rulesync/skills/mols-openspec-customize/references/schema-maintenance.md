@@ -3,7 +3,7 @@ description: >-
   Reusable maintenance guidance for an OpenSpec custom schema that already exists
   or has been chosen as a durable project surface. Load when deciding whether the
   schema package needs a README or nearby docs, separating runtime inputs from
-  maintainer material, assigning one owner per concern, or maintaining a forked
+  maintainer material, assigning one owner per concern, or maintaining an owned
   schema over time. Do not use to decide whether a custom schema is needed, for
   exact schema fields or CLI behavior, or for dogfood and tuning methodology.
 ---
@@ -89,16 +89,17 @@ Prefer links over copies. If a fact must affect OpenSpec runtime behavior, put i
 the runtime owner even when it is also explained to humans elsewhere. Colocation
 does not make maintenance prose part of the runtime contract.
 
-## Treat a schema fork as an owned snapshot
+## Maintain an owned schema deliberately
 
-A project-local fork is an intentionally owned copy, not a live extension of its
-built-in source. Do not assume routine OpenSpec updates will merge future built-in
-improvements into it.
+Once a custom schema is an owned project surface, treat its future changes as
+explicit maintenance decisions rather than assuming an upstream or tool update will
+reconcile them automatically.
 
-Compare upstream deliberately and port only changes that still fit the project.
-Record fork provenance only when it materially reduces future maintenance cost; do
-not create provenance ceremony for a schema whose origin is obvious and cheap to
-recover.
+When update, fork, shadowing, or resolution semantics affect that decision, verify
+the target OpenSpec version through
+[Official customization](official-customization.md). Record provenance only when it
+materially reduces future maintenance cost; do not create provenance ceremony for a
+schema whose origin is obvious and cheap to recover.
 
 ## Boundaries and handoff
 
