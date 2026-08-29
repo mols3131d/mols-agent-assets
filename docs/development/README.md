@@ -16,7 +16,7 @@ description: 저장소 개발 작업에서 VCS/Git, GitHub, 작성 원본과 권
 
 ## Authoring Resources
 
-- [GitHub Authoring Templates](../../.github/templates/README.md) — Issue, Pull Request, PR Review와 PR comment 본문을 작성할 때 사용하는 공통 구조와 template notation
+- [GitHub Authoring Templates](../../.github/templates/README.md) — Issue, Pull Request, PR Review와 PR comment의 본문 구조와 작성 notation이 필요할 때 참고합니다.
 
 ## Related Owners
 
