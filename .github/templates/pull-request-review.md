@@ -10,10 +10,7 @@
 {% if scope %}
 ## Scope
 
-<!--
-전체 current diff가 아닌 일부만 검토했거나 특별한 기준을 적용했다면 범위와 한계를 적는다.
-전체 current diff를 일반 기준으로 검토했다면 생략한다.
--->
+<!-- 전체 diff가 아닌 일부만 검토했거나 특별한 기준을 적용했을 때만 범위와 한계를 적는다. -->
 
 {% for item in scope %}
 - {{ item }}
@@ -27,9 +24,8 @@
 Line-specific finding은 inline review comment에 두고 여기서 완전히 반복하지 않는다.
 본문 finding이 없고 qualifying inline finding만 있으면 `See inline review comments for findings.`를 사용한다.
 둘 다 없을 때만 `No findings identified in the reviewed scope.`를 사용한다.
-Required Change는 필요한 결과나 제약을 적고, 특정 구현이 필수가 아니면 해결 방법을 과도하게 지정하지 않는다.
 
-`finding.importance`는 다음 marker와 label을 그대로 사용한다.
+`finding.importance`는 다음 값 중 하나를 그대로 사용한다.
 🔴 Critical — 보안·권한·데이터 손실이나 광범위한 장애처럼 즉시 차단해야 하는 문제
 🟠 High — correctness, security 또는 repository contract를 실질적으로 깨뜨려 merge 전에 수정해야 하는 문제
 🟡 Medium — 범위가 제한적이지만 실제 결함이나 의미 있는 운영·유지보수 위험을 만드는 문제
@@ -38,7 +34,7 @@ Required Change는 필요한 결과나 제약을 적고, 특정 구현이 필수
 
 {% if findings %}
 {% for finding in findings %}
-### {{ finding.importance }} · F{{ loop.index }} · {{ finding.title }}
+### {{ finding.importance }} · F{{ loop.index }} — {{ finding.title }}
 
 {% if finding.locations %}
 **Location**
@@ -79,10 +75,7 @@ No findings identified in the reviewed scope.
 
 ## Validation
 
-<!--
-직접 확인한 check와 근거만 기록한다.
-중요한 미확인 영역은 ⚪ Not Verified로 남긴다.
--->
+<!-- 직접 확인한 check와 근거만 기록하고 중요한 미확인 영역은 ⚪ Not Verified로 남긴다. -->
 
 {% for check in validation %}
 - {{ check.status }} — `{{ check.name }}`: {{ check.evidence }}
