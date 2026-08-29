@@ -30,7 +30,7 @@
 
 ### architecture·boundary
 - [x] `architecture-diagram.md`
-- [ ] `c4-context.md` — 리뷰 완료, 개선 대기
+- [x] `c4-diagrams.md` — `c4-context.md`에서 rename
 - [ ] `block-diagram.md`
 
 ### chronology·planning·work
@@ -56,5 +56,5 @@
 ## Current
 
 - 완료: `architecture-diagram.md`
-- 진행 중: `c4-context.md` — 리뷰 완료, 개선 대기
-- 다음: `c4-context.md` 개선 및 재리뷰
+- 완료: `c4-diagrams.md`
+- 다음: `block-diagram.md` 리뷰
