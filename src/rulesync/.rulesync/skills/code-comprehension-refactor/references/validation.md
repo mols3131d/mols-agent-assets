@@ -60,6 +60,17 @@ Refactor scope에서는 observed externally visible behavior를 임의로 고치
 
 반대로 characterization test를 추가했다는 이유만으로 accidental implementation detail이나 suspected bug를 새 durable requirement라고 설명하지 않는다. 현재 behavior를 보존하기 위한 temporary/characterization safeguard와 semantic contract authority를 분리한다.
 
+## Pre-existing Validation Failures
+
+Before validation이 이미 실패하면 그 failure를 **pre-existing baseline state**로 기록하고 이번 refactor가 만든 regression과 분리한다.
+
+- 기존 failure를 comprehension refactor 안에서 몰래 고치거나 test를 약화해 green으로 만들지 않는다.
+- 같은 relevant validation을 after에도 비교해 기존 failure의 의미나 범위가 달라졌는지, 새로운 failure가 생겼는지 확인한다.
+- Baseline이 red였으면 “전체 validation이 통과했다”고 보고하지 않는다. 확인 가능한 claim은 기존 failure와 refactor-introduced delta를 구분한 범위까지만 한다.
+- 기존 failure 때문에 preservation을 신뢰할 수 없고 다른 evidence도 충분하지 않다면 더 작은 transformation 또는 no-op을 선택한다.
+
+Pre-existing failure가 refactor와 독립된 correctness concern이면 별도 work로 분리한다.
+
 ## Transformation Risk
 
 각 refactoring family에는 서로 다른 preservation risk가 있을 수 있다. Portable Skill에 language-specific precondition을 나열하지 않고 **현재 candidate에 material한 risk만** 확인한다.
@@ -78,11 +89,11 @@ Refactor scope에서는 observed externally visible behavior를 임의로 고치
 
 가능하면 동일한 relevant envelope를 변경 전후에 비교한다.
 
-1. Existing contract, caller/usage context와 필요한 tests/characterization으로 baseline을 확인한다.
+1. Existing contract, caller/usage context와 필요한 tests/characterization으로 baseline을 확인한다. Baseline validation이 실패하면 failure를 pre-existing state로 기록한다.
 1. Candidate transformation의 relevant preservation risk를 확인한다.
 1. Comprehension refactor를 적용한다.
 1. 같은 observable/usage envelope에 대해 relevant validation을 다시 실행한다.
-1. Output, exception, state, side effect, ordering, registration/identity 또는 shape 차이가 없는지 target에 맞게 확인한다.
+1. Output, exception, state, side effect, ordering, registration/identity 또는 shape 차이가 없는지 target에 맞게 확인한다. Pre-existing failure가 있었다면 새 failure와 baseline delta를 구분한다.
 1. Type/lint/static check와 refactoring-tool preview는 해당 claim에 맞는 보조 evidence로 사용한다.
 1. Performance-sensitive code라면 repository에 이미 있는 benchmark, profiler evidence 또는 안정적인 비교 방법이 있을 때 before/after를 비교한다.
 
