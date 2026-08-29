@@ -80,7 +80,9 @@ requirementDiagram
 
 `direction TB|BT|LR|RL`은 diagram layout을 바꾼다. Relationship의 source/destination 의미나 relationship type을 뒤집지 않는다.
 
-Portrait viewport에서 `LR`가 너무 넓다고 해서 `A - satisfies -> B`를 `B <- satisfies - A`와 다른 의미로 재작성하지 않는다. 같은 semantic edge를 유지한 채 supported direction, grouping, split 또는 table fallback을 검토한다.
+Portrait viewport에서 `LR`가 너무 넓다고 해서 `A - satisfies -> B`를 다른 semantic edge로 바꾸지 않는다. 같은 source/destination과 relation type을 유지한 채 supported direction, split 또는 table fallback을 검토한다.
+
+Relationship direction이 load-bearing information이므로 arrowhead와 label이 실제 target renderer에서 source/destination을 의도대로 보여주는지도 확인한다. Parser/DB의 relation 방향이 맞다는 사실과 최종 SVG의 시각적 방향이 맞다는 것은 별도 acceptance 조건이다.
 
 ## Traceability Completeness
 
@@ -104,9 +106,10 @@ Requirement Diagram은 syntax validity와 **traceability fidelity**를 따로 �
 1. Requirement/element declaration name이 unique하고 모든 relationship endpoint가 실제 declaration으로 resolve되는가.
 1. Requirement name, displayed `id:`와 text가 source identity를 보존하는가.
 1. Requirement type, risk와 verification method를 source 없이 추론하지 않았는가.
-1. 모든 relationship type과 direction이 source trace model에 실제로 존재하는가.
+1. 모든 relationship type과 source/destination이 source trace model에 실제로 존재하는가.
 1. Generic dependency를 `satisfies`·`verifies`·`derives`·`refines` 같은 강한 relation으로 승격하지 않았는가.
 1. Relationship endpoint가 displayed ID가 아니라 올바른 declaration name을 참조하는가.
+1. Arrowhead와 relationship label이 실제 target render에서 intended source/destination을 올바르게 전달하는가.
 1. Diagram subset을 complete requirement/verification coverage처럼 해석하지 않았는가.
 1. Layout `direction`이나 styling을 semantic edge, risk 또는 status로 오해하지 않았는가.
 1. Quote가 필요한 user-defined text가 parser keyword와 충돌하지 않는가.
