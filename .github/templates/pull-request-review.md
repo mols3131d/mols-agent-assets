@@ -1,18 +1,18 @@
-## Summary
+## 📌 Summary
 
 <!--
-전체적으로 어떻게 판단했는가? 가장 중요한 근거는 무엇인가?
-결론부터 쓰고 필요한 경우 다음 조치를 덧붙인다. GitHub review decision은 본문에 반복하지 않는다.
+전체 판단과 가장 중요한 근거를 먼저 쓴다.
+필요하면 다음 조치를 덧붙이되 GitHub review decision은 본문에 반복하지 않는다.
 -->
 
 {{ summary }}
 
 {% if scope %}
-## Scope
+## 🧭 Scope
 
 <!--
-전체 current diff가 아닌 일부만 검토했거나 특별한 기준으로 검토했다면 범위와 한계를 적는다.
-전체 current diff를 일반 기준으로 검토했다면 이 section은 생략한다.
+전체 current diff가 아닌 일부만 검토했거나 특별한 기준을 적용했다면 범위와 한계를 적는다.
+전체 current diff를 일반 기준으로 검토했다면 생략한다.
 -->
 
 {% for item in scope %}
@@ -20,15 +20,16 @@
 {% endfor %}
 {% endif %}
 
-## Findings
+## 🔎 Findings
 
 <!--
 확인된 문제만 finding으로 기록한다. 단순 선호나 근거 없는 가능성은 제외한다.
-Line-specific finding은 inline review comment에 기록하고 여기서 같은 내용을 완전히 반복하지 않는다. 이 section은 cross-cutting finding이나 review 전체 판단에 필요한 finding에 사용한다.
-본문 finding이 없지만 qualifying inline finding이 있으면 `See inline review comments for findings.`라고 적는다. 둘 다 없을 때만 `No findings identified in the reviewed scope.`라고 적는다.
-Required Change는 문제를 해소하기 위해 필요한 결과나 제약을 적고, 특정 구현이 필수인 경우가 아니면 해결 방법을 과도하게 지정하지 않는다.
+Line-specific finding은 inline review comment에 두고 여기서 완전히 반복하지 않는다.
+본문 finding이 없고 qualifying inline finding만 있으면 `See inline review comments for findings.`를 사용한다.
+둘 다 없을 때만 `No findings identified in the reviewed scope.`를 사용한다.
+Required Change는 필요한 결과나 제약을 적고, 특정 구현이 필수가 아니면 해결 방법을 과도하게 지정하지 않는다.
 
-중요도는 실제 영향과 수정 시급성을 함께 본다.
+Importance:
 🔴 Critical — 보안·권한·데이터 손실이나 광범위한 장애처럼 즉시 차단해야 하는 문제
 🟠 High — correctness, security 또는 repository contract를 실질적으로 깨뜨려 merge 전에 수정해야 하는 문제
 🟡 Medium — 범위가 제한적이지만 실제 결함이나 의미 있는 운영·유지보수 위험을 만드는 문제
@@ -37,29 +38,36 @@ Required Change는 문제를 해소하기 위해 필요한 결과나 제약을 �
 
 {% if findings %}
 {% for finding in findings %}
-### {{ finding.importance }} — F{{ loop.index }} · {{ finding.title }}
+### {{ finding.importance }} · F{{ loop.index }} · {{ finding.title }}
 
 {% if finding.locations %}
-- **Location**
+**Location**
+
 {% for location in finding.locations %}
-  - {{ location }}
+- {{ location }}
 {% endfor %}
 {% endif %}
+
 {% if finding.evidence %}
-- **Evidence**
+**Evidence**
+
 {% for item in finding.evidence %}
-  - {{ item }}
+- {{ item }}
 {% endfor %}
 {% endif %}
-- **Impact:** {{ finding.impact }}
+
+**Impact:** {{ finding.impact }}
+
 {% if finding.required_changes %}
-- **Required Change**
+**Required Change**
+
 {% for change in finding.required_changes %}
-  - {{ change }}
+- {{ change }}
 {% endfor %}
 {% endif %}
+
 {% if finding.uncertainty %}
-- **Uncertainty:** {{ finding.uncertainty }}
+**Uncertainty:** {{ finding.uncertainty }}
 {% endif %}
 
 {% endfor %}
@@ -69,11 +77,10 @@ See inline review comments for findings.
 No findings identified in the reviewed scope.
 {% endif %}
 
-## Validation
+## 🧪 Validation
 
 <!--
-무엇을 직접 확인했고 어떤 근거가 있는가?
-diff, contract, test, command 등 실제 확인 결과만 기록한다.
+직접 확인한 check와 근거만 기록한다.
 중요한 미확인 영역은 ⚪ Not Verified로 남긴다.
 -->
 
@@ -82,10 +89,10 @@ diff, contract, test, command 등 실제 확인 결과만 기록한다.
 {% endfor %}
 
 {% if remaining_risks %}
-## Remaining Risks
+## ⚠️ Remaining Risks
 
 {% for risk in remaining_risks %}
-- ⚠️ {{ risk }}
+- {{ risk }}
 {% endfor %}
 {% endif %}
 
