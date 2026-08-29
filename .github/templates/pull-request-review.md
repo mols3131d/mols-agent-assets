@@ -1,3 +1,7 @@
+```yaml
+scope: "{{ scope }}"
+```
+
 ## Summary
 
 <!--
@@ -58,14 +62,6 @@ diff, contract, test, command 등 실제 확인 결과만 기록한다.
 {% for check in validation %}
 - {{ check.status }} — `{{ check.name }}`: {{ check.evidence }}
 {% endfor %}
-
-{% if scope %}
-## Scope
-
-{% for item in scope %}
-- {{ item }}
-{% endfor %}
-{% endif %}
 
 {% if remaining_risks %}
 ## Remaining Risks
