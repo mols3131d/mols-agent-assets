@@ -45,7 +45,7 @@ User-provided current fact는 usable evidence candidate지만 unconditional sema
 
 Git history, issue와 old discussion은 candidate rationale를 발견하는 supporting context일 수 있지만 current invariant의 단독 authority는 아니다. Historical reason을 explanation으로 남기려면 현재 code/contract에서도 여전히 유효한지 확인한다.
 
-Current evidence가 충돌하면 한 source를 편의상 정답으로 선택하지 않는다. Exact claim과 가장 직접적으로 연결된 current semantic owner, observable behavior와 applicable contract를 기준으로 충돌을 좁게 재확인한다. 충돌이 여전히 material하면 uncertainty로 남기고 permanent explanation을 만들지 않는다.
+Evidence가 **설명하려는 claim에 대해** 충돌하면 한 source를 편의상 정답으로 선택하지 않는다. Exact claim과 가장 직접적으로 연결된 current semantic owner, observable behavior와 applicable contract를 기준으로 충돌을 좁게 재확인한다. 그 claim의 충돌이 여전히 material하면 disputed meaning은 permanent explanation으로 만들지 않는다. 다른 non-conflicting current meaning까지 함께 버리지는 않는다.
 
 현재 behavior·constraint는 확인되지만 과거 decision reason은 확인되지 않는다면 **현재 확인 가능한 의미만** 설명한다. 예를 들어 same-request visibility contract는 확인되지만 과거 cache incident는 확인되지 않는다면 visibility constraint만 남긴다.
 
@@ -125,7 +125,7 @@ cleanup_staging()
 | --- | --- |
 | 한 API의 caller contract | 해당 language/repository의 caller-facing API documentation surface |
 | 한 branch, statement 또는 ordering의 maintainer-only rationale | 해당 code 근처 comment |
-| file/package 전체에 안정적으로 적용되는 local convention | module/package-level documentation surface |
+| file/package 전체에 안정적으로 적용되는 local convention | source-level module/package documentation surface |
 | 여러 module에 걸친 architecture·domain policy | canonical owner; source에는 필요한 projection만 |
 
 다음은 피한다.
@@ -175,7 +175,7 @@ source file 안의 모든 text가 단순 설명은 아니다.
 설명을 추가하거나 수정한 뒤 확인한다.
 
 - 이 explanation의 non-obvious semantic claim을 지지하는 current evidence는 무엇인가?
-- user-provided fact를 포함한 evidence source 사이의 material conflict가 해소됐는가?
+- user-provided fact를 포함해 **그 claim에 관련된** evidence source 사이의 material conflict가 해소됐는가?
 - evidence-backed durable contract·constraint·consequence·rationale가 남아 있는데 explanation을 놓치지 않았는가?
 - 이 설명이 없으면 reader는 무엇을 추론하거나 찾아야 하는가?
 - 설명이 그 비용을 실제로 줄이고 code/name/type을 반복하지 않는가?
@@ -186,4 +186,4 @@ source file 안의 모든 text가 단순 설명은 아니다.
 - volatile identifier·algorithm step·history에 불필요하게 결합되어 쉽게 stale 되지 않는가?
 - machine-consumed text나 durable negative knowledge를 잘못 다루고 있지 않은가?
 
-필요한 evidence-backed meaning이 아직 숨겨져 있으면 적절한 explanation을 보완한다. 반대로 근거가 없거나 충돌이 해소되지 않았거나 불필요하거나 쉽게 stale 되는 설명은 추가하지 않거나 줄인다.
+필요한 evidence-backed meaning이 아직 숨겨져 있으면 적절한 explanation을 보완한다. 반대로 근거가 없거나 해당 claim의 conflict가 해소되지 않았거나 불필요하거나 쉽게 stale 되는 설명은 추가하지 않거나 줄인다.
