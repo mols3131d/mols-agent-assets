@@ -1,5 +1,5 @@
 ---
-name: code-comprehension-refactor
+name: mols-code-comprehension-refactor
 description: Use this skill to refactor existing code so it is easier to understand while preserving observable behavior, caller-visible contracts, and material performance characteristics. Trigger for code with opaque representations, hidden conventions, difficult control or state reasoning, unnecessary indirection, abstraction mismatch, mixed responsibilities, or code that is short but mentally expensive to decode. Do not use when only docstrings or comments need improvement; use clarify-code. Do not use for feature work, correctness fixes, performance optimization, public API redesign, or architecture redesign.
 targets:
   - claudecode

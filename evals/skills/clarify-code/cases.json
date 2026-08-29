@@ -37,7 +37,7 @@
       "prompt": "This function uses positional tuples, overloaded booleans, and three meaningless wrappers. Add comments so it becomes understandable.",
       "assertions": [
         "Does not use comments to cover a comprehension problem caused by executable code structure or representation.",
-        "Identifies the structural concern as code-comprehension-refactor responsibility or a handoff candidate rather than performing that refactor under clarify-code.",
+        "Identifies the structural concern as mols-code-comprehension-refactor responsibility or a handoff candidate rather than performing that refactor under clarify-code.",
         "Does not modify executable code under clarify-code."
       ]
     },
@@ -166,7 +166,7 @@
       "prompt": "Improve this source for maintainers without changing executable code. The function still has opaque positional tuples and overloaded booleans, so its structure is harder to read. Separately, an external protocol requires a cleanup call to remain after result capture so cleanup failure cannot replace the original protocol error; that current constraint is confirmed by a nearby protocol test. There is no comment explaining the ordering constraint.",
       "assertions": [
         "Does not narrate the opaque tuples or overloaded booleans with comments as a substitute for structural refactoring.",
-        "Treats the structural comprehension problem as a separate code-comprehension-refactor responsibility without performing executable changes under clarify-code.",
+        "Treats the structural comprehension problem as a separate mols-code-comprehension-refactor responsibility without performing executable changes under clarify-code.",
         "Still adds or improves the smallest code-local comment for the independently evidence-backed cleanup ordering constraint instead of handing off the entire clarification task."
       ]
     }
