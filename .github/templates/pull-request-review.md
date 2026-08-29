@@ -1,4 +1,4 @@
-## 📌 Summary
+## Summary
 
 <!--
 전체 판단과 가장 중요한 근거를 먼저 쓴다.
@@ -8,7 +8,7 @@
 {{ summary }}
 
 {% if scope %}
-## 🧭 Scope
+## Scope
 
 <!--
 전체 current diff가 아닌 일부만 검토했거나 특별한 기준을 적용했다면 범위와 한계를 적는다.
@@ -20,7 +20,7 @@
 {% endfor %}
 {% endif %}
 
-## 🔎 Findings
+## Findings
 
 <!--
 확인된 문제만 finding으로 기록한다. 단순 선호나 근거 없는 가능성은 제외한다.
@@ -77,7 +77,7 @@ See inline review comments for findings.
 No findings identified in the reviewed scope.
 {% endif %}
 
-## 🧪 Validation
+## Validation
 
 <!--
 직접 확인한 check와 근거만 기록한다.
@@ -89,7 +89,7 @@ No findings identified in the reviewed scope.
 {% endfor %}
 
 {% if remaining_risks %}
-## ⚠️ Remaining Risks
+## Remaining Risks
 
 {% for risk in remaining_risks %}
 - {{ risk }}
