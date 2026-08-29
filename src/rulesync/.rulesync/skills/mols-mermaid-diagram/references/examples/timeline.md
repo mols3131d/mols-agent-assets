@@ -4,6 +4,8 @@
 
 사건의 duration보다 **ordered periods, milestones와 era grouping**이 중요하면 `timeline`을 사용한다. Mermaid Timeline의 period는 date type이 아니라 text이며, renderer가 날짜를 parse·sort하거나 시간 간격을 scale로 계산하지 않는다.
 
+Period에 arbitrary text를 쓸 수 있다는 grammar를 process step의 대체 문법으로 해석하지 않는다. `Plan → Build → Test`처럼 temporal bucket보다 절차·transition이 핵심이면 Flowchart가 더 직접적이다.
+
 ## Basic: Ordered Milestones
 
 ```mermaid
@@ -121,6 +123,7 @@ Timeline은 syntax validity와 temporal fidelity를 따로 검증한다.
 ## Rules
 
 - Period text를 date parser나 automatic sorter처럼 취급하지 않는다.
+- Period label이 실제 chronology를 나타내지 않으면 Timeline을 process diagram 대신 사용하지 않는다.
 - Source order를 chronology와 일치시킨다.
 - Visual distance를 elapsed duration으로 해석하지 않는다.
 - Same-period events는 co-location만 의미하며 causality·dependency를 만들지 않는다.
