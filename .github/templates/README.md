@@ -4,6 +4,9 @@
 
 템플릿은 사람과 agent가 함께 사용합니다. GitHub object의 권한, review 의미, merge 조건과 검증 정책은 이 디렉터리가 아니라 [`docs/development/github.md`](../../docs/development/github.md)가 소유합니다.
 
+> [!NOTE]
+> `.github/templates/`는 이 repository의 authoring library이며 GitHub가 자동으로 적용하는 native template 경로가 아닙니다. GitHub UI의 native Issue·Pull Request template이 필요하면 해당 GitHub 표준 경로를 별도 integration surface로 다룹니다.
+
 | Surface | Template |
 | --- | --- |
 | Issue | [`issue.md`](issue.md) |
