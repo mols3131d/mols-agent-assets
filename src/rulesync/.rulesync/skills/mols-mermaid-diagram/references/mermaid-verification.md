@@ -71,11 +71,14 @@ Target이 선택한 type을 지원하지 않으면 같은 의미를 보존하는
 
 ## Level 3: Visual Review
 
+가능하면 rendered output을 약 3:4의 portrait reading viewport 폭에서도 확인한다. 전체 height가 한 viewport에 들어갈 필요는 없으며 vertical scroll은 허용한다.
+
 | Check | Signal | Minimal Fix |
 | --- | --- | --- |
 | Label clipping | text가 잘리거나 줄이 비정상 | label 축약 또는 type-supported line break |
 | Excess density | node와 relationship이 한곳에 몰림 | direction, grouping, detail 분리 |
-| Wrong aspect | 지나치게 넓거나 높음 | direction 변경 또는 detail 분리 |
+| Viewport overflow | portrait viewport에서 horizontal scroll이나 과도한 downscaling이 필요 | peer group 세로 stacking, direction 조정, diagram 분리 |
+| Excess length | 세로 scroll이 지나치게 길어 핵심 질문을 추적하기 어려움 | overview/detail 분리 |
 | Edge spaghetti | 경로 추적이 어려움 | declaration order, boundary, diagram 분리 |
 | Wrong type | 정보 구조와 type이 맞지 않음 | 더 직접적인 type으로 교체 |
 | Low contrast | text와 fill 구분이 어려움 | custom style 축소 또는 theme 변경 |
