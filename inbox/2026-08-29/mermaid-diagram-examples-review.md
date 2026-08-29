@@ -43,7 +43,7 @@
 - [x] `kanban.md`
 
 ### hierarchy·experience·requirements
-- [ ] `mindmap.md`
+- [x] `mindmap.md`
 - [ ] `tree-view.md`
 - [ ] `user-journey.md`
 - [ ] `requirement-diagram.md`
@@ -58,7 +58,7 @@
 
 ## Current
 
-- 진행: **7/24 완료**, 17개 남음
+- 진행: **8/24 완료**, 16개 남음
 - 완료: `architecture-diagram.md`
 - 완료: `c4-diagrams.md` — 리뷰 → 개선 → 재리뷰 완료
 - 완료: `block-diagram.md` — 심층 RPI 완료; 공식 docs·11.17.2 parser/layout tests·release history·open layout issue·local design principles 교차 검토
@@ -66,4 +66,5 @@
 - 완료: `gantt.md` — 심층 RPI 완료; Mermaid 11.17.2 docs/parser/DB/tests, 11.16–11.17 release와 current Gantt issues/PRs를 교차 검토하고 implicit sequencing, reference resolution, working calendar, schedule uncertainty, milestone/status/criticality, renderer-sensitive acceptance를 재설계
 - 완료: `git-graph.md` — 심층 RPI 완료; Mermaid 11.17.2 docs/AST/renderer/tests, Git merge·cherry-pick 공식 semantics와 current upstream issues를 교차 검토하고 synthetic history boundary, stable identity, branch point/declaration order, merge-mode fidelity, cherry-pick ancestry caveat, temporal/parallel layout과 current-ref boundary를 재설계
 - 완료: `kanban.md` — 심층 RPI 완료; Mermaid 11.17.2 docs/parser/DB/renderer/tests, current Kanban styling/parser issues와 Kanban Guide를 교차 검토하고 snapshot completeness, Definition of Workflow boundary, flat column→card model, visual ordering, metadata honesty, styling safety와 viewport split을 재설계
-- 다음: `mindmap.md` 리뷰
+- 완료: `mindmap.md` — 심층 RPI 완료; Mermaid 11.17.2 docs/parser/DB/tests, current layout-default issue와 local design principles를 교차 검토하고 decision/process 오용 제거, single-root/tree fidelity, multiple-root split, indentation safety, shared identity boundary, decomposition consistency와 layout-semantic separation을 재설계
+- 다음: `tree-view.md` 리뷰
