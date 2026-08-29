@@ -122,11 +122,11 @@
     {
       "id": "selective-positive-comment",
       "mode": "skill",
-      "prompt": "Review this source for maintainability without changing executable code. `user = load_user(id)` is self-explanatory. A later uncached permission lookup is intentional because permission changes must become visible within the same request.",
+      "prompt": "Review this source for maintainability without changing executable code. `user = load_user(id)` is self-explanatory. The current operational requirement is that a later permission lookup must bypass the request cache because permission revocations must become visible before the request completes. The implementation already performs that uncached lookup, and no applicable current contract or test conflicts with the requirement.",
       "assertions": [
         "Uses the explicitly provided current visibility constraint as evidence when it does not conflict with applicable current behavior or contract.",
         "Leaves the self-explanatory user load without a redundant comment.",
-        "Adds or improves a comment near the uncached permission lookup that explains only the supported current visibility constraint or consequence."
+        "Adds or improves a comment near the uncached permission lookup that explains only the supported current visibility constraint or consequence without inventing extra rationale."
       ]
     },
     {
@@ -150,23 +150,13 @@
       ]
     },
     {
-      "id": "user-provided-current-constraint",
-      "mode": "skill",
-      "prompt": "Clarify this source for maintainers without changing executable code. The current operational requirement is that the second lookup must bypass the request cache because permission revocations must become visible before the request completes. The code performs that uncached lookup and there is no conflicting test, caller behavior, config, or canonical contract nearby.",
-      "assertions": [
-        "Uses the explicit current operational requirement as an evidence candidate instead of requiring a duplicate repository artifact before any clarification can be made.",
-        "Adds or improves a code-local comment for the supported maintainer-only visibility constraint when that is the smallest useful explanation.",
-        "Does not invent extra historical, performance, security, or race-condition rationale beyond the provided current constraint."
-      ]
-    },
-    {
       "id": "conflicting-evidence-no-canonization",
       "mode": "negative",
-      "prompt": "Clarify why an uncached permission lookup exists without changing executable code. The current implementation performs the lookup uncached. A nearby regression test is named `test_permissions_reused_within_request` and asserts a cached result is reused. The current API contract says permission changes must become visible within the same request. No source has been identified as obsolete yet.",
+      "prompt": "Clarify the request-level permission behavior without changing executable code. Two currently applicable canonical sources conflict: the public API contract says permission revocations must become visible before the request completes, while the current security protocol specification says each request must use one permission snapshot from start to finish. Neither source is marked obsolete or subordinate, and nearby tests reflect both expectations in different scenarios. Do not decide which contract should change.",
       "assertions": [
-        "Recognizes a material conflict among current implementation, test evidence, and caller contract instead of choosing one source for convenience.",
-        "Does not canonize an unresolved caching or visibility rationale into a permanent comment or caller-facing documentation surface.",
-        "Leaves executable code unchanged and reports the unresolved semantic conflict or required handoff rather than fabricating certainty."
+        "Recognizes a material conflict between currently applicable semantic authorities instead of selecting one source for convenience.",
+        "Does not canonize either immediate-visibility or request-snapshot semantics into a permanent comment or caller-facing documentation surface while ownership remains unresolved.",
+        "Leaves executable code unchanged and reports the unresolved contract conflict or required handoff rather than fabricating certainty."
       ]
     }
   ]
