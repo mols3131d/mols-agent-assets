@@ -11,7 +11,7 @@ Core `SKILL.md`가 common-path signal, evidence gate와 reader/scope 기반 surf
 | Caller | name, signature, type, language-native API documentation, call site | 무엇을 믿고 사용할 수 있는지 |
 | Maintainer | code, names, local comment, tests | 어떤 constraint·consequence·rationale를 보존해야 하는지 |
 
-코드와 이름이 스스로 설명할 수 있는 정보는 prose로 반복하지 않는다. 구조 자체가 불명확하면 prose를 추가하기보다 `code-comprehension-refactor`가 더 적합한지 먼저 판단한다.
+코드와 이름이 스스로 설명할 수 있는 정보는 prose로 반복하지 않는다. 구조 자체가 불명확하면 그 structural concern을 prose로 대체하지 않고 `code-comprehension-refactor` 책임으로 분리한다. 별도로 존재하는 durable explanation need는 독립적으로 판단한다.
 
 ## Explanation Value
 
@@ -90,7 +90,7 @@ Python example은 information placement를 보여주는 예시일 뿐 다른 언
 
 ## Comments
 
-Comment는 core의 maintainer-facing signal에 해당하는 **constraint, consequence와 rationale**를 가장 가까운 적절한 scope에서 전달한다. Code가 이미 구조적으로 적절하고 해당 meaning의 local projection이 필요하다면 가장 작은 comment를 추가하거나 기존 comment를 개선한다.
+Comment는 core의 maintainer-facing signal에 해당하는 **constraint, consequence와 rationale**를 가장 가까운 적절한 scope에서 전달한다. 해당 meaning이 structural refactor로 대체되지 않고 local projection이 필요하다면 가장 작은 comment를 추가하거나 기존 comment를 개선한다.
 
 Caller가 사용 전에 알아야 하는 contract를 implementation body comment에만 숨기지 않는다. 반대로 caller가 의존하지 않는 implementation-only ordering이나 workaround rationale를 public API documentation으로 승격하지 않는다.
 
