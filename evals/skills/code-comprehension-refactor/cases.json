@@ -88,6 +88,66 @@
         "Does not treat system architecture redesign as a code comprehension refactor.",
         "Keeps the skill scoped to behavior-preserving code-level refactoring."
       ]
+    },
+    {
+      "id": "lexical-domain-rename",
+      "mode": "skill",
+      "prompt": "Inside one parser, the variable `cfg` carries a repository concept that callers, types, and nearby code consistently call `retry_policy`. It is an internal local name, and the relevant scope shows no config, reflection, generated-code, or string lookup that depends on `cfg`. Reduce comprehension cost without changing behavior.",
+      "assertions": [
+        "Recognizes lexical or domain decoding as a real comprehension cost rather than requiring a larger structural smell.",
+        "Prefers the established repository term such as `retry_policy` instead of inventing a new synonym or abstraction.",
+        "Keeps the change local and behavior-preserving rather than treating longer names as inherently better."
+      ]
+    },
+    {
+      "id": "dynamic-usage-rename-boundary",
+      "mode": "negative",
+      "prompt": "A private-looking method `_load` has a vague name. Its unit tests still pass if it is renamed, but the current plugin manifest contains `handler_name: _load`, and the framework resolves that method by string at runtime. Improve comprehension without breaking behavior.",
+      "assertions": [
+        "Treats the manifest and string-based framework lookup as a relevant usage contract even though the method is private-looking.",
+        "Does not treat green unit tests or a static source-reference search as complete proof that the rename is safe.",
+        "Renames only if every applicable registration can be updated and validated within scope; otherwise keeps the contract or reports the blocked rename rather than breaking runtime discovery."
+      ]
+    },
+    {
+      "id": "tests-not-complete-spec",
+      "mode": "negative",
+      "prompt": "A proposed readability simplification wraps `SpecificError` in a generic error and moves an audit event after cleanup. The local unit tests still pass because they only assert the returned mapping, but the current caller contract requires `SpecificError` to escape unchanged and the integration contract requires the audit event before cleanup. Make the code easier to understand without changing behavior.",
+      "assertions": [
+        "Does not accept passing local tests as sufficient evidence for a transformation that violates current caller or integration contracts.",
+        "Preserves exception semantics and audit ordering or chooses a different smaller refactor or no-op.",
+        "Separates preservation evidence from test coverage rather than weakening the tests or redefining the current contract."
+      ]
+    },
+    {
+      "id": "coupled-root-cause",
+      "mode": "skill",
+      "prompt": "A local record is encoded as `entry = (x, kind, False, None)`, and nearby code uses `x` and positional indexes, so maintainers repeatedly reconstruct one hidden field rule. The repository already provides `FieldSpec(name, type, required, default)` for this exact domain concept. Improve comprehension without unrelated cleanup.",
+      "assertions": [
+        "Treats the naming and positional representation as one coherent root-cause cluster when both encode the same hidden rule.",
+        "May perform the tightly coupled representation and local naming edits needed to expose the existing domain concept.",
+        "Reuses the established `FieldSpec` surface and does not expand into unrelated renames, extra abstractions, or cleanup."
+      ]
+    },
+    {
+      "id": "characterization-observed-not-normative",
+      "mode": "skill",
+      "prompt": "A legacy parser returns an empty list for malformed blank input. There is no current contract saying whether that behavior is intended, and the path has no existing test. Perform only a behavior-preserving comprehension refactor; add a small characterization safeguard if needed, but do not decide or fix the blank-input semantics.",
+      "assertions": [
+        "May use a characterization test to capture the observed blank-input baseline when that evidence is needed for a safe refactor.",
+        "Does not describe the observed empty-list behavior as a newly established desired or normative requirement without separate contract evidence.",
+        "Preserves the current behavior during this refactor and separates any suspected correctness question from the comprehension change."
+      ]
+    },
+    {
+      "id": "mixed-structural-and-prose",
+      "mode": "skill",
+      "prompt": "This function has an overloaded boolean/positional configuration that is an executable comprehension bottleneck. Separately, a current protocol test proves that cleanup must stay after result capture so cleanup failure cannot replace the original protocol error, but there is no comment explaining that rationale. Improve the code without changing behavior.",
+      "assertions": [
+        "Still performs or proposes the smallest safe executable refactor for the structural configuration problem instead of handing off the whole task.",
+        "Treats the independent rationale/comment need as clarify-code responsibility rather than using comments as a substitute for the structural refactor.",
+        "Preserves the protocol-tested ordering and does not absorb a correctness or behavioral change into the readability work."
+      ]
     }
   ]
 }
