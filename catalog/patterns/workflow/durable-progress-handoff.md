@@ -61,13 +61,13 @@ Handoff의 상대는 반드시 다른 agent일 필요도 없습니다. 같은 ag
 | 완료·진행·남은 범위 | 이미 끝난 일을 반복하거나 미완료를 완료로 오인하지 않게 함 |
 | 중요한 decision과 짧은 evidence basis | 같은 결정을 다시 조사하는 비용을 줄이되 reasoning transcript를 만들지 않음 |
 | validation과 current health | 현재 known-good / known-broken 상태와 확인 방법을 복구함 |
-| 적용 기준점 | revision, task state, environment 등 handoff가 설명하던 상태를 현재와 비교할 단서를 줌 |
+| 상태 기준점 | revision, task state, environment 등 handoff가 설명하던 상태를 현재와 비교할 단서를 줌 |
 | 실패한 접근과 관찰된 실패 이유 | 같은 dead end를 반복하지 않게 함 |
 | blocker와 residual uncertainty | 아직 사실로 확정되지 않은 것을 명확히 남김 |
 | 다음 시작점 | 다음 실행이 탐색보다 실제 작업으로 빠르게 진입하게 함 |
 | 관련 source와 artifact reference | canonical 내용이나 큰 evidence를 복제하지 않고 찾아갈 수 있게 함 |
 
-적용 기준점은 고정 metadata schema를 뜻하지 않습니다. Git commit이나 ref가 유용한 작업도 있고, task version·dataset·environment처럼 다른 기준점이 더 자연스러운 작업도 있습니다. **다음 실행이 handoff의 freshness를 싸게 판단하는 데 필요한 경우에만** 남기면 됩니다.
+상태 기준점은 고정 metadata schema를 뜻하지 않습니다. Git commit이나 ref가 유용한 작업도 있고, task version·dataset·environment처럼 다른 기준점이 더 자연스러운 작업도 있습니다. **다음 실행이 handoff의 freshness를 싸게 판단하는 데 필요한 경우에만** 남기면 됩니다.
 
 실패한 접근도 전체 시도 과정을 기록할 필요는 없습니다. 재시도 비용이 큰 경우에 **무엇을 시도했고 어떤 관찰 때문에 접었는지** 정도만 남기는 편이 handoff 목적에 맞습니다.
 
@@ -115,7 +115,7 @@ Durable artifact를 썼다는 사실만으로 continuation이 안전해지는 �
 
 ### 다시 시작할 때
 
-Handoff artifact를 곧바로 현재 truth로 가정하지 않습니다. 먼저 적용 기준점과 source, Git state, canonical documentation이나 필요한 runtime 상태를 비교해 **artifact가 아직 현재 상태를 설명하는지** 확인합니다.
+Handoff artifact를 곧바로 현재 truth로 가정하지 않습니다. 먼저 상태 기준점과 source, Git state, canonical documentation이나 필요한 runtime 상태를 비교해 **artifact가 아직 현재 상태를 설명하는지** 확인합니다.
 
 현재 health가 continuation에 중요하다면 가장 작은 유효한 verification을 다시 실행할 수도 있습니다. 예를 들어 이전 handoff가 `tests passing`이라고 적고 있어도 이후 branch가 움직였거나 environment가 달라졌다면 그 문장만 믿고 계속하지 않습니다.
 
@@ -153,7 +153,7 @@ Handoff artifact도 유지비가 있습니다. 작업 상태가 자주 바뀌는
 
 오래된 progress나 plan이 현재 source와 다르면 다음 작업자가 잘못된 상태에서 시작할 수 있습니다.
 
-**대응:** handoff를 현재 truth가 아니라 resume candidate로 취급하고, 적용 기준점과 중요한 state·verification을 현재 source에 맞춰 확인합니다. Material change가 생기면 같은 내용을 여러 곳에 복제하기보다 현재 owner를 갱신합니다.
+**대응:** handoff를 현재 truth가 아니라 resume candidate로 취급하고, 상태 기준점과 중요한 state·verification을 현재 source에 맞춰 확인합니다. Material change가 생기면 같은 내용을 여러 곳에 복제하기보다 현재 owner를 갱신합니다.
 
 ### Artifact가 많아지면 새로운 탐색 문제가 생길 수 있습니다
 
@@ -203,4 +203,4 @@ Conversation에만 있던 credential, 개인 정보나 민감한 운영 세부�
 
 ## Short Form
 
-> **긴 작업에서 다시 알아내는 비용이 큰 목표·진행·결정·검증·실패·다음 시작점과 필요한 상태 기준점을 예상 handoff boundary를 버틸 최소한의 durable surface에 남깁니다. 재개할 때는 그 artifact를 현재 truth로 맹신하지 않고 source와 state에 맞는지 확인한 뒤 이어갑니다.**
+> **긴 작업에서 재개에 필요한 상태를 예상 handoff boundary를 버틸 최소한의 durable surface에 남깁니다. 재개할 때는 그 artifact를 현재 truth로 맹신하지 않고 source와 state에 맞는지 확인한 뒤 이어갑니다.**
