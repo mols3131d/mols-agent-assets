@@ -122,7 +122,7 @@ Gantt의 proportional time axis는 load-bearing information이다. Portrait view
 
 ## Renderer-Sensitive Review
 
-Gantt는 syntax validity와 **schedule integrity**를 따로 검증한다.
+Gantt는 syntax validity와 **schedule integrity**를 따로 검증한다. Parser가 입력을 받아들였다는 사실만으로 rendered schedule이 올바르다고 판정하지 않는다.
 
 1. 모든 task ID가 유일하고 모든 `after`/`until` reference가 실제 task에 resolve되는가.
 1. implicit previous-task start가 실제 schedule relation일 때만 남아 있는가.
@@ -132,7 +132,7 @@ Gantt는 syntax validity와 **schedule integrity**를 따로 검증한다.
 1. tentative/estimated 값이 committed 또는 observed schedule처럼 보이지 않는가.
 1. `excludes` 같은 calendar rule 뒤의 computed end와 downstream start가 source schedule과 맞는가.
 1. `done`·`active`·`crit`와 milestone/gate가 source snapshot 또는 planning decision을 반영하는가.
-1. task metadata에 accidental extra comma나 빈 field가 생기지 않았는가.
+1. task metadata의 field count와 omission이 의도한 form과 일치하며 stray extra comma가 없는가.
 1. date-time, calendar boundary, dense `vert`, compact layout처럼 renderer-sensitive한 조합은 실제 target에서 읽을 수 있는가.
 
 문제가 있으면 styling으로 숨기거나 날짜를 임의 이동하지 않는다. 먼저 schedule facts, reference ID, calendar assumption과 representation choice를 고친다.
