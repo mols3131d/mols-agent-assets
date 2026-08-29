@@ -47,6 +47,9 @@ Mermaid로 **관계·절차·책임·상태·시간·구조를 빠르고 쉽게 
 
 - 기존 diagram은 요청 범위만 수정하고 direction, grouping, naming, theme과 visual language를 불필요하게 바꾸지 않는다.
 - 정보 구조에 맞는 type을 사용하고 익숙하다는 이유로 모든 내용을 flowchart로 만들지 않는다.
+- node, edge와 boundary는 독립적인 semantic information을 가져야 한다. 항상 함께 움직이고 별도 관계를 설명하지 않는 중복 unit은 병합을 검토한다.
+- 구조를 크게 단순화할 때 relationship, order, guard, cardinality와 boundary를 보존하고, 해석에 영향을 주는 merge·collapse·drop은 결과와 함께 짧게 보고한다.
+- layout position만으로 relationship, order 또는 ownership을 암시하지 않는다. Renderer가 배치를 바꿔도 핵심 의미가 남아야 한다.
 - 의미 없는 node, edge, subgraph와 style을 추가하지 않는다.
 - 관계를 색상만으로 표현하지 않고 label, shape, position 또는 line style을 함께 사용한다.
 - 복잡도를 style로 덮지 말고 diagram을 분리하거나 더 단순한 표현으로 전환한다.
