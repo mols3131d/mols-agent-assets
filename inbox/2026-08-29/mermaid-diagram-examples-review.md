@@ -31,7 +31,7 @@
 ### architecture·boundary
 - [x] `architecture-diagram.md`
 - [x] `c4-diagrams.md` — `c4-context.md`에서 rename
-- [ ] `block-diagram.md`
+- [x] `block-diagram.md`
 
 ### chronology·planning·work
 - [ ] `timeline.md`
@@ -57,4 +57,5 @@
 
 - 완료: `architecture-diagram.md`
 - 완료: `c4-diagrams.md` — 리뷰 → 개선 → 재리뷰 완료
-- 다음: `block-diagram.md` 리뷰
+- 완료: `block-diagram.md` — 리뷰 → 개선 → 재리뷰 완료
+- 다음: `timeline.md` 리뷰
