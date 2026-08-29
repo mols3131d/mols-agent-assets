@@ -84,7 +84,7 @@
       "mode": "skill",
       "prompt": "A simpler caching approach looks tempting, but it would hide permission changes that must become visible within the same request. The implementation is already correct. Clarify this for future maintainers without changing executable code.",
       "assertions": [
-        "May preserve the current constraint and consequence as a code-local comment because it prevents a likely but invalid future change.",
+        "Adds or improves a code-local comment that preserves the current constraint and consequence because it prevents a likely but invalid future change.",
         "Explains the current invariant rather than recording discussion history or a rejected proposal log.",
         "Keeps the explanation tied to the narrow surface where the caching decision matters."
       ]
