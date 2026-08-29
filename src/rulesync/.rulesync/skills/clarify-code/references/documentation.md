@@ -1,6 +1,6 @@
 # Documentation
 
-`clarify-code`는 code-adjacent prose를 다룬다. Caller-facing API documentation과 maintainer comment는 독자, 수명과 소비 방식이 다르다.
+`clarify-code`는 code-adjacent prose를 다룬다. Caller-facing declaration documentation과 maintainer comment는 독자, 수명과 소비 방식이 다르다.
 
 Core `SKILL.md`가 common-path signal, evidence gate와 reader/scope 기반 surface 선택을 소유한다. 이 reference는 ecosystem-specific surface, placement·ownership·grounding이 단순하지 않은 경우의 세부 판단만 보완한다.
 
@@ -8,14 +8,14 @@ Core `SKILL.md`가 common-path signal, evidence gate와 reader/scope 기반 surf
 
 | Reader | Primary surface | Needs |
 | --- | --- | --- |
-| Caller | name, signature, type, language-native API documentation, call site | 무엇을 믿고 사용할 수 있는지 |
+| Caller | name, signature, type, language-native declaration documentation, call site | 무엇을 믿고 사용할 수 있는지 |
 | Maintainer | code, names, local comment, tests | 어떤 constraint·consequence·rationale를 보존해야 하는지 |
 
 코드와 이름이 스스로 설명할 수 있는 정보는 prose로 반복하지 않는다. 구조 자체가 불명확하면 그 structural concern을 prose로 대체하지 않고 `code-comprehension-refactor` 책임으로 분리한다. 별도로 존재하는 durable explanation need는 독립적으로 판단한다.
 
 ## Explanation Value
 
-설명이 있다는 사실 자체는 improvement가 아니다. Comment와 API documentation도 reader의 attention과 유지보수 비용을 소비한다.
+설명이 있다는 사실 자체는 improvement가 아니다. Comment와 caller-facing declaration documentation도 reader의 attention과 유지보수 비용을 소비한다.
 
 설명을 추가하거나 유지하기 전에 다음 순서로 본다.
 
@@ -53,9 +53,9 @@ Evidence가 **설명하려는 claim에 대해** 충돌하면 한 source를 편�
 
 Material rationale를 확인할 수 없다면 그럴듯한 이유를 만들거나 uncertainty를 permanent comment로 굳히지 않는다. Evidence read도 적용되는 scope와 authority를 지키며, 더 넓게 읽었다고 그 surface를 수정할 권한이 생기는 것은 아니다.
 
-## Caller-Facing API Documentation
+## Caller-Facing Declaration Documentation
 
-Caller-facing documentation은 caller가 **사용 전에 알아야 하지만 name, signature, type만으로 드러나지 않는 contract**를 보완한다.
+Caller-facing declaration documentation은 caller가 **사용 전에 알아야 하지만 name, signature, type만으로 드러나지 않는 contract**를 보완한다. Public API에만 한정하지 않으며 internal/private caller contract에도 같은 판단을 적용한다.
 
 구체적인 syntax는 현재 language와 repository convention을 따른다. 예를 들면 Python의 docstring, Go의 declaration doc comment, Rust의 item documentation comment, Java의 Javadoc comment가 같은 responsibility를 수행할 수 있다. 이 예시는 portable syntax rule이 아니다.
 
@@ -92,7 +92,7 @@ Python example은 information placement를 보여주는 예시일 뿐 다른 언
 
 Comment는 core의 maintainer-facing signal에 해당하는 **constraint, consequence와 rationale**를 가장 가까운 적절한 scope에서 전달한다. 해당 meaning이 structural refactor로 대체되지 않고 local projection이 필요하다면 가장 작은 comment를 추가하거나 기존 comment를 개선한다.
 
-Caller가 사용 전에 알아야 하는 contract를 implementation body comment에만 숨기지 않는다. 반대로 caller가 의존하지 않는 implementation-only ordering이나 workaround rationale를 public API documentation으로 승격하지 않는다.
+Caller가 사용 전에 알아야 하는 contract를 implementation body comment에만 숨기지 않는다. 반대로 caller가 의존하지 않는 implementation-only ordering이나 workaround rationale를 caller-facing declaration documentation으로 승격하지 않는다.
 
 Structural opacity와 independent rationale가 함께 존재할 수 있다. 이 경우 comment로 structure를 line-by-line 해설하지 않되, 별도로 확인된 durable constraint나 rationale까지 제거하지 않는다.
 
@@ -127,7 +127,7 @@ cleanup_staging()
 
 | Meaning | Preferred surface |
 | --- | --- |
-| 한 API의 caller contract | 해당 language/repository의 caller-facing API documentation surface |
+| 한 declaration의 caller contract | 해당 language/repository의 caller-facing declaration documentation surface |
 | 한 branch, statement 또는 ordering의 maintainer-only rationale | 해당 code 근처 comment |
 | file/package 전체에 안정적으로 적용되는 local convention | source-level module/package documentation surface |
 | 여러 module에 걸친 architecture·domain policy | canonical owner; source에는 필요한 projection만 |
@@ -146,7 +146,7 @@ Non-local하거나 긴 설명이라는 이유만으로 제거하지 않는다. �
 Module, package 또는 이에 해당하는 source-level documentation은 local convention이 개별 symbol만으로 복원되지 않고 실제로 더 넓은 source scope에 적용될 때 사용할 수 있다.
 
 - 해당 source scope가 소유하는 책임과 명확한 boundary를 짧게 설명한다.
-- symbol별 API documentation을 모아 다시 쓰지 않는다.
+- symbol별 caller-facing documentation을 모아 다시 쓰지 않는다.
 - repository architecture guide나 domain policy를 local source documentation에 복제하지 않는다.
 - 파일/package 구조가 잘못되어 역할이 불명확한 문제를 설명문으로 숨기지 않는다.
 
@@ -155,7 +155,7 @@ Module, package 또는 이에 해당하는 source-level documentation은 local c
 DRY는 중요한 caller contract를 외부 문서에만 숨기는 이유가 아니다.
 
 - 넓은 architecture·domain policy는 canonical 문서가 소유한다.
-- API 사용에 필요한 precondition, destructive side effect, overwrite/idempotency 의미는 API 가까이에 최소한으로 남긴다.
+- declaration 사용에 필요한 precondition, destructive side effect, overwrite/idempotency 의미는 declaration 가까이에 최소한으로 남긴다.
 - canonical 용어를 사용하고 새 동의어나 병렬 정의를 만들지 않는다.
 
 즉, 넓은 정책을 복제하지 말고 **호출이나 유지보수에 필요한 부분만 projection**한다.
