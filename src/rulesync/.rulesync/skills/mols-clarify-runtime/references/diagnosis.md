@@ -54,7 +54,7 @@ Input / Context → Decision / Path → Action → Effect → Outcome
 | Noisy | routine detail이 많아 중요한 event나 state change를 찾기 어렵다. |
 | Disconnected | 필요한 evidence는 있으나 operation, attempt 또는 causal relation을 복원하기 어렵다. |
 
-`Missing`과 `Unavailable`을 기계적으로 별도 taxonomy로 늘리지 않는다. 의미상 evidence가 있어도 sampling, filtering, retention 또는 접근 제한 때문에 실제 reconstruction에 쓸 수 없다면 persistent evidence 선택 단계에서 viability 문제로 다룬다.
+`Missing`과 `Unavailable`을 기계적으로 별도 taxonomy로 늘리지 않는다. 의미상 evidence가 있어도 sampling, filtering, retention 또는 접근 제한 때문에 실제 reconstruction에 쓸 수 없다면 maintained evidence 선택 단계에서 viability 문제로 다룬다.
 
 ## Priority
 
@@ -71,6 +71,8 @@ Input / Context → Decision / Path → Action → Effect → Outcome
 
 ## Observe Before Changing
 
-질문을 고른 뒤 바로 persistent evidence를 추가하지 않는다. 가능한 경우 [Observation](observation.md)에 따라 가장 작은 기존 executable scenario와 native evidence로 실제 behavior를 먼저 확인한다.
+질문을 고른 뒤 바로 maintained evidence를 추가하지 않는다. 가능한 경우 [Observation](observation.md)에 따라 가장 작은 기존 executable scenario와 native evidence로 실제 behavior를 먼저 확인한다.
 
-기존 observation만으로 질문에 직접 답할 수 있으면 수정하지 않는다. 관찰 중 defect나 correctness 의문이 생겨도 이 Skill 안에서 고치지 않고 해당 책임으로 넘긴다.
+기존 observation만으로 질문에 직접 답할 수 있고 future execution에 유지할 evidence 변경이 명시적으로 필요하지 않으면 수정하지 않는다. 한 execution에서 본 결과를 다른 input이나 environment의 일반 behavior로 확대하지 않는다.
+
+관찰 중 defect나 correctness 의문이 생겨도 이 Skill 안에서 고치지 않고 해당 책임으로 넘긴다.
