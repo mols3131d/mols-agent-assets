@@ -6,7 +6,7 @@
       "mode": "skill",
       "prompt": "The function name and types are clear, but callers cannot tell that loading the same partition key replaces the previous load. Clarify this in the source file without changing code behavior.",
       "assertions": [
-        "Uses a docstring or equivalent code-adjacent caller-facing explanation for the non-obvious contract.",
+        "Uses a docstring or equivalent code-adjacent caller-facing API documentation surface for the non-obvious contract.",
         "Does not rename the function, change its signature, or refactor executable code.",
         "Avoids repeating information already obvious from the name and types."
       ]
@@ -16,7 +16,7 @@
       "mode": "skill",
       "prompt": "Cleanup must happen after result capture so cleanup failure never replaces the original result or exception. The code is correct but the reason is not obvious. Clarify it without changing executable code.",
       "assertions": [
-        "Uses a concise code-local comment to explain why the ordering matters.",
+        "Uses a concise code-local comment to explain why the implementation ordering matters.",
         "Does not rewrite the control flow when the code itself is already appropriate.",
         "Explains rationale rather than translating the next statement into prose."
       ]
@@ -26,7 +26,7 @@
       "mode": "skill",
       "prompt": "This source module follows a local convention that is essential to maintainers but not visible from any one symbol. Add the smallest source-level explanation without duplicating the architecture guide.",
       "assertions": [
-        "May use a module-level explanation when the convention is genuinely local to the source file.",
+        "May use a module- or package-level explanation when the convention genuinely applies to that wider source scope.",
         "Projects only the local information maintainers need instead of copying broader policy.",
         "Does not change executable code."
       ]
@@ -114,8 +114,8 @@
       "mode": "skill",
       "prompt": "Make this source easier for future maintainers without changing executable code. The implementation captures an outcome, then runs staging cleanup. There is no explanatory comment. A nearby regression test named `test_cleanup_failure_preserves_original_exception` asserts that when the main operation raises and cleanup also fails, the original exception is still the one observed by the caller. Choose the smallest source-level clarification that is warranted.",
       "assertions": [
-        "Uses the nearby regression test as evidence for the hidden ordering or failure consequence instead of requiring the user to state the rationale directly.",
-        "Adds or improves a code-local comment explaining the evidence-backed consequence even though the prompt does not explicitly request a comment.",
+        "Uses the nearby regression test as evidence for the hidden implementation ordering or failure consequence instead of requiring the user to state the rationale directly.",
+        "Adds or improves a code-local comment explaining the evidence-backed maintainer consequence even though the prompt does not explicitly request a comment.",
         "Does not refactor executable code or narrate obvious statements."
       ]
     },
@@ -124,9 +124,9 @@
       "mode": "skill",
       "prompt": "Review this source for maintainability without changing executable code. `user = load_user(id)` is self-explanatory. A later uncached permission lookup is intentional because permission changes must become visible within the same request.",
       "assertions": [
+        "Uses the explicitly provided current visibility constraint as evidence when it does not conflict with applicable current behavior or contract.",
         "Leaves the self-explanatory user load without a redundant comment.",
-        "Adds or improves a comment near the uncached permission lookup that explains the current visibility constraint or consequence.",
-        "Selects the high-value explanation instead of either commenting everything or returning a global no-op."
+        "Adds or improves a comment near the uncached permission lookup that explains only the supported current visibility constraint or consequence."
       ]
     },
     {
@@ -137,6 +137,36 @@
         "Does not invent a plausible caching, performance, race-condition, consistency, or permission rationale from the unusual code shape alone.",
         "Does not add an unsupported permanent source comment merely to satisfy the request for clarification.",
         "May report that the material rationale could not be established while leaving executable code unchanged."
+      ]
+    },
+    {
+      "id": "caller-visible-protocol-doc-surface",
+      "mode": "skill",
+      "prompt": "This is Go code. An exported function `Send` may only be called after the protocol handshake is complete, and callers must know this before invoking it. The implementation is already correct. Add the smallest source-level clarification without changing executable code.",
+      "assertions": [
+        "Treats the handshake requirement as caller-visible contract information rather than maintainer-only implementation rationale.",
+        "Uses the language- and repository-native caller-facing API documentation surface, such as a Go declaration doc comment, instead of hiding the requirement only in a function-body comment.",
+        "Does not impose Python docstring syntax or modify executable code."
+      ]
+    },
+    {
+      "id": "user-provided-current-constraint",
+      "mode": "skill",
+      "prompt": "Clarify this source for maintainers without changing executable code. The current operational requirement is that the second lookup must bypass the request cache because permission revocations must become visible before the request completes. The code performs that uncached lookup and there is no conflicting test, caller behavior, config, or canonical contract nearby.",
+      "assertions": [
+        "Uses the explicit current operational requirement as an evidence candidate instead of requiring a duplicate repository artifact before any clarification can be made.",
+        "Adds or improves a code-local comment for the supported maintainer-only visibility constraint when that is the smallest useful explanation.",
+        "Does not invent extra historical, performance, security, or race-condition rationale beyond the provided current constraint."
+      ]
+    },
+    {
+      "id": "conflicting-evidence-no-canonization",
+      "mode": "negative",
+      "prompt": "Clarify why an uncached permission lookup exists without changing executable code. The current implementation performs the lookup uncached. A nearby regression test is named `test_permissions_reused_within_request` and asserts a cached result is reused. The current API contract says permission changes must become visible within the same request. No source has been identified as obsolete yet.",
+      "assertions": [
+        "Recognizes a material conflict among current implementation, test evidence, and caller contract instead of choosing one source for convenience.",
+        "Does not canonize an unresolved caching or visibility rationale into a permanent comment or caller-facing documentation surface.",
+        "Leaves executable code unchanged and reports the unresolved semantic conflict or required handoff rather than fabricating certainty."
       ]
     }
   ]
