@@ -65,7 +65,8 @@ Mermaid chart는 **수치가 있는 비교·추세·구성·이동량·계층 �
 
 - band thickness가 실제 quantity를 뜻할 때만 사용한다.
 - source가 conserved flow를 의미하면 intermediate node의 incoming/outgoing 합계를 대조한다. 실제 leak, creation 또는 loss가 있으면 그 예외를 label이나 caveat로 드러낸다.
-- 작은 flow를 `Other`로 합칠 수는 있지만 cutoff와 포함 범위를 숨기지 않는다. 작은 flow를 조용히 삭제하지 않는다.
+- 작은 flow를 `Other`로 합칠 때는 **한쪽 endpoint와 stage를 공유하고, 반대쪽 endpoints가 실제로 하나의 의미 있는 category로 묶일 수 있을 때만** aggregation한다. 양쪽 endpoint가 모두 다른 flow를 하나의 synthetic path로 합치거나 direction·stage를 바꾸지 않는다.
+- `Other`를 사용하면 cutoff, 포함 범위와 합산 값을 드러내고 작은 flow를 조용히 삭제하지 않는다. Aggregation 후에도 source의 conservation과 topology 의미가 유지되는지 확인한다.
 - stage 약 3개, node 약 8개, flow 약 12개를 넘으면 overview/detail 분리를 검토하되 source structure를 수치에 맞추려고 훼손하지 않는다.
 
 ### Treemap
