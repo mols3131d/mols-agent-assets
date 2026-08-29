@@ -76,11 +76,13 @@ docs/
 
 ## Source-Backed Annotations
 
-`##` description, highlight와 icon은 hierarchy를 보조하는 presentation/annotation layer다. Source에 실제로 있는 responsibility, generated status나 purpose를 짧게 설명할 수 있지만 새로운 관계를 만들지는 않는다.
+`##` description, highlight와 icon은 hierarchy를 보조하는 presentation/annotation layer다. Source에 실제로 있는 purpose, generated status나 운영 note를 짧게 설명할 수 있지만 새로운 관계를 만들지는 않는다.
+
+아래 예시는 annotation text 자체가 source-backed라는 전제다.
 
 ```mermaid
 treeView-beta
-├── src/ ## production code
+├── src/ ## application source
 │   ├── ingestion/ ## source adapters
 │   │   ├── api.py
 │   │   └── files.py
@@ -89,7 +91,7 @@ treeView-beta
 │   │   └── reconciliation.py
 │   └── publishing/ ## output adapters
 ├── tests/
-│   └── integration/ ## cross-boundary tests
+│   └── integration/ ## integration tests
 ├── generated/ ## generated output; do not edit manually
 │   └── schema.json
 └── pyproject.toml ## project/tool configuration
@@ -97,6 +99,7 @@ treeView-beta
 
 - `:::highlight`는 **해당 row를 강조**할 뿐 subtree boundary, ownership scope, security zone 또는 critical path를 만들지 않는다.
 - `##` description은 source-backed fact만 적는다. Filename이나 directory 이름만 보고 purpose, owner, generated status를 추론하지 않는다.
+- Ownership coverage나 policy boundary가 load-bearing information이면 description/highlight만으로 표현하지 말고 companion table이나 적절한 diagram으로 직접 설명한다.
 - Description text에 `uses X`, `generated from Y` 같은 관계를 써도 connector가 생기는 것은 아니다. 그 relationship이 load-bearing information이면 Flowchart나 companion table로 직접 표현한다.
 - External icon pack이나 icon mapping은 embedding host가 실제로 지원·등록한 경우에만 사용한다. Icon이 없어도 file/directory identity와 hierarchy가 읽혀야 한다.
 - Color, icon이나 highlight 하나에 ownership, risk, state 같은 domain semantics를 맡기지 않는다.
@@ -107,7 +110,7 @@ Renderer는 declaration의 tree traversal 순서대로 row를 배치할 수 있�
 
 - Source가 directory listing order를 제공하면 필요에 따라 보존할 수 있지만 위/아래 위치를 priority, chronology, import order 또는 runtime call order로 해석하지 않는다.
 - Sibling reorder가 source의 실제 hierarchy를 바꾸지 않는 presentation edit라면 가능하지만, source가 명시적 ordering을 소유하는 경우에는 그 순서를 보존한다.
-- Arbitrary dependency, backlink, symlink target 또는 cross-branch relationship이 핵심이면 TreeView connector로 흉내 내지 않는다.
+- Arbitrary dependency, backlink 또는 cross-branch relationship이 핵심이면 TreeView connector로 흉내 내지 않는다.
 
 ## Viewport And Density
 
