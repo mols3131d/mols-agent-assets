@@ -9,7 +9,7 @@
 | Candidate | Primary area | 현재 판단 | 핵심 질문 |
 | --- | --- | --- | --- |
 | [Local-Reasoning Structure](local-reasoning-structure.md) | software-engineering | strong | 한 부분을 바꾸기 위해 얼마나 넓은 context를 알아야 하는가? |
-| [Executable Architecture Invariants](executable-architecture-invariants.md) | software-engineering | strong | 중요한 architecture constraint를 가능한 경우 기계적으로 확인할 수 있는가? |
+| [Executable Architecture Invariants](executable-architecture-invariants.md) | software-engineering | strong / draft | 어떤 architecture invariant를 어디까지 검증하고, 검증 비용을 어떻게 제한할 것인가? |
 | [Executable Verification Surface](executable-verification-surface.md) | software-engineering | strong | agent나 사람이 결과의 correctness를 스스로 판정할 수 있는가? |
 | [Self-Contained Change](self-contained-change.md) | workflow / software-engineering | strong | 하나의 change가 독립적으로 이해·검증·통합 가능한가? |
 | [Durable Progress Handoff](durable-progress-handoff.md) | workflow | promising | 긴 작업을 다음 session이나 agent가 반복 탐색 없이 이어갈 수 있는가? |
