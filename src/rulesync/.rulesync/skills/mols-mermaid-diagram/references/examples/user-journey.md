@@ -2,7 +2,7 @@
 
 > `journey`의 현재 syntax와 renderer 지원은 target renderer와 Mermaid 공식 문서를 확인한다.
 
-사람이 목표를 완료하는 **ordered journey step**, 각 step의 **1–5 experience score**, 그리고 그 step에 참여하는 actor를 함께 읽는 것이 핵심이면 `journey`를 사용한다.
+사람이 목표를 완료하는 **ordered journey step**과 각 step의 **1–5 experience score**를 함께 읽는 것이 핵심이면 `journey`를 사용한다. Source가 actor participation도 제공하면 task에 함께 표현할 수 있지만 actor 목록은 Journey를 선택하기 위한 필수 조건이 아니다.
 
 Journey syntax는 task마다 score를 요구한다. Source에 score 근거가 없는데 diagram을 채우기 위해 임의로 `3` 같은 값을 만들지 않는다. 경험 점수 없이 절차·handoff만 설명해야 한다면 Flowchart/Swimlanes가 더 정확하고, actor별 정량 비교가 핵심이면 source table이나 chart를 사용한다.
 
@@ -35,7 +35,7 @@ Mermaid Journey의 score는 task당 하나의 숫자이며 공식 syntax 범위�
 
 ## Actor Participation Is Not Ownership
 
-Task 뒤의 actor 목록은 **그 task에 연결된 participant**를 나타낸다. 목록만으로 accountable owner, 승인 권한, handoff direction 또는 책임 비율을 만들지 않는다.
+Task 뒤의 actor 목록은 optional **participant annotation**이다. 목록만으로 accountable owner, 승인 권한, handoff direction 또는 책임 비율을 만들지 않는다.
 
 ```mermaid
 journey
@@ -69,10 +69,10 @@ Journey의 declaration order는 읽는 journey step 순서를 만든다. 따라�
 
 ## Viewport And Density
 
-Journey는 task가 늘수록 가로 폭과 actor legend 부담이 커진다.
+Journey는 task가 늘수록 가로 폭이 커지고, actor가 많으면 legend 부담도 함께 증가한다.
 
 - 상위 [Mermaid Diagram Reference](../mermaid-diagrams.md)의 Journey readability budget에 도달하면 phase별 split을 검토한다.
-- 단순히 폭을 줄이려고 실제 journey step을 병합하거나 actor를 삭제하지 않는다.
+- 단순히 폭을 줄이려고 실제 journey step이나 source-backed actor를 삭제하지 않는다.
 - 긴 task label은 핵심 행동만 남기고 rationale·evidence는 companion prose로 이동한다.
 - actor color, legend order와 기타 renderer presentation을 responsibility나 score semantics로 사용하지 않는다.
 
@@ -83,8 +83,8 @@ Journey는 syntax validity와 **experience-model fidelity**를 따로 검증한�
 1. 모든 task가 source-backed journey step이며 실제 순서가 확인됐는가.
 1. 모든 score가 1–5 범위이고 같은 해석 basis를 공유하는가.
 1. Score가 없던 source에 diagram을 맞추기 위한 값을 발명하지 않았는가.
+1. Actor를 표현했다면 source-backed participant이며 ownership/authority/handoff로 과해석하지 않았는가.
 1. 여러 actor가 붙은 task의 단일 score를 actor별 score처럼 읽히게 하지 않았는가.
-1. Actor list를 ownership, approval authority 또는 handoff direction으로 과해석하지 않았는가.
 1. Section을 phase grouping보다 강한 조직·system boundary로 사용하지 않았는가.
 1. Activity line과 score 변화만으로 dependency, recovery 또는 causality를 주장하지 않았는가.
 1. 정량 비교가 핵심인데 Journey score로 chart 역할을 대신하고 있지 않은가.
@@ -94,4 +94,4 @@ Journey는 syntax validity와 **experience-model fidelity**를 따로 검증한�
 
 ## Portable Fallback
 
-Target renderer가 Journey를 지원하지 않거나 source가 1–5 score를 정당화하지 못하면 **phase, step order, score basis와 actor participation**을 필요한 범위에서 보존하는 table로 전환한다. Score가 불필요하고 process flow가 핵심이면 Flowchart/Swimlanes를 사용한다.
+Target renderer가 Journey를 지원하지 않거나 source가 1–5 score를 정당화하지 못하면 **phase, step order, score basis와 source-backed actor participation**을 필요한 범위에서 보존하는 table로 전환한다. Score가 불필요하고 process flow가 핵심이면 Flowchart/Swimlanes를 사용한다.
