@@ -4,8 +4,9 @@ description: >-
   with real work. Load when dogfooding, tuning from observed failures, checking for
   overfitting or regressions, comparing against a baseline, or verifying resolved
   customization behavior. Do not use for generic surface selection, schema package
-  documentation, exact vendor-contract lookup, or project-specific evidence that
-  has not yet been established.
+  documentation, exact vendor-contract lookup, or inventing project-specific
+  requirements; pair with project-customization.md when repository evidence defines
+  the cases or acceptance boundary.
 ---
 
 # OpenSpec Dogfood and Tuning
