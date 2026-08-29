@@ -218,4 +218,4 @@ Sibling files는 directory depth를 늘리지 않는 대신 filename이 길어�
 
 ## Short Form
 
-> **Source와 test의 위치 관계를 예측 가능한 탐색 단서로 활용합니다. 작은 테스트는 단일 파일이나 sibling files로 둘 수 있고, 관련 파일이나 directory가 조밀해질수록 bundle이 탐색을 더 단순하게 만드는지 살펴볼 수 있습니다. Literal mirroring보다 feature·behavior·system boundary가 더 자연스러우면 그쪽에 맞춥니다.**
+> **Source와 test의 위치 관계는 관련 테스트를 찾는 탐색 단서가 될 수 있습니다. 작은 테스트는 단일 파일이나 sibling files로 표현할 수 있고, 관련 파일이나 directory가 조밀해지면 bundle이 탐색을 더 단순하게 만드는 선택지가 될 수 있습니다. Literal mirroring보다 feature·behavior·system boundary가 더 자연스러운 경우도 있습니다.**
