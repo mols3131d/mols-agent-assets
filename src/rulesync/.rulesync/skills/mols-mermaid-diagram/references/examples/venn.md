@@ -18,6 +18,16 @@ venn-beta
 
 `Analytics Engineering`은 `Engineering ∩ Analytics`에 해당하는 overlap label로 읽는다. 두 set의 전체 합집합을 뜻하지 않는다.
 
+## Set Identity And Membership
+
+Set identifier는 diagram 안의 stable identity다.
+
+- 각 source set에는 unique identifier를 사용한다. 같은 identifier를 다른 label/size로 다시 선언해 서로 다른 set처럼 보이게 하지 않는다.
+- `union`에 사용하는 identifier는 먼저 선언된 set을 참조한다.
+- Display label과 identifier를 구분해 rename 시 모든 intersection reference가 같은 set을 가리키는지 확인한다.
+- 같은 item이 어느 set에 속하는지 source가 불명확하면 보기 좋은 overlap을 만들기 위해 membership을 추론하지 않는다.
+- Exact subset/superset containment가 핵심인데 overlap보다 hierarchy가 중요한 경우 Class/Mindmap/table 등 더 직접적인 표현을 사용한다.
+
 ## Qualitative Versus Quantitative Geometry
 
 Size를 생략해도 renderer는 layout을 만들기 위한 default size를 사용한다. 따라서 **숫자를 쓰지 않았다고 circle area가 의미 없는 것은 아니지만, 그 geometry를 source-backed magnitude로 읽어서는 안 된다.**
@@ -64,13 +74,6 @@ Triple intersection `6`은 각 pairwise intersection과 parent set보다 클 수
 - Text node가 많거나 region이 작으면 target renderer에서 위치가 불안정할 수 있으므로 핵심 label만 남긴다.
 - Color/style 하나로 set membership, risk 또는 priority를 새로 만들지 않는다.
 
-## Set Identity And Membership
-
-- `union`에 사용하는 set identifier는 먼저 선언된 set을 참조한다.
-- Display label과 identifier를 구분해 rename 시 모든 intersection reference가 같은 set을 가리키는지 확인한다.
-- 같은 item이 어느 set에 속하는지 source가 불명확하면 보기 좋은 overlap을 만들기 위해 membership을 추론하지 않는다.
-- Exact subset/superset containment가 핵심인데 overlap보다 hierarchy가 중요한 경우 Class/Mindmap/table 등 더 직접적인 표현을 사용한다.
-
 ## Viewport And Density
 
 Venn은 set과 intersection이 늘수록 geometry가 빠르게 복잡해진다.
@@ -84,6 +87,7 @@ Venn은 set과 intersection이 늘수록 geometry가 빠르게 복잡해진다.
 Venn Diagram은 syntax validity와 **set-membership fidelity**를 따로 검증한다.
 
 1. Mermaid `union`을 실제 set union이 아니라 overlap/intersection으로 올바르게 사용했는가.
+1. Set identifier가 unique하고 모든 intersection이 의도한 declared set을 참조하는가.
 1. 모든 set membership과 declared intersection이 source-backed인가.
 1. Size를 썼다면 같은 population/unit/time basis이며 set arithmetic이 모순되지 않는가.
 1. Size를 생략한 geometry를 실제 magnitude처럼 읽히게 만들지 않았는가.
