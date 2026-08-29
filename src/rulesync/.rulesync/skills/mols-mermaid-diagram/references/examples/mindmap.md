@@ -80,7 +80,7 @@ Sibling declaration order와 renderer의 spatial placement는 hierarchy를 읽�
 - Source에 명시적 rank/order가 있고 그 순서 자체가 핵심이면 label, numbered field 또는 table처럼 order를 직접 보존하는 표현을 함께 검토한다.
 - Layout engine이 branch 위치를 바꿔도 parent-child meaning은 변하지 않아야 한다.
 - Mindmap의 default layout과 config precedence는 renderer/version에 따라 달라질 수 있으므로 특정 branch side, sibling geometry 또는 현재 spacing을 contract로 삼지 않는다. Composition이 중요하면 실제 target render를 확인한다.
-- `tidy-tree` 같은 alternate layout은 readability를 개선할 수 있지만 domain semantics를 추가하지 않는다. Target renderer 지원과 실제 결과를 확인한 뒤 presentation option으로만 사용한다.
+- Alternate layout은 readability를 개선할 수 있지만 domain semantics를 추가하지 않는다. Target renderer 지원과 실제 결과를 확인한 뒤 presentation option으로만 사용한다.
 
 ## Shapes, Icons And Classes
 
