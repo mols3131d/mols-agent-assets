@@ -37,7 +37,7 @@ Jinja2-style 표기는 template 구조를 표현하기 위한 authoring notation
 - 모르는 값은 추측하거나 임의의 긍정 상태로 채우지 않습니다.
 - 검증 상태는 `✅ Pass`, `❌ Fail`, `⚪ Not Verified`를 사용합니다. `Pass`는 명시한 check가 통과했다는 뜻만 가지며 semantic review나 제한된 inspection을 전체 검증으로 확대 해석하지 않습니다.
 - PR Review finding과 Pull Request risk의 importance는 `🔴 Critical`, `🟠 High`, `🟡 Medium`, `🔵 Low`를 사용합니다. 같은 색은 같은 상대적 중요도를 뜻하지만 finding과 risk 자체는 서로 다른 개념입니다.
-- PR conversation comment의 optional workflow status는 `🔴 Blocked`, `🟡 Waiting`, `🟢 Ready`를 사용합니다. 현재 진행 상태를 전달할 필요가 없는 일반 comment에서는 생략합니다.
+- PR conversation comment의 optional workflow status는 `🔴 Blocked`, `🟡 Waiting`, `🟢 Ready`를 사용합니다. `Blocked`는 다음 작업을 진행할 수 없는 상태, `Waiting`은 외부 결과나 의존성을 기다리는 상태, `Ready`는 명시한 다음 작업을 막는 알려진 blocker가 없는 상태에만 사용합니다.
 - 색상 원은 importance나 workflow 상태처럼 반복되는 의미를 빠르게 구분할 때만 사용하며 일반 section 장식에는 사용하지 않습니다.
 - 같은 finding을 review body와 inline comment에 완전히 중복하지 않습니다. Line-specific finding은 inline comment에 두고, review body에는 cross-cutting finding이나 전체 판단에 필요한 요약만 둡니다.
 - repository 내부 path와 artifact는 가능한 한 repository-relative reference를 사용합니다.
