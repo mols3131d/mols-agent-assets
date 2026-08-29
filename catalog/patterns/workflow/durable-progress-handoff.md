@@ -36,6 +36,8 @@ context / session / worker 전환
 
 Handoff의 상대는 반드시 다른 agent일 필요도 없습니다. 같은 agent가 context reset 뒤 돌아오는 경우, 다른 session이나 model이 이어받는 경우, 사람이 작업을 인계받는 경우에도 같은 문제가 생길 수 있습니다.
 
+또한 handoff boundary가 항상 예고되는 것은 아닙니다. 긴 작업에서 context loss나 worker 전환 가능성이 의미 있다면 **handoff 순간에 처음 요약하기보다 material checkpoint에서 resume-critical state를 갱신해 두는 형태**도 고려할 수 있습니다. 그렇다고 모든 작은 행동을 실시간으로 기록할 필요는 없습니다.
+
 ## 언제 유용한지
 
 다음 조건이 많이 겹칠수록 durable handoff의 가치가 커질 수 있습니다.
@@ -187,6 +189,7 @@ Conversation에만 있던 credential, 개인 정보나 민감한 운영 세부�
 - Repository의 knowledge lifecycle은 working artifact를 언제 canonical owner로 승격·유지·archive·삭제할지 다룹니다.
 - RPI 같은 workflow method는 Research, Plan, Implementation, Review의 단계와 prerequisite 관계를 다룹니다.
 - Git history는 repository가 어떻게 변했는지를 보존하지만, 그 자체가 모든 decision rationale이나 next action을 설명해야 하는 것은 아닙니다.
+- 여러 worker가 동시에 작업할 때의 task allocation, locking, merge와 conflict coordination은 별도의 collaboration / execution concern입니다.
 
 따라서 이 패턴은 특정 `inbox/`, `.tracking/`, plan filename, task ID, commit policy나 agent framework를 요구하지 않습니다.
 
