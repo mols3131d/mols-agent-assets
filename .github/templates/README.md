@@ -5,7 +5,7 @@
 > [!NOTE]
 > `.github/templates/`는 GitHub가 자동으로 적용하는 native Issue/PR template 경로가 아닙니다.
 
-GitHub object의 작성 의미, validation·importance·workflow status, provenance와 협업 정책은 [`docs/development/github.md`](../../docs/development/github.md)가 소유합니다. 이 directory는 template의 field, notation과 rendering 구조만 소유합니다.
+GitHub object의 작성 의미, validation·importance·workflow status, provenance와 협업 정책은 [`docs/development/github.md`](../../docs/development/github.md)가 소유합니다. 이 README는 directory-level notation과 공통 rendering convention을 소유하고, 각 template file은 자기 surface의 field, optional section, exact literal과 rendering structure를 소유합니다.
 
 ## Templates
 
@@ -39,9 +39,11 @@ Notation은 agent의 사고 과정이나 작업 순서를 강제하지 않습니
 
 ## Metadata rendering
 
-Metadata가 필요한 template은 **본문 마지막의 fenced `yaml` block 한 곳**에만 렌더링합니다. Front Matter나 GitHub object metadata로 취급하지 않으며 별도 `Metadata` heading도 만들지 않습니다.
+Metadata를 사용하는 template은 **본문 마지막의 fenced `yaml` block 한 곳**에만 렌더링합니다. Front Matter나 GitHub object metadata로 취급하지 않으며 별도 `Metadata` heading도 만들지 않습니다.
 
-현재 template contract에서 사용하는 field는 `author`와 `revision`뿐입니다. 각 field의 의미와 적용 surface는 [`docs/development/github.md`](../../docs/development/github.md)가 소유합니다. Metadata가 필요 없으면 block 전체를 생략합니다.
+현재 template family가 사용하는 metadata field는 `author`와 `revision`입니다. 각 field의 의미와 적용 surface는 [`docs/development/github.md`](../../docs/development/github.md)가, 실제 field presence는 각 template file이 소유합니다. Metadata가 필요 없으면 block 전체를 생략합니다.
+
+공통 rendering shape는 다음과 같으며 각 template은 실제로 사용하는 field만 남깁니다.
 
 ```yaml
 author:
