@@ -67,6 +67,7 @@ Importance의 의미와 정렬 기준은 `docs/development/github.md`를 따른�
 {% endfor %}
 {% endif %}
 
+<!-- Agent가 최종 Pull Request text를 실질적으로 작성하거나 재작성했다면 `author`는 필수입니다. -->
 {% if author or revision %}
 ```yaml
 {% if author %}
