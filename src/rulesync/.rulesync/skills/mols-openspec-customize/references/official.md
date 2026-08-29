@@ -3,19 +3,23 @@
 Use this reference as a discovery map for OpenSpec's current customization
 contract. The linked official sources remain authoritative.
 
-## Authority
+## Authority by question
 
-Prefer sources in this order when exact behavior matters:
+Do not use one global source priority for every OpenSpec question. Match the source
+to the decision being made:
 
-1. current documentation on `openspec.dev`;
-1. the upstream `Fission-AI/OpenSpec` repository when implementation or examples
-   clarify a documented contract;
-1. the installed OpenSpec CLI for version-specific observed behavior in the target
-   environment.
+- **Current documented contract** — use the current documentation on
+  `openspec.dev`.
+- **Behavior in a concrete project** — use the OpenSpec version actually installed
+  or selected by that project, including observed CLI behavior when relevant.
+- **Implementation detail for that version** — inspect source corresponding to the
+  project's version only when documentation and observed behavior are insufficient.
+- **Latest upstream development** — inspect the upstream repository when the task is
+  explicitly about current development rather than the target project's runtime.
 
-Do not treat this file as a frozen copy of OpenSpec's schema or CLI contract.
-Re-check the official source when fields, commands, paths, precedence, experimental
-status, or generated surfaces can affect the result.
+Do not let upstream `main` silently override the behavior of an older project
+version. If the relevant version or runtime cannot be inspected, preserve that
+uncertainty instead of inventing precedence.
 
 ## Official entrypoints
 
@@ -29,39 +33,35 @@ status, or generated surfaces can affect the result.
 | `schema.yaml` reference | <https://openspec.dev/docs/schemas/schema-yaml> |
 | CLI reference | <https://openspec.dev/docs/cli> |
 | Upstream repository | <https://github.com/Fission-AI/OpenSpec> |
-| Schema command implementation | <https://github.com/Fission-AI/OpenSpec/blob/main/src/commands/schema.ts> |
-| Schema resolver implementation | <https://github.com/Fission-AI/OpenSpec/blob/main/src/core/artifact-graph/resolver.ts> |
 
 ## Responsibility map
 
-Use the official documentation to resolve details, but keep the main ownership
-boundary clear:
+Use the official documentation to resolve exact details while keeping the main
+ownership boundary clear:
 
-- **Profiles** choose which OpenSpec workflows are installed and how the supported
+- **Profiles** choose which OpenSpec workflows are installed and how supported
   workflow surfaces are delivered.
 - **Project configuration** adds project context and scoped guidance to workflow
-  runs and selects project-level OpenSpec behavior exposed by its current contract.
+  runs and selects project-level behavior exposed by its current contract.
 - **Schemas** own the planning artifact graph, templates, and schema-level workflow
   instructions.
 
 ## Schema package boundary
 
-Official documentation describes a schema's semantic surface as a directory with
-`schema.yaml` and the templates referenced by it. Project schemas live under
-`openspec/schemas/<name>/` and are normally versioned with the project.
+Official documentation describes a project schema around `schema.yaml` and the
+templates it references under `openspec/schemas/<name>/`.
 
-Do not present `README.md`, `docs/`, examples, tuning notes, or other companion
-files as official schema inputs unless OpenSpec documents them as such.
-
-Current upstream implementation is compatible with colocated regular maintainer
-files: schema resolution is anchored by `schema.yaml`, validation checks the schema
-definition and referenced templates, and forking recursively copies the directory
-tree. Treat that as current implementation evidence, not a stable extension
+Do not present project-owned companion material such as `README.md` or `docs/` as
+OpenSpec schema inputs unless the relevant OpenSpec version documents them as such.
+Their colocating is a project maintenance convention, not an OpenSpec extension
 contract.
 
-Schema commands are currently marked experimental. Re-check current documentation,
-implementation, or installed CLI before depending on companion-file handling.
+When companion-file compatibility matters, verify it against the target project's
+OpenSpec version rather than relying on assumptions about upstream implementation.
+Schema-related commands may also carry experimental status, so re-check the current
+contract before depending on exact command behavior.
 
-A forked schema is a snapshot: normal OpenSpec update flows do not merge later
-built-in schema improvements into the project copy. Treat upstream comparison and
-porting as explicit maintenance decisions.
+A forked project schema is an owned snapshot rather than a live extension of the
+built-in schema. Do not assume normal OpenSpec updates will merge later built-in
+changes into that project copy; treat upstream comparison and porting as deliberate
+maintenance work.
