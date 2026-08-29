@@ -25,6 +25,7 @@ Line-specific finding은 inline review comment에 두고 여기서 완전히 반
 본문 finding이 없고 qualifying inline finding만 있으면 `See inline review comments for findings.`를 사용한다.
 둘 다 없을 때만 `No findings identified in the reviewed scope.`를 사용한다.
 Required Change는 문제를 해소하기 위해 필요한 결과나 제약을 적고, 특정 구현이 필수가 아니면 해결 방법을 과도하게 지정하지 않는다.
+기본적으로 importance가 높은 finding부터 정렬한다. 인과관계나 수정 순서가 판단에 중요하면 그 순서를 우선한다.
 
 `finding.importance`는 다음 값 중 하나를 그대로 사용한다.
 🔴 Critical — 보안·권한·데이터 손실이나 광범위한 장애처럼 즉시 차단해야 하는 문제
@@ -37,11 +38,13 @@ Required Change는 문제를 해소하기 위해 필요한 결과나 제약을 �
 {% for finding in findings %}
 ### {{ finding.importance }} · F{{ loop.index }} — {{ finding.title }}
 
-{% if finding.locations %}
-**Location**
+**Impact:** {{ finding.impact }}
 
-{% for location in finding.locations %}
-- {{ location }}
+{% if finding.required_changes %}
+**Required Change**
+
+{% for change in finding.required_changes %}
+- {{ change }}
 {% endfor %}
 {% endif %}
 
@@ -53,13 +56,11 @@ Required Change는 문제를 해소하기 위해 필요한 결과나 제약을 �
 {% endfor %}
 {% endif %}
 
-**Impact:** {{ finding.impact }}
+{% if finding.locations %}
+**Location**
 
-{% if finding.required_changes %}
-**Required Change**
-
-{% for change in finding.required_changes %}
-- {{ change }}
+{% for location in finding.locations %}
+- {{ location }}
 {% endfor %}
 {% endif %}
 
@@ -76,7 +77,10 @@ No findings identified in the reviewed scope.
 
 ## Validation
 
-<!-- 직접 확인한 check와 근거만 기록하고 중요한 미확인 영역은 ⚪ Not Verified로 남긴다. -->
+<!--
+직접 확인한 check와 근거만 기록하고 중요한 미확인 영역은 ⚪ Not Verified로 남긴다.
+기본적으로 ❌ Fail → ⚪ Not Verified → ✅ Pass 순으로 두되 실행 순서가 판단에 중요하면 그 순서를 우선한다.
+-->
 
 {% for check in validation %}
 - {{ check.status }} — `{{ check.name }}`: {{ check.evidence }}
