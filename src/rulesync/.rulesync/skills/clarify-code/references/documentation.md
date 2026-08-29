@@ -42,9 +42,11 @@ Candidate meaning을 확인할 때 상황에 따라 다음 evidence가 유용할
 
 Git history, issue와 old discussion은 candidate rationale를 발견하는 supporting context일 수 있지만 current invariant의 단독 authority는 아니다. Historical reason을 explanation으로 남기려면 현재 code/contract에서도 여전히 유효한지 확인한다.
 
+Current evidence가 충돌하면 한 source를 편의상 정답으로 선택하지 않는다. Exact claim과 가장 직접적으로 연결된 current semantic owner, observable behavior와 applicable contract를 기준으로 충돌을 좁게 재확인한다. 충돌이 여전히 material하면 uncertainty로 남기고 permanent explanation을 만들지 않는다.
+
 현재 behavior·constraint는 확인되지만 과거 decision reason은 확인되지 않는다면 **현재 확인 가능한 의미만** 설명한다. 예를 들어 same-request visibility contract는 증명되지만 과거 cache incident는 확인되지 않는다면 visibility constraint만 남긴다.
 
-Material rationale를 확인할 수 없다면 그럴듯한 이유를 만들거나 uncertainty를 permanent comment로 굳히지 않는다. Evidence를 찾기 위해 더 넓게 읽었다고 그 surface를 수정할 권한이 생기는 것도 아니다.
+Material rationale를 확인할 수 없다면 그럴듯한 이유를 만들거나 uncertainty를 permanent comment로 굳히지 않는다. Evidence read도 적용되는 scope와 authority를 지키며, 더 넓게 읽었다고 그 surface를 수정할 권한이 생기는 것은 아니다.
 
 ## Docstrings
 
@@ -164,6 +166,7 @@ source file 안의 모든 text가 단순 설명은 아니다.
 설명을 추가하거나 수정한 뒤 확인한다.
 
 - 이 explanation의 non-obvious semantic claim을 지지하는 current evidence는 무엇인가?
+- evidence source 사이의 material conflict가 해소됐는가?
 - target 안에 evidence-backed durable contract·constraint·consequence·rationale가 남아 있는데 explanation을 놓치지 않았는가?
 - 이 설명이 없으면 reader는 무엇을 추론하거나 찾아야 하는가?
 - 설명이 그 비용을 실제로 줄이고 code/name/type을 반복하지 않는가?
@@ -173,4 +176,4 @@ source file 안의 모든 text가 단순 설명은 아니다.
 - volatile identifier·algorithm step·history에 불필요하게 결합되어 쉽게 stale 되지 않는가?
 - machine-consumed text나 durable negative knowledge를 잘못 다루고 있지 않은가?
 
-필요한 evidence-backed meaning이 아직 숨겨져 있으면 적절한 explanation을 보완한다. 반대로 근거가 없거나 불필요하거나 쉽게 stale 되는 설명은 추가하지 않거나 줄인다.
+필요한 evidence-backed meaning이 아직 숨겨져 있으면 적절한 explanation을 보완한다. 반대로 근거가 없거나 충돌이 해소되지 않았거나 불필요하거나 쉽게 stale 되는 설명은 추가하지 않거나 줄인다.
