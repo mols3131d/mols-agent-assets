@@ -24,7 +24,7 @@ Participant와 message order는 source-backed interaction을 보존한다. Code-
 
 ## Message Kind Is Semantic
 
-ZenUML은 sync, async, creation, reply message를 서로 다른 interaction으로 표현한다.
+ZenUML은 sync, async, creation, reply message를 서로 다른 interaction으로 표현할 수 있다.
 
 - Sync method-call syntax는 blocking call 의미가 source에 있을 때만 사용한다.
 - `A->B` async syntax는 fire-and-forget/non-blocking interaction이 실제로 확인될 때만 사용한다.
@@ -109,7 +109,7 @@ ZenUML의 `// comment`는 일반 source-code hidden comment처럼 취급하지 �
 
 ## Actual Render Is The Acceptance Gate
 
-Mermaid 11.17.x의 ZenUML adapter에서 core-side parser는 Mermaid API를 만족시키기 위한 **no-op parser**이고 실제 DSL parsing/rendering은 `@zenuml/core`의 renderer에서 수행된다.
+Current Mermaid ZenUML adapter에서 core-side parser는 Mermaid API를 만족시키기 위한 **no-op parser**이고 실제 DSL parsing/rendering은 `@zenuml/core`의 renderer에서 수행된다.
 
 따라서:
 
@@ -143,7 +143,3 @@ ZenUML은 **actual-render validity와 interaction fidelity**를 함께 검증한
 1. `mermaid.parse()`만이 아니라 실제 target renderer에서 syntax와 layout을 확인했는가.
 
 문제가 있으면 ZenUML 문법에 맞게 interaction을 발명하지 않는다. Source semantics를 좁히거나 더 portable한 Sequence Diagram/table로 전환한다.
-
-## Portable Fallback
-
-Target이 ZenUML external diagram을 안정적으로 지원하지 않으면 **participant, message order, sync/async/creation/reply distinction과 source-backed control condition**을 가능한 범위에서 보존하는 `sequenceDiagram` 또는 interaction table을 사용한다. 정확히 대응되지 않는 ZenUML semantic은 명시적으로 남긴다.
