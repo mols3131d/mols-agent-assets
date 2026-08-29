@@ -4,11 +4,12 @@
 
 ## Goal
 
-기존 `clarify-code`의 comment recall, anti-spam, no-fabrication, executable-code boundary를 보존하면서 다음 세 gap을 닫습니다.
+기존 `clarify-code`의 comment recall, anti-spam, no-fabrication, executable-code boundary를 보존하면서 다음 gap을 닫습니다.
 
 1. information signal과 explanation surface를 잘못 1:1로 묶는 문제
 2. explicit current task fact의 evidence 역할이 불명확한 문제
 3. conflicting-evidence behavior가 capability eval로 보호되지 않는 문제
+4. structural comprehension issue와 독립적인 prose need가 함께 있을 때 clarification 전체를 잘못 handoff할 수 있는 문제
 
 ## Preserve
 
@@ -29,13 +30,11 @@
 
 Surface 선택 owner는 information type 자체가 아니라 `reader + semantic scope`입니다.
 
-권고 형태:
-
 | Reader / scope | High-value meaning | Default surface |
 | --- | --- | --- |
 | caller | hidden call semantics, precondition, side effect, exception/failure semantics, caller-visible protocol constraint | repository/language-native caller-facing API documentation surface |
 | maintainer | invariant, local constraint, implementation ordering/failure consequence, external implementation constraint, durable rejected alternative | code-local comment |
-| file/package maintainer | stable convention that applies beyond one symbol | module/package-level documentation surface |
+| file/package maintainer | stable convention that applies beyond one symbol | source-level module/package documentation surface |
 
 `docstring`은 Python에서의 example로만 남기고 portable responsibility name으로 사용하지 않습니다.
 
@@ -54,6 +53,7 @@ User-provided fact는 evidence candidate이며 무조건 canonical authority가 
 
 - applicable canonical/current evidence와 material conflict가 없으면 explanation grounding에 사용할 수 있음
 - conflict가 있으면 한쪽을 조용히 canonize하지 않음
+- conflict는 disputed claim에만 적용하며 non-conflicting current meaning까지 버리지 않음
 - source prose에는 provenance story가 아니라 current semantic만 남김
 
 Grounding behavior를 같은 workflow 근처에서 한 번 소유하고, Boundary의 duplicate wording은 필요한 no-fabrication invariant만 유지합니다.
@@ -83,69 +83,74 @@ Grounding evidence list에 explicit current task fact를 추가합니다.
 
 Evidence hierarchy 점수나 fixed precedence table은 만들지 않습니다. Semantic owner와 applicable authority가 context별로 다르기 때문입니다.
 
-### 5. Capability eval 3개 추가
+### 5. Mixed responsibility — structural handoff를 부분 책임으로 제한
+
+Structural opacity가 존재한다는 이유만으로 `clarify-code`의 모든 prose work를 중단하지 않습니다.
+
+- executable structure 자체의 이해 비용 → `code-comprehension-refactor` responsibility
+- 같은 target에 별도로 존재하는 evidence-backed caller contract 또는 maintainer rationale → `clarify-code` responsibility
+
+따라서 workflow는 **prose를 structural fix의 substitute로 사용하지 않는다**고 규정하되, 독립적인 code-adjacent explanation need까지 handoff하지 않습니다.
+
+사용자가 executable code 변경을 허용하지 않았다면 sibling refactor를 임의로 수행하지 않고 structural limitation을 report/handoff candidate로 남깁니다.
+
+### 6. Capability eval
 
 #### `caller-visible-protocol-doc-surface`
 
-Go 또는 유사 language-native declaration doc surface가 필요한 case.
-
-Assert:
-
-- caller-visible protocol restriction을 API documentation surface에 둠
-- maintainer-only body comment에 숨기지 않음
-- exact syntax는 language/repository convention을 따름
+- non-Python caller-facing protocol restriction을 language-native API documentation surface에 둠
+- body comment에만 숨기지 않음
 - executable code 변경 없음
 
-#### `user-provided-current-constraint`
+#### explicit current task fact
 
-User가 explicit current operational constraint를 제공하고 current code/context와 conflict가 없는 case.
+기존 `selective-positive-comment`에 explicit current operational constraint의 evidence behavior를 흡수합니다. 별도 중복 fixture는 만들지 않습니다.
 
-Assert:
-
-- user-provided current fact를 evidence candidate로 사용
-- durable maintainer meaning이면 comment를 실제 생성/개선
-- 별도 repository artifact가 없다는 이유만으로 no-op하지 않음
+- task-provided current fact를 evidence candidate로 사용
+- conflict가 없을 때 durable maintainer meaning을 실제 comment로 남김
 - unsupported extra rationale는 invent하지 않음
 
 #### `conflicting-evidence-no-canonization`
 
-Current sources가 material하게 충돌하는 case.
-
-Assert:
-
-- conflict를 식별
+- 현재 적용되는 semantic authorities가 material하게 충돌
 - 한 source를 임의 winner로 선택하지 않음
-- unresolved semantic을 permanent comment/API docs로 고정하지 않음
+- disputed semantic을 permanent prose로 고정하지 않음
+- non-conflicting meaning까지 전역적으로 차단하지 않음
 - executable code 변경 없음
+
+#### `mixed-structural-and-rationale`
+
+- structural opacity와 독립적인 durable rationale가 함께 존재
+- structure를 comments로 해설해 덮지 않음
+- independent evidence-backed rationale는 appropriate prose surface에 남김
+- executable refactor는 `clarify-code`가 수행하지 않음
 
 ## Review Loop
 
 ### Loop A — Surface model
 
-확인:
-
 - external/failure/ordering meaning이 caller-facing일 때 API docs로 갈 수 있는가
 - maintainer-only일 때 local comment를 유지하는가
 - Python-specific wording이 portable contract를 다시 좁히지 않는가
-- module/package-level surface가 symbol-level contract와 섞이지 않는가
-
-Material gap이 있으면 bounded implementation correction 후 재리뷰합니다.
+- source-level module/package surface가 standalone docs와 섞이지 않는가
 
 ### Loop B — Evidence authority
-
-반례:
 
 - user statement만 있고 code와 모순 없음
 - user statement와 test가 충돌
 - user statement와 canonical protocol contract가 충돌
 - historical reason만 있고 current invariant는 확인됨
 - code shape만 unusual하고 아무 rationale evidence 없음
+- 한 claim의 conflict가 다른 확정 meaning까지 막지는 않는가
 
-목표는 recall과 no-fabrication을 동시에 보존하는 것입니다.
+### Loop C — Responsibility composition
 
-### Loop C — Context economy / instruction quality
+- structural problem만 있음 → prose로 덮지 않음
+- prose need만 있음 → clarify-code가 처리
+- 둘 다 있음 → 각 owner가 자기 concern만 처리
+- user가 executable change를 금지함 → refactor를 임의 실행하지 않음
 
-확인:
+### Loop D — Context economy / instruction quality
 
 - 같은 grounding rule이 core에서 여러 owner를 갖지 않는가
 - common-path decision은 core에 남았는가
@@ -153,12 +158,11 @@ Material gap이 있으면 bounded implementation correction 후 재리뷰합니�
 - conditional reference의 load condition이 실제로 존재하는가
 - table/example이 숨은 normative rule을 만들지 않는가
 
-### Loop D — Eval coverage
-
-Positive / negative / near-miss를 대조합니다.
+### Loop E — Eval coverage
 
 - positive: caller docs, maintainer comment, implicit discovery, explicit user evidence
-- negative: obvious/no-net-value, unsupported rationale, structural handoff
+- negative: obvious/no-net-value, unsupported rationale, structural masking
+- mixed: structural + independent rationale
 - conflict: unresolved evidence
 - machine-consumed surface
 - portability: non-Python API doc surface
@@ -180,7 +184,8 @@ Fixture가 wording을 과도하게 고정하지 않고 behavior contract를 평�
 
 - surface selection이 reader/scope 중심으로 일관됨
 - portable API documentation responsibility가 Python syntax에 종속되지 않음
-- explicit current task fact를 사용할 수 있으면서 conflict 시 canonization하지 않음
+- explicit current task fact를 사용할 수 있으면서 conflict 시 disputed claim을 canonize하지 않음
+- structural handoff가 independent prose need를 삼키지 않음
 - conflicting-evidence behavior가 fixture로 보호됨
 - prior recall/anti-spam/no-fabrication behavior가 약화되지 않음
 - 새 file/package abstraction 불필요
@@ -204,4 +209,4 @@ Research/Plan/Review artifact는 `inbox/2026-08-30/`에서 maintainer evidence�
 
 ## Status
 
-Plan accepted for bounded Implementation → Review recursion.
+Plan revised after Review C. Mixed responsibility is now an explicit bounded requirement before further Work.
