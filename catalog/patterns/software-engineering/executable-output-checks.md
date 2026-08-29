@@ -84,9 +84,9 @@ Output을 사후에 검사하기보다 해당 성질을 이미 직접 보장하�
 
 판정 logic을 local script, test와 CI에 각각 복제할 필요는 없습니다. 하나의 의미를 여러 surface에서 사용해야 한다면 가능한 한 판정 logic의 owner는 하나로 두고 필요한 위치에서 호출합니다. 반대로 check가 하나뿐인데 미래 확장을 예상해 중앙 checker framework나 registry부터 만들지는 않습니다.
 
-Check가 평가 대상과 같은 구현 경로를 그대로 반복한다면 둘이 같은 오류를 공유할 수도 있습니다. 따라서 **그 check가 실제로 무엇을 확인하는지**를 좁게 봅니다. 예를 들어 regenerate + diff는 보통 generated artifact의 freshness나 reproducibility를 확인하는 데 강하지만 generator의 semantic correctness 전체를 증명하지는 않습니다. 더 높은 assurance가 필요한 경우에는 같은 경로를 한 번 더 실행하는 것보다 충분히 독립적인 관찰이나 별도 verification이 필요한지 검토할 수 있습니다.
+Check가 평가 대상과 같은 구현 경로나 가정을 공유하면 같은 blind spot을 가질 수 있습니다. 따라서 **check가 실제로 무엇을 관찰하는지보다 넓은 의미를 부여하지 않습니다.** 예를 들어 regenerate + diff는 generated artifact의 freshness나 reproducibility를 확인하는 데는 유용하지만 generator의 semantic correctness 전체를 증명하지는 않습니다.
 
-또한 check는 가능하면 **관찰과 수정을 분리**하는 편이 이해하기 쉽습니다. 검사 과정에서 formatter나 generator가 working output을 직접 바꾸면 원래 상태와 check가 만든 상태가 섞일 수 있습니다. Side effect가 판단을 흐릴 수 있다면 dry-run, temporary output, isolated workspace처럼 원본을 보존하는 방법을 먼저 고려하고, 실제 수정이 목적이라면 별도의 fix/generate action으로 구분할 수 있습니다.
+검사 과정이 output을 직접 수정하면 원래 상태와 checker가 만든 상태가 섞여 판단을 흐릴 수도 있습니다. 이런 경우에는 관찰과 수정의 역할을 구분할 수 있는지 봅니다.
 
 ## 실행 결과와 Feedback을 구분합니다
 
@@ -154,7 +154,7 @@ Agent가 schema를 수정했지만 generated artifact를 갱신하지 않을 수
 ```text
 scripts/check_generated.py
         ↓
-source에서 temporary output 생성
+source에서 다시 generate
         ↓
 committed output과 비교
         ↓
@@ -187,7 +187,7 @@ Check는 한 번 추가하면 끝나는 자산이 아닙니다. 유지보수, fa
 
 따라서 새 check를 만드는 것뿐 아니라 **더 약하게 운영하거나, 더 싼 mechanism으로 옮기거나, 제거하는 선택**도 열어둡니다. Custom script가 지키던 성질을 이후 compiler나 language module system이 자연스럽게 보장한다면 script를 없애는 편이 더 단순합니다.
 
-기존 repository에 이미 많은 위반이 있다면 새 check를 곧바로 blocking으로 만드는 것이 항상 좋은 시작은 아닙니다. 필요하면 먼저 signal이나 warning으로 관찰하거나, 변경된 범위에서 유용성을 확인한 뒤 적용 범위를 넓힐 수 있습니다. Baseline이나 allowlist를 사용한다면 그것 자체가 영구적인 예외 저장소가 되지 않는지도 봅니다.
+기존 repository에 이미 많은 위반이 있다면 새 check를 곧바로 blocking으로 만드는 것이 항상 좋은 시작은 아닙니다. 필요하면 먼저 signal이나 warning으로 관찰하거나 적용 범위를 좁게 시작할 수 있습니다. Baseline이나 allowlist가 영구적인 예외 저장소로 굳어지지 않는지도 봅니다.
 
 ## Limits and Responses
 
@@ -203,13 +203,7 @@ Executable check는 **관찰 가능한 증거를 만드는 surface이지, 그 �
 
 같은 입력에서 같은 결과가 나온다는 사실은 판정 기준이 옳다는 뜻이 아닙니다. 잘못 이해한 요구사항이나 오래된 assumption을 일관되게 구현할 수도 있고, targeted check는 일부 path나 state만 볼 수도 있습니다. 평가 대상과 checker가 같은 구현 경로나 가정을 공유하면 같은 blind spot을 함께 가질 수도 있습니다.
 
-**대응:** 무엇을 관찰하는 check인지 설명할 수 있게 두고, reproducibility를 validity나 full coverage와 같은 의미로 취급하지 않습니다. Check가 실제로 보장하는 범위보다 넓은 의미를 부여하지 않고, 누락 비용이 클 때만 더 독립적이거나 넓은 verification을 보완적으로 고려합니다.
-
-### Check가 관찰 대상 자체를 바꿀 수 있습니다
-
-Generator, formatter나 auto-fix 기능을 check 과정에서 직접 실행하면 working output이 바뀌어 원래 문제와 checker가 만든 변경을 구분하기 어려울 수 있습니다. Agent가 검사 과정의 변경을 자기 구현 결과로 오인할 수도 있습니다.
-
-**대응:** side effect가 의미 있는 경우에는 관찰과 수정을 분리하고, 가능하면 dry-run, temporary output이나 isolated workspace에서 비교합니다. In-place 수정이 더 단순하고 명확한 경우에는 그 동작을 숨기지 않고 check가 아니라 fix/generate action으로 구분할 수 있습니다.
+**대응:** 무엇을 관찰하는 check인지 설명할 수 있게 두고, reproducibility를 validity나 full coverage와 같은 의미로 취급하지 않습니다. Check가 실제로 관찰하는 범위보다 넓은 의미를 부여하지 않습니다.
 
 ### Checker의 환경 의존성과 Flakiness가 신뢰를 깎을 수 있습니다
 
