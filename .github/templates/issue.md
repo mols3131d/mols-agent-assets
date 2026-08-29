@@ -1,34 +1,33 @@
+## Summary
+
 <!--
-작성 지침:
-- `{{ ... }}`를 확인된 실제 값으로 치환한다.
-- 적용되지 않는 `{% ... %}` block과 빈 section은 제거한다.
-- GitHub에 게시할 때 이 comment와 미치환 template syntax를 남기지 않는다.
-- 구현 방법보다 문제, 원하는 결과와 완료 조건을 먼저 명확히 한다.
+무엇이 문제이거나 필요한가? 원하는 변화는 무엇인가?
+구현 방법보다 문제와 기대 결과를 먼저 설명한다.
+Agent에게 독립 작업을 위임하는 Issue라면 중요한 완료 조건과 넘지 말아야 할 경계를 충분히 명확히 하되 구현 절차를 과도하게 지정하지 않는다.
 -->
-
-```yaml
-type: "{{ type }}"
-scope: "{{ scope }}"
-{% if priority %}priority: "{{ priority }}"{% endif %}
-{% if related %}related: "{{ related }}"{% endif %}
-```
-
-## 요약
 
 {{ summary }}
 
 {% if context %}
-## 배경
+## Context
 
 {{ context }}
 {% endif %}
 
-## 원하는 결과
+## Desired Outcome
 
 {{ desired_outcome }}
 
+{% if boundaries %}
+## Boundaries
+
+{% for boundary in boundaries %}
+- {{ boundary }}
+{% endfor %}
+{% endif %}
+
 {% if acceptance_criteria %}
-## 완료 조건
+## Acceptance Criteria
 
 {% for criterion in acceptance_criteria %}
 - [ ] {{ criterion }}
@@ -36,21 +35,29 @@ scope: "{{ scope }}"
 {% endif %}
 
 {% if reproduction %}
-## 재현
+## Reproduction
 
 {% for step in reproduction.steps %}
 1. {{ step }}
 {% endfor %}
 
-**현재 결과:** {{ reproduction.actual }}
-
-**기대 결과:** {{ reproduction.expected }}
+- **Actual:** {{ reproduction.actual }}
+- **Expected:** {{ reproduction.expected }}
 {% endif %}
 
 {% if references %}
-## 참고
+## References
 
 {% for reference in references %}
 - {{ reference }}
 {% endfor %}
+{% endif %}
+
+{% if author %}
+```yaml
+author:
+{% for item in author %}
+  - {{ item }}
+{% endfor %}
+```
 {% endif %}
