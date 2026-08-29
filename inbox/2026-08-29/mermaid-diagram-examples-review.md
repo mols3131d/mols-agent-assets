@@ -34,7 +34,7 @@
 - [x] `block-diagram.md`
 
 ### chronology·planning·work
-- [ ] `timeline.md`
+- [x] `timeline.md`
 - [ ] `gantt.md`
 - [ ] `git-graph.md`
 - [ ] `kanban.md`
@@ -58,4 +58,5 @@
 - 완료: `architecture-diagram.md`
 - 완료: `c4-diagrams.md` — 리뷰 → 개선 → 재리뷰 완료
 - 완료: `block-diagram.md` — 심층 RPI 완료; 공식 docs·11.17.2 parser/layout tests·release history·open layout issue·local design principles 교차 검토
-- 다음: `timeline.md` 리뷰
+- 완료: `timeline.md` — 심층 RPI 완료; 공식 docs·11.17.2 DB/tests/LR·TD renderer·11.14 direction release를 교차 검토하고 chronology·temporal precision·section·causality 경계를 재설계
+- 다음: `gantt.md` 리뷰
