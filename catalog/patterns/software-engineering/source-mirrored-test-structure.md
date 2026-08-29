@@ -22,7 +22,7 @@ Test structure가 production source와 어느 정도 대응되면 **source를 �
 
 ## Core
 
-자연스러운 production owner가 분명한 테스트는 그 owner와 가까운 구조에 두는 형태가 가장 단순합니다.
+자연스러운 source anchor가 분명한 테스트는 그 source와 가까운 구조에 두는 형태가 가장 단순합니다.
 
 ```text
 src/
@@ -98,7 +98,7 @@ Source path가 항상 가장 좋은 organizing axis는 아닙니다. 테스트�
 
 | Alignment | 잘 맞는 경우 | Example |
 | --- | --- | --- |
-| Source unit | 한 module/file이 자연스러운 test owner | `tests/billing/test_invoice.py` |
+| Source unit | 한 module/file이 자연스러운 anchor | `tests/billing/test_invoice.py` |
 | Feature / domain | 여러 module이 하나의 기능 경계를 형성 | `tests/billing/checkout/` |
 | Behavior / contract | 내부 구조보다 외부에서 보이는 동작이 더 안정적 | `tests/api/authentication/` |
 | Test / system boundary | 여러 영역을 함께 검증하는 integration·e2e·compatibility test | `tests/integration/`, `tests/e2e/` |
@@ -106,6 +106,10 @@ Source path가 항상 가장 좋은 organizing axis는 아닙니다. 테스트�
 이 축들은 배타적이지 않습니다. 예를 들어 `tests/integration/billing/`처럼 test level과 domain을 함께 사용할 수도 있습니다.
 
 어떤 축을 먼저 드러낼지는 **사람이 테스트를 찾을 때 가장 먼저 알고 있는 정보가 무엇인지**에 따라 달라질 수 있습니다. Source를 보고 테스트를 찾는 일이 대부분이라면 source alignment가 강한 구조가 유리하고, 사용자 behavior나 integration boundary에서 테스트를 찾는 일이 많다면 그 축을 앞에 두는 편이 자연스러울 수 있습니다.
+
+Literal mirroring은 source와 test의 natural boundary가 비슷할 때 특히 잘 맞습니다. 하나의 public behavior가 여러 module을 가로지르거나, integration·e2e·compatibility·migration처럼 system 관계가 중심이거나, source refactoring보다 behavior boundary가 안정적인 경우에는 다른 alignment가 더 읽기 쉬울 수 있습니다.
+
+`misc/`, `others/`, 넓은 `common/` 같은 영역이 계속 커지는 것도 조직 축을 다시 볼 신호가 될 수 있습니다. 반드시 잘못된 구조라는 뜻은 아니지만, 반복되는 테스트가 실제로 공유하는 feature, behavior 또는 support responsibility가 있는지 살펴볼 만합니다.
 
 ## Growing into a Bundle
 
@@ -117,23 +121,9 @@ Bundle이 도움이 되는 흔한 신호는 다음과 같습니다.
 - 변경할 때 관련 없는 테스트까지 한 파일에서 함께 읽어야 합니다.
 - 독립적인 test concern이 반복해서 같은 파일을 수정합니다.
 - 특정 concern에만 필요한 fixture나 helper가 별도 local context를 형성합니다.
-- 파일을 나눴을 때 test ownership과 이름이 더 분명해집니다.
+- 파일을 나눴을 때 test grouping과 이름이 더 분명해집니다.
 
 반대로 여러 파일로 나눈 뒤 어디에 무엇이 있는지 더 추측하기 어려워진다면 단일 파일이 더 나은 형태일 수 있습니다.
-
-## When Mirroring Becomes Awkward
-
-Literal mirroring은 source와 test의 natural boundary가 비슷할 때 가장 잘 작동합니다. 다음과 같은 경우에는 다른 alignment가 더 읽기 쉬울 수 있습니다.
-
-- 하나의 public behavior가 여러 internal module을 가로지릅니다.
-- integration이나 end-to-end test가 repository의 여러 영역을 함께 검증합니다.
-- contract, compatibility, migration처럼 source file보다 system 관계가 중심입니다.
-- framework나 language가 colocated test 또는 특별한 test directory를 자연스럽게 사용합니다.
-- source refactoring은 잦지만 test가 검증하는 behavior boundary는 안정적입니다.
-
-이럴 때 mirroring을 유지하려고 테스트를 임의의 source file에 귀속시키기보다 **더 안정적인 test owner를 드러내는 구조**가 navigation에 도움이 될 수 있습니다.
-
-`misc/`, `others/`, 넓은 `common/` 같은 영역이 계속 커지는 경우도 하나의 신호가 될 수 있습니다. 반드시 잘못된 구조라는 뜻은 아니지만, 반복되는 테스트가 실제로 공유하는 feature, behavior 또는 support 책임이 있는지 다시 볼 만합니다.
 
 ## Variants
 
@@ -164,7 +154,7 @@ Source hierarchy가 얕고 이름 충돌이나 navigation 문제가 없다면 di
 
 ### Test-type-first
 
-Integration, e2e, compatibility처럼 실행 방식과 boundary가 source ownership보다 중요한 suite는 test type을 첫 번째 축으로 둘 수 있습니다.
+Integration, e2e, compatibility처럼 실행 방식과 boundary가 source grouping보다 중요한 suite는 test type을 첫 번째 축으로 둘 수 있습니다.
 
 ```text
 tests/
@@ -179,7 +169,7 @@ tests/
 
 Source mirroring은 탐색 비용을 낮추지만 source rename이나 module 이동이 잦은 repository에서는 test path churn을 만들 수 있습니다. 반대로 behavior 중심 구조는 refactoring에는 안정적일 수 있지만 source에서 관련 test를 바로 찾기는 어려울 수 있습니다.
 
-Directory를 세분화하면 ownership과 navigation이 좋아질 수 있지만 hierarchy 자체가 새로운 탐색 비용이 되기도 합니다. 그래서 작은 test surface에서는 단일 파일이나 flat layout으로 시작하고, 실제 마찰이 생길 때 structure를 확장하는 방식과 잘 맞습니다.
+Directory를 세분화하면 grouping과 navigation이 좋아질 수 있지만 hierarchy 자체가 새로운 탐색 비용이 되기도 합니다. 그래서 작은 test surface에서는 단일 파일이나 flat layout으로 시작하고, 실제 마찰이 생길 때 structure를 확장하는 방식과 잘 맞습니다.
 
 이 패턴은 test taxonomy, test pyramid, fixture architecture나 unit/integration의 의미를 정하는 패턴은 아닙니다. **어떤 테스트가 존재해야 하는가보다, 이미 존재하는 테스트를 filesystem에서 어떻게 찾기 쉽게 둘 것인가**에 초점을 둡니다.
 
