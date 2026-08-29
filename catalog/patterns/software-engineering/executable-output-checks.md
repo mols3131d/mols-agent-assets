@@ -54,16 +54,16 @@ Executable Output Checks는 일반적인 testing strategy나 quality gate 체계
 
 다음 성질이 많이 겹칠수록 executable check가 유용할 가능성이 높습니다.
 
-- 같은 종류의 부실이 반복해서 나타납니다.
+- 같은 종류의 부실이 반복해서 나타나거나, 아직 반복되지 않았더라도 위반 비용이 큰 안정된 성질입니다.
 - 결과를 보고 비교적 객관적으로 판정할 수 있습니다.
 - 늦게 발견하면 수정 범위나 복구 비용이 커집니다.
 - 관찰하려는 성질이 충분히 안정되어 있습니다.
 - 결과를 보고 사람이나 agent가 다음 행동을 이해할 수 있습니다.
 - 기존 mechanism이나 작은 deterministic check로 비교적 싸게 확인할 수 있습니다.
 
-반대로 일회성 문제, 아직 탐색 중인 설계 선택, 쉽게 고칠 수 있는 낮은 비용의 실수, 자주 바뀌는 convention은 review나 documentation에 남기는 편이 나을 수 있습니다.
+반대로 일회성이고 영향이 작은 문제, 아직 탐색 중인 설계 선택, 쉽게 고칠 수 있는 낮은 비용의 실수, 자주 바뀌는 convention은 review나 documentation에 남기는 편이 나을 수 있습니다.
 
-사람이 review에서 같은 객관적 지적을 반복하고 있다면 check 후보인지 살펴볼 수 있습니다. 다만 반복된다는 사실만으로 자동화하지 않고, 기계적 feedback이 실제 문제 비용을 줄이는지 봅니다.
+사람이 review에서 같은 객관적 지적을 반복하고 있다면 check 후보인지 살펴볼 수 있습니다. 반복 이력이 없더라도 **놓쳤을 때의 비용이 크고 property가 충분히 안정적이며 값싸게 판정할 수 있다면** 후보가 될 수 있습니다. 어느 경우든 기계적 feedback이 실제 문제 비용을 줄이는지 봅니다.
 
 ## 가장 단순한 실행 방법을 선택합니다
 
@@ -249,4 +249,4 @@ Agent가 output과 checker를 함께 수정할 수 있다면 warning을 없애�
 
 ## Short Form
 
-> **작업 결과에서 반복적으로 문제를 만드는 machine-observable property를 가장 단순한 executable check로 드러내고, 상황에 맞는 위치와 강도로 feedback합니다. Check는 truth나 policy 자체가 아니며, 문제보다 비싸지면 약화·이동·제거할 수 있습니다.**
+> **작업 결과에서 반복되거나 놓쳤을 때 비용이 큰 machine-observable property를 가장 단순한 executable check로 드러내고, 상황에 맞는 위치와 강도로 feedback합니다. Check는 truth나 policy 자체가 아니며, 문제보다 비싸지면 약화·이동·제거할 수 있습니다.**
