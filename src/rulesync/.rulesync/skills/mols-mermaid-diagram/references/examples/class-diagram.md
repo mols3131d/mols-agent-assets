@@ -80,14 +80,18 @@ classDiagram
 
 ## Relationship Choice
 
+Mermaid의 relation syntax는 UML relation type을 표현한다. 실제 domain에서 어떤 relation이 맞는지는 source model과 설계 계약이 결정하며, 구현 습관만으로 더 강한 relation을 추론하지 않는다.
+
 | Syntax | Meaning | Use |
 | --- | --- | --- |
-| `<|--` | inheritance | subtype가 base implementation을 상속한다 |
-| `<|..` | realization | class가 interface를 구현한다 |
-| `*--` | composition | parent가 child lifecycle을 소유한다 |
-| `o--` | aggregation | 독립 lifecycle을 가진 객체를 묶는다 |
-| `-->` | association | 지속적 reference나 협력 관계다 |
-| `..>` | dependency | 일시적으로 사용하거나 의존한다 |
+| `<|--` | inheritance | source가 subtype/base inheritance를 정의할 때 |
+| `<|..` | realization | source가 interface realization을 정의할 때 |
+| `*--` | composition | 강한 whole-part ownership이나 lifecycle 결합이 실제 model에 있을 때 |
+| `o--` | aggregation | composition보다 약한 whole-part relation이 실제 model에 있을 때 |
+| `-->` | association | 구조적·논리적 association이 확인될 때 |
+| `..>` | dependency | dependency/use 관계가 확인될 때 |
+
+Association을 항상 persistent reference로, dependency를 항상 temporary call로 해석하지 않는다. Multiplicity도 source가 뒷받침할 때만 구체화한다.
 
 ## Improvement: Model Responsibility, Not Every Field
 
@@ -113,3 +117,10 @@ classDiagram
     IncidentService --> EvidenceStore : reads/writes evidence
     IncidentService ..> RecoveryPort : requests approved recovery
 ```
+
+## Rules
+
+- class, member, stereotype와 relationship은 질문에 필요한 model만 보여준다.
+- inheritance, realization, composition, aggregation, association과 dependency의 강도를 source보다 높여 표현하지 않는다.
+- relation label은 relation type을 대체하지 않으며 둘이 모순되지 않게 한다.
+- package나 namespace는 실제 boundary를 설명할 때만 추가한다.

@@ -10,6 +10,37 @@ flowchart LR
     revise --> validate
 ```
 
+## Viewport-Aware Composition
+
+같은 수준의 group마다 내부 flow가 `LR`로 자연스럽더라도 모든 group을 하나의 긴 수평 chain으로 펼치지 않는다. width:height가 약 3:4인 portrait reading viewport를 기본으로 보고, group 내부 direction은 유지하면서 peer group을 세로로 쌓아 vertical scroll로 읽히게 한다.
+
+```mermaid
+flowchart TB
+    subgraph intake [Intake]
+        direction LR
+        receive[Receive] --> parse[Parse] --> normalize[Normalize] --> queue[Queue]
+    end
+
+    subgraph transform [Transform]
+        direction LR
+        read[Read] --> clean[Clean] --> enrich[Enrich] --> write[Write]
+    end
+
+    subgraph quality [Quality]
+        direction LR
+        inspect[Inspect] --> verify[Verify] --> record[Record] --> release[Release]
+    end
+
+    subgraph delivery [Delivery]
+        direction LR
+        package[Package] --> publish[Publish] --> notify[Notify] --> observe[Observe]
+    end
+
+    intake --> transform --> quality --> delivery
+```
+
+이 예시는 상위 composition은 `TB`, 각 group 내부는 `LR`로 분리한다. Group-level 순서 자체가 source fact이면 group boundary 사이의 관계로 표현할 수 있다. 특정 node 사이의 handoff가 의미상 필요하면 layout을 위해 group-level edge로 바꾸지 않는다. Flowchart에서 subgraph 내부 node를 외부와 직접 연결하면 내부 direction이 유지되지 않을 수 있으므로 target renderer에서 확인하고, 원하는 폭을 유지할 수 없다면 fixed size나 과도한 축소보다 diagram 분리를 우선한다.
+
 ## Splitting A Large Flowchart Package
 
 큰 flowchart는 하나의 pipeline을 임의로 반으로 자르는 대신, 같은 수준의 책임을 가진 네 영역을 package로 분리한다.

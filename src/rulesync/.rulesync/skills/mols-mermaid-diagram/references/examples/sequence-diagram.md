@@ -65,13 +65,11 @@ sequenceDiagram
 
 문서 본문에서 message를 번호로 참조한다면 source 변경 후 번호가 바뀌지 않았는지 다시 검토한다.
 
-## Splitting A Large Sequence Diagram Package
+## Splitting Large Sequence Diagrams
 
-큰 sequence diagram은 participant와 message를 임의로 반으로 자르지 않고, 같은 수준의 책임을 가진 네 participant 영역을 package로 분리한다.
+participant 수나 interaction이 많아 message 추적이 어려워지면 **interaction scenario 또는 책임 경계**를 기준으로 overview와 detail을 분리한다. Split은 이미 확인된 message와 participant를 재배치하거나 일부 생략하는 작업이지 새로운 interaction을 만드는 작업이 아니다.
 
-### Before: Four Equal Areas In One Diagram
-
-네 영역의 주요 participant와 전체 handoff를 한 diagram에서 먼저 보여준다.
+### Before
 
 ```mermaid
 sequenceDiagram
@@ -92,9 +90,9 @@ sequenceDiagram
     end
 ```
 
-### After: Overview
+### Overview
 
-네 영역 사이의 주요 message만 overview로 남긴다.
+전체 흐름을 이해하는 데 필요한 주요 message만 남기되, 생략으로 인해 조건이 사라져 의미가 강해지지 않게 한다.
 
 ```mermaid
 sequenceDiagram
@@ -103,64 +101,34 @@ sequenceDiagram
     participant Quality
     participant Delivery
 
-    Source->>Transform: Input
-    Transform->>Quality: Transformed data
-    Quality->>Delivery: Approved data
+    Source->>Transform: Send input
+    Transform->>Quality: Send transformed data
+    alt Checks pass
+        Quality->>Delivery: Release approved data
+    end
 ```
 
-### After: Four Detail Diagrams
+### Detail
 
-overview의 네 영역을 각각 하나의 detail diagram으로 확장한다. participant 영역을 합치거나 하나의 message 흐름을 임의로 끊지 않는다.
-
-#### Source Detail
-
-```mermaid
-sequenceDiagram
-    participant Source
-    participant InputStore
-
-    Source->>InputStore: Write input
-    InputStore-->>Source: Input accepted
-```
-
-#### Transform Detail
+특정 scenario를 확대할 때도 원본에 있던 participant, message 방향과 조건을 보존한다.
 
 ```mermaid
 sequenceDiagram
     participant Transform
-    participant InputStore
-    participant ModelStore
-
-    Transform->>InputStore: Read input
-    InputStore-->>Transform: Return records
-    Transform->>ModelStore: Write transformed data
-    ModelStore-->>Transform: Model accepted
-```
-
-#### Quality Detail
-
-```mermaid
-sequenceDiagram
     participant Quality
-    participant ModelStore
-    participant IssueLog
+    participant Delivery
 
-    Quality->>ModelStore: Read transformed data
-    ModelStore-->>Quality: Return records
     Quality->>Quality: Run checks
-    Quality->>IssueLog: Record failures
+    alt Checks pass
+        Quality->>Delivery: Release approved data
+    else Checks fail
+        Quality-->>Transform: Request correction
+    end
 ```
 
-#### Delivery Detail
+## Rules
 
-```mermaid
-sequenceDiagram
-    participant Delivery
-    participant Quality
-    participant OutputStore
-
-    Delivery->>Quality: Request approved data
-    Quality-->>Delivery: Return approved data
-    Delivery->>OutputStore: Publish data
-    OutputStore-->>Delivery: Delivery confirmed
-```
+- message direction, order와 condition은 source가 뒷받침할 때만 구체화한다.
+- participant를 단순히 diagram을 채우기 위해 추가하지 않는다.
+- overview는 detail을 축약할 수 있지만 condition을 제거해 optional message를 unconditional interaction처럼 만들지 않는다.
+- split 과정에서 새로운 participant, message, acknowledgement 또는 failure path를 발명하지 않는다.

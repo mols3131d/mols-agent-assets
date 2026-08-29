@@ -1,12 +1,12 @@
 # Mermaid Diagram Reference
 
-Mermaid diagram은 **수치보다 관계·절차·책임·상태·시간 순서·구조가 핵심**일 때 사용한다. 수치 비교·추세·구성·양적 흐름이 핵심이면 `mols-mermaid-chart`를 사용한다.
+Mermaid diagram은 **관계·절차·책임·상태·시간 순서·구조**를 설명할 때 사용한다.
 
 ## Authority
 
 - 실제로 render 가능한 type, syntax와 feature는 **target renderer와 그 renderer가 사용하는 Mermaid version**이 결정한다.
 - 현재 Mermaid syntax, configuration과 version별 feature semantics는 [Mermaid 공식 문서](https://mermaid.js.org/)를 기준으로 확인한다.
-- 이 reference는 질문에 맞는 type 선택, semantic fidelity, portability, grouping과 splitting의 local policy만 소유한다.
+- 이 reference는 질문에 맞는 type 선택, semantic fidelity, portability, viewport composition, grouping과 splitting의 local policy만 소유한다.
 - [Examples](examples/README.md)는 local pattern을 보여주는 출발점이며 완전한 syntax catalog나 version registry가 아니다.
 
 공식 문서가 지원한다고 해도 target renderer가 더 오래된 Mermaid를 embed하면 그 기능을 사용할 수 없다. 반대로 local example에 없는 type이나 syntax도 target과 공식 문서가 지원하면 사용할 수 있다.
@@ -69,6 +69,18 @@ Diagram의 edge, 위치와 notation은 사실 주장처럼 읽힐 수 있다.
 - 다른 diagram type의 arrow, shape, frontmatter 또는 config syntax를 호환된다고 가정하지 않는다.
 - 새로운·실험적 syntax가 중요하면 기억에 의존하지 않고 공식 문서와 target renderer에서 확인한다.
 - setup failure와 syntax failure를 구분한다. 자세한 절차는 [Verification](mermaid-verification.md)을 따른다.
+
+## Viewport Composition
+
+기본 reading surface는 **width:height가 약 3:4인 portrait viewport**로 가정한다. 이는 diagram 자체의 aspect ratio나 고정 pixel 크기 요구가 아니라 desktop과 mobile에서 폭을 과도하게 쓰지 않기 위한 composition 기준이다.
+
+- 전체 diagram을 한 viewport 안에 축소해 넣을 필요는 없다. Vertical scroll은 정상적인 reading flow로 허용한다.
+- 같은 수준의 stage, lane, domain 또는 반복 flow를 하나의 긴 수평 chain으로 이어 붙이기보다 **peer group 단위로 세로로 쌓는 구성을 우선한다.**
+- group 내부의 자연스러운 direction은 유지한다. 폭을 줄이기 위해 모든 내부 flow를 `TB`로 평탄화하지 않는다.
+- horizontal scroll이나 글자를 읽기 어려운 수준의 downscaling이 필요한 폭은 피한다. Renderer scaling을 composition 문제의 해결책으로 사용하지 않는다.
+- viewport preference 때문에 source가 요구하는 specific node-level relationship, direction 또는 order를 group-level 관계로 바꾸지 않는다.
+- 선택한 grammar나 layout engine이 원하는 상·하위 direction 조합을 안정적으로 유지하지 못하면 node나 label을 압축하기보다 overview/detail 또는 여러 diagram으로 분리한다.
+- sequence participant, chronology, planning surface처럼 정보 구조상 넓은 canvas가 본질적인 경우에는 semantic fidelity와 readability가 portrait preference보다 우선한다.
 
 ## Grouping And Splitting
 

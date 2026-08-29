@@ -7,7 +7,7 @@
 ## Basic: Ownership Handoffs
 
 ```mermaid
-swimlane-beta LR
+swimlane-beta
     subgraph customer [Customer]
         request[Request service]
         receive[Receive update]
@@ -35,7 +35,7 @@ swimlane-beta LR
 결정 node는 실제 owner lane에 두고, cross-lane edge에는 전달 artifact와 조건을 표시한다. 승인, 수정 요청, 실행 실패와 rollback까지 ownership이 끊기지 않게 만든다.
 
 ```mermaid
-swimlane-beta LR
+swimlane-beta
     accTitle: Data incident recovery governance
     accDescr: Operations packages evidence, engineering proposes and executes recovery, review approves risk, and audit records the outcome.
 
@@ -80,6 +80,9 @@ swimlane-beta LR
 
 ## Rules
 
-- lane은 team, actor, system, phase 중 **한 가지 ownership 기준**만 사용한다.
-- ownership이 중요하지 않으면 일반 flowchart를 사용한다.
-- message 시간 순서가 핵심이면 sequence diagram을 사용한다.
+- 한 diagram의 lane은 **하나의 partition criterion**을 사용한다. Ownership이 핵심이면 team, actor 또는 system 책임을 일관되게 나눈다.
+- phase를 lane으로 사용할 수는 있지만 ownership lane과 같은 level에서 섞지 않는다. 시간·단계 구분이 핵심이면 lane보다 flow structure가 더 직접적인지 먼저 검토한다.
+- direction은 layout 선택이다. 기본 방향이 충분하면 명시하지 않고, 정보 구조나 target viewport에서 더 읽기 좋은 경우에만 `TB`, `LR` 등의 direction을 지정한다.
+- cross-lane edge는 실제 handoff와 방향을 보존하고 보기 좋은 배치를 위해 소유자를 바꾸지 않는다.
+- ownership이 중요하지 않으면 더 단순한 구조 표현을 사용한다.
+- message 시간 순서가 핵심이면 interaction order를 직접 표현하는 notation을 사용한다.

@@ -1,6 +1,6 @@
 # Mermaid Chart Reference
 
-Mermaid chart는 **수치가 있는 비교·추세·구성·이동량·계층 규모·profile·positioning**을 보여줄 때 사용한다. 수치보다 관계나 절차가 핵심이면 `mols-mermaid-diagram`을 사용한다.
+Mermaid chart는 **수치가 있는 비교·추세·구성·이동량·계층 규모·profile·positioning**을 보여줄 때 사용한다.
 
 ## Selection
 
