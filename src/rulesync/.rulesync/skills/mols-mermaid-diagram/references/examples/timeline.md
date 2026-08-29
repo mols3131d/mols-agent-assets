@@ -62,7 +62,7 @@ timeline
         2026-06 : Policy revised
 ```
 
-Owner, team, workstream처럼 시간이 지나며 반복해서 등장하는 category를 section별로 모으기 위해 실제 chronology를 재정렬하지 않는다. Category가 interleave되면 section을 줄이거나 separate timelines, table 또는 질문에 더 직접적인 다른 representation을 사용한다.
+Owner, team, workstream처럼 시간이 지나며 반복해서 등장하는 category를 section별로 모으기 위해 실제 chronology를 재정렬하지 않는다. 같은 section label을 나중에 다시 열어 recurring lane처럼 사용하지도 않는다. Category가 interleave되면 section을 줄이거나 separate timelines, table 또는 질문에 더 직접적인 다른 representation을 사용한다.
 
 ## Decision History Without Invented Causality
 
@@ -112,7 +112,7 @@ Timeline은 syntax validity와 temporal fidelity를 따로 검증한다.
 1. rendered period 순서가 source chronology와 일치하는가.
 1. period granularity를 줄이면서 distinct events를 같은 시점으로 합치지 않았는가.
 1. same-period event를 causal/dependency chain처럼 읽히게 만들지 않았는가.
-1. section 때문에 interleaved chronology가 재정렬되지 않았는가.
+1. section 때문에 interleaved chronology가 재정렬되거나 같은 section이 lane처럼 재사용되지 않았는가.
 1. LR/TD 선택이 target renderer에서 지원되고 portrait viewport에서 읽을 수 있는가.
 1. long period/event label과 여러 same-period events가 clipping이나 과도한 vertical growth를 만들지 않는가.
 
@@ -130,4 +130,4 @@ Timeline은 syntax validity와 temporal fidelity를 따로 검증한다.
 
 ## Portable Fallback
 
-Target renderer가 Timeline이나 필요한 direction을 지원하지 않으면 source order를 보존하는 ordered list 또는 table로 전환한다. Duration·overlap이 중요한 경우에는 의미를 보존할 수 있을 때 Gantt를 사용하며, Timeline의 visual spacing을 fallback에서 실제 time scale처럼 재현하지 않는다.
+Target renderer가 Timeline이나 필요한 direction을 지원하지 않으면 source order와 의미 있는 section grouping을 보존하는 ordered list 또는 table로 전환한다. Duration·overlap이 중요한 경우에는 의미를 보존할 수 있을 때 Gantt를 사용하며, Timeline의 visual spacing을 fallback에서 실제 time scale처럼 재현하지 않는다.
