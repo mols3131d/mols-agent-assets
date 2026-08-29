@@ -19,15 +19,29 @@
 {% for finding in findings %}
 ### {{ finding.importance }} — F{{ loop.index }} · {{ finding.title }}
 
-{% if finding.locations %}- **Location**
-{% for location in finding.locations %}  - {{ location }}
-{% endfor %}{% endif %}{% if finding.evidence %}- **Evidence**
-{% for item in finding.evidence %}  - {{ item }}
-{% endfor %}{% endif %}- **Impact:** {{ finding.impact }}
-{% if finding.required_changes %}- **Required Change**
-{% for change in finding.required_changes %}  - {{ change }}
-{% endfor %}{% endif %}{% if finding.uncertainty %}- **Uncertainty:** {{ finding.uncertainty }}
+{% if finding.locations %}
+- **Location**
+{% for location in finding.locations %}
+  - {{ location }}
+{% endfor %}
 {% endif %}
+{% if finding.evidence %}
+- **Evidence**
+{% for item in finding.evidence %}
+  - {{ item }}
+{% endfor %}
+{% endif %}
+- **Impact:** {{ finding.impact }}
+{% if finding.required_changes %}
+- **Required Change**
+{% for change in finding.required_changes %}
+  - {{ change }}
+{% endfor %}
+{% endif %}
+{% if finding.uncertainty %}
+- **Uncertainty:** {{ finding.uncertainty }}
+{% endif %}
+
 {% endfor %}
 {% else %}
 ✅ No findings
@@ -63,10 +77,16 @@ diff, contract, test, command 등 실제 확인 결과만 기록한다.
 
 {% if author or revision %}
 ```yaml
-{% if author %}author:
-{% for item in author %}  - {{ item }}
-{% endfor %}{% endif %}{% if revision %}revision:
+{% if author %}
+author:
+{% for item in author %}
+  - {{ item }}
+{% endfor %}
+{% endif %}
+{% if revision %}
+revision:
   base: {{ revision.base }}
   head: {{ revision.head }}
-{% endif %}```
+{% endif %}
+```
 {% endif %}
