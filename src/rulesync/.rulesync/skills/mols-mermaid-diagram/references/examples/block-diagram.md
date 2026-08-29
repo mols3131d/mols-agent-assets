@@ -1,6 +1,6 @@
 # Block Diagram
 
-> Block syntax의 실제 지원 여부와 현재 세부 문법은 target renderer와 Mermaid 공식 문서를 확인한다. Local example은 `block` declaration을 사용하며, 오래된 source의 `block-beta`를 그대로 호환된다고 가정하지 않는다.
+> Block syntax의 실제 지원 여부와 현재 세부 문법은 target renderer와 Mermaid 공식 문서를 확인한다.
 
 Block diagram은 relationship뿐 아니라 **author-controlled grid arrangement**가 readability에 중요한 system overview에 사용한다. 여기서 author control은 row·column occupancy와 relative placement를 뜻하며 exact pixel coordinate, port 또는 fixed geometry contract를 뜻하지 않는다. Grid 위치는 기본적으로 presentation constraint이며, source가 layer·zone·physical placement처럼 위치 자체에 의미를 부여한 경우가 아니면 domain fact로 해석하지 않는다.
 
@@ -49,7 +49,7 @@ block
 
 `block:platform:3`의 `platform`은 composite ID이고 `:3`은 parent grid에서 차지하는 span이다. 이 ID가 reader-visible subsystem title이라고 가정하지 않는다. Visible label이나 boundary 의미를 부여한다면 source 근거와 target renderer의 실제 표시 결과를 함께 확인한다.
 
-### Reliable Span And Nesting
+### Reliable Layout Envelope
 
 Nested grid와 span은 문법적으로 지원되더라도 renderer layout에 민감하다. Portable documentation에서는 다음 범위부터 시작한다.
 
@@ -63,16 +63,11 @@ Nested grid와 span은 문법적으로 지원되더라도 renderer layout에 민
 
 ## Connections And Direction
 
-Block diagram에서도 relationship과 directional decoration을 구분한다.
-
 - edge가 relationship의 존재와 방향을 소유한다.
 - composite ID에 edge를 연결할 수 있더라도 **relationship이 실제 aggregate/group을 대상으로 할 때만** 사용한다. 특정 child와의 관계라면 그 child에 직접 연결한다.
 - block arrow는 directional shape를 가진 **block**이며 relationship edge가 아니다. 단순 연결 방향을 나타내려는 목적이라면 ordinary edge를 사용한다.
-- unusual marker, dotted/thick edge 또는 양방향 marker가 별도 의미를 갖는다면 source나 local legend로 그 의미를 확인하고 target renderer에서 marker 방향을 검증한다. 장식 목적으로 edge vocabulary를 늘리지 않는다.
 
 ## Layout Versus Semantics
-
-Block diagram은 placement control이 강하지만 **placement가 relationship을 대신하지 않는다.**
 
 - `columns`, span, declaration order와 `space`는 presentation layer다.
 - 같은 row·column, 가까운 거리 또는 넓은 span을 chronology, priority, throughput, ownership 또는 deployment fact로 해석하지 않는다.
@@ -87,7 +82,7 @@ Block diagram은 placement control이 강하지만 **placement가 relationship�
 - **Architecture**: service/resource topology와 architecture boundary를 해당 notation으로 직접 표현하는 것이 핵심일 때.
 - **Table / axis-oriented representation**: row·column 좌표, 정량 위치 또는 축 자체가 load-bearing data일 때. Block grid 위치만으로 그 의미를 암시하지 않는다.
 
-Block의 grid를 유지하려고 relationship이나 grouping을 왜곡해야 한다면 다른 type이나 overview/detail split을 우선한다. Exact physical geometry나 coordinate가 핵심이면 span·`space`로 근사하지 말고 그 정보를 명시적으로 표현할 수 있는 다른 representation을 사용한다. Portrait reading viewport에서 과도한 horizontal spread가 생기면 column 수, grouping 또는 diagram split을 먼저 검토하고 unreadable downscaling로 해결하지 않는다.
+Block의 grid를 유지하려고 relationship이나 grouping을 왜곡해야 한다면 다른 type이나 overview/detail split을 우선한다. Exact physical geometry나 coordinate가 핵심이면 span·`space`로 근사하지 말고 그 정보를 명시적으로 표현할 수 있는 다른 representation을 사용한다. Portrait reading viewport에서 과도한 horizontal spread가 생기면 column 수, grouping 또는 diagram split을 먼저 검토한다.
 
 ## Renderer-Sensitive Review
 
@@ -99,18 +94,16 @@ Block diagram은 **syntax validity와 visual stability를 별도로 검증**한�
 1. edge target과 arrow marker가 source relationship의 endpoint·direction과 일치하는가.
 1. portrait viewport에서 default/auto row가 과도하게 넓어지지 않는가.
 
-문제가 있으면 style tweak보다 grid 단순화, label 축약, span 축소, nesting 축소 또는 diagram split을 먼저 검토한다. Accessibility가 중요한 rendered artifact는 Block에 한정된 과거 제약을 가정하지 말고 현재 target renderer의 accessibility output을 실제로 확인한다.
+문제가 있으면 style tweak보다 grid 단순화, label 축약, span 축소, nesting 축소 또는 diagram split을 먼저 검토한다.
 
 ## Rules
 
-- Grid arrangement는 기본적으로 presentation constraint이며 exact geometry contract가 아니다.
-- Composite block을 layout wrapper로 사용할 수 있지만 source에 없는 containment·subsystem·boundary 의미를 부여하지 않는다.
-- Composite ID, visible label과 semantic boundary를 구분한다.
+- Grid arrangement는 presentation constraint이며 exact geometry contract가 아니다.
+- Composite ID, visible label과 semantic boundary를 구분하고 source에 없는 containment를 만들지 않는다.
 - Span과 `space`는 layout control이며 domain magnitude나 missing entity를 뜻하지 않는다.
 - span overflow나 deep nested grid의 renderer-specific 동작에 의존하지 않는다.
 - adjacency나 block arrow로 source에 없는 relationship을 암시하지 않는다.
 - aggregate relation이 아니면 composite ID 대신 실제 child endpoint에 연결한다.
-- 자동 relationship 배치가 질문에 더 적합하면 flowchart 또는 architecture diagram을 사용한다.
 
 ## Portable Fallback
 
