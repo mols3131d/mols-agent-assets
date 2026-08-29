@@ -82,9 +82,9 @@ Intervention은 한 cognitive dimension만 최적화하지 않는다. 줄어드�
 1. **Preservation before Transformation.** 후보 change가 영향을 줄 수 있는 observable behavior와 usage·contract surface를 식별한다. Caller, entrypoint, test, current contract와 relevant registration/config/tooling context를 필요한 만큼 확인하고, known hot path나 performance budget이 있으면 함께 보존 대상으로 둔다.
 1. 가장 material한 **coherent bottleneck/root-cause cluster**를 찾는다. 원인이 불명확하거나 여러 cost source의 trade-off가 판단을 바꿀 수 있으면 [Diagnosis](references/diagnosis.md)을 읽는다.
 1. Concern을 분리한다. Executable comprehension problem은 이 Skill이 다루되, independent prose need는 `clarify-code`, correctness defect는 correctness work, genuine optimization은 performance work, system boundary redesign은 architecture-level work로 분리한다. 한 sibling concern 때문에 valid comprehension work 전체를 버리지도, 다른 concern을 readability 명목으로 흡수하지도 않는다.
-1. 후보 transformation이 줄이는 reader work와 새로 만드는 conceptual surface를 비교해 **smallest safe coherent change**를 선택한다. Rename, move, extract, inline, representation/control-state change처럼 preservation precondition이 material할 수 있거나 transformation 선택이 단순하지 않으면 [Interventions](references/interventions.md)을 읽고 현재 language·repository·tooling contract에서 relevant risk를 확인한다.
+1. 후보 transformation이 줄이는 reader work와 새로 만드는 conceptual surface를 비교해 **smallest safe coherent change**를 선택한다. Transformation 선택이나 tightly coupled edit의 net comprehension trade-off가 단순하지 않으면 [Interventions](references/interventions.md)을 읽는다. Rename, move, extract, inline, representation/control-state change의 preservation precondition·usage risk·evidence가 material하게 불명확하면 mutation 전에 [Validation](references/validation.md)을 읽고 현재 language·repository·tooling contract에서 relevant risk를 확인한다.
 1. 필요한 executable code만 수정한다. 한 root cause를 제거하는 tightly coupled edit는 함께 할 수 있지만 unrelated cleanup, speculative abstraction 또는 future-proofing을 섞지 않는다. Preservation에 필요한 coupled consumer update가 write scope 밖이면 부분 mutation을 수행하지 않는다.
-1. 변경 전 확인한 preservation envelope를 기준으로 after state를 검증한다. Test coverage의 충분성, dynamic/hidden usage, characterization baseline, performance 또는 verification gap이 material하면 [Validation](references/validation.md)을 읽는다. Tests나 tooling 결과만으로 확인되지 않은 equivalence를 과대 주장하지 않는다.
+1. 변경 전 확인한 preservation envelope를 기준으로 after state를 검증한다. Test coverage의 충분성, dynamic/hidden usage, characterization baseline, performance 또는 verification gap이 material하면 [Validation](references/validation.md)의 같은 evidence contract를 재사용한다. Tests나 tooling 결과만으로 확인되지 않은 equivalence를 과대 주장하지 않는다.
 1. Caller와 maintainer 관점에서 다시 읽고, bottleneck이 실제로 줄었는지와 새 terminology·indirection·ceremony·coupling이 더 큰 이해 비용을 만들지 않았는지 확인한다. 변경, 보존 근거, 실제 수행한 validation, sibling concern과 남은 uncertainty만 짧게 보고한다.
 
 한 coherent bottleneck이 충분히 해소되면 중단한다. 안전한 refactor가 가능하더라도 net comprehension gain이 없으면 수정하지 않는다. Material preservation evidence가 부족한 고위험 transformation은 더 작은 intervention으로 줄이거나 중단한다.
@@ -94,8 +94,8 @@ Intervention은 한 cognitive dimension만 최적화하지 않는다. 줄어드�
 Common-path 판단은 이 `SKILL.md`가 소유한다. 다음 세부 판단이 실제로 필요할 때만 reference를 읽는다.
 
 - bottleneck의 root cause, abstraction 가치, usage surface 또는 cognitive trade-off가 불명확하면 [Diagnosis](references/diagnosis.md)
-- transformation 선택, tightly coupled edit, rename/move/extract/inline/representation/control-state의 preservation risk가 단순하지 않으면 [Interventions](references/interventions.md)
-- tests/contract가 불완전·충돌하거나 dynamic usage, characterization, material performance, before/after equivalence 판단이 단순하지 않으면 [Validation](references/validation.md)
+- transformation 선택, tightly coupled edit 또는 introduced-vs-removed reader work 판단이 단순하지 않으면 [Interventions](references/interventions.md)
+- candidate transformation의 preservation precondition/evidence, tests·contract 관계, dynamic usage, characterization, material performance 또는 before/after equivalence가 단순하지 않으면 mutation 전후에 [Validation](references/validation.md)
 
 Reference를 읽었다는 이유로 mutation scope나 operational authority가 넓어지지는 않는다.
 
