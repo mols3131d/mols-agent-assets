@@ -84,6 +84,8 @@ Executable check가 반드시 test일 필요는 없습니다. 같은 output prop
 
 판정 logic을 local script, test와 CI에 각각 복제할 필요는 없습니다. 하나의 의미를 여러 surface에서 사용해야 한다면 가능한 한 판정 logic의 owner는 하나로 두고 필요한 위치에서 호출합니다. 반대로 check가 하나뿐인데 미래 확장을 예상해 중앙 checker framework나 registry부터 만들지는 않습니다.
 
+Check가 평가 대상과 같은 구현 경로를 그대로 반복한다면 둘이 같은 오류를 공유할 수도 있습니다. 따라서 **그 check가 실제로 무엇을 확인하는지**를 좁게 봅니다. 예를 들어 regenerate + diff는 보통 generated artifact의 freshness나 reproducibility를 확인하는 데 강하지만 generator의 semantic correctness 전체를 증명하지는 않습니다. 더 높은 assurance가 필요한 경우에는 같은 경로를 한 번 더 실행하는 것보다 충분히 독립적인 관찰이나 별도 verification이 필요한지 검토할 수 있습니다.
+
 ## 실행 결과와 Feedback을 구분합니다
 
 Check가 실행되었다고 해서 결과가 항상 단순한 pass/fail인 것은 아닙니다. 특히 **output의 문제와 checker 자체의 실패를 섞지 않는 것**이 중요합니다.
@@ -157,7 +159,7 @@ committed output과 비교
 Finding이 있으면 보여줌
 ```
 
-Local workflow에서는 diff를 warning으로 보여주고, PR에서는 annotation으로 노출할 수 있습니다. Generated output의 일치가 실제 필수 조건인 repository라면 같은 판정을 blocking check로 사용할 수도 있습니다.
+Local workflow에서는 diff를 warning으로 보여주고, PR에서는 annotation으로 노출할 수 있습니다. Generated output의 일치가 실제 필수 조건인 repository라면 같은 판정을 blocking check로 사용할 수도 있습니다. 이 방식이 확인하는 것은 주로 **source-of-truth와 committed output의 동기화 상태**이며, generated code의 의미적 정확성 전체는 별도 문제일 수 있습니다.
 
 Architecture boundary 역시 같은 패턴의 한 사례입니다. `payments`의 internal package를 외부에서 직접 사용하는지 `scripts/check_architecture.py`로 확인할 수도 있고, ecosystem과 test infrastructure가 자연스럽게 맞는다면 `tests/architecture/test_module_boundaries.py` 같은 structural test로 표현할 수도 있습니다. Language나 package visibility가 이미 같은 boundary를 보장한다면 별도 check가 필요 없을 수 있습니다.
 
@@ -197,9 +199,9 @@ Executable check는 **관찰 가능한 증거를 만드는 surface이지, 그 �
 
 ### Deterministic한 Check도 잘못되거나 일부만 볼 수 있습니다
 
-같은 입력에서 같은 결과가 나온다는 사실은 판정 기준이 옳다는 뜻이 아닙니다. 잘못 이해한 요구사항이나 오래된 assumption을 일관되게 구현할 수도 있고, targeted check는 일부 path나 state만 볼 수도 있습니다.
+같은 입력에서 같은 결과가 나온다는 사실은 판정 기준이 옳다는 뜻이 아닙니다. 잘못 이해한 요구사항이나 오래된 assumption을 일관되게 구현할 수도 있고, targeted check는 일부 path나 state만 볼 수도 있습니다. 평가 대상과 checker가 같은 구현 경로나 가정을 공유하면 같은 blind spot을 함께 가질 수도 있습니다.
 
-**대응:** 무엇을 관찰하는 check인지 설명할 수 있게 두고, reproducibility를 validity나 full coverage와 같은 의미로 취급하지 않습니다. 누락 비용이 클 때만 더 넓은 verification을 보완적으로 고려합니다.
+**대응:** 무엇을 관찰하는 check인지 설명할 수 있게 두고, reproducibility를 validity나 full coverage와 같은 의미로 취급하지 않습니다. Check가 실제로 보장하는 범위보다 넓은 의미를 부여하지 않고, 누락 비용이 클 때만 더 독립적이거나 넓은 verification을 보완적으로 고려합니다.
 
 ### Checker의 환경 의존성과 Flakiness가 신뢰를 깎을 수 있습니다
 
@@ -249,4 +251,4 @@ Agent가 output과 checker를 함께 수정할 수 있다면 warning을 없애�
 
 ## Short Form
 
-> **작업 결과에서 반복되거나 놓쳤을 때 비용이 큰 machine-observable property를 가장 단순한 executable check로 드러내고, 상황에 맞는 위치와 강도로 feedback합니다. Check는 truth나 policy 자체가 아니며, 문제보다 비싸지면 약화·이동·제거할 수 있습니다.**
+> **작업 결과에서 반복되거나 놓쳤을 때 비용이 큰 machine-observable property를 가장 단순한 executable check로 드러내고, 상황에 맞는 위치와 강도로 feedback합니다. Check는 자신이 관찰하는 범위만 증거로 제공하며 truth나 policy 자체가 아니고, 문제보다 비싸지면 약화·이동·제거할 수 있습니다.**
