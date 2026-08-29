@@ -19,6 +19,7 @@
 
 <!--
 직접 확인한 check와 근거만 적는다.
+중요한 미수행 검증은 숨기지 말고 ⚪ Not Verified로 남긴다.
 상태: ✅ Pass / ❌ Fail / ⚪ Not Verified
 -->
 
