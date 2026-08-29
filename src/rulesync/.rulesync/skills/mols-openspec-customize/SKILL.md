@@ -1,13 +1,13 @@
 ---
 name: mols-openspec-customize
 description: >-
-  Design, maintain, dogfood, tune, or adapt OpenSpec customization. Use when
-  deciding which OpenSpec surface should own a customization, maintaining a custom
-  schema, evaluating customization with real work, or adapting it to a concrete
-  repository. Keep exact OpenSpec vendor behavior, reusable guidance, and
-  project-specific evidence separate. Do not use for ordinary OpenSpec change
-  authoring or implementation, generic repository guidance, or installation unless
-  directly required by customization work.
+  Design, review, dogfood, tune, or adapt OpenSpec customization. Use for choosing
+  or changing OpenSpec profiles, project configuration, custom schemas, templates,
+  schema maintenance, or customization behavior, especially when reusable design
+  judgment or project-specific tuning is required. Separate exact OpenSpec vendor
+  contract, reusable customization guidance, and concrete project decisions. Do not
+  use for ordinary OpenSpec workflow usage such as applying or implementing a
+  change, writing a specific proposal or spec, or unrelated repository guidance.
 targets:
   - claudecode
   - codexcli
