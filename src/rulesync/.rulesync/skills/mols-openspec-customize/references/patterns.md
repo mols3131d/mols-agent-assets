@@ -52,16 +52,12 @@ openspec/schemas/<name>/
 ├── templates/
 ├── README.md       # optional
 └── docs/           # optional
-    ├── maintenance.md
-    ├── scenarios.md
-    ├── tuning.md
-    └── upstream.md
 ```
 
-`README.md`, `docs/`, and the example files under `docs/` are not a required schema
-layout. Under the current OpenSpec contract, schema runtime semantics belong to
-`schema.yaml` and referenced templates. Companion surfaces are project-owned aids
-and should exist only when they materially improve schema use or maintenance.
+`README.md` and `docs/` are not a required schema layout. Under the current OpenSpec
+contract, schema runtime semantics belong to `schema.yaml` and referenced templates.
+Companion surfaces are project-owned aids and should exist only when they materially
+improve schema use or maintenance.
 
 ### `README.md`: schema entrypoint
 
@@ -78,7 +74,7 @@ It can explain:
   level;
 - how to start using, inspecting, validating, or dogfooding it without duplicating
   fast-changing CLI reference material;
-- where deeper maintenance, scenario, tuning, or upstream material lives in `docs/`;
+- where deeper supporting documentation lives when the package has any;
 - which repository or project authority governs maintenance when that is not obvious.
 
 Treat the README as a common navigation point for both human maintainers and agents
@@ -86,33 +82,32 @@ that are already inspecting the schema package. Do not assume an agent harness
 automatically discovers or loads it; agent discovery and instruction precedence
 remain owned by the repository and active harness.
 
-Keep README readable as an introduction and navigation surface. Move detailed
-maintenance procedures, tuning history, scenario catalogs, upgrade notes, or long
-rationale into `docs/` rather than turning the entrypoint into a maintainer dump.
+Keep README readable as an introduction and navigation surface. Move detail into
+`docs/` only when keeping it in the entrypoint would materially reduce readability
+or maintainability.
 
-### `docs/`: durable maintenance detail
+### `docs/`: optional supporting detail
 
-Use `docs/` when durable schema knowledge is useful but too detailed for the README.
-It is a supporting knowledge surface, not an automatic schema contract or a dumping
-ground for every experiment.
+Use `docs/` only when the schema has durable supporting knowledge that is useful to
+keep near the schema but does not belong in the README or runtime files.
 
-Possible documents include:
+Do not prescribe a standard document set, filenames, or internal taxonomy. Derive
+its contents from the concrete schema and project, and follow the repository's
+existing documentation conventions when they apply.
 
-- `maintenance.md` — schema-local maintenance workflow, change ownership,
-  invariants, validation, dogfooding, regression, and stabilization guidance that
-  maintainers or agents may need while modifying the schema;
-- `scenarios.md` — representative dogfood or regression scenarios worth preserving;
-- `tuning.md` — accepted tuning decisions and rationale that future maintainers may
-  need to reproduce or reconsider;
-- `upstream.md` — fork provenance, upstream comparison, and deliberate porting notes.
+When `docs/` exists:
 
-These filenames are examples. Create only the documents with durable value. Keep
-transient run logs and disposable experiments in the project's existing working
-artifact surface instead.
+- create only documents with a concrete maintenance or comprehension benefit;
+- keep each concern in one authoritative document rather than spreading the same
+  explanation across several files;
+- link relevant documents from `README.md` so the entrypoint remains useful;
+- keep transient logs, disposable experiments, and regenerable state out of it.
 
-If repository-wide or harness-specific agent instructions already govern schema
-maintenance, keep them in their existing authority and link or route to this package
-instead of duplicating them under the schema.
+If no durable detail justifies another document, omit `docs/` entirely.
+
+Repository-wide or harness-specific agent instructions remain in their existing
+authority. They may route an agent to the schema package without duplicating schema
+knowledge in a second instruction tree.
 
 ### Keep companion surfaces DRY
 
@@ -121,17 +116,14 @@ Give each concern one owner:
 | Concern | Preferred owner |
 | --- | --- |
 | What the schema is, who it is for, when to use it, and package navigation | `README.md` |
-| Detailed schema-local maintenance, tuning, verification, and rationale | `docs/` |
+| Durable supporting detail that would overload the entrypoint | `docs/` |
 | Actual OpenSpec schema behavior | `schema.yaml` and `templates/` |
 | Repository-wide or harness-specific agent policy | Existing repository authority |
 
-Prefer links over copies across these surfaces. `README.md` may route users,
-maintainers, and inspecting agents into `docs/`; detailed documents should not
-restate the entrypoint merely to be self-contained.
-
-A fact that must affect OpenSpec runtime behavior belongs in the runtime surface even
-if it is also explained to humans elsewhere. A maintenance explanation does not
-become runtime behavior merely because it is colocated with the schema.
+Prefer links over copies across these surfaces. A fact that must affect OpenSpec
+runtime behavior belongs in the runtime surface even if it is also explained to
+humans elsewhere. A maintenance explanation does not become runtime behavior merely
+because it is colocated with the schema.
 
 Omit any companion surface that does not earn its maintenance cost. A simple schema
 may correctly contain only `schema.yaml` and `templates/`.
