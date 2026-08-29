@@ -44,22 +44,8 @@ Metadata는 필요한 경우 **본문 마지막의 fenced `yaml` block 한 곳**
 
 허용하는 field는 `author`와 `revision`뿐입니다. 둘은 서로 독립적인 optional field이며 실제 판단에 필요한 것만 남깁니다.
 
-### `author`
-
-`author`는 실제 작성 주체가 GitHub에 표시되는 계정과 다를 때 agent 주도 작성을 식별하는 optional list입니다.
-
-- 사람만 작성했거나 사람이 주도하고 agent가 보조했다면 생략합니다.
-- agent가 주도했지만 GitHub 작성자만으로 실제 작성 주체를 구별할 수 없을 때 기록합니다.
-- 각 항목은 `<user-id>:<provider>-<service>` 형식의 scalar string을 사용합니다.
-
-### `revision`
-
-`revision`은 본문의 판단이나 설명이 exact repository revision pair에 의존할 때 사용하는 optional map입니다.
-
-- 사용하면 `base`와 `head`를 함께 기록합니다.
-- 두 값 모두 full commit SHA를 사용하며 움직이는 branch ref는 기록하지 않습니다.
-- PR description을 새 base/head 기준으로 갱신하면 `revision`도 함께 갱신합니다.
-- Review의 `revision`은 실제 검토한 pair를 고정하며 이후 PR head가 바뀌어도 과거 review 값은 바꾸지 않습니다.
+- `author` — GitHub 작성자만으로 실제 작성 주체를 구별할 수 없는 agent 주도 작성의 provenance입니다. 각 항목은 `<user-id>:<provider>-<service>` 형식을 사용합니다.
+- `revision` — 본문의 판단이나 설명이 exact repository revision pair에 의존할 때 사용합니다. `base`와 `head`를 함께 full commit SHA로 기록합니다. PR description을 새 pair 기준으로 갱신하면 함께 갱신하고, 이미 제출된 review의 pair는 이후 head가 바뀌어도 변경하지 않습니다.
 
 ```yaml
 author:
