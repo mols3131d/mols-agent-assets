@@ -1,5 +1,5 @@
 ---
-description: source와 test의 대응 관계를 탐색 단서로 활용하고, test file이 커질 때 sibling files와 bundle로 확장하거나 feature·behavior·system boundary로 조직할 때 참고하는 패턴입니다.
+description: source와 test의 대응 관계를 navigation cue로 활용하고, test surface가 커질 때 sibling files나 bundle 같은 구조를 선택할 때 참고하는 패턴입니다.
 ---
 
 # Source-Mirrored Test Structure
@@ -34,7 +34,7 @@ tests/
    └─ test_tax.py
 ```
 
-`src/billing/invoice.py`를 본 사람은 `tests/billing/test_invoice.py`를 먼저 찾아볼 수 있습니다. `src/` 같은 의미 없는 상위 prefix를 test tree에서 생략하거나 framework convention에 맞춰 이름을 바꾸더라도 이 대응 관계는 유지될 수 있습니다.
+`src/billing/invoice.py`를 본 사람은 `tests/billing/test_invoice.py`를 먼저 찾아볼 수 있습니다. `src/` 같은 상위 prefix를 test tree에서 생략하거나 framework convention에 맞춰 이름을 바꾸더라도 이 대응 관계는 유지될 수 있습니다.
 
 이 구조는 source architecture를 새로 정의하거나 test design을 source implementation에 결합하기 위한 것이 아닙니다. **이미 존재하는 구조를 navigation cue로 재사용하는 것**에 가깝습니다.
 
@@ -42,7 +42,7 @@ tests/
 
 ### File-to-file
 
-테스트 범위가 작고 하나의 파일에서 충분히 읽히는 경우 가장 간단한 형태입니다.
+테스트 범위가 작고 하나의 파일에서 충분히 읽히는 경우의 가장 단순한 형태입니다.
 
 ```text
 src/orders/service.py
@@ -52,7 +52,7 @@ tests/orders/test_service.py
 
 ### File-to-sibling-files
 
-하나의 test file 안에서 서로 다른 behavior나 scenario를 찾기 어려워지면, 먼저 같은 directory의 sibling files로 나누는 형태가 단순할 수 있습니다.
+하나의 test file이 여러 behavior나 scenario를 담게 되면 같은 directory의 sibling files로 나누는 형태를 사용할 수 있습니다.
 
 ```text
 src/
@@ -66,11 +66,11 @@ tests/
    └─ test_invoice_failures.py
 ```
 
-이 형태는 source와의 대응을 filename에 남기면서 새로운 directory depth를 만들지 않습니다. Test framework의 import와 discovery 방식에 따라 같은 leaf filename을 여러 directory에서 반복하는 구성이 불편할 수 있으므로, reusable pattern의 예시에서는 의미가 충분히 드러나는 filename을 사용하는 편이 안전합니다.
+이 형태는 source와의 대응을 filename에 남기면서 새로운 directory depth를 만들지 않습니다. 반면 같은 prefix가 반복되거나 directory의 file density가 높아지면 grouping 자체를 별도 directory로 드러내는 편이 더 읽기 쉬워질 수 있습니다.
 
 ### Files-to-bundle
 
-같은 production unit이나 behavior에 속하는 sibling test files가 하나의 독립적인 탐색 영역처럼 커지면 directory bundle로 묶을 수 있습니다.
+같은 production unit이나 behavior에 속하는 sibling test files가 하나의 독립적인 탐색 영역처럼 보이기 시작하면 directory bundle로 묶는 형태를 선택할 수 있습니다.
 
 ```text
 src/
@@ -86,7 +86,7 @@ tests/
       └─ test_invoice_permissions.py
 ```
 
-Bundle은 단순히 test file이 둘 이상이라는 이유로 만드는 것이 아니라, **그 group 자체가 이름을 가질 만한 탐색 단위가 되었을 때** 유용합니다. 내부 파일은 source의 private function이나 구현 순서를 다시 mirror하기보다 behavior, scenario, contract처럼 테스트를 읽고 변경할 때 의미 있는 경계로 나누는 편이 대체로 유용합니다.
+Bundle은 반복되는 grouping을 directory 이름으로 압축하고, 관련 fixture·data·snapshot·helper 같은 local context를 가까이 둘 수 있다는 장점이 있습니다. 내부 파일은 source의 private function이나 구현 순서를 다시 mirror하기보다 behavior, scenario, contract처럼 테스트를 읽고 변경할 때 의미 있는 경계로 나누는 형태가 흔합니다.
 
 ### Boundary-to-bundle
 
@@ -126,32 +126,32 @@ Source path가 항상 가장 좋은 organizing axis는 아닙니다. 테스트�
 
 Literal mirroring은 source와 test의 natural boundary가 비슷할 때 특히 잘 맞습니다. 하나의 public behavior가 여러 module을 가로지르거나, integration·e2e·compatibility·migration처럼 system 관계가 중심이거나, source refactoring보다 behavior boundary가 안정적인 경우에는 다른 alignment가 더 읽기 쉬울 수 있습니다.
 
-`misc/`, `others/`, 넓은 `common/` 같은 영역이 계속 커지는 것도 조직 축을 다시 볼 신호가 될 수 있습니다. 반드시 잘못된 구조라는 뜻은 아니지만, 반복되는 테스트가 실제로 공유하는 feature, behavior 또는 support responsibility가 있는지 살펴볼 만합니다.
+## Bundle Heuristics
 
-## Growing the Test Structure
+Bundle이 유용해지는 시점에는 보편적인 threshold가 없습니다. 다만 **관련 group의 크기**와 **같은 directory 전체의 file density**는 structure를 다시 볼 때 쓸 수 있는 간단한 heuristic입니다.
 
-Test structure의 확장에는 보편적인 line count나 test count가 없습니다. 파일 수는 **directory depth를 추가할지 생각하는 soft heuristic**으로 사용할 수 있을 뿐이고, 실제 탐색과 변경 마찰이 더 중요합니다.
+실용적인 감각으로는 다음 정도부터 bundle을 생각해 볼 만합니다.
 
-실용적인 출발점은 다음 정도입니다.
-
-| Related test files | Typical choice |
+| Signal | Bundle을 고려해 볼 만한 구간 |
 | --- | --- |
-| 1 | 단일 test file |
-| 2 | sibling files를 유지하는 경우가 대체로 단순함 |
-| 3 | sibling files도 충분하지만, group 이름이나 local context가 뚜렷하면 bundle을 고려할 수 있음 |
-| 4+ | 하나의 boundary를 반복해 표현한다면 bundle을 적극 검토할 만함 |
+| 같은 prefix나 주제를 공유하는 관련 test files | 대략 **4~6개부터** |
+| 같은 directory에 함께 놓인 전체 test files | 대략 **8~12개부터** |
 
-이 숫자는 framework standard나 threshold가 아니라 **구조 선택을 다시 생각해 볼 시점에 대한 heuristic**입니다. `4+`도 bundle의 기본값을 뜻하지 않습니다. 두 파일뿐이어도 함께 쓰는 fixture, data, snapshot 또는 helper가 독립적인 local context를 만들면 bundle이 자연스러울 수 있고, 네다섯 파일이어도 이름이 짧고 한 directory에서 쉽게 훑어진다면 siblings가 더 단순할 수 있습니다.
+이 범위는 framework standard나 전환 규칙이 아닙니다. Directory 한 단계를 추가하는 비용보다 grouping에서 얻는 탐색 이점이 커지기 시작하는 **관찰 지점**에 가깝습니다.
 
-Bundle을 고려할 만한 다른 신호도 있습니다.
+예를 들어 `test_invoice_*`가 4~6개 정도 반복되면 `invoice/`라는 directory가 prefix를 구조로 압축하는 데 도움이 될 수 있습니다. 반대로 같은 prefix를 가진 파일이 3개뿐이어도 해당 group만 사용하는 fixture나 snapshot이 많다면 bundle이 자연스러울 수 있습니다.
+
+Directory 전체의 밀도도 함께 볼 수 있습니다. 관련 파일이 3~4개뿐이어도 그 directory에 서로 다른 주제의 test file이 10개 안팎으로 섞여 있다면, 작은 group을 bundle로 분리하는 것만으로 scan 범위가 줄어들 수 있습니다. 반대로 관련 파일이 6개 정도여도 directory 전체가 그 group 하나뿐이고 filename만으로 쉽게 훑어진다면 sibling files가 더 단순할 수 있습니다.
+
+그 밖에 bundle이 유용해질 수 있는 흔한 신호는 다음과 같습니다.
 
 - filename에서 같은 긴 prefix가 반복됩니다.
-- 서로 다른 behavior나 scenario가 늘어 관련 테스트를 한눈에 찾기 어렵습니다.
-- 변경할 때 관련 없는 sibling test까지 계속 훑게 됩니다.
+- 서로 다른 behavior나 scenario가 늘어 관련 테스트를 한눈에 찾기 어려워집니다.
 - 특정 group만 사용하는 fixture, helper, fixture data 또는 snapshot이 생깁니다.
 - group 자체를 자주 함께 탐색하거나 review합니다.
+- 한 directory에 여러 unrelated test group이 섞여 scan 범위가 커집니다.
 
-반대로 bundle을 만든 뒤 directory 안의 파일이 두세 개뿐이고 group 이름도 별 정보를 주지 않거나, 한 단계 더 들어가는 navigation 비용만 생긴다면 sibling files가 더 나은 형태일 수 있습니다.
+숫자와 신호는 결정을 대신하기보다 **구조를 한 번 다시 볼 이유**를 제공하는 정도로 사용하는 것이 이 패턴의 의도에 가깝습니다.
 
 ## Variants
 
@@ -197,7 +197,7 @@ tests/
 
 Source mirroring은 탐색 비용을 낮추지만 source rename이나 module 이동이 잦은 repository에서는 test path churn을 만들 수 있습니다. 반대로 behavior 중심 구조는 refactoring에는 안정적일 수 있지만 source에서 관련 test를 바로 찾기는 어려울 수 있습니다.
 
-Sibling files는 directory depth를 늘리지 않는 대신 filename이 길어지고 같은 prefix가 반복될 수 있습니다. Bundle은 그 반복을 구조로 압축하고 local context를 모을 수 있지만 hierarchy 자체가 새로운 탐색 비용이 됩니다. 그래서 **single file → sibling files → bundle**은 유용한 growth path일 수 있지만, 각 단계를 반드시 거치거나 일정 개수에서 자동 전환할 필요는 없습니다.
+Sibling files는 directory depth를 늘리지 않는 대신 filename이 길어지고 같은 prefix가 반복될 수 있습니다. Bundle은 그 반복을 구조로 압축하고 local context를 모을 수 있지만 hierarchy 자체가 새로운 탐색 비용이 됩니다. 그래서 **single file → sibling files → bundle**은 흔한 growth path일 수 있지만, 순서나 전환 시점을 고정할 필요는 없습니다.
 
 이 패턴은 test taxonomy, test pyramid, fixture architecture나 unit/integration의 의미를 정하는 패턴은 아닙니다. **어떤 테스트가 존재해야 하는가보다, 이미 존재하는 테스트를 filesystem에서 어떻게 찾기 쉽게 둘 것인가**에 초점을 둡니다.
 
@@ -218,4 +218,4 @@ Sibling files는 directory depth를 늘리지 않는 대신 filename이 길어�
 
 ## Short Form
 
-> **Source와 test의 위치 관계를 예측 가능한 탐색 단서로 활용합니다. 작은 테스트는 단일 파일에서 시작하고, 커지면 sibling files로 나눈 뒤 group 자체가 독립적인 탐색 단위가 될 때 bundle을 고려합니다. Literal mirroring보다 feature·behavior·system boundary가 더 자연스러우면 그쪽에 맞춥니다.**
+> **Source와 test의 위치 관계를 예측 가능한 탐색 단서로 활용합니다. 작은 테스트는 단일 파일이나 sibling files로 두고, 같은 주제의 파일이 대략 4~6개로 늘거나 한 directory가 대략 8~12개 파일로 조밀해질 때 bundle이 탐색을 더 단순하게 만드는지 살펴볼 수 있습니다. Literal mirroring보다 feature·behavior·system boundary가 더 자연스러우면 그쪽에 맞춥니다.**
