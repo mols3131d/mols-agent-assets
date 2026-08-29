@@ -61,6 +61,50 @@ Bundle 내부는 source의 private function이나 현재 구현 순서를 그대
 
 단순히 파일이 길다는 이유만으로 분리하지 않습니다. 여러 파일로 나눈 뒤에도 어떤 테스트가 어디에 있는지 더 예측하기 어렵다면 bundle은 개선이 아닙니다.
 
+## When Mirroring Does Not Fit
+
+Mirroring이 자연스럽지 않으면 **억지로 source file 하나를 고르지 않고 테스트의 가장 안정적인 owner를 찾습니다.**
+
+보통 다음 순서로 판단할 수 있습니다.
+
+1. 하나의 source file이나 module이 자연스러운 owner면 그 경계를 mirror합니다.
+1. 그렇지 않지만 하나의 package, component, feature 또는 domain이 자연스러운 owner면 그 **상위 production boundary**에 대응시킵니다.
+1. 여러 production boundary를 의도적으로 함께 검증한다면 source path 대신 **behavior 또는 test concern 자체**를 owner로 둡니다.
+1. repository 전체나 외부 system과의 관계를 검증한다면 `integration`, `e2e`, `contract`, `migration`처럼 **test level이나 system boundary**가 owner가 될 수 있습니다.
+
+예를 들어 결제 흐름이 여러 module을 가로질러 하나의 사용자-visible behavior를 만든다면 다음처럼 둘 수 있습니다.
+
+```text
+src/
+└─ billing/
+   ├─ invoice.py
+   ├─ payment.py
+   └─ ledger.py
+
+tests/
+└─ billing/
+   ├─ test_invoice.py
+   └─ checkout/
+      ├─ test_success.py
+      └─ test_failures.py
+```
+
+`checkout/`은 source directory를 문자 그대로 mirror하지 않지만, 테스트가 실제로 소유하는 **stable behavior boundary**를 드러냅니다.
+
+더 넓은 integration test라면 다음처럼 source mirroring 축에서 분리할 수 있습니다.
+
+```text
+tests/
+├─ billing/
+│  └─ test_invoice.py
+├─ integration/
+│  └─ test_billing_database.py
+└─ e2e/
+   └─ test_checkout.py
+```
+
+핵심은 모든 테스트를 같은 축으로 정렬하는 것이 아니라 **각 테스트를 어디에서 찾을지 예측할 수 있는 일관된 owner를 갖게 하는 것**입니다. `misc/`, `others/`, `common/`처럼 의미가 약한 catch-all은 마지막 수단으로도 만들지 않는 편이 좋습니다. 그런 directory가 커진다면 아직 적절한 owner를 찾지 못했다는 신호로 봅니다.
+
 ## Variants
 
 Mirroring은 **exact filename schema가 아니라 대응 원칙**입니다. Language, framework와 test runner의 convention을 우선합니다.
@@ -116,4 +160,4 @@ Source rename이나 move가 test의 natural owner도 함께 바꾼다면 mirrore
 
 ## Short Form
 
-> **분리된 test tree는 source structure를 따라 관련 테스트의 위치를 예측 가능하게 두고, 한 test file이 감당하기 어려워지면 같은 대응 경계에서 bundle로 확장합니다. 다만 mirroring은 탐색을 위한 기본값이지 모든 테스트를 source와 1:1로 묶는 규칙은 아닙니다.**
+> **분리된 test tree는 source structure를 따라 관련 테스트의 위치를 예측 가능하게 두고, 한 test file이 감당하기 어려워지면 같은 대응 경계에서 bundle로 확장합니다. Mirroring이 자연스럽지 않으면 더 안정적인 feature, behavior 또는 system boundary를 owner로 선택합니다.**
