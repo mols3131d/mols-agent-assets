@@ -42,7 +42,9 @@ project's policy or one successful dogfood case into a reusable pattern by defau
 
 ## Reference routing
 
-Load only the references whose independent concern actually applies.
+Load only the references whose independent concern actually applies. Reference
+frontmatter `description` fields summarize applicability for search and discovery;
+this section owns the package-level decision about when to load each reference.
 
 | Reference | Load when | Do not load merely because... |
 | --- | --- | --- |
