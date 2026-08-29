@@ -65,11 +65,11 @@ sequenceDiagram
 
     critical Persist evidence
         API->>Store: Save report
+        Store-->>API: Stored
+        API-->>Operator: Validation complete
     option Store unavailable
         API-->>Operator: Retry later
     end
-
-    API-->>Operator: Validation complete
 ```
 
 - `alt`/`else`는 source-backed alternative path를 표현한다. 조건이 없는 source에 guard를 발명하거나 optional branch를 unconditional message로 만들지 않는다.
