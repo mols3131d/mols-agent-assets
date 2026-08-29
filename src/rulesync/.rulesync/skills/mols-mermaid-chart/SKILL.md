@@ -19,35 +19,12 @@ Mermaid로 **수치 구조를 빠르고 쉽게 읽을 수 있는 chart-as-code**
 
 Category 비교, 시간 추세, 구성비, 양적 이동, 계층 규모, multidimensional profile과 two-axis positioning에 사용한다. Histogram, box plot, scatter처럼 Mermaid가 직접 지원하지 않는 chart는 table이나 전문 chart 도구로 보낸다.
 
-## Activation
-
-다음 조건 중 하나가 핵심이면 이 Skill을 사용한다.
-
-- category 간 **값의 크기나 순위**를 비교한다.
-- 시간 또는 정렬된 순서에 따른 **수치 변화**를 본다.
-- 하나의 전체에 대한 **구성비**를 설명한다.
-- source에서 target으로 이동하는 **양**을 추적한다.
-- hierarchy의 구조가 아니라 **노드별 규모**를 비교한다.
-- 같은 scale의 dimension으로 여러 대상을 비교하거나 두 normalized axis에 배치한다.
-
-다음은 다른 Skill로 보낸다.
-
-| 중심 질문 | Route |
-| --- | --- |
-| 사건이 어떤 순서로 일어나는가? | `mols-mermaid-diagram` |
-| metric이 시간에 따라 어떻게 변하는가? | `mols-mermaid-chart` |
-| 연결 구조나 ownership은 무엇인가? | `mols-mermaid-diagram` |
-| 각 연결을 통해 얼마가 이동하는가? | `mols-mermaid-chart` |
-| dashboard 전체를 어떻게 구성하는가? | `mols-markdown-dashboard` |
-| histogram, scatter, box plot, multi-axis가 필요한가? | 전문 chart 도구 |
-
-## Reference Routing
+## References
 
 - 새 chart를 만들거나 type·구조를 바꿀 때 [Mermaid Chart Reference](references/mermaid-charts.md)를 읽는다.
 - theme, palette, 강조 또는 기존 chart의 visual language를 다룰 때만 [Style Policy](references/style-policy.md)를 읽는다.
 - 문법이 필요하면 [Examples](references/examples/README.md)에서 선택한 type의 문서만 읽는다.
 - render, export, syntax error 또는 compatibility 확인이 필요할 때 [Verification](references/mermaid-chart-verification.md)을 읽는다.
-- 수치보다 관계·절차·상태·component 구조가 핵심이면 `mols-mermaid-diagram`을 사용한다.
 
 ## Workflow
 
