@@ -79,9 +79,8 @@ the actual question.
    maintainable when that is part of acceptance.
 
 When an exact command, field, path, precedence rule, or version-specific runtime
-behavior is needed for verification, consult
-[Official customization](official-customization.md) rather than freezing that
-contract here.
+behavior is needed for verification, consult [Official contract](official-contract.md)
+rather than freezing that contract here.
 
 ## Stop on convergence, not exhaustion
 
