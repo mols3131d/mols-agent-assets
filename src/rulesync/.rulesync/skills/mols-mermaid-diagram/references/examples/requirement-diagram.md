@@ -32,6 +32,8 @@ requirementDiagram
 Diagram 안의 requirement **name**과 requirement body의 `id:`는 같은 책임이 아니다.
 
 - Relationship endpoint는 requirement/element declaration의 **name**을 참조한다.
+- Declaration name은 diagram 안에서 unique하게 유지한다. 같은 name을 두 번 선언해도 두 개의 독립 requirement가 안전하게 생긴다고 가정하지 않는다.
+- 모든 relationship source/destination name이 실제 requirement 또는 element declaration으로 resolve되는지 확인한다. Parser가 relation text를 받아들였다는 사실만으로 endpoint integrity를 보장받았다고 보지 않는다.
 - `id:`는 source가 소유하는 requirement identifier다. 이름을 짧게 만들더라도 displayed ID와 requirement text를 임의로 바꾸지 않는다.
 - Requirement type, `risk`, `verifymethod`는 source-backed metadata다. Source가 값을 제공하지 않으면 편의를 위해 `low`, `test` 같은 기본값을 발명하지 않는다.
 - User-defined value에 whitespace, punctuation 또는 Mermaid keyword가 포함되면 quote를 사용해 parsing ambiguity를 줄인다.
@@ -99,6 +101,7 @@ Risk나 verification method는 requirement body의 source-backed field가 의미
 
 Requirement Diagram은 syntax validity와 **traceability fidelity**를 따로 검증한다.
 
+1. Requirement/element declaration name이 unique하고 모든 relationship endpoint가 실제 declaration으로 resolve되는가.
 1. Requirement name, displayed `id:`와 text가 source identity를 보존하는가.
 1. Requirement type, risk와 verification method를 source 없이 추론하지 않았는가.
 1. 모든 relationship type과 direction이 source trace model에 실제로 존재하는가.
