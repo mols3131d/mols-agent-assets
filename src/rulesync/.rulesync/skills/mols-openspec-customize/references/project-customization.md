@@ -9,9 +9,11 @@ description: >-
 
 # Project-specific OpenSpec Customization
 
-Use this reference for **what a particular project should do differently**. The
-repository, its current OpenSpec state, and observed project work are the evidence
-for those decisions.
+Use this reference for **what a particular project should do differently**. It is
+about project evidence and project delta, not generic OpenSpec guidance.
+
+The repository, its current OpenSpec state, and observed project work are the
+evidence for these decisions.
 
 ## Inspect only what can change the decision
 
