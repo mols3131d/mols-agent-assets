@@ -1,5 +1,7 @@
 # Clarify Code — Enhancement Review
 
+> **Superseded for current implementation state.** 최신 `clarify-code` 판단은 [`clarify-code-surface-evidence-review.md`](clarify-code-surface-evidence-review.md)가 소유합니다. 이 문서는 중간 RPI 상태와 결정 변화를 추적하기 위한 historical review입니다.
+
 ## Reviewed
 
 - Research: `clarify-code-enhancement-research.md`
@@ -214,6 +216,4 @@ Follow-up comment-recall loop:
 
 ## Status
 
-**Follow-up RPI loop implemented; deterministic validation pending for latest head.**
-
-의미적 review에서는 comment recall을 높이면서 기존 precision boundary를 보존했습니다. 최신 head의 PR Gate 결과를 확인한 뒤 deterministic acceptance를 닫습니다.
+**Historical intermediate review.** 현재 구현 acceptance는 `clarify-code-surface-evidence-review.md`를 따릅니다.
