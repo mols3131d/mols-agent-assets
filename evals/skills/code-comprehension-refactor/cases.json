@@ -72,6 +72,16 @@
       ]
     },
     {
+      "id": "performance-sensitive-no-equivalence-evidence",
+      "mode": "negative",
+      "prompt": "This allocation-sensitive parser loop is hard to read, but there is no benchmark or profiler evidence. A proposed readability refactor would replace reused tuple state with freshly allocated domain objects on every iteration. Improve comprehension only if material performance can still be preserved.",
+      "assertions": [
+        "Treats the known allocation sensitivity as part of the preservation envelope even though no benchmark is available.",
+        "Does not apply the predictably allocation-heavier refactor or claim performance equivalence without supporting evidence.",
+        "Prefers a lower-risk comprehension change that does not plausibly add material work, or reports the evidence gap and leaves the hot path unchanged rather than adding a ceremonial benchmark."
+      ]
+    },
+    {
       "id": "comment-only-request",
       "mode": "negative",
       "prompt": "The implementation is already clear; I only want the docstring to explain overwrite semantics and a comment to explain why cleanup happens in this order.",
