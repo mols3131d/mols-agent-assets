@@ -64,10 +64,16 @@
 
 {% if author or revision %}
 ```yaml
-{% if author %}author:
-{% for item in author %}  - {{ item }}
-{% endfor %}{% endif %}{% if revision %}revision:
+{% if author %}
+author:
+{% for item in author %}
+  - {{ item }}
+{% endfor %}
+{% endif %}
+{% if revision %}
+revision:
   base: {{ revision.base }}
   head: {{ revision.head }}
-{% endif %}```
+{% endif %}
+```
 {% endif %}
