@@ -6,6 +6,8 @@ description: Agent나 automation이 만든 변경에서 반복되는 기계적�
 
 Agent나 automation이 빠르게 변경을 만들수록 사람이 모든 결과물을 같은 깊이로 다시 확인하기는 어려워집니다. 이때 **반복적으로 발생하고 기계적으로 판정 가능한 일부 부실을 executable check로 빠르게 드러내는 것**을 고려할 수 있습니다.
 
+여기서 output은 source code뿐 아니라 configuration, generated artifact, 문서 projection, package/dependency structure처럼 작업 결과로 repository에 남는 다양한 산출물을 포함할 수 있습니다.
+
 이 패턴은 agent output의 품질 전체를 자동 판정하려는 접근이 아닙니다. 설계의 자연스러움, naming, abstraction 수준, readability처럼 맥락 판단이 필요한 품질은 여전히 review의 영역으로 남깁니다.
 
 핵심은 **검사 가능한 것을 전부 검사하는 것이 아니라, 검사할 가치가 있는 소수의 안정된 성질만 가장 싼 신뢰 가능한 방법으로 확인하는 것**입니다.
@@ -79,13 +81,12 @@ CI는 이런 check를 실행하는 한 surface일 수 있지만, **CI 자체가 
 Architecture invariant를 별도 test로 표현해야 한다면 일반 behavior test와 구분되는 위치를 둘 수 있습니다.
 
 ```text
- tests/
- ├─ unit/
- ├─ integration/
- └─ architecture/
-    ├─ test_dependency_direction.py
-    ├─ test_module_boundaries.py
-    └─ test_generated_ownership.py
+tests/
+├─ unit/
+├─ integration/
+└─ architecture/
+   ├─ test_dependency_direction.py
+   └─ test_module_boundaries.py
 ```
 
 예를 들어 `payments` package의 내부 구현을 외부 module이 직접 사용하지 않아야 한다면 다음과 같은 성질을 검사할 수 있습니다.
