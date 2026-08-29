@@ -38,17 +38,11 @@ Jinja2-style 표기를 authoring notation으로 사용합니다. 실제 Jinja2 r
 
 GitHub object title이 이미 최상위 제목 역할을 하므로 본문의 주요 section은 `##`부터 시작합니다.
 
-## Header metadata
+## Metadata
 
-GitHub surface가 Front Matter를 해석하지 않으므로 필요한 authoring metadata는 **본문 맨 위의 fenced `yaml` block**으로 표현합니다. 이 block은 Front Matter나 GitHub object metadata가 아니라 사람이 빠르게 훑는 본문 metadata입니다.
+Metadata는 필요한 경우 **본문 마지막의 fenced `yaml` block 한 곳**에만 둡니다. Front Matter나 GitHub object metadata로 취급하지 않으며 별도 `Metadata` heading도 만들지 않습니다.
 
-- GitHub UI가 이미 충분히 보여주는 branch, line, review action 같은 정보는 반복하지 않습니다.
-- `type`, `scope`, `risk`, `purpose`, `importance`처럼 본문 판단에 실제 도움이 되는 field만 surface별로 사용합니다.
-- field는 확인된 값만 기록하고 optional field가 비면 제거합니다.
-
-## Provenance metadata
-
-GitHub가 제공하지 않는 provenance가 실제 판단에 필요할 때만 본문의 마지막에 별도의 `yaml` code block을 둡니다. 별도 `Metadata` heading은 만들지 않습니다.
+허용하는 field는 `author`와 `revision`뿐입니다. 둘은 서로 독립적인 optional field이며 실제 판단에 필요한 것만 남깁니다.
 
 ### `author`
 
@@ -60,12 +54,12 @@ GitHub가 제공하지 않는 provenance가 실제 판단에 필요할 때만 �
 
 ### `revision`
 
-`revision`은 Pull Request description이나 PR Review가 기준으로 삼은 exact repository revision pair를 식별하는 optional map입니다.
+`revision`은 본문의 판단이나 설명이 exact repository revision pair에 의존할 때 사용하는 optional map입니다.
 
 - 사용하면 `base`와 `head`를 함께 기록합니다.
 - 두 값 모두 full commit SHA를 사용하며 움직이는 branch ref는 기록하지 않습니다.
 - PR description을 새 base/head 기준으로 갱신하면 `revision`도 함께 갱신합니다.
-- Review의 `revision`은 해당 review가 실제 검토한 pair를 고정하며 이후 PR head가 바뀌어도 과거 review 값은 바꾸지 않습니다.
+- Review의 `revision`은 실제 검토한 pair를 고정하며 이후 PR head가 바뀌어도 과거 review 값은 바꾸지 않습니다.
 
 ```yaml
 author:
