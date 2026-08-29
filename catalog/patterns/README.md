@@ -48,6 +48,8 @@ Pattern은 **본질은 분명하게, 적용은 유연하게** 작성합니다.
 
 - Pattern을 성립시키는 core와 invariant는 명확하게 둡니다.
 - Pattern 자체를 contract나 mandatory instruction처럼 서술하지 않습니다. 적용 방식은 introduction, recommendation, typical form, option, heuristic처럼 **소개·제안·권장 수준**으로 표현합니다.
+- 패턴을 적용할 때 실질적으로 중요한 주의사항, 한계, trade-off가 있다면 숨기지 않고 설명하며, 가능하면 독자가 선택할 수 있는 대응방안이나 대안도 함께 제시합니다.
+- 주의사항이나 한계가 뚜렷하지 않은 pattern에 형식 때문에 별도 section을 강제하거나, 근거 없는 위험과 대응을 만들어내지 않습니다.
 - 본질이 아닌 layout, filename, format, tool, workflow는 고정 규칙으로 만들지 않습니다.
 - 대표 구현은 recommendation, typical form, example, option처럼 성격을 구분해 제시합니다.
 - 의미 있는 대안과 규모·환경에 따른 extension을 열어둡니다.
@@ -74,6 +76,7 @@ Pattern을 작성하거나 수정할 때 다음을 확인합니다.
 1. Primary problem과 category가 자연스럽게 일치하는가?
 1. Core와 recommendation / option / example이 구분되어 있는가?
 1. Pattern이 contract나 mandatory instruction처럼 읽히지 않고, 소개·제안·권장 수준으로 적용 여지를 남기는가?
+1. 실질적인 주의사항이나 한계가 있다면 필요한 대응방안·대안과 함께 설명했는가? 반대로 없는 내용을 형식 때문에 억지로 추가하지 않았는가?
 1. 특정 repository나 tool에 불필요하게 고정되어 있지 않은가?
 1. 다른 pattern이나 project policy가 소유해야 할 책임을 가져오지 않았는가?
 1. 필요한 대안과 확장 가능성을 닫아버리지 않았는가?
