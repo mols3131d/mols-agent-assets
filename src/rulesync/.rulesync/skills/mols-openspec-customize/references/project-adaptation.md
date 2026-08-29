@@ -38,13 +38,8 @@ Improve an existing OpenSpec owner before adding a parallel config or schema.
 Preserve repository policy owners and add only the delta the workflow needs.
 
 When a custom schema becomes a durable team-owned surface, apply the optional
-maintenance surfaces from [Patterns](patterns.md) only when they reduce real cost.
-Use `README.md` as the schema package's common human-readable entrypoint and
-navigation surface. Put durable supporting detail in `docs/` only when it would
-overload the README. Keep repository-wide or harness-specific agent instructions in
-their existing authority.
-
-Do not create companion files as ceremony. A simple schema may need none of them.
+maintenance-surface guidance in [Patterns](patterns.md) without redefining it here.
+Do not create companion files as ceremony.
 
 ## Apply dogfood evidence
 
@@ -61,10 +56,6 @@ project's existing working-artifact surface when one exists.
 Stop adapting the customization when project evidence no longer exposes a material
 gap, remaining failures belong to another owner, or further OpenSpec-specific
 changes would mainly duplicate existing project guidance.
-
-For a durable custom schema, the selected maintenance surfaces should make its
-purpose and meaningful project-specific differences understandable without creating
-a second project handbook.
 
 ## Evidence handoff
 
