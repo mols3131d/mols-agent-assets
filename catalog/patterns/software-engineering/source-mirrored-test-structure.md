@@ -130,9 +130,9 @@ Literal mirroring은 source와 test의 natural boundary가 비슷할 때 특히 
 
 Bundle이 유용해지는 시점에는 보편적인 threshold가 없습니다. 다만 **관련 group의 크기**와 **같은 directory 전체의 file density**는 structure를 다시 볼 때 쓸 수 있는 간단한 heuristic입니다.
 
-실용적인 감각으로는 다음 정도부터 bundle을 생각해 볼 만합니다.
+하나의 실용적인 제안은 다음 범위부터 bundle을 함께 비교해 보는 것입니다.
 
-| Signal | Bundle을 고려해 볼 만한 구간 |
+| Signal | Bundle을 함께 비교해 볼 만한 구간 |
 | --- | --- |
 | 같은 prefix나 주제를 공유하는 관련 test files | 대략 **4~6개부터** |
 | 같은 directory에서 함께 훑게 되는 files | 대략 **8~12개부터** |
