@@ -71,7 +71,7 @@ Target이 선택한 type을 지원하지 않으면 같은 의미를 보존하는
 
 ## Level 3: Visual Review
 
-가능하면 rendered output을 약 3:4의 portrait reading viewport 폭에서도 확인한다. 전체 height가 한 viewport에 들어갈 필요는 없으며 vertical scroll은 허용한다.
+가능하면 rendered output을 width:height가 약 3:4인 portrait reading viewport에서도 확인한다. 전체 height가 한 viewport에 들어갈 필요는 없으며 vertical scroll은 허용한다.
 
 | Check | Signal | Minimal Fix |
 | --- | --- | --- |
