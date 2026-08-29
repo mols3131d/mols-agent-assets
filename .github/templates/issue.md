@@ -17,6 +17,14 @@
 
 {{ desired_outcome }}
 
+{% if boundaries %}
+## Boundaries
+
+{% for boundary in boundaries %}
+- {{ boundary }}
+{% endfor %}
+{% endif %}
+
 {% if acceptance_criteria %}
 ## Acceptance Criteria
 
@@ -44,18 +52,11 @@
 {% endfor %}
 {% endif %}
 
-{% if author or revision %}
-```yaml
 {% if author %}
+```yaml
 author:
 {% for item in author %}
   - {{ item }}
 {% endfor %}
-{% endif %}
-{% if revision %}
-revision:
-  base: {{ revision.base }}
-  head: {{ revision.head }}
-{% endif %}
 ```
 {% endif %}
