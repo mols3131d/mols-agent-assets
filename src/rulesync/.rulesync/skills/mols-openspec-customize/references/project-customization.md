@@ -41,9 +41,8 @@ For each requested behavior, answer four questions:
 1. What is the smallest project-specific delta OpenSpec needs?
 
 Use [Customization design](customization-design.md) when the owning customization
-surface is not yet settled. Consult
-[Official customization](official-customization.md) only when the choice depends on
-exact OpenSpec support or behavior.
+surface is not yet settled. Consult [Official contract](official-contract.md) only
+when the choice depends on exact OpenSpec support or behavior.
 
 Leave information outside OpenSpec when OpenSpec does not need it.
 
