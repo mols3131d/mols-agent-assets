@@ -39,6 +39,7 @@ Property-based test처럼 runtime이 minimal failing input이나 replayable exam
 **한 execution은 그 scenario에서 관찰된 behavior만 보여준다.**
 
 - 특정 test/input에서 본 path를 모든 input의 일반 path로 확대하지 않는다.
+- fixture가 mock, stub, fake, in-memory adapter 또는 synthetic dependency를 사용하면 **그 대체 경계 안에서 실제로 관찰된 behavior**로 해석한다. 실제 external service, production adapter 또는 live environment가 같은 behavior라고 단정하지 않는다.
 - 한 environment에서 본 outcome을 다른 runtime, version 또는 concurrency 조건에도 같다고 단정하지 않는다.
 - nondeterministic behavior라면 한 run의 순서나 timing을 stable contract처럼 해석하지 않는다.
 - 더 넓은 결론에 여러 case가 필요하지만 existing scenario가 없으면 새 test를 임의로 만들지 않고 uncertainty와 별도 testing/debugging 필요를 드러낸다.
