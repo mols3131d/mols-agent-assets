@@ -22,15 +22,15 @@
 - [x] `swimlanes.md`
 
 ### message order
-- [ ] `sequence-diagram.md`
-- [ ] `zenuml.md`
+- [x] `sequence-diagram.md`
+- [x] `zenuml.md`
 
 ### lifecycle
-- [ ] `state-diagram.md`
+- [x] `state-diagram.md`
 
 ### domain model·schema
-- [ ] `class-diagram.md`
-- [ ] `er-diagram.md`
+- [x] `class-diagram.md`
+- [x] `er-diagram.md`
 
 ### architecture·boundary
 - [x] `architecture-diagram.md`
@@ -59,7 +59,7 @@
 
 ## Current
 
-- 진행: **19/24 완료**, 5개 남음
+- 진행: **24/24 완료**, 파일별 심층 RPI 수렴 완료
 - Batch 운영: 최대 5개씩 진행, 파일별 RPI는 독립·순차 수행
 - 완료: `architecture-diagram.md`
 - 완료: `c4-diagrams.md` — 리뷰 → 개선 → 재리뷰 완료
@@ -80,4 +80,9 @@
 - 완료: `cynefin.md` — 심층 RPI 완료; Cynefin current framing·Mermaid official docs·11.17.2 DB/renderer와 upstream framework-correction issues를 교차 검토하고 contextual sense-making, Aporetic↔`confusion` notation boundary, repeated-domain data loss, transition identity, fixed placement·overflow·self-loop semantics를 재설계
 - 완료: `flowchart.md` — 심층 RPI 완료; Mermaid official Flowchart docs와 local diagram principles를 교차 검토하고 dominant edge semantics, stable identity, decision honesty, subgraph semantic/layout boundary, external-edge direction limitation, overview/detail fidelity, shape·animation 의미 경계를 재설계
 - 완료: `swimlanes.md` — 심층 RPI 완료; official docs·11.17.2 layout-variant implementation과 current upstream churn을 교차 검토하고 Flowchart semantic reuse, one partition criterion, lane membership/decision authority, cross-lane handoff, direction/lane-order presentation과 beta render gate를 재설계
-- 다음 batch: `sequence-diagram.md` → `zenuml.md` → `state-diagram.md` → `class-diagram.md` → `er-diagram.md`
+- 완료: `sequence-diagram.md` — 심층 RPI 완료; official docs·11.17.2 sequence DB와 current parser issues를 교차 검토하고 participant/message identity, interaction order, fragment behavior, activation, autonumber와 split fidelity를 재설계
+- 완료: `zenuml.md` — 심층 RPI 완료; official docs·11.17.2 external adapter/no-op parser·`@zenuml/core` renderer와 current issues를 교차 검토하고 sync/async/creation/reply, nesting/control flow, visible comments, fallback fidelity와 actual-render acceptance를 재설계
+- 완료: `state-diagram.md` — 심층 RPI 완료; official State docs와 current renderer/layout issues를 교차 검토하고 state/process boundary, initial/final scope, choice/fork/join, composite-state scope와 overview/detail fidelity를 재설계
+- 완료: `class-diagram.md` — 심층 RPI 완료; official Class docs와 current generic issues를 교차 검토하고 stable class identity, UML relation strength, multiplicity, generic identity, member excerpt와 namespace boundary를 재설계
+- 완료: `er-diagram.md` — 심층 RPI 완료; official ER docs와 current parser issue를 교차 검토하고 grain, cardinality, identifying/non-identifying relation, label perspective, key/nullability, attribute excerpt와 input-safety gate를 재설계
+- 다음: **24개 example 전체 package 최종 리뷰 및 PR 수렴 검증**
