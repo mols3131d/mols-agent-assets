@@ -27,7 +27,7 @@ Agent에게 독립 작업을 위임한다면 중요한 완료 조건과 경계�
 {% endif %}
 
 {% if acceptance_criteria %}
-## ✅ Acceptance Criteria
+## 📋 Acceptance Criteria
 
 {% for criterion in acceptance_criteria %}
 - [ ] {{ criterion }}
