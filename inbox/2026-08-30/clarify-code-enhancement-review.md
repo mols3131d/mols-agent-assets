@@ -82,15 +82,15 @@ Final Pass가 current code/contract/policy와의 모순, volatile identifier·al
 
 ### Context Economy
 
-**Pass.**
+**Pass, revised in follow-up loop.**
 
-새 reference를 만들지 않았습니다. 항상 로드되는 `SKILL.md`에는 핵심 calibration만 넣고, 상세 judgment는 기존 `documentation.md`가 소유합니다.
+새 reference를 만들지 않았고 상세 judgment는 기존 `documentation.md` 한 곳이 소유합니다. 다만 후속 사용자 관찰에서 필요한 comment를 놓치는 false negative 위험이 확인되어, prose 추가·수정·제거를 실제로 판단하는 `clarify-code` 작업에서는 이 단일 reference를 읽도록 core routing을 강화했습니다.
 
-Frontmatter `description`도 이번 enhancement에서 변경하지 않았습니다. 따라서 이번 고도화 때문에 새로운 distribution route projection은 필요하지 않습니다.
+Frontmatter `description`은 이번 enhancement에서 변경하지 않았습니다. 따라서 이번 고도화 때문에 새로운 distribution route projection은 필요하지 않습니다.
 
 ## Capability Fixture Review
 
-기존 7개 case를 보존하고 다음 4개를 추가했습니다.
+초기 고도화에서는 기존 7개 case를 보존하고 다음 4개를 추가했습니다.
 
 | Case | 보호하는 behavior |
 | --- | --- |
@@ -99,17 +99,32 @@ Frontmatter `description`도 이번 enhancement에서 변경하지 않았습니�
 | `placement-scope` | local invariant를 module-wide rule로 확대하지 않음 |
 | `stale-implementation-narration` | stale narration 대신 current durable meaning을 교정·보존 |
 
+후속 comment-recall loop에서는 다음 2개를 추가했습니다.
+
+| Case | 보호하는 behavior |
+| --- | --- |
+| `implicit-maintainer-comment-discovery` | 사용자가 comment를 직접 요구하지 않아도 hidden ordering invariant를 발견해 comment 생성 |
+| `selective-positive-comment` | obvious line은 그대로 두고 durable constraint가 있는 지점에만 comment 생성 |
+
+또한 `durable-rejected-alternative`의 assertion을 `May preserve`에서 **실제 code-local comment를 추가하거나 개선하는 positive obligation**으로 강화했습니다.
+
 Exact wording이나 특정 comment 형식을 고정하지 않고 judgment와 responsibility boundary를 assertion으로 둡니다.
 
 ## Challenge Candidates
 
 ### “모든 clarify-code 작업에서 `documentation.md`를 강제로 읽어야 하는가?”
 
-**Disposition: 현재는 강제하지 않음.**
+**Initial disposition: 강제하지 않음. Superseded by follow-up evidence.**
 
-Core가 explanation value, reader split, code-refactor handoff와 stop condition을 이미 소유합니다. Placement, negative knowledge, stability 같은 상세 판단이 불명확할 때 reference를 읽는 현재 progressive-disclosure boundary가 더 작습니다.
+초기 Review에서는 core가 explanation value, reader split, code-refactor handoff와 stop condition을 이미 소유하므로 상세 판단이 불명확할 때만 reference를 읽는 쪽이 더 작다고 판단했습니다.
 
-실제 eval/runtime evidence에서 reference 미로드로 반복 failure가 확인되면 그때 routing을 강화하는 편이 적절합니다.
+후속 사용자 관찰에서 **기존 동작이 필요한 comment를 잘 만들지 않는 경향**이 있었다는 실제 failure evidence가 추가됐습니다. 현재 core는 여러 suppression gate를 갖는 반면 positive comment candidate를 구체적으로 분류하는 정보는 `documentation.md`에 더 많이 있습니다.
+
+따라서 이번 loop에서는 다음으로 변경했습니다.
+
+> docstring, comment 또는 module-level explanation을 추가·수정·제거할지 판단할 때 `Documentation`을 읽는다.
+
+Reference가 하나뿐이고 `clarify-code`의 주된 mutation surface 자체가 code-adjacent prose이므로, 이 경우 recall 개선의 이익이 context cost보다 큽니다.
 
 ### “Local comment는 항상 가까이 둬야 하는가?”
 
@@ -119,16 +134,72 @@ Core가 explanation value, reader split, code-refactor handoff와 stop condition
 
 ### “Rejected alternative를 comment에 적극 기록해야 하는가?”
 
-**Disposition: 조건부.**
+**Disposition: 조건부 positive.**
 
-과거 토론 기록이 아니라, 미래 maintainer가 자연스럽게 다시 시도할 가능성이 높고 현재도 유효한 constraint가 있을 때만 durable negative knowledge로 남깁니다.
+과거 토론 기록이 아니라, 미래 maintainer가 자연스럽게 다시 시도할 가능성이 높고 현재도 유효한 constraint가 있을 때는 durable negative knowledge로 실제 comment를 남기는 쪽을 기본으로 합니다.
+
+## Follow-up RPI Loop — Comment Recall
+
+### New Evidence
+
+사용자 관찰: 개선 전 `clarify-code`가 필요한 상황에서도 주석을 잘 생성하지 않는 경향이 있었습니다.
+
+현재 Skill을 다시 읽어보면 그 실패가 발생할 수 있는 구조적 이유가 있었습니다.
+
+- structural problem handoff
+- explanation net-value gate
+- redundant prose 제거
+- stale prose 제거
+- stop/no-op 허용
+
+같은 suppression signal은 여러 곳에서 강하게 표현됐지만, **실행 코드가 이미 적절하고 durable maintainer meaning이 숨겨져 있을 때 실제 comment를 생성한다**는 positive behavior는 상대적으로 약했습니다.
+
+따라서 문제는 “comment가 적어서 나쁘다”가 아니라 **precision에 비해 recall이 낮을 수 있는 instruction asymmetry**로 판단했습니다.
+
+### Plan Delta
+
+기존 scope를 넓히지 않고 다음 세 delta만 적용했습니다.
+
+1. core workflow에 positive obligation 추가
+   - executable code가 이미 적절함
+   - durable caller/maintainer meaning이 숨겨져 있음
+   - 같은 의미가 가까운 surface에 없음
+   - 이 조건이면 사용자가 comment/docstring을 직접 요구하지 않아도 explanation 추가·개선을 기본으로 함
+2. `documentation.md`에 `Positive Signals` 추가
+   - hidden caller contract
+   - invariant/local constraint
+   - ordering consequence
+   - external constraint
+   - durable rejected alternative
+   - module-local convention
+3. capability eval에서 recall과 precision을 한 쌍으로 보호
+   - implicit useful comment 생성
+   - obvious line에는 comment를 만들지 않고 high-value constraint만 선택
+
+### Review
+
+**Pass.**
+
+Positive obligation은 comment density 목표가 아닙니다. 기존 `obvious-comment-request`, `no-net-value-comment`, structural-problem handoff가 그대로 남아 있어 low-value prose와 structural-problem masking은 계속 억제됩니다.
+
+반대로 `implicit-maintainer-comment-discovery`와 강화된 `durable-rejected-alternative`는 positive condition이 충족됐을 때 no-op으로 빠지는 것을 허용하지 않습니다.
+
+따라서 이번 delta는 “더 많은 comment”가 아니라 **false negative를 줄이는 recall correction**입니다.
 
 ## Validation Evidence
+
+초기 RPI loop:
 
 - PR Gate: **success**
 - deterministic test suite: **224 passed**
 - committed route consistency check: PR Gate 안에서 통과
 - semantic diff review: `SKILL.md`, `documentation.md`, capability cases, `code-comprehension-refactor` boundary 대조 완료
+
+Follow-up comment-recall loop:
+
+- semantic review: **pass**
+- responsibility / anti-spam boundary review: **pass**
+- deterministic PR Gate: 최신 head에서 확인 필요
 
 미실행:
 
@@ -139,10 +210,10 @@ Core가 explanation value, reader split, code-refactor handoff와 stop condition
 
 ## Scope Delta
 
-없음. Research/Plan에서 정한 세 파일 변경 범위 안에서 구현했습니다.
+없음. 후속 loop도 기존 세 파일의 behavior calibration과 capability fixture 범위 안에 있습니다. 새 reference, routing description, analyzer 또는 code mutation 권한을 추가하지 않았습니다.
 
 ## Status
 
-**RPI loop converged.**
+**Follow-up RPI loop implemented; deterministic validation pending for latest head.**
 
-현재 acceptance criteria를 충족하며 추가 수정이 필요한 material gap은 발견되지 않았습니다. 후속 loop는 model/runtime eval에서 실제 failure가 나오거나 review에서 새로운 evidence가 생길 때 시작하는 것이 적절합니다.
+의미적 review에서는 comment recall을 높이면서 기존 precision boundary를 보존했습니다. 최신 head의 PR Gate 결과를 확인한 뒤 deterministic acceptance를 닫습니다.
