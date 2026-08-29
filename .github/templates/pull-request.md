@@ -40,8 +40,13 @@
 {% if risks %}
 ## Risks
 
+<!--
+`risk.importance`는 `🔴 Critical` / `🟠 High` / `🟡 Medium` / `🔵 Low` 중 하나를 그대로 사용한다.
+현재 변경에서 실제로 고려해야 할 risk만 적고 finding이나 Validation을 반복하지 않는다.
+-->
+
 {% for risk in risks %}
-- {{ risk }}
+- {{ risk.importance }} — {{ risk.description }}
 {% endfor %}
 {% endif %}
 
