@@ -29,6 +29,7 @@ Jinja2-style 표기를 authoring notation으로 사용합니다. 실제 Jinja2 r
 - 결론과 판단에 필요한 핵심 정보를 먼저 둡니다.
 - 작업 과정이나 시행착오보다 최종 결과와 근거를 기록합니다.
 - GitHub UI, CI 또는 canonical artifact가 이미 소유하는 정보는 필요 없이 복제하지 않습니다.
+- 같은 review finding을 review body와 inline comment에 완전히 중복하지 않습니다. Line-specific finding은 inline comment를 우선하고, review body에는 cross-cutting finding이나 전체 판단에 필요한 요약만 둡니다.
 - 독립적으로 훑어야 하는 변경, 근거, 경로와 상태는 긴 문단보다 list를 우선합니다.
 - optional section과 metadata는 판단 비용을 줄일 때만 사용하고 빈 section은 제거합니다.
 - 모르는 값은 추측하거나 임의의 긍정 상태로 채우지 않습니다.
