@@ -6,7 +6,7 @@
       "mode": "skill",
       "prompt": "The function name and types are clear, but callers cannot tell that loading the same partition key replaces the previous load. Clarify this in the source file without changing code behavior.",
       "assertions": [
-        "Uses a docstring or equivalent code-adjacent caller-facing API documentation surface for the non-obvious contract.",
+        "Uses a docstring or equivalent code-adjacent caller-facing declaration documentation surface for the non-obvious contract.",
         "Does not rename the function, change its signature, or refactor executable code.",
         "Avoids repeating information already obvious from the name and types."
       ]
@@ -104,7 +104,7 @@
       "mode": "skill",
       "prompt": "A comment still names an old variable and describes a previous three-step algorithm, but the real invariant that cleanup must not replace the original error is still valid. Improve the explanation without changing executable code.",
       "assertions": [
-        "Does not merely polish stale implementation narration.",
+        "Does not treat the existing stale narration as sufficient evidence for its own obsolete implementation claims.",
         "Rewrites or reduces the comment around the current durable invariant and consequence, or removes obsolete details that add no value.",
         "Does not change executable code while correcting the explanation."
       ]
@@ -145,18 +145,19 @@
       "prompt": "This is Go code. An exported function `Send` may only be called after the protocol handshake is complete, and callers must know this before invoking it. The implementation is already correct. Add the smallest source-level clarification without changing executable code.",
       "assertions": [
         "Treats the handshake requirement as caller-visible contract information rather than maintainer-only implementation rationale.",
-        "Uses the language- and repository-native caller-facing API documentation surface, such as a Go declaration doc comment, instead of hiding the requirement only in a function-body comment.",
+        "Uses the language- and repository-native caller-facing declaration documentation surface, such as a Go declaration doc comment, instead of hiding the requirement only in a function-body comment.",
         "Does not impose Python docstring syntax or modify executable code."
       ]
     },
     {
       "id": "conflicting-evidence-no-canonization",
-      "mode": "negative",
-      "prompt": "Clarify the request-level permission behavior without changing executable code. Two currently applicable canonical sources conflict: the public API contract says permission revocations must become visible before the request completes, while the current security protocol specification says each request must use one permission snapshot from start to finish. Neither source is marked obsolete or subordinate, and nearby tests reflect both expectations in different scenarios. Do not decide which contract should change.",
+      "mode": "skill",
+      "prompt": "Clarify only what the source can currently support without changing executable code. Two currently applicable canonical sources conflict about request-level permission semantics: the public contract says permission revocations must become visible before the request completes, while the current security protocol specification says each request must use one permission snapshot from start to finish. Neither source is marked obsolete or subordinate, and nearby tests reflect both expectations. Separately, both canonical sources agree that completing this operation invalidates the caller's temporary session token, and that caller-visible side effect is not documented near the declaration. Do not decide which permission contract should change.",
       "assertions": [
-        "Recognizes a material conflict between currently applicable semantic authorities instead of selecting one source for convenience.",
-        "Does not canonize either disputed immediate-visibility or request-snapshot semantics into a permanent comment or caller-facing documentation surface while ownership remains unresolved.",
-        "Leaves executable code unchanged and reports the unresolved contract conflict or required handoff rather than fabricating certainty."
+        "Recognizes the material conflict about permission semantics instead of selecting one authority for convenience.",
+        "Does not canonize either disputed immediate-visibility or request-snapshot semantics into permanent source prose while ownership remains unresolved.",
+        "Still documents or improves the independently agreed caller-visible session-token invalidation in the appropriate caller-facing declaration documentation surface rather than turning the unrelated conflict into a global no-op.",
+        "Leaves executable code unchanged and reports the unresolved permission-contract conflict or required handoff without fabricating certainty."
       ]
     },
     {
