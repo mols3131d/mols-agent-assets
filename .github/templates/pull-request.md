@@ -7,15 +7,13 @@
 -->
 
 ```yaml
-type: "{{ type | default('change') }}"
+type: "{{ type }}"
 scope: "{{ scope }}"
-base: "{{ base_branch }}"
-head: "{{ head_branch }}"
-related: "{{ related | default('none') }}"
-risk: "{{ risk | default('low') }}"
+{% if risk %}risk: "{{ risk }}"{% endif %}
+{% if related %}related: "{{ related }}"{% endif %}
 ```
 
-# 요약
+## 요약
 
 {{ summary }}
 
@@ -25,14 +23,12 @@ risk: "{{ risk | default('low') }}"
 - {{ change }}
 {% endfor %}
 
+{% if verification %}
 ## 검증
 
-{% for check in checks %}
+{% for check in verification %}
 - `{{ check.name }}` — {{ check.result }}
 {% endfor %}
-
-{% if checks_not_run %}
-**미실행:** {{ checks_not_run }}
 {% endif %}
 
 {% if impact %}
