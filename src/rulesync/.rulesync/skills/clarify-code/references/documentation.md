@@ -2,6 +2,8 @@
 
 `clarify-code`는 code-adjacent prose를 다룬다. Docstring과 comment는 같은 설명문이 아니며 독자, 수명과 소비 방식이 다르다.
 
+Core `SKILL.md`가 common-path signal, evidence gate와 기본 surface 선택을 소유한다. 이 reference는 placement·ownership·grounding이 단순하지 않은 경우의 세부 판단만 보완한다.
+
 ## Two Readers
 
 | Reader | Primary surface | Needs |
@@ -19,27 +21,30 @@
 
 1. reader가 code만으로 안정적으로 복원하기 어려운 non-obvious meaning을 특정한다.
 1. 설명이 없으면 어떤 추론, 탐색 또는 오해 가능성이 생기는지 확인한다.
-1. code, name, type 또는 가까운 contract가 이미 같은 정보를 충분히 전달하면 prose를 추가하지 않는다.
+1. code, name, type 또는 적절한 semantic owner가 이미 같은 정보를 충분히 전달하면 prose를 추가하지 않는다.
+1. local caller/maintainer가 그 의미를 해당 지점에서 알아야 하는 projection이 필요한지 확인한다.
 1. 설명이 제거하는 이해 비용이 읽기·유지·stale 위험보다 클 때만 남긴다.
 
 실제 score를 계산하지 않는다. 설명을 추가하지 않는 것, redundant prose를 제거하는 것, stale prose를 현재 의미에 맞게 고치는 것도 정상적인 결과다.
 
-다만 이 판단은 comment를 피하기 위한 억제 gate가 아니다. **실행 코드가 이미 적절하고, durable한 caller/maintainer 의미가 code만으로 안정적으로 드러나지 않으며, 같은 의미가 가까운 surface에 없다면 explanation을 추가하거나 개선하는 쪽이 기본이다.** 사용자가 comment나 docstring을 직접 요청하지 않았어도 target을 이해하는 과정에서 이런 의미를 발견하면 같은 기준을 적용한다.
+## Grounding
 
-## Positive Signals
+Explanation은 **current evidence의 projection**이어야 한다. Unusual code shape나 plausible story를 rationale의 근거로 사용하지 않는다.
 
-다음 조건에서는 no-op보다 explanation을 우선한다. 단, executable code가 이미 적절하고 같은 의미가 다른 가까운 owner에 충분히 존재한다면 중복하지 않는다.
+Candidate meaning을 확인할 때 상황에 따라 다음 evidence가 유용할 수 있다.
 
-| Signal | Default surface |
-| --- | --- |
-| caller가 사용 전에 알아야 하는 hidden contract나 non-obvious call semantics | docstring |
-| 현재 구현을 안전하게 바꾸려면 알아야 하는 invariant 또는 local constraint | code-local comment |
-| statement/order를 바꾸면 결과·error semantics가 깨지는 ordering consequence | code-local comment |
-| 외부 system/protocol 제약 때문에 의도적으로 특이한 구현을 유지해야 함 | code-local comment |
-| 미래 maintainer가 자연스럽게 시도할 대안이 현재 constraint를 깨뜨림 | code-local comment |
-| 개별 symbol보다 file 전체에 안정적으로 적용되는 local convention | module-level explanation |
+- target code의 observable behavior와 data/control relation
+- caller와 call-site behavior
+- regression/characterization test와 assertion
+- canonical API/domain/specification contract
+- current config, schema, protocol 또는 framework contract
+- 같은 semantic owner의 현재 source documentation
 
-Positive signal이 확인되면 설명의 존재 여부를 실제로 확인한다. 적절한 explanation이 없으면 가장 작은 설명을 추가하고, 이미 있다면 현재 code/contract와 일치하는지 개선 여부를 판단한다. 단순히 “code가 읽힌다”는 이유만으로 durable hidden meaning을 설명하지 않고 끝내지 않는다.
+Git history, issue와 old discussion은 candidate rationale를 발견하는 supporting context일 수 있지만 current invariant의 단독 authority는 아니다. Historical reason을 explanation으로 남기려면 현재 code/contract에서도 여전히 유효한지 확인한다.
+
+현재 behavior·constraint는 확인되지만 과거 decision reason은 확인되지 않는다면 **현재 확인 가능한 의미만** 설명한다. 예를 들어 same-request visibility contract는 증명되지만 과거 cache incident는 확인되지 않는다면 visibility constraint만 남긴다.
+
+Material rationale를 확인할 수 없다면 그럴듯한 이유를 만들거나 uncertainty를 permanent comment로 굳히지 않는다. Evidence를 찾기 위해 더 넓게 읽었다고 그 surface를 수정할 권한이 생기는 것도 아니다.
 
 ## Docstrings
 
@@ -74,9 +79,9 @@ def load_partition(path: Path) -> LoadResult:
 
 ## Comments
 
-Comment는 `Positive Signals`의 maintainer-facing 경우에 **constraint, consequence와 rationale**를 가장 가까운 적절한 scope에서 전달한다. Code가 이미 구조적으로 적절하고 해당 의미가 다른 가까운 explanation에 없다면 가장 작은 comment를 추가하거나 기존 comment를 개선한다.
+Comment는 core의 maintainer-facing signal에 해당하는 **constraint, consequence와 rationale**를 가장 가까운 적절한 scope에서 전달한다. Code가 이미 구조적으로 적절하고 해당 meaning의 local projection이 필요하다면 가장 작은 comment를 추가하거나 기존 comment를 개선한다.
 
-Rejected alternative는 durable negative knowledge가 될 수 있다. 과거에 다른 방법을 검토했다는 history 자체를 기록하지 않는다. 미래 maintainer가 자연스럽게 다시 시도할 가능성이 높고 **현재 constraint가 여전히 유효할 때**만 잘못된 대안과 연결되는 이유를 설명한다.
+Rejected alternative는 durable negative knowledge가 될 수 있다. 과거에 다른 방법을 검토했다는 history 자체를 기록하지 않는다. 미래 maintainer가 자연스럽게 다시 시도할 가능성이 높고 **현재 constraint가 여전히 유효하다는 evidence가 있을 때**만 잘못된 대안과 연결되는 이유를 설명한다.
 
 피한다:
 
@@ -85,6 +90,7 @@ Rejected alternative는 durable negative knowledge가 될 수 있다. 과거에 
 - 변경 이력·토론을 현재 규칙처럼 기록
 - 더 명확한 code representation이나 structure로 해결해야 하는 혼란
 - 임시 implementation detail을 영구 contract처럼 설명
+- evidence 없이 plausible rationale를 만들어냄
 
 ```python
 # Weak
@@ -98,7 +104,11 @@ cleanup_staging()
 
 ## Placement and Scope
 
-설명은 가능한 한 의미의 실제 scope와 owner에 맞는 surface에 둔다. 가까움은 목적이 아니라 reader가 설명과 대상의 관계를 다시 탐색하지 않게 하는 수단이다.
+설명을 둘 때는 **owner correctness를 먼저**, locality를 그 다음에 판단한다.
+
+1. 이 semantic의 적절한 owner가 어디인지 확인한다.
+1. 더 넓은 owner가 이미 있다면 local caller/maintainer projection이 실제로 필요한지 판단한다.
+1. Local projection이 필요하면 의미의 실제 scope에 가장 가까운 stable surface를 선택한다.
 
 | Meaning | Preferred surface |
 | --- | --- |
@@ -133,7 +143,7 @@ DRY는 중요한 caller contract를 외부 문서에만 숨기는 이유가 아�
 - API 사용에 필요한 precondition, destructive side effect, overwrite/idempotency 의미는 API 가까이에 최소한으로 남긴다.
 - canonical 용어를 사용하고 새 동의어나 병렬 정의를 만들지 않는다.
 
-즉, 넓은 정책을 복제하지 말고 **호출에 필요한 부분만 projection**한다.
+즉, 넓은 정책을 복제하지 말고 **호출이나 유지보수에 필요한 부분만 projection**한다.
 
 ## Machine-Consumed Text
 
@@ -153,13 +163,14 @@ source file 안의 모든 text가 단순 설명은 아니다.
 
 설명을 추가하거나 수정한 뒤 확인한다.
 
-- target 안에 durable한 hidden contract·constraint·consequence·rationale가 남아 있는데 explanation을 놓치지 않았는가?
+- 이 explanation의 non-obvious semantic claim을 지지하는 current evidence는 무엇인가?
+- target 안에 evidence-backed durable contract·constraint·consequence·rationale가 남아 있는데 explanation을 놓치지 않았는가?
 - 이 설명이 없으면 reader는 무엇을 추론하거나 찾아야 하는가?
 - 설명이 그 비용을 실제로 줄이고 code/name/type을 반복하지 않는가?
 - code 자체를 refactor해야 하는 문제를 prose로 보상하고 있지 않은가?
-- 의미의 실제 scope와 explanation의 위치·범위가 맞는가?
+- semantic owner, 실제 scope와 explanation의 위치·범위가 맞는가?
 - current code, caller contract 또는 canonical policy와 모순되지 않는가?
 - volatile identifier·algorithm step·history에 불필요하게 결합되어 쉽게 stale 되지 않는가?
 - machine-consumed text나 durable negative knowledge를 잘못 다루고 있지 않은가?
 
-필요한 durable meaning이 아직 숨겨져 있으면 적절한 explanation을 보완한다. 반대로 불필요하거나 쉽게 stale 되는 설명은 줄이거나 제거한다.
+필요한 evidence-backed meaning이 아직 숨겨져 있으면 적절한 explanation을 보완한다. 반대로 근거가 없거나 불필요하거나 쉽게 stale 되는 설명은 추가하지 않거나 줄인다.
