@@ -1,6 +1,6 @@
 ---
 name: clarify-code
-description: Use this skill to make existing code easier to understand and maintain without changing behavior. Trigger for requests to clarify confusing code, names, caller contracts, domain semantics, rationale, responsibilities, control flow, or unnecessary indirection. Do not use for feature implementation, correctness review, performance optimization, architecture redesign, or user-facing documentation.
+description: Use this skill to make code easier to understand by improving code-adjacent explanatory text such as docstrings, comments, and module-level explanations without changing executable code. Trigger when caller contracts, rationale, invariants, ordering, side effects, unusual implementation choices, or other non-obvious meaning should be explained inside source files. Do not use to rename symbols, change types or signatures, restructure control or state flow, change representations, or remove indirection; use code-comprehension-refactor for code changes. Do not use for user-facing documentation.
 targets:
   - claudecode
   - codexcli
@@ -12,9 +12,9 @@ targets:
 
 # Clarify Code
 
-기능을 추가하지 않고 코드 이해 부채를 줄인다. 오해 비용이 가장 큰 reading bottleneck을 가장 작은 안전한 변경으로 해소한다.
+실행 코드를 바꾸지 않고 **코드 파일 안에서 함께 유지되는 설명**을 개선해 caller와 maintainer의 이해 비용을 줄인다.
 
-호출자는 구현을 읽지 않고 필요한 contract를 알 수 있어야 하고, 유지보수자는 코드에서 의도와 제약을 복원할 수 있어야 한다.
+주된 surface는 docstring, comment와 module-level explanation이다. 코드 구조 자체가 이해 비용의 원인이면 prose로 덮지 않고 `code-comprehension-refactor`를 사용한다.
 
 ## Arguments
 
@@ -26,39 +26,36 @@ validation: auto
 
 | Argument | `auto` 동작 |
 | --- | --- |
-| `--target <value\|auto>` | 요청, 선택 영역 또는 현재 변경에서 개선 대상을 식별한다. |
-| `--scope <value,...\|auto>` | target과 실제 사용 surface, 관련 test, 공유 contract까지만 포함한다. |
-| `--validation <command\|auto\|none>` | behavior 보존을 확인할 가장 작은 기존 validation을 선택한다. |
+| `--target <value\|auto>` | 요청, 선택 영역 또는 현재 변경에서 설명이 필요한 code-adjacent surface를 식별한다. |
+| `--scope <value,...\|auto>` | target과 실제 caller·maintainer가 설명을 읽는 가까운 surface까지만 포함한다. |
+| `--validation <command\|auto\|none>` | docstring, doctest, directive처럼 explanation text가 tool/runtime에 소비될 가능성이 있을 때 필요한 최소 validation을 선택한다. |
 
-명시된 argument를 우선한다. 범위나 기존 동작이 불명확하면 추측으로 확대하지 않는다.
+명시된 argument를 우선한다. 넓은 정책이나 사용자 문서까지 추측으로 확대하지 않는다.
 
 ## Workflow
 
-1. 적용되는 repository/source instructions와 target, caller·entrypoint, 관련 test를 읽는다. 공유 contract가 걸릴 때만 범위를 넓힌다.
-1. 보존할 observable behavior와 caller-visible contract를 확인한다.
-1. 가장 중요한 reading bottleneck 하나를 진단한다. 오해가 misuse, destructive side effect, 잘못된 ordering 또는 invariant 위반을 만들 수 있으면 단순한 시각적 복잡성보다 우선한다.
-1. 가장 작은 해법을 선택한다. 내부 이름과 코드 구조로 명확해질 수 있으면 prose보다 먼저 개선하되, caller-visible API는 contract 변경 없이 rename하지 않는다.
-1. caller가 알아야 할 숨은 의미는 docstring, maintainer가 알아야 할 code-local 이유는 comment로 보완한다. 넓은 정책은 canonical owner에 둔다.
-1. 선택한 병목만 수정하고 unrelated cleanup이나 미래용 abstraction을 섞지 않는다.
-1. 가능한 경우 같은 validation을 변경 전후에 적용해 behavior 보존을 확인한다.
-1. caller와 maintainer 관점에서 다시 읽고 중복 prose와 indirection을 제거한 뒤, 변경·보존 근거·validation·risk만 짧게 보고한다.
+1. 적용되는 repository/source instructions와 target code, 가까운 caller·maintainer context를 읽는다.
+1. 독자가 code만으로 복원하기 어려운 의미가 무엇인지 확인하고 reader를 구분한다: caller contract인지, maintainer rationale인지 판단한다.
+1. 먼저 **prose가 맞는 해법인지** 확인한다. 이름, representation, control/state flow, responsibility 또는 indirection이 실제 원인이면 설명을 추가하지 말고 `code-comprehension-refactor`로 넘긴다.
+1. caller가 사용 전에 알아야 하는 비자명한 contract는 docstring에, maintainer가 구현을 수정할 때 알아야 하는 code-local 이유는 comment에 둔다. 상세 기준은 [Documentation](references/documentation.md)을 따른다.
+1. 선택한 설명 surface만 수정한다. 실행 statement, identifier, signature, type, control flow와 data representation은 변경하지 않는다.
+1. 설명이 runtime, tooling 또는 validation에 소비되는지 확인한다. doctest, reflection-dependent docstring, pragma, linter/type-check directive, magic comment는 일반 prose처럼 수정하지 않는다.
+1. 코드와 설명을 다시 읽어 중복, stale claim, 구현을 그대로 번역한 문장을 제거한다. 필요한 의미가 더 안정적인 canonical owner에 있다면 복제하지 않고 최소 projection만 남긴다.
+1. 변경한 설명, 보존한 code boundary, 수행한 validation과 남은 uncertainty만 짧게 보고한다.
 
-주된 병목이 해소되면 중단한다. 변경할 가치가 없으면 수정하지 않는다.
+필요한 설명이 충분해지면 중단한다. 추가 prose가 실제 이해 비용을 줄이지 않으면 수정하지 않는다.
 
 ## Progressive Disclosure
 
-현재 판단에 필요한 reference만 읽고, 관련 없는 reference는 로드하지 않는다.
-
-- 병목 종류나 최소 intervention이 불명확하거나 rename·extraction을 고려하면 [Diagnosis](references/diagnosis.md)를 읽는다.
-- docstring이나 comment를 추가·수정하려면 [Documentation](references/documentation.md)을 읽는다.
-- 코드 구조를 바꾸거나 behavior 보존 근거가 불명확하면 [Validation](references/validation.md)을 읽는다.
+- docstring과 comment의 reader, 내용, 위치가 불명확하면 [Documentation](references/documentation.md)을 읽는다.
 
 ## Boundaries
 
-- 기능, public contract, 성능 목표 또는 architecture를 clarification 명목으로 변경하지 않는다.
-- 이름이나 코드 구조로 표현 가능한 내용을 prose로 반복하지 않는다.
-- line count만 줄이는 helper, one-use abstraction, future extension point를 만들지 않는다.
-- 광범위한 style·formatting·rename을 섞지 않는다.
-- test를 약화하거나 기존 failure를 숨겨 behavior 보존을 증명하지 않는다.
-- correctness review를 대신하지 않는다. defect 의심은 별도 작업으로 분리한다.
+- 실행 코드, identifier, type, signature, representation, control/state flow 또는 abstraction을 clarification 명목으로 변경하지 않는다.
+- 코드 자체를 리팩터링해야 이해 비용이 줄어들면 `code-comprehension-refactor`를 사용한다.
+- 함수 이름, type annotation, 다음 statement처럼 code가 이미 직접 표현하는 내용을 prose로 반복하지 않는다.
+- 넓은 architecture·domain policy를 source comment에 복제하지 않는다. caller나 maintainer에게 필요한 local projection만 남긴다.
+- user-facing guide, README, API manual 같은 독립 문서는 이 skill의 scope가 아니다.
+- `noqa`, `type: ignore`, coverage pragma, formatter directive, shebang, encoding cookie와 같은 machine-consumed comment를 일반 설명 comment로 취급하지 않는다.
+- docstring이 reflection, documentation generation, doctest 또는 framework behavior의 contract라면 observable surface를 보존한다.
 - 실행하지 않은 validation을 수행했다고 보고하지 않는다.
