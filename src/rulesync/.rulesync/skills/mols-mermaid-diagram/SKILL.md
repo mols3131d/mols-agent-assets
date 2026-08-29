@@ -53,6 +53,7 @@ Mermaid로 **관계·절차·책임·상태·시간·구조를 빠르고 쉽게 
 1. 독자가 diagram으로 답해야 하는 질문을 한 문장으로 정의한다.
 1. 중심 구조에 가장 직접적인 type을 고르고, portability나 최신 기능이 중요하면 target renderer 지원을 확인한다.
 1. source가 뒷받침하는 핵심 entity, participant, state, boundary와 relationship만 먼저 작성한다.
+1. 새 diagram 또는 구조 재설계는 약 3:4의 portrait reading viewport에서 읽는 환경을 기본으로 한다. Vertical scroll은 허용하고, peer group을 하나의 긴 수평 흐름으로 이어 붙이기보다 group 단위로 세로로 쌓되 내부 flow direction은 정보 구조에 맞게 유지한다.
 1. 하나의 diagram에는 하나의 핵심 질문만 두고, 복잡하면 overview와 detail로 분리한다.
 1. inline Markdown, `.mmd` 또는 rendered artifact 중 필요한 output만 만든다.
 1. 필요한 수준까지 검증하고 renderer 제약, fallback 또는 검증하지 못한 부분을 보고한다.
