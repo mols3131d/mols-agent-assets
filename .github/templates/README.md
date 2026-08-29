@@ -1,11 +1,11 @@
 # GitHub Authoring Templates
 
-이 디렉터리는 이 repository의 Issue, Pull Request, PR Review와 PR comment를 작성할 때 사용하는 **본문 템플릿의 canonical library**입니다.
+이 디렉터리는 이 repository의 Issue, Pull Request, PR Review와 PR comment를 작성할 때 참고하는 **본문 authoring library**입니다.
 
-템플릿은 사람과 agent가 함께 사용합니다. GitHub object의 권한, review 의미, merge 조건과 검증 정책은 이 디렉터리가 아니라 [`docs/development/github.md`](../../docs/development/github.md)가 소유합니다.
+템플릿은 사람과 agent가 함께 사용할 수 있습니다. 이 디렉터리는 repository-wide instruction이나 activation을 소유하지 않습니다. GitHub object의 권한, review 의미, merge 조건과 검증 정책은 [`docs/development/github.md`](../../docs/development/github.md)가 소유합니다.
 
 > [!NOTE]
-> `.github/templates/`는 이 repository의 authoring library이며 GitHub가 자동으로 적용하는 native template 경로가 아닙니다. GitHub UI의 native Issue·Pull Request template이 필요하면 해당 GitHub 표준 경로를 별도 integration surface로 다룹니다.
+> `.github/templates/`는 이 repository의 authoring library이며 GitHub가 자동으로 적용하는 native Issue/PR template 경로가 아닙니다.
 
 | Surface | Template |
 | --- | --- |
