@@ -129,7 +129,7 @@ Bundle 전환에는 보편적인 threshold가 없습니다. 다만 **관련 grou
 
 예를 들어 `test_invoice_*`가 4~6개 반복되면 `invoice/`가 prefix를 구조로 압축하는 데 도움이 될 수 있습니다. 반대로 관련 파일이 6개여도 directory 전체가 그 group 하나뿐이고 쉽게 훑어진다면 sibling files가 더 단순할 수 있습니다.
 
-관련 파일이 3~4개뿐이어도 같은 directory에 서로 다른 주제의 파일이 10개 안팎 섞여 있거나, 그 group만 쓰는 fixture·snapshot·helper가 많다면 bundle이 scan 범위와 local context를 줄이는 데 도움이 될 수 있습니다.
+관련 파일이 3~4개뿐이어도 같은 directory에 서로 다른 주제의 파일이 10개 안팎 섞여 있거나, 그 group만 쓰는 fixture·snapshot·helper가 많다면 bundle이 scan 범위를 줄이고 local context를 가까이 모으는 데 도움이 될 수 있습니다.
 
 숫자 외에도 다음과 같은 신호를 함께 볼 수 있습니다.
 
