@@ -1,6 +1,6 @@
 # Mermaid Diagram 예제
 
-이 디렉터리는 Mermaid 공식 syntax 전체를 복제하는 catalog가 아니라, **`mols-mermaid-diagram`의 local design pattern을 보여주는 예제 모음**이다. 정확한 현재 syntax, type 지원 여부와 minimum version은 [Mermaid 공식 문서](https://mermaid.js.org/)와 실제 target renderer를 기준으로 확인한다.
+이 디렉터리는 Mermaid 공식 syntax 전체를 복제하는 catalog가 아니라, **`mols-mermaid-diagram`의 local design pattern을 보여주는 예제 모음**이다. 정확한 현재 syntax와 type·feature 지원 여부는 [Mermaid 공식 문서](https://mermaid.js.org/)와 실제 target renderer를 기준으로 확인한다.
 
 예제에 없는 Mermaid type도 Skill의 구조적 책임에 해당하고 target이 지원하면 사용할 수 있다. 반대로 예제가 존재해도 target renderer가 지원하지 않으면 그대로 복사하지 않는다.
 
