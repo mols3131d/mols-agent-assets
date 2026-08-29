@@ -1,35 +1,24 @@
 ---
 description: >-
-  Reusable guidance for deciding where an OpenSpec customization belongs. Load
-  when choosing between profile, project configuration, artifact or operation
-  guidance, a custom schema, or existing repository authority; when deciding
-  config versus schema; or when reducing unnecessary OpenSpec context. Do not use
-  for exact OpenSpec contract lookup, custom-schema package maintenance, dogfood
-  and tuning, or project-specific evidence.
+  Reusable guidance for deciding which surface should own an OpenSpec
+  customization. Load for config-versus-schema decisions, choosing the narrowest
+  owner, or reducing unnecessary OpenSpec context. Do not use for exact vendor
+  contract lookup, schema-package maintenance, dogfood methodology, or
+  project-specific evidence.
 ---
 
 # OpenSpec Customization Design
 
 Use this reference to decide **what should own a customization**. It provides
-reusable design judgment across projects; it does not define OpenSpec's exact
-current fields, commands, paths, or version-specific behavior.
+reusable design judgment, not exact OpenSpec fields, commands, paths, or
+version-specific behavior.
 
-Consult [Official contract](official-contract.md) only when the decision depends on
-exact OpenSpec support or semantics.
+## Choose the lightest sufficient owner
 
-## Start with the lightest sufficient surface
-
-Prefer an existing supported surface over a custom schema when it can express the
-required behavior without changing the workflow's artifact structure.
-
-A custom schema is justified when the artifact set, dependency flow, templates, or
-schema-level instructions must materially differ. It introduces another workflow
-definition to own and maintain, so do not create one merely to add guidance that
-project configuration can already express.
-
-## Choose the narrowest owner
-
-Put a customization on the smallest surface that actually needs it.
+Prefer an existing supported surface when it can express the required behavior
+without changing the workflow's artifact structure. Use a custom schema when the
+artifact set, dependency flow, templates, or schema-level instructions must
+materially differ.
 
 | Needed effect | First owner to consider |
 | --- | --- |
@@ -41,42 +30,35 @@ Put a customization on the smallest surface that actually needs it.
 | Change artifacts, dependencies, templates, or schema-level instructions | Custom schema |
 | Preserve policy OpenSpec does not need to inject | Existing repository authority |
 
-This is a selection heuristic, not a frozen vendor contract. If exact support,
-precedence, or field semantics can change the answer, verify them through
+This table is a selection heuristic, not a frozen vendor contract. If exact support,
+precedence, or field semantics can change the answer, use
 [Official contract](official-contract.md).
+
+A custom schema introduces another workflow definition to own and maintain. Do not
+create one merely to add guidance that a lighter supported surface can express.
 
 ## Keep OpenSpec context delta-only
 
-Do not turn OpenSpec configuration into a second project handbook.
+Do not turn OpenSpec configuration into a second project handbook. Keep only context
+that should materially change OpenSpec output or workflow behavior, and put narrow
+guidance on the narrowest surface that consumes it.
 
-Keep only context that should materially change OpenSpec output or workflow
-behavior. Put narrow guidance on the narrowest surface that consumes it.
+Repository policy should remain with its existing authority unless OpenSpec needs a
+deliberate operational projection of that concern. If the same rule appears in
+repository instructions, OpenSpec configuration, and a schema template, identify the
+real owner and remove accidental copies.
 
-When the active agent can reliably obtain repository guidance from its existing
-authority, keep that guidance canonical there and inject only the delta OpenSpec
-actually needs.
+For a concrete repository, use
+[Project customization](project-customization.md) to derive the actual project delta
+from live evidence rather than guessing it here.
 
-## Preserve repository authority
+## Continue only when another concern applies
 
-OpenSpec customization should adapt to repository policy, not become a competing
-owner of testing, architecture, security, documentation, language, contribution,
-or other project rules.
+- Existing or chosen custom schema needs package or long-term maintenance guidance →
+  [Schema maintenance](schema-maintenance.md)
+- Existing or candidate customization needs empirical evaluation or tuning →
+  [Dogfood and tuning](dogfood-and-tuning.md)
+- Exact OpenSpec behavior can change the decision →
+  [Official contract](official-contract.md)
 
-If the same concern appears in repository instructions, OpenSpec configuration, and
-a schema template, identify the real owner. Remove accidental copies unless OpenSpec
-needs a deliberate operational projection of that concern.
-
-For a concrete repository, use [Project customization](project-customization.md) to
-derive the actual project delta from live evidence rather than guessing it here.
-
-## Hand off after the ownership decision
-
-- If a custom schema is already chosen and its long-term package or documentation
-  needs design, use [Schema maintenance](schema-maintenance.md).
-- If an existing customization needs real-work evaluation, regression checking, or
-  evidence-driven iteration, use [Dogfood and tuning](dogfood-and-tuning.md).
-- If exact OpenSpec behavior affects the decision, use
-  [Official contract](official-contract.md).
-
-Do not load those references merely because they exist; load them only when their
-separate concern becomes material.
+Do not load another reference merely because it is linked here.
