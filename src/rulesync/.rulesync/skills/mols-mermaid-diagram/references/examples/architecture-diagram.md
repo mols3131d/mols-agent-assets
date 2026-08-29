@@ -44,7 +44,7 @@ architecture-beta
 
 ## Sibling Alignment
 
-> `align row` / `align column`은 Mermaid v11.16.0+ 기능이다.
+`align row` / `align column`은 renderer/version-sensitive Architecture feature다. 사용하기 전에 현재 Mermaid 공식 문서와 target renderer 지원을 확인한다.
 
 같은 downstream service를 향하는 sibling이 layout heuristic 때문에 겹치거나 지나치게 넓게 퍼지면 topology를 바꾸기 전에 `align`을 검토한다. 같은 horizontal attachment pair로 연결되는 sibling은 `align column`으로 세로 stack을 만들 수 있어 portrait reading viewport에도 유리하다.
 
@@ -68,7 +68,7 @@ architecture-beta
 
 ## Layout Tuning
 
-> architecture layout tuning은 Mermaid v11.15.0+ 기능이다.
+Architecture layout tuning도 renderer/version-sensitive surface다. 현재 지원되는 config와 semantics는 Mermaid 공식 문서와 target renderer를 기준으로 확인한다.
 
 Topology와 grouping이 맞고 `align`으로 해결할 문제가 아닌데 spacing이나 density가 좋지 않을 때만 renderer config를 최소한으로 조정한다.
 
