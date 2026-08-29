@@ -22,7 +22,7 @@ Jinja2-style 표기를 authoring notation으로 사용합니다. 실제 Jinja2 r
 - `{% if condition %} ... {% endif %}` — 조건이 맞을 때만 남깁니다.
 - `{% for item in items %} ... {% endfor %}` — 실제 항목 수만큼 펼칩니다.
 
-최종 GitHub text에는 미치환 notation과 작성 지침 comment를 남기지 않습니다.
+최종 GitHub text에는 미치환 notation과 작성 지침 comment를 남기지 않습니다. Notation은 구조를 표현하는 authoring aid일 뿐 agent의 사고 과정이나 작업 순서를 강제하지 않습니다.
 
 ## Writing rules
 
@@ -45,7 +45,9 @@ Metadata는 필요한 경우 **본문 마지막의 fenced `yaml` block 한 곳**
 허용하는 field는 `author`와 `revision`뿐입니다. 둘은 서로 독립적인 optional field이며 실제 판단에 필요한 것만 남깁니다.
 
 - `author` — GitHub 작성자만으로 실제 작성 주체를 구별할 수 없는 agent 주도 작성의 provenance입니다. 각 항목은 `<user-id>:<provider>-<service>` 형식을 사용합니다.
-- `revision` — 본문의 판단이나 설명이 exact repository revision pair에 의존할 때 사용합니다. `base`와 `head`를 함께 full commit SHA로 기록합니다. PR description을 새 pair 기준으로 갱신하면 함께 갱신하고, 이미 제출된 review의 pair는 이후 head가 바뀌어도 변경하지 않습니다.
+- `revision` — Pull Request description이나 PR Review가 exact diff pair에 의존할 때 사용하는 provenance입니다. `base`와 `head`를 함께 full commit SHA로 기록합니다. PR description을 새 pair 기준으로 갱신하면 함께 갱신하고, 이미 제출된 review의 pair는 이후 head가 바뀌어도 변경하지 않습니다.
+
+Issue와 일반 comment에는 exact revision pair가 판단에 특별히 필요하지 않으면 `revision`을 추가하지 않습니다. Metadata가 필요 없으면 block 전체를 생략합니다.
 
 ```yaml
 author:
@@ -54,8 +56,6 @@ revision:
   base: <full-base-commit-sha>
   head: <full-head-commit-sha>
 ```
-
-필요한 metadata가 없으면 block 전체를 생략합니다.
 
 > [!NOTE]
 > `.github/templates/`는 GitHub가 자동으로 적용하는 native Issue/PR template 경로가 아닙니다.
