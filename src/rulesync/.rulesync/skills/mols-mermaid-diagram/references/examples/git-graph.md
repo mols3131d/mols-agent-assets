@@ -2,7 +2,7 @@
 
 > `gitGraph` syntax와 version-specific feature 지원은 target renderer와 Mermaid 공식 문서를 확인한다.
 
-branch point, commit ancestry, merge-commit과 release marker처럼 **Git-style history topology**가 핵심이면 `gitGraph`를 사용한다. 다만 Mermaid `gitGraph`는 실제 repository history를 import하는 도구가 아니라 declaration 순서대로 synthetic history를 만드는 제한된 DSL이다.
+branch point, commit ancestry, merge-commit과 Git tag처럼 **Git-style history topology**가 핵심이면 `gitGraph`를 사용한다. 다만 Mermaid `gitGraph`는 실제 repository history를 import하는 도구가 아니라 declaration 순서대로 synthetic history를 만드는 제한된 DSL이다.
 
 실제 history의 정확성이 핵심이면 authoritative Git data를 먼저 확인하고, `gitGraph`가 표현할 수 있는 source-backed excerpt만 diagram으로 옮긴다. Fast-forward, squash, rebase처럼 integration method 자체가 질문이면 이를 generic `merge`로 치환하지 않는다.
 
@@ -29,8 +29,8 @@ Mermaid는 custom `id`가 없는 commit에 generated ID를 부여한다. 문서�
 - Custom commit ID는 diagram 안에서 유일하게 유지한다.
 - 실제 SHA를 알고 있고 그 identity가 핵심일 때만 SHA처럼 보이는 값을 사용한다. Conceptual strategy라면 `base`, `verify`, `release`처럼 역할을 드러내는 synthetic ID가 더 정직하다.
 - Root/default branch 이름도 source fact다. 실제 branch가 `master`, `develop` 등이라면 target이 지원하는 `mainBranchName` config를 사용하거나 다른 표현으로 보존하고, 단순히 기본 `main`으로 바꾸지 않는다.
-- `tag`는 실제 tag 또는 명시된 strategy marker를 나타낼 때만 붙인다. Version-looking tag를 장식으로 만들지 않는다.
-- Commit ID와 commit message를 같은 개념으로 취급하지 않는다. Repeated human-readable 설명이 필요하면 ID를 중복시키지 말고 주변 prose나 다른 지원 표현을 사용한다.
+- `tag`는 source가 실제 Git tag 또는 명시적으로 계획된 Git tag를 말할 때만 붙인다. 일반 release marker나 강조를 tag처럼 만들지 않는다.
+- Custom ID를 human-readable copy 용도로 중복 사용하지 않는다. Identity/reference와 설명 text를 분리한다.
 
 ## Branch Points And Declaration Order
 
@@ -104,7 +104,7 @@ Orientation, branch `order`, label rotation과 visual commit type은 presentatio
 - Orientation을 실제 chronology direction, branch importance 또는 upstream/downstream precedence로 해석하지 않는다.
 - `HIGHLIGHT`와 `REVERSE`는 visual commit type이다. `REVERSE`를 `git revert` operation으로 해석하지 않고, strong emphasis는 source-backed 또는 명시적으로 설명된 editorial focus에만 사용한다.
 - Commit label을 숨기거나 축약해 branch topology만 남길 수 있지만, identity가 질문의 핵심이면 readability를 위해 identity를 버리지 않는다.
-- 많은 commit을 실제 history에서 그대로 복사하기보다 질문에 필요한 branch point, merge commit, release marker와 source-backed intermediate commit만 남긴다.
+- 많은 commit을 실제 history에서 그대로 복사하기보다 질문에 필요한 branch point, merge commit, Git tag와 source-backed intermediate commit만 남긴다.
 
 ## Renderer-Sensitive Review
 
@@ -118,7 +118,7 @@ Orientation, branch `order`, label rotation과 visual commit type은 presentatio
 1. `order`, orientation, `parallelCommits`와 lane position을 chronology, priority, ownership 또는 concurrency evidence로 승격하지 않았는가.
 1. Cherry-pick connector를 Git parent relationship으로 읽게 만들지 않았는가.
 1. Branch lane을 현재 ref existence나 deletion state로 오해하게 만들지 않았는가.
-1. 실제 repository history를 요약했다면 생략한 commit 때문에 branch point, parent, merge mode 또는 release identity가 달라지지 않았는가.
+1. 실제 repository history를 요약했다면 생략한 commit 때문에 branch point, parent, merge mode 또는 tag identity가 달라지지 않았는가.
 1. Dense branch/commit label, orientation과 target-specific config는 실제 target에서 읽을 수 있는가.
 
 문제가 있으면 lane order나 highlight로 숨기지 않는다. 먼저 history facts와 representation choice를 고친다.
