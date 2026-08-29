@@ -1,22 +1,34 @@
+---
+description: >-
+  Reusable OpenSpec customization design guidance. Use when choosing the smallest
+  customization surface, deciding config versus schema, keeping project context
+  delta-only, maintaining custom schemas, dogfooding, tuning, or verifying a
+  customization. This reference provides design heuristics, not exact OpenSpec
+  commands, fields, paths, or version-specific behavior.
+---
+
 # OpenSpec Customization Patterns
 
-Use these as reusable design heuristics, not OpenSpec requirements. Confirm exact
-fields, commands, paths, and supported behavior through
-[Official customization](official-customization.md).
+Use these patterns for **how to design and maintain a customization**. They are
+reusable heuristics, not OpenSpec requirements.
 
-## Config before schema
+When a decision depends on exact commands, fields, paths, precedence, or supported
+behavior, consult [Official customization](official-customization.md).
 
-Prefer project configuration when the existing workflow can stay intact and the
-change only adds context, artifact guidance, operation guidance, or another
-project-level option supported by OpenSpec.
+## Prefer config before a custom schema
 
-Use a custom schema when the artifact set, dependency flow, templates, or
+Use project configuration when the existing workflow can stay intact and the change
+only adds context, artifact guidance, operation guidance, or another project-level
+option that OpenSpec already supports.
+
+Use a custom schema only when the artifact set, dependency flow, templates, or
 schema-level instructions must materially differ. A schema fork creates another
-snapshot to own, so do not fork for a change additive configuration can express.
+snapshot to maintain, so do not fork when additive configuration can express the
+change.
 
-## Narrowest surface
+## Choose the narrowest surface
 
-Put a customization on the smallest supported surface that needs it.
+Put each customization on the smallest supported surface that needs it.
 
 | Needed effect | First surface to consider |
 | --- | --- |
@@ -28,24 +40,25 @@ Put a customization on the smallest supported surface that needs it.
 | Change artifacts, dependencies, templates, or schema instructions | Custom schema |
 | Preserve policy OpenSpec does not need to inject | Existing repository owner |
 
-This is a selection heuristic, not a replacement for OpenSpec's current contract.
+This table is a selection heuristic. Confirm exact support through the official
+OpenSpec contract when it matters.
 
-## Delta-only context
+## Keep OpenSpec context delta-only
 
-Do not turn OpenSpec configuration into a second project handbook. Keep only
-context that should materially shape OpenSpec output, and put narrow rules on
-narrow surfaces.
+Do not turn OpenSpec configuration into a second project handbook. Keep only context
+that should materially shape OpenSpec output, and put narrow rules on narrow
+surfaces.
 
-When the active agent can reliably load existing repository guidance, prefer that
-canonical owner and inject only the delta OpenSpec actually needs.
+When the active agent can reliably load existing repository guidance, keep that
+guidance in its canonical owner and inject only the delta OpenSpec actually needs.
 
-## Maintainable schema package
+## Keep custom schemas maintainable
 
-Treat a non-trivial project schema as a small maintained package while keeping
-OpenSpec runtime inputs distinct from optional maintenance material.
+Treat a non-trivial project schema as a small maintained package. Keep OpenSpec
+runtime inputs separate from optional maintenance material.
 
-Start with only the files the schema actually needs. Add companion surfaces only
-when they reduce real user or maintainer cost:
+Start with only what the schema needs. Add companion surfaces only when they reduce
+real user or maintainer cost:
 
 ```text
 openspec/schemas/<name>/
@@ -55,76 +68,58 @@ openspec/schemas/<name>/
 └── docs/           # optional
 ```
 
-`README.md` and `docs/` are not a required schema layout. Under the current OpenSpec
-contract, schema runtime semantics belong to `schema.yaml` and referenced templates.
-Companion surfaces are project-owned aids and should exist only when they materially
-improve schema use or maintenance.
+`README.md` and `docs/` are project-owned aids, not a required OpenSpec schema
+layout. Runtime semantics belong to the OpenSpec-owned schema inputs for the target
+version.
 
-### `README.md`: schema entrypoint
+### `README.md`: optional schema entrypoint
 
-Use `README.md` when users or maintainers benefit from an introduction that
-`schema.yaml` alone does not provide. It is the default human-readable entry document
-for the schema package and should let a reader understand what the schema is, why it
-exists, whether to use it, and where to go next.
+Add a `README.md` when `schema.yaml` alone is not enough for users or maintainers to
+understand the schema.
 
-It can explain:
+A useful README answers four questions quickly:
 
-- what the schema is for and the kinds of work it supports;
-- when a user should choose it, and important cases where they should not;
-- the artifact flow and the schema's intentional differences at a useful overview
-  level;
-- how to start using, inspecting, validating, or dogfooding it without duplicating
-  fast-changing CLI reference material;
-- where deeper supporting documentation lives when the package has any;
-- which repository or project authority governs maintenance when that is not obvious.
+1. What is this schema for?
+1. When should I use or avoid it?
+1. What is intentionally different about its workflow or artifact flow?
+1. Where should I go next for deeper detail or the governing project authority?
 
-Treat the README as a common navigation point for both human maintainers and agents
-that are already inspecting the schema package. Do not assume an agent harness
-automatically discovers or loads it; agent discovery and instruction precedence
-remain owned by the repository and active harness.
+It may also show how to begin inspecting, validating, or dogfooding the schema, but
+do not duplicate fast-changing CLI reference material.
 
-Keep README readable as an introduction and navigation surface. Move detail into
-`docs/` only when keeping it in the entrypoint would materially reduce readability
-or maintainability.
+Treat the README as a human-readable entrypoint, not as an agent-runtime contract.
+An agent may read it when already inspecting the package, but automatic discovery
+and instruction precedence belong to the active repository and harness.
 
 ### `docs/`: optional supporting detail
 
-Use `docs/` only when the schema has durable supporting knowledge that is useful to
-keep near the schema but does not belong in the README or runtime files.
+Add `docs/` only when durable supporting knowledge is useful near the schema but
+would make the README harder to read or maintain.
 
-Do not prescribe a standard document set, filenames, or internal taxonomy. Derive
-its contents from the concrete schema and project, and follow the repository's
-existing documentation conventions when they apply.
+Do not prescribe a standard document set, filenames, or taxonomy. Let the concrete
+schema, project needs, and repository documentation conventions determine what goes
+there.
 
-When `docs/` exists:
+If `docs/` exists:
 
-- create only documents with a concrete maintenance or comprehension benefit;
-- keep each concern in one authoritative document rather than spreading the same
-  explanation across several files;
-- link relevant documents from `README.md` so the entrypoint remains useful;
-- keep transient logs, disposable experiments, and regenerable state out of it.
+- keep only information with a concrete maintenance or comprehension benefit;
+- give each concern one authoritative home;
+- link useful detail from the README;
+- keep transient logs, disposable experiments, and regenerable state elsewhere.
 
 If no durable detail justifies another document, omit `docs/` entirely.
 
-Repository-wide or harness-specific agent instructions remain in their existing
-authority. They may route an agent to the schema package without duplicating schema
-knowledge in a second instruction tree.
-
-### Keep companion surfaces DRY
-
-Give each concern one owner:
+### One concern, one owner
 
 | Concern | Preferred owner |
 | --- | --- |
 | What the schema is, who it is for, when to use it, and package navigation | `README.md` |
-| Durable supporting detail that would overload the entrypoint | `docs/` |
-| Actual OpenSpec schema behavior | `schema.yaml` and `templates/` |
+| Durable detail that would overload the entrypoint | `docs/` |
+| Actual OpenSpec schema behavior | OpenSpec schema inputs for the target version |
 | Repository-wide or harness-specific agent policy | Existing repository authority |
 
-Prefer links over copies across these surfaces. A fact that must affect OpenSpec
-runtime behavior belongs in the runtime surface even if it is also explained to
-humans elsewhere. A maintenance explanation does not become runtime behavior merely
-because it is colocated with the schema.
+Prefer links over copies. If a fact must affect runtime behavior, put it in the
+runtime owner even when it is also explained for humans elsewhere.
 
 Omit any companion surface that does not earn its maintenance cost. A simple schema
 may correctly contain only `schema.yaml` and `templates/`.
@@ -136,12 +131,12 @@ owner of testing, architecture, security, documentation, language, contribution,
 or other project rules.
 
 If the same rule appears in project instructions, OpenSpec configuration, and a
-schema template, identify the actual owner and remove accidental copies unless
-OpenSpec needs a deliberate operational copy.
+schema template, identify the real owner. Remove accidental copies unless OpenSpec
+needs a deliberate operational copy.
 
 ## Treat schema forks as owned snapshots
 
-A project-local custom schema is an intentionally owned copy. Do not assume normal
+A project-local custom schema is an intentionally owned copy. Do not assume routine
 OpenSpec updates will merge later built-in improvements into it.
 
 Keep shared schemas versioned with the project. Compare upstream deliberately and
@@ -150,20 +145,21 @@ reduces future maintenance cost.
 
 ## Dogfood before stabilizing
 
-Tune against real project work before treating a customization as settled. Use a
-small representative set chosen for information value: ordinary work, a case that
-stresses the intended customization, and a near-miss or edge case when overfitting
-is plausible.
+Tune against real project work before treating a customization as settled. Choose a
+small representative set for information value, for example:
+
+- ordinary work;
+- a case that stresses the intended customization;
+- a near-miss or edge case when overfitting is plausible.
 
 For each material friction point:
 
-1. capture the observed instruction, artifact, workflow behavior, or maintainer
-   difficulty;
-1. state the expected behavior and why the project needs it;
-1. classify the narrowest owner: project config, schema graph, template, schema
+1. capture the observed behavior or maintainer difficulty;
+1. state the expected behavior and why it matters;
+1. identify the narrowest owner: project config, schema graph, template, schema
    instruction, repository policy, or something outside OpenSpec;
 1. make the smallest change at that owner;
-1. rerun the relevant case and check likely regressions in the representative set.
+1. rerun the relevant case and check likely regressions.
 
 Do not compensate for a template problem with global context, or for a repository
 policy problem with duplicated schema instructions.
@@ -172,24 +168,23 @@ policy problem with duplicated schema instructions.
 
 Prefer observable failure modes over vague goals such as "make the model smarter"
 or "improve the prompt." Useful signals include repeated omissions, irrelevant
-boilerplate, bad dependency timing, template editing friction, recurring manual
-correction, or an improvement in one case that harms another.
+boilerplate, bad dependency timing, template friction, recurring manual correction,
+or an improvement in one case that harms another.
 
 Change one meaningful owner at a time when practical so effects stay attributable.
-Preserve a baseline for material workflow comparisons. Stop adding guidance when
-remaining failures belong outside OpenSpec or further tuning has no credible
-benefit.
+Preserve a baseline for material workflow comparisons. Stop adding guidance when the
+remaining failure belongs outside OpenSpec or further tuning has no credible benefit.
 
 ## Verify resolved behavior
 
-Static YAML review proves less than resolved workflow behavior. Use evidence
-appropriate to the claim:
+Match the evidence to the claim. Static YAML review alone does not prove resolved
+workflow behavior.
 
-1. schema/config validation for machine-checkable structure;
-1. schema, template, or instruction resolution for what OpenSpec actually selects;
-1. representative dogfood runs for artifact quality and project fit;
-1. maintainer review for whether the customization remains understandable and
-   upgradeable.
+1. Validate schema or config structure when machine-checkable validation exists.
+1. Inspect resolved schema, templates, or instructions when selection and precedence
+   matter.
+1. Run representative dogfood cases for artifact quality and project fit.
+1. Review whether the customization remains understandable and maintainable.
 
-Use current official CLI syntax rather than freezing experimental command behavior
-into this pattern.
+Use current official CLI syntax when commands are needed rather than freezing
+experimental behavior into this pattern.
