@@ -1,4 +1,4 @@
-## 📌 Summary
+## Summary
 
 <!--
 왜 필요한 변경이며, merge 후 무엇이 달라지는가?
@@ -7,7 +7,7 @@
 
 {{ summary }}
 
-## 🧩 Changes
+## Changes
 
 <!--
 검토자가 diff에서 확인해야 할 최종 변화를 적는다.
@@ -18,7 +18,7 @@
 - {{ change }}
 {% endfor %}
 
-## 🧪 Validation
+## Validation
 
 <!--
 직접 확인한 check와 근거를 적는다.
@@ -31,7 +31,7 @@
 {% endfor %}
 
 {% if boundaries %}
-## 🚧 Boundaries
+## Boundaries
 
 {% for boundary in boundaries %}
 - {{ boundary }}
@@ -39,7 +39,7 @@
 {% endif %}
 
 {% if review_focus %}
-## 👀 Review Focus
+## Review Focus
 
 <!--
 특히 확인할 결정, trade-off나 위험만 강조한다.
@@ -52,7 +52,7 @@
 {% endif %}
 
 {% if risks %}
-## ⚠️ Risks
+## Risks
 
 {% for risk in risks %}
 - {{ risk }}
@@ -60,7 +60,7 @@
 {% endif %}
 
 {% if references %}
-## 🔗 References
+## References
 
 {% for reference in references %}
 - {{ reference }}
