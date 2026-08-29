@@ -27,36 +27,59 @@ validation: auto
 | Argument | `auto` 동작 |
 | --- | --- |
 | `--target <value\|auto>` | 요청, 선택 영역 또는 현재 변경에서 설명이 필요한 code-adjacent surface를 식별한다. |
-| `--scope <value,...\|auto>` | target과 실제 caller·maintainer가 설명을 읽는 가까운 surface까지만 포함한다. |
+| `--scope <value,...\|auto>` | 설명을 수정할 write scope를 target과 필요한 source surface로 제한한다. Explanation의 사실성을 확인하기 위한 caller·test·contract context는 필요한 만큼 읽을 수 있지만 write authority는 넓어지지 않는다. |
 | `--validation <command\|auto\|none>` | docstring, doctest, directive처럼 explanation text가 tool/runtime에 소비될 가능성이 있을 때 필요한 최소 validation을 선택한다. |
 
 명시된 argument를 우선한다. 넓은 정책이나 사용자 문서까지 추측으로 확대하지 않는다.
 
+## Default Explanation Signals
+
+실행 코드가 이미 적절하고 아래 의미가 code만으로 안정적으로 드러나지 않으면 explanation 후보로 본다.
+
+| Signal | Default surface |
+| --- | --- |
+| hidden caller contract 또는 non-obvious call semantics | docstring |
+| maintainer가 보존해야 하는 invariant 또는 local constraint | code-local comment |
+| ordering 또는 failure consequence | code-local comment |
+| external system·protocol constraint | code-local comment |
+| 현재 constraint 때문에 잘못되는 durable rejected alternative | code-local comment |
+| 개별 symbol보다 file 전체에 안정적으로 적용되는 local convention | module-level explanation |
+
+사용자가 comment나 docstring을 직접 요청하지 않았어도 같은 기준을 적용한다. Signal 수나 comment 수 자체를 품질 지표로 사용하지 않는다.
+
 ## Workflow
 
 1. 적용되는 repository/source instructions와 target code, 가까운 caller·maintainer context를 읽는다.
-1. 독자가 code만으로 복원하기 어려운 의미와 그 때문에 생기는 추론·탐색·오해 비용을 확인하고 reader를 구분한다: caller contract인지, maintainer rationale·constraint인지 판단한다.
+1. 독자가 code만으로 복원하기 어려운 의미와 그 때문에 생기는 추론·탐색·오해 비용을 확인하고 reader를 구분한다: caller contract인지, maintainer constraint·consequence·rationale인지 판단한다.
 1. 먼저 **prose가 맞는 해법인지** 확인한다. 이름, representation, control/state flow, responsibility 또는 indirection이 실제 원인이면 설명을 추가하지 말고 `code-comprehension-refactor`로 넘긴다.
-1. 실행 코드가 이미 적절하지만 caller나 maintainer에게 필요한 durable contract·invariant·constraint·consequence·rationale를 code만으로 안정적으로 복원하기 어렵고 같은 의미가 가까운 surface에 없다면, 사용자가 comment나 docstring을 직접 요청하지 않았어도 설명을 추가하거나 개선하는 것을 기본으로 한다.
-1. 반대로 code, name, type이 이미 충분한 정보를 주거나 prose가 읽기·유지 비용만 늘리면 추가하지 않거나 불필요한 설명을 제거한다. 설명의 양 자체를 품질로 보지 않는다.
-1. caller가 사용 전에 알아야 하는 비자명한 contract는 docstring에, maintainer가 구현을 수정할 때 알아야 하는 code-local constraint·consequence·rationale는 comment에 둔다. 의미의 실제 scope와 owner에 맞는 위치는 [Documentation](references/documentation.md)을 따른다.
+1. **Evidence before Explanation.** Candidate meaning을 source prose로 고정하기 전에 target behavior, caller, test, canonical contract/spec, current config·schema·protocol 등 필요한 가장 좁은 current evidence로 확인한다. Git history나 old discussion은 후보 이유를 찾는 supporting context일 수 있지만 current invariant의 단독 근거로 사용하지 않는다. Evidence를 읽는다고 write scope가 넓어지지 않는다.
+1. Current evidence가 지지하는 의미만 설명한다. 현재 constraint·consequence는 확인되지만 historical reason은 확인되지 않으면 확인 가능한 현재 의미만 남긴다. Material rationale를 확정할 수 없으면 그럴듯한 이유를 invent하지 않고 unsupported explanation을 추가하지 않는다.
+1. 같은 semantic이 적절한 owner에 이미 충분히 있는지 확인한다. 그래도 caller나 maintainer가 해당 지점에서 알아야 하는 local projection이 필요하거나 explanation이 없다면 가장 작은 설명을 추가·개선한다. 반대로 code, name, type이 이미 충분하거나 prose가 읽기·유지 비용만 늘리면 추가하지 않거나 불필요한 설명을 제거한다.
+1. caller가 사용 전에 알아야 하는 contract는 docstring에, maintainer가 구현을 수정할 때 알아야 하는 code-local meaning은 comment에 둔다. 위치·scope·owner가 단순하지 않으면 [Documentation](references/documentation.md)을 따른다.
 1. 선택한 설명 surface만 수정한다. 실행 statement, identifier, signature, type, control flow와 data representation은 변경하지 않는다.
 1. 설명이 runtime, tooling 또는 validation에 소비되는지 확인한다. doctest, reflection-dependent docstring, pragma, linter/type-check directive, magic comment는 일반 prose처럼 수정하지 않는다.
-1. 코드와 설명을 다시 읽어 중복, stale claim, 구현을 그대로 번역한 문장을 제거한다. 필요한 의미가 더 안정적인 canonical owner에 있다면 복제하지 않고 최소 projection만 남긴다.
-1. 변경한 설명, 보존한 code boundary, 수행한 validation과 남은 uncertainty만 짧게 보고한다.
+1. 코드와 설명을 다시 읽어 unsupported claim, 중복, stale claim과 구현을 그대로 번역한 문장을 제거한다. 변경한 설명, 보존한 code boundary, 수행한 validation과 남은 uncertainty만 짧게 보고한다.
 
-필요한 설명이 충분해지면 중단한다. durable한 non-obvious meaning이 남아 있는데 comment를 피하기 위해 no-op으로 조기 종료하지 않는다. 반대로 추가 prose가 제거하는 이해 비용보다 읽기·유지 비용이 크면 추가하지 않는다.
+Evidence-backed durable meaning이 남아 있는데 comment를 피하기 위해 no-op으로 조기 종료하지 않는다. 반대로 semantic claim을 뒷받침할 evidence가 없거나 추가 prose가 제거하는 이해 비용보다 읽기·유지 비용이 크면 설명을 invent하지 않고 중단할 수 있다.
 
 ## Progressive Disclosure
 
-- docstring, comment 또는 module-level explanation을 추가·수정·제거할지 판단할 때 [Documentation](references/documentation.md)을 읽는다.
+다음 판단이 실제로 필요할 때만 [Documentation](references/documentation.md)을 읽는다.
+
+- explanation의 placement, scope 또는 semantic owner가 불명확함
+- canonical policy/contract의 local projection을 판단해야 함
+- rejected alternative, history 또는 stale explanation이 얽힘
+- module-level explanation이 적절한지 판단해야 함
+- machine/runtime/tool-consumed text를 수정할 가능성이 있음
 
 ## Boundaries
 
 - 실행 코드, identifier, type, signature, representation, control/state flow 또는 abstraction을 clarification 명목으로 변경하지 않는다.
 - 코드 자체를 리팩터링해야 이해 비용이 줄어들면 `code-comprehension-refactor`를 사용한다.
 - 함수 이름, type annotation, 다음 statement처럼 code가 이미 직접 표현하는 내용을 prose로 반복하지 않는다.
+- unusual code shape, naming, history 또는 관례만 보고 확인되지 않은 rationale를 만들어내지 않는다.
 - 넓은 architecture·domain policy를 source comment에 복제하지 않는다. caller나 maintainer에게 필요한 local projection만 남긴다.
+- evidence 확인을 위해 target 밖을 읽더라도 그 surface를 수정할 권한이 생기지 않는다.
 - user-facing guide, README, API manual 같은 독립 문서는 이 skill의 scope가 아니다.
 - `noqa`, `type: ignore`, coverage pragma, formatter directive, shebang, encoding cookie와 같은 machine-consumed comment를 일반 설명 comment로 취급하지 않는다.
 - docstring이 reflection, documentation generation, doctest 또는 framework behavior의 contract라면 observable surface를 보존한다.
