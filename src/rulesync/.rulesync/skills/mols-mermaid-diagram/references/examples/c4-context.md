@@ -1,6 +1,8 @@
 # C4 Context
 
-시스템 경계와 외부 actor·dependency가 핵심이면 C4 context diagram을 사용한다. renderer가 지원하지 않으면 flowchart나 text description으로 대체한다.
+> Mermaid의 C4 syntax는 현재 **experimental**이다. Syntax와 property가 바뀔 수 있으므로 실제 target renderer와 현재 공식 문서를 확인한다.
+
+시스템 경계와 외부 actor·dependency가 핵심이면 C4 view를 사용한다. renderer가 지원하지 않으면 architecture, flowchart 또는 text description으로 대체한다.
 
 ```mermaid
 C4Context
@@ -13,13 +15,14 @@ C4Context
     Rel(source, pipeline, "Sends files")
 ```
 
-## Advanced: Context To Containers
+## Context To Containers
 
-context diagram이 시스템 경계와 외부 관계를 설명한다면, 다음 단계에서는 system 내부의 주요 container와 책임을 분리한다. context의 actor와 external system을 container detail에 다시 복사하지 말고, 내부 책임에 집중한다.
+Context view는 system boundary와 외부 관계를 설명하고, Container view는 그 boundary 내부의 주요 runtime·data responsibility를 확대한다. 상위 view의 요소를 기계적으로 반복하지 말고 **현재 zoom level의 relationship을 이해하는 데 필요한 actor와 external system만 유지한다.**
 
 ```mermaid
 C4Container
     title Data pipeline containers
+    Person(operator, "Operator", "Reviews validation results")
     Container_Boundary(pipeline, "Data Pipeline") {
         Container(ingest, "Ingestion", "Python", "Reads source files")
         Container(transform, "Transformation", "dbt", "Builds analytical models")
@@ -30,11 +33,14 @@ C4Container
     Rel(ingest, transform, "Writes staged data")
     Rel(transform, quality, "Publishes model metadata")
     Rel(quality, store, "Approves curated data")
+    Rel(operator, quality, "Reviews validation results")
 ```
 
-## Improvement: Explicit Boundary And Relationship Meaning
+`Operator`는 이 Container view에서 `Quality Checks`와의 interaction이 중요하기 때문에 유지한다. 반대로 내부 관계를 이해하는 데 기여하지 않는 external element는 생략할 수 있다.
 
-개선된 C4는 system boundary, container 책임, relationship의 방향과 message 의미를 명시한다. 단순 component 목록보다 “누가 무엇을 제공하는가”를 읽을 수 있어야 한다.
+## Explicit Boundary And Relationship Meaning
+
+C4의 핵심은 element 수보다 **zoom level, boundary, responsibility와 relationship 의미**다. Relationship label은 단순한 “uses”보다 무엇을 제공하거나 요청하는지 드러낼 때 유용하다.
 
 ```mermaid
 C4Context
@@ -52,9 +58,9 @@ C4Context
     Rel(action_api, coordinator, "Returns action result")
 ```
 
-## Advanced: Component And Dynamic Views
+## Component And Dynamic Views
 
-C4는 여러 zoom/view를 지원할 수 있지만 exact support는 target renderer와 현재 Mermaid 문서를 확인한다. 같은 질문을 여러 view에 반복하지 않고 zoom level을 명확히 한다.
+같은 질문을 여러 view에 반복하지 않고 zoom level을 명확히 한다. Exact syntax와 support는 target renderer와 현재 Mermaid 문서를 확인한다.
 
 ```mermaid
 C4Component
@@ -85,9 +91,11 @@ C4Dynamic
     RelIndex(4, api, operator, "Returns report")
 ```
 
-## Advanced: Deployment View
+Dynamic view의 번호는 source가 뒷받침하는 interaction order를 표현할 때만 사용한다.
 
-C4 Deployment는 container가 실제 execution environment에 어떻게 배치되는지 보여준다. logical container diagram과 deployment topology를 한 view에 섞지 않는다.
+## Deployment View
+
+Deployment view는 logical container가 실제 execution environment에 어떻게 배치되는지 보여준다. Logical responsibility와 deployment topology를 하나의 view에서 임의로 섞지 않는다.
 
 ```mermaid
 C4Deployment
@@ -113,4 +121,10 @@ C4Deployment
     Rel(worker, store, "Records result", "SQL")
 ```
 
-C4 support는 target-dependent하다. 실제 render를 확인하지 못했다면 support를 단정하지 않고, portable 문서에는 architecture, flowchart 또는 text fallback을 제공한다.
+## Rules
+
+- 먼저 Context, Container, Component, Dynamic, Deployment 중 **현재 질문의 zoom level**을 정한다.
+- 상위 view의 element를 completeness를 위해 반복하지 않는다. 현재 view의 관계를 이해하는 데 필요한 context만 유지한다.
+- zoom level을 바꾸면서 source에 없는 component, container, deployment 또는 interaction을 발명하지 않는다.
+- experimental syntax의 exact behavior는 local example이 아니라 현재 공식 문서와 target renderer가 소유한다.
+- 실제 render를 확인하지 못했다면 C4 support를 단정하지 않는다.
