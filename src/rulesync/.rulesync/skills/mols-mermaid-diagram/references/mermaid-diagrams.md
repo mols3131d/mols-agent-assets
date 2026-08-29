@@ -72,12 +72,13 @@ Diagram의 edge, 위치와 notation은 사실 주장처럼 읽힐 수 있다.
 
 ## Viewport Composition
 
-기본 reading surface는 **약 3:4의 portrait viewport**로 가정한다. 이는 diagram 자체의 aspect ratio나 고정 pixel 크기 요구가 아니라 desktop과 mobile에서 폭을 과도하게 쓰지 않기 위한 composition 기준이다.
+기본 reading surface는 **width:height가 약 3:4인 portrait viewport**로 가정한다. 이는 diagram 자체의 aspect ratio나 고정 pixel 크기 요구가 아니라 desktop과 mobile에서 폭을 과도하게 쓰지 않기 위한 composition 기준이다.
 
 - 전체 diagram을 한 viewport 안에 축소해 넣을 필요는 없다. Vertical scroll은 정상적인 reading flow로 허용한다.
 - 같은 수준의 stage, lane, domain 또는 반복 flow를 하나의 긴 수평 chain으로 이어 붙이기보다 **peer group 단위로 세로로 쌓는 구성을 우선한다.**
 - group 내부의 자연스러운 direction은 유지한다. 폭을 줄이기 위해 모든 내부 flow를 `TB`로 평탄화하지 않는다.
 - horizontal scroll이나 글자를 읽기 어려운 수준의 downscaling이 필요한 폭은 피한다. Renderer scaling을 composition 문제의 해결책으로 사용하지 않는다.
+- viewport preference 때문에 source가 요구하는 specific node-level relationship, direction 또는 order를 group-level 관계로 바꾸지 않는다.
 - 선택한 grammar나 layout engine이 원하는 상·하위 direction 조합을 안정적으로 유지하지 못하면 node나 label을 압축하기보다 overview/detail 또는 여러 diagram으로 분리한다.
 - sequence participant, chronology, planning surface처럼 정보 구조상 넓은 canvas가 본질적인 경우에는 semantic fidelity와 readability가 portrait preference보다 우선한다.
 
