@@ -28,13 +28,13 @@ tests/
 
 이 예에서 `src/billing/invoice.py`의 주요 테스트는 `tests/billing/test_invoice.py`에서 찾을 수 있습니다. Filename 자체보다 중요한 것은 **source path와 test path 사이의 대응 관계가 명확하고 반복 가능하다는 점**입니다.
 
-Test layout은 source architecture를 새로 정의하지 않습니다. 이미 선택된 source structure를 탐색 단서로 재사용하는 것이 핵심입니다.
+Test layout은 source architecture를 새로 정의하지 않습니다. 이미 선택된 source structure를 탐색 단서로 재사용하는 것이 핵심입니다. Path가 대응된다는 사실도 white-box test나 implementation detail 중심의 assertion을 요구하지 않습니다.
 
 ## Grow from File to Bundle
 
 하나의 source unit에 대한 테스트가 작을 때는 **하나의 test file에서 시작**하는 편이 단순합니다.
 
-테스트가 늘어나 한 파일에서 서로 다른 behavior와 scenario를 탐색하기 어려워지면, 같은 대응 위치를 유지한 채 **test bundle directory로 확장**할 수 있습니다.
+테스트가 늘어나 한 파일에서 서로 다른 behavior와 scenario를 탐색하기 어려워지면, 같은 대응 위치를 유지한 채 **test bundle directory로 확장**할 수 있습니다. 보통 bundle은 기존 단일 test file을 대체합니다.
 
 ```text
 src/
@@ -67,12 +67,17 @@ Mirroring은 **exact filename schema가 아니라 대응 원칙**입니다. Lang
 
 예를 들어 `invoice.py`에 대한 bundle은 환경에 따라 `invoice/`, `test_invoice/`, `invoice_tests/`처럼 표현할 수 있습니다. 중요한 것은 repository 안에서 source와 test 사이의 대응을 쉽게 복원할 수 있고 test discovery와 tooling을 방해하지 않는 것입니다.
 
-Test를 source 옆에 colocate하는 ecosystem이라면 별도의 `tests/` tree를 만들 필요가 없습니다. 같은 원칙을 sibling test file이나 local test directory에 적용할 수 있습니다.
+Test를 source 옆에 colocate하는 ecosystem이라면 별도의 `tests/` tree를 만들 필요가 없습니다. 작은 테스트는 sibling file로 두고, 커지면 같은 local boundary의 bundle로 확장하는 식으로 같은 원칙을 적용할 수 있습니다.
 
 ```text
+# file form
 billing/
 ├─ invoice.ts
-├─ invoice.test.ts
+└─ invoice.test.ts
+
+# bundle form
+billing/
+├─ invoice.ts
 └─ invoice.test/
    ├─ create.test.ts
    └─ failures.test.ts
