@@ -59,19 +59,22 @@ Handoff의 상대는 반드시 다른 agent일 필요도 없습니다. 같은 ag
 | --- | --- |
 | 현재 목표와 scope | 다음 작업자가 다른 문제를 풀기 시작하지 않게 함 |
 | 완료·진행·남은 범위 | 이미 끝난 일을 반복하거나 미완료를 완료로 오인하지 않게 함 |
-| 중요한 decision과 rationale | source만 보고 다시 같은 설계 논쟁을 반복하는 비용을 줄임 |
+| 중요한 decision과 짧은 evidence basis | 같은 결정을 다시 조사하는 비용을 줄이되 reasoning transcript를 만들지 않음 |
 | validation과 current health | 현재 known-good / known-broken 상태와 확인 방법을 복구함 |
-| 실패한 접근과 이유 | 같은 dead end를 반복하지 않게 함 |
+| 적용 기준점 | revision, task state, environment 등 handoff가 설명하던 상태를 현재와 비교할 단서를 줌 |
+| 실패한 접근과 관찰된 실패 이유 | 같은 dead end를 반복하지 않게 함 |
 | blocker와 residual uncertainty | 아직 사실로 확정되지 않은 것을 명확히 남김 |
 | 다음 시작점 | 다음 실행이 탐색보다 실제 작업으로 빠르게 진입하게 함 |
 | 관련 source와 artifact reference | canonical 내용이나 큰 evidence를 복제하지 않고 찾아갈 수 있게 함 |
 
-특히 **실패한 접근의 이유**는 Git history나 최종 source에서 사라지기 쉽습니다. 재시도 비용이 크다면 짧게 남길 가치가 있습니다.
+적용 기준점은 고정 metadata schema를 뜻하지 않습니다. Git commit이나 ref가 유용한 작업도 있고, task version·dataset·environment처럼 다른 기준점이 더 자연스러운 작업도 있습니다. **다음 실행이 handoff의 freshness를 싸게 판단하는 데 필요한 경우에만** 남기면 됩니다.
+
+실패한 접근도 전체 시도 과정을 기록할 필요는 없습니다. 재시도 비용이 큰 경우에 **무엇을 시도했고 어떤 관찰 때문에 접었는지** 정도만 남기는 편이 handoff 목적에 맞습니다.
 
 반대로 다음 내용은 보통 handoff의 핵심이 아닙니다.
 
 - 매 command와 tool call의 전체 실행 로그
-- conversation transcript 전체
+- conversation이나 reasoning transcript 전체
 - Git diff나 commit history를 그대로 옮긴 변경 목록
 - canonical documentation에 이미 있는 규칙의 복제
 - 쉽게 다시 계산하거나 검색할 수 있는 raw observation
@@ -107,11 +110,12 @@ Durable artifact를 썼다는 사실만으로 continuation이 안전해지는 �
 - 다음 작업의 판단을 바꾸는 material delta를 우선 남깁니다.
 - canonical source가 있는 내용은 복제하기보다 reference합니다.
 - 여러 artifact가 있다면 어느 것이 현재 상태인지 알아볼 수 있게 합니다.
+- freshness 판단에 기준점이 필요하면 현재 revision이나 task state를 가볍게 연결합니다.
 - 작업이 멈춘 이유와 다음 시작점이 중요하다면 명시합니다.
 
 ### 다시 시작할 때
 
-Handoff artifact를 곧바로 현재 truth로 가정하지 않습니다. 먼저 source, Git state, canonical documentation이나 필요한 runtime 상태와 비교해 **artifact가 아직 현재 상태를 설명하는지** 확인합니다.
+Handoff artifact를 곧바로 현재 truth로 가정하지 않습니다. 먼저 적용 기준점과 source, Git state, canonical documentation이나 필요한 runtime 상태를 비교해 **artifact가 아직 현재 상태를 설명하는지** 확인합니다.
 
 현재 health가 continuation에 중요하다면 가장 작은 유효한 verification을 다시 실행할 수도 있습니다. 예를 들어 이전 handoff가 `tests passing`이라고 적고 있어도 이후 branch가 움직였거나 environment가 달라졌다면 그 문장만 믿고 계속하지 않습니다.
 
@@ -139,7 +143,7 @@ RPI workflow를 사용한다면 Research, Plan, Review 같은 기존 artifact가
 
 Handoff artifact도 유지비가 있습니다. 작업 상태가 자주 바뀌는데 artifact를 계속 동기화해야 한다면 기록 비용이 continuation에서 절약하는 비용보다 커질 수 있습니다.
 
-따라서 모든 작은 변화마다 기록하기보다 **다음 실행의 판단이나 시작점을 바꾸는 material state가 달라졌을 때** 갱신하는 편이 자연스럽습니다.
+따라서 handoff probability, 재탐색 비용과 작업 규모에 비례해 기록하고, 모든 작은 변화보다 **다음 실행의 판단이나 시작점을 바꾸는 material state가 달라졌을 때** 갱신하는 편이 자연스럽습니다. Source와 Git만으로 충분하면 별도 artifact를 만들지 않을 수도 있습니다.
 
 작업이 끝난 뒤 artifact를 어떻게 처리할지도 별도 문제입니다. 현재와 미래의 판단을 계속 바꾸는 durable knowledge가 생겼다면 적절한 canonical owner로 승격할 수 있고, 단순한 working state라면 repository의 artifact lifecycle에 따라 유지·archive·삭제할 수 있습니다.
 
@@ -149,7 +153,7 @@ Handoff artifact도 유지비가 있습니다. 작업 상태가 자주 바뀌는
 
 오래된 progress나 plan이 현재 source와 다르면 다음 작업자가 잘못된 상태에서 시작할 수 있습니다.
 
-**대응:** handoff를 현재 truth가 아니라 resume candidate로 취급하고, continuation 전에 중요한 state와 verification을 현재 source에 맞춰 확인합니다. Material change가 생기면 같은 내용을 여러 곳에 복제하기보다 현재 owner를 갱신합니다.
+**대응:** handoff를 현재 truth가 아니라 resume candidate로 취급하고, 적용 기준점과 중요한 state·verification을 현재 source에 맞춰 확인합니다. Material change가 생기면 같은 내용을 여러 곳에 복제하기보다 현재 owner를 갱신합니다.
 
 ### Artifact가 많아지면 새로운 탐색 문제가 생길 수 있습니다
 
@@ -161,19 +165,13 @@ Research, plan, note, review, task state가 계속 늘어나면 어느 것이 �
 
 Durable하다는 이유로 이전 판단이 더 옳아지는 것은 아닙니다. 잘못된 assumption도 잘 정리된 handoff를 통해 그대로 전달될 수 있습니다.
 
-**대응:** decision과 evidence를 구분하고 residual uncertainty를 숨기지 않습니다. 현재 source나 새 evidence와 충돌하면 handoff를 수정하거나 폐기합니다.
+**대응:** decision과 evidence basis를 구분하고 residual uncertainty를 숨기지 않습니다. 현재 source나 새 evidence와 충돌하면 handoff를 수정하거나 폐기합니다.
 
 ### Canonical knowledge와 working state가 섞일 수 있습니다
 
 Handoff에 project rule이나 architecture truth를 복제하면 시간이 지나며 canonical source와 다른 두 번째 authority가 생길 수 있습니다.
 
 **대응:** handoff에는 현재 작업에 필요한 state와 reference를 남기고, 장기적으로 유효한 knowledge는 해당 canonical owner가 소유하게 합니다.
-
-### 기록 자체가 작업보다 커질 수 있습니다
-
-작은 작업까지 세세하게 기록하면 artifact maintenance가 실제 implementation보다 비싸질 수 있습니다.
-
-**대응:** handoff probability, 재탐색 비용과 작업 규모에 비례해 기록합니다. Source와 Git만으로 충분하면 별도 artifact를 만들지 않습니다.
 
 ### 민감한 context가 불필요하게 지속될 수 있습니다
 
@@ -205,4 +203,4 @@ Conversation에만 있던 credential, 개인 정보나 민감한 운영 세부�
 
 ## Short Form
 
-> **긴 작업에서 다시 알아내는 비용이 큰 목표·진행·결정·검증·실패·다음 시작점을 예상 handoff boundary를 버틸 최소한의 durable surface에 남깁니다. 재개할 때는 그 artifact를 현재 truth로 맹신하지 않고 source와 state에 맞는지 확인한 뒤 이어갑니다.**
+> **긴 작업에서 다시 알아내는 비용이 큰 목표·진행·결정·검증·실패·다음 시작점과 필요한 상태 기준점을 예상 handoff boundary를 버틸 최소한의 durable surface에 남깁니다. 재개할 때는 그 artifact를 현재 truth로 맹신하지 않고 source와 state에 맞는지 확인한 뒤 이어갑니다.**
