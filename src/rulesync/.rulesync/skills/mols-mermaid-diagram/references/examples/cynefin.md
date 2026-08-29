@@ -32,7 +32,7 @@ cynefin-beta
 
 ## Domain Meaning Is Contextual
 
-Mermaid 11.17.x는 `complex`, `complicated`, `clear`, `chaotic`, `confusion`을 fixed keyword로 제공하지만 domain assignment는 source-backed sense-making judgment다.
+Current Mermaid beta grammar는 `complex`, `complicated`, `clear`, `chaotic`, `confusion`을 fixed keyword로 제공하지만 domain assignment는 source-backed sense-making judgment다.
 
 - **Clear**: cause/effect와 대응이 충분히 명확해 standard/best practice를 적용할 수 있는 context.
 - **Complicated**: cause/effect는 알 수 있지만 expertise나 analysis가 필요한 context.
@@ -42,7 +42,7 @@ Mermaid 11.17.x는 `complex`, `complicated`, `clear`, `chaotic`, `confusion`을 
 
 ## Framework Versus Renderer Boundary
 
-Current Cynefin sources와 Mermaid upstream correction 논의는 canonical central domain을 **Aporetic**으로 구분한다. Mermaid 11.17.x의 `confusion` keyword/label은 이 framework distinction을 완전히 표현하지 못하는 **beta notation boundary**다.
+Current Cynefin sources와 Mermaid upstream correction 논의는 canonical central domain을 **Aporetic**으로 구분한다. Current Mermaid beta renderer의 `confusion` keyword/label은 이 framework distinction을 완전히 표현하지 못하는 **notation boundary**다.
 
 - target renderer가 요구하는 syntax를 맞추기 위해 `confusion`을 사용할 수 있지만, source가 `Aporetic`을 말한다면 이를 synonym처럼 조용히 바꾸지 않는다.
 - framework terminology가 load-bearing하면 companion prose/table에서 source term과 Mermaid rendering term을 명시적으로 구분한다.
