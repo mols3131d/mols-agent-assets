@@ -39,35 +39,35 @@ Mermaid diagram은 **관계·절차·책임·상태·시간 순서·구조**를 
 
 특정 type의 현재 declaration과 상세 문법이 필요하면 local table을 확장하기보다 공식 문서와 target renderer를 확인한다.
 
-## Type Boundaries
+## Selection Boundaries
 
-비슷해 보이는 type 사이에서는 **무엇이 load-bearing information인지**로 선택한다.
+비슷해 보이는 표현 사이에서는 **무엇이 load-bearing information인지**로 선택한다. 아래 항목은 새로운 Mermaid type 이름이 아니라 선택 질문이다.
 
-| Boundary | 첫 번째 표현이 적합한 경우 | 두 번째 표현이 적합한 경우 |
+| Selection boundary | 첫 번째 표현이 적합한 경우 | 두 번째 표현이 적합한 경우 |
 | --- | --- | --- |
-| Hierarchy ↔ Dependency graph | single-parent, acyclic hierarchy 자체가 핵심 | shared dependency, multi-parent 또는 cycle이 핵심 |
-| Logical architecture ↔ Deployment view | 무엇이 무엇과 연결되고 어떤 boundary가 있는지가 핵심 | 어디에 배치되고 zone·host·artifact·replica가 무엇인지가 핵심 |
-| ER ↔ Physical schema detail | entity와 cardinality가 핵심 | SQL type, constraint, index와 column-level contract가 핵심 |
-| Swimlanes ↔ Ownership hierarchy | process 안에서 owner와 handoff가 핵심 | 정적인 reporting, coverage 또는 ownership 구조가 핵심 |
-| Kanban ↔ Process flow | 현재 work state의 snapshot이 핵심 | ordered transition, condition 또는 handoff가 핵심 |
-| Journey ↔ Process/Timeline | human experience와 actor involvement가 핵심 | 절차 자체나 chronology가 핵심 |
-| Class ↔ ER | inheritance, realization, composition, operation 같은 typed relation이 핵심 | entity, key와 cardinality가 핵심 |
-| Wardley ↔ Runtime architecture | value chain과 evolution positioning이 핵심 | runtime topology와 dependency가 핵심 |
-| Timeline ↔ Gantt | 사건의 chronology가 핵심 | duration, overlap과 dependency가 핵심 |
+| Hierarchy (`Mindmap`/`TreeView`) ↔ dependency-oriented `Flowchart` | single-parent, acyclic hierarchy 자체가 핵심 | shared dependency, multi-parent 또는 cycle이 핵심 |
+| Logical topology (`Architecture`/`C4`/`Flowchart`) ↔ deployment placement | 무엇이 무엇과 연결되고 어떤 boundary가 있는지가 핵심 | 어디에 배치되고 zone·host·artifact·replica가 무엇인지가 핵심; target이 적절한 deployment 표현을 지원하지 않으면 text/table fallback을 검토 |
+| Conceptual `ER` ↔ physical schema detail | entity와 cardinality가 핵심 | SQL type, constraint, index와 column-level contract가 핵심; 필요하면 schema/table 표현을 사용 |
+| Process ownership (`Swimlanes`) ↔ ownership hierarchy (`Mindmap`/`TreeView`) | process 안에서 owner와 handoff가 핵심 | 정적인 reporting, coverage 또는 ownership 구조가 핵심 |
+| `Kanban` ↔ process flow (`Flowchart`/`Swimlanes`) | 현재 work state의 snapshot이 핵심 | ordered transition, condition 또는 handoff가 핵심 |
+| `Journey` ↔ process/chronology (`Flowchart`/`Timeline`) | human experience와 actor involvement가 핵심 | 절차 자체나 chronology가 핵심 |
+| `Class` ↔ `ER` | inheritance, realization, composition, operation 같은 typed relation이 핵심 | entity, key와 cardinality가 핵심 |
+| `Wardley` ↔ runtime architecture (`Architecture`/`C4`/`Flowchart`) | value chain과 evolution positioning이 핵심 | runtime topology와 dependency가 핵심 |
+| `Timeline` ↔ `Gantt` | 사건의 chronology가 핵심 | duration, overlap과 dependency가 핵심 |
 
-Type boundary가 애매하면 더 많은 syntax를 넣기보다 독자가 답해야 할 질문을 다시 좁힌다.
+Selection boundary가 애매하면 더 많은 syntax를 넣기보다 독자가 답해야 할 질문을 다시 좁힌다.
 
 ## Readability Budgets
 
 아래 수치는 **문법 validity limit가 아니라 분리 여부를 다시 검토하는 soft trigger**다. Target viewport, label 길이와 renderer가 더 중요하며 숫자 초과만으로 실패로 판정하지 않는다.
 
-| Type | Review trigger | 우선 검토 |
+| Structure / type | Review trigger | 우선 검토 |
 | --- | --- | --- |
 | Flowchart | 한 decision에서 4개 이상 branch | decision 분해, rule table, detail split |
 | Sequence | participant 약 5개 초과, message 약 12개 초과, fragment nesting 2단계 이상 | scenario별 split, happy/failure path 분리 |
 | State | transition 수가 state 수의 약 2배를 크게 넘음 | lifecycle concern별 분리 |
-| Hierarchy | depth 약 4 초과 또는 sibling breadth 약 5 초과 | subtree detail 분리 |
-| Dependency graph | node 약 9개 또는 edge 약 14개 초과 | subsystem detail, 반복 leaf aggregate |
+| Hierarchy (`Mindmap`/`TreeView`) | depth 약 4 초과 또는 sibling breadth 약 5 초과 | subtree detail 분리 |
+| Dependency-heavy Flowchart | node 약 9개 또는 edge 약 14개 초과 | subsystem detail, 반복 leaf aggregate |
 | Gantt | task 약 12개 초과 | phase overview + sub-plan |
 | Kanban | column 약 5개 또는 visible card 약 12개 초과 | backlog aggregate, board 분리 |
 | Journey | stage 약 6개 초과 | journey phase 분리 |
@@ -98,7 +98,7 @@ Diagram의 edge, 위치와 notation은 사실 주장처럼 읽힐 수 있다.
 복잡도를 줄일 때는 domain fact를 무작위로 삭제하지 않고 다음 순서로 검토한다.
 
 1. 의미를 전달하지 않는 decoration과 중복 presentation을 먼저 제거한다.
-1. 같은 semantic role과 relationship을 반복하는 exact duplicate를 병합한다.
+1. exact duplicate는 **identity, responsibility, ownership, state, provenance, boundary와 relationship 중 독립 의미가 남지 않을 때만** 병합한다.
 1. 개별 identity가 핵심이 아닌 반복 leaf group은 의미를 보존하는 aggregate로 축약하고, 무엇을 묶었는지 드러낸다.
 1. 핵심 질문에 직접 기여하지 않는 cross-cutting detail은 note, table 또는 detail diagram으로 이동한다.
 1. 그래도 관계 추적이 어렵다면 overview와 detail로 분리한다.
