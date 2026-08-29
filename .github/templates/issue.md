@@ -1,3 +1,11 @@
+```yaml
+type: "{{ type }}"
+scope: "{{ scope }}"
+{% if priority %}
+priority: "{{ priority }}"
+{% endif %}
+```
+
 ## Summary
 
 <!--
