@@ -118,12 +118,12 @@ Literal mirroring은 source와 test의 natural boundary가 비슷할 때 특히 
 
 Bundle 전환에는 보편적인 threshold가 없습니다. 다만 **관련 group의 크기**와 **같은 directory에서 함께 훑게 되는 file density**는 구조를 다시 비교할 때 유용한 신호가 될 수 있습니다.
 
-이 패턴에서 제안하는 경험적 출발점은 다음과 같습니다.
+이 패턴에서 제안하는 실용적인 참고 범위는 다음과 같습니다.
 
 | Signal | Bundle을 함께 비교해 볼 만한 구간 |
 | --- | --- |
-| 같은 prefix나 주제를 공유하는 관련 test files | 대략 **4~6개부터** |
-| 같은 directory에서 함께 훑게 되는 files | 대략 **8~12개부터** |
+| 같은 prefix나 주제를 공유하는 관련 test files | 대략 **4~6개 안팎이 되면** |
+| 같은 directory에서 함께 훑게 되는 files | 대략 **8~12개 안팎이 되면** |
 
 이 숫자는 framework standard나 전환 규칙이 아니라 **관찰 지점**입니다. Directory 한 단계를 추가하는 비용보다 grouping에서 얻는 탐색 이점이 커지는지 다시 볼 시점을 제안합니다.
 
@@ -132,7 +132,7 @@ Bundle 전환에는 보편적인 threshold가 없습니다. 다만 **관련 grou
 - 특정 group만 사용하는 fixture, helper, data 또는 snapshot이 생기면 **그 local context를 group 가까이에 모으는 구조를 고려합니다.**
 - bundle을 만들어도 파일이 쉽게 구분되지 않거나 navigation step만 늘어난다면 **sibling files를 유지합니다.**
 
-예를 들어 `test_invoice_*`가 4~6개 반복되면 `invoice/`가 prefix를 구조로 압축하는 데 도움이 될 수 있습니다. 반대로 관련 파일이 6개여도 directory 전체가 그 group 하나뿐이고 쉽게 훑어진다면 sibling files가 더 단순할 수 있습니다.
+예를 들어 `test_invoice_*`가 4~6개 정도 반복되면 `invoice/`가 prefix를 구조로 압축하는 데 도움이 될 수 있습니다. 반대로 관련 파일이 6개여도 directory 전체가 그 group 하나뿐이고 쉽게 훑어진다면 sibling files가 더 단순할 수 있습니다.
 
 관련 파일이 3~4개뿐이어도 같은 directory에 서로 다른 주제의 파일이 10개 안팎 섞여 있거나, 그 group만 쓰는 fixture·snapshot·helper가 많다면 bundle이 scan 범위를 줄이고 local context를 가까이 모으는 데 도움이 될 수 있습니다.
 
@@ -183,14 +183,14 @@ tests/
 
 `single file → sibling files → bundle`은 흔한 growth path일 수 있지만 모든 단계를 거치거나 특정 개수에서 자동으로 전환할 필요는 없습니다.
 
-### Limits
+## Limits
 
-이 패턴의 이점은 filesystem이 실제 navigation에 얼마나 중요한지와 source tree가 얼마나 안정적인 탐색 단서를 제공하는지에 따라 달라집니다.
+이 패턴의 이점은 filesystem이 실제 navigation에 얼마나 중요한지와 source tree가 얼마나 좋은 탐색 단서를 제공하는지에 따라 달라집니다.
 
-- Source tree 자체가 불안정하거나 테스트의 자연스러운 경계를 잘 보여주지 못한다면 **literal mirroring을 약하게 하고 더 안정적인 feature·behavior·domain boundary를 고려합니다.**
+Source tree가 테스트의 자연스러운 경계를 잘 보여주지 못한다면 앞의 alternate alignment가 더 적합할 수 있습니다. 그 밖에는 다음 환경 조건을 함께 봅니다.
+
 - IDE search, symbol navigation, test runner filtering처럼 더 빠른 탐색 수단이 이미 충분하다면 **filesystem hierarchy를 추가하는 이점이 실제로 있는지 먼저 비교합니다.**
 - Framework나 language의 test discovery·import convention과 충돌한다면 **ecosystem convention을 우선합니다.**
-- Mirroring 때문에 source implementation detail과 test organization이 함께 흔들린다면 **public behavior나 contract처럼 더 안정적인 경계를 고려합니다.**
 
 이 패턴은 test taxonomy, test pyramid, fixture architecture나 unit/integration의 의미를 정하지 않습니다. **어떤 테스트가 존재해야 하는가보다, 이미 존재하는 테스트를 filesystem에서 어떻게 찾기 쉽게 둘 것인가**에 초점을 둡니다.
 
