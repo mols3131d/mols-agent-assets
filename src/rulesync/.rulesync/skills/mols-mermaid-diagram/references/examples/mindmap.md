@@ -4,7 +4,7 @@
 
 하나의 중심 개념을 **single-root parent-child hierarchy**로 분해하거나 연관 개념을 계층적으로 묶는 것이 핵심이면 `mindmap`을 사용한다. Mindmap의 edge는 기본적으로 hierarchy/association을 나타내며 process transition, causality, dependency, ownership 또는 decision rule을 자동으로 의미하지 않는다.
 
-실행 순서·조건 분기·handoff가 질문이면 Flowchart/Swimlanes, shared dependency·multi-parent·cycle이 핵심이면 Flowchart나 관계 table, directory-like literal hierarchy가 핵심이면 TreeView를 우선 검토한다.
+실행 순서·조건 분기·handoff가 질문이면 Flowchart/Swimlanes, shared dependency·multi-parent·cycle이 핵심이면 Flowchart나 관계 table을 우선 검토한다. Directory-like literal hierarchy가 핵심이면 target이 지원하는 경우 TreeView, 그렇지 않으면 outline/table이 더 직접적일 수 있다.
 
 ## Basic: Source-Backed Concept Hierarchy
 
