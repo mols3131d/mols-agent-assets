@@ -108,6 +108,26 @@
         "Rewrites or reduces the comment around the current durable invariant and consequence, or removes obsolete details that add no value.",
         "Does not change executable code while correcting the explanation."
       ]
+    },
+    {
+      "id": "implicit-maintainer-comment-discovery",
+      "mode": "skill",
+      "prompt": "Make this source easier for future maintainers without changing executable code. The implementation first preserves the original result or exception and only then runs staging cleanup. Cleanup can fail, and that failure must never replace the original result or exception. The code structure is already appropriate; choose the smallest source-level clarification that is warranted.",
+      "assertions": [
+        "Adds or improves a code-local comment explaining the ordering consequence even though the prompt does not explicitly request a comment.",
+        "Does not choose a no-op merely because the executable code is already structurally clear when a durable maintainer-relevant invariant remains hidden.",
+        "Does not refactor executable code or narrate obvious statements."
+      ]
+    },
+    {
+      "id": "selective-positive-comment",
+      "mode": "skill",
+      "prompt": "Review this source for maintainability without changing executable code. `user = load_user(id)` is self-explanatory. A later uncached permission lookup is intentional because permission changes must become visible within the same request.",
+      "assertions": [
+        "Leaves the self-explanatory user load without a redundant comment.",
+        "Adds or improves a comment near the uncached permission lookup that explains the current visibility constraint or consequence.",
+        "Selects the high-value explanation instead of either commenting everything or returning a global no-op."
+      ]
     }
   ]
 }
