@@ -2,7 +2,7 @@
 
 > Block syntax의 실제 지원 여부와 현재 세부 문법은 target renderer와 Mermaid 공식 문서를 확인한다. Local example은 `block` declaration을 사용하며, 오래된 source의 `block-beta`를 그대로 호환된다고 가정하지 않는다.
 
-Block diagram은 relationship뿐 아니라 **author-controlled 2D arrangement**가 readability에 중요한 system overview에 사용한다. Grid 위치는 기본적으로 presentation constraint이며, source가 layer·zone·physical placement처럼 위치 자체에 의미를 부여한 경우가 아니면 domain fact로 해석하지 않는다.
+Block diagram은 relationship뿐 아니라 **author-controlled grid arrangement**가 readability에 중요한 system overview에 사용한다. 여기서 author control은 row·column occupancy와 relative placement를 뜻하며 exact pixel coordinate, port 또는 fixed geometry contract를 뜻하지 않는다. Grid 위치는 기본적으로 presentation constraint이며, source가 layer·zone·physical placement처럼 위치 자체에 의미를 부여한 경우가 아니면 domain fact로 해석하지 않는다.
 
 ## Basic: Grid Layout
 
@@ -85,8 +85,9 @@ Block diagram은 placement control이 강하지만 **placement가 relationship�
 - **Block**: 특정 상대 배치와 grouping을 직접 제어하는 것이 readability의 핵심일 때.
 - **Flowchart**: process, decision, dependency path와 자동 relationship layout이 핵심일 때.
 - **Architecture**: service/resource topology와 architecture boundary를 해당 notation으로 직접 표현하는 것이 핵심일 때.
+- **Table / axis-oriented representation**: row·column 좌표, 정량 위치 또는 축 자체가 load-bearing data일 때. Block grid 위치만으로 그 의미를 암시하지 않는다.
 
-Block의 grid를 유지하려고 relationship이나 grouping을 왜곡해야 한다면 다른 type이나 overview/detail split을 우선한다. Portrait reading viewport에서 과도한 horizontal spread가 생기면 column 수, grouping 또는 diagram split을 먼저 검토하고 unreadable downscaling로 해결하지 않는다.
+Block의 grid를 유지하려고 relationship이나 grouping을 왜곡해야 한다면 다른 type이나 overview/detail split을 우선한다. Exact physical geometry나 coordinate가 핵심이면 span·`space`로 근사하지 말고 그 정보를 명시적으로 표현할 수 있는 다른 representation을 사용한다. Portrait reading viewport에서 과도한 horizontal spread가 생기면 column 수, grouping 또는 diagram split을 먼저 검토하고 unreadable downscaling로 해결하지 않는다.
 
 ## Renderer-Sensitive Review
 
@@ -102,7 +103,7 @@ Block diagram은 **syntax validity와 visual stability를 별도로 검증**한�
 
 ## Rules
 
-- Grid arrangement는 기본적으로 presentation constraint다.
+- Grid arrangement는 기본적으로 presentation constraint이며 exact geometry contract가 아니다.
 - Composite block을 layout wrapper로 사용할 수 있지만 source에 없는 containment·subsystem·boundary 의미를 부여하지 않는다.
 - Composite ID, visible label과 semantic boundary를 구분한다.
 - Span과 `space`는 layout control이며 domain magnitude나 missing entity를 뜻하지 않는다.
