@@ -60,6 +60,7 @@
 ## Current
 
 - 진행: **24/24 완료**, 파일별 심층 RPI 수렴 완료
+- 전체 package consistency review: **완료** — README index 24개와 tracker를 대조하고 PR diff가 tracker + README + 24 example 범위인지 확인
 - Batch 운영: 최대 5개씩 진행, 파일별 RPI는 독립·순차 수행
 - 완료: `architecture-diagram.md`
 - 완료: `c4-diagrams.md` — 리뷰 → 개선 → 재리뷰 완료
@@ -85,4 +86,4 @@
 - 완료: `state-diagram.md` — 심층 RPI 완료; official State docs와 current renderer/layout issues를 교차 검토하고 state/process boundary, initial/final scope, choice/fork/join, composite-state scope와 overview/detail fidelity를 재설계
 - 완료: `class-diagram.md` — 심층 RPI 완료; official Class docs와 current generic issues를 교차 검토하고 stable class identity, UML relation strength, multiplicity, generic identity, member excerpt와 namespace boundary를 재설계
 - 완료: `er-diagram.md` — 심층 RPI 완료; official ER docs와 current parser issue를 교차 검토하고 grain, cardinality, identifying/non-identifying relation, label perspective, key/nullability, attribute excerpt와 input-safety gate를 재설계
-- 다음: **24개 example 전체 package 최종 리뷰 및 PR 수렴 검증**
+- 다음: **PR #178 최종 리뷰 및 merge decision**
