@@ -48,6 +48,12 @@ Intent는 Mermaid token이 아니라 skill-level instruction이다.
 
 색상을 제거해도 intent가 읽혀야 한다.
 
+## Focal Emphasis
+
+- strong emphasis는 보통 하나의 focal element나 path에 사용한다. 둘이 필요하면 둘 사이의 비교나 긴장이 핵심 질문에 직접 기여해야 한다.
+- 3개 이상의 요소를 모두 강하게 강조해야 한다면 `classDef`를 늘리기보다 핵심 질문, grouping 또는 diagram 분리가 필요한지 먼저 검토한다.
+- 강조는 이미 존재하는 semantic difference를 빠르게 찾게 해야 하며, 강조 자체로 새로운 중요도나 상태를 만들지 않는다.
+
 ## Structural Styling
 
 - 핵심 경로는 source 순서와 layout 방향에서 자연스럽게 읽히게 배치한다.
@@ -110,4 +116,4 @@ flowchart LR
 - 색상을 제거해도 핵심 의미가 유지되는가?
 - shape, line, position과 label이 실제 semantic difference를 나타내는가?
 - style보다 정보 구조를 먼저 개선했는가?
-- 강조가 많다면 diagram을 분리해야 하지 않는가?
+- strong emphasis가 3개 이상이면 diagram을 분리하거나 질문을 좁혀야 하지 않는가?
