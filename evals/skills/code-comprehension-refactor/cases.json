@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "compact-positional-contract",
+      "mode": "skill",
+      "prompt": "This five-line contract object is short, but each tuple position and boolean flag must be decoded from another definition. Make it easier to understand without changing behavior.",
+      "assertions": [
+        "Treats the compact representation as a possible comprehension bottleneck even though the code is short.",
+        "Prefers a behavior-preserving representation change that exposes roles or domain meaning when such a change is locally safe.",
+        "Does not claim that more lines or a new class are inherently better."
+      ]
+    },
+    {
+      "id": "boolean-sentinel-config",
+      "mode": "skill",
+      "prompt": "A local configuration uses several booleans and None as overloaded mode signals. Refactor it only if understanding can be improved without changing callers or runtime behavior.",
+      "assertions": [
+        "Recognizes hidden flag or sentinel conventions as reconstruction cost.",
+        "Considers named or domain-shaped existing representations before adding new abstractions.",
+        "Preserves caller-visible contracts and observable behavior."
+      ]
+    },
+    {
+      "id": "meaningless-wrapper-chain",
+      "mode": "skill",
+      "prompt": "Understanding this path requires opening three one-line wrappers that only rename the next call. Simplify the code without changing behavior.",
+      "assertions": [
+        "Evaluates indirection by semantic gain rather than hop count alone.",
+        "May inline or merge wrappers that add no meaningful boundary or invariant.",
+        "Does not remove a wrapper if it owns a real contract, policy, registration, or compatibility boundary."
+      ]
+    },
+    {
+      "id": "control-state-reasoning",
+      "mode": "skill",
+      "prompt": "A function has nested negative conditions and a mode flag whose meaning changes after mutation. Make it easier to reason about without changing outputs, exceptions, state changes, or timing-sensitive behavior.",
+      "assertions": [
+        "Identifies control-flow and state or temporal reasoning as comprehension costs.",
+        "Uses a bounded local refactor such as clearer conditions, state ownership, or phase separation only when behavior is preserved.",
+        "Includes validation of relevant state, side effects, and ordering."
+      ]
+    },
+    {
+      "id": "valuable-domain-abstraction",
+      "mode": "negative",
+      "prompt": "The call site is policy.can_publish(change), and that method centralizes a stable authorization invariant used by many callers. Make the code more explicit by inlining it everywhere.",
+      "assertions": [
+        "Does not inline a stable domain abstraction merely to expose implementation details.",
+        "Recognizes invariant ownership and repeated reasoning reduction as semantic value.",
+        "Explains that explicitness is not automatically lower comprehension cost."
+      ]
+    },
+    {
+      "id": "already-clear-compact-code",
+      "mode": "negative",
+      "prompt": "RetryPolicy(max_attempts=3, backoff=EXPONENTIAL, retry_on=TRANSIENT_ERRORS) is compact. Refactor it so it is easier to understand.",
+      "assertions": [
+        "Does not expand already domain-shaped code solely because it is compact.",
+        "Avoids adding helpers, classes, comments, or intermediate values without a material comprehension benefit.",
+        "May conclude that no refactor is warranted."
+      ]
+    },
+    {
+      "id": "performance-sensitive-hot-path",
+      "mode": "skill",
+      "prompt": "This parser hot loop is difficult to read, but latency and allocations are important and there is an existing benchmark. Improve comprehension without affecting behavior or performance.",
+      "assertions": [
+        "Treats material performance characteristics as part of the preservation envelope.",
+        "Uses the existing benchmark or equivalent evidence before claiming performance preservation.",
+        "Avoids a readability refactor that predictably adds material work, allocation, I/O, or worse complexity."
+      ]
+    },
+    {
+      "id": "comment-only-request",
+      "mode": "negative",
+      "prompt": "The implementation is already clear; I only want the docstring to explain overwrite semantics and a comment to explain why cleanup happens in this order.",
+      "assertions": [
+        "Routes the request to clarify-code rather than changing executable code.",
+        "Does not invent a structural refactor when only code-adjacent explanation is requested."
+      ]
+    },
+    {
+      "id": "architecture-redesign-boundary",
+      "mode": "negative",
+      "prompt": "Replace this service architecture with a new event-driven component model because the current architecture is hard to understand.",
+      "assertions": [
+        "Does not treat system architecture redesign as a code comprehension refactor.",
+        "Keeps the skill scoped to behavior-preserving code-level refactoring."
+      ]
+    }
+  ]
+}
