@@ -112,10 +112,10 @@
     {
       "id": "implicit-maintainer-comment-discovery",
       "mode": "skill",
-      "prompt": "Make this source easier for future maintainers without changing executable code. The implementation first preserves the original result or exception and only then runs staging cleanup. Cleanup can fail, and that failure must never replace the original result or exception. The code structure is already appropriate; choose the smallest source-level clarification that is warranted.",
+      "prompt": "Make this source easier for future maintainers without changing executable code. The implementation captures an outcome, then runs staging cleanup. There is no explanatory comment. A nearby regression test named `test_cleanup_failure_preserves_original_exception` asserts that when the main operation raises and cleanup also fails, the original exception is still the one observed by the caller. Choose the smallest source-level clarification that is warranted.",
       "assertions": [
-        "Adds or improves a code-local comment explaining the ordering consequence even though the prompt does not explicitly request a comment.",
-        "Does not choose a no-op merely because the executable code is already structurally clear when a durable maintainer-relevant invariant remains hidden.",
+        "Uses the nearby regression test as evidence for the hidden ordering or failure consequence instead of requiring the user to state the rationale directly.",
+        "Adds or improves a code-local comment explaining the evidence-backed consequence even though the prompt does not explicitly request a comment.",
         "Does not refactor executable code or narrate obvious statements."
       ]
     },
@@ -127,6 +127,16 @@
         "Leaves the self-explanatory user load without a redundant comment.",
         "Adds or improves a comment near the uncached permission lookup that explains the current visibility constraint or consequence.",
         "Selects the high-value explanation instead of either commenting everything or returning a global no-op."
+      ]
+    },
+    {
+      "id": "unsupported-rationale-no-fabrication",
+      "mode": "negative",
+      "prompt": "Clarify this unusual source for future maintainers without changing executable code. One lookup explicitly disables caching, but the caller, tests, current configuration, API contract, and nearby source documentation do not explain why. There is no confirmed performance, consistency, or permission-visibility requirement. Add only explanation that can be supported by the available context.",
+      "assertions": [
+        "Does not invent a plausible caching, performance, race-condition, consistency, or permission rationale from the unusual code shape alone.",
+        "Does not add an unsupported permanent source comment merely to satisfy the request for clarification.",
+        "May report that the material rationale could not be established while leaving executable code unchanged."
       ]
     }
   ]
