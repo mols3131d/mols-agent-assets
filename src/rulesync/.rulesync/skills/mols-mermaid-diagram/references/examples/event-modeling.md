@@ -42,7 +42,7 @@ Explicit source reference가 없는 일반 frame은 주변 declaration과 swimla
 ```mermaid
 eventmodeling
     tf 01 ui IncidentUI
-    tf 02 cmd CreateIncident { source: string }
+    tf 02 cmd CreateIncident
     tf 03 evt IncidentCreated
 
     rf 04 evt RecoveryRecorded
@@ -73,7 +73,7 @@ Inline data와 `data` block은 해당 frame에 예시 정보를 붙이는 기능
 - Data type marker가 존재해도 renderer가 해당 type의 semantics를 검증한다고 가정하지 않는다.
 - Source에 없는 field를 완성된 payload처럼 채워 넣지 않는다.
 - Data detail이 너무 길어 timeline을 압도하면 핵심 information-flow field만 남기고 schema/spec으로 분리한다.
-- Renderer/version에 따라 inline/block data의 표시가 민감할 수 있으므로 data example이 load-bearing이면 actual target render를 확인한다.
+- Data rendering은 version-sensitive surface로 취급한다. Data example이 load-bearing이면 actual target render에서 truncation, wrapping과 reference resolution을 확인한다.
 
 ## Choosing Event Modeling
 
