@@ -33,6 +33,7 @@ Mindmap은 tree다. 하나의 root에서 시작하고 각 non-root node는 한 p
 - 같은 label을 여러 branch 아래에 반복해도 renderer 관점에서는 별도 node occurrence다. 반복 label을 하나의 shared entity나 implicit cross-link로 해석하지 않는다.
 - Cycle이나 back-reference가 load-bearing information이면 Mindmap으로 평탄화하지 않는다.
 - Root는 질문의 실제 중심 scope여야 한다. 단지 모든 항목을 하나의 tree로 묶기 위한 가짜 상위 개념을 만들지 않는다.
+- Source가 여러 독립 root를 갖고 하나의 공통 parent를 말하지 않는다면 synthetic root를 추가하지 않는다. 질문별로 mindmap을 나누거나 outline/table처럼 forest를 그대로 보존하는 표현을 사용한다.
 
 ## Indentation Is Structure
 
@@ -102,6 +103,7 @@ Mindmap은 root 주변으로 branch가 퍼질 수 있으므로 breadth가 커지
 Mindmap은 syntax validity와 **hierarchy fidelity**를 따로 검증한다.
 
 1. 실제 질문에 맞는 하나의 root가 있고, 가짜 umbrella concept을 만들지 않았는가.
+1. 여러 독립 root를 source에 없는 parent로 억지로 묶지 않았는가.
 1. 모든 parent-child가 source-backed hierarchy/association이며 causality·transition·dependency를 잘못 대신하지 않는가.
 1. Multi-parent, shared dependency, cycle 또는 cross-link가 중요한데 tree로 강제하지 않았는가.
 1. 같은 label을 반복한 node를 shared identity로 오해하게 만들지 않았는가.
@@ -110,7 +112,7 @@ Mindmap은 syntax validity와 **hierarchy fidelity**를 따로 검증한다.
 1. Sibling order, branch position, shape, icon과 class를 priority·chronology·ownership 등의 fact로 승격하지 않았는가.
 1. Source의 partial examples를 complete taxonomy처럼 표현하지 않았는가.
 1. Broad/deep hierarchy가 unreadable하면 layout trick보다 overview/detail split을 검토했는가.
-1. Default/alternate layout, icon, class와 Markdown label 같은 renderer-sensitive 기능은 실제 target에서 읽을 수 있는가.
+1. Default/alternate layout, icon과 class 같은 renderer-sensitive 기능은 실제 target에서 읽을 수 있는가.
 
 문제가 있으면 보기 좋은 tree를 만들기 위해 관계를 발명하지 않는다. 먼저 hierarchy facts와 representation choice를 고친다.
 
