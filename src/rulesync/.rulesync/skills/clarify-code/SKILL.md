@@ -34,7 +34,7 @@ validation: auto
 
 ## Default Explanation Decisions
 
-실행 코드가 이미 적절하고 아래와 같은 의미가 code만으로 안정적으로 드러나지 않으면 explanation 후보로 본다.
+아래와 같은 의미가 code만으로 안정적으로 드러나지 않으면 explanation 후보로 본다. 코드 구조가 별도 comprehension problem이어도 그와 독립적인 durable meaning은 따로 판단한다.
 
 - hidden caller contract 또는 non-obvious call semantics
 - maintainer가 보존해야 하는 invariant 또는 local constraint
