@@ -7,12 +7,30 @@
 
 {{ summary }}
 
+{% if scope %}
+## Scope
+
+<!--
+전체 current diff가 아닌 일부만 검토했거나 특별한 기준으로 검토했다면 범위와 한계를 적는다.
+전체 current diff를 일반 기준으로 검토했다면 이 section은 생략한다.
+-->
+
+{% for item in scope %}
+- {{ item }}
+{% endfor %}
+{% endif %}
+
 ## Findings
 
 <!--
 확인된 문제만 finding으로 기록한다. 단순 선호나 근거 없는 가능성은 제외한다.
-문제가 없으면 `✅ No findings`를 남긴다.
-중요도: 🔴 Critical / 🟠 High / 🟡 Medium / 🔵 Low
+문제가 없으면 `No findings identified in the reviewed scope.`라고 적는다.
+
+중요도는 실제 영향과 수정 시급성을 함께 본다.
+🔴 Critical — 보안·권한·데이터 손실이나 광범위한 장애처럼 즉시 차단해야 하는 문제
+🟠 High — correctness, security 또는 repository contract를 실질적으로 깨뜨려 merge 전에 수정해야 하는 문제
+🟡 Medium — 범위가 제한적이지만 실제 결함이나 의미 있는 운영·유지보수 위험을 만드는 문제
+🔵 Low — 영향이 작고 기본적으로 non-blocking이지만 실제 개선 가치가 있는 문제
 -->
 
 {% if findings %}
@@ -44,7 +62,7 @@
 
 {% endfor %}
 {% else %}
-✅ No findings
+No findings identified in the reviewed scope.
 {% endif %}
 
 ## Validation
