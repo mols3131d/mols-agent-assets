@@ -22,7 +22,9 @@ block
 
 ## Composite Blocks And Spans
 
-Composite block은 source가 실제 containment, subsystem 또는 shared boundary를 뒷받침할 때 grouping에 사용할 수 있다. Span은 block이 차지하는 grid width를 조정할 뿐 component의 중요도, capacity 또는 scope 크기를 뜻하지 않는다.
+Composite block은 child block을 함께 배치하는 **layout wrapper**로도 사용할 수 있고, source가 실제 containment, subsystem 또는 shared boundary를 뒷받침하면 그 grouping을 명시적으로 표현할 수도 있다. Labeled composite나 boundary로 읽히는 grouping에는 source 근거가 필요하다.
+
+Span은 block이 차지하는 grid width를 조정할 뿐 component의 중요도, capacity 또는 scope 크기를 뜻하지 않는다.
 
 ```mermaid
 block
@@ -66,7 +68,7 @@ Block의 grid를 유지하려고 relationship이나 grouping을 왜곡해야 한
 ## Rules
 
 - Grid arrangement는 기본적으로 presentation constraint다. 위치 자체가 load-bearing information일 때만 semantic meaning을 부여한다.
-- Composite block은 source가 뒷받침하는 containment나 boundary에만 의미 있는 label을 붙인다.
+- Composite block을 layout wrapper로 사용할 수 있지만, source가 뒷받침하지 않는 containment·subsystem·boundary 의미를 부여하지 않는다.
 - Span과 `space`는 layout control이며 domain magnitude나 missing entity를 뜻하지 않는다.
 - Edge를 생략하고 adjacency만으로 relationship을 암시하지 않는다.
 - block span과 nested block을 과도하게 사용해 layout puzzle로 만들지 않는다.
