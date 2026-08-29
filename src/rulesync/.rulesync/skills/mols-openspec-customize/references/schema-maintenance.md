@@ -15,7 +15,7 @@ Use this reference after a custom schema is already the right owner and its
 
 It does not define OpenSpec schema semantics. Exact runtime inputs, resolution,
 commands, and version-specific behavior belong to
-[Official customization](official-customization.md).
+[Official contract](official-contract.md).
 
 ## Start with only the schema runtime needs
 
@@ -96,10 +96,10 @@ explicit maintenance decisions rather than assuming an upstream or tool update w
 reconcile them automatically.
 
 When update, fork, shadowing, or resolution semantics affect that decision, verify
-the target OpenSpec version through
-[Official customization](official-customization.md). Record provenance only when it
-materially reduces future maintenance cost; do not create provenance ceremony for a
-schema whose origin is obvious and cheap to recover.
+the target OpenSpec version through [Official contract](official-contract.md).
+Record provenance only when it materially reduces future maintenance cost; do not
+create provenance ceremony for a schema whose origin is obvious and cheap to
+recover.
 
 ## Boundaries and handoff
 
@@ -108,7 +108,7 @@ schema whose origin is obvious and cheap to recover.
 - To evaluate the schema against real work, tune it, or verify regressions, use
   [Dogfood and tuning](dogfood-and-tuning.md).
 - For exact schema commands, fields, resolution, or version-specific behavior, use
-  [Official customization](official-customization.md).
+  [Official contract](official-contract.md).
 
 Do not turn schema maintenance into a second project documentation framework. Add
 only surfaces that make this particular schema materially easier to understand or
