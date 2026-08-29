@@ -7,9 +7,22 @@
 | Reader | Primary surface | Needs |
 | --- | --- | --- |
 | Caller | name, signature, type, docstring, call site | 무엇을 믿고 사용할 수 있는지 |
-| Maintainer | code, names, local comment, tests | 왜 이 구현·제약·순서가 필요한지 |
+| Maintainer | code, names, local comment, tests | 어떤 constraint·consequence·rationale를 보존해야 하는지 |
 
 코드와 이름이 스스로 설명할 수 있는 정보는 prose로 반복하지 않는다. 구조 자체가 불명확하면 prose를 추가하기보다 `code-comprehension-refactor`가 더 적합한지 먼저 판단한다.
+
+## Explanation Value
+
+설명이 있다는 사실 자체는 improvement가 아니다. Comment와 docstring도 reader의 attention과 유지보수 비용을 소비한다.
+
+설명을 추가하거나 유지하기 전에 다음 순서로 본다.
+
+1. reader가 code만으로 안정적으로 복원하기 어려운 non-obvious meaning을 특정한다.
+1. 설명이 없으면 어떤 추론, 탐색 또는 오해 가능성이 생기는지 확인한다.
+1. code, name, type 또는 가까운 contract가 이미 같은 정보를 충분히 전달하면 prose를 추가하지 않는다.
+1. 설명이 제거하는 이해 비용이 읽기·유지·stale 위험보다 클 때만 남긴다.
+
+실제 score를 계산하지 않는다. 설명을 추가하지 않는 것, redundant prose를 제거하는 것, stale prose를 현재 의미에 맞게 고치는 것도 정상적인 결과다.
 
 ## Docstrings
 
@@ -44,16 +57,18 @@ def load_partition(path: Path) -> LoadResult:
 
 ## Comments
 
-Comment는 maintainer가 code를 수정할 때 필요한 **code-local 이유**를 설명한다.
+Comment는 maintainer가 code를 수정할 때 code만으로 안정적으로 복원하기 어려운 **constraint, consequence와 rationale**를 설명한다.
 
 좋은 대상:
 
-- policy 또는 invariant가 이 지점에서 적용되는 이유
-- 비자명한 예외 처리 이유
-- 순서가 중요한 이유
-- 외부 시스템 제약
+- 이 지점에서 반드시 유지해야 하는 invariant 또는 local constraint
+- 비자명한 failure consequence나 예외 처리 이유
+- statement나 operation의 순서가 바뀌면 깨지는 ordering consequence
+- 외부 시스템·protocol이 강제하는 현재 제약
 - 의도적으로 특이한 구현 선택의 이유
-- 더 단순해 보이는 대안을 사용하지 못하는 local constraint
+- 더 단순해 보이는 alternative가 현재도 유효한 constraint 때문에 잘못되는 이유
+
+마지막 항목은 durable negative knowledge일 수 있다. 과거에 다른 방법을 검토했다는 history 자체를 기록하지 않는다. 미래 maintainer가 자연스럽게 다시 시도할 가능성이 높고 **현재 constraint가 여전히 유효할 때**만 설명한다.
 
 피한다:
 
@@ -72,6 +87,26 @@ validate(result)
 # Cleanup failure must not replace the original ingestion result or exception.
 cleanup_staging()
 ```
+
+## Placement and Scope
+
+설명은 가능한 한 의미의 실제 scope와 owner에 맞는 surface에 둔다. 가까움은 목적이 아니라 reader가 설명과 대상의 관계를 다시 탐색하지 않게 하는 수단이다.
+
+| Meaning | Preferred surface |
+| --- | --- |
+| 한 API의 caller contract | 해당 docstring |
+| 한 branch, statement 또는 ordering의 local rationale | 해당 code 근처 comment |
+| file 전체에 안정적으로 적용되는 local convention | module-level explanation |
+| 여러 module에 걸친 architecture·domain policy | canonical owner; source에는 필요한 projection만 |
+
+다음은 피한다.
+
+- 특정 branch의 이유를 module 전체 rule처럼 넓게 설명하기
+- 여러 local comment에 같은 context를 복제하기
+- 가까이 둔다는 이유로 broad policy의 authority를 source comment로 옮기기
+- 실제 invariant보다 넓은 scope로 읽히는 표현
+
+Non-local하거나 긴 설명이라는 이유만으로 제거하지 않는다. 더 넓은 stable owner가 의미를 정확히 소유하거나 local repetition보다 탐색 비용을 줄인다면 그 surface가 더 적절할 수 있다.
 
 ## Module-Level Explanation
 
@@ -110,11 +145,12 @@ source file 안의 모든 text가 단순 설명은 아니다.
 
 설명을 추가하거나 수정한 뒤 확인한다.
 
-- 실제 caller 또는 maintainer가 이 정보를 필요로 하는가?
-- code 자체를 refactor하면 prose가 필요 없어지는 문제인가?
-- 이름이나 code를 그대로 번역하고 있지 않은가?
-- 더 안정적인 owner에 있어야 할 넓은 정책을 복제했는가?
-- code가 바뀌면 쉽게 거짓말이 될 설명인가?
-- machine-consumed text를 일반 prose로 오해했는가?
+- 이 설명이 없으면 reader는 무엇을 추론하거나 찾아야 하는가?
+- 설명이 그 비용을 실제로 줄이고 code/name/type을 반복하지 않는가?
+- code 자체를 refactor해야 하는 문제를 prose로 보상하고 있지 않은가?
+- 의미의 실제 scope와 explanation의 위치·범위가 맞는가?
+- current code, caller contract 또는 canonical policy와 모순되지 않는가?
+- volatile identifier·algorithm step·history에 불필요하게 결합되어 쉽게 stale 되지 않는가?
+- machine-consumed text나 durable negative knowledge를 잘못 다루고 있지 않은가?
 
 불필요하거나 쉽게 stale 되는 설명은 줄이거나 제거한다.
