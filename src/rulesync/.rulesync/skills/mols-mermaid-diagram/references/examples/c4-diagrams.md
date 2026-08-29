@@ -125,7 +125,7 @@ C4Deployment
     Rel(quality, store, "Publishes approved result")
 ```
 
-Logical responsibility와 deployment placement를 같은 사실로 취급하지 않는다. Container model에 없는 replica, cluster, node 또는 environment를 보기 좋다는 이유로 발명하지 않는다.
+Logical responsibility와 deployment placement를 같은 사실로 취급하지 않는다. Static model만 보고 placement를 추론하지 않고, **deployment source에 없는 replica, cluster, node 또는 environment를 보기 좋다는 이유로 발명하지 않는다.**
 
 ## Relationship Meaning
 
