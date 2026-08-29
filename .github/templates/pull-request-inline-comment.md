@@ -26,18 +26,11 @@ Evidence, Impact, Required Change, Suggestion은 실제 내용에 맞는 것만 
 **Suggestion:** {{ suggestion }}
 {% endif %}
 
-{% if author or revision %}
-```yaml
 {% if author %}
+```yaml
 author:
 {% for item in author %}
   - {{ item }}
 {% endfor %}
-{% endif %}
-{% if revision %}
-revision:
-  base: {{ revision.base }}
-  head: {{ revision.head }}
-{% endif %}
 ```
 {% endif %}
