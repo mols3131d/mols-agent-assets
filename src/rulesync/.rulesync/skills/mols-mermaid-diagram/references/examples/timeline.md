@@ -20,9 +20,11 @@ Source order가 rendered chronology를 소유한다. 실제 날짜가 있는 sou
 
 Visual spacing도 elapsed time에 비례하지 않는다. `2024 → 2025`와 `2025 → 2030`이 비슷한 간격으로 보이더라도 같은 duration을 뜻하지 않는다.
 
-## Temporal Precision And Same-Period Events
+## Temporal Precision, Order And Same-Period Events
 
 Period label의 precision은 source evidence보다 높이지 않는다. Source가 `2025`까지만 말하면 정렬이나 미관을 위해 `2025-01` 또는 `2025-01-01`을 만들지 않는다. Approximate·uncertain timing이 중요한 경우에도 그 불확실성을 지우고 exact date처럼 보이게 하지 않는다.
+
+Chronological order의 precision도 source보다 높이지 않는다. 두 사건의 선후가 확인되지 않았는데 declaration order만으로 total order를 만들지 않는다. 실제로 같은 temporal bucket에 속하고 선후가 중요하지 않다면 같은 period 아래 co-locate하고, 그렇지 않으면 order uncertainty를 보존할 수 있는 table이나 prose를 사용한다.
 
 같은 temporal bucket에 여러 사실이 실제로 속할 때 한 period 아래 여러 event를 둘 수 있다.
 
@@ -114,8 +116,8 @@ Timeline의 visual spacing이나 section layout으로 duration 또는 parallel o
 
 Timeline은 syntax validity, temporal fidelity와 visual stability를 따로 검증한다.
 
-1. rendered period 순서가 source chronology와 일치하는가.
-1. period label이 source보다 더 정확한 timestamp를 발명하지 않았는가.
+1. rendered period 순서가 source가 뒷받침하는 chronology와 일치하는가.
+1. period label이나 declaration order가 source보다 더 높은 temporal precision을 발명하지 않았는가.
 1. period granularity를 줄이면서 distinct events를 같은 시점으로 합치지 않았는가.
 1. axis/event connector arrow를 causal·dependency edge처럼 읽히게 만들지 않았는가.
 1. section 때문에 interleaved chronology가 재정렬되거나 같은 section이 lane처럼 재사용되지 않았는가.
@@ -129,7 +131,7 @@ Timeline은 syntax validity, temporal fidelity와 visual stability를 따로 검
 
 - Period text를 date parser나 automatic sorter처럼 취급하지 않는다.
 - Period label이 실제 chronology를 나타내지 않으면 Timeline을 process diagram 대신 사용하지 않는다.
-- Source order를 chronology와 일치시키고 source보다 높은 temporal precision을 발명하지 않는다.
+- Source가 뒷받침하는 범위에서만 declaration order를 chronology로 사용하고 temporal precision을 높이지 않는다.
 - Visual distance를 elapsed duration으로 해석하지 않는다.
 - Visual connector를 source의 causality·dependency relationship으로 승격하지 않는다.
 - Same-period events는 co-location만 의미하며 설명 detail을 무제한 쌓는 surface가 아니다.
