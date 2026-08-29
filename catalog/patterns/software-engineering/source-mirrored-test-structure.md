@@ -20,7 +20,7 @@ Test structure가 production source와 어느 정도 대응되면 **source를 �
 
 ## Core
 
-자연스러운 source anchor가 분명한 테스트는 그 source와 가까운 구조에 두는 형태가 가장 단순합니다.
+자연스러운 source anchor가 분명할 때 source와 가까운 test structure는 단순한 형태 중 하나입니다.
 
 ```text
 src/
@@ -135,13 +135,13 @@ Bundle이 유용해지는 시점에는 보편적인 threshold가 없습니다. �
 | Signal | Bundle을 고려해 볼 만한 구간 |
 | --- | --- |
 | 같은 prefix나 주제를 공유하는 관련 test files | 대략 **4~6개부터** |
-| 같은 directory에 함께 놓인 전체 test files | 대략 **8~12개부터** |
+| 같은 directory에서 함께 훑게 되는 files | 대략 **8~12개부터** |
 
 이 범위는 framework standard나 전환 규칙이 아닙니다. Directory 한 단계를 추가하는 비용보다 grouping에서 얻는 탐색 이점이 커지기 시작하는 **관찰 지점**에 가깝습니다.
 
 예를 들어 `test_invoice_*`가 4~6개 정도 반복되면 `invoice/`라는 directory가 prefix를 구조로 압축하는 데 도움이 될 수 있습니다. 반대로 같은 prefix를 가진 파일이 3개뿐이어도 해당 group만 사용하는 fixture나 snapshot이 많다면 bundle이 자연스러울 수 있습니다.
 
-Directory 전체의 밀도도 함께 볼 수 있습니다. 관련 파일이 3~4개뿐이어도 그 directory에 서로 다른 주제의 test file이 10개 안팎으로 섞여 있다면, 작은 group을 bundle로 분리하는 것만으로 scan 범위가 줄어들 수 있습니다. 반대로 관련 파일이 6개 정도여도 directory 전체가 그 group 하나뿐이고 filename만으로 쉽게 훑어진다면 sibling files가 더 단순할 수 있습니다.
+Directory 전체의 밀도도 함께 볼 수 있습니다. 관련 파일이 3~4개뿐이어도 같은 directory에서 서로 다른 주제의 파일을 10개 안팎 함께 훑어야 한다면, 작은 group을 bundle로 분리하는 것만으로 scan 범위가 줄어들 수 있습니다. 반대로 관련 파일이 6개 정도여도 directory 전체가 그 group 하나뿐이고 filename만으로 쉽게 훑어진다면 sibling files가 더 단순할 수 있습니다.
 
 그 밖에 bundle이 유용해질 수 있는 흔한 신호는 다음과 같습니다.
 
@@ -218,4 +218,4 @@ Sibling files는 directory depth를 늘리지 않는 대신 filename이 길어�
 
 ## Short Form
 
-> **Source와 test의 위치 관계를 예측 가능한 탐색 단서로 활용합니다. 작은 테스트는 단일 파일이나 sibling files로 두고, 같은 주제의 파일이 대략 4~6개로 늘거나 한 directory가 대략 8~12개 파일로 조밀해질 때 bundle이 탐색을 더 단순하게 만드는지 살펴볼 수 있습니다. Literal mirroring보다 feature·behavior·system boundary가 더 자연스러우면 그쪽에 맞춥니다.**
+> **Source와 test의 위치 관계를 예측 가능한 탐색 단서로 활용합니다. 작은 테스트는 단일 파일이나 sibling files로 둘 수 있고, 관련 파일이나 directory가 조밀해질수록 bundle이 탐색을 더 단순하게 만드는지 살펴볼 수 있습니다. Literal mirroring보다 feature·behavior·system boundary가 더 자연스러우면 그쪽에 맞춥니다.**
