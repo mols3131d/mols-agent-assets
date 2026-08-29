@@ -22,12 +22,13 @@ gitGraph TB:
 
 이 예제는 두 branch가 실제로 diverge한 뒤 **merge commit을 만드는 history**를 표현한다. `merge feature`를 단순한 “feature가 main에 들어감”이라는 의미로 사용하지 않는다.
 
-## Stable Commit Identity
+## Stable Identity
 
 Mermaid는 custom `id`가 없는 commit에 generated ID를 부여한다. 문서에서 commit을 다시 참조하거나 label이 안정적으로 보여야 하면 explicit ID를 사용한다.
 
 - Custom commit ID는 diagram 안에서 유일하게 유지한다.
 - 실제 SHA를 알고 있고 그 identity가 핵심일 때만 SHA처럼 보이는 값을 사용한다. Conceptual strategy라면 `base`, `verify`, `release`처럼 역할을 드러내는 synthetic ID가 더 정직하다.
+- Root/default branch 이름도 source fact다. 실제 branch가 `master`, `develop` 등이라면 target이 지원하는 `mainBranchName` config를 사용하거나 다른 표현으로 보존하고, 단순히 기본 `main`으로 바꾸지 않는다.
 - `tag`는 실제 tag 또는 명시된 strategy marker를 나타낼 때만 붙인다. Version-looking tag를 장식으로 만들지 않는다.
 - Commit ID와 commit message를 같은 개념으로 취급하지 않는다. Repeated human-readable 설명이 필요하면 ID를 중복시키지 말고 주변 prose나 다른 지원 표현을 사용한다.
 
@@ -52,6 +53,7 @@ gitGraph TB:
 - Declaration order를 단순한 source-code formatting으로 보지 않는다. `commit`, `branch`, `checkout`, `merge`의 순서는 synthetic history를 만든다.
 - `order`는 branch lane의 **display order**다. Branch priority, creation order, merge precedence 또는 ownership을 뜻하지 않는다.
 - `gitGraph`는 arbitrary old commit으로 자유롭게 reset해 branch를 만드는 full Git history editor가 아니다. 정확한 historical branch point를 현재 command model로 보존할 수 없으면 history를 억지로 재구성하지 않는다.
+- Branch lane이 끝까지 보인다는 사실은 현재 ref가 아직 존재한다는 증거가 아니다. Branch deletion이나 현재 ref inventory가 핵심이면 authoritative Git data나 table을 사용한다.
 
 ## Merge Semantics
 
@@ -109,12 +111,13 @@ Orientation, branch `order`, label rotation과 visual commit type은 presentatio
 `gitGraph`는 syntax validity와 **history fidelity**를 따로 검증한다.
 
 1. `commit`, `branch`, `checkout`, `merge`의 declaration 순서가 의도한 parent/branch history를 실제로 만드는가.
-1. Custom commit ID가 유일하고, synthetic ID와 실제 SHA를 혼동시키지 않는가.
+1. Root branch 이름과 custom commit ID가 source와 맞고, ID는 유일하며 synthetic ID와 실제 SHA를 혼동시키지 않는가.
 1. 각 branch가 source가 말하는 commit에서 갈라지는가.
 1. 모든 `merge`가 실제 또는 의도된 **merge commit**을 뜻하며 fast-forward, squash, rebase를 잘못 대체하지 않는가.
 1. Tag와 highlighted commit이 source fact 또는 설명된 editorial emphasis와 일치하는가.
 1. `order`, orientation, `parallelCommits`와 lane position을 chronology, priority, ownership 또는 concurrency evidence로 승격하지 않았는가.
 1. Cherry-pick connector를 Git parent relationship으로 읽게 만들지 않았는가.
+1. Branch lane을 현재 ref existence나 deletion state로 오해하게 만들지 않았는가.
 1. 실제 repository history를 요약했다면 생략한 commit 때문에 branch point, parent, merge mode 또는 release identity가 달라지지 않았는가.
 1. Dense branch/commit label, orientation과 target-specific config는 실제 target에서 읽을 수 있는가.
 
