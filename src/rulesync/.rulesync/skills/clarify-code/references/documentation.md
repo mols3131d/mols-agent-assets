@@ -74,18 +74,9 @@ def load_partition(path: Path) -> LoadResult:
 
 ## Comments
 
-Comment는 maintainer가 code를 수정할 때 code만으로 안정적으로 복원하기 어려운 **constraint, consequence와 rationale**를 설명한다.
+Comment는 `Positive Signals`의 maintainer-facing 경우에 **constraint, consequence와 rationale**를 가장 가까운 적절한 scope에서 전달한다. Code가 이미 구조적으로 적절하고 해당 의미가 다른 가까운 explanation에 없다면 가장 작은 comment를 추가하거나 기존 comment를 개선한다.
 
-아래 의미가 현재도 유효하고 code가 이미 구조적으로 적절하며 가까운 explanation이 없다면 comment를 추가하거나 개선하는 것을 기본으로 한다.
-
-- 이 지점에서 반드시 유지해야 하는 invariant 또는 local constraint
-- 비자명한 failure consequence나 예외 처리 이유
-- statement나 operation의 순서가 바뀌면 깨지는 ordering consequence
-- 외부 시스템·protocol이 강제하는 현재 제약
-- 의도적으로 특이한 구현 선택의 이유
-- 더 단순해 보이는 alternative가 현재도 유효한 constraint 때문에 잘못되는 이유
-
-마지막 항목은 durable negative knowledge일 수 있다. 과거에 다른 방법을 검토했다는 history 자체를 기록하지 않는다. 미래 maintainer가 자연스럽게 다시 시도할 가능성이 높고 **현재 constraint가 여전히 유효할 때**만 설명한다.
+Rejected alternative는 durable negative knowledge가 될 수 있다. 과거에 다른 방법을 검토했다는 history 자체를 기록하지 않는다. 미래 maintainer가 자연스럽게 다시 시도할 가능성이 높고 **현재 constraint가 여전히 유효할 때**만 잘못된 대안과 연결되는 이유를 설명한다.
 
 피한다:
 
