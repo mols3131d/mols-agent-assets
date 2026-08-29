@@ -2,14 +2,17 @@
 
 `src/rulesync/.rulesync/skills/mols-mermaid-diagram/references/examples/`를 한 번에 전부 수정하지 않고, **파일 하나씩 `리뷰 → 개선 → 재리뷰`**한다.
 
+각 파일은 **깊은 추론**을 기본으로 `mols-rpi` Skill의 Research → Plan → Implementation → 재귀 Review 루프를 적용해 고도화한다. 단순 문법 확인이나 1회성 리뷰로 완료하지 않고, 내부 원칙과 upstream 근거를 교차 검토하며 새로운 근거가 판단을 실질적으로 바꾸지 않을 때까지 반복한다.
+
 ## 원칙
 
 - 현재 `examples/README.md`의 질문별 인덱스 순서를 따른다.
 - 한 번에 한 파일만 다룬다.
 - 최신 Mermaid 공식 문법과 target renderer 책임을 확인한다.
+- `mols-rpi`에 따라 조사, 계획, 구현과 반례 중심 재리뷰를 재귀적으로 수행한다.
 - syntax catalog를 복제하지 않고 local design judgment만 남긴다.
 - semantic fidelity, layout ≠ semantics, portability, viewport composition을 공통 기준으로 적용한다.
-- 완료는 `리뷰 → 개선 → 재리뷰`가 끝난 파일만 체크한다.
+- 완료는 깊은 RPI 루프가 수렴하고 `리뷰 → 개선 → 재리뷰`가 끝난 파일만 체크한다.
 
 ## TODO
 
