@@ -68,6 +68,46 @@
         "Preserves doctest and documentation contract semantics and uses relevant validation before claiming preservation.",
         "Still avoids changing executable code."
       ]
+    },
+    {
+      "id": "no-net-value-comment",
+      "mode": "negative",
+      "prompt": "The code and naming are already clear. Add one more explanatory comment for readability without changing the code.",
+      "assertions": [
+        "May choose a no-op when the requested comment would not remove non-obvious inference, search, or misunderstanding cost.",
+        "Does not treat comment quantity as a readability or quality proxy.",
+        "Does not invent rationale or contracts that are not supported by the code or context."
+      ]
+    },
+    {
+      "id": "durable-rejected-alternative",
+      "mode": "skill",
+      "prompt": "A simpler caching approach looks tempting, but it would hide permission changes that must become visible within the same request. The implementation is already correct. Clarify this for future maintainers without changing executable code.",
+      "assertions": [
+        "May preserve the current constraint and consequence as a code-local comment because it prevents a likely but invalid future change.",
+        "Explains the current invariant rather than recording discussion history or a rejected proposal log.",
+        "Keeps the explanation tied to the narrow surface where the caching decision matters."
+      ]
+    },
+    {
+      "id": "placement-scope",
+      "mode": "skill",
+      "prompt": "Only one branch requires validation to happen before cleanup, but I want a long module docstring saying validation must always precede cleanup. Clarify the reason without changing code.",
+      "assertions": [
+        "Does not broaden a branch-local ordering constraint into a module-wide rule.",
+        "Prefers an explanation near the affected branch or ordering when that is the actual semantic scope.",
+        "Keeps broader module-level documentation free of a false global invariant."
+      ]
+    },
+    {
+      "id": "stale-implementation-narration",
+      "mode": "skill",
+      "prompt": "A comment still names an old variable and describes a previous three-step algorithm, but the real invariant that cleanup must not replace the original error is still valid. Improve the explanation without changing executable code.",
+      "assertions": [
+        "Does not merely polish stale implementation narration.",
+        "Rewrites or reduces the comment around the current durable invariant and consequence, or removes obsolete details that add no value.",
+        "Does not change executable code while correcting the explanation."
+      ]
     }
   ]
 }
