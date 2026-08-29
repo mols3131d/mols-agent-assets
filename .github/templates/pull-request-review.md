@@ -1,7 +1,3 @@
-```yaml
-scope: "{{ scope }}"
-```
-
 ## Summary
 
 <!--
