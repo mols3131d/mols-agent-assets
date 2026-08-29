@@ -39,6 +39,41 @@ Mermaid diagram은 **관계·절차·책임·상태·시간 순서·구조**를 
 
 특정 type의 현재 declaration과 상세 문법이 필요하면 local table을 확장하기보다 공식 문서와 target renderer를 확인한다.
 
+## Type Boundaries
+
+비슷해 보이는 type 사이에서는 **무엇이 load-bearing information인지**로 선택한다.
+
+| Boundary | 첫 번째 표현이 적합한 경우 | 두 번째 표현이 적합한 경우 |
+| --- | --- | --- |
+| Hierarchy ↔ Dependency graph | single-parent, acyclic hierarchy 자체가 핵심 | shared dependency, multi-parent 또는 cycle이 핵심 |
+| Logical architecture ↔ Deployment view | 무엇이 무엇과 연결되고 어떤 boundary가 있는지가 핵심 | 어디에 배치되고 zone·host·artifact·replica가 무엇인지가 핵심 |
+| ER ↔ Physical schema detail | entity와 cardinality가 핵심 | SQL type, constraint, index와 column-level contract가 핵심 |
+| Swimlanes ↔ Ownership hierarchy | process 안에서 owner와 handoff가 핵심 | 정적인 reporting, coverage 또는 ownership 구조가 핵심 |
+| Kanban ↔ Process flow | 현재 work state의 snapshot이 핵심 | ordered transition, condition 또는 handoff가 핵심 |
+| Journey ↔ Process/Timeline | human experience와 actor involvement가 핵심 | 절차 자체나 chronology가 핵심 |
+| Class ↔ ER | inheritance, realization, composition, operation 같은 typed relation이 핵심 | entity, key와 cardinality가 핵심 |
+| Wardley ↔ Runtime architecture | value chain과 evolution positioning이 핵심 | runtime topology와 dependency가 핵심 |
+| Timeline ↔ Gantt | 사건의 chronology가 핵심 | duration, overlap과 dependency가 핵심 |
+
+Type boundary가 애매하면 더 많은 syntax를 넣기보다 독자가 답해야 할 질문을 다시 좁힌다.
+
+## Readability Budgets
+
+아래 수치는 **문법 validity limit가 아니라 분리 여부를 다시 검토하는 soft trigger**다. Target viewport, label 길이와 renderer가 더 중요하며 숫자 초과만으로 실패로 판정하지 않는다.
+
+| Type | Review trigger | 우선 검토 |
+| --- | --- | --- |
+| Flowchart | 한 decision에서 4개 이상 branch | decision 분해, rule table, detail split |
+| Sequence | participant 약 5개 초과, message 약 12개 초과, fragment nesting 2단계 이상 | scenario별 split, happy/failure path 분리 |
+| State | transition 수가 state 수의 약 2배를 크게 넘음 | lifecycle concern별 분리 |
+| Hierarchy | depth 약 4 초과 또는 sibling breadth 약 5 초과 | subtree detail 분리 |
+| Dependency graph | node 약 9개 또는 edge 약 14개 초과 | subsystem detail, 반복 leaf aggregate |
+| Gantt | task 약 12개 초과 | phase overview + sub-plan |
+| Kanban | column 약 5개 또는 visible card 약 12개 초과 | backlog aggregate, board 분리 |
+| Journey | stage 약 6개 초과 | journey phase 분리 |
+
+표에 없는 type도 관계 추적, label 식별 또는 핵심 질문 유지가 어려워지는 순간 같은 원칙을 적용한다.
+
 ## Compatibility
 
 - portable documentation에서는 target이 확실히 지원하는 단순한 type과 syntax를 우선한다.
@@ -57,6 +92,28 @@ Diagram의 edge, 위치와 notation은 사실 주장처럼 읽힐 수 있다.
 - Ishikawa 같은 cause-oriented notation에서도 가설을 causal proof로 표현하지 않는다.
 - readability를 위한 layout, ordering과 grouping은 허용하되 새로운 domain semantics를 만들지 않는다.
 - 필요한 추론은 source fact와 구별되게 표시한다.
+
+## Semantic Compression
+
+복잡도를 줄일 때는 domain fact를 무작위로 삭제하지 않고 다음 순서로 검토한다.
+
+1. 의미를 전달하지 않는 decoration과 중복 presentation을 먼저 제거한다.
+1. 같은 semantic role과 relationship을 반복하는 exact duplicate를 병합한다.
+1. 개별 identity가 핵심이 아닌 반복 leaf group은 의미를 보존하는 aggregate로 축약하고, 무엇을 묶었는지 드러낸다.
+1. 핵심 질문에 직접 기여하지 않는 cross-cutting detail은 note, table 또는 detail diagram으로 이동한다.
+1. 그래도 관계 추적이 어렵다면 overview와 detail로 분리한다.
+
+Layout상 가까워 보인다는 이유만으로 edge를 삭제하지 않는다. Mermaid position은 renderer-dependent하므로 relationship은 source에서 명시적으로 남겨야 한다.
+
+## Editing Existing Mermaid
+
+기존 source를 구조적으로 재작성할 때 semantic layer와 presentation layer를 분리해 본다.
+
+- semantic layer에는 entity·participant·state, relationship, 실제 의미가 있는 direction/order, guard·fragment, cardinality, boundary와 quantitative label이 포함된다.
+- theme, `classDef`, decorative style, declaration order와 layout hint는 domain fact로 자동 해석하지 않는다. 다만 사용자나 local convention이 보존을 요구하면 유지한다.
+- source의 `LR`/`TB` 같은 direction을 chronology나 causality로 임의 해석하지 않는다.
+- structural simplification이 해석에 영향을 줄 정도라면 결과와 함께 **merged / collapsed / omitted** 항목을 짧게 보고한다. 단순 label edit에는 이런 보고를 요구하지 않는다.
+- 구조를 줄인 뒤에도 source에 없던 relationship, order, boundary 또는 state가 새로 생기지 않았는지 다시 확인한다.
 
 ## Syntax Safety
 
