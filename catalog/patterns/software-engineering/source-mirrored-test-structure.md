@@ -122,8 +122,8 @@ Bundle 전환에는 보편적인 threshold가 없습니다. 다만 **관련 grou
 
 | Signal | Bundle을 함께 비교해 볼 만한 구간 |
 | --- | --- |
-| 같은 prefix나 주제를 공유하는 관련 test files | 대략 **4~6개 안팎이 되면** |
-| 같은 directory에서 함께 훑게 되는 files | 대략 **8~12개 안팎이 되면** |
+| 같은 prefix나 주제를 공유하는 관련 test files | 대략 **4~6개 정도가 되면** |
+| 같은 directory에서 함께 훑게 되는 files | 대략 **8~12개 정도가 되면** |
 
 이 숫자는 framework standard나 전환 규칙이 아니라 **관찰 지점**입니다. Directory 한 단계를 추가하는 비용보다 grouping에서 얻는 탐색 이점이 커지는지 다시 볼 시점을 제안합니다.
 
