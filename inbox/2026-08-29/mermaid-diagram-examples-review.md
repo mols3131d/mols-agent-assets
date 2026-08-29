@@ -7,7 +7,7 @@
 ## 원칙
 
 - 현재 진행 cursor를 따라 최대 5개를 한 batch로 묶는다. 끝에 도달하면 남은 미완료 파일을 `examples/README.md`의 질문별 인덱스 순서로 이어간다.
-- Batch 안에서도 한 파일의 Research → Plan → Implementation → Review를 독립적으로 수행한다. 여러 파일을 한꺼번에 같은 결론으로 처리하지 않는다.
+- Batch는 작업 단위일 뿐 판단 단위가 아니다. 각 파일의 Research → Plan → Implementation → Review를 독립적으로 순차 수행하고 여러 파일을 하나의 공통 결론으로 처리하지 않는다.
 - 파일별 완료 여부는 개별 RPI 수렴으로 판단한다. 같은 batch의 다른 파일이 미완료여도 수렴한 파일만 체크할 수 있다.
 - 최신 Mermaid 공식 문법과 target renderer 책임을 확인한다.
 - `mols-rpi`에 따라 조사, 계획, 구현과 반례 중심 재리뷰를 재귀적으로 수행한다.
