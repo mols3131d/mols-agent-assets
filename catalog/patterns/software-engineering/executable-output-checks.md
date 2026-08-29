@@ -44,6 +44,7 @@ Executable Output Checks는 일반적인 testing strategy나 quality gate 체계
 - 함수와 기능의 behavior correctness를 어떻게 test할지는 해당 testing 전략이 다룹니다.
 - design, naming, abstraction, readability처럼 맥락 판단이 필요한 품질은 review 영역으로 남깁니다.
 - security, compliance처럼 독립적인 assurance가 필요한 constraint의 권한·보호 모델을 이 패턴이 대신하지 않습니다.
+- language/type/module system처럼 **위반 자체를 직접 방지하는 native constraint**를 output check의 한 종류로 재정의하지 않습니다.
 - test directory, script path, marker, CI cadence와 severity 체계를 고정하지 않습니다.
 
 이 패턴이 다루는 것은 **작업 결과에서 비교적 명확하게 관찰할 수 있는 성질을 실행 가능한 feedback으로 만들 가치가 있는지, 있다면 어떤 형태와 강도가 적절한지**입니다.
@@ -65,14 +66,13 @@ Executable Output Checks는 일반적인 testing strategy나 quality gate 체계
 
 사람이 review에서 같은 객관적 지적을 반복하고 있다면 check 후보인지 살펴볼 수 있습니다. 반복 이력이 없더라도 **놓쳤을 때의 비용이 크고 property가 충분히 안정적이며 값싸게 판정할 수 있다면** 후보가 될 수 있습니다. 어느 경우든 기계적 feedback이 실제 문제 비용을 줄이는지 봅니다.
 
-## 가장 단순한 실행 방법을 선택합니다
+## Check를 만들기 전에 더 직접적인 Mechanism을 봅니다
 
-Executable check가 반드시 test일 필요는 없습니다. 같은 output property를 더 자연스럽고 싸게 확인할 수 있는 mechanism이 있다면 그것을 사용할 수 있습니다.
+Output을 사후에 검사하기보다 해당 성질을 이미 직접 보장하는 native mechanism이 있다면 별도 check가 필요 없을 수 있습니다. 예를 들어 type system, module/package visibility나 schema contract가 문제를 자연스럽게 예방한다면 같은 의미를 custom script나 CI에서 다시 구현하지 않는 편이 단순합니다.
 
-대표적인 형태는 다음과 같습니다.
+별도 관찰이 여전히 필요하다면 executable check는 여러 형태를 취할 수 있습니다.
 
-- language, type system, module/package visibility 같은 native constraint
-- formatter, linter, schema validator, build tool처럼 이미 사용하는 도구
+- formatter, linter, schema validator, build tool의 check mode
 - 작은 script 또는 CLI command
 - source-of-truth에서 다시 생성한 뒤 비교하는 generator + diff
 - 일반 test 또는 structural test
@@ -133,10 +133,10 @@ Executable하다는 이유만으로 blocking할 필요는 없습니다. **판정
 | manifest나 artifact 형식 오류 | parser, schema/semantic validator | 경고 또는 차단 |
 | 잘못된 config 조합 | validator script, existing linter | 경고 또는 차단 |
 | 작성 원본과 projection의 drift | generator + comparison | 정보 또는 경고 |
-| internal API의 의도하지 않은 사용 | import/dependency checker, visibility mechanism | 경고 또는 차단 |
-| architecture dependency 위반 | language rule, dependency script, structural test | 경고 또는 차단 |
+| internal API의 의도하지 않은 사용 | import/dependency checker | 경고 또는 차단 |
+| architecture dependency 위반 | dependency script, structural test | 경고 또는 차단 |
 
-이 표는 구현 계약이 아니라 선택지를 보여주는 예시입니다.
+Native visibility나 module constraint가 같은 문제를 직접 예방한다면 표의 check를 추가하지 않는 편이 더 단순할 수 있습니다. 이 표는 구현 계약이 아니라 별도 관찰이 필요한 경우의 선택지를 보여주는 예시입니다.
 
 ## 예시: Generated Output을 Script로 확인하기
 
@@ -259,4 +259,4 @@ Agent가 output과 checker를 함께 수정할 수 있다면 warning을 없애�
 
 ## Short Form
 
-> **작업 결과에서 반복되거나 놓쳤을 때 비용이 큰 machine-observable property를 가장 단순한 executable check로 드러내고, 상황에 맞는 위치와 강도로 feedback합니다. Check는 자신이 관찰하는 범위만 증거로 제공하며 truth나 policy 자체가 아니고, 문제보다 비싸지면 약화·이동·제거할 수 있습니다.**
+> **작업 결과에서 반복되거나 놓쳤을 때 비용이 큰 machine-observable property를 가장 단순한 executable check로 드러내고, 상황에 맞는 위치와 강도로 feedback합니다. 더 직접적인 native constraint가 이미 성질을 보장한다면 별도 check를 만들지 않으며, check는 자신이 관찰하는 범위만 증거로 제공합니다.**
