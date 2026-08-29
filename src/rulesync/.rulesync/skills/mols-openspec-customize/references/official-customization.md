@@ -4,8 +4,9 @@ description: >-
   supported profiles, project config, schema or CLI behavior, command or field
   semantics, paths, precedence, experimental status, version-specific behavior, or
   an authoritative OpenSpec source. Do not load merely because a task mentions
-  OpenSpec or customization; reusable design belongs in customization-patterns.md
-  and concrete repository decisions belong in project-customization.md.
+  OpenSpec or customization; reusable ownership decisions belong in
+  customization-design.md and concrete repository decisions belong in
+  project-customization.md.
 ---
 
 # Official OpenSpec Customization
@@ -37,6 +38,7 @@ version. If the relevant version cannot be inspected, keep that uncertainty visi
 | Topic | Official source |
 | --- | --- |
 | Customization overview | <https://openspec.dev/docs/customize> |
+| Configuration overview | <https://openspec.dev/docs/configuration> |
 | Profiles and delivery | <https://openspec.dev/docs/profiles> |
 | Project configuration | <https://openspec.dev/docs/project-config> |
 | Custom schemas | <https://openspec.dev/docs/customize-schemas> |
@@ -56,8 +58,8 @@ Use the official sources above for exact details. At a high level:
 - **Schemas** own the planning artifact graph, referenced templates, and
   schema-level workflow instructions.
 
-For reusable guidance on choosing between these surfaces, use
-[Customization patterns](customization-patterns.md).
+For reusable judgment about which owner to choose, use
+[Customization design](customization-design.md).
 
 ## Schema package boundary
 
@@ -73,6 +75,7 @@ When companion-file behavior or exact schema commands matter, verify them agains
 the target project's OpenSpec version. Schema-related commands may be experimental,
 so avoid freezing their current syntax or behavior into reusable local guidance.
 
-A forked project schema is an owned snapshot, not a live extension of its built-in
-source. Do not assume routine OpenSpec updates will merge later built-in changes into
-the project copy; compare and port upstream changes deliberately when needed.
+Current OpenSpec documentation treats a forked project schema as a snapshot that is
+not updated by routine `openspec update`. For reusable guidance on maintaining that
+owned snapshot or optional companion documentation, use
+[Schema maintenance](schema-maintenance.md).
