@@ -38,11 +38,17 @@ Jinja2-style 표기를 authoring notation으로 사용합니다. 실제 Jinja2 r
 
 GitHub object title이 이미 최상위 제목 역할을 하므로 본문의 주요 section은 `##`부터 시작합니다.
 
-## Metadata
+## Header metadata
 
-GitHub가 제공하지 않는 provenance가 실제 판단에 필요할 때만 본문의 마지막에 하나의 `yaml` code block으로 둡니다. Front Matter나 GitHub object metadata로 취급하지 않으며 별도 `Metadata` heading을 만들지 않습니다.
+GitHub surface가 Front Matter를 해석하지 않으므로 필요한 authoring metadata는 **본문 맨 위의 fenced `yaml` block**으로 표현합니다. 이 block은 Front Matter나 GitHub object metadata가 아니라 사람이 빠르게 훑는 본문 metadata입니다.
 
-Metadata field는 서로 독립적이며 필요한 field만 사용합니다.
+- GitHub UI가 이미 충분히 보여주는 branch, line, review action 같은 정보는 반복하지 않습니다.
+- `type`, `scope`, `risk`, `purpose`, `importance`처럼 본문 판단에 실제 도움이 되는 field만 surface별로 사용합니다.
+- field는 확인된 값만 기록하고 optional field가 비면 제거합니다.
+
+## Provenance metadata
+
+GitHub가 제공하지 않는 provenance가 실제 판단에 필요할 때만 본문의 마지막에 별도의 `yaml` code block을 둡니다. 별도 `Metadata` heading은 만들지 않습니다.
 
 ### `author`
 
