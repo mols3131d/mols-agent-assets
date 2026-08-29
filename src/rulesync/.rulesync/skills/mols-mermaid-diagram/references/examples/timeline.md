@@ -18,7 +18,7 @@ timeline
 
 Source order가 rendered chronology를 소유한다. 실제 날짜가 있는 source를 timeline으로 옮길 때는 먼저 source facts를 시간순으로 정렬·검증하고, renderer가 잘못된 순서를 교정해 줄 것으로 기대하지 않는다.
 
-Visual spacing도 elapsed time에 비례하지 않는다. `2024 → 2025`와 `2025 → 2030`이 비슷한 간격으로 보이더라도 같은 duration을 뜻하지 않는다. Timeline axis의 arrow도 passage/read order를 돕는 presentation이며 source의 causal arrow가 아니다.
+Visual spacing도 elapsed time에 비례하지 않는다. `2024 → 2025`와 `2025 → 2030`이 비슷한 간격으로 보이더라도 같은 duration을 뜻하지 않는다.
 
 ## Temporal Precision And Same-Period Events
 
@@ -38,7 +38,7 @@ timeline
     2026-01 : Automated recovery enabled
 ```
 
-같은 period 아래의 여러 event는 **co-located facts**일 뿐이다. Renderer가 period와 event 사이를 arrow-like connector로 그리더라도 그것이 causality, dependency 또는 approval 관계를 추가하지 않는다.
+같은 period 아래의 여러 event는 **co-located facts**일 뿐이다. Renderer가 period/event association을 arrow-like connector로 그리더라도 source에 causality, dependency 또는 approval 관계가 추가되는 것은 아니다.
 
 - event의 위아래 순서만으로 causality, dependency, approval chain 또는 within-period chronology를 주장하지 않는다.
 - 서로 다른 날짜에 일어난 사실을 compact하게 보이기 위해 하나의 period로 합치지 않는다.
@@ -108,7 +108,7 @@ Portrait reading viewport에서 LR이 과도하게 넓어지면 `TD`를 **후보
 - **Sequence / Flowchart**: message order, process transition, causality 또는 branching relationship이 핵심일 때.
 - **Table**: exact timestamps, sortable records, recurring categories 또는 비교 가능한 여러 fields가 핵심일 때.
 
-Timeline의 visual gap, axis arrow, event connector 또는 section layout으로 duration, causality, dependency나 parallel ownership을 암시하지 않는다.
+Timeline의 visual spacing이나 section layout으로 duration 또는 parallel ownership을 암시하지 않는다.
 
 ## Renderer-Sensitive Review
 
@@ -131,7 +131,7 @@ Timeline은 syntax validity, temporal fidelity와 visual stability를 따로 검
 - Period label이 실제 chronology를 나타내지 않으면 Timeline을 process diagram 대신 사용하지 않는다.
 - Source order를 chronology와 일치시키고 source보다 높은 temporal precision을 발명하지 않는다.
 - Visual distance를 elapsed duration으로 해석하지 않는다.
-- Axis와 event connector arrow를 causality·dependency 의미로 승격하지 않는다.
+- Visual connector를 source의 causality·dependency relationship으로 승격하지 않는다.
 - Same-period events는 co-location만 의미하며 설명 detail을 무제한 쌓는 surface가 아니다.
 - Section은 contiguous grouping이며 recurring category를 위한 parallel lane이 아니다.
 - Evidence, decision과 consequence의 실제 시점을 보존한다.
