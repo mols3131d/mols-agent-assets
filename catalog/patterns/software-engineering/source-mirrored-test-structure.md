@@ -141,7 +141,7 @@ Test structure의 확장에는 보편적인 line count나 test count가 없습�
 | 3 | sibling files도 충분하지만, group 이름이나 local context가 뚜렷하면 bundle을 고려할 수 있음 |
 | 4+ | 하나의 boundary를 반복해 표현한다면 bundle을 적극 검토할 만함 |
 
-이 숫자는 framework standard나 threshold가 아니라 **구조 선택을 다시 생각해 볼 시점에 대한 heuristic**입니다. 두 파일뿐이어도 함께 쓰는 fixture, data, snapshot 또는 helper가 독립적인 local context를 만들면 bundle이 자연스러울 수 있고, 네다섯 파일이어도 이름이 짧고 한 directory에서 쉽게 훑어진다면 siblings가 더 단순할 수 있습니다.
+이 숫자는 framework standard나 threshold가 아니라 **구조 선택을 다시 생각해 볼 시점에 대한 heuristic**입니다. `4+`도 bundle의 기본값을 뜻하지 않습니다. 두 파일뿐이어도 함께 쓰는 fixture, data, snapshot 또는 helper가 독립적인 local context를 만들면 bundle이 자연스러울 수 있고, 네다섯 파일이어도 이름이 짧고 한 directory에서 쉽게 훑어진다면 siblings가 더 단순할 수 있습니다.
 
 Bundle을 고려할 만한 다른 신호도 있습니다.
 
