@@ -24,6 +24,7 @@
 Line-specific finding은 inline review comment에 두고 여기서 완전히 반복하지 않는다.
 본문 finding이 없고 qualifying inline finding만 있으면 `See inline review comments for findings.`를 사용한다.
 둘 다 없을 때만 `No findings identified in the reviewed scope.`를 사용한다.
+Required Change는 문제를 해소하기 위해 필요한 결과나 제약을 적고, 특정 구현이 필수가 아니면 해결 방법을 과도하게 지정하지 않는다.
 
 `finding.importance`는 다음 값 중 하나를 그대로 사용한다.
 🔴 Critical — 보안·권한·데이터 손실이나 광범위한 장애처럼 즉시 차단해야 하는 문제
