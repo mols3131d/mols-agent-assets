@@ -1,6 +1,6 @@
 ---
 name: clarify-code
-description: Use this skill to make code easier to understand by improving code-adjacent explanatory text such as docstrings, comments, and module-level explanations without changing executable code. Trigger when caller contracts, rationale, invariants, ordering, side effects, unusual implementation choices, or other non-obvious meaning should be explained inside source files. Do not use to rename symbols, change types or signatures, restructure control or state flow, change representations, or remove indirection; use code-comprehension-refactor for code changes. Do not use for user-facing documentation.
+description: Use this skill to make code easier to understand by improving code-adjacent explanatory text such as declaration documentation (including docstrings or doc comments), implementation comments, and source-level module/package explanations without changing executable code. Trigger when caller contracts, rationale, invariants, ordering, side effects, unusual implementation choices, or other non-obvious meaning should be explained inside source files. Do not use to rename symbols, change types or signatures, restructure control or state flow, change representations, or remove indirection; use code-comprehension-refactor for executable changes. Do not use for standalone user-facing documentation outside source files.
 targets:
   - claudecode
   - codexcli
@@ -86,9 +86,9 @@ Evidence-backed durable meaning이 남아 있는데 explanation을 피하기 위
 - 코드 자체를 리팩터링해야 이해 비용이 줄어드는 concern은 `code-comprehension-refactor` 책임으로 분리하되, 별도의 evidence-backed prose concern까지 함께 버리지 않는다.
 - 함수 이름, type annotation, 다음 statement처럼 code가 이미 직접 표현하는 내용을 prose로 반복하지 않는다.
 - unusual code shape, naming, history 또는 관례만 보고 확인되지 않은 rationale를 만들어내지 않는다.
-- 넓은 architecture·domain policy를 source comment에 복제하지 않는다. caller나 maintainer에게 필요한 local projection만 남긴다.
+- 넓은 architecture·domain policy를 code-adjacent prose에 복제하지 않는다. caller나 maintainer에게 필요한 local projection만 남긴다.
 - evidence 확인을 위한 read도 적용되는 explicit scope와 authority를 넘지 않으며, 읽은 surface를 수정할 권한이 생기지 않는다.
-- user-facing guide, README, standalone API manual 같은 독립 문서는 이 skill의 scope가 아니다.
+- standalone guide, README, API manual 같은 source 밖의 user-facing documentation은 이 skill의 scope가 아니다.
 - `noqa`, `type: ignore`, coverage pragma, formatter directive, shebang, encoding cookie와 같은 machine-consumed comment를 일반 설명 comment로 취급하지 않는다.
 - caller-facing declaration documentation이 reflection, documentation generation, doctest 또는 framework behavior의 contract라면 observable surface를 보존한다.
 - 실행하지 않은 validation을 수행했다고 보고하지 않는다.
