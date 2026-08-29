@@ -9,14 +9,10 @@ description: 저장소 개발 작업에서 VCS/Git, GitHub, 작성 원본과 권
 ## Local Policies
 
 - [VCS / Git](vcs-git.md) — branch policy와 naming, commit convention과 enforcement boundary
-- [GitHub](github.md) — Issues, Pull Requests, PR Reviews, Merge, Rulesets와 Actions의 local policy
+- [GitHub](github.md) — Issues, Pull Requests, PR Reviews, Merge, Rulesets와 Actions의 local policy. 본문 작성 구조는 [GitHub Authoring Templates](../../.github/templates/README.md)를 참고합니다.
 - [작성 원본과 권한](source-authority.md) — 작성 원본, 표준, 대상과 저장소 고유 권한의 경계
 - [Testing](testing.md) — repository correctness verification과 PR Gate
 - [Evaluation](evaluation.md) — Agent Asset behavioral evaluation과 evidence 해석
-
-## Authoring Resources
-
-- [GitHub Authoring Templates](../../.github/templates/README.md) — Issue, Pull Request, PR Review와 PR comment의 본문 구조와 작성 notation이 필요할 때 참고합니다.
 
 ## Related Owners
 
@@ -27,4 +23,4 @@ description: 저장소 개발 작업에서 VCS/Git, GitHub, 작성 원본과 권
 - Rulesync source/workspace boundary → [Rulesync](../references/tooling/rulesync.md)
 - Skill authoring convention → [Skill Authoring Conventions](../references/agent-assets/skills/skill-authoring-conventions.md)
 
-이 README는 development entrypoint이며 linked policy와 resource의 본문을 복제하지 않습니다.
+이 README는 development entrypoint이며 linked policy의 본문을 복제하지 않습니다.
