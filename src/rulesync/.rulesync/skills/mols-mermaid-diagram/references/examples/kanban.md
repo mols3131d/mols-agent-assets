@@ -86,19 +86,7 @@ kanban
 - `ticket`과 `ticketBaseUrl`은 실제 traceability가 필요할 때만 사용한다. Synthetic example이 아닌 실제 문서에서는 존재하지 않는 ticket이나 URL을 만들지 않는다.
 - Metadata를 추가하기 위해 card label에 같은 정보를 반복하지 않는다. Label은 work item을 식별하고 metadata는 보조 fact를 맡는다.
 
-## Selection Boundaries
-
-| 질문 | 우선 표현 |
-| --- | --- |
-| 지금 어떤 일이 어느 stage에 있는가 | Kanban |
-| 어떤 조건으로 다음 stage로 이동하는가 | Flowchart |
-| 누가 어떤 handoff를 수행하는가 | Swimlanes 또는 Flowchart |
-| 언제 시작하고 얼마나 걸리며 무엇에 의존하는가 | Gantt |
-| epic/subtask 같은 nested decomposition은 무엇인가 | TreeView, Mindmap 또는 table |
-| WIP control, movement policy, SLE 같은 workflow operating policy는 무엇인가 | Kanban + companion prose/table 또는 authoritative work system |
-| 전체 board를 정렬·필터·집계해야 하는가 | source system 또는 table |
-
-Kanban column 이름이 process step처럼 보인다는 이유만으로 process model로 사용하지 않는다. `kanban` 자체에는 card 간 dependency edge나 transition rule이 없다.
+Kanban column 이름이 process step처럼 보여도 `kanban` 자체에는 card 간 dependency edge나 transition rule이 없다. WIP control, movement policy, SLE가 질문의 핵심이면 board와 companion prose/table 또는 authoritative work system을 함께 사용한다.
 
 ## Viewport And Density
 
