@@ -23,9 +23,9 @@ Prefer an existing supported surface over a custom schema when it can express th
 required behavior without changing the workflow's artifact structure.
 
 A custom schema is justified when the artifact set, dependency flow, templates, or
-schema-level instructions must materially differ. A schema becomes another owned
-workflow snapshot, so do not create one merely to add guidance that project
-configuration can already express.
+schema-level instructions must materially differ. It introduces another workflow
+definition to own and maintain, so do not create one merely to add guidance that
+project configuration can already express.
 
 ## Choose the narrowest owner
 
