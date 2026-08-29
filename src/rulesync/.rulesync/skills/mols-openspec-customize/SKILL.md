@@ -48,7 +48,7 @@ this section owns the package-level decision about when to load each reference.
 
 | Reference | Load when | Do not load merely because... |
 | --- | --- | --- |
-| [Official customization](references/official-customization.md) | Exact OpenSpec support or behavior can change the answer | the task merely mentions OpenSpec |
+| [Official contract](references/official-contract.md) | Exact OpenSpec support or behavior can change the answer | the task merely mentions OpenSpec |
 | [Customization design](references/customization-design.md) | Choosing the narrowest owner, config versus schema, or how much context OpenSpec should receive | a custom schema already exists and only maintenance is in question |
 | [Schema maintenance](references/schema-maintenance.md) | An existing or chosen custom schema needs package, documentation, fork, or long-term maintenance guidance | the task merely mentions or creates a schema |
 | [Dogfood and tuning](references/dogfood-and-tuning.md) | An existing or candidate customization needs real-work evaluation, tuning, regression checking, baseline comparison, or resolved-behavior verification | the ownership decision can be made without empirical iteration |
