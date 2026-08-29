@@ -30,11 +30,11 @@ Mermaid diagram은 **관계·절차·책임·상태·시간 순서·구조**를 
 | ownership·handoff | Swimlanes 또는 Flowchart | 책임 주체를 lane으로 분리할 가치가 있을 때 |
 | message order | Sequence, ZenUML | 호출·message의 시간 순서가 핵심 |
 | lifecycle | State | state와 transition이 핵심 |
-| domain·schema | Class, ER | type 관계 또는 entity cardinality가 핵심 |
+| domain·schema | Class, ER | type 관계 또는 entity grain·cardinality·identifying relation이 핵심 |
 | architecture·boundary | Architecture, C4, Flowchart | system boundary와 dependency를 설명할 때 |
 | chronology·planning | Timeline, Gantt, Git Graph | 사건 순서, 기간 또는 branch history가 핵심 |
 | hierarchy | Mindmap, TreeView | 방향·수치보다 계층 구조가 핵심 |
-| experience·work | Journey, Requirement, Kanban | 경험 단계, traceability 또는 work state가 핵심 |
+| experience·work | Journey, Requirement, Kanban | experience score, traceability 또는 work-state snapshot이 핵심 |
 | specialized relationship | Block, Packet, Venn, Ishikawa, Wardley, Cynefin, Event Modeling 등 | 해당 notation 자체가 질문을 더 직접적으로 설명할 때 |
 
 특정 type의 현재 declaration과 상세 문법이 필요하면 local table을 확장하기보다 공식 문서와 target renderer를 확인한다.
@@ -47,11 +47,11 @@ Mermaid diagram은 **관계·절차·책임·상태·시간 순서·구조**를 
 | --- | --- | --- |
 | Hierarchy (`Mindmap`/`TreeView`) ↔ dependency-oriented `Flowchart` | single-parent, acyclic hierarchy 자체가 핵심 | shared dependency, multi-parent 또는 cycle이 핵심 |
 | Logical topology (`Architecture`/`C4`/`Flowchart`) ↔ deployment placement | 무엇이 무엇과 연결되고 어떤 boundary가 있는지가 핵심 | 어디에 배치되고 zone·host·artifact·replica가 무엇인지가 핵심; target이 적절한 deployment 표현을 지원하지 않으면 text/table fallback을 검토 |
-| Conceptual `ER` ↔ physical schema detail | entity와 cardinality가 핵심 | SQL type, constraint, index와 column-level contract가 핵심; 필요하면 schema/table 표현을 사용 |
+| Conceptual `ER` ↔ physical schema detail | entity grain, cardinality와 identifying/non-identifying relation이 핵심 | SQL type, constraint, index와 column-level contract가 핵심; 필요하면 schema/table 표현을 사용 |
 | Process ownership (`Swimlanes`) ↔ ownership hierarchy (`Mindmap`/`TreeView`) | process 안에서 owner와 handoff가 핵심 | 정적인 reporting, coverage 또는 ownership 구조가 핵심 |
 | `Kanban` ↔ process flow (`Flowchart`/`Swimlanes`) | 현재 work state의 snapshot이 핵심 | ordered transition, condition 또는 handoff가 핵심 |
-| `Journey` ↔ process/chronology (`Flowchart`/`Timeline`) | human experience와 actor involvement가 핵심 | 절차 자체나 chronology가 핵심 |
-| `Class` ↔ `ER` | inheritance, realization, composition, operation 같은 typed relation이 핵심 | entity, key와 cardinality가 핵심 |
+| `Journey` ↔ process/chronology (`Flowchart`/`Timeline`) | ordered human-experience step과 source-backed 1–5 score가 핵심; actor involvement는 source에 있을 때 보조 정보 | 절차 자체나 chronology가 핵심 |
+| `Class` ↔ `ER` | inheritance, realization, composition, operation 같은 typed relation이 핵심 | entity grain, key, cardinality와 identifying relation이 핵심 |
 | `Wardley` ↔ runtime architecture (`Architecture`/`C4`/`Flowchart`) | value chain과 evolution positioning이 핵심 | runtime topology와 dependency가 핵심 |
 | `Timeline` ↔ `Gantt` | 사건의 chronology가 핵심 | duration, overlap과 dependency가 핵심 |
 
