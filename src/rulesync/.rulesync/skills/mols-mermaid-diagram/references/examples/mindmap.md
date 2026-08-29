@@ -22,7 +22,7 @@ mindmap
             SLA
 ```
 
-이 예제는 `Data Quality`를 세 개의 quality dimension으로 분해하고, 각 dimension 아래에 관련 check concept을 둔다. `Freshness`가 `SLA`보다 먼저 실행된다거나 `Missing fields`가 `Missing records`를 유발한다는 의미는 만들지 않는다.
+이 예제는 `Data Quality`를 세 개의 quality dimension으로 분해하고, 각 dimension 아래에 관련 concept을 둔다. `Freshness`가 `SLA`보다 먼저 실행된다거나 `Missing fields`가 `Missing records`를 유발한다는 의미는 만들지 않는다.
 
 ## Tree Fidelity
 
@@ -78,6 +78,7 @@ Sibling declaration order와 renderer의 spatial placement는 hierarchy를 읽�
 - Sibling이 왼쪽/오른쪽, 위/아래에 있다는 이유만으로 priority, chronology, rank, maturity 또는 ownership을 만들지 않는다.
 - Source에 명시적 rank/order가 있고 그 순서 자체가 핵심이면 label, numbered field 또는 table처럼 order를 직접 보존하는 표현을 함께 검토한다.
 - Layout engine이 branch 위치를 바꿔도 parent-child meaning은 변하지 않아야 한다.
+- Mindmap의 default layout과 config precedence는 renderer/version에 따라 달라질 수 있으므로 특정 branch side, sibling geometry 또는 현재 spacing을 contract로 삼지 않는다. Composition이 중요하면 실제 target render를 확인한다.
 - `tidy-tree` 같은 alternate layout은 readability를 개선할 수 있지만 domain semantics를 추가하지 않는다. Target renderer 지원과 실제 결과를 확인한 뒤 presentation option으로만 사용한다.
 
 ## Shapes, Icons And Classes
@@ -109,7 +110,7 @@ Mindmap은 syntax validity와 **hierarchy fidelity**를 따로 검증한다.
 1. Sibling order, branch position, shape, icon과 class를 priority·chronology·ownership 등의 fact로 승격하지 않았는가.
 1. Source의 partial examples를 complete taxonomy처럼 표현하지 않았는가.
 1. Broad/deep hierarchy가 unreadable하면 layout trick보다 overview/detail split을 검토했는가.
-1. Alternate layout, icon, class와 Markdown label 같은 renderer-sensitive 기능은 실제 target에서 읽을 수 있는가.
+1. Default/alternate layout, icon, class와 Markdown label 같은 renderer-sensitive 기능은 실제 target에서 읽을 수 있는가.
 
 문제가 있으면 보기 좋은 tree를 만들기 위해 관계를 발명하지 않는다. 먼저 hierarchy facts와 representation choice를 고친다.
 
