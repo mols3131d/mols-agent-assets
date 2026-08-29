@@ -21,10 +21,11 @@
 
 ## 예제의 역할
 
-- **Basic**은 해당 notation의 핵심 구조를 최소 요소로 보여준다.
-- **Intermediate**는 실제 판단에 도움이 되는 option, label 또는 presentation 기능을 추가한다.
-- **Advanced/Improvement**는 boundary, branching, multiple actors, metadata, annotation, recovery path 또는 fidelity constraint처럼 실제 문제 해결에 필요한 요소를 결합한다.
-- Advanced가 단순히 줄 수만 늘어나지 않도록, 무엇을 더 잘 판단하게 하는지 설명한다.
+각 문서는 해당 notation에서 **모델이 틀리기 쉬운 local judgment와 최소 예제**를 중심으로 구성한다. `Basic`, `Intermediate`, `Advanced` 같은 단계형 heading은 필요할 때만 사용하며 모든 파일에 같은 구조를 강제하지 않는다.
+
+- 최소 예제는 해당 notation의 핵심 구조와 semantic contract를 가장 적은 요소로 보여준다.
+- 확장 예제는 option 수를 늘리는 대신 boundary, branching, multiple actors, metadata, annotation, recovery path 또는 fidelity constraint처럼 **새로운 판단이 필요한 경우**에만 추가한다.
+- type-specific review section은 syntax validity와 별도로 확인해야 하는 semantic trap이나 renderer-sensitive acceptance를 정리한다.
 - split, overview/detail 또는 zoom 예제는 정보를 생략하거나 재배치할 수 있지만 **원본에 없던 relationship, direction, order, participant, state, transition 또는 다른 domain fact를 추가하지 않는다.**
 - 예제는 복사 시작점일 뿐이며 실제 문서의 domain, terminology, evidence와 target renderer에 맞게 다시 설계한다.
 
