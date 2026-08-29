@@ -88,6 +88,12 @@ kanban
 
 Kanban column 이름이 process step처럼 보여도 `kanban` 자체에는 card 간 dependency edge나 transition rule이 없다. WIP control, movement policy, SLE가 질문의 핵심이면 board와 companion prose/table 또는 authoritative work system을 함께 사용한다.
 
+## Styling Safety
+
+다른 Mermaid type의 `style`, `classDef`나 decoration syntax를 Kanban에도 동작한다고 가정하지 않는다. Kanban의 unsupported styling input은 명확한 parse error 대신 **구조적인 column/card처럼 해석되거나 render 단계에서 유실될 수 있으므로**, 현재 공식 Kanban surface와 실제 target render가 확인된 기능만 사용한다.
+
+Styling이 핵심 정보를 전달해야 할 정도라면 먼저 metadata, label 또는 별도 representation으로 의미를 명시하고 색상·class만 semantic owner로 두지 않는다.
+
 ## Viewport And Density
 
 Kanban renderer는 column을 수평으로 나란히 놓고 각 column 안의 card를 세로로 쌓는다. Column 수가 늘어날수록 board 폭이 구조적으로 커지므로 portrait viewport를 맞추기 위해 card의 실제 stage를 바꾸거나 label을 읽기 어려울 정도로 축소하지 않는다.
