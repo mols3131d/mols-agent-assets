@@ -1,6 +1,6 @@
 # Mermaid Diagram Reference
 
-Mermaid diagram은 **수치보다 관계·절차·책임·상태·시간 순서·구조가 핵심**일 때 사용한다. 수치 비교·추세·구성·양적 흐름이 핵심이면 `mols-mermaid-chart`를 사용한다.
+Mermaid diagram은 **관계·절차·책임·상태·시간 순서·구조**를 설명할 때 사용한다.
 
 ## Authority
 
