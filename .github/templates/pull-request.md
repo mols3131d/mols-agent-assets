@@ -21,32 +21,34 @@
 직접 확인한 check와 근거만 적는다.
 중요한 미수행 검증은 숨기지 말고 ⚪ Not Verified로 남긴다.
 상태: ✅ Pass / ❌ Fail / ⚪ Not Verified
+기본적으로 ❌ Fail → ⚪ Not Verified → ✅ Pass 순으로 두어 주의가 필요한 결과를 먼저 보이게 한다. 실행 순서가 판단에 중요하면 그 순서를 우선한다.
 -->
 
 {% for check in validation %}
 - {{ check.status }} — `{{ check.name }}`: {{ check.evidence }}
 {% endfor %}
 
-{% if review_focus %}
-## Review Focus
-
-<!-- 특히 확인할 결정, trade-off나 위험만 적는다. Review 범위를 제한하지 않는다. -->
-
-{% for item in review_focus %}
-- {{ item }}
-{% endfor %}
-{% endif %}
-
 {% if risks %}
 ## Risks
 
 <!--
 `risk.importance`는 `🔴 Critical` / `🟠 High` / `🟡 Medium` / `🔵 Low` 중 하나를 그대로 사용한다.
+기본적으로 importance가 높은 risk부터 정렬한다. 인과관계나 진행 순서가 판단에 중요하면 그 순서를 우선한다.
 현재 변경에서 실제로 고려해야 할 risk만 적고 finding이나 Validation을 반복하지 않는다.
 -->
 
 {% for risk in risks %}
 - {{ risk.importance }} — {{ risk.description }}
+{% endfor %}
+{% endif %}
+
+{% if review_focus %}
+## Review Focus
+
+<!-- 앞의 변경, 검증과 risk를 바탕으로 특히 확인할 결정이나 trade-off를 적는다. Review 범위를 제한하지 않는다. -->
+
+{% for item in review_focus %}
+- {{ item }}
 {% endfor %}
 {% endif %}
 
