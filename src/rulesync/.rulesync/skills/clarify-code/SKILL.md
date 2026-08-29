@@ -14,7 +14,7 @@ targets:
 
 실행 코드를 바꾸지 않고 **코드 파일 안에서 함께 유지되는 설명**을 개선해 caller와 maintainer의 이해 비용을 줄인다.
 
-주된 surface는 caller-facing API documentation, code-local comment와 source-level module/package explanation이다. 코드 구조 자체의 이해 비용은 prose로 대체하지 않고 `code-comprehension-refactor`의 책임으로 분리한다.
+주된 surface는 caller-facing declaration documentation, code-local comment와 source-level module/package explanation이다. 코드 구조 자체의 이해 비용은 prose로 대체하지 않고 `code-comprehension-refactor`의 책임으로 분리한다.
 
 ## Arguments
 
@@ -47,7 +47,7 @@ Surface는 signal 이름이 아니라 **reader와 semantic scope**로 선택한�
 
 | Reader / scope | Default surface |
 | --- | --- |
-| caller가 사용 전에 알아야 하는 contract, side effect, exception/failure semantics, caller-visible protocol constraint | repository/language-native caller-facing API documentation surface |
+| caller가 사용 전에 알아야 하는 contract, side effect, exception/failure semantics, caller-visible protocol constraint | repository/language-native caller-facing declaration documentation surface |
 | maintainer가 구현 변경 시 보존해야 하는 local invariant, ordering/failure consequence, implementation constraint, durable rejected alternative | code-local comment |
 | 한 symbol보다 file/package 전체에 안정적으로 적용되는 local convention | source-level module/package documentation surface |
 
@@ -72,7 +72,7 @@ Evidence-backed durable meaning이 남아 있는데 explanation을 피하기 위
 
 다음 판단이 실제로 필요할 때만 [Documentation](references/documentation.md)을 읽는다.
 
-- caller-facing API documentation의 ecosystem-specific surface가 불명확함
+- caller-facing declaration documentation의 ecosystem-specific surface가 불명확함
 - explanation의 placement, scope 또는 semantic owner가 불명확함
 - evidence source가 충돌하거나 historical/indirect evidence의 의미를 구분해야 함
 - canonical policy/contract의 local projection을 판단해야 함
@@ -88,7 +88,7 @@ Evidence-backed durable meaning이 남아 있는데 explanation을 피하기 위
 - unusual code shape, naming, history 또는 관례만 보고 확인되지 않은 rationale를 만들어내지 않는다.
 - 넓은 architecture·domain policy를 source comment에 복제하지 않는다. caller나 maintainer에게 필요한 local projection만 남긴다.
 - evidence 확인을 위한 read도 적용되는 explicit scope와 authority를 넘지 않으며, 읽은 surface를 수정할 권한이 생기지 않는다.
-- user-facing guide, README, API manual 같은 독립 문서는 이 skill의 scope가 아니다.
+- user-facing guide, README, standalone API manual 같은 독립 문서는 이 skill의 scope가 아니다.
 - `noqa`, `type: ignore`, coverage pragma, formatter directive, shebang, encoding cookie와 같은 machine-consumed comment를 일반 설명 comment로 취급하지 않는다.
-- caller-facing documentation이 reflection, documentation generation, doctest 또는 framework behavior의 contract라면 observable surface를 보존한다.
+- caller-facing declaration documentation이 reflection, documentation generation, doctest 또는 framework behavior의 contract라면 observable surface를 보존한다.
 - 실행하지 않은 validation을 수행했다고 보고하지 않는다.
