@@ -97,6 +97,8 @@ Runtime이 이미 trace/span/event를 제공한다면 새 log로 같은 사실�
 
 이 구분은 새 tracing framework를 도입하라는 뜻이 아니다. **이미 존재하는 native surface를 재사용할 때의 선택 기준**이다.
 
+사용자가 logging을 구체적으로 요청했다면 [Evidence](evidence.md#explicit-surface-requests)의 surface 제약을 따른다. 기존 span/result가 상세 사실을 소유하더라도 요청을 조용히 다른 surface로 대체하지 않고, 필요한 최소 boundary event나 link만 logging에 projection한다.
+
 ## Level And Outcome
 
 | Level | Typical meaning |
@@ -135,11 +137,11 @@ Exception이 발생했다는 이유만으로 항상 `ERROR`가 되는 것은 아
 ## Final Check
 
 - 이 event는 어떤 복원 질문에 답하는가?
-- existing observation이나 다른 persistent owner로 이미 충분하지 않은가?
+- existing observation이나 다른 owning surface로 이미 충분하지 않은가?
 - 사건의 owner와 기록 위치가 맞는가?
 - message/event type과 최소 context만으로 사건을 식별할 수 있는가?
 - action/outcome/reason 중 실제로 필요한 의미가 구분되는가?
 - 기존 evidence와 중복되지 않는가?
 - 반복 실행에서 noise, cardinality와 데이터 크기가 감당 가능한가?
 
-이 event를 제거해도 복원 질문에 답할 수 있다면 제거한다.
+이 event를 제거해도 복원 질문에 답할 수 있다면 제거한다. 단, 사용자가 logging 자체를 유지하라고 명시했거나 별도 logging contract가 있으면 그 제약을 먼저 따른다.
