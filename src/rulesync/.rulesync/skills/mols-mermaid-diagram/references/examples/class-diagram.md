@@ -85,9 +85,11 @@ classDiagram
     class Incident
 
     Repository <|.. IncidentRepository : implements
-    IncidentService "1" --> "1" Repository : uses
+    IncidentService "1" --> "1" Repository : repository reference
     IncidentService "1" --> "0..*" Incident : manages
 ```
+
+`repository reference`는 source model이 `IncidentService`와 `Repository` 사이에 구조적 association을 실제로 정의한다는 전제다. 단순 method call만 있다면 `..>` dependency가 더 정확할 수 있다.
 
 - Mermaid가 quoted multiplicity text를 그릴 수 있다는 사실이 source cardinality를 검증해 주지는 않는다.
 - `1`, `0..*` 같은 값을 source model보다 강하게 추론하지 않는다.
