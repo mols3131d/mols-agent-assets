@@ -1,11 +1,3 @@
-```yaml
-type: "{{ type }}"
-scope: "{{ scope }}"
-{% if priority %}
-priority: "{{ priority }}"
-{% endif %}
-```
-
 ## Summary
 
 <!--
@@ -52,11 +44,18 @@ priority: "{{ priority }}"
 {% endfor %}
 {% endif %}
 
-{% if author %}
+{% if author or revision %}
 ```yaml
+{% if author %}
 author:
 {% for item in author %}
   - {{ item }}
 {% endfor %}
+{% endif %}
+{% if revision %}
+revision:
+  base: {{ revision.base }}
+  head: {{ revision.head }}
+{% endif %}
 ```
 {% endif %}
