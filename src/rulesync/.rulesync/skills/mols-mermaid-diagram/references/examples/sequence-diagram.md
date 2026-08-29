@@ -92,7 +92,7 @@ sequenceDiagram
 
 ### Overview
 
-전체 흐름을 이해하는 데 필요한 주요 message만 남긴다.
+전체 흐름을 이해하는 데 필요한 주요 message만 남기되, 생략으로 인해 조건이 사라져 의미가 강해지지 않게 한다.
 
 ```mermaid
 sequenceDiagram
@@ -103,7 +103,9 @@ sequenceDiagram
 
     Source->>Transform: Send input
     Transform->>Quality: Send transformed data
-    Quality->>Delivery: Release approved data
+    alt Checks pass
+        Quality->>Delivery: Release approved data
+    end
 ```
 
 ### Detail
@@ -128,5 +130,5 @@ sequenceDiagram
 
 - message direction, order와 condition은 source가 뒷받침할 때만 구체화한다.
 - participant를 단순히 diagram을 채우기 위해 추가하지 않는다.
-- overview는 detail을 축약할 수 있지만 서로 모순되는 interaction을 만들지 않는다.
+- overview는 detail을 축약할 수 있지만 condition을 제거해 optional message를 unconditional interaction처럼 만들지 않는다.
 - split 과정에서 새로운 participant, message, acknowledgement 또는 failure path를 발명하지 않는다.
