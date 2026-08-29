@@ -67,7 +67,7 @@ Mermaid `merge`는 source branch head와 current branch head를 parent로 가진
 
 ## Cherry-Pick Is Not Ancestry
 
-Git의 cherry-pick은 기존 commit이 만든 change를 현재 branch에 다시 적용해 새 commit을 기록하는 operation이다. Original commit이 새 commit의 Git parent가 되는 것은 아니다.
+일반적인 recorded cherry-pick은 기존 commit이 만든 change를 현재 branch에 다시 적용해 새 commit을 기록한다. 이때 source commit을 새 commit의 **추가 parent**로 연결하지 않는다. Git에는 `--ff`, `-n`처럼 다른 동작을 만드는 option도 있으므로 Mermaid `cherry-pick`을 Git command 전체의 정확한 모델로 보지 않는다.
 
 Mermaid `cherry-pick`은 source commit을 시각적으로 연결하는 자체 모델을 사용하므로, 그 connector를 **실제 Git ancestry나 merge relationship으로 해석하지 않는다**. Cherry-pick operation 자체를 설명해야 한다면 source와 target을 prose/table로 함께 명시하고, ancestry 정확성이 핵심이면 `gitGraph`의 visual connector에 의존하지 않는다.
 
