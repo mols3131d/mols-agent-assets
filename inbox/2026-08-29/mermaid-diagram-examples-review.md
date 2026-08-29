@@ -60,7 +60,14 @@
 ## Current
 
 - 진행: **24/24 완료**, 파일별 심층 RPI 수렴 완료
-- 전체 package consistency review: **완료** — README index 24개와 tracker를 대조하고 PR diff가 tracker + README + 24 example 범위인지 확인
+- 최종 package review: **완료** — README index·상위 selection reference·24개 example·tracker·PR diff를 교차 검토하고 새 P1/P2가 없을 때까지 재리뷰
+- 최종 review 보정:
+  - `examples/README.md`의 고정 `Basic/Intermediate/Advanced` 역할 설명을 실제 type-specific example 구조와 일치시킴
+  - 상위 `mermaid-diagrams.md`의 Journey·ER 선택 기준을 개선된 example semantics와 동기화
+  - `architecture-diagram.md`, `cynefin.md`, `zenuml.md`에서 current/minimum version authority를 local 문서가 소유하지 않도록 renderer·공식 문서 책임으로 환원
+  - `zenuml.md`의 중복 fallback owner를 하나로 통합
+  - Journey score 없음, ER FK-only, ZenUML blocking interaction, action-only State, quantitative Venn near-miss를 adversarial simulation하고 새 semantic regression이 없음을 확인
+- 검증 범위: PR diff는 tracker + 상위 `mermaid-diagrams.md` + examples README + 24 logical example에 한정하며, C4 rename은 delete/add path로 표시됨
 - Batch 운영: 최대 5개씩 진행, 파일별 RPI는 독립·순차 수행
 - 완료: `architecture-diagram.md`
 - 완료: `c4-diagrams.md` — 리뷰 → 개선 → 재리뷰 완료
@@ -86,4 +93,4 @@
 - 완료: `state-diagram.md` — 심층 RPI 완료; official State docs와 current renderer/layout issues를 교차 검토하고 state/process boundary, initial/final scope, choice/fork/join, composite-state scope와 overview/detail fidelity를 재설계
 - 완료: `class-diagram.md` — 심층 RPI 완료; official Class docs와 current generic issues를 교차 검토하고 stable class identity, UML relation strength, multiplicity, generic identity, member excerpt와 namespace boundary를 재설계
 - 완료: `er-diagram.md` — 심층 RPI 완료; official ER docs와 current parser issue를 교차 검토하고 grain, cardinality, identifying/non-identifying relation, label perspective, key/nullability, attribute excerpt와 input-safety gate를 재설계
-- 다음: **PR #178 최종 리뷰 및 merge decision**
+- 다음: **PR #178 merge decision** — merge는 사용자의 명시적 승인 후 별도 수행
