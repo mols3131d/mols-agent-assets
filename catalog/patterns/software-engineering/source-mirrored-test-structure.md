@@ -1,18 +1,28 @@
 ---
-description: 분리된 test tree를 source code 경로와 대응시켜 테스트 위치를 예측 가능하게 하고, 단일 테스트 파일이 커질 때 대응 bundle로 확장할지 판단할 때 참고하는 패턴입니다.
+description: source와 test의 대응 관계를 탐색 단서로 활용하고, literal mirroring이 맞지 않을 때 feature·behavior·system boundary로 조직하거나 큰 test unit을 bundle로 확장할 때 참고하는 패턴입니다.
 ---
 
 # Source-Mirrored Test Structure
 
-`tests/`처럼 production source와 분리된 test tree를 사용할 때 **source의 경로와 책임 경계를 가능한 범위에서 mirror**해 관련 테스트의 위치를 예측 가능하게 만듭니다.
+Test structure가 production source와 어느 정도 대응되면 **source를 찾은 뒤 관련 테스트의 위치를 예측하기 쉬워집니다.** 특히 `tests/`처럼 production code와 test tree가 분리된 repository에서 유용한 navigation pattern입니다.
 
-목표는 source와 test를 기계적으로 1:1 대응시키는 것이 아닙니다. Source를 찾은 사람이 관련 테스트를 어디에서 찾아야 하는지 빠르게 추측할 수 있고, test tree만 보아도 어느 production 영역을 검증하는지 큰 윤곽을 파악할 수 있으면 충분합니다.
+여기서 mirroring은 source tree를 그대로 복사한다는 뜻이 아닙니다. Source path는 테스트를 배치하는 **좋은 탐색 단서 중 하나**이고, 테스트가 실제로 다루는 feature, behavior 또는 system boundary가 더 자연스러운 경우에는 그 경계를 따를 수 있습니다.
 
-이 패턴은 [`Filesystem-Legible Structure`](filesystem-legible-structure.md)를 test/source navigation에 적용한 구체적인 형태입니다.
+이 패턴은 [`Filesystem-Legible Structure`](filesystem-legible-structure.md)를 source/test navigation에 적용한 구체적인 형태입니다.
+
+## Purpose
+
+관련 source와 test 사이의 위치 관계를 쉽게 추측할 수 있게 하여 다음과 같은 비용을 줄이는 것이 목적입니다.
+
+- source를 수정할 때 관련 테스트를 찾는 비용
+- test tree만 보고 어느 production 영역을 검증하는지 파악하는 비용
+- 테스트가 커졌을 때 어디에서 나누고 확장할지 결정하는 비용
+
+핵심은 완벽한 대칭이 아니라 **예측 가능한 대응 관계**입니다.
 
 ## Core
 
-분리된 test tree에서는 **자연스러운 production owner가 있는 테스트를 그 owner의 source path와 대응되는 위치에 둡니다.** `src/`, package root처럼 test tree에서 의미 없는 상위 prefix는 생략하거나 해당 ecosystem의 일반 layout에 맞게 정규화할 수 있습니다.
+자연스러운 production owner가 분명한 테스트는 그 owner와 가까운 구조에 두는 형태가 가장 단순합니다.
 
 ```text
 src/
@@ -26,15 +36,25 @@ tests/
    └─ test_tax.py
 ```
 
-이 예에서 `src/billing/invoice.py`의 주요 테스트는 `tests/billing/test_invoice.py`에서 찾을 수 있습니다. Filename 자체보다 중요한 것은 **source path와 test path 사이의 대응 관계가 명확하고 반복 가능하다는 점**입니다.
+`src/billing/invoice.py`를 본 사람은 `tests/billing/test_invoice.py`를 먼저 찾아볼 수 있습니다. `src/` 같은 의미 없는 상위 prefix를 test tree에서 생략하거나 framework convention에 맞춰 이름을 바꾸더라도 이 대응 관계는 유지될 수 있습니다.
 
-Test layout은 source architecture를 새로 정의하지 않습니다. 이미 선택된 source structure를 탐색 단서로 재사용하는 것이 핵심입니다. Path가 대응된다는 사실도 white-box test나 implementation detail 중심의 assertion을 요구하지 않습니다.
+이 구조는 source architecture를 새로 정의하거나 test design을 source implementation에 결합하기 위한 것이 아닙니다. **이미 존재하는 구조를 navigation cue로 재사용하는 것**에 가깝습니다.
 
-## Grow from File to Bundle
+## Typical Forms
 
-하나의 source unit에 대한 테스트가 작을 때는 **하나의 test file에서 시작**하는 편이 단순합니다.
+### File-to-file
 
-테스트가 늘어나 한 파일에서 서로 다른 behavior와 scenario를 탐색하기 어려워지면, 같은 대응 위치를 유지한 채 **test bundle directory로 확장**할 수 있습니다. 보통 bundle은 기존 단일 test file을 대체합니다.
+테스트 범위가 작고 하나의 파일에서 충분히 읽히는 경우 가장 간단한 형태입니다.
+
+```text
+src/orders/service.py
+          ↓
+tests/orders/test_service.py
+```
+
+### File-to-bundle
+
+하나의 production unit에 대한 테스트가 여러 독립적인 behavior나 scenario로 커지면 대응 위치를 유지하면서 directory bundle로 확장할 수 있습니다.
 
 ```text
 src/
@@ -49,30 +69,11 @@ tests/
       └─ test_failures.py
 ```
 
-Bundle 내부는 source의 private function이나 현재 구현 순서를 그대로 복제하기보다 **behavior, scenario, contract처럼 테스트를 읽고 변경하는 데 유용한 경계**로 나눕니다.
+Bundle 내부는 source의 private function이나 구현 순서를 다시 mirror하기보다 **behavior, scenario, contract처럼 테스트를 읽고 변경할 때 의미 있는 경계**로 나누는 편이 대체로 유용합니다.
 
-고정된 line count나 test case 수를 split 기준으로 두지 않습니다. 다음과 같은 마찰이 반복될 때 bundle 전환을 고려합니다.
+### Boundary-to-bundle
 
-- 서로 다른 behavior가 한 파일 안에서 섞여 필요한 테스트를 찾기 어렵습니다.
-- 파일이 커져 review와 변경 범위를 빠르게 파악하기 어렵습니다.
-- 독립적인 test concern이 반복해서 같은 파일을 수정해 충돌이 커집니다.
-- local fixture나 helper가 특정 concern에만 속하는데 한 파일의 공용 영역에 쌓입니다.
-- 파일을 나누면 test ownership과 navigation이 더 분명해집니다.
-
-단순히 파일이 길다는 이유만으로 분리하지 않습니다. 여러 파일로 나눈 뒤에도 어떤 테스트가 어디에 있는지 더 예측하기 어렵다면 bundle은 개선이 아닙니다.
-
-## When Mirroring Does Not Fit
-
-Mirroring이 자연스럽지 않으면 **억지로 source file 하나를 고르지 않고 테스트의 가장 안정적인 owner를 찾습니다.**
-
-보통 다음 순서로 판단할 수 있습니다.
-
-1. 하나의 source file이나 module이 자연스러운 owner면 그 경계를 mirror합니다.
-1. 그렇지 않지만 하나의 package, component, feature 또는 domain이 자연스러운 owner면 그 **상위 production boundary**에 대응시킵니다.
-1. 여러 production boundary를 의도적으로 함께 검증한다면 source path 대신 **behavior 또는 test concern 자체**를 owner로 둡니다.
-1. repository 전체나 외부 system과의 관계를 검증한다면 `integration`, `e2e`, `contract`, `migration`처럼 **test level이나 system boundary**가 owner가 될 수 있습니다.
-
-예를 들어 결제 흐름이 여러 module을 가로질러 하나의 사용자-visible behavior를 만든다면 다음처럼 둘 수 있습니다.
+테스트가 여러 source unit을 함께 다루면서 하나의 안정적인 behavior를 검증한다면 literal source path 대신 그 behavior가 bundle의 이름이 될 수 있습니다.
 
 ```text
 src/
@@ -89,75 +90,110 @@ tests/
       └─ test_failures.py
 ```
 
-`checkout/`은 source directory를 문자 그대로 mirror하지 않지만, 테스트가 실제로 소유하는 **stable behavior boundary**를 드러냅니다.
+`checkout/`은 source directory를 그대로 복제한 것은 아니지만, 테스트가 다루는 경계를 더 잘 보여줄 수 있습니다.
 
-더 넓은 integration test라면 다음처럼 source mirroring 축에서 분리할 수 있습니다.
+## Choosing the Alignment
 
-```text
-tests/
-├─ billing/
-│  └─ test_invoice.py
-├─ integration/
-│  └─ test_billing_database.py
-└─ e2e/
-   └─ test_checkout.py
-```
+Source path가 항상 가장 좋은 organizing axis는 아닙니다. 테스트의 성격에 따라 다음 축 가운데 하나가 더 자연스러울 수 있고, repository 안에서 여러 축을 조합할 수도 있습니다.
 
-핵심은 모든 테스트를 같은 축으로 정렬하는 것이 아니라 **각 테스트를 어디에서 찾을지 예측할 수 있는 일관된 owner를 갖게 하는 것**입니다. `misc/`, `others/`, `common/`처럼 의미가 약한 catch-all은 마지막 수단으로도 만들지 않는 편이 좋습니다. 그런 directory가 커진다면 아직 적절한 owner를 찾지 못했다는 신호로 봅니다.
+| Alignment | 잘 맞는 경우 | Example |
+| --- | --- | --- |
+| Source unit | 한 module/file이 자연스러운 test owner | `tests/billing/test_invoice.py` |
+| Feature / domain | 여러 module이 하나의 기능 경계를 형성 | `tests/billing/checkout/` |
+| Behavior / contract | 내부 구조보다 외부에서 보이는 동작이 더 안정적 | `tests/api/authentication/` |
+| Test / system boundary | 여러 영역을 함께 검증하는 integration·e2e·compatibility test | `tests/integration/`, `tests/e2e/` |
+
+이 축들은 배타적이지 않습니다. 예를 들어 `tests/integration/billing/`처럼 test level과 domain을 함께 사용할 수도 있습니다.
+
+어떤 축을 먼저 드러낼지는 **사람이 테스트를 찾을 때 가장 먼저 알고 있는 정보가 무엇인지**에 따라 달라질 수 있습니다. Source를 보고 테스트를 찾는 일이 대부분이라면 source alignment가 강한 구조가 유리하고, 사용자 behavior나 integration boundary에서 테스트를 찾는 일이 많다면 그 축을 앞에 두는 편이 자연스러울 수 있습니다.
+
+## Growing into a Bundle
+
+File → bundle 전환에는 보편적인 line count나 test count가 필요하지 않습니다. Test file이 길다는 사실보다 **하나의 탐색 단위로 유지하는 것이 계속 유용한지**가 더 중요한 기준입니다.
+
+Bundle이 도움이 되는 흔한 신호는 다음과 같습니다.
+
+- 서로 다른 behavior나 scenario가 섞여 필요한 테스트를 찾기 어려워집니다.
+- 변경할 때 관련 없는 테스트까지 한 파일에서 함께 읽어야 합니다.
+- 독립적인 test concern이 반복해서 같은 파일을 수정합니다.
+- 특정 concern에만 필요한 fixture나 helper가 별도 local context를 형성합니다.
+- 파일을 나눴을 때 test ownership과 이름이 더 분명해집니다.
+
+반대로 여러 파일로 나눈 뒤 어디에 무엇이 있는지 더 추측하기 어려워진다면 단일 파일이 더 나은 형태일 수 있습니다.
+
+## When Mirroring Becomes Awkward
+
+Literal mirroring은 source와 test의 natural boundary가 비슷할 때 가장 잘 작동합니다. 다음과 같은 경우에는 다른 alignment가 더 읽기 쉬울 수 있습니다.
+
+- 하나의 public behavior가 여러 internal module을 가로지릅니다.
+- integration이나 end-to-end test가 repository의 여러 영역을 함께 검증합니다.
+- contract, compatibility, migration처럼 source file보다 system 관계가 중심입니다.
+- framework나 language가 colocated test 또는 특별한 test directory를 자연스럽게 사용합니다.
+- source refactoring은 잦지만 test가 검증하는 behavior boundary는 안정적입니다.
+
+이럴 때 mirroring을 유지하려고 테스트를 임의의 source file에 귀속시키기보다 **더 안정적인 test owner를 드러내는 구조**가 navigation에 도움이 될 수 있습니다.
+
+`misc/`, `others/`, 넓은 `common/` 같은 영역이 계속 커지는 경우도 하나의 신호가 될 수 있습니다. 반드시 잘못된 구조라는 뜻은 아니지만, 반복되는 테스트가 실제로 공유하는 feature, behavior 또는 support 책임이 있는지 다시 볼 만합니다.
 
 ## Variants
 
-Mirroring은 **exact filename schema가 아니라 대응 원칙**입니다. Language, framework와 test runner의 convention을 우선합니다.
+### Colocated tests
 
-예를 들어 `invoice.py`에 대한 bundle은 환경에 따라 `invoice/`, `test_invoice/`, `invoice_tests/`처럼 표현할 수 있습니다. 중요한 것은 repository 안에서 source와 test 사이의 대응을 쉽게 복원할 수 있고 test discovery와 tooling을 방해하지 않는 것입니다.
-
-Test를 source 옆에 colocate하는 ecosystem이라면 별도의 `tests/` tree를 만들 필요가 없습니다. 작은 테스트는 sibling file로 두고, 커지면 같은 local boundary의 bundle로 확장하는 식으로 같은 원칙을 적용할 수 있습니다.
+Source 옆에 테스트를 두는 ecosystem에서는 별도의 mirrored `tests/` tree 없이 같은 아이디어를 사용할 수 있습니다.
 
 ```text
-# file form
 billing/
 ├─ invoice.ts
 └─ invoice.test.ts
-
-# bundle form
-billing/
-├─ invoice.ts
-└─ invoice.test/
-   ├─ create.test.ts
-   └─ failures.test.ts
 ```
 
-작은 repository에서는 flat test layout이 더 단순할 수 있습니다. Source hierarchy가 얕고 이름 충돌이나 navigation 문제가 없다면 mirroring을 위해 불필요한 directory를 추가하지 않습니다.
+Test가 커지면 local bundle이나 framework가 자연스럽게 지원하는 다른 분할 형태를 사용할 수 있습니다.
 
-## Tests That Should Not Mirror a Single Source File
+### Flat tests
 
-모든 테스트가 하나의 source file이나 module에 자연스럽게 귀속되는 것은 아닙니다. **여러 production boundary를 함께 검증하는 테스트까지 억지로 하나의 source path에 배치하지 않습니다.**
+작은 repository에서는 flat `tests/`가 가장 단순할 수 있습니다.
 
-대표적으로 다음은 자기 목적에 맞는 별도 구조가 더 자연스러울 수 있습니다.
+```text
+tests/
+├─ test_invoice.py
+├─ test_tax.py
+└─ test_checkout.py
+```
 
-- integration test
-- end-to-end test
-- contract 또는 compatibility test
-- migration과 system-level regression test
-- 여러 test area가 공유하는 fixture, factory와 test support code
+Source hierarchy가 얕고 이름 충돌이나 navigation 문제가 없다면 directory mirroring을 추가하는 편익도 작습니다.
 
-이런 테스트는 `tests/integration/`, `tests/e2e/`처럼 test concern 자체를 owner로 삼을 수 있습니다. 특정 feature나 domain이 명확한 owner라면 그 경계를 기준으로 다시 묶을 수도 있습니다.
+### Test-type-first
 
-Public behavior를 검증하는 테스트가 여러 내부 module을 의도적으로 가로지른다면 현재 implementation file보다 **stable behavior boundary**를 따라가는 편이 refactoring에 더 강할 수 있습니다.
+Integration, e2e, compatibility처럼 실행 방식과 boundary가 source ownership보다 중요한 suite는 test type을 첫 번째 축으로 둘 수 있습니다.
 
-## Guardrails
+```text
+tests/
+├─ unit/
+├─ integration/
+└─ e2e/
+```
 
-**Mirroring은 navigation aid이지 source와 test 사이의 강한 coupling contract가 아닙니다.**
+필요하면 각 영역 안에서 다시 domain이나 source structure를 반영할 수 있습니다.
 
-- Source 내부 구현이 바뀔 때마다 test tree를 기계적으로 재배열하지 않습니다.
-- Test organization을 맞추기 위해 production structure를 왜곡하지 않습니다.
-- Framework, language, generated code와 test runner가 소유하는 유효한 convention을 우선합니다.
-- One source file = one test file 규칙을 강제하지 않습니다.
-- 하나의 test가 여러 owner에 걸친다는 이유로 같은 test logic을 여러 위치에 복제하지 않습니다.
-- Mirrored path가 실제 test intent를 숨기기 시작하면 behavior, feature 또는 system boundary처럼 더 적절한 owner를 선택합니다.
+## Trade-offs
 
-Source rename이나 move가 test의 natural owner도 함께 바꾼다면 mirrored test path를 같이 갱신하는 것이 탐색성에 도움이 됩니다. 반대로 source의 일시적인 내부 재배치에 불과하고 test의 conceptual owner가 그대로라면 strict mirror를 유지하기 위한 churn은 만들지 않습니다.
+Source mirroring은 탐색 비용을 낮추지만 source rename이나 module 이동이 잦은 repository에서는 test path churn을 만들 수 있습니다. 반대로 behavior 중심 구조는 refactoring에는 안정적일 수 있지만 source에서 관련 test를 바로 찾기는 어려울 수 있습니다.
+
+Directory를 세분화하면 ownership과 navigation이 좋아질 수 있지만 hierarchy 자체가 새로운 탐색 비용이 되기도 합니다. 그래서 작은 test surface에서는 단일 파일이나 flat layout으로 시작하고, 실제 마찰이 생길 때 structure를 확장하는 방식과 잘 맞습니다.
+
+이 패턴은 test taxonomy, test pyramid, fixture architecture나 unit/integration의 의미를 정하는 패턴은 아닙니다. **어떤 테스트가 존재해야 하는가보다, 이미 존재하는 테스트를 filesystem에서 어떻게 찾기 쉽게 둘 것인가**에 초점을 둡니다.
+
+## Ecosystem Fit
+
+대표적인 ecosystem만 보아도 test layout에는 하나의 표준 형태가 없습니다.
+
+- [pytest](https://docs.pytest.org/en/stable/explanation/goodpractices.html#tests-outside-application-code)는 application code 밖의 `tests/` layout을 지원합니다.
+- [Go](https://pkg.go.dev/testing)는 package source와 같은 directory의 `*_test.go`를 기본적인 형태로 사용합니다.
+- [Cargo](https://doc.rust-lang.org/cargo/reference/cargo-targets.html#tests)는 source 안의 unit test와 `tests/` 아래 integration test를 구분합니다.
+- [Jest](https://jestjs.io/docs/configuration#testmatch-arraystring)는 `__tests__` directory와 `.test` / `.spec` suffix를 모두 기본 discovery 형태로 지원합니다.
+
+따라서 source mirroring은 ecosystem convention을 대신하는 universal layout이라기보다, **허용되는 구조 안에서 source와 test 사이의 navigation 관계를 더 읽기 쉽게 만드는 선택지**로 보는 편이 적절합니다.
 
 ## Short Form
 
-> **분리된 test tree는 source structure를 따라 관련 테스트의 위치를 예측 가능하게 두고, 한 test file이 감당하기 어려워지면 같은 대응 경계에서 bundle로 확장합니다. Mirroring이 자연스럽지 않으면 더 안정적인 feature, behavior 또는 system boundary를 owner로 선택합니다.**
+> **Source와 test의 위치 관계를 예측 가능하게 만들 수 있다면 그 구조를 탐색 단서로 활용합니다. 작은 테스트는 파일로 시작하고 필요하면 같은 의미 경계의 bundle로 확장하며, literal mirroring보다 feature·behavior·system boundary가 더 자연스러우면 그쪽에 맞춥니다.**
