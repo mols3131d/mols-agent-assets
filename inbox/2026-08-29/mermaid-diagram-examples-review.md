@@ -35,7 +35,7 @@
 
 ### chronology·planning·work
 - [x] `timeline.md`
-- [ ] `gantt.md`
+- [x] `gantt.md`
 - [ ] `git-graph.md`
 - [ ] `kanban.md`
 
@@ -59,4 +59,5 @@
 - 완료: `c4-diagrams.md` — 리뷰 → 개선 → 재리뷰 완료
 - 완료: `block-diagram.md` — 심층 RPI 완료; 공식 docs·11.17.2 parser/layout tests·release history·open layout issue·local design principles 교차 검토
 - 완료: `timeline.md` — 추가 심층 RPI 완료; 공식 docs·11.17.2 DB/tests/LR·TD renderer·develop renderer·11.14/11.17 release·upstream issue를 교차 검토하고 temporal precision뿐 아니라 order uncertainty, visual connector semantics, repeated section, event-density coupling, long-title width와 TD actual-render gate까지 재검증
-- 다음: `gantt.md` 리뷰
+- 완료: `gantt.md` — 심층 RPI 완료; Mermaid 11.17.2 docs/parser/DB/tests, 11.16–11.17 release와 current Gantt issues/PRs를 교차 검토하고 implicit sequencing, reference resolution, working calendar, schedule uncertainty, milestone/status/criticality, renderer-sensitive acceptance를 재설계
+- 다음: `git-graph.md` 리뷰
