@@ -31,6 +31,15 @@ Maintained evidence가 필요하면 가장 자연스러운 기존 owner를 고�
 
 Metrics는 aggregate health, rate, distribution과 trend를 위한 surface다. **개별 execution을 복원하려고 request/user/execution identifier를 metric label로 추가하지 않는다.** 질문이 aggregate 상태라면 monitoring/observability 책임으로 route한다.
 
+## Explicit Surface Requests
+
+사용자가 `logging`, result context, metadata처럼 **구체적인 maintained evidence surface를 명시했다면 그 surface는 요청 제약으로 취급한다.** 다른 owner가 더 자연스럽다는 이유만으로 요청한 surface를 조용히 다른 것으로 대체하지 않는다.
+
+- 요청한 surface가 안전·contract·project authority와 양립하면 그 surface 안에서 가장 작은 의미 있는 projection을 선택한다.
+- 이미 다른 owner가 상세 사실을 충분히 소유하면, 요청한 surface에는 그 사실 전체를 복제하지 말고 필요한 boundary meaning이나 link만 남긴다.
+- 요청한 surface가 중복, 민감정보 노출, cardinality 폭증 또는 명시적 contract 위반을 만들면 그 충돌을 드러내고 더 안전한 최소안을 선택한다.
+- 사용자가 특정 surface가 아니라 “이해하기 쉽게 해달라”처럼 목적만 제시했다면 owner selection은 이 Skill이 맡는다.
+
 ## Choose The Change
 
 새 evidence 추가만 해법으로 보지 않는다.
@@ -64,8 +73,8 @@ Maintained evidence를 선택하기 전에 필요한 범위에서 확인한다.
 
 1. **누가 이 사실을 알아야 하는가?** caller, maintainer, operator, downstream Agent 중 실제 독자를 정한다.
 1. **기존 observation으로 충분한가?** 현재 이해만 필요하고 충분하면 maintained evidence를 추가하지 않는다.
-1. **사용자가 maintained surface를 명시했는가?** logging, result context, metadata처럼 future execution에 남을 surface가 명시되었다면 no-op 규칙으로 요청 자체를 무시하지 않는다. 다만 중복·오소유·과도한 방식은 더 작은 설계로 조정한다.
-1. **기존 durable/native owner가 있는가?** result, exception, artifact, framework metadata/history가 충분하면 wrapper log를 추가하지 않는다.
+1. **사용자가 specific surface를 명시했는가?** 명시했다면 [Explicit Surface Requests](#explicit-surface-requests)를 적용한다.
+1. **기존 durable/native owner가 있는가?** result, exception, artifact, framework metadata/history가 충분하면 method-agnostic 요청에서 wrapper log를 추가하지 않는다.
 1. **operation path나 causal relation이 필요한가?** 이미 존재하는 trace/history/relation을 우선하고 새 tracing 체계를 만들지 않는다.
 1. **시간적 사건 자체가 의미 있는가?** 다른 owner로는 사라지는 decision, transition 또는 boundary outcome일 때만 logging/event를 고려한다.
 1. **relation이 필요한가?** retry, async, batch 또는 cross-process 관계가 핵심이면 [Correlation](correlation.md)을 따른다.
@@ -80,8 +89,8 @@ Maintained evidence를 선택하기 전에 필요한 범위에서 확인한다.
 | Situation | Preferred decision |
 | --- | --- |
 | existing test/result만으로 현재 behavior를 충분히 이해할 수 있고 maintained change 요구가 없다 | 코드 변경 없이 stop한다. |
-| 사용자가 future logging을 요구했지만 result/history가 이미 같은 사실을 더 잘 소유한다 | 요청 목적을 보존하면서 중복 log 대신 owning surface 보강 또는 가장 작은 boundary event를 선택한다. |
-| result가 필요한 상태 전이와 최종 action을 이미 충분히 노출한다 | 추가 log 없이 result를 owner로 유지한다. |
+| 사용자가 future logging을 명시했고 result/history가 이미 상세 사실을 소유한다 | logging 요청을 유지하되 owning surface의 상세 내용을 복제하지 않고 필요한 boundary event, outcome 또는 stable link만 남긴다. |
+| result가 필요한 상태 전이와 최종 action을 이미 충분히 노출한다 | method-agnostic 요청이면 추가 log 없이 result를 owner로 유지한다. |
 | 같은 failure를 하위·중간·상위 layer가 모두 기록한다 | failure를 소유하거나 처리하는 boundary를 남기고 반복 evidence를 제거한다. |
 | framework가 durable execution history, artifact 또는 metadata에 사실을 이미 남긴다 | 그 native evidence를 우선하고 wrapper에는 별도 의미가 있을 때만 projection한다. |
 | existing trace가 causal flow를 충분히 제공한다 | 새 log/correlation을 추가하기 전에 trace를 재사용한다. |
