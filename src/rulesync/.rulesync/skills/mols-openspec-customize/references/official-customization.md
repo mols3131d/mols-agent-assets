@@ -24,7 +24,11 @@ the claim you need to make.
 | What does OpenSpec currently document and support? | Current `openspec.dev` documentation |
 | What does this project actually run? | The OpenSpec version selected or installed by the project; observe its CLI when useful |
 | Why does that project version behave this way? | Source corresponding to that version, only when docs and observed behavior are insufficient |
-| What is changing in OpenSpec upstream development? | Upstream repository, only when the task is explicitly about latest development |
+| What is changing in OpenSpec upstream development? | Upstream repository, only when the user or task explicitly requires latest upstream development or implementation research |
+
+Do not browse or inspect upstream implementation merely because the task involves
+OpenSpec customization. Use upstream source only when the decision genuinely depends
+on latest development or unresolved implementation behavior.
 
 Do not let upstream `main` silently override the behavior of an older project
 version. If the relevant version cannot be inspected, keep that uncertainty visible.
