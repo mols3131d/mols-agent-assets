@@ -1,13 +1,14 @@
 # Mermaid Diagram Examples Review
 
-`src/rulesync/.rulesync/skills/mols-mermaid-diagram/references/examples/`를 한 번에 전부 수정하지 않고, **파일 하나씩 `리뷰 → 개선 → 재리뷰`**한다.
+`src/rulesync/.rulesync/skills/mols-mermaid-diagram/references/examples/`를 한 번에 전부 수정하지 않고, **최대 5개씩 batch로 진행하되 각 파일은 독립적으로 `리뷰 → 개선 → 재리뷰`**한다.
 
 각 파일은 **깊은 추론**을 기본으로 `mols-rpi` Skill의 Research → Plan → Implementation → 재귀 Review 루프를 적용해 고도화한다. 단순 문법 확인이나 1회성 리뷰로 완료하지 않고, 내부 원칙과 upstream 근거를 교차 검토하며 새로운 근거가 판단을 실질적으로 바꾸지 않을 때까지 반복한다.
 
 ## 원칙
 
-- 현재 `examples/README.md`의 질문별 인덱스 순서를 따른다.
-- 한 번에 한 파일만 다룬다.
+- 현재 진행 cursor를 따라 최대 5개를 한 batch로 묶는다. 끝에 도달하면 남은 미완료 파일을 `examples/README.md`의 질문별 인덱스 순서로 이어간다.
+- Batch 안에서도 한 파일의 Research → Plan → Implementation → Review를 독립적으로 수행한다. 여러 파일을 한꺼번에 같은 결론으로 처리하지 않는다.
+- 파일별 완료 여부는 개별 RPI 수렴으로 판단한다. 같은 batch의 다른 파일이 미완료여도 수렴한 파일만 체크할 수 있다.
 - 최신 Mermaid 공식 문법과 target renderer 책임을 확인한다.
 - `mols-rpi`에 따라 조사, 계획, 구현과 반례 중심 재리뷰를 재귀적으로 수행한다.
 - syntax catalog를 복제하지 않고 local design judgment만 남긴다.
@@ -45,20 +46,21 @@
 ### hierarchy·experience·requirements
 - [x] `mindmap.md`
 - [x] `tree-view.md`
-- [ ] `user-journey.md`
-- [ ] `requirement-diagram.md`
+- [x] `user-journey.md`
+- [x] `requirement-diagram.md`
 
 ### specialized relationship·sensemaking
-- [ ] `packet-diagram.md`
-- [ ] `event-modeling.md`
-- [ ] `venn.md`
+- [x] `packet-diagram.md`
+- [x] `event-modeling.md`
+- [x] `venn.md`
 - [ ] `ishikawa.md`
 - [ ] `wardley.md`
 - [ ] `cynefin.md`
 
 ## Current
 
-- 진행: **9/24 완료**, 15개 남음
+- 진행: **14/24 완료**, 10개 남음
+- Batch 운영: 최대 5개씩 진행, 파일별 RPI는 독립·순차 수행
 - 완료: `architecture-diagram.md`
 - 완료: `c4-diagrams.md` — 리뷰 → 개선 → 재리뷰 완료
 - 완료: `block-diagram.md` — 심층 RPI 완료; 공식 docs·11.17.2 parser/layout tests·release history·open layout issue·local design principles 교차 검토
@@ -68,4 +70,9 @@
 - 완료: `kanban.md` — 심층 RPI 완료; Mermaid 11.17.2 docs/parser/DB/renderer/tests, current Kanban styling/parser issues와 Kanban Guide를 교차 검토하고 snapshot completeness, Definition of Workflow boundary, flat column→card model, visual ordering, metadata honesty, styling safety와 viewport split을 재설계
 - 완료: `mindmap.md` — 심층 RPI 완료; Mermaid 11.17.2 docs/parser/DB/tests, current layout-default issue와 local design principles를 교차 검토하고 decision/process 오용 제거, single-root/tree fidelity, multiple-root split, indentation safety, shared identity boundary, decomposition consistency와 layout-semantic separation을 재설계
 - 완료: `tree-view.md` — 심층 RPI 완료; Mermaid 11.17.2 docs/parser/DB/renderer/e2e, box-drawing implementation, current root behavior·upstream issues와 local design principles를 교차 검토하고 literal-tree scope/completeness, virtual `/` root, file-directory identity, structural input, annotation semantics, order/layout와 viewport fallback을 재설계
-- 다음: `user-journey.md` 리뷰
+- 완료: `user-journey.md` — 심층 RPI 완료; official docs·11.17.2 parser/DB/renderer를 교차 검토하고 1–5 score evidence, actor optionality·single-task score, activity-line semantics, phase/order honesty와 quantitative fallback을 재설계
+- 완료: `requirement-diagram.md` — 심층 RPI 완료; official docs·11.17.2 Jison/DB/tests와 current renderer-direction issue를 교차 검토하고 declaration/display ID 분리, endpoint resolution, typed traceability, direction/render acceptance와 coverage completeness를 재설계
+- 완료: `packet-diagram.md` — 심층 RPI 완료; official docs·11.17.2 parser/tests를 교차 검토하고 contiguous bit arithmetic, fixed/variable boundary, reserved-gap honesty, row-wrap semantics, bit numbering·byte order와 excerpt fallback을 재설계
+- 완료: `event-modeling.md` — 심층 RPI 완료; official docs·11.17.2 grammar/validator/DB/tests와 current namespace/data-render issues를 교차 검토하고 timeframe identity, declaration-order inference, reset/source control, entity-type source validation, namespace·data renderer sensitivity를 재설계
+- 완료: `venn.md` — 심층 RPI 완료; official docs·11.17.2 parser/DB/renderer와 current text/many-set issues를 교차 검토하고 `union`≠set union, set identity, size/population honesty, higher-arity synthetic pairwise layout, text/density와 quantitative fallback을 재설계
+- 다음 batch: `ishikawa.md` → `wardley.md` → `cynefin.md` → `flowchart.md` → `swimlanes.md`
