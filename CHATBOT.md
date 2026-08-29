@@ -8,13 +8,13 @@
 1. 구체적인 GitHub target(repository, path, ref, Pull Request, Issue, check, workflow, release 등)을 대상으로 작업한다면 기억이나 이전 대화만 믿지 말고 현재 repository와 관련 ref/object를 live state에서 먼저 식별합니다.
 1. 작업 대상 경로가 정해지면 관련 ref의 repository root부터 해당 경로까지 존재하는 `AGENTS.md`를 확인하고 더 좁은 scope의 instruction이 있으면 함께 적용합니다.
 1. [`.agents/route/ROUTE.md`](.agents/route/ROUTE.md)를 읽고 아래 routing table의 trigger를 참고해 현재 작업에 필요한 Agent Asset만 선택합니다. 아래 표는 route contract를 대체하지 않습니다.
-1. 구체적인 GitHub task에서는 `github-context`와 task-specific Asset을 모두 발견할 수 있는 route를 선택합니다. 좁은 family route가 둘을 함께 노출하지 않으면 `all`을 사용하고, 선택한 route 안에서도 task-relevant Skill만 로드합니다.
+1. 구체적인 GitHub task에서는 `github-context`를 선택합니다. 다른 task-specific Asset도 함께 필요하면 둘을 모두 발견할 수 있는 route를 선택하고, 좁은 family route 하나로 함께 노출할 수 없을 때만 `all`을 사용합니다. 선택한 route 안에서도 task-relevant Skill만 로드합니다.
 1. 이후 작업이 GitHub context에 의존하기 전에 `github-context`가 현재 repository/ref/object, 적용되는 repository instruction과 필요한 live GitHub state를 확인하도록 합니다.
 1. 작업 범위, target repository, ref/object 또는 대상 경로가 실질적으로 바뀌면 적용되는 instruction, GitHub context와 route selection을 다시 평가합니다.
 
 ## Git / GitHub 문서 라우팅
 
-여러 trigger가 동시에 맞으면 필요한 문서를 함께 읽습니다. 표는 **언제 어디로 갈지**만 연결하며 각 문서의 정책을 복제하지 않습니다.
+여러 trigger가 동시에 맞으면 필요한 문서를 함께 읽습니다. 일반적인 Git/GitHub 개념 설명만 요청하고 이 repository의 policy나 state가 판단에 필요하지 않으면 repository-local 문서를 강제로 로드하지 않습니다. 표는 **언제 어디로 갈지**만 연결하며 각 문서의 정책을 복제하지 않습니다.
 
 | Trigger | Load | 역할 |
 | --- | --- | --- |
