@@ -54,7 +54,7 @@ erDiagram
     ORDER ||--|{ LINE_ITEM : contains
 ```
 
-이는 `ORDER contains LINE_ITEM`으로 읽는다.
+이는 `ORDER contains LINE_ITEM`으로 읽으며, solid line은 이 예제의 source model이 `LINE_ITEM`을 `ORDER`에 identifying-dependent한 entity로 정의한다는 전제다.
 
 - Label을 반대 방향의 동사처럼 작성하지 않는다.
 - Relationship line은 process-flow arrow가 아니다. Diagram direction `LR`/`TB`나 label 문장 방향을 runtime call/ownership flow로 해석하지 않는다.
@@ -62,11 +62,11 @@ erDiagram
 
 ## Keys Are Source Annotations, Not Inference
 
-PK, FK, UK는 source schema/model이 뒷받침할 때만 표시한다.
+PK, FK, UK는 source schema/model이 뒷받침할 때만 표시한다. 아래 예제는 identifying dependence를 별도로 가정하지 않고 cardinality와 key annotation만 보여주므로 relationship을 non-identifying으로 둔다.
 
 ```mermaid
 erDiagram
-    PIPELINE_RUN ||--|{ RUN_STEP : contains
+    PIPELINE_RUN ||..|{ RUN_STEP : contains
     PIPELINE_RUN ||..o{ RUN_ARTIFACT : produces
     RUN_STEP ||..o{ STEP_ERROR : records
 
@@ -105,9 +105,9 @@ ER attribute block은 entity 이해에 필요한 **selected attributes**만 보�
 
 ```mermaid
 erDiagram
-    INCIDENT ||--o{ INCIDENT_EVENT : records
-    INCIDENT ||--o{ REMEDIATION : proposes
-    REMEDIATION ||--o{ APPROVAL : requires
+    INCIDENT ||..o{ INCIDENT_EVENT : records
+    INCIDENT ||..o{ REMEDIATION : proposes
+    REMEDIATION ||..o{ APPROVAL : requires
 
     INCIDENT {
         string incident_id PK
@@ -132,7 +132,7 @@ erDiagram
     }
 ```
 
-이 예시는 current state와 history event를 분리하는 **한 가지 source model**일 뿐 ER의 일반 규칙이 아니다.
+이 예시는 current state와 history event를 분리하는 **한 가지 source model**이고 identifying dependence는 주장하지 않는다. 실제 source schema가 identifying relation을 정의하면 solid relation으로 바꾼다.
 
 - 질문과 관련 없는 column을 모두 복제하지 않는다.
 - Attribute subset이면 complete DDL/schema라고 표현하지 않는다.
