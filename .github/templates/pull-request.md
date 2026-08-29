@@ -1,11 +1,3 @@
-```yaml
-type: "{{ type }}"
-scope: "{{ scope }}"
-{% if risk %}
-risk: "{{ risk }}"
-{% endif %}
-```
-
 ## Summary
 
 <!--
