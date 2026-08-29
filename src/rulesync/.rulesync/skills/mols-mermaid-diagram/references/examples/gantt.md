@@ -137,16 +137,6 @@ Gantt는 syntax validity와 **schedule integrity**를 따로 검증한다. Parse
 
 문제가 있으면 styling으로 숨기거나 날짜를 임의 이동하지 않는다. 먼저 schedule facts, reference ID, calendar assumption과 representation choice를 고친다.
 
-## Rules
-
-- Row order나 section grouping을 schedule dependency로 승격하지 않는다.
-- Implicit sequential start는 실제 chaining이 의도된 경우에만 사용한다.
-- `after`·`until` reference는 모두 resolve되고 cycle이 없어야 한다.
-- Date, duration, calendar, uncertainty와 status precision을 source보다 강하게 만들지 않는다.
-- `done`·`active`는 snapshot state이고 `crit`는 source-backed annotation이다.
-- Milestone은 실제 point event/gate에 사용하며 exact instant에는 `0d`를 우선한다.
-- Gantt 자체가 critical path나 dependency graph를 자동 분석·시각화한다고 주장하지 않는다.
-
 ## Portable Fallback
 
 Target renderer가 필요한 Gantt semantics를 안정적으로 지원하지 않으면 **task ID, task, start, end/duration, predecessor, status와 calendar assumption**을 보존하는 table로 전환한다. Dependency topology가 핵심이면 Flowchart를 함께 사용한다. Duration과 overlap이 load-bearing information이면 Timeline으로 단순 변환하지 않는다.
