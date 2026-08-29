@@ -58,8 +58,8 @@ actually arise. Do not create companion files as ceremony.
 
 ## Apply project evidence to dogfood
 
-When empirical tuning matters, choose a small representative set from real project
-work. Pick cases for information value rather than a quota, then apply the method in
+When empirical tuning matters, derive representative cases and acceptance evidence
+from real project work, then apply the reusable method in
 [Dogfood and tuning](dogfood-and-tuning.md).
 
 Preserve only evidence future maintainers need to understand or reproduce a
