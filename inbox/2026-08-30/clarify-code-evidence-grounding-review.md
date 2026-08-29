@@ -1,5 +1,7 @@
 # Clarify Code — Evidence Grounding Review
 
+> **Superseded for current implementation state.** 최신 `clarify-code` 판단은 [`clarify-code-surface-evidence-review.md`](clarify-code-surface-evidence-review.md)가 소유합니다. 이 문서는 evidence-grounding 단계의 historical review입니다.
+
 ## Reviewed
 
 - Research: `clarify-code-evidence-grounding-research.md`
@@ -236,6 +238,4 @@ Review 중 발견한 explicit-scope와 conflicting-evidence gap은 둘 다 `Evid
 
 ## Status
 
-**RPI converged after 3 substantive loops.**
-
-현재 상태는 comment recall, factual grounding, anti-spam precision, mutation boundary와 context economy를 동시에 만족합니다. 추가 loop는 model/runtime evidence가 새 failure를 보여주거나 새로운 review evidence가 생길 때만 정당화됩니다.
+**Historical intermediate review.** 현재 구현 acceptance는 `clarify-code-surface-evidence-review.md`를 따릅니다.
