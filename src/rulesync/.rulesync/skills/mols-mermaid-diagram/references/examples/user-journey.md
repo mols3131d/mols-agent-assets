@@ -62,7 +62,7 @@ journey
 Journey의 declaration order는 읽는 journey step 순서를 만든다. 따라서 순서가 source-backed일 때만 ordered journey로 표현한다.
 
 - `section`은 같은 journey phase의 task를 묶는다. Section 자체가 조직 boundary, ownership lane 또는 system component를 뜻하지 않는다.
-- 인접한 두 task 사이에 dependency edge가 있는 것은 아니다. 앞 task가 다음 task의 원인·전제·trigger라는 사실은 별도 근거가 필요하다.
+- Renderer가 task들을 activity line과 arrow로 연결해 보여도 이는 journey progression을 읽기 위한 visual treatment다. 인접 task 사이의 dependency, causality 또는 trigger를 자동으로 만들지 않는다.
 - Task width나 visual spacing을 elapsed time, effort 또는 중요도로 읽지 않는다.
 - Source가 일부 step의 선후만 말하고 total order를 확정하지 않았다면 보기 좋은 순서를 임의로 만들지 않는다. Parallel/alternative path가 load-bearing이면 Flowchart나 Swimlanes를 검토한다.
 - as-is와 to-be journey를 비교할 때 한 diagram 안에서 실제/제안 task를 섞어 현재 사실처럼 보이게 하지 않는다. 별도 diagram 또는 명시적 비교 table이 더 안전하다.
@@ -86,7 +86,7 @@ Journey는 syntax validity와 **experience-model fidelity**를 따로 검증한�
 1. 여러 actor가 붙은 task의 단일 score를 actor별 score처럼 읽히게 하지 않았는가.
 1. Actor list를 ownership, approval authority 또는 handoff direction으로 과해석하지 않았는가.
 1. Section을 phase grouping보다 강한 조직·system boundary로 사용하지 않았는가.
-1. 낮은 점수 뒤 높은 점수가 나온다는 이유만으로 recovery나 causality를 주장하지 않았는가.
+1. Activity line과 score 변화만으로 dependency, recovery 또는 causality를 주장하지 않았는가.
 1. 정량 비교가 핵심인데 Journey score로 chart 역할을 대신하고 있지 않은가.
 1. Task와 actor가 많아 읽기 어려우면 downscale보다 phase split을 검토했는가.
 
