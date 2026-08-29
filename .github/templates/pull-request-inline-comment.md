@@ -9,7 +9,7 @@ Required Change는 필요한 결과를, Suggestion은 optional 대안이나 구�
 {{ message }}
 
 {% if importance %}
-**🔎 Importance:** {{ importance }}
+**⚖️ Importance:** {{ importance }}
 {% endif %}
 
 {% if evidence %}
