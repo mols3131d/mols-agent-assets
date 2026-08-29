@@ -25,6 +25,7 @@
 - **Intermediate**는 실제 판단에 도움이 되는 option, label 또는 presentation 기능을 추가한다.
 - **Advanced/Improvement**는 boundary, branching, multiple actors, metadata, annotation, recovery path 또는 fidelity constraint처럼 실제 문제 해결에 필요한 요소를 결합한다.
 - Advanced가 단순히 줄 수만 늘어나지 않도록, 무엇을 더 잘 판단하게 하는지 설명한다.
+- split, overview/detail 또는 zoom 예제는 정보를 생략하거나 재배치할 수 있지만 **원본에 없던 relationship, direction, order, participant, state, transition 또는 다른 domain fact를 추가하지 않는다.**
 - 예제는 복사 시작점일 뿐이며 실제 문서의 domain, terminology, evidence와 target renderer에 맞게 다시 설계한다.
 
 ## Upstream 변화 다루기
