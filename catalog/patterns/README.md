@@ -6,7 +6,7 @@ description: Agentic development에서 context engineering, documentation, workf
 
 `catalog/patterns/`는 **agentic development에서 반복되는 설계·운용·구현 문제를 해결할 때 참고하는 reusable pattern library**입니다.
 
-Pattern은 특정 project의 mandatory policy가 아니라 여러 repository와 harness에서 참고·선택·조합·변형할 수 있는 설계 capsule입니다. Project-local mandatory rule과 workflow는 해당 project의 operational documentation이 소유합니다.
+Pattern은 특정 project의 contract나 mandatory policy가 아닙니다. 여러 repository와 harness에서 문제와 맥락을 이해하고, 가능한 접근을 참고·선택·조합·변형할 수 있도록 **소개·제안·권장 수준으로 다루는 설계 capsule**입니다. Project-local mandatory rule과 workflow는 해당 project의 operational documentation이 소유합니다.
 
 ## Categories
 
@@ -47,6 +47,7 @@ Bundle은 여러 파일로 나뉘어도 하나의 pattern capsule입니다. Entr
 Pattern은 **본질은 분명하게, 적용은 유연하게** 작성합니다.
 
 - Pattern을 성립시키는 core와 invariant는 명확하게 둡니다.
+- Pattern 자체를 contract나 mandatory instruction처럼 서술하지 않습니다. 적용 방식은 introduction, recommendation, typical form, option, heuristic처럼 **소개·제안·권장 수준**으로 표현합니다.
 - 본질이 아닌 layout, filename, format, tool, workflow는 고정 규칙으로 만들지 않습니다.
 - 대표 구현은 recommendation, typical form, example, option처럼 성격을 구분해 제시합니다.
 - 의미 있는 대안과 규모·환경에 따른 extension을 열어둡니다.
@@ -72,9 +73,10 @@ Pattern을 작성하거나 수정할 때 다음을 확인합니다.
 1. 이 capsule만으로 pattern의 목적과 본질을 이해할 수 있는가?
 1. Primary problem과 category가 자연스럽게 일치하는가?
 1. Core와 recommendation / option / example이 구분되어 있는가?
+1. Pattern이 contract나 mandatory instruction처럼 읽히지 않고, 소개·제안·권장 수준으로 적용 여지를 남기는가?
 1. 특정 repository나 tool에 불필요하게 고정되어 있지 않은가?
 1. 다른 pattern이나 project policy가 소유해야 할 책임을 가져오지 않았는가?
 1. 필요한 대안과 확장 가능성을 닫아버리지 않았는가?
 1. Bundle이라면 entrypoint에서 전체 의미와 내부 구조를 탐색할 수 있는가?
 
-Root와 category README는 전체 pattern inventory를 복제하지 않습니다. Filesystem과 각 entrypoint가 탐색 surface가 되고, README는 분류와 공통 contract만 소유합니다.
+Root와 category README는 전체 pattern inventory를 복제하지 않습니다. Filesystem과 각 entrypoint가 탐색 surface가 되고, README는 분류와 공통 작성 원칙만 소유합니다.
