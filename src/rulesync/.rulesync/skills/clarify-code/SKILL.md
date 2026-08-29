@@ -37,18 +37,19 @@ validation: auto
 1. 적용되는 repository/source instructions와 target code, 가까운 caller·maintainer context를 읽는다.
 1. 독자가 code만으로 복원하기 어려운 의미와 그 때문에 생기는 추론·탐색·오해 비용을 확인하고 reader를 구분한다: caller contract인지, maintainer rationale·constraint인지 판단한다.
 1. 먼저 **prose가 맞는 해법인지** 확인한다. 이름, representation, control/state flow, responsibility 또는 indirection이 실제 원인이면 설명을 추가하지 말고 `code-comprehension-refactor`로 넘긴다.
-1. 설명이 실제 이해 비용을 줄이는지 판단한다. code, name, type이 이미 충분한 정보를 주거나 prose가 읽기·유지 비용만 늘리면 추가하지 않거나 불필요한 설명을 제거한다.
+1. 실행 코드가 이미 적절하지만 caller나 maintainer에게 필요한 durable contract·invariant·constraint·consequence·rationale를 code만으로 안정적으로 복원하기 어렵고 같은 의미가 가까운 surface에 없다면, 사용자가 comment나 docstring을 직접 요청하지 않았어도 설명을 추가하거나 개선하는 것을 기본으로 한다.
+1. 반대로 code, name, type이 이미 충분한 정보를 주거나 prose가 읽기·유지 비용만 늘리면 추가하지 않거나 불필요한 설명을 제거한다. 설명의 양 자체를 품질로 보지 않는다.
 1. caller가 사용 전에 알아야 하는 비자명한 contract는 docstring에, maintainer가 구현을 수정할 때 알아야 하는 code-local constraint·consequence·rationale는 comment에 둔다. 의미의 실제 scope와 owner에 맞는 위치는 [Documentation](references/documentation.md)을 따른다.
 1. 선택한 설명 surface만 수정한다. 실행 statement, identifier, signature, type, control flow와 data representation은 변경하지 않는다.
 1. 설명이 runtime, tooling 또는 validation에 소비되는지 확인한다. doctest, reflection-dependent docstring, pragma, linter/type-check directive, magic comment는 일반 prose처럼 수정하지 않는다.
 1. 코드와 설명을 다시 읽어 중복, stale claim, 구현을 그대로 번역한 문장을 제거한다. 필요한 의미가 더 안정적인 canonical owner에 있다면 복제하지 않고 최소 projection만 남긴다.
 1. 변경한 설명, 보존한 code boundary, 수행한 validation과 남은 uncertainty만 짧게 보고한다.
 
-필요한 설명이 충분해지면 중단한다. 추가 prose가 제거하는 이해 비용보다 읽기·유지 비용이 크면 추가하지 않는다.
+필요한 설명이 충분해지면 중단한다. durable한 non-obvious meaning이 남아 있는데 comment를 피하기 위해 no-op으로 조기 종료하지 않는다. 반대로 추가 prose가 제거하는 이해 비용보다 읽기·유지 비용이 크면 추가하지 않는다.
 
 ## Progressive Disclosure
 
-- docstring과 comment의 reader, 내용, 가치, 위치 또는 scope가 불명확하면 [Documentation](references/documentation.md)을 읽는다.
+- docstring, comment 또는 module-level explanation을 추가·수정·제거할지 판단할 때 [Documentation](references/documentation.md)을 읽는다.
 
 ## Boundaries
 
