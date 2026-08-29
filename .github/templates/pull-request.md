@@ -1,52 +1,73 @@
+## Summary
+
 <!--
-작성 지침:
-- `{{ ... }}`를 실제 PR과 검증 결과에서 확인한 값으로 치환한다.
-- 적용되지 않는 `{% ... %}` block과 빈 section은 제거한다.
-- GitHub에 게시할 때 이 comment와 미치환 template syntax를 남기지 않는다.
-- summary는 diff를 다시 나열하지 말고 변경의 목적과 결과를 먼저 설명한다.
-- 중요한 검증을 실행하지 않았다면 verification에 미실행 상태와 필요한 이유를 숨기지 않고 적는다.
+왜 이 변경이 필요한가? 병합 후 무엇이 달라지는가?
+핵심부터 설명하고 구현 상세는 Changes에 둔다.
 -->
-
-```yaml
-type: "{{ type }}"
-scope: "{{ scope }}"
-{% if risk %}risk: "{{ risk }}"{% endif %}
-{% if related %}related: "{{ related }}"{% endif %}
-```
-
-## 요약
 
 {{ summary }}
 
-## 변경
+## Changes
+
+<!--
+검토자가 diff에서 확인해야 할 최종 변화는 무엇인가?
+파일 목록을 다시 쓰기보다 동작, 계약, 구조의 변화에 집중한다.
+-->
 
 {% for change in changes %}
 - {{ change }}
 {% endfor %}
 
-{% if verification %}
-## 검증
+## Validation
 
-{% for check in verification %}
-- `{{ check.name }}` — {{ check.result }}
+<!--
+실제로 무엇을 확인했고 결과는 어땠는가?
+중요한 미수행 검증은 숨기지 말고 ⚪ Not Verified로 남긴다.
+상태: ✅ Pass / ❌ Fail / ⚪ Not Verified
+-->
+
+{% for check in validation %}
+- {{ check.status }} — `{{ check.name }}`: {{ check.evidence }}
+{% endfor %}
+
+{% if boundaries %}
+## Boundaries
+
+{% for boundary in boundaries %}
+- {{ boundary }}
 {% endfor %}
 {% endif %}
 
-{% if impact %}
-## 영향
+{% if review_focus %}
+## Review Focus
 
-{{ impact }}
-{% endif %}
-
-{% if breaking_change %}
-> [!WARNING]
-> **Breaking change:** {{ breaking_change }}
-{% endif %}
-
-{% if review_points %}
-## 리뷰 포인트
-
-{% for point in review_points %}
-- {{ point }}
+{% for item in review_focus %}
+- {{ item }}
 {% endfor %}
+{% endif %}
+
+{% if risks %}
+## Risks
+
+{% for risk in risks %}
+- ⚠️ {{ risk }}
+{% endfor %}
+{% endif %}
+
+{% if references %}
+## References
+
+{% for reference in references %}
+- {{ reference }}
+{% endfor %}
+{% endif %}
+
+{% if author or revision %}
+```yaml
+{% if author %}author:
+{% for item in author %}  - {{ item }}
+{% endfor %}{% endif %}{% if revision %}revision:
+  base: {{ revision.base }}
+  head: {{ revision.head }}
+{% endif %}```
 {% endif %}
