@@ -68,6 +68,8 @@ Preservation surface는 public caller에 한정되지 않는다. Target에 따�
 
 Tests, static analysis와 refactoring-tool preview는 preservation evidence가 될 수 있지만 자동으로 complete specification이나 proof가 되지는 않는다. 위험한 transformation의 preservation 근거가 약하면 더 작은 안전한 change를 선택하거나 중단한다.
 
+Behavior preservation을 위해 함께 갱신해야 하는 consumer·registration·shape가 mutation scope 밖에 있으면 target만 부분 변경하지 않는다. 적용되는 scope policy와 authority가 허용하면 필요한 최소 scope expansion을 거치고, 그렇지 않으면 기존 contract를 유지하거나 handoff/no-op으로 남긴다.
+
 ### Net Comprehension Gain
 
 Intervention은 한 cognitive dimension만 최적화하지 않는다. 줄어드는 reader work와 새로 생기는 reader work를 함께 본다.
@@ -81,7 +83,7 @@ Intervention은 한 cognitive dimension만 최적화하지 않는다. 줄어드�
 1. 가장 material한 **coherent bottleneck/root-cause cluster**를 찾는다. 원인이 불명확하거나 여러 cost source의 trade-off가 판단을 바꿀 수 있으면 [Diagnosis](references/diagnosis.md)을 읽는다.
 1. Concern을 분리한다. Executable comprehension problem은 이 Skill이 다루되, independent prose need는 `clarify-code`, correctness defect는 correctness work, genuine optimization은 performance work, system boundary redesign은 architecture-level work로 분리한다. 한 sibling concern 때문에 valid comprehension work 전체를 버리지도, 다른 concern을 readability 명목으로 흡수하지도 않는다.
 1. 후보 transformation이 줄이는 reader work와 새로 만드는 conceptual surface를 비교해 **smallest safe coherent change**를 선택한다. Rename, move, extract, inline, representation/control-state change처럼 preservation precondition이 material할 수 있거나 transformation 선택이 단순하지 않으면 [Interventions](references/interventions.md)을 읽고 현재 language·repository·tooling contract에서 relevant risk를 확인한다.
-1. 필요한 executable code만 수정한다. 한 root cause를 제거하는 tightly coupled edit는 함께 할 수 있지만 unrelated cleanup, speculative abstraction 또는 future-proofing을 섞지 않는다.
+1. 필요한 executable code만 수정한다. 한 root cause를 제거하는 tightly coupled edit는 함께 할 수 있지만 unrelated cleanup, speculative abstraction 또는 future-proofing을 섞지 않는다. Preservation에 필요한 coupled consumer update가 write scope 밖이면 부분 mutation을 수행하지 않는다.
 1. 변경 전 확인한 preservation envelope를 기준으로 after state를 검증한다. Test coverage의 충분성, dynamic/hidden usage, characterization baseline, performance 또는 verification gap이 material하면 [Validation](references/validation.md)을 읽는다. Tests나 tooling 결과만으로 확인되지 않은 equivalence를 과대 주장하지 않는다.
 1. Caller와 maintainer 관점에서 다시 읽고, bottleneck이 실제로 줄었는지와 새 terminology·indirection·ceremony·coupling이 더 큰 이해 비용을 만들지 않았는지 확인한다. 변경, 보존 근거, 실제 수행한 validation, sibling concern과 남은 uncertainty만 짧게 보고한다.
 
@@ -101,6 +103,7 @@ Reference를 읽었다는 이유로 mutation scope나 operational authority가 �
 
 - 기능, observable behavior, relevant usage·contract surface, error semantics 또는 material performance characteristic을 readability 명목으로 변경하지 않는다.
 - public API뿐 아니라 framework discovery, registration, reflection, config/string lookup, serialization처럼 현재 consumer가 의존하는 non-public surface도 확인 없이 변경하지 않는다.
+- behavior-preserving refactor가 scope 밖 consumer의 coordinated mutation을 요구하면 target만 부분 변경하지 않는다. Authorized scope expansion, contract 유지 또는 handoff/no-op 중 적용 가능한 경로를 선택한다.
 - performance를 개선하거나 최적화하는 것이 목적이면 이 Skill의 범위를 벗어난다.
 - line count, 함수 수, class 수, abstraction 수, hop count를 단순함의 proxy로 사용하지 않는다.
 - tuple, dict, boolean, helper, abstraction, one-liner 자체를 문제로 보지 않는다. 실제 misunderstanding risk와 reconstruction cost를 판단한다.
