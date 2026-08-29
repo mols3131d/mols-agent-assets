@@ -4,6 +4,7 @@
 - 적용되지 않는 `{% ... %}` block과 빈 section은 제거한다.
 - GitHub에 게시할 때 이 comment와 미치환 template syntax를 남기지 않는다.
 - summary는 diff를 다시 나열하지 말고 변경의 목적과 결과를 먼저 설명한다.
+- 중요한 검증을 실행하지 않았다면 verification에 미실행 상태와 필요한 이유를 숨기지 않고 적는다.
 -->
 
 ```yaml
