@@ -50,6 +50,8 @@ ishikawa-beta
 - sibling cause는 같은 decomposition level을 사용한다.
 - child cause는 parent를 더 구체적으로 분해한다는 근거가 있을 때만 한 단계 아래에 둔다.
 - indentation depth를 원인의 중요도, 발생 확률, 증거 강도 또는 시간 순서로 해석하지 않는다.
+- parser는 raw whitespace depth를 구조 입력으로 사용하므로 같은 hierarchy에서는 일관된 spaces를 사용하고 tabs/spaces 혼용이나 formatter의 자동 reindent를 피한다.
+- root/effect line 자체가 더 들여쓰기 되어도 first cause를 기준으로 relative hierarchy가 계산될 수 있으므로, 화면상 column만 보고 parent relation을 추론하지 않는다.
 - 같은 문구가 여러 category에 반복되더라도 Mermaid는 shared identity를 가진 하나의 cause node로 연결하지 않는다. 하나의 공통 cause가 여러 effect/category와 실제 관계를 가진다면 Flowchart나 table처럼 관계를 직접 표현하는 representation을 검토한다.
 
 ## Hypothesis Versus Evidence
@@ -104,7 +106,7 @@ Ishikawa Diagram은 syntax validity와 **cause-model fidelity**를 따로 검증
 1. 첫 node가 실제로 조사하려는 하나의 effect/problem인가.
 1. 모든 top-level category가 같은 decomposition lens를 사용하고 source/investigation framing에 근거하는가.
 1. Indentation이 의도한 parent/child cause hierarchy와 정확히 일치하는가.
-1. Formatting 과정에서 indentation을 바꿔 cause parent를 변경하지 않았는가.
+1. Spaces/tabs 혼용이나 formatting 과정에서 raw indentation depth를 바꿔 cause parent를 변경하지 않았는가.
 1. Observation, confirmed factor와 hypothesis를 causal proof처럼 섞지 않았는가.
 1. Nested depth, branch order와 rendered position을 importance·probability·chronology로 과해석하지 않았는가.
 1. Solution/mitigation을 cause branch에 섞지 않았는가.
