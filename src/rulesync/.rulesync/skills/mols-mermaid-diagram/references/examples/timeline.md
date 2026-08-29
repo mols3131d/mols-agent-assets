@@ -20,7 +20,9 @@ Source order가 rendered chronology를 소유한다. 실제 날짜가 있는 sou
 
 Visual spacing도 elapsed time에 비례하지 않는다. `2024 → 2025`와 `2025 → 2030`이 비슷한 간격으로 보이더라도 같은 duration을 뜻하지 않는다.
 
-## Period Granularity And Same-Period Events
+## Temporal Precision And Same-Period Events
+
+Period label의 precision은 source evidence보다 높이지 않는다. Source가 `2025`까지만 말하면 정렬이나 미관을 위해 `2025-01` 또는 `2025-01-01`을 만들지 않는다. Approximate·uncertain timing이 중요한 경우에도 그 불확실성을 지우고 exact date처럼 보이게 하지 않는다.
 
 같은 temporal bucket에 여러 사실이 실제로 속할 때 한 period 아래 여러 event를 둘 수 있다.
 
@@ -41,7 +43,7 @@ timeline
 - event의 위아래 순서만으로 causality, dependency, approval chain 또는 within-period chronology를 주장하지 않는다.
 - 서로 다른 날짜에 일어난 사실을 compact하게 보이기 위해 하나의 period로 합치지 않는다.
 - month → quarter → year처럼 source granularity를 낮춰야 한다면 질문에 필요한 수준인지 확인하고, 해석에 영향을 주는 aggregation은 드러낸다.
-- within-period order가 중요하면 더 세밀한 period를 사용하거나 sequence/flowchart 같은 다른 type을 검토한다.
+- within-period order가 중요하면 더 세밀한 source evidence가 있을 때 그 period를 사용하거나 sequence/flowchart 같은 다른 type을 검토한다.
 
 ## Sections Are Contiguous Grouping
 
@@ -112,19 +114,20 @@ Timeline의 visual gap이나 section layout으로 duration, overlap, causality �
 Timeline은 syntax validity와 temporal fidelity를 따로 검증한다.
 
 1. rendered period 순서가 source chronology와 일치하는가.
+1. period label이 source보다 더 정확한 timestamp를 발명하지 않았는가.
 1. period granularity를 줄이면서 distinct events를 같은 시점으로 합치지 않았는가.
 1. same-period event를 causal/dependency chain처럼 읽히게 만들지 않았는가.
 1. section 때문에 interleaved chronology가 재정렬되거나 같은 section이 lane처럼 재사용되지 않았는가.
 1. LR/TD 선택이 target renderer에서 지원되고 portrait viewport에서 읽을 수 있는가.
 1. long period/event label과 여러 same-period events가 clipping이나 과도한 vertical growth를 만들지 않는가.
 
-문제가 있으면 styling으로 숨기기보다 label 축약, period granularity 조정, section 축소, direction 변경 또는 diagram split을 먼저 검토한다.
+문제가 있으면 styling으로 숨기기보다 label 축약, supported temporal granularity, section 축소, direction 변경 또는 diagram split을 먼저 검토한다.
 
 ## Rules
 
 - Period text를 date parser나 automatic sorter처럼 취급하지 않는다.
 - Period label이 실제 chronology를 나타내지 않으면 Timeline을 process diagram 대신 사용하지 않는다.
-- Source order를 chronology와 일치시킨다.
+- Source order를 chronology와 일치시키고 source보다 높은 temporal precision을 발명하지 않는다.
 - Visual distance를 elapsed duration으로 해석하지 않는다.
 - Same-period events는 co-location만 의미하며 causality·dependency를 만들지 않는다.
 - Section은 contiguous grouping이며 recurring category를 위한 parallel lane이 아니다.
@@ -133,4 +136,4 @@ Timeline은 syntax validity와 temporal fidelity를 따로 검증한다.
 
 ## Portable Fallback
 
-Target renderer가 Timeline이나 필요한 direction을 지원하지 않으면 source order와 의미 있는 section grouping을 보존하는 ordered list 또는 table로 전환한다. Duration·overlap이 중요한 경우에는 의미를 보존할 수 있을 때 Gantt를 사용하며, Timeline의 visual spacing을 fallback에서 실제 time scale처럼 재현하지 않는다.
+Target renderer가 Timeline이나 필요한 direction을 지원하지 않으면 source order, temporal precision과 의미 있는 section grouping을 보존하는 ordered list 또는 table로 전환한다. Duration·overlap이 중요한 경우에는 의미를 보존할 수 있을 때 Gantt를 사용하며, Timeline의 visual spacing을 fallback에서 실제 time scale처럼 재현하지 않는다.
