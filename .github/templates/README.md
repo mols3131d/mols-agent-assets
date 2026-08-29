@@ -45,11 +45,13 @@ Notation은 agent의 사고 과정이나 작업 순서를 강제하지 않습니
 - 독립적으로 훑어야 하는 변경, 근거, 경로와 상태는 긴 문단보다 list를 우선합니다.
 - optional section은 판단 비용을 줄일 때만 사용하고 빈 section은 제거합니다.
 - GitHub object title이 이미 최상위 제목 역할을 하므로 본문의 주요 section은 `##`부터 시작합니다.
+- 일반 heading에는 장식용 emoji를 사용하지 않습니다.
 
 ### 근거와 상태
 
 - 모르는 값은 추측하거나 임의의 긍정 상태로 채우지 않습니다.
 - 검증 상태는 `✅ Pass`, `❌ Fail`, `⚪ Not Verified`처럼 marker와 text label을 함께 사용합니다.
+- PR Review의 importance는 `🔴 Critical`, `🟠 High`, `🟡 Medium`, `🔵 Low`처럼 색상 원 marker와 label을 함께 사용합니다.
 - `Pass`는 **명시한 check가 통과했다는 뜻만** 가집니다. Semantic review, self-review나 제한된 inspection을 deterministic test, runtime verification 또는 전체 변경의 검증으로 확대 해석하지 않습니다.
 - 같은 review finding을 review body와 inline comment에 완전히 중복하지 않습니다. Line-specific finding은 inline comment를 우선하고, review body에는 cross-cutting finding이나 전체 판단에 필요한 요약만 둡니다.
 
