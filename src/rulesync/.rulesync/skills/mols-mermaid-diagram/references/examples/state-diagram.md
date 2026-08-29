@@ -49,20 +49,22 @@ stateDiagram-v2
     evidence_check --> Approved: complete
 
     state Approved {
-        [*] --> Execute
-        state Execute <<fork>>
-        Execute --> Backfill
-        Execute --> Audit
-        Backfill --> Join
-        Audit --> Join
-        state Join <<join>>
-        Join --> Verified
+        [*] --> dispatch
+        state dispatch <<fork>>
+        dispatch --> BackfillActive
+        dispatch --> AuditActive
+        BackfillActive --> synchronize
+        AuditActive --> synchronize
+        state synchronize <<join>>
+        synchronize --> Verified
         Verified --> [*]
     }
 
     Rejected --> [*]
     Approved --> [*]
 ```
+
+`BackfillActive`와 `AuditActive`는 source가 실제로 concurrent lifecycle state를 정의한다는 전제다. 단순히 두 작업을 병렬 실행한다는 절차만 있다면 Flowchart/Sequence가 더 정확할 수 있다.
 
 - `<<choice>>`는 condition에 따라 alternative transition을 선택하는 decision point다. Source에 guard가 없는데 branch label을 발명하지 않는다.
 - `<<fork>>`는 하나의 flow가 concurrent paths로 갈라진다는 claim이다. 단순 unordered work를 concurrency로 확정하지 않는다.
