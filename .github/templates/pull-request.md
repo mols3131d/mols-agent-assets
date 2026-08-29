@@ -19,9 +19,8 @@
 
 <!--
 직접 확인한 check와 근거만 적는다.
-중요한 미수행 검증은 숨기지 말고 ⚪ Not Verified로 남긴다.
-상태: ✅ Pass / ❌ Fail / ⚪ Not Verified
-기본적으로 ❌ Fail → ⚪ Not Verified → ✅ Pass 순으로 두어 주의가 필요한 결과를 먼저 보이게 한다. 실행 순서가 판단에 중요하면 그 순서를 우선한다.
+`check.status`는 `✅ Pass` / `❌ Fail` / `⚪ Not Verified` 중 하나를 그대로 사용한다.
+상태의 의미와 정렬 기준은 `docs/development/github.md`를 따른다.
 -->
 
 {% for check in validation %}
@@ -33,7 +32,7 @@
 
 <!--
 `risk.importance`는 `🔴 Critical` / `🟠 High` / `🟡 Medium` / `🔵 Low` 중 하나를 그대로 사용한다.
-기본적으로 importance가 높은 risk부터 정렬한다. 인과관계나 진행 순서가 판단에 중요하면 그 순서를 우선한다.
+Importance의 의미와 정렬 기준은 `docs/development/github.md`를 따른다.
 현재 변경에서 실제로 고려해야 할 risk만 적고 finding이나 Validation을 반복하지 않는다.
 -->
 
