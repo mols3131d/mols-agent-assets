@@ -97,7 +97,7 @@ C4Dynamic
     RelIndex(3, quality, store, "Publishes approved result")
 ```
 
-Mermaid의 `RelIndex(index, ...)`는 **`index` 인자를 sequence number로 사용하지 않는다. Relationship statement가 작성된 순서가 표시 번호를 결정한다.** 따라서 interaction order가 source에 의해 확인된 경우에만 statement 순서를 그 순서대로 작성한다. 숫자 인자 자체를 semantic source로 취급하지 않는다.
+Mermaid의 `RelIndex(index, ...)`는 **`index` 인자를 sequence number로 사용하지 않는다. Relationship statement가 작성된 순서가 표시 번호를 결정한다.** 따라서 interaction order가 source에 의해 확인된 경우에만 statement 순서를 그 순서대로 작성한다. 숫자 인자는 C4-PlantUML 호환 syntax를 채우기 위한 값으로 보고, 번호를 바꿔 순서를 교정하려 하지 않는다.
 
 ## Deployment View
 
