@@ -33,6 +33,7 @@ Jinja2-style 표기를 authoring notation으로 사용합니다. 실제 Jinja2 r
 - optional section과 metadata는 판단 비용을 줄일 때만 사용하고 빈 section은 제거합니다.
 - 모르는 값은 추측하거나 임의의 긍정 상태로 채우지 않습니다.
 - 검증 상태는 `✅ Pass`, `❌ Fail`, `⚪ Not Verified`처럼 marker와 text label을 함께 사용합니다.
+- `Pass`는 **명시한 check가 통과했다는 뜻만** 가집니다. Semantic review, self-review나 제한된 inspection 결과를 deterministic test, runtime verification 또는 전체 변경의 검증으로 확대 해석하지 않습니다.
 - repository 내부 path와 artifact는 가능한 한 repository-relative reference를 사용합니다.
 - 요구사항이나 결정의 source가 따로 있으면 내용을 다시 쓰기보다 해당 artifact를 연결합니다.
 
