@@ -24,7 +24,8 @@
 
 <!--
 확인된 문제만 finding으로 기록한다. 단순 선호나 근거 없는 가능성은 제외한다.
-문제가 없으면 `No findings identified in the reviewed scope.`라고 적는다.
+Line-specific finding은 inline review comment에 기록하고 여기서 같은 내용을 완전히 반복하지 않는다. 이 section은 cross-cutting finding이나 review 전체 판단에 필요한 finding에 사용한다.
+본문 finding이 없지만 qualifying inline finding이 있으면 `See inline review comments for findings.`라고 적는다. 둘 다 없을 때만 `No findings identified in the reviewed scope.`라고 적는다.
 Required Change는 문제를 해소하기 위해 필요한 결과나 제약을 적고, 특정 구현이 필수인 경우가 아니면 해결 방법을 과도하게 지정하지 않는다.
 
 중요도는 실제 영향과 수정 시급성을 함께 본다.
@@ -62,6 +63,8 @@ Required Change는 문제를 해소하기 위해 필요한 결과나 제약을 �
 {% endif %}
 
 {% endfor %}
+{% elif has_inline_findings %}
+See inline review comments for findings.
 {% else %}
 No findings identified in the reviewed scope.
 {% endif %}
