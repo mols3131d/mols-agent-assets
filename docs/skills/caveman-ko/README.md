@@ -8,7 +8,7 @@ Status: **Experimental**.
 
 `caveman-ko`는 MIT 라이선스의 [`JuliusBrussee/caveman`](https://github.com/JuliusBrussee/caveman) 응답 Skill을 한국어 사용 환경에 맞게 실험적으로 조정한 자산입니다. 생성 문장을 압축하면서 기술적 의미를 보존한다는 핵심 아이디어는 유지하되, 로컬 trigger 조건, 한국어 표현, runtime과 명확성 요구에 다른 계약이 필요할 때는 의도적으로 upstream과 다르게 동작합니다.
 
-Provenance baseline: `JuliusBrussee/caveman` `skills/caveman/SKILL.md` at `bd22d86b32e4a99e09ff7482a35509faac7a6f65`.
+Provenance baseline: `JuliusBrussee/caveman` [`skills/caveman/SKILL.md`](https://github.com/JuliusBrussee/caveman/blob/781c384cafc28d7ca392014dbab569f985b5b2fd/skills/caveman/SKILL.md) at `781c384cafc28d7ca392014dbab569f985b5b2fd`.
 
 배포 package에는 upstream MIT notice를 `src/rulesync/.rulesync/skills/caveman-ko/LICENSE`로 포함합니다.
 
