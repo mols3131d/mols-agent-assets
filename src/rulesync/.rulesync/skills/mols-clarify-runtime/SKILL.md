@@ -49,7 +49,7 @@ validation: auto
 1. 적용되는 project instructions와 target, entrypoint/caller, 관련 test, 기존 result·exception·artifact·metadata·history·log·trace 등 현재 runtime evidence를 읽어 실행 경계를 복원한다.
 1. 먼저 문제를 분류한다. 주된 병목이 runtime understanding이 아니면 instrumentation하지 않고 해당 책임으로 넘긴다. 경계가 애매하면 [Diagnosis](references/diagnosis.md)를 따른다.
 1. **복원 질문 하나**를 정한다: 어떤 경로를 탔거나 타지 않았는가, 왜 결정됐는가, 어떤 input/context가 영향을 줬는가, 무엇이 바뀌거나 만들어졌는가, 무엇이 실패했는가, 어떤 실행·attempt와 연결되는가.
-1. **Observe before instrument.** 가능한 경우 기존 test, command, request 같은 가장 작은 executable scenario를 사용하고 result·exception, state delta, output artifact/report, framework-native execution history, existing trace/coverage와 relevant input/config를 관찰한다. 세부 선택은 [Observation](references/observation.md)을 따른다.
+1. **Observe before instrument.** 현재 권한과 safety boundary 안에서 실행해도 되는 기존 test, command, request 중 가장 작은 executable scenario를 사용하고 result·exception, state delta, output artifact/report, framework-native execution history, existing trace/coverage와 relevant input/config를 관찰한다. 관찰 목적만으로 destructive·externally consequential execution 권한을 새로 가정하지 않는다. 세부 선택은 [Observation](references/observation.md)을 따른다.
 1. 기존 observation만으로 질문에 답할 수 있고 future execution에 유지할 evidence 변경이 명시적으로 필요하지 않으면 수정하지 않는다. 부족하면 이번 조사에만 필요한 transient observation인지 future execution에도 evidence를 유지해야 하는지 구분하고, 관찰 공백의 형태를 진단한다.
 1. Future execution에 evidence를 유지해야 하면 가장 작은 변경 방식과 owner를 고른다. 기존 evidence를 재사용·보강·이동·병합·제거하는 것을 새 evidence 추가보다 먼저 고려하고, semantic owner뿐 아니라 실제 생성·가용성·필요한 durability·completeness와 correlation도 확인한다. [Evidence](references/evidence.md)와 필요한 경우 [Correlation](references/correlation.md)을 따른다.
 1. 선택한 책임 경계만 수정한다. 같은 사실을 여러 surface에 반복하거나 포괄적인 observability 체계를 만들지 않는다.
@@ -76,6 +76,7 @@ validation: auto
 
 - runtime clarification 명목으로 domain behavior, public contract, acceptance criteria 또는 architecture를 변경하지 않는다.
 - **실행을 관찰하는 것과 correctness를 판단하는 것을 구분한다.** 기존 test를 scenario로 실행할 수 있지만 새 test 설계, defect 판정과 수정은 testing 또는 review/debugging 책임이다.
+- observation은 별도 실행 권한을 부여하지 않는다. destructive, irreversible 또는 externally consequential action은 현재 authority와 safety gate를 그대로 따른다.
 - logging이나 future runtime evidence 추가를 기본 해법으로 가정하지 않는다. 기존 실행 관찰이나 정리·이동·병합·제거가 더 작은 해법이면 그것을 사용한다.
 - 한 test/run에서 관찰한 behavior를 다른 input, environment 또는 concurrency 조건으로 일반화하지 않는다.
 - 모든 함수 entry/exit, branch, 상태를 기록하지 않는다.
