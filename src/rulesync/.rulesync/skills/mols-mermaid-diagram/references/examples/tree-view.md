@@ -61,16 +61,16 @@ Box-drawing input은 source tree를 그대로 읽기 좋은 경우에 사용한�
 
 ```mermaid
 treeView-beta
-├── docs/
-│   ├── architecture/
-│   │   └── overview.md
-│   └── operations/
-│       └── runbook.md
-└── README.md
+docs/
+├── architecture/
+│   └── overview.md
+└── operations/
+    └── runbook.md
 ```
 
-- 한 diagram의 hierarchy에는 indentation 또는 box-drawing 중 하나의 structural style을 선택한다.
+- 한 diagram의 **child hierarchy**에는 indentation 또는 box-drawing 중 하나의 structural style을 선택한다. Box-drawing tree의 unprefixed root/top-level line은 이 원칙과 충돌하지 않는다.
 - Box-drawing branch의 column position이 depth 계산에 사용될 수 있으므로 branch 문자를 보기 좋게 임의 이동하지 않는다.
+- Box-drawing mode에서 child를 일부만 ordinary indentation으로 바꾸는 식의 혼합에 의존하지 않는다.
 - 기존 source의 indentation이나 branch column을 바꿀 때 parent-child가 바뀌는 semantic edit인지 먼저 확인한다.
 - 두 입력 형식이 같은 tree를 표현해야 한다면 label, node type과 parent-child가 동일한지 비교한다. 시각적 유사성만 확인하지 않는다.
 
@@ -99,7 +99,7 @@ treeView-beta
 - `##` description은 source-backed fact만 적는다. Filename이나 directory 이름만 보고 purpose, owner, generated status를 추론하지 않는다.
 - Description text에 `uses X`, `generated from Y` 같은 관계를 써도 connector가 생기는 것은 아니다. 그 relationship이 load-bearing information이면 Flowchart나 companion table로 직접 표현한다.
 - External icon pack이나 icon mapping은 embedding host가 실제로 지원·등록한 경우에만 사용한다. Icon이 없어도 file/directory identity와 hierarchy가 읽혀야 한다.
-- Shape/color/icon/highlight 하나에 ownership, risk, state 같은 domain semantics를 맡기지 않는다.
+- Color, icon이나 highlight 하나에 ownership, risk, state 같은 domain semantics를 맡기지 않는다.
 
 ## Order Is Not Dependency
 
@@ -129,9 +129,9 @@ TreeView는 syntax validity와 **literal hierarchy fidelity**를 따로 검증�
 1. 모든 parent-child가 source-backed containment이며 file/directory type이 trailing `/`와 일치하는가.
 1. File 아래 child처럼 parser가 받아들일 수 있어도 source model과 모순되는 구조가 없는가.
 1. Indentation 또는 box-drawing column만 읽어도 intended depth가 명확한가.
-1. Structural input style을 섞어 parent 계산을 renderer의 보정이나 우연한 parsing에 맡기지 않았는가.
+1. Child hierarchy의 structural input style을 섞어 parent 계산을 renderer의 보정이나 우연한 parsing에 맡기지 않았는가.
 1. Row order를 dependency, chronology, priority 또는 runtime order로 승격하지 않았는가.
-1. Highlight, description과 icon이 hierarchy보다 강한 boundary·ownership·state를 암시하지 않는가.
+1. Highlight, description과 icon이 hierarchy보다 강한 boundary·ownership·state를 암시하지 않았는가.
 1. Long/deep labels와 description column 때문에 horizontal downscaling이 필요한 경우 scope/split을 먼저 재검토했는가.
 1. Beta syntax, annotations, icon integration과 root behavior가 실제 target에서 의도대로 읽히는가.
 
