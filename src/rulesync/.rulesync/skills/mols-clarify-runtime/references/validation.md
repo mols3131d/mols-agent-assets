@@ -1,6 +1,6 @@
 # Validation
 
-Runtime clarification은 evidence를 의도적으로 바꿀 수 있지만 **observable behavior와 기존 caller/consumer contract는 보존**해야 한다. 가능하면 변경 전후에 같은 작은 executable scenario를 사용한다.
+Runtime clarification은 maintained evidence를 의도적으로 바꿀 수 있지만 **observable behavior와 기존 caller/consumer contract는 보존**해야 한다. 가능하면 변경 전후에 같은 작은 executable scenario를 사용한다.
 
 ## Behavior Envelope
 
@@ -20,7 +20,7 @@ Runtime clarification은 evidence를 의도적으로 바꿀 수 있지만 **obse
 
 ## Baseline Observation
 
-Persistent evidence를 수정하기 전에 가능한 경우 [Observation](observation.md)에 따라 현재 behavior와 evidence를 먼저 본다.
+Maintained evidence를 수정하기 전에 가능한 경우 [Observation](observation.md)에 따라 현재 behavior와 evidence를 먼저 본다.
 
 Baseline은 최소한 다음을 구분할 수 있어야 한다.
 
@@ -30,11 +30,11 @@ Baseline은 최소한 다음을 구분할 수 있어야 한다.
 - 질문과 관련된 state delta, artifact, history 또는 path evidence가 무엇인가
 - 현재 reconstruction이 정확히 어디서 끊기는가
 
-현재 evidence만으로 질문이 충분히 풀리면 변경하지 않는다.
+현재 evidence만으로 질문이 충분히 풀리고 maintained change가 필요하지 않으면 변경하지 않는다.
 
 ## Before And After
 
-Persistent clarification을 적용했다면:
+Maintained clarification을 적용했다면:
 
 1. 변경 전 사용한 동일하거나 의미상 동등한 좁은 executable scenario를 다시 실행한다.
 1. return, exception, state와 side effect가 의도치 않게 달라지지 않았는지 확인한다.
@@ -42,6 +42,8 @@ Persistent clarification을 적용했다면:
 1. 변경 후 **남은 selected evidence만 보고** 복원 질문에 답한다.
 1. 제거·이동한 evidence가 기존 consumer, audit/security 또는 framework contract를 깨지 않았는지 확인한다.
 1. 질문에 필요하지 않은 field, event, relation 또는 duplication이 남아 있으면 제거한다.
+
+`같은 scenario`는 relevant input, setup과 execution boundary가 의미상 같다는 뜻이다. Nondeterministic runtime에서 byte-identical output이나 동일 timing을 요구하지 않으며, 기존 허용 behavior envelope를 보존했는지 본다.
 
 기존 safeguard가 충분하면 clarification 검증만을 위해 넓은 test suite나 새로운 test infrastructure를 만들지 않는다.
 
@@ -62,9 +64,11 @@ Persistent clarification을 적용했다면:
 
 정답을 만들기 위해 다시 전체 source와 여러 unrelated log를 조합해야 한다면 clarification이 아직 충분하지 않을 수 있다.
 
+한 scenario에서 reconstruction이 성공해도 다른 input/environment에 같은 behavior를 일반화하지 않는다. Claim 범위는 실제 관찰·검증 범위와 맞춘다.
+
 ## Validate Evidence Viability
 
-Persistent reconstruction이 특정 evidence availability에 의존하면 필요한 범위에서 확인한다.
+Future reconstruction이 특정 evidence availability에 의존하면 필요한 범위에서 확인한다.
 
 - selected success/failure/skip/retry path에서 실제로 생성되는가
 - consumer가 필요한 시점에 접근할 수 있는가
