@@ -1,8 +1,8 @@
 ## Summary
 
 <!--
-문제나 필요와 원하는 변화를 먼저 설명한다.
-구현 방법보다 왜 필요한지와 무엇이 달라져야 하는지에 집중한다.
+현재 문제나 필요가 무엇이고 왜 해결해야 하는지 먼저 설명한다.
+Desired Outcome을 반복하지 말고 현재 상태와 동기에 집중한다.
 Agent에게 독립 작업을 위임한다면 완료 조건과 경계를 분명히 하되 구현 절차는 과도하게 지정하지 않는다.
 -->
 
@@ -10,7 +10,7 @@ Agent에게 독립 작업을 위임한다면 완료 조건과 경계를 분명�
 
 ## Desired Outcome
 
-<!-- 완료되었을 때 기대하는 결과를 구체적으로 적는다. -->
+<!-- 완료되었을 때 무엇이 달라져 있어야 하는지 구체적으로 적는다. -->
 
 {{ desired_outcome }}
 
@@ -32,14 +32,6 @@ Agent에게 독립 작업을 위임한다면 완료 조건과 경계를 분명�
 {% endfor %}
 {% endif %}
 
-{% if context %}
-## Context
-
-<!-- 판단에 필요한 배경만 남기고 Summary를 반복하지 않는다. -->
-
-{{ context }}
-{% endif %}
-
 {% if reproduction %}
 ## Reproduction
 
@@ -49,6 +41,14 @@ Agent에게 독립 작업을 위임한다면 완료 조건과 경계를 분명�
 
 - **Actual:** {{ reproduction.actual }}
 - **Expected:** {{ reproduction.expected }}
+{% endif %}
+
+{% if context %}
+## Context
+
+<!-- 판단에 필요한 배경만 남기고 Summary, Desired Outcome이나 Reproduction을 반복하지 않는다. -->
+
+{{ context }}
 {% endif %}
 
 {% if references %}
