@@ -88,10 +88,8 @@ No findings identified in the reviewed scope.
 {% endfor %}
 {% endif %}
 
-<!--
-Agent가 최종 PR Review text를 실질적으로 작성하거나 재작성했다면 `author`는 필수입니다.
-이 template은 특정 diff pair를 평가하므로 `revision`을 항상 기록합니다.
--->
+<!-- Agent가 최종 PR Review text를 실질적으로 작성하거나 재작성했다면 `author`는 필수입니다. -->
+{% if author or revision %}
 ```yaml
 {% if author %}
 author:
@@ -99,7 +97,10 @@ author:
   - {{ item }}
 {% endfor %}
 {% endif %}
+{% if revision %}
 revision:
   base: {{ revision.base }}
   head: {{ revision.head }}
+{% endif %}
 ```
+{% endif %}
