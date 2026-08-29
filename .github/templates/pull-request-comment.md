@@ -21,18 +21,11 @@ Evidence와 Next Actions는 판단이나 후속 작업에 실제로 필요할 �
 {% endfor %}
 {% endif %}
 
-{% if author or revision %}
-```yaml
 {% if author %}
+```yaml
 author:
 {% for item in author %}
   - {{ item }}
 {% endfor %}
-{% endif %}
-{% if revision %}
-revision:
-  base: {{ revision.base }}
-  head: {{ revision.head }}
-{% endif %}
 ```
 {% endif %}
