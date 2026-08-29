@@ -9,8 +9,9 @@ description: >-
 
 # OpenSpec Customization Patterns
 
-Use these patterns for **how to design and maintain a customization**. They are
-reusable heuristics, not OpenSpec requirements.
+Use this reference for **how to design and maintain OpenSpec customization** across
+projects. It contains reusable heuristics, not vendor requirements or
+project-specific policy.
 
 When a decision depends on exact commands, fields, paths, precedence, or supported
 behavior, consult [Official customization](official-customization.md).
