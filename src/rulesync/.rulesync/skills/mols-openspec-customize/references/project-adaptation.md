@@ -39,9 +39,10 @@ Preserve repository policy owners and add only the delta the workflow needs.
 
 When a custom schema becomes a durable team-owned surface, apply the optional
 maintenance surfaces from [Patterns](patterns.md) only when they reduce real cost.
-In particular, use `AGENTS.md` as the schema-maintenance agent entrypoint when local
-agent guidance is useful; keep user introduction and navigation in `README.md`, and
-move durable detail into `docs/` instead of duplicating it across surfaces.
+Use `README.md` as the schema package's common human-readable entrypoint and
+navigation surface. Put durable maintenance detail in `docs/` when it would overload
+the README. Keep repository-wide or harness-specific agent instructions in their
+existing authority rather than creating a schema-local instruction file by default.
 
 Do not create companion files as ceremony. A simple schema may need none of them.
 
@@ -50,23 +51,11 @@ Do not create companion files as ceremony. A simple schema may need none of them
 When tuning is part of the goal, establish a small representative dogfood set before
 repeated edits. Select cases for information value rather than a quota.
 
-For each iteration:
-
-1. run or inspect the relevant workflow with the current customization;
-1. capture only material friction: wrong artifact shape, missing project context,
-   redundant guidance, dependency problems, repeated manual correction, or
-   maintainer confusion;
-1. trace the friction to its narrowest owner using [Patterns](patterns.md);
-1. make the smallest coherent change there;
-1. validate the changed structure or resolution with current OpenSpec tooling;
-1. rerun the affected case and enough of the representative set to detect a likely
-   regression;
-1. keep the change only when evidence improves project fit without creating a more
-   expensive competing owner.
-
-Do not persist every dogfood run. Preserve only rationale, representative scenarios,
+Apply the dogfooding and tuning method in [Patterns](patterns.md) to project evidence.
+For project-specific work, preserve only rationale, representative scenarios,
 provenance, or constraints future maintainers need to reproduce a decision. Put
-transient logs in the project's existing working-artifact surface when one exists.
+transient run logs in the project's existing working-artifact surface when one
+exists.
 
 ## Stabilize
 
