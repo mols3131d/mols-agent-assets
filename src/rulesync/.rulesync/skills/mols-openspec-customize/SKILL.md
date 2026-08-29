@@ -1,14 +1,15 @@
 ---
 name: mols-openspec-customize
 description: >-
-  Design, review, dogfood, tune, or apply OpenSpec customization while keeping
+  Design, review, dogfood, tune, or adapt OpenSpec customization while keeping
   three concerns distinct: current official customization mechanisms, reusable
   customization patterns, and adaptation to a concrete project or repository.
   Use when customizing or iterating OpenSpec profiles, project configuration,
   schemas, templates, or workflow behavior, including project-local schema
   maintenance and evidence-driven tuning. Do not use for ordinary OpenSpec
-  workflow usage, writing a specific change proposal or spec, or general
-  repository guidance unrelated to OpenSpec customization.
+  workflow usage such as applying a change, writing a specific change proposal or
+  spec, implementing a change, or general repository guidance unrelated to OpenSpec
+  customization.
 targets:
   - claudecode
   - codexcli
@@ -50,7 +51,7 @@ Load only what the request needs:
 - [Patterns](references/patterns.md) — reusable customization, schema maintenance,
   dogfooding, and tuning patterns.
 - [Project adaptation](references/project-adaptation.md) — concrete repository
-  adaptation and evidence-driven iteration.
+  adaptation and project-specific evidence.
 
 Load multiple references when their responsibilities independently apply. For a
 concrete repository, load its applicable live instructions and current OpenSpec
