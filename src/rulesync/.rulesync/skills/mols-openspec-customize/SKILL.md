@@ -3,7 +3,7 @@ name: mols-openspec-customize
 description: >-
   Design, review, dogfood, tune, or adapt OpenSpec customization while keeping
   three concerns distinct: current official customization mechanisms, reusable
-  customization patterns, and adaptation to a concrete project or repository.
+  customization patterns, and customization for a concrete project or repository.
   Use when customizing or iterating OpenSpec profiles, project configuration,
   schemas, templates, or workflow behavior, including project-local schema
   maintenance and evidence-driven tuning. Do not use for ordinary OpenSpec
@@ -32,8 +32,8 @@ Keep three concerns distinct even when one task needs all of them:
    its authoritative documentation lives.
 1. **Customization patterns** — reusable guidance for choosing, maintaining, and
    tuning those mechanisms.
-1. **Project adaptation** — choices derived from the concrete repository, existing
-   OpenSpec state, and observed project use.
+1. **Project customization** — choices derived from the concrete repository,
+   existing OpenSpec state, and observed project use.
 
 OpenSpec owns commands, fields, paths, precedence, and runtime semantics. This
 Skill owns reusable customization judgment. The target repository owns
@@ -46,12 +46,12 @@ project's policy or one successful dogfood case into a reusable pattern by defau
 
 Load only what the request needs:
 
-- [Official](references/official.md) — current OpenSpec mechanisms, official source
-  map, and schema package boundaries.
-- [Patterns](references/patterns.md) — reusable customization, schema maintenance,
-  dogfooding, and tuning patterns.
-- [Project adaptation](references/project-adaptation.md) — concrete repository
-  adaptation and project-specific evidence.
+- [Official customization](references/official-customization.md) — current OpenSpec
+  mechanisms, official source map, and schema package boundaries.
+- [Customization patterns](references/customization-patterns.md) — reusable
+  customization, schema maintenance, dogfooding, and tuning patterns.
+- [Project customization](references/project-customization.md) — concrete repository
+  customization and project-specific evidence.
 
 Load multiple references when their responsibilities independently apply. For a
 concrete repository, load its applicable live instructions and current OpenSpec
@@ -59,8 +59,8 @@ state before making project-specific recommendations or mutations.
 
 ## Workflow
 
-1. Classify the request as official mechanism, reusable pattern, project adaptation,
-   or a combination.
+1. Classify the request as official mechanism, reusable pattern, project
+   customization, or a combination.
 1. Load only the corresponding references and authority.
 1. Separate sourced OpenSpec facts, reusable design judgment, and project-specific
    evidence.
