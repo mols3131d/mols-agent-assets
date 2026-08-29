@@ -8,7 +8,7 @@ Ordered process나 handoff가 질문이면 Flowchart/Swimlanes, duration·overla
 
 ## Snapshot Scope And Completeness
 
-Kanban diagram은 live board가 아니라 작성 시점의 snapshot이다. 상태나 card 수를 해석해야 한다면 **as-of 시점, 포함 범위와 filter**를 source와 함께 확정한다.
+Mermaid source 자체는 external board와 live synchronization을 제공하지 않는다. 별도 generation/sync pipeline이 최신성을 보장한다는 근거가 없으면 **as-of snapshot**으로 취급하고, 상태나 card 수를 해석해야 할 때는 시점, 포함 범위와 filter를 source와 함께 확정한다.
 
 ```mermaid
 kanban
@@ -24,9 +24,16 @@ kanban
 ```
 
 - 전체 board를 옮긴 complete snapshot인지, 질문에 필요한 card만 뽑은 excerpt인지 구분한다.
-- Excerpt라면 누락된 card가 있음을 주변 prose에서 밝히고 column별 card 수를 WIP concentration, bottleneck 또는 queue size의 근거로 사용하지 않는다.
-- Complete snapshot이라도 card count만으로 throughput, lead time, WIP limit 준수나 병목의 원인을 추론하지 않는다. 그런 판단에는 해당 metric의 별도 source가 필요하다.
+- Excerpt라면 누락된 card가 있음을 주변 prose에서 밝히고 column별 card 수를 concentration, bottleneck 또는 queue size의 근거로 사용하지 않는다.
+- Complete snapshot이라도 card count만으로 throughput, lead time, WIP limit 준수나 병목의 원인을 추론하지 않는다. 그런 판단에는 해당 metric과 workflow policy의 별도 source가 필요하다.
+- Card count를 WIP라고 부르려면 source가 started/finished boundary와 어떤 states가 WIP에 포함되는지 정의해야 한다. 그렇지 않으면 단순한 visible card count로 다룬다.
 - Card를 보기 좋게 재배치하면서 source의 실제 stage를 바꾸지 않는다.
+
+## Board Is Not The Whole Kanban System
+
+Mermaid `kanban`은 column, card와 일부 metadata를 시각화하는 board notation이다. Kanban 방법론의 전체 **Definition of Workflow**를 자동으로 모델링하거나 검증하지 않는다.
+
+WIP control, explicit movement policy, started/finished definition, service-level expectation처럼 운영 판단에 중요한 policy가 source에 있다면 Mermaid card 배치만으로 암시하지 않는다. 필요한 policy·limit·metric은 companion prose/table이나 authoritative work system에 남기고, diagram에는 실제로 표현 가능한 work state만 둔다.
 
 ## Flat Column And Card Model
 
@@ -88,6 +95,7 @@ kanban
 | 누가 어떤 handoff를 수행하는가 | Swimlanes 또는 Flowchart |
 | 언제 시작하고 얼마나 걸리며 무엇에 의존하는가 | Gantt |
 | epic/subtask 같은 nested decomposition은 무엇인가 | TreeView, Mindmap 또는 table |
+| WIP control, movement policy, SLE 같은 workflow operating policy는 무엇인가 | Kanban + companion prose/table 또는 authoritative work system |
 | 전체 board를 정렬·필터·집계해야 하는가 | source system 또는 table |
 
 Kanban column 이름이 process step처럼 보인다는 이유만으로 process model로 사용하지 않는다. `kanban` 자체에는 card 간 dependency edge나 transition rule이 없다.
@@ -96,7 +104,7 @@ Kanban column 이름이 process step처럼 보인다는 이유만으로 process 
 
 Kanban renderer는 column을 수평으로 나란히 놓고 각 column 안의 card를 세로로 쌓는다. Column 수가 늘어날수록 board 폭이 구조적으로 커지므로 portrait viewport를 맞추기 위해 card의 실제 stage를 바꾸거나 label을 읽기 어려울 정도로 축소하지 않는다.
 
-- 약 5개를 넘는 column이나 약 12개를 넘는 visible card는 split 여부를 다시 검토하는 soft trigger다.
+- 상위 [Mermaid Diagram Reference](../mermaid-diagrams.md)의 Kanban readability budget에 도달하면 scope/filter/split을 다시 검토한다.
 - Split은 source-backed scope, team, product area 또는 명시된 filter처럼 실제로 설명 가능한 기준으로 한다.
 - Filtered board라면 무엇이 제외됐는지 밝히고 complete board처럼 card 수를 해석하지 않는다.
 - 하나의 card를 layout 편의를 위해 다른 column으로 옮기지 않는다.
@@ -107,12 +115,13 @@ Kanban renderer는 column을 수평으로 나란히 놓고 각 column 안의 car
 Kanban은 syntax validity와 **snapshot fidelity**를 따로 검증한다.
 
 1. Snapshot의 as-of 시점, scope와 filter가 해석에 필요한 만큼 명확한가.
-1. Complete snapshot과 excerpt를 구분했고, excerpt의 card count를 WIP·queue evidence로 사용하지 않는가.
+1. Complete snapshot과 excerpt를 구분했고, excerpt의 card count를 queue/WIP evidence로 사용하지 않는가.
+1. WIP라고 표현한 범위가 있다면 source의 started/finished boundary와 WIP definition이 이를 뒷받침하는가.
 1. 모든 column/card ID가 unique하고 각 card가 source가 말하는 stage에 있는가.
 1. Deeper indentation을 nested work relationship으로 잘못 사용하지 않았는가.
 1. Column order와 card order를 source에 없는 transition, priority, FIFO 또는 chronology로 승격하지 않았는가.
 1. `assigned`, `ticket`, `priority`가 source-backed이며 metadata 의미를 owner/approval/urgency로 과장하지 않았는가.
-1. Dependency·transition·duration처럼 Kanban이 소유하지 않는 사실을 column proximity로 암시하지 않았는가.
+1. Dependency·transition·duration이나 workflow policy처럼 Kanban diagram이 소유하지 않는 사실을 column proximity로 암시하지 않았는가.
 1. Wide board나 long-label density 때문에 downscaling이 필요한 경우 scope/filter/split을 먼저 재검토했는가.
 1. Styling이나 decoration은 다른 Mermaid grammar의 syntax를 가져오지 않고 현재 공식 Kanban surface와 actual target render를 확인했는가.
 1. Ticket link와 target-specific metadata rendering은 실제 target에서 읽고 사용할 수 있는가.
