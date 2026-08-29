@@ -1,16 +1,27 @@
 # Observation
 
-Runtime behavior를 이해하려고 바로 maintained logging이나 instrumentation을 추가하지 않는다. **먼저 기존 실행을 가장 작게 관찰하고, 현재 evidence만으로 선택한 복원 질문에 답할 수 있는지 확인한다.**
+Runtime behavior를 이해하려고 바로 maintained logging이나 instrumentation을 추가하지 않는다. **이미 남아 있는 runtime evidence를 먼저 사용하고, 그래도 질문이 풀리지 않을 때만 가장 작은 안전한 기존 scenario를 실행한다.**
+
+## Reuse Before Re-Executing
+
+먼저 현재 질문과 revision에 실제로 적용되는 existing evidence가 있는지 본다.
+
+- prior result / return 또는 failure report
+- state snapshot, artifact, manifest 또는 diff
+- framework-native execution history / report
+- existing trace/span/event 또는 coverage/path report
+- 기존 test run이 남긴 case, seed, replay input 또는 output
+
+이 evidence가 현재 code/config와 무관하거나 stale한데 behavior가 바뀌었을 가능성이 있으면 현재 실행의 증거처럼 사용하지 않는다. 반대로 이미 질문에 충분한 evidence가 있으면 단지 “직접 실행해 보기 위해” 같은 scenario를 다시 돌리지 않는다.
 
 ## Choose The Smallest Executable Scenario
 
-가능하면 이미 존재하고 재현 가능하며 **현재 권한과 environment에서 안전하게 실행할 수 있는 scenario**를 사용한다.
+실제 execution이 여전히 필요하면 이미 존재하고 재현 가능하며 **현재 권한과 environment에서 안전하게 실행할 수 있는 scenario**를 사용한다.
 
 일반적인 선택 순서:
 
 1. 질문을 직접 재현하는 기존 isolated test case
 1. 안전하게 실행 가능한 관련 command, task, request 또는 entrypoint
-1. framework가 이미 보존한 execution history나 report
 1. 더 넓은 integration 실행
 
 전체 suite나 application을 돌리는 것보다 질문에 필요한 input과 boundary만 실행할 수 있으면 그것을 우선한다. 반대로 더 작은 command라도 destructive mutation, 외부 호출, 비용 발생 또는 production 영향이 있으면 “작다”는 이유로 실행하지 않는다.
