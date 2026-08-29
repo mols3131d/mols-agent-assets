@@ -6,8 +6,9 @@
 
 1. 먼저 root [`AGENTS.md`](AGENTS.md)를 읽고 현재 작업에 적용되는 repository instruction을 따릅니다.
 1. [`.agents/route/ROUTE.md`](.agents/route/ROUTE.md)를 읽고 아래 routing table의 trigger를 참고해 현재 작업에 필요한 Agent Asset만 선택합니다. 아래 표는 route contract를 대체하지 않습니다.
-1. 구체적인 GitHub target(repository, path, ref, Pull Request, Issue, check, workflow, release 등)을 대상으로 작업하거나 GitHub Plugin, connector 또는 tool로 target-dependent action을 수행한다면 `github-context`를 필수로 선택합니다. 이름 있는 target의 ID/ref만 더 식별해야 하는 경우도 concrete target으로 봅니다. 아직 concrete repository/object가 없는 broad discovery만 이 gate 이전에 수행할 수 있습니다.
-1. `github-context`가 필요한 경우 downstream target read/review/change/tool action보다 먼저 로드하고, 현재 repository/ref/object, 적용되는 repository instruction과 필요한 live GitHub state를 확인합니다. 이를 위해 routing 또는 context discovery 자체에 필요한 좁은 GitHub read는 수행할 수 있습니다.
+1. 구체적인 GitHub target(repository, path, ref, Pull Request, Issue, check, workflow, release 등)을 대상으로 작업하거나 GitHub Plugin, connector 또는 tool로 target-dependent action을 수행한다면 `github-context`를 필수로 선택합니다. 이름 있는 target의 ID/ref만 더 식별해야 하는 경우도 concrete target으로 봅니다.
+1. `github-context`가 필요한 경우 downstream target read/review/change/tool action보다 먼저 로드하고, 현재 repository/ref/object, 적용되는 repository instruction과 필요한 live GitHub state를 확인합니다. Root instruction·route를 읽거나 `github-context`를 로드·수행하는 데 필요한 좁은 GitHub read는 context discovery 자체이므로 gate 완료 전에도 수행할 수 있습니다.
+1. 아직 concrete repository 또는 GitHub object가 하나도 특정되지 않은 broad discovery는 `github-context`보다 먼저 수행할 수 있습니다. Discovery가 concrete target을 식별하면 이후 downstream target-dependent action 전에 `github-context` loading을 완료합니다.
 1. 작업 대상 경로가 정해지면 `github-context`가 관련 ref의 repository root부터 해당 경로까지 적용되는 instruction과 task-relevant Agent Asset을 확인하도록 합니다. 다른 task-specific Asset도 필요하면 [`.agents/route/ROUTE.md`](.agents/route/ROUTE.md)의 가장 좁은 유효 route를 사용하고, 필요한 Asset을 좁은 family 하나로 모두 노출할 수 없을 때만 `all`을 사용합니다. 선택한 route 안에서도 task-relevant Skill만 로드합니다.
 1. 작업 범위, target repository, ref/object 또는 대상 경로가 실질적으로 바뀌면 적용되는 instruction, GitHub context와 route selection을 다시 평가합니다.
 
