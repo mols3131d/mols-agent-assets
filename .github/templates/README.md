@@ -55,7 +55,7 @@ revision:
   head: <full-head-commit-sha>
 ```
 
-Provenance가 필요하지 않으면 metadata block 전체를 생략합니다.
+필요한 metadata가 없으면 block 전체를 생략합니다.
 
 > [!NOTE]
 > `.github/templates/`는 GitHub가 자동으로 적용하는 native Issue/PR template 경로가 아닙니다.
