@@ -32,15 +32,23 @@ cynefin-beta
 
 ## Domain Meaning Is Contextual
 
-Mermaid는 `complex`, `complicated`, `clear`, `chaotic`, `confusion`을 fixed keyword로 제공하지만 domain assignment는 source-backed sense-making judgment다.
+Mermaid 11.17.x는 `complex`, `complicated`, `clear`, `chaotic`, `confusion`을 fixed keyword로 제공하지만 domain assignment는 source-backed sense-making judgment다.
 
 - **Clear**: cause/effect와 대응이 충분히 명확해 standard/best practice를 적용할 수 있는 context.
 - **Complicated**: cause/effect는 알 수 있지만 expertise나 analysis가 필요한 context.
 - **Complex**: pattern이 interaction을 통해 emerge하며 hindsight에서 더 잘 보이는 context.
 - **Chaotic**: 즉시 안정화 action이 필요하고 아직 유효한 cause/effect relation을 전제로 할 수 없는 context.
-- **Confusion**: 어느 domain인지 아직 판단하지 못했거나 source framing이 의도적으로 not-knowing 상태를 유지하는 context.
+- Mermaid의 **`confusion`**: current renderer가 central domain을 입력하기 위해 사용하는 syntax keyword다. 이 keyword 자체를 Cynefin framework의 canonical terminology와 동일시하지 않는다.
 
-Cynefin literature에서는 central domain을 Confused/Aporetic 등 더 세밀하게 다루기도 한다. Mermaid keyword가 `confusion`이라는 이유로 framework의 용어 차이를 지우지 않는다. 그 distinction이 load-bearing하면 companion prose에서 명시한다.
+## Framework Versus Renderer Boundary
+
+Current Cynefin sources와 Mermaid upstream correction 논의는 canonical central domain을 **Aporetic**으로 구분한다. Mermaid 11.17.x의 `confusion` keyword/label은 이 framework distinction을 완전히 표현하지 못하는 **beta notation boundary**다.
+
+- target renderer가 요구하는 syntax를 맞추기 위해 `confusion`을 사용할 수 있지만, source가 `Aporetic`을 말한다면 이를 synonym처럼 조용히 바꾸지 않는다.
+- framework terminology가 load-bearing하면 companion prose/table에서 source term과 Mermaid rendering term을 명시적으로 구분한다.
+- current Mermaid quadrant geometry, boundary style와 central label을 Cynefin framework 자체의 authoritative visual semantics로 취급하지 않는다.
+- Mermaid beta syntax가 향후 바뀔 수 있으므로 target version을 확인한다. 아직 지원하지 않는 `aporetic` keyword를 기억이나 upstream proposal만으로 사용하지 않는다.
+- framework fidelity가 diagram convenience보다 중요하고 current renderer가 의미를 충분히 보존하지 못하면 table 또는 source-aligned static artifact를 우선한다.
 
 ## Do Not Treat Domains As Intrinsic Task Types
 
@@ -48,6 +56,14 @@ Cynefin literature에서는 central domain을 Confused/Aporetic 등 더 세밀�
 - team이나 system을 통째로 `complex`, `chaotic` 같은 label로 낙인찍지 않는다. 판단 대상 context를 구체적으로 적는다.
 - domain assignment가 workshop hypothesis인지, observed operating condition인지, agreed decision framing인지 필요하면 주변 설명에서 밝힌다.
 - 여러 사람이 domain에 이견이 있다면 diagram 하나의 정답처럼 평균내지 않고 uncertainty 또는 competing interpretation을 드러낸다.
+
+## Domain Declaration Integrity
+
+각 domain block은 diagram에서 한 번만 선언하는 것을 기본으로 한다.
+
+- 같은 domain을 여러 block으로 나눠 뒤에 다시 선언하면 current Mermaid DB는 이전 block을 append하는 대신 같은 domain entry를 덮어쓸 수 있다.
+- item이 많다고 `complex` block을 여러 군데 반복하지 않는다. 하나의 block으로 모으거나 scope를 나눈다.
+- repeated declaration이 parser를 통과한다는 사실을 data preservation 보장으로 해석하지 않는다.
 
 ## Transitions Represent Domain Movement
 
@@ -90,6 +106,7 @@ cynefin-beta
 - transition을 workflow step, runtime dependency 또는 guaranteed lifecycle로 해석하지 않는다.
 - source에 movement evidence가 없는데 “성숙하면 Complex → Complicated → Clear” 같은 선형 경로를 자동 추가하지 않는다.
 - `clear --> chaotic` 같은 catastrophic movement는 실제 scenario risk를 설명할 때만 사용한다.
+- framework가 설명하는 dynamic/liminal movement를 current Mermaid transition grammar가 완전하게 모델링한다고 가정하지 않는다.
 
 ## Domain Placement Is Fixed Presentation
 
@@ -97,15 +114,16 @@ Renderer는 domain declaration order와 무관하게 domain의 위치를 고정�
 
 - declaration order를 priority, maturity 또는 transition order로 해석하지 않는다.
 - Complex/Complicated/Clear/Chaotic의 화면 위치 자체를 custom organizational quadrant로 재정의하지 않는다.
-- boundary waviness, color와 domain area size는 framework presentation이며 item volume·risk magnitude·probability를 뜻하지 않는다.
+- boundary waviness, color와 domain area size는 renderer presentation이며 item volume·risk magnitude·probability를 뜻하지 않는다.
+- current renderer의 boundary geometry를 canonical framework boundary semantics로 확대 해석하지 않는다.
 - theme/config를 바꿔도 domain assignment와 transition meaning이 유지되어야 한다.
 
 ## Confusion And Density
 
-Mermaid renderer의 central Confusion area는 작고 표시 가능한 item 수가 제한적이다.
+Mermaid renderer의 central `confusion` area는 작고 표시 가능한 item 수가 제한적이다.
 
-- Confusion에 많은 item을 backlog처럼 쌓지 않는다. 아직 판단되지 않은 context를 빠르게 surface하고 다음 sense-making으로 넘기는 용도로 사용한다.
-- 현재 renderer는 Confusion의 일부 item만 직접 보여주고 나머지를 overflow badge로 요약할 수 있으므로 item identity가 중요하면 실제 target render를 확인한다.
+- central domain에 많은 item을 backlog처럼 쌓지 않는다. 아직 판단되지 않은 context를 빠르게 surface하고 다음 sense-making으로 넘기는 용도로 사용한다.
+- 현재 renderer는 central area의 일부 item만 직접 보여주고 나머지를 overflow badge로 요약할 수 있으므로 item identity가 중요하면 실제 target render를 확인한다.
 - 네 main domain도 long list가 overflow될 수 있다. item count를 줄이기 위해 서로 다른 context를 한 label로 합치지 말고 scenario/team/time slice별 split을 검토한다.
 
 ## Empty Domains And Completeness
@@ -126,7 +144,7 @@ Self-loop transition은 current Mermaid implementation에서 의미 없는 relat
 
 ## Viewport And Renderer Review
 
-Cynefin은 fixed framework geometry를 사용한다.
+Cynefin은 fixed framework-style geometry를 사용한다.
 
 - portrait viewport를 맞추기 위해 domain geometry나 framework relation을 재배치하지 않는다.
 - item label을 읽을 수 없게 축소하기보다 scope를 줄이거나 companion table을 사용한다.
@@ -138,12 +156,13 @@ Cynefin Diagram은 syntax validity와 **sense-making fidelity**를 따로 검증
 
 1. 각 item이 task의 영구 속성이 아니라 구체적인 current context를 나타내는가.
 1. Domain assignment가 source-backed judgment이며 필요한 uncertainty가 드러나는가.
-1. Mermaid keyword `confusion`과 source framework의 Confused/Aporetic 의미 차이를 필요 이상으로 평탄화하지 않았는가.
+1. Source의 Aporetic/Confused terminology와 Mermaid `confusion` keyword 사이의 notation mismatch를 필요 이상으로 평탄화하지 않았는가.
+1. 각 domain을 한 번만 선언하고 repeated block 때문에 이전 item을 잃지 않았는가.
 1. Transition이 실제 domain movement/evidence를 나타내며 workflow나 runtime edge로 과해석되지 않는가.
 1. Transition을 특정 item movement처럼 보이게 하면서 item identity 근거를 잃지 않았는가.
 1. Source 없이 linear maturity path나 catastrophic transition을 추가하지 않았는가.
-1. Declaration/render position, color와 boundary geometry를 priority·magnitude·probability로 해석하지 않았는가.
-1. Confusion overflow와 main-domain density 때문에 item identity가 숨겨지지 않는가.
+1. Declaration/render position, color와 boundary geometry를 priority·magnitude·probability 또는 canonical framework semantics로 과해석하지 않았는가.
+1. Central-area overflow와 main-domain density 때문에 item identity가 숨겨지지 않는가.
 1. Empty domain이나 partial diagram을 complete organizational inventory처럼 해석하지 않았는가.
 1. Exact history/process가 필요한데 Cynefin framework가 그 역할을 대신하고 있지 않은가.
 
@@ -151,4 +170,4 @@ Cynefin Diagram은 syntax validity와 **sense-making fidelity**를 따로 검증
 
 ## Portable Fallback
 
-Target renderer가 Cynefin을 지원하지 않으면 **context/item, assigned domain, decision rationale, confidence/uncertainty와 domain movement evidence**를 보존하는 table을 사용한다. Exact workflow나 lifecycle이 핵심이면 Flowchart/State/Timeline 등 해당 relation을 직접 표현하는 type으로 전환한다.
+Target renderer가 Cynefin을 지원하지 않거나 framework terminology를 충분히 보존하지 못하면 **context/item, source domain term, renderer term이 다르면 그 mapping, decision rationale, confidence/uncertainty와 domain movement evidence**를 보존하는 table을 사용한다. Exact workflow나 lifecycle이 핵심이면 Flowchart/State/Timeline 등 해당 relation을 직접 표현하는 type으로 전환한다.
