@@ -18,7 +18,7 @@ timeline
 
 Source order가 rendered chronology를 소유한다. 실제 날짜가 있는 source를 timeline으로 옮길 때는 먼저 source facts를 시간순으로 정렬·검증하고, renderer가 잘못된 순서를 교정해 줄 것으로 기대하지 않는다.
 
-Visual spacing도 elapsed time에 비례하지 않는다. `2024 → 2025`와 `2025 → 2030`이 비슷한 간격으로 보이더라도 같은 duration을 뜻하지 않는다.
+Visual spacing도 elapsed time에 비례하지 않는다. `2024 → 2025`와 `2025 → 2030`이 비슷한 간격으로 보이더라도 같은 duration을 뜻하지 않는다. Timeline axis의 arrow도 passage/read order를 돕는 presentation이며 source의 causal arrow가 아니다.
 
 ## Temporal Precision And Same-Period Events
 
@@ -38,12 +38,13 @@ timeline
     2026-01 : Automated recovery enabled
 ```
 
-같은 period 아래의 여러 event는 **co-located facts**일 뿐이다.
+같은 period 아래의 여러 event는 **co-located facts**일 뿐이다. Renderer가 period와 event 사이를 arrow-like connector로 그리더라도 그것이 causality, dependency 또는 approval 관계를 추가하지 않는다.
 
 - event의 위아래 순서만으로 causality, dependency, approval chain 또는 within-period chronology를 주장하지 않는다.
 - 서로 다른 날짜에 일어난 사실을 compact하게 보이기 위해 하나의 period로 합치지 않는다.
 - month → quarter → year처럼 source granularity를 낮춰야 한다면 질문에 필요한 수준인지 확인하고, 해석에 영향을 주는 aggregation은 드러낸다.
 - within-period order가 중요하면 더 세밀한 source evidence가 있을 때 그 period를 사용하거나 sequence/flowchart 같은 다른 type을 검토한다.
+- 한 period에 annotation을 계속 쌓지 않는다. 실제 co-located fact가 아닌 rationale, evidence detail이나 설명은 companion prose/table로 옮긴다.
 
 ## Sections Are Contiguous Grouping
 
@@ -98,7 +99,7 @@ timeline TD
     2026 : Recovery workflow introduced
 ```
 
-Portrait reading viewport에서 LR이 과도하게 넓어지면 target renderer가 지원할 때 `TD`를 우선 검토한다. 오래된 renderer에 unsupported direction을 억지로 넣지 않고 LR, split 또는 fallback을 사용한다.
+Portrait reading viewport에서 LR이 과도하게 넓어지면 `TD`를 **후보로 검토**한다. TD는 chronology를 세로로 배치하지만 compact width나 안정적인 rendering을 보장하는 shortcut은 아니다. Target renderer가 TD를 지원하는지 확인하고, 실제 rendered artifact에서는 axis와 event connector marker, label wrapping, section width와 전체 viewport를 함께 검증한다. TD 결과가 불안정하거나 오히려 복잡해지면 LR, split 또는 fallback으로 돌아간다.
 
 ## Choosing Timeline Versus Other Types
 
@@ -107,21 +108,22 @@ Portrait reading viewport에서 LR이 과도하게 넓어지면 target renderer�
 - **Sequence / Flowchart**: message order, process transition, causality 또는 branching relationship이 핵심일 때.
 - **Table**: exact timestamps, sortable records, recurring categories 또는 비교 가능한 여러 fields가 핵심일 때.
 
-Timeline의 visual gap이나 section layout으로 duration, overlap, causality 또는 parallel ownership을 암시하지 않는다.
+Timeline의 visual gap, axis arrow, event connector 또는 section layout으로 duration, causality, dependency나 parallel ownership을 암시하지 않는다.
 
 ## Renderer-Sensitive Review
 
-Timeline은 syntax validity와 temporal fidelity를 따로 검증한다.
+Timeline은 syntax validity, temporal fidelity와 visual stability를 따로 검증한다.
 
 1. rendered period 순서가 source chronology와 일치하는가.
 1. period label이 source보다 더 정확한 timestamp를 발명하지 않았는가.
 1. period granularity를 줄이면서 distinct events를 같은 시점으로 합치지 않았는가.
-1. same-period event를 causal/dependency chain처럼 읽히게 만들지 않았는가.
+1. axis/event connector arrow를 causal·dependency edge처럼 읽히게 만들지 않았는가.
 1. section 때문에 interleaved chronology가 재정렬되거나 같은 section이 lane처럼 재사용되지 않았는가.
-1. LR/TD 선택이 target renderer에서 지원되고 portrait viewport에서 읽을 수 있는가.
-1. long period/event label과 여러 same-period events가 clipping이나 과도한 vertical growth를 만들지 않는가.
+1. LR/TD 선택이 target renderer에서 지원되고 실제 viewport에서 읽을 수 있는가.
+1. 한 period의 많은 event나 긴 label이 전체 spacing·height를 불필요하게 키우지 않는가.
+1. long title이 diagram width나 downscaling을 지배하지 않는가.
 
-문제가 있으면 styling으로 숨기기보다 label 축약, supported temporal granularity, section 축소, direction 변경 또는 diagram split을 먼저 검토한다.
+문제가 있으면 styling으로 숨기기보다 title·label 축약, detail offload, supported temporal granularity, section 축소, direction 변경 또는 diagram split을 먼저 검토한다.
 
 ## Rules
 
@@ -129,11 +131,13 @@ Timeline은 syntax validity와 temporal fidelity를 따로 검증한다.
 - Period label이 실제 chronology를 나타내지 않으면 Timeline을 process diagram 대신 사용하지 않는다.
 - Source order를 chronology와 일치시키고 source보다 높은 temporal precision을 발명하지 않는다.
 - Visual distance를 elapsed duration으로 해석하지 않는다.
-- Same-period events는 co-location만 의미하며 causality·dependency를 만들지 않는다.
+- Axis와 event connector arrow를 causality·dependency 의미로 승격하지 않는다.
+- Same-period events는 co-location만 의미하며 설명 detail을 무제한 쌓는 surface가 아니다.
 - Section은 contiguous grouping이며 recurring category를 위한 parallel lane이 아니다.
 - Evidence, decision과 consequence의 실제 시점을 보존한다.
+- TD는 viewport option이지 semantic 또는 renderer-stability 보장이 아니다.
 - duration, overlap, dependency 또는 proportional time scale이 중요하면 Timeline 대신 더 직접적인 type을 사용한다.
 
 ## Portable Fallback
 
-Target renderer가 Timeline이나 필요한 direction을 지원하지 않으면 source order, temporal precision과 의미 있는 section grouping을 보존하는 ordered list 또는 table로 전환한다. Duration·overlap이 중요한 경우에는 의미를 보존할 수 있을 때 Gantt를 사용하며, Timeline의 visual spacing을 fallback에서 실제 time scale처럼 재현하지 않는다.
+Target renderer가 Timeline이나 필요한 direction을 안정적으로 지원하지 않으면 source order, temporal precision과 의미 있는 section grouping을 보존하는 ordered list 또는 table로 전환한다. Duration·overlap이 중요한 경우에는 의미를 보존할 수 있을 때 Gantt를 사용하며, Timeline의 visual spacing이나 connector arrow를 fallback에서 실제 time scale 또는 causal relation처럼 재현하지 않는다.
