@@ -21,6 +21,7 @@ Data, source syntax, renderer support와 rendered image를 서로 다른 단계�
 - Pie가 같은 전체를 구성하고 category가 중복되지 않는지 확인한다.
 - Sankey row가 `source,target,value`이고 value가 수치인지 확인한다.
 - source가 conserved flow를 의미하는 Sankey는 intermediate node의 incoming/outgoing 합계를 대조하고 실제 loss·creation은 명시되어 있는지 확인한다.
+- Sankey에서 `Other` aggregation을 사용했다면 한쪽 endpoint와 stage가 유지되고, 반대쪽 endpoints가 source에서 의미 있게 묶일 수 있는 category인지 확인한다. Aggregation 때문에 양쪽 endpoint가 동시에 바뀐 synthetic path나 새로운 topology가 생기지 않았는지 대조한다.
 - 하나의 whole을 표현하는 Treemap은 parts 합계, unit, 기준 시점, rounding과 `Other` aggregation을 확인한다.
 - Radar axis와 curve value 수, scale 방향을 확인한다. 서로 반대 방향의 metric이나 근거 없는 qualitative score를 한 profile에 섞지 않는다.
 - Quadrant 좌표와 축 정의, normalization 근거를 확인하고 경계선 부근 item을 과도하게 분류하지 않는다.
@@ -69,6 +70,7 @@ Type이 지원되지 않으면 table, portable chart 또는 전문 chart 도구�
 | Misleading scale | 범위가 차이를 과장하거나 단위가 불명확 | axis·unit 명시 또는 table 병기 |
 | Hidden discontinuity | missing/gap이 연속선처럼 읽힘 | gap을 드러내는 표현, annotation 또는 table |
 | Broken flow balance | conserved Sankey의 in/out이 근거 없이 다름 | source 재검토, leak/creation 명시 |
+| Synthetic Sankey aggregation | `Other` 때문에 endpoint·stage·topology가 source와 달라짐 | aggregation 축소 또는 원래 flow 복원 |
 | Incomplete whole | Treemap에서 작은 part가 사라지거나 합계가 whole과 맞지 않음 | `Other`, rounding 또는 scope 명시 |
 | Incomparable radar | axis direction·scale·rubric이 다름 | normalization 수정 또는 chart 분리 |
 | Excess density | category·series·node·item이 과다 | 핵심 비교 축소, detail chart 또는 table |
@@ -83,7 +85,7 @@ Type별 readability budget은 review trigger일 뿐 hard fail이 아니다. 실�
 ## Failure Reporting
 
 - **Data mismatch**: source와 다른 값·순서·단위·누락을 보고하고 수정한다.
-- **Integrity mismatch**: conservation, whole reconciliation, scale direction 또는 normalization이 source 의미와 맞지 않는 지점을 보고한다.
+- **Integrity mismatch**: conservation, aggregation topology, whole reconciliation, scale direction 또는 normalization이 source 의미와 맞지 않는 지점을 보고한다.
 - **Syntax failure**: error location과 수정한 source를 보고한다.
 - **Renderer setup failure**: missing CLI/browser/network를 보고하고 source-only 결과를 제공한다.
 - **Unsupported type**: portable chart, table 또는 전문 chart tool로 전환한다.
