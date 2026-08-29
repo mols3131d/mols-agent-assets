@@ -79,6 +79,14 @@ Duration-based task가 excluded day를 지나면 Mermaid는 지정한 working du
 
 Calendar behavior를 신뢰성 있게 표현할 수 없으면 날짜를 임의 보정하기보다 source schedule table을 fallback으로 사용한다.
 
+## Schedule Uncertainty
+
+Gantt bar의 정확한 위치와 길이는 강한 schedule claim으로 읽힌다. Source가 tentative date, approximate duration 또는 range만 제공하면 단일 exact value로 임의 확정하지 않는다.
+
+- 계획값을 사용한다면 title이나 companion prose에서 **plan / estimate / as-of 기준**을 드러낸다.
+- `3–5d`, `Q3 중`, `approval 이후 예상`처럼 uncertainty 자체가 중요한 경우 하나의 확정 bar로 압축하지 않는다.
+- Mermaid Gantt가 uncertainty band나 confidence interval을 표현한다고 가정하지 않는다. 필요한 범위·가정은 table/prose 또는 별도 scenario로 유지한다.
+
 ## Milestones, Gates And Criticality
 
 사람이나 외부 절차의 승인 시점이 schedule constraint라면 milestone로 구분할 수 있다. 실제 승인 없이 gate가 통과된 것처럼 표현하지 않는다.
@@ -121,6 +129,7 @@ Gantt는 syntax validity와 **schedule integrity**를 따로 검증한다.
 1. dependency graph에 source가 뒷받침하지 않는 edge나 cycle이 생기지 않았는가.
 1. explicit date의 precision과 `dateFormat`이 일관되고 source보다 정밀한 시간을 만들지 않았는가.
 1. duration, explicit end와 working calendar 중 무엇이 authoritative한지 보존했는가.
+1. tentative/estimated 값이 committed 또는 observed schedule처럼 보이지 않는가.
 1. `excludes` 같은 calendar rule 뒤의 computed end와 downstream start가 source schedule과 맞는가.
 1. `done`·`active`·`crit`와 milestone/gate가 source snapshot 또는 planning decision을 반영하는가.
 1. task metadata에 accidental extra comma나 빈 field가 생기지 않았는가.
@@ -133,7 +142,7 @@ Gantt는 syntax validity와 **schedule integrity**를 따로 검증한다.
 - Row order나 section grouping을 schedule dependency로 승격하지 않는다.
 - Implicit sequential start는 실제 chaining이 의도된 경우에만 사용한다.
 - `after`·`until` reference는 모두 resolve되고 cycle이 없어야 한다.
-- Date, duration, calendar와 status precision을 source보다 강하게 만들지 않는다.
+- Date, duration, calendar, uncertainty와 status precision을 source보다 강하게 만들지 않는다.
 - `done`·`active`는 snapshot state이고 `crit`는 source-backed annotation이다.
 - Milestone은 실제 point event/gate에 사용하며 exact instant에는 `0d`를 우선한다.
 - Gantt 자체가 critical path나 dependency graph를 자동 분석·시각화한다고 주장하지 않는다.
