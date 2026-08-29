@@ -56,7 +56,7 @@ tests/
    └─ test_invoice_failures.py
 ```
 
-Source와의 대응을 filename에 남기면서 새로운 directory depth를 만들지 않는 형태입니다. 같은 prefix가 반복되거나 directory가 조밀해지면 별도 bundle이 더 읽기 쉬울 수 있습니다.
+Source와의 대응을 filename에 남기면서 새로운 directory depth를 만들지 않는 형태입니다. 같은 prefix가 반복되거나 directory가 조밀해지면 별도 bundle과 비교해 봅니다.
 
 ### Files-to-bundle
 
@@ -76,7 +76,7 @@ tests/
       └─ test_invoice_permissions.py
 ```
 
-Bundle은 반복되는 grouping을 directory 이름으로 압축하고 관련 fixture·data·snapshot·helper 같은 local context를 가까이 둘 수 있습니다. 내부 파일은 source의 private implementation보다 behavior, scenario, contract처럼 테스트를 읽고 변경할 때 의미 있는 경계로 나누는 형태가 흔합니다.
+Bundle은 반복되는 grouping을 directory 이름으로 압축하고 관련 fixture·data·snapshot·helper 같은 local context를 가까이 둘 수 있습니다. 내부 파일은 source의 private implementation보다 behavior, scenario, contract처럼 테스트를 읽고 변경할 때 의미 있는 경계로 나누는 것을 고려합니다.
 
 ### Boundary-to-bundle
 
@@ -112,7 +112,7 @@ Source path가 항상 가장 좋은 organizing axis는 아닙니다. 테스트�
 
 이 축들은 조합할 수도 있습니다. 예를 들어 `tests/integration/billing/`처럼 test level과 domain을 함께 드러낼 수 있습니다.
 
-Literal mirroring은 source와 test의 natural boundary가 비슷할 때 특히 잘 맞습니다. 반대로 하나의 behavior가 여러 module을 가로지르거나 source refactoring보다 behavior boundary가 안정적이라면 다른 alignment가 더 읽기 쉬울 수 있습니다.
+Literal mirroring은 source와 test의 natural boundary가 비슷할 때 특히 잘 맞습니다. 하나의 behavior가 여러 module을 가로지르거나 source refactoring보다 behavior boundary가 안정적이라면 **feature·behavior·system boundary 중심의 alignment를 고려합니다.**
 
 ## Bundle Heuristics
 
@@ -127,16 +127,14 @@ Bundle 전환에는 보편적인 threshold가 없습니다. 다만 **관련 grou
 
 이 숫자는 framework standard나 전환 규칙이 아니라 **관찰 지점**입니다. Directory 한 단계를 추가하는 비용보다 grouping에서 얻는 탐색 이점이 커지는지 다시 볼 시점을 제안합니다.
 
+- 같은 긴 filename prefix가 반복되면 **그 prefix를 directory 이름으로 압축할지 고려합니다.**
+- 한 directory에서 여러 unrelated test group을 함께 훑어야 한다면 **독립적인 group을 bundle로 분리할지 고려합니다.**
+- 특정 group만 사용하는 fixture, helper, data 또는 snapshot이 생기면 **그 local context를 group 가까이에 모으는 구조를 고려합니다.**
+- bundle을 만들어도 파일이 쉽게 구분되지 않거나 navigation step만 늘어난다면 **sibling files를 유지합니다.**
+
 예를 들어 `test_invoice_*`가 4~6개 반복되면 `invoice/`가 prefix를 구조로 압축하는 데 도움이 될 수 있습니다. 반대로 관련 파일이 6개여도 directory 전체가 그 group 하나뿐이고 쉽게 훑어진다면 sibling files가 더 단순할 수 있습니다.
 
 관련 파일이 3~4개뿐이어도 같은 directory에 서로 다른 주제의 파일이 10개 안팎 섞여 있거나, 그 group만 쓰는 fixture·snapshot·helper가 많다면 bundle이 scan 범위를 줄이고 local context를 가까이 모으는 데 도움이 될 수 있습니다.
-
-숫자 외에도 다음과 같은 신호를 함께 볼 수 있습니다.
-
-- 같은 긴 filename prefix가 반복됩니다.
-- 관련 테스트를 한눈에 찾기 어려워집니다.
-- 특정 group만 사용하는 fixture, helper, data 또는 snapshot이 생깁니다.
-- 한 directory에 여러 unrelated test group이 섞여 있습니다.
 
 ## Variants
 
@@ -174,16 +172,25 @@ tests/
 
 필요하면 각 영역 안에서 다시 domain이나 source structure를 반영할 수 있습니다.
 
-## Trade-offs
+## Trade-offs and Responses
 
-| Form | Strength | Cost |
-| --- | --- | --- |
-| Source mirroring | source에서 관련 test를 빠르게 추측하기 쉬움 | source rename·move가 잦으면 test path churn이 생길 수 있음 |
-| Sibling files | directory depth를 늘리지 않음 | filename이 길어지고 prefix가 반복될 수 있음 |
-| Bundle | grouping과 local context를 구조로 드러냄 | hierarchy와 navigation step이 늘어남 |
-| Behavior-oriented grouping | refactoring에도 test boundary가 안정적일 수 있음 | source에서 관련 test를 바로 찾기는 어려울 수 있음 |
+| Form | Strength | Limitation | Possible response |
+| --- | --- | --- | --- |
+| Source mirroring | source에서 관련 test를 빠르게 추측하기 쉬움 | source rename·move가 잦으면 test path churn이 생길 수 있음 | 더 안정적인 feature·behavior·domain boundary를 고려함 |
+| Sibling files | directory depth를 늘리지 않음 | filename이 길어지고 prefix가 반복될 수 있음 | 반복 group이 뚜렷해지면 bundle과 비교함 |
+| Bundle | grouping과 local context를 구조로 드러냄 | hierarchy와 navigation step이 늘어남 | 작은 group이거나 scan이 쉬우면 siblings를 유지함 |
+| Behavior-oriented grouping | refactoring에도 test boundary가 안정적일 수 있음 | source에서 관련 test를 바로 찾기는 어려울 수 있음 | source navigation이 중요한 영역은 source alignment를 유지함 |
 
 `single file → sibling files → bundle`은 흔한 growth path일 수 있지만 모든 단계를 거치거나 특정 개수에서 자동으로 전환할 필요는 없습니다.
+
+### Limits
+
+이 패턴의 이점은 filesystem이 실제 navigation에 얼마나 중요한지와 source tree가 얼마나 안정적인 탐색 단서를 제공하는지에 따라 달라집니다.
+
+- Source tree 자체가 불안정하거나 테스트의 자연스러운 경계를 잘 보여주지 못한다면 **literal mirroring을 약하게 하고 더 안정적인 feature·behavior·domain boundary를 고려합니다.**
+- IDE search, symbol navigation, test runner filtering처럼 더 빠른 탐색 수단이 이미 충분하다면 **filesystem hierarchy를 추가하는 이점이 실제로 있는지 먼저 비교합니다.**
+- Framework나 language의 test discovery·import convention과 충돌한다면 **ecosystem convention을 우선합니다.**
+- Mirroring 때문에 source implementation detail과 test organization이 함께 흔들린다면 **public behavior나 contract처럼 더 안정적인 경계를 고려합니다.**
 
 이 패턴은 test taxonomy, test pyramid, fixture architecture나 unit/integration의 의미를 정하지 않습니다. **어떤 테스트가 존재해야 하는가보다, 이미 존재하는 테스트를 filesystem에서 어떻게 찾기 쉽게 둘 것인가**에 초점을 둡니다.
 
@@ -196,7 +203,7 @@ Test layout에는 하나의 보편적인 형태가 없습니다.
 - [Cargo](https://doc.rust-lang.org/cargo/reference/cargo-targets.html#tests)는 source 안의 unit test와 `tests/` 아래 integration test를 구분합니다.
 - [Jest](https://jestjs.io/docs/configuration#testmatch-arraystring)는 `__tests__` directory와 `.test` / `.spec` suffix를 모두 기본 discovery 형태로 지원합니다.
 
-Framework의 discovery·import 규칙은 naming이나 nesting에 영향을 줄 수 있으므로 실제 layout에서는 해당 ecosystem의 convention을 함께 봅니다. Source mirroring은 그 convention을 대신하는 universal layout이 아니라, **허용되는 구조 안에서 source와 test 사이의 navigation 관계를 더 읽기 쉽게 만드는 선택지**입니다.
+Framework의 discovery·import 규칙은 naming이나 nesting에 영향을 줄 수 있습니다. 실제 layout에서는 해당 ecosystem의 convention을 우선하고, 그 안에서 source/test navigation을 더 읽기 쉽게 만들 수 있는지 봅니다.
 
 ## Related Pattern
 
@@ -204,4 +211,4 @@ Framework의 discovery·import 규칙은 naming이나 nesting에 영향을 줄 �
 
 ## Short Form
 
-> **Source와 test의 위치 관계는 관련 테스트를 찾는 탐색 단서가 될 수 있습니다. 작은 테스트는 단일 파일이나 sibling files로 표현할 수 있고, 관련 파일이나 directory가 조밀해지면 bundle이 탐색을 더 단순하게 만드는 선택지가 될 수 있습니다. Literal mirroring보다 feature·behavior·system boundary가 더 자연스러운 경우도 있습니다.**
+> **Source와 test의 위치 관계를 탐색 단서로 활용할 수 있습니다. 작은 테스트는 단일 파일이나 sibling files로 두고, 관련 파일이나 directory가 조밀해지면 bundle을 비교합니다. Literal mirroring이 실제 boundary와 맞지 않으면 feature·behavior·system boundary를 고려하고, framework convention과 충돌하면 ecosystem convention을 우선합니다.**
