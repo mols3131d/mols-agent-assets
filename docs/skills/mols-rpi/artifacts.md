@@ -9,6 +9,7 @@ RPI Skill의 artifact 동작을 설계할 때 참고할 결정사항만 정리�
 ## Decisions
 
 - Public control은 가능하면 `artifacts` 하나로 둡니다.
+- Structured syntax를 요구하지 않고, 같은 의도의 자연어 지시도 `artifacts` override로 해석합니다.
 - `durable_handoff`, `artifacts_path`를 별도 argument로 두지 않습니다.
 - `<auto>`는 사용자·project·workspace·harness가 이미 정한 artifact 방식을 우선합니다.
 - 적절한 persistent surface가 없거나 persistence가 허용되지 않으면 inline으로 fallback합니다.
