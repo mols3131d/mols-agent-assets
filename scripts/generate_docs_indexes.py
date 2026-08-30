@@ -22,7 +22,7 @@ HEADER = "path\tdescription\n"
 DEFAULT_INDEX_DEPTH = 0
 DEFAULT_DEPTH = -1
 DEFAULT_DIRECTORY_ENTRY_FILES = ("README.md",)
-BASE_EXCLUDE = ("AGENTS.md", "INDEX.md")
+BASE_EXCLUDE = ("AGENTS.md", "INDEXING.md")
 EXCLUDE_GLOBS = [".*.md", "__*__.md"]
 
 
