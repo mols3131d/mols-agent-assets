@@ -15,7 +15,7 @@ description: README·docs·comments·Git/GitHub communication과 Agent Asset에�
 
 영역과 경우마다 아래 규칙을 적용합니다. 더 구체적인 `Scope`가 일반 규칙보다 우선합니다.
 
-| Scope | Applies To | Rule |
+| Scope | Description | Language |
 | --- | --- | --- |
 | **General Prose** | 설명, 안내와 근거 같은 일반 서술 | Default |
 | **Markdown Heading** | Markdown heading | `H1`~`H3`: 영어 · `H4`~`H6`: 한국어 |
@@ -26,11 +26,11 @@ description: README·docs·comments·Git/GitHub communication과 Agent Asset에�
 
 ## Non-Scope
 
-아래 항목의 언어와 표기는 이 저장소의 기본 언어 정책이 직접 결정하지 않습니다.
+아래 항목의 언어와 표기는 이 저장소의 기본 언어 정책이 직접 결정하지 않으며, 해당 source, framework, tool 또는 자산의 규칙과 관행을 따릅니다.
 
-| Non-Scope | Applies To | Rule |
-| --- | --- | --- |
-| **Agent Assets Managed by This Repository** | 이 repository가 생성·관리하는 대상 Agent Asset과 그 source/package content | 해당 자산이 따르는 규칙과 관행을 따름 |
-| **Framework, Tool, and Technology Conventions** | framework, tool, technology가 언어 또는 표기를 정한 content | 해당 규칙을 따름 |
-| **Exact and Literal Values** | code, command, path, filename, literal value와 외부에서 정의된 exact name | 원문 유지 |
-| **Generated or Preserved Text** | 자동 생성된 메시지와 외부 source에서 보존해야 하는 text | source 규칙을 따름 |
+| Non-Scope | Description |
+| --- | --- |
+| **Agent Assets Managed by This Repository** | 이 repository가 생성·관리하는 대상 Agent Asset과 그 source/package content |
+| **Framework, Tool, and Technology Conventions** | framework, tool, technology가 언어 또는 표기를 정한 content |
+| **Exact and Literal Values** | code, command, path, filename, literal value와 외부에서 정의된 exact name |
+| **Generated or Preserved Text** | 자동 생성된 메시지와 외부 source에서 보존해야 하는 text |
