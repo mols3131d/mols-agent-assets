@@ -22,7 +22,7 @@ Work는 accepted Plan에 따라 현재 Goal을 실제로 전진시키는 실행 
 
 즉 **Implementation은 실행의 역할을 뜻하며 결과의 종류를 제한하지 않습니다.**
 
-Work는 하나일 필요도 없습니다. 하나의 Plan은 Goal을 위해 여러 Work unit을 순차적·병렬적·의존적으로 묶을 수 있으며, RPI Work는 그중 현재 Plan이 요구하는 필요한 집합을 수행합니다. Review는 개별 Work뿐 아니라 서로의 dependency와 조합 결과가 Plan과 Goal을 충족하는지도 확인합니다.
+Work는 하나일 필요가 없습니다. 하나의 Plan은 Goal을 위해 **하나 이상의 Work unit**을 순차적·병렬적·의존적으로 묶을 수 있으며, RPI Work는 현재 Plan이 요구하는 필요한 집합을 수행합니다. Review는 각 Work뿐 아니라 Work 사이의 dependency와 조합 결과가 Plan과 Goal을 충족하는지도 확인합니다.
 
 ## Prerequisite
 
