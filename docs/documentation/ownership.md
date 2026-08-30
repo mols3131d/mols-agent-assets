@@ -34,6 +34,6 @@ Directory-level README는 해당 directory의 contract 또는 navigation respons
 - correctness나 recovery에 영향을 주는 진입 순서 또는 navigation decision
 - 해당 directory만의 maintenance 또는 recovery knowledge
 
-Sibling 파일 목록만 복제하는 index는 만들지 않습니다. 쉽게 재생성되는 inventory는 filesystem과 search에 맡깁니다.
+Sibling 파일 목록만 복제하는 authored index나 README section은 만들지 않습니다. 쉽게 재생성되는 inventory는 filesystem, search 또는 repository가 소유하는 generated projection에 맡깁니다. `README.md`와 docs `INDEX.tsv`의 구체적인 경계는 [README and Generated Index](readme-and-index.md)가 소유합니다.
 
 문서의 공통 중복 원칙은 [Duplication Boundaries](duplication-boundaries.md)가 소유하고, directory-local 중복 경계는 해당 local owner가 소유합니다.
