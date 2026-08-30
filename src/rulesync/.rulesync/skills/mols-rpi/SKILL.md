@@ -40,7 +40,7 @@ accepted Plan**, not code-only implementation. It may produce code, documents, a
 edits, decisions, configuration, tool actions, or another planned result that moves the
 current state toward the Goal.
 
-`mols-rpi` is an orchestration method, not the task-domain capability. Keep applicable
+`RPI` is an orchestration method, not the task-domain capability. Keep applicable
 task-specific Skills, tools, and governing procedures in force inside RPI stages. RPI owns
 prerequisite ordering, Run/Loop state, Scope control, Review transitions, recursion, and
 handoff; it does not replace more specific task authority.
