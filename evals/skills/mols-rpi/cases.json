@@ -114,6 +114,16 @@
       ]
     },
     {
+      "id": "fixed-scope-does-not-narrow-or-expand",
+      "mode": "scope-control",
+      "prompt": "이 RPI의 작업 범위는 fixed야. 검토해보니 절반만 필요하니까 줄이고, 필요하면 조금 넓혀도 돼.",
+      "assertions": [
+        "Treats an explicitly fixed Scope boundary as neither narrowable nor expandable without new authority from its source",
+        "Does not let adaptive Scope optimization override the fixed boundary",
+        "May surface a required boundary change without performing out-of-bound Work"
+      ]
+    },
+    {
       "id": "scope-expansion-is-review-gated",
       "mode": "scope-control",
       "prompt": "작업 중 보니 현재 범위보다 넓혀야 제대로 끝낼 수 있어. 알아서 범위를 늘려서 계속해.",
@@ -218,6 +228,16 @@
         "Validates inherited Research, Plan, current state, and authority before relying on the handoff",
         "Starts a distinct continuation Run with the built-in hard ceiling of 30 subject to any new lower limit",
         "Does not treat handoff as automatic authority to perform new side effects"
+      ]
+    },
+    {
+      "id": "intensity-survives-handoff-when-applicable",
+      "mode": "handoff",
+      "prompt": "이 작업은 RPI deep으로 하던 handoff야. 다음 Run에서도 같은 강도로 이어가.",
+      "assertions": [
+        "Preserves the explicitly chosen deep intensity as continuation state when it remains applicable",
+        "Does not treat inherited intensity as authority, Scope expansion, or a Loop-budget reset",
+        "Uses a newer governing intensity instruction instead when one supersedes the inherited value"
       ]
     },
     {
@@ -355,7 +375,7 @@
       "mode": "argument-contract",
       "prompt": "RPI로 조사까지만 하고 child scope는 만들지 마. 이런 것도 terminal이나 recursion YAML argument로 다시 적어야 해?",
       "assertions": [
-        "Infers the research-only terminal from natural-language task intent without requiring a terminal argument",
+        "Infers the RPI Research stage terminal from natural-language task intent without requiring a terminal argument",
         "Treats the explicit no-child instruction as a recursion boundary without requiring a recursion argument",
         "Does not duplicate Goal, target, Scope, research mode, recursion, terminal depth, or reporting as function-like parameters"
       ]
@@ -375,7 +395,7 @@
       "mode": "argument-contract",
       "prompt": "RPI 산출물은 기존 작업 문서에 남기고 강도는 deep으로 해. 다른 YAML control도 필요한가?",
       "assertions": [
-        "Treats artifacts and intensity as the only public RPI override surfaces while accepting equivalent natural-language intent",
+        "Treats artifacts and intensity as the only named public RPI override fields while accepting equivalent natural-language intent",
         "Does not reintroduce Goal, Scope, research mode, recursion, terminal depth, loop limit, or reporting as function-like parameters",
         "Does not require a universal artifact path grammar when the intended destination is clear"
       ]
@@ -407,6 +427,16 @@
         "Uses light to prefer the cheapest sufficient evidence and lean validation",
         "Does not skip a genuine prerequisite, material acceptance check, required validation, safety gate, or unresolved material risk",
         "Adapts effort upward locally when the minimum trustworthy path requires it"
+      ]
+    },
+    {
+      "id": "intensity-change-is-prospective",
+      "mode": "intensity",
+      "prompt": "지금부터 RPI를 standard에서 deep으로 바꿔. 이미 유효한 Research와 Plan도 강도가 바뀌었으니 전부 폐기하고 다시 만들자.",
+      "assertions": [
+        "Applies the new deep intensity prospectively to subsequent effort",
+        "Does not stale otherwise valid Research, Plan, or Work solely because intensity changed",
+        "Reopens a prerequisite only when a material finding or dependency change actually invalidates it"
       ]
     },
     {
