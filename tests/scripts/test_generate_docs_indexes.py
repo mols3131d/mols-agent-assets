@@ -55,11 +55,7 @@ def test_generate_docs_indexes_projects_directories_and_all_descendant_files(tmp
         {"path": "references/nested/deep.md", "description": "Deep reference."},
         {"path": "references/reference.md", "description": "Reference."},
     ]
-    assert _read_tsv(docs / "references" / "INDEX.tsv") == [
-        {"path": "nested/", "description": "Nested references."},
-        {"path": "nested/deep.md", "description": "Deep reference."},
-        {"path": "reference.md", "description": "Reference."},
-    ]
+    assert not (docs / "references" / "INDEX.tsv").exists()
     assert not (docs / "references" / "nested" / "INDEX.tsv").exists()
 
 
@@ -147,9 +143,7 @@ def test_generate_docs_indexes_directory_entry_falls_back_to_index(tmp_path):
         {"path": "references/", "description": "Index fallback."},
         {"path": "references/guide.md", "description": "Guide."},
     ]
-    assert _read_tsv(docs / "references" / "INDEX.tsv") == [
-        {"path": "guide.md", "description": "Guide."},
-    ]
+    assert not (docs / "references" / "INDEX.tsv").exists()
 
 
 def test_generate_docs_indexes_directory_entry_precedence_does_not_merge(tmp_path):
@@ -184,10 +178,12 @@ def test_generate_docs_indexes_keeps_directory_without_entry_description_blank(t
 
     assert generate_docs_indexes(docs) == []
 
-    assert _read_tsv(docs / "skills" / "INDEX.tsv") == [
-        {"path": "nested/", "description": ""},
-        {"path": "nested/guide.md", "description": "Guide."},
+    assert _read_tsv(docs / "INDEX.tsv") == [
+        {"path": "skills/", "description": ""},
+        {"path": "skills/nested/", "description": ""},
+        {"path": "skills/nested/guide.md", "description": "Guide."},
     ]
+    assert not (docs / "skills" / "INDEX.tsv").exists()
 
 
 def test_generate_docs_indexes_excludes_non_markdown_directories_recursively(tmp_path):
@@ -216,13 +212,15 @@ def test_generate_docs_indexes_removes_indexes_beyond_index_depth(tmp_path):
         docs / "references" / "nested" / "guide.md",
         "---\ndescription: Guide.\n---\n# Guide\n",
     )
-    stale = docs / "references" / "nested" / "INDEX.tsv"
-    _write(stale, "path\tdescription\nold.md\tOld.\n")
+    child = docs / "references" / "INDEX.tsv"
+    nested = docs / "references" / "nested" / "INDEX.tsv"
+    _write(child, "path\tdescription\nold.md\tOld.\n")
+    _write(nested, "path\tdescription\nold.md\tOld.\n")
 
     assert generate_docs_indexes(docs) == []
-    assert not stale.exists()
     assert (docs / "INDEX.tsv").exists()
-    assert (docs / "references" / "INDEX.tsv").exists()
+    assert not child.exists()
+    assert not nested.exists()
 
 
 def test_generate_docs_indexes_check_reports_scoped_drift_and_deeper_stale(tmp_path):
@@ -235,7 +233,7 @@ def test_generate_docs_indexes_check_reports_scoped_drift_and_deeper_stale(tmp_p
         docs / "references" / "nested" / "reference.md",
         "---\ndescription: Nested reference.\n---\n# Reference\n",
     )
-    generate_docs_indexes(docs)
+    generate_docs_indexes(docs, index_depth=1)
 
     _write(
         docs / "guide.md",
@@ -247,7 +245,7 @@ def test_generate_docs_indexes_check_reports_scoped_drift_and_deeper_stale(tmp_p
         "path\tdescription\nold.md\tOld.\n",
     )
 
-    assert generate_docs_indexes(docs, check=True) == [
+    assert generate_docs_indexes(docs, check=True, index_depth=1) == [
         "outdated: docs/INDEX.tsv",
         "missing: docs/references/INDEX.tsv",
         "stale: docs/references/nested/INDEX.tsv",
