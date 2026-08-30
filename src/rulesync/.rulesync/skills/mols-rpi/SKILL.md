@@ -87,6 +87,7 @@ scope_policy: <auto>
 research: <auto>
 recursion: <auto>
 max_total_loops: <auto>
+durable_handoff: <auto>
 progress: <auto>
 output: <auto>
 ```
@@ -101,6 +102,7 @@ output: <auto>
 | `research` | `internal`, `external`, `mixed` | Research |
 | `recursion` | `prefer`, `off` | Recursive Resolution |
 | `max_total_loops` | integer `1..30` | Run and Loop |
+| `durable_handoff` | `on`, `off` | Artifacts / Run Boundary and Handoff |
 | `progress` | `compact`, `quiet` | Reporting and Output |
 | `output` | `inline`, `persist`, `both` | Reporting and Output |
 
@@ -301,6 +303,41 @@ Apply these rules:
    and tool authority remain independent gates.
 
 Do not regenerate valid artifacts for ceremony.
+
+### Durable Progress Handoff
+
+Resolve `durable_handoff` here. `<auto>` enables durable handoff only when continuation
+across a context, session, worker, or similar boundary is materially likely and an
+authorized surface can preserve resume-critical state across that boundary; otherwise it
+resolves to `off`. `off` adds no durability requirement beyond normal artifact handling.
+`on` activates the following continuation contract without changing prerequisite order or
+creating a new artifact type.
+
+When `durable_handoff: on`:
+
+1. Reuse existing Research, Active Scope, Plan, Review, task, PR, or other established
+   working surfaces before creating a separate handoff artifact. Preserve only the minimum
+   state needed to resume without expensive rediscovery.
+1. Update the continuation surface at material checkpoints, normally after a substantive
+   Review or another state change that would materially alter resumption. Do not checkpoint
+   every tool call, command, or unchanged artifact.
+1. Preserve resume-critical state when it matters: current Goal and Scope; completed,
+   current, and remaining Work; material decisions with a brief evidence basis; validation
+   and current health; a freshness anchor when useful; expensive failed approaches;
+   blockers and residual uncertainty; the next transition; and relevant source or artifact
+   references.
+1. Choose a surface expected to survive the anticipated boundary. `output: persist` alone
+   does not prove durability, and an inline-only surface does not satisfy this mode unless
+   the runtime guarantees that it survives the boundary. If no authorized suitable surface
+   exists, report the durable-handoff requirement as unsatisfied and do not claim durable
+   compatibility.
+1. On continuation, treat durable state as resume evidence, not authority. Validate its
+   freshness anchor, applicable source and state, and any health claim that can materially
+   change the next action before relying on it. Update or discard stale state instead of
+   continuing from it blindly.
+
+Checkpoint maintenance is state preservation, not another Loop, and never broadens Scope,
+authority, persistence permission, or the effective Loop budget.
 
 ## Stages
 
@@ -547,16 +584,23 @@ After the final allowed Review:
    next transition;
 1. preserve the exhaustion reason plus authority, approval, environment, validation, and
    material risk boundaries needed for safe continuation;
+1. if `durable_handoff: on` and a suitable continuation surface already exists, update that
+   surface with the final material delta and reference it instead of duplicating the same
+   state in a new handoff format;
 1. mark the Run as handed off, not complete.
 
 If no established handoff surface is available, return the same minimum continuation state
-inline; do not invent storage or claim persistence.
+inline; do not invent storage or claim persistence. When `durable_handoff: on`, explicitly
+report that the durable-handoff requirement is unsatisfied rather than presenting the
+inline fallback as durable continuation state.
 
 A later RPI Run may continue from the handoff only after validating inherited Research,
 Active Scope, pending Scope proposals, Plan, current state, authority, and still-applicable
-argument values. The later Run receives a new hard ceiling of 30, subject to any lower
-limit explicitly established for that continuation Run. Handoff does not itself authorize
-or auto-start another Run and must never become a hidden reset inside the exhausted Run.
+argument values. For durable continuation, also validate the persisted freshness anchor and
+any material health claim before relying on them. The later Run receives a new hard ceiling
+of 30, subject to any lower limit explicitly established for that continuation Run. Handoff
+does not itself authorize or auto-start another Run and must never become a hidden reset
+inside the exhausted Run.
 
 Finish with one observable Run state:
 
@@ -581,3 +625,8 @@ Resolve `output` here. `<auto>` follows established artifact policy and uses inl
 when no appropriate writable destination exists. `persist` falls back to inline when
 persistence is unavailable or unauthorized; state that limitation. `both` does not
 duplicate unchanged working artifacts unnecessarily.
+
+`output` controls where artifacts are exposed or persisted; `durable_handoff` controls
+whether resume-critical state must survive an anticipated handoff boundary and be
+revalidated on return. Neither implies the other. If explicit argument values cannot both
+be satisfied, surface the conflict instead of inventing storage, persistence, or authority.
