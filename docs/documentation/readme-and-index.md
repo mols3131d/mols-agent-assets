@@ -54,7 +54,8 @@ Frontmatter의 세부 contract는 [Frontmatter](frontmatter.md)가 소유합니�
 
 Repository의 docs index는 현재 다음 contract를 사용합니다.
 
-- canonical wrapper는 [`scripts/generate_docs_indexes.py`](../../scripts/generate_docs_indexes.py)입니다.
+- [`scripts/generate_docs_indexes.py`](../../scripts/generate_docs_indexes.py)가 docs index의 selection과 materialization logic을 소유합니다.
+- repository-level write entrypoint는 `mise run generated-sync`입니다.
 - 기본 materialization depth는 `0`이므로 `docs/INDEX.tsv`만 생성합니다.
 - 그 index는 기본적으로 전체 `docs/` subtree를 재귀적으로 포함합니다.
 - field는 `path`와 `description`입니다.
