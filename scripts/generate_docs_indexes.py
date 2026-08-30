@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate recursive repository-local ``docs/**/INDEX.tsv`` files."""
+"""Generate repository-local docs indexes, root-only by default."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ from generate_index import generate_index  # noqa: E402
 DOCS_ROOT = ROOT / "docs"
 INDEX_NAME = "INDEX.tsv"
 HEADER = "path\tdescription\n"
-DEFAULT_INDEX_DEPTH = 1
+DEFAULT_INDEX_DEPTH = 0
 DEFAULT_DEPTH = -1
 DEFAULT_DIRECTORY_ENTRY_FILES = ("README.md", "index.md")
 BASE_EXCLUDE = ("AGENTS.md",)
@@ -107,7 +107,7 @@ def generate_docs_indexes(
     depth: int = DEFAULT_DEPTH,
     directory_entry_files: tuple[str, ...] | list[str] = DEFAULT_DIRECTORY_ENTRY_FILES,
 ) -> list[str]:
-    """Generate recursive docs indexes or report drift when ``check`` is true."""
+    """Generate docs indexes at the configured materialization depth."""
     if not docs_root.is_dir():
         raise NotADirectoryError(docs_root)
     if index_depth < -1:
