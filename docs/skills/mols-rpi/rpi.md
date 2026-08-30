@@ -13,6 +13,7 @@ RPI의 기본 관계는 **Research → Plan → Implementation → Review**입�
 - Plan은 현재 Goal과 Active Scope 안의 material assumptions와 decisions를 뒷받침하는 유효한 Research에 근거합니다.
 - Consequential Work는 해당 Work를 실제로 포괄하는 유효한 Plan 뒤에 옵니다.
 - `Implementation`은 code-only 구현이 아니라 Plan에 따라 Goal을 전진시키는 하나 이상의 **Work**입니다. Work 자체는 research, planning, review, writing, analysis 같은 domain action일 수 있으며 같은 이름의 RPI stage와는 semantic level이 다릅니다.
+- RPI Research나 RPI Plan **stage 자체**가 terminal인 요청과, research·plan·review가 **domain Work**인 요청을 구분합니다.
 - Consequential terminal result는 현재 result와 prerequisite state를 검증한 Review 뒤에만 accept합니다.
 - 유효한 prerequisite는 재사용합니다. Material change가 생긴 dependency만 stale해지고, 다음 Loop는 **earliest stale prerequisite**부터 다시 시작합니다.
 - 뒤늦게 만든 Research나 Plan은 이미 수행한 Work의 사전조건을 소급해 충족시키지 않습니다.
@@ -55,10 +56,11 @@ Recursion은 adaptive transition의 한 형태이지 별도 실행 체계가 아
 
 - **genuine prerequisites** — Evidence before Plan, Plan before Work, Review before acceptance
 - **polymorphic Work** — Implementation은 하나 이상의 domain Work를 실행하며 code-only 또는 single-action으로 제한하지 않습니다.
+- **stage/domain separation** — RPI stage terminal과 같은 이름의 domain Work를 혼동하지 않습니다.
 - **dependency-aware reuse** — valid state는 재사용하고 stale dependency만 다시 엽니다.
 - **Review-driven adaptation** — 다음 Loop의 시작점, Scope 처리와 recursion 여부는 Review 결과에 따라 달라집니다.
 - **adaptive intensity** — 3단계 intensity는 effort를 bias하지만 quality waiver, fixed procedure나 Loop quota가 아닙니다.
 - **strict-subset recursion** — child는 parent control boundary를 넓히지 않습니다.
 - **shared accounting and reintegration** — parent와 child가 하나의 Run budget을 공유하고 child 결과를 parent state에 재검증해 합칩니다.
 
-이를 고정된 stage repetition, 전체 재작성, code-only Implementation, single-action Work, intensity별 고정 절차, 고정 recursion depth 또는 무조건적인 recursive descent로 바꾸지 않습니다.
+이를 고정된 stage repetition, 전체 재작성, code-only Implementation, single-action Work, stage-terminal confusion, intensity별 고정 절차, 고정 recursion depth 또는 무조건적인 recursive descent로 바꾸지 않습니다.
