@@ -28,6 +28,8 @@ Review는 가장 작은 유용한 단위로 세 가지 판단을 수행합니다
 
 Challenge는 비판을 많이 만드는 절차가 아닙니다. Direct evidence가 material question을 이미 닫았다면 가짜 반론을 만들지 않습니다. 반대로 plausible material finding은 reviewer의 remedy가 나쁘다는 이유만으로 버리지 않습니다.
 
+Verify, Challenge와 Reconcile은 하나의 Review 안에서 이루어지는 local operations입니다. 이들이 별도 Loop를 만들지 않으며, substantive Review가 닫힐 때 현재 attempt가 하나의 Loop로 닫힙니다.
+
 ## Adaptive Dispatch
 
 Review의 핵심 산출물은 **무엇을 고칠지**보다 **어느 prerequisite 또는 owning control로 돌아갈지**를 결정하는 것입니다.
@@ -38,7 +40,9 @@ Review의 핵심 산출물은 **무엇을 고칠지**보다 **어느 prerequisit
 - Scope boundary change → Scope Control; expansion은 Research → Plan prerequisite를 다시 거칩니다.
 - narrower material blocker → 필요할 때 strict-subset recursive child Scope
 - no credible gain / saturation → convergence 또는 blocker 판단
-- terminal result가 충분히 검증됨 → acceptance
+- terminal result가 충분히 검증됨 → acceptance candidate
+
+Review는 이 transition을 **dispatch**할 뿐, Scope 변경·Run 종료·authority 변경 같은 다른 control concern의 실행 규칙을 대신 소유하지 않습니다.
 
 새 material gap이 발견되면 같은 Review 안에서 무한히 재검토하지 않습니다. Review를 닫고 다음 counted Loop를 **earliest stale prerequisite**에서 시작합니다.
 
@@ -57,7 +61,7 @@ Review는 known material gap을 남긴 채 terminal result를 accept하지 않�
 Recursive descent 역시 Review가 선택하는 transition입니다.
 
 - parent 진행을 막는 narrower problem이 있고 isolation이 materially 유리할 때만 child Scope를 push합니다.
-- child Scope는 parent의 strict subset이며 같은 Run authority와 Loop budget을 공유합니다.
+- child Scope는 parent의 strict subset이며 같은 Run과 Loop budget을 공유합니다. Authority와 safety boundary는 parent에서 상속하거나 더 좁힐 수 있을 뿐 넓힐 수 없습니다.
 - child Review가 끝나면 evidence, decision, parent impact와 residual limitation만 parent에 반환합니다.
 - parent Review는 child 결과가 parent Research, Scope 또는 Plan 중 무엇을 stale하게 만드는지 재검증합니다.
 
@@ -70,7 +74,7 @@ Review를 고도화할 때 다음을 보존합니다.
 - **Review-before-acceptance** — consequential terminal result는 Review 없이 accept하지 않습니다.
 - **evidence-based challenge reconciliation** — critique는 candidate finding이며 evidence와 authority를 거쳐야 합니다.
 - **earliest-stale dispatch** — 다음 Loop는 가장 이른 invalidated prerequisite에서 시작합니다.
-- **adaptive transition ownership** — Research reopening, replanning, bounded Work, Scope handling, recursion과 termination을 Review 결과가 구분해 dispatch합니다.
-- **bounded Review** — Review 내부의 challenge/reconcile을 hidden recursion이나 fake Loop로 만들지 않습니다.
+- **adaptive dispatch** — Research reopening, replanning, bounded Work, Scope handling, recursion과 termination을 구분해 해당 owner로 보냅니다.
+- **bounded Review** — Review 내부의 verify/challenge/reconcile을 hidden recursion이나 fake Loop로 만들지 않습니다.
 
 이를 static checklist, reviewer-majority decision, 매번 full restart 또는 무조건적인 recursion trigger로 바꾸지 않습니다.
