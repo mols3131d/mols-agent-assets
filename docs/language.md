@@ -18,7 +18,8 @@ description: README·docs·comments·Git/GitHub communication과 Agent Asset에�
 | Scope | Description | Language |
 | --- | --- | --- |
 | **General Prose** | 설명, 안내, 근거 등 일반 서술 | Default |
-| **Markdown Heading** | Markdown heading | `H1`~`H3`: 영어 · `H4`~`H6`: 한국어 |
+| **Markdown Headings H1–H3** | `H1`~`H3` heading | 영어 |
+| **Markdown Headings H4–H6** | `H4`~`H6` heading | 한국어 |
 | **Structural Names and Values** | field name, metadata key, identifier 등 구조적이거나 기계적으로 해석되는 이름과 값 | 영어 |
 | **Descriptive Metadata Values** | `description`, `summary`, `notes` 등 사람이 읽는 metadata value | Default |
 | **Agent Assets Used to Manage This Repository** | 이 repository와 관리 대상 Agent Asset을 생성·수정·검증하는 데 사용하는 Agent Asset과 지원 자료 | Default |
