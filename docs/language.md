@@ -31,6 +31,6 @@ description: README·docs·comments·Git/GitHub communication과 Agent Asset에�
 | Non-Scope | Applies To | Rule |
 | --- | --- | --- |
 | **Agent Assets Managed by This Repository** | 이 repository가 생성·관리하는 대상 Agent Asset과 그 source/package content | Local |
-| **Framework, Tool, and Technology Conventions** | framework, tool, technology가 언어 또는 표기를 정한 content | 해당 convention을 따름 |
-| **Exact and Literal Values** | code, command, path, filename, literal value와 외부에서 정의된 exact name | 원문 표기를 유지 |
+| **Framework, Tool, and Technology Conventions** | framework, tool, technology가 언어 또는 표기를 정한 content | 해당 규칙을 따름 |
+| **Exact and Literal Values** | code, command, path, filename, literal value와 외부에서 정의된 exact name | 원문 유지 |
 | **Generated or Preserved Text** | 자동 생성된 메시지와 외부 source에서 보존해야 하는 text | source 규칙을 따름 |
