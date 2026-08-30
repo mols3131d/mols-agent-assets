@@ -8,7 +8,7 @@ RPI Skill의 artifact 동작을 설계할 때 참고할 결정사항만 정리�
 
 ## Decisions
 
-- Artifact 관련 public control은 `artifacts` 하나로 둡니다. `intensity`는 별도의 effort control이며 artifact placement를 소유하지 않습니다.
+- Artifact 관련 named public override는 `artifacts` 하나로 둡니다. `intensity`는 별도의 effort control이며 artifact placement를 소유하지 않습니다.
 - Structured syntax를 요구하지 않고, 같은 의도의 자연어 지시도 `artifacts` override로 해석합니다.
 - `durable_handoff`, `artifacts_path`를 별도 argument로 두지 않습니다.
 - `<auto>`는 사용자·project·workspace·harness가 이미 정한 artifact 방식을 우선합니다.
@@ -25,10 +25,11 @@ Persistent RPI artifact는 별도 toggle 없이 **resume 가능한 working state
 - 완료·현재·남은 Work
 - material decision과 validation 상태
 - blocker와 residual uncertainty
+- 사용자 지정 active intensity처럼 continuation에 필요한 control state
 - freshness를 확인할 기준점
 - 다음 시작점과 필요한 reference
 
-모든 항목을 항상 기록하지 않고, 다음 실행의 재탐색 비용을 줄이는 최소 상태만 유지합니다.
+모든 항목을 항상 기록하지 않고, 다음 실행의 재탐색 비용과 의미 손실을 줄이는 최소 상태만 유지합니다.
 
 ## Placement
 
