@@ -263,7 +263,9 @@ Apply these rules:
    Review; Work on them requires prior valid Scope expansion.
 1. **Narrowing is adaptive.** Review may narrow an inferred or broad Scope when the Goal,
    user-required Work, and required acceptance conditions remain intact. Record the Scope
-   delta and revalidate affected Plan coverage before Work continues.
+   delta and revalidate affected Plan coverage before Work continues. An explicitly fixed
+   boundary may not be narrowed or expanded without new authority from the source that set
+   it.
 1. **Expansion is consequential.** Review may propose expansion when wider Scope appears
    materially required for the Goal, but the proposal does not change the Active Scope.
    Before expansion or affected Work, Research must validate the need and boundary, the
@@ -312,7 +314,7 @@ Research Artifact
 Plan Artifact
 - Based on: <Research Artifact + Active Scope>
 - Goal / scope
-- Decisions / ordered Work
+- Decisions / Work units / material dependencies or ordering
 - Acceptance / validation
 
 Review Artifact
@@ -430,9 +432,10 @@ instructions apply only when an authorized source actually governs the Active Sc
 ### Plan
 
 Derive the smallest Plan that can move the current state toward the Goal inside Active
-Scope. Include the intended state change, scope, approach, ordered Work, acceptance or
-validation, and material assumptions that would force replanning if changed. When Scope
-Control validates an expansion, incorporate only that boundary.
+Scope. Include the intended state change, scope, approach, Work units and material
+dependencies or ordering, acceptance or validation, and material assumptions that would
+force replanning if changed. When Scope Control validates an expansion, incorporate only
+that boundary.
 
 A Plan is methodological authorization, not operational permission.
 
