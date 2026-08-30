@@ -1,5 +1,5 @@
 ---
-description: clarify-code의 routing, scope, public argument, documentation·validation 전략을 변경하거나 복구할 때 원래 설계 결정을 확인하는 protected baseline 기록입니다.
+description: mols-clarify-code의 routing, scope, public argument, documentation·validation 전략을 변경하거나 복구할 때 원래 설계 결정과 후속 식별자 변경을 확인하는 protected baseline 기록입니다.
 ---
 
 # Clarify Code 결정 기록
@@ -8,9 +8,10 @@ description: clarify-code의 routing, scope, public argument, documentation·val
 
 | 결정 | 이유 | 영향 |
 | --- | --- | --- |
-| `clarify-code` 스킬 정립 | 독립적이고 범용적인 code clarification skill로 구성 | 범용적인 `clarify-code` 식별자 사용 |
+| `clarify-code` 스킬 정립 | 독립적이고 범용적인 code clarification skill로 구성 | 초기 식별자로 `clarify-code` 사용 |
+| `mols-clarify-code`로 식별자 변경 | 이 repository가 소유하는 reusable Skill naming과 일관되게 `mols-` prefix를 사용 | routing·eval·maintainer documentation과 sibling reference의 식별자만 동기화하고 기존 책임과 behavior contract는 보존 |
 | description은 사용자 intent와 near-miss boundary를 직접 표현 | discovery 단계에서는 `name`과 `description`이 주요 routing signal | clarify 요청은 넓게 포착하고 feature, review, performance, architecture 요청은 제외 |
-| higher-authority repository/source guardrail은 외부 authority로 존중하고, `clarify-code` 자체에 필요한 invariant는 asset 안에 보존 | host policy를 Skill에 복제하지 않으면서 asset-specific behavior를 hidden dependency로 만들지 않음 | 다른 repository로 옮겨도 Skill 고유 계약은 복원 가능하고 host rule은 overlay로 적용 |
+| higher-authority repository/source guardrail은 외부 authority로 존중하고, `mols-clarify-code` 자체에 필요한 invariant는 asset 안에 보존 | host policy를 Skill에 복제하지 않으면서 asset-specific behavior를 hidden dependency로 만들지 않음 | 다른 repository로 옮겨도 Skill 고유 계약은 복원 가능하고 host rule은 overlay로 적용 |
 | 오해 비용이 가장 큰 병목 하나를 먼저 해소 | 전면 정리와 cosmetic cleanup을 방지 | destructive side effect, gate, ordering, invariant를 단순 복잡성보다 우선 |
 | explicit caller와 framework/runtime entrypoint를 모두 usage surface로 취급 | 등록 기반 호출과 public contract 보호 | caller-visible rename·move·extraction을 제한 |
 | code/name → docstring/comment → extraction 순으로 최소 해법 선택 | prose와 helper 증가로 생기는 이해 부채 방지 | caller contract와 code-local rationale만 필요한 위치에 설명 |

@@ -147,7 +147,7 @@ mols-clarify-runtime/
 - coverage, trace, metrics의 역할과 한계를 과장하지 않는다.
 - audit/security evidence를 일반 noise 제거 규칙으로 훼손하지 않는다.
 - 새 vendor/framework dependency를 요구하지 않는다.
-- `clarify-code`, debugging/review, testing, monitoring, profiling 책임과 routing이 선명하다.
+- `mols-clarify-code`, debugging/review, testing, monitoring, profiling 책임과 routing이 선명하다.
 - 핵심 Skill은 짧고 조건부 detail은 reference에 남는다.
 
 ## Validation plan

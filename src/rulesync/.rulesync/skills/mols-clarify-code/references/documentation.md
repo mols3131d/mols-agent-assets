@@ -1,6 +1,6 @@
 # Documentation
 
-`clarify-code`는 code-adjacent prose를 다룬다. Caller-facing declaration documentation과 maintainer comment는 독자, 수명과 소비 방식이 다르다.
+`mols-clarify-code`는 code-adjacent prose를 다룬다. Caller-facing declaration documentation과 maintainer comment는 독자, 수명과 소비 방식이 다르다.
 
 Core `SKILL.md`가 common-path signal, evidence gate와 reader/scope 기반 surface 선택을 소유한다. 이 reference는 ecosystem-specific surface, placement·ownership·grounding이 단순하지 않은 경우의 세부 판단만 보완한다.
 
@@ -11,7 +11,7 @@ Core `SKILL.md`가 common-path signal, evidence gate와 reader/scope 기반 surf
 | Caller | name, signature, type, language-native declaration documentation, call site | 무엇을 믿고 사용할 수 있는지 |
 | Maintainer | code, names, local comment, tests | 어떤 constraint·consequence·rationale를 보존해야 하는지 |
 
-코드와 이름이 스스로 설명할 수 있는 정보는 prose로 반복하지 않는다. 구조 자체가 불명확하면 그 structural concern을 prose로 대체하지 않고 `mols-code-comprehension-refactor` 책임으로 분리한다. 별도로 존재하는 durable explanation need는 독립적으로 판단한다.
+코드와 이름이 스스로 설명할 수 있는 정보는 prose로 반복하지 않는다. 구조 자체가 불명확하면 그 structural concern을 prose로 대체하지 않고 별도의 executable refactoring concern으로 분리한다. 별도로 존재하는 durable explanation need는 독립적으로 판단한다.
 
 ## Explanation Value
 

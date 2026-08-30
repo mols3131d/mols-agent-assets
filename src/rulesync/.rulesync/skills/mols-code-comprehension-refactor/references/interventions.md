@@ -151,4 +151,4 @@ Local navigation을 줄인다는 이유로 shared policy를 여러 caller에 복
 - 개선을 위해 published/usage contract 또는 system architecture 자체를 redesign해야 한다.
 - performance-sensitive path에서 동등성 근거 없이 material work/allocation/I/O/complexity를 바꿔야 한다.
 - [Validation](validation.md)에서 high-risk transformation의 preservation 근거가 충분하지 않다. 더 작은 intervention을 고르거나 중단한다.
-- 남은 문제는 executable structure가 아니라 caller/maintainer explanation 부족이다. 이 concern은 `clarify-code`가 소유한다.
+- 남은 문제가 executable structure가 아니라 caller/maintainer explanation 부족이면 더 진행하지 않는다. Code-adjacent prose 변경은 이 Skill의 범위 밖이다.
