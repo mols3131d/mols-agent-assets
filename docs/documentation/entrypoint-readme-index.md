@@ -32,8 +32,6 @@ Directory entrypoint인 `README.md`의 frontmatter `description`은 파일 자�
 
 이 repository에서 directory metadata source로 인정하는 entrypoint는 `README.md`뿐입니다. `README.md`에 frontmatter가 없거나 필요한 field가 비어 있어도 다른 filename으로 fallback하거나 metadata를 합치지 않습니다.
 
-`index.md`와 `INDEX.md`는 이 repository에서 reserved entrypoint 또는 indexing filename이 아닙니다.
-
 Frontmatter의 세부 contract는 [Frontmatter](frontmatter.md)가 소유합니다.
 
 ## `INDEXING.md`
