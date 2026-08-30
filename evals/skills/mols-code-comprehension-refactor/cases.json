@@ -86,7 +86,7 @@
       "mode": "negative",
       "prompt": "The implementation is already clear; I only want the docstring to explain overwrite semantics and a comment to explain why cleanup happens in this order.",
       "assertions": [
-        "Routes the request to mols-clarify-code rather than changing executable code.",
+        "Treats the request as code-adjacent explanation-only and leaves executable code unchanged.",
         "Does not invent a structural refactor when only code-adjacent explanation is requested."
       ]
     },
@@ -155,7 +155,7 @@
       "prompt": "This function has an overloaded boolean/positional configuration that is an executable comprehension bottleneck. Separately, a current protocol test proves that cleanup must stay after result capture so cleanup failure cannot replace the original protocol error, but there is no comment explaining that rationale. Improve the code without changing behavior.",
       "assertions": [
         "Still performs or proposes the smallest safe executable refactor for the structural configuration problem instead of handing off the whole task.",
-        "Treats the independent rationale/comment need as mols-clarify-code responsibility rather than using comments as a substitute for the structural refactor.",
+        "Treats the independent rationale/comment need as a separate code-adjacent prose concern rather than using comments as a substitute for the structural refactor.",
         "Preserves the protocol-tested ordering and does not absorb a correctness or behavioral change into the readability work."
       ]
     }

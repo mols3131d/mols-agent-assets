@@ -1,6 +1,6 @@
 ---
 name: mols-code-comprehension-refactor
-description: Use this skill to refactor existing code so it is easier to understand while preserving observable behavior, caller-visible contracts, and material performance characteristics. Trigger for code with opaque representations, hidden conventions, difficult control or state reasoning, unnecessary indirection, abstraction mismatch, mixed responsibilities, or code that is short but mentally expensive to decode. Do not use when only docstrings or comments need improvement; use mols-clarify-code. Do not use for feature work, correctness fixes, performance optimization, public API redesign, or architecture redesign.
+description: Use this skill to refactor existing code so it is easier to understand while preserving observable behavior, caller-visible contracts, and material performance characteristics. Trigger for code with opaque representations, hidden conventions, difficult control or state reasoning, unnecessary indirection, abstraction mismatch, mixed responsibilities, or code that is short but mentally expensive to decode. Do not use when only docstrings or comments need improvement; code-adjacent explanation without executable changes is outside this skill. Do not use for feature work, correctness fixes, performance optimization, public API redesign, or architecture redesign.
 targets:
   - claudecode
   - codexcli
@@ -81,11 +81,11 @@ Intervention은 한 cognitive dimension만 최적화하지 않는다. 줄어드�
 1. 적용되는 repository/source instructions와 target code를 읽고, 현재 task에서 누가 어떤 mental model을 만들어야 하는지 확인한다.
 1. **Preservation before Transformation.** 후보 change가 영향을 줄 수 있는 observable behavior와 usage·contract surface를 식별한다. Caller, entrypoint, test, current contract와 relevant registration/config/tooling context를 필요한 만큼 확인하고, known hot path나 performance budget이 있으면 함께 보존 대상으로 둔다.
 1. 가장 material한 **coherent bottleneck/root-cause cluster**를 찾는다. 원인이 불명확하거나 여러 cost source의 trade-off가 판단을 바꿀 수 있으면 [Diagnosis](references/diagnosis.md)을 읽는다.
-1. Concern을 분리한다. Executable comprehension problem은 이 Skill이 다루되, independent prose need는 `mols-clarify-code`, correctness defect는 correctness work, genuine optimization은 performance work, system boundary redesign은 architecture-level work로 분리한다. 한 sibling concern 때문에 valid comprehension work 전체를 버리지도, 다른 concern을 readability 명목으로 흡수하지도 않는다.
+1. Concern을 분리한다. Executable comprehension problem은 이 Skill이 다루되, independent code-adjacent prose need, correctness defect, genuine optimization, system boundary redesign은 각각 별도 concern으로 분리한다. 인접한 concern 하나 때문에 valid comprehension work 전체를 버리지도, 다른 concern을 readability 명목으로 흡수하지도 않는다.
 1. 후보 transformation이 줄이는 reader work와 새로 만드는 conceptual surface를 비교해 **smallest safe coherent change**를 선택한다. Transformation 선택이나 tightly coupled edit의 net comprehension trade-off가 단순하지 않으면 [Interventions](references/interventions.md)을 읽는다. Rename, move, extract, inline, representation/control-state change의 preservation precondition·usage risk·evidence가 material하게 불명확하면 mutation 전에 [Validation](references/validation.md)을 읽고 현재 language·repository·tooling contract에서 relevant risk를 확인한다.
 1. 필요한 executable code만 수정한다. 한 root cause를 제거하는 tightly coupled edit는 함께 할 수 있지만 unrelated cleanup, speculative abstraction 또는 future-proofing을 섞지 않는다. Preservation에 필요한 coupled consumer update가 write scope 밖이면 부분 mutation을 수행하지 않는다.
 1. 변경 전 확인한 preservation envelope를 기준으로 after state를 검증한다. Test coverage의 충분성, dynamic/hidden usage, characterization baseline, performance 또는 verification gap이 material하면 [Validation](references/validation.md)의 같은 evidence contract를 재사용한다. Tests나 tooling 결과만으로 확인되지 않은 equivalence를 과대 주장하지 않는다.
-1. Caller와 maintainer 관점에서 다시 읽고, bottleneck이 실제로 줄었는지와 새 terminology·indirection·ceremony·coupling이 더 큰 이해 비용을 만들지 않았는지 확인한다. 변경, 보존 근거, 실제 수행한 validation, sibling concern과 남은 uncertainty만 짧게 보고한다.
+1. Caller와 maintainer 관점에서 다시 읽고, bottleneck이 실제로 줄었는지와 새 terminology·indirection·ceremony·coupling이 더 큰 이해 비용을 만들지 않았는지 확인한다. 변경, 보존 근거, 실제 수행한 validation, 분리한 concern과 남은 uncertainty만 짧게 보고한다.
 
 한 coherent bottleneck이 충분히 해소되면 중단한다. 안전한 refactor가 가능하더라도 net comprehension gain이 없으면 수정하지 않는다. Material preservation evidence가 부족한 고위험 transformation은 더 작은 intervention으로 줄이거나 중단한다.
 
@@ -108,7 +108,7 @@ Reference를 읽었다는 이유로 mutation scope나 operational authority가 �
 - line count, 함수 수, class 수, abstraction 수, hop count를 단순함의 proxy로 사용하지 않는다.
 - tuple, dict, boolean, helper, abstraction, one-liner 자체를 문제로 보지 않는다. 실제 misunderstanding risk와 reconstruction cost를 판단한다.
 - stable domain concept, invariant, validation, compatibility boundary, reuse 또는 volatile detail encapsulation을 제공하는 abstraction은 단순히 explicit하거나 local하게 만들기 위해 제거하지 않는다.
-- comment나 declaration documentation만 고치면 되는 concern은 `mols-clarify-code`가 소유한다. Structural refactor와 independent prose concern이 함께 있으면 concern별로 분리한다.
+- comment나 declaration documentation만 고치면 되는 concern은 이 Skill의 범위 밖이다. Structural refactor와 independent prose concern이 함께 있으면 concern별로 분리한다.
 - public API redesign, dependency architecture 변경, component boundary 재설계처럼 system-level architecture decision이 주목적인 작업은 수행하지 않는다.
 - correctness defect가 의심되면 refactor가 그 defect를 우연히 고치거나 새 contract로 고정하지 않게 분리해 보고한다.
 - test를 약화하거나 existing failure를 숨겨 behavior preservation을 증명하지 않는다. Test가 통과했다는 사실만으로 untested contract까지 보존됐다고 주장하지 않는다.

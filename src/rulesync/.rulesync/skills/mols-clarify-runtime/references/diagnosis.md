@@ -6,16 +6,16 @@ Runtime 문제를 모두 관찰하려 하지 않는다. **실행 후 답하기 �
 
 먼저 runtime understanding이 실제 병목인지 확인한다.
 
-| Main question | Route |
+| Main question | Decision |
 | --- | --- |
-| 기존 code/test가 실제로 어떤 경로와 outcome으로 실행되는지 이해하기 어렵다 | `mols-clarify-runtime` |
-| 실행 후 무엇이 일어났거나 왜 일어나지 않았는지 복원하기 어렵다 | `mols-clarify-runtime` |
-| 코드를 읽어도 의미, 책임 또는 caller contract를 이해하기 어렵다 | `mols-clarify-code` |
-| 현재 동작이 올바른지, defect인지 판단해야 한다 | code review 또는 debugging workflow |
-| 어떤 test나 validation으로 동작을 증명할지 설계해야 한다 | testing responsibility |
-| 실행 boundary나 책임 자체를 재설계해야 한다 | architecture/design |
-| 지속적인 상태 감시, alert, SLO 또는 aggregate health가 필요하다 | monitoring/observability |
-| 왜 느리거나 자원을 많이 쓰는지 찾아야 한다 | profiling/performance |
+| 기존 code/test가 실제로 어떤 경로와 outcome으로 실행되는지 이해하기 어렵다 | 이 Skill 범위 |
+| 실행 후 무엇이 일어났거나 왜 일어나지 않았는지 복원하기 어렵다 | 이 Skill 범위 |
+| 코드를 읽어도 의미, 책임 또는 caller contract를 이해하기 어렵다 | 범위 밖: static code comprehension |
+| 현재 동작이 올바른지, defect인지 판단해야 한다 | 범위 밖: code review 또는 debugging |
+| 어떤 test나 validation으로 동작을 증명할지 설계해야 한다 | 범위 밖: testing responsibility |
+| 실행 boundary나 책임 자체를 재설계해야 한다 | 범위 밖: architecture/design |
+| 지속적인 상태 감시, alert, SLO 또는 aggregate health가 필요하다 | 범위 밖: monitoring/observability |
+| 왜 느리거나 자원을 많이 쓰는지 찾아야 한다 | 범위 밖: profiling/performance |
 
 주된 문제가 runtime understanding이 아니면 clarification 명목으로 logging, metadata, test 또는 telemetry를 추가하지 않는다.
 
