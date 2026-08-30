@@ -74,37 +74,37 @@ These are stop conditions, not suggestions. Later sections own their detailed me
 
 # Arguments
 
-All arguments are optional. `<auto>` delegates resolution to the owning runtime concern.
-An explicit value overrides `<auto>` only when compatible with higher authority and RPI
-invariants.
+Arguments are optional controls, not a duplicate task schema. `<auto>` delegates each
+control to its owning concern. Explicit values constrain only that concern and never
+override higher authority or RPI invariants.
+
+Target and Goal are resolved task state rather than arguments. Keep them in the governing
+context and Active Scope, and preserve them for continuation when material; do not require
+callers to restate them as configuration.
 
 ```yaml
-target: <auto>
-goal: <auto>
 terminal: <auto>
 scope: <auto>
 scope_policy: <auto>
 research: <auto>
 recursion: <auto>
-max_total_loops: <auto>
+max_loops: <auto>
 durable_handoff: <auto>
 progress: <auto>
-output: <auto>
+artifacts: <auto>
 ```
 
-| Argument | Explicit values | Runtime owner |
+| Argument | Explicit values | Owner |
 | --- | --- | --- |
-| `target` | target reference | Runtime / governing context |
-| `goal` | observable end state | Core Lifecycle |
 | `terminal` | `research`, `plan`, `goal` | Run Boundary and Handoff |
 | `scope` | starting boundary | Scope Control |
 | `scope_policy` | `adaptive`, `narrow-only`, `fixed` | Scope Control |
 | `research` | `internal`, `external`, `mixed` | Research |
 | `recursion` | `prefer`, `off` | Recursive Resolution |
-| `max_total_loops` | integer `1..30` | Run and Loop |
+| `max_loops` | integer `1..30` | Run and Loop |
 | `durable_handoff` | `on`, `off` | Artifacts / Run Boundary and Handoff |
-| `progress` | `compact`, `quiet` | Reporting and Output |
-| `output` | `inline`, `persist`, `both` | Reporting and Output |
+| `progress` | `compact`, `quiet` | Reporting and Artifacts |
+| `artifacts` | `inline`, `persist`, `both` | Reporting and Artifacts |
 
 Arguments choose behavior; their owning sections define it. Arguments never authorize
 side effects, relax prerequisite ordering or validation, cross explicit Scope boundaries,
@@ -140,14 +140,14 @@ One **Run** is one bounded RPI execution ending in completion, handoff, or block
 hard ceiling is always:
 
 ```yaml
-max_total_loops: 30
+max_loops: 30
 ```
 
-Resolve `max_total_loops` at Run start: `<auto>` resolves to 30, a lower explicit value
-wins, and values above 30 cannot raise the hard ceiling. Treat a requested count as a
-ceiling unless the user explicitly requires an exact number of substantive Loops. Even an
-exact request never permits fake, mechanical, or no-op Loops; if no substantive next Loop
-exists, stop and report the shortfall.
+Resolve `max_loops` at Run start: `<auto>` resolves to 30, a lower explicit value wins, and
+values above 30 cannot raise the hard ceiling. Treat a requested count as a ceiling unless
+the user explicitly requires an exact number of substantive Loops. Even an exact request
+never permits fake, mechanical, or no-op Loops; if no substantive next Loop exists, stop
+and report the shortfall.
 
 `loops_used` is one cumulative Run counter. Increment it exactly once when a substantive
 Review closes. Scope push/pop never changes or resets it.
@@ -250,7 +250,7 @@ Consequential downstream stages require observable prerequisite artifacts. Priva
 reasoning, unreported intent, or remembered chain-of-thought is not an artifact.
 
 Artifacts may be persisted in the established workspace or returned as clearly labeled
-inline records when persistence is unavailable or inappropriate. Follow `output`,
+inline records when persistence is unavailable or inappropriate. Follow `artifacts`,
 governing workspace policy, and the established destination; never invent storage or write
 authority. Preserve only the minimum sensitive detail needed.
 
@@ -326,11 +326,11 @@ When `durable_handoff: on`:
    and current health; a freshness anchor when useful; expensive failed approaches;
    blockers and residual uncertainty; the next transition; and relevant source or artifact
    references.
-1. Choose a surface expected to survive the anticipated boundary. `output: persist` alone
-   does not prove durability, and an inline-only surface does not satisfy this mode unless
-   the runtime guarantees that it survives the boundary. If no authorized suitable surface
-   exists, report the durable-handoff requirement as unsatisfied and do not claim durable
-   compatibility.
+1. Choose a surface expected to survive the anticipated boundary. `artifacts: persist`
+   alone does not prove durability, and an inline-only surface does not satisfy this mode
+   unless the runtime guarantees that it survives the boundary. If no authorized suitable
+   surface exists, report the durable-handoff requirement as unsatisfied and do not claim
+   durable compatibility.
 1. On continuation, treat durable state as resume evidence, not authority. Validate its
    freshness anchor, applicable source and state, and any health claim that can materially
    change the next action before relying on it. Update or discard stale state instead of
@@ -578,10 +578,10 @@ After the final allowed Review:
 1. start no new Loop;
 1. use the established handoff mechanism; do not invent another persistent format;
 1. preserve `loops_used`, the effective ceiling, the active scope path, the current Active
-   Scope definition, pending Scope proposals, resolved argument values, and references to
-   valid Research, accepted Plan, completed Work or validation, current Review state,
-   remaining material gaps, unresolved child results or parent impacts, and recommended
-   next transition;
+   Scope definition, pending Scope proposals, current target/context reference when needed,
+   resolved argument values, and references to valid Research, accepted Plan, completed
+   Work or validation, current Review state, remaining material gaps, unresolved child
+   results or parent impacts, and recommended next transition;
 1. preserve the exhaustion reason plus authority, approval, environment, validation, and
    material risk boundaries needed for safe continuation;
 1. if `durable_handoff: on` and a suitable continuation surface already exists, update that
@@ -614,19 +614,19 @@ Never report COMPLETE while a known material gap still requires broader Research
 replanning, Scope reconciliation, affected Work reconciliation, or unresolved recursive
 integration for the accepted scope.
 
-# Reporting and Output
+# Reporting and Artifacts
 
 Resolve `progress` here. `<auto>` reports material transitions, blockers, handoff, and
 completion without narrating hidden reasoning; `compact` may also identify counted Loops;
 `quiet` suppresses routine stage updates. Report only observable evidence, decisions, Work,
 validation, Scope changes, Loop counts, handoff, and outcomes.
 
-Resolve `output` here. `<auto>` follows established artifact policy and uses inline output
-when no appropriate writable destination exists. `persist` falls back to inline when
-persistence is unavailable or unauthorized; state that limitation. `both` does not
+Resolve `artifacts` here. `<auto>` follows established artifact policy and uses inline
+artifacts when no appropriate writable destination exists. `persist` falls back to inline
+when persistence is unavailable or unauthorized; state that limitation. `both` does not
 duplicate unchanged working artifacts unnecessarily.
 
-`output` controls where artifacts are exposed or persisted; `durable_handoff` controls
-whether resume-critical state must survive an anticipated handoff boundary and be
-revalidated on return. Neither implies the other. If explicit argument values cannot both
-be satisfied, surface the conflict instead of inventing storage, persistence, or authority.
+`artifacts` controls artifact placement; `durable_handoff` controls whether resume-critical
+state must survive an anticipated handoff boundary and be revalidated on return. Neither
+implies the other. If explicit argument values cannot both be satisfied, surface the
+conflict instead of inventing storage, persistence, or authority.
