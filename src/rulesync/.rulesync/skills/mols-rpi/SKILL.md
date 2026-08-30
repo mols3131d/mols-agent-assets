@@ -10,10 +10,14 @@ description: >-
   reconciliation before consequential decisions, an explicit Plan before consequential
   Work, convergence across multiple acceptance conditions or coupled workstreams,
   repeated verification or likely replanning, narrower subproblem resolution, or
-  protection against costly rework from hidden assumptions or uncertainty. Do not use
-  when loop is merely the topic, identifier, or code concept being discussed, when the
-  user only asks to repeat content without iterative work, merely because a task is long,
-  or for trivial work where explicit prerequisite artifacts add no meaningful control.
+  protection against costly rework from hidden assumptions or uncertainty. When the active
+  harness exposes a more task-specific workflow or controlling context that owns the task
+  lifecycle, gates, state, or required procedure, follow that owner as controlling and
+  compose mols-rpi only where it is compatible and materially useful; do not replace, wrap,
+  or override that owner with a competing RPI lifecycle. Do not use when loop is merely the
+  topic, identifier, or code concept being discussed, when the user only asks to repeat
+  content without iterative work, merely because a task is long, or for trivial work where
+  explicit prerequisite artifacts add no meaningful control.
 targets:
   - claudecode
   - codexcli
