@@ -106,7 +106,7 @@ RPI is an LLM Skill, not a parameterized function. Do not require callers to res
 state or internal control choices as structured arguments. Natural-language intent and the
 governing context are authoritative when they are sufficient.
 
-The public controls are:
+The named public overrides are:
 
 ```yaml
 artifacts: <auto>
@@ -127,9 +127,10 @@ Its runtime effect is owned by `Intensity` below.
 
 Goal, target, terminal depth, Scope boundaries, evidence sources, recursive descent, loop
 limits, reporting cadence, and continuation needs are resolved from the task, higher
-instructions, built-in configuration, and current RPI state. They are not public arguments.
-None of these inferred or explicit task constraints authorize side effects, weaken RPI
-invariants, or cross a higher-authority boundary.
+instructions, built-in configuration, and current RPI state. They are not named public
+arguments. Natural-language task constraints still apply without being converted into a
+function-like parameter surface. None of these controls or constraints authorize side
+effects, weaken RPI invariants, or cross a higher-authority boundary.
 
 # Runtime
 
@@ -216,9 +217,11 @@ source counts, recursive children, or ceremonial work after convergence or satur
 validation, safety gate, or unresolved risk that can change the result. When several paths
 are all sufficient, prefer the one that best matches the requested intensity.
 
-A recursive child inherits the active intensity as a bias and may adapt within it to its
-narrower material question. Intensity never expands the child's inherited Scope or
-authority and never resets Run accounting.
+If the active intensity changes during a Run, apply the new bias prospectively. An intensity
+change alone does not stale otherwise valid Research, Plan, or Work; only a material finding
+or dependency change does. A recursive child inherits the active intensity as a bias and
+may adapt within it to its narrower material question. Intensity never expands the child's
+inherited Scope or authority and never resets Run accounting.
 
 ## Scope Control
 
@@ -314,7 +317,7 @@ Research Artifact
 Plan Artifact
 - Based on: <Research Artifact + Active Scope>
 - Goal / scope
-- Decisions / Work units / material dependencies or ordering
+- Decisions / Work units / material dependencies, ordering, or concurrency
 - Acceptance / validation
 
 Review Artifact
@@ -361,8 +364,9 @@ When artifact state is persisted:
    every tool call, command, or unchanged artifact.
 1. Preserve resume-critical state when it matters: current Goal and Scope; completed,
    current, and remaining Work; material decisions with a brief evidence basis; validation
-   and current health; a freshness anchor when useful; expensive failed approaches;
-   blockers and residual uncertainty; the next transition; and relevant references.
+   and current health; applicable user controls such as a non-default or explicitly chosen
+   active intensity; a freshness anchor when useful; expensive failed approaches; blockers
+   and residual uncertainty; the next transition; and relevant references.
 1. Use a surface expected to survive the anticipated boundary. If the available surface
    cannot do so, do not describe it as durable merely because content was written there.
 1. On continuation, treat persisted state as resume evidence, not authority. Validate its
@@ -433,9 +437,9 @@ instructions apply only when an authorized source actually governs the Active Sc
 
 Derive the smallest Plan that can move the current state toward the Goal inside Active
 Scope. Include the intended state change, scope, approach, Work units and material
-dependencies or ordering, acceptance or validation, and material assumptions that would
-force replanning if changed. When Scope Control validates an expansion, incorporate only
-that boundary.
+dependencies, ordering, or concurrency, acceptance or validation, and material assumptions
+that would force replanning if changed. When Scope Control validates an expansion,
+incorporate only that boundary.
 
 A Plan is methodological authorization, not operational permission.
 
@@ -630,9 +634,10 @@ After the final allowed Review:
 1. use the established handoff mechanism; do not invent another persistent format;
 1. preserve `loops_used`, the effective ceiling, the active scope path, the current Active
    Scope definition, pending Scope proposals, current target/context reference when needed,
-   applicable user constraints, and references to valid Research, accepted Plan, completed
-   Work or validation, current Review state, remaining material gaps, unresolved child
-   results or parent impacts, and recommended next transition;
+   applicable user constraints and named controls including the active intensity when it
+   matters, and references to valid Research, accepted Plan, completed Work or validation,
+   current Review state, remaining material gaps, unresolved child results or parent
+   impacts, and recommended next transition;
 1. preserve the exhaustion reason plus authority, approval, environment, validation, and
    material risk boundaries needed for safe continuation;
 1. if a suitable persistent continuation surface already exists, update it with the final
@@ -644,10 +649,12 @@ inline; do not invent storage or claim persistence.
 
 A later RPI Run may continue from the handoff only after validating inherited Research,
 Active Scope, pending Scope proposals, Plan, current state, authority, applicable user
-constraints, freshness anchors, and any material health claim needed for the next action.
-The later Run receives the built-in `max_loops` ceiling, subject to any lower limit
-established for that continuation Run. Handoff does not itself authorize or auto-start
-another Run and must never become a hidden reset inside the exhausted Run.
+constraints and controls, freshness anchors, and any material health claim needed for the
+next action. Preserve an explicitly chosen inherited intensity when it remains applicable;
+otherwise use a newer governing instruction or the built-in `standard` default. The later
+Run receives the built-in `max_loops` ceiling, subject to any lower limit established for
+that continuation Run. Handoff does not itself authorize or auto-start another Run and must
+never become a hidden reset inside the exhausted Run.
 
 Finish with one observable Run state:
 
