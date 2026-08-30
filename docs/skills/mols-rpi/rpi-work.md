@@ -46,7 +46,7 @@ RPI stage와 Work의 domain action은 서로 다른 semantic level입니다.
 - **RPI Work** — 사용자가 실제로 요구한 하나 이상의 domain action을 수행한다.
 - **RPI Review** — Work 결과와 prerequisite lineage가 충분한지 검증하고 다음 transition을 결정한다.
 
-따라서 Work 자체가 `research`, `plan`, `review`여도 해당 RPI stage와 자동으로 같은 것이 되지 않습니다.
+따라서 Work 자체가 `research`, `plan`, `review`여도 해당 RPI stage와 자동으로 같은 것이 되지 않습니다. 반대로 사용자가 **RPI Research 단계 자체**나 **RPI Plan 단계 자체**를 terminal로 명시한 경우에는 그 stage를 domain Work로 다시 수행하지 않습니다.
 
 예를 들어 요청된 Work가 **review**라면:
 
@@ -76,8 +76,9 @@ Work를 고도화할 때 다음을 보존합니다.
 - **domain polymorphism** — research, plan, review를 포함한 다양한 domain action이 Work가 될 수 있습니다.
 - **one-or-many Work** — Work는 단일 행위에 한정되지 않으며 Plan이 요구하는 여러 Work unit과 dependency를 포함할 수 있습니다.
 - **semantic-level separation** — RPI orchestration stage와 같은 이름의 domain Work를 혼동하지 않습니다.
+- **stage-terminal distinction** — RPI stage 자체가 terminal인 요청과 같은 이름의 domain Work를 구분합니다.
 - **Plan-before-Work** — consequential Work에는 실제 coverage를 가진 Plan이 선행합니다.
 - **Review-of-the-work** — Work가 review여도 outer RPI Review는 그 review 결과의 충분성과 신뢰성을 검증합니다.
 - **reuse without collapse** — 유효한 artifact와 Work 결과는 재사용하되 역할 차이를 없애거나 ceremony를 만들지 않습니다.
 
-이를 code-only Implementation, single-action assumption, stage-name collision, 무조건적인 중복 실행 또는 Work가 스스로 acceptance를 선언하는 구조로 바꾸지 않습니다.
+이를 code-only Implementation, single-action assumption, stage-name collision, stage-terminal confusion, 무조건적인 중복 실행 또는 Work가 스스로 acceptance를 선언하는 구조로 바꾸지 않습니다.
