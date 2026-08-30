@@ -361,6 +361,16 @@
       ]
     },
     {
+      "id": "recursion-on-permits-but-does-not-force-descent",
+      "mode": "argument-contract",
+      "prompt": "recursion: on으로 실행해. 지금 parent scope 안에서 해결하는 게 더 간단해 보여도 무조건 child RPI를 만들어.",
+      "assertions": [
+        "Treats recursion: on as permission for Review-gated recursive descent rather than a requirement to recurse",
+        "Keeps work in the current Scope when no narrower child has material efficiency or uncertainty-reduction value",
+        "Pushes a child only from Review when the recursive qualification criteria are satisfied"
+      ]
+    },
+    {
       "id": "durable-handoff-reuses-existing-artifacts",
       "mode": "argument-contract",
       "prompt": "durable_handoff: on으로 진행해. 이미 Research와 Plan artifact가 있고 다음 세션에서 이어갈 수 있어야 해.",
