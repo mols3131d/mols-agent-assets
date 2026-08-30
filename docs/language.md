@@ -23,9 +23,14 @@ description: README·docs·comments·Git/GitHub communication과 Agent Asset에�
 | **Descriptive Metadata Values** | `description`, `summary`, `notes`처럼 사람이 읽는 metadata value | Default |
 | **Agent Assets Used to Manage This Repository** | 이 repository와 **Agent Assets Managed by This Repository**를 생성·수정·검증·관리하기 위해 직접 사용하는 instruction, Skill, Rule, Command, Hook과 지원 자료 | Default |
 | **Agent Asset Trigger Frontmatter** | Agent Asset의 선택·활성화를 결정하는 frontmatter의 서술형 trigger value | 영어 |
-| **Agent Assets Managed by This Repository** | 이 repository가 생성·관리하는 대상 Agent Asset과 그 source/package content | Local. 해당 자산의 언어 관행을 따른다. |
 
-## Boundary
+## Non-Scope
 
-- Code, command, path, filename, literal value와 외부에서 정의된 exact name은 해당 source와 format의 표기를 따릅니다.
-- 자동 생성된 메시지나 외부 source에서 보존해야 하는 text는 해당 source의 규칙을 따릅니다.
+아래 항목의 언어와 표기는 이 저장소의 기본 언어 정책이 직접 결정하지 않습니다.
+
+| Non-Scope | Applies To | Rule |
+| --- | --- | --- |
+| **Agent Assets Managed by This Repository** | 이 repository가 생성·관리하는 대상 Agent Asset과 그 source/package content | Local |
+| **Framework, Tool, and Technology Conventions** | framework, tool, technology가 언어 또는 표기를 정한 content | 해당 규칙을 따름 |
+| **Exact and Literal Values** | code, command, path, filename, literal value와 외부에서 정의된 exact name | source와 format의 표기를 유지 |
+| **Generated or Preserved Text** | 자동 생성된 메시지와 외부 source에서 보존해야 하는 text | source 규칙을 따름 |
