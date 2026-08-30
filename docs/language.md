@@ -19,14 +19,13 @@ description: README·docs·comments·Git/GitHub communication과 Agent Asset에�
 | --- | --- | --- |
 | **General Prose** | 설명, 안내와 근거 같은 일반 서술 | Default |
 | **Markdown Heading** | Markdown heading | `H1`~`H3`: 영어 · `H4`~`H6`: 한국어 |
-| **Structural Names and Values** | field name, metadata key, identifier, key, option, enum처럼 구조적이거나 기계적으로 해석되는 이름과 값 | 영어 |
+| **Structural Names and Values** | field name, metadata key, identifier, key, option, enum, tags처럼 구조적이거나 기계적으로 해석되는 이름과 값 | 영어 |
 | **Descriptive Metadata Values** | `description`, `summary`, `notes`처럼 사람이 읽는 metadata value | Default |
 | **Agent Assets Used to Manage This Repository** | 이 repository와 **Agent Assets Managed by This Repository**를 생성·수정·검증·관리하기 위해 직접 사용하는 instruction, Skill, Rule, Command, Hook과 지원 자료 | Default |
 | **Agent Asset Trigger Frontmatter** | Agent Asset의 선택·활성화를 결정하는 frontmatter의 서술형 trigger value | 영어 |
-| **Agent Assets Managed by This Repository** | 이 repository가 생성·관리하는 대상 Agent Asset과 그 source/package content | 저장소 기본값 대신 source framework, target contract, intended audience와 asset-local convention을 따름 |
+| **Agent Assets Managed by This Repository** | 이 repository가 생성·관리하는 대상 Agent Asset과 그 source/package content | Local. 해당 자산의 언어 관행을 따른다. |
 
 ## Boundary
 
-- Branch, tag, label, field 같은 identifier와 metadata의 구조적 요소는 `Scope`를 따릅니다.
 - Code, command, path, filename, literal value와 외부에서 정의된 exact name은 해당 source와 format의 표기를 따릅니다.
 - 자동 생성된 메시지나 외부 source에서 보존해야 하는 text는 해당 source의 규칙을 따릅니다.
