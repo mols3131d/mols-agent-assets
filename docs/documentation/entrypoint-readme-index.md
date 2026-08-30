@@ -1,56 +1,58 @@
 ---
-description: directory의 README.md와 generated INDEX.tsv의 역할, 생성 조건, ownership과 갱신 경계를 결정할 때 사용하는 repository documentation policy입니다.
+description: directory·bundle entrypoint인 README.md와 authored INDEX.md, generated INDEX.tsv의 역할, 생성 조건과 ownership 경계를 결정할 때 사용하는 repository documentation policy입니다.
 ---
 
-# README and Generated Index
+# Entrypoints and Indexes
 
-`README.md`는 directory가 실제 contract나 navigation responsibility를 소유할 때 사람이 작성하는 local entrypoint입니다. `INDEX.tsv`는 Markdown과 frontmatter에서 다시 만들 수 있는 discovery projection입니다.
+이 repository의 문서 surface는 **entrypoint**와 **index**의 책임을 filename으로 구분합니다.
 
-둘은 서로 대체하지 않습니다. `README.md`는 의미와 책임을 설명하고, `INDEX.tsv`는 이미 존재하는 문서를 빠르게 찾게 합니다.
-
-## Responsibility
-
-| Surface | Responsibility |
+| Surface | Role |
 | --- | --- |
-| `README.md` | 해당 directory의 목적, 책임 경계, 필요한 navigation·maintenance rule을 설명하는 authored entrypoint |
-| `INDEX.tsv` | 문서 경로와 discovery metadata를 투영하는 generated index |
-| Filesystem과 search | 별도 설명이 필요 없는 단순 inventory와 파일 존재 여부 |
+| directory의 `README.md` | directory entrypoint |
+| bundle형 문서 또는 파일의 `README.md` | bundle entrypoint |
+| directory의 `INDEX.md` | 사람이 작성하는 indexing 전담 문서 |
+| directory의 `INDEX.tsv` | 생성되는 indexing projection |
 
-정책, 판단 기준이나 유지보수 지식을 `INDEX.tsv`에만 두지 않습니다. 반대로 파일 목록을 보여주기 위해 `README.md`를 만들지 않습니다.
+`README.md`는 무엇을 읽고 어떻게 시작할지 설명합니다. `INDEX.md`는 사람이 읽는 curated navigation을, `INDEX.tsv`는 도구와 빠른 discovery를 위한 재생성 가능한 inventory를 담당합니다.
 
 ## `README.md`
 
-Directory-level `README.md`는 **그 directory가 설명해야 할 책임이 있을 때만** 둡니다. Directory가 존재하거나 파일이 여러 개 있다는 사실만으로 생성하지 않습니다.
+`README.md`는 directory와 bundle형 문서 또는 파일의 **entrypoint**입니다. Directory나 bundle이 존재한다는 이유만으로 만들지 않고, 시작점에서 설명해야 할 책임이 있을 때만 둡니다.
 
-다음 중 하나 이상이 실제로 필요하면 local entrypoint의 근거가 됩니다.
+다음은 `README.md`를 둘 근거가 됩니다.
 
-- child 이름만으로 복구하기 어려운 directory contract나 responsibility boundary
-- 올바른 문서를 선택하려면 알아야 하는 navigation decision
-- 해당 directory에서만 적용되는 maintenance 또는 recovery rule
-- parent가 소유하면 scope가 너무 넓어지는 local convention
+- 이름만으로 복구하기 어려운 목적이나 responsibility boundary
+- 올바른 child·문서·파일을 선택하려면 먼저 알아야 하는 navigation decision
+- 해당 scope에만 적용되는 maintenance 또는 recovery rule
+- bundle을 하나의 단위로 읽거나 사용할 때 필요한 시작 설명
 
-`README.md`에는 해당 directory가 직접 소유하는 내용만 둡니다.
+`README.md`에는 해당 scope가 직접 소유하는 의미와 진입 정보만 둡니다. 단순 파일 목록이나 쉽게 재생성되는 inventory는 복제하지 않습니다.
 
-- directory의 목적과 책임 범위
-- 필요한 경우 child surface 사이의 구분과 선택 기준
-- local maintenance·recovery rule
-- 공통 정책을 다시 쓰지 않는 canonical document link
+Directory entrypoint인 `README.md`의 frontmatter `description`은 파일 자체보다 **그 directory를 언제 탐색해야 하는지**를 설명하며 generated docs index의 directory metadata로 사용할 수 있습니다.
 
-Sibling 파일 목록이나 쉽게 재생성되는 inventory는 복제하지 않습니다. Repository-wide documentation principle은 [`docs/documentation/`](./)의 canonical policy를 따르고, descendant의 세부 책임은 가장 가까운 local owner에게 둡니다.
+이 repository에서 directory metadata source로 인정하는 entrypoint는 `README.md`뿐입니다. `README.md`에 frontmatter가 없거나 필요한 field가 비어 있어도 다른 filename으로 fallback하거나 metadata를 합치지 않습니다.
 
-### Directory metadata
-
-`README.md`가 directory entrypoint라면 frontmatter `description`은 파일 자체보다 **그 directory를 언제 탐색해야 하는지**를 설명합니다. 이 metadata는 generated docs index의 directory row에도 사용됩니다.
-
-현재 docs index는 directory metadata를 찾을 때 `README.md`를 먼저 보고, YAML frontmatter 자체가 없을 때만 `index.md`를 fallback으로 사용합니다. 앞선 entrypoint에 frontmatter가 있으면 뒤 entrypoint와 field를 합치지 않습니다.
-
-빈 index description을 채우기 위한 이유만으로 `README.md`를 만들지 않습니다. Local owner가 필요하지 않은 directory는 entrypoint 없이 존재할 수 있습니다.
+Lowercase `index.md`는 이 repository에서 reserved entrypoint 또는 indexing filename이 아닙니다.
 
 Frontmatter의 세부 contract는 [Frontmatter](frontmatter.md)가 소유합니다.
 
+## `INDEX.md`
+
+`INDEX.md`는 directory에서 사람이 읽는 **indexing 전담 문서**가 실제로 필요할 때만 둡니다. Directory entrypoint가 아니며 directory contract나 metadata source 역할을 대신하지 않습니다.
+
+다음처럼 filesystem이나 generated inventory만으로 복구하기 어려운 curated navigation이 있을 때 가치가 있습니다.
+
+- 문서를 category나 목적별로 묶어 보여줘야 하는 경우
+- 권장 reading order나 선택 기준이 필요한 경우
+- 같은 directory 안의 항목 사이 관계나 차이를 짧게 설명해야 하는 경우
+
+단순 sibling 목록을 손으로 유지하기 위한 `INDEX.md`는 만들지 않습니다. 의미 있는 grouping, selection cue나 관계가 없다면 filesystem, search 또는 `INDEX.tsv`를 사용합니다.
+
+`INDEX.md`는 일반 authored Markdown이므로 해당 documentation frontmatter contract를 따르지만, generated `INDEX.tsv`의 directory metadata source로 사용하지 않습니다.
+
 ## `INDEX.tsv`
 
-`INDEX.tsv`는 source document가 아니라 **generated projection**입니다. Row를 직접 추가하거나 수정하지 않고 source Markdown, frontmatter 또는 generator policy를 고친 뒤 다시 생성합니다.
+`INDEX.tsv`는 source document가 아니라 **generated indexing projection**입니다. Row를 직접 추가하거나 수정하지 않고 source Markdown, frontmatter 또는 generator policy를 고친 뒤 다시 생성합니다.
 
 Repository의 docs index는 현재 다음 contract를 사용합니다.
 
@@ -60,8 +62,8 @@ Repository의 docs index는 현재 다음 contract를 사용합니다.
 - 그 index는 기본적으로 전체 `docs/` subtree를 재귀적으로 포함합니다.
 - field는 `path`와 `description`입니다.
 - document row의 `description`은 해당 Markdown frontmatter에서 가져옵니다.
-- directory row의 metadata는 ordered entrypoint인 `README.md`, `index.md`에서 가져옵니다.
-- entrypoint 문서 자체는 별도 row로 중복하지 않습니다.
+- directory row의 metadata는 해당 directory의 `README.md`에서만 가져옵니다.
+- `README.md`와 authored `INDEX.md`는 generated inventory row로 중복하지 않습니다.
 - generated index, `AGENTS.md`, systemic·hidden Markdown과 문서가 없는 subtree는 generator의 selection rule에 따라 제외합니다.
 
 따라서 새 nested directory가 생겼다는 이유만으로 그 안에 `INDEX.tsv`를 수동으로 추가하지 않습니다. 더 깊은 위치에 index materialization이 필요하다면 개별 파일을 추가하는 대신 generator policy와 그 필요성을 함께 변경합니다.
@@ -72,7 +74,7 @@ Repository의 docs index는 현재 다음 contract를 사용합니다.
 
 문서 변경 시 source와 projection의 순서를 지킵니다.
 
-1. Markdown, `README.md` 또는 frontmatter의 authored source를 수정합니다.
+1. `README.md`, `INDEX.md`, 일반 Markdown 또는 frontmatter의 authored source를 수정합니다.
 1. `mise run generated-sync`로 generated projection을 갱신합니다.
 1. `INDEX.tsv` diff가 source 변경의 예상 결과인지 검토합니다.
 1. 필요한 repository check를 실행하고, 실행하지 않은 검증을 통과했다고 기록하지 않습니다.

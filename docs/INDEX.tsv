@@ -11,7 +11,7 @@ documentation/duplication-boundaries.md	두 문서의 내용이 중복인지, �
 documentation/frontmatter.md	Markdown 문서의 frontmatter 적용 범위, 예외, description의 탐색·routing 역할, directory entrypoint metadata 원칙과 관련 도구를 확인할 때 사용합니다.
 documentation/lifecycle.md	research·review·draft 같은 작업 산출물과 durable knowledge를 canonical source, inbox, archive, Git history 중 어디에 남길지 판단할 때 사용합니다.
 documentation/ownership.md	repository-wide 문서 배치와 directory-local documentation owner를 결정할 때 사용하는 ownership policy입니다.
-documentation/entrypoint-readme-index.md	directory의 README.md와 generated INDEX.tsv의 역할, 생성 조건, ownership과 갱신 경계를 결정할 때 사용하는 repository documentation policy입니다.
+documentation/entrypoint-readme-index.md	directory·bundle entrypoint인 README.md와 authored INDEX.md, generated INDEX.tsv의 역할, 생성 조건과 ownership 경계를 결정할 때 사용하는 repository documentation policy입니다.
 language.md	README·docs·comments·Git/GitHub communication과 Agent Asset에서 한국어와 영어를 어떻게 사용할지 판단할 때 적용하는 repository 언어 정책입니다.
 references/	이 repository와 다른 repository에서 반복해서 참고·적용할 reusable knowledge를 찾고 선택할 때 사용하는 entrypoint입니다.
 references/agent-assets/	Agent Asset 자체의 공통 설계 의미와 Skill-specific specification·authoring convention 중 어떤 reference를 볼지 선택할 때 사용합니다.

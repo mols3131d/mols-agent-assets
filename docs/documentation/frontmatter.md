@@ -32,12 +32,16 @@ description: Markdown 문서의 frontmatter 적용 범위, 예외, description�
 
 보통 한 문장으로 충분하며, 정확한 routing에 필요할 때만 두 문장까지 확장합니다.
 
-## Directory Entrypoint
+## Entrypoints and Indexes
 
-`README.md`, `index.md`처럼 directory의 entrypoint 역할을 하는 문서는 frontmatter에 **해당 directory의 metadata**를 담을 수 있습니다.
+이 repository에서 directory와 bundle형 문서 또는 파일의 entrypoint filename은 `README.md`입니다. Lowercase `index.md`는 reserved entrypoint가 아닙니다.
 
-Directory metadata를 projection할 때는 repository가 정한 entrypoint 후보의 우선순위를 따릅니다. 이 repository의 docs index는 기본적으로 `README.md`를 먼저 보고, 파일이 없거나 YAML frontmatter 자체가 없으면 `index.md`로 넘어갑니다. 앞선 entrypoint에 frontmatter가 있으면 일부 field가 비어 있어도 뒤 entrypoint와 metadata를 임의로 합치지 않습니다.
+Directory entrypoint인 `README.md`는 frontmatter에 **해당 directory의 metadata**를 담을 수 있습니다. Generated docs index가 directory metadata를 projection할 때도 `README.md`만 사용하며, frontmatter가 없거나 일부 field가 비어 있어도 다른 filename으로 fallback하거나 metadata를 합치지 않습니다.
 
 `description`은 entrypoint 파일 자체를 설명하기보다 directory를 언제 탐색해야 하는지와, 선택에 필요할 때 그 directory의 책임·범위를 나타냅니다.
+
+`INDEX.md`는 사람이 작성하는 directory indexing 전담 문서이며 일반 documentation frontmatter contract를 따르지만 directory metadata source는 아닙니다. `INDEX.tsv`는 generated projection이므로 authored frontmatter source가 아닙니다.
+
+Entrypoint와 index filename의 역할과 생성 조건은 [Entrypoints and Indexes](entrypoint-readme-index.md)가 소유합니다.
 
 Front Matter CMS의 설정, 공식 옵션, source routing은 [Front Matter CMS](../references/tooling/front-matter-cms.md)를 참고합니다.
