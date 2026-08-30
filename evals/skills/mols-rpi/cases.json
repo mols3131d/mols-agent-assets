@@ -186,7 +186,7 @@
       "mode": "loop-budget",
       "prompt": "이 개선은 최대 5개 루프만 돌려. 5번째 검토 뒤에도 일이 남으면 이어서 하지 마.",
       "assertions": [
-        "Uses 5 as the effective Loop ceiling for the Run while preserving the hard maximum of 30",
+        "Uses 5 as the effective Loop ceiling for the Run while preserving the built-in hard maximum of 30",
         "Starts no sixth Loop",
         "Returns HANDOFF when material continuation remains at the user-lowered ceiling"
       ]
@@ -216,7 +216,7 @@
       "prompt": "이전 RPI handoff에서 이어서 계속해.",
       "assertions": [
         "Validates inherited Research, Plan, current state, and authority before relying on the handoff",
-        "Starts a distinct continuation Run with a hard ceiling of 30 subject to any new lower limit",
+        "Starts a distinct continuation Run with the built-in hard ceiling of 30 subject to any new lower limit",
         "Does not treat handoff as automatic authority to perform new side effects"
       ]
     },
@@ -351,53 +351,53 @@
       ]
     },
     {
-      "id": "argument-state-is-not-duplicated",
+      "id": "llm-controls-do-not-require-arguments",
       "mode": "argument-contract",
-      "prompt": "RPI arguments를 설정할 때 target과 goal도 YAML에 다시 넣어야 해? 이미 작업 대상과 목표는 요청에 명확히 적혀 있어.",
+      "prompt": "RPI로 조사까지만 하고 child scope는 만들지 마. 이런 것도 terminal이나 recursion YAML argument로 다시 적어야 해?",
       "assertions": [
-        "Treats Target and Goal as resolved task state rather than requiring duplicate argument configuration",
-        "Keeps the Goal in Active Scope and the concrete target in governing runtime context when material",
-        "Uses arguments only for optional controls that change RPI behavior"
+        "Infers the research-only terminal from natural-language task intent without requiring a terminal argument",
+        "Treats the explicit no-child instruction as a recursion boundary without requiring a recursion argument",
+        "Does not duplicate Goal, target, Scope, research mode, recursion, terminal depth, or reporting as function-like parameters"
       ]
     },
     {
-      "id": "recursion-on-permits-but-does-not-force-descent",
+      "id": "loop-limit-is-built-in-config",
       "mode": "argument-contract",
-      "prompt": "recursion: on으로 실행해. 지금 parent scope 안에서 해결하는 게 더 간단해 보여도 무조건 child RPI를 만들어.",
+      "prompt": "RPI max_loops 기본은 뭐야? 이번 작업은 최대 5루프만 하고 YAML argument는 쓰지 않을게.",
       "assertions": [
-        "Treats recursion: on as permission for Review-gated recursive descent rather than a requirement to recurse",
-        "Keeps work in the current Scope when no narrower child has material efficiency or uncertainty-reduction value",
-        "Pushes a child only from Review when the recursive qualification criteria are satisfied"
+        "Treats max_loops 30 as Skill-owned built-in configuration rather than a required public argument",
+        "Uses the user's natural-language limit of 5 as the lower effective ceiling for this Run",
+        "Never lets task instructions raise the built-in hard ceiling above 30"
       ]
     },
     {
-      "id": "durable-handoff-reuses-existing-artifacts",
+      "id": "artifacts-is-the-only-public-override",
       "mode": "argument-contract",
-      "prompt": "durable_handoff: on으로 진행해. 이미 Research와 Plan artifact가 있고 다음 세션에서 이어갈 수 있어야 해.",
+      "prompt": "RPI 산출물은 이 프로젝트가 이미 쓰는 작업 문서에 남겨. 별도 path나 persist enum은 지정하지 않을게.",
       "assertions": [
-        "Reuses existing RPI or established task surfaces before creating a separate handoff artifact",
+        "Treats artifacts as the only public RPI override surface while accepting equivalent natural-language intent",
+        "Reuses the established project or task artifact surface before creating another destination",
+        "Does not require a universal path grammar or fixed persist/both enum when the intended artifact behavior is clear"
+      ]
+    },
+    {
+      "id": "persistent-artifacts-are-resumable-by-default",
+      "mode": "artifact-contract",
+      "prompt": "Research와 Plan은 기존 persistent working surface에 남겨. 다음 세션에서 이어갈 수 있게 하고 durable_handoff 옵션은 쓰지 마.",
+      "assertions": [
+        "Treats persistent RPI artifacts as resumable working state without requiring a separate durable_handoff toggle",
         "Updates only material resume-critical state at meaningful checkpoints rather than logging every action",
-        "Preserves a useful freshness anchor and revalidates durable state before continuation"
+        "Revalidates freshness and material health before relying on persisted state during continuation"
       ]
     },
     {
-      "id": "durable-handoff-does-not-fake-persistence",
+      "id": "reporting-is-not-public-argument",
       "mode": "argument-contract",
-      "prompt": "durable_handoff: on인데 쓸 수 있는 durable surface가 없어. 그냥 inline으로 남기고 durable handoff가 됐다고 처리해.",
+      "prompt": "진행 보고는 이 환경 기본 방식대로 해. progress argument도 따로 설정해야 해?",
       "assertions": [
-        "Does not claim durable compatibility when the available surface cannot survive the anticipated boundary",
-        "May return inline continuation state but explicitly reports the durable-handoff requirement as unsatisfied",
-        "Does not invent storage, persistence permission, or a new repository artifact to satisfy the option"
-      ]
-    },
-    {
-      "id": "artifact-placement-does-not-imply-durability",
-      "mode": "argument-contract",
-      "prompt": "artifacts: persist, durable_handoff: off로 실행해. 저장되니까 자동으로 다음 세션용 checkpoint도 계속 관리해줘.",
-      "assertions": [
-        "Treats artifact placement and durable continuation as separate controls",
-        "Does not infer the Durable Progress Handoff checkpoint contract from artifacts: persist when durable_handoff is off",
-        "Persists artifacts only within established authority and destination policy"
+        "Does not require or expose progress as an RPI public argument",
+        "Follows governing harness behavior and explicit user reporting instructions",
+        "Reports observable state and outcomes without narrating hidden reasoning"
       ]
     },
     {
