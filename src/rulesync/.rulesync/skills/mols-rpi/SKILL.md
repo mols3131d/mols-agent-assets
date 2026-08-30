@@ -40,6 +40,13 @@ accepted Plan**, not code-only implementation. It may produce code, documents, a
 edits, decisions, configuration, tool actions, or another planned result that moves the
 current state toward the Goal.
 
+Implementation may execute **one or more Work units**. A Work unit is a task-domain action,
+so it may itself be research, planning, review, writing, analysis, implementation, decision
+work, or another planned action. When a Work unit has the same name as an RPI stage, keep
+the semantic levels distinct: the RPI stage provides orchestration prerequisites and
+control, while Work performs the user's domain task. For example, review Work is followed
+by RPI Review of whether that review was sufficiently grounded, complete, and accepted.
+
 `RPI` is an orchestration method, not the task-domain capability. Keep applicable
 task-specific Skills, tools, and governing procedures in force inside RPI stages. RPI owns
 prerequisite ordering, Run/Loop state, Scope control, Review transitions, recursion, and
@@ -71,6 +78,9 @@ These are stop conditions, not suggestions. Later sections own their detailed me
   inherit or narrow authority, never expand it.
 - **Prerequisite order is real.** Retrospective Research or Plan cannot make earlier Work
   compliant after the fact.
+- **Intensity is not authority.** A requested intensity may bias effort, but never weakens
+  prerequisites, acceptance conditions, Scope, safety, validation truthfulness, or Loop
+  ceilings, and never requires artificial work after convergence.
 
 # Built-in Configuration
 
@@ -78,11 +88,14 @@ Stable safety defaults belong to the Skill, not to a function-like caller interf
 
 ```yaml
 max_loops: 30
+intensity: standard
 ```
 
 `max_loops` is the hard per-Run ceiling. User or governing context may establish a lower
 Run limit in natural language; use the lower value as the effective ceiling. Never raise
 the built-in ceiling above 30 from task instructions.
+
+`intensity: standard` is the default effort bias when the user does not specify one.
 
 # Arguments
 
@@ -90,16 +103,22 @@ RPI is an LLM Skill, not a parameterized function. Do not require callers to res
 state or internal control choices as structured arguments. Natural-language intent and the
 governing context are authoritative when they are sufficient.
 
-The only public override is artifact handling:
+The public overrides are:
 
 ```yaml
 artifacts: <auto>
+intensity: <light | standard | deep>
 ```
 
-`<auto>` follows the established user, project, workspace, or harness artifact policy. An
-explicit artifact instruction may request inline handling or an authorized established
-destination/surface. Do not impose a universal path grammar or fixed enum when ordinary
-language identifies the intended artifact behavior clearly.
+`artifacts: <auto>` follows the established user, project, workspace, or harness artifact
+policy. An explicit artifact instruction may request inline handling or an authorized
+established destination/surface. Do not impose a universal path grammar or fixed enum when
+ordinary language identifies the intended artifact behavior clearly.
+
+`intensity` is also accepted through ordinary language. Interpret equivalent requests such
+as light/가볍게, standard/보통, or deep/깊게 by meaning rather than requiring YAML syntax.
+Intensity is a soft effort control, not a stage count, Loop quota, recursion command, or
+quality waiver. Its runtime effect is owned by `Intensity` below.
 
 Goal, target, terminal depth, Scope boundaries, evidence sources, recursive descent, loop
 limits, reporting cadence, and continuation needs are resolved from the task, higher
@@ -167,6 +186,34 @@ simulate progress.
 - Handoff serialization is not another Loop.
 
 Never hide a reset by starting a nested or renamed Run inside the current Run.
+
+## Intensity
+
+Intensity biases **how much effort is justified before RPI considers a material question
+sufficiently resolved**. It influences Research breadth and depth, adversarial challenge,
+validation breadth or tier, alternative exploration, Work decomposition, and willingness
+to isolate a qualifying recursive child. It does not replace materiality or expected
+information gain.
+
+Use exactly three levels:
+
+- **`light`** — prefer the cheapest sufficient evidence, focused challenge, lean validation,
+  and recursion only when its benefit is clear.
+- **`standard`** — use the normal balanced tradeoff between confidence, cost, and speed.
+- **`deep`** — prefer stronger disconfirmation, broader or deeper evidence when useful,
+  stronger validation, more alternative comparison, and recursive narrowing when it can
+  materially reduce uncertainty or rework.
+
+Treat the selected level as an **effort prior**, not a quota. Adapt locally to evidence,
+risk, reversibility, uncertainty, and information gain. `deep` never requires extra Loops,
+source counts, recursive children, or ceremonial work after convergence or saturation.
+`light` never permits skipping a genuine prerequisite, material acceptance check, required
+validation, safety gate, or unresolved risk that can change the result. When several paths
+are all sufficient, prefer the one that best matches the requested intensity.
+
+A recursive child inherits the active intensity as a bias and may adapt within it to its
+narrower material question. Intensity never expands the child's inherited Scope or
+authority and never resets Run accounting.
 
 ## Scope Control
 
@@ -386,10 +433,21 @@ A Plan is methodological authorization, not operational permission.
 
 ### Implementation
 
-Execute the accepted Plan inside Active Scope. Before consequential side effects, verify
-Scope and Plan coverage plus current operational authority. Prefer reversible actions when
-equivalent. Before destructive, irreversible, or externally consequential actions, verify
-the exact target and applicable approval gate.
+Execute the accepted Plan inside Active Scope. Implementation may consist of one or more
+Work units whose ordering, concurrency, or dependency follows the accepted Plan. Execute
+only the units currently required; do not rerun unaffected valid Work merely because one
+unit changes or fails.
+
+A Work unit is polymorphic task-domain execution. It may be code implementation, document
+work, research, planning, review, analysis, decision-making, configuration, tool action, or
+another planned result. A domain Work unit named Research, Plan, or Review does not replace
+the corresponding RPI orchestration stage. Reuse evidence or artifacts when they satisfy
+both roles without collapsing the prerequisite relationship or manufacturing duplicate
+ceremony.
+
+Before consequential side effects, verify Scope and Plan coverage plus current operational
+authority. Prefer reversible actions when equivalent. Before destructive, irreversible, or
+externally consequential actions, verify the exact target and applicable approval gate.
 
 If Work requires a material new assumption, approach, or Scope outside the accepted Plan,
 stop affected Work and return to Review. Review reconciles the gap and delegates any
