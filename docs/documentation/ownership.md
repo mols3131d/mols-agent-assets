@@ -10,12 +10,12 @@ description: repository-wide 문서 배치와 directory-local documentation owne
 
 문서 규칙은 **실제로 적용되는 가장 좁은 owner**가 소유합니다.
 
-- repository 전체의 documentation principle이나 convention → `docs/document/`
+- repository 전체의 documentation principle이나 convention → `docs/documentation/`
 - top-level documentation layout, 주요 surface routing과 `docs/` nested ownership model → `docs/README.md`
 - 특정 directory나 surface에만 적용되는 contract, navigation, maintenance 또는 recovery rule → 해당 directory의 `README.md` 또는 그 directory 안의 local document
 - 개별 asset 또는 family에만 적용되는 maintainer knowledge → 해당 asset maintainer documentation
 
-`docs/document/`를 directory별 local contract의 registry로 사용하지 않습니다. 같은 local rule이 여러 directory에서 반복되기 시작하면 실제로 repository-wide 원칙인지 먼저 판단하고, 그렇다면 공통 owner로 승격합니다.
+`docs/documentation/`를 directory별 local contract의 registry로 사용하지 않습니다. 같은 local rule이 여러 directory에서 반복되기 시작하면 실제로 repository-wide 원칙인지 먼저 판단하고, 그렇다면 공통 owner로 승격합니다.
 
 ## Repository Entrypoints
 
