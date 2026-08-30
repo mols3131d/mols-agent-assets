@@ -15,9 +15,9 @@ description: README·docs·comments·Git/GitHub communication과 Agent Asset에�
 
 영역과 경우마다 아래 규칙을 적용합니다. 더 구체적인 `Scope`가 일반 규칙보다 우선합니다.
 
-| Scope | Target | Rule |
+| Scope | Applies To | Rule |
 | --- | --- | --- |
-| **General Prose** | 설명, 안내와 근거 같은 일반 서술 | 자연스러운 한국어를 우선하고, 한국어가 부자연스러울 때 자연스러운 영어를 사용함 |
+| **General Prose** | 설명, 안내와 근거 같은 일반 서술 | Default |
 | **Markdown Heading** | Markdown heading | `H1`~`H3`은 영어, `H4` 이하는 한국어 |
 | **Structural Names and Values** | field name, metadata key, identifier, key, option, enum처럼 구조적이거나 기계적으로 해석되는 이름과 값 | 영어 |
 | **Descriptive Metadata Values** | `description`, `summary`, `notes`처럼 사람이 읽는 metadata value | 해당 `Scope`의 일반 서술 규칙을 따름 |
