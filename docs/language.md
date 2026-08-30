@@ -4,13 +4,12 @@ description: README·docs·comments·Git/GitHub communication과 Agent Asset에�
 
 # Language
 
-- 이 저장소의 기본 언어는 한국어입니다. 보조 언어는 영어입니다.
-- 한국어가 자연스러우면 한국어를 사용합니다.
-- 한국어가 부자연스러우면 영어가 자연스러운지 판단합니다.
+- 이 저장소의 기본 언어는 한국어입니다. 한국어가 자연스러우면 한국어를 사용합니다. 
+- 보조 언어는 영어입니다. 한국어가 부자연스러우면 영어가 자연스러운지 판단합니다.
   - 영어가 자연스러우면 영어를 사용합니다.
   - 영어도 부자연스러우면 기본값인 한국어를 사용합니다.
-- standard, specification, product, tool, framework, API, protocol과 같은 표준·기술 명칭은 통용되는 영어 명칭을 사용합니다.
-- 한국어로 번역하거나 음역했을 때 매우 어색하거나 의미가 덜 정확해지는 영어 표현과 단어는 영어를 유지합니다.
+  - standard, specification, product, tool, framework, API, protocol과 같은 표준·기술 명칭은 통용되는 영어 명칭을 사용합니다.
+  - 한국어로 번역하거나 음역했을 때 매우 어색하거나 의미가 덜 정확해지는 영어 표현과 단어는 영어를 유지합니다.
 - 더 구체적인 `Scope` 규칙이 있으면 해당 규칙을 우선합니다.
 
 ## Scope
