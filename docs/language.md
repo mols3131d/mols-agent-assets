@@ -29,7 +29,7 @@ description: README·docs·comments·Git/GitHub communication과 Agent Asset에�
 | **일반 서술** | 설명, 안내와 근거는 한국어로 작성합니다. 자연스러운 한국어가 있는 일반 문장을 불필요하게 영어로 바꾸지 않습니다. |
 | **Heading** | Markdown heading은 `H1`~`H3`까지 영어, `H4` 이하부터 한국어로 작성합니다. |
 | **구조적 이름과 값** | field name, metadata key, identifier, key, option, enum처럼 구조적이거나 기계적으로 해석되는 이름과 값은 영어를 사용합니다. |
-| **서술형 metadata value** | `description`, `summary`, `notes`처럼 사람이 읽는 값은 해당 `Scope`의 일반 서술 규칙을 따릅니다. Agent Asset trigger frontmatter에는 `Scope`의 영어 규칙을 적용합니다. |
+| **서술형 metadata value** | `description`, `summary`, `notes`처럼 사람이 읽는 값은 해당 `Scope`의 일반 서술 규칙을 따릅니다. 단, Agent Asset trigger frontmatter는 `Scope`에 따라 영어로 작성합니다. |
 | **표준·기술 명칭** | standard, specification, product, tool, framework, API, protocol과 같은 명칭은 통용되는 영어 명칭을 사용합니다. |
 | **번역이 부자연스럽거나 부정확한 표현** | 한국어로 번역하거나 음역했을 때 매우 어색하거나 의미가 덜 정확해지는 영어 표현과 단어는 영어를 유지합니다. |
 
