@@ -27,9 +27,13 @@ def test_generate_docs_indexes_projects_directories_and_all_descendant_files(tmp
         docs / "index.md",
         "---\ndescription: Lowercase index is an ordinary document.\n---\n# Index\n",
     )
+    _write(
+        docs / "INDEX.md",
+        "---\ndescription: Uppercase index is an ordinary document.\n---\n# Index\n",
+    )
     _write(docs / "ARCHITECTURE.md", "# Architecture\n")
     _write(docs / "README.md", "# Readme\n")
-    _write(docs / "INDEX.md", "# Curated index\n")
+    _write(docs / "INDEXING.md", "# Curated index\n")
     _write(docs / "AGENTS.md", "# Agents\n")
     _write(docs / ".private.md", "# Hidden\n")
     _write(docs / "__system__.md", "# System\n")
@@ -55,6 +59,7 @@ def test_generate_docs_indexes_projects_directories_and_all_descendant_files(tmp
     assert _read_tsv(docs / "INDEX.tsv") == [
         {"path": "ARCHITECTURE.md", "description": ""},
         {"path": "guide.md", "description": "Guide description."},
+        {"path": "INDEX.md", "description": "Uppercase index is an ordinary document."},
         {
             "path": "index.md",
             "description": "Lowercase index is an ordinary document.",
