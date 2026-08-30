@@ -52,9 +52,12 @@ task-specific Skills, tools, and governing procedures in force inside RPI stages
 prerequisite ordering, Run/Loop state, Scope control, Review transitions, recursion, and
 handoff; it does not replace more specific task authority.
 
-The dependency is directional; it does not require every downstream stage. Research-only
-work may stop after Research + Review; Plan-only work requires Research and may stop after
-Plan + Review. Perform Implementation only when the Goal requires planned execution.
+The dependency is directional; it does not require every downstream stage. A request may
+stop at RPI Research or RPI Plan only when that **orchestration stage itself** is the
+requested terminal result. Do not infer a stage-only terminal merely because the user's
+domain Work is research, planning, or review. When the requested deliverable is domain
+research, a domain plan, or a domain review, it may be performed as Work under an accepted
+RPI Plan and then evaluated by the outer RPI Review.
 
 # Invariants
 
@@ -84,7 +87,7 @@ These are stop conditions, not suggestions. Later sections own their detailed me
 
 # Built-in Configuration
 
-Stable safety defaults belong to the Skill, not to a function-like caller interface.
+Stable Skill defaults belong to the Skill, not to a function-like caller interface.
 
 ```yaml
 max_loops: 30
@@ -103,7 +106,7 @@ RPI is an LLM Skill, not a parameterized function. Do not require callers to res
 state or internal control choices as structured arguments. Natural-language intent and the
 governing context are authoritative when they are sufficient.
 
-The public overrides are:
+The public controls are:
 
 ```yaml
 artifacts: <auto>
@@ -117,8 +120,10 @@ ordinary language identifies the intended artifact behavior clearly.
 
 `intensity` is also accepted through ordinary language. Interpret equivalent requests such
 as light/가볍게, standard/보통, or deep/깊게 by meaning rather than requiring YAML syntax.
-Intensity is a soft effort control, not a stage count, Loop quota, recursion command, or
-quality waiver. Its runtime effect is owned by `Intensity` below.
+When a phrase clearly combines RPI method intent and strength, such as `deep loop` or
+`심층 루프`, use `deep` unless stronger context establishes another intent. Intensity is a
+soft effort control, not a stage count, Loop quota, recursion command, or quality waiver.
+Its runtime effect is owned by `Intensity` below.
 
 Goal, target, terminal depth, Scope boundaries, evidence sources, recursive descent, loop
 limits, reporting cadence, and continuation needs are resolved from the task, higher
@@ -137,9 +142,9 @@ recursive descent, and Run termination are separate control concerns below.
 flowchart LR
     G["Goal + Active Scope"] --> R["Research"]
     R -->|planning needed| P["Plan"]
-    R -->|research terminal| V["Review"]
+    R -->|RPI Research terminal| V["Review"]
     P -->|work needed| I["Goal-directed Work"]
-    P -->|plan terminal| V
+    P -->|RPI Plan terminal| V
     I --> V
     V -->|evidence gap| R
     V -->|plan gap| P
@@ -169,7 +174,7 @@ through Review. Examples:
 - `Research → Plan → Implementation → Review`;
 - `Plan → Implementation → Review` when valid Research already exists;
 - `Implementation → Review` for a bounded fix already covered by a valid Plan;
-- `Research → Review` when Research itself is the requested terminal result.
+- `Research → Review` when RPI Research itself is the requested terminal result.
 
 A substantively distinct attempt consumes one Loop when it reaches Review even if Review
 concludes that nothing should change, a hypothesis failed, or the work saturated. A
@@ -189,10 +194,10 @@ Never hide a reset by starting a nested or renamed Run inside the current Run.
 
 ## Intensity
 
-Intensity biases **how much effort is justified before RPI considers a material question
-sufficiently resolved**. It influences Research breadth and depth, adversarial challenge,
-validation breadth or tier, alternative exploration, Work decomposition, and willingness
-to isolate a qualifying recursive child. It does not replace materiality or expected
+Intensity biases **effort allocation while resolving material questions**. It influences
+Research breadth and depth, adversarial challenge, validation breadth or tier, alternative
+exploration, Work decomposition, and willingness to isolate a qualifying recursive child.
+It does not change acceptance conditions, truth criteria, materiality, or expected
 information gain.
 
 Use exactly three levels:
@@ -608,10 +613,13 @@ flowchart TD
 ```
 
 Infer the requested terminal result from natural-language task intent and governing context.
-A research-only request accepts Research + Review; a plan-only request accepts Research +
-Plan + Review; execution continues until the requested Goal is accepted when the task asks
-for the Goal itself. Reaching the effective Loop ceiling with material work remaining is a
-**continuation boundary**, not proof that the Goal failed.
+If the user explicitly requests the **RPI Research stage itself** as terminal, accept only
+after Research + Review. If the user explicitly requests the **RPI Plan stage itself** as
+terminal, require Research + Plan + Review. A domain deliverable that happens to be research,
+a plan, or a review is not automatically a stage-only terminal; it may be Work and therefore
+remain subject to Plan-before-Work and the outer RPI Review. When the task asks for the Goal
+itself, continue until the Goal is accepted. Reaching the effective Loop ceiling with
+material work remaining is a **continuation boundary**, not proof that the Goal failed.
 
 After the final allowed Review:
 
