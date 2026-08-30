@@ -4,45 +4,34 @@ description: README·docs·comments·Git/GitHub communication과 Agent Asset에�
 
 # Language
 
-이 repository의 언어 정책은 **영역과 역할에 따라 적용**합니다.
-
-기본 원칙은 간단합니다. 사람이 읽는 일반 서술과 협업 내용은 한국어 중심으로 작성하고, 구조적 이름과 통용되는 기술 명칭은 영어를 유지합니다. 다만 이 repository가 생성·관리하는 대상 Agent Asset에는 이 한국어 기본값을 강제하지 않습니다.
-
-더 좁은 영역에 별도 언어 규칙이 있으면 해당 규칙을 따릅니다.
+- 이 저장소의 기본 언어는 한국어입니다.
+- 한국어 표현이 어색하면 자연스러운 영어를 사용합니다.
+  - 번역하면 어색하거나 뜻이 흐려지는 표현은 영어를 유지합니다.
+  - 한국에서 널리 쓰이는 기술 용어나 고유 명칭은 영어를 그대로 사용합니다.
+  - 영어도 어색하면 기본값인 한국어를 사용합니다.
+- 더 구체적인 `Scope`가 있으면 해당 규칙을 우선합니다.
 
 ## Scope
 
-### Korean-Centered Repository Work
+영역별 언어는 아래와 같습니다.
 
-다음 영역은 **한국어 중심**으로 작성합니다.
+| Scope | Description | Language |
+| --- | --- | --- |
+| **General Prose** | 설명, 안내, 근거 등 일반 서술 | Default |
+| **Markdown Headings H1–H3** | `H1`~`H3` heading | 영어 |
+| **Markdown Headings H4–H6** | `H4`~`H6` heading | Default |
+| **Structural Names and Values** | field name, metadata key, identifier 등 구조적이거나 기계적으로 해석되는 이름과 값 | 영어 |
+| **Descriptive Metadata Values** | `description`, `summary`, `notes` 등 사람이 읽는 metadata value | Default |
+| **Agent Assets Used to Manage This Repository** | 이 repository와 관리 대상 Agent Asset을 생성·수정·검증하는 데 사용하는 Agent Asset과 지원 자료 | Default |
+| **Agent Asset Trigger Frontmatter** | Agent Asset의 선택·활성화를 결정하는 frontmatter의 서술형 trigger value | 영어 |
 
-- **Documentation** — README, `docs/`와 그 밖의 사람이 읽는 repository 문서
-- **Comments and Docstrings** — source와 configuration의 주석, 개발자용 docstring
-- **Git** — 사람이 작성하는 commit subject와 body
-- **GitHub** — 사람이 작성하는 PR, issue, discussion, review, comment와 release note
-- **Agent Assets Used to Manage This Repository** — 이 repository와 **Agent Assets Managed by This Repository**를 생성·수정·검증·관리하기 위해 직접 사용하는 instruction, Skill, Rule, Command, Hook과 지원 자료
+## Non-Scope
 
-### Agent Assets Managed by This Repository
+Non-Scope는 해당 대상의 언어와 표기 규칙을 따릅니다.
 
-**Agent Assets Managed by This Repository**는 이 repository가 생성·관리하는 대상 Agent Asset입니다. 이 자산과 그 source/package content에는 repository의 한국어 기본값을 강제하지 않습니다.
-
-Skill, Rule, Command, Hook, agent instruction, runtime resource, template, script, schema와 target-specific content는 source framework, target contract, intended audience와 asset-local convention을 따릅니다.
-
-즉, **Agent Assets Used to Manage This Repository**는 이 repository에서 관리 작업에 직접 사용하는 자산이고, **Agent Assets Managed by This Repository**는 관리 대상 자산입니다.
-
-## Mixing Rules
-
-한국어 중심 영역에서는 일반 서술은 한국어로 작성하되, 구조적 이름과 표준·기술 명칭은 필요한 영어 표기를 유지합니다.
-
-- **일반 서술** — 설명, 안내와 근거는 한국어로 작성합니다.
-- **구조적 이름과 값** — field name, heading, metadata key, identifier, key, option, enum처럼 구조적이거나 기계적으로 해석되는 이름과 값은 영어를 사용합니다.
-- **서술형 metadata value** — `description`, `summary`, `notes`처럼 사람이 읽는 값은 일반 서술과 같은 언어 규칙을 적용합니다.
-- **표준·기술 명칭** — standard, specification, product, tool, framework, API, protocol과 같은 명칭은 통용되는 영어 명칭을 사용합니다.
-- **번역이 부자연스럽거나 부정확한 표현** — 한국어로 번역하거나 음역했을 때 매우 어색하거나 의미가 덜 정확해지는 영어 표현과 단어는 영어를 유지합니다.
-- **자연스러운 한국어가 있는 일반 문장** — 불필요하게 영어로 바꾸지 않습니다.
-
-## Boundary
-
-- Branch, tag, label, field 같은 identifier와 metadata의 구조적 요소는 `Mixing Rules`를 따릅니다.
-- Code, command, path, filename, literal value와 외부에서 정의된 exact name은 해당 source와 format의 표기를 따릅니다.
-- 자동 생성된 메시지나 외부 source에서 보존해야 하는 text는 해당 source의 규칙을 따릅니다.
+| Non-Scope | Description |
+| --- | --- |
+| **Agent Assets Managed by This Repository** | 이 repository가 생성·관리하는 Agent Asset과 source/package content |
+| **Framework, Tool, and Technology Conventions** | framework, tool, technology의 언어·표기 규칙이 적용되는 content |
+| **Exact and Literal Values** | code, command, path, filename, literal value, 외부에서 정의된 exact name |
+| **Generated or Preserved Text** | 자동 생성된 message와 외부 source에서 보존해야 하는 text |
