@@ -26,7 +26,7 @@ description: README·docs·comments·Git/GitHub communication과 Agent Asset에�
 
 ## Non-Scope
 
-아래 항목의 언어와 표기는 이 저장소의 기본 언어 정책이 직접 결정하지 않으며, 해당 source, framework, tool 또는 자산의 규칙과 관행을 따릅니다.
+이 문서가 언어를 정하지 않는 대상은 해당 대상이 따르는 언어와 표기 규칙을 존중합니다.
 
 | Non-Scope | Description |
 | --- | --- |
