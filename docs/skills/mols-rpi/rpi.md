@@ -12,6 +12,7 @@ RPI의 기본 관계는 **Research → Plan → Implementation → Review**입�
 
 - Plan은 현재 Goal과 Active Scope 안의 material assumptions와 decisions를 뒷받침하는 유효한 Research에 근거합니다.
 - Consequential Work는 해당 Work를 실제로 포괄하는 유효한 Plan 뒤에 옵니다.
+- `Implementation`은 code-only 구현이 아니라 Plan에 따라 Goal을 전진시키는 하나 이상의 **Work**입니다. Work 자체는 research, planning, review, writing, analysis 같은 domain action일 수 있으며 같은 이름의 RPI stage와는 semantic level이 다릅니다.
 - Consequential terminal result는 현재 result와 prerequisite state를 검증한 Review 뒤에만 accept합니다.
 - 유효한 prerequisite는 재사용합니다. Material change가 생긴 dependency만 stale해지고, 다음 Loop는 **earliest stale prerequisite**부터 다시 시작합니다.
 - 뒤늦게 만든 Research나 Plan은 이미 수행한 Work의 사전조건을 소급해 충족시키지 않습니다.
@@ -25,6 +26,7 @@ RPI의 동적 적응은 Review가 현재 state를 평가한 뒤 다음 transitio
 - Evidence가 부족하면 Research를 다시 엽니다.
 - Evidence는 충분하지만 Plan coverage가 stale하면 Plan부터 갱신합니다.
 - Plan이 여전히 유효하고 bounded Work gap만 남으면 필요한 Work만 수행합니다.
+- 여러 Work 중 일부만 stale하거나 실패했다면 영향을 받은 Work와 그 earliest stale prerequisite만 다시 엽니다.
 - Scope 변화가 필요하면 Review는 변경을 직접 실행하지 않고 owning control로 넘깁니다. Expansion은 Research와 Plan의 선행 검증을 다시 요구합니다.
 - 더 작은 blocker를 분리하는 편이 materially 유리하면 Review에서 strict-subset child Scope로 내려갈 수 있습니다.
 - Convergence, saturation 또는 blocker가 확인되면 해당 owning concern으로 dispatch하고 Loop budget을 채우기 위한 반복을 만들지 않습니다.
@@ -46,9 +48,10 @@ Recursion은 adaptive transition의 한 형태이지 별도 실행 체계가 아
 이 Skill을 변경할 때 다음 성질을 함께 보존합니다.
 
 - **genuine prerequisites** — Evidence before Plan, Plan before Work, Review before acceptance
+- **polymorphic Work** — Implementation은 하나 이상의 domain Work를 실행하며 code-only 또는 single-action으로 제한하지 않습니다.
 - **dependency-aware reuse** — valid state는 재사용하고 stale dependency만 다시 엽니다.
 - **Review-driven adaptation** — 다음 Loop의 시작점, Scope 처리와 recursion 여부는 Review 결과에 따라 달라집니다.
 - **strict-subset recursion** — child는 parent control boundary를 넓히지 않습니다.
 - **shared accounting and reintegration** — parent와 child가 하나의 Run budget을 공유하고 child 결과를 parent state에 재검증해 합칩니다.
 
-이를 고정된 stage repetition, 전체 재작성, 고정 recursion depth 또는 무조건적인 recursive descent로 바꾸지 않습니다.
+이를 고정된 stage repetition, 전체 재작성, code-only Implementation, single-action Work, 고정 recursion depth 또는 무조건적인 recursive descent로 바꾸지 않습니다.
