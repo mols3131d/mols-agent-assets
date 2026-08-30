@@ -1,5 +1,5 @@
 ---
-description: RPI의 prerequisite contract, Review-driven adaptation과 recursive resolution이 하나의 Run에서 어떻게 연결되는지 보존하는 maintainer 문서입니다.
+description: RPI의 prerequisite contract, Review-driven adaptation, intensity와 recursive resolution이 하나의 Run에서 어떻게 연결되는지 보존하는 maintainer 문서입니다.
 ---
 
 # RPI
@@ -33,6 +33,12 @@ RPI의 동적 적응은 Review가 현재 state를 평가한 뒤 다음 transitio
 
 이 구조 때문에 RPI는 처음부터 다시 도는 반복문이 아니라 **dependency validity에 따라 시작점과 범위를 바꾸는 adaptive control loop**입니다. Review는 transition을 선택·dispatch하지만 Scope 변경, authority 또는 Run termination의 세부 규칙을 대신 소유하지 않습니다.
 
+## Adaptive Intensity
+
+사용자는 `light`, `standard`, `deep` 중 하나로 effort bias를 지정할 수 있습니다. 기본값은 `standard`입니다.
+
+Intensity는 Research 깊이, challenge, validation, alternative exploration과 recursive narrowing의 적극성에 영향을 주지만 고정 절차나 Loop quota가 아닙니다. `deep`도 convergence 뒤의 추가 작업을 강제하지 않고, `light`도 genuine prerequisite나 material validation을 생략하지 않습니다.
+
 ## Recursive Resolution
 
 Recursion은 adaptive transition의 한 형태이지 별도 실행 체계가 아닙니다.
@@ -51,7 +57,8 @@ Recursion은 adaptive transition의 한 형태이지 별도 실행 체계가 아
 - **polymorphic Work** — Implementation은 하나 이상의 domain Work를 실행하며 code-only 또는 single-action으로 제한하지 않습니다.
 - **dependency-aware reuse** — valid state는 재사용하고 stale dependency만 다시 엽니다.
 - **Review-driven adaptation** — 다음 Loop의 시작점, Scope 처리와 recursion 여부는 Review 결과에 따라 달라집니다.
+- **adaptive intensity** — 3단계 intensity는 effort를 bias하지만 quality waiver, fixed procedure나 Loop quota가 아닙니다.
 - **strict-subset recursion** — child는 parent control boundary를 넓히지 않습니다.
 - **shared accounting and reintegration** — parent와 child가 하나의 Run budget을 공유하고 child 결과를 parent state에 재검증해 합칩니다.
 
-이를 고정된 stage repetition, 전체 재작성, code-only Implementation, single-action Work, 고정 recursion depth 또는 무조건적인 recursive descent로 바꾸지 않습니다.
+이를 고정된 stage repetition, 전체 재작성, code-only Implementation, single-action Work, intensity별 고정 절차, 고정 recursion depth 또는 무조건적인 recursive descent로 바꾸지 않습니다.
