@@ -34,13 +34,13 @@ description: Markdown 문서의 frontmatter 적용 범위, 예외, description�
 
 ## Entrypoints and Indexes
 
-이 repository에서 directory와 bundle형 문서 또는 파일의 entrypoint filename은 `README.md`입니다. Lowercase `index.md`는 reserved entrypoint가 아닙니다.
+이 repository에서 directory와 bundle형 문서 또는 파일의 entrypoint filename은 `README.md`입니다. `index.md`와 `INDEX.md`는 reserved entrypoint가 아닙니다.
 
 Directory entrypoint인 `README.md`는 frontmatter에 **해당 directory의 metadata**를 담을 수 있습니다. Generated docs index가 directory metadata를 projection할 때도 `README.md`만 사용하며, frontmatter가 없거나 일부 field가 비어 있어도 다른 filename으로 fallback하거나 metadata를 합치지 않습니다.
 
 `description`은 entrypoint 파일 자체를 설명하기보다 directory를 언제 탐색해야 하는지와, 선택에 필요할 때 그 directory의 책임·범위를 나타냅니다.
 
-`INDEX.md`는 사람이 작성하는 directory indexing 전담 문서이며 일반 documentation frontmatter contract를 따르지만 directory metadata source는 아닙니다. `INDEX.tsv`는 generated projection이므로 authored frontmatter source가 아닙니다.
+`INDEXING.md`는 사람이 작성하는 directory indexing 전담 문서이며 일반 documentation frontmatter contract를 따르지만 directory metadata source는 아닙니다. `INDEX.tsv`는 generated projection이므로 authored frontmatter source가 아닙니다.
 
 Entrypoint와 index filename의 역할과 생성 조건은 [Entrypoints and Indexes](entrypoint-readme-index.md)가 소유합니다.
 
