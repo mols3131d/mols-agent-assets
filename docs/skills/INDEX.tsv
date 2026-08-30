@@ -18,6 +18,6 @@ mols-markdown-maintenance/	mols-markdown-maintenance를 변경하거나 유지�
 mols-mermaid/	mols-mermaid family에서 관계·절차·구조는 diagram, 정량 비교·추세·구성은 chart 중 어느 Skill로 라우팅할지 판단하거나 family boundary를 유지보수할 때 사용하는 entrypoint입니다.
 mols-rpi/	
 mols-rpi/artifacts.md	RPI artifact의 배치, persistence, durable continuation과 lifecycle을 설계하거나 변경할 때 보존해야 할 결정사항을 정리한 maintainer 문서입니다.
-mols-rpi/rpi-adaptive-recursion.md	RPI의 핵심 특징인 adaptive recursive Loop와 child Scope의 본질을 보존하기 위한 maintainer 결정사항입니다.
 mols-rpi/rpi-plan.md	Adaptive recursive RPI에서 Plan이 각 Loop와 Scope 변화에 맞춰 어떻게 갱신되는지 보존할 핵심 결정사항입니다.
 mols-rpi/rpi-research.md	Adaptive recursive RPI에서 Research가 uncertainty와 다음 Loop 방향을 어떻게 줄이는지 보존할 핵심 결정사항입니다.
+mols-rpi/rpi.md	RPI, adaptive control, recursive resolution이라는 이 Skill의 핵심 설계를 보존하기 위한 maintainer 문서입니다.
