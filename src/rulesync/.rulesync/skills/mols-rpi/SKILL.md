@@ -72,43 +72,40 @@ These are stop conditions, not suggestions. Later sections own their detailed me
 - **Prerequisite order is real.** Retrospective Research or Plan cannot make earlier Work
   compliant after the fact.
 
-# Arguments
+# Built-in Configuration
 
-Arguments are optional controls, not a duplicate task schema. Each listed argument defaults
-to `<auto>`, which delegates that control to its owning concern. Explicit values constrain
-only that concern and never override higher authority or RPI invariants.
-
-Target and Goal are resolved task state rather than arguments. Keep them in the governing
-context and Active Scope, and preserve them for continuation when material; do not require
-callers to restate them as configuration.
+Stable safety defaults belong to the Skill, not to a function-like caller interface.
 
 ```yaml
-terminal: <auto>
-scope: <auto>
-scope_policy: <auto>
-research: <auto>
-recursion: <auto>
-max_loops: <auto>
-durable_handoff: <auto>
-progress: <auto>
+max_loops: 30
+```
+
+`max_loops` is the hard per-Run ceiling. User or governing context may establish a lower
+Run limit in natural language; use the lower value as the effective ceiling. Never raise
+the built-in ceiling above 30 from task instructions.
+
+# Arguments
+
+RPI is an LLM Skill, not a parameterized function. Do not require callers to restate task
+state or internal control choices as structured arguments. Natural-language intent and the
+governing context are authoritative when they are sufficient.
+
+The only public override is artifact handling:
+
+```yaml
 artifacts: <auto>
 ```
 
-| Argument | Explicit values | Owner |
-| --- | --- | --- |
-| `terminal` | `research`, `plan`, `goal` | Run Boundary and Handoff |
-| `scope` | starting boundary | Scope Control |
-| `scope_policy` | `adaptive`, `narrow-only`, `fixed` | Scope Control |
-| `research` | `internal`, `external`, `mixed` | Research |
-| `recursion` | `on`, `off` | Recursive Resolution |
-| `max_loops` | integer `1..30` | Run and Loop |
-| `durable_handoff` | `on`, `off` | Artifacts |
-| `progress` | `compact`, `quiet` | Reporting and Artifacts |
-| `artifacts` | `inline`, `persist`, `both` | Reporting and Artifacts |
+`<auto>` follows the established user, project, workspace, or harness artifact policy. An
+explicit artifact instruction may request inline handling or an authorized established
+destination/surface. Do not impose a universal path grammar or fixed enum when ordinary
+language identifies the intended artifact behavior clearly.
 
-Arguments choose behavior; their owning sections define it. Arguments never authorize
-side effects, relax prerequisite ordering or validation, cross explicit Scope boundaries,
-reset a Run, or raise the hard Loop ceiling above 30.
+Goal, target, terminal depth, Scope boundaries, evidence sources, recursive descent, loop
+limits, reporting cadence, and continuation needs are resolved from the task, higher
+instructions, built-in configuration, and current RPI state. They are not public arguments.
+None of these inferred or explicit task constraints authorize side effects, weaken RPI
+invariants, or cross a higher-authority boundary.
 
 # Runtime
 
@@ -136,18 +133,13 @@ cross-cutting findings go to their owner.
 
 ## Run and Loop
 
-One **Run** is one bounded RPI execution ending in completion, handoff, or blocking. The
-hard ceiling is always:
+One **Run** is one bounded RPI execution ending in completion, handoff, or blocking.
+The effective Loop ceiling is the built-in `max_loops` value unless the user or governing
+context establishes a lower limit for the Run.
 
-```yaml
-max_loops: 30
-```
-
-Resolve `max_loops` at Run start: `<auto>` resolves to 30, a lower explicit value wins, and
-values above 30 cannot raise the hard ceiling. Treat a requested count as a ceiling unless
-the user explicitly requires an exact number of substantive Loops. Even an exact request
-never permits fake, mechanical, or no-op Loops; if no substantive next Loop exists, stop
-and report the shortfall.
+Treat a requested count as a ceiling unless the user explicitly requires an exact number
+of substantive Loops. Even an exact request never permits fake, mechanical, or no-op
+Loops; if no substantive next Loop exists, stop and report the shortfall.
 
 `loops_used` is one cumulative Run counter. Increment it exactly once when a substantive
 Review closes. Scope push/pop never changes or resets it.
@@ -170,8 +162,8 @@ simulate progress.
 - Parent and recursive child Loops share `loops_used` and the same effective ceiling;
   returning between scopes never resets the counter.
 - There is no separate per-scope Loop limit and no fixed recursion-depth limit.
-- Never exceed the effective Loop ceiling or hard ceiling of 30. The ceiling is a safety
-  bound, not a target; stop earlier on convergence, saturation, or a blocker.
+- Never exceed the effective Loop ceiling. The ceiling is a safety bound, not a target;
+  stop earlier on convergence, saturation, or a blocker.
 - Handoff serialization is not another Loop.
 
 Never hide a reset by starting a nested or renamed Run inside the current Run.
@@ -188,10 +180,9 @@ Active Scope
 - Acceptance conditions
 ```
 
-At Run start, establish a provisional Active Scope before the first substantive Loop.
-Resolve `scope` and `scope_policy` first. With `<auto>`, infer the smallest scope sufficient
-to pursue the Goal; record material boundary uncertainty instead of silently widening it.
-Explicit user-defined boundaries take precedence over inferred convenience.
+At Run start, infer the smallest provisional Active Scope sufficient to pursue the Goal.
+Record material boundary uncertainty instead of silently widening it. Explicit user or
+governing boundaries take precedence over inferred convenience.
 
 Scope controls what Work belongs to the current problem; it does not grant operational
 permission or weaken authority, safety, persistence, or validation requirements.
@@ -204,7 +195,7 @@ flowchart TD
     N --> P["Revalidate Plan coverage"]
     P --> S
     V -->|expansion needed| E["Expansion proposal only"]
-    E --> Q{"Policy + explicit boundary permit?"}
+    E --> Q{"Explicit boundary permits?"}
     Q -->|no| B["Expose blocked boundary"]
     Q -->|yes| R["Research validates need + boundary"]
     R --> U["Plan incorporates smallest justified delta"]
@@ -218,22 +209,17 @@ Apply these rules:
 
 1. **Work stays inside the Active Scope.** Out-of-scope findings may inform Research or
    Review; Work on them requires prior valid Scope expansion.
-1. **Narrowing is adaptive.** Under `adaptive`, `narrow-only`, or `<auto>`, Review may
-   narrow an inferred or broad Scope only when the Goal, user-required Work, and required
-   acceptance conditions remain intact. Record the Scope delta and revalidate affected
-   Plan coverage before Work continues.
-1. **Expansion is consequential.** Only `adaptive` or `<auto>` may expand Scope. Review may
-   propose expansion when the wider Scope appears materially required for the Goal, but
-   the proposal does not change the Active Scope. Before expansion or affected Work,
-   Research must validate the need and boundary, the Plan must incorporate the validated
-   expansion, and applicable authority/safety gates must pass. Expand only by the smallest
-   justified boundary delta; adjacent or opportunistic work remains out of scope.
-1. **`narrow-only` and `fixed` are hard user choices.** If trustworthy continuation needs
-   forbidden expansion, expose the required change rather than silently widening Scope.
-   Under `fixed`, do not narrow or expand the boundary.
+1. **Narrowing is adaptive.** Review may narrow an inferred or broad Scope when the Goal,
+   user-required Work, and required acceptance conditions remain intact. Record the Scope
+   delta and revalidate affected Plan coverage before Work continues.
+1. **Expansion is consequential.** Review may propose expansion when wider Scope appears
+   materially required for the Goal, but the proposal does not change the Active Scope.
+   Before expansion or affected Work, Research must validate the need and boundary, the
+   Plan must incorporate the smallest justified delta, and applicable authority/safety
+   gates must pass.
 1. **Explicit boundaries are not silently mutable.** Never expand across a user-defined
-   `Out of scope`, replace a user-defined Goal, or relax a required acceptance condition
-   without new authority from the source that set that boundary.
+   `Out of scope`, replace a user-defined Goal, relax a required acceptance condition, or
+   violate an explicit no-expand/fixed boundary without new authority from its source.
 1. **Scope changes preserve controls.** They do not mint a new Run, broaden authority, or
    relax acceptance or validation requirements; `Run and Loop` still owns accounting.
 
@@ -249,16 +235,16 @@ affected Work and surface the required Scope or authority change; do not drift o
 Consequential downstream stages require observable prerequisite artifacts. Private
 reasoning, unreported intent, or remembered chain-of-thought is not an artifact.
 
-Artifacts may be persisted in the established workspace or returned as clearly labeled
-inline records when persistence is unavailable or inappropriate. Follow `artifacts`,
-governing workspace policy, and the established destination; never invent storage or write
-authority. Preserve only the minimum sensitive detail needed.
+Artifact placement follows the optional `artifacts` override when present; otherwise use
+established user, project, workspace, or harness policy. Reuse an existing task, PR, Issue,
+plan, Research, Review, or other working surface before creating another artifact. If no
+appropriate authorized persistent destination exists, return clear inline artifacts.
+Never invent storage, path conventions, or write authority.
 
 Give each artifact a stable path, reference, heading, or label. Maintain the latest valid
-Research, Active Scope, and Plan as working state for each current scope. Update or
-version them when materially changed; otherwise reference them instead of repeating
-unchanged full content. Keep Review delta-oriented to avoid context growth through artifact
-duplication.
+Research, Active Scope, and Plan as working state for each current scope. Update or version
+them when materially changed; otherwise reference them instead of repeating unchanged full
+content. Keep Review delta-oriented to avoid context growth through artifact duplication.
 
 Make lineage inspectable:
 
@@ -304,38 +290,33 @@ Apply these rules:
 
 Do not regenerate valid artifacts for ceremony.
 
-### Durable Progress Handoff
+### Persistent Artifacts and Continuation
 
-Resolve `durable_handoff` here. `<auto>` enables durable handoff only when continuation
-across a context, session, worker, or similar boundary is materially likely and an
-authorized surface can preserve resume-critical state across that boundary; otherwise it
-resolves to `off`. `off` adds no durability requirement beyond normal artifact handling.
-`on` activates the following continuation contract without changing prerequisite order or
-creating a new artifact type.
+A persistent RPI artifact is resumable working state by default; durability is not a
+separate caller toggle. `durable` means the selected surface is expected to survive the
+anticipated handoff boundary long enough for the next execution to recover the needed
+state. It does not mean permanent or canonical documentation.
 
-When `durable_handoff: on`:
+When artifact state is persisted:
 
-1. Reuse existing Research, Active Scope, Plan, Review, task, PR, or other established
-   working surfaces before creating a separate handoff artifact. Preserve only the minimum
-   state needed to resume without expensive rediscovery.
-1. Update the continuation surface at material checkpoints, normally after a substantive
-   Review or another state change that would materially alter resumption. Do not checkpoint
+1. Reuse existing RPI or established task surfaces before creating a separate handoff
+   artifact. Preserve only the minimum state needed to resume without expensive
+   rediscovery.
+1. Update persistent state only at material checkpoints, normally after a substantive
+   Review or another state change that materially alters resumption. Do not checkpoint
    every tool call, command, or unchanged artifact.
 1. Preserve resume-critical state when it matters: current Goal and Scope; completed,
    current, and remaining Work; material decisions with a brief evidence basis; validation
    and current health; a freshness anchor when useful; expensive failed approaches;
-   blockers and residual uncertainty; the next transition; and relevant source or artifact
-   references.
-1. Choose a surface expected to survive the anticipated boundary. `artifacts: persist`
-   alone does not prove durability, and an inline-only surface does not satisfy this mode
-   unless the runtime guarantees that it survives the boundary. If no authorized suitable
-   surface exists, report the durable-handoff requirement as unsatisfied and do not claim
-   durable compatibility.
-1. On continuation, treat durable state as resume evidence, not authority. Validate its
-   freshness anchor, applicable source and state, and any health claim that can materially
-   change the next action before relying on it. Update or discard stale state instead of
-   continuing from it blindly.
+   blockers and residual uncertainty; the next transition; and relevant references.
+1. Use a surface expected to survive the anticipated boundary. If the available surface
+   cannot do so, do not describe it as durable merely because content was written there.
+1. On continuation, treat persisted state as resume evidence, not authority. Validate its
+   freshness, applicable source/state, and any material health claim before relying on it;
+   update or discard stale state.
 
+If persistence is unavailable, unauthorized, or inappropriate, inline artifacts remain a
+valid fallback, but do not claim cross-boundary durability that the runtime cannot provide.
 Checkpoint maintenance is state preservation, not another Loop, and never broadens Scope,
 authority, persistence permission, or the effective Loop budget.
 
@@ -343,18 +324,16 @@ authority, persistence permission, or the effective Loop budget.
 
 ### Research
 
-Resolve `research` for the current question. `<auto>` chooses internal, external, or mixed
-evidence by uncertainty, freshness, source authority, and expected information gain. An
-explicit value constrains the primary evidence surface only when compatible with freshness,
-verification, and higher-authority requirements. `mixed` does not require equal effort or
-mechanical alternation between internal and external sources.
+Research is an **adaptive evidence search**, not a fixed retrieval checklist or caller-set
+source mode. Choose repository/workspace, external, or mixed evidence according to the
+material question, uncertainty, freshness, source authority, verification needs, and
+expected information gain.
 
-Research is an **adaptive evidence search**, not a fixed retrieval checklist. Start from the
-smallest set of material questions or assumptions whose answers could change the current
-decision, Scope, Plan, Review, acceptance condition, or verification claim. Then choose the
-next evidence action by expected information gain rather than by a predetermined source
-sequence. These stage-local evidence moves do not increment `loops_used`; Run and Loop
-accounting changes only when a substantive Review closes.
+Start from the smallest set of material questions or assumptions whose answers could change
+the current decision, Scope, Plan, Review, acceptance condition, or verification claim.
+Then choose the next evidence action by expected information gain rather than by a
+predetermined source sequence. These stage-local evidence moves do not increment
+`loops_used`; Run and Loop accounting changes only when a substantive Review closes.
 
 Do not use stage-local evidence search as a hidden Loop. Keep it bounded by expected
 information gain and available task or runtime budget. When a material question remains
@@ -499,18 +478,15 @@ the Loop ceiling.
 
 ## Recursive Resolution
 
-Resolve `recursion` here. `<auto>` permits recursive descent when the criteria below make it
-materially useful; `on` permits the same Review-gated descent explicitly, and `off` forbids
-child scopes. Neither `<auto>` nor `on` forces recursion when staying in the current Scope
-is cheaper or clearer.
+Recursive descent is an adaptive Review transition, not a public toggle. Use it only when
+permitted by the active user and governing context. An explicit instruction that forbids
+child scopes or recursion is a boundary. Conversely, a request for a "recursive loop" does
+not require manufacturing child scopes when the current Scope is cheaper and clearer.
 
-If `recursion: off`, do not push child scopes. Continue at the current Scope or return the
-finding to its owner.
-
-Otherwise, push a child scope only from Review, and only when a narrower problem can
-materially reduce parent uncertainty or unblock parent Work more efficiently than staying
-at the parent scope. If a blocker appears during Research, Plan, or Implementation, stop
-the affected stage, close the current Loop with Review, then decide whether to recurse.
+Push a child scope only from Review, and only when a narrower problem can materially reduce
+parent uncertainty or unblock parent Work more efficiently than staying at the parent
+scope. If a blocker appears during Research, Plan, or Implementation, stop the affected
+stage, close the current Loop with Review, then decide whether to recurse.
 
 ```mermaid
 flowchart TD
@@ -563,7 +539,7 @@ it is separate from phase progression.
 ```mermaid
 flowchart TD
     V["Review closes"] --> L["loops_used += 1"]
-    L --> A{"Terminal result accepted?"}
+    L --> A{"Requested terminal accepted?"}
     A -->|yes| C["COMPLETE"]
     A -->|no| B{"Trustworthy continuation blocked?"}
     B -->|yes| X["BLOCKED"]
@@ -573,10 +549,11 @@ flowchart TD
     H --> O["HANDOFF"]
 ```
 
-Resolve `terminal` here. `<auto>` infers the requested terminal stage; `research` accepts
-Research + Review, `plan` accepts Research + Plan + Review, and `goal` requires the Goal
-itself to be accepted. Reaching the effective Loop ceiling with material work remaining is
-a **continuation boundary**, not proof that the Goal failed.
+Infer the requested terminal result from natural-language task intent and governing context.
+A research-only request accepts Research + Review; a plan-only request accepts Research +
+Plan + Review; execution continues until the requested Goal is accepted when the task asks
+for the Goal itself. Reaching the effective Loop ceiling with material work remaining is a
+**continuation boundary**, not proof that the Goal failed.
 
 After the final allowed Review:
 
@@ -584,28 +561,24 @@ After the final allowed Review:
 1. use the established handoff mechanism; do not invent another persistent format;
 1. preserve `loops_used`, the effective ceiling, the active scope path, the current Active
    Scope definition, pending Scope proposals, current target/context reference when needed,
-   resolved argument values, and references to valid Research, accepted Plan, completed
+   applicable user constraints, and references to valid Research, accepted Plan, completed
    Work or validation, current Review state, remaining material gaps, unresolved child
    results or parent impacts, and recommended next transition;
 1. preserve the exhaustion reason plus authority, approval, environment, validation, and
    material risk boundaries needed for safe continuation;
-1. if `durable_handoff: on` and a suitable continuation surface already exists, update that
-   surface with the final material delta and reference it instead of duplicating the same
-   state in a new handoff format;
+1. if a suitable persistent continuation surface already exists, update it with the final
+   material delta and reference it instead of duplicating the same state elsewhere;
 1. mark the Run as handed off, not complete.
 
 If no established handoff surface is available, return the same minimum continuation state
-inline; do not invent storage or claim persistence. When `durable_handoff: on`, explicitly
-report that the durable-handoff requirement is unsatisfied rather than presenting the
-inline fallback as durable continuation state.
+inline; do not invent storage or claim persistence.
 
 A later RPI Run may continue from the handoff only after validating inherited Research,
-Active Scope, pending Scope proposals, Plan, current state, authority, and still-applicable
-argument values. For durable continuation, also validate the persisted freshness anchor and
-any material health claim before relying on them. The later Run receives a new hard ceiling
-of 30, subject to any lower limit explicitly established for that continuation Run. Handoff
-does not itself authorize or auto-start another Run and must never become a hidden reset
-inside the exhausted Run.
+Active Scope, pending Scope proposals, Plan, current state, authority, applicable user
+constraints, freshness anchors, and any material health claim needed for the next action.
+The later Run receives the built-in `max_loops` ceiling, subject to any lower limit
+established for that continuation Run. Handoff does not itself authorize or auto-start
+another Run and must never become a hidden reset inside the exhausted Run.
 
 Finish with one observable Run state:
 
@@ -619,19 +592,10 @@ Never report COMPLETE while a known material gap still requires broader Research
 replanning, Scope reconciliation, affected Work reconciliation, or unresolved recursive
 integration for the accepted scope.
 
-# Reporting and Artifacts
+# Reporting
 
-Resolve `progress` here. `<auto>` reports material transitions, blockers, handoff, and
-completion without narrating hidden reasoning; `compact` may also identify counted Loops;
-`quiet` suppresses routine stage updates. Report only observable evidence, decisions, Work,
-validation, Scope changes, Loop counts, handoff, and outcomes.
-
-Resolve `artifacts` here. `<auto>` follows established artifact policy and uses inline
-artifacts when no appropriate writable destination exists. `persist` falls back to inline
-when persistence is unavailable or unauthorized; state that limitation. `both` does not
-duplicate unchanged working artifacts unnecessarily.
-
-`artifacts` controls artifact placement; `durable_handoff` controls whether resume-critical
-state must survive an anticipated handoff boundary and be revalidated on return. Neither
-implies the other. If explicit argument values cannot both be satisfied, surface the
-conflict instead of inventing storage, persistence, or authority.
+Reporting cadence is not an RPI argument. Follow higher-priority harness behavior and
+explicit user instructions. At minimum, keep material blockers, handoff state, and terminal
+outcome observable when the environment permits. Report only observable evidence,
+decisions, Work, validation, Scope changes, Loop counts, handoff, and outcomes; do not
+narrate hidden reasoning.
