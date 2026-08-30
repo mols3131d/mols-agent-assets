@@ -371,13 +371,62 @@
       ]
     },
     {
-      "id": "artifacts-is-the-only-public-override",
+      "id": "public-overrides-stay-minimal",
       "mode": "argument-contract",
-      "prompt": "RPI 산출물은 이 프로젝트가 이미 쓰는 작업 문서에 남겨. 별도 path나 persist enum은 지정하지 않을게.",
+      "prompt": "RPI 산출물은 기존 작업 문서에 남기고 강도는 deep으로 해. 다른 YAML control도 필요한가?",
       "assertions": [
-        "Treats artifacts as the only public RPI override surface while accepting equivalent natural-language intent",
-        "Reuses the established project or task artifact surface before creating another destination",
-        "Does not require a universal path grammar or fixed persist/both enum when the intended artifact behavior is clear"
+        "Treats artifacts and intensity as the only public RPI override surfaces while accepting equivalent natural-language intent",
+        "Does not reintroduce Goal, Scope, research mode, recursion, terminal depth, loop limit, or reporting as function-like parameters",
+        "Does not require a universal artifact path grammar when the intended destination is clear"
+      ]
+    },
+    {
+      "id": "intensity-defaults-to-standard",
+      "mode": "intensity",
+      "prompt": "RPI로 진행해. 강도는 따로 지정하지 않을게.",
+      "assertions": [
+        "Uses standard as the built-in default intensity",
+        "Treats intensity as an adaptive effort bias rather than a stage count or Loop quota"
+      ]
+    },
+    {
+      "id": "deep-intensity-is-adaptive-not-a-quota",
+      "mode": "intensity",
+      "prompt": "RPI deep으로 최대한 깊게 해. 이미 충분히 수렴해도 30루프를 꽉 채우고 child scope도 많이 만들어.",
+      "assertions": [
+        "Uses deep to prefer stronger disconfirmation, validation, alternative comparison, and useful recursive narrowing",
+        "Does not manufacture extra Loops, sources, or child scopes after convergence or saturation",
+        "Keeps the same hard Loop ceiling, Scope, authority, and prerequisite contracts"
+      ]
+    },
+    {
+      "id": "light-intensity-does-not-waive-quality",
+      "mode": "intensity",
+      "prompt": "RPI light로 해. 중요한 검증이나 Research도 귀찮으면 생략해도 돼.",
+      "assertions": [
+        "Uses light to prefer the cheapest sufficient evidence and lean validation",
+        "Does not skip a genuine prerequisite, material acceptance check, required validation, safety gate, or unresolved material risk",
+        "Adapts effort upward locally when the minimum trustworthy path requires it"
+      ]
+    },
+    {
+      "id": "work-may-contain-multiple-domain-units",
+      "mode": "work-semantics",
+      "prompt": "Plan에 문서 수정, eval 보강, 설정 변경 세 가지 Work가 있어. 하나만 Implementation으로 치는 거야?",
+      "assertions": [
+        "Treats Implementation as one or more planned Work units rather than a single action",
+        "Preserves ordering, concurrency, and dependencies from the accepted Plan",
+        "When one unit becomes stale or fails, does not rerun unaffected valid Work without a dependency reason"
+      ]
+    },
+    {
+      "id": "review-can-be-domain-work",
+      "mode": "work-semantics",
+      "prompt": "이 PR을 RPI로 리뷰해줘. 그러면 Work 자체도 review인데 마지막 Review는 뭐야?",
+      "assertions": [
+        "Allows review to be the task-domain Work performed during Implementation",
+        "Keeps domain review Work distinct from the RPI Review orchestration stage",
+        "Uses the outer RPI Review to verify that the review Work was sufficiently grounded, complete, and acceptable without manufacturing duplicate ceremony"
       ]
     },
     {
