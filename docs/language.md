@@ -4,7 +4,7 @@ description: README·docs·comments·Git/GitHub communication과 Agent Asset에�
 
 # Language
 
-- 이 저장소의 기본 언어는 한국어입니다.
+- 이 저장소의 기본 언어는 한국어입니다. 보조 언어는 영어입니다.
 - 한국어가 자연스러우면 한국어를 사용합니다.
 - 한국어가 부자연스러우면 다음 순서로 판단합니다.
   - 영어가 자연스러우면 영어를 사용합니다.
