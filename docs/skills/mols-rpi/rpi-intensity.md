@@ -20,7 +20,9 @@ Intensity는 고정된 단계 수나 Loop 수가 아닙니다. 현재 risk, unce
 - `light`도 genuine prerequisite, material acceptance check, required validation이나 safety gate를 생략하지 않습니다.
 - 여러 충분한 경로가 있다면 요청된 intensity에 더 잘 맞는 경로를 선택합니다.
 - Recursive child는 parent intensity를 effort bias로 상속하지만 Scope, authority나 Loop budget을 넓히지 않습니다.
+- Run 중 intensity가 바뀌면 이후 effort에 적용합니다. Intensity 변화만으로 이미 유효한 Research, Plan이나 Work를 stale하게 만들지 않습니다.
+- Continuation에서는 사용자 지정 active intensity를 resume state의 일부로 보존합니다.
 
 ## Preserve
 
-Intensity를 고도화할 때 **adaptive effort bias**라는 성질을 유지합니다. 이를 quality waiver, fixed procedure, Loop quota, recursion command 또는 authority 확장으로 바꾸지 않습니다.
+Intensity를 고도화할 때 **adaptive effort bias**라는 성질을 유지합니다. 이를 quality waiver, fixed procedure, Loop quota, recursion command, dependency invalidator 또는 authority 확장으로 바꾸지 않습니다.
