@@ -4,7 +4,7 @@ development/evaluation.md	Agent Asset의 behavioral evaluation을 설계·실행
 development/github.md	GitHub의 Issues, Pull Requests, PR Reviews, coding agents, automations, GitHub Agentic Workflows, Rulesets, Actions와 Merge에 적용되는 저장소 협업 정책과 권한 경계를 확인할 때 사용합니다.
 development/source-authority.md	저장소 지침과 에이전트 자산에서 작성 원본, 표준·도구·대상별 권한, 원본과 파생 결과의 경계를 결정할 때 사용하는 정책입니다.
 development/testing.md	저장소의 결정론적 검증, 도구 검증, PR Gate와 merge를 차단하는 테스트 근거를 확인할 때 사용하는 정책입니다.
-development/vcs-git.md	저장소 고유 branch 정책, 병렬 작업 격리, branch naming, Git history 안전성과 commit convention을 확인할 때 사용하는 정책입니다.
+development/vcs-git.md	저장소 고유 branch 정책, 병렬 작업 격리, branch naming, Git history 안전성과 commit convention을 확인할 때 사용합니다.
 documentation/	repository-wide 문서 배치, ownership, duplication boundary, frontmatter, knowledge lifecycle과 asset maintainer documentation 원칙이 필요할 때 해당 documentation policy를 찾는 데 사용합니다.
 documentation/asset-maintainer-documentation.md	개별 Agent Asset 또는 family의 maintainer documentation을 어디에 두고, runtime source·family docs·repository-local docs와 책임을 어떻게 나눌지 결정할 때 사용합니다.
 documentation/duplication-boundaries.md	두 문서의 내용이 중복인지, 어느 owner가 authoritative source가 되어야 하는지, scope가 다른 overlap을 허용할지 판단할 때 사용합니다.
@@ -46,10 +46,11 @@ skills/mols-markdown-dashboard/baseline/
 skills/mols-markdown-dashboard/baseline/DIRECTIVE.md	스킬이 후속 수정에서 훼손되지 않도록 핵심 요구사항과 결정사항을 보존한다.
 skills/mols-markdown-maintenance/	mols-markdown-maintenance를 변경하거나 유지할 때 repository-native Markdown tooling 우선순위, custom frontmatter/index delta와 유지보수 invariant를 확인하는 maintainer documentation entrypoint입니다.
 skills/mols-mermaid/	mols-mermaid family에서 관계·절차·구조는 diagram, 정량 비교·추세·구성은 chart 중 어느 Skill로 라우팅할지 판단하거나 family boundary를 유지보수할 때 사용하는 entrypoint입니다.
-skills/mols-rpi/	mols-rpi를 유지보수할 때 prerequisite contract, adaptive Research·Plan·Review와 artifact 결정을 찾는 entrypoint입니다.
+skills/mols-rpi/	mols-rpi를 유지보수할 때 prerequisite contract, adaptive Research·Plan·Work·Review와 artifact 결정을 찾는 entrypoint입니다.
 skills/mols-rpi/artifacts.md	RPI artifact의 배치, persistence, durable continuation과 lifecycle을 설계하거나 변경할 때 보존해야 할 결정사항을 정리한 maintainer 문서입니다.
 skills/mols-rpi/rpi-plan.md	Adaptive recursive RPI에서 Plan의 prerequisite, coverage, delta replanning과 downstream Work transition을 보존하는 maintainer 문서입니다.
 skills/mols-rpi/rpi-research.md	Adaptive recursive RPI에서 Research의 prerequisite, uncertainty reduction, dynamic search와 downstream transition을 보존하는 maintainer 문서입니다.
 skills/mols-rpi/rpi-review.md	Adaptive recursive RPI에서 Review의 prerequisite validation, challenge reconciliation과 next-transition dispatch를 보존하는 maintainer 문서입니다.
+skills/mols-rpi/rpi-work.md	RPI의 Implementation을 goal-directed Work로 해석하고, Work가 하나 이상의 다양한 domain action으로 구성될 수 있다는 핵심 설계를 보존하는 maintainer 문서입니다.
 skills/mols-rpi/rpi.md	RPI의 prerequisite contract, Review-driven adaptation과 recursive resolution이 하나의 Run에서 어떻게 연결되는지 보존하는 maintainer 문서입니다.
 using-this-repository.md	이 저장소의 Agent Asset이나 reusable knowledge를 외부 repository·runtime에서 찾고, 직접 사용·설치·고정·가져오는 방법을 선택할 때 사용합니다.
