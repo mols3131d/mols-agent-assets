@@ -34,6 +34,6 @@ Directory-level README는 해당 directory의 contract 또는 navigation respons
 - correctness나 recovery에 영향을 주는 진입 순서 또는 navigation decision
 - 해당 directory만의 maintenance 또는 recovery knowledge
 
-단순 sibling 목록을 `README.md`나 authored `INDEX.md`에 복제하지 않습니다. 사람이 읽는 curated indexing이 실제로 필요하면 `INDEX.md`가 그 책임을 소유하고, 재생성 가능한 inventory는 filesystem, search 또는 generated `INDEX.tsv`에 맡깁니다. Entrypoint와 index surface의 구체적인 경계는 [Entrypoints and Indexes](entrypoint-readme-index.md)가 소유합니다.
+단순 sibling 목록을 `README.md`나 authored `INDEXING.md`에 복제하지 않습니다. 사람이 읽는 curated indexing이 실제로 필요하면 `INDEXING.md`가 그 책임을 소유하고, 재생성 가능한 inventory는 filesystem, search 또는 generated `INDEX.tsv`에 맡깁니다. Entrypoint와 index surface의 구체적인 경계는 [Entrypoints and Indexes](entrypoint-readme-index.md)가 소유합니다.
 
 문서의 공통 중복 원칙은 [Duplication Boundaries](duplication-boundaries.md)가 소유하고, directory-local 중복 경계는 해당 local owner가 소유합니다.
