@@ -1,6 +1,6 @@
 # Documentation
 
-`clarify-code`는 code-adjacent prose를 다룬다. Caller-facing declaration documentation과 maintainer comment는 독자, 수명과 소비 방식이 다르다.
+`mols-clarify-code`는 code-adjacent prose를 다룬다. Caller-facing declaration documentation과 maintainer comment는 독자, 수명과 소비 방식이 다르다.
 
 Core `SKILL.md`가 common-path signal, evidence gate와 reader/scope 기반 surface 선택을 소유한다. 이 reference는 ecosystem-specific surface, placement·ownership·grounding이 단순하지 않은 경우의 세부 판단만 보완한다.
 

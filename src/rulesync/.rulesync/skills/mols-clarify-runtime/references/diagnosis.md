@@ -10,7 +10,7 @@ Runtime 문제를 모두 관찰하려 하지 않는다. **실행 후 답하기 �
 | --- | --- |
 | 기존 code/test가 실제로 어떤 경로와 outcome으로 실행되는지 이해하기 어렵다 | `mols-clarify-runtime` |
 | 실행 후 무엇이 일어났거나 왜 일어나지 않았는지 복원하기 어렵다 | `mols-clarify-runtime` |
-| 코드를 읽어도 의미, 책임 또는 caller contract를 이해하기 어렵다 | `clarify-code` |
+| 코드를 읽어도 의미, 책임 또는 caller contract를 이해하기 어렵다 | `mols-clarify-code` |
 | 현재 동작이 올바른지, defect인지 판단해야 한다 | code review 또는 debugging workflow |
 | 어떤 test나 validation으로 동작을 증명할지 설계해야 한다 | testing responsibility |
 | 실행 boundary나 책임 자체를 재설계해야 한다 | architecture/design |

@@ -32,12 +32,12 @@ skills/
 skills/artifact-consistency-inspector/	
 skills/artifact-consistency-inspector/customization.md	artifact-consistency-inspector를 project에 맞게 조정할 때 변경 가능한 항목과 반드시 보존할 runtime·report invariant, rename 및 frontmatter 동기화 규칙을 확인하는 maintainer 문서입니다.
 skills/caveman-ko/	caveman-ko를 유지보수하거나 승격할 때 upstream provenance, Experimental 경계, runtime·eval 책임과 promotion criteria를 확인하는 maintainer entrypoint입니다.
-skills/clarify-code/	
-skills/clarify-code/baseline/	
-skills/clarify-code/baseline/decisions.md	clarify-code의 routing, scope, public argument, documentation·validation 전략을 변경하거나 복구할 때 원래 설계 결정을 확인하는 protected baseline 기록입니다.
 skills/mols-agent-asset-validator/	
 skills/mols-agent-asset-validator/baseline/	
 skills/mols-agent-asset-validator/baseline/DIRECTIVE.md	mols-agent-asset-validator의 검증 범위, evidence 상태, loop·review·runtime 원칙을 변경하거나 복구할 때 보존해야 할 핵심 invariant를 확인하는 protected baseline입니다.
+skills/mols-clarify-code/	
+skills/mols-clarify-code/baseline/	
+skills/mols-clarify-code/baseline/decisions.md	mols-clarify-code의 routing, scope, public argument, documentation·validation 전략을 변경하거나 복구할 때 원래 설계 결정과 후속 식별자 변경을 확인하는 protected baseline 기록입니다.
 skills/mols-markdown/	mols-markdown family에서 사람이 읽는 Markdown, dashboard, deterministic maintenance 중 어느 Skill이 책임지는지 선택하거나 family boundary를 유지보수할 때 사용하는 entrypoint입니다.
 skills/mols-markdown-dashboard/	mols-markdown-dashboard의 baseline, architecture와 maintenance 문서를 찾아 현재 구현을 이해·변경·복구할 때 사용하는 maintainer documentation entrypoint입니다.
 skills/mols-markdown-dashboard/ARCHITECTURE.md	mols-markdown-dashboard의 구현 구조와 data flow를 이해하거나 변경 영향을 판단할 때 component responsibility, design boundary, failure safety와 exit code를 확인하는 maintainer 문서입니다.

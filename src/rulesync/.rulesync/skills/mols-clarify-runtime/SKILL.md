@@ -24,7 +24,7 @@ targets:
 
 기능이나 domain behavior를 추가하지 않고 runtime 이해 부채를 줄인다. **실행 후 답하기 어려운 가장 중요한 복원 질문 하나를 고르고, 먼저 이미 남아 있는 runtime evidence를 관찰한다. 부족할 때만 가장 작은 안전한 기존 scenario를 실행한다. 현재 조사만으로 충분하면 변경하지 않고, future execution에서도 같은 질문을 반복해서 복원해야 할 때만 가장 작은 runtime evidence를 유지한다.**
 
-코드를 읽는 것 자체가 어렵다면 `clarify-code`, defect 판단은 review/debugging 책임이다. 이 Skill은 기존 소스 코드와 테스트 코드가 실제로 어떻게 실행되는지 관찰하고, 실행 경로·결정·상태 변화·외부 작업·실패 원인을 복원하는 데 집중한다.
+코드를 읽는 것 자체가 어렵다면 `mols-clarify-code`, defect 판단은 review/debugging 책임이다. 이 Skill은 기존 소스 코드와 테스트 코드가 실제로 어떻게 실행되는지 관찰하고, 실행 경로·결정·상태 변화·외부 작업·실패 원인을 복원하는 데 집중한다.
 
 ## Arguments
 

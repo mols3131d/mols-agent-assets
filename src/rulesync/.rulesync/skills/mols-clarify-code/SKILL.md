@@ -1,5 +1,5 @@
 ---
-name: clarify-code
+name: mols-clarify-code
 description: Use this skill to make code easier to understand by improving code-adjacent explanatory text such as declaration documentation (including docstrings or doc comments), implementation comments, and source-level module/package explanations without changing executable code. Trigger when caller contracts, rationale, invariants, ordering, side effects, unusual implementation choices, or other non-obvious meaning should be explained inside source files. Do not use to rename symbols, change types or signatures, restructure control or state flow, change representations, or remove indirection; use mols-code-comprehension-refactor for executable changes. Do not use for standalone user-facing documentation outside source files.
 targets:
   - claudecode
