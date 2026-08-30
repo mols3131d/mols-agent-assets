@@ -74,9 +74,9 @@ These are stop conditions, not suggestions. Later sections own their detailed me
 
 # Arguments
 
-Arguments are optional controls, not a duplicate task schema. `<auto>` delegates each
-control to its owning concern. Explicit values constrain only that concern and never
-override higher authority or RPI invariants.
+Arguments are optional controls, not a duplicate task schema. Each listed argument defaults
+to `<auto>`, which delegates that control to its owning concern. Explicit values constrain
+only that concern and never override higher authority or RPI invariants.
 
 Target and Goal are resolved task state rather than arguments. Keep them in the governing
 context and Active Scope, and preserve them for continuation when material; do not require
@@ -100,9 +100,9 @@ artifacts: <auto>
 | `scope` | starting boundary | Scope Control |
 | `scope_policy` | `adaptive`, `narrow-only`, `fixed` | Scope Control |
 | `research` | `internal`, `external`, `mixed` | Research |
-| `recursion` | `prefer`, `off` | Recursive Resolution |
+| `recursion` | `on`, `off` | Recursive Resolution |
 | `max_loops` | integer `1..30` | Run and Loop |
-| `durable_handoff` | `on`, `off` | Artifacts / Run Boundary and Handoff |
+| `durable_handoff` | `on`, `off` | Artifacts |
 | `progress` | `compact`, `quiet` | Reporting and Artifacts |
 | `artifacts` | `inline`, `persist`, `both` | Reporting and Artifacts |
 
@@ -498,6 +498,11 @@ as blocked for Run Boundary and Handoff. Do not invent findings, depth, or churn
 the Loop ceiling.
 
 ## Recursive Resolution
+
+Resolve `recursion` here. `<auto>` permits recursive descent when the criteria below make it
+materially useful; `on` permits the same Review-gated descent explicitly, and `off` forbids
+child scopes. Neither `<auto>` nor `on` forces recursion when staying in the current Scope
+is cheaper or clearer.
 
 If `recursion: off`, do not push child scopes. Continue at the current Scope or return the
 finding to its owner.
