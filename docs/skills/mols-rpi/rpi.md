@@ -10,7 +10,7 @@ description: RPI의 prerequisite contract, Review-driven adaptation과 recursive
 
 RPI의 기본 관계는 **Research → Plan → Implementation → Review**입니다. 이는 모든 단계를 매번 순서대로 실행하는 고정 pipeline이 아니라, downstream state가 의존하는 prerequisite contract입니다.
 
-- Plan은 현재 Goal과 Active Scope를 설명할 수 있는 유효한 Research에 근거합니다.
+- Plan은 현재 Goal과 Active Scope 안의 material assumptions와 decisions를 뒷받침하는 유효한 Research에 근거합니다.
 - Consequential Work는 해당 Work를 실제로 포괄하는 유효한 Plan 뒤에 옵니다.
 - Consequential terminal result는 현재 result와 prerequisite state를 검증한 Review 뒤에만 accept합니다.
 - 유효한 prerequisite는 재사용합니다. Material change가 생긴 dependency만 stale해지고, 다음 Loop는 **earliest stale prerequisite**부터 다시 시작합니다.
@@ -27,9 +27,9 @@ RPI의 동적 적응은 Review가 현재 state를 평가한 뒤 다음 transitio
 - Plan이 여전히 유효하고 bounded Work gap만 남으면 필요한 Work만 수행합니다.
 - Scope 변화가 필요하면 Review는 변경을 직접 실행하지 않고 owning control로 넘깁니다. Expansion은 Research와 Plan의 선행 검증을 다시 요구합니다.
 - 더 작은 blocker를 분리하는 편이 materially 유리하면 Review에서 strict-subset child Scope로 내려갈 수 있습니다.
-- Convergence, saturation 또는 blocker가 확인되면 Loop budget을 채우기 위한 반복을 만들지 않습니다.
+- Convergence, saturation 또는 blocker가 확인되면 해당 owning concern으로 dispatch하고 Loop budget을 채우기 위한 반복을 만들지 않습니다.
 
-이 구조 때문에 RPI는 처음부터 다시 도는 반복문이 아니라 **dependency validity에 따라 시작점과 범위를 바꾸는 adaptive control loop**입니다.
+이 구조 때문에 RPI는 처음부터 다시 도는 반복문이 아니라 **dependency validity에 따라 시작점과 범위를 바꾸는 adaptive control loop**입니다. Review는 transition을 선택·dispatch하지만 Scope 변경, authority 또는 Run termination의 세부 규칙을 대신 소유하지 않습니다.
 
 ## Recursive Resolution
 
