@@ -26,6 +26,8 @@ Review는 가장 작은 유용한 단위로 세 가지 판단을 수행합니다
 2. **Challenge** — material risk나 uncertainty가 남아 있을 때 strongest plausible failure, counterexample, missed constraint, regression 또는 unsupported claim을 다른 관점에서 찾습니다.
 3. **Reconcile** — challenge를 authority로 받아들이지 않고 evidence와 governing boundary에 대조해 `absorb`, `reject`, `unresolved`로 처리합니다.
 
+Active intensity는 challenge와 validation effort의 적극성을 bias하지만 acceptance condition, evidence truthfulness나 materiality를 바꾸지 않습니다.
+
 Challenge는 비판을 많이 만드는 절차가 아닙니다. Direct evidence가 material question을 이미 닫았다면 가짜 반론을 만들지 않습니다. 반대로 plausible material finding은 reviewer의 remedy가 나쁘다는 이유만으로 버리지 않습니다.
 
 Verify, Challenge와 Reconcile은 하나의 Review 안에서 이루어지는 local operations입니다. 이들이 별도 Loop를 만들지 않으며, substantive Review가 닫힐 때 현재 attempt가 하나의 Loop로 닫힙니다.
@@ -73,8 +75,9 @@ Review를 고도화할 때 다음을 보존합니다.
 
 - **Review-before-acceptance** — consequential terminal result는 Review 없이 accept하지 않습니다.
 - **evidence-based challenge reconciliation** — critique는 candidate finding이며 evidence와 authority를 거쳐야 합니다.
+- **intensity-biased challenge** — intensity는 Review effort를 bias하지만 acceptance 기준을 바꾸지 않습니다.
 - **earliest-stale dispatch** — 다음 Loop는 가장 이른 invalidated prerequisite에서 시작합니다.
 - **adaptive dispatch** — Research reopening, replanning, bounded Work, Scope handling, recursion과 termination을 구분해 해당 owner로 보냅니다.
 - **bounded Review** — Review 내부의 verify/challenge/reconcile을 hidden recursion이나 fake Loop로 만들지 않습니다.
 
-이를 static checklist, reviewer-majority decision, 매번 full restart 또는 무조건적인 recursion trigger로 바꾸지 않습니다.
+이를 static checklist, reviewer-majority decision, intensity별 고정 critique 수, 매번 full restart 또는 무조건적인 recursion trigger로 바꾸지 않습니다.
