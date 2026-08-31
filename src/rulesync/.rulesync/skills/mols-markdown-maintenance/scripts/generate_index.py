@@ -100,10 +100,8 @@ def _collect_entries(
             for path in directory.glob(pattern):
                 if not path.is_file() or not _matches_extension(path, extensions):
                     continue
-                if (
-                    path.name == "INDEXING.md"
-                    or path.name.startswith("INDEX.")
-                    or path.name.startswith("__index__")
+                if path.name.upper().startswith("INDEX") or path.name.startswith(
+                    "__index__"
                 ):
                     continue
 
