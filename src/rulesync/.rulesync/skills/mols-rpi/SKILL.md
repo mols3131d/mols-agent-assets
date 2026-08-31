@@ -1,17 +1,11 @@
 ---
 name: mols-rpi
 description: >-
-  Run adaptive RPI work with explicit Research → Plan → Implementation prerequisites,
-  evidence-driven Review, and bounded serial recursion.
-  Use when the user requests RPI or RPI(R), loop/loops/loop it/루프, recursive loop/재귀 루프,
-  improvement loop/개선 루프, deep loop/심층 루프, or equivalent repeated research/planning/work/review or recursive improvement.
-  Also use without those words for complex multi-step work where a single pass is materially unreliable because the task needs evidence gathering or reconciliation before consequential decisions,
-  an explicit Plan before consequential Work, convergence across multiple acceptance conditions or coupled workstreams, repeated verification or likely replanning,
-  narrower subproblem resolution, or protection against costly rework from hidden assumptions or uncertainty.
-  When the active harness exposes a more task-specific workflow or controlling context that owns the task lifecycle, gates, state, or required procedure,
-  follow that owner as controlling and compose mols-rpi only where it is compatible and materially useful; do not replace, wrap, or override that owner with a competing RPI lifecycle.
-  Do not use when loop is merely the topic, identifier, or code concept being discussed, when the user only asks to repeat content without iterative work,
-  merely because a task is long, or for trivial work where explicit prerequisite artifacts add no meaningful control.
+  Run adaptive RPI orchestration with Research → Plan → Implementation/Work → Review prerequisites and review-driven iteration.
+  Use for RPI/RPI(R), loop/루프, recursive/재귀, improvement/개선, or deep/심층 loop intent.
+  Also use without those terms when a single pass is materially unreliable because consequential decisions need evidence, consequential Work needs a Plan, multiple acceptance conditions/workstreams must converge, repeated verification/replanning is likely, a narrower subproblem should be isolated, or uncertainty risks costly rework.
+  As a general orchestration Skill, prefer a more specific/dedicated harness Skill, workflow, or procedure that owns the task or lifecycle/gates/state; compose RPI only when compatible and useful, never as a competing replacement or authority override.
+  Do not use for topical/identifier/code uses of “loop”, generic repetition, length alone, trivial work, or bounded one-shot work where RPI prerequisite control adds no material value.
 targets:
   - claudecode
   - codexcli
