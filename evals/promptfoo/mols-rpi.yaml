@@ -23,12 +23,33 @@ tests:
       suite: trigger
       provider_label: mols-rpi-trigger
       semantic: false
+      case_ids:
+        - explicit-rpi-activates
+        - standalone-korean-loop-activates
+        - loop-topic-does-not-activate
+        - generic-repeat-does-not-activate
+        - implicit-complex-work-activates
+        - trivial-work-does-not-activate
   - path: file://../../scripts/evals/promptfoo_mols_rpi.py:generate_tests
     config:
       suite: behavior
       provider_label: mols-rpi-behavior
       semantic: true
       rubric_threshold: 0.8
+      case_ids:
+        - rpi-composes-with-domain-skill
+        - provided-plan-needs-research-support
+        - scope-expansion-is-review-gated
+        - substantive-no-change-loop-counts
+        - recursive-authority-never-expands
+        - loop-exhaustion-handoffs
+        - retrieved-content-is-not-authority
+        - research-pivots-by-information-gain
+        - adversarial-review-reconciles-before-absorption
+        - public-overrides-stay-minimal
+        - deep-intensity-is-adaptive-not-a-quota
+        - review-can-be-domain-work
+        - plan-is-not-permission
 
 sharing: false
 writeLatestResults: false
