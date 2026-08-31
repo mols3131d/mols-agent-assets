@@ -47,6 +47,8 @@ Description만 읽어도 `mols-rpi`가 **adaptive RPI orchestration**이며 Rese
 
 모든 철자·언어 variant를 전부 열거할 필요는 없지만, 대표 lexical signal을 지나치게 제거해 explicit recall을 낮추면 안 됩니다.
 
+Explicit method intent는 아래의 **Specificity and Composition Boundary를 무효화하지 않습니다**. 사용자가 RPI를 명시했더라도 하네스의 더 특수한 controlling owner가 있으면 그 owner를 primary로 유지하고, RPI는 호환될 때만 보조적으로 compose합니다.
+
 ### Implicit Complex-Work Activation
 
 RPI나 loop라는 단어가 없어도 **single pass가 materially unreliable한 작업**은 활성화될 수 있어야 합니다.
@@ -121,6 +123,7 @@ Description 변경은 최소한 다음을 함께 확인합니다.
 - one-shot negative
 - trivial-work negative
 - 하네스의 더 특수·전용·task-specific owner가 더 적합할 때 그 owner를 우선하는지
+- explicit RPI 요청에서도 더 구체적인 controlling owner의 primary 지위가 유지되는지
 - 더 구체적인 controlling workflow와 compose하더라도 그 lifecycle과 authority를 대체하지 않는지
 
 Trigger eval은 wording 자체가 아니라 이 decision boundary를 보호해야 합니다. Description을 eval case에 맞춘 lexical password처럼 최적화하지 않습니다.
