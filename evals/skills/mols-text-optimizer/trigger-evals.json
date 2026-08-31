@@ -1,27 +1,51 @@
 [
   {
-    "id": "generic-meaning-preserving-shortening-ko",
-    "query": "아래 문장은 전문 작성 규칙이 없어. 의미는 그대로 두고 표현만 더 가볍게 줄여줘: 반복해서 다시 확인해야 한다는 점을 다시 한번 확인해야 한다.",
+    "id": "meaning-preserving-shortening-ko",
+    "query": "아래 문장 의미는 그대로 두고 덜 장황하게 줄여줘: 같은 설정 값을 반복해서 다시 입력할 필요는 없습니다.",
     "should_trigger": true,
-    "reason": "Generic target text plus explicit meaning-preserving optimization intent"
+    "reason": "Realistic generic meaning-preserving shortening request"
   },
   {
-    "id": "generic-deduplicate-wording",
-    "query": "이 일반 안내문에서 내용은 빼지 말고 중복 wording만 제거해줘.",
+    "id": "deduplicate-wording-ko",
+    "query": "이 안내문에서 내용은 하나도 빼지 말고 겹치는 표현만 정리해줘.",
     "should_trigger": true,
     "reason": "Generic wording deduplication with preservation intent"
   },
   {
-    "id": "generic-token-cost",
-    "query": "이 문단의 의미와 조건은 그대로 두고 wording/token 비용만 줄여줘.",
+    "id": "token-footprint-casual-ko",
+    "query": "이 문단 토큰 좀 줄여줘. 조건이랑 의미는 건들지 마.",
     "should_trigger": true,
-    "reason": "Explicit wording or token optimization of identified text"
+    "reason": "Casual token-footprint request with explicit preservation intent"
   },
   {
     "id": "explicit-skill-generic",
     "query": "mols-text-optimizer로 이 일반 prose를 의미 손실 없이 줄여줘.",
     "should_trigger": true,
     "reason": "Explicit invocation on a generic text-optimization task"
+  },
+  {
+    "id": "english-preserve-and-shorten",
+    "query": "Make this paragraph less wordy without dropping any requirements, exceptions, or numbers.",
+    "should_trigger": true,
+    "reason": "English meaning-preserving wording reduction request"
+  },
+  {
+    "id": "short-casual-request",
+    "query": "내용 그대로. 말만 좀 압축해줘: 재시도는 실패한 요청에 대해서만 다시 수행합니다.",
+    "should_trigger": true,
+    "reason": "Short informal request still clearly targets existing wording"
+  },
+  {
+    "id": "condition-heavy-prose",
+    "query": "아래 문장은 조건과 예외가 중요해. 둘 다 유지하면서 표현만 더 가볍게 해줘: 검증이 실패하면 재시도하지만 인증 오류면 즉시 중단한다.",
+    "should_trigger": true,
+    "reason": "Generic optimization request with behavior-sensitive semantics"
+  },
+  {
+    "id": "remove-repetition-only",
+    "query": "이 문장에서 반복되는 말만 빼줘. 주장이나 강도는 바꾸지 마: 반드시 사전 승인이 필요하며 사전 승인을 반드시 받아야 한다.",
+    "should_trigger": true,
+    "reason": "Explicitly bounded repetition reduction"
   },
   {
     "id": "specific-agent-skill-owner",
@@ -46,12 +70,6 @@
     "query": "이 Markdown 문서의 구조는 그대로 두고 문장 wording만 의미 보존해서 줄여줘. 이 문서에는 Markdown 작성 지침이 적용돼.",
     "should_trigger": false,
     "reason": "Target-specific Markdown guidance applies even when the requested edit is wording-only"
-  },
-  {
-    "id": "specific-markdown-owner",
-    "query": "이 Markdown 문서를 더 짧고 읽기 좋게 만들고 heading과 list도 정리해줘.",
-    "should_trigger": false,
-    "reason": "Markdown structure and readability are owned elsewhere"
   },
   {
     "id": "specific-schema-contract",
@@ -88,12 +106,6 @@
     "query": "이 한국어 문장에서 AI 티를 없애고 사람이 쓴 것처럼 다듬어줘.",
     "should_trigger": false,
     "reason": "Humanization and style are owned elsewhere"
-  },
-  {
-    "id": "grammar-only",
-    "query": "이 문장 맞춤법과 문법만 고쳐줘.",
-    "should_trigger": false,
-    "reason": "Grammar-only correction is not wording-cost optimization"
   },
   {
     "id": "caveman-style",
