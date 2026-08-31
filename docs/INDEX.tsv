@@ -21,7 +21,7 @@ references/agent-assets/common/naming.md	flat namespace에서 관리 편의와 �
 references/agent-assets/skills/	
 references/agent-assets/skills/skill-authoring-conventions.md	Agent Skill을 작성·리팩터링할 때 공통 표준·작성 프레임워크·target contract 이후에도 적용되는 mols의 package, description, context와 metadata 관행을 확인할 때 사용합니다.
 references/agent-assets/skills/specification.md	Agent Skills 작업에서 공통 표준, 작성 프레임워크, 대상별 확장과 creator guidance의 현재 공식 원본을 concern별로 찾는 registry입니다.
-references/tooling/	외부 tooling과 specification의 authority routing, integration knowledge와 중복 경계를 찾을 때 사용하는 directory entrypoint입니다.
+references/tooling/	이 repository와 다른 repository에서 반복해서 참고·적용할 reusable knowledge를 찾고 선택할 때 사용하는 entrypoint입니다.
 references/tooling/front-matter-cms.md	Front Matter CMS 설정, 공식 옵션, frontmatter.json 변경 근거를 확인할 때 사용합니다.
 references/tooling/github-sensitive-data-removal-runbook.md	GitHub repository에 노출된 회전·폐기 불가능한 민감정보를 Git history rewrite, GitHub 저장면 정리, fork/clone 대응과 Support purge까지 최대한 제거할 때 사용하는 재사용 런북입니다.
 references/tooling/mise.md	이 저장소에서 tool version·task entrypoint를 어디에 고정할지, mise와 uv의 ownership을 어떻게 나눌지 확인하거나 setup·check·test·format 명령을 찾을 때 사용합니다.
@@ -48,6 +48,7 @@ skills/mols-markdown-maintenance/	mols-markdown-maintenance를 변경하거나 �
 skills/mols-mermaid/	mols-mermaid family에서 관계·절차·구조는 diagram, 정량 비교·추세·구성은 chart 중 어느 Skill로 라우팅할지 판단하거나 family boundary를 유지보수할 때 사용하는 entrypoint입니다.
 skills/mols-rpi/	mols-rpi를 유지보수할 때 prerequisite contract, adaptive Research·Plan·Work·Review, intensity와 artifact 결정을 찾는 entrypoint입니다.
 skills/mols-rpi/artifacts.md	RPI artifact의 배치, persistence, durable continuation과 lifecycle을 설계하거나 변경할 때 보존해야 할 결정사항을 정리한 maintainer 문서입니다.
+skills/mols-rpi/description.md	mols-rpi frontmatter description의 Trigger·routing 필수 신호, 보조 신호와 1,024자 압축 경계를 유지보수할 때 사용하는 문서입니다.
 skills/mols-rpi/evaluation.md	mols-rpi의 Trigger와 Behavior eval을 분리해 설계하고 Promptfoo fixture·provider·grader·runtime evidence를 유지보수할 때 사용하는 문서입니다.
 skills/mols-rpi/rpi-intensity.md	RPI의 light·standard·deep intensity가 adaptive effort를 어떻게 bias하면서 prerequisite와 safety를 보존하는지 정리한 maintainer 문서입니다.
 skills/mols-rpi/rpi-plan.md	Adaptive recursive RPI에서 Plan의 prerequisite, coverage, delta replanning과 downstream Work transition을 보존하는 maintainer 문서입니다.
