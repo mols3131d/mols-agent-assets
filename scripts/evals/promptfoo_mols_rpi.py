@@ -285,9 +285,8 @@ def _route(prompt: str, skill: str) -> tuple[dict, str] | dict:
     schema_text = json.dumps(TRIGGER_RESPONSE_SCHEMA, ensure_ascii=False)
     system = (
         "Classify whether this user request should activate one Agent Skill using only the discovery "
-        "metadata below. Do not use the Skill body. Distinguish explicit method intent and materially "
-        "matching complex work from topical mentions, identifiers, code concepts, generic repetition, "
-        "length alone, and trivial work according to the metadata.\n\n"
+        "metadata below. Do not use the Skill body or infer activation from the Skill name or an isolated "
+        "keyword alone. Apply the positive use conditions and negative boundaries expressed by the metadata.\n\n"
         "Return only JSON matching this schema exactly:\n"
         f"{schema_text}\n\n"
         f"<skill-metadata>\n{_skill_frontmatter(skill)}\n</skill-metadata>"
