@@ -74,13 +74,13 @@ Description은 적어도 다음 decision signal을 전달해야 합니다.
 
 Negative boundary는 explicit trigger recall과 같은 수준으로 중요합니다. 강한 orchestration Skill의 false positive는 불필요한 artifact, Research, Plan과 Review를 만들어 추론비용과 작업비용을 높일 수 있습니다.
 
-### Composition Boundary
+### Specificity and Composition Boundary
 
-더 구체적인 workflow 또는 governing context가 task lifecycle, gates, state 또는 required procedure를 소유하면 그 owner가 controlling이어야 합니다.
+`mols-rpi`는 **범용 orchestration Skill**입니다. 하네스에 현재 작업을 더 직접적으로 다루는 특수·전용·task-specific Skill, workflow 또는 governing procedure가 있으면 그 owner를 우선 선택해야 합니다.
 
-`mols-rpi`는 compatible하고 materially useful할 때 compose할 수 있지만, 그 owner의 lifecycle을 경쟁적으로 대체하거나 권한을 덮어쓰면 안 됩니다.
+특히 그 owner가 task lifecycle, gates, state 또는 required procedure를 소유하면 `mols-rpi`가 경쟁적인 대체 workflow가 되어서는 안 됩니다. RPI는 그 owner가 허용하고 실제로 도움이 되는 경우에만 보조적으로 compose하며, 더 구체적인 owner의 lifecycle이나 authority를 대체하거나 덮어쓰지 않습니다.
 
-이 경계가 사라지면 RPI가 task-specific workflow를 과도하게 감싸거나 orchestration authority를 탈취할 수 있으므로 Tier 1입니다.
+이 경계가 사라지면 범용 RPI가 더 정확한 전용 capability 대신 과도하게 선택되거나 orchestration authority를 탈취할 수 있으므로 Tier 1입니다.
 
 ## Tier 2 — Supporting
 
@@ -106,7 +106,7 @@ Tier 2를 제거할 때는 단순 token 절감이 아니라 **routing signal den
 4. Tier 1을 삭제해야만 1,024자를 맞출 수 있다면 표현 구조를 다시 설계합니다. Required signal을 body로 넘겨 budget을 맞추지 않습니다.
 5. 마지막에 semantic line break를 정리하고 parsed length를 다시 계산합니다.
 
-짧아졌지만 모델이 implicit activation, negative boundary 또는 composition owner를 더 많이 추론해야 한다면 성공한 압축이 아닙니다.
+짧아졌지만 모델이 implicit activation, negative boundary 또는 더 구체적인 owner의 우선권을 더 많이 추론해야 한다면 성공한 압축이 아닙니다.
 
 ## Validation
 
@@ -120,7 +120,8 @@ Description 변경은 최소한 다음을 함께 확인합니다.
 - long-but-one-pass negative
 - one-shot negative
 - trivial-work negative
-- 더 구체적인 controlling workflow와의 composition boundary
+- 하네스의 더 특수·전용·task-specific owner가 더 적합할 때 그 owner를 우선하는지
+- 더 구체적인 controlling workflow와 compose하더라도 그 lifecycle과 authority를 대체하지 않는지
 
 Trigger eval은 wording 자체가 아니라 이 decision boundary를 보호해야 합니다. Description을 eval case에 맞춘 lexical password처럼 최적화하지 않습니다.
 
