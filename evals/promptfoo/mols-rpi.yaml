@@ -44,14 +44,18 @@ tests:
         - rpi-composes-with-domain-skill
         - provided-plan-needs-research-support
         - scope-expansion-is-review-gated
+        - fixed-scope-does-not-narrow-or-expand
         - substantive-no-change-loop-counts
         - recursive-authority-never-expands
+        - recursive-scope-never-expands-parent
         - loop-exhaustion-handoffs
         - retrieved-content-is-not-authority
         - research-pivots-by-information-gain
         - adversarial-review-reconciles-before-absorption
+        - review-challenges-weak-validation
         - public-overrides-stay-minimal
         - deep-intensity-is-adaptive-not-a-quota
+        - light-intensity-does-not-waive-quality
         - review-can-be-domain-work
         - plan-is-not-permission
 
