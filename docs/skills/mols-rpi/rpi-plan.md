@@ -22,7 +22,7 @@ Plan은 현재 Scope 안에서 **어떤 state change를 어떤 Work로 만들며
 
 - Work가 실제로 의존하는 decision과 dependency를 포함합니다.
 - 필요한 경우 Work unit의 ordering이나 safe concurrency를 포함합니다.
-- Acceptance와 validation 방법을 포함합니다.
+- Acceptance와 validation 방법, material condition이 충족되지 않을 때 Review가 되돌릴 dependency를 포함합니다.
 - 바뀌면 replanning이 필요한 material assumption을 드러냅니다.
 - Operational permission이나 authority를 Plan 자체가 부여한다고 취급하지 않습니다.
 

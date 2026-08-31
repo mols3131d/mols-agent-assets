@@ -56,10 +56,11 @@ Core runtime selection은 다음 축에서 대표 case를 고릅니다.
 - task-specific Skill 또는 governing workflow와의 composition
 - Research → Plan → Work prerequisite
 - Scope narrowing·expansion과 fixed boundary
-- Loop accounting과 handoff
+- Goal-directed loop intent, completion gate, observable Review state와 handoff
 - recursion의 strict-subset Scope와 authority
 - retrieved evidence와 operational authority
-- adaptive Research와 Review challenge reconciliation
+- adaptive multi-perspective Research와 Review challenge reconciliation
+- perspective diversity, actual independence와 consensus/majority의 구분
 - public override와 intensity
 - domain Work와 RPI orchestration stage 구분
 
@@ -70,7 +71,7 @@ Core runtime selection은 다음 축에서 대표 case를 고릅니다.
 Behavior output에는 두 종류의 assertion을 적용합니다.
 
 1. **Output contract** — 빈 응답 같은 plumbing failure를 deterministic하게 차단합니다.
-2. **Behavior contract** — fixture의 repository-owned assertions를 `llm-rubric`으로 평가합니다.
+1. **Behavior contract** — fixture의 repository-owned assertions를 `llm-rubric`으로 평가합니다.
 
 Rubric은 다음을 지킵니다.
 
@@ -136,6 +137,7 @@ Default suite는 비용과 signal을 균형 있게 유지하고, 더 넓은 case
 1. assertion은 observable behavior와 금지 behavior를 적고, 특정 문구나 구현 세부에 과적합하지 않습니다.
 1. Trigger case는 positive와 negative/near-miss 균형을 확인합니다.
 1. Behavior case는 outcome을 우선하고, trajectory 자체가 contract일 때만 중간 gate를 assertion으로 둡니다.
+1. Multi-perspective case는 distinct question·evidence surface와 reconciliation을 검사하고 reviewer 수, persona 이름, exact lens roster나 다수결을 정답으로 고정하지 않습니다.
 1. 반복된 runtime failure가 안정적인 contract로 확인된 경우 regression defense로 승격합니다.
 
 Fixture를 target runtime에 노출하지 않습니다. Target provider는 prompt와 실제 Skill contract만 보고, assertion은 grading 단계에서만 사용합니다.

@@ -24,12 +24,15 @@ Persistent RPI artifact는 별도 toggle 없이 **resume 가능한 working state
 - Goal과 Scope
 - 완료·현재·남은 Work
 - material decision과 validation 상태
+- 적용한 material perspective와 아직 열려 있는 lens·conflict
 - blocker와 residual uncertainty
 - 사용자 지정 active intensity처럼 continuation에 필요한 control state
 - freshness를 확인할 기준점
 - 다음 시작점과 필요한 reference
 
 모든 항목을 항상 기록하지 않고, 다음 실행의 재탐색 비용과 의미 손실을 줄이는 최소 상태만 유지합니다.
+
+Substantive Review가 닫힐 때는 별도 상세 log 대신 누적 Loop, acceptance 상태, material gap과 다음 transition을 observable하게 남깁니다. Existing surface가 같은 상태를 이미 소유하면 새 artifact를 만들지 않고 그 surface를 갱신하거나 reference합니다.
 
 ## Placement
 

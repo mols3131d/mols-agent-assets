@@ -28,6 +28,7 @@ Use **Research → Plan → Implementation → Review** as an artifact dependenc
 - **Implementation / Work** — goal-directed execution of the accepted Plan, not code-only implementation. It may contain **one or more domain Work units** such as code, documents, research, planning, review, analysis, decisions, configuration, or tool actions.
 - **Stage vs. Work** — Work named Research, Plan, or Review does not replace the corresponding RPI orchestration stage. For example, review Work is followed by outer RPI Review of whether that review was sufficiently grounded, complete, and accepted.
 - **Terminal depth** — dependencies are directional, so not every downstream stage is always required. Stop at RPI Research or RPI Plan only when that **orchestration stage itself** is the requested terminal result. Do not infer stage-only terminal merely because domain Work is research, planning, or review; it may instead run as Work under an accepted Plan and then outer Review.
+- **Loop-method terminal** — an unqualified request to run a loop, research loop, improvement loop, or equivalent iterative method means a Goal-directed Run, not permission to stop after one pass. One Loop may still be sufficient when Review accepts the requested Goal.
 
 ## Invariants
 
@@ -40,6 +41,7 @@ These are stop conditions, not suggestions. Later sections own their detailed me
 - **Recursion never widens control.** A child Scope is a strict subset of its parent and may inherit or narrow authority, never expand it.
 - **Prerequisite order is real.** Retrospective Research or Plan cannot make earlier Work compliant after the fact.
 - **Intensity is not authority.** It may bias effort but never weakens prerequisites, acceptance conditions, Scope, safety, validation truthfulness, or Loop ceilings, and never requires artificial work after convergence.
+- **Open material gaps block completion.** Do not park a result-changing `absorb` or `unresolved` finding, an unverified acceptance condition, or a dispatched gap as future work while declaring the Run complete. Continue at the earliest stale prerequisite when the Run can proceed; otherwise use the applicable HANDOFF or BLOCKED boundary.
 
 ## Controls
 
@@ -93,6 +95,8 @@ One **Loop** is one substantive attempt from the earliest prerequisite that must
 - `Implementation → Review` for a bounded fix already covered by a valid Plan
 - `Research → Review` when RPI Research itself is the requested terminal result
 
+Explicit loop-method intent defaults to a Goal-directed Run unless the user or governing context names the RPI Research or RPI Plan stage itself as terminal. A phrase such as "research loop" ordinarily names iterative domain research, so it is not by itself an RPI Research-stage terminal. The first Review is not an implicit Run boundary.
+
 A substantively distinct attempt consumes one Loop when it reaches Review, even if Review concludes nothing should change, a hypothesis failed, or work saturated.
 A no-change Loop is valid when real investigation or validation closed uncertainty or established a blocker/saturation condition.
 Mechanical edits, reporting, artifact formatting, repeated evidence, and no-op churn are not Loops and must not be repeated to simulate progress.
@@ -117,6 +121,22 @@ Intensity is an **effort prior** for material questions. It biases Research brea
 Adapt locally to evidence, risk, reversibility, uncertainty, and information gain. `deep` never requires extra Loops, source counts, recursive children, or ceremonial work after convergence/saturation; `light` never skips a genuine prerequisite, material acceptance check, required validation, safety gate, or result-changing unresolved risk. When several paths are sufficient, prefer the one matching requested intensity.
 
 Intensity changes apply prospectively and alone do not stale valid Research, Plan, or Work. A child inherits the active intensity as a bias and may adapt within it to its narrower question, but intensity never expands child Scope/authority or resets Run accounting.
+
+### Perspective Control
+
+Use multi-perspective inquiry when the user requests it or when a consequential, contested, underdetermined, or perspective-sensitive question could be misjudged from one material lens.
+
+A perspective is a distinct decision-relevant question or failure lens, not a persona, source count, agent count, vote, or paraphrase. Select the smallest set likely to change Research, Plan, acceptance, or verification. For each selected perspective preserve only:
+
+- the material question, assumption, or failure it tests
+- the evidence and authority surface suited to that question
+- how its result could change a downstream decision or acceptance
+
+Choose lenses from the task rather than a universal roster. Useful candidates may differ by stakeholder, time horizon, system boundary, competing cause or hypothesis, user outcome, failure or regression mode, safety or authority, and operability or maintainability. These are examples, not a checklist.
+
+When practical, obtain each perspective's initial evidence or candidate findings before cross-comparison so an early view does not erase useful disagreement. Do not claim independent review unless the contexts or evidence paths were actually isolated. A single agent may use explicit, role-separated sequential passes; multiple agents or parallel tools are optional execution capabilities, not a semantic requirement. Their outputs remain candidate evidence, and the active RPI lead retains reconciliation and transition ownership.
+
+Reconcile perspectives by claim quality, source fit, directness, freshness, independence where established, and reproducibility—not consensus or majority. Merge duplicates by claim or root cause, preserve evidence-backed disagreement and result-changing unknowns, and stop adding lenses when another one has no credible material information gain.
 
 ### Scope Control
 
@@ -156,7 +176,8 @@ Research Artifact
 - Goal
 - Active Scope: in / out / acceptance
 - Material questions / decision points
-- Evidence / sources
+- Perspective coverage / omitted material lenses, when applicable
+- Evidence / sources by claim or perspective
 - Findings / counterevidence / conflicts
 - Residual uncertainty / assumptions
 
@@ -164,12 +185,13 @@ Plan Artifact
 - Based on: <Research Artifact + Active Scope>
 - Goal / scope
 - Decisions / Work units / material dependencies, ordering, or concurrency
-- Acceptance / validation
+- Material assumptions that would force replanning
+- Acceptance conditions / validation method / Review transition when unmet
 
 Review Artifact
 - Reviewed: <result + prerequisite artifacts>
 - Validation evidence
-- Material challenge candidates + disposition / evidence basis, if any
+- Material perspective checks and challenge candidates + disposition / evidence basis, if any
 - Scope delta or pending expansion, if any
 - Deviations / gaps
 - Next transition / status
@@ -205,6 +227,8 @@ Research is **adaptive evidence search**, not a fixed checklist or caller-set so
 
 Start with the smallest material questions/assumptions whose answers could change the decision, Scope, Plan, Review, acceptance condition, or verification claim. Choose each next evidence action by expected information gain. Stage-local evidence moves do not increment `loops_used`; accounting changes only when substantive Review closes.
 
+When Perspective Control applies, form the smallest perspective map before committing to one evidence path. Give each selected lens a distinct material question, suitable evidence surface, and result-changing implication; then search within or across lenses adaptively. Distinguish perspective diversity from source independence: several sources can repeat one viewpoint, and one source can contain several viewpoints. Do not claim independent confirmation without genuinely independent evidence.
+
 Do not turn stage-local search into a hidden Loop. Bound it by expected information gain and task/runtime budget. If a material question remains open but further search is unavailable or disproportionate, preserve the uncertainty and reach Review.
 
 After material evidence, update Research state and choose deliberately:
@@ -214,6 +238,7 @@ After material evidence, update Research state and choose deliberately:
 | **broaden** | The landscape or plausible alternatives remain unclear. |
 | **deepen** | A high-value lead needs stronger direct evidence. |
 | **challenge** | A consequential conclusion rests on a material assumption, one evidence path, or plausible competing explanation. |
+| **diversify** | A missing material perspective, method, stakeholder, horizon, boundary, or failure lens could change the downstream result. |
 | **switch** | Current source/tool/query/perspective is low-yield, repetitive, or biased toward the same evidence. |
 | **stop** | Remaining uncertainty cannot materially change the downstream decision/acceptance/verification, or another search has no credible gain. |
 
@@ -258,7 +283,11 @@ These are Review-local operations, not Loops. Do not recursively restart Challen
    Record a concise evidence basis for every material disposition; never discard a finding merely because its proposed remedy is poor or inconvenient.
 1. **Dispatch.** Record only material deviations, gaps, regressions, unresolved uncertainty, Scope deltas/proposals, result-changing dispositions, and next owner. Reviewer majority, rhetoric, or repetition never substitutes for evidence.
 
-Do not accept a terminal result while an `absorb` finding needs unverified change or an `unresolved` material candidate can change acceptance. Route to the earliest stale prerequisite/owner; if no trustworthy path exists, classify the Run as blocked.
+When Perspective Control applies, use the selected lens set for distinct Review passes before reconciliation. Each pass tests its own material question or failure condition; it does not merely restate a general critique. Preserve actual isolation when available, otherwise use role-separated sequential passes without claiming independence. Reconcile all candidate findings once, after the passes, using the same evidence and disposition contract.
+
+Dispatch is executable Run state, not a suggestion for an unspecified future attempt. Route every material `absorb` or acceptance-relevant `unresolved` finding to the earliest stale prerequisite or owning control. If the Run can continue, begin the next Loop there; do not describe a pending "next Loop" while marking the current Run complete.
+
+Do not accept a terminal result while an `absorb` finding needs unverified change, an `unresolved` material candidate can change acceptance, an acceptance condition is unverified, or Review has dispatched a material gap. If no trustworthy continuation path exists, classify the Run as blocked; if the effective Loop ceiling is reached with material continuation remaining, hand off without claiming completion.
 
 | Review finding | Owner |
 | --- | --- |
@@ -281,7 +310,7 @@ A lower tier does not prove a higher-tier claim; never report unperformed checks
 At material Reviews, focus on the smallest useful set of Goal, Active Scope, current state, remaining material gaps, supporting/counterevidence, unresolved challenge candidates, and unresolved uncertainty.
 
 Continue only when another Loop has a credible path to material information gain, uncertainty reduction, verified quality gain, or acceptance closure. Repeated activity without such gain is saturation.
-When saturated, change evidence source/method/perspective or narrow Active Scope when permitted/useful. If continuation requires broader Scope, delegate to Scope Control; if a material gap remains with no valid path, classify it as blocked for Run Boundary and Handoff. Never invent findings, depth, or churn to consume the ceiling.
+Saturation in one source, method, or perspective is not overall saturation when an unexamined material lens has a credible result-changing path. Otherwise change evidence source/method/perspective or narrow Active Scope when permitted/useful. If continuation requires broader Scope, delegate to Scope Control; if a material gap remains with no valid path, classify it as blocked for Run Boundary and Handoff. Never invent findings, depth, or churn to consume the ceiling.
 
 ### Recursive Resolution
 
@@ -303,7 +332,7 @@ Every descent is Review-gated, shares current Run/Loop accounting, and never cre
 
 Return only new evidence, decision/resolved finding, parent Research/Scope/Plan impact, and unresolved limitations. Pop the child and revalidate affected parent artifacts; child results never automatically override stronger parent evidence, Scope, or authority.
 
-Use perspective switching—not pretend multi-agent debate—when another viewpoint helps but no narrower subproblem exists. Adversarial perspectives still produce candidate findings subject to Review reconciliation.
+Use Perspective Control—not recursive descent or pretend multi-agent debate—when another viewpoint helps but no narrower independently resolvable subproblem exists. Adversarial perspectives still produce candidate findings subject to Review reconciliation.
 
 ### Run Boundary and Handoff
 
@@ -328,6 +357,8 @@ Infer terminal result from natural-language task intent and governing context:
 - explicit **RPI Plan stage** terminal → Research + Plan + Review
 - domain research/plan/review deliverable → may be Work, so Plan-before-Work and outer RPI Review still apply
 - Goal requested → continue until Goal is accepted
+
+`COMPLETE` requires all of the following at the closing Review: the requested terminal is accepted, applicable acceptance conditions are verified, no result-changing `absorb` or `unresolved` finding remains, and no material next transition is pending. When any condition is open and continuation is available, start the next Loop at the earliest stale prerequisite. A label such as "first Loop complete" may describe accounting, but must not imply Run completion while acceptance remains open.
 
 Reaching the effective ceiling with material Work remaining is a **continuation boundary**, not proof of Goal failure.
 
@@ -360,3 +391,13 @@ Never report COMPLETE while a known material gap still requires broader Research
 
 Reporting cadence is not an RPI argument; follow higher-priority harness behavior and explicit user instructions. Keep material blockers, handoff state, and terminal outcome observable when the environment permits.
 Report only observable evidence, decisions, Work, validation, Scope changes, Loop counts, handoff, and outcomes; do not narrate hidden reasoning.
+
+At each substantive Review close and terminal boundary, expose the minimum state below or reference an equivalent established surface. Do not emit it for every search or tool action.
+
+```text
+RPI State
+- Loop: <loops_used>/<effective ceiling>
+- Acceptance: <open | accepted>
+- Material gaps: <result-changing gaps | none>
+- Next: <Research | Plan | Work | COMPLETE | HANDOFF | BLOCKED>
+```

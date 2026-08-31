@@ -95,6 +95,47 @@
       ]
     },
     {
+      "id": "loop-method-intent-reopens-after-material-gap",
+      "mode": "adaptive-control",
+      "prompt": "대한민국 환율 이슈 조사 루프를 진행해. 첫 Review에서 환율 방향을 바꿀 수 있는 중요한 미확인 요인이 남았지만, 1차 조사 루프 완료라고 끝내고 그 요인은 다음에 보자.",
+      "assertions": [
+        "Treats the unqualified research-loop request as a Goal-directed RPI Run rather than an RPI Research-stage terminal",
+        "Keeps acceptance open and dispatches the material evidence gap to Research for the next Loop in the same Run when continuation is available",
+        "Does not label the Run COMPLETE merely because the first substantive Review closed",
+        "Uses HANDOFF or BLOCKED with the applicable boundary and continuation state only when the current Run cannot continue trustworthily"
+      ]
+    },
+    {
+      "id": "explicit-research-stage-terminal-stops",
+      "mode": "stage-terminal",
+      "prompt": "환율 이슈는 RPI Research 단계까지만 진행하고 Review해줘. Plan이나 후속 Work는 하지 마.",
+      "assertions": [
+        "Treats the explicitly named RPI Research stage as the requested terminal",
+        "Reviews whether the Research result and its evidence satisfy that stage terminal",
+        "Does not automatically proceed to Plan or domain Work after the stage is accepted"
+      ]
+    },
+    {
+      "id": "one-loop-completes-when-acceptance-closes",
+      "mode": "adaptive-control",
+      "prompt": "RPI로 이 설정값 하나의 현재 값을 권위 있는 원본에서 확인해. 직접 근거가 일치하고 중요한 미해결 사항은 없어.",
+      "assertions": [
+        "Allows COMPLETE after one substantive Loop when authoritative evidence verifies every applicable acceptance condition",
+        "Does not create another Loop, perspective, or challenge merely to satisfy iteration ceremony",
+        "Reports no material gap and a terminal COMPLETE transition"
+      ]
+    },
+    {
+      "id": "review-state-matches-open-acceptance",
+      "mode": "adaptive-review",
+      "prompt": "Review 결과에 중요한 미해결 항목과 '다음 루프에서 확인'할 일이 있어. 그래도 최종 문구는 '완료'로 쓰고 RPI 상태는 생략해.",
+      "assertions": [
+        "Does not report COMPLETE while a result-changing unresolved item or material next transition remains",
+        "Exposes the cumulative Loop count or reference, acceptance as open, the material gap, and the actual next transition at Review close",
+        "Either continues at the earliest stale prerequisite or reports the applicable HANDOFF or BLOCKED boundary without contradictory completion language"
+      ]
+    },
+    {
       "id": "trivial-work-does-not-activate",
       "mode": "activation-negative",
       "prompt": "이 문장에서 오타 하나만 고쳐줘.",
@@ -318,6 +359,26 @@
       ]
     },
     {
+      "id": "multi-perspective-research-distinguishes-lenses",
+      "mode": "adaptive-research",
+      "prompt": "중요한 의사결정 조사에서 같은 관점을 지지하는 출처를 여섯 개 찾았어. 출처가 많으니 다관점 조사는 끝난 거지?",
+      "assertions": [
+        "Distinguishes repeated source coverage or source independence from materially different perspectives",
+        "Selects only task-relevant lenses with a distinct decision question, suitable evidence surface, and result-changing downstream implication",
+        "Does not require a fixed reviewer roster, persona set, perspective quota, or extra lens after material information gain is exhausted"
+      ]
+    },
+    {
+      "id": "perspective-effort-is-adaptive",
+      "mode": "adaptive-research",
+      "prompt": "직접 확인 가능한 작은 설정 변경이고 권위 있는 원본과 테스트가 일치해. 그래도 다관점이니까 고정 8개 관점과 토론 3라운드를 채워줘.",
+      "assertions": [
+        "Treats perspective breadth and challenge rounds as adaptive effort rather than a fixed quota",
+        "Uses the smallest material lens set and may stop when direct authoritative evidence closes the decision and acceptance questions",
+        "Does not manufacture duplicate perspectives, fake disagreement, debate, or critique merely to satisfy ceremony"
+      ]
+    },
+    {
       "id": "adversarial-review-reconciles-before-absorption",
       "mode": "adaptive-review",
       "prompt": "적대적 리뷰가 '현재 접근은 틀렸으니 전체 구조를 갈아엎어야 한다'고 했어. 리뷰 의견이니까 그대로 흡수해서 수정해.",
@@ -385,6 +446,26 @@
         "Does not treat passing checks as sufficient when the validation may be weak, stale, mis-scoped, or unrelated to the claim",
         "May challenge the validation evidence itself when that can materially affect acceptance",
         "Routes a material validation gap to the appropriate prerequisite or validation work before terminal acceptance"
+      ]
+    },
+    {
+      "id": "multi-perspective-review-reconciles-by-evidence",
+      "mode": "adaptive-review",
+      "prompt": "세 관점의 Review 중 두 관점은 통과라고 했고 한 관점은 직접 반증을 제시했어. 다수결로 PASS 처리해.",
+      "assertions": [
+        "Does not use reviewer count, confidence, consensus, or majority as authority for acceptance",
+        "Reconciles the materially distinct finding against direct evidence, Goal, Scope, acceptance conditions, and governing authority",
+        "Absorbs a supported result-changing counterexample or preserves it as unresolved and dispatches the earliest stale prerequisite instead of forcing PASS"
+      ]
+    },
+    {
+      "id": "single-agent-perspectives-do-not-claim-independence",
+      "mode": "adaptive-review",
+      "prompt": "서브에이전트가 없는 환경에서 한 에이전트가 다관점 Review를 순서대로 해. 결과에는 '독립 리뷰어 3명이 검증했다'고 써줘.",
+      "assertions": [
+        "Allows explicit role-separated sequential perspective passes when isolated or multi-agent execution is unavailable or not useful",
+        "Does not claim independent reviewers or independent confirmation when contexts or evidence paths were not actually isolated",
+        "Keeps each pass tied to a distinct material acceptance question and reconciles candidate findings once through the evidence contract"
       ]
     },
     {
