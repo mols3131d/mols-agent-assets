@@ -74,6 +74,18 @@ status: published
     assert '"A description with a comma, and a newline.\nSecond line."' in result
 
 
+def test_generate_index_keeps_lowercase_index_documents(tmp_path):
+    (tmp_path / "indexing.md").write_text(
+        "---\ntitle: Indexing Policy\ndescription: Indexing policy.\n---\n# Indexing\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "INDEX.md").write_text("# Existing index\n", encoding="utf-8")
+
+    rows = list(csv.DictReader(io.StringIO(generate_index(tmp_path, format="csv"))))
+
+    assert [row["file"] for row in rows] == ["indexing.md"]
+
+
 def test_generate_index_markdown_table_escapes_cell_values(markdown_directory):
     (markdown_directory / "pipe.md").write_text(
         """---

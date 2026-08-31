@@ -23,8 +23,13 @@ def test_generate_docs_indexes_projects_directories_and_all_descendant_files(tmp
         docs / "guide.md",
         "---\ndescription: Guide description.\n---\n# Guide\n",
     )
+    _write(
+        docs / "indexing.md",
+        "---\ndescription: Indexing policy.\n---\n# Indexing\n",
+    )
     _write(docs / "ARCHITECTURE.md", "# Architecture\n")
     _write(docs / "README.md", "# Readme\n")
+    _write(docs / "INDEX.md", "# Existing index\n")
     _write(docs / "AGENTS.md", "# Agents\n")
     _write(docs / ".private.md", "# Hidden\n")
     _write(docs / "__system__.md", "# System\n")
@@ -50,6 +55,7 @@ def test_generate_docs_indexes_projects_directories_and_all_descendant_files(tmp
     assert _read_tsv(docs / "INDEX.tsv") == [
         {"path": "ARCHITECTURE.md", "description": ""},
         {"path": "guide.md", "description": "Guide description."},
+        {"path": "indexing.md", "description": "Indexing policy."},
         {"path": "references/", "description": "Reference docs."},
         {"path": "references/nested/", "description": "Nested references."},
         {"path": "references/nested/deep.md", "description": "Deep reference."},
@@ -125,36 +131,12 @@ def test_generate_docs_indexes_rejects_invalid_depths(tmp_path):
         generate_docs_indexes(docs, depth=-2)
 
 
-def test_generate_docs_indexes_directory_entry_falls_back_to_index(tmp_path):
+def test_generate_docs_indexes_uses_readme_only_for_directory_metadata(tmp_path):
     docs = tmp_path / "docs"
     _write(docs / "references" / "README.md", "# No frontmatter\n")
     _write(
         docs / "references" / "index.md",
-        "---\ndescription: Index fallback.\n---\n# Index\n",
-    )
-    _write(
-        docs / "references" / "guide.md",
-        "---\ndescription: Guide.\n---\n# Guide\n",
-    )
-
-    assert generate_docs_indexes(docs) == []
-
-    assert _read_tsv(docs / "INDEX.tsv") == [
-        {"path": "references/", "description": "Index fallback."},
-        {"path": "references/guide.md", "description": "Guide."},
-    ]
-    assert not (docs / "references" / "INDEX.tsv").exists()
-
-
-def test_generate_docs_indexes_directory_entry_precedence_does_not_merge(tmp_path):
-    docs = tmp_path / "docs"
-    _write(
-        docs / "references" / "README.md",
-        "---\ntitle: References\n---\n# Readme\n",
-    )
-    _write(
-        docs / "references" / "index.md",
-        "---\ndescription: Must not merge.\n---\n# Index\n",
+        "---\ndescription: Regular document, not directory metadata.\n---\n# Index\n",
     )
     _write(
         docs / "references" / "guide.md",
@@ -166,7 +148,12 @@ def test_generate_docs_indexes_directory_entry_precedence_does_not_merge(tmp_pat
     assert _read_tsv(docs / "INDEX.tsv") == [
         {"path": "references/", "description": ""},
         {"path": "references/guide.md", "description": "Guide."},
+        {
+            "path": "references/index.md",
+            "description": "Regular document, not directory metadata.",
+        },
     ]
+    assert not (docs / "references" / "INDEX.tsv").exists()
 
 
 def test_generate_docs_indexes_keeps_directory_without_entry_description_blank(tmp_path):
