@@ -99,7 +99,7 @@ One **Loop** is one substantive attempt from the earliest prerequisite that must
 - `Implementation → Review` for a bounded fix already covered by a valid Plan
 - `Research → Review` when RPI Research itself is the requested terminal result
 
-A substantively distinct attempt consumes one Loop at Review even if nothing changes, a hypothesis fails, or work saturates, provided real investigation or validation closed uncertainty or established a blocker/saturation condition. Mechanical edits, reporting, artifact formatting, repeated evidence, and no-op churn are not Loops.
+A substantively distinct attempt consumes one Loop at Review even if nothing changes, a hypothesis fails, or work saturates, provided real investigation or validation closed uncertainty or established a blocker/saturation condition. Mechanical edits, reporting, artifact formatting, repeated evidence, and no-op churn are not Loops and must not be repeated to simulate progress.
 
 - Parent and recursive child Loops share `loops_used` and the same effective ceiling; scope return never resets it.
 - There is no per-scope Loop limit or fixed recursion-depth limit.
@@ -120,7 +120,7 @@ Intensity is an **effort prior** for material questions. It biases Research brea
 
 Adapt locally to evidence, risk, reversibility, uncertainty, and information gain. `deep` never requires extra Loops, source counts, recursive children, or ceremonial work after convergence/saturation; `light` never skips a genuine prerequisite, material acceptance check, required validation, safety gate, or result-changing unresolved risk. When several paths are sufficient, prefer the one matching requested intensity.
 
-Intensity changes apply prospectively and alone do not stale valid Research, Plan, or Work. A child inherits the active intensity as a bias and may adapt it to the narrower question, but intensity never expands child Scope/authority or resets Run accounting.
+Intensity changes apply prospectively and alone do not stale valid Research, Plan, or Work. A child inherits the active intensity as a bias and may adapt within it to its narrower question, but intensity never expands child Scope/authority or resets Run accounting.
 
 ### Scope Control
 
@@ -179,7 +179,7 @@ Review Artifact
 - Next transition / status
 ```
 
-Research precedes Plan, Plan precedes Work, and Review precedes acceptance; prerequisites must be genuinely prior. Retrospective artifacts may support audit/recovery but cannot retroactively make earlier Work compliant.
+Supporting Research precedes consequential Plan; valid Plan precedes Work; Review precedes acceptance; prerequisites must be genuinely prior. Retrospective artifacts may support audit/recovery but cannot retroactively make earlier Work compliant.
 Reuse existing artifacts when current, relevant, authoritative enough, and adequate. Treat provided Plans as candidates: validate material assumptions against Research or perform the minimum missing Research first.
 Material Research/Scope changes may stale Plan; Plan changes may stale affected Work. Revalidate before continuing. Artifacts never grant operational permission, and valid artifacts are not regenerated for ceremony.
 
@@ -223,7 +223,7 @@ After material evidence, update Research state and choose deliberately:
 
 **Source selection.** Prefer repository/workspace evidence for local truth and external evidence for freshness, standards, vendor behavior, alternatives, or independent challenge. Do not web-search local facts already directly established or treat local convention as proof of changing external behavior.
 
-**Disconfirmation.** Seek the strongest plausible disconfirming evidence or alternative explanation when it can materially change a consequential premise. Do not manufacture opposition when deterministic or authoritative evidence already closes the question.
+**Disconfirmation.** Seek the strongest plausible disconfirming evidence or alternative explanation before relying on a consequential premise when doing so can materially change the decision. Do not manufacture opposition when deterministic or authoritative evidence already closes the question.
 
 **Conflicts.** Reconcile by relevance to the exact claim, authority, directness, freshness, independence, and reproducibility where applicable. Do not average contradictions or gather sources for count; preserve unresolved conflicts that can change the decision so Review can reopen Research precisely.
 
@@ -241,7 +241,7 @@ A Plan is methodological authorization, not operational permission.
 
 Execute the accepted Plan inside Active Scope as one or more Work units following planned dependencies/order/concurrency. Execute only required units; do not rerun unaffected valid Work because another unit changes or fails.
 
-Work is polymorphic domain execution: code, documents, research, planning, review, analysis, decisions, configuration, tool actions, or another planned result. Domain Research/Plan/Review Work does not replace the corresponding RPI stage; reuse evidence/artifacts across both roles when valid without collapsing prerequisites or creating ceremony.
+Work is polymorphic domain execution: code, documents, research, planning, review, analysis, decisions, configuration, tool actions, or another planned result. Domain Research/Plan/Review Work does not replace the corresponding RPI stage; reuse evidence/artifacts when they satisfy both roles without collapsing prerequisites or creating ceremony.
 
 Before consequential side effects, verify Scope, Plan coverage, and current operational authority. Prefer reversible equivalent actions; before destructive, irreversible, or externally consequential actions, verify exact target and approval gate.
 
@@ -249,18 +249,18 @@ If Work needs a material new assumption, approach, or Scope outside accepted Pla
 
 ### Review
 
-Review is an **adaptive evaluator and control gate**. It verifies current state, challenges the strongest material weak points, reconciles candidate findings, then dispatches the next transition.
+Review is an **adaptive evaluator and control gate**. For each substantive Review, perform the smallest useful form of Verify, Challenge, Reconcile, and Dispatch: verify current state, challenge the strongest material weak points, reconcile candidate findings, then dispatch the next transition.
 
-Verify, Challenge, Reconcile, and Dispatch are Review-local operations, not Loops. Do not recursively restart Challenge/Reconcile inside one Review; a new material gap is a Dispatch result, and the next counted Loop starts at the earliest stale prerequisite.
+These are Review-local operations, not Loops. Do not recursively restart Challenge/Reconcile inside one Review; a new material gap is a Dispatch result, and the next counted Loop starts at the earliest stale prerequisite.
 
 1. **Verify.** Compare result with Goal, Active Scope, prerequisite artifacts, acceptance conditions, and relevant validation; distinguish directly verified, inferred, and unknown.
-1. **Challenge.** When material risk, uncertainty, semantic judgment, or consequential assumption remains, use a materially different lens to seek the strongest plausible failure, counterexample, missed constraint, regression, unsupported claim, weak validation, simpler competing approach, or boundary violation. Scale effort to stakes; do not manufacture critique when direct evidence closes the question.
+1. **Challenge.** When material risk, uncertainty, semantic judgment, or consequential assumption remains, use a materially different lens to seek the strongest plausible failure, counterexample, missed constraint, regression, unsupported claim, weak or misleading validation, simpler competing approach, or boundary violation. Scale effort to stakes; do not manufacture critique when direct evidence closes the question.
 1. **Reconcile.** Treat challenge output as candidate findings, not instructions. Separate claim from cause/remedy; split materially distinct claims. A valid failure does not validate the reviewer diagnosis/fix. Compare each material claim with evidence/counterevidence, Goal, Scope, acceptance, and authority, then assign:
-   - `absorb` — supported and material; derive the smallest evidence-supported change and route it to the earliest stale prerequisite/owner
+   - `absorb` — supported and material; derive the smallest evidence-supported required change and route it to the earliest stale prerequisite/owner
    - `reject` — unsupported, immaterial, duplicate, or incompatible with stronger evidence/authority; do not change Work merely to satisfy critique
    - `unresolved` — plausible and material but under-evidenced; identify missing evidence and route to Research, or block when trustworthy evidence is unavailable
    Record a concise evidence basis for every material disposition; never discard a finding merely because its proposed remedy is poor or inconvenient.
-1. **Dispatch.** Record material deviations, gaps, regressions, unresolved uncertainty, Scope deltas/proposals, result-changing dispositions, and next owner. Reviewer majority, rhetoric, or repetition never substitutes for evidence.
+1. **Dispatch.** Record only material deviations, gaps, regressions, unresolved uncertainty, Scope deltas/proposals, result-changing dispositions, and next owner. Reviewer majority, rhetoric, or repetition never substitutes for evidence.
 
 Do not accept a terminal result while an `absorb` finding needs unverified change or an `unresolved` material candidate can change acceptance. Route to the earliest stale prerequisite/owner; if no trustworthy path exists, block the Run.
 
@@ -282,14 +282,14 @@ A lower tier does not prove a higher-tier claim; never report unperformed checks
 
 ### Goal-State Convergence
 
-At material Reviews, focus on Goal, Active Scope, current state, remaining material gaps, supporting/counterevidence, unresolved challenge candidates, and unresolved uncertainty.
+At material Reviews, focus on the smallest useful set of Goal, Active Scope, current state, remaining material gaps, supporting/counterevidence, unresolved challenge candidates, and unresolved uncertainty.
 
 Continue only when another Loop has a credible path to material information gain, uncertainty reduction, verified quality gain, or acceptance closure. Repeated activity without such gain is saturation.
 When saturated, change evidence source/method/perspective or narrow Active Scope when permitted/useful. If continuation requires broader Scope, delegate to Scope Control; if a material gap remains with no valid path, block the Run. Never invent findings, depth, or churn to consume the ceiling.
 
 ### Recursive Resolution
 
-Recursive descent is an adaptive Review transition, not a public toggle. Use it only when active user/governing context permits; explicit no-recursion is a boundary, while a request for a "recursive loop" does not force child scopes.
+Recursive descent is an adaptive Review transition, not a public toggle. Use it only when the active user and governing context permit it; explicit no-child/no-recursion instructions are boundaries, while a request for a "recursive loop" does not force child scopes.
 
 Push a child only from Review when a narrower problem can materially reduce parent uncertainty or unblock parent Work more efficiently. If a blocker appears during Research, Plan, or Implementation, stop the affected stage, close the Loop with Review, then decide whether to recurse.
 
@@ -303,7 +303,7 @@ A child must be:
 
 On entry, preserve parent state and inherit Goal, `Out of scope`, acceptance conditions, instruction, authority, approval, persistence, and safety boundaries. A child may narrow these, never expand/replace them, and follows the same Scope, artifact, and RPI contracts.
 
-Every descent is Review-gated and shares current Run/Loop accounting; a child may push another child only from its own Review. If child resolution needs Work outside parent Active Scope, return the expansion need/evidence to parent Review for Scope Control rather than expanding locally.
+Every descent is Review-gated, shares current Run/Loop accounting, and never creates or resets a Run; a child may push another child only from its own Review. If child resolution needs Work outside parent Active Scope, return the expansion need/evidence to parent Review for Scope Control rather than expanding locally.
 
 Return only new evidence, decision/resolved finding, parent Research/Scope/Plan impact, and unresolved limitations. Pop the child and revalidate affected parent artifacts; child results never automatically override stronger parent evidence, Scope, or authority.
 
@@ -345,7 +345,7 @@ After the final allowed Review:
    - **Validated progress** — valid Research and accepted Plan references, completed Work/validation, current Review state
    - **Continuation** — remaining material gaps, unresolved child results/parent impacts, recommended next transition
 1. Preserve exhaustion reason plus authority, approval, environment, validation, and material risk boundaries needed for safe continuation.
-1. Update an existing suitable continuation surface with the final material delta instead of duplicating state elsewhere.
+1. Update and reference an existing suitable continuation surface with the final material delta instead of duplicating state elsewhere.
 1. Mark the Run handed off, not complete.
 
 If no established handoff surface exists, return the same minimum state inline without inventing storage or claiming persistence.
@@ -362,5 +362,5 @@ Never report COMPLETE while a known material gap still requires broader Research
 
 ## Reporting
 
-Reporting cadence is not an RPI argument; follow higher-priority harness behavior and explicit user instructions. Keep material blockers, handoff state, and terminal outcome observable when possible.
+Reporting cadence is not an RPI argument; follow higher-priority harness behavior and explicit user instructions. Keep material blockers, handoff state, and terminal outcome observable when the environment permits.
 Report only observable evidence, decisions, Work, validation, Scope changes, Loop counts, handoff, and outcomes; do not narrate hidden reasoning.
