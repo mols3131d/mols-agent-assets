@@ -157,3 +157,37 @@ README에 둘 수 있는 것은 다음 조건을 모두 만족하는 작은 scop
 - README는 독립 책임이 약한 작은 scope-local rule과 entrypoint routing context를 위한 예외적 surface로만 사용합니다.
 - 같은 durable 의미를 여러 authored source가 병렬로 소유하지 않습니다.
 - 사람이 읽기 쉽고 agent가 discovery/routing하기 쉬운 구조를 함께 유지합니다.
+
+## RPI Work Result
+
+최종 구현은 계획보다 문서를 늘리지 않고 **owner 정합성과 중복 제거를 함께 개선하는 방향**으로 수렴했습니다.
+
+- `principles.md`를 독자 필요, 책임과 scope, progressive disclosure, authority, 신뢰성, discoverability, maintainability의 일곱 원칙으로 재구성했습니다.
+- 원칙의 label과 prose는 repository 언어 정책에 맞게 자연스러운 한국어 중심으로 다듬고, `Filesystem`, `search`, generator 같은 구체 implementation 예시는 원칙에서 제거했습니다.
+- `docs/documentation/README.md`에서는 authority·duplication 원칙의 중복 소유를 제거하고 working artifact·Git history·archive의 최소 entrypoint context만 남겼습니다.
+- 새 `writing.md`는 만들지 않았습니다. 일반 Markdown presentation은 `mols-markdown-for-human`, README-specific authoring은 `readme-authoring.md`, 언어는 `docs/language.md`가 계속 소유합니다.
+- `frontmatter.md`는 일반 frontmatter와 discovery metadata를 소유하고 README-specific scope metadata는 `readme-authoring.md`로 route하도록 축소했습니다.
+- `readme-authoring.md`가 `indexing.md`에 table column·generation·세부 중복 규칙까지 위임하던 과대 선언을 제거하고 index surface 선택 원칙만 route하도록 고쳤습니다.
+- `asset-maintainer-documentation.md`의 삭제된 `ownership.md`·`duplication-boundaries.md` 참조를 현재 canonical owner로 교체했습니다.
+- 같은 문서의 stale reserved namespace `document`를 현재 directory 이름인 `documentation`으로 바로잡았습니다.
+- `docs/INDEX.tsv`는 `principles.md`의 변경된 description만 source와 맞게 반영했습니다.
+
+## RPI Review
+
+`loops_used: 4`
+
+### Resolved Findings
+
+1. **원칙의 품질 축 부족** — 기존 ownership 중심 여섯 항목을 reader need·신뢰성·discoverability까지 포함하는 일곱 축으로 재구성했습니다.
+1. **원칙 문서의 implementation leakage** — 구체 generator·filesystem 예시를 제거하고 판단 기준만 남겼습니다.
+1. **README와 principles의 authority 중복** — repository-wide duplication/authority 판단은 `principles.md`로 모으고 README는 working knowledge의 최소 context만 유지했습니다.
+1. **삭제 문서 stale links** — `asset-maintainer-documentation.md`, `docs/README.md`, `docs/references/README.md`, `inbox/README.md`, handoff 후보의 참조를 현재 owner로 정리했습니다.
+1. **Indexing owner drift** — `indexing.md`가 실제로 소유하지 않는 generation·table-column 세부를 주변 문서가 위임하던 표현을 제거했습니다.
+1. **Frontmatter / README metadata 중복** — 일반 metadata contract와 README-specific scope metadata의 owner를 다시 분리했습니다.
+1. **Stale namespace** — `document` rename 잔재를 `documentation`으로 정정했습니다.
+
+### Convergence
+
+현재 구조에서는 새 독립 documentation surface를 추가해야 할 책임 gap이 발견되지 않았습니다. 특히 generic writing guidance는 새 문서보다 기존 Skill·language policy·README authoring의 조합이 더 KISS/DRY합니다.
+
+남은 검증은 final head의 PR Gate와 repository-local `generated-sync`입니다. PR Gate는 GitHub에서 확인하고, `mise run generated-sync`는 현재 chat runtime에서 직접 실행할 수 없으므로 확인하지 않았다고 유지합니다.
