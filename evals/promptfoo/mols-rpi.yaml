@@ -26,9 +26,13 @@ tests:
       case_ids:
         - explicit-rpi-activates
         - standalone-korean-loop-activates
+        - implicit-complex-work-activates
+        - equivalent-iterative-method-activates
         - loop-topic-does-not-activate
         - generic-repeat-does-not-activate
-        - implicit-complex-work-activates
+        - long-one-pass-task-does-not-activate
+        - loop-identifier-in-task-does-not-activate
+        - single-review-request-does-not-activate
         - trivial-work-does-not-activate
   - path: file://../../scripts/evals/promptfoo_mols_rpi.py:generate_tests
     config:
