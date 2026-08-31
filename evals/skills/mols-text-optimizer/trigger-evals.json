@@ -27,13 +27,19 @@
     "id": "specific-agent-skill-owner",
     "query": "이 Agent Skill의 description과 instruction을 더 짧게 최적화해줘. 이 저장소의 Agent Asset 작성 지침을 따라야 해.",
     "should_trigger": false,
-    "reason": "A more specific Agent Asset authoring owner governs the change"
+    "reason": "A more specific Agent Asset authoring owner applies to the target"
   },
   {
     "id": "specific-agent-skill-explicit-generic-name",
     "query": "mols-text-optimizer를 써서 이 Agent Skill을 줄여줘. 다만 적용되는 Agent Asset 작성 규칙은 그대로 따라야 해.",
     "should_trigger": false,
     "reason": "Explicit invocation does not override a more specific applicable owner"
+  },
+  {
+    "id": "specific-markdown-wording-only",
+    "query": "이 Markdown 문서의 구조는 그대로 두고 문장 wording만 의미 보존해서 줄여줘. 이 문서에는 Markdown 작성 지침이 적용돼.",
+    "should_trigger": false,
+    "reason": "Target-specific Markdown guidance applies even when the requested edit is wording-only"
   },
   {
     "id": "specific-markdown-owner",
@@ -45,7 +51,13 @@
     "id": "specific-schema-contract",
     "query": "이 OpenAPI schema 설명을 줄여줘. 프로젝트의 API description 규칙과 schema contract가 적용돼.",
     "should_trigger": false,
-    "reason": "A target-specific contract governs how the text may change"
+    "reason": "A target-specific contract applies to the target"
+  },
+  {
+    "id": "specific-policy-guidance",
+    "query": "이 정책 문장을 의미 손실 없이 줄여줘. 이 정책 문서의 canonical writing guidance가 따로 있어.",
+    "should_trigger": false,
+    "reason": "Document-specific canonical guidance takes precedence over the generic optimizer"
   },
   {
     "id": "generic-response-brevity",
