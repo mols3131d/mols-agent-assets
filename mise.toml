@@ -64,5 +64,13 @@ description = "mols-rpi Promptfoo fixture smoke를 local에서 실행"
 run = "npm run eval:promptfoo:mols-rpi:smoke"
 
 [tasks.eval-mols-rpi]
-description = "mols-rpi Promptfoo runtime evaluation을 local에서 실행"
+description = "mols-rpi Trigger + Behavior Promptfoo runtime eval을 local에서 실행"
 run = "npm run eval:promptfoo:mols-rpi"
+
+[tasks.eval-mols-rpi-trigger]
+description = "mols-rpi Trigger Promptfoo runtime eval만 local에서 실행"
+run = "npm run eval:promptfoo:mols-rpi:trigger"
+
+[tasks.eval-mols-rpi-behavior]
+description = "mols-rpi Behavior Promptfoo runtime eval만 local에서 실행"
+run = "npm run eval:promptfoo:mols-rpi:behavior"
