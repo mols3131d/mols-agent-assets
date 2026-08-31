@@ -25,11 +25,11 @@ description: 개별 Agent Asset 또는 family의 maintainer documentation을 어
 - Runtime behavior의 canonical source를 documentation으로 복제하지 않습니다. Maintainer documentation은 maintainer context이지 deployable source의 대체물이 아닙니다.
 - Runtime에 필요한 instruction, reference, script, template 또는 asset은 maintainer documentation이 아니라 대응 runtime package가 소유합니다.
 
-이 documentation의 중복 경계는 이 문서의 Ownership과 Contract가 소유합니다. Repository-wide 중복 판단 원칙은 [Duplication Boundaries](duplication-boundaries.md)를 따릅니다.
+이 documentation의 중복 경계는 이 문서의 Ownership과 Contract가 소유합니다. Repository-wide 중복 판단은 [Documentation Principles](principles.md)를 따릅니다.
 
 ## Entrypoint
 
-Asset-specific documentation의 README 사용 여부와 entrypoint 책임은 [Documentation Ownership](ownership.md)을 따릅니다.
+Asset-specific documentation의 README 사용 여부와 entrypoint 책임은 [README Authoring](readme-authoring.md)을 따릅니다.
 
 Family documentation은 membership과 shared boundary를 설명해야 하므로 `README.md`를 entrypoint로 둡니다. README 자체도 대응 asset 또는 family와 함께 이동할 수 있어야 합니다.
 
