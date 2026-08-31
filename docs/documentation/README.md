@@ -11,7 +11,7 @@ description: repository-wide 문서 배치, ownership, duplication boundary, fro
 ## Policies
 
 - [Ownership](ownership.md) — repository-wide 원칙과 directory-local documentation의 책임 경계
-- [Entrypoints and Indexes](entrypoint-readme-index.md) — `README.md`, `INDEXING.md`, generated `INDEX.tsv`의 역할과 생성 조건
+- [Entrypoints and Indexes](entrypoint-readme-index.md) — `README.md` 작성 원칙과 `INDEXING.md`, generated `INDEX.tsv`의 역할·생성 조건
 - [Duplication Boundaries](duplication-boundaries.md) — 문서 owner와 scope를 기준으로 중복을 판단하는 공통 원칙
 - [Frontmatter](frontmatter.md) — repository 문서의 frontmatter authority와 Front Matter CMS reference routing
 - [Knowledge Lifecycle](lifecycle.md) — durable knowledge, inbox, archive와 Git history의 역할
