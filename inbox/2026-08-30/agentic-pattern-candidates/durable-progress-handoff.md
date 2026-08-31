@@ -57,11 +57,11 @@ Long-running agent 작업에서는 context reset이나 session boundary 자체�
 
 ## Relationship to Existing Patterns
 
-현재 `workflow/artifact-inbox.md`와 `docs/documentation/lifecycle.md`가 working artifact의 보존 위치와 lifecycle을 다룹니다. 이 후보는 **무엇을 handoff content로 남기면 작업 연속성에 도움이 되는가**를 다룰 수 있지만, 기존 lifecycle 책임과 겹치지 않는지 엄격히 검토해야 합니다.
+현재 `workflow/artifact-inbox.md`와 `docs/documentation/README.md`가 working artifact의 보존 위치와 durable knowledge의 기본 원칙을 다룹니다. 이 후보는 **무엇을 handoff content로 남기면 작업 연속성에 도움이 되는가**를 다룰 수 있지만, 기존 inbox/documentation 책임과 겹치지 않는지 엄격히 검토해야 합니다.
 
 ## Promotion Questions
 
-- existing lifecycle/inbox pattern에 흡수하는 편이 더 KISS하지 않은가?
+- existing inbox/documentation principle에 흡수하는 편이 더 KISS하지 않은가?
 - agent-specific memory workaround를 일반 workflow pattern으로 과도하게 일반화하고 있지 않은가?
 - durable handoff의 최소 content를 특정 tool 없이 설명할 수 있는가?
 - stale state에 대한 대응을 충분히 다룰 수 있는가?

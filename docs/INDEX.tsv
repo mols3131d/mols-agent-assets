@@ -5,12 +5,12 @@ development/github.md	GitHub의 Issues, Pull Requests, PR Reviews, coding agents
 development/source-authority.md	저장소 지침과 에이전트 자산에서 작성 원본, 표준·도구·대상별 권한, 원본과 파생 결과의 경계를 결정할 때 사용하는 정책입니다.
 development/testing.md	저장소의 결정론적 검증, 도구 검증, PR Gate와 merge를 차단하는 테스트 근거를 확인할 때 사용합니다.
 development/vcs-git.md	저장소 고유 branch 정책, 병렬 작업 격리, branch naming, Git history 안전성과 commit convention을 확인할 때 사용합니다.
-documentation/	repository-wide 문서 배치, ownership, duplication boundary, frontmatter, knowledge lifecycle과 asset maintainer documentation 원칙이 필요할 때 해당 documentation policy를 찾는 데 사용합니다.
-documentation/asset-maintainer-documentation.md	개별 Agent Asset 또는 family의 maintainer documentation을 어디에 두고, runtime source·family docs·repository-local docs와 책임을 어떻게 나눌지 결정할 때 사용합니다.
-documentation/duplication-boundaries.md	두 문서의 내용이 중복인지, 어느 owner가 authoritative source가 되어야 하는지, scope가 다른 overlap을 허용할지 판단할 때 사용합니다.
-documentation/frontmatter.md	Markdown 문서의 frontmatter 적용 범위, 예외, description의 탐색·routing 역할, directory entrypoint metadata 원칙과 관련 도구를 확인할 때 사용합니다.
-documentation/lifecycle.md	research·review·draft 같은 작업 산출물과 durable knowledge를 canonical source, inbox, archive, Git history 중 어디에 남길지 판단할 때 사용합니다.
-documentation/ownership.md	repository-wide 문서 배치와 directory-local documentation owner를 결정할 때 사용하는 ownership policy입니다.
+documentation/	저장소 전반의 문서 원칙과 README 작성, 문서 인덱싱, frontmatter, Agent Asset 유지보수 문서 정책을 찾을 때 사용합니다.
+documentation/asset-maintainer-documentation.md	개별 Agent Asset 또는 family의 유지보수 문서를 어디에 두고, 실행 원본과 family 문서, 저장소 전용 문서의 책임을 어떻게 나눌지 정할 때 사용합니다.
+documentation/frontmatter.md	Markdown 문서에 frontmatter를 언제 적용하고, description을 탐색·라우팅에 어떻게 쓰며, README 범위 메타데이터를 어디서 다룰지 확인할 때 사용합니다.
+documentation/indexing.md	README의 Index와 자동 생성 INDEX.tsv 중 어떤 인덱싱 방식을 사용할지 정할 때 적용하는 문서 원칙입니다.
+documentation/principles.md	저장소 전반의 문서를 만들고 배치할 때 목적, 책임 범위, 정본, 신뢰성, 탐색성, 유지보수성을 판단하는 공통 원칙입니다.
+documentation/readme-authoring.md	디렉터리나 문서·파일 묶음의 진입점인 README.md를 언제 만들고 무엇을 담을지, 범위 메타데이터를 어떻게 쓸지 정할 때 사용하는 정책입니다.
 language.md	README·docs·comments·Git/GitHub communication과 Agent Asset에서 한국어와 영어를 어떻게 사용할지 판단할 때 적용하는 repository 언어 정책입니다.
 references/	이 repository와 다른 repository에서 반복해서 참고·적용할 reusable knowledge를 찾고 선택할 때 사용하는 entrypoint입니다.
 references/agent-assets/	Agent Asset 자체의 공통 설계 의미와 Skill-specific specification·authoring convention 중 어떤 reference를 볼지 선택할 때 사용합니다.
