@@ -1,0 +1,145 @@
+{
+  "version": 1,
+  "evals": [
+    {
+      "name": "safe-duplicate-reduction",
+      "input": "이 기능은 반드시 활성화해야 합니다. 반드시 이 기능을 활성화해야 합니다.",
+      "expected": {
+        "wording_reduced": true,
+        "material_information_preserved": true,
+        "must_preserved": true,
+        "adds_explanatory_wrapper": false
+      }
+    },
+    {
+      "name": "compact-input-may-noop",
+      "input": "Retry는 최대 3회다.",
+      "expected": {
+        "no_op_allowed": true,
+        "must_not_add_explanation": true
+      }
+    },
+    {
+      "name": "preserve-requirement-strength",
+      "input": "배포 전에 검증을 반드시 수행해야 한다. 검증 실패 시 배포하면 안 된다.",
+      "expected": {
+        "preserves_requirement_strength": true,
+        "preserves_prohibition": true
+      }
+    },
+    {
+      "name": "preserve-quantifier-and-uncertainty",
+      "input": "최소 2개 노드가 필요하며 장애가 재현될 가능성이 있다.",
+      "expected": {
+        "preserves": ["최소 2개", "가능성"],
+        "must_not_convert_to_certainty": true
+      }
+    },
+    {
+      "name": "preserve-condition-and-exception",
+      "input": "검증이 실패하면 기존 fallback을 사용한다. 단, 데이터 손상이 의심되면 중단한다.",
+      "expected": {
+        "condition_binding_preserved": true,
+        "exception_preserved": true
+      }
+    },
+    {
+      "name": "preserve-actor-action-target",
+      "input": "관리자는 승인 후 배포 파이프라인을 실행한다.",
+      "expected": {
+        "actor_preserved": true,
+        "action_preserved": true,
+        "target_preserved": true
+      }
+    },
+    {
+      "name": "do-not-introduce-ambiguous-reference",
+      "input": "배포 서버가 검증 서버에 요청을 보낸 뒤 배포 서버가 작업을 종료한다.",
+      "expected": {
+        "actor_binding_preserved": true,
+        "must_not_replace_explicit_actor_with_ambiguous_pronoun": true
+      }
+    },
+    {
+      "name": "preserve-canonical-domain-term",
+      "input": "OpenTelemetry Collector는 trace를 수집하고 OpenTelemetry Collector 설정은 배포 전에 검증한다.",
+      "expected": {
+        "canonical_term_preserved": "OpenTelemetry Collector",
+        "must_not_invent_abbreviation": true
+      }
+    },
+    {
+      "name": "preserve-exact-technical-tokens",
+      "input": "`HTTP 429`, `Retry-After`, `git rebase --onto`, `/api/v2/jobs`, 30초를 그대로 유지해야 한다.",
+      "expected": {
+        "preserves_exact": ["HTTP 429", "Retry-After", "git rebase --onto", "/api/v2/jobs", "30초"]
+      }
+    },
+    {
+      "name": "preserve-order",
+      "input": "1) 백업 2) 마이그레이션 3) 검증 순서로 진행해야 한다.",
+      "expected": {
+        "order_preserved": ["백업", "마이그레이션", "검증"],
+        "sequence_unambiguous": true
+      }
+    },
+    {
+      "name": "preserve-structure",
+      "input": "# 제목\n\n- 조건 A\n- 조건 B\n\n```json\n{\"enabled\": true}\n```",
+      "expected": {
+        "heading_structure_unchanged": true,
+        "list_structure_unchanged": true,
+        "code_fence_unchanged": true
+      }
+    },
+    {
+      "name": "agent-behavior-preserved",
+      "input": "사용자가 명시적으로 승인한 경우에만 실행한다. 승인하지 않으면 실행하지 않는다.",
+      "expected": {
+        "permission_boundary_preserved": true,
+        "activation_boundary_preserved": true
+      }
+    },
+    {
+      "name": "agent-repeated-guard-is-sensitive",
+      "input": "직접 main을 수정하지 않는다. 변경은 반드시 branch에서 한다. 다시 말해 main 직접 수정은 금지한다.",
+      "expected": {
+        "must_not_remove_guard_without_behavioral_basis": true,
+        "branch_requirement_preserved": true
+      }
+    },
+    {
+      "name": "meaning-floor-beats-target-ratio",
+      "input": "이 문장을 절반 길이로 줄이되 조건, 예외, 금지와 수치를 모두 유지해줘: 실패하면 최대 3회 재시도하지만 인증 오류가 발생하면 재시도하지 않는다.",
+      "expected": {
+        "fixed_ratio_not_required": true,
+        "condition_preserved": true,
+        "exception_preserved": true,
+        "quantity_preserved": true
+      }
+    },
+    {
+      "name": "token-claim-is-honest-without-tokenizer",
+      "input": "정확히 토큰을 40% 줄였다고 보장해줘. tokenizer는 지정하지 않을게: 이 설정은 배포 전에 반드시 검증해야 한다.",
+      "expected": {
+        "must_not_claim_exact_token_reduction_without_measurement": true,
+        "meaning_preserved": true
+      }
+    },
+    {
+      "name": "specific-owner-defers",
+      "input": "이 Agent Skill instruction을 줄여줘. 현재 repository의 Agent Asset authoring contract가 적용된다.",
+      "expected": {
+        "generic_optimizer_does_not_take_ownership": true,
+        "specific_owner_preferred": true
+      }
+    },
+    {
+      "name": "explicit-invocation-does-not-override-owner",
+      "input": "mols-text-optimizer를 써서 이 규칙을 줄여줘. 이 파일에는 path-scoped authoring instruction이 적용된다.",
+      "expected": {
+        "explicit_invocation_does_not_override_specific_authority": true
+      }
+    }
+  ]
+}

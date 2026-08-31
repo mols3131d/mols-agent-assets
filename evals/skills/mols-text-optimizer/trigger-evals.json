@@ -1,0 +1,122 @@
+[
+  {
+    "id": "meaning-preserving-shortening-ko",
+    "query": "아래 문장 의미는 그대로 두고 덜 장황하게 줄여줘: 같은 설정 값을 반복해서 다시 입력할 필요는 없습니다.",
+    "should_trigger": true,
+    "reason": "Realistic generic meaning-preserving shortening request"
+  },
+  {
+    "id": "deduplicate-wording-ko",
+    "query": "이 안내문에서 내용은 하나도 빼지 말고 겹치는 표현만 정리해줘.",
+    "should_trigger": true,
+    "reason": "Generic wording deduplication with preservation intent"
+  },
+  {
+    "id": "token-footprint-casual-ko",
+    "query": "이 문단 토큰 좀 줄여줘. 조건이랑 의미는 건들지 마.",
+    "should_trigger": true,
+    "reason": "Casual token-footprint request with explicit preservation intent"
+  },
+  {
+    "id": "explicit-skill-generic",
+    "query": "mols-text-optimizer로 이 일반 prose를 의미 손실 없이 줄여줘.",
+    "should_trigger": true,
+    "reason": "Explicit invocation on a generic text-optimization task"
+  },
+  {
+    "id": "english-preserve-and-shorten",
+    "query": "Make this paragraph less wordy without dropping any requirements, exceptions, or numbers.",
+    "should_trigger": true,
+    "reason": "English meaning-preserving wording reduction request"
+  },
+  {
+    "id": "short-casual-request",
+    "query": "내용 그대로. 말만 좀 압축해줘: 재시도는 실패한 요청에 대해서만 다시 수행합니다.",
+    "should_trigger": true,
+    "reason": "Short informal request still clearly targets existing wording"
+  },
+  {
+    "id": "condition-heavy-prose",
+    "query": "아래 문장은 조건과 예외가 중요해. 둘 다 유지하면서 표현만 더 가볍게 해줘: 검증이 실패하면 재시도하지만 인증 오류면 즉시 중단한다.",
+    "should_trigger": true,
+    "reason": "Generic optimization request with behavior-sensitive semantics"
+  },
+  {
+    "id": "remove-repetition-only",
+    "query": "이 문장에서 반복되는 말만 빼줘. 주장이나 강도는 바꾸지 마: 반드시 사전 승인이 필요하며 사전 승인을 반드시 받아야 한다.",
+    "should_trigger": true,
+    "reason": "Explicitly bounded repetition reduction"
+  },
+  {
+    "id": "specific-agent-skill-owner",
+    "query": "이 Agent Skill의 description과 instruction을 더 짧게 최적화해줘. 이 저장소의 Agent Asset 작성 지침을 따라야 해.",
+    "should_trigger": false,
+    "reason": "A more specific Agent Asset authoring owner applies to the target"
+  },
+  {
+    "id": "specific-agent-skill-explicit-generic-name",
+    "query": "mols-text-optimizer를 써서 이 Agent Skill을 줄여줘. 다만 적용되는 Agent Asset 작성 규칙은 그대로 따라야 해.",
+    "should_trigger": false,
+    "reason": "Explicit invocation does not override a more specific applicable owner"
+  },
+  {
+    "id": "specific-technical-document-fidelity",
+    "query": "이 기술 문서를 의미, 코드, 식별자와 구조를 보존하면서 더 짧게 줄여줘.",
+    "should_trigger": false,
+    "reason": "A technical-document-specific fidelity Skill applies to the target transformation"
+  },
+  {
+    "id": "specific-markdown-wording-only",
+    "query": "이 Markdown 문서의 구조는 그대로 두고 문장 wording만 의미 보존해서 줄여줘. 이 문서에는 Markdown 작성 지침이 적용돼.",
+    "should_trigger": false,
+    "reason": "Target-specific Markdown guidance applies even when the requested edit is wording-only"
+  },
+  {
+    "id": "specific-schema-contract",
+    "query": "이 OpenAPI schema 설명을 줄여줘. 프로젝트의 API description 규칙과 schema contract가 적용돼.",
+    "should_trigger": false,
+    "reason": "A target-specific contract applies to the target"
+  },
+  {
+    "id": "specific-policy-guidance",
+    "query": "이 정책 문장을 의미 손실 없이 줄여줘. 이 정책 문서의 canonical writing guidance가 따로 있어.",
+    "should_trigger": false,
+    "reason": "Document-specific canonical guidance takes precedence over the generic optimizer"
+  },
+  {
+    "id": "generic-response-brevity",
+    "query": "앞으로 답변을 항상 짧게 해줘.",
+    "should_trigger": false,
+    "reason": "Generic response brevity is not target-text optimization"
+  },
+  {
+    "id": "summary",
+    "query": "이 문서를 3줄로 요약해줘.",
+    "should_trigger": false,
+    "reason": "Summarization intentionally reduces information"
+  },
+  {
+    "id": "translation",
+    "query": "이 문장을 자연스러운 영어로 번역해줘.",
+    "should_trigger": false,
+    "reason": "Translation is outside the Skill responsibility"
+  },
+  {
+    "id": "humanization",
+    "query": "이 한국어 문장에서 AI 티를 없애고 사람이 쓴 것처럼 다듬어줘.",
+    "should_trigger": false,
+    "reason": "Humanization and style are owned elsewhere"
+  },
+  {
+    "id": "caveman-style",
+    "query": "원시인 모드로 최대한 짧게 답해줘.",
+    "should_trigger": false,
+    "reason": "Caveman-style speech is a separate style capability"
+  },
+  {
+    "id": "latent-compressor",
+    "query": "긴 prompt context를 latent representation으로 압축하는 compressor를 만들어줘.",
+    "should_trigger": false,
+    "reason": "Latent prompt or context compression is outside the Skill"
+  }
+]
