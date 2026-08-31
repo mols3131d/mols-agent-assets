@@ -31,6 +31,10 @@ def _canonical_cases() -> dict[str, dict]:
     return {case["id"]: case for case in payload["cases"]}
 
 
+def _suite_case_ids(cases: dict[str, dict], suite: str) -> list[str]:
+    return [case_id for case_id, case in cases.items() if ADAPTER._case_suite(case["mode"]) == suite]
+
+
 def _fake_response(payload: dict):
     class FakeResponse:
         def __enter__(self):
@@ -46,11 +50,11 @@ def _fake_response(payload: dict):
     return FakeResponse()
 
 
-def test_trigger_generator_reuses_canonical_fixture_and_routes_provider() -> None:
+def test_trigger_generator_projects_all_canonical_trigger_cases_by_default() -> None:
     canonical = _canonical_cases()
     generated = ADAPTER.generate_tests({"suite": "trigger", "semantic": False})
 
-    assert [test["vars"]["case_id"] for test in generated] == list(ADAPTER.DEFAULT_TRIGGER_CASE_IDS)
+    assert [test["vars"]["case_id"] for test in generated] == _suite_case_ids(canonical, "trigger")
     for test in generated:
         case = canonical[test["vars"]["case_id"]]
         expected = case["mode"] == "activation"
@@ -66,14 +70,14 @@ def test_trigger_generator_reuses_canonical_fixture_and_routes_provider() -> Non
         )
 
 
-def test_behavior_generator_uses_observable_rubric_without_trigger_state(monkeypatch) -> None:
+def test_behavior_generator_projects_all_canonical_behavior_cases_by_default(monkeypatch) -> None:
     monkeypatch.setenv("PROMPTFOO_GRADER_PROVIDER", "ollama:chat:test-grader")
     canonical = _canonical_cases()
     generated = ADAPTER.generate_tests(
         {"suite": "behavior", "semantic": True, "rubric_threshold": 0.85}
     )
 
-    assert [test["vars"]["case_id"] for test in generated] == list(ADAPTER.DEFAULT_BEHAVIOR_CASE_IDS)
+    assert [test["vars"]["case_id"] for test in generated] == _suite_case_ids(canonical, "behavior")
     for test in generated:
         case = canonical[test["vars"]["case_id"]]
         assert "expected_activation" not in test["vars"]
@@ -246,6 +250,7 @@ def test_runner_defaults_are_local_and_non_sharing() -> None:
 
 
 def test_promptfoo_configs_separate_suites_and_keep_results_disposable() -> None:
+    canonical = _canonical_cases()
     runtime = yaml.safe_load((CONFIG_DIR / "mols-rpi.yaml").read_text(encoding="utf-8"))
     smoke = yaml.safe_load((CONFIG_DIR / "mols-rpi-smoke.yaml").read_text(encoding="utf-8"))
 
@@ -272,3 +277,12 @@ def test_promptfoo_configs_separate_suites_and_keep_results_disposable() -> None
     assert runtime_tests["behavior"]["rubric_threshold"] == 0.8
     assert smoke_tests["trigger"]["semantic"] is False
     assert smoke_tests["behavior"]["semantic"] is False
+    assert "case_ids" not in smoke_tests["trigger"]
+    assert "case_ids" not in smoke_tests["behavior"]
+
+    for suite in ("trigger", "behavior"):
+        selected = runtime_tests[suite]["case_ids"]
+        assert selected
+        assert len(selected) == len(set(selected))
+        assert all(case_id in canonical for case_id in selected)
+        assert all(ADAPTER._case_suite(canonical[case_id]["mode"]) == suite for case_id in selected)
