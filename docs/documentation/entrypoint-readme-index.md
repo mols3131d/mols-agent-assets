@@ -1,5 +1,5 @@
 ---
-description: directory·bundle entrypoint인 README.md의 작성 원칙, inline Index section과 authored INDEXING.md, generated INDEX.tsv의 역할 및 frontmatter scope metadata 경계를 결정할 때 사용하는 repository documentation policy입니다.
+description: directory·bundle entrypoint인 README.md의 작성 원칙과 authored INDEXING.md, generated INDEX.tsv의 역할, 생성 조건과 ownership 경계를 결정할 때 사용하는 repository documentation policy입니다.
 ---
 
 # Entrypoints and Indexes
