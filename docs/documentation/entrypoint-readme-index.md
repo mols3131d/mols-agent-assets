@@ -1,19 +1,20 @@
 ---
-description: directory·bundle entrypoint인 README.md의 작성 원칙과 authored INDEXING.md, generated INDEX.tsv의 역할, 생성 조건과 ownership 경계를 결정할 때 사용하는 repository documentation policy입니다.
+description: directory·bundle entrypoint인 README.md의 작성 원칙, inline Index section과 authored INDEXING.md, generated INDEX.tsv의 역할 및 frontmatter scope metadata 경계를 결정할 때 사용하는 repository documentation policy입니다.
 ---
 
 # Entrypoints and Indexes
 
-이 repository의 문서 surface는 **entrypoint**와 **index**의 책임을 filename으로 구분합니다.
+이 repository의 문서 surface는 **entrypoint**와 **index**의 책임을 filename과 scope로 구분합니다.
 
 | Surface | Role |
 | --- | --- |
 | directory의 `README.md` | directory entrypoint |
 | bundle형 문서 또는 파일의 `README.md` | bundle entrypoint |
+| `README.md`의 `Index` section | 작은 scope의 inline curated index |
 | directory의 `INDEXING.md` | 사람이 작성하는 indexing 전담 문서 |
 | directory의 `INDEX.tsv` | 생성되는 indexing projection |
 
-`README.md`는 무엇을 읽고 어떻게 시작할지 설명합니다. `INDEXING.md`는 사람이 읽는 curated navigation을, `INDEX.tsv`는 도구와 빠른 discovery를 위한 재생성 가능한 inventory를 담당합니다.
+`README.md`는 무엇을 읽고 어떻게 시작할지 설명합니다. 작은 scope의 curated navigation은 README 안의 `Index` section이 소유할 수 있습니다. 독립적인 사람이 읽는 indexing 책임은 `INDEXING.md`, 도구와 빠른 discovery를 위한 재생성 가능한 inventory는 `INDEX.tsv`가 담당합니다.
 
 ## `README.md`
 
@@ -48,7 +49,7 @@ README는 독자의 읽기 순서에 맞춰 **orientation → first action → d
 1. 행동 전에 알아야 하는 prerequisite, 중요한 boundary나 선택 조건이 있으면 먼저 둡니다.
 1. 실제 사용을 바로 시작해야 하는 scope라면 가장 짧은 권장 경로를 제공합니다.
 1. 세부 절차와 reference는 canonical document로 연결하고 README에는 진입에 필요한 수준만 남깁니다.
-1. curated navigation 자체가 독립적인 책임이 될 만큼 커지면 `INDEXING.md`로 분리합니다.
+1. 작은 curated navigation이면 README의 `Index` section에 유지하고, 독립적인 indexing 책임으로 커지면 `INDEXING.md`로 분리합니다.
 
 이 순서는 section template가 아닙니다. 해당 scope에 필요 없는 단계나 section은 만들지 않습니다.
 
@@ -64,6 +65,34 @@ README는 독자의 읽기 순서에 맞춰 **orientation → first action → d
 - Badge나 status summary는 현재 상태를 신뢰할 수 있게 반영하고 독자의 판단에 실제로 도움이 될 때만 둡니다. 장식용 badge wall은 만들지 않습니다.
 - `Welcome`, `Overview` 같은 형식적 서론이나 README 자체를 설명하는 문장보다 scope의 결론을 바로 제시합니다.
 
+### Inline Index
+
+`INDEXING.md`나 local `INDEX.tsv`를 별도 surface로 두는 것이 scope에 비해 과한 경우에는 README에 `Index` section을 두고 작은 table로 navigation을 제공할 수 있습니다.
+
+Inline index는 다음 조건에 잘 맞습니다.
+
+- 항목 수가 작고 안정적이며 README의 entrypoint 역할을 흐리지 않는 경우
+- 독자가 path만 보는 것보다 목적, 사용 시점이나 선택 기준을 함께 보면 이득이 있는 경우
+- 별도 `INDEXING.md`를 만들 만큼 grouping, reading order 또는 관계 설명이 복잡하지 않은 경우
+- 별도 generated index를 materialize하거나 유지할 실익이 없는 경우
+
+Table은 **선택에 필요한 최소 column만** 둡니다. 보통 `Path | Purpose` 또는 `Path | When to use` 정도로 충분합니다. 파일명만 나열하거나 filesystem에서 즉시 복구되는 정보만 반복하는 table은 만들지 않습니다.
+
+Inline index가 길어지거나 category·reading order·관계 설명 자체가 독립적인 maintainer responsibility가 되면 `INDEXING.md`로 승격합니다. 같은 scope에 generated `INDEX.tsv`가 있고 README table이 그 내용을 그대로 복제한다면 table을 유지하지 않습니다. README의 inline index가 계속 필요하다면 generated inventory에는 없는 사람용 selection cue를 소유해야 합니다.
+
+### Scope Metadata
+
+Directory 또는 bundle의 entrypoint인 `README.md`는 frontmatter에 **README 파일 자체가 아니라 그 entrypoint가 대표하는 scope의 metadata**를 담습니다.
+
+- `description`은 그 directory 또는 bundle을 **언제 탐색하거나 사용해야 하는지**를 설명합니다.
+- `title`을 사용할 때는 README라는 파일명이 아니라 그 directory 또는 bundle의 사람이 읽는 이름을 나타냅니다.
+- `이 README는 ...을 설명합니다`처럼 파일 자체를 서술하기보다 scope의 목적, trigger와 responsibility boundary를 표현합니다.
+- 일반 documentation frontmatter에 적용되는 required field와 schema는 [Frontmatter](frontmatter.md)가 소유합니다.
+
+Generated docs index가 directory metadata를 projection할 때는 해당 directory의 `README.md`만 source로 사용합니다. `README.md`에 frontmatter가 없거나 필요한 field가 비어 있어도 다른 filename으로 fallback하거나 metadata를 합치지 않습니다.
+
+Bundle README의 frontmatter도 같은 **scope metadata** 원칙을 따르지만, 특정 generator나 consumer가 bundle metadata를 어떻게 사용하는지는 해당 owner가 별도로 정의합니다. 이 문서가 존재하지 않는 projection semantics를 만들지는 않습니다.
+
 ### Quality Gate
 
 README를 추가하거나 크게 수정할 때 다음을 확인합니다.
@@ -73,27 +102,24 @@ README를 추가하거나 크게 수정할 때 다음을 확인합니다.
 - Quick start가 있으면 prerequisite와 command가 실제 권장 경로를 나타내고 copy-paste를 방해하는 불필요한 선택지가 없습니다.
 - Repository 내부 link는 가능한 한 relative하며, 이동·clone·branch context에서도 의미가 유지됩니다.
 - Child file이 추가되거나 정렬 순서가 바뀌어도 README가 단순 inventory drift 때문에 낡지 않습니다.
-- `INDEXING.md`, `INDEX.tsv` 또는 다른 canonical documentation이 소유하는 내용을 README가 중복하지 않습니다.
-
-Directory entrypoint인 `README.md`의 frontmatter `description`은 파일 자체보다 **그 directory를 언제 탐색해야 하는지**를 설명하며 generated docs index의 directory metadata로 사용할 수 있습니다.
-
-이 repository에서 directory metadata source로 인정하는 entrypoint는 `README.md`뿐입니다. `README.md`에 frontmatter가 없거나 필요한 field가 비어 있어도 다른 filename으로 fallback하거나 metadata를 합치지 않습니다.
-
-Frontmatter의 세부 contract는 [Frontmatter](frontmatter.md)가 소유합니다.
+- Inline `Index` table은 작고 유용한 selection cue를 제공하며 filesystem 또는 `INDEX.tsv`를 그대로 복제하지 않습니다.
+- `INDEXING.md`, `INDEX.tsv` 또는 다른 canonical documentation이 이미 소유하는 내용을 README가 중복하지 않습니다.
+- Entrypoint frontmatter는 README 파일보다 directory 또는 bundle scope를 설명합니다.
 
 ## `INDEXING.md`
 
 `INDEXING.md`는 directory에서 사람이 읽는 **indexing 전담 문서**가 실제로 필요할 때만 둡니다. Directory entrypoint가 아니며 directory contract나 metadata source 역할을 대신하지 않습니다.
 
-다음처럼 filesystem이나 generated inventory만으로 복구하기 어려운 curated navigation이 있을 때 가치가 있습니다.
+다음처럼 README의 작은 inline index나 filesystem만으로 복구하기 어려운 curated navigation이 있을 때 가치가 있습니다.
 
 - 문서를 category나 목적별로 묶어 보여줘야 하는 경우
 - 권장 reading order나 선택 기준이 필요한 경우
 - 같은 directory 안의 항목 사이 관계나 차이를 짧게 설명해야 하는 경우
+- README의 entrypoint 역할을 흐릴 정도로 index가 커지는 경우
 
-단순 sibling 목록을 손으로 유지하기 위한 `INDEXING.md`는 만들지 않습니다. 의미 있는 grouping, selection cue나 관계가 없다면 filesystem, search 또는 `INDEX.tsv`를 사용합니다.
+단순 sibling 목록을 손으로 유지하기 위한 `INDEXING.md`는 만들지 않습니다. 의미 있는 grouping, selection cue나 관계가 없다면 README의 작은 inline index, filesystem, search 또는 `INDEX.tsv`를 사용합니다.
 
-`INDEXING.md`는 일반 authored Markdown이므로 해당 documentation frontmatter contract를 따르지만, generated `INDEX.tsv`의 directory metadata source로 사용하지 않습니다.
+`INDEXING.md`는 일반 authored Markdown이므로 해당 documentation frontmatter contract를 따르지만, generated `INDEX.tsv`의 directory metadata source로 사용하지 않습니다. `INDEXING.md`가 생기면 README에는 필요한 진입 설명과 짧은 link만 남기고 같은 curated index를 복제하지 않습니다.
 
 ## `INDEX.tsv`
 
@@ -111,7 +137,7 @@ Repository의 docs index는 현재 다음 contract를 사용합니다.
 - `README.md`와 authored `INDEXING.md`는 generated inventory row로 중복하지 않습니다.
 - generated index, `AGENTS.md`, systemic·hidden Markdown과 문서가 없는 subtree는 generator의 selection rule에 따라 제외합니다.
 
-따라서 새 nested directory가 생겼다는 이유만으로 그 안에 `INDEX.tsv`를 수동으로 추가하지 않습니다. 더 깊은 위치에 index materialization이 필요하다면 개별 파일을 추가하는 대신 generator policy와 그 필요성을 함께 변경합니다.
+따라서 새 nested directory가 생겼다는 이유만으로 그 안에 `INDEX.tsv`를 수동으로 추가하지 않습니다. 작은 local scope에서 inline `Index` table이면 충분하다면 별도 generated index를 요구하지 않습니다. 더 깊은 위치에 `INDEX.tsv` materialization이 실제로 필요하다면 개별 파일을 수동 추가하는 대신 generator policy와 그 필요성을 함께 변경합니다.
 
 다른 route, catalog 또는 generated index는 이 문서의 `INDEX.tsv` contract를 자동으로 상속하지 않습니다. 해당 surface의 canonical owner와 generator를 따릅니다.
 
