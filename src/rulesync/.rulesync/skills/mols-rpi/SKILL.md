@@ -1,11 +1,17 @@
 ---
 name: mols-rpi
 description: >-
-  Run adaptive RPI work with explicit Research → Plan → Implementation prerequisites, evidence-driven Review, and bounded serial recursion.
-  Use when the user requests RPI or RPI(R), loop/loops/loop it/루프, recursive loop/재귀 루프, improvement loop/개선 루프, deep loop/심층 루프, or equivalent repeated research/planning/work/review or recursive improvement.
-  Also use without those words for complex multi-step work where a single pass is materially unreliable because the task needs evidence gathering or reconciliation before consequential decisions, an explicit Plan before consequential Work, convergence across multiple acceptance conditions or coupled workstreams, repeated verification or likely replanning, narrower subproblem resolution, or protection against costly rework from hidden assumptions or uncertainty.
-  When the active harness exposes a more task-specific workflow or controlling context that owns the task lifecycle, gates, state, or required procedure, follow that owner as controlling and compose mols-rpi only where it is compatible and materially useful; do not replace, wrap, or override that owner with a competing RPI lifecycle.
-  Do not use when loop is merely the topic, identifier, or code concept being discussed, when the user only asks to repeat content without iterative work, merely because a task is long, or for trivial work where explicit prerequisite artifacts add no meaningful control.
+  Run adaptive RPI work with explicit Research → Plan → Implementation prerequisites,
+  evidence-driven Review, and bounded serial recursion.
+  Use when the user requests RPI or RPI(R), loop/loops/loop it/루프, recursive loop/재귀 루프,
+  improvement loop/개선 루프, deep loop/심층 루프, or equivalent repeated research/planning/work/review or recursive improvement.
+  Also use without those words for complex multi-step work where a single pass is materially unreliable because the task needs evidence gathering or reconciliation before consequential decisions,
+  an explicit Plan before consequential Work, convergence across multiple acceptance conditions or coupled workstreams, repeated verification or likely replanning,
+  narrower subproblem resolution, or protection against costly rework from hidden assumptions or uncertainty.
+  When the active harness exposes a more task-specific workflow or controlling context that owns the task lifecycle, gates, state, or required procedure,
+  follow that owner as controlling and compose mols-rpi only where it is compatible and materially useful; do not replace, wrap, or override that owner with a competing RPI lifecycle.
+  Do not use when loop is merely the topic, identifier, or code concept being discussed, when the user only asks to repeat content without iterative work,
+  merely because a task is long, or for trivial work where explicit prerequisite artifacts add no meaningful control.
 targets:
   - claudecode
   - codexcli
@@ -24,12 +30,12 @@ Use **Research → Plan → Implementation → Review** as an artifact dependenc
 
 ## Core Contract
 
-- **RPI.** `RPI` is the public method name and an orchestration method, not the task-domain capability.
-- **Implementation.** `Implementation` means **goal-directed execution of the accepted Plan**, not code-only implementation. It may produce code, documents, analysis, edits, decisions, configuration, tool actions, or another planned result that moves the current state toward the Goal.
-- **Work.** Implementation may execute **one or more Work units**. A Work unit is a task-domain action and may itself be research, planning, review, writing, analysis, implementation, decision work, or another planned action.
-- **Stage vs. Work.** A Work unit named Research, Plan, or Review does not replace the corresponding RPI orchestration stage. The stage provides orchestration prerequisites and control, while Work performs the user's domain task. For example, review Work is followed by RPI Review of whether that review was sufficiently grounded, complete, and accepted.
-- **Task authority.** Keep applicable task-specific Skills, tools, and governing procedures in force inside RPI stages. RPI owns prerequisite ordering, Run/Loop state, Scope control, Review transitions, recursion, and handoff; it does not replace more specific task authority.
-- **Terminal depth.** The dependency is directional and does not require every downstream stage. Stop at RPI Research or RPI Plan only when that **orchestration stage itself** is the requested terminal result. Do not infer a stage-only terminal merely because the user's domain Work is research, planning, or review; those may instead be Work under an accepted RPI Plan and then be evaluated by the outer RPI Review.
+- **RPI** — `RPI` is the public method name and an orchestration method, not the task-domain capability.
+- **Implementation** — `Implementation` means **goal-directed execution of the accepted Plan**, not code-only implementation. It may produce code, documents, analysis, edits, decisions, configuration, tool actions, or another planned result that moves the current state toward the Goal.
+- **Work** — Implementation may execute **one or more Work units**. A Work unit is a task-domain action and may itself be research, planning, review, writing, analysis, implementation, decision work, or another planned action.
+- **Stage vs. Work** — A Work unit named Research, Plan, or Review does not replace the corresponding RPI orchestration stage. The stage provides orchestration prerequisites and control, while Work performs the user's domain task. For example, review Work is followed by RPI Review of whether that review was sufficiently grounded, complete, and accepted.
+- **Task authority** — Keep applicable task-specific Skills, tools, and governing procedures in force inside RPI stages. RPI owns prerequisite ordering, Run/Loop state, Scope control, Review transitions, recursion, and handoff; it does not replace more specific task authority.
+- **Terminal depth** — The dependency is directional and does not require every downstream stage. Stop at RPI Research or RPI Plan only when that **orchestration stage itself** is the requested terminal result. Do not infer a stage-only terminal merely because the user's domain Work is research, planning, or review; those may instead be Work under an accepted RPI Plan and then be evaluated by the outer RPI Review.
 
 ## Invariants
 
@@ -50,11 +56,11 @@ These are stop conditions, not suggestions. Later sections own their detailed me
 
 RPI is an LLM Skill, not a parameterized function. Stable defaults stay in the Skill, while natural-language task intent and governing context remain authoritative when sufficient.
 
-| Control | Kind | Default / Values | Contract |
-| --- | --- | --- | --- |
-| `max_loops` | Built-in | `30` | Hard per-Run ceiling. User or governing context may establish a lower Run limit in natural language; never raise the built-in ceiling above 30 from task instructions. |
-| `artifacts` | Named public override | `<auto>` | Follows established user, project, workspace, or harness artifact policy. Explicit natural-language artifact instructions may request inline handling or an authorized established destination/surface. |
-| `intensity` | Named public override | `standard`; `light`, `standard`, `deep` | Soft effort control, not a stage count, Loop quota, recursion command, or quality waiver. |
+| Control | Kind | Contract |
+| --- | --- | --- |
+| `max_loops` | Built-in, default `30` | Hard per-Run ceiling. User or governing context may establish a lower Run limit in natural language; never raise the built-in ceiling above 30 from task instructions. |
+| `artifacts` | Named public override, default `<auto>` | Follows established user, project, workspace, or harness artifact policy. Explicit natural-language artifact instructions may request inline handling or an authorized established destination/surface. |
+| `intensity` | Named public override; default `standard`; values `light`, `standard`, `deep` | Soft effort control, not a stage count, Loop quota, recursion command, or quality waiver. |
 
 Do not require callers to restate task state or internal control choices as structured arguments.
 Do not impose a universal artifact path grammar or fixed enum when ordinary language identifies the intended artifact behavior clearly.
@@ -467,17 +473,10 @@ After the final allowed Review:
 1. Start no new Loop.
 1. Use the established handoff mechanism; do not invent another persistent format.
 1. Preserve the minimum continuation state that matters:
-   - `loops_used` and the effective ceiling
-   - active scope path and current Active Scope definition
-   - pending Scope proposals
-   - current target/context reference when needed
-   - applicable user constraints and named controls, including the active intensity when it matters
-   - references to valid Research and the accepted Plan
-   - completed Work or validation
-   - current Review state
-   - remaining material gaps
-   - unresolved child results or parent impacts
-   - recommended next transition
+   - **Run accounting** — `loops_used` and the effective ceiling
+   - **Scope and context** — active scope path and current Active Scope definition; pending Scope proposals; current target/context reference when needed; applicable user constraints and named controls, including the active intensity when it matters
+   - **Validated progress** — references to valid Research and the accepted Plan; completed Work or validation; current Review state
+   - **Continuation** — remaining material gaps; unresolved child results or parent impacts; recommended next transition
 1. Preserve the exhaustion reason plus authority, approval, environment, validation, and material risk boundaries needed for safe continuation.
 1. If a suitable persistent continuation surface already exists, update it with the final material delta and reference it instead of duplicating the same state elsewhere.
 1. Mark the Run as handed off, not complete.
