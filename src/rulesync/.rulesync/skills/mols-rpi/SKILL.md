@@ -30,10 +30,10 @@ Use **Research → Plan → Implementation → Review** as an artifact dependenc
 
 ## Core Contract
 
-- **RPI** — public orchestration method. It owns prerequisite ordering, Run/Loop state, Scope control, Review transitions, recursion, and handoff; task-specific Skills, tools, and governing procedures remain authoritative inside its stages.
+- **RPI** — public orchestration method. Keep applicable task-specific Skills, tools, and governing procedures in force inside its stages. RPI owns prerequisite ordering, Run/Loop state, Scope control, Review transitions, recursion, and handoff; it does not replace more specific task authority.
 - **Implementation / Work** — goal-directed execution of the accepted Plan, not code-only implementation. It may contain **one or more domain Work units** such as code, documents, research, planning, review, analysis, decisions, configuration, or tool actions.
 - **Stage vs. Work** — Work named Research, Plan, or Review does not replace the corresponding RPI orchestration stage. For example, review Work is followed by outer RPI Review of whether that review was sufficiently grounded, complete, and accepted.
-- **Terminal depth** — dependencies are directional, so not every downstream stage is always required. Stop at RPI Research or RPI Plan only when that **orchestration stage itself** is the requested terminal result; domain research, planning, or review may instead be Work under an accepted Plan and then outer Review.
+- **Terminal depth** — dependencies are directional, so not every downstream stage is always required. Stop at RPI Research or RPI Plan only when that **orchestration stage itself** is the requested terminal result. Do not infer stage-only terminal merely because domain Work is research, planning, or review; it may instead run as Work under an accepted Plan and then outer Review.
 
 ## Invariants
 
@@ -99,7 +99,9 @@ One **Loop** is one substantive attempt from the earliest prerequisite that must
 - `Implementation → Review` for a bounded fix already covered by a valid Plan
 - `Research → Review` when RPI Research itself is the requested terminal result
 
-A substantively distinct attempt consumes one Loop at Review even if nothing changes, a hypothesis fails, or work saturates, provided real investigation or validation closed uncertainty or established a blocker/saturation condition. Mechanical edits, reporting, artifact formatting, repeated evidence, and no-op churn are not Loops and must not be repeated to simulate progress.
+A substantively distinct attempt consumes one Loop when it reaches Review, even if Review concludes nothing should change, a hypothesis failed, or work saturated.
+A no-change Loop is valid when real investigation or validation closed uncertainty or established a blocker/saturation condition.
+Mechanical edits, reporting, artifact formatting, repeated evidence, and no-op churn are not Loops and must not be repeated to simulate progress.
 
 - Parent and recursive child Loops share `loops_used` and the same effective ceiling; scope return never resets it.
 - There is no per-scope Loop limit or fixed recursion-depth limit.
@@ -134,7 +136,7 @@ Active Scope
 - Acceptance conditions
 ```
 
-At Run start, infer the smallest provisional Active Scope sufficient for the Goal. Record material boundary uncertainty instead of silently widening it; explicit user or governing boundaries take precedence.
+At Run start, infer the smallest provisional Active Scope sufficient to pursue the Goal. Record material boundary uncertainty instead of silently widening it; explicit user or governing boundaries take precedence.
 Scope determines what Work belongs to the problem, not operational permission or weaker authority, safety, persistence, or validation requirements.
 
 1. **Work stays inside Active Scope.** Out-of-scope findings may inform Research or Review; Work on them requires prior valid expansion.
@@ -285,7 +287,7 @@ A lower tier does not prove a higher-tier claim; never report unperformed checks
 At material Reviews, focus on the smallest useful set of Goal, Active Scope, current state, remaining material gaps, supporting/counterevidence, unresolved challenge candidates, and unresolved uncertainty.
 
 Continue only when another Loop has a credible path to material information gain, uncertainty reduction, verified quality gain, or acceptance closure. Repeated activity without such gain is saturation.
-When saturated, change evidence source/method/perspective or narrow Active Scope when permitted/useful. If continuation requires broader Scope, delegate to Scope Control; if a material gap remains with no valid path, block the Run. Never invent findings, depth, or churn to consume the ceiling.
+When saturated, change evidence source/method/perspective or narrow Active Scope when permitted/useful. If continuation requires broader Scope, delegate to Scope Control; if a material gap remains with no valid path, classify it as blocked for Run Boundary and Handoff. Never invent findings, depth, or churn to consume the ceiling.
 
 ### Recursive Resolution
 
