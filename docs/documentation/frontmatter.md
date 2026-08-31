@@ -34,24 +34,14 @@ description: Markdown 문서의 frontmatter 적용 범위, 예외, description�
 
 ## Entrypoint Metadata
 
-이 repository에서 directory와 bundle형 문서 또는 파일의 entrypoint filename은 `README.md`입니다.
+Directory 또는 bundle의 entrypoint인 `README.md`에도 일반 frontmatter contract를 적용하지만, 그 metadata는 **README 파일 자체보다 README가 대표하는 scope**를 나타냅니다.
 
-Entrypoint `README.md`의 frontmatter는 **README 파일 자체보다 그 entrypoint가 대표하는 directory 또는 bundle scope의 metadata**를 담습니다.
-
-- `description`은 그 scope를 언제 탐색하거나 사용해야 하는지와, 선택에 필요할 때 책임·경계를 나타냅니다.
-- `title`을 사용할 때는 README라는 filename이 아니라 그 directory 또는 bundle의 사람이 읽는 이름을 나타냅니다.
-- `이 README는 ...을 설명합니다`처럼 파일 자체를 서술하기보다 scope의 목적과 routing signal을 표현합니다.
-
-Generated docs index가 directory metadata를 projection할 때는 해당 directory의 `README.md`만 사용합니다. Frontmatter가 없거나 일부 field가 비어 있어도 다른 filename으로 fallback하거나 metadata를 합치지 않습니다.
-
-Bundle README도 같은 scope-metadata 원칙을 따르지만, 특정 generator나 consumer가 bundle metadata를 어떻게 사용하는지는 해당 owner가 정의합니다. 일반 frontmatter policy가 존재하지 않는 projection semantics를 만들지는 않습니다.
-
-README 생성·작성과 scope metadata의 세부 원칙은 [README Authoring](readme-authoring.md)이 소유합니다.
+README의 생성·entrypoint 책임과 scope metadata 작성 원칙은 [README Authoring](readme-authoring.md)이 소유합니다. Generated index나 다른 consumer가 README metadata를 어떻게 선택·projection하는지는 해당 owner가 정의하며, 이 문서가 consumer-specific semantics를 대신 만들지 않습니다.
 
 ## Indexing Metadata
 
-README 안의 inline `Index`와 generated `INDEX.tsv`의 선택·생성·중복 경계는 [Document Indexing](indexing.md)이 소유합니다.
-
 README의 inline `Index`는 body navigation이며 frontmatter metadata를 대신하지 않습니다. `INDEX.tsv`는 generated projection이므로 authored frontmatter source가 아닙니다.
+
+어떤 indexing surface를 사용할지에 대한 원칙은 [Document Indexing](indexing.md)을 따릅니다.
 
 Front Matter CMS의 설정, 공식 옵션, source routing은 [Front Matter CMS](../references/tooling/front-matter-cms.md)를 참고합니다.

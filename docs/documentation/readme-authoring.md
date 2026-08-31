@@ -58,9 +58,7 @@ README는 독자의 읽기 순서에 맞춰 **orientation → first action → d
 
 ## Inline Index
 
-별도 generated index가 필요하지 않을 만큼 작은 scope에서는 README 안에 `Index` section과 작은 table을 둘 수 있습니다. 이 허용은 README의 entrypoint 역할을 흐리지 않는 범위에서 유지합니다.
-
-Table column, `INDEX.tsv`와의 중복 경계, inline index를 유지할지 generated index로 옮길지에 대한 세부 규칙은 [Document Indexing](indexing.md)이 소유합니다.
+작은 curated navigation이 실제로 필요하면 README 안에 `Index` section을 둘 수 있습니다. README `Index`와 generated `INDEX.tsv` 중 어떤 surface를 사용할지에 대한 선택 원칙은 [Document Indexing](indexing.md)을 따릅니다.
 
 ## Scope Metadata
 
@@ -83,7 +81,7 @@ README를 추가하거나 크게 수정할 때 다음을 확인합니다.
 - Quick start가 있으면 prerequisite와 command가 실제 권장 경로를 나타내고 copy-paste를 방해하는 불필요한 선택지가 없습니다.
 - Repository 내부 link는 가능한 한 relative하며, 이동·clone·branch context에서도 의미가 유지됩니다.
 - Child file이 추가되거나 정렬 순서가 바뀌어도 README가 단순 inventory drift 때문에 낡지 않습니다.
-- Inline `Index`가 있다면 README의 entrypoint 역할을 흐리지 않고 [Document Indexing](indexing.md)의 중복 규칙을 따릅니다.
+- Inline `Index`가 있다면 README의 entrypoint 역할을 흐리지 않고 [Document Indexing](indexing.md)의 선택 원칙과 맞아야 합니다.
 - Entrypoint frontmatter는 README 파일보다 directory 또는 bundle scope를 설명합니다.
 
 ## Boundaries
