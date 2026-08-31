@@ -28,7 +28,6 @@ Semantic stability는 별도 기능이 아니라 optimization의 제약이다. �
 - **behavioral identity** — instruction, policy, prompt 같은 agent-facing text에서는 activation, permission, prohibition, gate와 stop condition의 효과를 유지한다.
 - **exact technical identity** — identifier, path, command, API, 수치, 단위와 literal token을 임의로 바꾸지 않는다.
 - **protected structure** — section, 문단, 목록, 순서, delimiter와 exact format contract를 optimization 대상으로 삼지 않는다.
-- **locality** — 필요한 부분만 줄이고 optimization을 이유로 주변 내용을 광범위하게 다시 쓰지 않는다.
 - **safe no-op** — 의미 보존이 불확실하거나 절감 가치가 작으면 원문을 유지할 수 있다.
 
 ## Boundaries
