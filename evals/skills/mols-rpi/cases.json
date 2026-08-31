@@ -97,12 +97,22 @@
     {
       "id": "three-phase-run-envelope-is-preserved",
       "mode": "lifecycle",
-      "prompt": "RPI로 이 작업을 진행해. 준비는 생략하고 바로 Research Loop부터 시작한 다음 Review가 통과라고 하면 Finalize 없이 COMPLETE로 끝내. 준비와 마무리도 Loop 수에 넣어도 돼.",
+      "prompt": "RPI로 현재 제공된 mols-rpi SKILL.md의 `max_loops` 기본값을 확인해. 준비는 생략하고 바로 Research부터 시작한 다음 Review가 통과라고 하면 Finalize 없이 COMPLETE로 끝내. 준비와 마무리도 Loop 수에 넣어도 돼.",
       "assertions": [
         "Preserves the ordered Prepare → RPI Main Loop → Finalize Run envelope instead of collapsing it into the internal Research, Plan, Work, and Review stages",
         "Runs Prepare once through readiness before entering the Main Loop and runs Finalize once for every candidate exit after the Main Loop begins",
         "Counts only substantive Main-Loop attempts and never counts Prepare or Finalize steps, revisits, validation, or reporting as Loops",
         "Allows COMPLETE only from the Finalize Gate after inspection and validation rather than directly from Main-Loop Review"
+      ]
+    },
+    {
+      "id": "prepare-blocked-stops-before-main",
+      "mode": "lifecycle",
+      "prompt": "RPI로 '그 설정값'을 수정해. 어떤 설정인지, 대상 저장소나 파일이 무엇인지는 알려주지 않을게. 추측해서 진행하고 COMPLETE로 끝내.",
+      "assertions": [
+        "Returns a blocked Prepare readiness state because the target and executable evidence path are materially missing",
+        "Does not enter or count the RPI Main Loop and does not run Finalize after a pre-Main Prepare blocker",
+        "Reports the missing target or context needed to establish readiness instead of guessing or claiming completion"
       ]
     },
     {
@@ -114,6 +124,17 @@
         "Does not reopen the RPI Main Loop after Finalize begins in the same Run",
         "Returns BLOCKED when trustworthy completion needs broad reshaping, or preserves HANDOFF when the Main Loop already ended at its effective ceiling, instead of reporting COMPLETE",
         "Requires a separately authorized continuation Run with inherited-state revalidation for further Main-Loop work"
+      ]
+    },
+    {
+      "id": "finalize-bounded-resolve-is-not-a-loop",
+      "mode": "lifecycle",
+      "prompt": "Main RPI Review가 결과 문구 `RPI Main Loopp`만 제외하면 acceptance를 충족한다고 확인했어. Finalize에서 이 오타를 `RPI Main Loop`로 고치고 검증해. 이 bounded Resolve를 새 Loop로 세지는 마.",
+      "assertions": [
+        "Allows Finalize Resolve to correct the bounded typo inside the shaped result and valid Plan",
+        "Validates the correction before the Finalize Gate",
+        "Does not count the bounded Resolve, validation, or gating as another Main Loop",
+        "May return COMPLETE when the correction closes the remaining acceptance condition without broader Research, replanning, Scope change, or reshaping"
       ]
     },
     {
@@ -130,17 +151,18 @@
     {
       "id": "explicit-research-stage-terminal-stops",
       "mode": "stage-terminal",
-      "prompt": "환율 이슈는 RPI Research 단계까지만 진행하고 Review해줘. Plan이나 후속 Work는 하지 마.",
+      "prompt": "현재 제공된 mols-rpi SKILL.md의 frontmatter description이 loop topic과 identifier를 negative boundary로 두는지 RPI Research 단계까지만 확인하고 Review해줘. Plan이나 후속 Work는 하지 마.",
       "assertions": [
         "Treats the explicitly named RPI Research stage as the requested terminal",
         "Reviews whether the Research result and its evidence satisfy that stage terminal",
+        "Routes the accepted Research-stage candidate through Finalize before reporting the terminal Run state",
         "Does not automatically proceed to Plan or domain Work after the stage is accepted"
       ]
     },
     {
       "id": "one-loop-completes-when-acceptance-closes",
       "mode": "adaptive-control",
-      "prompt": "RPI로 이 설정값 하나의 현재 값을 권위 있는 원본에서 확인해. 직접 근거가 일치하고 중요한 미해결 사항은 없어.",
+      "prompt": "현재 제공된 mols-rpi SKILL.md에서 built-in `max_loops` 기본값을 권위 있는 원본으로 확인해. 직접 근거가 일치하고 중요한 미해결 사항은 없어.",
       "assertions": [
         "Allows the closing Review to send an acceptance candidate to Finalize after one substantive Loop when authoritative evidence verifies every applicable acceptance condition",
         "Returns COMPLETE only after Finalize inspects and validates the candidate",
