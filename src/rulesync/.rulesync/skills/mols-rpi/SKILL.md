@@ -181,7 +181,7 @@ Review Artifact
 - Next transition / status
 ```
 
-Supporting Research precedes consequential Plan; valid Plan precedes Work; Review precedes acceptance; prerequisites must be genuinely prior. Retrospective artifacts may support audit/recovery but cannot retroactively make earlier Work compliant.
+Supporting Research precedes consequential Plan; a valid Plan covering the Work precedes Work; Review precedes acceptance; prerequisites must be genuinely prior. Retrospective artifacts may support audit/recovery but cannot retroactively make earlier Work compliant.
 Reuse existing artifacts when current, relevant, authoritative enough, and adequate. Treat provided Plans as candidates: validate material assumptions against Research or perform the minimum missing Research first.
 Material Research/Scope changes may stale Plan; Plan changes may stale affected Work. Revalidate before continuing. Artifacts never grant operational permission, and valid artifacts are not regenerated for ceremony.
 
@@ -235,7 +235,7 @@ After material evidence, update Research state and choose deliberately:
 
 ### Plan
 
-Derive the smallest Plan that moves current state toward Goal inside Active Scope. Include intended state change, scope, approach, Work units and material dependencies/order/concurrency, acceptance/validation, and material assumptions that would force replanning. After validated Scope expansion, incorporate only that boundary.
+Derive the smallest Plan that moves current state toward Goal inside Active Scope. Include intended state change, scope, approach, Work units and material dependencies/order/concurrency, acceptance/validation, and material assumptions that would force replanning. When Scope Control validates an expansion, incorporate only that boundary.
 
 A Plan is methodological authorization, not operational permission.
 
