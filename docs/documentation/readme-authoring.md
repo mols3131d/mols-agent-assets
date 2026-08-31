@@ -1,91 +1,91 @@
 ---
-description: directory·bundle entrypoint인 README.md의 생성 조건, scope metadata와 작성·품질 원칙을 결정할 때 사용하는 repository documentation policy입니다.
+description: 디렉터리나 문서·파일 묶음의 진입점인 README.md를 언제 만들고 무엇을 담을지, 범위 메타데이터를 어떻게 쓸지 정할 때 사용하는 정책입니다.
 ---
 
 # README Authoring
 
-`README.md`는 directory와 bundle형 문서 또는 파일의 **entrypoint**입니다. 완결된 manual이 아니라 현재 scope를 이해하고 올바른 다음 행동을 선택하게 하는 orientation layer입니다.
+`README.md`는 디렉터리나 문서·파일 묶음의 **진입점**입니다. 모든 내용을 담는 설명서가 아니라, 이 범위가 무엇인지 빠르게 이해하고 다음에 무엇을 볼지 결정하게 돕습니다.
 
-Directory나 bundle이 존재한다는 이유만으로 만들지 않습니다. 시작점에서 설명해야 할 책임이 있을 때만 둡니다.
+디렉터리나 묶음이 있다는 이유만으로 README를 만들지 않습니다. 시작점에서 안내해야 할 책임이 있을 때만 둡니다.
 
 ## Responsibility
 
 다음 중 하나 이상이 실제로 필요하면 `README.md`를 둘 근거가 됩니다.
 
-- 이름만으로 복구하기 어려운 목적이나 responsibility boundary
-- 올바른 child·문서·파일을 선택하려면 먼저 알아야 하는 navigation decision
-- 해당 scope에만 적용되는 maintenance 또는 recovery rule
-- bundle을 하나의 단위로 읽거나 사용할 때 필요한 시작 설명
+- 이름만으로 목적이나 책임 경계를 알기 어려운 경우
+- 여러 하위 문서·파일 가운데 무엇을 봐야 할지 먼저 판단해야 하는 경우
+- 이 범위에만 적용되는 유지보수·복구 규칙이 있는 경우
+- 문서나 파일 묶음을 하나의 단위로 이해하기 위한 시작 설명이 필요한 경우
 
-`README.md`에는 해당 scope가 직접 소유하는 의미와 진입 정보만 둡니다. 상세 tutorial, exhaustive reference, 긴 explanation, 반복되는 policy와 단순 inventory는 더 적절한 canonical owner로 분리합니다.
+README에는 이 범위의 진입에 필요한 내용만 둡니다. 자세한 튜토리얼, 긴 참고 자료, 반복되는 정책, 단순 파일 목록은 더 적절한 정본 문서로 보냅니다.
 
-해당 scope에서 계속 필요한 원칙이나 규칙이지만 **독립 문서로 분리할 만큼 별도의 책임이 크지 않다면 README에 간결하게 포함할 수 있습니다.** 내용이 독립적으로 탐색·유지되어야 할 만큼 커지거나 별도 책임을 갖게 될 때만 분리합니다.
+이 범위에서 계속 필요한 짧은 원칙이나 규칙이지만 **독립 문서로 만들 만큼 책임이 크지 않다면 README에 간결하게 둘 수 있습니다.** 내용이 커지거나 따로 찾아 유지해야 할 필요가 생기면 별도 문서로 분리합니다.
 
 ## Authoring Questions
 
-README는 고정 template를 채우는 대신, 해당 scope에서 실제로 필요한 질문에 답합니다.
+고정된 템플릿을 채우기보다 이 범위에서 실제로 필요한 질문에 답합니다.
 
-- 이 scope는 무엇을 소유하고 무엇을 위한 것인가?
-- 독자는 왜 또는 언제 이 scope를 사용해야 하는가?
-- 가장 먼저 취할 권장 행동이나 읽을 경로는 무엇인가?
-- 더 자세한 절차, reference, explanation 또는 도움은 어디에 있는가?
-- ownership이나 contribution 경계가 명확하지 않다면 누가 또는 무엇이 이를 소유하는가?
+- 이 범위는 무엇을 맡고 있으며 무엇을 위한 것인가?
+- 독자는 언제 이 범위를 찾아야 하는가?
+- 가장 먼저 무엇을 하거나 어떤 문서를 읽어야 하는가?
+- 더 자세한 절차나 참고 자료, 도움말은 어디에 있는가?
+- 책임이나 기여 경계가 불분명하다면 누가 무엇을 맡는가?
 
-Repository root README는 project의 목적과 유용성, 시작 방법, 도움을 얻는 위치와 maintainer·contribution 진입점을 필요에 따라 포함합니다. Directory와 bundle README는 같은 질문을 자기 scope에 필요한 만큼만 축소해서 답하며 root README의 section 구성을 복제하지 않습니다.
+저장소 루트 README는 프로젝트의 목적과 쓰임, 시작 방법, 도움을 얻는 곳, 유지보수와 기여 진입점을 필요에 따라 담습니다. 하위 디렉터리나 묶음의 README는 자기 범위에 필요한 내용만 담고 루트 README의 구성을 그대로 복제하지 않습니다.
 
 ## Recommended Flow
 
-README는 독자의 읽기 순서에 맞춰 **orientation → first action → deeper navigation**으로 확장합니다.
+README는 독자의 읽기 순서에 맞춰 **범위 소개 → 첫 행동 → 자세한 정보**로 확장합니다.
 
-1. 첫 문단에서 scope의 정체성, 목적 또는 사용 시점을 가장 짧게 밝힙니다.
-1. 행동 전에 알아야 하는 prerequisite, 중요한 boundary나 선택 조건이 있으면 먼저 둡니다.
-1. 실제 사용을 바로 시작해야 하는 scope라면 가장 짧은 권장 경로를 제공합니다.
-1. 세부 절차와 reference는 canonical document로 연결하고 README에는 진입에 필요한 수준만 남깁니다.
-1. 작은 curated navigation이 필요하면 README 안에 `Index` section을 둘 수 있습니다.
+1. 첫 문단에서 이 범위가 무엇이며 언제 쓰는지 짧게 밝힙니다.
+1. 행동 전에 꼭 알아야 할 전제 조건, 중요한 경계나 선택 조건이 있으면 먼저 둡니다.
+1. 바로 사용을 시작해야 하는 범위라면 가장 짧은 권장 경로를 보여줍니다.
+1. 자세한 절차와 참고 자료는 정본 문서로 연결하고 README에는 진입에 필요한 내용만 남깁니다.
+1. 사람이 고를 수 있는 작은 탐색 안내가 필요하면 README 안에 `Index` section을 둘 수 있습니다.
 
-이 순서는 section template가 아닙니다. 해당 scope에 필요 없는 단계나 section은 만들지 않습니다.
+이 순서는 고정된 section 템플릿이 아닙니다. 필요 없는 단계나 section은 만들지 않습니다.
 
 ## Writing Rules
 
 - 핵심 정보와 중요한 조건을 문단과 section 앞에 둡니다.
-- 한 문단에는 하나의 핵심을 두고, descriptive heading과 얕은 heading hierarchy로 빠르게 훑을 수 있게 합니다.
-- 절차에는 가장 권장되는 한 경로를 먼저 제시합니다. 대안은 독자의 선택을 실제로 바꿀 때만 추가합니다.
-- Quick start나 command가 있으면 필요한 prerequisite를 먼저 밝히고, 가능한 한 그대로 실행할 수 있는 최소 예시를 제공합니다. Output은 성공 여부 확인이나 다음 행동에 필요할 때만 보여줍니다.
-- Repository 안의 다른 문서로 이동할 때는 clone과 branch에서도 동작하는 relative link를 우선합니다.
-- GitHub가 Markdown heading에서 outline을 자동 생성하므로 manual table of contents는 기본값으로 두지 않습니다. 다른 주요 consumer가 실제로 필요로 할 때만 추가합니다.
-- Badge나 status summary는 현재 상태를 신뢰할 수 있게 반영하고 독자의 판단에 실제로 도움이 될 때만 둡니다. 장식용 badge wall은 만들지 않습니다.
-- `Welcome`, `Overview` 같은 형식적 서론이나 README 자체를 설명하는 문장보다 scope의 결론을 바로 제시합니다.
+- 한 문단에는 하나의 핵심만 두고, 내용을 바로 알 수 있는 heading과 얕은 계층으로 빠르게 훑을 수 있게 합니다.
+- 절차는 가장 권장하는 한 경로부터 보여줍니다. 대안은 실제 선택을 바꿀 때만 추가합니다.
+- 빠른 시작이나 명령어가 있다면 필요한 전제 조건을 먼저 밝히고, 가능한 한 복사해 바로 실행할 수 있는 최소 예시를 제공합니다. 출력 예시는 성공 여부를 확인하거나 다음 행동을 정하는 데 필요할 때만 보여줍니다.
+- 저장소 안의 다른 문서로 연결할 때는 clone이나 branch가 달라져도 동작하는 상대 경로 링크를 우선합니다.
+- GitHub가 Markdown heading을 바탕으로 문서 개요를 제공하므로 수동 목차는 기본값으로 두지 않습니다. 다른 주요 사용 환경에서 실제로 필요할 때만 추가합니다.
+- badge나 상태 요약은 현재 상태를 정확히 반영하고 독자의 판단에 도움이 될 때만 둡니다. 장식용 badge 나열은 만들지 않습니다.
+- `Welcome`, `Overview` 같은 형식적 서론이나 README 자체를 설명하는 문장보다 이 범위의 핵심을 바로 제시합니다.
 
 ## Inline Index
 
-작은 curated navigation이 실제로 필요하면 README 안에 `Index` section을 둘 수 있습니다. README `Index`와 generated `INDEX.tsv` 중 어떤 surface를 사용할지에 대한 선택 원칙은 [Document Indexing](indexing.md)을 따릅니다.
+사람이 문서를 고르는 데 작은 탐색 안내가 실제로 필요하면 README 안에 `Index` section을 둘 수 있습니다. README의 `Index`와 자동 생성 `INDEX.tsv` 중 무엇을 사용할지는 [Document Indexing](indexing.md)의 원칙을 따릅니다.
 
 ## Scope Metadata
 
-Directory 또는 bundle의 entrypoint인 `README.md`는 frontmatter에 **README 파일 자체가 아니라 그 entrypoint가 대표하는 scope의 metadata**를 담습니다.
+진입점인 `README.md`의 frontmatter에는 **README 파일 자체가 아니라 README가 대표하는 디렉터리나 묶음의 메타데이터**를 담습니다.
 
-- `description`은 그 directory 또는 bundle을 **언제 탐색하거나 사용해야 하는지**를 설명합니다.
-- `title`을 사용할 때는 README라는 filename이 아니라 그 directory 또는 bundle의 사람이 읽는 이름을 나타냅니다.
-- `이 README는 ...을 설명합니다`처럼 파일 자체를 서술하기보다 scope의 목적, trigger와 responsibility boundary를 표현합니다.
+- `description`은 그 범위를 언제 찾아보거나 사용해야 하는지 설명합니다.
+- `title`을 쓸 때는 README라는 파일명이 아니라 그 범위를 사람이 읽을 이름으로 적습니다.
+- `이 README는 ...을 설명합니다`처럼 파일을 소개하기보다 범위의 목적, 사용 시점, 책임 경계를 표현합니다.
 
-Generated docs index가 directory metadata를 projection할 때는 해당 directory의 `README.md`만 source로 사용합니다. `README.md`에 frontmatter가 없거나 필요한 field가 비어 있어도 다른 filename으로 fallback하거나 metadata를 합치지 않습니다.
+디렉터리 메타데이터의 원본은 해당 디렉터리의 `README.md` 하나로 한정합니다. `README.md`에 frontmatter가 없거나 필요한 field가 비어 있어도 다른 파일에서 값을 가져오거나 여러 메타데이터를 합치지 않습니다.
 
-Bundle README의 frontmatter도 같은 **scope metadata** 원칙을 따르지만, 특정 generator나 consumer가 bundle metadata를 어떻게 사용하는지는 해당 owner가 별도로 정의합니다. 일반 documentation frontmatter의 field와 schema는 [Frontmatter](frontmatter.md)가 소유합니다.
+문서나 파일 묶음의 README도 같은 범위 메타데이터 원칙을 따릅니다. 특정 도구가 이 메타데이터를 어떻게 사용하는지는 해당 도구의 owner가 정합니다. 일반 문서 frontmatter의 field와 schema는 [Frontmatter](frontmatter.md)가 소유합니다.
 
 ## Quality Gate
 
 README를 추가하거나 크게 수정할 때 다음을 확인합니다.
 
-- 첫 부분만 읽어도 scope의 목적과 사용 시점, 다음 행동을 판단할 수 있습니다.
-- 각 section은 독자의 이해, 선택 또는 행동을 실제로 바꾸며 그렇지 않은 section은 제거하거나 더 적절한 owner로 이동합니다.
-- Quick start가 있으면 prerequisite와 command가 실제 권장 경로를 나타내고 copy-paste를 방해하는 불필요한 선택지가 없습니다.
-- Repository 내부 link는 가능한 한 relative하며, 이동·clone·branch context에서도 의미가 유지됩니다.
-- Child file이 추가되거나 정렬 순서가 바뀌어도 README가 단순 inventory drift 때문에 낡지 않습니다.
-- Inline `Index`가 있다면 README의 entrypoint 역할을 흐리지 않고 [Document Indexing](indexing.md)의 선택 원칙과 맞아야 합니다.
-- Entrypoint frontmatter는 README 파일보다 directory 또는 bundle scope를 설명합니다.
+- 첫 부분만 읽어도 범위의 목적, 사용 시점, 다음 행동을 판단할 수 있는가?
+- 각 section이 독자의 이해·선택·행동을 실제로 바꾸는가? 그렇지 않다면 제거하거나 더 적절한 정본으로 옮겼는가?
+- 빠른 시작이 있다면 전제 조건과 명령어가 실제 권장 경로를 보여주며 불필요한 선택지가 없는가?
+- 저장소 내부 링크가 가능한 한 상대 경로이며, 파일 이동이나 clone·branch 변경에도 의미가 유지되는가?
+- 하위 파일이 추가되거나 정렬 순서가 바뀌어도 README가 단순 목록 변화 때문에 낡지 않는가?
+- `Index`가 있다면 README의 진입점 역할을 흐리지 않고 [Document Indexing](indexing.md)의 선택 원칙과 맞는가?
+- frontmatter가 README 파일이 아니라 디렉터리나 묶음의 범위를 설명하는가?
 
 ## Boundaries
 
 - 문서 생성·배치의 공통 원칙 → [Documentation Principles](principles.md)
-- README inline `Index`와 generated `INDEX.tsv` → [Document Indexing](indexing.md)
-- frontmatter field와 discovery metadata → [Frontmatter](frontmatter.md)
+- README `Index`와 자동 생성 `INDEX.tsv`의 선택 → [Document Indexing](indexing.md)
+- frontmatter field와 탐색 메타데이터 → [Frontmatter](frontmatter.md)

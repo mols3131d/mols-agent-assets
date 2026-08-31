@@ -1,43 +1,43 @@
 ---
-description: 개별 Agent Asset 또는 family의 maintainer documentation을 어디에 두고, runtime source·family docs·repository-local docs와 책임을 어떻게 나눌지 결정할 때 사용합니다.
+description: 개별 Agent Asset 또는 family의 유지보수 문서를 어디에 두고, 실행 원본과 family 문서, 저장소 전용 문서의 책임을 어떻게 나눌지 정할 때 사용합니다.
 ---
 
 # Asset Maintainer Documentation
 
-`docs/<asset-type>/<owner>/**`는 대응하는 asset 또는 family의 **portable maintainer documentation**을 둡니다. `<owner>`는 하나의 asset이거나 같은 책임군의 family일 수 있습니다.
+`docs/<asset-type>/<owner>/**`에는 해당 Agent Asset이나 family를 유지보수하는 데 필요한 문서를 둡니다. 이 문서는 대응하는 자산과 함께 다른 저장소로 옮겨도 계속 쓸 수 있어야 합니다. `<owner>`는 하나의 asset이거나 같은 책임을 공유하는 family일 수 있습니다.
 
-`development`, `documentation`, `references`는 reserved documentation namespace이며 asset type에 포함하지 않습니다.
+`development`, `documentation`, `references`는 문서 전용 namespace이며 asset type으로 사용하지 않습니다.
 
 ## Ownership
 
-- 하나의 asset에만 적용되는 maintainer knowledge는 `docs/<asset-type>/<asset>/`이 소유합니다.
-- 같은 family가 공유하는 durable knowledge나 family 책임 경계는 `docs/<asset-type>/<family>/`이 한 번만 소유합니다.
-- Family documentation은 runtime taxonomy, registry 또는 metadata schema가 아닙니다. 실제 runtime entrypoint와 trigger는 각 asset이 계속 소유합니다.
-- Family membership을 별도 machine registry로 복제하지 않습니다. Family documentation에는 `README.md`를 두고 현재 member와 책임 경계를 사람이 읽을 수 있게 명시합니다.
-- 현재 member 수만으로 family owner 여부를 결정하지 않습니다. Family 자체가 durable maintenance boundary일 때만 둡니다.
+- 하나의 asset에만 적용되는 유지보수 지식은 `docs/<asset-type>/<asset>/`에 둡니다.
+- 같은 family가 공유하는 유지보수 지식이나 책임 경계는 `docs/<asset-type>/<family>/`에서 한 번만 설명합니다.
+- Family 문서는 runtime taxonomy, registry, metadata schema가 아닙니다. 실제 실행 진입점과 trigger는 각 asset이 계속 맡습니다.
+- Family 구성 정보를 별도 machine registry로 복제하지 않습니다. Family 문서의 `README.md`에서 현재 구성 asset과 책임 경계를 사람이 읽을 수 있게 설명합니다.
+- 구성 asset 수만으로 family 문서를 만들지 않습니다. Family 자체가 지속적인 유지보수 경계일 때만 둡니다.
 
 ## Contract
 
-각 maintainer documentation은 대응하는 asset 또는 family와 함께 다른 repository로 옮겨도 이해·수정·복구에 필요한 문서 context가 유지될 정도로 self-contained해야 합니다.
+각 유지보수 문서는 대응하는 asset 또는 family와 함께 다른 저장소로 옮겨도 이해·수정·복구할 수 있을 만큼 독립적이어야 합니다.
 
-- 해당 owner의 intent, invariant, maintenance, recovery와 non-obvious decision을 이 documentation 안에서 완결합니다.
-- 다른 repository-local 문서가 없으면 의미를 복원할 수 없는 hidden dependency를 만들지 않습니다.
-- Runtime behavior의 canonical source를 documentation으로 복제하지 않습니다. Maintainer documentation은 maintainer context이지 deployable source의 대체물이 아닙니다.
-- Runtime에 필요한 instruction, reference, script, template 또는 asset은 maintainer documentation이 아니라 대응 runtime package가 소유합니다.
+- 해당 owner의 의도, 반드시 지켜야 할 조건, 유지보수·복구 방법, 쉽게 알 수 없는 결정을 이 문서 안에서 이해할 수 있게 합니다.
+- 다른 저장소 전용 문서가 없으면 의미를 복원할 수 없는 숨은 의존성을 만들지 않습니다.
+- 실행 동작의 정본을 문서에 복제하지 않습니다. 유지보수 문서는 맥락을 보존하기 위한 자료이지 실행 원본을 대신하지 않습니다.
+- 실행에 필요한 instruction, reference, script, template 또는 asset은 유지보수 문서가 아니라 대응하는 runtime package가 소유합니다.
 
-이 documentation의 중복 경계는 이 문서의 Ownership과 Contract가 소유합니다. Repository-wide 중복 판단은 [Documentation Principles](principles.md)를 따릅니다.
+이 문서 묶음 안의 중복 경계는 이 문서의 Ownership과 Contract가 정합니다. 저장소 전반의 중복 판단은 [Documentation Principles](principles.md)를 따릅니다.
 
 ## Entrypoint
 
-Asset-specific documentation의 README 사용 여부와 entrypoint 책임은 [README Authoring](readme-authoring.md)을 따릅니다.
+Asset별 문서에 README를 둘지와 진입점 역할은 [README Authoring](readme-authoring.md)을 따릅니다.
 
-Family documentation은 membership과 shared boundary를 설명해야 하므로 `README.md`를 entrypoint로 둡니다. README 자체도 대응 asset 또는 family와 함께 이동할 수 있어야 합니다.
+Family 문서는 구성 asset과 공통 책임 경계를 설명해야 하므로 `README.md`를 진입점으로 둡니다. README도 대응하는 asset 또는 family와 함께 다른 저장소로 옮겨 쓸 수 있어야 합니다.
 
 ## Portability Review
 
-Maintainer documentation을 검토할 때 다음을 확인합니다.
+유지보수 문서를 검토할 때 다음을 확인합니다.
 
-- 이 directory와 대응 asset 또는 family만으로 핵심 intent와 maintenance boundary를 복원할 수 있는가?
-- shared knowledge가 member별 documentation에 불필요하게 복제되어 있지 않은가?
-- 외부 project path, personal workspace 또는 특정 platform UI에 불필요하게 의존하는가?
-- 외부 dependency가 정말 필요한 경우 그 이유와 source가 명확한가?
+- 이 디렉터리와 대응하는 asset 또는 family만으로 핵심 의도와 유지보수 경계를 이해할 수 있는가?
+- 공통 지식이 각 구성 asset의 문서에 불필요하게 반복되어 있지 않은가?
+- 외부 프로젝트 경로, 개인 작업 공간, 특정 플랫폼 UI에 불필요하게 의존하지 않는가?
+- 외부 의존성이 꼭 필요하다면 그 이유와 출처가 분명한가?
