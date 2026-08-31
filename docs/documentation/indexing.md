@@ -1,5 +1,5 @@
 ---
-description: README의 inline Index와 generated INDEX.tsv 중 적절한 문서 인덱싱 방식을 선택하는 원칙을 확인할 때 사용합니다.
+description: README의 inline Index와 generated INDEX.tsv 중 적절한 문서 인덱싱 방식을 선택할 때 사용하는 repository documentation policy입니다.
 ---
 
 # Document Indexing
