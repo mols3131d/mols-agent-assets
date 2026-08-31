@@ -12,7 +12,7 @@ description: repository-wide 문서 배치, ownership, duplication boundary, fro
 
 - [Ownership](ownership.md) — repository-wide 원칙과 directory-local documentation의 책임 경계
 - [README Authoring](readme-authoring.md) — directory·bundle `README.md`의 생성 조건, 작성 흐름과 scope metadata
-- [Document Indexing](indexing.md) — README inline `Index`와 generated `INDEX.tsv`의 선택·생성·중복·유지보수 경계
+- [Document Indexing](indexing.md) — README inline `Index`와 generated `INDEX.tsv`의 선택 기준
 - [Duplication Boundaries](duplication-boundaries.md) — 문서 owner와 scope를 기준으로 중복을 판단하는 공통 원칙
 - [Frontmatter](frontmatter.md) — repository 문서의 frontmatter authority와 Front Matter CMS reference routing
 - [Knowledge Lifecycle](lifecycle.md) — durable knowledge, inbox, archive와 Git history의 역할
