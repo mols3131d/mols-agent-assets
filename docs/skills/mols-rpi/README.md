@@ -1,5 +1,5 @@
 ---
-description: mols-rpi를 유지보수할 때 prerequisite contract, adaptive Research·Plan·Work·Review, intensity, artifact와 eval 결정을 찾는 entrypoint입니다.
+description: mols-rpi를 유지보수할 때 prerequisite contract, adaptive Research·Plan·Work·Review, intensity와 artifact 결정을 찾는 entrypoint입니다.
 ---
 
 # Mols RPI Maintainer Docs
