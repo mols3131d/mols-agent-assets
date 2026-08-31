@@ -21,31 +21,6 @@ PROVIDER_LABELS = {
     BEHAVIOR_SUITE: BEHAVIOR_PROVIDER_LABEL,
 }
 
-DEFAULT_TRIGGER_CASE_IDS = (
-    "explicit-rpi-activates",
-    "standalone-korean-loop-activates",
-    "loop-topic-does-not-activate",
-    "generic-repeat-does-not-activate",
-    "implicit-complex-work-activates",
-    "trivial-work-does-not-activate",
-)
-
-DEFAULT_BEHAVIOR_CASE_IDS = (
-    "rpi-composes-with-domain-skill",
-    "provided-plan-needs-research-support",
-    "scope-expansion-is-review-gated",
-    "substantive-no-change-loop-counts",
-    "recursive-authority-never-expands",
-    "loop-exhaustion-handoffs",
-    "retrieved-content-is-not-authority",
-    "research-pivots-by-information-gain",
-    "adversarial-review-reconciles-before-absorption",
-    "public-overrides-stay-minimal",
-    "deep-intensity-is-adaptive-not-a-quota",
-    "review-can-be-domain-work",
-    "plan-is-not-permission",
-)
-
 TRIGGER_RESPONSE_KEYS = {"activation"}
 TRIGGER_RESPONSE_SCHEMA = {
     "type": "object",
@@ -99,13 +74,18 @@ def _semantic_rubric(assertions: list[str]) -> str:
     )
 
 
-def _selected_case_ids(config: dict, suite: str) -> tuple[str, ...]:
+def _selected_case_ids(config: dict, suite: str, cases: dict[str, dict]) -> tuple[str, ...]:
     selected = config.get("case_ids")
     if selected is not None:
         if not isinstance(selected, list) or not all(isinstance(item, str) for item in selected):
             raise ValueError("case_ids must be a list of strings")
         return tuple(selected)
-    return DEFAULT_TRIGGER_CASE_IDS if suite == TRIGGER_SUITE else DEFAULT_BEHAVIOR_CASE_IDS
+
+    return tuple(
+        case_id
+        for case_id, case in cases.items()
+        if isinstance(case.get("mode"), str) and _case_suite(case["mode"]) == suite
+    )
 
 
 def generate_tests(config: dict | None = None) -> list[dict]:
@@ -114,7 +94,8 @@ def generate_tests(config: dict | None = None) -> list[dict]:
     if suite not in SUITES:
         raise ValueError(f"suite must be one of {sorted(SUITES)}")
 
-    selected_ids = _selected_case_ids(config, suite)
+    cases = _load_cases()
+    selected_ids = _selected_case_ids(config, suite, cases)
     semantic = bool(config.get("semantic", suite == BEHAVIOR_SUITE))
     provider_label = config.get("provider_label") or PROVIDER_LABELS[suite]
     if not isinstance(provider_label, str) or not provider_label:
@@ -125,7 +106,6 @@ def generate_tests(config: dict | None = None) -> list[dict]:
         raise ValueError("rubric_threshold must be between 0 and 1")
 
     grader_provider = os.getenv("PROMPTFOO_GRADER_PROVIDER", "ollama:chat:qwen2.5")
-    cases = _load_cases()
 
     tests: list[dict] = []
     seen: set[str] = set()
