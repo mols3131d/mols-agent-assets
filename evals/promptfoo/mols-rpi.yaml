@@ -1,25 +1,63 @@
 # yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
 
-description: mols-rpi local runtime behavioral eval
+description: mols-rpi local Trigger and Behavior runtime eval
 
 prompts:
   - "{{task}}"
 
 providers:
   - id: file://../../scripts/evals/promptfoo_mols_rpi.py:call_api
-    label: mols-rpi-local-ollama
+    label: mols-rpi-trigger
     config:
       mode: ollama
+      suite: trigger
+  - id: file://../../scripts/evals/promptfoo_mols_rpi.py:call_api
+    label: mols-rpi-behavior
+    config:
+      mode: ollama
+      suite: behavior
 
 tests:
   - path: file://../../scripts/evals/promptfoo_mols_rpi.py:generate_tests
     config:
-      semantic: true
+      suite: trigger
+      provider_label: mols-rpi-trigger
+      semantic: false
       case_ids:
         - explicit-rpi-activates
+        - standalone-korean-loop-activates
+        - implicit-complex-work-activates
+        - equivalent-iterative-method-activates
         - loop-topic-does-not-activate
+        - generic-repeat-does-not-activate
+        - long-one-pass-task-does-not-activate
+        - loop-identifier-in-task-does-not-activate
+        - single-review-request-does-not-activate
+        - trivial-work-does-not-activate
+  - path: file://../../scripts/evals/promptfoo_mols_rpi.py:generate_tests
+    config:
+      suite: behavior
+      provider_label: mols-rpi-behavior
+      semantic: true
+      rubric_threshold: 0.8
+      case_ids:
+        - rpi-composes-with-domain-skill
+        - provided-plan-needs-research-support
         - scope-expansion-is-review-gated
+        - fixed-scope-does-not-narrow-or-expand
+        - substantive-no-change-loop-counts
+        - recursive-authority-never-expands
+        - recursive-scope-never-expands-parent
+        - loop-exhaustion-handoffs
         - retrieved-content-is-not-authority
+        - research-pivots-by-information-gain
+        - adversarial-review-reconciles-before-absorption
+        - review-challenges-weak-validation
+        - public-overrides-stay-minimal
+        - deep-intensity-is-adaptive-not-a-quota
+        - light-intensity-does-not-waive-quality
+        - review-can-be-domain-work
+        - plan-is-not-permission
 
 sharing: false
 writeLatestResults: false

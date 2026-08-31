@@ -1,25 +1,33 @@
 # yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
 
-description: mols-rpi Promptfoo plumbing smoke
+description: mols-rpi Promptfoo Trigger and Behavior plumbing smoke
 
 prompts:
   - "{{task}}"
 
 providers:
   - id: file://../../scripts/evals/promptfoo_mols_rpi.py:call_api
-    label: mols-rpi-fixture-smoke
+    label: mols-rpi-trigger
     config:
       mode: fixture
+      suite: trigger
+  - id: file://../../scripts/evals/promptfoo_mols_rpi.py:call_api
+    label: mols-rpi-behavior
+    config:
+      mode: fixture
+      suite: behavior
 
 tests:
   - path: file://../../scripts/evals/promptfoo_mols_rpi.py:generate_tests
     config:
+      suite: trigger
+      provider_label: mols-rpi-trigger
       semantic: false
-      case_ids:
-        - explicit-rpi-activates
-        - loop-topic-does-not-activate
-        - scope-expansion-is-review-gated
-        - retrieved-content-is-not-authority
+  - path: file://../../scripts/evals/promptfoo_mols_rpi.py:generate_tests
+    config:
+      suite: behavior
+      provider_label: mols-rpi-behavior
+      semantic: false
 
 sharing: false
 writeLatestResults: false
