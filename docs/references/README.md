@@ -31,4 +31,4 @@ Reference에 있다는 이유만으로 downstream project의 mandatory policy가
 
 - 같은 responsibility를 둘 이상의 sibling surface가 함께 소유하지 않습니다.
 - child surface 내부의 세부 ownership은 해당 child의 `README.md` 또는 local document가 정의합니다.
-- repository-wide 중복 원칙만 [Duplication Boundaries](../documentation/duplication-boundaries.md)를 따릅니다.
+- repository-wide 문서 원칙은 [Documentation](../documentation/)을 따릅니다.

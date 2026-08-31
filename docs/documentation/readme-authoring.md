@@ -89,4 +89,3 @@ README를 추가하거나 크게 수정할 때 다음을 확인합니다.
 - 문서 생성·배치의 공통 원칙 → [Documentation Principles](principles.md)
 - README inline `Index`와 generated `INDEX.tsv` → [Document Indexing](indexing.md)
 - frontmatter field와 discovery metadata → [Frontmatter](frontmatter.md)
-- 중복 판단과 canonical owner 선택 → [Duplication Boundaries](duplication-boundaries.md)
