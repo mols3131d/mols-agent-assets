@@ -9,7 +9,7 @@
 
 날짜 directory는 실제 artifact가 생길 때만 만듭니다. 빈 directory나 placeholder를 유지하지 않습니다.
 
-Artifact의 canonical 승격·보존과 Git history의 기본 원칙은 [`docs/documentation/README.md`](../docs/documentation/README.md)의 shared rules를 따릅니다.
+Artifact의 canonical 승격·보존과 Git history의 기본 원칙은 [`docs/documentation/README.md`](../docs/documentation/README.md)의 `Working Knowledge`를 따릅니다.
 
 ## Boundary
 
