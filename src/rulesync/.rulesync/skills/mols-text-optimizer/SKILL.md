@@ -23,18 +23,6 @@ targets:
 
 Reduce wording cost, not substance.
 
-## Route
-
-Use this Skill only as a generic fallback.
-
-- If a more specific applicable Skill, scoped instruction, document or domain guidance,
-  framework contract, or procedure applies to the target or task, use that owner instead
-  and stop this Skill.
-- Do not start broad discovery just to prove that no specific owner exists. Respect the
-  applicable routing and context already exposed by the active harness or project.
-- Explicitly naming `mols-text-optimizer` does not override a more specific applicable
-  owner.
-
 ## Optimize
 
 Apply the smallest safe local wording changes first:
