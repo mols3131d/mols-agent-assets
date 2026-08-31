@@ -1,5 +1,5 @@
 ---
-description: repository-wide 문서 배치, ownership, duplication boundary, frontmatter, knowledge lifecycle과 asset maintainer documentation 원칙이 필요할 때 해당 documentation policy를 찾는 데 사용합니다.
+description: repository-wide 문서 원칙, README authoring, indexing, duplication, frontmatter, knowledge lifecycle과 asset maintainer documentation policy를 찾을 때 사용합니다.
 ---
 
 # Documentation
@@ -10,7 +10,7 @@ description: repository-wide 문서 배치, ownership, duplication boundary, fro
 
 ## Policies
 
-- [Ownership](ownership.md) — repository-wide 원칙과 directory-local documentation의 책임 경계
+- [Documentation Principles](principles.md) — 문서 생성·배치·ownership·authority에 적용하는 공통 원칙
 - [README Authoring](readme-authoring.md) — directory·bundle `README.md`의 생성 조건, 작성 흐름과 scope metadata
 - [Document Indexing](indexing.md) — README inline `Index`와 generated `INDEX.tsv`의 선택 기준
 - [Duplication Boundaries](duplication-boundaries.md) — 문서 owner와 scope를 기준으로 중복을 판단하는 공통 원칙

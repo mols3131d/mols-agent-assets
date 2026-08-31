@@ -26,4 +26,4 @@ description: 문서 작업 전에 top-level docs surface와 nested directory의 
 - Repository-wide documentation principle은 [`documentation/`](documentation/)가 계속 소유합니다. Local owner는 자기 scope를 구체화할 수 있지만 상위 공통 원칙을 중복 소유하거나 재정의하지 않습니다.
 - 이 ownership model은 domain별 folder, document bundle, asset maintainer documentation 또는 특정 nesting depth를 요구하지 않습니다. 그런 구조는 해당 책임에서 실제로 필요할 때만 local하게 정의합니다.
 
-Directory-level documentation이 필요한 조건과 repository-wide 배치 원칙은 [Documentation Ownership](documentation/ownership.md)이 소유합니다. 특정 directory나 surface에만 적용되는 contract와 세부 규칙은 가장 가까운 유효한 local owner가 소유합니다.
+Directory-level documentation이 필요한 조건과 repository-wide 배치 원칙은 [Documentation Principles](documentation/principles.md)를 따릅니다. 특정 directory나 surface에만 적용되는 contract와 세부 규칙은 가장 가까운 유효한 local owner가 소유합니다.
