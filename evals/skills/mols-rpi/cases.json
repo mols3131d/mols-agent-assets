@@ -5,84 +5,82 @@
       "id": "explicit-rpi-activates",
       "mode": "activation",
       "prompt": "이 작업 RPI로 진행해줘.",
-      "assertions": [
-        "Activates mols-rpi for explicit RPI method intent",
-        "Requires Research before a consequential Plan and Plan before consequential Work",
-        "Uses Review to choose the next transition"
-      ]
+      "expected_selection": {
+        "selected_skills": ["mols-rpi"],
+        "primary_skill": "mols-rpi"
+      }
     },
     {
       "id": "standalone-korean-loop-activates",
       "mode": "activation",
       "prompt": "방금 작업 재귀 루프 진행해.",
-      "assertions": [
-        "Treats 재귀 루프 as explicit method intent for the active task",
-        "Uses serial single-agent recursion rather than inventing subagents",
-        "Counts recursive child loops against the same run-wide total"
-      ]
+      "expected_selection": {
+        "selected_skills": ["mols-rpi"],
+        "primary_skill": "mols-rpi"
+      }
     },
     {
       "id": "loop-topic-does-not-activate",
       "mode": "activation-negative",
       "prompt": "Python for loop와 while loop 차이를 설명해줘.",
-      "assertions": [
-        "Does not activate mols-rpi merely because loop is the topic or code concept",
-        "Answers the concept question without manufacturing RPI artifacts"
-      ]
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
     },
     {
       "id": "generic-repeat-does-not-activate",
       "mode": "activation-negative",
       "prompt": "이 문장을 세 번 반복해줘.",
-      "assertions": [
-        "Does not activate mols-rpi for generic content repetition without iterative work intent",
-        "Repeats the requested content without manufacturing RPI artifacts"
-      ]
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
     },
     {
       "id": "implicit-complex-work-activates",
       "mode": "activation",
       "prompt": "이 저장소의 배포 구조를 조사해서 마이그레이션 계획을 세우고 실제 변경까지 해줘. 기존 동작 보존과 여러 검증 조건도 확인해.",
-      "assertions": [
-        "Activates mols-rpi without an explicit RPI keyword because evidence, planning, implementation, and multiple acceptance conditions are materially coupled",
-        "Creates or reuses observable prerequisite artifacts before consequential downstream work"
-      ]
+      "expected_selection": {
+        "selected_skills": ["mols-rpi"],
+        "primary_skill": "mols-rpi"
+      }
     },
     {
       "id": "equivalent-iterative-method-activates",
       "mode": "activation",
       "prompt": "이 문제는 먼저 근거를 조사하고 계획을 세운 뒤 수정해. 검토에서 중요한 문제가 나오면 필요한 단계로 돌아가 반복해서 수렴해줘.",
-      "assertions": [
-        "Activates mols-rpi for explicit repeated Research, Plan, Work, and Review intent even without the RPI or loop keyword",
-        "Uses Review-driven iteration rather than treating the request as a single linear pass"
-      ]
+      "expected_selection": {
+        "selected_skills": ["mols-rpi"],
+        "primary_skill": "mols-rpi"
+      }
     },
     {
       "id": "long-one-pass-task-does-not-activate",
       "mode": "activation-negative",
       "prompt": "이 긴 회의록을 읽고 핵심 결정사항만 요약해줘. 조사나 계획, 반복 검토는 필요 없어.",
-      "assertions": [
-        "Does not activate mols-rpi merely because the input or task is long",
-        "Respects the explicit one-pass transformation intent without manufacturing prerequisite artifacts"
-      ]
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
     },
     {
       "id": "loop-identifier-in-task-does-not-activate",
       "mode": "activation-negative",
       "prompt": "코드에서 event_loop 변수 이름을 더 이해하기 쉽게 바꿀지 검토해줘.",
-      "assertions": [
-        "Does not activate mols-rpi merely because loop appears inside an identifier in a real task",
-        "Treats the request as the underlying bounded code review or naming task unless other RPI intent exists"
-      ]
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
     },
     {
       "id": "single-review-request-does-not-activate",
       "mode": "activation-negative",
       "prompt": "이 PR을 한 번 리뷰해서 중요한 문제만 알려줘. 개선 루프는 돌리지 마.",
-      "assertions": [
-        "Does not activate mols-rpi for a bounded one-shot review when the user explicitly rejects iterative improvement",
-        "Does not override the explicit no-loop boundary merely because Review is part of the RPI lifecycle"
-      ]
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
     },
     {
       "id": "rpi-composes-with-domain-skill",
@@ -160,6 +158,17 @@
       ]
     },
     {
+      "id": "explicit-plan-stage-terminal-stops",
+      "mode": "stage-terminal",
+      "prompt": "현재 제공된 mols-rpi SKILL.md의 description을 개선하기 위한 RPI Plan 단계까지만 작성하고 Review해줘. 파일은 수정하지 마.",
+      "assertions": [
+        "Treats the explicitly named RPI Plan stage as the requested terminal",
+        "Performs or validates the minimum Research needed before creating the Plan",
+        "Reviews the Plan and its Research lineage, then routes the accepted candidate through Finalize",
+        "Does not proceed to Implementation, edit the Skill, or claim that a file was changed"
+      ]
+    },
+    {
       "id": "one-loop-completes-when-acceptance-closes",
       "mode": "adaptive-control",
       "prompt": "현재 제공된 mols-rpi SKILL.md에서 built-in `max_loops` 기본값을 권위 있는 원본으로 확인해. 직접 근거가 일치하고 중요한 미해결 사항은 없어.",
@@ -184,9 +193,49 @@
       "id": "trivial-work-does-not-activate",
       "mode": "activation-negative",
       "prompt": "이 문장에서 오타 하나만 고쳐줘.",
-      "assertions": [
-        "Does not activate mols-rpi when explicit prerequisite artifacts add no meaningful control"
-      ]
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "explicit-rpi-trivial-work-still-activates",
+      "mode": "activation",
+      "prompt": "이 문장에서 오타 하나만 고치는 작업이야. 그래도 RPI 개선 루프로 진행해줘.",
+      "expected_selection": {
+        "selected_skills": ["mols-rpi"],
+        "primary_skill": "mols-rpi"
+      }
+    },
+    {
+      "id": "specific-owner-remains-primary-when-rpi-composes",
+      "mode": "activation",
+      "prompt": "이 Agent Skill의 description을 고치고 RPI 개선 루프로 리뷰까지 반복해줘.",
+      "routing_candidates": [
+        {
+          "name": "agent-skill-authoring",
+          "description": "Create or modify Agent Skills and their trigger or runtime instructions. Use as the primary capability when the requested work changes an Agent Skill."
+        }
+      ],
+      "expected_selection": {
+        "selected_skills": ["agent-skill-authoring", "mols-rpi"],
+        "primary_skill": "agent-skill-authoring"
+      }
+    },
+    {
+      "id": "specific-owner-one-shot-does-not-pull-rpi",
+      "mode": "activation-negative",
+      "prompt": "이 Agent Skill의 description만 한 번 수정해줘. RPI나 개선 루프는 필요 없어.",
+      "routing_candidates": [
+        {
+          "name": "agent-skill-authoring",
+          "description": "Create or modify Agent Skills and their trigger or runtime instructions. Use as the primary capability when the requested work changes an Agent Skill."
+        }
+      ],
+      "expected_selection": {
+        "selected_skills": ["agent-skill-authoring"],
+        "primary_skill": "agent-skill-authoring"
+      }
     },
     {
       "id": "provided-plan-needs-research-support",

@@ -32,7 +32,11 @@ def _canonical_cases() -> dict[str, dict]:
 
 
 def _suite_case_ids(cases: dict[str, dict], suite: str) -> list[str]:
-    return [case_id for case_id, case in cases.items() if ADAPTER._case_suite(case["mode"]) == suite]
+    return [
+        case_id
+        for case_id, case in cases.items()
+        if ADAPTER._case_suite(case["mode"]) == suite
+    ]
 
 
 def _fake_response(payload: dict):
@@ -54,37 +58,49 @@ def test_trigger_generator_projects_all_canonical_trigger_cases_by_default() -> 
     canonical = _canonical_cases()
     generated = ADAPTER.generate_tests({"suite": "trigger", "semantic": False})
 
-    assert [test["vars"]["case_id"] for test in generated] == _suite_case_ids(canonical, "trigger")
+    assert [test["vars"]["case_id"] for test in generated] == _suite_case_ids(
+        canonical, "trigger"
+    )
     for test in generated:
         case = canonical[test["vars"]["case_id"]]
-        expected = case["mode"] == "activation"
+        expected = case["expected_selection"]
 
         assert test["vars"]["task"] == case["prompt"]
         assert test["vars"]["mode"] == case["mode"]
-        assert test["vars"]["expected_activation"] is expected
+        assert test["vars"]["expected_selection"] == expected
+        assert test["vars"]["routing_candidates"] == case.get("routing_candidates", [])
         assert test["metadata"]["suite"] == "trigger"
         assert test["providers"] == [ADAPTER.TRIGGER_PROVIDER_LABEL]
         assert [check["type"] for check in test["assert"]] == ["python"]
         assert test["assert"][0]["metric"] == (
-            "trigger-activation" if expected else "trigger-rejection"
+            "trigger-activation"
+            if "mols-rpi" in expected["selected_skills"]
+            else "trigger-rejection"
         )
 
 
-def test_behavior_generator_projects_all_canonical_behavior_cases_by_default(monkeypatch) -> None:
+def test_behavior_generator_projects_all_canonical_behavior_cases_by_default(
+    monkeypatch,
+) -> None:
     monkeypatch.setenv("PROMPTFOO_GRADER_PROVIDER", "ollama:chat:test-grader")
     canonical = _canonical_cases()
     generated = ADAPTER.generate_tests(
         {"suite": "behavior", "semantic": True, "rubric_threshold": 0.85}
     )
 
-    assert [test["vars"]["case_id"] for test in generated] == _suite_case_ids(canonical, "behavior")
+    assert [test["vars"]["case_id"] for test in generated] == _suite_case_ids(
+        canonical, "behavior"
+    )
     for test in generated:
         case = canonical[test["vars"]["case_id"]]
-        assert "expected_activation" not in test["vars"]
+        assert "expected_selection" not in test["vars"]
+        assert "routing_candidates" not in test["vars"]
         assert test["metadata"]["suite"] == "behavior"
         assert test["providers"] == [ADAPTER.BEHAVIOR_PROVIDER_LABEL]
 
-        semantic_checks = [check for check in test["assert"] if check["type"] == "llm-rubric"]
+        semantic_checks = [
+            check for check in test["assert"] if check["type"] == "llm-rubric"
+        ]
         assert len(semantic_checks) == 1
         semantic = semantic_checks[0]
         assert semantic["provider"] == "ollama:chat:test-grader"
@@ -111,25 +127,93 @@ def test_generator_rejects_cross_suite_cases() -> None:
         raise AssertionError("cross-suite case selection should fail")
 
 
-def test_trigger_response_requires_exact_boolean_label() -> None:
-    assert ADAPTER._trigger_response_error({"activation": True}) is None
+def test_trigger_response_requires_exact_valid_selection() -> None:
+    assert (
+        ADAPTER._trigger_response_error(
+            {"selected_skills": ["mols-rpi"], "primary_skill": "mols-rpi"}
+        )
+        is None
+    )
+    assert (
+        ADAPTER._trigger_response_error({"selected_skills": [], "primary_skill": None})
+        is None
+    )
     assert ADAPTER._trigger_response_error(["not", "an", "object"]) is not None
-    assert ADAPTER._trigger_response_error({"activation": True, "debug": "hidden"}) is not None
-    assert ADAPTER._trigger_response_error({"activation": "true"}) is not None
+    assert (
+        ADAPTER._trigger_response_error(
+            {
+                "selected_skills": ["mols-rpi"],
+                "primary_skill": "mols-rpi",
+                "debug": True,
+            }
+        )
+        is not None
+    )
+    assert (
+        ADAPTER._trigger_response_error(
+            {"selected_skills": ["mols-rpi", "mols-rpi"], "primary_skill": "mols-rpi"}
+        )
+        is not None
+    )
+    assert (
+        ADAPTER._trigger_response_error(
+            {"selected_skills": ["mols-rpi"], "primary_skill": "other"}
+        )
+        is not None
+    )
+    assert (
+        ADAPTER._trigger_response_error(
+            {"selected_skills": ["mols-rpi"], "primary_skill": None}
+        )
+        is not None
+    )
 
 
-def test_trigger_grader_checks_exact_activation() -> None:
+def test_routing_candidates_accept_promptfoo_json_serialization() -> None:
+    candidates = [
+        {
+            "name": "agent-skill-authoring",
+            "description": "Create or modify Agent Skills.",
+        }
+    ]
+
+    assert ADAPTER._routing_candidates(json.dumps(candidates)) == candidates
+    try:
+        ADAPTER._routing_candidates("not-json")
+    except ValueError as error:
+        assert "not valid JSON" in str(error)
+    else:
+        raise AssertionError("malformed routing candidate JSON should fail")
+
+
+def test_trigger_grader_checks_exact_selected_set_and_primary() -> None:
+    expected = {
+        "selected_skills": ["agent-skill-authoring", "mols-rpi"],
+        "primary_skill": "agent-skill-authoring",
+    }
     passing = ADAPTER.assert_trigger(
-        json.dumps({"activation": False}),
-        {"vars": {"expected_activation": False}},
+        json.dumps(
+            {
+                "selected_skills": ["mols-rpi", "agent-skill-authoring"],
+                "primary_skill": "agent-skill-authoring",
+            }
+        ),
+        {"vars": {"expected_selection": expected}},
     )
     mismatch = ADAPTER.assert_trigger(
-        json.dumps({"activation": True}),
-        {"vars": {"expected_activation": False}},
+        json.dumps(
+            {
+                "selected_skills": ["mols-rpi", "agent-skill-authoring"],
+                "primary_skill": "mols-rpi",
+            }
+        ),
+        {"vars": {"expected_selection": expected}},
     )
-    malformed = ADAPTER.assert_trigger("not-json", {"vars": {"expected_activation": True}})
+    malformed = ADAPTER.assert_trigger(
+        "not-json", {"vars": {"expected_selection": expected}}
+    )
     missing_expected = ADAPTER.assert_trigger(
-        json.dumps({"activation": True}),
+        json.dumps({"selected_skills": [], "primary_skill": None}),
         {"vars": {}},
     )
 
@@ -140,15 +224,19 @@ def test_trigger_grader_checks_exact_activation() -> None:
 
 
 def test_behavior_output_grader_only_requires_observable_text() -> None:
-    assert ADAPTER.assert_behavior_output("Review에서 Research로 돌아갑니다.", {})["pass"] is True
+    assert (
+        ADAPTER.assert_behavior_output("Review에서 Research로 돌아갑니다.", {})["pass"]
+        is True
+    )
     assert ADAPTER.assert_behavior_output("  ", {})["pass"] is False
 
 
 def test_fixture_provider_keeps_trigger_and_behavior_plumbing_separate() -> None:
+    expected = {"selected_skills": [], "primary_skill": None}
     trigger = ADAPTER.call_api(
         "ignored",
         {"config": {"mode": "fixture", "suite": "trigger"}},
-        {"vars": {"expected_activation": False}},
+        {"vars": {"expected_selection": expected}},
     )
     behavior = ADAPTER.call_api(
         "ignored",
@@ -156,7 +244,7 @@ def test_fixture_provider_keeps_trigger_and_behavior_plumbing_separate() -> None
         {"vars": {}},
     )
 
-    assert json.loads(trigger["output"]) == {"activation": False}
+    assert json.loads(trigger["output"]) == expected
     assert "not runtime behavior evidence" in behavior["output"]
 
 
@@ -165,7 +253,9 @@ def test_trigger_provider_uses_only_discovery_metadata(monkeypatch) -> None:
 
     def fake_urlopen(api_request, timeout):
         captured.append(json.loads(api_request.data.decode("utf-8")))
-        return _fake_response({"activation": True})
+        return _fake_response(
+            {"selected_skills": ["mols-rpi"], "primary_skill": "mols-rpi"}
+        )
 
     monkeypatch.setattr(ADAPTER.request, "urlopen", fake_urlopen)
     monkeypatch.setenv("PROMPTFOO_RUNTIME_MODEL", "qwen2.5:test")
@@ -174,7 +264,7 @@ def test_trigger_provider_uses_only_discovery_metadata(monkeypatch) -> None:
     result = ADAPTER.call_api(
         task,
         {"config": {"mode": "ollama", "suite": "trigger"}},
-        {"vars": {"mode": "activation"}},
+        {"vars": {"mode": "activation", "routing_candidates": []}},
     )
     payload = json.loads(result["output"])
     skill = ADAPTER.SKILL_PATH.read_text(encoding="utf-8")
@@ -185,28 +275,76 @@ def test_trigger_provider_uses_only_discovery_metadata(monkeypatch) -> None:
     assert captured[0]["format"] == ADAPTER.TRIGGER_RESPONSE_SCHEMA
     assert ADAPTER._skill_frontmatter(skill) in captured[0]["messages"][0]["content"]
     assert "# Mols RPI" not in captured[0]["messages"][0]["content"]
-    assert payload == {"activation": True}
+    assert payload == {"selected_skills": ["mols-rpi"], "primary_skill": "mols-rpi"}
 
 
-def test_trigger_provider_does_not_generate_normal_answer_for_rejection(monkeypatch) -> None:
+def test_trigger_provider_does_not_generate_normal_answer_for_rejection(
+    monkeypatch,
+) -> None:
     captured: list[dict] = []
 
     def fake_urlopen(api_request, timeout):
         captured.append(json.loads(api_request.data.decode("utf-8")))
-        return _fake_response({"activation": False})
+        return _fake_response({"selected_skills": [], "primary_skill": None})
 
     monkeypatch.setattr(ADAPTER.request, "urlopen", fake_urlopen)
 
     result = ADAPTER.call_api(
         "Python for loop와 while loop 차이를 설명해줘.",
         {"config": {"mode": "ollama", "suite": "trigger"}},
-        {"vars": {"mode": "activation-negative"}},
+        {"vars": {"mode": "activation-negative", "routing_candidates": []}},
     )
 
     assert len(captured) == 1
     assert captured[0]["format"] == ADAPTER.TRIGGER_RESPONSE_SCHEMA
     assert "# Mols RPI" not in captured[0]["messages"][0]["content"]
-    assert json.loads(result["output"]) == {"activation": False}
+    assert json.loads(result["output"]) == {
+        "selected_skills": [],
+        "primary_skill": None,
+    }
+
+
+def test_trigger_provider_routes_competing_metadata_and_keeps_specific_owner_primary(
+    monkeypatch,
+) -> None:
+    captured: list[dict] = []
+    candidate = {
+        "name": "agent-skill-authoring",
+        "description": (
+            "Create or modify Agent Skills and their trigger or runtime instructions. "
+            "Use as the primary capability when the requested work changes an Agent "
+            "Skill."
+        ),
+    }
+
+    def fake_urlopen(api_request, timeout):
+        captured.append(json.loads(api_request.data.decode("utf-8")))
+        return _fake_response(
+            {
+                "selected_skills": ["agent-skill-authoring", "mols-rpi"],
+                "primary_skill": "agent-skill-authoring",
+            }
+        )
+
+    monkeypatch.setattr(ADAPTER.request, "urlopen", fake_urlopen)
+
+    result = ADAPTER.call_api(
+        "이 Agent Skill을 RPI 개선 루프로 수정해줘.",
+        {"config": {"mode": "ollama", "suite": "trigger"}},
+        {"vars": {"mode": "activation", "routing_candidates": [candidate]}},
+    )
+    system = captured[0]["messages"][0]["content"]
+
+    assert json.dumps([candidate], ensure_ascii=False, indent=2) in system
+    assert (
+        ADAPTER._skill_frontmatter(ADAPTER.SKILL_PATH.read_text(encoding="utf-8"))
+        in system
+    )
+    assert "# Mols RPI" not in system
+    assert json.loads(result["output"]) == {
+        "selected_skills": ["agent-skill-authoring", "mols-rpi"],
+        "primary_skill": "agent-skill-authoring",
+    }
 
 
 def test_behavior_provider_skips_routing_and_uses_full_skill(monkeypatch) -> None:
@@ -215,7 +353,11 @@ def test_behavior_provider_skips_routing_and_uses_full_skill(monkeypatch) -> Non
     def fake_urlopen(api_request, timeout):
         captured.append(json.loads(api_request.data.decode("utf-8")))
         return _fake_response(
-            {"response": "Review에서 확장을 제안하고 Research와 Plan을 갱신해야 합니다."}
+            {
+                "response": (
+                    "Review에서 확장을 제안하고 Research와 Plan을 갱신해야 합니다."
+                )
+            }
         )
 
     monkeypatch.setattr(ADAPTER.request, "urlopen", fake_urlopen)
@@ -252,7 +394,9 @@ def test_runner_defaults_are_local_and_non_sharing() -> None:
 def test_promptfoo_configs_separate_suites_and_keep_results_disposable() -> None:
     canonical = _canonical_cases()
     runtime = yaml.safe_load((CONFIG_DIR / "mols-rpi.yaml").read_text(encoding="utf-8"))
-    smoke = yaml.safe_load((CONFIG_DIR / "mols-rpi-smoke.yaml").read_text(encoding="utf-8"))
+    smoke = yaml.safe_load(
+        (CONFIG_DIR / "mols-rpi-smoke.yaml").read_text(encoding="utf-8")
+    )
 
     for config in (runtime, smoke):
         assert config["sharing"] is False
@@ -269,7 +413,9 @@ def test_promptfoo_configs_separate_suites_and_keep_results_disposable() -> None
         suites = {test["config"]["suite"] for test in config["tests"]}
         assert suites == {"trigger", "behavior"}
 
-    runtime_tests = {test["config"]["suite"]: test["config"] for test in runtime["tests"]}
+    runtime_tests = {
+        test["config"]["suite"]: test["config"] for test in runtime["tests"]
+    }
     smoke_tests = {test["config"]["suite"]: test["config"] for test in smoke["tests"]}
 
     assert runtime_tests["trigger"]["semantic"] is False
@@ -285,4 +431,7 @@ def test_promptfoo_configs_separate_suites_and_keep_results_disposable() -> None
         assert selected
         assert len(selected) == len(set(selected))
         assert all(case_id in canonical for case_id in selected)
-        assert all(ADAPTER._case_suite(canonical[case_id]["mode"]) == suite for case_id in selected)
+        assert all(
+            ADAPTER._case_suite(canonical[case_id]["mode"]) == suite
+            for case_id in selected
+        )

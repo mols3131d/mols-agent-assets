@@ -51,6 +51,8 @@ Description은 탐색과 Trigger 판단만 소유합니다. Prepare → Main RPI
 
 Explicit method intent는 아래의 **Specificity and Composition Boundary를 무효화하지 않습니다**. 사용자가 RPI를 명시했더라도 하네스의 더 특수한 controlling owner가 있으면 그 owner를 primary로 유지하고, RPI는 호환될 때만 보조적으로 compose합니다.
 
+작업이 짧거나 trivial하다는 이유만으로 명시적인 method intent를 무효화하지 않습니다. 반대로 `RPI`나 `loop`가 설명 대상, identifier, code concept 또는 부정된 방법일 뿐이면 명시적 요청으로 보지 않습니다.
+
 ### Implicit Complex-Work Activation
 
 RPI나 loop라는 단어가 없어도 **single pass가 materially unreliable한 작업**은 활성화될 수 있어야 합니다.
@@ -71,10 +73,10 @@ Description은 적어도 다음 decision signal을 전달해야 합니다.
 다음은 `mols-rpi` activation 이유가 되어서는 안 됩니다.
 
 - `loop`가 주제, identifier 또는 code concept일 뿐인 경우
-- iterative work intent가 없는 단순 반복 요청
-- 작업이 단지 길다는 이유
-- explicit prerequisite control이 의미 있는 이득을 주지 않는 trivial work
-- bounded one-shot answer/review로 충분하고 RPI prerequisite control이 materially 필요하지 않은 경우
+- explicit RPI/loop method intent가 없는 단순 반복 요청
+- explicit method intent 없이 작업이 단지 길다는 이유
+- explicit method intent가 없고 prerequisite control이 의미 있는 이득을 주지 않는 trivial work
+- explicit method intent가 없으며 bounded one-shot answer/review로 충분한 경우
 
 Negative boundary는 explicit trigger recall과 같은 수준으로 중요합니다. 강한 orchestration Skill의 false positive는 불필요한 artifact, Research, Plan과 Review를 만들어 추론비용과 작업비용을 높일 수 있습니다.
 
@@ -105,10 +107,10 @@ Tier 2를 제거할 때는 단순 token 절감이 아니라 **routing signal den
 1,024자 budget을 맞출 때 다음 순서를 지킵니다.
 
 1. Tier 2의 순수 중복을 삭제합니다.
-2. 남은 Tier 2를 더 짧은 상위 표현으로 통합합니다.
-3. Tier 1의 문구를 압축하되 decision boundary는 그대로 유지합니다.
-4. Tier 1을 삭제해야만 1,024자를 맞출 수 있다면 표현 구조를 다시 설계합니다. Required signal을 body로 넘겨 budget을 맞추지 않습니다.
-5. 마지막에 semantic line break를 정리하고 parsed length를 다시 계산합니다.
+1. 남은 Tier 2를 더 짧은 상위 표현으로 통합합니다.
+1. Tier 1의 문구를 압축하되 decision boundary는 그대로 유지합니다.
+1. Tier 1을 삭제해야만 1,024자를 맞출 수 있다면 표현 구조를 다시 설계합니다. Required signal을 body로 넘겨 budget을 맞추지 않습니다.
+1. 마지막에 semantic line break를 정리하고 parsed length를 다시 계산합니다.
 
 짧아졌지만 모델이 implicit activation, negative boundary 또는 더 구체적인 owner의 우선권을 더 많이 추론해야 한다면 성공한 압축이 아닙니다.
 
@@ -118,6 +120,7 @@ Description 변경은 최소한 다음을 함께 확인합니다.
 
 - parsed length ≤ 1,024 characters
 - explicit RPI / recursive-loop positive
+- trivial work에서도 explicit RPI method intent가 있으면 positive
 - keyword-free complex-work positive
 - loop topic과 identifier negative
 - generic repetition negative
@@ -126,6 +129,7 @@ Description 변경은 최소한 다음을 함께 확인합니다.
 - trivial-work negative
 - 하네스의 더 특수·전용·task-specific owner가 더 적합할 때 그 owner를 우선하는지
 - explicit RPI 요청에서도 더 구체적인 controlling owner의 primary 지위가 유지되는지
+- competing Skill metadata가 있을 때 selected set과 primary owner를 함께 판정하는지
 - 더 구체적인 controlling workflow와 compose하더라도 그 lifecycle과 authority를 대체하지 않는지
 
 Trigger eval은 wording 자체가 아니라 이 decision boundary를 보호해야 합니다. Description을 eval case에 맞춘 lexical password처럼 최적화하지 않습니다.
