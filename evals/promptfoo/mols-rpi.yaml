@@ -43,6 +43,7 @@ tests:
       case_ids:
         - rpi-composes-with-domain-skill
         - three-phase-run-envelope-is-preserved
+        - prepare-blocked-stops-before-main
         - finalize-cannot-hide-a-new-main-loop
         - loop-method-intent-reopens-after-material-gap
         - explicit-research-stage-terminal-stops
