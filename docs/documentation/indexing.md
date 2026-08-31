@@ -29,13 +29,10 @@ Index가 README의 entrypoint 역할을 흐릴 정도로 커지면 사람이 꼭
 
 ## `INDEX.tsv`
 
-`INDEX.tsv`는 authored document가 아니라 **generated projection**입니다.
+`INDEX.tsv`는 authored document가 아니라 **generated projection**입니다. 직접 수정하지 않고 source에서 다시 생성합니다.
 
-- row를 직접 수정하지 않고 source Markdown, frontmatter 또는 generator policy를 수정한 뒤 다시 생성합니다.
-- 이 repository의 docs index field는 `path`와 `description`입니다.
+- field는 `path`와 `description`입니다.
 - document description은 해당 Markdown frontmatter에서 가져옵니다.
 - directory metadata는 해당 directory의 `README.md`에서만 가져옵니다.
-- repository-level 생성 entrypoint는 `mise run generated-sync`입니다.
-- nested directory에 `INDEX.tsv`가 필요하다면 파일을 수동으로 추가하지 않고 generator의 materialization policy를 변경합니다.
 
 README와 `INDEX.tsv`가 함께 있으면 README는 사람용 selection cue를, `INDEX.tsv`는 generated inventory를 소유합니다.
