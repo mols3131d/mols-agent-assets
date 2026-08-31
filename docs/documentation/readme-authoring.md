@@ -19,6 +19,8 @@ Directory나 bundle이 존재한다는 이유만으로 만들지 않습니다. �
 
 `README.md`에는 해당 scope가 직접 소유하는 의미와 진입 정보만 둡니다. 상세 tutorial, exhaustive reference, 긴 explanation, 반복되는 policy와 단순 inventory는 더 적절한 canonical owner로 분리합니다.
 
+해당 scope에서 계속 필요한 원칙이나 규칙이지만 **독립 문서로 분리할 만큼 별도의 책임이 크지 않다면 README에 간결하게 포함할 수 있습니다.** 내용이 독립적으로 탐색·유지되어야 할 만큼 커지거나 별도 책임을 갖게 될 때만 분리합니다.
+
 ## Authoring Questions
 
 README는 고정 template를 채우는 대신, 해당 scope에서 실제로 필요한 질문에 답합니다.
@@ -65,7 +67,7 @@ Table column, `INDEX.tsv`와의 중복 경계, inline index를 유지할지 gene
 Directory 또는 bundle의 entrypoint인 `README.md`는 frontmatter에 **README 파일 자체가 아니라 그 entrypoint가 대표하는 scope의 metadata**를 담습니다.
 
 - `description`은 그 directory 또는 bundle을 **언제 탐색하거나 사용해야 하는지**를 설명합니다.
-- `title`을 사용할 때는 README라는 파일명이 아니라 그 directory 또는 bundle의 사람이 읽는 이름을 나타냅니다.
+- `title`을 사용할 때는 README라는 filename이 아니라 그 directory 또는 bundle의 사람이 읽는 이름을 나타냅니다.
 - `이 README는 ...을 설명합니다`처럼 파일 자체를 서술하기보다 scope의 목적, trigger와 responsibility boundary를 표현합니다.
 
 Generated docs index가 directory metadata를 projection할 때는 해당 directory의 `README.md`만 source로 사용합니다. `README.md`에 frontmatter가 없거나 필요한 field가 비어 있어도 다른 filename으로 fallback하거나 metadata를 합치지 않습니다.
