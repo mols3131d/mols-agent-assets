@@ -42,7 +42,7 @@ Local truth에는 repository/workspace evidence를, 변화 가능성이 큰 외�
 Research는 evidence를 많이 모았을 때가 아니라 **현재 downstream transition에 필요한 uncertainty가 충분히 줄었을 때** 닫힙니다.
 
 - Planning이 필요하면 현재 Research를 Plan의 prerequisite로 넘깁니다.
-- **RPI Research stage 자체**가 requested terminal이면 Review로 갑니다.
+- **RPI Research stage 자체**가 requested terminal이면 Main RPI Review로 가고, accepted candidate는 Finalize Gate를 거칩니다.
 - 추가 search가 proportionate하지 않지만 material uncertainty가 남으면 uncertainty를 숨기지 않고 Review로 넘깁니다.
 - Review가 evidence gap, unresolved conflict 또는 invalidated premise를 찾으면 다음 Loop는 필요한 Research 지점부터 다시 시작합니다.
 

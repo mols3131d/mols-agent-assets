@@ -53,6 +53,7 @@ Behavior eval은 **routing이 이미 성공했다고 가정**합니다. Provider
 
 Core runtime selection은 다음 축에서 대표 case를 고릅니다.
 
+- Prepare → RPI Main Loop → Finalize의 3단계 순서, 단일 실행과 Main-Loop-only accounting
 - task-specific Skill 또는 governing workflow와의 composition
 - Research → Plan → Work prerequisite
 - Scope narrowing·expansion과 fixed boundary
@@ -138,6 +139,7 @@ Default suite는 비용과 signal을 균형 있게 유지하고, 더 넓은 case
 1. Trigger case는 positive와 negative/near-miss 균형을 확인합니다.
 1. Behavior case는 outcome을 우선하고, trajectory 자체가 contract일 때만 중간 gate를 assertion으로 둡니다.
 1. Multi-perspective case는 distinct question·evidence surface와 reconciliation을 검사하고 reviewer 수, persona 이름, exact lens roster나 다수결을 정답으로 고정하지 않습니다.
+1. Lifecycle case는 Prepare와 Finalize를 RPI stage나 counted Loop로 오인하지 않는지, Main RPI exit가 Finalize Gate를 통과하는지, Finalize가 hidden Main Loop를 열지 않는지 검사합니다.
 1. 반복된 runtime failure가 안정적인 contract로 확인된 경우 regression defense로 승격합니다.
 
 Fixture를 target runtime에 노출하지 않습니다. Target provider는 prompt와 실제 Skill contract만 보고, assertion은 grading 단계에서만 사용합니다.

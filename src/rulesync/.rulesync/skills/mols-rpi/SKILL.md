@@ -1,11 +1,11 @@
 ---
 name: mols-rpi
 description: >-
-  Run adaptive RPI orchestration: Research → Plan → Implementation/Work → Review prerequisite ordering and Review-driven iteration.
-  Use for explicit RPI/RPI(R) or loop/루프 method intent, including recursive loop, recursive improvement, improvement loop, or deep loop.
-  Also use without those terms when a single pass is materially unreliable because decisions need evidence, consequential Work needs a Plan, acceptance conditions/workstreams must converge, repeated verification/replanning is likely, isolating a narrower subproblem helps, or uncertainty risks costly rework.
-  As a general Skill, defer to a more specific or dedicated harness Skill, workflow, procedure, or governing context that owns the task or its lifecycle/gates/state; compose RPI only when compatible and useful, never replace or override it.
-  Do not use when RPI/loop is merely a topic, identifier, or code concept; for generic repetition, length alone, trivial work, or one-shot work where RPI control adds no material value.
+  Run three-phase adaptive RPI orchestration: Prepare → Research → Plan → Implementation/Work → Review main loop → Finalize.
+  Use for explicit RPI/RPI(R) or loop/루프 method intent, including recursive, improvement, or deep loops.
+  Also use when one pass is materially unreliable because decisions need evidence, consequential Work needs a Plan, acceptance conditions/workstreams must converge, repeated verification/replanning is likely, a narrower subproblem helps, or uncertainty risks costly rework.
+  As a general Skill, defer to a more specific harness, Skill, workflow, procedure, or governing lifecycle/gates/state; compose RPI only when compatible and useful, never replace or override it.
+  Do not use when RPI/loop is only a topic, identifier, or code concept; for generic repetition, length alone, trivial work, or reliable one-shot work.
 targets:
   - claudecode
   - codexcli
@@ -18,17 +18,18 @@ targets:
 
 # Mols RPI
 
-Use **Research → Plan → Implementation → Review** as an artifact dependency contract and adaptive work method.
+Use **Prepare → RPI Main Loop → Finalize** as the Run envelope. Inside the Main Loop, use **Research → Plan → Implementation → Review** as an artifact dependency contract and adaptive work method.
 
-> **Evidence before Plan. Plan before Work. Review before acceptance.**
+> **Prepare before the Main Loop. Evidence before Plan. Plan before Work. Review before Finalize. Finalize before completion.**
 
 ## Core Contract
 
+- **Three-phase Run** — Prepare establishes readiness once, the RPI Main Loop shapes and reviews the requested result, and Finalize closes every Run that entered the Main Loop once. Prepare and Finalize are supporting workflows, not counted Loops and not aliases for Research or Review.
 - **RPI** — public orchestration method. Keep applicable task-specific Skills, tools, and governing procedures in force inside its stages. RPI owns prerequisite ordering, Run/Loop state, Scope control, Review transitions, recursion, and handoff; it does not replace more specific task authority.
 - **Implementation / Work** — goal-directed execution of the accepted Plan, not code-only implementation. It may contain **one or more domain Work units** such as code, documents, research, planning, review, analysis, decisions, configuration, or tool actions.
-- **Stage vs. Work** — Work named Research, Plan, or Review does not replace the corresponding RPI orchestration stage. For example, review Work is followed by outer RPI Review of whether that review was sufficiently grounded, complete, and accepted.
-- **Terminal depth** — dependencies are directional, so not every downstream stage is always required. Stop at RPI Research or RPI Plan only when that **orchestration stage itself** is the requested terminal result. Do not infer stage-only terminal merely because domain Work is research, planning, or review; it may instead run as Work under an accepted Plan and then outer Review.
-- **Loop-method terminal** — an unqualified request to run a loop, research loop, improvement loop, or equivalent iterative method means a Goal-directed Run, not permission to stop after one pass. One Loop may still be sufficient when Review accepts the requested Goal.
+- **Stage vs. Work** — Work named Research, Plan, or Review does not replace the corresponding RPI orchestration stage. For example, review Work is followed by outer RPI Review of whether that review is sufficiently grounded, complete, and ready for Finalize.
+- **Terminal depth** — dependencies are directional, so not every Main-Loop downstream stage is always required. End the Main Loop after RPI Research or RPI Plan + Review only when that **orchestration stage itself** is the requested terminal result, then Finalize. Do not infer stage-only terminal merely because domain Work is research, planning, or review; it may instead run as Work under an accepted Plan and then outer Review.
+- **Loop-method terminal** — an unqualified request to run a loop, research loop, improvement loop, or equivalent iterative method means a Goal-directed Run, not permission to stop after one pass. One Loop may still be sufficient when Review nominates and Finalize accepts the requested Goal.
 
 ## Invariants
 
@@ -42,6 +43,7 @@ These are stop conditions, not suggestions. Later sections own their detailed me
 - **Prerequisite order is real.** Retrospective Research or Plan cannot make earlier Work compliant after the fact.
 - **Intensity is not authority.** It may bias effort but never weakens prerequisites, acceptance conditions, Scope, safety, validation truthfulness, or Loop ceilings, and never requires artificial work after convergence.
 - **Open material gaps block completion.** Do not park a result-changing `absorb` or `unresolved` finding, an unverified acceptance condition, or a dispatched gap as future work while declaring the Run complete. Continue at the earliest stale prerequisite when the Run can proceed; otherwise use the applicable HANDOFF or BLOCKED boundary.
+- **The phase envelope is monotonic.** Enter the Main Loop only after Prepare is ready. Once Finalize begins, do not reopen the Main Loop or disguise broad Research, replanning, or reshaping as bounded finishing work. Prepare and Finalize never consume or reset `loops_used`.
 
 ## Controls
 
@@ -61,9 +63,34 @@ Natural-language constraints still apply. No control or constraint authorizes si
 
 ## Runtime
 
-### Core Lifecycle
+### Three-Phase Run Envelope
 
-This diagram owns only **phase progression and phase-local feedback**. Scope changes, recursive descent, and Run termination are separate control concerns.
+The full Run envelope has exactly three ordered phases:
+
+```text
+Prepare workflow
+→ RPI Main Loop: Research → Plan → Implementation/Work → Review × N
+→ Finalize workflow
+```
+
+Only substantive attempts in the RPI Main Loop are counted. Prepare runs once. For every Run that enters the Main Loop, Finalize also runs once; either supporting workflow may revisit its own steps without becoming a Loop. If Prepare returns `BLOCKED`, report that pre-Main boundary without entering the Main Loop or Finalize. Once the Main Loop has begun, every candidate Run exit passes through Finalize before a terminal state is reported.
+
+#### Phase 1 — Prepare Workflow
+
+Run once before the Main Loop:
+
+`Discover → Assess → Configure → Verify`
+
+- **Discover** — establish task and environment: objective, current state, provisional Goal/Scope, constraints, stakes, acceptance, governing context, task capabilities, tools, permissions, artifact/validation surfaces, and material unknowns.
+- **Assess** — match requirements to the environment; identify dependencies, evidence needs, risks, authority boundaries, and material gaps. Distinguish technically available from authorized, and unavailable from unchecked.
+- **Configure** — choose the smallest viable Main Loop and Finalize strategy: terminal depth, effective Loop ceiling, intensity, evidence/perspective needs, Active Scope, artifact surface, validation, transition signals, and completion gates. Keep it adaptive rather than scripting future Loops.
+- **Verify** — check that the configured Run is executable, proportionate, authorized, and has an evidence path or explicit limitation for every material acceptance condition.
+
+Return `READY`, `READY WITH LIMITS`, or `BLOCKED`. Enter the Main Loop only from a ready state. Prepare may inspect readiness context, but must not absorb substantive RPI Research or pre-count future Loops.
+
+#### Phase 2 — RPI Main Loop
+
+This diagram owns only **Main-Loop stage progression and stage-local feedback**. Scope changes, recursive descent, and Run termination are separate control concerns.
 
 ```mermaid
 flowchart LR
@@ -78,11 +105,26 @@ flowchart LR
     V -->|bounded work gap| I
 ```
 
-Review verifies current state, challenges material weak points, reconciles candidate findings, then dispatches the next transition. Core Lifecycle findings stay here; cross-cutting findings go to their owner.
+Review verifies current state, challenges material weak points, reconciles candidate findings, then dispatches the next transition. Main-Loop findings stay here; cross-cutting findings go to their owner.
+
+The Main Loop continues while another substantive attempt can close a material gap. Review sends terminal acceptance, a trustworthy continuation blocker, or Loop-ceiling exhaustion to Finalize as a candidate exit; it never reports the final Run state directly.
+
+#### Phase 3 — Finalize Workflow
+
+Run once after the Main Loop:
+
+`Inspect → Resolve → Validate → Gate`
+
+- **Inspect** — inspect the candidate exit, acceptance, prerequisite lineage, Review dispositions, unresolved findings, validation gaps, residual risk, recent changes, and Main-Loop integrity.
+- **Resolve** — correct, complete, revert, or preserve only bounded finishing issues inside the shaped result and valid Scope, Plan, and authority; this does not permit hidden Research, replanning, Scope expansion, or substantial reshaping.
+- **Validate** — run the smallest checks that can materially change completion confidence. Verify claimed acceptance conditions and bounded Resolve changes; never convert `pending`, `unresolved`, or unperformed checks into success.
+- **Gate** — return exactly one terminal Run state through `Run Boundary and Handoff`: `COMPLETE`, `HANDOFF`, or `BLOCKED`.
+
+Finalize is not another Review Loop. If trustworthy completion needs broad Research, replanning, Scope change, or substantial reshaping, do not return to the Main Loop inside the same Run. Gate `BLOCKED`, or preserve `HANDOFF` when the Main Loop already ended at its effective ceiling. A later Run requires continuation authority and inherited-state revalidation.
 
 ### Run and Loop
 
-One **Run** is one bounded RPI execution ending in completion, handoff, or blocking. Its effective Loop ceiling is built-in `max_loops` unless the user or governing context sets a lower limit.
+One **Run** is one bounded execution of this phase envelope; it may stop at a blocked Prepare boundary or end after Finalize in completion, handoff, or blocking. Its effective Loop ceiling is built-in `max_loops` unless the user or governing context sets a lower limit. Resolve controls during Prepare; the ceiling applies only to the Main Loop.
 
 Treat a requested count as a ceiling unless the user explicitly requires an exact number of substantive Loops. Even then, never create fake, mechanical, or no-op Loops; stop and report the shortfall when no substantive next Loop exists.
 
@@ -105,6 +147,7 @@ Mechanical edits, reporting, artifact formatting, repeated evidence, and no-op c
 - There is no per-scope Loop limit or fixed recursion-depth limit.
 - The ceiling is a safety bound, not a target: never exceed it, and stop earlier on convergence, saturation, or a blocker.
 - Handoff serialization is not a Loop.
+- Prepare and Finalize steps, revisits, corrections, validation, gating, and reporting are not Loops.
 
 Never hide a reset by starting a nested or renamed Run inside the current Run.
 
@@ -150,7 +193,7 @@ Active Scope
 - Acceptance conditions
 ```
 
-At Run start, infer the smallest provisional Active Scope sufficient to pursue the Goal. Record material boundary uncertainty instead of silently widening it; explicit user or governing boundaries take precedence.
+During Prepare, infer the smallest provisional Active Scope sufficient to pursue the Goal. Record material boundary uncertainty instead of silently widening it; explicit user or governing boundaries take precedence.
 Scope determines what Work belongs to the problem, not operational permission or weaker authority, safety, persistence, or validation requirements.
 
 1. **Work stays inside Active Scope.** Out-of-scope findings may inform Research or Review; Work on them requires prior valid expansion.
@@ -172,6 +215,12 @@ Give artifacts a stable path, reference, heading, or label. Maintain the latest 
 Make lineage inspectable:
 
 ```text
+Prepare Record
+- Task / environment / governing context
+- Goal / provisional Active Scope / acceptance conditions
+- Configured controls, evidence paths, limitations
+- Readiness: READY | READY WITH LIMITS | BLOCKED
+
 Research Artifact
 - Goal
 - Active Scope: in / out / acceptance
@@ -194,10 +243,16 @@ Review Artifact
 - Material perspective checks and challenge candidates + disposition / evidence basis, if any
 - Scope delta or pending expansion, if any
 - Deviations / gaps
-- Next transition / status
+- Next transition / candidate exit to Finalize
+
+Finalize Record
+- Inspected candidate exit / material gates
+- Bounded resolutions, if any
+- Validation evidence / residual limitations
+- Gate: COMPLETE | HANDOFF | BLOCKED
 ```
 
-Supporting Research precedes consequential Plan; a valid Plan covering the Work precedes Work; Review precedes acceptance; prerequisites must be genuinely prior. Retrospective artifacts may support audit/recovery but cannot retroactively make earlier Work compliant.
+Supporting Research precedes consequential Plan; a valid Plan covering the Work precedes Work; Main-Loop Review precedes Finalize, and the Finalize Gate precedes acceptance. Prerequisites must be genuinely prior. Retrospective artifacts may support audit/recovery but cannot retroactively make earlier Work compliant.
 Reuse existing artifacts when current, relevant, authoritative enough, and adequate. Treat provided Plans as candidates: validate material assumptions against Research or perform the minimum missing Research first.
 Material Research/Scope changes may stale Plan; Plan changes may stale affected Work. Revalidate before continuing. Artifacts never grant operational permission, and valid artifacts are not regenerated for ceremony.
 
@@ -270,7 +325,7 @@ If Work needs a material new assumption, approach, or Scope outside accepted Pla
 
 ### Review
 
-Review is an **adaptive evaluator and control gate**. For each substantive Review, perform the smallest useful form of Verify, Challenge, Reconcile, and Dispatch: verify current state, challenge the strongest material weak points, reconcile candidate findings, then dispatch the next transition.
+Review is an **adaptive evaluator and Main-Loop control gate**. For each substantive Review, perform the smallest useful form of Verify, Challenge, Reconcile, and Dispatch: verify current state, challenge the strongest material weak points, reconcile candidate findings, then dispatch the next transition or a candidate exit to Finalize.
 
 These are Review-local operations, not Loops. Do not recursively restart Challenge/Reconcile inside one Review; a new material gap is a Dispatch result, and the next counted Loop starts at the earliest stale prerequisite.
 
@@ -287,15 +342,15 @@ When Perspective Control applies, use the selected lens set for distinct Review 
 
 Dispatch is executable Run state, not a suggestion for an unspecified future attempt. Route every material `absorb` or acceptance-relevant `unresolved` finding to the earliest stale prerequisite or owning control. If the Run can continue, begin the next Loop there; do not describe a pending "next Loop" while marking the current Run complete.
 
-Do not accept a terminal result while an `absorb` finding needs unverified change, an `unresolved` material candidate can change acceptance, an acceptance condition is unverified, or Review has dispatched a material gap. If no trustworthy continuation path exists, classify the Run as blocked; if the effective Loop ceiling is reached with material continuation remaining, hand off without claiming completion.
+Do not nominate terminal acceptance while an `absorb` finding needs unverified change, an `unresolved` material candidate can change acceptance, an acceptance condition is unverified, or Review has dispatched a material gap. If no trustworthy continuation path exists, send a blocking candidate to Finalize; if the effective Loop ceiling is reached with material continuation remaining, send a handoff candidate. Finalize owns the terminal Gate.
 
 | Review finding | Owner |
 | --- | --- |
-| evidence, plan, or bounded Work gap | Core Lifecycle |
+| evidence, plan, or bounded Work gap | RPI Main Loop |
 | Scope boundary change | Scope Control |
 | saturation or no credible gain | Goal-State Convergence |
 | narrower material blocker | Recursive Resolution |
-| accepted terminal, blocking boundary, or Loop ceiling | Run Boundary and Handoff |
+| accepted terminal, blocking boundary, or Loop ceiling | Finalize → Run Boundary and Handoff |
 
 Validate consequential claims as close as practical to their producing stage, using the cheapest evidence that can answer the question:
 
@@ -336,19 +391,20 @@ Use Perspective Control—not recursive descent or pretend multi-agent debate—
 
 ### Run Boundary and Handoff
 
-Evaluate termination only after substantive Review closes and `loops_used` increments; this is separate from phase progression.
+Evaluate a candidate exit only after substantive Review closes and `loops_used` increments.
+Then enter Finalize; only its Gate reports the terminal Run state.
 
 ```mermaid
 flowchart TD
     V["Review closes"] --> L["loops_used += 1"]
     L --> A{"Requested terminal accepted?"}
-    A -->|yes| C["COMPLETE"]
-    A -->|no| B{"Trustworthy continuation blocked?"}
-    B -->|yes| X["BLOCKED"]
-    B -->|no| E{"loops_used >= effective ceiling?"}
-    E -->|no| N["Next Loop at earliest stale prerequisite"]
-    E -->|yes| H["Serialize continuation state"]
-    H --> O["HANDOFF"]
+    A -->|yes| F["Finalize"]
+    A -->|no| B{"Continuation blocked?"}
+    B -->|yes| F
+    B -->|no| E{"At Loop ceiling?"}
+    E -->|yes| F
+    E -->|no| N["Next Main Loop"]
+    F --> G["Gate: COMPLETE / HANDOFF / BLOCKED"]
 ```
 
 Infer terminal result from natural-language task intent and governing context:
@@ -356,16 +412,24 @@ Infer terminal result from natural-language task intent and governing context:
 - explicit **RPI Research stage** terminal → Research + Review
 - explicit **RPI Plan stage** terminal → Research + Plan + Review
 - domain research/plan/review deliverable → may be Work, so Plan-before-Work and outer RPI Review still apply
-- Goal requested → continue until Goal is accepted
+- Goal requested → continue until Review can nominate and Finalize can accept the Goal
 
-`COMPLETE` requires all of the following at the closing Review: the requested terminal is accepted, applicable acceptance conditions are verified, no result-changing `absorb` or `unresolved` finding remains, and no material next transition is pending. When any condition is open and continuation is available, start the next Loop at the earliest stale prerequisite. A label such as "first Loop complete" may describe accounting, but must not imply Run completion while acceptance remains open.
+Review may nominate completion only when the requested terminal appears accepted,
+applicable acceptance conditions are verified, no result-changing `absorb` or
+`unresolved` finding remains, and no material next transition is pending. When any
+condition is open and continuation is available, start the next Main Loop at the earliest
+stale prerequisite. A label such as "first Loop complete" may describe accounting, but
+must not imply Run completion while acceptance remains open. `COMPLETE` exists only after
+Finalize independently inspects this candidate, resolves and validates any bounded
+finishing issue, and its Gate passes.
 
 Reaching the effective ceiling with material Work remaining is a **continuation boundary**, not proof of Goal failure.
 
-After the final allowed Review:
+When the final allowed Review sends a handoff candidate to Finalize:
 
 1. Start no new Loop.
-1. Use the established handoff mechanism; invent no persistent format.
+1. Inspect and validate the continuation boundary; use the established handoff mechanism
+   and invent no persistent format.
 1. Preserve minimum continuation state:
    - **Run accounting** — `loops_used`, effective ceiling
    - **Scope/context** — active scope path/definition, pending Scope proposals, needed target/context reference, applicable user constraints/named controls including relevant active intensity
@@ -373,7 +437,7 @@ After the final allowed Review:
    - **Continuation** — remaining material gaps, unresolved child results/parent impacts, recommended next transition
 1. Preserve exhaustion reason plus authority, approval, environment, validation, and material risk boundaries needed for safe continuation.
 1. Update and reference an existing suitable continuation surface with the final material delta instead of duplicating state elsewhere.
-1. Mark the Run handed off, not complete.
+1. Gate the Run as HANDOFF, not COMPLETE.
 
 If no established handoff surface exists, return the same minimum state inline without inventing storage or claiming persistence.
 
@@ -381,9 +445,9 @@ A later Run may continue only after validating inherited Research, Active Scope,
 
 | State | Meaning |
 | --- | --- |
-| **COMPLETE** | Requested terminal Goal or stage is accepted by Review. |
-| **HANDOFF** | Effective Loop ceiling reached with material continuation remaining. |
-| **BLOCKED** | Material evidence, capability, Scope, authority, approval, dependency, or unresolved saturation prevents trustworthy continuation. |
+| **COMPLETE** | Finalize validates that the requested terminal Goal or stage and all material gates are accepted. |
+| **HANDOFF** | Finalize validates a continuation boundary after the effective Loop ceiling is reached with material continuation remaining. |
+| **BLOCKED** | Prepare cannot establish readiness, or Finalize confirms that material evidence, capability, Scope, authority, approval, dependency, broad reshaping, or unresolved saturation prevents trustworthy completion. |
 
 Never report COMPLETE while a known material gap still requires broader Research, replanning, Scope reconciliation, affected Work reconciliation, or unresolved recursive integration for accepted scope.
 
@@ -392,12 +456,17 @@ Never report COMPLETE while a known material gap still requires broader Research
 Reporting cadence is not an RPI argument; follow higher-priority harness behavior and explicit user instructions. Keep material blockers, handoff state, and terminal outcome observable when the environment permits.
 Report only observable evidence, decisions, Work, validation, Scope changes, Loop counts, handoff, and outcomes; do not narrate hidden reasoning.
 
-At each substantive Review close and terminal boundary, expose the minimum state below or reference an equivalent established surface. Do not emit it for every search or tool action.
+At Prepare readiness, each substantive Review close, Finalize entry, and the terminal
+boundary, expose the minimum relevant state below or reference an equivalent established
+surface. Prepare and Finalize updates are unnumbered; do not emit this for every search or
+tool action.
 
 ```text
 RPI State
+- Phase: <Prepare | Main RPI | Finalize>
+- Readiness: <READY | READY WITH LIMITS | BLOCKED | n/a>
 - Loop: <loops_used>/<effective ceiling>
-- Acceptance: <open | accepted>
+- Acceptance: <open | candidate | accepted>
 - Material gaps: <result-changing gaps | none>
-- Next: <Research | Plan | Work | COMPLETE | HANDOFF | BLOCKED>
+- Next: <Research | Plan | Work | Finalize | COMPLETE | HANDOFF | BLOCKED>
 ```

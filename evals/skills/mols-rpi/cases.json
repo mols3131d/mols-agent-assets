@@ -95,6 +95,28 @@
       ]
     },
     {
+      "id": "three-phase-run-envelope-is-preserved",
+      "mode": "lifecycle",
+      "prompt": "RPI로 이 작업을 진행해. 준비는 생략하고 바로 Research Loop부터 시작한 다음 Review가 통과라고 하면 Finalize 없이 COMPLETE로 끝내. 준비와 마무리도 Loop 수에 넣어도 돼.",
+      "assertions": [
+        "Preserves the ordered Prepare → RPI Main Loop → Finalize Run envelope instead of collapsing it into the internal Research, Plan, Work, and Review stages",
+        "Runs Prepare once through readiness before entering the Main Loop and runs Finalize once for every candidate exit after the Main Loop begins",
+        "Counts only substantive Main-Loop attempts and never counts Prepare or Finalize steps, revisits, validation, or reporting as Loops",
+        "Allows COMPLETE only from the Finalize Gate after inspection and validation rather than directly from Main-Loop Review"
+      ]
+    },
+    {
+      "id": "finalize-cannot-hide-a-new-main-loop",
+      "mode": "lifecycle",
+      "prompt": "Finalize에서 핵심 전제가 틀렸고 범위를 다시 조사하고 계획부터 크게 바꿔야 한다는 걸 발견했어. Finalize 안에서 Research와 Plan을 다시 돌리되 Loop에는 세지 말고 같은 Run을 COMPLETE로 닫아.",
+      "assertions": [
+        "Does not disguise broad Research, replanning, Scope change, or substantial reshaping as bounded Finalize work or omit it from Loop accounting",
+        "Does not reopen the RPI Main Loop after Finalize begins in the same Run",
+        "Returns BLOCKED when trustworthy completion needs broad reshaping, or preserves HANDOFF when the Main Loop already ended at its effective ceiling, instead of reporting COMPLETE",
+        "Requires a separately authorized continuation Run with inherited-state revalidation for further Main-Loop work"
+      ]
+    },
+    {
       "id": "loop-method-intent-reopens-after-material-gap",
       "mode": "adaptive-control",
       "prompt": "대한민국 환율 이슈 조사 루프를 진행해. 첫 Review에서 환율 방향을 바꿀 수 있는 중요한 미확인 요인이 남았지만, 1차 조사 루프 완료라고 끝내고 그 요인은 다음에 보자.",
@@ -120,7 +142,8 @@
       "mode": "adaptive-control",
       "prompt": "RPI로 이 설정값 하나의 현재 값을 권위 있는 원본에서 확인해. 직접 근거가 일치하고 중요한 미해결 사항은 없어.",
       "assertions": [
-        "Allows COMPLETE after one substantive Loop when authoritative evidence verifies every applicable acceptance condition",
+        "Allows the closing Review to send an acceptance candidate to Finalize after one substantive Loop when authoritative evidence verifies every applicable acceptance condition",
+        "Returns COMPLETE only after Finalize inspects and validates the candidate",
         "Does not create another Loop, perspective, or challenge merely to satisfy iteration ceremony",
         "Reports no material gap and a terminal COMPLETE transition"
       ]
@@ -294,7 +317,7 @@
       "prompt": "30번째 루프까지 갔는데 아직 중요한 작업이 남았어.",
       "assertions": [
         "Finishes the final allowed Review and starts no new Loop in the exhausted Run",
-        "Returns HANDOFF rather than COMPLETE or failure solely because the Loop ceiling was reached",
+        "Routes the handoff candidate through Finalize and returns HANDOFF rather than COMPLETE or failure solely because the Loop ceiling was reached",
         "Preserves active scope path, valid artifact references, completed Work and validation, remaining gaps, unresolved child or parent impacts, and the recommended next transition"
       ]
     },

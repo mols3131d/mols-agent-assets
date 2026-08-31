@@ -42,7 +42,7 @@ Plan은 Review와 upstream state 변화에 따라 필요한 부분만 갱신합�
 
 ## Exit and Reopening
 
-Plan은 현재 Goal과 Scope에 필요한 Work를 안전하게 시작할 만큼 coverage가 유효할 때 downstream Work로 넘어갑니다. RPI Plan stage 자체가 requested terminal이면 Review가 Plan과 그 Research lineage를 검증한 뒤 accept 여부를 결정합니다. Domain Work가 planning인 경우와는 구분합니다.
+Plan은 현재 Goal과 Scope에 필요한 Work를 안전하게 시작할 만큼 coverage가 유효할 때 downstream Work로 넘어갑니다. RPI Plan stage 자체가 requested terminal이면 Main RPI Review가 Plan과 그 Research lineage를 검증해 candidate exit를 만들고 Finalize Gate가 accept 여부를 결정합니다. Domain Work가 planning인 경우와는 구분합니다.
 
 Implementation 중 material new assumption, approach 또는 Scope gap이 나타나면 Work를 계속 밀어붙이지 않습니다. Review가 gap을 reconcile한 뒤 Research 또는 Plan 중 earliest stale prerequisite를 다시 엽니다.
 

@@ -46,7 +46,7 @@ skills/mols-markdown-dashboard/baseline/
 skills/mols-markdown-dashboard/baseline/DIRECTIVE.md	스킬이 후속 수정에서 훼손되지 않도록 핵심 요구사항과 결정사항을 보존한다.
 skills/mols-markdown-maintenance/	mols-markdown-maintenance를 변경하거나 유지할 때 repository-native Markdown tooling 우선순위, custom frontmatter/index delta와 유지보수 invariant를 확인하는 maintainer documentation entrypoint입니다.
 skills/mols-mermaid/	mols-mermaid family에서 관계·절차·구조는 diagram, 정량 비교·추세·구성은 chart 중 어느 Skill로 라우팅할지 판단하거나 family boundary를 유지보수할 때 사용하는 entrypoint입니다.
-skills/mols-rpi/	mols-rpi를 유지보수할 때 prerequisite contract, adaptive Research·Plan·Work·Review, intensity와 artifact 결정을 찾는 entrypoint입니다.
+skills/mols-rpi/	mols-rpi를 유지보수할 때 3단계 Run 외피, adaptive Research·Plan·Work·Review, intensity와 artifact 결정을 찾는 entrypoint입니다.
 skills/mols-rpi/artifacts.md	RPI artifact의 배치, persistence, durable continuation과 lifecycle을 설계하거나 변경할 때 보존해야 할 결정사항을 정리한 maintainer 문서입니다.
 skills/mols-rpi/description.md	mols-rpi frontmatter description의 Trigger·routing 필수 신호, 보조 신호와 1,024자 압축 경계를 유지보수할 때 사용하는 문서입니다.
 skills/mols-rpi/evaluation.md	mols-rpi의 Trigger와 Behavior eval을 분리해 설계하고 Promptfoo fixture·provider·grader·runtime evidence를 유지보수할 때 사용하는 문서입니다.
@@ -55,5 +55,5 @@ skills/mols-rpi/rpi-plan.md	Adaptive recursive RPI에서 Plan의 prerequisite, c
 skills/mols-rpi/rpi-research.md	Adaptive recursive RPI에서 Research의 prerequisite, uncertainty reduction, dynamic search와 downstream transition을 보존하는 maintainer 문서입니다.
 skills/mols-rpi/rpi-review.md	Adaptive recursive RPI에서 Review의 prerequisite validation, challenge reconciliation과 next-transition dispatch를 보존하는 maintainer 문서입니다.
 skills/mols-rpi/rpi-work.md	RPI의 Implementation을 goal-directed Work로 해석하고, Work가 하나 이상의 다양한 domain action으로 구성될 수 있다는 핵심 설계를 보존하는 maintainer 문서입니다.
-skills/mols-rpi/rpi.md	RPI의 prerequisite contract, Review-driven adaptation, intensity와 recursive resolution이 하나의 Run에서 어떻게 연결되는지 보존하는 maintainer 문서입니다.
+skills/mols-rpi/rpi.md	Prepare, Main RPI, Finalize의 3단계 Run 외피와 prerequisite contract, Review-driven adaptation이 어떻게 연결되는지 보존하는 maintainer 문서입니다.
 using-this-repository.md	이 저장소의 Agent Asset이나 reusable knowledge를 외부 repository·runtime에서 찾고, 직접 사용·설치·고정·가져오는 방법을 선택할 때 사용합니다.

@@ -30,7 +30,7 @@ Runtime behavior는 `src/rulesync/.rulesync/skills/mols-rpi/SKILL.md`, behaviora
 
 ### Capability Identity
 
-Description만 읽어도 `mols-rpi`가 **adaptive RPI orchestration**이며 Research → Plan → Implementation/Work → Review의 prerequisite 관계와 반복적 개선을 다룬다는 점을 구분할 수 있어야 합니다.
+Description만 읽어도 `mols-rpi`가 **Prepare → Main RPI → Finalize의 3단계 adaptive orchestration**이며 Main RPI 안에서 Research → Plan → Implementation/Work → Review의 prerequisite 관계와 반복적 개선을 다룬다는 점을 구분할 수 있어야 합니다.
 
 단순히 긴 작업을 처리하는 일반 workflow로 보이게 만들면 안 됩니다.
 
@@ -115,6 +115,7 @@ Tier 2를 제거할 때는 단순 token 절감이 아니라 **routing signal den
 Description 변경은 최소한 다음을 함께 확인합니다.
 
 - parsed length ≤ 1,024 characters
+- Prepare → Main RPI → Finalize capability identity
 - explicit RPI / recursive-loop positive
 - keyword-free complex-work positive
 - loop topic과 identifier negative
