@@ -39,11 +39,11 @@ Use **Research → Plan → Implementation → Review** as an artifact dependenc
 | Concept | Contract |
 | --- | --- |
 | `RPI` | Public method name. It is an orchestration method, not the task-domain capability. |
-| `Implementation` | **Goal-directed execution of the accepted Plan**, not code-only implementation. It may produce code, documents, analysis, edits, decisions, configuration, tool actions, or another planned result. |
+| `Implementation` | **Goal-directed execution of the accepted Plan**, not code-only implementation. It may produce code, documents, analysis, edits, decisions, configuration, tool actions, or another planned result that moves the current state toward the Goal. |
 | Work | Implementation may execute **one or more Work units**. A Work unit is a task-domain action and may itself be research, planning, review, writing, analysis, implementation, decision work, or another planned action. |
 | Stage vs. Work | A Work unit named Research, Plan, or Review does not replace the corresponding RPI orchestration stage. For example, review Work is followed by RPI Review of whether that review was sufficiently grounded, complete, and accepted. |
 | Task authority | Keep applicable task-specific Skills, tools, and governing procedures in force inside RPI stages. RPI owns prerequisite ordering, Run/Loop state, Scope control, Review transitions, recursion, and handoff; it does not replace more specific task authority. |
-| Terminal depth | The dependency is directional and does not require every downstream stage. Stop at RPI Research or RPI Plan only when that **orchestration stage itself** is the requested terminal result. Domain research, planning, or review may instead be Work under an accepted RPI Plan and then be evaluated by outer RPI Review. |
+| Terminal depth | The dependency is directional and does not require every downstream stage. Stop at RPI Research or RPI Plan only when that **orchestration stage itself** is the requested terminal result. Do not infer a stage-only terminal merely because the user's domain Work is research, planning, or review; those may instead be Work under an accepted RPI Plan and then be evaluated by outer RPI Review. |
 
 ## Invariants
 
@@ -64,13 +64,14 @@ These are stop conditions, not suggestions. Later sections own their detailed me
 
 RPI is an LLM Skill, not a parameterized function. Stable defaults stay in the Skill, while natural-language task intent and governing context remain authoritative when sufficient.
 
-| Surface | Contract |
+| Control | Contract |
 | --- | --- |
 | `max_loops: 30` | Built-in hard per-Run ceiling. User or governing context may establish a lower Run limit in natural language; never raise the built-in ceiling above 30 from task instructions. |
-| `artifacts: <auto>` | Named public override. `<auto>` follows established user, project, workspace, or harness artifact policy. Explicit natural-language artifact instructions may request inline handling or an authorized established destination. |
+| `artifacts: <auto>` | Named public override. `<auto>` follows established user, project, workspace, or harness artifact policy. Explicit natural-language artifact instructions may request inline handling or an authorized established destination/surface. |
 | `intensity: <light \| standard \| deep>` | Named public override with built-in default `standard`. It is a soft effort control, not a stage count, Loop quota, recursion command, or quality waiver. |
 
 Do not require callers to restate task state or internal control choices as structured arguments.
+Do not impose a universal artifact path grammar or fixed enum when ordinary language identifies the intended artifact behavior clearly.
 Interpret equivalent intensity requests such as light/가볍게, standard/보통, or deep/깊게 by meaning rather than requiring YAML syntax.
 When a phrase clearly combines RPI method intent and strength, such as `deep loop` or `심층 루프`, use `deep` unless stronger context establishes another intent.
 The runtime effect of intensity is owned by `Intensity` below.
@@ -111,14 +112,12 @@ Even an exact request never permits fake, mechanical, or no-op Loops; if no subs
 
 `loops_used` is one cumulative Run counter. Increment it exactly once when a substantive Review closes. Scope push/pop never changes or resets it.
 
-One **Loop** is one substantive attempt from the earliest prerequisite that must change through Review.
+One **Loop** is one substantive attempt from the earliest prerequisite that must change through Review. Common paths include:
 
-| Loop path | When it applies |
-| --- | --- |
-| `Research → Plan → Implementation → Review` | Research, Plan, and Work all need to change. |
-| `Plan → Implementation → Review` | Valid Research already exists. |
-| `Implementation → Review` | A bounded fix is already covered by a valid Plan. |
-| `Research → Review` | RPI Research itself is the requested terminal result. |
+- `Research → Plan → Implementation → Review`
+- `Plan → Implementation → Review` when valid Research already exists
+- `Implementation → Review` for a bounded fix already covered by a valid Plan
+- `Research → Review` when RPI Research itself is the requested terminal result
 
 A substantively distinct attempt consumes one Loop when it reaches Review even if Review concludes that nothing should change, a hypothesis failed, or the work saturated.
 A no-change Loop is valid when real investigation or validation closed uncertainty or established a blocker/saturation condition.
