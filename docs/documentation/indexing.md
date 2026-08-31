@@ -17,5 +17,4 @@ description: README의 inline Index와 generated INDEX.tsv 중 적절한 문서 
 - README의 `Index`는 사람의 판단을 돕는 curated navigation에 사용합니다.
 - `INDEX.tsv`는 재생성 가능한 inventory에 사용합니다.
 - 두 surface를 함께 사용하더라도 같은 정보를 반복하지 않습니다.
-- README의 entrypoint 역할을 흐릴 만큼 index가 커지면 사람에게 필요한 선택 기준만 README에 남깁니다.
 - Index는 원본이나 authority를 대신하지 않습니다.
