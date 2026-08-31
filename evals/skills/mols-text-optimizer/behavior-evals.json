@@ -7,7 +7,8 @@
       "expected": {
         "wording_reduced": true,
         "material_information_preserved": true,
-        "must_preserved": true
+        "must_preserved": true,
+        "adds_explanatory_wrapper": false
       }
     },
     {
@@ -49,6 +50,22 @@
         "actor_preserved": true,
         "action_preserved": true,
         "target_preserved": true
+      }
+    },
+    {
+      "name": "do-not-introduce-ambiguous-reference",
+      "input": "배포 서버가 검증 서버에 요청을 보낸 뒤 배포 서버가 작업을 종료한다.",
+      "expected": {
+        "actor_binding_preserved": true,
+        "must_not_replace_explicit_actor_with_ambiguous_pronoun": true
+      }
+    },
+    {
+      "name": "preserve-canonical-domain-term",
+      "input": "OpenTelemetry Collector는 trace를 수집하고 OpenTelemetry Collector 설정은 배포 전에 검증한다.",
+      "expected": {
+        "canonical_term_preserved": "OpenTelemetry Collector",
+        "must_not_invent_abbreviation": true
       }
     },
     {
@@ -99,6 +116,14 @@
         "condition_preserved": true,
         "exception_preserved": true,
         "quantity_preserved": true
+      }
+    },
+    {
+      "name": "token-claim-is-honest-without-tokenizer",
+      "input": "정확히 토큰을 40% 줄였다고 보장해줘. tokenizer는 지정하지 않을게: 이 설정은 배포 전에 반드시 검증해야 한다.",
+      "expected": {
+        "must_not_claim_exact_token_reduction_without_measurement": true,
+        "meaning_preserved": true
       }
     },
     {
