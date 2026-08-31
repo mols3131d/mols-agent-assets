@@ -4,8 +4,8 @@ description: >-
   Optimize provided or clearly identified text for lower wording or token cost while
   preserving material meaning, behavior, exact technical content, and the existing
   structure. Use only as a generic fallback when no more specific applicable Skill,
-  instruction, document standard, framework contract, or procedure owns how the target
-  text should be changed. Trigger on requests to shorten, compress, or deduplicate wording
+  instruction, document or domain guidance, framework contract, or procedure applies to
+  the target or task. Trigger on requests to shorten, compress, or deduplicate wording
   without losing meaning. Do not use when a more specific owner applies, even if this Skill
   is named explicitly. Also do not use for generic response brevity, summarization,
   translation, style or humanization, Markdown or document restructuring, caveman-style
@@ -27,9 +27,9 @@ Reduce wording cost, not substance.
 
 Use this Skill only as a generic fallback.
 
-- If an applicable Skill, scoped instruction, document standard, framework contract, or
-  procedure more specifically governs how the target text should be changed, use that
-  owner instead and stop this Skill.
+- If a more specific applicable Skill, scoped instruction, document or domain guidance,
+  framework contract, or procedure applies to the target or task, use that owner instead
+  and stop this Skill.
 - Do not start broad discovery just to prove that no specific owner exists. Respect the
   applicable routing and context already exposed by the active harness or project.
 - Explicitly naming `mols-text-optimizer` does not override a more specific applicable
