@@ -49,6 +49,42 @@
       ]
     },
     {
+      "id": "equivalent-iterative-method-activates",
+      "mode": "activation",
+      "prompt": "이 문제는 먼저 근거를 조사하고 계획을 세운 뒤 수정해. 검토에서 중요한 문제가 나오면 필요한 단계로 돌아가 반복해서 수렴해줘.",
+      "assertions": [
+        "Activates mols-rpi for explicit repeated Research, Plan, Work, and Review intent even without the RPI or loop keyword",
+        "Uses Review-driven iteration rather than treating the request as a single linear pass"
+      ]
+    },
+    {
+      "id": "long-one-pass-task-does-not-activate",
+      "mode": "activation-negative",
+      "prompt": "이 긴 회의록을 읽고 핵심 결정사항만 요약해줘. 조사나 계획, 반복 검토는 필요 없어.",
+      "assertions": [
+        "Does not activate mols-rpi merely because the input or task is long",
+        "Respects the explicit one-pass transformation intent without manufacturing prerequisite artifacts"
+      ]
+    },
+    {
+      "id": "loop-identifier-in-task-does-not-activate",
+      "mode": "activation-negative",
+      "prompt": "코드에서 event_loop 변수 이름을 더 이해하기 쉽게 바꿀지 검토해줘.",
+      "assertions": [
+        "Does not activate mols-rpi merely because loop appears inside an identifier in a real task",
+        "Treats the request as the underlying bounded code review or naming task unless other RPI intent exists"
+      ]
+    },
+    {
+      "id": "single-review-request-does-not-activate",
+      "mode": "activation-negative",
+      "prompt": "이 PR을 한 번 리뷰해서 중요한 문제만 알려줘. 개선 루프는 돌리지 마.",
+      "assertions": [
+        "Does not activate mols-rpi for a bounded one-shot review when the user explicitly rejects iterative improvement",
+        "Does not override the explicit no-loop boundary merely because Review is part of the RPI lifecycle"
+      ]
+    },
+    {
       "id": "rpi-composes-with-domain-skill",
       "mode": "orchestration",
       "prompt": "이 에이전트 스킬을 재귀 개선해서 품질을 높여줘.",
