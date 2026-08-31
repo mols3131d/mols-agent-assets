@@ -27,6 +27,10 @@ description: 개별 Agent Asset 또는 family의 유지보수 문서를 어디�
 
 이 문서 묶음 안의 중복 경계는 이 문서의 Ownership과 Contract가 정합니다. 저장소 전반의 중복 판단은 [Documentation Principles](principles.md)를 따릅니다.
 
+## Anti-patterns
+
+- **자산명 반복** — 문맥상 대상이 이미 분명한데도 문장이나 항목마다 자산명을 주어처럼 되풀이하지 않습니다. 자산명은 첫 식별, 여러 자산 비교, 모호성 해소처럼 이름 자체가 필요한 지점에서만 명시합니다. 불필요한 반복은 가독성을 낮추고 이름 변경 시 수정 범위를 키웁니다.
+
 ## Entrypoint
 
 Asset별 문서에 README를 둘지와 진입점 역할은 [README Authoring](readme-authoring.md)을 따릅니다.
