@@ -11,6 +11,7 @@
 - `src/rulesync/.rulesync/skills/mols-text-optimizer/SKILL.md`가 canonical source로 존재한다.
 - 대상에 적용되는 전문 Skill, 지침, 문서 또는 절차가 있으면 그것을 우선하고 이 Skill은 선택되지 않는다.
 - 더 구체적인 owner가 없는 일반 텍스트 경량화 요청에서만 fallback으로 선택된다.
+- routing/trigger는 frontmatter `description`이 소유하고 Skill body에서 중복하지 않는다.
 - 단순 응답 간결화, 요약, 번역, 문체 윤문, Markdown 구조 개선, caveman-style 요청과 경계가 분명하다.
 - 의미·기능·행동 보존이 wording/token 절감보다 우선한다.
 - safe case에서는 실제 표현 비용이 줄고, 안전한 절감이 없으면 no-op한다.
@@ -48,6 +49,7 @@ Canonical Skill 변경으로 필요한 distribution route는 기존 generator로
 - Markdown 구조·가독성 기능
 - summarization, translation, humanization, response-style mode
 - 전문 도메인 Skill이나 지침을 대체하는 범용 override logic
+- Skill body의 별도 `Route` section
 
 실제 implementation/eval evidence 없이 보조 구조를 추가하지 않는다.
 
@@ -61,89 +63,27 @@ Semantic stability는 별도 기능이 아니라 **optimization constraint**다.
 
 이 Skill만으로 번역·재생성·요약·압축 이후 의미 동일성을 보장한다고 주장하지 않는다. 원문 wording에서 제거 가능한 ambiguity, synonym churn과 불필요한 표현 변이를 늘리지 않는 것이 범위다.
 
-## Routing principle: specific owner first
+## Routing and activation
 
-이 Skill은 범용 fallback이다. **대상의 의미, 동작, 형식 또는 작성 방식을 더 구체적으로 소유하는 적용 가능한 Skill, 지침, 문서, 표준, 절차가 있으면 그것을 사용하고 `mols-text-optimizer`는 선택하지 않는다.**
+Routing과 trigger는 frontmatter `description`이 소유한다. Skill body는 이미 선택된 뒤의 실행 계약만 소유한다.
 
-선택 순서는 다음과 같다.
+`description`은 다음을 분명하게 해야 한다.
 
-```text
-Applicable target/domain-specific owner?
-  ├─ Yes → use that owner; do not select mols-text-optimizer
-  └─ No  → if text-optimization intent matches, use mols-text-optimizer
-```
+- 이 Skill은 generic fallback이다.
+- 현재 대상이나 작업에 더 구체적으로 적용되는 Skill, scoped instruction, document/domain guidance, framework contract 또는 procedure가 있으면 이 Skill을 선택하지 않는다.
+- explicit invocation도 더 구체적인 applicable owner를 override하지 않는다.
+- 대상 텍스트가 제공되거나 명확히 지칭되고, 의미 보존 경량화·축약·중복 제거·wording/token optimization intent가 있을 때만 trigger한다.
+- generic response brevity, summarization, translation, humanization, Markdown/document restructuring, caveman style, latent prompt/context compression에는 trigger하지 않는다.
 
-### 더 구체적인 owner로 보는 것
-
-현재 작업과 대상에 실제로 적용되며 요청된 변경을 materially govern하는 다음 surface를 포함한다.
-
-- 대상 자산 전용 authoring/improvement Skill
-- repository/path-scoped instruction
-- 해당 문서·포맷·도메인의 canonical 작성 지침
-- target runtime이나 framework의 authoritative contract
-- 작업 유형 전용 procedure 또는 validator가 소유하는 변경 규칙
-
-관련 자료가 존재한다는 사실만으로 generic Skill을 막지는 않는다. **현재 요청의 변경 방식이나 보존해야 할 contract를 실제로 소유하는 경우**에만 specific owner로 판단한다.
-
-### 예시
-
-- Agent Skill/Rule의 instruction을 경량화한다 → `mols-agent-asset`과 적용 지침이 우선한다.
-- Markdown 구조나 사람이 읽는 문서 표현을 개선한다 → 해당 Markdown/document owner가 우선한다.
-- 특정 schema, API, policy, requirement 작성 규칙이 적용된다 → 그 규칙이 우선한다.
-- 별도 domain owner가 없는 일반 prose의 중복 wording을 의미 보존 조건에서 줄인다 → `mols-text-optimizer`를 사용한다.
-
-Specific owner가 명시적으로 이 Skill에 wording 최적화를 위임하거나 함께 사용하도록 지시한 경우에만 composition을 허용한다. 그 경우에도 specific owner의 invariant와 authority가 우선한다.
-
-## Activation
-
-### 선택한다
-
-다음 조건을 모두 만족해야 한다.
-
-1. 적용되는 더 구체적인 owner가 없다. 또는 해당 owner가 명시적으로 이 Skill에 wording 최적화를 위임한다.
-2. 사용자가 **대상 텍스트를 제공하거나 명확히 지칭**한다.
-3. 의미를 유지한 경량화·축약·중복 제거·wording/token 최적화 intent가 있다.
-
-사용자가 `mols-text-optimizer`를 명시적으로 요청해도 더 구체적인 authoritative owner의 contract를 무시하지 않는다. 명시 호출은 generic routing ambiguity를 해소할 뿐, 더 구체적인 authority를 override하지 않는다.
-
-대표 intent:
-
-- "의미는 그대로 두고 이 일반 문장을 줄여줘"
-- "전문 작성 규칙은 따로 없어. 이 텍스트 중복만 줄여줘"
-- "중복 표현만 제거해서 token 비용을 줄여줘"
-- "semantic drift가 늘지 않는 범위에서 이 wording을 압축해줘"
-
-### 선택하지 않는다
-
-- 대상에 적용되는 전문 Skill, 지침, 문서, 표준 또는 절차가 요청된 변경을 소유함
-- "앞으로 짧게 답해", "간결하게 설명해"
-- 핵심만 남기는 요약
-- 번역
-- 맞춤법/문법 교정만 필요한 작업
-- AI 티 제거, 자연스러운 문체, tone/voice 개선
-- Markdown section/heading/list/table 또는 읽기 흐름 개선
-- caveman/원시인 style
-- latent prompt/context compressor 구현
-
-텍스트가 존재한다는 사실만으로 activation하지 않는다. **specific-owner absence + target text + optimization intent**가 기본 gate다.
+Skill body에 별도 routing workflow나 owner-discovery 절차를 반복하지 않는다. Routing surface가 이미 `description`을 보고 선택하므로 같은 책임을 body에 다시 넣으면 중복 context와 authority ambiguity가 생긴다.
 
 ## `SKILL.md` 설계
 
-Single-file Skill로 시작한다. Body는 다음 계약만 복원할 수 있으면 된다.
+Single-file Skill로 시작한다. Body는 선택 이후의 실행 계약만 복원할 수 있으면 된다.
 
 ```text
-Route → Optimize → Preserve → Check / Stop
+Optimize → Preserve → Protect Structure → Check / Stop → Boundary
 ```
-
-### Route
-
-최적화 전에 현재 대상에 더 구체적인 적용 owner가 있는지 확인한다.
-
-- 있으면 그 owner로 route하고 이 Skill의 최적화를 수행하지 않는다.
-- 없으면 아래 generic optimization contract를 적용한다.
-- 특정 owner와의 composition은 그 owner가 명시적으로 허용하거나 위임할 때만 한다.
-
-이 단계는 광범위한 문서 탐색을 새로 수행하라는 뜻이 아니다. 현재 harness/project가 이미 제공한 적용 context와 routing surface에서 **더 구체적인 owner가 드러난 경우 우선권을 지키는 최소 gate**다.
 
 ### Optimize
 
@@ -166,7 +106,6 @@ Route → Optimize → Preserve → Check / Stop
 - **strength/uncertainty** — negation, prohibition, modality, permission, quantifier, uncertainty, comparison
 - **exact facts/tokens** — number, threshold, unit, date, name, identifier, path, command, API, field, code token, exact error string, citation/attribution
 - **agent behavior** — activation, permission, safety boundary, required gate/stop
-- **specific-owner contract** — applicable domain/target owner가 정한 terminology, invariant, formatting, permission과 behavior
 
 Agent-facing text에서는 반복된 guard나 instruction이 behavior-bearing일 수 있으므로 단지 lexical duplicate라는 이유로 제거하지 않는다.
 
@@ -188,7 +127,6 @@ Full artifact를 반환해야 하더라도 **optimization candidate 밖의 conte
 
 변경한 span과 필요한 주변 context만 한 번 확인한다.
 
-- 더 구체적인 owner를 잘못 우회하지 않았는가?
 - 빠진 material information이 있는가?
 - actor/action/target이 바뀌었는가?
 - condition/exception binding이 바뀌었는가?
@@ -196,7 +134,7 @@ Full artifact를 반환해야 하더라도 **optimization candidate 밖의 conte
 - scope/order/relation이 바뀌었는가?
 - exact token, identifier, quantity 또는 unit이 바뀌었는가?
 - agent-facing activation/permission/behavior가 달라질 수 있는가?
-- protected surface 또는 specific-owner invariant를 변경했는가?
+- protected surface를 변경했는가?
 
 하나라도 불확실하면 해당 변경을 되돌리거나 원문을 유지한다.
 
@@ -231,13 +169,14 @@ Positive case:
 - 별도 전문 owner가 없는 일반 text의 의미 보존 축약
 - 별도 domain rule이 없는 제공 text의 중복 wording 제거
 - generic prose를 기능/의미 보존 조건에서 경량화
-- 적용 가능한 specific owner가 없고 `mols-text-optimizer`를 명시한 요청
+- 적용 가능한 specific owner가 없는 explicit `mols-text-optimizer` 요청
 
 Negative / near-miss:
 
 - Agent Skill/Rule처럼 전문 authoring owner가 적용되는 text optimization 요청
+- technical document처럼 전문 fidelity Skill이 적용되는 text optimization 요청
 - path-scoped/document-specific 작성 지침이 적용되는 text optimization 요청
-- target/framework-specific contract가 요청된 변경을 소유하는 경우
+- target/framework-specific contract가 적용되는 경우
 - generic brevity
 - summarization
 - translation
@@ -246,7 +185,7 @@ Negative / near-miss:
 - caveman style
 - latent prompt compressor
 
-Keyword 목록이 아니라 실제 사용자 표현 variation을 사용한다. **같은 "줄여줘" 요청도 specific owner의 존재 여부에 따라 routing 결과가 달라지는 paired case**를 포함한다.
+Keyword 목록이 아니라 실제 사용자 표현 variation을 사용한다. 같은 optimization intent도 specific owner 존재 여부에 따라 routing 결과가 달라지는 paired case를 포함한다.
 
 ### Behavior fixture
 
@@ -266,8 +205,6 @@ Keyword 목록이 아니라 실제 사용자 표현 variation을 사용한다. *
 10. agent-facing activation/permission/safety 보존
 11. agent-facing repeated guard 무근거 삭제 금지
 12. target compression ratio보다 meaning floor 우선
-13. specific owner가 있는 case에서 generic optimization을 수행하지 않음
-14. explicit invocation이 specific-owner authority를 override하지 않음
 
 ### Evidence boundary
 
@@ -288,16 +225,15 @@ src/rulesync/.rulesync/skills/mols-text-optimizer/SKILL.md
 
 `.agents/route/uncategorized.jsonl`은 root lock-backed consumer Skill을 위한 surface이므로 이번 Skill 생성 범위에 포함하지 않는다.
 
-Distribution description에서도 이 Skill이 **generic fallback**임을 드러내야 한다. 전문 owner가 적용되는 요청을 넓게 잡는 description은 실패다.
+Distribution route에 투영되는 `description`이 routing/trigger authority를 그대로 전달해야 한다.
 
 ## 작업 순서
 
 ### 1. Canonical Skill 작성
 
 - directory와 `SKILL.md`를 만든다.
-- description의 첫 routing 경계로 specific-owner-first / generic-fallback을 표현한다.
-- positive trigger와 가까운 near-miss를 구분한다.
-- body는 `Route / Optimize / Preserve / Check / Boundary` 중심으로 최소화한다.
+- `description`에서 specific-owner-first / generic-fallback, positive trigger와 near-miss를 구분한다.
+- body에는 routing을 반복하지 않고 `Optimize / Preserve / Protect Structure / Check and Stop / Boundary`만 둔다.
 - Research의 논문·근거 설명은 복사하지 않는다.
 - reference/helper는 만들지 않는다.
 
@@ -306,10 +242,10 @@ Distribution description에서도 이 Skill이 **generic fallback**임을 드러
 `mols-agent-asset` 기준으로 확인한다.
 
 - 정말 신규 generic responsibility인가?
-- 더 구체적인 owner를 가로채지 않는가?
+- description이 더 구체적인 owner를 가로채지 않는가?
 - explicit invocation이 specific authority를 override한다고 읽히지 않는가?
 - generic brevity, summarization, Markdown, humanization, caveman과 겹치지 않는가?
-- activation이 specific-owner absence + target text + optimization intent에 묶여 있는가?
+- routing responsibility가 body에 중복되지 않았는가?
 - preservation rule이 reduction보다 우선하는가?
 - structure를 owner 밖에서 변경하지 않는가?
 - always-loaded body가 불필요하게 장황하지 않은가?
@@ -320,7 +256,6 @@ Distribution description에서도 이 Skill이 **generic fallback**임을 드러
 - generic positive와 specific-owner negative를 함께 작성한다.
 - 같은 optimization intent를 owner 유무만 바꾼 paired routing case를 포함한다.
 - behavior safe-reduction/no-op/invariant case를 작성한다.
-- explicit invocation이 authority override가 되지 않는 case를 포함한다.
 - exact output wording에 과적합하지 않았는지 확인한다.
 
 ### 4. Repository integration
@@ -345,7 +280,7 @@ Distribution description에서도 이 Skill이 **generic fallback**임을 드러
 
 - specific owner가 있는데 generic Skill이 선택됨
 - generic fallback이어야 하는데 선택되지 않음
-- explicit invocation이 authority override로 작동함
+- description과 body가 routing responsibility를 중복 소유함
 - safe case에서 실질적 reduction이 없음
 - semantic 또는 behavioral invariant 손실
 - structure mutation
@@ -361,16 +296,15 @@ Distribution description에서도 이 Skill이 **generic fallback**임을 드러
 ### Routing
 
 - [ ] `mols-text-optimizer`가 범용 fallback으로 정의된다.
-- [ ] 요청된 변경을 materially govern하는 specific Skill/instruction/document/standard/procedure가 있으면 그것을 우선한다.
+- [ ] 요청된 대상/작업에 specific Skill/instruction/document/domain guidance/framework contract/procedure가 적용되면 그것을 우선한다.
 - [ ] specific owner가 적용되면 이 Skill은 자동 선택되지 않는다.
 - [ ] explicit invocation도 더 구체적인 authority를 override하지 않는다.
-- [ ] specific owner가 명시적으로 위임한 경우에만 composition한다.
+- [ ] routing과 trigger는 `description`이 소유하고 body에 별도 `Route` section이 없다.
 - [ ] generic fallback case와 specific-owner case를 trigger fixture가 구분한다.
 
 ### Skill contract
 
 - [ ] responsibility가 wording optimization 하나로 제한된다.
-- [ ] activation이 specific-owner absence + target text + optimization intent를 기본 gate로 사용한다.
 - [ ] generic response brevity를 소유하지 않는다.
 - [ ] safe case에서는 실제 wording 비용이 줄어든다.
 - [ ] unsafe/uncertain case에서는 no-op한다.
@@ -380,7 +314,6 @@ Distribution description에서도 이 Skill이 **generic fallback**임을 드러
 
 - [ ] material information을 줄이지 않는다.
 - [ ] logic, strength, uncertainty와 exact technical token을 보존한다.
-- [ ] specific-owner invariant를 약화하지 않는다.
 - [ ] agent-facing behavior boundary를 약화하지 않는다.
 - [ ] structure와 formatting contract를 변경하지 않는다.
 - [ ] edit scope 밖의 content를 불필요하게 rewrite하지 않는다.
@@ -409,8 +342,9 @@ Distribution description에서도 이 Skill이 **generic fallback**임을 드러
 | `.agents/route/uncategorized` 자동 노출 가정 오류 | repository-local route를 범위에서 제거하고 distribution route만 사용 |
 | semantic stabilization이 별도 capability로 확장될 위험 | stability를 optimization constraint로 축소 |
 | activation이 "텍스트가 존재함"만으로 너무 넓음 | target text + optimization intent로 제한 |
-| 범용 Skill이 전문 owner를 가로챌 위험 | specific-owner-first / generic-fallback routing을 최상위 contract로 추가 |
-| explicit Skill invocation이 authority override로 오인될 위험 | 명시 호출도 specific owner보다 우선하지 않도록 제한 |
+| 범용 Skill이 전문 owner를 가로챌 위험 | specific-owner-first / generic-fallback을 `description`에 둠 |
+| explicit Skill invocation이 authority override로 오인될 위험 | 명시 호출도 specific owner보다 우선하지 않도록 `description`에서 제한 |
+| routing 책임을 body의 `Route` section에서 반복 | `Route` section 삭제, routing/trigger는 `description` 단일 owner |
 | whole-document regeneration 금지가 output 방식까지 제한 | `local edit scope` 보호로 재정의 |
 | target metadata가 미정 | portable 6 targets를 초기값으로 고정 |
 | eval deterministic evidence 과장 | JSON validity와 behavioral evidence를 분리 |
@@ -418,8 +352,7 @@ Distribution description에서도 이 Skill이 **generic fallback**임을 드러
 ### 구현 중 확인
 
 - description 첫 문맥에서 generic fallback임이 분명한가?
-- specific-owner negative와 generic positive를 실제 routing에서 구분할 수 있는가?
-- owner 탐색 규칙이 광범위한 별도 discovery workflow로 비대해지지 않는가?
+- description만으로 specific-owner near-miss가 충분히 구분되는가?
 - safe reduction과 risky no-op가 둘 다 가능한가?
 - preservation instruction이 너무 많아 context 비용을 키우지 않는가?
 - Agent-facing text에서 duplicate-removal이 behavior를 약화시키지 않는가?
@@ -440,4 +373,4 @@ Distribution description에서도 이 Skill이 **generic fallback**임을 드러
 
 ## Handoff
 
-다음 작업은 **`SKILL.md` 초안 생성**이다. 첫 implementation은 canonical Skill 하나만 만들고, 그 초안의 실제 부족함이 확인되기 전에는 다른 package resource를 추가하지 않는다.
+다음 작업은 canonical `SKILL.md`와 fixture를 리뷰하고 distribution route를 repository-native 방식으로 동기화하는 것이다. Skill body에는 별도 routing section을 다시 추가하지 않는다.
