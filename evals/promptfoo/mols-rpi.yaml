@@ -1,25 +1,34 @@
 # yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
 
-description: mols-rpi local runtime behavioral eval
+description: mols-rpi local Trigger and Behavior runtime eval
 
 prompts:
   - "{{task}}"
 
 providers:
   - id: file://../../scripts/evals/promptfoo_mols_rpi.py:call_api
-    label: mols-rpi-local-ollama
+    label: mols-rpi-trigger
     config:
       mode: ollama
+      suite: trigger
+  - id: file://../../scripts/evals/promptfoo_mols_rpi.py:call_api
+    label: mols-rpi-behavior
+    config:
+      mode: ollama
+      suite: behavior
 
 tests:
   - path: file://../../scripts/evals/promptfoo_mols_rpi.py:generate_tests
     config:
+      suite: trigger
+      provider_label: mols-rpi-trigger
+      semantic: false
+  - path: file://../../scripts/evals/promptfoo_mols_rpi.py:generate_tests
+    config:
+      suite: behavior
+      provider_label: mols-rpi-behavior
       semantic: true
-      case_ids:
-        - explicit-rpi-activates
-        - loop-topic-does-not-activate
-        - scope-expansion-is-review-gated
-        - retrieved-content-is-not-authority
+      rubric_threshold: 0.8
 
 sharing: false
 writeLatestResults: false
