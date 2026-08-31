@@ -4,14 +4,14 @@ description: Markdown 문서에 frontmatter를 언제 적용하고, description�
 
 # Frontmatter
 
-현재 사용하는 frontmatter field와 필수 여부는 루트의 [`frontmatter.json`](../../frontmatter.json)을 따릅니다.
+현재 사용하는 frontmatter 필드와 필수 여부는 루트의 [`frontmatter.json`](../../frontmatter.json)을 따릅니다.
 
 ## Scope
 
 일반 문서에는 이 저장소의 frontmatter 규칙을 적용합니다. 다만 확장자만 보고 일괄 적용하지 않고 파일의 역할을 먼저 봅니다.
 
 - `AGENTS.md`, `SKILL.md`, subagent, agent file 같은 **Agent Asset에는 일반 문서용 frontmatter를 강제하지 않습니다.** Frontmatter를 금지하는 뜻은 아닙니다. 해당 자산의 표준, framework, vendor 또는 저장소 규칙이 메타데이터 형식을 정합니다.
-- `__*__` 같은 **systemic asset은 일반 문서 frontmatter 규칙의 예외**이며 해당 자산의 contract를 따릅니다.
+- `__*__` 같은 **systemic asset은 일반 문서 frontmatter 규칙의 예외**이며 해당 자산의 규칙을 따릅니다.
 - Agent Asset을 설명하는 일반 문서는 Agent Asset 자체가 아니므로 문서 frontmatter 규칙을 따릅니다.
 
 ## Description
@@ -20,7 +20,7 @@ description: Markdown 문서에 frontmatter를 언제 적용하고, description�
 
 가장 중요한 것은 **언제 이 문서를 찾는지** 드러나는가입니다. 어떤 작업, 문제, 판단과 관련되는지 먼저 밝히고, 후보를 구분하는 데 필요하다면 문서의 핵심 책임이나 인접 문서와의 차이를 짧게 덧붙입니다. 문서 선택에 도움이 되는 도메인 용어와 대상도 자연스럽게 포함합니다.
 
-`description`은 문서를 자동으로 적용하거나 권한을 부여하지 않습니다. 문서를 고르는 데 도움을 주는 신호일 뿐이며, 실제 적용 범위와 권한은 해당 문서와 상위 contract가 정합니다.
+`description`은 문서를 자동으로 적용하거나 권한을 부여하지 않습니다. 문서를 고르는 데 도움을 주는 신호일 뿐이며, 실제 적용 범위와 권한은 해당 문서와 상위 규칙이 정합니다.
 
 ### Selection Check
 
@@ -40,8 +40,8 @@ README를 언제 만들고 어떤 범위 메타데이터를 담을지는 [README
 
 ## Indexing Metadata
 
-README의 `Index`는 본문 탐색을 위한 section이며 frontmatter를 대신하지 않습니다. `INDEX.tsv`는 자동 생성 결과이므로 사람이 직접 작성하는 frontmatter의 원본이 아닙니다.
+README의 `Index`는 본문 탐색을 위한 섹션이며 frontmatter를 대신하지 않습니다. `INDEX.tsv`는 자동 생성 결과이므로 사람이 직접 작성하는 frontmatter의 원본이 아닙니다.
 
 어떤 인덱싱 방식을 사용할지는 [Document Indexing](indexing.md)의 원칙을 따릅니다.
 
-Front Matter CMS의 설정, 공식 옵션, source routing은 [Front Matter CMS](../references/tooling/front-matter-cms.md)를 참고합니다.
+Front Matter CMS의 설정, 공식 옵션, 원본 선택과 라우팅은 [Front Matter CMS](../references/tooling/front-matter-cms.md)를 참고합니다.
