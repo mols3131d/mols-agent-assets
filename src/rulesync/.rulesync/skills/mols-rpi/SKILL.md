@@ -2,9 +2,9 @@
 name: mols-rpi
 description: >-
   Run adaptive RPI orchestration with Research → Plan → Implementation/Work → Review prerequisites and review-driven iteration.
-  Use for RPI/RPI(R), loop/루프, recursive/재귀, improvement/개선, or deep/심층 loop intent.
-  Also use without those terms when a single pass is materially unreliable because consequential decisions need evidence, consequential Work needs a Plan, multiple acceptance conditions/workstreams must converge, repeated verification/replanning is likely, a narrower subproblem should be isolated, or uncertainty risks costly rework.
-  As a general orchestration Skill, prefer a more specific/dedicated harness Skill, workflow, or procedure that owns the task or lifecycle/gates/state; compose RPI only when compatible and useful, never as a competing replacement or authority override.
+  Use for RPI/RPI(R), loop/루프 method intent, recursive improvement/재귀 개선, or recursive/improvement/deep-loop requests.
+  Also use without those terms when a single pass is materially unreliable because consequential decisions need evidence, Work needs a Plan, multiple acceptance conditions/workstreams must converge, repeated verification/replanning is likely, narrower subproblem isolation helps, or uncertainty risks costly rework.
+  As a general orchestration Skill, prefer a more specific/dedicated harness Skill, workflow, or procedure that owns the task or lifecycle/gates/state; compose RPI only when compatible and useful, never replace or override that owner.
   Do not use for topical/identifier/code uses of “loop”, generic repetition, length alone, trivial work, or bounded one-shot work where RPI prerequisite control adds no material value.
 targets:
   - claudecode
