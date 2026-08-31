@@ -1,5 +1,5 @@
 ---
-description: mols-rpi를 유지보수할 때 prerequisite contract, adaptive Research·Plan·Work·Review, intensity와 artifact 결정을 찾는 entrypoint입니다.
+description: mols-rpi를 유지보수할 때 prerequisite contract, adaptive Research·Plan·Work·Review, intensity, artifact와 eval 결정을 찾는 entrypoint입니다.
 ---
 
 # Mols RPI Maintainer Docs
@@ -13,3 +13,4 @@ Runtime behavior의 canonical source는 `src/rulesync/.rulesync/skills/mols-rpi/
 - [Review](rpi-review.md) — prerequisite validation, challenge reconciliation과 next-transition dispatch
 - [Intensity](rpi-intensity.md) — light·standard·deep adaptive effort bias
 - [Artifacts](artifacts.md) — artifact placement, persistence와 continuation 결정
+- [Evaluation](evaluation.md) — Trigger/Behavior suite, Promptfoo projection, grader와 runtime evidence 경계
