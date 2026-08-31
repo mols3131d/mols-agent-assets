@@ -48,6 +48,7 @@ skills/mols-markdown-maintenance/	mols-markdown-maintenance를 변경하거나 �
 skills/mols-mermaid/	mols-mermaid family에서 관계·절차·구조는 diagram, 정량 비교·추세·구성은 chart 중 어느 Skill로 라우팅할지 판단하거나 family boundary를 유지보수할 때 사용하는 entrypoint입니다.
 skills/mols-rpi/	mols-rpi를 유지보수할 때 prerequisite contract, adaptive Research·Plan·Work·Review, intensity와 artifact 결정을 찾는 entrypoint입니다.
 skills/mols-rpi/artifacts.md	RPI artifact의 배치, persistence, durable continuation과 lifecycle을 설계하거나 변경할 때 보존해야 할 결정사항을 정리한 maintainer 문서입니다.
+skills/mols-rpi/evaluation.md	mols-rpi의 Trigger와 Behavior eval을 분리해 설계하고 Promptfoo fixture·provider·grader·runtime evidence를 유지보수할 때 사용하는 문서입니다.
 skills/mols-rpi/rpi-intensity.md	RPI의 light·standard·deep intensity가 adaptive effort를 어떻게 bias하면서 prerequisite와 safety를 보존하는지 정리한 maintainer 문서입니다.
 skills/mols-rpi/rpi-plan.md	Adaptive recursive RPI에서 Plan의 prerequisite, coverage, delta replanning과 downstream Work transition을 보존하는 maintainer 문서입니다.
 skills/mols-rpi/rpi-research.md	Adaptive recursive RPI에서 Research의 prerequisite, uncertainty reduction, dynamic search와 downstream transition을 보존하는 maintainer 문서입니다.
