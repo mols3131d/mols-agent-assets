@@ -6,7 +6,7 @@ description: 개별 Agent Asset 또는 family의 maintainer documentation을 어
 
 `docs/<asset-type>/<owner>/**`는 대응하는 asset 또는 family의 **portable maintainer documentation**을 둡니다. `<owner>`는 하나의 asset이거나 같은 책임군의 family일 수 있습니다.
 
-`development`, `document`, `references`는 reserved documentation namespace이며 asset type에 포함하지 않습니다.
+`development`, `documentation`, `references`는 reserved documentation namespace이며 asset type에 포함하지 않습니다.
 
 ## Ownership
 
