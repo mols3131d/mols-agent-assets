@@ -1,5 +1,5 @@
 ---
-description: Markdown 문서의 frontmatter 적용 범위, 예외, description의 탐색·routing 역할, directory·bundle entrypoint scope metadata 원칙과 관련 도구를 확인할 때 사용합니다.
+description: Markdown 문서의 frontmatter 적용 범위, 예외, description의 탐색·routing 역할, directory entrypoint metadata 원칙과 관련 도구를 확인할 때 사용합니다.
 ---
 
 # Frontmatter
