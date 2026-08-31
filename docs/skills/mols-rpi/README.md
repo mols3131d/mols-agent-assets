@@ -13,4 +13,5 @@ Runtime behavior의 canonical source는 `src/rulesync/.rulesync/skills/mols-rpi/
 - [Review](rpi-review.md) — prerequisite validation, challenge reconciliation과 next-transition dispatch
 - [Intensity](rpi-intensity.md) — light·standard·deep adaptive effort bias
 - [Artifacts](artifacts.md) — artifact placement, persistence와 continuation 결정
+- [Description](description.md) — Trigger·routing 필수/보조 signal과 1,024자 portability boundary
 - [Evaluation](evaluation.md) — Trigger/Behavior suite, Promptfoo projection, grader와 runtime evidence 경계
