@@ -715,7 +715,7 @@ src/rulesync/.rulesync/skills/mols-text-optimizer/
 - Yash Mahajan et al. *ALIGN-SIM: A Task-Free Test Bed for Evaluating and Interpreting Sentence Embeddings through Semantic Similarity Alignment*. Findings of EMNLP 2024 — https://aclanthology.org/2024.findings-emnlp.436/
 - Alvaro Veizaga et al. *On systematically building a controlled natural language for functional requirements*. Empirical Software Engineering 2021 — https://link.springer.com/article/10.1007/s10664-021-09956-6
 - RFC 2119 — https://www.rfc-editor.org/info/rfc2119/
-- RFC 8174 — https://www.rfc-editor.org/info/rfc8179/
+- RFC 8174 — https://www.rfc-editor.org/info/rfc8174/
 - Huiqiang Jiang et al. *LLMLingua: Compressing Prompts for Accelerated Inference of Large Language Models*. EMNLP 2023 — https://aclanthology.org/2023.emnlp-main.825/
 - Huiqiang Jiang et al. *LongLLMLingua*. ACL 2024 — https://aclanthology.org/2024.acl-long.91/
 - Cornelius Kummer et al. *Prompt Compression in the Wild: Measuring Latency, Rate Adherence, and Quality for Faster LLM Inference*. 2026 — https://arxiv.org/abs/2604.02985
