@@ -32,7 +32,7 @@ def _is_route_markdown(path: Path) -> bool:
         return False
     if name in BASE_EXCLUDE or name.startswith("."):
         return False
-    if name.upper().startswith("INDEX") or name.startswith("__index__"):
+    if name.startswith("INDEX.") or name.startswith("__index__"):
         return False
     if name.startswith("__") and name.endswith("__.md"):
         return False

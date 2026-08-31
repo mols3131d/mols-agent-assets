@@ -23,8 +23,13 @@ def test_generate_docs_indexes_projects_directories_and_all_descendant_files(tmp
         docs / "guide.md",
         "---\ndescription: Guide description.\n---\n# Guide\n",
     )
+    _write(
+        docs / "indexing.md",
+        "---\ndescription: Indexing policy.\n---\n# Indexing\n",
+    )
     _write(docs / "ARCHITECTURE.md", "# Architecture\n")
     _write(docs / "README.md", "# Readme\n")
+    _write(docs / "INDEX.md", "# Generated-like index\n")
     _write(docs / "INDEXING.md", "# Curated index\n")
     _write(docs / "AGENTS.md", "# Agents\n")
     _write(docs / ".private.md", "# Hidden\n")
@@ -51,6 +56,7 @@ def test_generate_docs_indexes_projects_directories_and_all_descendant_files(tmp
     assert _read_tsv(docs / "INDEX.tsv") == [
         {"path": "ARCHITECTURE.md", "description": ""},
         {"path": "guide.md", "description": "Guide description."},
+        {"path": "indexing.md", "description": "Indexing policy."},
         {"path": "references/", "description": "Reference docs."},
         {"path": "references/nested/", "description": "Nested references."},
         {"path": "references/nested/deep.md", "description": "Deep reference."},
@@ -131,7 +137,7 @@ def test_generate_docs_indexes_uses_readme_only_for_directory_metadata(tmp_path)
     _write(docs / "references" / "README.md", "# No frontmatter\n")
     _write(
         docs / "references" / "index.md",
-        "---\ndescription: Must not supply directory metadata.\n---\n# Index\n",
+        "---\ndescription: Regular document, not directory metadata.\n---\n# Index\n",
     )
     _write(
         docs / "references" / "INDEXING.md",
@@ -147,6 +153,10 @@ def test_generate_docs_indexes_uses_readme_only_for_directory_metadata(tmp_path)
     assert _read_tsv(docs / "INDEX.tsv") == [
         {"path": "references/", "description": ""},
         {"path": "references/guide.md", "description": "Guide."},
+        {
+            "path": "references/index.md",
+            "description": "Regular document, not directory metadata.",
+        },
     ]
     assert not (docs / "references" / "INDEX.tsv").exists()
 
