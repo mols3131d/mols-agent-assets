@@ -36,6 +36,12 @@
     "reason": "Explicit invocation does not override a more specific applicable owner"
   },
   {
+    "id": "specific-technical-document-fidelity",
+    "query": "이 기술 문서를 의미, 코드, 식별자와 구조를 보존하면서 더 짧게 줄여줘.",
+    "should_trigger": false,
+    "reason": "A technical-document-specific fidelity Skill applies to the target transformation"
+  },
+  {
     "id": "specific-markdown-wording-only",
     "query": "이 Markdown 문서의 구조는 그대로 두고 문장 wording만 의미 보존해서 줄여줘. 이 문서에는 Markdown 작성 지침이 적용돼.",
     "should_trigger": false,
