@@ -12,6 +12,9 @@
 - 대상에 적용되는 전문 Skill, 지침, 문서 또는 절차가 있으면 그것을 우선하고 이 Skill은 선택되지 않는다.
 - 더 구체적인 owner가 없는 일반 텍스트 경량화 요청에서만 fallback으로 선택된다.
 - routing/trigger는 frontmatter `description`이 소유하고 Skill body에서 중복하지 않는다.
+- Skill body는 한국어 중심으로 작성하고, 번역하면 어색하거나 의미가 흐려지는 기술 용어·고유 명칭만 영어를 보조로 사용한다.
+- frontmatter `description`은 repository 언어 정책의 Agent Asset trigger 규칙에 따라 영어를 유지한다.
+- Markdown은 사람이 빠르게 읽을 수 있게 구성하고, 의미 없는 section·중복·기계적인 줄 폭 맞춤을 만들지 않는다.
 - 단순 응답 간결화, 요약, 번역, 문체 윤문, Markdown 구조 개선, caveman-style 요청과 경계가 분명하다.
 - 의미·기능·행동 보존이 wording/token 절감보다 우선한다.
 - safe case에서는 실제 표현 비용이 줄고, 안전한 절감이 없으면 no-op한다.
@@ -84,6 +87,8 @@ Single-file Skill로 시작한다. Body는 선택 이후의 실행 계약만 복
 ```text
 Optimize → Preserve → Protect Structure → Check / Stop → Boundary
 ```
+
+본문은 한국어를 기본으로 쓰고, `token`, `fallback`, `no-op`, `API`, `Markdown`처럼 번역이 더 어색하거나 기술적 의미가 흐려지는 표현만 영어로 유지한다. 문단은 의미 단위로 나누고, 목록 항목이나 문장을 임의의 열 너비에 맞춰 강제로 줄바꿈하지 않는다.
 
 ### Optimize
 
@@ -234,12 +239,14 @@ Distribution route에 투영되는 `description`이 routing/trigger authority를
 - directory와 `SKILL.md`를 만든다.
 - `description`에서 specific-owner-first / generic-fallback, positive trigger와 near-miss를 구분한다.
 - body에는 routing을 반복하지 않고 `Optimize / Preserve / Protect Structure / Check and Stop / Boundary`만 둔다.
+- body prose는 한국어 중심으로 작성하고 필요한 기술 용어만 영어를 보조로 사용한다.
+- 기계적인 줄 폭 맞춤 없이 의미 단위의 문단과 목록을 사용한다.
 - Research의 논문·근거 설명은 복사하지 않는다.
 - reference/helper는 만들지 않는다.
 
 ### 2. Authoring self-review
 
-`mols-agent-asset` 기준으로 확인한다.
+`mols-agent-asset`과 `mols-markdown-for-human` 기준으로 확인한다.
 
 - 정말 신규 generic responsibility인가?
 - description이 더 구체적인 owner를 가로채지 않는가?
@@ -248,6 +255,8 @@ Distribution route에 투영되는 `description`이 routing/trigger authority를
 - routing responsibility가 body에 중복되지 않았는가?
 - preservation rule이 reduction보다 우선하는가?
 - structure를 owner 밖에서 변경하지 않는가?
+- 한국어 본문이 자연스럽고 기술 용어의 영어 사용이 필요한 범위에 한정되는가?
+- Markdown이 빠르게 훑어 읽을 수 있고 불필요한 section·중복·강제 줄바꿈이 없는가?
 - always-loaded body가 불필요하게 장황하지 않은가?
 - model/tokenizer별 가정을 portable contract로 만들지 않았는가?
 
@@ -284,6 +293,8 @@ Distribution route에 투영되는 `description`이 routing/trigger authority를
 - safe case에서 실질적 reduction이 없음
 - semantic 또는 behavioral invariant 손실
 - structure mutation
+- 한국어 중심 원칙을 벗어난 불필요한 영어 서술
+- 기계적인 줄바꿈이나 scan cost를 높이는 Markdown
 - aggressive compression
 - unnecessary context/steps
 - sibling responsibility overlap
@@ -301,6 +312,14 @@ Distribution route에 투영되는 `description`이 routing/trigger authority를
 - [ ] explicit invocation도 더 구체적인 authority를 override하지 않는다.
 - [ ] routing과 trigger는 `description`이 소유하고 body에 별도 `Route` section이 없다.
 - [ ] generic fallback case와 specific-owner case를 trigger fixture가 구분한다.
+
+### Language and readability
+
+- [ ] frontmatter `description`은 영어 trigger value로 유지된다.
+- [ ] Skill body의 일반 서술은 한국어 중심이다.
+- [ ] 번역하면 어색하거나 의미가 흐려지는 기술 용어·고유 명칭만 영어를 사용한다.
+- [ ] 문단과 목록은 의미 단위로 나뉘며 임의의 line-width wrapping을 하지 않는다.
+- [ ] 같은 규칙을 여러 section에서 반복하지 않는다.
 
 ### Skill contract
 
@@ -345,6 +364,7 @@ Distribution route에 투영되는 `description`이 routing/trigger authority를
 | 범용 Skill이 전문 owner를 가로챌 위험 | specific-owner-first / generic-fallback을 `description`에 둠 |
 | explicit Skill invocation이 authority override로 오인될 위험 | 명시 호출도 specific owner보다 우선하지 않도록 `description`에서 제한 |
 | routing 책임을 body의 `Route` section에서 반복 | `Route` section 삭제, routing/trigger는 `description` 단일 owner |
+| 영어 중심 body와 기계적 줄바꿈 | 한국어 중심 prose + 필요한 영어 보조 + 의미 단위 줄바꿈으로 수정 |
 | whole-document regeneration 금지가 output 방식까지 제한 | `local edit scope` 보호로 재정의 |
 | target metadata가 미정 | portable 6 targets를 초기값으로 고정 |
 | eval deterministic evidence 과장 | JSON validity와 behavioral evidence를 분리 |
@@ -356,6 +376,7 @@ Distribution route에 투영되는 `description`이 routing/trigger authority를
 - safe reduction과 risky no-op가 둘 다 가능한가?
 - preservation instruction이 너무 많아 context 비용을 키우지 않는가?
 - Agent-facing text에서 duplicate-removal이 behavior를 약화시키지 않는가?
+- 한국어 prose와 Markdown이 자연스럽고 빠르게 읽히는가?
 - fixture가 특정 표현이나 model에 과적합되지 않는가?
 
 ### 이번 작업에서 defer
@@ -373,4 +394,4 @@ Distribution route에 투영되는 `description`이 routing/trigger authority를
 
 ## Handoff
 
-다음 작업은 canonical `SKILL.md`와 fixture를 리뷰하고 distribution route를 repository-native 방식으로 동기화하는 것이다. Skill body에는 별도 routing section을 다시 추가하지 않는다.
+다음 작업은 canonical `SKILL.md`와 fixture를 리뷰하고 distribution route를 repository-native 방식으로 동기화하는 것이다. Skill body에는 별도 routing section을 다시 추가하지 않고, 한국어 중심 prose와 자연스러운 Markdown을 유지한다.
