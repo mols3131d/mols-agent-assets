@@ -1,5 +1,5 @@
 ---
-description: directory·bundle entrypoint인 README.md와 authored INDEXING.md, generated INDEX.tsv의 역할, 생성 조건과 ownership 경계를 결정할 때 사용하는 repository documentation policy입니다.
+description: directory·bundle entrypoint인 README.md의 작성 원칙과 authored INDEXING.md, generated INDEX.tsv의 역할, 생성 조건과 ownership 경계를 결정할 때 사용하는 repository documentation policy입니다.
 ---
 
 # Entrypoints and Indexes
@@ -26,7 +26,54 @@ description: directory·bundle entrypoint인 README.md와 authored INDEXING.md, 
 - 해당 scope에만 적용되는 maintenance 또는 recovery rule
 - bundle을 하나의 단위로 읽거나 사용할 때 필요한 시작 설명
 
-`README.md`에는 해당 scope가 직접 소유하는 의미와 진입 정보만 둡니다. 단순 파일 목록이나 쉽게 재생성되는 inventory는 복제하지 않습니다.
+`README.md`의 목표는 완결된 manual이 아니라 **현재 scope를 이해하고 올바른 다음 행동을 선택하게 하는 것**입니다. 해당 scope가 직접 소유하는 의미와 진입 정보만 두고, 단순 파일 목록이나 쉽게 재생성되는 inventory는 복제하지 않습니다.
+
+### Authoring Questions
+
+README는 고정 template를 채우는 대신, 해당 scope에서 실제로 필요한 질문에 답합니다.
+
+- 이 scope는 무엇을 소유하고 무엇을 위한 것인가?
+- 독자는 왜 또는 언제 이 scope를 사용해야 하는가?
+- 가장 먼저 취할 권장 행동이나 읽을 경로는 무엇인가?
+- 더 자세한 절차, reference, explanation 또는 도움은 어디에 있는가?
+- ownership이나 contribution 경계가 명확하지 않다면 누가 또는 무엇이 이를 소유하는가?
+
+Repository root README는 project의 목적과 유용성, 시작 방법, 도움을 얻는 위치와 maintainer·contribution 진입점을 필요에 따라 포함합니다. Directory와 bundle README는 같은 질문을 자기 scope에 필요한 만큼만 축소해서 답하며 root README의 section 구성을 복제하지 않습니다.
+
+### Recommended Flow
+
+README는 독자의 읽기 순서에 맞춰 **orientation → first action → deeper navigation**으로 확장합니다.
+
+1. 첫 문단에서 scope의 정체성, 목적 또는 사용 시점을 가장 짧게 밝힙니다.
+1. 행동 전에 알아야 하는 prerequisite, 중요한 boundary나 선택 조건이 있으면 먼저 둡니다.
+1. 실제 사용을 바로 시작해야 하는 scope라면 가장 짧은 권장 경로를 제공합니다.
+1. 세부 절차와 reference는 canonical document로 연결하고 README에는 진입에 필요한 수준만 남깁니다.
+1. curated navigation 자체가 독립적인 책임이 될 만큼 커지면 `INDEXING.md`로 분리합니다.
+
+이 순서는 section template가 아닙니다. 해당 scope에 필요 없는 단계나 section은 만들지 않습니다.
+
+### Writing Rules
+
+- 핵심 정보와 중요한 조건을 문단과 section 앞에 둡니다.
+- 한 문단에는 하나의 핵심을 두고, descriptive heading과 얕은 heading hierarchy로 빠르게 훑을 수 있게 합니다.
+- 절차에는 가장 권장되는 한 경로를 먼저 제시합니다. 대안은 독자의 선택을 실제로 바꿀 때만 추가합니다.
+- Quick start나 command가 있으면 필요한 prerequisite를 먼저 밝히고, 가능한 한 그대로 실행할 수 있는 최소 예시를 제공합니다. Output은 성공 여부 확인이나 다음 행동에 필요할 때만 보여줍니다.
+- Repository 안의 다른 문서로 이동할 때는 clone과 branch에서도 동작하는 relative link를 우선합니다.
+- GitHub가 Markdown heading에서 outline을 자동 생성하므로 manual table of contents는 기본값으로 두지 않습니다. 다른 주요 consumer가 실제로 필요로 할 때만 추가합니다.
+- Full tutorial, exhaustive reference, 긴 architecture explanation, changelog, 반복되는 policy와 단순 file inventory를 README에 누적하지 않습니다. 해당 책임의 canonical owner로 연결합니다.
+- Badge나 status summary는 현재 상태를 신뢰할 수 있게 반영하고 독자의 판단에 실제로 도움이 될 때만 둡니다. 장식용 badge wall은 만들지 않습니다.
+- `Welcome`, `Overview` 같은 형식적 서론이나 README 자체를 설명하는 문장보다 scope의 결론을 바로 제시합니다.
+
+### Quality Gate
+
+README를 추가하거나 크게 수정할 때 다음을 확인합니다.
+
+- 첫 부분만 읽어도 scope의 목적과 사용 시점, 다음 행동을 판단할 수 있습니다.
+- 각 section은 독자의 이해, 선택 또는 행동을 실제로 바꾸며 그렇지 않은 section은 제거하거나 더 적절한 owner로 이동합니다.
+- Quick start가 있으면 prerequisite와 command가 실제 권장 경로를 나타내고 copy-paste를 방해하는 불필요한 선택지가 없습니다.
+- Repository 내부 link는 가능한 한 relative하며, 이동·clone·branch context에서도 의미가 유지됩니다.
+- Child file이 추가되거나 정렬 순서가 바뀌어도 README가 단순 inventory drift 때문에 낡지 않습니다.
+- `INDEXING.md`, `INDEX.tsv` 또는 다른 canonical documentation이 소유하는 내용을 README가 중복하지 않습니다.
 
 Directory entrypoint인 `README.md`의 frontmatter `description`은 파일 자체보다 **그 directory를 언제 탐색해야 하는지**를 설명하며 generated docs index의 directory metadata로 사용할 수 있습니다.
 
