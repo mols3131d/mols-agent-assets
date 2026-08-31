@@ -26,29 +26,27 @@ description: repository-wide documentation principles를 재작성하기 위한 
 
 | Source | 핵심 시사점 |
 | --- | --- |
-| Google Technical Writing — Audience | 독자의 기존 지식과 필요한 결과를 먼저 정의하고 그 gap을 문서가 채웁니다. |
-| Google Technical Writing — Course Summary | scope와 핵심을 먼저 제시하고 명확한 heading, 한 문장 한 idea, 한 문단 한 topic을 권장합니다. |
-| Microsoft Writing Style Guide — Scannable Content | 중요한 정보를 앞에 두고 chunking과 descriptive heading으로 빠른 탐색을 돕습니다. |
-| Diátaxis — Foundations / Compass / Quality | 문서 구조를 작성 형식보다 user need에서 시작하고 서로 다른 목적의 documentation을 무리하게 섞지 않습니다. |
+| Google Developer Documentation Style Guide | 독자와 현재 상태에 집중하고, clear·concise·unambiguous한 표현과 timeless documentation을 강조합니다. |
+| Microsoft Writing Style Guide | audience와 intent를 먼저 정하고, 중요한 정보를 먼저 보여주며 scan 가능한 content를 권장합니다. |
+| Diátaxis | documentation을 user need에 맞는 책임으로 분리하고 accuracy·completeness·consistency·usefulness·precision과 human fit을 함께 품질로 봅니다. |
 | Write the Docs — Documentation Principles | current, complete-within-scope, unique, discoverable, 가까운 source와 유지 가능성을 강조하며 필요한 반복은 허용합니다. |
 | Write the Docs — Docs as Code | documentation도 version control, review와 검증 가능한 workflow 안에서 유지하는 것이 유리합니다. |
-| GitLab Documentation Guidelines | topic responsibility, single source, 지속적 갱신, docs-as-code와 자동 검증을 강조합니다. |
-| W3C Writing Tips | semantic heading, meaningful link text, 명확한 구조와 쉬운 표현이 탐색성과 접근성을 함께 높입니다. |
+| GitLab Documentation Guidelines | topic responsibility, single source, 지속적 갱신, search/scan 가능성과 자동 검증을 강조합니다. |
+| W3C Writing for Web Accessibility | 의미 있는 heading·link text, 명확한 instruction, clear·concise content가 접근성과 탐색성을 함께 높입니다. |
 
 참고 URL:
 
-- https://developers.google.com/tech-writing/one/audience
-- https://developers.google.com/tech-writing/course-summaries/one
+- https://developers.google.com/style/
+- https://developers.google.com/style/translation
+- https://developers.google.com/style/timeless-documentation
+- https://learn.microsoft.com/en-us/style-guide/content-planning
 - https://learn.microsoft.com/en-us/style-guide/scannable-content/
-- https://diataxis.fr/foundations/
-- https://diataxis.fr/compass/
+- https://diataxis.fr/
 - https://diataxis.fr/quality/
 - https://www.writethedocs.org/guide/writing/docs-principles/
 - https://www.writethedocs.org/guide/docs-as-code/
 - https://docs.gitlab.com/development/documentation/styleguide/
 - https://docs.gitlab.com/development/documentation/topic_types/
-- https://docs.gitlab.com/development/documentation/site_architecture/folder_structure/
-- https://docs.gitlab.com/development/documentation/testing/
 - https://www.w3.org/WAI/tips/writing/
 
 ## Placement Strategy
@@ -65,25 +63,24 @@ README는 catch-all 문서로 사용하지 않습니다.
 
 `docs/documentation/principles.md`에는 **구체적인 실행 방법이 아니라 repository-wide 판단 기준**만 둡니다.
 
-현재 조사에서 원칙 후보는 다음과 같습니다.
+RPI Research 결과 원칙은 다음 일곱 축으로 수렴시킵니다.
 
 1. **Reader need first** — 작성자의 설명 순서보다 독자의 질문·판단·행동에서 시작합니다.
-1. **Clear responsibility** — 문서와 section은 명확한 주된 책임을 가지며, 책임 없는 문서를 관성적으로 만들지 않습니다.
-1. **Smallest useful scope** — 가장 작은 유효 scope를 선택하되 선택한 scope 안에서는 충분하고 일관되게 다룹니다.
+1. **Clear responsibility and scope** — 문서마다 주된 책임과 가장 작은 유효 scope를 두고, 선택한 scope 안에서는 필요한 의미를 충분히 다룹니다.
 1. **Progressive disclosure** — 판단에 필요한 핵심과 context를 먼저 제공하고 세부는 필요에 따라 확장합니다.
 1. **One authority, minimal repetition** — 같은 의미의 authority는 하나로 두되 이해와 routing에 필요한 짧은 context는 허용합니다.
-1. **Current and trustworthy** — 문서는 현재 truth와 맞아야 하며 불확실하거나 오래된 내용을 확정적으로 유지하지 않습니다.
+1. **Current and trustworthy** — 문서는 현재 truth에 맞고 정확·일관·검증 가능해야 하며, 불확실하거나 오래된 내용을 확정적으로 유지하지 않습니다.
 1. **Discoverable and navigable** — 필요한 독자가 올바른 문서를 발견·선택하고 다음 정보로 이동할 수 있어야 합니다.
-1. **Maintainable by design** — 쉽게 재생성되거나 유지 가치가 낮은 정보를 authored documentation으로 만들지 않습니다.
+1. **Maintainable by design** — 쉽게 재생성되거나 유지 가치가 낮은 정보를 authored documentation으로 만들지 않고, local 반복이 공통 책임이 되면 owner를 재검토합니다.
 
-현재 `principles.md`의 기존 원칙은 삭제 대상으로 보기보다 위 후보에 흡수·압축합니다.
+현재 `principles.md`의 기존 원칙은 위 일곱 축에 흡수합니다.
 
-- `필요한 문서만 둔다` → `Clear responsibility` / `Smallest useful scope`
-- `가장 좁은 scope가 소유한다` → `Smallest useful scope` / authority
+- `필요한 문서만 둔다` → `Clear responsibility and scope`
+- `가장 좁은 scope가 소유한다` → `Clear responsibility and scope`
 - `한 의미에는 한 authoritative owner` → `One authority, minimal repetition`
-- `상위 원칙을 local에서 복제하지 않는다` → authority / scope
+- `상위 원칙을 local에서 복제하지 않는다` → `One authority, minimal repetition`
 - `복구 가능한 inventory를 authored knowledge로 만들지 않는다` → `Maintainable by design`
-- `반복되는 local rule은 승격을 검토한다` → responsibility / authority
+- `반복되는 local rule은 승격을 검토한다` → `Maintainable by design`
 
 원칙 문서에는 command, field schema, heading 규칙, 특정 filename의 세부 semantics, CI나 generator 동작 같은 실행 세부를 넣지 않습니다.
 
@@ -91,7 +88,7 @@ README는 catch-all 문서로 사용하지 않습니다.
 
 구체 규칙이 독립적으로 탐색·유지될 책임을 가지면 별도 문서가 소유합니다.
 
-| Responsibility | Owner / Candidate |
+| Responsibility | Owner |
 | --- | --- |
 | README 생성 조건, entrypoint 역할, local rule 흡수 조건 | `docs/documentation/readme-authoring.md` |
 | README `Index`와 generated `INDEX.tsv` 선택 | `docs/documentation/indexing.md` |
@@ -99,22 +96,23 @@ README는 catch-all 문서로 사용하지 않습니다.
 | repository 언어 선택 | `docs/language.md` |
 | asset/family maintainer documentation contract | `docs/documentation/asset-maintainer-documentation.md` |
 | deterministic validation, CI와 merge-blocking evidence | `docs/development/testing.md` |
-| Markdown 표현, heading, paragraph, table/list 선택과 human-readable presentation | 우선 `mols-markdown-for-human`과 중복을 감사한 뒤 필요할 때만 별도 documentation owner를 검토 |
+| Markdown 표현, heading, paragraph, table/list 선택과 human-readable presentation | `mols-markdown-for-human` |
 
-### Writing Guidance Candidate
+### Writing Guidance Audit
 
-조사에서 나온 다음 내용은 중요하지만 `principles.md`에 직접 넣기에는 구체적입니다.
+추가 조사와 repository asset 대조 결과 **새 `docs/documentation/writing.md`는 만들지 않습니다.**
 
-- 중요한 정보를 먼저 쓰기
-- descriptive heading
-- 한 문장 한 idea, 한 문단 한 topic
+`mols-markdown-for-human`이 이미 다음을 소유합니다.
+
+- BLUF와 중요한 정보 우선 배치
+- descriptive heading과 얕은 hierarchy
+- 한 문단 한 핵심과 scan 가능한 구조
+- list/table/callout 등 정보 구조에 맞는 표현 선택
 - consistent terminology
-- meaningful link text
-- scan 가능한 chunking
-- accessibility를 해치지 않는 semantic structure
-- example과 alternative의 최소화 기준
+- KISS/DRY와 불필요한 section·중복 제거
+- 독자의 질문·판단·다음 행동에 맞춘 구조화
 
-이 내용은 곧바로 새 `writing.md`를 만들지 않습니다. 먼저 repository가 이미 사용하는 `mols-markdown-for-human`, `docs/language.md`, README authoring 규칙과의 중복을 검토합니다. **독립적인 repository documentation writing contract가 실제로 남을 때만** 새 문서를 만듭니다.
+사람과 agent 모두에게 적용할 repository-wide 판단 기준만 `principles.md`에 남기고, 구체 Markdown presentation은 Skill과 기존 dedicated policy가 계속 소유합니다. 별도 writing policy가 필요해지는 경우는 Skill로 소유할 수 없는 repository-specific writing contract가 실제로 생길 때뿐입니다.
 
 ## 3. README Placement
 
@@ -128,8 +126,6 @@ README에 둘 수 있는 것은 다음 조건을 모두 만족하는 작은 scop
 - 별도 파일로 만들면 navigation과 maintenance surface만 늘어납니다.
 - 짧게 유지할 수 있습니다.
 
-이번 `docs/documentation/README.md`의 duplication/lifecycle shared rule 흡수는 이 예외에 해당합니다.
-
 다음 중 하나가 생기면 README에서 별도 owner로 분리할지 다시 검토합니다.
 
 - 내용이 계속 커집니다.
@@ -137,23 +133,27 @@ README에 둘 수 있는 것은 다음 조건을 모두 만족하는 작은 scop
 - 독립적인 변경·검토·유지 책임이 생깁니다.
 - README의 entrypoint 역할보다 해당 규칙 자체가 더 큰 비중을 차지합니다.
 
-## Work Plan
+현재 `docs/documentation/README.md`의 working artifact·Git history·archive 관련 짧은 안내는 독립 lifecycle policy를 다시 만들기보다 entrypoint에서 필요한 최소 routing context로 유지합니다. 반면 authority·duplication의 repository-wide 판단은 `principles.md`가 canonical owner가 되도록 README에서 중복을 줄입니다.
 
-1. 현재 `principles.md`와 위 원칙 후보를 대조해 의미 중복을 제거합니다.
-1. 기존 여섯 원칙을 단순히 추가하지 않고, 전체를 7~8개 이하의 균형 잡힌 원칙으로 재구성합니다.
-1. 각 문장이 repository 전체에 적용되는 durable 판단 기준인지 확인합니다. 구체 실행이면 해당 dedicated owner로 돌립니다.
-1. writing/scannability/accessibility 세부는 `mols-markdown-for-human`, `docs/language.md`, README authoring과 먼저 대조합니다.
-1. 감사 후 독립 responsibility가 남을 때만 별도 writing documentation을 제안합니다.
-1. README에는 위 예외 조건을 만족하는 scope-local 작은 규칙만 남기고 새 repository-wide 규칙을 추가하지 않습니다.
-1. 변경 후 KISS/DRY, authority 중복, discoverability, link integrity와 generated index 영향을 리뷰합니다.
+## RPI Implementation Plan
+
+1. `principles.md`를 기존 6개 항목에 덧붙이지 않고 일곱 축으로 전면 재구성합니다.
+1. 각 principle은 한 문단 이내로 유지하고 implementation detail을 제거합니다.
+1. `docs/documentation/README.md`에서 principles와 중복되는 authority·duplication 문장을 제거하고, working artifact lifecycle의 최소 entrypoint context만 남깁니다.
+1. `readme-authoring.md`, `indexing.md`, `frontmatter.md`, `language.md`, `testing.md`, `mols-markdown-for-human`의 책임은 확대하지 않고 현재 owner를 유지합니다.
+1. 새 writing policy는 만들지 않습니다.
+1. `docs/INDEX.tsv`는 source description 변경이 생길 때만 projection을 정합화합니다.
+1. 변경 후 문서 의미 보존, KISS/DRY, authority 중복, discoverability, link integrity와 PR Gate를 리뷰합니다.
+1. Review에서 실제 책임 누락이나 과도한 추상화가 발견될 때만 다음 Loop를 엽니다.
 
 ## Acceptance
 
 다음 조건을 만족하면 원칙 설계가 수렴한 것으로 봅니다.
 
 - `principles.md`는 implementation detail 없이 repository-wide 판단 기준만 소유합니다.
-- 각 principle은 다른 principle과 의미가 명확히 구분되며 7~8개 이하로 유지됩니다.
+- 원칙은 일곱 축 안에서 서로 역할이 구분되고, 기존 ownership 의미를 잃지 않습니다.
 - 구체 writing, README, indexing, metadata, language, testing 규칙은 적절한 dedicated owner가 소유합니다.
-- README는 독립 책임이 약한 작은 scope-local rule을 위한 예외적 surface로만 사용합니다.
+- 새 writing policy를 중복 생성하지 않습니다.
+- README는 독립 책임이 약한 작은 scope-local rule과 entrypoint routing context를 위한 예외적 surface로만 사용합니다.
 - 같은 durable 의미를 여러 authored source가 병렬로 소유하지 않습니다.
 - 사람이 읽기 쉽고 agent가 discovery/routing하기 쉬운 구조를 함께 유지합니다.
