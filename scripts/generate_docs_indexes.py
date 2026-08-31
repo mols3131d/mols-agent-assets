@@ -22,7 +22,7 @@ HEADER = "path\tdescription\n"
 DEFAULT_INDEX_DEPTH = 0
 DEFAULT_DEPTH = -1
 DEFAULT_DIRECTORY_ENTRY_FILES = ("README.md",)
-BASE_EXCLUDE = ("AGENTS.md", "INDEXING.md")
+BASE_EXCLUDE = ("AGENTS.md",)
 EXCLUDE_GLOBS = [".*.md", "__*__.md"]
 
 
@@ -32,7 +32,7 @@ def _is_route_markdown(path: Path) -> bool:
         return False
     if name in BASE_EXCLUDE or name.startswith("."):
         return False
-    if name.upper().startswith("INDEX") or name.startswith("__index__"):
+    if name.startswith("INDEX") or name.startswith("__index__"):
         return False
     if name.startswith("__") and name.endswith("__.md"):
         return False

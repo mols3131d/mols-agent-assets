@@ -32,7 +32,7 @@ description: Markdown 문서의 frontmatter 적용 범위, 예외, description�
 
 보통 한 문장으로 충분하며, 정확한 routing에 필요할 때만 두 문장까지 확장합니다.
 
-## Entrypoints and Indexes
+## Entrypoint Metadata
 
 이 repository에서 directory와 bundle형 문서 또는 파일의 entrypoint filename은 `README.md`입니다.
 
@@ -46,10 +46,12 @@ Generated docs index가 directory metadata를 projection할 때는 해당 direct
 
 Bundle README도 같은 scope-metadata 원칙을 따르지만, 특정 generator나 consumer가 bundle metadata를 어떻게 사용하는지는 해당 owner가 정의합니다. 일반 frontmatter policy가 존재하지 않는 projection semantics를 만들지는 않습니다.
 
-작은 scope에서 별도 `INDEXING.md`나 local `INDEX.tsv`가 과하면 README 안에 `Index` section을 둘 수 있습니다. 이때 table은 README body의 authored navigation이며 frontmatter metadata를 대신하지 않습니다.
+README 생성·작성과 scope metadata의 세부 원칙은 [README Authoring](readme-authoring.md)이 소유합니다.
 
-`INDEXING.md`는 사람이 작성하는 directory indexing 전담 문서이며 일반 documentation frontmatter contract를 따르지만 directory metadata source는 아닙니다. `INDEX.tsv`는 generated projection이므로 authored frontmatter source가 아닙니다.
+## Indexing Metadata
 
-Entrypoint, inline index와 독립 index filename의 역할과 생성 조건은 [Entrypoints and Indexes](entrypoint-readme-index.md)가 소유합니다.
+README 안의 inline `Index`와 generated `INDEX.tsv`의 선택·생성·중복 경계는 [Document Indexing](indexing.md)이 소유합니다.
+
+README의 inline `Index`는 body navigation이며 frontmatter metadata를 대신하지 않습니다. `INDEX.tsv`는 generated projection이므로 authored frontmatter source가 아닙니다.
 
 Front Matter CMS의 설정, 공식 옵션, source routing은 [Front Matter CMS](../references/tooling/front-matter-cms.md)를 참고합니다.
