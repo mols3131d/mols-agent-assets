@@ -1,6 +1,6 @@
 # Common Improve
 
-개선은 더 많이 고치는 일이 아니라 실제 결함과 불필요한 비용을 줄이는 일이다. 유형별 기준은 각 `improve.md`가 소유한다.
+개선은 더 많이 고치는 일이 아니라 실제 결함과 불필요한 비용을 줄이는 일이다. 특정 목적이나 환경에 맞추는 적응이 주된 목표면 `tune.md`를 사용한다. 유형별 기준은 각 `improve.md`가 소유한다.
 
 ## Diagnose
 
@@ -8,7 +8,7 @@
 
 - 책임이 겹치거나 owner가 불명확한가?
 - 적용 범위나 routing이 실제 필요보다 복잡한가?
-- 불필요한 context, reference, layer, option이 남아 있는가?
+- 불필요한 context, reference, layer, surface가 남아 있는가?
 - reusable core를 project/target별로 반복하고 있는가?
 - stale metadata, obsolete reference, derived copy를 사람이 유지하고 있는가?
 - native mechanism이나 기존 check로 충분한 문제를 새 abstraction으로 풀고 있는가?
@@ -21,7 +21,6 @@
 - 반대로 불필요한 context가 반복해서 함께 로드되면 필요한 부분만 분리한다.
 - context를 줄이지 못하는 router/reference chain은 제거한다.
 - 같은 core의 복제는 reusable core와 필요한 delta로 줄인다.
-- option이 내부 구현만 노출하거나 mini-framework를 만들면 제거하거나 책임을 다시 나눈다.
 
 ## Change
 
