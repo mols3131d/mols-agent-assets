@@ -1,64 +1,60 @@
 ---
-description: 저장소의 자산·도구·생성물·문서 등 여러 도메인에서 무엇을 어떤 authority와 evidence로 검증할지 정할 때 사용하는 공통 Validation 정책입니다.
+description: 문서 frontmatter·INDEX.tsv, Agent Asset routing, Rulesync 관리 자산의 repository validation 범위와 실행 경계를 확인할 때 사용하는 정책입니다.
 ---
 
 # Validation
 
-Validation은 **대상이 만족해야 하는 계약을 적절한 authority와 evidence로 확인하는 일**입니다. 하나의 validator가 모든 correctness를 증명한다고 간주하지 않습니다.
+이 repository의 Validation은 **검증할 가치가 있는 네 가지 파생·구조 계약**만 다룹니다. 테스트, formatting, behavioral evaluation이나 일반적인 toolchain 상태까지 Validation의 범위로 확장하지 않습니다.
 
-검증은 대상과 계약에 맞는 가장 좁은 owner에게 맡깁니다. upstream tool이나 specification이 소유하는 semantics를 repository validator가 다시 구현하지 않습니다.
+## Targets
 
-## Domains
-
-| Domain | Primary validation |
+| Target | Validation |
 | --- | --- |
-| Agent Assets | 작성 framework·official specification·target contract와 필요한 semantic·routing review |
-| Rulesync assets | Rulesync CLI가 소유하는 parser·processor·target adapter |
-| Generated projections | 작성 원본에서 재생성한 결과와 committed output의 drift |
-| Documentation | 적용되는 documentation policy, linter와 metadata·index contract |
-| Repository tooling | toolchain, lock state와 configuration contract |
-| Repository-owned behavior | deterministic test로 확인할 수 있는 executable behavior |
-| External dependencies | upstream lock·source·installer가 소유하는 revision과 materialization contract |
+| Documentation frontmatter | 일반 문서가 repository frontmatter contract를 만족하는지 확인 |
+| Documentation `INDEX.tsv` | 작성 원본에서 재생성한 index와 committed output의 drift 확인 |
+| Agent Asset routing | distribution·repository route를 재생성하고 committed output과 비교 |
+| Rulesync-managed assets | Rulesync CLI의 parser·processor·target adapter를 통한 read-only structural validation |
 
-도메인별 validator가 다르더라도 **계약을 소유하는 source를 우선하고 repository는 필요한 orchestration과 local acceptance만 추가합니다.**
+각 검증은 **계약을 소유하는 기존 도구를 재사용**합니다. 같은 schema나 projection semantics를 repository validator에서 다시 구현하지 않습니다.
 
-## Evidence
+## Documentation Frontmatter
 
-검증 결과는 실제로 확인한 범위까지만 주장합니다.
+일반 문서의 적용 범위와 metadata contract는 [Frontmatter](../documentation/frontmatter.md)가 소유합니다. Validation은 해당 범위의 Markdown이 YAML frontmatter로 parse되고 필요한 `description`을 가지는지 `mols-markdown-maintenance`의 `validate_frontmatter.py`로 확인합니다.
 
-- parser, compiler, validator, deterministic script나 command가 확인한 결과는 해당 계약에 대한 deterministic evidence입니다.
-- target-specific compatibility는 해당 target의 contract나 runtime evidence 없이 확대 해석하지 않습니다.
-- semantic quality, routing quality와 behavior는 structural validation 통과만으로 증명되지 않습니다.
-- model/runtime evaluation은 deterministic validation을 대체하지 않습니다.
+Agent Asset, systemic asset과 maintainer baseline처럼 일반 문서 frontmatter 규칙의 적용 대상이 아닌 파일에는 이 검증을 강제하지 않습니다.
 
-검증하지 않은 영역은 통과한 것으로 간주하지 않습니다.
+## Documentation Index
+
+`docs/**/INDEX.tsv`는 작성 원본에서 다시 만들 수 있는 projection입니다. `scripts/generate_docs_indexes.py --check`로 현재 source에서 계산한 결과와 committed index가 같은지 확인합니다.
+
+Index의 생성 방식과 scope는 [Document Indexing](../documentation/indexing.md)이 소유합니다. Validation은 generated output을 직접 수정하지 않습니다.
+
+## Agent Asset Routing
+
+이 repository가 제공하는 자산의 `route/*.jsonl`과 이 repository가 사용하는 자산의 `.agents/route/*.jsonl`은 각 source에서 재생성한 뒤 committed output과 비교합니다.
+
+Route의 source와 generation contract는 해당 generator가 소유합니다. Validation은 route 내용을 별도 schema로 재정의하지 않습니다.
+
+## Rulesync-Managed Assets
+
+Reusable Rulesync Agent Asset은 `npm run rulesync:validate`로 검증합니다. `scripts/agent-assets/validate_rulesync.py`는 Rulesync의 schema나 projection semantics를 재구현하지 않고 read-only pass를 orchestration합니다.
+
+1. `doctor --strict` — configuration validation
+2. `generate --dry-run` — configured projection validation
+3. `generate --dry-run --targets "*"` — asset-declared target projection validation
+
+Rulesync JSON output의 warning도 validation failure로 취급합니다. 이 검증은 semantic quality, routing quality 또는 runtime behavior까지 검증했다는 뜻이 아닙니다.
 
 ## Automation
 
-검증 automation은 가능한 한 read-only여야 합니다. 생성이나 materialization이 필요한 검증은 source를 보존하면서 결과만 비교할 수 있게 설계합니다.
+네 검증은 필요할 때 `Optional Validation`에서 각각 선택해 실행합니다. 기본값은 모두 OFF입니다.
 
-- PR Gate는 [Testing](testing.md)이 소유하는 repository deterministic test만 실행합니다.
-- 비용이 높거나 항상 필요하지 않은 검증은 `Optional Validation`에서 명시적으로 선택해 실행합니다.
-- generated projection 갱신처럼 write가 필요한 작업은 local generation path가 소유하고 validation은 drift를 확인합니다.
-- formatter, generator, validator와 evaluation을 하나의 거대한 CI gate로 합치지 않습니다.
-
-## Agent Skills
-
-Agent Skill도 하나의 검증으로 모든 계약을 확인하지 않습니다.
-
-| Concern | Owner |
-| --- | --- |
-| 작성 원본의 syntax·projection | Rulesync 등 실제 source framework |
-| 공통 Skill package contract | applicable Agent Skills specification과 official validator |
-| target-specific compatibility | 실제 target의 official contract와 필요한 runtime evidence |
-| repository-owned deterministic mechanics | [Testing](testing.md) |
-| trigger·output·behavior quality | [Evaluation](evaluation.md) |
-| semantic·routing·adversarial review | `mols-agent-asset-validator` |
-
-Skill의 공식 source routing은 [Agent Skills Specification](../references/agent-assets/skills/specification.md), Rulesync의 구체적인 validation contract와 entrypoint는 [Rulesync](../references/tooling/rulesync.md)가 소유합니다.
+Write가 필요한 index·route 갱신은 local generation path가 소유합니다. Validation은 read-only 검사 또는 재생성 후 drift comparison만 수행합니다.
 
 ## Boundary
 
 - deterministic test 설계와 PR Gate → [Testing](testing.md)
 - model/runtime behavior evidence → [Evaluation](evaluation.md)
-- 작성 원본과 upstream/local authority → [작성 원본과 권한](source-authority.md)
+- documentation frontmatter contract → [Frontmatter](../documentation/frontmatter.md)
+- index generation policy → [Document Indexing](../documentation/indexing.md)
+- Rulesync source·projection contract → [Rulesync](../references/tooling/rulesync.md)
