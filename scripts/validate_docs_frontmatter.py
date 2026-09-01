@@ -74,7 +74,7 @@ def _matches_exclude(path: Path, patterns: list[str]) -> bool:
 
 def _is_document(path: Path, relative: Path, exclude_patterns: list[str]) -> bool:
     name = path.name
-    if name in ROLE_EXCLUDED_NAMES or name.startswith("."):
+    if name in ROLE_EXCLUDED_NAMES:
         return False
     if any(name.endswith(suffix) for suffix in ROLE_EXCLUDED_SUFFIXES):
         return False
