@@ -16,7 +16,7 @@ description: 파일 이름에서 하이픈은 구조 경계로, 언더바는 한
 <structural_unit>-<structural_unit>-<structural_unit>.<ext>
 ```
 
-한 구조 단위가 여러 단어라면 그 안의 띄어쓰기를 언더바로 표현합니다.
+구조 단위는 domain, subdomain, family, subject, aspect, role처럼 파일을 분류하거나 탐색할 때 의미 있는 경계가 될 수 있습니다. 한 구조 단위가 여러 단어라면 그 안의 띄어쓰기를 언더바로 표현합니다.
 
 ```text
 <domain_name>-<topic_name>-<detail_name>.<ext>
@@ -39,18 +39,6 @@ validation_rules → validation rules
 하이픈은 `agent_assets → routing_policy → validation_rules`라는 구조적 분리를 보여주고, 언더바는 각 단위 안의 단어를 하나의 이름으로 묶습니다.
 
 구조 단위의 수와 각 단위 안의 언더바 수는 고정하지 않습니다. 필요한 만큼의 의미 있는 경계와 단어만 사용합니다.
-
-## Structural Units
-
-구조 단위는 domain, subdomain, family, subject, aspect, role처럼 파일을 분류하거나 탐색할 때 의미 있는 경계가 될 수 있습니다.
-
-```text
-agent_assets-skill-authoring_guide.md
-agent_assets-skill-validation_rules.md
-agent_assets-subagent-authoring_guide.md
-```
-
-여기서 `agent_assets`, `skill`, `authoring_guide`는 각각 하나의 구조 단위입니다. `agent_assets`와 `authoring_guide` 안의 언더바는 구조를 더 나누지 않고 띄어쓰기 역할만 합니다.
 
 ## Composition with Sort-Aware Naming
 
