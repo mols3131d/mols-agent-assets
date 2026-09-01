@@ -33,7 +33,7 @@ def validate_subject(subject: str) -> str | None:
 
 def main(argv: list[str]) -> int:
     if len(argv) != 2:
-        print("usage: validate_commit_msg.py <commit-message-file>", file=sys.stderr)
+        print("usage: commit_message_validate.py <commit-message-file>", file=sys.stderr)
         return 2
 
     message_path = Path(argv[1])
