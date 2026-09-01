@@ -1,14 +1,14 @@
 ---
 name: mols-agent-asset
 description: >-
-  Create, modify, simplify, refactor, or adapt agent Skills, Rules or scoped
-  instructions, and agent or subagent definitions. Use as the primary authoring
-  and improvement capability when changing agent-facing behavior, ownership,
-  activation, source or target authority, or duplicated or overgrown asset
-  structure. Use mols-agent-asset-validator when the primary task is formal
-  validation, audit, readiness, stress testing, regression, behavioral or
-  adversarial evaluation, or bounded correction driven by those findings. Use
-  mols-agent-asset-find for discovery, selection, loading, installation,
+  Create, tune, modify, simplify, refactor, or adapt agent Skills, Rules or
+  scoped instructions, and agent or subagent definitions. Use as the primary
+  authoring and improvement capability when changing agent-facing behavior,
+  ownership, activation, source or target authority, or duplicated or overgrown
+  asset structure. Use mols-agent-asset-validator when the primary task is
+  formal validation, audit, readiness, stress testing, regression, behavioral
+  or adversarial evaluation, or bounded correction driven by those findings.
+  Use mols-agent-asset-find for discovery, selection, loading, installation,
   synchronization, or invocation. Do not use for ordinary product code,
   human-facing prose, prompt writing, hook setup, or MCP setup.
 targets:
@@ -23,7 +23,7 @@ targets:
 
 # Mols Agent Asset
 
-요청된 동작을 실제로 소유하는 가장 작은 Agent Asset을 설계, 개선, 리뷰, 검증한다.
+요청된 동작을 실제로 소유하는 가장 작은 Agent Asset을 설계, 튜닝, 개선, 리뷰, 검증한다.
 
 ## Contract
 
@@ -39,22 +39,25 @@ targets:
 
 ## Route
 
-작업 종류와 자산 유형을 하나씩 고른 뒤, 해당 `common` reference와 type reference만 읽는다.
+먼저 작업 종류를 고른다.
 
-| 작업 | 파일 |
+| 작업 | Common reference |
 | --- | --- |
-| 설계·생성·큰 재설계 | `design.md` |
-| 개선·수정·단순화·리팩터링·적응 | `improve.md` |
-| 리뷰 | `review.md` |
-| 검증·체크 | `validate.md` |
+| 설계·생성·큰 재설계 | `references/common/design.md` |
+| 특정 목적·상황·저장소·런타임에 맞춘 튜닝 | `references/common/tune.md` |
+| 개선·수정·단순화·리팩터링 | `references/common/improve.md` |
+| 리뷰 | `references/common/review.md` |
+| 검증·체크 | `references/common/validate.md` |
 
-자산 유형은 다음 디렉터리를 사용한다.
+설계, 개선, 리뷰, 검증은 자산 유형에 맞는 같은 이름의 type reference도 함께 읽는다.
 
 - Skill 또는 `SKILL.md` → `references/skill/`
 - Rule, scoped instruction, selector, inheritance, precedence, projection, deduplication → `references/rule/`
 - Agent/Subagent, delegation, handoff, capability, termination → `references/subagent/`
 
-예를 들어 Skill 리뷰는 `references/common/review.md`와 `references/skill/review.md`만 읽는다. 여러 작업이나 유형이 실제로 겹칠 때만 필요한 reference를 추가한다.
+튜닝은 `references/common/tune.md`를 먼저 읽는다. 새 자산이나 별도 variant가 필요하면 해당 유형의 `design.md`를, 기존 자산을 수정하면 `improve.md`를 추가로 읽는다. 둘이 독립적으로 필요할 때만 둘 다 읽는다.
+
+예를 들어 Skill 리뷰는 `references/common/review.md`와 `references/skill/review.md`만 읽는다. 저장소에 맞게 기존 Skill을 튜닝한다면 `references/common/tune.md`와 `references/skill/improve.md`를 읽는다.
 
 Formal audit, readiness, adversarial/repeated evaluation, runtime trace, regression program이 주된 목적이면 `mols-agent-asset-validator`를 사용한다.
 
