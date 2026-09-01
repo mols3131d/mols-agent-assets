@@ -4,7 +4,7 @@ description: 문서 frontmatter·INDEX.tsv, Agent Asset routing, Rulesync 관리
 
 # Validation
 
-Validation은 이 repository가 유지하는 **네 가지 구조·파생 계약**을 확인합니다. Formatting, deterministic test와 behavioral evaluation은 각각의 정본이 소유합니다.
+Validation은 이 repository가 유지하는 **네 가지 구조·파생 계약**을 확인합니다. 파일 표현은 [Formatting](formatting.md), repository-owned executable behavior는 [Testing](testing.md), model/runtime behavior evidence는 [Evaluation](evaluation.md)이 소유합니다.
 
 ## Targets
 
@@ -26,9 +26,3 @@ Validation은 이 repository가 유지하는 **네 가지 구조·파생 계약*
 Index와 route의 갱신은 local generation path가 소유합니다. Validation은 현재 상태를 read-only로 확인하거나 재생성한 결과와 committed output을 비교합니다.
 
 `npm run rulesync:validate`는 Rulesync-managed assets의 structural validation entrypoint입니다. 통과 결과를 semantic quality, routing quality나 runtime behavior까지 확대 해석하지 않습니다.
-
-## Boundary
-
-- 파일 표현 정규화 → [Formatting](formatting.md)
-- repository-owned executable behavior와 PR Gate → [Testing](testing.md)
-- model/runtime behavior evidence → [Evaluation](evaluation.md)
