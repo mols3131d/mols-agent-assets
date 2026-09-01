@@ -10,4 +10,4 @@
 - 이 repository 자체를 작업하는 agent의 routing entrypoint는 `.agents/route/ROUTE.md`입니다. `.agents/route/`는 이 repository가 사용하는 Agent Asset의 routing surface이며, 현재 generated Skill route의 family membership은 `.agents/route/families.json`이 소유합니다. `routes.jsonl`과 현재 Skill family `*.jsonl`은 lock/config와 family membership에서 생성되는 discovery data이므로 직접 편집하지 않습니다.
 - 이 repository가 제공하는 Agent Asset의 cross-runtime discovery fallback은 `route/README.md`를 따릅니다.
 - Repository 개발 규칙은 `docs/development/README.md`, 문서 규칙과 artifact lifecycle은 `docs/documentation/README.md`를 entrypoint로 사용합니다.
-- Repository verification은 `docs/development/testing.md`를 따릅니다.
+- Repository formatting은 `docs/development/formatting.md`, validation은 `docs/development/validation.md`, deterministic testing과 PR Gate는 `docs/development/testing.md`를 따릅니다.
