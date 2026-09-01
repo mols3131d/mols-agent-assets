@@ -15,7 +15,11 @@ Formatting은 **파일의 표현을 repository convention에 맞게 정규화하
 
 일상 작업에서는 `format-changed`를 사용합니다. 전체 포맷은 unrelated file까지 바꿀 수 있으므로 명시적인 repository-wide 정리에만 사용합니다.
 
-Python은 Ruff, Markdown은 rumdl, JSON·JSONC·JavaScript·TypeScript 계열은 Biome이 담당합니다.
+| 대상 | Formatter |
+| --- | --- |
+| Python | Ruff |
+| Markdown | rumdl |
+| JSON·JSONC·JavaScript·TypeScript 계열 | Biome |
 
 ## Boundary
 
