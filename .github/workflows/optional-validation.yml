@@ -3,18 +3,23 @@ name: Optional Validation
 on:
   workflow_dispatch:
     inputs:
+      docs_frontmatter:
+        description: Validate documentation frontmatter
+        required: false
+        default: false
+        type: boolean
       docs_indexes:
         description: Validate committed docs indexes
         required: false
         default: false
         type: boolean
-      routes:
-        description: Regenerate committed routes and compare
+      asset_routes:
+        description: Regenerate committed Agent Asset routes and compare
         required: false
         default: false
         type: boolean
-      rulesync:
-        description: Run strict Rulesync doctor
+      rulesync_assets:
+        description: Validate repository-managed Agent Assets through Rulesync
         required: false
         default: false
         type: boolean
@@ -24,7 +29,7 @@ permissions:
 
 jobs:
   validate:
-    if: ${{ inputs.docs_indexes || inputs.routes || inputs.rulesync }}
+    if: ${{ inputs.docs_frontmatter || inputs.docs_indexes || inputs.asset_routes || inputs.rulesync_assets }}
     runs-on: ubuntu-slim
     timeout-minutes: 10
     steps:
@@ -34,34 +39,42 @@ jobs:
           persist-credentials: false
 
       - name: Set up uv
-        if: ${{ inputs.docs_indexes || inputs.routes }}
+        if: ${{ inputs.docs_frontmatter || inputs.docs_indexes || inputs.asset_routes }}
         uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
         with:
           version: "0.12.1"
           enable-cache: true
 
+      - name: Validate docs frontmatter
+        if: ${{ inputs.docs_frontmatter }}
+        run: uv run --locked --no-default-groups --group test python scripts/validate_docs_frontmatter.py
+
       - name: Validate docs indexes
         if: ${{ inputs.docs_indexes }}
         run: uv run --locked --no-default-groups --group test python scripts/generate_docs_indexes.py --check
 
-      - name: Validate routes
-        if: ${{ inputs.routes }}
+      - name: Validate Agent Asset routes
+        if: ${{ inputs.asset_routes }}
         shell: bash
         run: |
           set -euo pipefail
           uv run --locked --no-default-groups --group test python scripts/generate_distribution_routes.py
           uv run --locked --no-default-groups --group test python scripts/generate_repository_routes.py
-          git diff --exit-code -- route/*.jsonl .agents/route/*.jsonl
+          changes="$(git status --porcelain -- route .agents/route)"
+          if [[ -n "$changes" ]]; then
+            printf '%s\n' "$changes"
+            exit 1
+          fi
 
       - name: Set up mise
-        if: ${{ inputs.rulesync }}
+        if: ${{ inputs.rulesync_assets }}
         uses: jdx/mise-action@v3
         with:
           install: false
           cache: true
 
-      - name: Validate Rulesync source
-        if: ${{ inputs.rulesync }}
+      - name: Validate Rulesync-managed assets
+        if: ${{ inputs.rulesync_assets }}
         run: |
           mise install uv node "npm:rulesync"
-          npm run rulesync:doctor
+          npm run rulesync:validate

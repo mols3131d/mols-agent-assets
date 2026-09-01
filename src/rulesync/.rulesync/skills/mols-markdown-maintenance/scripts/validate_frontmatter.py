@@ -106,6 +106,7 @@ def validate_frontmatter(
 
     Schema Rules:
         - type: Allowed data type (e.g., str, list, dict).
+        - required: Whether the field must exist. Defaults to True.
         - allowed_values: Allowed set/list of values.
         - min_length / max_length: Min/max size for str, list, dict.
         - min_items / max_items: Min/max length of lists.
@@ -139,7 +140,11 @@ def validate_frontmatter(
 
         for key in schema_keys:
             spec = schema[key]
-            if key not in data or not _validate_value(data[key], spec):
+            if key not in data:
+                if spec.get("required", True):
+                    return False
+                continue
+            if not _validate_value(data[key], spec):
                 return False
 
     if expected_values is not None:

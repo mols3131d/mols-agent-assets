@@ -40,6 +40,16 @@
           "integrity": "sha256-cea1aeea21c7dbe1ff56eb3cf46e510ef50f691e6a4a97b5f5582922b0d4046d"
         }
       }
+    },
+    "dyoshikawa/rulesync": {
+      "requestedRef": "main",
+      "resolvedRef": "19fad794303990803c6511bb95fa7ea5f34e9e12",
+      "resolvedAt": "2026-09-01T01:02:00.000Z",
+      "skills": {
+        "rulesync": {
+          "integrity": "sha256-658851f4f3b4c432820cc1ed54bd294a699f171ee28d1da9a3c89e5a3b26a96f"
+        }
+      }
     }
   }
 }

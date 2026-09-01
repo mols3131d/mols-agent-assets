@@ -4,7 +4,7 @@ node = "24.19.0"
 rumdl = "0.2.54"
 lefthook = "2.1.10"
 "npm:@biomejs/biome" = "2.5.6"
-"npm:rulesync" = "16.5.0"
+"npm:rulesync" = "latest"
 "npm:skills" = "1.5.23"
 
 [tasks.setup]
@@ -49,15 +49,15 @@ run = [
   "biome --version",
   "rulesync --version",
   "skills --version",
-  "uv run python scripts/sync_agent_skills.py --dry-run",
   "uv lock --check",
+  "uv run --locked --no-default-groups python scripts/sync_agent_skills.py --dry-run",
   "lefthook validate",
   "biome check biome.json package.json .vscode/tasks.json",
 ]
 
 [tasks.test]
 description = "Run repository tests"
-run = "uv run pytest"
+run = "uv run --locked --no-default-groups --group test pytest"
 
 [tasks.eval-mols-rpi-smoke]
 description = "mols-rpi Promptfoo fixture smoke를 local에서 실행"

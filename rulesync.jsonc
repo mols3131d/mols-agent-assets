@@ -31,6 +31,13 @@
       "transport": "github",
       "ref": "main",
       "path": "src/rulesync/.rulesync/skills"
+    },
+    {
+      "source": "dyoshikawa/rulesync",
+      "skills": ["rulesync"],
+      "transport": "github",
+      "ref": "main",
+      "path": "skills"
     }
   ]
 }
