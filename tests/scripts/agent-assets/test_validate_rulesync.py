@@ -49,6 +49,30 @@ def test_validate_fails_on_rulesync_error(capsys) -> None:
     assert "invalid frontmatter" in capsys.readouterr().err
 
 
+def test_validate_fails_when_success_is_false_with_zero_exit(capsys) -> None:
+    def runner(_args: tuple[str, ...]):
+        return result(stdout='{"success":false}')
+
+    assert validate_rulesync.validate(runner) == 1
+    assert "FAIL" in capsys.readouterr().err
+
+
+def test_validate_fails_on_malformed_warnings_contract(capsys) -> None:
+    def runner(_args: tuple[str, ...]):
+        return result(stdout='{"success":true,"warnings":"bad asset"}')
+
+    assert validate_rulesync.validate(runner) == 1
+    assert "warnings" in capsys.readouterr().err
+
+
+def test_validate_fails_on_non_json_output(capsys) -> None:
+    def runner(_args: tuple[str, ...]):
+        return result(stdout="not-json")
+
+    assert validate_rulesync.validate(runner) == 1
+    assert "JSON" in capsys.readouterr().err
+
+
 def test_run_rulesync_uses_json_and_library_workspace(monkeypatch) -> None:
     seen: dict[str, object] = {}
 
