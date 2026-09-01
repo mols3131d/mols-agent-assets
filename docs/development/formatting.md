@@ -21,9 +21,4 @@ Formatting은 **파일의 표현을 repository convention에 맞게 정규화하
 | Markdown | rumdl |
 | JSON·JSONC·JavaScript·TypeScript 계열 | Biome |
 
-## Boundary
-
-- Formatter 실행은 local write path가 소유합니다.
-- Lefthook은 formatter를 자동 실행하거나 변경 내용을 자동 stage하지 않습니다.
-- PR Gate와 [Validation](validation.md)은 formatting을 대신 실행하지 않습니다.
-- 의미나 동작을 바꾸는 수정은 formatting으로 취급하지 않습니다.
+Lefthook은 formatter를 자동 실행하거나 변경 내용을 자동 stage하지 않습니다.
