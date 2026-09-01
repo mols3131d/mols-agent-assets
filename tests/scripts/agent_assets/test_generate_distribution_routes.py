@@ -1,6 +1,6 @@
 import json
 
-from scripts.generation import generate_distribution_routes
+from scripts.agent_assets import generate_distribution_routes
 
 
 def write_asset(path, name, description):

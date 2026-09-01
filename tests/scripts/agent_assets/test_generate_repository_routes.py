@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from scripts.generation import generate_repository_routes as routes
+from scripts.agent_assets import generate_repository_routes as routes
 
 
 def skill_row(name: str) -> dict[str, str]:

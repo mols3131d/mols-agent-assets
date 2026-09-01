@@ -10,13 +10,13 @@ from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 
-from scripts.generation import generate_distribution_routes
-from scripts.generation import generate_repository_routes
-from scripts.generation.generate_docs_indexes import generate_docs_indexes
+from scripts.agent_assets import generate_distribution_routes
+from scripts.agent_assets import generate_repository_routes
+from scripts.generate_docs_indexes import generate_docs_indexes
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[1]
 
-_DOCS_INDEX_TOOL_SOURCES = {"scripts/generation/generate_docs_indexes.py"}
+_DOCS_INDEX_TOOL_SOURCES = {"scripts/generate_docs_indexes.py"}
 _DOCS_INDEX_TOOL_PREFIX = (
     "src/rulesync/.rulesync/skills/mols-markdown-maintenance/scripts/"
 )
@@ -25,7 +25,7 @@ _REPOSITORY_ROUTE_SOURCES = {
     "rulesync.jsonc",
     "skills-lock.json",
     ".agents/route/families.json",
-    "scripts/generation/generate_repository_routes.py",
+    "scripts/agent_assets/generate_repository_routes.py",
 }
 _SUBAGENT_SOURCE_PREFIX = "src/rulesync/.rulesync/subagents/"
 
@@ -74,7 +74,7 @@ def _is_docs_index_output(path: str) -> bool:
 
 
 def _is_distribution_route_source(path: str) -> bool:
-    if path == "scripts/generation/generate_distribution_routes.py":
+    if path == "scripts/agent_assets/generate_distribution_routes.py":
         return True
     if path.startswith("src/rulesync/.rulesync/skills/") and path.endswith(
         "/SKILL.md"

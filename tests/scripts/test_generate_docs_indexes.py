@@ -4,7 +4,7 @@ import csv
 
 import pytest
 
-from scripts.generation.generate_docs_indexes import generate_docs_indexes
+from scripts.generate_docs_indexes import generate_docs_indexes
 
 
 def _write(path, content):

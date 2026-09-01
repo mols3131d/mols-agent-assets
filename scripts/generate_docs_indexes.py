@@ -8,7 +8,7 @@ import sys
 from collections import deque
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[1]
 INDEX_TOOL_DIR = (
     ROOT / "src/rulesync/.rulesync/skills/mols-markdown-maintenance/scripts"
 )

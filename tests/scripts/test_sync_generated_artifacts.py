@@ -4,7 +4,7 @@ import subprocess
 
 import pytest
 
-from scripts.generation import sync_generated_artifacts as sync
+from scripts import sync_generated_artifacts as sync
 
 
 def _run_git(root, *args):
@@ -27,7 +27,7 @@ def _run_git(root, *args):
         ("docs/references/.private.md", False),
         ("docs/references/__system__.md", False),
         ("docs/references/INDEX.md", False),
-        ("scripts/generation/generate_docs_indexes.py", True),
+        ("scripts/generate_docs_indexes.py", True),
         (
             "src/rulesync/.rulesync/skills/mols-markdown-maintenance/"
             "scripts/generate_index.py",
@@ -47,7 +47,7 @@ def test_docs_index_source_matching(path, expected):
         ("src/rulesync/.rulesync/skills/example/references/guide.md", False),
         ("src/rulesync/.rulesync/subagents/review.md", True),
         ("src/rulesync/.rulesync/subagents/references/guide.md", False),
-        ("scripts/generation/generate_distribution_routes.py", True),
+        ("scripts/agent_assets/generate_distribution_routes.py", True),
         ("rulesync.lock", False),
     ],
 )
@@ -62,7 +62,7 @@ def test_distribution_route_source_matching(path, expected):
         ("rulesync.jsonc", True),
         ("skills-lock.json", True),
         (".agents/route/families.json", True),
-        ("scripts/generation/generate_repository_routes.py", True),
+        ("scripts/agent_assets/generate_repository_routes.py", True),
         ("src/rulesync/.rulesync/skills/example/SKILL.md", False),
     ],
 )
