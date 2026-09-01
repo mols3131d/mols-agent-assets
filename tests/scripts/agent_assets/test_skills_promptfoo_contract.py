@@ -12,6 +12,20 @@ ROOT = Path(__file__).resolve().parents[3]
 CONFIG_DIR = ROOT / "evals" / "promptfoo"
 
 
+def _write_skill(root: Path, skill_name: str = "example-skill") -> None:
+    path = evaluator.skill_path(skill_name)
+    path = root / path.relative_to(evaluator.ROOT)
+    path.parent.mkdir(parents=True)
+    path.write_text(
+        "---\n"
+        f"name: {skill_name}\n"
+        "description: Use for example work.\n"
+        "---\n\n"
+        "# Example Skill\n\nFollow the example behavior contract.\n",
+        encoding="utf-8",
+    )
+
+
 @pytest.mark.parametrize("skill", ["..", "../other", "nested/skill", "nested\\skill"])
 def test_skill_name_rejects_path_components(skill: str) -> None:
     with pytest.raises(ValueError, match="directory name"):
@@ -134,6 +148,83 @@ def test_trigger_response_rejects_invalid_selection_envelopes(payload: object) -
 def test_behavior_output_grader_requires_observable_text() -> None:
     assert evaluator.assert_behavior_output("observable response", {})["pass"] is True
     assert evaluator.assert_behavior_output("   ", {})["pass"] is False
+
+
+def test_trigger_provider_rejection_only_routes_and_does_not_use_skill_body(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    original_root = evaluator.ROOT
+    _write_skill(tmp_path)
+    monkeypatch.setattr(evaluator, "ROOT", tmp_path)
+    captured: list[str] = []
+
+    def fake_request(prompt: str, system: str, schema: dict):
+        captured.append(system)
+        payload = {"selected_skills": [], "primary_skill": None}
+        return payload, json.dumps(payload)
+
+    monkeypatch.setattr(evaluator, "_ollama_request", fake_request)
+    result = evaluator.call_api(
+        "Do something unrelated.",
+        {
+            "config": {
+                "skill": "example-skill",
+                "mode": "ollama",
+                "suite": "trigger",
+            }
+        },
+        {"vars": {"skill": "example-skill", "routing_candidates": []}},
+    )
+
+    assert original_root != evaluator.ROOT
+    assert len(captured) == 1
+    assert "description: Use for example work." in captured[0]
+    assert "# Example Skill" not in captured[0]
+    assert json.loads(result["output"]) == {
+        "selected_skills": [],
+        "primary_skill": None,
+    }
+
+
+def test_trigger_provider_preserves_competing_metadata_and_primary_selection(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    _write_skill(tmp_path)
+    monkeypatch.setattr(evaluator, "ROOT", tmp_path)
+    candidate = {
+        "name": "specific-owner",
+        "description": "Own this specific task and remain primary when applicable.",
+    }
+    captured: list[str] = []
+
+    def fake_request(prompt: str, system: str, schema: dict):
+        captured.append(system)
+        payload = {
+            "selected_skills": ["specific-owner", "example-skill"],
+            "primary_skill": "specific-owner",
+        }
+        return payload, json.dumps(payload)
+
+    monkeypatch.setattr(evaluator, "_ollama_request", fake_request)
+    result = evaluator.call_api(
+        "Use both applicable Skills.",
+        {
+            "config": {
+                "skill": "example-skill",
+                "mode": "ollama",
+                "suite": "trigger",
+            }
+        },
+        {"vars": {"skill": "example-skill", "routing_candidates": [candidate]}},
+    )
+
+    assert json.dumps([candidate], ensure_ascii=False, indent=2) in captured[0]
+    assert json.loads(result["output"]) == {
+        "selected_skills": ["specific-owner", "example-skill"],
+        "primary_skill": "specific-owner",
+    }
 
 
 def test_runtime_promptfoo_config_selects_valid_cases_and_semantics() -> None:
