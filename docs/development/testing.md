@@ -62,7 +62,7 @@ mise run check
 mise run test
 ```
 
-Deterministic test는 이 repository가 구현한 **실행 가능한 동작**을 검증합니다. Generator, sync, validator, adapter와 deterministic하게 검사할 가치가 있는 Skill contract가 주 대상입니다.
+Deterministic test는 이 repository가 구현한 **실행 가능한 동작**을 검증합니다. Generator, sync, validator, adapter와 deterministic하게 검사할 가치가 있는 Skill contract가 주 대상입니다. Test file의 placement와 source-test navigation alignment는 [Repository Structure](repository-structure.md)가 소유합니다.
 
 현재 설정값을 그대로 다시 적는 snapshot test는 두지 않습니다. `.gitignore`, `.gitattributes`, tool version, workflow 문자열, 문서 배치·표현, Rulesync manifest/lock schema 같은 값은 각각 해당 config, 문서, upstream tool 또는 review가 소유합니다. 변경 가능한 선택값을 pytest assertion으로 한 번 더 고정하지 않습니다.
 
