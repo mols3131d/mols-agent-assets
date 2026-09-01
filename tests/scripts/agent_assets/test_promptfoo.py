@@ -8,7 +8,7 @@ from types import ModuleType
 import yaml
 
 ROOT = Path(__file__).resolve().parents[3]
-RUNNER_PATH = ROOT / "scripts" / "agent_assets" / "run_promptfoo.py"
+RUNNER_PATH = ROOT / "scripts" / "agent_assets" / "promptfoo_run.py"
 ADAPTER_PATH = ROOT / "scripts" / "agent_assets" / "promptfoo_mols_rpi.py"
 FIXTURE_PATH = ROOT / "evals" / "skills" / "mols-rpi" / "cases.json"
 CONFIG_DIR = ROOT / "evals" / "promptfoo"
