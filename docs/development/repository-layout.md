@@ -6,7 +6,7 @@ description: 저장소의 파일·디렉터리 이름과 배치, 계층, source�
 
 파일 구조는 **책임과 탐색 경로를 드러내는 보조 수단**입니다. 이름과 배치만 보아도 무엇이 어디에 있고 다음에 어디를 살펴볼지 대략 예측할 수 있어야 합니다.
 
-탐색성을 위해 구조를 왜곡하지 않습니다. 정확성, 명확한 책임 경계, 자연스러운 생태계 관례, 유지보수성과 운영 편의가 우선합니다. Framework·tool·generated 영역에 더 구체적인 layout 규칙이 있으면 그 규칙을 따릅니다.
+탐색성을 위해 구조를 왜곡하지 않습니다. 정확성, 명확한 책임 경계, 자연스러운 생태계 관례, 유지보수성과 운영 편의가 우선합니다. framework·tool·generated 영역에 더 구체적인 layout 규칙이 있으면 그 규칙을 따릅니다.
 
 ## Placement
 
@@ -23,7 +23,7 @@ description: 저장소의 파일·디렉터리 이름과 배치, 계층, source�
 
 ## Source and Test Alignment
 
-현재처럼 source와 `tests/`를 분리한 pytest layout을 유지합니다. Repository가 직접 소유하는 executable source에 자연스러운 기준점이 있으면 관련 test도 위치를 예측할 수 있게 대응시킵니다.
+현재처럼 source와 `tests/`를 분리한 pytest layout을 유지합니다. 저장소가 직접 소유하는 실행 가능한 source에 자연스러운 기준점이 있으면 관련 test도 위치를 예측할 수 있게 대응시킵니다.
 
 ```text
 scripts/agent-assets/validate_rulesync.py
@@ -31,14 +31,14 @@ scripts/agent-assets/validate_rulesync.py
 tests/scripts/agent-assets/test_validate_rulesync.py
 ```
 
-Source path를 그대로 복제하는 것 자체가 목적은 아닙니다.
+source 경로를 그대로 복제하는 것 자체가 목적은 아닙니다.
 
-- 하나의 source file에 작은 test surface가 대응하면 하나의 test file을 기본으로 합니다.
+- 하나의 source file에 작은 test 범위가 대응하면 하나의 test file을 기본으로 합니다.
 - 같은 source의 test가 늘어나면 sibling files나 bundle로 나눌 수 있습니다.
-- 여러 source unit이 하나의 안정적인 behavior나 system boundary를 만들면 source path보다 그 경계를 기준으로 묶을 수 있습니다.
+- 여러 source unit이 하나의 안정적인 동작이나 시스템 경계를 만들면 source 경로보다 그 경계를 기준으로 묶을 수 있습니다.
 - framework의 test discovery와 import convention이 다르면 framework convention을 우선합니다.
 
-Source를 이동하거나 이름을 바꿀 때는 관련 test의 탐색 관계도 함께 확인합니다. 더 안정적인 test boundary를 훼손하면서까지 경로를 맞추지는 않습니다.
+source를 이동하거나 이름을 바꿀 때는 관련 test의 탐색 관계도 함께 확인합니다. 더 안정적인 test 경계를 훼손하면서까지 경로를 맞추지는 않습니다.
 
 ## Review
 
