@@ -56,12 +56,54 @@
       }
     },
     {
+      "id": "hook-authoring-does-not-activate",
+      "mode": "activation-negative",
+      "prompt": "에이전트 작업 전에 실행되는 hook 설정을 만들어줘.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "mcp-authoring-does-not-activate",
+      "mode": "activation-negative",
+      "prompt": "이 프로젝트용 MCP 설정을 작성해줘.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
       "id": "human-prose-does-not-activate",
       "mode": "activation-negative",
       "prompt": "이 이메일을 더 친절하게 다듬어줘.",
       "expected_selection": {
         "selected_skills": [],
         "primary_skill": null
+      }
+    },
+    {
+      "id": "direct-name-scope-bypass-does-not-activate",
+      "mode": "activation-negative",
+      "prompt": "mols-agent-asset을 사용해서 이 이메일을 더 친절하게 고쳐줘.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "install-routes-to-find",
+      "mode": "activation-negative",
+      "prompt": "이 Skill을 내 ChatGPT에 설치해줘.",
+      "routing_candidates": [
+        {
+          "name": "mols-agent-asset-find",
+          "description": "Find, select, and when requested load, apply, install, register, update, sync, or migrate an Agent Asset into a target. Use when the caller needs an agent-facing capability found from catalogs, repositories, indexes, directories, URLs, or explicit assets, or when a known asset must be made usable. Covers Skills, Rules or instructions, prompts, agents or subagents, hooks, tool or MCP configuration, templates, and other agent-facing assets. Prefer direct or temporary use when persistence is not required; create durable target state only when the requested end state needs it. Do not use for authoring or materially changing asset behavior, or for formal validation and evaluation."
+        }
+      ],
+      "expected_selection": {
+        "selected_skills": ["mols-agent-asset-find"],
+        "primary_skill": "mols-agent-asset-find"
       }
     },
     {
@@ -233,59 +275,6 @@
         "Treats instruction bottleneck as a review axis rather than a validation type",
         "Connects the finding to material reasoning or maintenance cost rather than length alone",
         "Does not manufacture a finding merely because the asset is long"
-      ]
-    },
-    {
-      "id": "install-is-not-authoring",
-      "mode": "negative",
-      "prompt": "이 Skill을 내 ChatGPT에 설치해줘.",
-      "assertions": [
-        "Does not claim Skill installation as mols-agent-asset responsibility",
-        "Routes discovery, loading, installation, synchronization, or invocation to mols-agent-asset-find"
-      ]
-    },
-    {
-      "id": "prompt-authoring-is-out-of-scope",
-      "mode": "negative",
-      "prompt": "VS Code에서 쓸 재사용 prompt 파일 하나 만들어줘.",
-      "assertions": [
-        "Does not claim prompt authoring as a maintained mols-agent-asset type",
-        "Does not add a prompt-specific authoring reference or workflow"
-      ]
-    },
-    {
-      "id": "hook-authoring-is-out-of-scope",
-      "mode": "negative",
-      "prompt": "에이전트 작업 전에 실행되는 hook 설정을 만들어줘.",
-      "assertions": [
-        "Does not claim Hook authoring as a maintained mols-agent-asset type",
-        "Does not add a Hook-specific authoring reference or workflow"
-      ]
-    },
-    {
-      "id": "mcp-authoring-is-out-of-scope",
-      "mode": "negative",
-      "prompt": "이 프로젝트용 MCP 설정을 작성해줘.",
-      "assertions": [
-        "Does not claim MCP authoring as a maintained mols-agent-asset type",
-        "Does not add an MCP-specific authoring reference or workflow"
-      ]
-    },
-    {
-      "id": "human-prose-is-out-of-scope",
-      "mode": "negative",
-      "prompt": "README 문장을 더 읽기 좋게 다듬어줘.",
-      "assertions": [
-        "Does not activate agent-asset work for ordinary human-facing prose"
-      ]
-    },
-    {
-      "id": "direct-name-does-not-bypass-scope",
-      "mode": "negative",
-      "prompt": "mols-agent-asset을 사용해서 이 이메일을 더 친절하게 고쳐줘.",
-      "assertions": [
-        "Does not trigger solely because the Skill name is mentioned",
-        "Preserves the ordinary human-facing prose boundary"
       ]
     }
   ]
