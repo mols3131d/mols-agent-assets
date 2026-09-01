@@ -21,7 +21,7 @@ Lead, specialist, subagent, handoff와 tool-agent가 어떤 책임을 소유하�
 - Tool or agent not found behavior
 - Human approval와 irreversible action boundary
 - Traceability from request to reviewer result and final output
-- Failure, retry and termination stability across agents
+- Failure, retry and termination contract resilience across agents
 - Human-readable ownership and change-impact boundaries
 
 ## Return
