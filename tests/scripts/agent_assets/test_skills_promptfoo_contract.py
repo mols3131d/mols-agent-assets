@@ -13,8 +13,15 @@ CONFIG_DIR = ROOT / "evals" / "promptfoo"
 
 
 def _write_skill(root: Path, skill_name: str = "example-skill") -> None:
-    path = evaluator.skill_path(skill_name)
-    path = root / path.relative_to(evaluator.ROOT)
+    path = (
+        root
+        / "src"
+        / "rulesync"
+        / ".rulesync"
+        / "skills"
+        / skill_name
+        / "SKILL.md"
+    )
     path.parent.mkdir(parents=True)
     path.write_text(
         "---\n"
@@ -154,7 +161,6 @@ def test_trigger_provider_rejection_only_routes_and_does_not_use_skill_body(
     tmp_path: Path,
     monkeypatch,
 ) -> None:
-    original_root = evaluator.ROOT
     _write_skill(tmp_path)
     monkeypatch.setattr(evaluator, "ROOT", tmp_path)
     captured: list[str] = []
@@ -177,7 +183,6 @@ def test_trigger_provider_rejection_only_routes_and_does_not_use_skill_body(
         {"vars": {"skill": "example-skill", "routing_candidates": []}},
     )
 
-    assert original_root != evaluator.ROOT
     assert len(captured) == 1
     assert "description: Use for example work." in captured[0]
     assert "# Example Skill" not in captured[0]
