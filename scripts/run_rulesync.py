@@ -3,7 +3,6 @@ from __future__ import annotations
 import shutil
 import subprocess
 import sys
-import tempfile
 from collections.abc import Callable
 from pathlib import Path
 
@@ -30,20 +29,10 @@ def preview(args: list[str]) -> None:
     run(["generate", "--dry-run", *args], WORKSPACE)
 
 
-def validate(args: list[str]) -> None:
-    with tempfile.TemporaryDirectory(prefix="rulesync-validate-") as temp_dir:
-        workspace = Path(temp_dir) / "rulesync"
-        shutil.copytree(WORKSPACE, workspace)
-        run(["doctor", "--strict"], workspace)
-        run(["generate", *args], workspace)
-        run(["generate", "--check", *args], workspace)
-
-
 def main() -> None:
     commands: dict[str, Callable[[list[str]], None]] = {
         "doctor": doctor,
         "preview": preview,
-        "validate": validate,
     }
     if len(sys.argv) < 2 or sys.argv[1] not in commands:
         expected = "|".join(commands)
