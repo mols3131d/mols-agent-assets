@@ -80,9 +80,9 @@ Skill의 조건부 보조 resource에는 [Agent Asset Design Principles](../comm
 
 ## Verification
 
-Skill 검증의 공통 원칙과 도메인별 authority는 [Validation](../../../development/validation.md)이 소유합니다. 이 문서에서는 별도의 Skill-only validation contract를 만들지 않습니다.
+이 repository에서 Rulesync로 관리하는 Skill의 structural validation은 [Validation](../../../development/validation.md)이 소유합니다. 공통 Skill specification, target compatibility와 behavioral quality는 각각 해당 official source와 [Evaluation](../../../development/evaluation.md)을 따릅니다.
 
-작성할 때는 적용되는 source framework, 공통 specification, target contract와 repository validation을 각각 필요한 범위에서 사용하고, 한 validator의 통과를 전체 compatibility나 behavior quality로 확대 해석하지 않습니다.
+한 validator의 통과를 전체 compatibility나 behavior quality로 확대 해석하지 않습니다.
 
 ## Boundary
 
@@ -94,6 +94,6 @@ Skill 검증의 공통 원칙과 도메인별 authority는 [Validation](../../..
 - Argument와 argument-gated disclosure → [Argument-Driven Assets](../../../../catalog/patterns/context-engineering/argument-driven-assets.md)
 - Maintainer documentation → [Asset Maintainer Documentation](../../../documentation/asset-maintainer-documentation.md)
 - 작성 원본과 권한 → [작성 원본과 권한](../../../development/source-authority.md)
-- Validation authority와 evidence → [Validation](../../../development/validation.md)
+- Repository-managed asset validation → [Validation](../../../development/validation.md)
 - Deterministic test 설계와 PR Gate → [Testing](../../../development/testing.md)
 - Behavioral evaluation → [Evaluation](../../../development/evaluation.md)
