@@ -6,6 +6,13 @@ description: RPI artifact의 배치, persistence, durable continuation과 lifecy
 
 RPI Skill의 artifact 동작을 설계할 때 참고할 결정사항만 정리합니다. Runtime behavior의 canonical source는 `SKILL.md`입니다.
 
+Run boundary에서는 다음 두 record도 필요할 때 보존합니다.
+
+- **Prepare Record** — task/environment, Goal·provisional Scope·acceptance, configured controls와 evidence path, readiness
+- **Finalize Record** — inspected candidate exit, bounded resolution, validation evidence와 residual limitation, terminal Gate
+
+Prepare와 Finalize record는 각각 한 번만 나타나며 Loop 번호를 갖지 않습니다. Main RPI의 Research·Plan·Review artifact를 대체하거나 복제하지 않습니다.
+
 ## Decisions
 
 - Artifact 관련 named public override는 `artifacts` 하나로 둡니다. `intensity`는 별도의 effort control이며 artifact placement를 소유하지 않습니다.
@@ -24,12 +31,15 @@ Persistent RPI artifact는 별도 toggle 없이 **resume 가능한 working state
 - Goal과 Scope
 - 완료·현재·남은 Work
 - material decision과 validation 상태
+- 적용한 material perspective와 아직 열려 있는 lens·conflict
 - blocker와 residual uncertainty
 - 사용자 지정 active intensity처럼 continuation에 필요한 control state
 - freshness를 확인할 기준점
 - 다음 시작점과 필요한 reference
 
 모든 항목을 항상 기록하지 않고, 다음 실행의 재탐색 비용과 의미 손실을 줄이는 최소 상태만 유지합니다.
+
+Substantive Review가 닫힐 때는 별도 상세 log 대신 누적 Loop, acceptance `open`/`candidate`, material gap과 다음 transition을 observable하게 남깁니다. `accepted`는 Finalize Gate 뒤에만 사용합니다. Existing surface가 같은 상태를 이미 소유하면 새 artifact를 만들지 않고 그 surface를 갱신하거나 reference합니다.
 
 ## Placement
 

@@ -25,9 +25,12 @@ tests:
       semantic: false
       case_ids:
         - explicit-rpi-activates
+        - explicit-rpi-trivial-work-still-activates
         - standalone-korean-loop-activates
         - implicit-complex-work-activates
         - equivalent-iterative-method-activates
+        - specific-owner-remains-primary-when-rpi-composes
+        - specific-owner-one-shot-does-not-pull-rpi
         - loop-topic-does-not-activate
         - generic-repeat-does-not-activate
         - long-one-pass-task-does-not-activate
@@ -42,6 +45,14 @@ tests:
       rubric_threshold: 0.8
       case_ids:
         - rpi-composes-with-domain-skill
+        - three-phase-run-envelope-is-preserved
+        - prepare-blocked-stops-before-main
+        - finalize-cannot-hide-a-new-main-loop
+        - loop-method-intent-reopens-after-material-gap
+        - explicit-research-stage-terminal-stops
+        - explicit-plan-stage-terminal-stops
+        - one-loop-completes-when-acceptance-closes
+        - review-state-matches-open-acceptance
         - provided-plan-needs-research-support
         - scope-expansion-is-review-gated
         - fixed-scope-does-not-narrow-or-expand
@@ -51,7 +62,10 @@ tests:
         - loop-exhaustion-handoffs
         - retrieved-content-is-not-authority
         - research-pivots-by-information-gain
+        - multi-perspective-research-distinguishes-lenses
         - adversarial-review-reconciles-before-absorption
+        - multi-perspective-review-reconciles-by-evidence
+        - single-agent-perspectives-do-not-claim-independence
         - review-challenges-weak-validation
         - public-overrides-stay-minimal
         - deep-intensity-is-adaptive-not-a-quota

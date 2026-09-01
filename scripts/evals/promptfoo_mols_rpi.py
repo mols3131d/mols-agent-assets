@@ -7,7 +7,9 @@ from urllib import request
 
 ROOT = Path(__file__).resolve().parents[2]
 FIXTURE_PATH = ROOT / "evals" / "skills" / "mols-rpi" / "cases.json"
-SKILL_PATH = ROOT / "src" / "rulesync" / ".rulesync" / "skills" / "mols-rpi" / "SKILL.md"
+SKILL_PATH = (
+    ROOT / "src" / "rulesync" / ".rulesync" / "skills" / "mols-rpi" / "SKILL.md"
+)
 
 TRIGGER_SUITE = "trigger"
 BEHAVIOR_SUITE = "behavior"
@@ -21,11 +23,18 @@ PROVIDER_LABELS = {
     BEHAVIOR_SUITE: BEHAVIOR_PROVIDER_LABEL,
 }
 
-TRIGGER_RESPONSE_KEYS = {"activation"}
+TRIGGER_RESPONSE_KEYS = {"selected_skills", "primary_skill"}
 TRIGGER_RESPONSE_SCHEMA = {
     "type": "object",
-    "properties": {"activation": {"type": "boolean"}},
-    "required": ["activation"],
+    "properties": {
+        "selected_skills": {
+            "type": "array",
+            "items": {"type": "string", "minLength": 1},
+            "uniqueItems": True,
+        },
+        "primary_skill": {"type": ["string", "null"]},
+    },
+    "required": ["selected_skills", "primary_skill"],
     "additionalProperties": False,
 }
 BEHAVIOR_RESPONSE_SCHEMA = {
@@ -56,28 +65,120 @@ def _case_suite(mode: str) -> str:
     return TRIGGER_SUITE if mode in TRIGGER_MODES else BEHAVIOR_SUITE
 
 
-def _expected_activation(mode: str) -> bool:
-    if mode not in TRIGGER_MODES:
-        raise ValueError(f"mode is not a trigger-eval mode: {mode}")
-    return mode == "activation"
+def _selection_error(value: object, label: str) -> str | None:
+    if not isinstance(value, dict):
+        return f"{label} must be a JSON object"
+    if set(value) != TRIGGER_RESPONSE_KEYS:
+        return f"{label} must contain exactly selected_skills and primary_skill"
+
+    selected = value["selected_skills"]
+    primary = value["primary_skill"]
+    if not isinstance(selected, list) or not all(
+        isinstance(item, str) and item for item in selected
+    ):
+        return f"{label} selected_skills must be a list of non-empty strings"
+    if len(selected) != len(set(selected)):
+        return f"{label} selected_skills must not contain duplicates"
+    if primary is not None and (not isinstance(primary, str) or not primary):
+        return f"{label} primary_skill must be a non-empty string or null"
+    if selected and primary is None:
+        return f"{label} primary_skill is required when selected_skills is non-empty"
+    if not selected and primary is not None:
+        return f"{label} primary_skill must be null when selected_skills is empty"
+    if primary is not None and primary not in selected:
+        return f"{label} primary_skill must be one of selected_skills"
+    return None
+
+
+def _coerce_selection(value: object, label: str) -> dict:
+    if isinstance(value, str):
+        try:
+            value = json.loads(value)
+        except json.JSONDecodeError as error:
+            raise ValueError(f"{label} is not valid JSON") from error
+    error = _selection_error(value, label)
+    if error is not None:
+        raise ValueError(error)
+    return value
+
+
+def _routing_candidates(value: object) -> list[dict[str, str]]:
+    if value is None:
+        return []
+    if isinstance(value, str):
+        try:
+            value = json.loads(value)
+        except json.JSONDecodeError as error:
+            raise ValueError("routing_candidates is not valid JSON") from error
+    if not isinstance(value, list):
+        raise ValueError("routing_candidates must be a list")
+
+    candidates: list[dict[str, str]] = []
+    seen: set[str] = set()
+    for candidate in value:
+        if not isinstance(candidate, dict) or set(candidate) != {"name", "description"}:
+            raise ValueError(
+                "each routing candidate must contain exactly name and description"
+            )
+        name = candidate["name"]
+        description = candidate["description"]
+        if (
+            not isinstance(name, str)
+            or not name
+            or not isinstance(description, str)
+            or not description
+        ):
+            raise ValueError(
+                "routing candidate name and description must be non-empty strings"
+            )
+        if name == "mols-rpi":
+            raise ValueError("routing_candidates must not redefine mols-rpi")
+        if name in seen:
+            raise ValueError(f"duplicate routing candidate: {name}")
+        seen.add(name)
+        candidates.append({"name": name, "description": description})
+    return candidates
+
+
+def _trigger_case_contract(case: dict, mode: str) -> tuple[dict, list[dict[str, str]]]:
+    expected = _coerce_selection(case.get("expected_selection"), "expected_selection")
+    candidates = _routing_candidates(case.get("routing_candidates"))
+    available = {"mols-rpi"}
+    available.update(candidate["name"] for candidate in candidates)
+    unknown = set(expected["selected_skills"]) - available
+    if unknown:
+        raise ValueError(
+            f"expected_selection contains unavailable Skills: {sorted(unknown)}"
+        )
+
+    expects_rpi = "mols-rpi" in expected["selected_skills"]
+    if expects_rpi != (mode == "activation"):
+        raise ValueError(f"expected_selection conflicts with trigger mode: {mode}")
+    return expected, candidates
 
 
 def _semantic_rubric(assertions: list[str]) -> str:
     criteria = "\n".join(f"- {assertion}" for assertion in assertions)
     return (
-        "Evaluate only the observable assistant response against every repository-owned criterion below. "
-        "Do not require hidden reasoning, exact wording, or a particular valid trajectory unless a criterion "
-        "explicitly requires that observable behavior. Pass only when all criteria are materially satisfied. "
-        "Fail if the response agrees to a forbidden action, skips a required gate, or claims an unperformed "
+        "Evaluate only the observable assistant response against every "
+        "repository-owned criterion below. Do not require hidden reasoning, "
+        "exact wording, or a particular valid trajectory unless a criterion "
+        "explicitly requires that observable behavior. Pass only when all "
+        "criteria are materially satisfied. Fail if the response agrees "
+        "to a forbidden action, skips a required gate, or claims an unperformed "
         "action in a way that violates a criterion.\n"
         f"{criteria}"
     )
 
 
-def _selected_case_ids(config: dict, suite: str, cases: dict[str, dict]) -> tuple[str, ...]:
+def _selected_case_ids(
+    config: dict, suite: str, cases: dict[str, dict]
+) -> tuple[str, ...]:
     selected = config.get("case_ids")
     if selected is not None:
-        if not isinstance(selected, list) or not all(isinstance(item, str) for item in selected):
+        if not isinstance(selected, list) or not all(
+            isinstance(item, str) for item in selected
+        ):
             raise ValueError("case_ids must be a list of strings")
         return tuple(selected)
 
@@ -118,14 +219,13 @@ def generate_tests(config: dict | None = None) -> list[dict]:
 
         case = cases[case_id]
         prompt = case.get("prompt")
-        assertions = case.get("assertions")
         mode = case.get("mode")
-        if not isinstance(prompt, str) or not isinstance(mode, str) or not isinstance(assertions, list):
+        if not isinstance(prompt, str) or not isinstance(mode, str):
             raise ValueError(f"invalid eval case: {case_id}")
-        if not all(isinstance(item, str) and item for item in assertions):
-            raise ValueError(f"invalid assertions for eval case: {case_id}")
         if _case_suite(mode) != suite:
-            raise ValueError(f"eval case {case_id} belongs to {_case_suite(mode)}, not {suite}")
+            raise ValueError(
+                f"eval case {case_id} belongs to {_case_suite(mode)}, not {suite}"
+            )
 
         vars_ = {"task": prompt, "case_id": case_id, "mode": mode}
         metadata = {
@@ -136,16 +236,26 @@ def generate_tests(config: dict | None = None) -> list[dict]:
         }
 
         if suite == TRIGGER_SUITE:
-            expected = _expected_activation(mode)
-            vars_["expected_activation"] = expected
+            expected, candidates = _trigger_case_contract(case, mode)
+            vars_["expected_selection"] = expected
+            vars_["routing_candidates"] = candidates
             checks = [
                 {
                     "type": "python",
                     "value": "file://../../scripts/evals/promptfoo_mols_rpi.py:assert_trigger",
-                    "metric": "trigger-activation" if expected else "trigger-rejection",
+                    "metric": (
+                        "trigger-activation"
+                        if "mols-rpi" in expected["selected_skills"]
+                        else "trigger-rejection"
+                    ),
                 }
             ]
         else:
+            assertions = case.get("assertions")
+            if not isinstance(assertions, list) or not all(
+                isinstance(item, str) and item for item in assertions
+            ):
+                raise ValueError(f"invalid assertions for eval case: {case_id}")
             checks = [
                 {
                     "type": "python",
@@ -176,67 +286,83 @@ def generate_tests(config: dict | None = None) -> list[dict]:
     return tests
 
 
-def _coerce_optional_bool(value: object) -> bool | None:
-    if isinstance(value, bool):
-        return value
-    if isinstance(value, str):
-        lowered = value.lower()
-        if lowered == "true":
-            return True
-        if lowered == "false":
-            return False
-    return None
-
-
 def _trigger_response_error(payload: object) -> str | None:
-    if not isinstance(payload, dict):
-        return "trigger provider output must be a JSON object"
-    if set(payload) != TRIGGER_RESPONSE_KEYS:
-        return "trigger provider output must contain exactly activation"
-    if not isinstance(payload["activation"], bool):
-        return "trigger provider output activation must be boolean"
-    return None
+    return _selection_error(payload, "trigger provider output")
 
 
 def assert_trigger(output: str, context: dict) -> dict:
     try:
         payload = json.loads(output)
     except (TypeError, json.JSONDecodeError):
-        return {"pass": False, "score": 0, "reason": "trigger provider output is not valid JSON"}
+        return {
+            "pass": False,
+            "score": 0,
+            "reason": "trigger provider output is not valid JSON",
+        }
 
     envelope_error = _trigger_response_error(payload)
     if envelope_error is not None:
         return {"pass": False, "score": 0, "reason": envelope_error}
 
-    expected = _coerce_optional_bool(context.get("vars", {}).get("expected_activation"))
-    if expected is None:
-        return {"pass": False, "score": 0, "reason": "expected_activation is missing"}
+    try:
+        expected = _coerce_selection(
+            context.get("vars", {}).get("expected_selection"), "expected_selection"
+        )
+    except ValueError as error:
+        return {"pass": False, "score": 0, "reason": str(error)}
 
-    activation = payload["activation"]
-    if activation is not expected:
+    selected = set(payload["selected_skills"])
+    expected_selected = set(expected["selected_skills"])
+    if (
+        selected != expected_selected
+        or payload["primary_skill"] != expected["primary_skill"]
+    ):
         return {
             "pass": False,
             "score": 0,
-            "reason": f"activation mismatch: expected {expected}, got {activation}",
+            "reason": (
+                f"routing selection mismatch: expected {expected}, got {payload}"
+            ),
         }
-    return {"pass": True, "score": 1, "reason": "trigger classification matched expected activation"}
+    return {
+        "pass": True,
+        "score": 1,
+        "reason": "routing selection matched expected Skills",
+    }
 
 
 def assert_behavior_output(output: str, context: dict) -> dict:
     if not isinstance(output, str) or not output.strip():
-        return {"pass": False, "score": 0, "reason": "behavior provider output must be non-empty text"}
-    return {"pass": True, "score": 1, "reason": "behavior provider returned observable response text"}
+        return {
+            "pass": False,
+            "score": 0,
+            "reason": "behavior provider output must be non-empty text",
+        }
+    return {
+        "pass": True,
+        "score": 1,
+        "reason": "behavior provider returned observable response text",
+    }
 
 
 def _fixture_output(context: dict, suite: str) -> dict:
     if suite == TRIGGER_SUITE:
-        expected = _coerce_optional_bool(context.get("vars", {}).get("expected_activation"))
-        if expected is None:
-            return {"error": "fixture trigger case requires expected_activation", "output": ""}
-        return {"output": json.dumps({"activation": expected}, ensure_ascii=False)}
+        try:
+            expected = _coerce_selection(
+                context.get("vars", {}).get("expected_selection"), "expected_selection"
+            )
+        except ValueError as error:
+            return {
+                "error": f"fixture trigger case requires valid selection: {error}",
+                "output": "",
+            }
+        return {"output": json.dumps(expected, ensure_ascii=False)}
     if suite == BEHAVIOR_SUITE:
         return {
-            "output": "Promptfoo fixture-mode plumbing response; this is not runtime behavior evidence."
+            "output": (
+                "Promptfoo fixture-mode plumbing response; this is not runtime "
+                "behavior evidence."
+            )
         }
     return {"error": f"unsupported fixture suite: {suite}", "output": ""}
 
@@ -248,6 +374,16 @@ def _skill_frontmatter(skill: str) -> str:
     if len(parts) != 3:
         raise ValueError(f"Skill frontmatter is malformed: {SKILL_PATH}")
     return f"---{parts[1]}---"
+
+
+def _skill_catalog(skill: str, candidates: list[dict[str, str]]) -> str:
+    candidate_text = json.dumps(candidates, ensure_ascii=False, indent=2)
+    return (
+        "<skill-catalog>\n"
+        f"<skill-metadata>\n{_skill_frontmatter(skill)}\n</skill-metadata>\n"
+        f"<routing-candidates>\n{candidate_text}\n</routing-candidates>\n"
+        "</skill-catalog>"
+    )
 
 
 def _ollama_request(prompt: str, system: str, schema: dict) -> tuple[dict, str] | dict:
@@ -281,15 +417,24 @@ def _ollama_request(prompt: str, system: str, schema: dict) -> tuple[dict, str] 
     return parsed, content
 
 
-def _route(prompt: str, skill: str) -> tuple[dict, str] | dict:
+def _route(
+    prompt: str, skill: str, candidates: list[dict[str, str]]
+) -> tuple[dict, str] | dict:
     schema_text = json.dumps(TRIGGER_RESPONSE_SCHEMA, ensure_ascii=False)
     system = (
-        "Classify whether this user request should activate one Agent Skill using only the discovery "
-        "metadata below. Do not use the Skill body or infer activation from the Skill name or an isolated "
-        "keyword alone. Apply the positive use conditions and negative boundaries expressed by the metadata.\n\n"
+        "Route this user request across the available Agent Skills using only "
+        "the discovery metadata below. Select every Skill that is independently "
+        "applicable to the request "
+        "and choose exactly one primary Skill when any are selected. Prefer the most "
+        "task-specific controlling owner as primary; a general orchestration Skill may "
+        "compose when its own trigger applies but must not displace that owner. "
+        "Do not use Skill bodies, infer selection from a name or isolated keyword, "
+        "or invent unavailable Skills. Apply each description's positive "
+        "conditions, negative boundaries, and "
+        "composition rules.\n\n"
         "Return only JSON matching this schema exactly:\n"
         f"{schema_text}\n\n"
-        f"<skill-metadata>\n{_skill_frontmatter(skill)}\n</skill-metadata>"
+        f"{_skill_catalog(skill, candidates)}"
     )
     result = _ollama_request(prompt, system, TRIGGER_RESPONSE_SCHEMA)
     if isinstance(result, dict):
@@ -298,7 +443,9 @@ def _route(prompt: str, skill: str) -> tuple[dict, str] | dict:
     envelope_error = _trigger_response_error(parsed)
     if envelope_error is not None:
         return {
-            "error": f"Ollama trigger routing returned an invalid response: {envelope_error}",
+            "error": (
+                f"Ollama trigger routing returned an invalid response: {envelope_error}"
+            ),
             "output": content,
         }
     return parsed, content
@@ -307,11 +454,13 @@ def _route(prompt: str, skill: str) -> tuple[dict, str] | dict:
 def _execute_behavior(prompt: str, skill: str) -> tuple[str, str] | dict:
     schema_text = json.dumps(BEHAVIOR_RESPONSE_SCHEMA, ensure_ascii=False)
     system = (
-        "Execute one already-activated mols-rpi behavioral evaluation. Routing has already selected the "
-        "Skill, so do not re-decide activation. Use the canonical Skill below as the complete task-specific "
-        "behavior contract. Follow its prerequisite, Scope, authority, Research, Plan, Work, Review, "
-        "recursion, intensity, artifact, and handoff boundaries. Respond to the user's scenario as the "
-        "assistant would under that Skill. Do not claim tool actions you did not perform.\n\n"
+        "Execute one already-activated mols-rpi behavioral evaluation. Routing "
+        "has already selected the Skill, so do not re-decide activation. Use the "
+        "canonical Skill below as the complete task-specific behavior contract. "
+        "Follow its prerequisite, Scope, authority, Research, Plan, Work, Review, "
+        "recursion, intensity, artifact, and handoff boundaries. Respond to the "
+        "user's scenario as the assistant would under that Skill. "
+        "Do not claim tool actions you did not perform.\n\n"
         "Return only JSON matching this schema exactly:\n"
         f"{schema_text}\n\n"
         f"<skill>\n{skill}\n</skill>"
@@ -321,17 +470,29 @@ def _execute_behavior(prompt: str, skill: str) -> tuple[str, str] | dict:
         return result
     parsed, content = result
     if not isinstance(parsed, dict) or set(parsed) != {"response"}:
-        return {"error": "Ollama behavior output must contain exactly response", "output": content}
+        return {
+            "error": "Ollama behavior output must contain exactly response",
+            "output": content,
+        }
     response = parsed["response"]
     if not isinstance(response, str) or not response.strip():
-        return {"error": "Ollama behavior response must be a non-empty string", "output": content}
+        return {
+            "error": "Ollama behavior response must be a non-empty string",
+            "output": content,
+        }
     return response, content
 
 
-def _ollama_output(prompt: str, suite: str) -> dict:
+def _ollama_output(prompt: str, suite: str, context: dict) -> dict:
     skill = SKILL_PATH.read_text(encoding="utf-8")
     if suite == TRIGGER_SUITE:
-        routed = _route(prompt, skill)
+        try:
+            candidates = _routing_candidates(
+                context.get("vars", {}).get("routing_candidates")
+            )
+        except ValueError as error:
+            return {"error": f"invalid routing candidates: {error}", "output": ""}
+        routed = _route(prompt, skill, candidates)
         if isinstance(routed, dict):
             return routed
         _, route_content = routed
@@ -350,10 +511,13 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
     mode = config.get("mode", "ollama")
     suite = config.get("suite")
     if suite not in SUITES:
-        return {"error": f"provider suite must be one of {sorted(SUITES)}", "output": ""}
+        return {
+            "error": f"provider suite must be one of {sorted(SUITES)}",
+            "output": "",
+        }
 
     if mode == "fixture":
         return _fixture_output(context, suite)
     if mode == "ollama":
-        return _ollama_output(prompt, suite)
+        return _ollama_output(prompt, suite, context)
     return {"error": f"unsupported Promptfoo runtime mode: {mode}", "output": ""}
