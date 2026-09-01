@@ -1,11 +1,11 @@
 ---
 name: mols-rpi
 description: >-
-  Run adaptive RPI orchestration for explicit RPI/RPI(R) or loop/루프 method intent, including recursive, improvement, or deep loops.
-  Also use when one pass is materially unreliable because decisions need evidence, consequential Work needs a Plan, acceptance conditions or workstreams must converge, repeated verification or replanning is likely, a narrower subproblem would materially help, or uncertainty risks costly rework.
-  Keep task-specific harnesses, Skills, workflows, procedures, and governing lifecycles primary; compose RPI only when compatible and useful.
-  Never activate when RPI/loop is only a topic, identifier, or code concept.
-  Without explicit RPI/loop method intent, do not use it for generic repetition, length alone, trivial work, or reliable one-shot work.
+  Use RPI orchestration when the user explicitly requests RPI/RPI(R), a loop/루프 method, recursive improvement, an improvement/deep loop, or an equivalent iterative method.
+  Also use when a single pass is materially unreliable and the task needs evidence before consequential decisions, planning before consequential Work, iterative verification or replanning, convergence across coupled acceptance conditions or workstreams, or recursive narrowing.
+  Keep any more specific task Skill, workflow, or governing procedure primary; compose RPI only when compatible and useful.
+  Do not trigger when RPI/loop is merely a topic, identifier, or code concept.
+  Without explicit method intent, do not use for generic repetition, length alone, trivial work, or reliable one-shot work.
 targets:
   - claudecode
   - codexcli
