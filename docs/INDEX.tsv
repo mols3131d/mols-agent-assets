@@ -1,8 +1,9 @@
 path	description
-development/	저장소 개발 작업에서 VCS/Git, GitHub, 작성 원본과 권한, repository layout, formatting, validation, testing, evaluation 중 적용할 local policy를 찾을 때 사용합니다.
+development/	저장소 개발 작업에서 공통 개발 원칙, VCS/Git, GitHub, 작성 원본과 권한, repository layout, formatting, validation, testing, evaluation 중 적용할 local policy를 찾을 때 사용합니다.
 development/evaluation.md	Agent Asset의 behavioral evaluation을 설계·실행·해석하고 deterministic test, runtime evidence, regression contract를 구분할 때 사용하는 repository-local policy입니다.
 development/formatting.md	저장소 파일을 포맷할 때 changed-only와 전체 포맷 중 어떤 경로를 사용하고 formatter와 CI의 책임을 어떻게 나눌지 확인하는 정책입니다.
 development/github.md	GitHub의 Issues, Pull Requests, PR Reviews, coding agents, automations, GitHub Agentic Workflows, Rulesets, Actions와 Merge에 적용되는 저장소 협업 정책과 권한 경계를 확인할 때 사용합니다.
+development/principles.md	저장소 개발에서 여러 유효한 선택지 사이의 우선순위, 복잡성, 추상화, 변경 범위와 검증 수준을 판단할 때 사용하는 공통 원칙입니다.
 development/repository-layout.md	저장소의 파일·디렉터리 이름과 배치, 계층, source와 test의 대응을 정할 때 적용하는 layout 정책입니다.
 development/source-authority.md	저장소 지침과 에이전트 자산에서 작성 원본, 표준·도구·대상별 권한, 원본과 파생 결과의 경계를 결정할 때 사용하는 정책입니다.
 development/testing.md	저장소의 deterministic test 설계, PR Gate와 merge를 차단하는 테스트 근거를 확인할 때 사용하는 정책입니다.
