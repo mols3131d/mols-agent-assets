@@ -12,14 +12,15 @@ Validation은 **대상이 만족해야 하는 계약을 적절한 authority와 e
 
 | Domain | Primary validation |
 | --- | --- |
-| Agent Assets | 작성 framework·official specification·target contract에 따른 structural validation과 필요한 semantic·routing review |
-| Rulesync assets | Rulesync CLI의 parser·processor·target adapter를 사용한 read-only validation |
-| Generated projections | 작성 원본에서 재생성한 결과와 committed output의 drift 확인 |
-| Documentation | 적용되는 documentation policy, formatter·linter와 필요한 metadata/index validation |
-| Repository tooling | toolchain, lock state, configuration과 repository-owned executable behavior 검증 |
-| External dependencies | upstream lock·source·installer contract에 따른 revision과 materialization 검증 |
+| Agent Assets | 작성 framework·official specification·target contract와 필요한 semantic·routing review |
+| Rulesync assets | Rulesync CLI가 소유하는 parser·processor·target adapter |
+| Generated projections | 작성 원본에서 재생성한 결과와 committed output의 drift |
+| Documentation | 적용되는 documentation policy, linter와 metadata·index contract |
+| Repository tooling | toolchain, lock state와 configuration contract |
+| Repository-owned behavior | deterministic test로 확인할 수 있는 executable behavior |
+| External dependencies | upstream lock·source·installer가 소유하는 revision과 materialization contract |
 
-도메인별 validator가 다르더라도 공통 원칙은 같습니다. **계약을 소유하는 source를 우선하고, repository는 필요한 orchestration과 local acceptance만 추가합니다.**
+도메인별 validator가 다르더라도 **계약을 소유하는 source를 우선하고 repository는 필요한 orchestration과 local acceptance만 추가합니다.**
 
 ## Evidence
 
@@ -34,16 +35,16 @@ Validation은 **대상이 만족해야 하는 계약을 적절한 authority와 e
 
 ## Automation
 
-검증 automation은 가능한 한 read-only여야 합니다. 생성이나 materialization이 필요한 검증은 임시 영역이나 drift comparison처럼 source를 보존하는 방식으로 수행합니다.
+검증 automation은 가능한 한 read-only여야 합니다. 생성이나 materialization이 필요한 검증은 source를 보존하면서 결과만 비교할 수 있게 설계합니다.
 
 - PR Gate는 [Testing](testing.md)이 소유하는 repository deterministic test만 실행합니다.
 - 비용이 높거나 항상 필요하지 않은 검증은 `Optional Validation`에서 명시적으로 선택해 실행합니다.
-- generated projection 갱신처럼 write가 필요한 작업은 local generation path가 소유하고, validation은 그 결과의 drift를 확인합니다.
+- generated projection 갱신처럼 write가 필요한 작업은 local generation path가 소유하고 validation은 drift를 확인합니다.
 - formatter, generator, validator와 evaluation을 하나의 거대한 CI gate로 합치지 않습니다.
 
 ## Agent Skills
 
-Agent Skill 검증도 같은 원칙을 따릅니다.
+Agent Skill도 하나의 검증으로 모든 계약을 확인하지 않습니다.
 
 | Concern | Owner |
 | --- | --- |
@@ -54,19 +55,7 @@ Agent Skill 검증도 같은 원칙을 따릅니다.
 | trigger·output·behavior quality | [Evaluation](evaluation.md) |
 | semantic·routing·adversarial review | `mols-agent-asset-validator` |
 
-Skill 작업의 공식 source routing은 [Agent Skills Specification](../references/agent-assets/skills/specification.md)이 소유합니다.
-
-## Rulesync
-
-Reusable Rulesync Agent Asset의 repository validation entrypoint는 `npm run rulesync:validate`입니다. `scripts/agent-assets/validate_rulesync.py`는 Rulesync CLI의 schema나 projection semantics를 재구현하지 않고 다음 read-only pass를 orchestration합니다.
-
-1. `doctor --strict` — configuration validation
-2. `generate --dry-run` — configured projection validation
-3. `generate --dry-run --targets "*"` — asset-declared target projection validation
-
-Rulesync JSON output의 warning도 repository validation failure로 취급합니다. `--targets "*"`는 각 asset이 선언한 `targets`를 덮어쓰지 않으며, 선언되지 않은 target compatibility까지 검증했다는 뜻이 아닙니다.
-
-구체적인 Rulesync source·projection contract는 [Rulesync](../references/tooling/rulesync.md)가 소유합니다.
+Skill의 공식 source routing은 [Agent Skills Specification](../references/agent-assets/skills/specification.md), Rulesync의 구체적인 validation contract와 entrypoint는 [Rulesync](../references/tooling/rulesync.md)가 소유합니다.
 
 ## Boundary
 
