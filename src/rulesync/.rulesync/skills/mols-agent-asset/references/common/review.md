@@ -13,7 +13,7 @@
 - **Structure** — naming과 placement가 탐색을 돕되 자연스러운 구조를 왜곡하지 않는가?
 - **Instruction cost** — material failure를 방지하지 않는 과도한 절차·조건이 판단을 방해하지 않는가?
 - **Context noise** — 항상 로드되는 저관련성 자산, 중복·stale context, signal dilution이 없는가?
-- **Stability** — 실패, 이름·경로·override 변화에서 핵심 contract와 복구 경계가 유지되는가?
+- **Contract resilience** — 실패, 이름·경로·override 변화에서도 핵심 contract와 복구 경계가 유지되는가?
 - **Human comprehension** — 목적, trigger, owner, 근거, 예외와 변경 영향을 과도한 해석 없이 파악할 수 있는가?
 - **Regression** — 기존의 유효한 behavior, scope, local delta를 보존했는가?
 - **Failure visibility** — unknown, unavailable capability, unsupported compatibility를 성공처럼 숨기지 않는가?
@@ -26,7 +26,7 @@
 
 - `agents/quality.agent.md` — correctness, clarity, consistency, maintainability
 - `agents/routing.agent.md` — trigger, routing, delegation, tool selection
-- `agents/efficiency.agent.md` — instruction/context bottleneck, stability, comprehension
+- `agents/efficiency.agent.md` — instruction/context bottleneck, contract resilience, comprehension
 - `agents/adversarial.agent.md` — bypass, conflicting instruction, malformed or hostile case
 - `agents/orchestration.agent.md` — agent boundary, handoff, ownership, termination
 
