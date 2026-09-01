@@ -22,7 +22,9 @@
 | commit message를 작성하거나 검토 | [`docs/development/vcs-git.md`](docs/development/vcs-git.md), [`.gitmessage`](.gitmessage) | commit authoring convention과 그 소유 관계 |
 | Issue, Pull Request, PR Review, PR comment, Merge, Ruleset, GitHub Actions, coding agent, automation, GitHub permission·collaboration | [`docs/development/github.md`](docs/development/github.md) | repository의 GitHub 협업·권한·surface 정책 |
 | Issue/PR/Review/comment 본문을 작성·재작성·형식 검토 | [`docs/development/github.md`](docs/development/github.md), [`.github/templates/README.md`](.github/templates/README.md), 아래 surface template | cross-surface 작성 의미와 실제 rendering structure |
-| test, check, PR Gate, deterministic validation, merge-blocking evidence | [`docs/development/testing.md`](docs/development/testing.md) | 검증 방법과 evidence 의미 |
+| format, formatter, `format-changed`, Ruff·rumdl·Biome을 통한 repository file 정규화 | [`docs/development/formatting.md`](docs/development/formatting.md) | formatting write path와 automation boundary |
+| 문서 frontmatter, `INDEX.tsv`, Agent Asset routing, Rulesync-managed asset validation | [`docs/development/validation.md`](docs/development/validation.md) | repository-owned validation 범위와 실행 경계 |
+| test, pytest, PR Gate, deterministic test, merge-blocking test evidence | [`docs/development/testing.md`](docs/development/testing.md) | deterministic test와 PR Gate의 evidence 의미 |
 | Agent Asset behavior, model/runtime evidence, behavioral regression·evaluation | [`docs/development/evaluation.md`](docs/development/evaluation.md) | test와 behavioral eval의 경계와 evidence 해석 |
 
 GitHub text를 작성·재작성·형식 검토할 때는 실제 surface에 맞는 template만 추가로 읽습니다.
