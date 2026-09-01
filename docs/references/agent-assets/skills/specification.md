@@ -17,7 +17,7 @@ description: Agent Skills 작업에서 공통 표준, 작성 프레임워크, �
 | Skill 작성 품질, `description` tuning과 eval guidance | Agent Skills creator documentation |
 | 대상별 discovery, invocation, permissions, metadata와 packaging | 실제 target/harness의 official documentation |
 | mols의 재사용 Skill 추가 관행 | [Skill Authoring Conventions](skill-authoring-conventions.md) |
-| Repository verification과 behavioral evidence | [Testing](../../../development/testing.md), [Evaluation](../../../development/evaluation.md) |
+| Repository validation과 behavioral evidence | [Validation](../../../development/validation.md), [Evaluation](../../../development/evaluation.md) |
 
 구체적인 작업에서는 실제 작성 프레임워크와 대상을 먼저 식별합니다. 대상이 여러 개라면 각 계약을 독립적으로 확인하고 **여러 vendor의 field와 behavior를 합친 local superset을 공통 contract처럼 만들지 않습니다.**
 
