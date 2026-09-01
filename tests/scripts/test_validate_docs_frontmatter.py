@@ -53,7 +53,6 @@ def test_validate_docs_frontmatter_uses_config_and_role_exclusions(tmp_path) -> 
         "docs/example.instructions.md",
         "docs/example.prompt.md",
         "docs/__index__.md",
-        "docs/.hidden.md",
     ):
         _write(tmp_path / relative, "# Not a general document\n")
 
@@ -62,6 +61,7 @@ def test_validate_docs_frontmatter_uses_config_and_role_exclusions(tmp_path) -> 
 
 def test_validate_docs_frontmatter_rejects_required_and_optional_type_errors(tmp_path) -> None:
     _write_config(tmp_path)
+    _write(tmp_path / "docs/.hidden.md", "# Missing frontmatter\n")
     _write(tmp_path / "docs/missing.md", "---\ntitle: Valid\n---\n")
     _write(
         tmp_path / "docs/description-type.md",
@@ -73,6 +73,7 @@ def test_validate_docs_frontmatter_rejects_required_and_optional_type_errors(tmp
     )
 
     assert validate_docs_frontmatter(tmp_path) == [
+        "docs/.hidden.md",
         "docs/description-type.md",
         "docs/missing.md",
         "docs/title-type.md",
