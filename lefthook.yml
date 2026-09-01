@@ -3,12 +3,12 @@ no_tty: true
 pre-commit:
   commands:
     generated-artifacts:
-      run: mise exec -- uv run --locked --no-default-groups --group test python -m scripts.sync_generated_artifacts --staged
+      run: mise exec -- uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts_sync --staged
 
 commit-msg:
   commands:
     conventional:
-      run: mise exec -- uv run --locked --no-default-groups python scripts/validate_commit_msg.py "{1}"
+      run: mise exec -- uv run --locked --no-default-groups python scripts/commit_message_validate.py "{1}"
 
 pre-push:
   commands:
