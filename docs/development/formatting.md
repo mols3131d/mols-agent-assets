@@ -36,6 +36,6 @@ mise run format
 
 Formatter는 local write path가 소유합니다. Lefthook은 formatter를 자동 실행하거나 수정된 working tree를 자동 stage하지 않습니다.
 
-PR Gate와 [Validation](validation.md)도 formatting을 대신 실행하지 않습니다. Validation은 현재 상태의 repository contract를 확인하고, [Testing](testing.md)은 deterministic test와 PR Gate를 소유합니다.
+PR Gate와 [Validation](validation.md)도 formatting을 실행하지 않습니다. [Testing](testing.md)은 deterministic test와 PR Gate를 소유합니다.
 
 Formatting 결과가 의미나 동작을 바꾸는 수정까지 포함해서는 안 됩니다. 그런 변경은 해당 코드·문서·자산 작업의 책임으로 다룹니다.
