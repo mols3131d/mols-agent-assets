@@ -55,6 +55,10 @@ jobs:
               ! -path '*/baseline/*' \
               ! -name 'AGENTS.md' \
               ! -name 'SKILL.md' \
+              ! -name 'DIRECTIVE.md' \
+              ! -name '*.agent.md' \
+              ! -name '*.instructions.md' \
+              ! -name '*.prompt.md' \
               ! -name '__*__.md' \
               ! -name '.*.md' \
               -print0
