@@ -42,9 +42,9 @@
       }
     },
     "dyoshikawa/rulesync": {
-      "requestedRef": "v16.5.0",
-      "resolvedRef": "9c90ce98ed4213444a5b47a6e9ef1f826bb7daa2",
-      "resolvedAt": "2026-09-01T00:56:47.000Z",
+      "requestedRef": "main",
+      "resolvedRef": "19fad794303990803c6511bb95fa7ea5f34e9e12",
+      "resolvedAt": "2026-09-01T01:02:00.000Z",
       "skills": {
         "rulesync": {
           "integrity": "sha256-658851f4f3b4c432820cc1ed54bd294a699f171ee28d1da9a3c89e5a3b26a96f"
