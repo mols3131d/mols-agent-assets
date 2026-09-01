@@ -15,6 +15,9 @@
         "mols-agent-asset-find": {
           "integrity": "sha256-6ace67d927da8eedcdd359593ddcbd7a80d97a2fa9cab42288f634116382aef6"
         },
+        "mols-agent-asset-validator": {
+          "integrity": "sha256-3656ca7d568fbc51286cc262210c7499346909c796e2825c5910f421ec16f940"
+        },
         "mols-agent-asset": {
           "integrity": "sha256-124fdbded5fa2d787da6c207c1bbe3db428cc2395b586e8ad25d91936465e0eb"
         },

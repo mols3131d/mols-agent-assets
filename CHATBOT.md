@@ -45,8 +45,9 @@ GitHub text를 작성·재작성·형식 검토할 때는 실제 surface에 맞�
 | --- | --- | --- |
 | 구체적인 GitHub repository/path/ref/PR/Issue/check/workflow/release를 읽기·검토·변경하거나 GitHub Plugin·connector·tool로 해당 target에 action을 수행, 또는 이미 확정된 GitHub target의 follow-up | `github-context` | downstream target-dependent action 전에 live repository/ref/object와 적용 context를 확인합니다. 이름 있는 target의 ID/ref resolution도 concrete로 봅니다. 아직 concrete repository/object가 없는 broad discovery와 generic Git/GitHub 설명에는 선택하지 않습니다. |
 | `CHATBOT.md` compatibility, chat runtime first-hop, repository entry/router를 생성·수정·복구하거나 그 compatibility를 검토 | `mols-chatbot-bootstrap` | bootstrap과 routing 연결을 다루며 repository policy를 새로 소유하지 않습니다. |
-| Skill, Rule, scoped instruction, agent/subagent를 작성·수정·단순화·리팩터링하거나 Agent-facing asset을 리뷰·검증·평가 | `mols-agent-asset` | authoring과 assurance를 함께 소유합니다. Validation은 deterministic·semantic contract 준수를, Eval은 routing·behavior의 실제 성능을 다룹니다. |
+| Skill, Rule, scoped instruction, agent/subagent를 작성·수정·단순화·리팩터링 | `mols-agent-asset` | agent-facing behavior authoring이 주 작업일 때 선택합니다. |
 | Agent Asset을 찾기·선택·로드·설치·동기화·이관 | `mols-agent-asset-find` | 기존 Asset의 discovery와 적용이 주 작업일 때 선택합니다. |
+| Agent Asset, instruction, `CHATBOT.md`의 품질·routing·readiness를 formal review, audit, adversarial validation 또는 validation-driven improvement | `mols-agent-asset-validator` | 일반 authoring self-review보다 강한 검증이 주 작업일 때 선택합니다. |
 | 사용자가 RPI, 개선 루프, 재귀 루프, 심층 루프를 요구하거나 복합 작업에 반복 Research → Plan → Implementation → Review가 필요 | `mols-rpi` + task-specific Asset | RPI가 작업 domain Asset을 대체하지 않습니다. |
 
 `CHATBOT.md`는 repository policy, Agent Asset behavior 또는 routing semantics를 재정의하지 않습니다. 연결된 canonical source와 [`.agents/route/ROUTE.md`](.agents/route/ROUTE.md)가 항상 authoritative합니다.
