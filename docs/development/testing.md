@@ -23,23 +23,7 @@ mise run setup
 
 `mise run setup`은 모든 Python 의존성 그룹, 저장소 내부의 잠금된 Rulesync 자산, 생성된 Agent Skill, `skills-lock.json`의 외부 Skill dependency와 Git hook을 설치합니다. 외부 Skill은 `mise run skills-sync`와 같은 read-only sync 구현을 사용하며, vendor별 payload·설치 방식은 source-native installer가 소유합니다.
 
-## Formatting
-
-일상 작업에서는 현재 변경만 포맷합니다.
-
-```bash
-mise run format-changed
-```
-
-`format-changed`는 `HEAD` 대비 staged·unstaged 변경과 untracked file 가운데 Ruff, rumdl 또는 Biome 대상 파일만 수정합니다. 삭제된 파일과 변경되지 않은 파일은 건드리지 않습니다.
-
-저장소 전체를 명시적으로 정리할 때만 다음을 사용합니다.
-
-```bash
-mise run format
-```
-
-두 task 모두 각 도구를 소유하는 runtime을 통해 Ruff, rumdl과 Biome을 실행합니다. Pre-commit hook은 formatter를 실행하거나 수정된 working-tree 내용을 자동 stage하지 않습니다.
+파일 표현을 정규화하는 write path는 [Formatting](formatting.md)이 소유합니다.
 
 ## Generated projections
 
@@ -75,7 +59,7 @@ CI와 Git hook에서 project Python을 사용할 때는 `uv.lock`을 암묵적�
 
 PR Gate의 책임은 `tests/` 전체를 고정된 Python과 uv 환경에서 `uv --locked` semantics로 실행하는 것뿐입니다. Test selection routing보다 실행 가능한 repository logic의 전체 deterministic suite를 안전한 기본값으로 사용합니다.
 
-Formatting, repository validation, generated route/index drift 확인, Promptfoo와 model/runtime evaluation은 PR Gate에서 반복하지 않습니다.
+[Formatting](formatting.md), repository validation, generated route/index drift 확인, Promptfoo와 model/runtime evaluation은 PR Gate에서 반복하지 않습니다.
 
 PR Gate는 `contents: read`만 사용하고 repository에 write-back하지 않습니다.
 
