@@ -58,7 +58,7 @@ Entrypoint 자체에서 충분한 작은 로컬 안내는 간결하게 둘 수 �
 
 README는 가장 흔한 entrypoint 형식이지만 특별한 catch-all 문서가 아니다.
 
-- repository, directory, package나 document bundle의 첫 화면 역할이 실제로 필요할 때 사용한다.
+- repository, directory, package나 document bundle의 첫 진입 문서 역할이 실제로 필요할 때 사용한다.
 - 모든 정책, 설계, 사용법, 이력과 상태를 README 하나에 모으지 않는다.
 - 상세 책임은 해당 canonical 문서로 넘기고 README에는 첫 이해와 첫 행동에 필요한 맥락만 둔다.
 - 상위 README나 다른 entrypoint의 section 구성을 그대로 복제하지 않는다.
