@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-SCRIPT = ROOT / "scripts" / "agent_assets" / "validate_rulesync.py"
+SCRIPT = ROOT / "scripts" / "agent_assets" / "rulesync_validate.py"
 SPEC = importlib.util.spec_from_file_location("validate_rulesync_assets", SCRIPT)
 assert SPEC is not None and SPEC.loader is not None
 validate_rulesync = importlib.util.module_from_spec(SPEC)
