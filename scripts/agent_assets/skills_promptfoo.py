@@ -37,7 +37,14 @@ BEHAVIOR_RESPONSE_SCHEMA = {
 
 def _skill_name(config: dict) -> str:
     name = config.get("skill")
-    if not isinstance(name, str) or not name or Path(name).name != name:
+    if (
+        not isinstance(name, str)
+        or not name
+        or name in {".", ".."}
+        or "/" in name
+        or "\\" in name
+        or Path(name).name != name
+    ):
         raise ValueError("skill must be a non-empty directory name")
     return name
 
@@ -65,11 +72,17 @@ def provider_label(skill_name: str, suite: str) -> str:
 def _load_cases(skill_name: str) -> dict[str, dict]:
     path = fixture_path(skill_name)
     payload = json.loads(path.read_text(encoding="utf-8"))
-    if payload.get("version") != 1 or not isinstance(payload.get("cases"), list):
+    if (
+        not isinstance(payload, dict)
+        or payload.get("version") != 1
+        or not isinstance(payload.get("cases"), list)
+    ):
         raise ValueError(f"unsupported eval fixture shape: {path}")
 
     cases: dict[str, dict] = {}
     for case in payload["cases"]:
+        if not isinstance(case, dict):
+            raise ValueError(f"invalid eval case in {path}")
         case_id = case.get("id")
         if not isinstance(case_id, str) or not case_id:
             raise ValueError(f"invalid eval case id in {path}")
@@ -225,13 +238,19 @@ def generate_tests(config: dict | None = None) -> list[dict]:
 
     cases = _load_cases(skill_name)
     selected_ids = _selected_case_ids(config, suite, cases)
-    semantic = bool(config.get("semantic", suite == BEHAVIOR_SUITE))
+    semantic = config.get("semantic", suite == BEHAVIOR_SUITE)
+    if not isinstance(semantic, bool):
+        raise ValueError("semantic must be a boolean")
     label = config.get("provider_label") or provider_label(skill_name, suite)
     if not isinstance(label, str) or not label:
         raise ValueError("provider_label must be a non-empty string")
 
     rubric_threshold = config.get("rubric_threshold", 0.8)
-    if not isinstance(rubric_threshold, (int, float)) or not 0 <= rubric_threshold <= 1:
+    if (
+        isinstance(rubric_threshold, bool)
+        or not isinstance(rubric_threshold, (int, float))
+        or not 0 <= rubric_threshold <= 1
+    ):
         raise ValueError("rubric_threshold must be between 0 and 1")
 
     grader_provider = os.getenv("PROMPTFOO_GRADER_PROVIDER", "ollama:chat:qwen2.5")
@@ -249,7 +268,12 @@ def generate_tests(config: dict | None = None) -> list[dict]:
         case = cases[case_id]
         prompt = case.get("prompt")
         mode = case.get("mode")
-        if not isinstance(prompt, str) or not isinstance(mode, str):
+        if (
+            not isinstance(prompt, str)
+            or not prompt
+            or not isinstance(mode, str)
+            or not mode
+        ):
             raise ValueError(f"invalid eval case: {case_id}")
         if _case_suite(mode) != suite:
             raise ValueError(
@@ -528,16 +552,20 @@ def _ollama_output(
     skill_name: str,
 ) -> dict:
     path = skill_path(skill_name)
-    skill = path.read_text(encoding="utf-8")
+    try:
+        skill = path.read_text(encoding="utf-8")
+    except OSError as error:
+        return {"error": f"failed to read Skill {path}: {error}", "output": ""}
+
     if suite == TRIGGER_SUITE:
         try:
             candidates = _routing_candidates(
                 context.get("vars", {}).get("routing_candidates"),
                 skill_name,
             )
+            routed = _route(prompt, skill, candidates, path)
         except ValueError as error:
-            return {"error": f"invalid routing candidates: {error}", "output": ""}
-        routed = _route(prompt, skill, candidates, path)
+            return {"error": f"invalid Skill routing input: {error}", "output": ""}
         if isinstance(routed, dict):
             return routed
         _, route_content = routed
@@ -557,6 +585,16 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
         skill_name = _skill_name(config)
     except ValueError as error:
         return {"error": str(error), "output": ""}
+
+    context_skill = context.get("vars", {}).get("skill")
+    if context_skill is not None and context_skill != skill_name:
+        return {
+            "error": (
+                "provider skill does not match generated test skill: "
+                f"{skill_name} != {context_skill}"
+            ),
+            "output": "",
+        }
 
     mode = config.get("mode", "ollama")
     suite = config.get("suite")
