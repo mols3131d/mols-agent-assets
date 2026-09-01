@@ -25,13 +25,15 @@ description: 저장소의 파일·디렉터리 이름과 배치, 계층, source�
 
 현재처럼 source와 `tests/`를 분리한 pytest layout을 유지합니다. 저장소가 직접 소유하는 실행 가능한 source에 자연스러운 기준점이 있으면 관련 test도 위치를 예측할 수 있게 대응시킵니다.
 
+예를 들어 `scripts/` 아래 source라면 다음처럼 대응할 수 있습니다.
+
 ```text
-scripts/agent-assets/validate_rulesync.py
-                    ↓
-tests/scripts/agent-assets/test_validate_rulesync.py
+scripts/<area>/<name>.py
+             ↓
+tests/scripts/<area>/test_<name>.py
 ```
 
-source 경로를 그대로 복제하는 것 자체가 목적은 아닙니다.
+`<area>`와 `<name>`은 실제 책임 경계와 파일 이름으로 바꿉니다. source 경로를 그대로 복제하는 것 자체가 목적은 아닙니다.
 
 - 하나의 source file에 작은 test 범위가 대응하면 하나의 test file을 기본으로 합니다.
 - 같은 source의 test가 늘어나면 sibling files나 bundle로 나눌 수 있습니다.
