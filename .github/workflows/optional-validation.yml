@@ -60,7 +60,11 @@ jobs:
           set -euo pipefail
           uv run --locked --no-default-groups --group test python scripts/generate_distribution_routes.py
           uv run --locked --no-default-groups --group test python scripts/generate_repository_routes.py
-          git diff --exit-code -- route .agents/route
+          changes="$(git status --porcelain -- route .agents/route)"
+          if [[ -n "$changes" ]]; then
+            printf '%s\n' "$changes"
+            exit 1
+          fi
 
       - name: Set up mise
         if: ${{ inputs.rulesync_assets }}
