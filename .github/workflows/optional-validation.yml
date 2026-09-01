@@ -14,7 +14,7 @@ on:
         default: false
         type: boolean
       rulesync:
-        description: Run strict Rulesync doctor
+        description: Validate canonical Agent Assets through Rulesync
         required: false
         default: false
         type: boolean
@@ -60,8 +60,8 @@ jobs:
           install: false
           cache: true
 
-      - name: Validate Rulesync source
+      - name: Validate Rulesync assets
         if: ${{ inputs.rulesync }}
         run: |
           mise install uv node "npm:rulesync"
-          npm run rulesync:doctor
+          npm run rulesync:validate
