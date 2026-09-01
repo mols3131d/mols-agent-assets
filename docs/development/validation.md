@@ -21,12 +21,7 @@ Validation은 이 repository가 유지하는 **네 가지 구조·파생 계약*
 
 ## Automation
 
-`Optional Validation`에서 다음 검증을 필요할 때 각각 선택해 실행합니다. 기본값은 모두 OFF입니다.
-
-- `docs_frontmatter`
-- `docs_indexes`
-- `asset_routes`
-- `rulesync_assets`
+`Optional Validation`에서 `docs_frontmatter`, `docs_indexes`, `asset_routes`, `rulesync_assets`를 필요할 때 각각 선택해 실행합니다. 기본값은 모두 OFF입니다.
 
 Index와 route의 갱신은 local generation path가 소유합니다. Validation은 현재 상태를 read-only로 확인하거나 재생성한 결과와 committed output을 비교합니다.
 
