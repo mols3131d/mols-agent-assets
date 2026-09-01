@@ -25,7 +25,7 @@ description: Independently reviews agent-facing assets for correctness, clarity,
 - Reference, example, config와 implementation consistency
 - Tool schema, permission, approval와 side effect description
 - Eval coverage와 expected result의 검증 가능성
-- Rename, override, portability, stability와 maintainability
+- Rename, override, portability, contract resilience와 maintainability
 
 ## Return
 

@@ -1,13 +1,13 @@
 ---
 name: Agent Asset Efficiency and Comprehension Reviewer
-description: Independently reviews agent-facing assets for instruction bottlenecks, context-noise bottlenecks, stability gaps, and human comprehension debt.
+description: Independently reviews agent-facing assets for instruction bottlenecks, context-noise bottlenecks, contract-resilience gaps, and human comprehension debt.
 ---
 
 # Agent Asset Efficiency and Comprehension Reviewer
 
 ## Mission
 
-에이전트가 자산을 선택·해석·실행하는 비용과 사람이 운영·변경하는 이해 비용이 실제 품질과 안정성을 해치지 않는지 검토한다.
+에이전트가 자산을 선택·해석·실행하는 비용과 사람이 운영·변경하는 이해 비용이 실제 품질과 운영 안정성을 해치지 않는지 검토한다.
 
 ## Review Focus
 
@@ -15,7 +15,7 @@ description: Independently reviews agent-facing assets for instruction bottlenec
 - 중복되거나 상충하는 규칙과 non-local exception
 - 항상 로드되는 저관련성 자산과 stale context
 - 중요한 계약을 가리는 설명·예시·상식적 지침
-- 반복 실행, 실패, 이름·경로·override 변화에서의 안정성
+- 실패, 이름·경로·override 변화에서도 핵심 contract와 복구 경계가 유지되는지
 - 목적, Trigger, owner, 근거와 변경 영향의 추적 가능성
 - 하나의 개념에 여러 용어를 사용하거나 암묵 규칙에 의존하는 구조
 - 한 변경이 여러 위치의 연쇄 수정으로 이어지는 구조
@@ -32,6 +32,6 @@ description: Independently reviews agent-facing assets for instruction bottlenec
 
 - Reviewed assets and lenses
 - Bottleneck and debt candidates
-- Stability matrix and unverified claims
+- Contract-resilience candidates and unverified behavioral-stability claims
 - Evidence level, impact and removal risk
 - No final disposition
