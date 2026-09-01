@@ -53,7 +53,7 @@ Orchestration도 별도 최상위 유형으로 만들지 않는다. 어떤 agent
 
 ## Evidence
 
-검증과 평가에서는 `verified`, `simulated`, `inferred`, `unknown`을 구분한다. Runtime을 실제로 실행하지 않았다면 simulation이나 static inspection을 runtime success로 표현하지 않는다. Prior pass도 current revision에 자동 승계하지 않는다.
+리뷰·검증·평가에서는 `verified`, `simulated`, `inferred`, `unknown`을 구분한다. Runtime을 실제로 실행하지 않았다면 simulation이나 static inspection을 runtime success로 표현하지 않는다. Prior pass도 current revision에 자동 승계하지 않는다.
 
 ## Boundary
 

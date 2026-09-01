@@ -1,6 +1,6 @@
 # Evidence
 
-검증과 평가의 claim은 실제로 확보한 evidence 수준을 넘지 않는다.
+리뷰·검증·평가의 claim은 실제로 확보한 evidence 수준을 넘지 않는다.
 
 ## Levels
 
