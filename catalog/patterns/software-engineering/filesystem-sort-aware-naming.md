@@ -16,13 +16,19 @@ description: 파일 이름의 prefix·subject·postfix를 구성해 기본 files
 <prefix...>-<subject>-<postfix...>.<ext>
 ```
 
-`prefix`와 `postfix`는 각각 하나로 제한되지 않습니다. 필요한 경우 여러 단계가 이어질 수 있습니다.
+`prefix`와 `postfix`는 각각 하나로 제한되지 않습니다. 여러 단계가 필요하면 다음처럼 이어질 수 있습니다.
+
+```text
+<prefix-1>-<prefix-2>-<subject>-<postfix-1>-<postfix-2>.<ext>
+```
+
+의미 구조로 보면 다음과 같은 형태가 될 수 있습니다.
 
 ```text
 <domain>-<subdomain>-<family>-<subject>-<aspect>-<variant>.<ext>
 ```
 
-각 단계는 왼쪽에서 오른쪽으로 더 구체적인 의미를 더합니다. 다만 단계 수를 늘리는 것 자체가 목적은 아니며, 실제 grouping과 탐색에 의미가 있는 요소만 사용합니다.
+각 단계는 왼쪽에서 오른쪽으로 더 구체적인 의미를 더합니다. 단계 수를 늘리는 것 자체가 목적은 아니며, 실제 grouping과 탐색에 의미가 있는 요소만 사용합니다.
 
 ## Prefix
 
@@ -59,7 +65,9 @@ agent-assets-routing-policy.md
 agent-assets-routing-validation.md
 ```
 
-이때 `agent-assets-routing` 전체가 다시 하나의 작은 prefix처럼 작동합니다. Postfix가 여러 단계면 같은 방식으로 더 좁은 군집을 만들 수 있습니다.
+이때 `agent-assets-routing` 전체가 다시 하나의 작은 prefix처럼 작동합니다.
+
+Postfix도 하나로 제한되지 않습니다.
 
 ```text
 agent-assets-routing-validation.md
@@ -67,27 +75,39 @@ agent-assets-routing-validation-runtime.md
 agent-assets-routing-validation-schema.md
 ```
 
-따라서 postfix는 단순한 suffix 표지가 아니라 **이미 형성된 이름을 확장해 그 이름 아래에 관련 파일을 계속 붙일 수 있게 하는 grouping 장치**로 사용할 수 있습니다.
+여기서 `validation`은 `routing`에 대해서는 postfix지만, `runtime`과 `schema`를 묶을 때는 `agent-assets-routing-validation`이라는 더 구체적인 grouping key의 일부가 됩니다.
+
+즉 prefix와 postfix는 고정된 한 단계의 문법 요소라기보다 **파일 이름을 왼쪽에서 오른쪽으로 확장하면서 계층적인 정렬 군집을 만드는 위치적 역할**로 볼 수 있습니다.
 
 ## Choosing the Sort Axis
 
-같은 파일도 어떤 의미를 앞쪽에 두느냐에 따라 filesystem 정렬에서 형성되는 군집이 달라집니다.
+어떤 의미를 앞쪽에 두느냐에 따라 filesystem 정렬에서 형성되는 군집이 달라집니다.
+
+대상을 먼저 두면 관련 작업이 대상별로 모일 수 있습니다.
 
 ```text
-rulesync-validate.py
+routes-generate.py
 routes-validate.py
-skills-validate.py
+
+rulesync-doctor.py
+rulesync-preview.py
+rulesync-validate.py
+
+skills-install.py
+skills-sync.py
 ```
 
-위 형태는 대상별로 모입니다.
+작업을 먼저 두면 같은 파일들도 작업 이름을 중심으로 정렬됩니다.
 
 ```text
+doctor-rulesync.py
+generate-routes.py
+install-skills.py
+preview-rulesync.py
+sync-skills.py
 validate-routes.py
 validate-rulesync.py
-validate-skills.py
 ```
-
-위 형태는 작업별로 모입니다.
 
 둘 다 이해 가능한 이름일 수 있습니다. **같은 directory에서 어떤 파일들을 함께 찾는 경우가 더 많은지**를 기준으로 앞쪽 grouping key를 선택합니다.
 
@@ -132,10 +152,10 @@ agent-assets/
 - filename만으로 repository의 전체 architecture를 표현하려 하지 않습니다.
 - directory가 더 자연스러운 grouping boundary인데도 긴 prefix chain을 유지하지 않습니다.
 - language, framework, tool이 요구하는 naming convention을 덮어쓰지 않습니다.
-- locale, case sensitivity, natural sort 등 모든 filesystem·UI의 정렬 semantics가 동일하다고 가정하지 않습니다. 보통 사용하는 이름 정렬에서 grouping cue가 유지되는 정도면 충분합니다.
+- locale, case sensitivity, natural sort 등 모든 filesystem·UI의 정렬 방식이 동일하다고 가정하지 않습니다. 주로 사용하는 이름 정렬에서 grouping cue가 유지되는 정도면 충분합니다.
 
 Separator도 `-`, `_`, `.`, 기타 ecosystem convention 중 자연스러운 것을 사용합니다. 이 패턴의 본질은 특정 구분자가 아니라 **이름의 왼쪽에서 오른쪽으로 grouping axis를 구성하는 것**입니다.
 
 ## Short Form
 
-> **파일 이름을 filesystem 정렬의 grouping key로 활용할 수 있습니다. Prefix는 domain·subdomain·family처럼 상위 범위를 모으고, subject 뒤의 postfix는 그 subject를 다시 작은 prefix처럼 확장해 하위 군집을 만듭니다. Prefix와 postfix는 여러 단계가 될 수 있으며, 읽는 순서를 위한 numbering은 이 패턴에서 다루지 않습니다.**
+> **파일 이름을 filesystem 정렬의 grouping key로 활용할 수 있습니다. Prefix는 domain·subdomain·family처럼 상위 범위를 모으고, subject 뒤의 postfix는 그 subject를 다시 작은 prefix처럼 확장해 하위 군집을 만듭니다. Prefix와 postfix는 각각 여러 단계가 될 수 있으며, 읽는 순서를 위한 numbering은 이 패턴에서 다루지 않습니다.**
