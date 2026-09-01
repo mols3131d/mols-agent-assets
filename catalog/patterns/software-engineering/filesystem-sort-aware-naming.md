@@ -132,7 +132,7 @@ agent-assets/
 
 반대로 하나의 directory 안에서 여러 domain이나 family가 섞여 있고 이를 함께 유지할 이유가 있다면 prefix가 유용한 grouping surface가 될 수 있습니다.
 
-반복 prefix가 길어지고 관련 파일군이 독립적인 탐색 영역처럼 커지면, filename의 반복을 계속 늘리기보다 directory grouping과 비교해 봅니다.
+반복 prefix가 길어지고 관련 파일군이 독립적인 탐색 영역처럼 커지면 filename의 반복을 계속 늘리기보다 directory grouping과 비교해 봅니다.
 
 ## Boundaries
 
@@ -154,7 +154,7 @@ agent-assets/
 - language, framework, tool이 요구하는 naming convention을 덮어쓰지 않습니다.
 - locale, case sensitivity, natural sort 등 모든 filesystem·UI의 정렬 방식이 동일하다고 가정하지 않습니다. 주로 사용하는 이름 정렬에서 grouping cue가 유지되는 정도면 충분합니다.
 
-Separator도 `-`, `_`, `.`, 기타 ecosystem convention 중 자연스러운 것을 사용합니다. 이 패턴의 본질은 특정 구분자가 아니라 **이름의 왼쪽에서 오른쪽으로 grouping axis를 구성하는 것**입니다.
+Separator는 `-`, `_`, `.`, 기타 ecosystem convention 중 자연스러운 것을 사용합니다. 이 패턴의 본질은 특정 구분자가 아니라 **이름의 왼쪽에서 오른쪽으로 grouping axis를 구성하는 것**입니다.
 
 ## Short Form
 
