@@ -51,15 +51,15 @@ jobs:
 
       - name: Validate docs indexes
         if: ${{ inputs.docs_indexes }}
-        run: uv run --locked --no-default-groups --group test python scripts/generate_docs_indexes.py --check
+        run: uv run --locked --no-default-groups --group test python scripts/generation/generate_docs_indexes.py --check
 
       - name: Validate Agent Asset routes
         if: ${{ inputs.asset_routes }}
         shell: bash
         run: |
           set -euo pipefail
-          uv run --locked --no-default-groups --group test python scripts/generate_distribution_routes.py
-          uv run --locked --no-default-groups --group test python scripts/generate_repository_routes.py
+          uv run --locked --no-default-groups --group test python scripts/generation/generate_distribution_routes.py
+          uv run --locked --no-default-groups --group test python scripts/generation/generate_repository_routes.py
           changes="$(git status --porcelain -- route .agents/route)"
           if [[ -n "$changes" ]]; then
             printf '%s\n' "$changes"
