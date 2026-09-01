@@ -33,9 +33,6 @@ Filesystem은 탐색을 돕는 단서로 사용하되, 가독성을 위해 frame
 - reusable core 전체를 project/target별로 복제하지 않고 필요한 delta만 둔다.
 - customization의 scope와 owner를 분명히 한다.
 - 실제로 여러 layer가 겹칠 때만 precedence나 merge rule을 추가한다.
-- caller가 의미 있게 제어할 선택만 argument/option으로 노출한다.
-- `default`, `auto`, explicit value를 지원하면 각 의미와 omission behavior를 구분한다.
-- option이 별도 capability나 permission boundary가 되면 parameterization보다 책임 분리를 고려한다.
 
 ## Authority and precision
 
