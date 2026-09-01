@@ -12,7 +12,7 @@ Markdown으로 문서를 표현할 때만 적용한다. 독자, 목적, 정보 �
 - command, path, field, identifier와 짧은 code는 inline code로, 여러 줄 code나 그대로 복사해야 하는 내용은 fenced code block으로 표현한다.
 - link text는 목적지를 예측할 수 있게 작성한다. URL 자체가 필요한 데이터가 아니면 문장 속에 긴 URL을 그대로 노출하지 않는다.
 
-## Metadata and Navigation
+## Metadata
 
 Markdown surface가 frontmatter나 description metadata를 사용하면 해당 schema와 project rule을 먼저 따른다. 이 reference는 필드 이름이나 필수 여부를 정의하지 않는다.
 
@@ -20,8 +20,6 @@ Markdown surface가 frontmatter나 description metadata를 사용하면 해당 s
 - 실제 요청에 나올 만한 작업, 문제, 판단 대상과 구분되는 책임을 필요한 만큼 포함한다.
 - 제목이나 목차를 다시 압축해서 쓰거나 `이 문서는 ...을 설명한다`처럼 파일 자체를 소개하는 문구로 metadata를 채우지 않는다.
 - 같은 위치의 후보가 `path + description`만으로 충분히 구분되면 더 길게 쓰지 않는다.
-- table of contents, index와 navigation list는 문서 크기나 관례만으로 만들지 않고 실제 탐색 비용을 낮출 때 사용한다.
-- 사람이 선택을 위해 관리하는 navigation과 도구가 다시 생성할 수 있는 inventory를 같은 Markdown surface에서 중복하지 않는다.
 
 ## Optional Elements
 
