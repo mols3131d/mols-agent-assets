@@ -13,17 +13,17 @@ run = [
   "uv sync --all-groups",
   "rulesync install --frozen",
   "rulesync generate",
-  "uv run python scripts/agent_assets/sync_agent_skills.py",
+  "uv run python scripts/agent_assets/skills_sync.py",
   "lefthook install",
 ]
 
 [tasks.skills-sync]
 description = "Sync locked external Skills through source-native installers"
-run = "uv run python scripts/agent_assets/sync_agent_skills.py"
+run = "uv run python scripts/agent_assets/skills_sync.py"
 
 [tasks.generated-sync]
 description = "Regenerate committed indexes and routes"
-run = "uv run python -m scripts.sync_generated_artifacts"
+run = "uv run python -m scripts.generated_artifacts_sync"
 
 [tasks.format]
 description = "Format the entire repository"
@@ -37,7 +37,7 @@ run = [
 
 [tasks.format-changed]
 description = "Format modified and untracked repository files"
-run = "uv run --locked --no-default-groups --group dev python scripts/format_changed.py"
+run = "uv run --locked --no-default-groups --group dev python scripts/changed_files_format.py"
 
 [tasks.check]
 description = "Validate the repository toolchain and lock state"
@@ -50,7 +50,7 @@ run = [
   "rulesync --version",
   "skills --version",
   "uv lock --check",
-  "uv run --locked --no-default-groups python scripts/agent_assets/sync_agent_skills.py --dry-run",
+  "uv run --locked --no-default-groups python scripts/agent_assets/skills_sync.py --dry-run",
   "lefthook validate",
   "biome check biome.json package.json .vscode/tasks.json",
 ]
