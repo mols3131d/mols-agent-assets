@@ -1,5 +1,5 @@
 ---
-description: 저장소 개발 작업에서 VCS/Git, GitHub, 작성 원본과 권한, repository layout, formatting, validation, testing, evaluation 중 적용할 local policy를 찾을 때 사용합니다.
+description: 저장소 개발 작업에서 공통 개발 원칙, VCS/Git, GitHub, 작성 원본과 권한, repository layout, formatting, validation, testing, evaluation 중 적용할 local policy를 찾을 때 사용합니다.
 ---
 
 # Development
@@ -8,6 +8,7 @@ description: 저장소 개발 작업에서 VCS/Git, GitHub, 작성 원본과 권
 
 ## Local Policies
 
+- [Development Principles](principles.md) — 여러 유효한 구현 사이에서 효과성, 운영 편의성, 단순성, 추상화와 변경 범위를 판단하는 공통 원칙
 - [VCS / Git](vcs-git.md) — branch policy와 naming, commit convention과 enforcement boundary
 - [GitHub](github.md) — Issues, Pull Requests, PR Reviews, Merge, Rulesets와 Actions의 local policy. 본문 작성 구조는 [GitHub Authoring Templates](../../.github/templates/README.md)를 참고합니다.
 - [작성 원본과 권한](source-authority.md) — 작성 원본, 표준, 대상과 저장소 고유 권한의 경계
