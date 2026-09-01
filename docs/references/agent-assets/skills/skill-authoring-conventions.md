@@ -78,6 +78,12 @@ Skill의 조건부 보조 resource에는 [Agent Asset Design Principles](../comm
 - Source framework가 target metadata를 보존하거나 projection하는 방식은 해당 source framework가 소유합니다.
 - Canonical source가 필요한 target requirement를 표현하지 못하면 shadow source나 local superset을 만들기보다 [작성 원본과 권한](../../../development/source-authority.md)에 따라 source representation을 다시 판단합니다.
 
+## Verification
+
+Skill 검증의 공통 원칙과 도메인별 authority는 [Validation](../../../development/validation.md)이 소유합니다. 이 문서에서는 별도의 Skill-only validation contract를 만들지 않습니다.
+
+작성할 때는 적용되는 source framework, 공통 specification, target contract와 repository validation을 각각 필요한 범위에서 사용하고, 한 validator의 통과를 전체 compatibility나 behavior quality로 확대 해석하지 않습니다.
+
 ## Boundary
 
 - 공통 Agent Asset 설계 → [Agent Asset Design Principles](../common/design-principles.md)
@@ -88,5 +94,6 @@ Skill의 조건부 보조 resource에는 [Agent Asset Design Principles](../comm
 - Argument와 argument-gated disclosure → [Argument-Driven Assets](../../../../catalog/patterns/context-engineering/argument-driven-assets.md)
 - Maintainer documentation → [Asset Maintainer Documentation](../../../documentation/asset-maintainer-documentation.md)
 - 작성 원본과 권한 → [작성 원본과 권한](../../../development/source-authority.md)
-- Deterministic verification → [Testing](../../../development/testing.md)
+- Validation authority와 evidence → [Validation](../../../development/validation.md)
+- Deterministic test 설계와 PR Gate → [Testing](../../../development/testing.md)
 - Behavioral evaluation → [Evaluation](../../../development/evaluation.md)
