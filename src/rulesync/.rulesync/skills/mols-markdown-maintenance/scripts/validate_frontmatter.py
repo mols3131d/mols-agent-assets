@@ -30,12 +30,15 @@ TYPE_NAMES = {
 
 def _validate_value(value: Any, spec: dict) -> bool:
     """Helper to validate value against a spec dictionary."""
+    # 1. Type validation
     if "type" in spec and not isinstance(value, spec["type"]):
         return False
 
+    # 2. Allowed values validation
     if "allowed_values" in spec and value not in spec["allowed_values"]:
         return False
 
+    # 3. Size constraints (min_length, max_length)
     if "min_length" in spec and isinstance(value, (str, list, dict)):
         if len(value) < spec["min_length"]:
             return False
@@ -43,6 +46,7 @@ def _validate_value(value: Any, spec: dict) -> bool:
         if len(value) > spec["max_length"]:
             return False
 
+    # 4. List item counts (min_items, max_items)
     if "min_items" in spec and isinstance(value, list):
         if len(value) < spec["min_items"]:
             return False
@@ -50,6 +54,7 @@ def _validate_value(value: Any, spec: dict) -> bool:
         if len(value) > spec["max_items"]:
             return False
 
+    # 5. Date validation
     if spec.get("is_date"):
         if isinstance(value, datetime.date):
             pass
@@ -61,15 +66,18 @@ def _validate_value(value: Any, spec: dict) -> bool:
         else:
             return False
 
+    # 6. Regex pattern validation
     if "pattern" in spec:
         if not isinstance(value, str) or not re.match(spec["pattern"], value):
             return False
 
+    # 7. List elements type validation
     if "item_type" in spec and isinstance(value, list):
         item_type = spec["item_type"]
         if not all(isinstance(item, item_type) for item in value):
             return False
 
+    # 8. Nested schema validation
     if "schema" in spec:
         if not isinstance(value, dict):
             return False
@@ -91,7 +99,12 @@ def validate_frontmatter(
 ) -> bool:
     """Validate YAML frontmatter against required fields or a schema.
 
-    Schema rules:
+    Args:
+        file_path: Path to the target markdown file.
+        required_fields: Set of keys that must exist.
+        schema: Dictionary defining schema rules.
+
+    Schema Rules:
         - type: Allowed data type (e.g., str, list, dict).
         - required: Whether the field must exist. Defaults to True.
         - allowed_values: Allowed set/list of values.
@@ -102,6 +115,9 @@ def validate_frontmatter(
         - item_type: Expected type for list elements.
         - schema: Sub-schema for nested dict values.
         - strict: Disallow undefined fields (use '__strict__' for root).
+
+    Returns:
+        True if all checks pass, otherwise False.
     """
     if not file_path.is_file():
         return False
@@ -111,8 +127,9 @@ def validate_frontmatter(
         return False
     data, _ = parsed
 
-    if required_fields is not None and not required_fields.issubset(data.keys()):
-        return False
+    if required_fields is not None:
+        if not required_fields.issubset(data.keys()):
+            return False
 
     if schema is not None:
         is_strict = schema.get("__strict__", False)
