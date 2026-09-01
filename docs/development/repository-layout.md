@@ -33,7 +33,7 @@ scripts/<area>/<name>.py
 tests/scripts/<area>/test_<name>.py
 ```
 
-`<...>`는 예시용 placeholder입니다. `<area>`와 `<name>`은 실제 책임 경계와 파일 이름으로 바꿉니다. source 경로를 그대로 복제하는 것 자체가 목적은 아닙니다.
+`<...>`는 실제 책임 경계와 파일 이름으로 바꾸는 placeholder입니다. source 경로를 그대로 복제하는 것 자체가 목적은 아닙니다.
 
 - 하나의 source file에 작은 test 범위가 대응하면 하나의 test file을 기본으로 합니다.
 - 같은 source의 test가 늘어나면 sibling files나 bundle로 나눌 수 있습니다.
