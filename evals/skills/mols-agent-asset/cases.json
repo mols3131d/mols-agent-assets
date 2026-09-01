@@ -2,6 +2,69 @@
   "version": 1,
   "cases": [
     {
+      "id": "skill-authoring-activates",
+      "mode": "activation",
+      "prompt": "새로운 SQL 리뷰 Skill을 설계해서 만들어줘.",
+      "expected_selection": {
+        "selected_skills": ["mols-agent-asset"],
+        "primary_skill": "mols-agent-asset"
+      }
+    },
+    {
+      "id": "formal-readiness-validation-activates",
+      "mode": "activation",
+      "prompt": "이 agent asset을 readiness 기준으로 심층 검증해줘.",
+      "expected_selection": {
+        "selected_skills": ["mols-agent-asset"],
+        "primary_skill": "mols-agent-asset"
+      }
+    },
+    {
+      "id": "bounded-prompt-routing-eval-activates",
+      "mode": "activation",
+      "prompt": "이 prompt가 positive와 negative 요청을 올바르게 구분하는지 eval 해줘.",
+      "expected_selection": {
+        "selected_skills": ["mols-agent-asset"],
+        "primary_skill": "mols-agent-asset"
+      }
+    },
+    {
+      "id": "tool-schema-adversarial-review-activates",
+      "mode": "activation",
+      "prompt": "이 MCP tool schema와 approval rule을 적대적으로 검증해줘.",
+      "expected_selection": {
+        "selected_skills": ["mols-agent-asset"],
+        "primary_skill": "mols-agent-asset"
+      }
+    },
+    {
+      "id": "ordinary-product-code-review-does-not-activate",
+      "mode": "activation-negative",
+      "prompt": "이 Python 함수의 race condition을 코드 리뷰해줘.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "prompt-authoring-does-not-activate",
+      "mode": "activation-negative",
+      "prompt": "VS Code에서 쓸 재사용 prompt 파일 하나 만들어줘.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "human-prose-does-not-activate",
+      "mode": "activation-negative",
+      "prompt": "이 이메일을 더 친절하게 다듬어줘.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
       "id": "create-minimal-skill",
       "mode": "skill",
       "prompt": "CSV schema documentation Skill을 새로 만들어줘.",
