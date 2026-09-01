@@ -1,9 +1,11 @@
 path	description
-development/	저장소 개발 작업에서 VCS/Git, GitHub, 작성 원본과 권한, testing, evaluation 중 적용할 local policy를 찾을 때 사용합니다.
+development/	저장소 개발 작업에서 VCS/Git, GitHub, 작성 원본과 권한, repository layout, validation, testing, evaluation 중 적용할 local policy를 찾을 때 사용합니다.
 development/evaluation.md	Agent Asset의 behavioral evaluation을 설계·실행·해석하고 deterministic test, runtime evidence, regression contract를 구분할 때 사용하는 repository-local policy입니다.
 development/github.md	GitHub의 Issues, Pull Requests, PR Reviews, coding agents, automations, GitHub Agentic Workflows, Rulesets, Actions와 Merge에 적용되는 저장소 협업 정책과 권한 경계를 확인할 때 사용합니다.
+development/repository-layout.md	저장소의 파일·디렉터리 이름과 배치, 계층, source와 test의 대응을 정할 때 적용하는 layout 정책입니다.
 development/source-authority.md	저장소 지침과 에이전트 자산에서 작성 원본, 표준·도구·대상별 권한, 원본과 파생 결과의 경계를 결정할 때 사용하는 정책입니다.
-development/testing.md	저장소의 결정론적 검증, 도구 검증, PR Gate와 merge를 차단하는 테스트 근거를 확인할 때 사용합니다.
+development/testing.md	저장소의 deterministic test 설계, PR Gate와 merge를 차단하는 테스트 근거를 확인할 때 사용하는 정책입니다.
+development/validation.md	저장소의 자산·도구·생성물·문서 등 여러 도메인에서 무엇을 어떤 authority와 evidence로 검증할지 정할 때 사용하는 공통 Validation 정책입니다.
 development/vcs-git.md	저장소 고유 branch 정책, 병렬 작업 격리, branch naming, Git history 안전성과 commit convention을 확인할 때 사용합니다.
 documentation/	저장소 전반의 문서 원칙과 README 작성, 문서 인덱싱, frontmatter, Agent Asset 유지보수 문서 정책을 찾을 때 사용합니다.
 documentation/asset-maintainer-documentation.md	개별 Agent Asset 또는 family의 유지보수 문서를 어디에 두고, 실행 원본과 family 문서, 저장소 전용 문서의 책임을 어떻게 나눌지 정할 때 사용합니다.
