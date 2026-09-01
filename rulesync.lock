@@ -6,39 +6,17 @@
       "resolvedRef": "1783a5661b68082d3a5e85ac08c5cc75250474c9",
       "resolvedAt": "2026-08-25T20:47:57.740Z",
       "skills": {
-        "artifact-consistency-inspector": {
-          "integrity": "sha256-6cb2ff6eafb3ea0d0d7974bdb8068d0f8098d9a40321ab808509b6bf8cd2d43b"
-        },
-        "github-context": {
-          "integrity": "sha256-ba5201fd19cc7939ddbdd4300ea01f227670a64f1863e26ee6805429f4635191"
-        },
-        "mols-agent-asset-find": {
-          "integrity": "sha256-6ace67d927da8eedcdd359593ddcbd7a80d97a2fa9cab42288f634116382aef6"
-        },
-        "mols-agent-asset-validator": {
-          "integrity": "sha256-3656ca7d568fbc51286cc262210c7499346909c796e2825c5910f421ec16f940"
-        },
-        "mols-agent-asset": {
-          "integrity": "sha256-124fdbded5fa2d787da6c207c1bbe3db428cc2395b586e8ad25d91936465e0eb"
-        },
-        "mols-chatbot-bootstrap": {
-          "integrity": "sha256-bbd2c76d95263bc4beb579ff727219a39f3ad922f3339c00254c1f902a3c7687"
-        },
-        "mols-markdown-for-human": {
-          "integrity": "sha256-d12d681eaad30d33946ef7493e244320e6113accf2a6d1a4ba8962600294a5e0"
-        },
-        "mols-markdown-maintenance": {
-          "integrity": "sha256-9512e6f65bfaced6569353e749f8abe899f89283a3bf21a69d39057b6c752f6c"
-        },
-        "mols-mermaid-chart": {
-          "integrity": "sha256-983ff55d920be723a2f86db8bc71615f0c8b7ecb9d6b64c7d96b2ab314cbf563"
-        },
-        "mols-mermaid-diagram": {
-          "integrity": "sha256-f3b689fb9cf960fc9e31a3b6ed4b84b8f6314af4c03293410d38a7c38acf50b3"
-        },
-        "mols-rpi": {
-          "integrity": "sha256-cea1aeea21c7dbe1ff56eb3cf46e510ef50f691e6a4a97b5f5582922b0d4046d"
-        }
+        "artifact-consistency-inspector": {"integrity": "sha256-6cb2ff6eafb3ea0d0d7974bdb8068d0f8098d9a40321ab808509b6bf8cd2d43b"},
+        "github-context": {"integrity": "sha256-ba5201fd19cc7939ddbdd4300ea01f227670a64f1863e26ee6805429f4635191"},
+        "mols-agent-asset-find": {"integrity": "sha256-6ace67d927da8eedcdd359593ddcbd7a80d97a2fa9cab42288f634116382aef6"},
+        "mols-agent-asset-validator": {"integrity": "sha256-3656ca7d568fbc51286cc262210c7499346909c796e2825c5910f421ec16f940"},
+        "mols-agent-asset": {"integrity": "sha256-124fdbded5fa2d787da6c207c1bbe3db428cc2395b586e8ad25d91936465e0eb"},
+        "mols-chatbot-bootstrap": {"integrity": "sha256-bbd2c76d95263bc4beb579ff727219a39f3ad922f3339c00254c1f902a3c7687"},
+        "mols-markdown-for-human": {"integrity": "sha256-d12d681eaad30d33946ef7493e244320e6113accf2a6d1a4ba8962600294a5e0"},
+        "mols-markdown-maintenance": {"integrity": "sha256-9512e6f65bfaced6569353e749f8abe899f89283a3bf21a69d39057b6c752f6c"},
+        "mols-mermaid-chart": {"integrity": "sha256-983ff55d920be723a2f86db8bc71615f0c8b7ecb9d6b64c7d96b2ab314cbf563"},
+        "mols-mermaid-diagram": {"integrity": "sha256-f3b689fb9cf960fc9e31a3b6ed4b84b8f6314af4c03293410d38a7c38acf50b3"},
+        "mols-rpi": {"integrity": "sha256-cea1aeea21c7dbe1ff56eb3cf46e510ef50f691e6a4a97b5f5582922b0d4046d"}
       }
     },
     "dyoshikawa/rulesync": {
@@ -46,9 +24,7 @@
       "resolvedRef": "19fad794303990803c6511bb95fa7ea5f34e9e12",
       "resolvedAt": "2026-09-01T01:02:00.000Z",
       "skills": {
-        "rulesync": {
-          "integrity": "sha256-658851f4f3b4c432820cc1ed54bd294a699f171ee28d1da9a3c89e5a3b26a96f"
-        }
+        "rulesync": {"integrity": "sha256-658851f4f3b4c432820cc1ed54bd294a699f171ee28d1da9a3c89e5a3b26a96f"}
       }
     }
   }
