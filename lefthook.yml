@@ -3,7 +3,7 @@ no_tty: true
 pre-commit:
   commands:
     generated-artifacts:
-      run: mise exec -- uv run --locked --no-default-groups --group test python -m scripts.sync_generated_artifacts --staged
+      run: mise exec -- uv run --locked --no-default-groups --group test python -m scripts.generation.sync_generated_artifacts --staged
 
 commit-msg:
   commands:
