@@ -89,7 +89,7 @@ def failure_message(payload: dict[str, Any], stderr: str) -> str:
     return "Rulesync command failed"
 
 
-def validate_result(check: Check, result: subprocess.CompletedProcess[str]) -> None:
+def validate_result(result: subprocess.CompletedProcess[str]) -> None:
     try:
         payload = parse_payload(result.stdout)
     except ValidationFailure:
@@ -105,8 +105,7 @@ def validate_result(check: Check, result: subprocess.CompletedProcess[str]) -> N
         rendered = "\n".join(f"  - {warning}" for warning in warnings)
         raise ValidationFailure(f"Rulesync reported warnings:\n{rendered}")
 
-    success = payload.get("success")
-    if success is False:
+    if payload.get("success") is not True:
         raise ValidationFailure(failure_message(payload, result.stderr))
 
 
@@ -114,8 +113,7 @@ def validate(runner: Runner = run_rulesync) -> int:
     failed = False
     for check in CHECKS:
         try:
-            result = runner(check.args)
-            validate_result(check, result)
+            validate_result(runner(check.args))
         except (OSError, RuntimeError, ValidationFailure) as exc:
             failed = True
             print(f"FAIL {check.name}: {exc}", file=sys.stderr)
