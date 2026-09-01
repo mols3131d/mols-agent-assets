@@ -36,7 +36,7 @@
       "source": "dyoshikawa/rulesync",
       "skills": ["rulesync"],
       "transport": "github",
-      "ref": "v16.5.0",
+      "ref": "main",
       "path": "skills"
     }
   ]
