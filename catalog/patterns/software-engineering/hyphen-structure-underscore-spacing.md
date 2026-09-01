@@ -58,7 +58,7 @@ agent_assets-subagent-authoring_guide.md
 
 ## Reading the Filename
 
-이 패턴의 장점은 구분자를 기준으로 파일 이름을 두 단계로 읽을 수 있다는 점입니다.
+구분자를 기준으로 파일 이름을 두 단계로 읽을 수 있습니다.
 
 먼저 하이픈을 따라 큰 구조를 읽습니다.
 
@@ -78,7 +78,7 @@ validation rules
 
 ## Composition with Sort-Aware Naming
 
-Filesystem 정렬을 이용해 관련 파일을 모으는 naming과 함께 사용하면 하이픈으로 grouping hierarchy를 드러내면서 각 grouping key의 여러 단어를 언더바로 묶을 수 있습니다.
+Filesystem 정렬을 이용해 관련 파일을 모으는 naming과 함께 사용하면 하이픈으로 grouping structure를 드러내면서 각 grouping key의 여러 단어를 언더바로 묶을 수 있습니다.
 
 ```text
 agent_assets-routing_policy.md
@@ -89,7 +89,7 @@ agent_assets-validation_policy.md
 
 이름 앞쪽의 구조 단위가 같을수록 기본 정렬에서도 가까이 모이기 쉽고, 각 구조 단위 안의 여러 단어는 언더바 덕분에 하나의 의미 단위로 읽힙니다.
 
-이 조합에서도 하이픈은 구조를, 언더바는 구조 단위 내부의 띄어쓰기를 담당한다는 역할을 유지합니다.
+이 패턴 자체는 **어떤 구조 단위를 앞에 둘지, 무엇을 주된 정렬 축으로 삼을지 정하지 않습니다.** 여기서는 선택된 구조를 파일 이름 안에서 어떤 구분자로 표현할지만 다룹니다.
 
 ## Boundaries
 
@@ -98,6 +98,7 @@ agent_assets-validation_policy.md
 - 읽는 순서를 위한 `01-`, `02-` 같은 numbering은 다루지 않습니다.
 - 하이픈 개수나 구조 깊이를 고정하지 않습니다.
 - 언더바 개수도 제한하지 않습니다. 하나의 구조 단위가 여러 단어라면 필요한 만큼 사용할 수 있습니다.
+- 어떤 domain·family·subject를 앞에 둘지와 같은 grouping axis 선택은 이 패턴이 소유하지 않습니다.
 - filename만으로 repository architecture 전체를 표현하려 하지 않습니다.
 - directory가 이미 충분한 구조를 제공하면 filename에 같은 구조를 반복하지 않아도 됩니다.
 - language, framework, tool이 filename 형식을 강하게 소유하면 그 convention을 우선합니다.
