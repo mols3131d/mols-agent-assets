@@ -1,7 +1,16 @@
 ---
 name: mols-agent-asset
 description: >-
-  Create, tune, modify, simplify, refactor, review, or validate agent Skills, Rules or scoped instructions, and agent or subagent definitions. Use for routine asset design and change, repository or runtime adaptation, self-contained review, and proportionate validation when changing agent-facing behavior, ownership, activation, source or target authority, or duplicated or overgrown asset structure. Use mols-agent-asset-validator instead when formal validation, audit, readiness, stress testing, regression, behavioral or adversarial evaluation, repeated trials, runtime evidence, or bounded correction driven by those findings is the primary task. Use mols-agent-asset-find for discovery, selection, loading, installation, synchronization, or invocation. Do not use for ordinary product code, human-facing prose, prompt writing, hook setup, or MCP setup.
+  Create, modify, simplify, refactor, or adapt agent Skills, Rules or scoped
+  instructions, and agent or subagent definitions. Use as the primary authoring
+  and improvement capability when changing agent-facing behavior, ownership,
+  activation, source or target authority, or duplicated or overgrown asset
+  structure. Use mols-agent-asset-validator when the primary task is formal
+  validation, audit, readiness, stress testing, regression, behavioral or
+  adversarial evaluation, or bounded correction driven by those findings. Use
+  mols-agent-asset-find for discovery, selection, loading, installation,
+  synchronization, or invocation. Do not use for ordinary product code,
+  human-facing prose, prompt writing, hook setup, or MCP setup.
 targets:
   - claudecode
   - codexcli
@@ -51,7 +60,7 @@ targets:
 
 예를 들어 Skill 리뷰는 `references/common/review.md`와 `references/skill/review.md`를 읽는다. 저장소에 맞게 기존 Skill을 튜닝하고 검증한다면 `references/common/tune.md`, `references/common/improve.md`, `references/skill/improve.md`, `references/common/validate.md`, `references/skill/validate.md`를 읽는다.
 
-Formal audit, readiness, adversarial or repeated evaluation, runtime trace, regression program이 주된 목적이면 `mols-agent-asset-validator`를 사용한다.
+리뷰와 검증은 이 Skill이 이미 authoring 또는 improvement owner일 때 필요한 자기 점검과 비례적 확인을 소유한다. Formal audit, readiness, adversarial or repeated evaluation, runtime trace, regression program처럼 검증 자체가 주된 작업이면 `mols-agent-asset-validator`를 사용한다.
 
 ## Authority
 
