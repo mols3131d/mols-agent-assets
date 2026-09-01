@@ -1,10 +1,9 @@
 {
   "agent-assets": {
-    "description": "Agent Asset 작성·탐색·검증과 Rulesync 운영",
+    "description": "Agent Asset 작성·탐색·검증·평가와 Rulesync 운영",
     "skills": [
       "mols-agent-asset",
       "mols-agent-asset-find",
-      "mols-agent-asset-validator",
       "rulesync"
     ]
   },
