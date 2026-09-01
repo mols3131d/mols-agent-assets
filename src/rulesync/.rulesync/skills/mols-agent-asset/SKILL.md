@@ -42,7 +42,7 @@ targets:
 
 요청에 실제로 포함된 작업만 고른다. 여러 작업이 독립적으로 필요하면 해당 reference를 함께 읽고, 관련 없는 reference는 선로드하지 않는다.
 
-| 작업 | Common reference |
+| 작업 | 공통 파일 |
 | --- | --- |
 | 설계·생성·큰 재설계 | `references/common/design.md` |
 | 특정 목적·상황·저장소·런타임에 맞춘 튜닝 | `references/common/tune.md` |
@@ -56,11 +56,13 @@ targets:
 - Rule, scoped instruction, selector, inheritance, precedence, projection, deduplication → `references/rule/`
 - Agent/Subagent, delegation, handoff, capability, termination → `references/subagent/`
 
+여러 자산 유형이 실제로 함께 바뀌면 common reference는 한 번만 읽고 필요한 type reference를 각각 추가한다.
+
 튜닝은 `references/common/tune.md`를 먼저 읽는다. 새 자산이나 별도 variant가 필요하면 `references/common/design.md`와 해당 유형의 `design.md`를 추가하고, 기존 자산을 수정하면 `references/common/improve.md`와 해당 유형의 `improve.md`를 추가한다. 튜닝 후 리뷰나 검증까지 요청되면 해당 common/type reference도 함께 읽는다.
 
 예를 들어 Skill 리뷰는 `references/common/review.md`와 `references/skill/review.md`를 읽는다. 저장소에 맞게 기존 Skill을 튜닝하고 검증한다면 `references/common/tune.md`, `references/common/improve.md`, `references/skill/improve.md`, `references/common/validate.md`, `references/skill/validate.md`를 읽는다.
 
-리뷰와 검증은 이 Skill이 이미 authoring 또는 improvement owner일 때 필요한 자기 점검과 비례적 확인을 소유한다. Formal audit, readiness, adversarial or repeated evaluation, runtime trace, regression program처럼 검증 자체가 주된 작업이면 `mols-agent-asset-validator`를 사용한다.
+리뷰와 검증은 이 Skill이 이미 작성·개선의 주된 owner일 때 필요한 자기 점검과 비례적 확인을 소유한다. Formal audit, readiness, adversarial/repeated evaluation, runtime trace, regression program처럼 검증 자체가 주된 작업이면 `mols-agent-asset-validator`를 사용한다.
 
 ## Authority
 
