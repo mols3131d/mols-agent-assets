@@ -74,7 +74,7 @@ CI와 Git hook에서 project Python을 사용할 때는 `uv.lock`을 암묵적�
 
 PR Gate의 책임은 `tests/` 전체를 고정된 Python과 uv 환경에서 `uv --locked` semantics로 실행하는 것뿐입니다. Test selection routing보다 실행 가능한 repository logic의 전체 deterministic suite를 안전한 기본값으로 사용합니다.
 
-Formatting, Rulesync doctor, generated route/index drift 확인, repository toolchain validation, Promptfoo와 model/runtime evaluation은 PR Gate에서 반복하지 않습니다. 각각 local task 또는 Optional Validation이 실행 책임을 가집니다.
+Formatting, Rulesync validation, generated route/index drift 확인, repository toolchain validation, Promptfoo와 model/runtime evaluation은 PR Gate에서 반복하지 않습니다. 각각 local task 또는 Optional Validation이 실행 책임을 가집니다.
 
 PR Gate는 `contents: read`만 사용하고 repository에 write-back하지 않습니다.
 
@@ -86,15 +86,23 @@ PR Gate에 상시 넣을 필요는 없지만 필요할 때 독립적으로 다�
 
 - `docs_indexes` — committed docs index drift 확인
 - `routes` — distribution/repository route를 재생성하고 committed output과 비교
-- `rulesync` — canonical Rulesync source에 strict doctor 실행
+- `rulesync` — canonical Agent Assets를 Rulesync parser·processor·target adapter로 결정론적으로 검증
 
 선택하지 않은 검증은 실행하지 않습니다. Markdown formatter, 전체 `mise run check`, Promptfoo와 model/runtime evaluation은 이 workflow에도 넣지 않습니다.
 
 ## Rulesync 검증
 
-Rulesync CLI는 활발히 유지·개선하는 동안 `mise.toml`에서 `latest` alias를 사용합니다. 새 환경에서는 현재 배포 버전을 설치하고, 이미 설치된 환경에서 새 release를 가져올 때는 `mise upgrade "npm:rulesync"`를 사용합니다. 저장소가 유지보수 상태에 들어가거나 호환성·재현성 때문에 버전 고정이 실질적으로 필요해지면 그때 exact version으로 고정합니다. Repository `npm run rulesync:*` command는 `scripts/run_rulesync.py`를 통해 `src/rulesync/` workspace를 대상으로 실행합니다. Runner는 target path나 projection semantics를 재구현하지 않고 mise-managed Rulesync CLI에 위임합니다.
+Rulesync CLI는 활발히 유지·개선하는 동안 `mise.toml`에서 `latest` alias를 사용합니다. 새 환경에서는 현재 배포 버전을 설치하고, 이미 설치된 환경에서 새 release를 가져올 때는 `mise upgrade "npm:rulesync"`를 사용합니다. 저장소가 유지보수 상태에 들어가거나 호환성·재현성 때문에 버전 고정이 실질적으로 필요해지면 그때 exact version으로 고정합니다.
 
-Root repository workspace는 reusable library와 분리된 declarative consumer입니다. Manifest와 lock의 schema·무결성 및 target별 projection semantics는 Rulesync가 소유하며, `mise run setup`의 `rulesync install --frozen`과 필요한 Rulesync validation으로 확인합니다. Pytest가 lock schema, 특정 target, source transport/path 또는 현재 selection을 별도 contract로 복제하지 않습니다.
+`npm run rulesync:validate`는 `scripts/agent-assets/validate_rulesync.py`를 통해 reusable library workspace를 검증합니다. Validator는 Rulesync CLI의 schema나 projection semantics를 재구현하지 않고 다음 read-only pass를 실행합니다.
+
+1. `doctor --strict`로 Rulesync configuration을 검증합니다.
+2. configured `generate --dry-run`으로 현재 repository support surface의 source parsing과 projection을 검증합니다.
+3. `generate --dry-run --targets "*"`로 개별 asset이 선언한 target까지 Rulesync processor와 adapter에서 검증합니다.
+
+세 pass는 모두 Rulesync의 JSON output을 사용하며 warning도 validation failure로 취급합니다. `--dry-run`만 사용하므로 vendor projection을 쓰거나 삭제하지 않습니다. 개별 asset의 명시적 `targets`는 그대로 존중하며, 선언하지 않은 target의 compatibility까지 검증했다고 간주하지 않습니다.
+
+직접적인 doctor와 target별 preview는 `scripts/run_rulesync.py`가 담당합니다. Root repository workspace는 reusable library와 분리된 declarative consumer입니다. Manifest와 lock의 schema·무결성 및 target별 projection semantics는 Rulesync가 소유하며, `mise run setup`의 `rulesync install --frozen`과 필요한 Rulesync validation으로 확인합니다. Pytest가 lock schema, 특정 target, source transport/path 또는 현재 selection을 별도 contract로 복제하지 않습니다.
 
 ## Evaluation
 
@@ -112,14 +120,13 @@ mise run eval-mols-rpi
 ## 기본 명령
 
 ```bash
-mise exec -- npm run rulesync:doctor
+mise exec -- npm run rulesync:validate
 mise run check
 mise run test
 ```
 
-구체적인 target 검증이 필요할 때만 다음을 추가합니다.
+구체적인 target의 generation 결과를 확인할 때만 preview를 추가합니다.
 
 ```bash
 mise exec -- npm run rulesync:preview -- --targets <target>
-mise exec -- npm run rulesync:validate -- --targets <target>
 ```
