@@ -6,20 +6,23 @@ prompts:
   - "{{task}}"
 
 providers:
-  - id: file://../../scripts/evals/promptfoo_mols_rpi.py:call_api
+  - id: file://../../scripts/agent_assets/skills_promptfoo.py:call_api
     label: mols-rpi-trigger
     config:
+      skill: mols-rpi
       mode: ollama
       suite: trigger
-  - id: file://../../scripts/evals/promptfoo_mols_rpi.py:call_api
+  - id: file://../../scripts/agent_assets/skills_promptfoo.py:call_api
     label: mols-rpi-behavior
     config:
+      skill: mols-rpi
       mode: ollama
       suite: behavior
 
 tests:
-  - path: file://../../scripts/evals/promptfoo_mols_rpi.py:generate_tests
+  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_tests
     config:
+      skill: mols-rpi
       suite: trigger
       provider_label: mols-rpi-trigger
       semantic: false
@@ -37,8 +40,9 @@ tests:
         - loop-identifier-in-task-does-not-activate
         - single-review-request-does-not-activate
         - trivial-work-does-not-activate
-  - path: file://../../scripts/evals/promptfoo_mols_rpi.py:generate_tests
+  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_tests
     config:
+      skill: mols-rpi
       suite: behavior
       provider_label: mols-rpi-behavior
       semantic: true

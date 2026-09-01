@@ -70,7 +70,7 @@ Repository-local superset schema나 manual projection semantics는 만들지 않
 
 ### Deterministic validation
 
-Reusable Agent Asset validation은 `scripts/agent-assets/validate_rulesync.py`가 Rulesync CLI를 orchestration하는 방식으로 수행합니다. Validator는 Rulesync schema나 target adapter를 복제하지 않고 configuration, configured projection, asset-declared target projection을 모두 read-only로 실행하며 Rulesync warning도 failure로 승격합니다.
+Reusable Agent Asset validation은 `scripts/agent_assets/rulesync_validate.py`가 Rulesync CLI를 orchestration하는 방식으로 수행합니다. Validator는 Rulesync schema나 target adapter를 복제하지 않고 configuration, configured projection, asset-declared target projection을 모두 read-only로 실행하며 Rulesync warning도 failure로 승격합니다.
 
 이 검증은 개별 asset이 선언한 `targets`를 존중합니다. 선언하지 않은 target이나 별도의 open-standard compatibility를 검증했다고 확대 해석하지 않습니다.
 
@@ -80,8 +80,8 @@ Reusable Agent Asset validation은 `scripts/agent-assets/validate_rulesync.py`�
 | --- | --- |
 | reusable Rulesync workspace와 canonical assets | [`src/rulesync/`](../../../src/rulesync/) |
 | library configuration | [`src/rulesync/rulesync.jsonc`](../../../src/rulesync/rulesync.jsonc) |
-| Agent Asset Rulesync validator | [`scripts/agent-assets/validate_rulesync.py`](../../../scripts/agent-assets/validate_rulesync.py) |
-| direct doctor·preview wrapper | [`scripts/run_rulesync.py`](../../../scripts/run_rulesync.py) |
+| Agent Asset Rulesync validator | [`scripts/agent_assets/rulesync_validate.py`](../../../scripts/agent_assets/rulesync_validate.py) |
+| direct doctor·preview wrapper | [`scripts/agent_assets/rulesync_run.py`](../../../scripts/agent_assets/rulesync_run.py) |
 | repository command entrypoints | [`package.json`](../../../package.json) |
 
 현재 값이나 command를 이 문서에 복제하지 않습니다. 작업 시 위 source를 읽습니다.

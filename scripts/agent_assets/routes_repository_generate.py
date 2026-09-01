@@ -11,7 +11,7 @@ from urllib.request import urlopen
 
 import yaml
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 ROUTE_DIR = ROOT / ".agents/route"
 FAMILIES_PATH = ROUTE_DIR / "families.json"
 RULESYNC_LOCK = ROOT / "rulesync.lock"

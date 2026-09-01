@@ -8,7 +8,7 @@ from pathlib import Path
 
 import yaml
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 CANONICAL_ASSET_ROOT = ROOT / "src/rulesync/.rulesync"
 CANONICAL_SKILLS = CANONICAL_ASSET_ROOT / "skills"
 CANONICAL_SUBAGENTS = CANONICAL_ASSET_ROOT / "subagents"

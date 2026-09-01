@@ -1,6 +1,6 @@
 import pytest
 
-from scripts.validate_commit_msg import main, validate_subject
+from scripts.commit_message_validate import main, validate_subject
 
 
 @pytest.mark.parametrize(
@@ -35,4 +35,4 @@ def test_main_rejects_empty_message_file(tmp_path) -> None:
     message = tmp_path / "COMMIT_EDITMSG"
     message.write_text("", encoding="utf-8")
 
-    assert main(["validate_commit_msg.py", str(message)]) == 1
+    assert main(["commit_message_validate.py", str(message)]) == 1

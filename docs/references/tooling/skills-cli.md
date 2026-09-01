@@ -11,7 +11,7 @@ description: 외부 Agent Skill dependency를 lock·sync·install·update할 때
 
 - 외부 Skill의 선택과 revision은 root [`skills-lock.json`](../../../skills-lock.json)에 기록하고 commit합니다. Lock은 upstream skills CLI 형식을 그대로 유지하며 repository 전용 target field를 추가하지 않습니다.
 - skills CLI 버전은 [`mise.toml`](../../../mise.toml)에 고정하며 dependency를 추가하거나 lock 상태를 의도적으로 변경할 때 사용합니다.
-- [`scripts/sync_agent_skills.py`](../../../scripts/sync_agent_skills.py)는 lock의 source와 revision을 **읽기만** 합니다. 설치 상태를 맞추는 과정에서 `skills-lock.json`을 다시 쓰지 않습니다.
+- [`scripts/agent_assets/skills_sync.py`](../../../scripts/agent_assets/skills_sync.py)는 lock의 source와 revision을 **읽기만** 합니다. 설치 상태를 맞추는 과정에서 `skills-lock.json`을 다시 쓰지 않습니다.
 - `skills-sync`는 latest revision resolver가 아닙니다. Upstream의 더 새로운 revision을 채택하려면 dependency update로 lock을 먼저 의도적으로 갱신한 뒤 sync합니다.
 - 한 source가 vendor별로 서로 다른 payload나 추가 runtime 자산을 제공하면 generic `skills add --agent ...`로 같은 payload를 여러 target에 강제하지 않습니다. 해당 source의 native installer가 더 충실한 경우 adapter는 그 installer에 vendor 감지와 설치를 위임합니다.
 - 현재 `epoko77-ai/im-not-ai`의 `humanize-korean` dependency는 고정된 lock ref를 user cache에 checkout한 뒤 upstream `install.sh`를 실행합니다. Claude Code, Codex CLI, Gemini CLI의 payload와 지원 범위는 upstream installer가 결정합니다. GitHub Copilot처럼 upstream이 지원 대상으로 선언하지 않은 vendor에는 임의로 설치하지 않습니다.

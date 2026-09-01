@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from scripts import sync_generated_artifacts as sync
+from scripts import generated_artifacts_sync as sync
 
 
 @pytest.mark.parametrize(

@@ -47,19 +47,19 @@ jobs:
 
       - name: Validate docs frontmatter
         if: ${{ inputs.docs_frontmatter }}
-        run: uv run --locked --no-default-groups --group test python scripts/validate_docs_frontmatter.py
+        run: uv run --locked --no-default-groups --group test python scripts/docs_frontmatter_validate.py
 
       - name: Validate docs indexes
         if: ${{ inputs.docs_indexes }}
-        run: uv run --locked --no-default-groups --group test python scripts/generate_docs_indexes.py --check
+        run: uv run --locked --no-default-groups --group test python scripts/docs_indexes_generate.py --check
 
       - name: Validate Agent Asset routes
         if: ${{ inputs.asset_routes }}
         shell: bash
         run: |
           set -euo pipefail
-          uv run --locked --no-default-groups --group test python scripts/generate_distribution_routes.py
-          uv run --locked --no-default-groups --group test python scripts/generate_repository_routes.py
+          uv run --locked --no-default-groups --group test python scripts/agent_assets/routes_distribution_generate.py
+          uv run --locked --no-default-groups --group test python scripts/agent_assets/routes_repository_generate.py
           changes="$(git status --porcelain -- route .agents/route)"
           if [[ -n "$changes" ]]; then
             printf '%s\n' "$changes"

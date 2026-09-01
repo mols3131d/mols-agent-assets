@@ -7,7 +7,7 @@ description: Promptfoo config·assertion·provider·model grading·debugging의 
 
 이 reference는 Promptfoo 사용법이나 option catalog를 복제하지 않고, 자주 확인할 current official source로 라우팅합니다.
 
-Repository-local eval 정책은 [Evaluation](../../development/evaluation.md), PR Gate와 deterministic verification은 [Testing](../../development/testing.md), 실행 config는 [`evals/promptfoo/`](../../../evals/promptfoo/), adapter와 runner는 [`scripts/evals/`](../../../scripts/evals/)에서 확인합니다.
+Repository-local eval 정책은 [Evaluation](../../development/evaluation.md), PR Gate와 deterministic verification은 [Testing](../../development/testing.md), 실행 config는 [`evals/promptfoo/`](../../../evals/promptfoo/), Agent Asset 평가 adapter와 runner는 [`scripts/agent_assets/`](../../../scripts/agent_assets/)에서 확인합니다.
 
 ## Core lookup
 

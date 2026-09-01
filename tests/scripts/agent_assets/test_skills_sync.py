@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from scripts import sync_agent_skills as sync
+from scripts.agent_assets import skills_sync as sync
 
 
 def locked_skill(

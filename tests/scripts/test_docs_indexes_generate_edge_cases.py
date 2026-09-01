@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import csv
 
-from scripts.generate_docs_indexes import generate_docs_indexes
+from scripts.docs_indexes_generate import generate_docs_indexes
 
 
 def _write(path, content):
