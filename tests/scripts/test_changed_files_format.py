@@ -3,7 +3,7 @@ from __future__ import annotations
 import subprocess
 from pathlib import Path
 
-from scripts.format_changed import changed_paths, select_paths
+from scripts.changed_files_format import changed_paths, select_paths
 
 
 def git(root: Path, *args: str) -> None:
