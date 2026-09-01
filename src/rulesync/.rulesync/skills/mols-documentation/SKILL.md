@@ -13,6 +13,7 @@ targets:
   - copilotcli
   - antigravity-ide
   - antigravity-cli
+version: "4.0.0"
 ---
 
 # Mols Documentation
