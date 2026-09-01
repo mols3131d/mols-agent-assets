@@ -79,7 +79,7 @@ History 재작성은 작업 편의를 위한 기본 동작이 아닙니다.
 
 직접 작성하는 commit message의 authoring convention은 repository root의 [`.gitmessage`](../../.gitmessage)가 authoritative source입니다. 사람이 작성하든 agent가 작성하든 같은 convention을 적용하며 agent 실행 과정이나 model 표기를 위한 별도 commit format을 만들지 않습니다.
 
-- [`scripts/validate_commit_msg.py`](../../scripts/validate_commit_msg.py)는 deterministic하게 검사할 수 있는 최소 subset을 검증합니다.
+- [`scripts/commit_message_validate.py`](../../scripts/commit_message_validate.py)는 deterministic하게 검사할 수 있는 최소 subset을 검증합니다.
 - [`lefthook.yml`](../../lefthook.yml)의 `commit-msg` hook이 validator를 실행합니다.
 - Validator가 검사하지 않는 `.gitmessage`의 human convention까지 validator의 contract로 확대 해석하지 않습니다.
 
