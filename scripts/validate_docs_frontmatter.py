@@ -9,7 +9,6 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
-CONFIG_PATH = ROOT / "frontmatter.json"
 VALIDATOR_DIR = ROOT / "src/rulesync/.rulesync/skills/mols-markdown-maintenance/scripts"
 sys.path.insert(0, str(VALIDATOR_DIR))
 
@@ -105,9 +104,15 @@ def validate_docs_frontmatter(
         excludes = page_folder.get("excludePaths", [])
         if not isinstance(configured_path, str):
             raise ValueError("frontmatter page folder path must be a string")
-        if not isinstance(names, list) or len(names) != 1 or not isinstance(names[0], str):
+        if (
+            not isinstance(names, list)
+            or len(names) != 1
+            or not isinstance(names[0], str)
+        ):
             raise ValueError("frontmatter page folder must declare one content type")
-        if not isinstance(excludes, list) or not all(isinstance(item, str) for item in excludes):
+        if not isinstance(excludes, list) or not all(
+            isinstance(item, str) for item in excludes
+        ):
             raise ValueError("frontmatter excludePaths must be a string array")
         if names[0] not in content_types:
             raise ValueError(f"unknown frontmatter content type: {names[0]}")
