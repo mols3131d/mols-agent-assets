@@ -1,15 +1,13 @@
 ---
 name: mols-documentation
 description: >-
-  사람이 읽고 유지보수하는 문서를 작성, 재작성하거나 개선한다. README, 가이드,
-  정책, 계획, 보고서, 설명 문서 등에서 독자가 필요한 정보를 찾고 이해하고 판단하고
-  행동할 수 있도록 정보 구조, 명확성, 가독성, 탐색성, 신뢰성과 유지보수성을 다듬을
-  때 사용한다. 기존 문서는 사실, 결정, 식별자, 제약과 필요한 voice를 보존한다.
-  Markdown이나 README처럼 표현 surface나 문서 유형에 특화된 규칙은 필요한
-  reference만 로드한다. deterministic Markdown maintenance는
-  mols-markdown-maintenance, engineering dashboard는 mols-markdown-dashboard,
-  source-code comments와 docstrings는 mols-clarify-code가 소유한다. 기술 문서의
-  의미 보존이 주된 제약이면 technical-document-fidelity를 함께 적용한다.
+  README, 가이드, 정책, 계획, 보고서, 설명 문서 등 사람이 읽고 유지보수하는 문서를
+  새로 작성하거나 구조, 내용, 가독성을 개선할 때 사용한다. 독자가 필요한 정보를
+  찾고 이해하고 판단하고 행동할 수 있도록 목적, 정보 구조, 명확성, 탐색성, 신뢰성과
+  유지보수성을 다룬다. 기존 문서에서는 사실, 결정, 식별자, 제약과 필요한 voice를
+  보존한다. 단순 Markdown formatting이나 lint, engineering dashboard,
+  source-code comment나 docstring, 이메일·메시지·소셜 문구 또는 문체만 윤문하는
+  작업에는 사용하지 않는다.
 targets:
   - claudecode
   - codexcli
