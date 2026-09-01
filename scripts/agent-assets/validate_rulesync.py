@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
-"""Deterministically validate reusable Agent Assets through Rulesync.
+"""Rulesync로 재사용 Agent Asset을 결정론적으로 검증한다.
 
-Run read-only checks against ``src/rulesync`` to verify the Rulesync
-configuration, the repository's configured projections, and the projections
-selected by each asset's declared targets. Generation checks use ``--dry-run``;
-``--targets '*'`` broadens the target surface considered by Rulesync but does
-not override an asset's own target declaration.
+``src/rulesync``를 대상으로 read-only 검증을 실행해 Rulesync 설정, 이 repository가
+설정한 projection, 각 asset이 선언한 ``targets``에 따라 선택되는 projection을 확인한다.
+생성 검증은 모두 ``--dry-run``을 사용한다. ``--targets '*'``는 Rulesync가 고려하는
+대상 범위를 넓히지만 각 asset이 직접 선언한 target을 덮어쓰지 않는다.
 
-Treat every non-success JSON result and every Rulesync warning as a validation
-failure. Schema parsing, source loading, and target-adapter semantics remain
-owned by Rulesync rather than being reimplemented here. This validator does not
-claim to assess semantic quality, routing quality, or runtime behavior.
+Rulesync의 JSON 결과가 성공이 아니거나 warning이 하나라도 있으면 검증 실패로 본다.
+schema parsing, source loading, target adapter semantics는 여기서 다시 구현하지 않고
+Rulesync가 소유한다. 이 검증기는 semantic quality, routing quality, runtime behavior를
+검증한다고 간주하지 않는다.
 """
 
 from __future__ import annotations
@@ -44,13 +43,13 @@ Runner = Callable[[tuple[str, ...]], subprocess.CompletedProcess[str]]
 
 
 class ValidationFailure(RuntimeError):
-    """Raised when a Rulesync validation check is not clean."""
+    """Rulesync 검증 결과가 repository의 통과 조건을 만족하지 않을 때 발생한다."""
 
 
 def rulesync_command() -> str:
     rulesync = shutil.which("rulesync")
     if rulesync is None:
-        raise RuntimeError("rulesync is required; install repository tools with mise")
+        raise RuntimeError("rulesync가 필요합니다. mise로 repository 도구를 설치하세요.")
     return rulesync
 
 
@@ -66,13 +65,13 @@ def run_rulesync(args: tuple[str, ...]) -> subprocess.CompletedProcess[str]:
 
 def parse_payload(stdout: str) -> dict[str, Any]:
     if not stdout.strip():
-        raise ValidationFailure("Rulesync returned no JSON output")
+        raise ValidationFailure("Rulesync가 JSON 출력을 반환하지 않았습니다.")
     try:
         payload = json.loads(stdout)
     except json.JSONDecodeError as exc:
-        raise ValidationFailure("Rulesync returned invalid JSON output") from exc
+        raise ValidationFailure("Rulesync가 유효하지 않은 JSON을 반환했습니다.") from exc
     if not isinstance(payload, dict):
-        raise ValidationFailure("Rulesync JSON output must be an object")
+        raise ValidationFailure("Rulesync JSON 출력은 object여야 합니다.")
     return payload
 
 
@@ -81,7 +80,7 @@ def warnings_from(payload: dict[str, Any]) -> list[str]:
     if warnings is None:
         return []
     if not isinstance(warnings, list) or not all(isinstance(item, str) for item in warnings):
-        raise ValidationFailure("Rulesync JSON warnings must be a string array")
+        raise ValidationFailure("Rulesync JSON의 warnings는 string array여야 합니다.")
     return warnings
 
 
@@ -98,7 +97,7 @@ def failure_message(payload: dict[str, Any], stderr: str) -> str:
         return error
     if stderr.strip():
         return stderr.strip()
-    return "Rulesync command failed"
+    return "Rulesync 명령이 실패했습니다."
 
 
 def validate_result(result: subprocess.CompletedProcess[str]) -> None:
@@ -115,7 +114,7 @@ def validate_result(result: subprocess.CompletedProcess[str]) -> None:
     warnings = warnings_from(payload)
     if warnings:
         rendered = "\n".join(f"  - {warning}" for warning in warnings)
-        raise ValidationFailure(f"Rulesync reported warnings:\n{rendered}")
+        raise ValidationFailure(f"Rulesync가 warning을 보고했습니다:\n{rendered}")
 
     if payload.get("success") is not True:
         raise ValidationFailure(failure_message(payload, result.stderr))
