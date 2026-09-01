@@ -4,7 +4,7 @@ import json
 
 import pytest
 
-from scripts.validate_docs_frontmatter import validate_docs_frontmatter
+from scripts.docs_frontmatter_validate import validate_docs_frontmatter
 
 
 def _write(path, content: str) -> None:
