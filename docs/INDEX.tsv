@@ -35,9 +35,8 @@ skills/
 skills/artifact-consistency-inspector/	
 skills/artifact-consistency-inspector/customization.md	artifact-consistency-inspector를 project에 맞게 조정할 때 변경 가능한 항목과 반드시 보존할 runtime·report invariant, rename 및 frontmatter 동기화 규칙을 확인하는 maintainer 문서입니다.
 skills/caveman-ko/	caveman-ko를 유지보수하거나 승격할 때 upstream provenance, Experimental 경계, runtime·eval 책임과 promotion criteria를 확인하는 maintainer entrypoint입니다.
-skills/mols-agent-asset-validator/	
-skills/mols-agent-asset-validator/baseline/	
-skills/mols-agent-asset-validator/baseline/DIRECTIVE.md	mols-agent-asset-validator의 검증 범위, evidence 상태, loop·review·runtime 원칙을 변경하거나 복구할 때 보존해야 할 핵심 invariant를 확인하는 protected baseline입니다.
+skills/mols-agent-asset/	
+skills/mols-agent-asset/validation-and-evaluation.md	Agent Asset의 Review, 결정론적·의미론적 Validation과 Routing·Behavior Evaluation의 책임 경계를 판단할 때 사용합니다.
 skills/mols-clarify-code/	
 skills/mols-clarify-code/baseline/	
 skills/mols-clarify-code/baseline/decisions.md	mols-clarify-code의 routing, scope, public argument, documentation·validation 전략을 변경하거나 복구할 때 원래 설계 결정과 후속 식별자 변경을 확인하는 protected baseline 기록입니다.
