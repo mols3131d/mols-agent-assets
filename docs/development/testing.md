@@ -20,10 +20,6 @@ CI와 Git hook에서 project Python을 사용할 때는 `uv.lock`을 암묵적�
 
 ## PR Gate
 
-`main` 대상 PR은 `PR Gate`에서 `tests/` 전체를 실행합니다. Workflow-level path filter를 두지 않고, repository에는 write-back하지 않습니다.
+`main` 대상 PR은 `PR Gate`에서 `tests/` 전체를 실행합니다. Workflow-level path filter를 두지 않고 repository에는 write-back하지 않습니다.
 
-PR Gate는 다음 작업을 반복하지 않습니다.
-
-- [Formatting](formatting.md)
-- [Validation](validation.md)
-- [Evaluation](evaluation.md)
+PR Gate는 [Formatting](formatting.md), [Validation](validation.md), [Evaluation](evaluation.md)을 반복하지 않습니다.
