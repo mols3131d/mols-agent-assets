@@ -49,7 +49,7 @@ class ValidationFailure(RuntimeError):
 def rulesync_command() -> str:
     rulesync = shutil.which("rulesync")
     if rulesync is None:
-        raise RuntimeError("Rulesync가 필요합니다. mise로 repository 도구를 설치하세요.")
+        raise RuntimeError("rulesync가 필요합니다. mise로 repository 도구를 설치하세요.")
     return rulesync
 
 
