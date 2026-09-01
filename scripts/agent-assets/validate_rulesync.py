@@ -1,5 +1,17 @@
 #!/usr/bin/env python3
-"""Validate canonical Agent Assets through Rulesync without writing projections."""
+"""Deterministically validate reusable Agent Assets through Rulesync.
+
+Run read-only checks against ``src/rulesync`` to verify the Rulesync
+configuration, the repository's configured projections, and the projections
+selected by each asset's declared targets. Generation checks use ``--dry-run``;
+``--targets '*'`` broadens the target surface considered by Rulesync but does
+not override an asset's own target declaration.
+
+Treat every non-success JSON result and every Rulesync warning as a validation
+failure. Schema parsing, source loading, and target-adapter semantics remain
+owned by Rulesync rather than being reimplemented here. This validator does not
+claim to assess semantic quality, routing quality, or runtime behavior.
+"""
 
 from __future__ import annotations
 
