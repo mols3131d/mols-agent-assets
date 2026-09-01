@@ -47,25 +47,7 @@ jobs:
 
       - name: Validate docs frontmatter
         if: ${{ inputs.docs_frontmatter }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          mapfile -d '' files < <(
-            find docs -type f -name '*.md' \
-              ! -path '*/baseline/*' \
-              ! -name 'AGENTS.md' \
-              ! -name 'SKILL.md' \
-              ! -name 'DIRECTIVE.md' \
-              ! -name '*.agent.md' \
-              ! -name '*.instructions.md' \
-              ! -name '*.prompt.md' \
-              ! -name '__*__.md' \
-              ! -name '.*.md' \
-              -print0
-          )
-          uv run --locked --no-default-groups --group test python \
-            src/rulesync/.rulesync/skills/mols-markdown-maintenance/scripts/validate_frontmatter.py \
-            "${files[@]}" --required description
+        run: uv run --locked --no-default-groups --group test python scripts/validate_docs_frontmatter.py
 
       - name: Validate docs indexes
         if: ${{ inputs.docs_indexes }}
@@ -78,7 +60,7 @@ jobs:
           set -euo pipefail
           uv run --locked --no-default-groups --group test python scripts/generate_distribution_routes.py
           uv run --locked --no-default-groups --group test python scripts/generate_repository_routes.py
-          git diff --exit-code -- route/*.jsonl .agents/route/*.jsonl
+          git diff --exit-code -- route .agents/route
 
       - name: Set up mise
         if: ${{ inputs.rulesync_assets }}
