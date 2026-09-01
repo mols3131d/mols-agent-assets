@@ -48,13 +48,13 @@ Choose the operation first, then the asset type. Load the matching common refere
 | Review | `references/common/review.md` |
 | Validate or check | `references/common/validate.md` |
 
-| Asset type | Type references |
-| --- | --- |
-| Skill or `SKILL.md` | `references/skill/{design,improve,review,validate}.md` |
-| Rule, scoped instruction, selector, inheritance, precedence, projection, or rule deduplication | `references/rule/{design,improve,review,validate}.md` |
-| Agent or subagent definition, delegation, handoff, capability boundary, or termination contract | `references/subagent/{design,improve,review,validate}.md` |
+For the selected operation, use the same filename under the relevant asset type directory:
 
-Use the type file whose name matches the selected operation. When a task genuinely spans multiple operations or asset types, load only the additional files whose responsibilities independently apply.
+- Skill or `SKILL.md` → `references/skill/`
+- Rule, scoped instruction, selector, inheritance, precedence, projection, or rule deduplication → `references/rule/`
+- Agent or subagent definition, delegation, handoff, capability boundary, or termination contract → `references/subagent/`
+
+For example, Skill review loads `references/common/review.md` and `references/skill/review.md`. When a task genuinely spans multiple operations or asset types, load only the additional files whose responsibilities independently apply.
 
 Do not add another type or operation reference until repeated local decisions justify one. If the primary task is formal validation, audit, readiness, stress testing, regression, repeated trials, or behavioral/adversarial evaluation, use `mols-agent-asset-validator`. Validation-driven bounded correction remains validator-primary; compose this Skill only for authoring decisions that independently apply.
 
