@@ -1,16 +1,16 @@
 ---
 name: mols-agent-asset
 description: >-
-  Create, modify, simplify, refactor, review, validate, or improve agent Skills,
-  Rules or scoped instructions, and agent or subagent definitions. Use as the
-  primary type-aware lifecycle capability when changing or checking agent-facing
-  behavior, ownership, activation, source or target authority, duplicated or
-  overgrown structure, or type-specific quality. Use mols-agent-asset-validator
-  when the primary task is formal audit, readiness, stress testing, regression,
-  repeated behavioral or adversarial evaluation, or correction driven by that
-  evidence. Use mols-agent-asset-find for discovery, selection, loading,
-  installation, synchronization, or invocation. Do not use for ordinary product
-  code, human-facing prose, prompt writing, hook setup, or MCP setup.
+  Create, modify, simplify, refactor, or adapt agent Skills, Rules or scoped
+  instructions, and agent or subagent definitions. Use as the primary authoring
+  and improvement capability when changing agent-facing behavior, ownership,
+  activation, source or target authority, or duplicated or overgrown asset
+  structure. Use mols-agent-asset-validator when the primary task is formal
+  validation, audit, readiness, stress testing, regression, behavioral or
+  adversarial evaluation, or bounded correction driven by those findings. Use
+  mols-agent-asset-find for discovery, selection, loading, installation,
+  synchronization, or invocation. Do not use for ordinary product code,
+  human-facing prose, prompt writing, hook setup, or MCP setup.
 targets:
   - claudecode
   - codexcli
