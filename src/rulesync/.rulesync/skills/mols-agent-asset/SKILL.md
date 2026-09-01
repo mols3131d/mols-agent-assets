@@ -23,7 +23,7 @@ targets:
 
 # Mols Agent Asset
 
-Create, change, review, or validate the smallest agent asset that owns the requested behavior.
+Create, improve, review, or validate the smallest agent asset that owns the requested behavior.
 
 ## Contract
 
@@ -39,15 +39,24 @@ Create, change, review, or validate the smallest agent asset that owns the reque
 
 ## Route
 
-For any material Agent Asset work, read [Common Lifecycle](references/common/lifecycle.md). Then load only the type module that applies:
+Choose the operation first, then the asset type. Load the matching common reference and type-specific reference only.
 
-- Skill or `SKILL.md` → [Skill Lifecycle](references/skill/lifecycle.md)
-- Rule, scoped instruction, inheritance, selector, precedence, projection, or rule deduplication → [Rule Lifecycle](references/rule/lifecycle.md)
-- Agent or subagent definition, delegation, handoff, tool/capability boundary, or termination contract → [Subagent Lifecycle](references/subagent/lifecycle.md)
+| Operation | Common reference |
+| --- | --- |
+| Create, design, or materially redesign | `references/common/design.md` |
+| Improve, simplify, modify, refactor, or adapt | `references/common/improve.md` |
+| Review | `references/common/review.md` |
+| Validate or check | `references/common/validate.md` |
 
-When a change genuinely spans multiple asset types, load each affected type module but keep the common lifecycle as the single workflow owner. Do not create separate workflow machinery merely because the operation is called create, improve, refactor, review, or validate.
+| Asset type | Type references |
+| --- | --- |
+| Skill or `SKILL.md` | `references/skill/{design,improve,review,validate}.md` |
+| Rule, scoped instruction, selector, inheritance, precedence, projection, or rule deduplication | `references/rule/{design,improve,review,validate}.md` |
+| Agent or subagent definition, delegation, handoff, capability boundary, or termination contract | `references/subagent/{design,improve,review,validate}.md` |
 
-Do not add another type module until repeated local decisions justify one. If the primary task is formal validation, audit, readiness, stress testing, regression, repeated trials, or behavioral/adversarial evaluation, use `mols-agent-asset-validator`. Validation-driven bounded correction remains validator-primary; compose this Skill only for authoring decisions that independently apply.
+Use the type file whose name matches the selected operation. When a task genuinely spans multiple operations or asset types, load only the additional files whose responsibilities independently apply.
+
+Do not add another type or operation reference until repeated local decisions justify one. If the primary task is formal validation, audit, readiness, stress testing, regression, repeated trials, or behavioral/adversarial evaluation, use `mols-agent-asset-validator`. Validation-driven bounded correction remains validator-primary; compose this Skill only for authoring decisions that independently apply.
 
 ## Authority
 
