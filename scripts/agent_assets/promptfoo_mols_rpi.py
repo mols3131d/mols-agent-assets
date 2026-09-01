@@ -242,7 +242,7 @@ def generate_tests(config: dict | None = None) -> list[dict]:
             checks = [
                 {
                     "type": "python",
-                    "value": "file://../../scripts/evals/promptfoo_mols_rpi.py:assert_trigger",
+                    "value": "file://../../scripts/agent_assets/promptfoo_mols_rpi.py:assert_trigger",
                     "metric": (
                         "trigger-activation"
                         if "mols-rpi" in expected["selected_skills"]
@@ -259,7 +259,7 @@ def generate_tests(config: dict | None = None) -> list[dict]:
             checks = [
                 {
                     "type": "python",
-                    "value": "file://../../scripts/evals/promptfoo_mols_rpi.py:assert_behavior_output",
+                    "value": "file://../../scripts/agent_assets/promptfoo_mols_rpi.py:assert_behavior_output",
                     "metric": "behavior-output",
                 }
             ]
