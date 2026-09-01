@@ -36,4 +36,6 @@ Reviewer는 candidate finding과 unknown을 반환하고 최종 deduplication, s
 
 Finding은 구체적인 defect, ambiguity, unnecessary cost, unsupported claim, regression risk에 연결한다. 반복 symptom보다 root cause를 우선하고, 숫자나 형식을 맞추기 위해 finding을 만들지 않는다.
 
+Finding의 근거 수준과 capability limitation은 `../evidence.md`를 따른다.
+
 정적 리뷰로 runtime selection, application, delegation, parity, compatibility를 증명하지 않는다.
