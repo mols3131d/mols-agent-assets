@@ -67,7 +67,7 @@ Deterministic test는 이 repository가 구현한 **실행 가능한 동작**을
 
 CI와 Git hook에서 project Python을 사용할 때는 `uv.lock`을 암묵적으로 갱신하지 않는 `--locked` 실행을 사용합니다.
 
-도메인별 structural validation, generated drift, toolchain·lock validation과 Agent Asset validation은 [Validation](validation.md)이 소유합니다.
+문서 frontmatter·`INDEX.tsv`, Agent Asset routing, Rulesync-managed assets의 repository validation은 [Validation](validation.md)이 소유합니다.
 
 ## PR Gate
 
@@ -75,7 +75,7 @@ CI와 Git hook에서 project Python을 사용할 때는 `uv.lock`을 암묵적�
 
 PR Gate의 책임은 `tests/` 전체를 고정된 Python과 uv 환경에서 `uv --locked` semantics로 실행하는 것뿐입니다. Test selection routing보다 실행 가능한 repository logic의 전체 deterministic suite를 안전한 기본값으로 사용합니다.
 
-Formatting, domain validation, generated route/index drift 확인, repository toolchain validation, Promptfoo와 model/runtime evaluation은 PR Gate에서 반복하지 않습니다.
+Formatting, repository validation, generated route/index drift 확인, Promptfoo와 model/runtime evaluation은 PR Gate에서 반복하지 않습니다.
 
 PR Gate는 `contents: read`만 사용하고 repository에 write-back하지 않습니다.
 
