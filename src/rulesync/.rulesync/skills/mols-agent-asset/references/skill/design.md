@@ -28,6 +28,7 @@ Metadata는 후보를 좁히고, entrypoint는 실제 applicability와 필요한
 - conditional detail은 loading 이점이 있을 때만 reference로 분리하고, 언제 읽는지 entrypoint에서 발견 가능하게 한다.
 - 거의 항상 함께 읽는 짧은 detail은 따로 분리하지 않는다.
 - context를 좁히지 못하는 깊은 reference chain이나 router를 만들지 않는다.
+- supporting material에 host가 별도 Skill로 발견할 수 있는 추가 entrypoint 파일을 만들지 않는다.
 - 반복되는 deterministic work는 prose보다 script나 native mechanism을 고려한다.
 - output asset은 실제 task/runtime이 소비할 때만 둔다.
 - maintainer-only artifact를 deployable Skill에 섞지 않는다.
@@ -46,3 +47,5 @@ Metadata는 후보를 좁히고, entrypoint는 실제 applicability와 필요한
 ## Source and target
 
 Canonical source와 target projection을 구분한다. Source framework가 여러 target으로 투영하면 canonical source를 수정하고, target-specific discovery, metadata, permission, packaging, runtime behavior는 target contract를 따른다. Project-local 차이는 portable core 전체를 fork하지 않고 필요한 delta만 유지한다.
+
+현재 authoritative target contract를 확인할 수 없으면 established source shape를 보존하고 target-specific field, path, permission, packaging behavior를 추측하지 않는다. 그 차이가 결과에 영향을 줄 수 있으면 compatibility gap을 드러낸다.
