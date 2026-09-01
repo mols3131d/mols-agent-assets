@@ -1,7 +1,7 @@
 ---
 name: mols-rpi
 description: >-
-  Use RPI orchestration when the user explicitly requests RPI/RPI(R), an iterative or recursive loop/루프, improvement loop, deep loop, or equivalent method.
+  Use RPI orchestration when the user explicitly requests RPI/RPI(R), a loop/루프 method, recursive improvement, an improvement/deep loop, or an equivalent iterative method.
   Also use when a single pass is materially unreliable and the task needs evidence before consequential decisions, planning before consequential Work, iterative verification or replanning, convergence across coupled acceptance conditions or workstreams, or recursive narrowing.
   Keep any more specific task Skill, workflow, or governing procedure primary; compose RPI only when compatible and useful.
   Do not trigger when RPI/loop is merely a topic, identifier, or code concept.
