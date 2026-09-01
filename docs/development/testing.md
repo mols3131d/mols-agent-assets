@@ -6,7 +6,7 @@ description: 저장소의 결정론적 검증, 도구 검증, PR Gate와 merge�
 
 ## Tool ownership
 
-저장소에서 사용하는 도구 버전과 여러 도구를 아우르는 작업 진입점은 `mise.toml`에 고정합니다.
+저장소에서 사용하는 도구 버전 선택과 여러 도구를 아우르는 작업 진입점은 `mise.toml`에서 관리합니다.
 
 - mise는 `uv`, Node.js, rumdl, Lefthook, Biome, Rulesync, skills CLI와 저장소 수준 작업을 소유합니다.
 - uv는 `.python-version`의 Python 버전, `pyproject.toml`의 Python 의존성, 환경과 `uv.lock`을 소유합니다.
@@ -92,7 +92,7 @@ PR Gate에 상시 넣을 필요는 없지만 필요할 때 독립적으로 다�
 
 ## Rulesync 검증
 
-Rulesync CLI 버전은 `mise.toml`에 정확히 고정합니다. Repository `npm run rulesync:*` command는 `scripts/run_rulesync.py`를 통해 `src/rulesync/` workspace를 대상으로 실행합니다. Runner는 target path나 projection semantics를 재구현하지 않고 mise-managed Rulesync CLI에 위임합니다.
+Rulesync CLI는 활발히 유지·개선하는 동안 `mise.toml`에서 `latest`를 추적합니다. 저장소가 유지보수 상태에 들어가거나 호환성·재현성 때문에 버전 고정이 실질적으로 필요해지면 그때 exact version으로 고정합니다. Repository `npm run rulesync:*` command는 `scripts/run_rulesync.py`를 통해 `src/rulesync/` workspace를 대상으로 실행합니다. Runner는 target path나 projection semantics를 재구현하지 않고 mise-managed Rulesync CLI에 위임합니다.
 
 Root repository workspace는 reusable library와 분리된 declarative consumer입니다. Manifest와 lock의 schema·무결성 및 target별 projection semantics는 Rulesync가 소유하며, `mise run setup`의 `rulesync install --frozen`과 필요한 Rulesync validation으로 확인합니다. Pytest가 lock schema, 특정 target, source transport/path 또는 현재 selection을 별도 contract로 복제하지 않습니다.
 
