@@ -7,8 +7,8 @@ Text label 없이 색상이나 glyph만으로 의미를 전달하지 않는다.
 
 | Marker | Meaning |
 | --- | --- |
-| `✅` | Done, Pass, Success |
-| `❌` | Fail, Error |
+| `✅` | True, Done, Pass, Success |
+| `❌` | False, Fail, Error |
 | `⚠️` | Warning, Risk |
 | `ℹ️` | Information, Note |
 | `⏳` | Pending, In progress |
