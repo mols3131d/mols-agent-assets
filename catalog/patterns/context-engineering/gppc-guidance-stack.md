@@ -1,25 +1,29 @@
 ---
-description: Goal과 Principles의 안정적인 방향을 Patterns와 Contracts의 적응 가능한 실행 지침과 분리해 guidance를 구조화할 때 참고하는 pattern입니다.
+description: Goal과 Principles를 본질, Patterns와 Contracts를 실존으로 보고 안정적인 방향과 적응 가능한 실행 지침을 분리해 guidance를 구조화할 때 참고하는 pattern입니다.
 ---
 
 # GPPC Guidance Stack
 
 GPPC는 guidance를 **Goal, Principles, Patterns, Contracts**의 네 계층으로 나누어, 안정적으로 유지할 방향과 상황에 맞게 조정할 실행 지침을 분리하는 패턴이다.
 
-목적과 원칙을 구체적인 실행 지침과 같은 수준에서 다루면 세부 사항을 수정하다 방향까지 바꾸거나, 반대로 오래된 실행 방식을 지나치게 고정하기 쉽다. GPPC는 이 책임을 계층별로 분리한다.
+GPPC에서는 **Goal과 Principles를 본질(Essence)**로, **Patterns와 Contracts를 실존(Existence)**으로 본다. 본질은 guidance가 무엇을 지향하고 어떤 기준으로 판단하는지를 정의하고, 실존은 그 본질이 실제 환경에서 어떤 해결 방식과 조건으로 구체화되는지를 나타낸다.
+
+목적과 원칙을 구체적인 실행 지침과 같은 수준에서 다루면 세부 사항을 수정하다 방향까지 바꾸거나, 반대로 오래된 실행 방식을 지나치게 고정하기 쉽다. GPPC는 본질과 실존의 책임을 분리해 이를 피한다.
 
 ## Core
 
-| Layer | 책임 | 성격 |
-| --- | --- | --- |
-| **Goal** | 목적지를 정의한다 | 추상적 · 안정적 · 높은 권위 |
-| **Principles** | 판단 기준을 정의한다 | 추상적 · 안정적 · 높은 권위 |
-| **Patterns** | 재사용 가능한 해결 방식을 정의한다 | 상대적으로 구체적 · 적응 가능 |
-| **Contracts** | 지켜야 하는 조건과 경계를 정의한다 | 명확 · 적응 가능 · 적용 시 준수 |
+| Layer | 영역 | 책임 | 성격 |
+| --- | --- | --- | --- |
+| **Goal** | Essence | 목적지를 정의한다 | 추상적 · 안정적 · 높은 권위 |
+| **Principles** | Essence | 판단 기준을 정의한다 | 추상적 · 안정적 · 높은 권위 |
+| **Patterns** | Existence | 재사용 가능한 해결 방식을 정의한다 | 상대적으로 구체적 · 적응 가능 |
+| **Contracts** | Existence | 지켜야 하는 조건과 경계를 정의한다 | 명확 · 적응 가능 · 적용 시 준수 |
 
-**Goal과 Principles**는 guidance의 방향과 판단 기준을 소유한다. 쉽게 변경하지 않으며, agent도 명시적인 요청이나 적절한 변경 권한 없이 이를 수정 대상으로 취급하지 않는 편이 좋다.
+**GP — Goal과 Principles는 본질을 정의한다.** Guidance가 왜 존재하고 어디를 향하며 어떤 기준으로 판단하는지를 결정한다. 쉽게 변경하지 않으며, agent도 명시적인 요청이나 적절한 변경 권한 없이 이를 수정 대상으로 취급하지 않는 편이 좋다.
 
-**Patterns와 Contracts**는 Goal과 Principles를 실제 상황에 적용한다. 적용 경험이나 환경 변화에 따라 수정할 수 있지만, 변경된 내용은 Goal과 Principles에 계속 부합해야 한다.
+**PC — Patterns와 Contracts는 실존을 정의한다.** 본질이 실제 상황에서 어떻게 구현되고 어떤 조건 안에서 작동하는지를 구체화한다. 적용 경험이나 환경 변화에 따라 수정할 수 있지만, 변경된 내용은 Goal과 Principles에 계속 부합해야 한다.
+
+같은 Goal과 Principles를 유지하면서 Patterns와 Contracts가 달라지는 것은 같은 본질이 다른 방식으로 실존하는 것으로 볼 수 있다. 반대로 Goal이나 Principles의 변화는 guidance 자체의 정체성 변화에 가깝다.
 
 Contract는 적용되는 동안 엄격하게 준수될 수 있다. 그러나 강제력이 높다는 것이 Goal이나 Principles보다 의미적 권위가 높다는 뜻은 아니다.
 
@@ -92,6 +96,8 @@ Contracts는 선호나 권고와 구분된다. 적용되는 동안에는 준수�
 ## Boundary
 
 GPPC는 guidance 내부의 역할과 변경 성격을 구조화하는 패턴이다.
+
+Essence와 Existence는 GPPC의 구조를 설명하기 위해 빌린 표현이다. 특정 실존주의 철학의 명제나 존재론을 GPPC의 규칙으로 채택한다는 뜻은 아니다.
 
 다음은 GPPC 자체가 정의하지 않는다.
 
