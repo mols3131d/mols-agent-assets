@@ -35,6 +35,8 @@ Code-facing task의 **language-independent core engineering judgment**를 제공
 - KISS, YAGNI, DRY, SRP를 pattern count나 stylistic purity로 적용하지 않는다.
 - Abstraction은 stable concept, invariant 또는 ownership을 실제로 모을 때만 추가한다.
 - Speculative configuration, extension point, cache, concurrency, dependency, framework와 future-proofing은 현재 필요와 evidence가 있을 때만 추가한다.
+- 새 dependency는 제거하는 implementation, maintenance, operational, security 또는 correctness burden이 도입 비용보다 클 때 사용한다.
+- Functional change와 큰 mechanical refactor를 함께 하면 review, rollback, diagnosis 또는 verification이 materially 어려워지는 경우 분리한다.
 - Local problem을 evidence 없이 architecture problem으로 확대하지 않는다.
 
 ## Preserve Contracts and Failure Meaning
