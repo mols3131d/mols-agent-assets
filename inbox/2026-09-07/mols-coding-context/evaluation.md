@@ -65,6 +65,8 @@ Eval 결과에 따라 wording을 조정할 수 있지만 intended semantic bound
 
 ## Routing contract
 
+### Expected core sets
+
 ```text
 Generic coding task
 → mols-coding-context
@@ -79,49 +81,106 @@ Non-code task
 
 Python overlay-only selection은 failure다.
 
-다른 task-relevant Skill이 독립적으로 적용되는 composite case에서는 coding-context family와 다른 applicable asset이 각각 자기 frontmatter 때문에 선택되어야 한다. 특정 cross-family pair를 신규 Skill의 dependency contract로 만들지 않는다.
+### Independent multi-selection
+
+다른 task-relevant Skill이 독립적으로 적용되는 composite case에서는:
+
+```text
+expected set
+= coding-context family members that apply
++ independently applicable other assets
+```
+
+신규 Skill body가 다른 family를 이름으로 참조하지 않아도 router가 각 frontmatter를 independently 평가해 multi-select해야 한다.
+
+특정 cross-family pair를 신규 Skill의 dependency contract로 만들지 않는다.
 
 ## Base trigger cases
 
-Positive:
+### Positive
 
-- 기능 구현, bug fix, code review, refactor
+- 기능 구현
+- bug fix
+- code review
+- refactor
 - test 작성/수정
-- API/data model/dependency decision
+- API/data model change
+- dependency decision
 - performance/maintainability work
-- correctness/contract 판단이 필요한 code explanation
+- code explanation에서 correctness/contract 판단이 필요한 경우
 - 단순하지만 실제 code mutation이 있는 routine task
 
-Negative / near-miss:
+### Negative / near-miss
 
 - branch/PR metadata 관리만 수행
 - README prose만 수정
 - programming language 역사/개념 factual lookup
 - 코드 블록이 incidental example인 비코딩 문서 작업
-- code token의 단순 formatting/quoting
+- code token의 단순 formatting/quoting으로 engineering judgment가 필요하지 않음
+
+### Paired intent cases
+
+같은 vocabulary라도 intent가 다르면 결과가 달라져야 한다.
+
+```text
+"이 함수의 실패 처리를 수정해줘"
+→ base
+
+"실패 처리란 무슨 뜻이야?"
+→ pure factual explanation이면 base 불필요 가능
+```
+
+```text
+"이 PR의 코드 변경을 리뷰해줘"
+→ base
+
+"PR 제목만 바꿔줘"
+→ base 불필요
+```
 
 ## Python overlay trigger cases
 
-Positive:
+### Positive
 
-- `.py` implementation 또는 Python-facing test 수정/review
-- Python exception/fallback semantics
-- `asyncio`, task lifetime, cancellation
+- `.py` implementation 수정
+- pytest/fixture/test helper 수정 또는 review
+- Python exception/fallback semantics 검토
+- `asyncio`, task lifetime, cancellation 처리
 - Python subprocess/shell/dynamic execution boundary
 - model/tool/external JSON을 Python runtime state로 사용
 - Python-specific generated-code artifact review
 
-Negative / near-miss:
+### Negative / near-miss
 
-- repository에 Python helper가 있지만 다른 language만 수정
+- repository에 Python build/helper script가 있지만 TypeScript만 수정
 - Python snippet을 Markdown에 그대로 인용
-- factual language comparison
-- Python path/metadata만 다루고 code behavior는 판단하지 않음
+- “Python과 Rust 중 어떤 언어가 인기인가?”
+- Python file path/metadata만 다루고 code behavior는 판단하지 않음
 - PR title이나 issue text에 Python이 등장
+
+### Materiality paired cases
+
+```text
+"Python service의 exception handler를 수정해줘"
+→ base + python
+
+"Python service README의 오타만 고쳐줘"
+→ coding context 불필요 가능
+```
+
+```text
+"이 Python coroutine의 cancellation 처리 검토"
+→ base + python
+
+"이 문서의 Python code fence를 이동해줘"
+→ Python overlay 불필요 가능
+```
 
 ## Composite routing cases
 
-목적은 특정 Skill dependency가 아니라 **independent selection property**를 검증하는 것이다.
+목적은 특정 Skill dependency를 검증하는 것이 아니라 **independent selection property**를 검증하는 것이다.
+
+Case family:
 
 - code-facing task + code-adjacent prose task
 - code-facing task + specialized refactor task
@@ -142,46 +201,167 @@ Fail:
 - body cross-reference가 없으면 selection이 실패함
 - 불필요한 double routing/relay가 생김
 
+기존 specialized coding Skill들의 representative task는 이 composite set에서 regression check로 사용할 수 있지만, 신규 Skill의 dependency로 선언하지 않는다.
+
 ## Generic behavior cases
 
 ### Smallest coherent change
 
-Local defect를 현재 boundary 안에서 고칠 수 있는데 new service/layer/config/framework를 추가하기 쉬운 task를 둔다.
+Fixture: local defect를 현재 boundary 안에서 고칠 수 있는데 new service/layer/config/framework를 추가하기 쉬운 task.
 
-Pass는 current boundary와 consumer를 먼저 사용하고 필요한 최소 coherent surface만 변경하며 speculative future-proofing을 하지 않는 것이다.
+Pass:
+
+- current boundary와 consumer를 먼저 사용
+- 필요한 최소 coherent surface만 변경
+- speculative future-proofing 없음
+
+Fail:
+
+- architecture redesign으로 확대
+- unrelated cleanup 포함
+- current consumer 없는 option/config 추가
 
 ### Contract preservation
 
-Readability/cleanup change가 serialization/order/registration 같은 non-obvious consumer surface를 건드릴 수 있는 fixture를 둔다. Candidate change의 실제 contract를 필요한 만큼 확인하고 behavior-preserving claim을 test 존재만으로 과대 주장하지 않아야 한다.
+Fixture: readability/cleanup change가 serialization/order/registration 같은 non-obvious consumer surface를 건드릴 수 있음.
+
+Pass:
+
+- candidate change가 영향을 줄 contract를 필요한 만큼 확인
+- hidden usage를 근거 없이 무시하지도, 가능성만으로 모든 change를 막지도 않음
+- behavior-preserving claim을 test 존재만으로 과대 주장하지 않음
 
 ### Failure semantics
 
-External/tool call 실패가 `None`이나 empty list로 바뀌어 downstream이 “데이터 없음”으로 오해할 수 있는 fixture를 둔다. Failed/absent/unknown을 material할 때 구분하고 failure context를 보존해야 한다.
+Fixture: external/tool call 실패를 `None` 또는 empty list로 바꾸면 downstream이 “데이터 없음”으로 오해할 수 있음.
+
+Pass:
+
+- failed/absent/unknown을 material할 때 구분
+- failure context 보존
+- fallback contract가 없으면 정상값으로 위장하지 않음
 
 ### Operational machinery
 
-Remote call은 있으나 retry/timeout/concurrency requirement가 없는 fixture를 둔다. Context에 해당 mechanism이 언급됐다는 이유만으로 generic hardening을 추가하면 fail이다.
+Fixture: remote call이 있으나 retry/timeout/concurrency requirement는 명시되지 않음.
+
+Pass:
+
+- 현재 failure semantics와 requirement를 먼저 확인
+- context에 retry/timeout이 언급됐다는 이유만으로 mechanism을 추가하지 않음
+
+Fail:
+
+- generic retry decorator/backoff/timeouts를 무조건 추가
+- side-effect semantics를 모른 채 resilience hardening 수행
 
 ### Legibility
 
-Narrative comment와 실제 non-obvious invariant가 섞인 fixture에서 code narration은 제거/미작성하고 invariant/contract/rationale는 evidence-backed하게 보존해야 한다.
+Fixture: narrative comment와 실제 non-obvious invariant가 섞여 있음.
+
+Pass:
+
+- code narration은 제거/미작성
+- invariant/contract/rationale는 evidence-backed하게 보존
+- structural problem을 prose로 덮지 않음
 
 ## Python behavior cases
 
-- broad exception + success-like fallback
-- oversized `try` scope
-- blocking call inside async path
-- cancellation suppression
-- task lifetime loss
-- dynamic raw boundary with `.get()` defaults
-- model output + shell execution
-- narrative comment / hallucinated docstring / boilerplate padding / redundant type comment
+### Exception specificity and fallback
 
-Pass 기준은 특정 implementation이나 taxonomy label이 아니라 contract fidelity, failure visibility, current Python semantics와 unnecessary work 억제다.
+Fixture:
+
+```python
+try:
+    return await load_user()
+except Exception:
+    return None
+```
+
+Pass:
+
+- expected exception과 caller-visible failure semantics를 확인
+- unexpected error를 silent success-like value로 바꾸지 않음
+- not-found와 failed를 consumer가 구분해야 하면 의미를 분리
+
+정답 implementation 하나를 고정하지 않는다.
+
+### Try-scope overreach
+
+Fixture: large `try`가 unrelated parsing/programming error까지 domain fallback으로 바꿈.
+
+Pass:
+
+- actual expected failure operation과 handler scope의 관계를 좁힘
+- unrelated bug가 fallback으로 삼켜지지 않게 함
+
+### Blocking async
+
+Fixture: `async def` 안에서 blocking file/network/process/sleep API를 사용.
+
+Pass:
+
+- event-loop semantics를 인식
+- existing async-native/local offloading pattern과 analyzer feedback을 확인
+- unrelated concurrency abstraction을 추가하지 않음
+
+### Cancellation
+
+Fixture: cleanup handler가 cancellation semantics를 잃게 만들 수 있음.
+
+Pass:
+
+- current Python/runtime semantics를 확인
+- cleanup과 cancellation propagation을 구분
+- timeout/task-group contract를 무근거하게 깨뜨리지 않음
+
+### Task lifetime
+
+Fixture: 반환/reference 없이 `asyncio.create_task()`를 반복 생성.
+
+Pass:
+
+- task lifetime/owner를 확인
+- structured concurrency 또는 explicit background lifecycle이 더 맞는지 판단
+- intentional background task면 그 contract를 보존
+
+### Dynamic boundary
+
+Fixture: model/tool JSON을 `dict[str, Any]`로 받은 뒤 `.get()` default를 연쇄 사용.
+
+Pass:
+
+- downstream decision을 바꾸는 field의 requiredness/shape를 확인
+- repository-native typed/validated representation 또는 bounded validation 사용
+- 새 validation dependency를 근거 없이 추가하지 않음
+- coercion/extra-field handling이 material하면 실제 semantics 확인
+
+### Subprocess/model text
+
+Fixture: model output을 command string으로 만들어 `shell=True` 실행.
+
+Pass:
+
+- trust boundary와 shell requirement를 먼저 식별
+- direct interpolation 대신 structured/constrained execution path를 검토
+- token match만으로 surrounding requirement를 무시하지 않음
+
+### LLM producer artifacts
+
+Case set:
+
+- statement마다 `# Step N` narration
+- signature와 맞지 않는 docstring
+- broad catch + `pass`
+- broad catch + `return None`
+- annotation과 같은 type comment 반복
+- real invariant 없는 defensive wrapper/helper padding
+
+Pass 기준은 taxonomy label 언급이 아니라 contract fidelity, failure visibility와 context noise 개선이다.
 
 ## Conditional-rule false-positive eval
 
-Python Skill이 올바르게 선택된 task에서도 irrelevant rule이 work를 만들지 않는지 확인한다.
+Python Skill이 올바르게 선택된 task에서도 irrelevant rule이 work를 만들어내지 않는지 확인한다.
 
 | Fixture | Expected non-action |
 | --- | --- |
@@ -190,6 +370,8 @@ Python Skill이 올바르게 선택된 task에서도 irrelevant rule이 work를 
 | local pure function | retry/timeout 추가 안 함 |
 | no subprocess/dynamic execution | sandbox/security redesign으로 task 확대 안 함 |
 | comment-only local edit | unrelated runtime refactor 안 함 |
+
+이 eval은 trigger precision과 별개다. **선택은 맞았지만 내부 rule application이 과한 failure**를 잡는다.
 
 ## `coding-context` baseline comparison
 
@@ -208,9 +390,22 @@ Gate:
 - independent multi-selection behavior가 악화되지 않음
 - body/context가 불필요하게 비대해지지 않음
 
+Gate 통과 시 old `coding-context` 삭제 가능.
+
 ## Context cost review
 
-Token 수 하나를 quality metric으로 사용하지 않는다. Irrelevant Skill selection, Python incidental loading, same-family semantic duplication, unnecessary work/tool call, cross-family reference 의존 여부를 함께 본다.
+Token 수 하나를 quality metric으로 사용하지 않는다.
+
+대표 task에서 다음을 본다.
+
+- irrelevant Skill이 선택됐는가?
+- Python overlay가 incidental signal 때문에 로드됐는가?
+- selected body에서 current task와 무관한 detail이 지나치게 많은가?
+- same-family semantic이 중복되는가?
+- extra instruction 때문에 unnecessary work/tool call이 생겼는가?
+- cross-family reference 없이도 independent multi-selection이 됐는가?
+
+Runtime이 loaded Skill names/content/reference reads를 노출하면 evidence로 기록한다. Threshold는 baseline을 본 뒤 정한다.
 
 ## Deterministic validation
 
@@ -218,31 +413,56 @@ Token 수 하나를 quality metric으로 사용하지 않는다. Irrelevant Skil
 
 - Skill package/frontmatter/schema validation
 - route generation drift 없음
-- route description과 canonical frontmatter 일치
+- route의 description이 canonical frontmatter와 일치
 - Python overlay base-pairing fixture integrity
 - stale old `coding-context` reference 탐색
 - 신규 `SKILL.md`에 cross-family Skill name/reference가 없는지 확인
-- eval fixture correctness
-- repository formatting과 source-authority/layout policy 준수
+- eval fixture JSON/schema correctness
+- repository formatting
+- source-authority/layout policy 준수
 
 ## Exit gates
 
-Frontmatter ready:
+### Frontmatter ready
 
-- base positive task recall 충분
-- base near-miss false positive 억제
-- Python material task에서 base+overlay pairing 안정
-- Python incidental near-miss에서 overlay 억제
-- composite task에서 independent multi-selection 유지
-- selection을 위해 body cross-reference 불필요
+- base positive task recall이 충분함
+- base near-miss false positive가 과하지 않음
+- Python overlay positive task에서 base+overlay pairing이 안정적
+- Python incidental near-miss에서 overlay false positive가 낮음
+- composite task에서 independent multi-selection이 유지됨
+- selection을 위해 body cross-reference가 필요하지 않음
 
-Behavior ready:
+### Behavior ready
 
 - current baseline보다 generic behavior가 material하게 나빠지지 않음
-- Python failure fixtures에서 semantic judgment 개선 또는 안정
-- conditional-rule eval에서 speculative work 증가 없음
-- deterministic owner와 instruction owner 중복 없음
+- Python failure fixtures에서 semantic judgment가 개선되거나 최소 안정적
+- conditional-rule eval에서 speculative work가 증가하지 않음
+- deterministic owner와 instruction owner가 중복되지 않음
 
-Old generic deletion ready:
+### Old generic deletion ready
 
-기존 `coding-context`만 semantic 보존, representative routing/behavior regression 없음, Python pairing, independent multi-selection, consumer cleanup path, generated route/lock cleanup, truthfulness gate를 통과하면 삭제한다. Asset 수 감소 자체는 gate가 아니다.
+기존 `coding-context`만 다음을 만족하면 삭제한다.
+
+1. 필요한 generic semantic이 신규 base에 보존됨
+2. representative routing/behavior에 material regression 없음
+3. same-family Python pairing이 안정적
+4. independent multi-selection regression 없음
+5. old-name live consumer/reference cleanup path가 확인됨
+6. generated route/lock drift가 없음
+7. rollback은 Git history로 가능함
+
+다른 prefix/family Skill은 deletion gate 대상이 아니다.
+
+## Final review lens
+
+- Frontmatter만 보고 intended use와 near-miss를 구분할 수 있는가?
+- Description이 너무 넓어 generic keyword matcher처럼 동작하지 않는가?
+- Description이 너무 좁아 routine coding task를 놓치지 않는가?
+- Python overlay가 file-extension trigger로 퇴화하지 않는가?
+- 다른 family를 직접 참조하지 않고 composite routing이 가능한가?
+- Skill selection이 rule checklist execution으로 변질되지 않는가?
+- Python docs/Ruff/tool manual을 복제하지 않는가?
+- Important semantic failure를 단순 lint 가능 여부만 보고 놓치지 않는가?
+- 반대로 deterministic pattern을 prose로 불필요하게 반복하지 않는가?
+
+이 review를 통과한 뒤 implementation으로 이동한다.

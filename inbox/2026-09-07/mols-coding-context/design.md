@@ -80,7 +80,23 @@ description: >-
 ---
 ```
 
-High recall이 우선이다. 단순하거나 routine한 coding task도 baseline 후보가 되지만, pure factual lookup·repository administration·incidental code prose는 제외한다.
+### Trigger intent
+
+High recall이 우선이다. 다음 code-facing work는 난이도와 관계없이 baseline 후보가 된다.
+
+- code analysis/explanation with engineering judgment
+- implementation/modification/debugging
+- tests/refactor/review
+- API/data model/dependency decision
+- performance/maintainability
+
+False positive를 줄이는 핵심 negative는 세 가지다.
+
+- pure factual programming lookup
+- repository administration with no code-facing work
+- non-code writing where code is incidental
+
+`independently alongside any other task-relevant Skill`은 다른 Skill을 참조하지 않고 router의 multi-selection을 허용한다는 신호다.
 
 ### `mols-coding-context-python`
 
@@ -102,16 +118,61 @@ description: >-
 ---
 ```
 
-`mols-coding-context` 직접 언급은 같은 family의 base/overlay contract이므로 허용한다. 다른 family 이름은 넣지 않는다.
+`mols-coding-context` 직접 언급은 같은 family의 base/overlay contract이므로 허용한다.
 
-Python path나 keyword는 supporting signal일 뿐이다. Selection authority는 active work가 Python semantics에 실제로 의존하는지다.
+### Python trigger intent
+
+Positive signal:
+
+- Python code or Python-facing test가 active mutation/review surface
+- Python runtime behavior가 결과를 바꿈
+- exception/fallback semantics
+- `asyncio`, cancellation, task lifetime
+- dynamic Python boundary/coercion/defaulting
+- subprocess/shell/dynamic execution
+- Python generated-code quality review
+
+Near-miss:
+
+- repository에 incidental Python tooling만 존재
+- Python이 문서나 PR title에만 등장
+- Python snippet을 단순 인용/포맷
+- factual language comparison
+
+Path는 supporting signal일 수 있지만 selection authority는 task semantics다.
 
 ## Frontmatter optimization principles
 
-- selection 전에 필요한 role, positive applicability, realistic near-miss와 responsibility boundary는 `description`이 소유한다.
-- implementation step, validation checklist, exhaustive smell catalogue와 command는 frontmatter에 넣지 않는다.
-- brittle keyword match보다 `active work materially depends on ...` 같은 semantic relation을 사용한다.
-- 다른 task-relevant Skill과의 조합은 다른 family 이름을 나열하지 않고 independent multi-selection에 맡긴다.
+### Put selection evidence in `description`
+
+Model/harness가 body를 읽기 전에 선택해야 하므로 다음 정보는 frontmatter가 소유한다.
+
+- 무엇을 제공하는가
+- 어떤 active work에서 선택하는가
+- 중요한 positive examples의 semantic category
+- realistic near-miss
+- workflow owner가 아니라는 boundary
+- 같은 family dependency가 있으면 그 관계
+
+### Do not encode procedure in `description`
+
+Frontmatter는 router다. 다음은 넣지 않는다.
+
+- implementation steps
+- validation checklist
+- exhaustive smell catalog
+- specific command
+- long policy rationale
+
+### Prefer semantic phrases over brittle keywords
+
+`Python`, `asyncio`, `review` 같은 단어가 등장했다고 바로 trigger하지 않는다. `active work materially depends on ...`처럼 실제 task relation을 표현한다.
+
+### Preserve independent multi-selection
+
+Base description은 다른 task-relevant Skill과 독립적으로 함께 선택될 수 있음을 알리되 다른 Skill 이름을 나열하지 않는다.
+
+Family 밖의 Skill과 composition을 body contract로 만들지 않는다.
 
 ## Rule application model
 
@@ -125,10 +186,14 @@ Skill selected
 
 현재 target, change와 failure path에 material한 rule만 적용한다.
 
+예:
+
 - Python Skill이 선택됐지만 async code가 없음 → async rule은 행동을 만들지 않음
 - remote call이 있어도 retry requirement가 없음 → retry mechanism을 자동 추가하지 않음
 - trusted internal typed object → external validation layer를 억지로 추가하지 않음
 - comment-only edit → unrelated runtime refactor로 확대하지 않음
+
+이 gate가 없으면 context가 checklist가 되어 YAGNI를 위반한다.
 
 ## `mols-coding-context`
 
@@ -288,6 +353,8 @@ target-system semantic failure
 "<다른-family-skill>이 없으면 대신 수행한다"
 ```
 
+이 방식은 dependency graph, stale cross-reference와 routing coupling을 줄인다.
+
 ## Tooling ownership
 
 | Concern | Owner |
@@ -313,41 +380,46 @@ src/rulesync/.rulesync/skills/mols-coding-context-python/
 └── SKILL.md
 ```
 
-Reference는 independent conditional loading value가 실제 eval에서 확인될 때만 분리한다.
+Reference split은 independent loading value가 eval에서 확인된 뒤에만 한다.
+
+Python body가 커지고 특정 rule family가 반복적으로 irrelevant loading을 만든다는 evidence가 생기면 same-family reference split을 검토할 수 있다.
 
 ## Content admission rule
 
-새 rule은 다음을 모두 통과해야 한다.
+새 context rule을 넣기 전에 순서대로 본다.
 
-1. 모델 judgment가 실제로 필요한가?
-2. 여러 representative coding task에서 재사용되는가?
-3. repository/runtime/tooling이 이미 더 직접적으로 소유하지 않는가?
-4. base와 Python overlay 중 applicability가 더 정확한 owner가 어디인가?
-5. 현재 construct가 없을 때 unnecessary work를 유도하지 않는가?
-6. context/staleness cost를 정당화하는가?
+1. user/repository/runtime/language authority가 이미 결정하는가?
+2. formatter/linter/type checker/test/SAST가 안정적으로 판정하는가?
+3. 다른 asset family가 소유할 specialized procedure인가?
+4. 여러 representative coding task에서 model judgment를 실제로 바꾸는가?
+5. base와 Python overlay 중 어느 applicability가 더 정확한가?
+6. current construct가 없는데도 불필요한 work를 유도할 위험이 있는가?
+7. context cost와 staleness risk를 정당화하는가?
+
+1~3에서 더 직접적인 owner가 있으면 신규 context에 복제하지 않는다.
 
 ## Non-goals
 
 - clean-code encyclopedia
-- PEP 8 또는 Ruff/Bandit catalogue 복제
-- 모든 Python gotcha 목록
-- security checklist 전체
+- 모든 AI code smell taxonomy
+- 모든 Python gotcha
+- 모든 security rule
 - coding workflow orchestration
-- 다른 Skill family의 lifecycle/routing 관리
-- 언어별 Skill의 선제적 proliferation
+- unrelated code normalization
+- cross-family Skill dependency/reference
+- Python Skill selection만으로 async/retry/schema/security layer 추가
+- language별 overlay의 선제적 대량 생성
 
-## Expected end state
+## Intended steady state
 
 ```text
-frontmatter discovery
-        ↓
-model/harness independently selects applicable assets
-        ↓
-mols-coding-context
-        +
-(optional, same family) mols-coding-context-python
-        ↓
-only material rules affect work
+model / harness discovery
+│
+├─ mols-coding-context
+├─ mols-coding-context-python  # when material
+└─ other independently applicable assets
+
+no cross-family Skill dependency
 ```
 
-설계 성공 기준은 Skill 수나 rule 수가 아니라 **routing precision/recall, signal density, independent composition, unnecessary work 감소와 engineering outcome 보존**이다.
+핵심은 instruction을 늘리는 것이 아니라 **frontmatter routing precision과 family-local context를 통해 필요한 판단만 필요한 task에 로드하는 것**이다.
