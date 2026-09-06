@@ -60,9 +60,9 @@ Add-on은 core의 generic rule을 다시 쓰지 않는다.
 
 ### Python add-on
 
-Core가 적용되는 task 중 현재 결과가 Python code, Python runtime semantics 또는 Python-facing tests에 material하게 의존하면 함께 선택한다.
+Core가 적용되는 task 중 현재 결과가 Python code semantics, Python runtime behavior 또는 Python-facing tests에 material하게 의존하면 함께 선택한다.
 
-Path나 `.py` 존재 자체는 충분한 trigger가 아니다.
+Path나 `.py` 존재 자체는 충분한 trigger가 아니다. Python 파일 안의 prose-only 수정처럼 Python semantics가 결과를 바꾸지 않는 작업도 add-on trigger가 아니다.
 
 ```text
 Python service exception handler 수정
