@@ -2,13 +2,14 @@
 name: mols-coding-context-python
 description: >-
   Python-specific add-on to mols-coding-context for code-facing tasks whose active
-  work materially includes Python code, Python-facing tests, or Python runtime
-  semantics. Select only together with mols-coding-context. Adds Python-specific
-  judgment for exception and failure semantics, async and cancellation, dynamic
-  data and runtime validation boundaries, and subprocess, shell, or dynamic
-  execution. Do not select for incidental Python files or tooling, or mere Python
-  mentions without code-facing work. Exact API and version behavior remains with
-  current project and runtime authority.
+  work materially depends on Python code semantics, Python runtime behavior, or
+  Python-facing tests. Select only together with mols-coding-context. Adds
+  Python-specific judgment for exception and failure semantics, async and
+  cancellation, dynamic data and runtime validation boundaries, and subprocess,
+  shell, or dynamic execution. Do not select for incidental Python files or tooling,
+  mere Python mentions, or prose-only edits in Python files when Python semantics
+  are irrelevant. Exact API and version behavior remains with current project and
+  runtime authority.
 targets:
   - claudecode
   - codexcli
@@ -24,7 +25,7 @@ targets:
 
 ## Add-on Contract
 
-- Python code, Python runtime semantics 또는 Python-facing tests가 현재 task에 material할 때만 적용한다.
+- Python code semantics, Python runtime behavior 또는 Python-facing tests가 현재 task에 material할 때만 적용한다.
 - Python이라는 이유만으로 async, schema, retry, subprocess 또는 security structure를 새로 만들지 않는다.
 - Exact Python, standard-library, dependency와 framework behavior는 current authoritative source와 project/runtime evidence를 따른다.
 - Formatter, linter, type checker, SAST와 tests가 안정적으로 판정하는 항목은 해당 deterministic owner에 맡긴다.
@@ -60,7 +61,7 @@ targets:
 현재 code가 process, shell 또는 generated execution boundary를 다룰 때만 적용한다.
 
 - Shell이 필요하지 않으면 structured argv 또는 더 직접적인 native API를 우선한다.
-- Model, tool, user 또는 external text를 그대로 shell command나 host-language execution으로 승격하지 않는다.
+- Model, tool, user 또는 external text를 그대로 shell command나 Python execution으로 승격하지 않는다.
 - Dynamic execution이 requirement면 trust boundary, allowed capability, isolation, input/output contract와 failure semantics를 먼저 확인한다.
 - `shell=True`, `eval`, `exec` token 자체를 unconditional defect로 취급하지 않는다.
 
