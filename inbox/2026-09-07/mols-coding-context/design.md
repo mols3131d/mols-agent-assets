@@ -35,7 +35,6 @@ Python add-on이 소유하는 것:
 - `asyncio`, cancellation, task lifetime
 - Python dynamic data boundary와 runtime validation nuance
 - subprocess/shell/dynamic execution nuance
-- Python generated-code review lens
 
 Add-on은 core의 generic rule을 다시 쓰지 않는다.
 
@@ -167,6 +166,7 @@ Reference split은 실제로 independent loading value가 확인된 뒤에만 �
 - clean-code encyclopedia
 - language/API reference 복제
 - deterministic lint rule catalogue
+- generic AI-generated-code smell taxonomy
 - 모든 language add-on의 선제적 생성
 - cross-family dependency graph
 
