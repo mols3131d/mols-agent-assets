@@ -55,6 +55,7 @@ Python add-on 단독 선택은 failure다.
 ### Python add-on near-miss
 
 - repo에 Python helper가 있지만 다른 language만 수정
+- Python source file에서 Python semantics와 무관한 prose/comment만 수정
 - Markdown의 Python snippet을 그대로 이동
 - Python path/metadata만 다룸
 - Python이 issue/PR text에만 등장
@@ -126,6 +127,20 @@ Pass:
 - failed/absent/unknown을 material할 때 구분
 - failure context 보존
 - caller contract 없는 success-like fallback을 만들지 않음
+
+### Dependency decision
+
+Pass:
+
+- dependency가 제거하는 implementation/maintenance/operational/security/correctness burden과 새 비용을 비교
+- 단순 편의나 speculative use만으로 dependency를 추가하지 않음
+
+### Change separation
+
+Pass:
+
+- functional change와 큰 mechanical refactor를 같이 묶으면 review/rollback/diagnosis/verification이 materially 어려워지는지 판단
+- 그렇지 않은 작은 local cleanup은 불필요하게 분리하지 않음
 
 ### Operational machinery
 
@@ -217,7 +232,7 @@ Core가 언어별 dispatch logic을 소유하거나 모든 language context를 �
 - core positive recall이 충분함
 - core near-miss false positive가 과하지 않음
 - Python material task에서 core + add-on pairing이 안정적
-- Python incidental task에서 add-on 과선택이 낮음
+- Python incidental/prose-only task에서 add-on 과선택이 낮음
 - independent multi-selection이 유지됨
 
 ### Behavior ready
