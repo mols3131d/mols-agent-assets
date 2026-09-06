@@ -28,7 +28,6 @@ targets:
 - Python code semantics, Python runtime behavior 또는 Python-facing tests가 현재 task에 material할 때만 적용한다.
 - Python이라는 이유만으로 async, schema, retry, subprocess 또는 security structure를 새로 만들지 않는다.
 - Exact Python, standard-library, dependency와 framework behavior는 current authoritative source와 project/runtime evidence를 따른다.
-- Formatter, linter, type checker, SAST와 tests가 안정적으로 판정하는 항목은 해당 deterministic owner에 맡긴다.
 
 ## Exceptions and Failure Semantics
 
