@@ -1,15 +1,14 @@
 ---
 name: mols-coding-context-python
 description: >-
-  Python add-on for mols-coding-context. Select together with mols-coding-context
-  when the active work materially depends on Python code, Python runtime
-  semantics, or Python-facing tests, especially for exception and failure
-  semantics, asyncio or concurrency and cancellation, dynamic data boundaries,
-  subprocess or dynamic execution, and recurring generated-code risks. Do not
-  select merely because a repository contains incidental Python files or tooling,
-  or because Python is mentioned without code-facing work. Adds Python-specific
-  judgment only; exact API and version behavior remains with current project and
-  runtime authority.
+  Python-specific add-on to mols-coding-context for code-facing tasks whose active
+  work materially includes Python code, Python-facing tests, or Python runtime
+  semantics. Select only together with mols-coding-context. Adds Python-specific
+  judgment for exception and failure semantics, async and cancellation, dynamic
+  data and runtime validation boundaries, and subprocess, shell, or dynamic
+  execution. Do not select for incidental Python files or tooling, or mere Python
+  mentions without code-facing work. Exact API and version behavior remains with
+  current project and runtime authority.
 targets:
   - claudecode
   - codexcli
@@ -64,19 +63,6 @@ targets:
 - Model, tool, user 또는 external text를 그대로 shell command나 host-language execution으로 승격하지 않는다.
 - Dynamic execution이 requirement면 trust boundary, allowed capability, isolation, input/output contract와 failure semantics를 먼저 확인한다.
 - `shell=True`, `eval`, `exec` token 자체를 unconditional defect로 취급하지 않는다.
-
-## Generated-Code Review Lens
-
-다음은 mandatory checklist가 아니라 review lens다.
-
-- Narrative comment
-- Docstring hallucination
-- Boilerplate padding
-- Redundant type prose
-- Confident fallback
-- Over-protective handler
-
-Label을 찾는 것보다 contract fidelity, failure visibility와 context noise를 우선한다.
 
 ## Boundary
 
