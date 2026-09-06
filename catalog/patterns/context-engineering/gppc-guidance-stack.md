@@ -14,12 +14,14 @@ GPPC는 **Goal과 Principles를 본질(Essence)**, **Patterns와 Contracts를 �
 
 | Layer | 영역 | 책임 | 성격 |
 | --- | --- | --- | --- |
-| **Goal** | Essence | 목적지를 정의한다 | 추상적 · 안정적 · 높은 권위 |
-| **Principles** | Essence | 판단 기준을 정의한다 | 추상적 · 안정적 · 높은 권위 |
+| **Goal** | Essence | 목적지를 정의한다 | 추상적 · 안정적 · 방향의 기준 |
+| **Principles** | Essence | 판단 기준을 정의한다 | 추상적 · 안정적 · 선택의 기준 |
 | **Patterns** | Existence | 재사용 가능한 해결 방식을 정의한다 | 상대적으로 구체적 · 적응 가능 |
 | **Contracts** | Existence | 지켜야 하는 조건과 경계를 정의한다 | 명확 · 적응 가능 · 적용 시 준수 |
 
-여기서 **계층은 물리적 계층이 아니라 논리적 계층**이다. 문서의 heading depth, section 순서, file·directory 구조를 뜻하지 않으며, guidance의 의미와 책임 사이의 관계를 나타낸다.
+여기서 **계층은 물리적 계층이 아니라 논리적 계층**이다. 문서의 heading depth, section 순서, file·directory 구조를 뜻하지 않는다. 또한 단순한 우선순위나 강제력의 순위도 아니다. 각 layer가 서로 다른 역할과 취지를 맡고, 하위 layer가 상위 layer의 의미를 구체화하면서 정합해야 한다는 관계를 나타낸다.
+
+따라서 GPPC를 이해하거나 내용을 분류할 때는 무엇이 더 우선하는지만 보지 않는다. **왜 존재하는지, 어떤 판단을 맡는지, 어떤 해결 방식을 제시하는지, 무엇을 경계로 강제하는지**를 함께 본다.
 
 **GP — Goal과 Principles는 본질을 정의한다.** Guidance의 존재 이유, 지향점, 판단 기준을 결정한다. 쉽게 바꾸지 않으며, agent도 명시적인 요청이나 적절한 변경 권한 없이 수정 대상으로 취급하지 않는 편이 좋다.
 
