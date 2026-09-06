@@ -4,7 +4,7 @@ description: Goal과 Principles를 본질, Patterns와 Contracts를 실존으로
 
 # GPPC Guidance Stack
 
-GPPC는 guidance를 **Goal, Principles, Patterns, Contracts**의 네 계층으로 나눠 안정적인 방향과 적응 가능한 실행 지침을 분리하는 패턴이다.
+GPPC는 guidance를 **Goal, Principles, Patterns, Contracts**의 네 논리적 계층으로 나눠 안정적인 방향과 적응 가능한 실행 지침을 분리하는 패턴이다.
 
 GPPC는 **Goal과 Principles를 본질(Essence)**, **Patterns와 Contracts를 실존(Existence)**으로 본다. 본질은 지향점과 판단 기준을 정의하고, 실존은 그것이 실제 환경에서 구현되는 해결 방식과 조건을 나타낸다.
 
@@ -18,6 +18,8 @@ GPPC는 **Goal과 Principles를 본질(Essence)**, **Patterns와 Contracts를 �
 | **Principles** | Essence | 판단 기준을 정의한다 | 추상적 · 안정적 · 높은 권위 |
 | **Patterns** | Existence | 재사용 가능한 해결 방식을 정의한다 | 상대적으로 구체적 · 적응 가능 |
 | **Contracts** | Existence | 지켜야 하는 조건과 경계를 정의한다 | 명확 · 적응 가능 · 적용 시 준수 |
+
+여기서 **계층은 물리적 계층이 아니라 논리적 계층**이다. 문서의 heading depth, section 순서, file·directory 구조를 뜻하지 않으며, guidance의 의미와 책임 사이의 관계를 나타낸다.
 
 **GP — Goal과 Principles는 본질을 정의한다.** Guidance의 존재 이유, 지향점, 판단 기준을 결정한다. 쉽게 바꾸지 않으며, agent도 명시적인 요청이나 적절한 변경 권한 없이 수정 대상으로 취급하지 않는 편이 좋다.
 
@@ -42,7 +44,7 @@ GPPC의 네 계층은 **논리적 책임**이지 section이나 file schema가 �
 - GPPC는 네 계층 이름 외의 section을 금지하지 않는다. Rationale, Context, Examples, Notes처럼 이해와 적용을 보조하는 section이나 domain에 필요한 별도 section을 둘 수 있다.
 - 보조 section은 새로운 GPPC 계층을 뜻하지 않는다. 그 안에 guidance가 있다면 해당 내용의 책임은 Goal, Principles, Patterns, Contracts 중 적절한 계층과 정합되어야 한다.
 
-문서 구조를 합치거나 나누거나 보조 section을 추가하더라도 각 내용의 계층적 책임과 본질·실존의 경계, 상하위 정합성은 유지한다.
+문서 구조를 합치거나 나누거나 보조 section을 추가하더라도 각 내용의 논리적 책임과 본질·실존의 경계, 상하위 정합성은 유지한다.
 
 ## Goal
 
