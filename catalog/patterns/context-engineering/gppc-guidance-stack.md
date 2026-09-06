@@ -4,7 +4,7 @@ description: Goal과 Principles를 본질, Patterns와 Contracts를 실존으로
 
 # GPPC Guidance Stack
 
-GPPC는 guidance를 **Goal, Principles, Patterns, Contracts**의 네 논리적 계층으로 나눠 안정적인 방향과 적응 가능한 실행 지침을 분리하는 패턴이다.
+GPPC는 guidance를 **Goal, Principles, Patterns, Contracts**의 네 논리적 계층으로 구조화해 안정적인 방향과 적응 가능한 실행 지침을 구분해 다루는 패턴이다.
 
 GPPC는 **Goal과 Principles를 본질(Essence)**, **Patterns와 Contracts를 실존(Existence)**으로 본다. 본질은 지향점과 판단 기준을 정의하고, 실존은 그것이 실제 환경에서 구현되는 해결 방식과 조건을 나타낸다.
 
@@ -30,9 +30,9 @@ Contracts  — 무엇을 반드시 지키는가
 
 여기서 **계층은 물리적 계층이 아니라 논리적 계층**이다. 문서의 heading depth, section 순서, file·directory 구조를 뜻하지 않으며, 단순한 우선순위나 강제력의 순위도 아니다. 각 layer가 서로 다른 역할과 취지를 맡고, 더 구체적인 layer가 더 추상적인 layer의 의미를 구체화하면서 정합해야 한다는 관계를 나타낸다.
 
-**GP — Goal과 Principles는 본질을 정의한다.** Guidance의 존재 이유와 지향점, 판단 기준을 결정한다. 쉽게 바꾸지 않으며, agent도 명시적인 요청이나 적절한 변경 권한 없이 수정 대상으로 취급하지 않는 편이 좋다.
+**GP — Goal과 Principles는 본질을 정의한다.** Guidance의 존재 이유와 지향점, 판단 기준을 결정하므로 상대적으로 안정적으로 유지한다.
 
-**PC — Patterns와 Contracts는 실존을 정의한다.** 본질을 실제 상황에서 작동하는 해결 방식과 조건으로 구체화한다. 환경이나 적용 경험에 따라 수정할 수 있지만 Goal과 Principles에 계속 부합해야 한다.
+**PC — Patterns와 Contracts는 실존을 정의한다.** 본질을 실제 상황에서 작동하는 해결 방식과 조건으로 구체화한다. 환경이나 적용 경험에 따라 조정할 수 있지만 Goal과 Principles에 계속 부합해야 한다.
 
 더 구체적인 layer를 바꿀 때는 자신보다 추상적인 layer와의 정합성을 확인한다. 정합되지 않으면 더 추상적인 layer 자체의 변경이 필요한지도 함께 검토한다.
 
@@ -100,7 +100,7 @@ Contracts는 guidance를 적용할 때 **명확하게 지켜야 하는 조건과
 
 Requirement, invariant, boundary, prohibition처럼 충족·위반 여부를 비교적 명확히 판단할 수 있는 내용이 포함될 수 있다.
 
-Contracts는 선호나 권고와 구분된다. 적용 중에는 준수해야 하지만, 적절한 변경 권한이 있고 Goal과 Principles에 더 잘 부합한다면 수정할 수 있다.
+Contracts는 선호나 권고와 구분된다. 적용 중에는 준수해야 하지만 영구불변의 원칙은 아니며, Goal과 Principles에 더 잘 부합하도록 조건이나 경계를 다시 설계할 수 있다.
 
 **판별 질문:** 무엇이 반드시 지켜져야 하며, 어디까지 허용되는가?
 
@@ -119,7 +119,7 @@ Contracts는 선호나 권고와 구분된다. 적용 중에는 준수해야 하
 
 ## Example
 
-예를 들어 반복 작업의 실패를 줄이기 위한 guidance라면 다음처럼 나눠 볼 수 있다.
+예를 들어 반복 작업의 실패를 줄이기 위한 guidance라면 다음처럼 해석할 수 있다.
 
 - **Goal** — 반복 작업의 실패율을 낮춘다.
 - **Principles** — 단순성, 가시성, 복구 가능성을 우선한다.
