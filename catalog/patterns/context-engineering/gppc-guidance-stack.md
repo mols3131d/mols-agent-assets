@@ -31,6 +31,17 @@ Contract는 적용되는 동안 엄격히 준수될 수 있다. 그러나 높은
 
 이 계층은 실행 순서나 일반적인 instruction precedence를 의미하지 않는다.
 
+## Composition
+
+GPPC의 네 계층은 **논리적 책임**이지 section이나 file schema가 아니다. Layer, section, file은 1:1로 대응할 필요가 없다.
+
+- Goal과 Principles는 하나의 section에서 함께 다룰 수 있다.
+- Patterns와 Contracts도 하나의 section에서 함께 다룰 수 있다.
+- Principles와 Patterns를 하나의 구분되지 않은 section으로 합치지는 않는다. 본질과 실존의 경계는 명시적으로 유지한다.
+- 네 계층을 하나의 file에 모두 정의할 필요는 없다. 필요에 따라 여러 file로 나눌 수 있으며, 하나의 file이 일부 계층만 다뤄도 된다.
+
+문서 구조를 합치거나 나누더라도 각 내용의 계층적 책임과 상하위 정합성은 유지한다.
+
 ## Goal
 
 Goal은 guidance가 **왜 존재하는지, 무엇을 이루려는지, 어디에 도달하려는지**를 정의한다.
