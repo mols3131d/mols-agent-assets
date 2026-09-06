@@ -51,7 +51,6 @@ Python add-on 단독 선택은 failure다.
 - `asyncio`, cancellation, task lifetime
 - Python subprocess/shell/dynamic execution
 - external/model/tool data를 Python runtime state로 사용
-- Python generated-code quality review
 
 ### Python add-on near-miss
 
@@ -169,15 +168,6 @@ Pass:
 - shell 또는 dynamic execution requirement와 trust boundary를 먼저 확인
 - structured/constrained execution path를 검토
 - token match만으로 unconditional defect를 선언하지 않음
-
-### Generated-code lens
-
-Pass 기준은 smell label 사용이 아니라 다음 outcome이다.
-
-- hallucinated documentation 감소
-- narrative noise 감소
-- silent failure 감소
-- unnecessary defensive padding 감소
 
 ## Conditional-rule False Positive
 
