@@ -37,9 +37,11 @@ jobs:
         run: uv run --locked --no-default-groups --group test pytest -q tests
 
       - name: Validate affected generated projections
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        run: uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts_validate --changed-from "$BASE_SHA"
+        shell: bash
+        run: |
+          set -euo pipefail
+          base_sha="$(git rev-parse HEAD^1)"
+          uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts_validate --changed-from "$base_sha"
 
       - name: Set up mise
         uses: jdx/mise-action@v3
