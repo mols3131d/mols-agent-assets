@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+
+description: mols-loops Promptfoo Trigger and Behavior plumbing smoke
+
+prompts:
+  - "{{task}}"
+
+providers:
+  - id: file://../../scripts/agent_assets/skills_promptfoo.py:call_api
+    label: mols-loops-trigger
+    config:
+      skill: mols-loops
+      mode: fixture
+      suite: trigger
+  - id: file://../../scripts/agent_assets/skills_promptfoo.py:call_api
+    label: mols-loops-behavior
+    config:
+      skill: mols-loops
+      mode: fixture
+      suite: behavior
+
+tests:
+  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_tests
+    config:
+      skill: mols-loops
+      suite: trigger
+      provider_label: mols-loops-trigger
+      semantic: false
+  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_tests
+    config:
+      skill: mols-loops
+      suite: behavior
+      provider_label: mols-loops-behavior
+      semantic: false
+
+sharing: false
+writeLatestResults: false
+commandLineOptions:
+  cache: false
+  write: false
+  noShare: true
+  maxConcurrency: 1
