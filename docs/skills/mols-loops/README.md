@@ -8,7 +8,7 @@ Runtime behavior의 canonical source는 `src/rulesync/.rulesync/skills/mols-loop
 
 ## Public Rename Boundary
 
-`mols-loops`는 기존 public Skill identity `mols-rpi`의 rename이며 compatibility alias를 유지하지 않습니다. Exact Skill name이나 repository command 이름을 참조하는 consumer는 `mols-loops`로 이관해야 합니다. 같은 trigger를 공유하는 별도 `mols-rpi` wrapper를 남기면 두 public Skill 사이의 routing owner가 다시 모호해지므로, 호환성이 필요해지면 별도의 제한된 migration contract와 eval을 먼저 정의합니다.
+`mols-loops`는 기존 public Skill identity `mols-rpi`의 rename이며 compatibility alias를 유지하지 않습니다. Exact Skill name이나 repository command 이름을 참조하는 consumer는 `mols-loops`로 이관해야 합니다. 같은 trigger의 `mols-rpi` wrapper를 남기면 routing owner가 다시 모호해지므로, 호환성이 필요하면 별도의 제한된 migration contract와 eval을 먼저 정의합니다.
 
 `RPI`, `RPI Main Loop`, `rpi.md`와 `rpi-*.md`는 deprecated public identity가 아니라 Loops 내부 default kernel과 그 유지보수 용어입니다. Public rename을 이유로 이 내부 method terminology를 기계적으로 치환하지 않습니다.
 
