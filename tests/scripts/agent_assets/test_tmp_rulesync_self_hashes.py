@@ -1,36 +1,19 @@
 from __future__ import annotations
 
-import hashlib
-import json
-from pathlib import Path
-
-ROOT = Path(__file__).resolve().parents[3]
-SKILLS = (
-    "artifact-consistency-inspector",
-    "github-context",
-    "mols-agent-asset",
-    "mols-agent-asset-find",
-    "mols-chatbot-bootstrap",
-    "mols-markdown-for-human",
-    "mols-markdown-maintenance",
-    "mols-mermaid-chart",
-    "mols-mermaid-diagram",
-    "mols-loops",
-)
+from scripts.agent_assets import routes_distribution_generate as distribution
+from scripts.agent_assets import routes_repository_generate as repository
 
 
-def _integrity(skill: str) -> str:
-    root = ROOT / "src" / "rulesync" / ".rulesync" / "skills" / skill
-    digest = hashlib.sha256()
-    for path in sorted(path for path in root.rglob("*") if path.is_file()):
-        relative = path.relative_to(root).as_posix()
-        digest.update(relative.encode())
-        digest.update(b"\0")
-        digest.update(path.read_bytes())
-        digest.update(b"\0")
-    return f"sha256-{digest.hexdigest()}"
+def test_emit_generated_routes() -> None:
+    distribution_outputs = distribution.generate()
+    print("DISTRIBUTION_SKILLS_BEGIN")
+    print(distribution_outputs[distribution.DISTRIBUTION_SKILL_ROUTE], end="")
+    print("DISTRIBUTION_SKILLS_END")
 
+    repository_outputs = repository.generate()
+    for path, content in sorted(repository_outputs.items(), key=lambda item: str(item[0])):
+        print(f"REPOSITORY_ROUTE_BEGIN {path.name}")
+        print(content, end="")
+        print(f"REPOSITORY_ROUTE_END {path.name}")
 
-def test_emit_rulesync_self_source_integrities() -> None:
-    hashes = {skill: _integrity(skill) for skill in SKILLS}
-    raise AssertionError(json.dumps(hashes, sort_keys=True))
+    raise AssertionError("generated route diagnostic")
