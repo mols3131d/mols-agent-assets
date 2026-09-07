@@ -16,12 +16,13 @@ jobs:
   pr-gate:
     name: PR Gate
     runs-on: ubuntu-slim
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - name: Checkout PR merge
         uses: actions/checkout@v7
         with:
           persist-credentials: false
+          fetch-depth: 0
 
       - name: Set up uv
         uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
@@ -29,5 +30,13 @@ jobs:
           version: "0.12.1"
           enable-cache: true
 
+      - name: Validate source contracts
+        run: uv run --locked --no-default-groups --group test python scripts/docs_frontmatter_validate.py
+
       - name: Run deterministic tests
         run: uv run --locked --no-default-groups --group test pytest -q tests
+
+      - name: Validate affected generated projections
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts_validate --changed-from "$BASE_SHA"
