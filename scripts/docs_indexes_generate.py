@@ -100,14 +100,13 @@ def _desired_index(
     return None if content == HEADER else content
 
 
-def generate_docs_indexes(
+def expected_docs_indexes(
     docs_root: Path = DOCS_ROOT,
-    check: bool = False,
     index_depth: int = DEFAULT_INDEX_DEPTH,
     depth: int = DEFAULT_DEPTH,
     directory_entry_files: tuple[str, ...] | list[str] = DEFAULT_DIRECTORY_ENTRY_FILES,
-) -> list[str]:
-    """Generate docs indexes at the configured materialization depth."""
+) -> dict[Path, str]:
+    """Calculate desired committed index contents without writing repository files."""
     if not docs_root.is_dir():
         raise NotADirectoryError(docs_root)
     if index_depth < -1:
@@ -119,15 +118,36 @@ def generate_docs_indexes(
     if not entry_files:
         raise ValueError("directory_entry_files must not be empty")
 
-    drift: list[str] = []
-    target_indexes: set[Path] = set()
-
+    outputs: dict[Path, str] = {}
     for directory in _index_targets(docs_root, index_depth):
-        index_path = directory / INDEX_NAME
-        target_indexes.add(index_path)
         desired = _desired_index(directory, entry_files, depth)
-        relative = index_path.relative_to(docs_root.parent).as_posix()
+        if desired is not None:
+            outputs[directory / INDEX_NAME] = desired
+    return outputs
 
+
+def generate_docs_indexes(
+    docs_root: Path = DOCS_ROOT,
+    check: bool = False,
+    index_depth: int = DEFAULT_INDEX_DEPTH,
+    depth: int = DEFAULT_DEPTH,
+    directory_entry_files: tuple[str, ...] | list[str] = DEFAULT_DIRECTORY_ENTRY_FILES,
+) -> list[str]:
+    """Generate docs indexes at the configured materialization depth."""
+    expected = expected_docs_indexes(
+        docs_root=docs_root,
+        index_depth=index_depth,
+        depth=depth,
+        directory_entry_files=directory_entry_files,
+    )
+    target_indexes = {
+        directory / INDEX_NAME for directory in _index_targets(docs_root, index_depth)
+    }
+    drift: list[str] = []
+
+    for index_path in sorted(target_indexes):
+        relative = index_path.relative_to(docs_root.parent).as_posix()
+        desired = expected.get(index_path)
         if desired is None:
             if index_path.exists():
                 if check:
