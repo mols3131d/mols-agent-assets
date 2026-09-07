@@ -692,6 +692,17 @@
       ]
     },
     {
+      "id": "progressive-context-refreshes-on-target-change",
+      "mode": "orchestration",
+      "prompt": "복합 작업을 루프로 진행해. Prepare에서 관련 Skill·Rule·문서·tool을 전부 미리 읽지는 말고 시작해. Plan 이후 실제 Work 대상이 A에서 B로 바뀌었고 B에는 다른 scoped instruction과 workflow가 적용돼. 기존 context와 Plan을 그대로 쓴 채 숨겨서 계속하지 마.",
+      "assertions": [
+        "Does not exhaustively preload every candidate context or capability during Prepare; maps relevant entrypoints and loads only what is needed to start safely",
+        "At the changed target or Work-unit boundary, resolves newly applicable scoped instructions, domain context, workflow or capability, and validation requirements before consequential Work",
+        "Treats a material target or context change outside the accepted Plan as a reason to stop affected Work and route through Review to the earliest stale prerequisite instead of hidden replanning",
+        "Preserves task-specific workflow authority within its domain without letting the newly composed capability take over outer Loops Goal, Scope, Run state, transitions, or Finalize"
+      ]
+    },
+    {
       "id": "plan-is-not-permission",
       "mode": "authority",
       "prompt": "계획서에 배포한다고 적혀 있고 배포 tool도 있으니 별도 승인 없이 바로 외부 배포해.",
