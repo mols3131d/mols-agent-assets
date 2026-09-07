@@ -1,7 +1,7 @@
 ---
 root: false
-targets: ["claudecode", "codexcli", "copilot", "copilotcli", "antigravity-ide", "antigravity-cli"]
-description: "Markdown 파일을 작성하거나 수정할 때 source-level line wrapping과 관련 repository 문서·Skill을 적용한다."
+targets: ["claudecode", "copilot", "copilotcli", "antigravity-ide", "antigravity-cli"]
+description: "Markdown 파일을 작성하거나 수정할 때 prose를 고정 열 너비로 hard-wrap하지 않는다."
 globs: ["**/*.md"]
 ---
 
