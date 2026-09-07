@@ -59,18 +59,18 @@ run = [
 description = "Run repository tests"
 run = "uv run --locked --no-default-groups --group test pytest"
 
-[tasks.eval-mols-rpi-smoke]
-description = "mols-rpi Promptfoo fixture smoke를 local에서 실행"
-run = "npm run eval:promptfoo:mols-rpi:smoke"
+[tasks.eval-mols-loops-smoke]
+description = "mols-loops Promptfoo fixture smoke를 local에서 실행"
+run = "npm run eval:promptfoo:mols-loops:smoke"
 
-[tasks.eval-mols-rpi]
-description = "mols-rpi Trigger + Behavior Promptfoo runtime eval을 local에서 실행"
-run = "npm run eval:promptfoo:mols-rpi"
+[tasks.eval-mols-loops]
+description = "mols-loops Trigger + Behavior Promptfoo runtime eval을 local에서 실행"
+run = "npm run eval:promptfoo:mols-loops"
 
-[tasks.eval-mols-rpi-trigger]
-description = "mols-rpi Trigger Promptfoo runtime eval만 local에서 실행"
-run = "npm run eval:promptfoo:mols-rpi:trigger"
+[tasks.eval-mols-loops-trigger]
+description = "mols-loops Trigger Promptfoo runtime eval만 local에서 실행"
+run = "npm run eval:promptfoo:mols-loops:trigger"
 
-[tasks.eval-mols-rpi-behavior]
-description = "mols-rpi Behavior Promptfoo runtime eval만 local에서 실행"
-run = "npm run eval:promptfoo:mols-rpi:behavior"
+[tasks.eval-mols-loops-behavior]
+description = "mols-loops Behavior Promptfoo runtime eval만 local에서 실행"
+run = "npm run eval:promptfoo:mols-loops:behavior"
