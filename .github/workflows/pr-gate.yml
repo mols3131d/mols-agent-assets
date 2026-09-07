@@ -40,3 +40,15 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts_validate --changed-from "$BASE_SHA"
+
+      - name: Set up mise
+        uses: jdx/mise-action@v3
+        with:
+          install: false
+          cache: true
+
+      - name: Install Rulesync validation tools
+        run: mise install node "npm:rulesync"
+
+      - name: Validate Rulesync-managed assets
+        run: npm run rulesync:validate
