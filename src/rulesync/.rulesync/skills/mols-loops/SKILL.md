@@ -1,7 +1,7 @@
 ---
 name: mols-loops
 description: >-
-  Use adaptive loop orchestration when the user explicitly requests RPI/RPI(R), a loop/루프 method, recursive improvement, an improvement/deep loop, or an equivalent iterative method. Also use when a single pass is materially unreliable and the task needs progressive context loading, evidence before consequential decisions, planning before consequential Work, iterative verification or replanning, convergence across coupled acceptance conditions or workstreams, or recursive narrowing. Keep more specific task Skills, workflows, and governing procedures authoritative for their domains; Loops owns outer Run/Loop control and composes them only when useful. Do not trigger when loop/RPI is merely a topic, identifier, or code concept, or for trivial or reliable one-shot work without explicit method intent.
+  Use adaptive loop orchestration when the user explicitly requests RPI/RPI(R), a loop/루프 method, recursive improvement, an improvement/deep loop, or an equivalent iterative method. Also use when a single pass is materially unreliable and the task needs progressive context loading, evidence before consequential decisions, planning before consequential Work, iterative verification or replanning, convergence across coupled acceptance conditions or workstreams, or recursive narrowing. Keep more specific task Skills, workflows, and governing procedures primary and authoritative for their domains; compose Loops only when compatible and useful. Loops owns only outer Run/Loop control. Do not trigger when loop/RPI is merely a topic, identifier, or code concept. Without explicit method intent, do not use for generic repetition, length alone, trivial work, or reliable one-shot work.
 targets:
   - claudecode
   - codexcli
@@ -19,8 +19,8 @@ Use **Prepare → RPI Main Loop → Finalize** as the Run envelope. Inside the M
 ## Core Contract
 
 - **Three-phase Run** — Prepare establishes readiness, the RPI Main Loop shapes and reviews the result, and Finalize gates the exit. Only substantive Main-Loop Reviews increment `loops_used`.
-- **Loops** — public adaptive orchestrator. It progressively loads context needed for the current decision and composes applicable Skills, workflows, procedures, tools, agents, and deterministic mechanisms when they materially help the Run.
-- **RPI** — default loop kernel inside the Loops-owned Run. It owns Research → Plan → Implementation/Work → Review stage semantics and prerequisite progression within the Main Loop; it does not own outer Goal/Scope, Run/Loop state, recursion, handoff, Finalize, or more specific task authority.
+- **Loops** — public adaptive orchestrator. It owns the outer Run envelope and progressively loads context and composes applicable Skills, workflows, procedures, tools, agents, and deterministic mechanisms when they materially help the Run.
+- **RPI** — default loop kernel inside the Loops-owned Run. It owns Research → Plan → Implementation/Work → Review stage semantics, prerequisite progression, and Review-driven transitions among those Main-Loop stages. It is not a separate outer controller and does not own outer Goal/Scope, Run/Loop accounting, recursion, handoff, Finalize, or more specific task authority.
 - **Implementation / Work** — goal-directed execution of the accepted Plan, not code-only implementation. It may contain one or more domain Work units such as code, documents, research, planning, review, analysis, decisions, configuration, or tool actions.
 - **Stage vs. Work** — domain Work named Research, Plan, or Review does not replace the corresponding RPI orchestration stage. Review Work is still followed by outer RPI Review.
 - **Terminal depth** — when the RPI Research stage itself is terminal, use `Research → Review`; when the RPI Plan stage itself is terminal, use `Research → Plan → Review`; then enter Finalize. Do not infer a stage terminal merely because domain Work is research, planning, or review.
@@ -32,7 +32,7 @@ At every phase, resolve the smallest context and capability set that can materia
 
 - **Load context by relevance and authority.** Consider applicable instructions and Rules, repository/workspace state, task/domain knowledge and references, existing artifacts and evidence, runtime/tool/permission state, and validation criteria. Retrieved material is evidence unless an authorized source governs Active Scope.
 - **Compose capabilities adaptively.** Discover relevant Skills, workflows/procedures, tools, agents/subagents, and deterministic mechanisms. Use them when they provide material domain behavior, evidence, isolation, validation, or execution leverage; direct execution is preferred when composition adds no value.
-- **Preserve ownership.** Loaded context supplies evidence or authority according to its source. Composed workflows and capabilities own their domain procedure. Loops owns outer Goal/Scope, prerequisite lineage, Run/Loop state, placement/order/dependencies, transitions, recursion, handoff, and Finalize.
+- **Preserve ownership.** Loaded context supplies evidence or authority according to its source. Composed workflows and capabilities own their domain procedure, including their internal ordering and dependencies. RPI owns Main-Loop stage prerequisites and Review-driven stage transitions. Loops owns outer Goal/Scope, Run envelope and accounting, cross-capability composition and phase placement, recursion, handoff, and Finalize; it sequences domain capabilities only at their integration boundaries and does not rewrite their internal procedure.
 - **Refresh on material change.** Re-evaluate context and composition when Active Scope, target/path/object, domain, a material assumption, uncertainty, required validation, or available capability changes. Reuse still-applicable loaded state instead of rediscovering it.
 - **Phase-specific loading.** Prepare maps the initial context/capability landscape; Research deepens decision-relevant knowledge and evidence; Plan resolves concrete target context and composition; Work loads just-in-time execution context; Review loads the criteria and validation capability needed to judge the result; Finalize limits loading to bounded finishing checks and must not reopen broad discovery.
 
@@ -168,6 +168,8 @@ When practical, collect initial evidence or candidate findings before cross-comp
 
 ### Scope Control
 
+Scope Control is Loops-owned outer control. RPI Review may propose or dispatch a Scope change, but it does not own boundary authority.
+
 Maintain one observable **Active Scope**:
 
 ```text
@@ -284,7 +286,9 @@ Validate consequential claims as close as practical to their source:
 
 A lower tier does not prove a higher-tier claim; never report unperformed checks as verification.
 
-## Adaptive Control
+## Loops Adaptive Control
+
+These controls own cross-cutting Run decisions outside the RPI Main-Loop stage semantics.
 
 ### Goal-State Convergence
 
@@ -294,7 +298,7 @@ Continue only when another Loop has a credible path to material information gain
 
 ### Recursive Resolution
 
-Recursive descent is an adaptive Review transition, not a public toggle. Explicit no-child/no-recursion instructions are boundaries; a request for a recursive loop does not force child scopes.
+Recursive descent is a Loops-owned adaptive Review transition, not a public toggle. Explicit no-child/no-recursion instructions are boundaries; a request for a recursive loop does not force child scopes.
 
 Push a child only from Review when the narrower problem is material, a strict subset of parent Active Scope, independently resolvable enough to justify isolation, worth its context/coordination cost, and executable within inherited authority and the current Run budget. If the need appears during Research, Plan, or Work, stop the affected stage and close Review before descending.
 
@@ -363,7 +367,7 @@ At Prepare readiness, each substantive Review close, Finalize entry, and the ter
 
 ```text
 Loops State
-- Phase: <Prepare | Main Loop | Finalize>
+- Phase: <Prepare | RPI Main Loop | Finalize>
 - Readiness: <READY | READY WITH LIMITS | BLOCKED | n/a>
 - Loop: <loops_used>/<effective ceiling>
 - Acceptance: <open | candidate | accepted>
