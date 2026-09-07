@@ -1,10 +1,10 @@
 ---
-description: mols-rpi를 유지보수할 때 3단계 Run 외피, adaptive Research·Plan·Work·Review, intensity와 artifact 결정을 찾는 entrypoint입니다.
+description: mols-loops를 유지보수할 때 3단계 Run 외피, adaptive Research·Plan·Work·Review, intensity와 artifact 결정을 찾는 entrypoint입니다.
 ---
 
-# Mols RPI Maintainer Docs
+# Mols Loops Maintainer Docs
 
-Runtime behavior의 canonical source는 `src/rulesync/.rulesync/skills/mols-rpi/SKILL.md`입니다. 이 디렉토리는 Skill을 변경할 때 보존해야 할 핵심 결정만 기록합니다.
+Runtime behavior의 canonical source는 `src/rulesync/.rulesync/skills/mols-loops/SKILL.md`입니다. 이 디렉토리는 Skill을 변경할 때 보존해야 할 핵심 결정만 기록합니다.
 
 - [RPI](rpi.md) — Prepare → Main RPI → Finalize 외피, prerequisite contract, perspective control과 recursive resolution
 - [Research](rpi-research.md) — evidence prerequisite, adaptive multi-perspective search와 Review-driven reopening
