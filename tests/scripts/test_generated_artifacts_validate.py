@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import subprocess
+
 from scripts import generated_artifacts_sync as sync
 from scripts import generated_artifacts_validate as validate
 
@@ -28,6 +30,24 @@ def test_compare_outputs_reports_missing_outdated_and_stale(tmp_path):
         "outdated: route/outdated.jsonl",
         "stale: route/stale.jsonl",
     ]
+
+
+def test_changed_paths_does_not_filter_git_change_types(monkeypatch, tmp_path):
+    commands: list[list[str]] = []
+
+    def fake_run(command, **kwargs):
+        commands.append(command)
+        return subprocess.CompletedProcess(
+            command,
+            0,
+            stdout=b"source.txt\0",
+            stderr=b"",
+        )
+
+    monkeypatch.setattr(validate.subprocess, "run", fake_run)
+
+    assert validate.changed_paths("base", "head", tmp_path) == {"source.txt"}
+    assert not any(argument.startswith("--diff-filter=") for argument in commands[0])
 
 
 def test_select_for_validation_uses_projection_registry():
