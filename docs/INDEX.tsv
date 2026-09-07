@@ -61,4 +61,5 @@ skills/mols-rpi/rpi-review.md	Adaptive recursive RPI에서 Review의 prerequisit
 skills/mols-rpi/rpi-work.md	RPI의 Implementation을 goal-directed Work로 해석하고, Work가 하나 이상의 다양한 domain action으로 구성될 수 있다는 핵심 설계를 보존하는 maintainer 문서입니다.
 skills/mols-rpi/rpi.md	Prepare, Main RPI, Finalize의 3단계 Run 외피와 prerequisite contract, Review-driven adaptation이 어떻게 연결되는지 보존하는 maintainer 문서입니다.
 skills/mols-text-optimizer/	
+skills/mols-text-optimizer/goal.md	mols-text-optimizer를 변경할 때 보존해야 할 핵심 목표와 책임 경계를 설명하는 maintainer 문서입니다.
 using-this-repository.md	이 저장소의 Agent Asset이나 reusable knowledge를 외부 repository·runtime에서 찾고, 직접 사용·설치·고정·가져오는 방법을 선택할 때 사용합니다.
