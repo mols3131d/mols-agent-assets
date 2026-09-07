@@ -111,11 +111,11 @@ Generated result는 기본적으로 disposable evidence입니다. Durable decisi
 
 Promptfoo는 현재 behavioral eval 실행 backend이며 기본 실행 위치는 local environment입니다. Repository-owned fixture를 Promptfoo 전용 contract로 복제하지 않습니다.
 
-PR Gate는 Promptfoo CLI나 model/runtime을 설치·실행하지 않습니다. Eval config, fixture, adapter, assertion, runner의 구조적 correctness는 root deterministic test suite가 검증합니다. Promptfoo integration smoke와 실제 model/runtime eval은 repository-owned local entrypoint로 실행하고 결과를 behavioral evidence로 해석합니다.
+Eval config, fixture, adapter, assertion, runner의 구조적 correctness는 root deterministic test suite가 검증합니다. Promptfoo integration smoke와 실제 model/runtime eval은 repository-owned local entrypoint로 실행하고 결과를 behavioral evidence로 해석합니다. PR Gate에서 어떤 eval evidence를 blocking 또는 deferred로 둘지는 [Continuous Integration](ci.md)이 소유합니다.
 
-Fixture-mode smoke는 provider/generator/assertion plumbing을 Promptfoo 자체를 통해 확인하는 local integration check이며 runtime behavior evidence가 아닙니다. 실제 model/runtime eval과 semantic grading은 기본적으로 비차단 evidence입니다.
+Fixture-mode smoke는 provider/generator/assertion plumbing을 Promptfoo 자체를 통해 확인하는 local integration check이며 runtime behavior evidence가 아닙니다. 실제 model/runtime eval과 semantic grading은 기본적으로 비차단 evidence이지만, 중요한 admission risk를 deterministic evidence로 대체할 수 없으면 CI 정책에 따라 bounded blocking evidence로 승격할 수 있습니다.
 
-Promptfoo-specific config는 `evals/promptfoo/`, Agent Asset 평가 adapter와 runner는 `scripts/agent_assets/`가 소유합니다. 저장소 수준 실행 entrypoint는 `mise.toml`이 소유합니다. Tool 사용법과 current upstream source는 [Promptfoo](../references/tooling/promptfoo.md), PR Gate의 deterministic validation은 [Testing](testing.md)을 따릅니다.
+Promptfoo-specific config는 `evals/promptfoo/`, Agent Asset 평가 adapter와 runner는 `scripts/agent_assets/`가 소유합니다. 저장소 수준 실행 entrypoint는 `mise.toml`이 소유합니다. Tool 사용법과 current upstream source는 [Promptfoo](../references/tooling/promptfoo.md), deterministic test의 의미는 [Testing](testing.md), PR Gate의 execution boundary는 [Continuous Integration](ci.md)을 따릅니다.
 
 ## Review
 
