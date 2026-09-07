@@ -1,21 +1,21 @@
 ---
-description: mols-rpi의 Trigger와 Behavior eval을 분리해 설계하고 Promptfoo fixture·provider·grader·runtime evidence를 유지보수할 때 사용하는 문서입니다.
+description: mols-loops의 Trigger와 Behavior eval을 분리해 설계하고 Promptfoo fixture·provider·grader·runtime evidence를 유지보수할 때 사용하는 문서입니다.
 ---
 
-# Mols RPI Evaluation
+# Mols Loops Evaluation
 
-이 문서는 `mols-rpi`의 **eval 설계와 유지보수 결정**을 소유합니다.
+이 문서는 `mols-loops`의 **eval 설계와 유지보수 결정**을 소유합니다.
 
-Runtime behavior의 canonical source는 `src/rulesync/.rulesync/skills/mols-rpi/SKILL.md`, behavioral contract와 case는 `evals/skills/mols-rpi/cases.json`이 소유합니다. Promptfoo는 이 contract를 실행하고 채점하는 backend이며 별도의 behavior authority가 아닙니다.
+Runtime behavior의 canonical source는 `src/rulesync/.rulesync/skills/mols-loops/SKILL.md`, behavioral contract와 case는 `evals/skills/mols-loops/cases.json`이 소유합니다. Promptfoo는 이 contract를 실행하고 채점하는 backend이며 별도의 behavior authority가 아닙니다.
 
 ## Evaluation Model
 
-`mols-rpi`는 **Trigger**와 **Behavior**를 별도 suite로 평가합니다. 둘을 한 run에서 실행할 수 있지만 같은 system under evaluation로 취급하지 않습니다.
+`mols-loops`는 **Trigger**와 **Behavior**를 별도 suite로 평가합니다. 둘을 한 run에서 실행할 수 있지만 같은 system under evaluation로 취급하지 않습니다.
 
 | Suite | System under evaluation | Input context | Observable result | Primary grader |
 | --- | --- | --- | --- | --- |
 | Trigger | Skill discovery metadata와 routing prompt | 사용자 요청 + `SKILL.md` frontmatter + case-specific competing metadata | selected Skill set + primary Skill | deterministic Python assertion |
-| Behavior | 이미 activation된 `mols-rpi` runtime contract | 사용자 scenario + full `SKILL.md` | assistant response | semantic rubric + output contract |
+| Behavior | 이미 activation된 `mols-loops` runtime contract | 사용자 scenario + full `SKILL.md` | assistant response | semantic rubric + output contract |
 | Smoke | Promptfoo config/generator/provider/assertion plumbing | fixture-mode output | 연결과 schema가 정상인지 | deterministic assertion |
 
 Trigger suite는 **Skill body를 보지 않습니다**. Behavior suite는 **activation을 다시 판단하지 않습니다**. 이 분리가 무너지면 routing 품질과 instruction-following 품질의 원인을 구분하기 어려워집니다.
@@ -24,21 +24,22 @@ Smoke는 runtime behavior evidence가 아닙니다.
 
 ## Trigger Suite
 
-Trigger eval은 `mols-rpi`가 **선택되어야 하는 요청과 선택되면 안 되는 요청을 구분하는지** 측정합니다.
+Trigger eval은 `mols-loops`가 **선택되어야 하는 요청과 선택되면 안 되는 요청을 구분하는지** 측정합니다.
 
 Positive coverage에는 다음을 우선합니다.
 
 - 명시적인 RPI·loop·recursive improvement intent
 - RPI라는 단어가 없어도 Research, Plan, consequential Work와 반복 검증이 materially coupled된 복합 작업
+- 진행 중 concrete target이나 Scope가 구체화되며 context/capability를 점진적으로 resolve해야 하는 복합 작업
 
 Negative coverage에는 다음을 우선합니다.
 
 - `loop`가 주제, 식별자 또는 code concept일 뿐인 요청
 - 내용 단순 반복
 - 길기만 한 작업
-- explicit prerequisite control이 이득을 주지 않는 trivial work
+- explicit prerequisite/context orchestration이 이득을 주지 않는 trivial work
 
-Trigger provider는 실제 Skill body 없이 discovery metadata catalog만 받고 `selected_skills`와 `primary_skill`만 반환합니다. 기본 case에는 `mols-rpi` metadata만 주고, specificity·composition case에는 최소 competing Skill metadata를 함께 줍니다. 그래야 RPI의 activation 여부뿐 아니라 더 구체적인 owner가 primary를 유지하는지도 실행 가능한 계약으로 검증할 수 있습니다.
+Trigger provider는 실제 Skill body 없이 discovery metadata catalog만 받고 `selected_skills`와 `primary_skill`만 반환합니다. 기본 case에는 `mols-loops` metadata만 주고, specificity·composition case에는 최소 competing Skill metadata를 함께 줍니다. 그래야 Loops의 activation 여부뿐 아니라 더 구체적인 owner가 primary를 유지하는지도 실행 가능한 계약으로 검증할 수 있습니다.
 
 일반 답변은 함께 생성하지 않습니다. 분류 외 token과 behavior contamination을 제거하고 routing failure를 behavior failure와 분리하기 위해서입니다.
 
@@ -47,7 +48,7 @@ Promptfoo metric은 positive와 negative를 분리합니다.
 - `trigger-activation` — activation이 필요한 case
 - `trigger-rejection` — activation하면 안 되는 case
 
-정확한 selected set과 primary owner는 deterministic하게 판정할 수 있으므로 model grader에 맡기지 않습니다. `activation`/`activation-negative` mode는 `mols-rpi`가 expected selected set에 포함되는지를 나타내며, 다른 Skill의 선택 여부를 숨기지 않습니다.
+정확한 selected set과 primary owner는 deterministic하게 판정할 수 있으므로 model grader에 맡기지 않습니다. `activation`/`activation-negative` mode는 `mols-loops`가 expected selected set에 포함되는지를 나타내며, 다른 Skill의 선택 여부를 숨기지 않습니다.
 
 ## Behavior Suite
 
@@ -57,6 +58,7 @@ Core runtime selection은 다음 축에서 대표 case를 고릅니다.
 
 - Prepare → RPI Main Loop → Finalize의 3단계 순서, 단일 실행과 Main-Loop-only accounting
 - task-specific Skill 또는 governing workflow와의 composition
+- phase-local progressive context loading과 material-change 기반 context/capability refresh
 - Research → Plan → Work prerequisite
 - Scope narrowing·expansion과 fixed boundary
 - Goal-directed loop intent, completion gate, observable Review state와 handoff
@@ -92,10 +94,10 @@ Model grader failure는 target failure와 구분합니다. Transport, parse, gra
 
 Repository-owned fixture를 Promptfoo 전용 fixture로 복제하지 않습니다.
 
-`evals/promptfoo/mols-rpi.yaml`은 같은 Python generator를 두 번 호출합니다.
+`evals/promptfoo/mols-loops.yaml`은 같은 Python generator를 두 번 호출합니다.
 
-- `suite: trigger` → `mols-rpi-trigger` provider만 실행
-- `suite: behavior` → `mols-rpi-behavior` provider만 실행
+- `suite: trigger` → `mols-loops-trigger` provider만 실행
+- `suite: behavior` → `mols-loops-behavior` provider만 실행
 
 Generator는 각 test에 다음 metadata를 붙입니다.
 
@@ -109,16 +111,16 @@ Promptfoo의 test-level provider filter가 서로 다른 provider의 cartesian p
 ## Entrypoints
 
 ```bash
-mise run eval-mols-rpi-smoke
-mise run eval-mols-rpi
-mise run eval-mols-rpi-trigger
-mise run eval-mols-rpi-behavior
+mise run eval-mols-loops-smoke
+mise run eval-mols-loops
+mise run eval-mols-loops-trigger
+mise run eval-mols-loops-behavior
 ```
 
-- `eval-mols-rpi-smoke` — fixture/provider/assertion plumbing만 확인
-- `eval-mols-rpi` — default Trigger + Behavior runtime suite
-- `eval-mols-rpi-trigger` — metadata filter로 Trigger만 실행
-- `eval-mols-rpi-behavior` — metadata filter로 Behavior만 실행
+- `eval-mols-loops-smoke` — fixture/provider/assertion plumbing만 확인
+- `eval-mols-loops` — default Trigger + Behavior runtime suite
+- `eval-mols-loops-trigger` — metadata filter로 Trigger만 실행
+- `eval-mols-loops-behavior` — metadata filter로 Behavior만 실행
 
 Runtime model은 `PROMPTFOO_RUNTIME_MODEL`, model grader는 `PROMPTFOO_GRADER_PROVIDER`로 선택합니다. 서로 다른 model/runtime을 비교할 때는 다른 조건도 결과를 왜곡하지 않도록 맞추고 사용한 조건을 함께 기록합니다.
 
@@ -141,6 +143,7 @@ Default suite는 비용과 signal을 균형 있게 유지하고, 더 넓은 case
 1. Trigger case는 positive와 negative/near-miss 균형을 확인합니다.
 1. Specificity·composition failure는 competing metadata, expected selected set과 primary owner를 명시해 실제 routing decision을 검증합니다.
 1. Behavior case는 outcome을 우선하고, trajectory 자체가 contract일 때만 중간 gate를 assertion으로 둡니다.
+1. Context/composition case는 현재 decision에 필요한 최소 context만 load하는지, material change에서 applicability를 재평가하는지, loaded context와 composed workflow가 outer Loops authority를 탈취하지 않는지 검증합니다.
 1. Multi-perspective case는 distinct question·evidence surface와 reconciliation을 검사하고 reviewer 수, persona 이름, exact lens roster나 다수결을 정답으로 고정하지 않습니다.
 1. Lifecycle case는 Prepare와 Finalize를 RPI stage나 counted Loop로 오인하지 않는지, Main RPI exit가 Finalize Gate를 통과하는지, Finalize가 hidden Main Loop를 열지 않는지 검사합니다.
 1. 반복된 runtime failure가 안정적인 contract로 확인된 경우 regression defense로 승격합니다.
