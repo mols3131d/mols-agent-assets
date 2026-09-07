@@ -4,7 +4,7 @@ node = "24.19.0"
 rumdl = "0.2.54"
 lefthook = "2.1.10"
 "npm:@biomejs/biome" = "2.5.6"
-"npm:rulesync" = "latest"
+"npm:rulesync" = "16.24.1"
 "npm:skills" = "1.5.23"
 
 [tasks.setup]
@@ -24,6 +24,10 @@ run = "uv run python scripts/agent_assets/skills_sync.py"
 [tasks.generated-sync]
 description = "Regenerate committed indexes and routes"
 run = "uv run python -m scripts.generated_artifacts_sync"
+
+[tasks.generated-validate]
+description = "Validate committed indexes and routes without writing"
+run = "uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts_validate"
 
 [tasks.format]
 description = "Format the entire repository"

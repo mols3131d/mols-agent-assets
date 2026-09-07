@@ -18,7 +18,7 @@ def result(*, returncode: int = 0, stdout: str = '{"success":true}', stderr: str
     return subprocess.CompletedProcess([], returncode, stdout, stderr)
 
 
-def test_validate_runs_all_read_only_checks() -> None:
+def test_validate_runs_config_and_configured_projection_checks() -> None:
     calls: list[tuple[str, ...]] = []
 
     def runner(args: tuple[str, ...]):
@@ -26,8 +26,10 @@ def test_validate_runs_all_read_only_checks() -> None:
         return result()
 
     assert validate_rulesync.validate(runner) == 0
-    assert calls == [check.args for check in validate_rulesync.CHECKS]
-    assert all("--dry-run" in args for args in calls[1:])
+    assert calls == [
+        ("doctor", "--strict"),
+        ("generate", "--dry-run"),
+    ]
 
 
 def test_validate_fails_on_rulesync_warning(capsys) -> None:
@@ -71,6 +73,14 @@ def test_validate_fails_on_non_json_output(capsys) -> None:
 
     assert validate_rulesync.validate(runner) == 1
     assert "JSON" in capsys.readouterr().err
+
+
+def test_validate_preserves_exit_code_when_failure_has_no_output(capsys) -> None:
+    def runner(_args: tuple[str, ...]):
+        return result(returncode=-9, stdout="", stderr="")
+
+    assert validate_rulesync.validate(runner) == 1
+    assert "exit code -9" in capsys.readouterr().err
 
 
 def test_run_rulesync_uses_json_and_library_workspace(monkeypatch) -> None:

@@ -12,7 +12,8 @@ description: 저장소 고유 branch 정책, 병렬 작업 격리, branch naming
 - Git 명령과 worktree, ref, history의 동작 의미 → Git 공식 문서
 - agent runtime의 작업 공간, worktree와 ephemeral branch 동작 → 해당 runtime의 공식 문서
 - GitHub의 Pull Request, Merge, Ruleset과 서버 측 강제 규칙 → [GitHub](github.md)
-- verification과 merge-blocking evidence → [Testing](testing.md)
+- branch validation, PR admission과 merge-blocking evidence placement → [Continuous Integration](ci.md)
+- deterministic test 자체의 의미 → [Testing](testing.md)
 
 Runtime이 편의를 위해 branch나 worktree를 자동으로 만들더라도 이 repository의 변경 격리와 history 안전성 정책이 자동으로 완화되지는 않습니다.
 
@@ -47,7 +48,7 @@ Git 환경에서는 `git worktree`가 같은 repository history를 공유하면�
 - PR head, feature branch, stacked change, prepared snapshot이나 특정 commit처럼 다른 base가 명시되거나 runtime이 작업 기준을 이미 확정한 경우에는 그 base commit을 보존합니다. 최신 `main`으로 임의 이동하지 않습니다.
 - 장시간 작업 중 target ref가 이동해도 active base commit을 자동으로 바꾸지 않습니다. 새 base와 동기화할 필요가 있으면 별도의 merge, rebase 또는 재계획 대상으로 판단합니다.
 - 서로 독립적으로 검토하거나 폐기할 수 있는 변경은 branch도 분리합니다. Agent session, model, RPI 단계 같은 실행 세부사항만을 이유로 branch를 추가하지 않습니다.
-- `main`으로의 integration은 [GitHub](github.md)의 Pull Request와 Merge 정책을 따릅니다.
+- `main`으로의 integration은 [GitHub](github.md)의 Pull Request와 Merge 정책, [Continuous Integration](ci.md)의 admission policy를 따릅니다.
 
 ## Branch Naming
 
@@ -99,6 +100,7 @@ Vendor별 branch 생성, cleanup, handoff와 session lifecycle은 빠르게 바�
 
 - GitHub Issues, Pull Requests, PR Reviews, Merge, GitHub-side coding agent·automation 협업과 권한, GitHub Agentic Workflows, Rulesets와 Actions → [GitHub](github.md)
 - 변경 대상의 작성 원본 선택 → [작성 원본과 권한](source-authority.md)
-- verification과 merge-blocking evidence → [Testing](testing.md)
+- branch validation, PR admission과 merge-blocking evidence placement → [Continuous Integration](ci.md)
+- deterministic test의 의미 → [Testing](testing.md)
 
 이 문서는 일반적인 Git 사용법이나 repository-wide change workflow를 정의하지 않습니다.

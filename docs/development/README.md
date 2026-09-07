@@ -1,5 +1,5 @@
 ---
-description: 저장소 개발 작업에서 공통 개발 원칙, VCS/Git, GitHub, 작성 원본과 권한, repository layout, formatting, validation, testing, evaluation 중 적용할 local policy를 찾을 때 사용합니다.
+description: 저장소 개발 작업에서 공통 개발 원칙, VCS/Git, GitHub, CI, 작성 원본과 권한, repository layout, formatting, validation, testing, evaluation 중 적용할 local policy를 찾을 때 사용합니다.
 ---
 
 # Development
@@ -11,11 +11,12 @@ description: 저장소 개발 작업에서 공통 개발 원칙, VCS/Git, GitHub
 - [Development Principles](principles.md) — 여러 유효한 구현 사이에서 효과성, 운영 편의성, 단순성, 추상화와 변경 범위를 판단하는 공통 원칙
 - [VCS / Git](vcs-git.md) — branch policy와 naming, commit convention과 enforcement boundary
 - [GitHub](github.md) — Issues, Pull Requests, PR Reviews, Merge, Rulesets와 Actions의 local policy. 본문 작성 구조는 [GitHub Authoring Templates](../../.github/templates/README.md)를 참고합니다.
+- [Continuous Integration](ci.md) — local·CLI·API·MCP·Plugin·agent write path부터 branch validation, PR admission, deferred evidence와 projection gate까지의 integration lifecycle
 - [작성 원본과 권한](source-authority.md) — 작성 원본, 표준, 대상과 저장소 고유 권한의 경계
 - [Repository Layout](repository-layout.md) — 파일·디렉터리의 이름과 배치, 계층, source와 test의 대응
 - [Formatting](formatting.md) — changed-only·전체 포맷 경로와 formatter automation boundary
 - [Validation](validation.md) — 문서 frontmatter·index, Agent Asset routing, Rulesync-managed assets의 repository validation
-- [Testing](testing.md) — deterministic test 설계와 PR Gate
+- [Testing](testing.md) — deterministic test 설계와 repository-owned executable behavior의 evidence boundary
 - [Evaluation](evaluation.md) — Agent Asset behavioral evaluation과 evidence 해석
 
 ## Related Owners

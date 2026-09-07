@@ -1,24 +1,24 @@
-name: PR Gate
+name: Branch Check
 
 on:
-  pull_request:
-    branches:
+  push:
+    branches-ignore:
       - main
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
   contents: read
 
 jobs:
-  pr-gate:
-    name: PR Gate
+  branch-check:
+    name: Branch Check
     runs-on: ubuntu-slim
     timeout-minutes: 5
     steps:
-      - name: Checkout PR merge
+      - name: Checkout branch commit
         uses: actions/checkout@v7
         with:
           persist-credentials: false
@@ -29,5 +29,11 @@ jobs:
           version: "0.12.1"
           enable-cache: true
 
+      - name: Validate source contracts
+        run: uv run --locked --no-default-groups --group test python scripts/docs_frontmatter_validate.py
+
       - name: Run deterministic tests
         run: uv run --locked --no-default-groups --group test pytest -q tests
+
+      - name: Validate local generated projections
+        run: uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts_validate --local-only --all

@@ -21,4 +21,10 @@ Formatting은 **파일의 표현을 repository convention에 맞게 정규화하
 | Markdown | rumdl |
 | JSON·JSONC·JavaScript·TypeScript 계열 | Biome |
 
+## CI Boundary
+
+CI가 committed representation contract를 확인하기 위해 formatter의 check-only 경로를 사용할 수 있습니다. 이 경우 CI는 파일을 자동 수정하거나 stage·commit·push하지 않습니다.
+
+Formatting check를 merge-blocking evidence로 둘지, 어떤 단계에서 실행할지는 [Continuous Integration](ci.md)이 소유합니다. Formatter가 실제 파일을 정규화하는 write path와 tool ownership은 이 문서가 계속 소유합니다.
+
 Lefthook은 formatter를 자동 실행하거나 변경 내용을 자동 stage하지 않습니다.

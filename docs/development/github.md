@@ -14,7 +14,8 @@ description: GitHub의 Issues, Pull Requests, PR Reviews, coding agents, automat
 - agent에게 적용되는 저장소 instruction과 Agent Asset → 각 instruction과 asset의 원본
 - GitHub에서 실제로 강제되는 조건과 actor 권한 → repository settings, Rulesets와 GitHub 권한 모델
 - GitHub 기능의 현재 동작과 preview 상태 → GitHub 공식 문서
-- 검증·평가 근거의 의미 → [Testing](testing.md), [Evaluation](evaluation.md)
+- CI admission과 evidence orchestration → [Continuous Integration](ci.md)
+- 검증·평가 근거의 의미 → [Testing](testing.md), [Validation](validation.md), [Evaluation](evaluation.md)
 
 문서의 정책과 실제 GitHub 설정이 다르면 임의로 맞춰 해석하지 않고 drift로 봅니다. Agent나 model의 기능이 더 강해져도 저장소가 부여한 권한까지 자동으로 넓어지는 것은 아닙니다.
 
@@ -142,13 +143,13 @@ Rulesets는 branch와 PR의 통합 조건을 GitHub에서 강제합니다. PR re
 
 ## GitHub Actions
 
-GitHub Actions는 automation과 checks를 실행합니다. `PR Gate`가 무엇을 검증하고 어떤 결과가 merge를 막는지는 [Testing](testing.md)이 소유합니다. Stochastic model/runtime 평가 근거는 [Evaluation](evaluation.md)을 따릅니다.
+GitHub Actions는 automation과 checks를 실행합니다. `PR Gate`의 admission 의미, trigger, blocking·deferred evidence와 projection gate는 [Continuous Integration](ci.md)이 소유합니다. Deterministic test의 의미는 [Testing](testing.md), 구조·파생 validation은 [Validation](validation.md), stochastic model/runtime 평가 근거는 [Evaluation](evaluation.md)을 따릅니다.
 
 - Workflow permission은 필요한 최소 범위로 제한합니다. Agent나 automation 편의를 위해 넓은 write permission을 기본값으로 두지 않습니다.
 - Agent가 생성하거나 수정한 workflow는 권한 있는 실행 표면으로 봅니다. 사람의 명시적 승인 없이 secret이나 쓰기 권한이 있는 workflow가 실행되도록 만들지 않습니다.
 - 신뢰하지 않는 Issue, PR, comment나 외부 내용을 agent나 action의 입력으로 사용해도 그 내용 자체에 권한이나 지침의 효력이 생기지는 않습니다.
 - Secret과 credential은 필요한 실행 단계에만 제공하고 agent 실행 환경에는 불필요하게 노출하지 않습니다.
-- `main`에 write-back하는 CI를 두지 않는 정책과 PR Gate의 구체적인 실행 규칙은 [Testing](testing.md)을 따릅니다.
+- `main` admission CI의 read-only와 no-write-back contract는 [Continuous Integration](ci.md)을 따릅니다.
 
 ## GitHub Agentic Workflows
 
@@ -180,7 +181,9 @@ GitHub Agentic Workflows는 자연어 Markdown으로 작성하더라도 일반 �
 - 각 GitHub authoring surface의 field, optional section, exact literal과 rendering structure → `.github/templates/`의 해당 template file
 - working state, worktree, base, branch policy와 naming, Git history와 commit convention → [VCS / Git](vcs-git.md)
 - 작성 원본과 저장소 권한 결정 → [작성 원본과 권한](source-authority.md)
-- 저장소 정확성 검증과 PR Gate → [Testing](testing.md)
+- CI admission, PR Gate와 workflow evidence orchestration → [Continuous Integration](ci.md)
+- deterministic executable behavior → [Testing](testing.md)
+- 구조·파생 계약 검증 → [Validation](validation.md)
 - behavioral evaluation과 근거 해석 → [Evaluation](evaluation.md)
 - Agent Asset의 설계, activation과 runtime behavior → 해당 Agent Asset의 원본과 [Agent Assets](../references/agent-assets/README.md)
 - GitHub 기능의 일반 사용법과 빠르게 변하는 현재 동작 → GitHub 공식 문서

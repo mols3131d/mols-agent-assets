@@ -69,11 +69,12 @@ SRP는 함수·파일·모듈을 작게 만드는 규칙이 아닙니다. 책임
 | --- | --- |
 | VCS, Git, branch와 history | [VCS / Git](vcs-git.md) |
 | GitHub 협업과 merge | [GitHub](github.md) |
+| CI admission, PR Gate와 evidence orchestration | [Continuous Integration](ci.md) |
 | 작성 원본과 권한 | [작성 원본과 권한](source-authority.md) |
 | 파일과 디렉터리 배치 | [Repository Layout](repository-layout.md) |
 | Formatting | [Formatting](formatting.md) |
 | 구조·파생 계약 검증 | [Validation](validation.md) |
-| deterministic test와 PR Gate | [Testing](testing.md) |
+| deterministic executable behavior | [Testing](testing.md) |
 | Agent Asset 동작 근거 | [Evaluation](evaluation.md) |
 
 더 좁은 정책이 구체적인 결정을 정하면 해당 정책이 우선합니다. 이 문서는 그 뒤에도 선택지가 남을 때 적용합니다.

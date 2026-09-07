@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Rulesync로 재사용 Agent Asset을 결정론적으로 검증한다.
 
-``src/rulesync``를 대상으로 read-only 검증을 실행해 Rulesync 설정, 이 repository가
-설정한 projection, 각 asset이 선언한 ``targets``에 따라 선택되는 projection을 확인한다.
-생성 검증은 모두 ``--dry-run``을 사용한다. ``--targets '*'``는 Rulesync가 고려하는
-대상 범위를 넓히지만 각 asset이 직접 선언한 target을 덮어쓰지 않는다.
+``src/rulesync``를 대상으로 read-only 검증을 실행해 Rulesync 설정과 이 repository가
+유지하는 전체 configured projection을 확인한다. Library config는 지원 ceiling의 target과
+feature를 선언하고, Rulesync generation은 각 asset의 ``targets``를 존중한다. 생성 검증은
+모두 ``--dry-run``을 사용한다.
 
 Rulesync의 JSON 결과가 성공이 아니거나 warning이 하나라도 있으면 검증 실패로 본다.
 schema parsing, source loading, target adapter semantics는 여기서 다시 구현하지 않고
@@ -36,7 +36,6 @@ class Check:
 CHECKS = (
     Check("config", ("doctor", "--strict")),
     Check("configured-projection", ("generate", "--dry-run")),
-    Check("declared-targets", ("generate", "--dry-run", "--targets", "*")),
 )
 
 Runner = Callable[[tuple[str, ...]], subprocess.CompletedProcess[str]]
@@ -104,8 +103,13 @@ def validate_result(result: subprocess.CompletedProcess[str]) -> None:
     try:
         payload = parse_payload(result.stdout)
     except ValidationFailure:
-        if result.returncode != 0 and result.stderr.strip():
-            raise ValidationFailure(result.stderr.strip()) from None
+        if result.returncode != 0:
+            detail = result.stderr.strip()
+            if detail:
+                raise ValidationFailure(detail) from None
+            raise ValidationFailure(
+                f"Rulesync 명령이 출력 없이 실패했습니다 (exit code {result.returncode})."
+            ) from None
         raise
 
     if result.returncode != 0:

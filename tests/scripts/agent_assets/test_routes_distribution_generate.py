@@ -192,10 +192,5 @@ def test_write_outputs_removes_retired_jsonl(tmp_path, monkeypatch):
     assert readme.exists()
 
 
-def test_committed_distribution_routes_are_current():
-    for path, content in generate_distribution_routes.generate().items():
-        assert path.read_text(encoding="utf-8") == content
-
-
 def test_canonical_skill_directory_contains_no_route_index():
     assert not (generate_distribution_routes.CANONICAL_SKILLS / "INDEX.jsonl").exists()
