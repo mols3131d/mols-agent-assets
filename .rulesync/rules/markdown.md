@@ -26,6 +26,8 @@ These are context pointers, not dependency edges. Load only the Skill whose task
 
 ## Related References
 
+Read only the reference that can materially change the current Markdown decision; do not preload this list.
+
 - [Markdown reference](https://github.com/mols3131d/mols-agent-assets/blob/main/src/rulesync/.rulesync/skills/mols-documentation/references/markdown.md) — general Markdown-specific expression and source/rendered-view guidance.
 - [Documentation Principles](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/documentation/principles.md) — repository documentation quality and information-architecture principles.
 - [Formatting](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/development/formatting.md) — repository formatter ownership and changed-only formatting workflow.
