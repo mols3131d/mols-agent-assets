@@ -13,17 +13,18 @@ Apply the same rule to prose-valued Markdown frontmatter such as YAML scalar des
 
 Keep structural line breaks where Markdown or the embedded format gives them meaning, including list items, tables, fenced code, blockquotes, explicit line breaks, and structured YAML.
 
+Do not inspect or imitate formatter or linter configuration merely to shape prose. Deterministic formatting and lint normalization belong to repository automation; use that machinery when formatting verification or normalization is actually needed.
+
 ## Related Skills
 
 These are context pointers, not dependency edges. Load only the Skill whose task scope actually applies.
 
 - [`mols-documentation`](https://github.com/mols3131d/mols-agent-assets/blob/main/src/rulesync/.rulesync/skills/mols-documentation/SKILL.md) — human-readable document authoring, structure, readability, navigation, and ownership.
-- [`mols-markdown-maintenance`](https://github.com/mols3131d/mols-agent-assets/blob/main/src/rulesync/.rulesync/skills/mols-markdown-maintenance/SKILL.md) — deterministic Markdown formatting, linting, frontmatter validation, and index maintenance.
+- [`mols-markdown-maintenance`](https://github.com/mols3131d/mols-agent-assets/blob/main/src/rulesync/.rulesync/skills/mols-markdown-maintenance/SKILL.md) — deterministic Markdown maintenance when formatting, linting, frontmatter validation, or index maintenance is itself required.
 
 ## Related References
 
 - [Markdown reference](https://github.com/mols3131d/mols-agent-assets/blob/main/src/rulesync/.rulesync/skills/mols-documentation/references/markdown.md) — general Markdown-specific expression and source/rendered-view guidance.
 - [Documentation Principles](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/documentation/principles.md) — repository documentation quality and information-architecture principles.
-- [Formatting](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/development/formatting.md) — repository formatter ownership and changed-only formatting path.
+- [Formatting](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/development/formatting.md) — repository formatter ownership and changed-only formatting workflow.
 - [Frontmatter](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/documentation/frontmatter.md) — repository Markdown frontmatter contract.
-- [rumdl configuration](https://github.com/mols3131d/mols-agent-assets/blob/main/.rumdl.toml) — deterministic Markdown lint/format configuration; `MD013` is intentionally disabled.
