@@ -1,16 +1,7 @@
 ---
 name: mols-loops
 description: >-
-  Use adaptive loop orchestration when the user explicitly requests RPI/RPI(R), a
-  loop/루프 method, recursive improvement, an improvement/deep loop, or an equivalent
-  iterative method. Also use when a single pass is materially unreliable and the task
-  needs progressive context loading, evidence before consequential decisions, planning
-  before consequential Work, iterative verification or replanning, convergence across
-  coupled acceptance conditions or workstreams, or recursive narrowing. Keep more
-  specific task Skills, workflows, and governing procedures authoritative for their
-  domains; Loops owns outer Run/Loop control and composes them only when useful. Do not
-  trigger when loop/RPI is merely a topic, identifier, or code concept, or for trivial
-  or reliable one-shot work without explicit method intent.
+  Use adaptive loop orchestration when the user explicitly requests RPI/RPI(R), a loop/루프 method, recursive improvement, an improvement/deep loop, or an equivalent iterative method. Also use when a single pass is materially unreliable and the task needs progressive context loading, evidence before consequential decisions, planning before consequential Work, iterative verification or replanning, convergence across coupled acceptance conditions or workstreams, or recursive narrowing. Keep more specific task Skills, workflows, and governing procedures authoritative for their domains; Loops owns outer Run/Loop control and composes them only when useful. Do not trigger when loop/RPI is merely a topic, identifier, or code concept, or for trivial or reliable one-shot work without explicit method intent.
 targets:
   - claudecode
   - codexcli
@@ -69,11 +60,9 @@ Loops is an LLM Skill, not a parameterized function. Stable defaults stay in the
 | `artifacts` | Named public override, default `<auto>` | Follows established user, project, workspace, or harness artifact policy. Explicit natural language may request inline handling or an authorized established destination/surface. |
 | `intensity` | Named public override; default `standard`; values `light`, `standard`, `deep` | Soft effort control, not a stage count, Loop quota, recursion command, or quality waiver. |
 
-Do not require callers to restate task state or internal control choices as structured arguments, or impose a universal artifact path grammar/fixed enum when ordinary language is clear.
-Interpret equivalent intensity requests by meaning: light/가볍게, standard/보통, deep/깊게. A clear `deep loop` or `심층 루프` means `deep` unless stronger context says otherwise.
+Do not require callers to restate task state or internal control choices as structured arguments, or impose a universal artifact path grammar/fixed enum when ordinary language is clear. Interpret equivalent intensity requests by meaning: light/가볍게, standard/보통, deep/깊게. A clear `deep loop` or `심층 루프` means `deep` unless stronger context says otherwise.
 
-Goal, target, terminal depth, Scope boundaries, evidence sources, recursive descent, loop limits, reporting cadence, and continuation needs come from the task, higher instructions, built-in configuration, and current Loops state; they are not named public arguments.
-Natural-language constraints still apply. No control or constraint authorizes side effects, weakens invariants, or crosses higher authority.
+Goal, target, terminal depth, Scope boundaries, evidence sources, recursive descent, loop limits, reporting cadence, and continuation needs come from the task, higher instructions, built-in configuration, and current Loops state; they are not named public arguments. Natural-language constraints still apply. No control or constraint authorizes side effects, weakens invariants, or crosses higher authority.
 
 ## Runtime
 
@@ -189,8 +178,7 @@ Active Scope
 - Acceptance conditions
 ```
 
-During Prepare, infer the smallest provisional Active Scope sufficient to pursue the Goal. Record material boundary uncertainty instead of silently widening it; explicit user or governing boundaries take precedence.
-Scope determines what Work belongs to the problem, not operational permission or weaker authority, safety, persistence, or validation requirements.
+During Prepare, infer the smallest provisional Active Scope sufficient to pursue the Goal. Record material boundary uncertainty instead of silently widening it; explicit user or governing boundaries take precedence. Scope determines what Work belongs to the problem, not operational permission or weaker authority, safety, persistence, or validation requirements.
 
 1. **Work stays inside Active Scope.** Out-of-scope findings may inform Research or Review; Work on them requires prior valid expansion.
 1. **Narrowing is adaptive.** Review may narrow an inferred/broad Scope while preserving Goal, user-required Work, and required acceptance conditions. Record the delta and revalidate affected Plan coverage. An explicitly fixed boundary cannot narrow or expand without new authority from its source.
@@ -302,8 +290,7 @@ A lower tier does not prove a higher-tier claim; never report unperformed checks
 
 At material Reviews, focus on the smallest useful set of Goal, Active Scope, current state, remaining material gaps, supporting/counterevidence, unresolved challenge candidates, and unresolved uncertainty.
 
-Continue only when another Loop has a credible path to material information gain, uncertainty reduction, verified quality gain, or acceptance closure. Repeated activity without such gain is saturation.
-Saturation in one source, method, or perspective is not overall saturation when an unexamined material lens has a credible result-changing path. Otherwise change evidence source/method/perspective or narrow Active Scope when permitted/useful. If continuation requires broader Scope, delegate to Scope Control; if a material gap remains with no valid path, classify it as blocked for Run Boundary and Handoff. Never invent findings, depth, or churn to consume the ceiling.
+Continue only when another Loop has a credible path to material information gain, uncertainty reduction, verified quality gain, or acceptance closure. Repeated activity without such gain is saturation. Saturation in one source, method, or perspective is not overall saturation when an unexamined material lens has a credible result-changing path. Otherwise change evidence source/method/perspective or narrow Active Scope when permitted/useful. If continuation requires broader Scope, delegate to Scope Control; if a material gap remains with no valid path, classify it as blocked for Run Boundary and Handoff. Never invent findings, depth, or churn to consume the ceiling.
 
 ### Recursive Resolution
 
@@ -317,8 +304,7 @@ Use Perspective Control instead when another viewpoint helps but no narrower ind
 
 ### Run Boundary and Handoff
 
-Evaluate a candidate exit only after substantive Review closes and `loops_used` increments.
-Then enter Finalize; only its Gate reports the terminal Run state.
+Evaluate a candidate exit only after substantive Review closes and `loops_used` increments. Then enter Finalize; only its Gate reports the terminal Run state.
 
 ```mermaid
 flowchart TD
@@ -340,21 +326,14 @@ Infer terminal result from natural-language task intent and governing context:
 - domain research/plan/review deliverable → may be Work, so Plan-before-Work and outer RPI Review still apply
 - Goal requested → continue until Review can nominate and Finalize can accept the Goal
 
-Review may nominate completion only when the requested terminal appears accepted,
-applicable acceptance conditions are verified, no result-changing `absorb` or
-`unresolved` finding remains, and no material next transition is pending. When any
-condition is open and continuation is available, start the next Main Loop at the earliest
-stale prerequisite. A label such as "first Loop complete" may describe accounting, but
-must not imply Run completion while acceptance remains open. `COMPLETE` exists only after Finalize separately inspects the candidate, resolves and
-validates any bounded finishing issue, and its Gate passes.
+Review may nominate completion only when the requested terminal appears accepted, applicable acceptance conditions are verified, no result-changing `absorb` or `unresolved` finding remains, and no material next transition is pending. When any condition is open and continuation is available, start the next Main Loop at the earliest stale prerequisite. A label such as "first Loop complete" may describe accounting, but must not imply Run completion while acceptance remains open. `COMPLETE` exists only after Finalize separately inspects the candidate, resolves and validates any bounded finishing issue, and its Gate passes.
 
 Reaching the effective ceiling with material Work remaining is a **continuation boundary**, not proof of Goal failure.
 
 When the final allowed Review sends a handoff candidate to Finalize:
 
 1. Start no new Loop.
-1. Inspect and validate the continuation boundary; use the established handoff mechanism
-   and invent no persistent format.
+1. Inspect and validate the continuation boundary; use the established handoff mechanism and invent no persistent format.
 1. Preserve minimum continuation state:
    - **Run accounting** — `loops_used`, effective ceiling
    - **Scope/context** — active scope path/definition, pending Scope proposals, needed target/context reference, applicable user constraints/named controls including relevant active intensity
@@ -378,13 +357,9 @@ Never report COMPLETE while a known material gap still requires broader Research
 
 ## Reporting
 
-Reporting cadence is not a Loops argument; follow higher-priority harness behavior and explicit user instructions. Keep material blockers, handoff state, and terminal outcome observable when the environment permits.
-Report only observable evidence, decisions, Work, validation, Scope changes, Loop counts, handoff, and outcomes; do not narrate hidden reasoning.
+Reporting cadence is not a Loops argument; follow higher-priority harness behavior and explicit user instructions. Keep material blockers, handoff state, and terminal outcome observable when the environment permits. Report only observable evidence, decisions, Work, validation, Scope changes, Loop counts, handoff, and outcomes; do not narrate hidden reasoning.
 
-At Prepare readiness, each substantive Review close, Finalize entry, and the terminal
-boundary, expose the minimum relevant state below or reference an equivalent established
-surface. Prepare and Finalize updates are unnumbered; do not emit this for every search or
-tool action.
+At Prepare readiness, each substantive Review close, Finalize entry, and the terminal boundary, expose the minimum relevant state below or reference an equivalent established surface. Prepare and Finalize updates are unnumbered; do not emit this for every search or tool action.
 
 ```text
 Loops State
