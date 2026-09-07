@@ -4,7 +4,6 @@
     "skills": [
       "mols-agent-asset",
       "mols-agent-asset-find",
-      "mols-agent-asset-validator",
       "rulesync"
     ]
   },
