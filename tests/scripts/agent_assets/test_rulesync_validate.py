@@ -28,6 +28,7 @@ def test_validate_runs_all_read_only_checks() -> None:
     assert validate_rulesync.validate(runner) == 0
     assert calls == [check.args for check in validate_rulesync.CHECKS]
     assert all("--dry-run" in args for args in calls[1:])
+    assert calls[-1][-4:] == ("--targets", "*", "--features", "skills")
 
 
 def test_validate_fails_on_rulesync_warning(capsys) -> None:
