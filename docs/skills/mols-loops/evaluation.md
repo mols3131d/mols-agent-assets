@@ -58,6 +58,7 @@ Core runtime selection은 다음 축에서 대표 case를 고릅니다.
 
 - Prepare → RPI Main Loop → Finalize의 3단계 순서, 단일 실행과 Main-Loop-only accounting
 - task-specific Skill 또는 governing workflow와의 composition
+- Loops outer Goal/Scope·Run accounting·cross-capability placement·recursion·handoff·Finalize, RPI Main-Loop prerequisite·stage transition, task-specific internal procedure·ordering·dependency의 ownership 분리
 - phase-local progressive context loading과 material-change 기반 context/capability refresh
 - Research → Plan → Work prerequisite
 - Scope narrowing·expansion과 fixed boundary
@@ -143,6 +144,7 @@ Default suite는 비용과 signal을 균형 있게 유지하고, 더 넓은 case
 1. Trigger case는 positive와 negative/near-miss 균형을 확인합니다.
 1. Specificity·composition failure는 competing metadata, expected selected set과 primary owner를 명시해 실제 routing decision을 검증합니다.
 1. Behavior case는 outcome을 우선하고, trajectory 자체가 contract일 때만 중간 gate를 assertion으로 둡니다.
+1. Ownership case는 Loops outer control, RPI Main-Loop prerequisite/stage transition, task-specific internal procedure·ordering·dependency가 서로 침범하지 않는지 검증합니다.
 1. Context/composition case는 현재 decision에 필요한 최소 context만 load하는지, material change에서 applicability를 재평가하는지, loaded context와 composed workflow가 outer Loops authority를 탈취하지 않는지 검증합니다.
 1. Multi-perspective case는 distinct question·evidence surface와 reconciliation을 검사하고 reviewer 수, persona 이름, exact lens roster나 다수결을 정답으로 고정하지 않습니다.
 1. Lifecycle case는 Prepare와 Finalize를 RPI stage나 counted Loop로 오인하지 않는지, Main RPI exit가 Finalize Gate를 통과하는지, Finalize가 hidden Main Loop를 열지 않는지 검사합니다.
