@@ -104,8 +104,13 @@ def validate_result(result: subprocess.CompletedProcess[str]) -> None:
     try:
         payload = parse_payload(result.stdout)
     except ValidationFailure:
-        if result.returncode != 0 and result.stderr.strip():
-            raise ValidationFailure(result.stderr.strip()) from None
+        if result.returncode != 0:
+            detail = result.stderr.strip()
+            if detail:
+                raise ValidationFailure(detail) from None
+            raise ValidationFailure(
+                f"Rulesync 명령이 출력 없이 실패했습니다 (exit code {result.returncode})."
+            ) from None
         raise
 
     if result.returncode != 0:
