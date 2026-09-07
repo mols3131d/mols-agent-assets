@@ -27,7 +27,7 @@
         "mols-loops"
       ],
       "transport": "github",
-      "ref": "7eed4371c6c961068a7d17b970b63eb8e08bbffe",
+      "ref": "main",
       "path": "src/rulesync/.rulesync/skills"
     },
     {
