@@ -18,7 +18,7 @@ def result(*, returncode: int = 0, stdout: str = '{"success":true}', stderr: str
     return subprocess.CompletedProcess([], returncode, stdout, stderr)
 
 
-def test_validate_runs_all_read_only_checks() -> None:
+def test_validate_runs_config_and_configured_projection_checks() -> None:
     calls: list[tuple[str, ...]] = []
 
     def runner(args: tuple[str, ...]):
@@ -26,9 +26,10 @@ def test_validate_runs_all_read_only_checks() -> None:
         return result()
 
     assert validate_rulesync.validate(runner) == 0
-    assert calls == [check.args for check in validate_rulesync.CHECKS]
-    assert all("--dry-run" in args for args in calls[1:])
-    assert calls[-1][-4:] == ("--targets", "*", "--features", "skills")
+    assert calls == [
+        ("doctor", "--strict"),
+        ("generate", "--dry-run"),
+    ]
 
 
 def test_validate_fails_on_rulesync_warning(capsys) -> None:
