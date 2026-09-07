@@ -49,6 +49,7 @@ tests:
       rubric_threshold: 0.8
       case_ids:
         - rpi-composes-with-domain-skill
+        - progressive-context-refreshes-on-target-change
         - three-phase-run-envelope-is-preserved
         - prepare-blocked-stops-before-main
         - finalize-cannot-hide-a-new-main-loop
