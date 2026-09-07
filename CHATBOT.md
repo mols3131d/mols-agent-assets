@@ -48,6 +48,6 @@ GitHub text를 작성·재작성·형식 검토할 때는 실제 surface에 맞�
 | Skill, Rule, scoped instruction, agent/subagent를 작성·수정·단순화·리팩터링 | `mols-agent-asset` | agent-facing behavior authoring이 주 작업일 때 선택합니다. |
 | Agent Asset을 찾기·선택·로드·설치·동기화·이관 | `mols-agent-asset-find` | 기존 Asset의 discovery와 적용이 주 작업일 때 선택합니다. |
 | Agent Asset, instruction, `CHATBOT.md`의 품질·routing·readiness를 formal review, audit, adversarial validation 또는 validation-driven improvement | `mols-agent-asset-validator` | 일반 authoring self-review보다 강한 검증이 주 작업일 때 선택합니다. |
-| 사용자가 RPI, 개선 루프, 재귀 루프, 심층 루프를 요구하거나 복합 작업에 반복 Research → Plan → Implementation → Review가 필요 | `mols-rpi` + task-specific Asset | RPI가 작업 domain Asset을 대체하지 않습니다. |
+| 사용자가 RPI, 개선 루프, 재귀 루프, 심층 루프를 요구하거나 복합 작업에 반복 Research → Plan → Implementation → Review 및 점진적 context/capability orchestration이 필요 | `mols-loops` + task-specific Asset | Loops가 작업 domain Asset의 authority나 내부 procedure를 대체하지 않습니다. |
 
 `CHATBOT.md`는 repository policy, Agent Asset behavior 또는 routing semantics를 재정의하지 않습니다. 연결된 canonical source와 [`.agents/route/ROUTE.md`](.agents/route/ROUTE.md)가 항상 authoritative합니다.
