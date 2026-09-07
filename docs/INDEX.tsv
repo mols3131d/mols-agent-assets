@@ -42,14 +42,6 @@ skills/mols-agent-asset/validation-and-evaluation.md	Agent Asset의 Review, 결�
 skills/mols-clarify-code/	
 skills/mols-clarify-code/baseline/	
 skills/mols-clarify-code/baseline/decisions.md	mols-clarify-code의 routing, scope, public argument, documentation·validation 전략을 변경하거나 복구할 때 원래 설계 결정과 후속 식별자 변경을 확인하는 protected baseline 기록입니다.
-skills/mols-markdown/	mols-markdown family에서 사람이 읽는 Markdown, dashboard, deterministic maintenance 중 어느 Skill이 책임지는지 선택하거나 family boundary를 유지보수할 때 사용하는 entrypoint입니다.
-skills/mols-markdown-dashboard/	mols-markdown-dashboard의 baseline, architecture와 maintenance 문서를 찾아 현재 구현을 이해·변경·복구할 때 사용하는 maintainer documentation entrypoint입니다.
-skills/mols-markdown-dashboard/ARCHITECTURE.md	mols-markdown-dashboard의 구현 구조와 data flow를 이해하거나 변경 영향을 판단할 때 component responsibility, design boundary, failure safety와 exit code를 확인하는 maintainer 문서입니다.
-skills/mols-markdown-dashboard/MAINTENANCE.md	mols-markdown-dashboard를 변경·검증·복구할 때 maintenance protocol, package-local quality gate, recovery checklist와 refactoring rule을 확인하는 maintainer 문서입니다.
-skills/mols-markdown-dashboard/baseline/	
-skills/mols-markdown-dashboard/baseline/DIRECTIVE.md	스킬이 후속 수정에서 훼손되지 않도록 핵심 요구사항과 결정사항을 보존한다.
-skills/mols-markdown-maintenance/	mols-markdown-maintenance를 변경하거나 유지할 때 repository-native Markdown tooling 우선순위, custom frontmatter/index delta와 유지보수 invariant를 확인하는 maintainer documentation entrypoint입니다.
-skills/mols-mermaid/	mols-mermaid family에서 관계·절차·구조는 diagram, 정량 비교·추세·구성은 chart 중 어느 Skill로 라우팅할지 판단하거나 family boundary를 유지보수할 때 사용하는 entrypoint입니다.
 skills/mols-loops/	mols-loops를 유지보수할 때 outer adaptive orchestration, RPI loop kernel, progressive context/composition, intensity와 artifact 결정을 찾는 entrypoint입니다.
 skills/mols-loops/artifacts.md	mols-loops의 artifact 배치, persistence, durable continuation과 lifecycle을 설계하거나 변경할 때 보존해야 할 결정사항을 정리한 maintainer 문서입니다.
 skills/mols-loops/description.md	mols-loops frontmatter description의 Trigger·routing 필수 신호, 보조 신호와 1,024자 압축 경계를 유지보수할 때 사용하는 문서입니다.
@@ -60,6 +52,14 @@ skills/mols-loops/rpi-research.md	Adaptive recursive RPI에서 Research의 prere
 skills/mols-loops/rpi-review.md	Adaptive recursive RPI에서 Review의 prerequisite validation, challenge reconciliation과 next-transition dispatch를 보존하는 maintainer 문서입니다.
 skills/mols-loops/rpi-work.md	RPI의 Implementation을 goal-directed Work로 해석하고, Work가 하나 이상의 다양한 domain action으로 구성될 수 있다는 핵심 설계를 보존하는 maintainer 문서입니다.
 skills/mols-loops/rpi.md	Prepare, Main RPI, Finalize의 3단계 Run 외피와 prerequisite contract, Review-driven adaptation이 어떻게 연결되는지 보존하는 maintainer 문서입니다.
+skills/mols-markdown/	mols-markdown family에서 사람이 읽는 Markdown, dashboard, deterministic maintenance 중 어느 Skill이 책임지는지 선택하거나 family boundary를 유지보수할 때 사용하는 entrypoint입니다.
+skills/mols-markdown-dashboard/	mols-markdown-dashboard의 baseline, architecture와 maintenance 문서를 찾아 현재 구현을 이해·변경·복구할 때 사용하는 maintainer documentation entrypoint입니다.
+skills/mols-markdown-dashboard/ARCHITECTURE.md	mols-markdown-dashboard의 구현 구조와 data flow를 이해하거나 변경 영향을 판단할 때 component responsibility, design boundary, failure safety와 exit code를 확인하는 maintainer 문서입니다.
+skills/mols-markdown-dashboard/MAINTENANCE.md	mols-markdown-dashboard를 변경·검증·복구할 때 maintenance protocol, package-local quality gate, recovery checklist와 refactoring rule을 확인하는 maintainer 문서입니다.
+skills/mols-markdown-dashboard/baseline/	
+skills/mols-markdown-dashboard/baseline/DIRECTIVE.md	스킬이 후속 수정에서 훼손되지 않도록 핵심 요구사항과 결정사항을 보존한다.
+skills/mols-markdown-maintenance/	mols-markdown-maintenance를 변경하거나 유지할 때 repository-native Markdown tooling 우선순위, custom frontmatter/index delta와 유지보수 invariant를 확인하는 maintainer documentation entrypoint입니다.
+skills/mols-mermaid/	mols-mermaid family에서 관계·절차·구조는 diagram, 정량 비교·추세·구성은 chart 중 어느 Skill로 라우팅할지 판단하거나 family boundary를 유지보수할 때 사용하는 entrypoint입니다.
 skills/mols-text-optimizer/	
 skills/mols-text-optimizer/goal.md	mols-text-optimizer를 변경할 때 보존해야 할 핵심 목표와 책임 경계를 설명하는 maintainer 문서입니다.
 using-this-repository.md	이 저장소의 Agent Asset이나 reusable knowledge를 외부 repository·runtime에서 찾고, 직접 사용·설치·고정·가져오는 방법을 선택할 때 사용합니다.
