@@ -30,7 +30,7 @@ mise run format
 Promptfoo처럼 Node runtime이 필요한 기존 command는 mise environment에서 실행합니다.
 
 ```bash
-mise exec -- npm run eval:promptfoo:mols-rpi
+mise exec -- npm run eval:promptfoo:mols-loops
 ```
 
 ## Official sources
