@@ -25,6 +25,10 @@ run = "uv run python scripts/agent_assets/skills_sync.py"
 description = "Regenerate committed indexes and routes"
 run = "uv run python -m scripts.generated_artifacts_sync"
 
+[tasks.generated-validate]
+description = "Validate committed indexes and routes without writing"
+run = "uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts_validate"
+
 [tasks.format]
 description = "Format the entire repository"
 run = [
