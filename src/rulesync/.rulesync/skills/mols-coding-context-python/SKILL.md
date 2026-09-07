@@ -23,7 +23,7 @@ targets:
 ## Add-on Contract
 
 - Python code semantics, Python runtime behavior 또는 Python-facing tests가 현재 task에 material할 때만 적용한다.
-- Python이라는 이유만으로 async, schema, retry, subprocess, concurrency 또는 security structure를 새로 만들지 않는다.
+- Python이라는 이유만으로 validation, concurrency 또는 execution structure를 새로 만들지 않는다.
 - Exact Python, standard-library, dependency와 framework behavior는 current authoritative source와 project/runtime evidence를 따른다.
 - 해당 construct가 실제 change surface에 없으면 관련 section은 행동을 만들지 않는다.
 
@@ -31,7 +31,7 @@ targets:
 
 - 실제로 처리할 concrete exception과 caller-visible failure contract를 식별하고 `try` scope를 intended failure source 주변으로 좁힌다.
 - Broad catch가 unrelated programming, parsing 또는 invariant failure를 success-like fallback으로 삼키지 않게 한다.
-- Exception translation은 필요한 cause와 actionable context를 보존한다. Catch가 recovery, translation 또는 required cleanup을 하지 않으면 필요성부터 다시 본다.
+- Exception translation은 필요한 cause와 actionable context를 보존한다. Catch가 recovery, translation, required cleanup/observation 등 실제 caller/runtime contract를 수행하지 않으면 필요성부터 다시 본다.
 
 ## Async and Concurrency
 
@@ -47,7 +47,7 @@ targets:
 현재 boundary가 dynamic, externally shaped 또는 runtime-validated일 때만 적용한다.
 
 - Type annotation은 runtime validation이 아니다. Downstream decision을 바꾸는 requiredness, coercion, variant와 extra-field behavior는 실제 runtime boundary가 무엇을 보장하는지 확인한다.
-- Dataclass, TypedDict, Pydantic, attrs 또는 다른 representation을 universal default로 강제하지 않는다. Existing project boundary가 충분하면 새 validation layer를 만들지 않는다.
+- 특정 representation 또는 validation framework를 universal default로 강제하지 않는다. Existing project boundary가 충분하면 새 validation layer를 만들지 않는다.
 
 ## Subprocess and Dynamic Execution
 
