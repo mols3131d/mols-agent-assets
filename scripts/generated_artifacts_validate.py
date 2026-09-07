@@ -113,7 +113,6 @@ def changed_paths(
             "diff",
             "--name-only",
             "--no-renames",
-            "--diff-filter=ACMRD",
             "-z",
             base,
             head,
