@@ -10,19 +10,32 @@ from collections.abc import Callable, Iterable
 from pathlib import Path
 
 from scripts import generated_artifacts_sync as sync
+from scripts import docs_indexes_generate
 from scripts.agent_assets import routes_distribution_generate as distribution_routes
 from scripts.agent_assets import routes_repository_generate as repository_routes
-from scripts.docs_indexes_generate import generate_docs_indexes
 
 ROOT = sync.ROOT
 LOCAL_PROJECTION_NAMES = frozenset({"docs-indexes", "distribution-routes"})
 Checker = Callable[[], list[str]]
 
 
+def _first_line_difference(current: str, expected: str) -> tuple[int, str, str] | None:
+    current_lines = current.splitlines()
+    expected_lines = expected.splitlines()
+    for index in range(max(len(current_lines), len(expected_lines))):
+        current_line = current_lines[index] if index < len(current_lines) else "<missing>"
+        expected_line = expected_lines[index] if index < len(expected_lines) else "<missing>"
+        if current_line != expected_line:
+            return index + 1, current_line, expected_line
+    return None
+
+
 def compare_outputs(
     expected: dict[Path, str],
     output_matches: Callable[[str], bool],
     root: Path = ROOT,
+    *,
+    show_first_difference: bool = False,
 ) -> list[str]:
     """Compare expected generated files with committed outputs without writing them."""
     expected_by_path = {
@@ -34,8 +47,19 @@ def compare_outputs(
         path = root / relative
         if not path.exists():
             drift.append(f"missing: {relative}")
-        elif path.read_text(encoding="utf-8") != content:
-            drift.append(f"outdated: {relative}")
+            continue
+
+        current = path.read_text(encoding="utf-8")
+        if current == content:
+            continue
+
+        drift.append(f"outdated: {relative}")
+        if show_first_difference:
+            difference = _first_line_difference(current, content)
+            if difference is not None:
+                line, current_line, expected_line = difference
+                drift.append(f"line {line} current: {current_line}")
+                drift.append(f"line {line} expected: {expected_line}")
 
     existing = {
         path.relative_to(root).as_posix()
@@ -49,7 +73,11 @@ def compare_outputs(
 
 
 def check_docs_indexes() -> list[str]:
-    return generate_docs_indexes(check=True)
+    return compare_outputs(
+        docs_indexes_generate.expected_docs_indexes(),
+        sync._is_docs_index_output,
+        show_first_difference=True,
+    )
 
 
 def check_distribution_routes() -> list[str]:
