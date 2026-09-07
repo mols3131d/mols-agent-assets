@@ -4,7 +4,7 @@ description: Prepare, Main RPI, Finalize의 3단계 Run 외피와 prerequisite c
 
 # RPI
 
-이 문서는 이 Skill의 고유한 RPI 설계만 기록합니다. Runtime behavior의 canonical source는 `SKILL.md`입니다.
+이 문서는 `mols-loops` 내부의 default RPI loop kernel과 Loops outer control의 접점을 기록합니다. Runtime behavior의 canonical source는 `SKILL.md`입니다. Loops가 outer Goal/Scope, Run accounting, recursion, handoff와 Finalize를 소유하고, RPI는 Main Loop의 Research → Plan → Implementation/Work → Review prerequisite와 Review-driven stage transition을 소유합니다.
 
 ## Three-Phase Run Envelope
 
@@ -17,7 +17,7 @@ Prepare workflow
 ```
 
 - **Prepare**는 `Discover → Assess → Configure → Verify`로 task·environment·authority·acceptance를 확인하고, Main RPI의 Scope·evidence·intensity·artifact·validation 전략을 준비합니다. `READY` 또는 `READY WITH LIMITS`일 때만 Main RPI에 진입합니다.
-- **RPI Main Loop**만 substantive Loop를 셉니다. Research, Plan, Work, Review의 prerequisite와 Review-driven transition, multi-perspective inquiry, Scope, recursion, convergence가 이 phase 안에서 작동합니다.
+- **RPI Main Loop**만 substantive Loop를 셉니다. Research, Plan, Work, Review의 prerequisite와 Review-driven stage transition이 이 phase 안에서 작동합니다. Multi-perspective inquiry는 RPI 품질 제어에 참여하고, Loops-owned Scope·recursion·convergence control은 Review dispatch를 통해 이 phase와 상호작용합니다.
 - **Finalize**는 `Inspect → Resolve → Validate → Gate`로 Main RPI가 만든 candidate exit를 한 번 닫습니다. 이미 형성된 결과 안의 bounded finishing만 허용하며, 마지막 Gate가 `COMPLETE`, `HANDOFF`, `BLOCKED` 중 하나를 결정합니다.
 
 Prepare는 한 번 실행됩니다. Main RPI에 진입한 Run에서는 Finalize도 한 번 실행되며 둘 다 Loop가 아닙니다. Prepare가 `BLOCKED`이면 pre-Main boundary를 보고하고 Main RPI나 Finalize에 들어가지 않습니다. Main RPI가 시작된 뒤에는 terminal state를 직접 선언하지 않고 Finalize를 거칩니다. Finalize에 들어간 뒤 broad Research, replanning, Scope change 또는 substantial reshaping이 필요해지면 같은 Run의 Main RPI를 다시 열지 않습니다.
@@ -41,18 +41,18 @@ RPI의 기본 관계는 **Research → Plan → Implementation → Review**입�
 
 ## Review-driven Adaptation
 
-RPI의 동적 적응은 Review가 현재 state를 평가한 뒤 다음 transition을 선택하는 데서 발생합니다.
+RPI kernel의 동적 적응은 Review가 현재 Main-Loop state를 평가한 뒤 다음 RPI stage transition을 선택하는 데서 발생합니다. Scope, recursion, convergence, Run termination 같은 cross-cutting concern은 Review가 직접 소유하지 않고 Loops-owned control로 dispatch합니다.
 
 - Evidence가 부족하면 Research를 다시 엽니다.
 - Evidence는 충분하지만 Plan coverage가 stale하면 Plan부터 갱신합니다.
 - Plan이 여전히 유효하고 bounded Work gap만 남으면 필요한 Work만 수행합니다.
 - 여러 Work 중 일부만 stale하거나 실패했다면 영향을 받은 Work와 그 earliest stale prerequisite만 다시 엽니다.
-- Scope 변화가 필요하면 Review는 변경을 직접 실행하지 않고 owning control로 넘깁니다. Expansion은 Research와 Plan의 선행 검증을 다시 요구합니다.
-- 더 작은 blocker를 분리하는 편이 materially 유리하면 Review에서 strict-subset child Scope로 내려갈 수 있습니다.
-- Convergence, saturation 또는 blocker가 확인되면 해당 owning concern으로 dispatch하고 Loop budget을 채우기 위한 반복을 만들지 않습니다.
+- Scope 변화가 필요하면 Review는 변경을 직접 실행하지 않고 Scope Control로 넘깁니다. Expansion은 Research와 Plan의 선행 검증을 다시 요구합니다.
+- 더 작은 blocker를 분리하는 편이 materially 유리하면 Review는 Recursive Resolution에 child descent를 제안합니다. 실제 recursion boundary와 accounting은 Loops가 소유합니다.
+- Convergence, saturation 또는 blocker가 확인되면 해당 Loops-owned concern으로 dispatch하고 Loop budget을 채우기 위한 반복을 만들지 않습니다.
 - Material finding이나 acceptance gap을 다음에 볼 과제로 남기면서 현재 Run을 완료로 표시하지 않습니다. Review가 Research, Plan 또는 Work로 dispatch했고 Run을 계속할 수 있으면 같은 Run의 다음 Loop를 실제로 시작합니다. Accepted terminal, blocker 또는 Loop ceiling만 Finalize candidate exit가 됩니다.
 
-이 구조 때문에 RPI는 처음부터 다시 도는 반복문이 아니라 **dependency validity에 따라 시작점과 범위를 바꾸는 adaptive control loop**입니다. Review는 transition을 선택·dispatch하지만 Scope 변경, authority 또는 Run termination의 세부 규칙을 대신 소유하지 않습니다.
+이 구조 때문에 RPI는 처음부터 다시 도는 반복문이 아니라 **dependency validity에 따라 Main-Loop 시작점과 범위를 바꾸는 adaptive loop kernel**입니다. Review는 RPI stage transition을 선택하고 cross-cutting need를 owning Loops control로 dispatch하지만 Scope authority, recursion boundary, Run accounting 또는 Run termination을 대신 소유하지 않습니다.
 
 ## Adaptive Intensity
 
@@ -71,9 +71,9 @@ Intensity는 Research 깊이, challenge, validation, alternative exploration과 
 - 관점 결과는 consensus나 다수결로 정하지 않고 evidence quality와 claim relevance로 reconcile합니다.
 - 새 관점의 material information gain이 없으면 관점 수를 채우기 위한 pass를 만들지 않습니다.
 
-## Recursive Resolution
+## Interaction with Recursive Resolution
 
-Recursion은 adaptive transition의 한 형태이지 별도 실행 체계가 아닙니다.
+Recursion은 Loops-owned adaptive transition이며 RPI와 별도 실행 체계를 만들지 않습니다. RPI Review는 narrower blocker를 식별하고 child descent 필요를 dispatch하며, child 안에서는 같은 RPI prerequisite contract를 재사용합니다.
 
 - Child Scope는 parent Active Scope의 strict subset이어야 합니다.
 - Child는 parent의 Goal, authority, safety, acceptance boundary와 Loop budget을 상속하며 넓히거나 reset하지 않습니다.
@@ -91,11 +91,11 @@ Recursion은 adaptive transition의 한 형태이지 별도 실행 체계가 아
 - **polymorphic Work** — Implementation은 하나 이상의 domain Work를 실행하며 code-only 또는 single-action으로 제한하지 않습니다.
 - **stage/domain separation** — RPI stage terminal과 같은 이름의 domain Work를 혼동하지 않습니다.
 - **dependency-aware reuse** — valid state는 재사용하고 stale dependency만 다시 엽니다.
-- **Review-driven adaptation** — 다음 Loop의 시작점, Scope 처리와 recursion 여부는 Review 결과에 따라 달라집니다.
+- **Review-driven adaptation** — RPI Review는 다음 Main-Loop stage를 earliest stale prerequisite로 dispatch하고, Scope·recursion·convergence·termination need는 owning Loops control로 넘깁니다.
 - **Goal-directed loop intent** — 특정 RPI stage terminal이 없으면 loop-method 요청은 첫 pass가 아니라 Goal acceptance까지 이어지는 Run입니다.
 - **evidence-led perspectives** — 필요한 Research와 Review는 materially distinct lens를 사용하되 persona·vote·고정 관점 수로 대체하지 않습니다.
 - **adaptive intensity** — 3단계 intensity는 effort를 bias하지만 quality waiver, fixed procedure나 Loop quota가 아닙니다.
-- **strict-subset recursion** — child는 parent control boundary를 넓히지 않습니다.
-- **shared accounting and reintegration** — parent와 child가 하나의 Run budget을 공유하고 child 결과를 parent state에 재검증해 합칩니다.
+- **strict-subset recursion** — Loops-owned child boundary는 parent control을 넓히지 않고 child RPI는 같은 prerequisite contract를 따릅니다.
+- **shared accounting and reintegration** — parent와 child가 하나의 Loops-owned Run budget을 공유하고 child 결과를 parent state에 재검증해 합칩니다.
 
 이를 Prepare/Finalize가 없는 bare loop, Finalize 안의 hidden loop, 고정된 stage repetition, 전체 재작성, code-only Implementation, single-action Work, stage-terminal confusion, intensity별 고정 절차, 고정 recursion depth 또는 무조건적인 recursive descent로 바꾸지 않습니다.
