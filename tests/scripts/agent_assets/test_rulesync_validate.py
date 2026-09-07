@@ -73,6 +73,14 @@ def test_validate_fails_on_non_json_output(capsys) -> None:
     assert "JSON" in capsys.readouterr().err
 
 
+def test_validate_preserves_exit_code_when_failure_has_no_output(capsys) -> None:
+    def runner(_args: tuple[str, ...]):
+        return result(returncode=-9, stdout="", stderr="")
+
+    assert validate_rulesync.validate(runner) == 1
+    assert "exit code -9" in capsys.readouterr().err
+
+
 def test_run_rulesync_uses_json_and_library_workspace(monkeypatch) -> None:
     seen: dict[str, object] = {}
 
