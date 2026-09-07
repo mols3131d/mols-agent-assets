@@ -1,12 +1,12 @@
 ---
-description: mols-rpi frontmatter description의 Trigger·routing 필수 신호, 보조 신호와 1,024자 압축 경계를 유지보수할 때 사용하는 문서입니다.
+description: mols-loops frontmatter description의 Trigger·routing 필수 신호, 보조 신호와 1,024자 압축 경계를 유지보수할 때 사용하는 문서입니다.
 ---
 
-# Mols RPI Description
+# Mols Loops Description
 
-이 문서는 `mols-rpi`의 frontmatter `description`이 **어떤 routing signal을 반드시 보존해야 하는지** 소유합니다.
+이 문서는 `mols-loops`의 frontmatter `description`이 **어떤 routing signal을 반드시 보존해야 하는지** 소유합니다.
 
-Runtime behavior는 `src/rulesync/.rulesync/skills/mols-rpi/SKILL.md`, behavioral eval은 `evals/skills/mols-rpi/cases.json`, Promptfoo 실행 설계는 [Evaluation](evaluation.md)이 소유합니다. 이 문서는 description 문구 자체를 고정하지 않고 **선택 경계와 압축 우선순위**를 고정합니다.
+Runtime behavior는 `src/rulesync/.rulesync/skills/mols-loops/SKILL.md`, behavioral eval은 `evals/skills/mols-loops/cases.json`, Promptfoo 실행 설계는 [Evaluation](evaluation.md)이 소유합니다. 이 문서는 description 문구 자체를 고정하지 않고 **선택 경계와 압축 우선순위**를 고정합니다.
 
 ## Portability Contract
 
@@ -30,9 +30,9 @@ Runtime behavior는 `src/rulesync/.rulesync/skills/mols-rpi/SKILL.md`, behaviora
 
 ### Capability Identity
 
-Description만 읽어도 `mols-rpi`가 **evidence, Plan, 반복 검증과 Review-driven adaptation이 필요한 작업을 위한 범용 RPI orchestration Skill**이라는 점을 구분할 수 있어야 합니다.
+Description만 읽어도 `mols-loops`가 **필요한 context와 capability를 점진적으로 resolve하고, RPI를 기본 loop kernel로 사용해 evidence·Plan·Work·Review를 수렴시키는 범용 adaptive orchestration Skill**이라는 점을 구분할 수 있어야 합니다.
 
-Description은 탐색과 Trigger 판단만 소유합니다. Prepare → Main RPI → Finalize phase 구조, stage progression, artifact, Loop accounting과 completion semantics는 runtime body가 소유하며 routing에 필요한 경우가 아니면 description에 넣지 않습니다.
+Description은 탐색과 Trigger 판단만 소유합니다. Prepare → Main RPI → Finalize phase 구조, stage progression, context/composition mechanics, artifact, Loop accounting과 completion semantics는 runtime body가 소유하며 routing에 필요한 경우가 아니면 description에 넣지 않습니다.
 
 단순히 긴 작업을 처리하는 일반 workflow로 보이게 만들면 안 됩니다.
 
@@ -49,7 +49,7 @@ Description은 탐색과 Trigger 판단만 소유합니다. Prepare → Main RPI
 
 모든 철자·언어 variant를 전부 열거할 필요는 없지만, 대표 lexical signal을 지나치게 제거해 explicit recall을 낮추면 안 됩니다.
 
-Explicit method intent는 아래의 **Specificity and Composition Boundary를 무효화하지 않습니다**. 사용자가 RPI를 명시했더라도 하네스의 더 특수한 controlling owner가 있으면 그 owner를 primary로 유지하고, RPI는 호환될 때만 보조적으로 compose합니다.
+Explicit method intent는 아래의 **Specificity and Composition Boundary를 무효화하지 않습니다**. 사용자가 RPI를 명시했더라도 하네스의 더 특수한 controlling owner가 있으면 그 owner를 primary로 유지하고, Loops는 호환될 때만 보조적으로 compose합니다.
 
 작업이 짧거나 trivial하다는 이유만으로 명시적인 method intent를 무효화하지 않습니다. 반대로 `RPI`나 `loop`가 설명 대상, identifier, code concept 또는 부정된 방법일 뿐이면 명시적 요청으로 보지 않습니다.
 
@@ -61,6 +61,7 @@ Description은 적어도 다음 decision signal을 전달해야 합니다.
 
 - consequential decision 전에 evidence gathering 또는 reconciliation이 필요함
 - consequential Work 전에 명시적인 Plan이 필요함
+- 진행 중 target·scope·artifact state가 구체화되며 추가 context/capability resolution이 필요함
 - 여러 acceptance condition 또는 coupled workstream을 수렴시켜야 함
 - repeated verification 또는 likely replanning이 필요함
 - narrower subproblem resolution이 materially useful함
@@ -70,23 +71,23 @@ Description은 적어도 다음 decision signal을 전달해야 합니다.
 
 ### Negative Precision
 
-다음은 `mols-rpi` activation 이유가 되어서는 안 됩니다.
+다음은 `mols-loops` activation 이유가 되어서는 안 됩니다.
 
 - `loop`가 주제, identifier 또는 code concept일 뿐인 경우
 - explicit RPI/loop method intent가 없는 단순 반복 요청
 - explicit method intent 없이 작업이 단지 길다는 이유
-- explicit method intent가 없고 prerequisite control이 의미 있는 이득을 주지 않는 trivial work
+- explicit method intent가 없고 prerequisite/context orchestration이 의미 있는 이득을 주지 않는 trivial work
 - explicit method intent가 없으며 bounded one-shot answer/review로 충분한 경우
 
-Negative boundary는 explicit trigger recall과 같은 수준으로 중요합니다. 강한 orchestration Skill의 false positive는 불필요한 artifact, Research, Plan과 Review를 만들어 추론비용과 작업비용을 높일 수 있습니다.
+Negative boundary는 explicit trigger recall과 같은 수준으로 중요합니다. 강한 orchestration Skill의 false positive는 불필요한 context loading, artifact, Research, Plan과 Review를 만들어 추론비용과 작업비용을 높일 수 있습니다.
 
 ### Specificity and Composition Boundary
 
-`mols-rpi`는 **범용 orchestration Skill**입니다. 하네스에 현재 작업을 더 직접적으로 다루는 특수·전용·task-specific Skill, workflow 또는 governing procedure가 있으면 그 owner를 우선 선택해야 합니다.
+`mols-loops`는 **범용 adaptive orchestration Skill**입니다. 하네스에 현재 작업을 더 직접적으로 다루는 특수·전용·task-specific Skill, workflow 또는 governing procedure가 있으면 그 owner를 우선 선택해야 합니다.
 
-특히 그 owner가 task lifecycle, gates, state 또는 required procedure를 소유하면 `mols-rpi`가 경쟁적인 대체 workflow가 되어서는 안 됩니다. RPI는 그 owner가 허용하고 실제로 도움이 되는 경우에만 보조적으로 compose하며, 더 구체적인 owner의 lifecycle이나 authority를 대체하거나 덮어쓰지 않습니다.
+특히 그 owner가 task lifecycle, gates, state 또는 required procedure를 소유하면 `mols-loops`가 경쟁적인 대체 workflow가 되어서는 안 됩니다. Loops는 그 owner가 허용하고 실제로 도움이 되는 경우에만 보조적으로 compose하며, 더 구체적인 owner의 lifecycle이나 authority를 대체하거나 덮어쓰지 않습니다.
 
-이 경계가 사라지면 범용 RPI가 더 정확한 전용 capability 대신 과도하게 선택되거나 orchestration authority를 탈취할 수 있으므로 Tier 1입니다.
+이 경계가 사라지면 범용 Loops가 더 정확한 전용 capability 대신 과도하게 선택되거나 orchestration authority를 탈취할 수 있으므로 Tier 1입니다.
 
 ## Tier 2 — Supporting
 
@@ -122,6 +123,7 @@ Description 변경은 최소한 다음을 함께 확인합니다.
 - explicit RPI / recursive-loop positive
 - trivial work에서도 explicit RPI method intent가 있으면 positive
 - keyword-free complex-work positive
+- progressive context/capability orchestration이 materially 필요한 complex-work positive
 - loop topic과 identifier negative
 - generic repetition negative
 - long-but-one-pass negative
@@ -137,7 +139,7 @@ Trigger eval은 wording 자체가 아니라 이 decision boundary를 보호해�
 ## Boundary
 
 - Skill runtime behavior → `SKILL.md`
-- Trigger/Behavior behavioral contract → `evals/skills/mols-rpi/cases.json`
+- Trigger/Behavior behavioral contract → `evals/skills/mols-loops/cases.json`
 - Promptfoo suite와 grader/runtime evidence → [Evaluation](evaluation.md)
 - repository-wide Skill description convention → [Skill Authoring Conventions](../../references/agent-assets/skills/skill-authoring-conventions.md)
 - field limit와 vendor-specific discovery behavior → [Agent Skills Specification](../../references/agent-assets/skills/specification.md)에서 applicable official source로 resolve

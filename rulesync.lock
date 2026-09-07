@@ -3,41 +3,38 @@
   "sources": {
     "mols3131d/mols-agent-assets": {
       "requestedRef": "main",
-      "resolvedRef": "1783a5661b68082d3a5e85ac08c5cc75250474c9",
-      "resolvedAt": "2026-08-25T20:47:57.740Z",
+      "resolvedRef": "2a5be17db6cfa5ee91abce23bfdb9270166ce27e",
+      "resolvedAt": "2026-09-07T06:27:20.000Z",
       "skills": {
         "artifact-consistency-inspector": {
-          "integrity": "sha256-6cb2ff6eafb3ea0d0d7974bdb8068d0f8098d9a40321ab808509b6bf8cd2d43b"
+          "integrity": "sha256-a77e60b98b57b56a4dc62754eb60ab2c45b2109a0b4622e6c63af61f2d533fe3"
         },
         "github-context": {
           "integrity": "sha256-ba5201fd19cc7939ddbdd4300ea01f227670a64f1863e26ee6805429f4635191"
         },
+        "mols-agent-asset": {
+          "integrity": "sha256-5a1ba25e6fe822b43130b5e1f53726255a52fbe4361589874b1e1a484ff0214e"
+        },
         "mols-agent-asset-find": {
           "integrity": "sha256-6ace67d927da8eedcdd359593ddcbd7a80d97a2fa9cab42288f634116382aef6"
         },
-        "mols-agent-asset-validator": {
-          "integrity": "sha256-3656ca7d568fbc51286cc262210c7499346909c796e2825c5910f421ec16f940"
-        },
-        "mols-agent-asset": {
-          "integrity": "sha256-124fdbded5fa2d787da6c207c1bbe3db428cc2395b586e8ad25d91936465e0eb"
-        },
         "mols-chatbot-bootstrap": {
-          "integrity": "sha256-bbd2c76d95263bc4beb579ff727219a39f3ad922f3339c00254c1f902a3c7687"
+          "integrity": "sha256-88c8ff1d6a10f35c2a68008c19ad140baccde4f3009e8c1d3e9fe253027a767d"
         },
         "mols-markdown-for-human": {
-          "integrity": "sha256-d12d681eaad30d33946ef7493e244320e6113accf2a6d1a4ba8962600294a5e0"
+          "integrity": "sha256-f88d74555607a1ce7b809b09a852678a6b64314da170edc1a2da729e883f0a67"
         },
         "mols-markdown-maintenance": {
-          "integrity": "sha256-9512e6f65bfaced6569353e749f8abe899f89283a3bf21a69d39057b6c752f6c"
+          "integrity": "sha256-78411769d42cf0a35be8600e842286b33432491c0ff1d3c0b70eef83d3df9e35"
         },
         "mols-mermaid-chart": {
-          "integrity": "sha256-983ff55d920be723a2f86db8bc71615f0c8b7ecb9d6b64c7d96b2ab314cbf563"
+          "integrity": "sha256-1ad62e9d16514abd1a9b62782d1e933e20103508b1e44e3608e64f53540e9a2d"
         },
         "mols-mermaid-diagram": {
-          "integrity": "sha256-f3b689fb9cf960fc9e31a3b6ed4b84b8f6314af4c03293410d38a7c38acf50b3"
+          "integrity": "sha256-2b7d4d7b2bddbbeb8e3d46d6691501bee11fae1139968ec798d72d7dd1fc40ac"
         },
-        "mols-rpi": {
-          "integrity": "sha256-cea1aeea21c7dbe1ff56eb3cf46e510ef50f691e6a4a97b5f5582922b0d4046d"
+        "mols-loops": {
+          "integrity": "sha256-f3f3de0ae4d899fe029748440d537b2a0624074e238a575dce7565916efa5c9f"
         }
       }
     },

@@ -83,7 +83,7 @@ Directory path나 file list만 보여서는 semantic routing이 불가능한 경
 Skills are under src/.../skills/
 
 # routable
-mols-rpi — recursive RPI improvement에 사용 — <route>
+mols-loops — adaptive loop orchestration에 사용 — <route>
 searcher — current external research에 사용 — <route>
 ```
 

@@ -1,30 +1,30 @@
 # yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
 
-description: mols-rpi local Trigger and Behavior runtime eval
+description: mols-loops local Trigger and Behavior runtime eval
 
 prompts:
   - "{{task}}"
 
 providers:
   - id: file://../../scripts/agent_assets/skills_promptfoo.py:call_api
-    label: mols-rpi-trigger
+    label: mols-loops-trigger
     config:
-      skill: mols-rpi
+      skill: mols-loops
       mode: ollama
       suite: trigger
   - id: file://../../scripts/agent_assets/skills_promptfoo.py:call_api
-    label: mols-rpi-behavior
+    label: mols-loops-behavior
     config:
-      skill: mols-rpi
+      skill: mols-loops
       mode: ollama
       suite: behavior
 
 tests:
   - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_tests
     config:
-      skill: mols-rpi
+      skill: mols-loops
       suite: trigger
-      provider_label: mols-rpi-trigger
+      provider_label: mols-loops-trigger
       semantic: false
       case_ids:
         - explicit-rpi-activates
@@ -42,13 +42,14 @@ tests:
         - trivial-work-does-not-activate
   - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_tests
     config:
-      skill: mols-rpi
+      skill: mols-loops
       suite: behavior
-      provider_label: mols-rpi-behavior
+      provider_label: mols-loops-behavior
       semantic: true
       rubric_threshold: 0.8
       case_ids:
         - rpi-composes-with-domain-skill
+        - progressive-context-refreshes-on-target-change
         - three-phase-run-envelope-is-preserved
         - prepare-blocked-stops-before-main
         - finalize-cannot-hide-a-new-main-loop
