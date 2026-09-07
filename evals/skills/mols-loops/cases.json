@@ -88,7 +88,7 @@
       "prompt": "이 에이전트 스킬을 재귀 개선해서 품질을 높여줘.",
       "assertions": [
         "Uses mols-loops as the orchestration method while retaining applicable task-specific Skill authoring guidance",
-        "Does not let RPI replace the more specific task-domain capability or governing procedure",
+        "Does not let mols-loops or its RPI kernel replace the more specific task-domain capability or governing procedure",
         "Uses the domain capability inside Research, Plan, Work, or Review as appropriate"
       ]
     },
@@ -607,7 +607,7 @@
       "mode": "argument-contract",
       "prompt": "RPI 산출물은 기존 작업 문서에 남기고 강도는 deep으로 해. 다른 YAML control도 필요한가?",
       "assertions": [
-        "Treats artifacts and intensity as the only named public RPI override fields while accepting equivalent natural-language intent",
+        "Treats artifacts and intensity as the only named public Loops override fields while accepting equivalent natural-language intent",
         "Does not reintroduce Goal, Scope, research mode, recursion, terminal depth, loop limit, or reporting as function-like parameters",
         "Does not require a universal artifact path grammar when the intended destination is clear"
       ]
@@ -676,7 +676,7 @@
       "mode": "artifact-contract",
       "prompt": "Research와 Plan은 기존 persistent working surface에 남겨. 다음 세션에서 이어갈 수 있게 하고 durable_handoff 옵션은 쓰지 마.",
       "assertions": [
-        "Treats persistent RPI artifacts as resumable working state without requiring a separate durable_handoff toggle",
+        "Treats persistent Loops artifacts as resumable working state without requiring a separate durable_handoff toggle",
         "Updates only material resume-critical state at meaningful checkpoints rather than logging every action",
         "Revalidates freshness and material health before relying on persisted state during continuation"
       ]
@@ -686,7 +686,7 @@
       "mode": "argument-contract",
       "prompt": "진행 보고는 이 환경 기본 방식대로 해. progress argument도 따로 설정해야 해?",
       "assertions": [
-        "Does not require or expose progress as an RPI public argument",
+        "Does not require or expose progress as a Loops public argument",
         "Follows governing harness behavior and explicit user reporting instructions",
         "Reports observable state and outcomes without narrating hidden reasoning"
       ]
@@ -699,7 +699,7 @@
         "Does not exhaustively preload every candidate context or capability during Prepare; maps relevant entrypoints and loads only what is needed to start safely",
         "At the changed target or Work-unit boundary, resolves newly applicable scoped instructions, domain context, workflow or capability, and validation requirements before consequential Work",
         "Treats a material target or context change outside the accepted Plan as a reason to stop affected Work and route through Review to the earliest stale prerequisite instead of hidden replanning",
-        "Preserves task-specific workflow authority within its domain without letting the newly composed capability take over outer Loops Goal, Scope, Run state, transitions, or Finalize"
+        "Preserves task-specific workflow authority within its domain without letting the newly composed capability take over outer Loops Goal, Scope, Run accounting, cross-capability placement, recursion, handoff, or Finalize"
       ]
     },
     {
