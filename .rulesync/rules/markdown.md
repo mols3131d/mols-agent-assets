@@ -1,17 +1,19 @@
 ---
 root: false
 targets: ["claudecode", "copilot", "copilotcli", "antigravity-ide", "antigravity-cli"]
-description: "Markdown 파일을 작성하거나 수정할 때 prose를 고정 열 너비로 hard-wrap하지 않는다."
+description: "Markdown prose를 작성하거나 수정할 때 고정 열 너비로 hard-wrap하지 않는다."
 globs: ["**/*.md"]
 ---
 
 # Markdown Source Style
 
-Do not hard-wrap Markdown prose to a fixed column width. Keep each paragraph on one physical source line unless a line break is semantically meaningful or required by Markdown syntax, an embedded format, or repository tooling.
+Do not hard-wrap Markdown prose to a fixed column width. Keep each paragraph you author or materially edit on one physical source line unless a line break is semantically meaningful or required by Markdown syntax, an embedded format, or repository tooling.
 
 Apply the same rule to prose-valued Markdown frontmatter such as YAML scalar descriptions when syntax permits. Do not split a sentence across physical lines merely to satisfy an arbitrary width.
 
 Keep structural line breaks where Markdown or the embedded format gives them meaning, including list items, tables, fenced code, blockquotes, explicit line breaks, and structured YAML.
+
+Do not reflow unrelated existing paragraphs solely to normalize source style unless the task includes Markdown formatting or source-style cleanup.
 
 Do not inspect or imitate formatter or linter configuration merely to shape prose. Deterministic formatting and lint normalization belong to repository automation; use that machinery when formatting verification or normalization is actually needed.
 
