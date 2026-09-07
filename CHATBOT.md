@@ -20,7 +20,7 @@
 | --- | --- | --- |
 | working tree, worktree, branch, ref, base, commit, amend, rebase, reset, cherry-pick, stash, push, force update, Git history, branch naming | [`docs/development/vcs-git.md`](docs/development/vcs-git.md) | repository의 VCS/Git 상태·history·branch 안전성 |
 | commit message를 작성하거나 검토 | [`docs/development/vcs-git.md`](docs/development/vcs-git.md), [`.gitmessage`](.gitmessage) | commit authoring convention과 그 소유 관계 |
-| Issue, Pull Request, PR Review, PR comment, Merge, Ruleset, GitHub Actions permission·security, coding agent, automation, GitHub collaboration | [`docs/development/github.md`](docs/development/github.md) | repository의 GitHub 협업·권한·surface 정책 |
+| Issue, Pull Request, PR Review, PR comment, Merge, Ruleset, GitHub Actions, coding agent, automation, GitHub permission·collaboration | [`docs/development/github.md`](docs/development/github.md) | repository의 GitHub 협업·권한·surface 정책 |
 | CI, PR Gate, GitHub Actions workflow orchestration, required check, trigger, blocking·deferred evidence, projection gate, branch push와 PR CI | [`docs/development/ci.md`](docs/development/ci.md) | `main` admission과 CI evidence orchestration |
 | Issue/PR/Review/comment 본문을 작성·재작성·형식 검토 | [`docs/development/github.md`](docs/development/github.md), [`.github/templates/README.md`](.github/templates/README.md), 아래 surface template | cross-surface 작성 의미와 실제 rendering structure |
 | format, formatter, `format-changed`, Ruff·rumdl·Biome을 통한 repository file 정규화 | [`docs/development/formatting.md`](docs/development/formatting.md) | formatting write path와 automation boundary |
@@ -47,9 +47,8 @@ GitHub text를 작성·재작성·형식 검토할 때는 실제 surface에 맞�
 | 구체적인 GitHub repository/path/ref/PR/Issue/check/workflow/release를 읽기·검토·변경하거나 GitHub Plugin·connector·tool로 해당 target에 action을 수행, 또는 이미 확정된 GitHub target의 follow-up | `github-context` | downstream target-dependent action 전에 live repository/ref/object와 적용 context를 확인합니다. 이름 있는 target의 ID/ref resolution도 concrete로 봅니다. 아직 concrete repository/object가 없는 broad discovery와 generic Git/GitHub 설명에는 선택하지 않습니다. |
 | CI architecture, PR Gate, merge gate, blocking·deferred evidence, impact routing, projection gate 또는 maintenance automation을 설계·검토·재설계 | `mols-ci-design` | CI의 admission evidence system을 설계·handoff하며 workflow 구현은 명시적으로 요청된 경우에만 수행합니다. |
 | `CHATBOT.md` compatibility, chat runtime first-hop, repository entry/router를 생성·수정·복구하거나 그 compatibility를 검토 | `mols-chatbot-bootstrap` | bootstrap과 routing 연결을 다루며 repository policy를 새로 소유하지 않습니다. |
-| Skill, Rule, scoped instruction, agent/subagent를 작성·수정·단순화·리팩터링 | `mols-agent-asset` | agent-facing behavior authoring이 주 작업일 때 선택합니다. |
+| Skill, Rule, scoped instruction, agent/subagent 또는 agent behavior를 구성하는 bounded asset을 작성·수정·단순화·리팩터링·리뷰·검증·평가 | `mols-agent-asset` | authoring, review, validation, evaluation의 task-specific contract를 소유하며 실제 evidence보다 강한 결론을 만들지 않습니다. |
 | Agent Asset을 찾기·선택·로드·설치·동기화·이관 | `mols-agent-asset-find` | 기존 Asset의 discovery와 적용이 주 작업일 때 선택합니다. |
-| Agent Asset, instruction, `CHATBOT.md`의 품질·routing·readiness를 formal review, audit, adversarial validation 또는 validation-driven improvement | `mols-agent-asset-validator` | 일반 authoring self-review보다 강한 검증이 주 작업일 때 선택합니다. |
-| 사용자가 RPI, 개선 루프, 재귀 루프, 심층 루프를 요구하거나 복합 작업에 반복 Research → Plan → Implementation → Review가 필요 | `mols-rpi` + task-specific Asset | RPI가 작업 domain Asset을 대체하지 않습니다. |
+| 사용자가 RPI, 개선 루프, 재귀 루프, 심층 루프를 요구하거나 복합 작업에 반복 Research → Plan → Implementation → Review 및 점진적 context/capability orchestration이 필요 | `mols-loops` + task-specific Asset | Loops가 작업 domain Asset의 authority나 내부 procedure를 대체하지 않습니다. |
 
 `CHATBOT.md`는 repository policy, Agent Asset behavior 또는 routing semantics를 재정의하지 않습니다. 연결된 canonical source와 [`.agents/route/ROUTE.md`](.agents/route/ROUTE.md)가 항상 authoritative합니다.

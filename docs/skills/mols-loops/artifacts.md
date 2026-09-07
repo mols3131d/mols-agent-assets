@@ -1,10 +1,10 @@
 ---
-description: RPI artifact의 배치, persistence, durable continuation과 lifecycle을 설계하거나 변경할 때 보존해야 할 결정사항을 정리한 maintainer 문서입니다.
+description: mols-loops의 artifact 배치, persistence, durable continuation과 lifecycle을 설계하거나 변경할 때 보존해야 할 결정사항을 정리한 maintainer 문서입니다.
 ---
 
-# RPI Artifacts
+# Loops Artifacts
 
-RPI Skill의 artifact 동작을 설계할 때 참고할 결정사항만 정리합니다. Runtime behavior의 canonical source는 `SKILL.md`입니다.
+이 문서는 `mols-loops`의 outer Run이 사용하는 artifact 동작을 정리합니다. RPI는 내부 default loop kernel이며 artifact placement나 persistence authority를 별도로 소유하지 않습니다. Runtime behavior의 canonical source는 `SKILL.md`입니다.
 
 Run boundary에서는 다음 두 record도 필요할 때 보존합니다.
 
@@ -20,11 +20,11 @@ Prepare와 Finalize record는 각각 한 번만 나타나며 Loop 번호를 갖�
 - `durable_handoff`, `artifacts_path`를 별도 argument로 두지 않습니다.
 - `<auto>`는 사용자·project·workspace·harness가 이미 정한 artifact 방식을 우선합니다.
 - 적절한 persistent surface가 없거나 persistence가 허용되지 않으면 inline으로 fallback합니다.
-- 새 path, registry, storage schema나 권한을 RPI가 임의로 만들지 않습니다.
+- 새 path, registry, storage schema나 권한을 Loops가 임의로 만들지 않습니다.
 
 ## Persistent Artifacts
 
-Persistent RPI artifact는 별도 toggle 없이 **resume 가능한 working state**로 관리합니다.
+Persistent Loops artifact는 별도 toggle 없이 **resume 가능한 working state**로 관리합니다.
 
 필요한 경우 다음 상태만 남깁니다.
 

@@ -5,9 +5,9 @@
     "rulesync:doctor": "uv run --locked --no-default-groups python scripts/agent_assets/rulesync_run.py doctor",
     "rulesync:preview": "uv run --locked --no-default-groups python scripts/agent_assets/rulesync_run.py preview",
     "rulesync:validate": "uv run --locked --no-default-groups python scripts/agent_assets/rulesync_validate.py",
-    "eval:promptfoo:mols-rpi:smoke": "uv run python scripts/agent_assets/promptfoo_run.py eval -c evals/promptfoo/mols-rpi-smoke.yaml",
-    "eval:promptfoo:mols-rpi": "uv run python scripts/agent_assets/promptfoo_run.py eval -c evals/promptfoo/mols-rpi.yaml",
-    "eval:promptfoo:mols-rpi:trigger": "uv run python scripts/agent_assets/promptfoo_run.py eval -c evals/promptfoo/mols-rpi.yaml --filter-metadata suite=trigger",
-    "eval:promptfoo:mols-rpi:behavior": "uv run python scripts/agent_assets/promptfoo_run.py eval -c evals/promptfoo/mols-rpi.yaml --filter-metadata suite=behavior"
+    "eval:promptfoo:mols-loops:smoke": "uv run python scripts/agent_assets/promptfoo_run.py eval -c evals/promptfoo/mols-loops-smoke.yaml",
+    "eval:promptfoo:mols-loops": "uv run python scripts/agent_assets/promptfoo_run.py eval -c evals/promptfoo/mols-loops.yaml",
+    "eval:promptfoo:mols-loops:trigger": "uv run python scripts/agent_assets/promptfoo_run.py eval -c evals/promptfoo/mols-loops.yaml --filter-metadata suite=trigger",
+    "eval:promptfoo:mols-loops:behavior": "uv run python scripts/agent_assets/promptfoo_run.py eval -c evals/promptfoo/mols-loops.yaml --filter-metadata suite=behavior"
   }
 }

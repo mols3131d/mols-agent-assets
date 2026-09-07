@@ -51,7 +51,7 @@ def test_provider_rejects_generated_skill_mismatch() -> None:
         },
         {
             "vars": {
-                "skill": "mols-rpi",
+                "skill": "mols-loops",
                 "expected_selection": {
                     "selected_skills": [],
                     "primary_skill": None,
@@ -80,13 +80,13 @@ def test_load_cases_rejects_malformed_fixture_shape(
 def test_generator_validates_semantic_and_threshold_types() -> None:
     with pytest.raises(ValueError, match="semantic must be a boolean"):
         evaluator.generate_tests(
-            {"skill": "mols-rpi", "suite": "behavior", "semantic": "false"}
+            {"skill": "mols-loops", "suite": "behavior", "semantic": "false"}
         )
 
     with pytest.raises(ValueError, match="rubric_threshold"):
         evaluator.generate_tests(
             {
-                "skill": "mols-rpi",
+                "skill": "mols-loops",
                 "suite": "behavior",
                 "semantic": True,
                 "rubric_threshold": True,
@@ -96,7 +96,7 @@ def test_generator_validates_semantic_and_threshold_types() -> None:
 
 def test_semantic_behavior_projection_preserves_rubric_contract(monkeypatch) -> None:
     monkeypatch.setenv("PROMPTFOO_GRADER_PROVIDER", "ollama:chat:test-grader")
-    cases = evaluator._load_cases("mols-rpi")
+    cases = evaluator._load_cases("mols-loops")
     case_id = next(
         case_id
         for case_id, case in cases.items()
@@ -104,7 +104,7 @@ def test_semantic_behavior_projection_preserves_rubric_contract(monkeypatch) -> 
     )
     generated = evaluator.generate_tests(
         {
-            "skill": "mols-rpi",
+            "skill": "mols-loops",
             "suite": "behavior",
             "case_ids": [case_id],
             "semantic": True,
@@ -131,9 +131,9 @@ def test_routing_candidates_accept_serialized_json_and_reject_malformed_json() -
         }
     ]
 
-    assert evaluator._routing_candidates(json.dumps(candidates), "mols-rpi") == candidates
+    assert evaluator._routing_candidates(json.dumps(candidates), "mols-loops") == candidates
     with pytest.raises(ValueError, match="not valid JSON"):
-        evaluator._routing_candidates("not-json", "mols-rpi")
+        evaluator._routing_candidates("not-json", "mols-loops")
 
 
 @pytest.mark.parametrize(
@@ -141,11 +141,11 @@ def test_routing_candidates_accept_serialized_json_and_reject_malformed_json() -
     [
         ["not", "an", "object"],
         {
-            "selected_skills": ["mols-rpi", "mols-rpi"],
-            "primary_skill": "mols-rpi",
+            "selected_skills": ["mols-loops", "mols-loops"],
+            "primary_skill": "mols-loops",
         },
-        {"selected_skills": ["mols-rpi"], "primary_skill": None},
-        {"selected_skills": [], "primary_skill": "mols-rpi"},
+        {"selected_skills": ["mols-loops"], "primary_skill": None},
+        {"selected_skills": [], "primary_skill": "mols-loops"},
     ],
 )
 def test_trigger_response_rejects_invalid_selection_envelopes(payload: object) -> None:
@@ -233,9 +233,9 @@ def test_trigger_provider_preserves_competing_metadata_and_primary_selection(
 
 
 def test_runtime_promptfoo_config_selects_valid_cases_and_semantics() -> None:
-    fixture = evaluator._load_cases("mols-rpi")
+    fixture = evaluator._load_cases("mols-loops")
     config = yaml.safe_load(
-        (CONFIG_DIR / "mols-rpi.yaml").read_text(encoding="utf-8")
+        (CONFIG_DIR / "mols-loops.yaml").read_text(encoding="utf-8")
     )
     generated_by_suite = {
         entry["config"]["suite"]: entry["config"] for entry in config["tests"]

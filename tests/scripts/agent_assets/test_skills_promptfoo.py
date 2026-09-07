@@ -110,9 +110,9 @@ def test_generic_skill_generates_trigger_and_behavior_without_python_adapter(
     )
 
 
-def test_mols_rpi_fixture_projects_all_cases_through_generic_evaluator() -> None:
+def test_mols_loops_fixture_projects_all_cases_through_generic_evaluator() -> None:
     fixture = json.loads(
-        evaluator.fixture_path("mols-rpi").read_text(encoding="utf-8")
+        evaluator.fixture_path("mols-loops").read_text(encoding="utf-8")
     )["cases"]
     expected_trigger = [
         case["id"]
@@ -126,10 +126,10 @@ def test_mols_rpi_fixture_projects_all_cases_through_generic_evaluator() -> None
     ]
 
     trigger = evaluator.generate_tests(
-        {"skill": "mols-rpi", "suite": "trigger", "semantic": False}
+        {"skill": "mols-loops", "suite": "trigger", "semantic": False}
     )
     behavior = evaluator.generate_tests(
-        {"skill": "mols-rpi", "suite": "behavior", "semantic": False}
+        {"skill": "mols-loops", "suite": "behavior", "semantic": False}
     )
 
     assert [case["vars"]["case_id"] for case in trigger] == expected_trigger
@@ -143,7 +143,7 @@ def test_generator_rejects_missing_skill_and_cross_suite_case() -> None:
     with pytest.raises(ValueError, match="belongs to behavior"):
         evaluator.generate_tests(
             {
-                "skill": "mols-rpi",
+                "skill": "mols-loops",
                 "suite": "trigger",
                 "case_ids": ["scope-expansion-is-review-gated"],
                 "semantic": False,
@@ -151,7 +151,7 @@ def test_generator_rejects_missing_skill_and_cross_suite_case() -> None:
         )
 
 
-def test_trigger_contract_uses_selected_skill_name_not_mols_rpi() -> None:
+def test_trigger_contract_uses_selected_skill_name_not_mols_loops() -> None:
     case = {
         "expected_selection": {
             "selected_skills": ["example-skill"],
@@ -176,13 +176,13 @@ def test_trigger_contract_uses_selected_skill_name_not_mols_rpi() -> None:
 
 def test_trigger_grader_checks_exact_selected_set_and_primary() -> None:
     expected = {
-        "selected_skills": ["agent-skill-authoring", "mols-rpi"],
+        "selected_skills": ["agent-skill-authoring", "mols-loops"],
         "primary_skill": "agent-skill-authoring",
     }
     passing = evaluator.assert_trigger(
         json.dumps(
             {
-                "selected_skills": ["mols-rpi", "agent-skill-authoring"],
+                "selected_skills": ["mols-loops", "agent-skill-authoring"],
                 "primary_skill": "agent-skill-authoring",
             }
         ),
@@ -191,8 +191,8 @@ def test_trigger_grader_checks_exact_selected_set_and_primary() -> None:
     mismatch = evaluator.assert_trigger(
         json.dumps(
             {
-                "selected_skills": ["mols-rpi", "agent-skill-authoring"],
-                "primary_skill": "mols-rpi",
+                "selected_skills": ["mols-loops", "agent-skill-authoring"],
+                "primary_skill": "mols-loops",
             }
         ),
         {"vars": {"expected_selection": expected}},
@@ -300,14 +300,14 @@ def test_behavior_provider_uses_full_selected_skill(
 
 
 def test_promptfoo_configs_use_generic_skill_evaluator() -> None:
-    for name in ("mols-rpi.yaml", "mols-rpi-smoke.yaml"):
+    for name in ("mols-loops.yaml", "mols-loops-smoke.yaml"):
         config = yaml.safe_load((CONFIG_DIR / name).read_text(encoding="utf-8"))
         for provider in config["providers"]:
             assert provider["id"].endswith("skills_promptfoo.py:call_api")
-            assert provider["config"]["skill"] == "mols-rpi"
+            assert provider["config"]["skill"] == "mols-loops"
         for generated in config["tests"]:
             assert generated["path"].endswith("skills_promptfoo.py:generate_tests")
-            assert generated["config"]["skill"] == "mols-rpi"
+            assert generated["config"]["skill"] == "mols-loops"
         assert config["sharing"] is False
         assert config["writeLatestResults"] is False
         assert config["commandLineOptions"]["cache"] is False
