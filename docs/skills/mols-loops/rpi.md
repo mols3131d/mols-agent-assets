@@ -22,7 +22,7 @@ Prepare workflow
 
 Prepare는 한 번 실행됩니다. Main RPI에 진입한 Run에서는 Finalize도 한 번 실행되며 둘 다 Loop가 아닙니다. Prepare가 `BLOCKED`이면 pre-Main boundary를 보고하고 Main RPI나 Finalize에 들어가지 않습니다. Main RPI가 시작된 뒤에는 terminal state를 직접 선언하지 않고 Finalize를 거칩니다. Finalize에 들어간 뒤 broad Research, replanning, Scope change 또는 substantial reshaping이 필요해지면 같은 Run의 Main RPI를 다시 열지 않습니다.
 
-이 외피는 과거 `rpwr-loop` 정본의 `Prepare → main loop → Finalize` 책임을 현재 `mols-rpi`에 승계한 것입니다. 다관점 Research·Review는 Main RPI의 품질 제어이며 Prepare나 Finalize를 대체하지 않습니다.
+이 외피는 과거 `rpwr-loop` 정본의 `Prepare → main loop → Finalize` 책임을 현재 `mols-loops`에 승계한 것입니다. 다관점 Research·Review는 Main RPI의 품질 제어이며 Prepare나 Finalize를 대체하지 않습니다.
 
 ## Prerequisite Contract
 
