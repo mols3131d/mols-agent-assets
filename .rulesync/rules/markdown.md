@@ -1,6 +1,6 @@
 ---
 root: false
-targets: ["claudecode", "copilot", "copilotcli", "antigravity-ide", "antigravity-cli"]
+targets: ["claudecode", "codexcli", "copilot", "copilotcli", "antigravity-ide", "antigravity-cli"]
 description: "Markdown 파일을 작성하거나 수정할 때 source-level line wrapping과 관련 repository 문서·Skill을 적용한다."
 globs: ["**/*.md"]
 ---
@@ -19,10 +19,10 @@ These are context pointers, not dependency edges. Load only the Skill whose task
 
 - [`mols-documentation`](https://github.com/mols3131d/mols-agent-assets/blob/main/src/rulesync/.rulesync/skills/mols-documentation/SKILL.md) — human-readable document authoring, structure, readability, navigation, and ownership.
 - [`mols-markdown-maintenance`](https://github.com/mols3131d/mols-agent-assets/blob/main/src/rulesync/.rulesync/skills/mols-markdown-maintenance/SKILL.md) — deterministic Markdown formatting, linting, frontmatter validation, and index maintenance.
-- [`technical-document-fidelity`](https://github.com/mols3131d/mols-agent-assets/blob/main/src/rulesync/.rulesync/skills/technical-document-fidelity/SKILL.md) — meaning-preserving transformation of existing technical documents when fidelity is the primary requirement.
 
-## Repository References
+## Related References
 
+- [Markdown reference](https://github.com/mols3131d/mols-agent-assets/blob/main/src/rulesync/.rulesync/skills/mols-documentation/references/markdown.md) — general Markdown-specific expression and source/rendered-view guidance.
 - [Documentation Principles](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/documentation/principles.md) — repository documentation quality and information-architecture principles.
 - [Formatting](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/development/formatting.md) — repository formatter ownership and changed-only formatting path.
 - [Frontmatter](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/documentation/frontmatter.md) — repository Markdown frontmatter contract.
