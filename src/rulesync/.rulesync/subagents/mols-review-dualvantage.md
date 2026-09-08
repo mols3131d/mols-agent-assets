@@ -15,7 +15,7 @@ description: >-
   blocked. Do not use for implementation, mutation, or single-perspective review.
 claudecode:
   tools:
-    - Agent
+    - "Agent(mols-review-dualvantage-verifier,mols-review-dualvantage-challenger)"
     - Read
     - Grep
     - Glob
@@ -24,6 +24,7 @@ codexcli:
   sandbox_mode: read-only
   agents:
     enabled: true
+    max_concurrent_threads_per_session: 2
 copilot:
   tools:
     - read
