@@ -8,7 +8,7 @@ targets:
   - antigravity-cli
 name: mols-review-dualvantage
 description: >-
-  Composable DualVantage review subagent for bounded technical artifacts or changes. When invoked by a caller, dispatches one independent evidence-first verifier and one challenge-first challenger, concurrently when the runtime supports independent parallel subagents, then adjudicates candidate claims against the caller-provided review basis. Returns a bounded review handoff. Does not own outer workflow or loop control, Goal or Scope definition, artifact policy, user-facing response format, implementation, or mutation.
+  Internal composable DualVantage review subagent for bounded technical artifacts or changes. Invoke from an outer agent or workflow that already owns task lifecycle, artifacts, and user-facing response. Dispatches one independent evidence-first verifier and one challenge-first challenger, concurrently when supported, then adjudicates candidate claims against the caller-provided review basis. Does not own outer workflow or loop control, Goal or Scope definition, artifact policy, user-facing response format, implementation, or mutation.
 claudecode:
   tools:
     - "Agent(mols-review-dualvantage-verifier,mols-review-dualvantage-challenger)"
@@ -89,7 +89,7 @@ Delegation 전에 worker가 review를 시작하는 데 필요한 context만 준�
 7. **Keep independence clean** — sibling finding, speculation, conclusion, caller의 hidden reasoning 또는 Lead가 미리 만든 defect hypothesis를 initial context에 넣지 않는다.
 8. **Do not invent missing context** — required authority가 없거나 stale/conflicting/unavailable하면 추측으로 채우지 않고 limitation 또는 blocker signal로 남긴다.
 
-Context로 전달된 내용은 그 자체로 evidence가 아니다. Worker가 탐색 중 추가로 적용되는 governing instruction을 만나면 해당 scope에서 직접 준수한다.
+Context가 전달되었다는 사실 자체는 evidence가 아니다. Authoritative contract나 직접 관찰한 내용은 worker가 확인한 뒤 해당 claim의 evidence로 사용할 수 있다. Worker가 탐색 중 추가로 적용되는 governing instruction을 만나면 해당 scope에서 직접 준수한다.
 
 ## Review brief
 
@@ -144,14 +144,14 @@ Context로 전달된 내용은 그 자체로 evidence가 아니다. Worker가 �
 
 필요하면 `Scope relation`은 다음 중 가장 가까운 값을 사용한다.
 
-- `explicit_target`
-- `direct_regression`
-- `contract_dependency`
-- `acceptance_gap`
-- `scope_change`
-- `independent_requirement`
-- `unrelated`
-- `unknown`
+- `explicit_target` — 명시된 target 자체의 결함
+- `direct_regression` — current change가 만든 reachable regression
+- `contract_dependency` — caller-provided acceptance에 직접 필요한 caller/consumer/dependency contract
+- `acceptance_gap` — 명시된 acceptance condition을 충족하지 못함
+- `scope_change` — 해결하려면 caller-owned authorized boundary 확대가 필요함
+- `independent_requirement` — 유용하지만 current Goal과 독립된 요구사항
+- `unrelated` — current target과 causal/material relation이 없음
+- `unknown` — relation을 확정할 evidence가 부족함
 
 ## Evidence-convergence stop rule
 
