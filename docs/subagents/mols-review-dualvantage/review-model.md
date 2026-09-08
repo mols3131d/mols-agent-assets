@@ -1,12 +1,12 @@
 ---
-description: DualVantage의 evidence layer, candidate adjudication, scope relation, convergence와 caller handoff 의미를 유지보수할 때 사용합니다.
+description: DualVantage의 evidence layer, candidate adjudication, convergence와 caller-owned review policy handoff 의미를 유지보수할 때 사용합니다.
 ---
 
 # DualVantage Review Model
 
-이 문서는 specialist output을 **candidate claim에서 outer caller가 소비할 bounded review signal까지** 좁히는 내부 review semantics를 소유한다. 존재 이유와 identity invariant는 [goal.md](goal.md), delegation과 capability mechanics는 [maintenance.md](maintenance.md), 실행 동작은 각 subagent 정의가 정본이다.
+이 문서는 specialist output을 **candidate claim에서 caller가 소비할 evidence-backed review signal까지** 좁히는 내부 review semantics를 소유한다. 존재 이유와 identity invariant는 [goal.md](goal.md), delegation과 capability mechanics는 [maintenance.md](maintenance.md), 실행 동작은 각 subagent 정의가 정본이다.
 
-여기의 state, disposition과 label은 artifact schema나 user-facing response format이 아니다. Outer caller는 자신의 workflow와 output contract에 맞게 그대로 사용하거나 매핑하거나 생략할 수 있다.
+여기의 evidence state는 artifact schema나 user-facing response format이 아니다. Severity, blocking, disposition, completion status와 required-action policy는 caller 또는 governing review asset이 소유한다.
 
 ## Review flow
 
@@ -17,7 +17,7 @@ independent specialist output
        candidate claim
             │
             ▼
-     Root adjudication
+      evidence gate
             │
      ┌──────┼──────┐
      ▼      ▼      ▼
@@ -26,16 +26,10 @@ confirmed rejected merged
      └──── unresolved
             │
             ▼
-  boundary-aware disposition
-            │
-            ▼
-   bounded review signal
-            │
-            ▼
-       outer caller
+caller-owned review policy / handoff
 ```
 
-Worker는 candidate construction, Root는 candidate adjudication과 review disposition, outer caller는 task-level decision/action을 소유한다. Specialist 수나 agreement는 이 흐름을 건너뛰게 하지 않는다.
+Specialist 수나 agreement는 evidence gate를 건너뛰게 하지 않는다.
 
 ## Evidence layers
 
@@ -47,102 +41,76 @@ Worker는 candidate construction, Root는 candidate adjudication과 review dispo
 
 Unknown을 Observed처럼 표현하지 않고 Inferred를 source fact처럼 포장하지 않는다. Evidence가 current revision/version/state와 맞지 않으면 stale basis로 취급한다.
 
-Host의 Skill, Rule, instruction 또는 document가 evidence/authority 판단에 관여하면 그 host의 실제 scope, precedence, activation과 ownership semantics를 보존한다. Retrieval되었다는 이유만으로 instruction이나 authority가 되지 않는다.
-
 ## Candidate adjudication
 
 Root는 material candidate를 다음 순서로 확인한다.
 
 1. **State basis** — current caller-provided review basis를 가리키는가?
-2. **Scope relation** — caller-provided Goal/target과 causal 또는 acceptance relation이 있는가?
+2. **Caller criteria and authority** — Goal/Scope/acceptance와 caller가 제공한 admission, severity, blocking 또는 disposition policy가 있으면 그 기준에 맞는가?
 3. **Evidence** — decisive observed fact가 authoritative source에서 확인되는가?
 4. **Reasoning and reachability** — evidence에서 trigger/path/impact로 가는 추론이 실제 reachable한가?
 5. **Attribution** — current target/change가 문제를 만들거나 materially 악화했는가, 또는 acceptance가 dependency를 요구하는가?
 6. **Counter-evidence** — guard, invariant, validation, permission, serialization, rollback/retry, compatibility layer 또는 stronger contract가 claim을 무효화하는가?
-7. **Materiality** — correctness, reliability, security, compatibility 또는 운영 판단에 의미 있는가?
-8. **Disposition against caller authority** — candidate를 caller-provided authority와 authorized boundary에 어떻게 분류할 수 있는가?
-9. **Deduplication** — 같은 root cause, reachable path 또는 correction으로 닫히는 candidate와 중복되는가?
+7. **Decision relevance** — caller-provided criteria가 있으면 그 기준으로, 없으면 current Goal/acceptance에 실제 영향을 주는가?
+8. **Deduplication** — 같은 root cause, reachable path 또는 correction으로 닫히는 candidate와 중복되는가?
 
-Supporting context를 읽는 것은 scope expansion이 아니다. 그 context의 문제를 current remediation signal로 올리려면 caller-provided target과 causal/acceptance relation이 있어야 한다. Root는 relation과 disposition을 판정하지만 outer Scope나 remediation authority를 만들지 않는다.
+Root는 이 과정을 위해 caller policy를 소비할 수 있지만 대체 review policy를 발명하지 않는다. Supporting context를 읽는 것도 scope expansion authority가 아니다.
 
-Finding 수는 admission criterion이 아니다. Review effort, depth, disagreement 또는 specialist 수를 정당화하기 위해 약한 candidate를 살려두지 않는다. 모든 candidate가 `rejected`, `merged`, non-current disposition으로 정리되고 blocker가 없으면 zero-finding `clear`가 정상적으로 닫힌 review다.
-
-## Scope relation
-
-| Relation | Meaning |
-| --- | --- |
-| `explicit_target` | 명시된 target 자체의 결함 |
-| `direct_regression` | current change가 만든 reachable regression |
-| `contract_dependency` | caller-provided acceptance에 직접 필요한 caller/consumer/dependency contract |
-| `acceptance_gap` | 명시된 acceptance condition을 충족하지 못함 |
-| `scope_change` | 해결하려면 caller-owned authorized boundary 확대가 필요함 |
-| `independent_requirement` | 유용하지만 current Goal과 독립된 요구사항 |
-| `unrelated` | current target과 causal/material relation이 없음 |
-| `unknown` | relation을 확정할 evidence가 부족함 |
-
-Relation은 문제가 Goal과 **어떻게 연결되는지**, disposition은 caller-provided boundary에 **어떻게 분류되는지**를 나타낸다. 둘 다 outer Scope나 authority를 새로 만들지 않는다.
+Finding 수는 admission criterion이 아니다. Review effort, depth, disagreement 또는 specialist 수를 정당화하기 위해 약한 candidate를 살려두지 않는다. 모든 candidate가 탈락하는 것도 정상 결과다.
 
 ## Claim state
 
 | State | Meaning |
 | --- | --- |
 | `confirmed` | evidence, reasoning, reachability와 attribution이 충분함 |
-| `rejected` | false, contradicted, unreachable, unsupported 또는 immaterial |
+| `rejected` | false, contradicted, unreachable, unsupported 또는 caller-provided review basis와 무관함 |
 | `merged` | 다른 candidate와 같은 root cause로 통합됨 |
-| `unresolved` | outer caller decision에 영향을 줄 수 있으나 decisive evidence가 부족함 |
+| `unresolved` | caller decision에 영향을 줄 수 있으나 decisive evidence가 부족함 |
 
-Reviewer confidence, agreement 또는 반복 주장은 이 state를 대신하지 않는다.
+이 state는 **epistemic accounting**이다. Caller의 PASS/FAIL, clear/blocked, severity, blocking 또는 completion state를 대신하지 않는다.
 
-## Disposition
+## Caller policy boundary
 
-| Disposition | Meaning |
-| --- | --- |
-| `current_required` | caller-provided authorized boundary 안에서 acceptance에 필요한 confirmed defect/regression/acceptance gap |
-| `scope_decision` | 해결하려면 Goal/Scope/Acceptance/authorized contract boundary 확대 결정이 필요함 |
-| `follow_up` | valid하지만 current Goal completion에 필수적이지 않은 독립 요구사항 |
-| `unrelated` | current target과 causal/material relation이 없음 |
-| `unknown` | relation 또는 impact를 확정할 evidence가 부족함 |
+DualVantage는 review policy engine이 아니다.
 
-이 값들은 Root의 **review classification**이다. `current_required`도 mutation 명령이나 task-level authority가 아니다. Outer caller가 실제 remediation, scope change와 completion을 결정한다. `scope_decision`이나 `unknown`은 그 결정/evidence 없이는 acceptance를 판단할 수 있을 때 blocker signal이 된다.
+Caller나 governing review asset이 다음을 제공하면 Root는 그 의미를 보존해 적용한다.
+
+- admission 또는 materiality criteria
+- severity convention
+- blocking / non-blocking policy
+- disposition 또는 status vocabulary
+- acceptance / completion rule
+- required-action policy
+
+제공되지 않았다면 DualVantage가 자체 taxonomy를 만들어 빈자리를 채우지 않는다. 대신 evidence-backed candidate와 decision-relevant unknown을 최소 형태로 반환한다.
 
 ## Evidence convergence
 
 다음 evidence step 전에 묻는다.
 
-> 이 evidence가 candidate disposition 또는 outer caller decision을 materially 바꿀 credible path가 있는가?
+> 이 evidence가 candidate state 또는 caller decision을 materially 바꿀 credible path가 있는가?
 
 있으면 가장 작은 필요한 context/validation만 추가한다. 없으면 saturation으로 보고 멈춘다.
 
 - 같은 evidence를 다른 표현으로 반복하지 않는다.
 - finding 수나 confidence를 높이기 위한 no-op 탐색을 하지 않는다.
 - 한 source/method가 saturated여도 아직 보지 않은 distinct material lens가 결과를 바꿀 수 있으면 그 lens만 확인한다.
-- decisive evidence에 접근할 수 없고 그 gap이 outer caller decision을 막으면 blocker signal로 남긴다.
-- 이 convergence는 Root의 candidate 확인이며 specialist 재호출이나 missing worker exploration 대체 loop가 아니다.
-
-## Review-state semantics
-
-Outer caller가 유용하게 소비할 수 있을 때 Root는 다음 내부 의미 상태를 도출할 수 있다. 이는 고정 output schema가 아니다.
-
-1. `blocked` — required specialist coverage, decisive evidence, review basis 또는 scope authority가 부족해 independent review를 신뢰성 있게 닫을 수 없음
-2. `changes_required` — blocker가 없고 confirmed `current_required`가 하나 이상 있음
-3. `clear` — 위 둘이 모두 없음
-
-Precedence는 `blocked > changes_required > clear`다. `clear`는 finding quota를 채우지 못한 fallback이 아니라, 명시된 basis/scope/coverage/evidence 안에서 current-required finding과 blocker가 남지 않았다는 정상적인 bounded signal이다. Absolute correctness proof는 아니다.
+- decisive evidence에 접근할 수 없으면 `unresolved` 또는 coverage limitation으로 남긴다.
+- 이 convergence는 evidence refinement이며 specialist 재호출 loop가 아니다.
 
 ## Handoff semantics
 
-Root → outer caller handoff의 형식은 caller가 소유한다. Review model은 presentation이 아니라 decision-relevant meaning 보존만 요구한다.
+Root → caller handoff의 형식과 review-policy vocabulary는 caller가 소유한다. Review model은 presentation이 아니라 decision-relevant meaning 보존만 요구한다.
 
 필요한 경우 다음 의미를 전달한다.
 
 - reviewed target과 current state basis
-- confirmed `current_required`
-- caller decision이 필요한 `scope_decision`
-- useful `follow_up`
-- material unresolved evidence/coverage limitation
-- caller에게 유용한 경우 review-state semantics
+- confirmed material candidate와 decisive evidence
+- decision-relevant `unresolved`
+- validation / coverage / state-basis limitation
+- caller가 제공한 status, severity 또는 disposition 체계가 있을 때 그 체계에 따른 mapping
 
-`rejected`, `merged`, low-value `unrelated`, reviewer vote와 reasoning transcript는 기본 handoff로 강제하지 않는다.
+`rejected`, `merged`, reviewer vote와 reasoning transcript는 기본 handoff로 강제하지 않는다. Material candidate가 없으면 만들지 않는다.
 
 ## Specialist evidence shape
 
@@ -154,4 +122,4 @@ Challenger의 핵심 reasoning chain은 다음과 같다.
 Assumption → Trigger → Reachable path → Expected defense → Observed gap → Impact → Falsifier
 ```
 
-Chain이 evidence 없이 끊기거나 existing defense가 path를 충분히 차단하면 confirmed defect처럼 승격하지 않는다.
+Chain이 evidence 없이 끊기거나 existing defense가 path를 충분히 차단하면 confirmed claim처럼 승격하지 않는다.
