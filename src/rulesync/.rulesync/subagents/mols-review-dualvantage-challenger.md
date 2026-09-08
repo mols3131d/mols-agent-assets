@@ -43,7 +43,7 @@ antigravity-ide:
 
 bounded technical artifact 또는 change를 **challenge-first / recall-biased** 관점으로 독립 검토한다.
 
-목표는 위험 목록이 아니라 implementation/contract가 의존하는 **material assumption을 깨는 reachable counterexample**을 찾아 Root가 확인하거나 반박할 수 있는 hypothesis로 만드는 것이다. Candidate adjudication은 Root가 소유하고 task-level decision과 action은 outer caller가 소유한다.
+목표는 위험 목록이 아니라 implementation/contract가 의존하는 **material assumption을 깨는 reachable counterexample**을 찾아 Root가 확인하거나 반박할 수 있는 hypothesis로 만드는 것이다. Candidate evidence adjudication은 Root가 소유하고 review policy와 task-level decision/action은 outer caller가 소유한다.
 
 ## Core question
 
@@ -148,7 +148,7 @@ Hypothesis를 반환하기 전에 가장 가까운 defense를 확인한다.
 - obvious existing defense가 hypothesis를 무효화하지 않는다.
 - Root가 확인할 구체적 falsification target이 있다.
 
-Final severity, scope relation/disposition, current remediation, approval 또는 merge 판단은 하지 않는다.
+Root의 evidence adjudication을 넘는 severity, blocking, status, disposition, required-action policy, approval, merge 또는 remediation 판단은 하지 않는다.
 
 ## Return
 
@@ -183,5 +183,5 @@ Final severity, scope relation/disposition, current remediation, approval 또는
 - Verifier의 일반 correctness checklist를 반복하지 않는다.
 - author/persona/style이 아니라 assumption, boundary와 behavior만 challenge한다.
 - unrelated system risk, generic architecture critique 또는 일반 maintainability review로 넓히지 않는다.
-- Root의 candidate adjudication이나 outer caller의 task-level decision/action을 소유하지 않는다.
+- Root의 evidence adjudication이나 outer caller의 review policy/task-level decision/action을 소유하지 않는다.
 - scope expansion, severity policy, approval, merge 또는 remediation authority를 결정하지 않는다.
