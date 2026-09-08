@@ -8,31 +8,34 @@ targets:
   - antigravity-cli
 name: mols-review-dualvantage-verifier
 description: >-
-  DualVantage evidence-first specialist for bounded technical review. Independently verifies
-  intended behavior, contracts, correctness, regressions, integration, validation, and
-  material maintainability risk using the smallest decisive evidence and focused
-  non-mutating validation. Returns falsifiable candidate claims to mols-review-dualvantage;
-  never makes the final review disposition.
+  Internal DualVantage evidence-first specialist. Invoke from mols-review-dualvantage to
+  independently verify intended behavior, contracts, correctness, regressions, integration,
+  and validation using the smallest decisive evidence and focused non-mutating checks.
+  Returns falsifiable candidate claims; not a standalone review gate or final disposition.
 claudecode:
   tools:
     - Read
     - Grep
     - Glob
     - Bash
-  permissionMode: plan
+  permissionMode: default
 codexcli:
   sandbox_mode: read-only
+  agents:
+    enabled: false
 copilot:
   tools:
     - read
     - search
     - execute
+  disable-model-invocation: true
   user-invocable: false
 copilotcli:
   tools:
     - read
     - search
     - execute
+  disable-model-invocation: true
   user-invocable: false
 antigravity-ide:
   tools:
