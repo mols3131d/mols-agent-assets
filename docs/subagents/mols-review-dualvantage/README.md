@@ -16,8 +16,10 @@ owns Goal · Scope · lifecycle · artifacts · final response
                          │
                          ▼
                 DualVantage Root
+         discover/select applicable guidance
+           classify authority vs reference
                          │
-              same bounded brief
+              shared bounded package
                ┌────────┴────────┐
                ▼                 ▼
            Verifier          Challenger
@@ -33,7 +35,9 @@ owns Goal · Scope · lifecycle · artifacts · final response
                       caller
 ```
 
-병렬 실행을 실제 지원하는 runtime에서는 Verifier와 Challenger를 같은 delegation wave에서 시작한다. 병렬 실행을 제공하지 않을 때만 독립성을 보존한 sequential fallback을 사용한다.
+Root가 current review에 필요한 Agent Asset, Skill, instruction, contract 또는 document를 찾아 worker별 최소 guidance로 전달한다. Worker는 별도 review engine이나 generic asset routing을 만들지 않고 주입된 guidance를 자신의 failure lens에 적용한다. Engine-like Skill의 outer loop, lifecycle, artifact와 response ownership은 caller 또는 원래 owner에 남는다.
+
+병렬 실행을 실제 지원하는 runtime에서는 guidance package를 먼저 확정한 뒤 Verifier와 Challenger를 같은 delegation wave에서 시작한다. 병렬 실행을 제공하지 않을 때만 독립성을 보존한 sequential fallback을 사용한다.
 
 ## Read next
 
@@ -41,6 +45,6 @@ owns Goal · Scope · lifecycle · artifacts · final response
 | --- | --- |
 | 존재 이유, composability, identity invariant, non-goal, 성공 기준 | **[goal.md](goal.md)** |
 | evidence layer, candidate adjudication, scope relation, convergence, review-state/handoff semantics | [review-model.md](review-model.md) |
-| ownership, brief, parallel delegation, capability, invocation budget, runtime 변화와 specialist evolution | [maintenance.md](maintenance.md) |
+| ownership, guidance routing, brief, parallel delegation, capability, invocation budget, runtime 변화와 specialist evolution | [maintenance.md](maintenance.md) |
 
 Runtime tool, permission, target-specific field와 실제 instruction은 maintainer 문서에 복제하지 않고 대응 Agent Asset에서 확인한다.

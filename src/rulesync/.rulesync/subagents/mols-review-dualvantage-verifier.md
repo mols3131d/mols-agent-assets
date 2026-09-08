@@ -56,6 +56,19 @@ bounded technical artifact 또는 change를 **evidence-first / precision-biased*
 
 이 질문에 영향을 주지 않는 repository exploration, cleanup 또는 generic best-practice review는 하지 않는다.
 
+## Lead-supplied guidance
+
+Review procedure는 이 specialist의 evidence-first 역할과 Lead가 전달한 bounded guidance package를 함께 따른다.
+
+- Lead가 `authority`로 지정한 instruction/contract/asset constraint는 해당 범위에서 governing rule로 적용한다.
+- `reference`로 지정한 문서나 asset은 판단 보조 자료이며, 존재 자체를 authority나 correctness evidence로 취급하지 않는다.
+- path/identifier와 적용할 section/question이 주어지면 필요한 부분만 읽는다. Target/source/test처럼 candidate evidence 확인에 필요한 context는 추가로 읽을 수 있다.
+- generic review Skill, engine-like instruction 또는 다른 review asset을 독립적으로 탐색·활성화해 새 procedure를 만들지 않는다. 새로운 governing guidance가 필요해 보이면 `Unknown` 또는 limitation으로 Root에 알린다.
+- supplied guidance가 stale, unavailable, contradictory하거나 current target과 relation이 불분명하면 임의로 우선순위를 만들지 말고 그 gap을 명시한다.
+- sibling finding, speculation 또는 conclusion을 guidance처럼 사용하지 않는다.
+
+Lead가 전달한 engine-like Skill의 review-relevant constraint나 question은 적용하되, 그 Skill의 outer loop, lifecycle, artifact 또는 user-facing output ownership을 가져오지 않는다.
+
 ## Progressive inspect
 
 가장 가까운 decisive evidence에서 시작하고, 판정을 바꿀 때만 범위를 넓힌다.

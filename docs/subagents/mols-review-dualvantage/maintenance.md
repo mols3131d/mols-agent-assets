@@ -4,16 +4,16 @@ description: DualVantage의 caller/subagent ownership, independent·parallel del
 
 # DualVantage Maintenance
 
-이 문서는 family의 **delegation, handoff, capability와 termination mechanics**를 유지보수할 때 사용한다. 변경 전 [goal.md](goal.md)를 먼저 확인하고, evidence/claim/review-state 의미는 [review-model.md](review-model.md)를 따른다.
+이 문서는 family의 **delegation, guidance routing, handoff, capability와 termination mechanics**를 유지보수할 때 사용한다. 변경 전 [goal.md](goal.md)를 먼저 확인하고, evidence/claim/review-state 의미는 [review-model.md](review-model.md)를 따른다.
 
 ## Ownership and roles
 
 | Owner | Owns | Does not own |
 | --- | --- | --- |
 | caller / outer Skill / workflow / governing instruction | outer Goal/Scope, lifecycle, artifact policy, user-facing response, implementation/mutation, final task completion | specialist 내부 review procedure |
-| `mols-review-dualvantage` | bounded brief, two-specialist delegation, candidate adjudication, scope/authority relation, review handoff | outer workflow/loop, artifact/answer format, third full review, scope expansion, implementation/approval/merge |
-| `mols-review-dualvantage-verifier` | intended behavior/contract/correctness, reachability, counter-evidence, smallest decisive non-mutating validation | broad hypothesis generation, final authority, caller-facing response |
-| `mols-review-dualvantage-challenger` | material assumption, realistic trigger, reachable counterexample, expected defense, falsifier | general correctness checklist, active attack/reproduction, final authority, caller-facing response |
+| `mols-review-dualvantage` | bounded brief, applicable guidance discovery/selection/injection, two-specialist delegation, candidate adjudication, scope/authority relation, review handoff | outer workflow/loop, artifact/answer format, third full review, scope expansion, implementation/approval/merge |
+| `mols-review-dualvantage-verifier` | intended behavior/contract/correctness, reachability, counter-evidence, smallest decisive non-mutating validation | generic review asset routing, broad hypothesis generation, final authority, caller-facing response |
+| `mols-review-dualvantage-challenger` | material assumption, realistic trigger, reachable counterexample, expected defense, falsifier | generic review asset routing, general correctness checklist, active attack/reproduction, final authority, caller-facing response |
 
 역할 차이는 persona가 아니라 **failure lens와 evidence method**의 차이다. Coverage가 부족해도 Root가 specialist perspective를 대신 수행하지 않고 limitation 또는 blocker signal로 caller에게 돌려준다.
 
@@ -21,18 +21,34 @@ description: DualVantage의 caller/subagent ownership, independent·parallel del
 
 두 specialist는 가능한 한 같은 최소 bounded brief를 받는다.
 
-필요한 내용은 target, current state basis, caller-provided Goal/acceptance 중 review에 필요한 부분, in/out scope, authorized contract boundary, governing instruction/contract, known safeguard와 material validation evidence다.
+필요한 내용은 target, current state basis, caller-provided Goal/acceptance 중 review에 필요한 부분, in/out scope, authorized contract boundary, governing instruction/contract, selected guidance, known safeguard와 material validation evidence다.
 
 Initial brief에는 sibling finding/speculation/conclusion, caller의 hidden reasoning, 전체 implementation transcript, self-review 결론을 evidence처럼 보이게 하는 서술과 assigned decision에 필요하지 않은 repository-wide context를 넣지 않는다.
+
+## Guidance discovery and injection
+
+Review engine이나 domain guidance를 worker prompt 안에 미리 내장하지 않는다. Root가 현재 review target과 caller-provided basis를 보고 applicable guidance를 찾고 선택해 worker에게 전달한다.
+
+1. **Authority first** — caller가 명시한 instruction과 current target에 적용되는 governing instruction/contract를 먼저 확인한다.
+2. **Narrow discovery** — current environment의 native routing, repository structure와 read/search surface에서 현재 review question을 materially 바꿀 Agent Asset, Skill, contract, validation policy, maintainer/reference document만 찾는다.
+3. **Classify and explain** — 각 선택 항목을 `authority` 또는 `reference`로 구분하고 적용 이유, 관련 constraint/question과 필요한 section/path를 명시한다. 검색 결과나 문서 존재 자체는 authority가 아니다.
+4. **Preserve outer ownership** — engine-like Skill이나 instruction이 outer Run/Loop, lifecycle, artifact 또는 answer contract를 정의해도 그 부분을 DualVantage가 소유하지 않는다. 현재 review에 필요한 domain constraint, evidence rule, question 또는 specialist procedure만 주입한다.
+5. **Shared before role-specific** — 두 worker에 공통으로 적용되는 authority/context는 같은 shared package로 전달한다. Verifier/Challenger 중 하나의 lens에만 필요한 guidance는 role-specific addendum으로 분리한다.
+6. **Minimal context** — worker가 직접 접근 가능한 path/identifier가 있으면 전체 문서를 복제하지 않고 필요한 section과 review question을 지정한다. 직접 접근할 수 없을 때만 필요한 최소 내용을 전달한다.
+7. **Keep independence** — sibling result, speculation, confidence나 conclusion을 guidance package에 넣지 않는다.
+8. **Missing guidance stays visible** — required authority가 없거나 stale/conflicting/unavailable하면 Root나 worker가 새 contract를 발명하지 않고 limitation 또는 blocker signal로 남긴다.
+
+Worker는 Lead가 지정한 guidance를 적용하고 target/source evidence는 필요한 만큼 직접 확인할 수 있지만, generic Skill/document catalog를 다시 훑어 별도 review engine이나 routing layer를 만들지 않는다.
 
 ## Parallel-first delegation
 
 두 specialist 사이에는 data dependency가 없으므로 **independent concurrent execution이 가능한 runtime에서는 같은 delegation wave에서 둘 다 시작한다.**
 
 - 어느 한쪽 결과를 읽은 뒤 다른 쪽을 호출하는 serial path를 parallel-capable runtime의 기본으로 사용하지 않는다.
+- shared guidance package와 각 role-specific addendum을 병렬 dispatch 전에 확정한다.
 - 두 specialist가 terminal result 또는 terminal failure에 도달한 뒤 Root가 adjudication을 시작한다.
 - runtime, permission 또는 concurrency limit이 실제 병렬 실행을 제공하지 않을 때만 sequential fallback을 사용한다.
-- sequential fallback에서도 먼저 끝난 result를 sibling brief에 추가하지 않는다.
+- sequential fallback에서도 먼저 끝난 result를 sibling brief나 guidance에 추가하지 않는다.
 - 실제 제공되지 않은 parallelism이나 isolation을 수행했다고 주장하지 않는다.
 
 ## Handoff
@@ -50,7 +66,7 @@ caller / outer orchestrator
            │
            ▼
     DualVantage Root
- read/search + delegation
+ read/search + guidance routing + delegation
            │
    ┌───────┴───────┐
    ▼               ▼
@@ -62,11 +78,12 @@ focused check   no execution
 
 Capability는 responsibility보다 넓지 않게 유지한다.
 
-- Root만 specialist delegation capability를 가진다.
+- Root만 applicable guidance discovery/routing과 specialist delegation capability를 가진다.
 - 지원되는 runtime에서는 Root 자체도 primary/user-facing agent가 아니라 internal/programmatic subagent로 제한한다.
 - Verifier만 smallest decisive non-mutating validation에 필요한 제한적 execution을 가진다.
 - Challenger는 read/search를 기본으로 하고 active attack/reproduction을 수행하지 않는다.
 - Worker child delegation을 capability 수준에서 차단할 수 있으면 instruction보다 native mechanism을 우선한다.
+- Worker가 generic review asset discovery/routing을 맡도록 별도 capability를 넓히지 않는다.
 - Runtime이 independence, nested delegation, parallelism 또는 permission boundary를 제공하지 않으면 제공했다고 주장하지 않는다.
 
 Vendor-specific field와 tool alias는 빠르게 변할 수 있으므로 이 문서에 고정하지 않는다. Target runtime과 source framework의 current authoritative contract를 확인하고 reusable core에는 의미만 유지한다.
@@ -89,13 +106,14 @@ Parallel execution은 invocation 수를 늘리는 허가가 아니다.
 Vendor, model, tool schema 또는 projection이 바뀔 때는 기존 의미를 가장 직접적인 native mechanism으로 표현한다.
 
 1. Root를 가능한 한 programmatic subagent-only surface로 유지한다.
-2. Root delegation을 두 named specialist로 가장 좁게 제한한다.
-3. Parallel-capable runtime에서는 두 specialist의 concurrent dispatch를 기본 경로로 유지한다.
-4. Worker child delegation을 capability 수준에서 차단할 수 있으면 차단한다.
-5. Verifier execution은 focused non-mutating validation에 필요한 범위만 연다.
-6. Challenger는 read-only를 기본으로 유지한다.
-7. Native capability가 부족하면 instruction으로 보완하되 실제보다 강한 isolation, parallelism 또는 permission을 주장하지 않는다.
-8. Vendor delta는 target-specific configuration에 두고 reusable core에 복제하지 않는다.
+2. Root가 applicable guidance를 discover/read할 최소 read/search capability를 유지한다.
+3. Root delegation을 두 named specialist로 가장 좁게 제한한다.
+4. Parallel-capable runtime에서는 guidance package를 먼저 확정하고 두 specialist의 concurrent dispatch를 기본 경로로 유지한다.
+5. Worker child delegation을 capability 수준에서 차단할 수 있으면 차단한다.
+6. Verifier execution은 focused non-mutating validation에 필요한 범위만 연다.
+7. Challenger는 read-only를 기본으로 유지한다.
+8. Native capability가 부족하면 instruction으로 보완하되 실제보다 강한 isolation, parallelism 또는 permission을 주장하지 않는다.
+9. Vendor delta는 target-specific configuration에 두고 reusable core에 복제하지 않는다.
 
 [goal.md](goal.md)의 identity invariant를 지킬 수 없는 runtime 제한은 숨기지 않고 degraded capability 또는 redesign 필요로 기록한다.
 
@@ -119,9 +137,12 @@ Vendor, model, tool schema 또는 projection이 바뀔 때는 기존 의미를 �
 - [goal.md](goal.md)의 identity invariant가 유지되는가?
 - outer workflow/loop, artifact 또는 user-facing response ownership을 가져오지 않았는가?
 - caller-provided Goal/Scope를 소비하고 outer task contract를 발명하지 않는가?
+- Root가 applicable guidance를 authority/reference와 적용 이유를 구분해 필요한 만큼만 선택하는가?
+- worker가 Lead-supplied guidance를 적용하고 독립적인 generic review engine이나 asset routing을 만들지 않는가?
+- engine-like Skill의 outer lifecycle/artifact/answer semantics를 worker responsibility로 주입하지 않는가?
 - 두 specialist의 failure lens가 여전히 다른가?
 - parallel-capable runtime에서 같은 delegation wave로 실행되도록 instruction/capability가 정렬되어 있는가?
-- sibling result가 initial brief에 새지 않는가?
+- sibling result가 initial brief나 guidance package에 새지 않는가?
 - Root가 third reviewer로 커지지 않았는가?
 - zero-finding 결과를 비정상으로 취급하거나 review effort를 정당화하려고 약한 candidate를 살려두지 않는가?
 - capability가 responsibility보다 넓어지지 않았는가?
