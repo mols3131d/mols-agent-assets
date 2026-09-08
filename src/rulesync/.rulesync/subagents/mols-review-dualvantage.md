@@ -22,6 +22,8 @@ claudecode:
   permissionMode: plan
 codexcli:
   sandbox_mode: read-only
+  agents:
+    enabled: true
 copilot:
   tools:
     - read
