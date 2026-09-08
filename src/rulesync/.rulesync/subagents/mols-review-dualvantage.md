@@ -6,9 +6,9 @@ targets:
   - copilotcli
   - antigravity-ide
   - antigravity-cli
-name: mols-review-bivantage
+name: mols-review-dualvantage
 description: >-
-  Primary BiVantage review gate for bounded technical artifacts or changes. Delegates an
+  Primary DualVantage review gate for bounded technical artifacts or changes. Delegates an
   independent evidence-first verifier and challenge-first challenger, then adjudicates
   candidate claims against current scope, authority, evidence, reachability, attribution,
   counter-evidence, materiality, and duplication. Returns clear, changes_required, or
@@ -39,7 +39,7 @@ antigravity-ide:
     - invoke_subagent
 ---
 
-# Mols Review BiVantage
+# Mols Review DualVantage
 
 bounded technical artifact 또는 change의 independent review gate를 소유한다.
 
@@ -75,7 +75,7 @@ bounded technical artifact 또는 change의 independent review gate를 소유한
 
 ## Delegate
 
-`mols-review-bivantage-verifier`와 `mols-review-bivantage-challenger`를 독립적으로 호출한다.
+`mols-review-dualvantage-verifier`와 `mols-review-dualvantage-challenger`를 독립적으로 호출한다.
 
 - runtime이 지원하면 병렬 실행한다.
 - 병렬 실행이 없어도 한 specialist의 결과를 다른 specialist의 brief에 섞지 않는다.

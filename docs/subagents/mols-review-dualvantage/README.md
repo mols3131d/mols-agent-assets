@@ -1,10 +1,10 @@
 ---
-description: mols-review-bivantage family의 목적, 본질, 역할 분리, evidence convergence와 유지보수 원칙을 판단할 때 사용합니다.
+description: mols-review-dualvantage family의 목적, 본질, 역할 분리, evidence convergence와 유지보수 원칙을 판단할 때 사용합니다.
 ---
 
-# Mols Review BiVantage
+# Mols Review DualVantage
 
-`mols-review-bivantage`는 하나의 reviewer가 가진 reasoning path와 failure mode에 review 품질이 과도하게 의존하지 않도록, **서로 다른 두 vantage를 독립적으로 만든 뒤 별도의 evidence gate에서 하나의 판단으로 수렴시키는 review family**다.
+`mols-review-dualvantage`는 하나의 reviewer가 가진 reasoning path와 failure mode에 review 품질이 과도하게 의존하지 않도록, **서로 다른 두 vantage를 독립적으로 만든 뒤 별도의 evidence gate에서 하나의 판단으로 수렴시키는 review family**다.
 
 이 문서는 실행 prompt를 복제하지 않는다. 각 subagent의 tool, target, output contract와 runtime semantics는 대응하는 Agent Asset이 소유한다. 여기서는 구현이 바뀌어도 보존해야 할 목적, 본질, 책임 경계와 유지보수 판단을 기록한다.
 
@@ -21,7 +21,7 @@ description: mols-review-bivantage family의 목적, 본질, 역할 분리, evid
 즉 핵심은 다음이다.
 
 ```text
-                         BiVantage
+                       DualVantage
                             │
                  same bounded review brief
                   ┌─────────┴─────────┐
@@ -44,7 +44,7 @@ description: mols-review-bivantage family의 목적, 본질, 역할 분리, evid
 
 ## 이름의 의미
 
-`BiVantage`에서 `bi`는 단순히 agent가 두 개라는 뜻이 아니다. 같은 target을 판단할 때 결과를 바꿀 수 있는 **두 개의 서로 다른 decision-relevant vantage**를 의미한다.
+`DualVantage`에서 `dual`은 단순히 agent가 두 개라는 뜻이 아니다. 같은 target을 판단할 때 결과를 바꿀 수 있는 **두 개의 서로 다른 decision-relevant vantage**를 의미한다.
 
 - Verifier vantage: "관찰 가능한 근거로 입증되는 material defect가 있는가?"
 - Challenger vantage: "현재 동작이 의존하는 전제를 현실적인 trigger로 깨면 reachable failure가 생기는가?"
@@ -129,7 +129,7 @@ Saturation에서 더 깊게 읽는 것은 품질이 아니라 churn이 될 수 �
 
 ## 역할 경계
 
-### `mols-review-bivantage`
+### `mols-review-dualvantage`
 
 Family의 public/root reviewer이자 evidence gate owner다.
 
@@ -156,7 +156,7 @@ Family의 public/root reviewer이자 evidence gate owner다.
 
 Coverage가 부족하면 직접 메우지 않고 coverage gap을 드러낸다.
 
-### `mols-review-bivantage-verifier`
+### `mols-review-dualvantage-verifier`
 
 Evidence-first, precision-biased specialist다.
 
@@ -175,7 +175,7 @@ Evidence-first, precision-biased specialist다.
 
 Maintainability는 그 자체가 목표가 아니다. 이미 구체적인 future correctness/reliability risk를 만들 때만 material review surface가 된다.
 
-### `mols-review-bivantage-challenger`
+### `mols-review-dualvantage-challenger`
 
 Challenge-first, recall-biased specialist다.
 
@@ -312,7 +312,7 @@ Finding 수, agent 수, source 수, token 수는 quality metric이 아니다.
 
 ## 성공 기준
 
-BiVantage가 잘 작동한다는 것은 많은 finding을 생성한다는 뜻이 아니다.
+DualVantage가 잘 작동한다는 것은 많은 finding을 생성한다는 뜻이 아니다.
 
 - Verifier와 Challenger가 실제로 다른 failure mode를 탐색한다.
 - 두 specialist의 initial analysis가 independent하다.
@@ -341,4 +341,4 @@ Vendor, model, tool alias, runtime API와 projection format은 바뀔 수 있다
 10. material coverage/evidence gap을 성공으로 흡수하지 않는다.
 11. false-positive suppression과 actionable signal을 finding 수보다 우선한다.
 
-이 조건이 사라지면 파일명이나 agent 수가 유지되어도 더 이상 BiVantage라고 보기 어렵다.
+이 조건이 사라지면 파일명이나 agent 수가 유지되어도 더 이상 DualVantage라고 보기 어렵다.

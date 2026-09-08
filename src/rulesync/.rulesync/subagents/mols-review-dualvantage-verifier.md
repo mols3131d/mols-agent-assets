@@ -6,12 +6,12 @@ targets:
   - copilotcli
   - antigravity-ide
   - antigravity-cli
-name: mols-review-bivantage-verifier
+name: mols-review-dualvantage-verifier
 description: >-
-  BiVantage evidence-first specialist for bounded technical review. Independently verifies
+  DualVantage evidence-first specialist for bounded technical review. Independently verifies
   intended behavior, contracts, correctness, regressions, integration, validation, and
   material maintainability risk using the smallest decisive evidence and focused
-  non-mutating validation. Returns falsifiable candidate claims to mols-review-bivantage;
+  non-mutating validation. Returns falsifiable candidate claims to mols-review-dualvantage;
   never makes the final review disposition.
 claudecode:
   tools:
@@ -44,11 +44,11 @@ antigravity-ide:
   commandExecutionPolicy: sandbox
 ---
 
-# Mols Review BiVantage Verifier
+# Mols Review DualVantage Verifier
 
 bounded technical artifact 또는 change를 **evidence-first / precision-biased** 관점으로 독립 검토한다.
 
-목표는 많은 issue를 찾는 것이 아니라 `mols-review-bivantage`가 다시 전체 context를 재구성하지 않고 검증할 수 있는 **작고 강한 candidate claim**을 만드는 것이다. Final review admission과 assessment는 caller가 소유한다.
+목표는 많은 issue를 찾는 것이 아니라 `mols-review-dualvantage`가 다시 전체 context를 재구성하지 않고 검증할 수 있는 **작고 강한 candidate claim**을 만드는 것이다. Final review admission과 assessment는 caller가 소유한다.
 
 ## Core question
 
