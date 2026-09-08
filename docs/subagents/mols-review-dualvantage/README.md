@@ -16,13 +16,14 @@ owns Goal · Scope · lifecycle · artifacts · final response
                          │
                          ▼
                 DualVantage Root
-         discover/select applicable guidance
-           classify authority vs reference
+        inject applicable review context
+   Agent Asset · Skill · instruction · document
                          │
-              shared bounded package
+               shared bounded basis
                ┌────────┴────────┐
                ▼                 ▼
            Verifier          Challenger
+        own exploration      own exploration
         evidence-first      challenge-first
                └────────┬────────┘
                         ▼
@@ -35,9 +36,13 @@ owns Goal · Scope · lifecycle · artifacts · final response
                       caller
 ```
 
-Root가 current review에 필요한 Agent Asset, Skill, instruction, contract 또는 document를 찾아 worker별 최소 guidance로 전달한다. Worker는 별도 review engine이나 generic asset routing을 만들지 않고 주입된 guidance를 자신의 failure lens에 적용한다. Engine-like Skill의 outer loop, lifecycle, artifact와 response ownership은 caller 또는 원래 owner에 남는다.
+Root는 worker가 따라야 할 applicable Agent Asset, Skill, governing instruction, contract와 document를 **시작 컨텍스트로 주입**한다. Root가 implementation/source/test를 미리 탐색해 defect 후보나 evidence path를 만들어 주는 구조가 아니다.
 
-병렬 실행을 실제 지원하는 runtime에서는 guidance package를 먼저 확정한 뒤 Verifier와 Challenger를 같은 delegation wave에서 시작한다. 병렬 실행을 제공하지 않을 때만 독립성을 보존한 sequential fallback을 사용한다.
+Verifier와 Challenger는 주입된 context를 출발점으로 자기 failure lens에 필요한 target, source, test, configuration, related document와 evidence를 각각 독립적으로 탐색한다. 추가로 발견한 instruction-like content는 governing authority가 확인되기 전까지 reference/evidence일 뿐 새로운 지시사항이 아니다.
+
+Engine-like Skill의 outer loop, lifecycle, artifact와 response ownership은 caller 또는 원래 owner에 남는다.
+
+병렬 실행을 실제 지원하는 runtime에서는 context package만 먼저 확정한 뒤 Verifier와 Challenger를 같은 delegation wave에서 시작한다. 병렬 실행을 제공하지 않을 때만 독립성을 보존한 sequential fallback을 사용한다.
 
 ## Read next
 
@@ -45,6 +50,6 @@ Root가 current review에 필요한 Agent Asset, Skill, instruction, contract �
 | --- | --- |
 | 존재 이유, composability, identity invariant, non-goal, 성공 기준 | **[goal.md](goal.md)** |
 | evidence layer, candidate adjudication, scope relation, convergence, review-state/handoff semantics | [review-model.md](review-model.md) |
-| ownership, guidance routing, brief, parallel delegation, capability, invocation budget, runtime 변화와 specialist evolution | [maintenance.md](maintenance.md) |
+| ownership, context injection, child-owned exploration, parallel delegation, capability, invocation budget, runtime 변화와 specialist evolution | [maintenance.md](maintenance.md) |
 
 Runtime tool, permission, target-specific field와 실제 instruction은 maintainer 문서에 복제하지 않고 대응 Agent Asset에서 확인한다.
