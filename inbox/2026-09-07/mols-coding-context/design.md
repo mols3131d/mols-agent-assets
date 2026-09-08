@@ -1,10 +1,10 @@
 # `mols-coding-context` 설계
 
-이 문서는 coding context의 **core/add-on architecture**를 정의한다.
+이 문서는 coding context의 **core/add-on architecture와 instruction budget**을 정의한다.
 
 ## Goal
 
-Code-facing task에 필요한 engineering judgment를 작고 선택 가능한 context로 제공한다.
+Code-facing task에 필요한 engineering judgment를 작고 선택 가능한 context로 제공하고, LLM/agent가 만들기 쉬운 불필요한 scope·mechanism·fallback·verification claim을 줄인다.
 
 ```text
 mols-coding-context
@@ -25,16 +25,18 @@ Core가 소유하는 것:
 - system fit과 smallest coherent change
 - observable contract 보존
 - failure/absence/unknown 의미 보존
-- dynamic/external boundary 판단
-- retry/timeout/concurrency 같은 operational machinery의 도입 기준
-- legibility와 verification truthfulness
+- external/executable boundary 판단
+- operational machinery의 evidence gate
+- verification truthfulness와 stop condition
+- evidence-driven optimization judgment
 
 Python add-on이 소유하는 것:
 
-- Python exception/fallback semantics
+- Python exception/fallback semantics delta
 - `asyncio`, cancellation, task lifetime
-- Python dynamic data boundary와 runtime validation nuance
+- annotation과 runtime validation의 Python nuance
 - subprocess/shell/dynamic execution nuance
+- Python performance mechanism 선택의 runtime-evidence delta
 
 Add-on은 core의 generic rule을 다시 쓰지 않는다.
 
@@ -94,6 +96,76 @@ Skill selected
 
 Python add-on이 선택됐어도 async code가 없으면 async rule은 아무 작업도 만들지 않는다.
 
+## Instruction Budget
+
+새 instruction은 다음 중 하나를 충족할 때만 admission한다.
+
+- 없으면 반복적으로 발생하는 material engineering error를 직접 줄임
+- observable invariant, failure meaning, safety/trust boundary 또는 required default를 보존함
+- generic authority/tooling만으로 안정적으로 복원하기 어려운 ambiguity를 해결함
+- language add-on에서는 core로 표현할 수 없는 material semantic/runtime delta를 제공함
+
+다음은 admission 근거가 아니다.
+
+- 일반적으로 좋은 practice라는 이유
+- 특정 keyword/library가 등장했다는 이유
+- “더 robust해 보임” 또는 “future-proof해 보임”
+- model이 언젠가 실수할 수 있다는 막연한 가능성
+- rule을 더 많이 두면 더 안전할 것이라는 가정
+
+새 rule은 기존 rule의 condition을 더 정확히 하는 것으로 해결할 수 있는지 먼저 본다. 같은 failure를 여러 문장이 막으면 가장 직접적인 owner만 남긴다.
+
+## Anti-pattern Lenses
+
+두 Skill은 code-smell taxonomy를 소유하지 않는다. 대신 여러 언어와 task에서 decision quality를 실제로 바꾸는 root anti-pattern만 유지한다.
+
+### Core
+
+- **Scope inflation** — local issue를 architecture rewrite, unrelated cleanup 또는 broad refactor로 확대
+- **Robustness theater** — failure/constraint evidence 없이 fallback, retry, cache, concurrency, configuration 또는 abstraction 추가
+- **Confident fallback** — failure/unknown을 success-like absence/empty value로 변환
+- **Verification theater** — 일부 test나 static inspection을 전체 acceptance evidence로 과대 해석
+- **Premature optimization** — metric, baseline 또는 bottleneck evidence 전에 optimization mechanism 선택
+
+### Python delta
+
+- **Over-protective handler** — broad/oversized catch로 unrelated failure를 삼킴
+- **Annotation-as-validation** — type annotation을 runtime validation으로 오해
+- **Async by reflex** — task lifetime/failure model 없이 async/concurrency machinery 추가
+- **Token security heuristic** — `shell=True`, `eval`, `exec` token 자체만으로 unconditional defect 판정
+- **Python folklore optimization** — target runtime/workload evidence 없이 async/thread/process/vectorization/native path 등을 성능 해법으로 선택
+
+Narrative Comment, Docstring Hallucination, Redundant Type Comment 같은 concern은 이 core/add-on의 직접 owner가 아니다. 별도 prose/tooling owner 또는 deterministic mechanism으로 처리하고 여기에는 복제하지 않는다.
+
+## Evidence-Driven Optimization
+
+Optimization은 core의 generic judgment이며, Python add-on은 language delta만 추가한다.
+
+Core process:
+
+```text
+target
+→ locate dominant cost
+→ reduce existing work first
+→ narrow optimization
+→ compare
+→ stop
+```
+
+- **Target** — metric/constraint/cost와 representative workload를 정하고 practical하면 baseline을 확보
+- **Locate** — profile/benchmark/trace/complexity/data-flow evidence로 dominant cost 식별
+- **Reduce first** — mechanism을 추가하기 전에 work, indirection, allocation, data movement, repeated I/O 제거 검토
+- **Narrow optimization** — 가장 작은 owner에서 observable contract를 보존하며 변경
+- **Compare / stop** — 같은 조건에서 before/after를 비교하고 목표 달성, diminishing gain 또는 complexity cost가 커지면 종료
+
+Optimization process 자체가 모든 coding task의 workflow가 되지는 않는다. Performance/resource/material maintenance cost가 scope이거나 evidence가 bottleneck을 가리킬 때만 활성화한다.
+
+Python add-on은 다음만 추가한다.
+
+- interpreter/build와 representative workload를 기준으로 측정
+- CPU/I/O, allocation/data movement, serialization/interop 중 실제 dominant cost 확인
+- `async`, threads/processes, native/vectorized path, memoization 같은 Python mechanism을 folklore만으로 고르지 않음
+
 ## Extensibility
 
 다른 언어 add-on은 필요와 evidence가 생겼을 때만 추가한다.
@@ -140,15 +212,16 @@ Same-family core/add-on 관계만 직접 표현한다.
 1. 사용자/repository/runtime/language authority가 이미 결정하는가?
 2. formatter/linter/type checker/test/SAST가 안정적으로 판정하는가?
 3. 다른 asset이 더 직접적인 owner인가?
-4. 여러 representative task에서 model judgment를 실제로 바꾸는가?
+4. representative task에서 model judgment를 실제로 바꾸는가?
 5. Core와 add-on 중 더 정확한 applicability owner가 어디인가?
 6. 해당 construct가 없는데도 unnecessary work를 유도하지 않는가?
+7. existing instruction을 더 정확히 하거나 삭제하는 것이 새 rule보다 나은가?
 
 더 직접적인 owner가 있으면 context에 복제하지 않는다.
 
 ## Package Shape
 
-초기 package는 둘 다 single-file Skill로 유지한다.
+두 package는 single-file Skill로 유지한다.
 
 ```text
 src/rulesync/.rulesync/skills/mols-coding-context/
@@ -164,10 +237,12 @@ Reference split은 실제로 independent loading value가 확인된 뒤에만 �
 
 - coding workflow orchestration
 - clean-code encyclopedia
+- LLM code-smell taxonomy 복제
 - language/API reference 복제
 - deterministic lint rule catalogue
-- generic AI-generated-code smell taxonomy
+- generic security checklist
+- generic optimization checklist
 - 모든 language add-on의 선제적 생성
 - cross-family dependency graph
 
-성공 기준은 Skill 수가 아니라 **routing precision, context relevance, semantic ownership과 unnecessary work 감소**다.
+성공 기준은 Skill 수나 rule 수가 아니라 **routing precision, context relevance, semantic ownership, evidence quality와 unnecessary work 감소**다.
