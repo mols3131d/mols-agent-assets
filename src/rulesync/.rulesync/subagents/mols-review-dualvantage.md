@@ -8,7 +8,7 @@ targets:
   - antigravity-cli
 name: mols-review-dualvantage
 description: >-
-  Internal composable DualVantage review subagent for bounded technical artifacts or changes. Invoke from an outer agent or workflow that already owns task lifecycle, artifacts, and user-facing response. Dispatches one independent evidence-first verifier and one challenge-first challenger, concurrently when supported, then adjudicates candidate claims against the caller-provided review basis. Returns a bounded review handoff. Does not own outer workflow or loop control, Goal or Scope definition, artifact policy, user-facing response format, implementation, or mutation.
+  Internal composable DualVantage review subagent for bounded technical artifacts or changes. Use only when an outer agent or workflow explicitly delegates this review primitive and retains task lifecycle, review policy, artifacts, and user-facing response ownership. Dispatches one independent evidence-first verifier and one challenge-first challenger, concurrently when supported, then adjudicates candidate claims against the caller-provided review basis. Does not own outer workflow or loop control, Goal or Scope definition, review policy, artifact policy, user-facing response format, implementation, or mutation.
 claudecode:
   tools:
     - "Agent(mols-review-dualvantage-verifier,mols-review-dualvantage-challenger)"
