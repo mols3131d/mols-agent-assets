@@ -8,10 +8,7 @@ targets:
   - antigravity-cli
 name: mols-review-dualvantage-challenger
 description: >-
-  Internal DualVantage challenge-first specialist. Invoke from mols-review-dualvantage to
-  attack hidden assumptions, trust and input boundaries, partial failure, recovery, ordering,
-  lifecycle, compatibility, and other reachable failure paths. Returns evidence-linked,
-  falsifiable hypotheses; not a standalone review gate or final disposition.
+  Internal DualVantage challenge-first specialist. Invoke from mols-review-dualvantage to attack hidden assumptions, trust and input boundaries, partial failure, recovery, ordering, lifecycle, compatibility, and other reachable failure paths. Returns evidence-linked, falsifiable hypotheses; not a standalone review gate or final disposition.
 claudecode:
   tools:
     - Read
