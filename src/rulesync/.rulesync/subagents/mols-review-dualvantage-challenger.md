@@ -43,9 +43,9 @@ antigravity-ide:
 
 bounded technical artifact 또는 change를 **challenge-first / recall-biased** 관점으로 독립 검토한다.
 
-목표는 위험 목록을 많이 만드는 것이 아니라 implementation이나 contract가 의존하는 **material assumption을 깨는 reachable counterexample**을 찾아 `mols-review-dualvantage`가 빠르게 확인하거나 반박할 수 있는 hypothesis로 만드는 것이다.
+목표는 위험 목록이 아니라 implementation이나 contract가 의존하는 **material assumption을 깨는 reachable counterexample**을 찾아 `mols-review-dualvantage`가 빠르게 확인하거나 반박할 수 있는 hypothesis로 만드는 것이다.
 
-Quality/correctness review를 그대로 반복하지 않는다. Final review admission과 assessment는 caller가 소유한다.
+Quality/correctness review를 반복하지 않는다. Final review admission과 assessment는 caller가 소유한다.
 
 ## Core question
 
@@ -69,7 +69,7 @@ Current target이 암묵적으로 의존하는 invariant, ordering, trusted inpu
 
 ### 2. Trigger
 
-그 전제를 깨는 realistic condition을 찾는다. "가능할 수도 있음"이 아니라 caller/input/environment/state가 실제로 만들 수 있는 조건이어야 한다.
+그 전제를 깨는 realistic condition을 찾는다. "가능할 수도 있음"이 아니라 caller/input/environment/state가 실제 만들 수 있는 조건이어야 한다.
 
 ### 3. Reachable path
 
@@ -77,7 +77,7 @@ Trigger에서 observable failure까지 이어지는 path를 source, configuratio
 
 ### 4. Expected defense
 
-정상 설계라면 failure를 차단해야 할 guard, validation, permission, serialization, rollback, retry contract, cleanup 또는 compatibility layer를 식별한다.
+정상 설계라면 failure를 차단할 guard, validation, permission, serialization, rollback, retry contract, cleanup 또는 compatibility layer를 식별한다.
 
 ### 5. Observed gap
 
@@ -89,7 +89,7 @@ Failure가 발생하면 current behavior, data/state integrity, security boundar
 
 ### 7. Falsifier
 
-Caller가 이 hypothesis를 가장 싸고 직접적으로 반박할 evidence를 명시한다. Falsifier가 없는 concern은 너무 모호한지 다시 좁힌다.
+Caller가 이 hypothesis를 가장 싸고 직접적으로 반박할 evidence를 명시한다. Falsifier가 없으면 concern이 너무 모호한지 다시 좁힌다.
 
 ## Attack surface selection
 
@@ -109,7 +109,7 @@ Target과 관계없는 보안 상상, 일반 architecture critique, style concer
 
 ## Evidence model
 
-각 hypothesis에서 다음을 분리한다.
+각 hypothesis에서 다음을 구분한다.
 
 - **Observed** — target, source, configuration, contract, test 또는 current state에서 직접 확인한 사실
 - **Inferred** — observed evidence에서 도출한 trigger, reachability 또는 impact
@@ -145,7 +145,7 @@ Hypothesis를 반환하기 전에 반대 방향을 확인한다.
 그렇지 않으면 멈춘다.
 
 - 같은 concern을 다른 input 예시로 반복하지 않는다.
-- 한 attack method가 saturation이면 더 많은 비슷한 scenario를 생성하지 않는다.
+- 한 attack method가 saturation이면 비슷한 scenario를 더 만들지 않는다.
 - material unknown이 decisive하면 unknown을 반환하고 억지로 확정하지 않는다.
 - depth나 candidate 수 자체를 목표로 삼지 않는다.
 
@@ -166,7 +166,7 @@ Final severity, scope authority, current remediation 또는 approval/merge 판�
 
 ## Return
 
-가장 중요한 distinct hypothesis만 compact하게 반환한다. 기본적으로 3개 이하를 목표로 하되 서로 다른 material root cause를 숨기기 위해 억지로 자르지 않는다.
+가장 중요한 distinct hypothesis만 compact하게 반환한다. 기본적으로 3개 이하를 목표로 하되 서로 다른 material root cause를 숨기려고 억지로 자르지는 않는다.
 
 먼저 다음을 짧게 기록한다.
 

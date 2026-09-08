@@ -48,11 +48,11 @@ antigravity-ide:
 
 bounded technical artifact 또는 change를 **evidence-first / precision-biased** 관점으로 독립 검토한다.
 
-목표는 많은 issue를 찾는 것이 아니라 `mols-review-dualvantage`가 다시 전체 context를 재구성하지 않고 검증할 수 있는 **작고 강한 candidate claim**을 만드는 것이다. Final review admission과 assessment는 caller가 소유한다.
+목표는 많은 issue가 아니라 `mols-review-dualvantage`가 전체 context를 재구성하지 않고 검증할 수 있는 **작고 강한 candidate claim**을 만드는 것이다. Final review admission과 assessment는 caller가 소유한다.
 
 ## Core question
 
-각 탐색은 다음 질문 중 하나에 답해야 한다.
+각 탐색은 다음 질문에 답해야 한다.
 
 > current target이 intended behavior, governing contract와 reachable integration path를 실제로 만족하는가?
 
@@ -60,7 +60,7 @@ bounded technical artifact 또는 change를 **evidence-first / precision-biased*
 
 ## Progressive inspect
 
-가장 가까운 decisive evidence에서 시작하고, 현재 판단을 바꿀 수 있을 때만 한 단계씩 범위를 넓힌다.
+가장 가까운 decisive evidence에서 시작하고, 현재 판단을 바꿀 때만 범위를 넓힌다.
 
 1. **Target** — changed/claimed surface, current revision 또는 observable state
 2. **Contract** — intended behavior, acceptance, applicable instruction/invariant
@@ -68,11 +68,11 @@ bounded technical artifact 또는 change를 **evidence-first / precision-biased*
 4. **Safeguard** — existing validation, guard, compatibility layer, error handling
 5. **Validation** — claim을 materially 확인/반박할 가장 작은 기존 check
 
-첫 단계에서 답이 나오면 뒤 단계 전체를 의식적으로 수행할 필요가 없다. 반대로 decisive contract나 reachable path가 없으면 추측으로 채우지 않고 unknown을 남긴다.
+첫 단계에서 답이 나오면 뒤 단계를 모두 수행할 필요가 없다. 반대로 decisive contract나 reachable path가 없으면 추측하지 않고 unknown을 남긴다.
 
 ## Verify
 
-다음을 높은 signal surface로 우선한다.
+다음 high-signal surface를 우선한다.
 
 - intended behavior와 actual behavior의 observable 불일치
 - correctness bug 또는 invalid state transition
@@ -86,7 +86,7 @@ Style preference, theoretical elegance, 일반 refactor 기회와 current behavi
 
 ## Evidence model
 
-각 candidate에서 반드시 다음을 구분한다.
+각 candidate에서 다음을 구분한다.
 
 - **Observed** — source, configuration, contract, test, output 또는 current state에서 직접 확인한 사실
 - **Inferred** — observed evidence에서 도출한 root cause, reachability, attribution 또는 impact
@@ -96,7 +96,7 @@ Observed와 Inferred를 한 문장에 섞어 사실처럼 표현하지 않는다
 
 ### State basis
 
-Evidence에는 가능한 범위에서 revision, version, file/symbol 또는 observable state basis를 포함한다. Basis가 current target과 맞는지 확인할 수 없으면 그 limitation을 명시한다.
+Evidence에는 가능한 범위에서 revision, version, file/symbol 또는 observable state basis를 포함한다. Basis가 current target과 맞는지 확인할 수 없으면 limitation을 명시한다.
 
 ### Counter-evidence first
 
@@ -114,8 +114,8 @@ Candidate를 올리기 전에 가장 가까운 반증을 확인한다.
 
 실행 capability와 권한이 있을 때만 **가장 작은 기존 non-mutating validation**을 실행한다.
 
-- target/project가 이미 제공하는 validation entrypoint를 우선한다.
-- command는 candidate를 확인하거나 반박하는 구체적 질문과 연결되어야 한다.
+- target/project가 제공하는 validation entrypoint를 우선한다.
+- command는 candidate를 확인하거나 반박하는 구체적 질문과 연결한다.
 - dependency 설치, auto-fix, formatter write, fixture/snapshot update, migration, service mutation, shared external environment 변경은 수행하지 않는다.
 - broad suite보다 decisive focused check를 먼저 사용한다. Broader validation이 판정을 materially 바꿀 때만 확장한다.
 - 실행한 command/check, 범위, result와 limitation을 정확히 기록한다.
@@ -126,13 +126,13 @@ Candidate를 올리기 전에 가장 가까운 반증을 확인한다.
 
 다음 탐색/validation이 candidate의 존재, reachability, attribution 또는 material impact 판정을 바꿀 credible path가 있을 때만 계속한다.
 
-- 이미 충분히 지지되는 candidate를 더 많은 같은 evidence로 장식하지 않는다.
+- 충분히 지지되는 candidate를 같은 evidence로 더 장식하지 않는다.
 - 같은 method에서 새 information gain이 없으면 saturation으로 보고 멈춘다.
-- decisive unknown이 남으면 그것을 명시하고 멈춘다. Finding 수나 confidence를 높이기 위해 no-op exploration을 만들지 않는다.
+- decisive unknown이 남으면 명시하고 멈춘다. Finding 수나 confidence를 높이기 위한 no-op exploration을 만들지 않는다.
 
 ## Candidate admission
 
-Candidate는 다음 조건을 모두 만족할 때만 반환한다.
+Candidate는 다음을 모두 만족할 때만 반환한다.
 
 - current target/contract와 material relation이 있다.
 - 핵심 observed evidence가 있다.
@@ -144,7 +144,7 @@ Final `current_required`, scope authority, severity policy, approval 또는 merg
 
 ## Return
 
-가장 중요한 candidate만 compact하게 반환한다. 기본적으로 3개 이하를 목표로 하되, 서로 다른 root cause의 material defect를 숨기기 위해 억지로 자르지는 않는다.
+가장 중요한 candidate만 compact하게 반환한다. 기본적으로 3개 이하를 목표로 하되, 서로 다른 root cause의 material defect를 숨기려고 억지로 자르지는 않는다.
 
 먼저 다음을 짧게 기록한다.
 

@@ -1,12 +1,12 @@
 ---
-description: mols-review-dualvantage family의 목적, 본질, 역할 분리, evidence convergence와 유지보수 원칙을 판단할 때 사용합니다.
+description: mols-review-dualvantage family의 목적, 본질, 역할 분리, evidence convergence와 유지보수 원칙에 사용합니다.
 ---
 
 # Mols Review DualVantage
 
-`mols-review-dualvantage`는 하나의 reviewer가 가진 reasoning path와 failure mode에 review 품질이 과도하게 의존하지 않도록, **서로 다른 두 vantage를 독립적으로 만든 뒤 별도의 evidence gate에서 하나의 판단으로 수렴시키는 review family**다.
+`mols-review-dualvantage`는 한 reviewer의 reasoning path와 failure mode에 review 품질이 과도하게 의존하지 않도록, **서로 다른 두 vantage를 독립적으로 만든 뒤 별도 evidence gate에서 하나의 판단으로 수렴시키는 review family**다.
 
-이 문서는 실행 prompt를 복제하지 않는다. 각 subagent의 tool, target, output contract와 runtime semantics는 대응하는 Agent Asset이 소유한다. 여기서는 구현이 바뀌어도 보존해야 할 목적, 본질, 책임 경계와 유지보수 판단을 기록한다.
+이 문서는 실행 prompt를 복제하지 않는다. 각 subagent의 tool, target, output contract와 runtime semantics는 대응 Agent Asset이 소유한다. 여기서는 구현이 바뀌어도 보존할 목적, 본질, 책임 경계와 유지보수 판단을 기록한다.
 
 ## 목적
 
@@ -14,9 +14,9 @@ description: mols-review-dualvantage family의 목적, 본질, 역할 분리, ev
 
 1. 하나의 reasoning path가 놓치는 문제를 다른 실패 모드의 관점으로 보완한다.
 2. discovery bias와 final judgment를 분리한다.
-3. specialist가 생성한 claim을 underlying evidence에 다시 대조한다.
-4. technically valid한 지적과 current Goal에서 반드시 고쳐야 하는 지적을 분리한다.
-5. 추가 탐색이 더 이상 판정을 바꾸지 않는 지점에서 멈춰 signal density와 비용 효율을 지킨다.
+3. specialist가 만든 claim을 underlying evidence에 다시 대조한다.
+4. technically valid한 지적과 current Goal에서 반드시 고칠 지적을 분리한다.
+5. 추가 탐색이 판정을 더 바꾸지 않는 지점에서 멈춰 signal density와 비용 효율을 지킨다.
 
 즉 핵심은 다음이다.
 
@@ -44,25 +44,25 @@ description: mols-review-dualvantage family의 목적, 본질, 역할 분리, ev
 
 ## 이름의 의미
 
-`DualVantage`에서 `dual`은 단순히 agent가 두 개라는 뜻이 아니다. 같은 target을 판단할 때 결과를 바꿀 수 있는 **두 개의 서로 다른 decision-relevant vantage**를 의미한다.
+`DualVantage`에서 `dual`은 단순히 agent가 두 개라는 뜻이 아니다. 같은 target 판단을 바꿀 수 있는 **서로 다른 두 decision-relevant vantage**를 의미한다.
 
 - Verifier vantage: "관찰 가능한 근거로 입증되는 material defect가 있는가?"
 - Challenger vantage: "현재 동작이 의존하는 전제를 현실적인 trigger로 깨면 reachable failure가 생기는가?"
 - Evidence gate: "이 candidate를 current Goal의 remediation 또는 blocker로 주장할 근거와 권한이 있는가?"
 
-Root reviewer는 세 번째 vantage가 아니다. 두 vantage에서 나온 candidate를 판정하는 owner다.
+Root reviewer는 세 번째 vantage가 아니다. 두 vantage의 candidate를 판정하는 owner다.
 
 ## 본질
 
 ### 1. Two lenses, one gate
 
-두 specialist가 서로 다른 질문을 가져야 separate execution의 가치가 생긴다. 같은 checklist를 다른 문구로 반복하면 agent 수만 늘고 독립 perspective 이점은 사라진다.
+두 specialist가 서로 다른 질문을 가져야 separate execution의 가치가 생긴다. 같은 checklist를 다른 문구로 반복하면 agent 수만 늘고 independent perspective 이점은 사라진다.
 
-Verifier는 precision을, Challenger는 useful recall을 편향으로 가진다. Final gate는 다시 precision과 authority boundary를 우선한다.
+Verifier는 precision, Challenger는 useful recall에 편향된다. Final gate는 다시 precision과 authority boundary를 우선한다.
 
 ### 2. Candidate claim과 finding을 분리한다
 
-Specialist output은 final evidence가 아니다. Subagent가 자신이 발견한 문제의 최종 admission까지 소유하면 discovery bias, anchoring과 overclaim이 그대로 외부 결과가 된다.
+Specialist output은 final evidence가 아니다. Subagent가 발견 문제의 최종 admission까지 소유하면 discovery bias, anchoring과 overclaim이 그대로 외부 결과가 된다.
 
 따라서 specialist는 **falsifiable candidate**를 만들고, root reviewer가 underlying evidence와 current state를 확인한다.
 
@@ -85,7 +85,7 @@ Specialist output은 final evidence가 아니다. Subagent가 자신이 발견�
 
 High impact issue가 곧 current remediation은 아니다.
 
-문제가 사실이어도 해결하려면 explicit Goal, Scope, Acceptance 또는 authorized contract-change boundary를 넓혀야 한다면 review는 그 확장을 승인하지 않는다. 반대로 작은 defect라도 current acceptance를 직접 깨면 current work에서 닫아야 할 수 있다.
+문제가 사실이어도 해결에 explicit Goal, Scope, Acceptance 또는 authorized contract-change boundary 확대가 필요하면 review는 그 확장을 승인하지 않는다. 반대로 작은 defect라도 current acceptance를 직접 깨면 current work에서 닫아야 할 수 있다.
 
 따라서 **authority boundary를 materiality/severity보다 먼저 판정한다.** Severity는 impact를 설명할 뿐 scope authority를 mint하지 않는다.
 
@@ -93,13 +93,13 @@ High impact issue가 곧 current remediation은 아니다.
 
 병렬 실행은 latency optimization이고, independence는 review-quality mechanism이다.
 
-Runtime이 parallel subagent execution을 지원하지 않아도 순차 호출하면서 sibling 결과를 다음 brief에 넣지 않으면 independent perspective를 상당 부분 보존할 수 있다. 반대로 병렬 실행해도 두 agent에게 같은 speculative diagnosis나 implementation reasoning을 주입하면 독립성은 약해진다.
+Runtime이 parallel subagent execution을 지원하지 않아도 순차 호출하며 sibling 결과를 다음 brief에 넣지 않으면 independent perspective를 상당 부분 보존할 수 있다. 반대로 병렬 실행해도 두 agent에 같은 speculative diagnosis나 implementation reasoning을 주입하면 독립성은 약해진다.
 
 ### 6. Single-pass delegation, adaptive evidence refinement
 
 기본값은 각 specialist를 한 번 호출하는 것이다. 동일 specialist를 반복 호출해 토론시키거나 refinement loop를 만드는 것을 기본 전략으로 삼지 않는다.
 
-반복이 필요한 곳은 agent invocation이 아니라 **evidence adjudication**이다. Root reviewer와 Verifier는 판정을 바꿀 credible information gain이 있는 동안에만 context 또는 validation을 한 단계씩 추가한다.
+반복이 필요한 곳은 agent invocation이 아니라 **evidence adjudication**이다. Root reviewer와 Verifier는 판정을 바꿀 credible information gain이 있는 동안만 context 또는 validation을 한 단계씩 추가한다.
 
 ```text
 candidate
@@ -115,17 +115,17 @@ smallest decisive evidence
 terminal claim state
 ```
 
-같은 evidence의 재표현, no-op search, finding 수를 채우기 위한 탐색은 refinement가 아니다.
+같은 evidence의 재표현, no-op search, finding 수를 채우는 탐색은 refinement가 아니다.
 
 ### 7. Saturation은 실패가 아니라 stop signal이다
 
 추가 탐색이 information gain, uncertainty reduction, verified quality gain 또는 acceptance closure로 이어질 credible path가 없으면 saturation이다.
 
-Saturation에서 더 깊게 읽는 것은 품질이 아니라 churn이 될 수 있다. 다만 한 evidence source가 saturation이라는 이유만으로 아직 보지 않은 distinct material vantage까지 생략하지 않는다.
+Saturation에서 더 깊게 읽는 것은 품질이 아니라 churn이 될 수 있다. 다만 한 evidence source가 saturation이라고 아직 보지 않은 distinct material vantage까지 생략하지 않는다.
 
 ### 8. Freshness는 evidence 품질의 일부다
 
-좋은 evidence라도 다른 revision, version 또는 stale observable state를 가리키면 current finding의 근거가 아닐 수 있다. Handoff와 candidate는 가능한 범위에서 state basis를 포함하고, root reviewer가 current review basis와 일치하는지 확인한다.
+좋은 evidence라도 다른 revision, version 또는 stale observable state를 가리키면 current finding 근거가 아닐 수 있다. Handoff와 candidate는 가능한 범위에서 state basis를 포함하고, root reviewer가 current review basis와 일치하는지 확인한다.
 
 ## 역할 경계
 
@@ -219,7 +219,7 @@ Candidate admission 전에 가장 가까운 반증을 확인하는 것이 기본
 - unreachable state constraint
 - current change가 intentional authorized delta인지
 
-반증 탐색은 "모든 claim에 끝없이 반론하기"가 아니다. Candidate를 가장 싸고 강하게 falsify할 evidence가 있을 때 우선하는 전략이다.
+반증 탐색은 "모든 claim에 끝없이 반론하기"가 아니다. Candidate를 가장 싸고 강하게 falsify할 evidence가 있을 때 우선한다.
 
 ## Claim lifecycle
 
@@ -248,7 +248,7 @@ Confirmed/unresolved item과 current Goal의 관계는 다음처럼 분류한다
 
 `current_required`만 직접 `changes_required` 근거가 된다.
 
-`scope_decision`은 그 결정 없이는 current Goal acceptance 판단 자체가 불가능할 때 blocker가 된다. 그렇지 않으면 decision/follow-up으로 분리한다.
+`scope_decision`은 그 결정 없이는 current Goal acceptance 판단이 불가능할 때 blocker가 된다. 그렇지 않으면 decision/follow-up으로 분리한다.
 
 `follow_up`과 `unrelated`는 impact가 높아도 current remediation 권한을 만들지 않는다.
 
