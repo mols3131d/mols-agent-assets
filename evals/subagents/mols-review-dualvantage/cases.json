@@ -1,5 +1,11 @@
 {
   "version": 1,
+  "contract": "capability",
+  "system_under_evaluation": [
+    "mols-review-dualvantage",
+    "mols-review-dualvantage-verifier",
+    "mols-review-dualvantage-challenger"
+  ],
   "cases": [
     {
       "id": "root-injects-context-without-pre-review",
