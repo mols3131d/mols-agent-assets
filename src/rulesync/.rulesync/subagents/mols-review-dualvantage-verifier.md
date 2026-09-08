@@ -126,7 +126,7 @@ Severity, blocking, status, disposition, required-action policy, approval, merge
 
 가장 중요한 distinct candidate만 반환한다. 기본적으로 3개 이하를 목표로 하되 서로 다른 material root cause를 숨기려고 자르지 않는다.
 
-먼저 `Reviewed scope`, `State basis`, `Validation performed/not run/limitation`을 짧게 기록한다.
+먼저 `Reviewed scope`, `State basis`, `Validation performed/not run/limitation`을 짧게 기록한다. Candidate admission을 통과하지 못했더라도 Root 판단을 materially 제한하는 missing contract, runtime/state 또는 decisive evidence가 있으면 `Decision-relevant unknowns`로 별도 기록한다. 단순 speculation은 포함하지 않는다.
 
 각 candidate에는 필요한 만큼 다음을 포함한다.
 
