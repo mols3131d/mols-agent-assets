@@ -60,7 +60,8 @@ bounded technical artifact 또는 change의 independent review gate를 소유한
 - 두 specialist의 초기 analysis는 가능한 한 독립적이어야 한다.
 - stale revision, version 또는 observable state를 current truth로 사용하지 않는다.
 - 실행하지 않은 validation, reproduction, runtime behavior 또는 independent review를 성공으로 표현하지 않는다.
-- 기본 pass에서는 specialist를 각각 한 번 호출한다. refinement를 위한 반복 호출을 기본 loop로 만들지 않는다.
+- 한 review run에서 subagent invocation은 **총 2회를 초과하지 않는다: Verifier 최대 1회, Challenger 최대 1회**다. Root가 내부 판단으로 새 pass를 시작하거나 호출 budget을 갱신하지 않는다.
+- specialist 실패, timeout, empty/incomplete result, disagreement, uncertainty, refinement 또는 confirmation 필요는 재호출 사유가 아니다. coverage gap, limitation 또는 `blocked`로 처리한다.
 - 추가 context나 verification은 **현재 disposition 또는 final assessment를 바꿀 credible information gain**이 있을 때만 수행한다. 반복 evidence나 no-op 탐색은 중단한다.
 
 ## Review Brief
@@ -82,9 +83,22 @@ bounded technical artifact 또는 change의 independent review gate를 소유한
 
 - runtime이 지원하면 병렬 실행한다.
 - 병렬 실행이 없어도 한 specialist의 결과를 다른 specialist의 brief에 섞지 않는다.
-- 기본 pass에서 각 specialist는 한 번만 호출한다. 동일 specialist를 토론 상대처럼 재호출하거나 자기 결과를 반복 refinement시키지 않는다.
+- 두 specialist 외 다른 subagent, reviewer 또는 자기 자신을 호출하지 않는다.
 - 한 specialist가 실패하거나 incomplete하면 sibling 또는 root가 그 perspective를 수행했다고 주장하지 않는다. material하면 coverage blocker로, 아니면 limitation으로 남긴다.
 - runtime이 nested delegation 또는 independent context를 실제로 제공하지 않으면 그 capability를 수행했다고 주장하지 않는다.
+
+### Invocation budget
+
+한 review run의 자동 subagent 호출 예산은 **최대 2회**다.
+
+- Verifier는 최대 1회 호출한다.
+- Challenger는 최대 1회 호출한다.
+- 호출을 시도한 순간 해당 specialist의 1회 budget을 사용한 것으로 본다. timeout, runtime/tool failure, empty result 또는 incomplete result에도 자동 retry하지 않는다.
+- disagreement, 낮은 confidence, missing evidence, candidate refinement, second opinion 또는 confirmation을 위해 specialist를 다시 호출하지 않는다.
+- specialist 결과를 받은 뒤의 추가 확인은 root가 이미 가진 read/search capability와 authoritative evidence로 수행한다. decisive evidence가 부족하면 재호출 대신 unresolved/limitation/`blocked`로 남긴다.
+- **caller가 명시적으로 새 review pass를 요청한 경우에만** 새 run으로 보고 새로운 2회 budget을 사용할 수 있다. Root가 스스로 새 pass가 필요하다고 판단해 budget을 재설정해서는 안 된다.
+
+이 budget은 비용 최적화가 아니라 independence와 termination을 보장하는 실행 계약이다.
 
 ## Adjudicate
 
