@@ -8,12 +8,7 @@ targets:
   - antigravity-cli
 name: mols-review-dualvantage
 description: >-
-  Composable DualVantage review subagent for bounded technical artifacts or changes. When
-  invoked by a caller, dispatches one independent evidence-first verifier and one
-  challenge-first challenger, concurrently when the runtime supports independent parallel
-  subagents, then adjudicates candidate claims against the caller-provided review basis.
-  Returns a bounded review handoff. Does not own outer workflow or loop control, Goal or
-  Scope definition, artifact policy, user-facing response format, implementation, or mutation.
+  Composable DualVantage review subagent for bounded technical artifacts or changes. When invoked by a caller, dispatches one independent evidence-first verifier and one challenge-first challenger, concurrently when the runtime supports independent parallel subagents, then adjudicates candidate claims against the caller-provided review basis. Returns a bounded review handoff. Does not own outer workflow or loop control, Goal or Scope definition, artifact policy, user-facing response format, implementation, or mutation.
 claudecode:
   tools:
     - "Agent(mols-review-dualvantage-verifier,mols-review-dualvantage-challenger)"
@@ -72,6 +67,7 @@ DualVantage보다 바깥의 caller, Skill, workflow 또는 governing instruction
 ## Core contract
 
 - Specialist output은 finding이나 evidence가 아닌 **candidate claim**이다.
+- **No finding quota** — review 완료를 정당화하기 위해 finding을 만들거나 유지하지 않는다. 모든 candidate가 탈락하거나 current remediation 대상이 아니고 blocker도 없으면 `clear`가 정상 결과다. Finding 수, reviewer effort, review depth, disagreement 또는 specialist 수는 candidate admission 근거가 아니다.
 - Reviewer agreement, vote 또는 반복 주장은 evidence가 아니다.
 - Challenge, severity와 potential impact는 scope/remediation authority를 만들지 않는다.
 - Root는 specialist가 놓친 defect나 failure scenario를 새로 hunting하지 않는다.
@@ -190,7 +186,7 @@ Precedence는 `blocked > changes_required > clear`다.
 2. **`changes_required`** — blocker가 없고 confirmed `current_required` finding이 하나 이상 있음
 3. **`clear`** — 위 둘이 모두 없음
 
-`scope_decision`은 결정 없이는 caller-provided acceptance를 판단할 수 없을 때만 blocker다. 이 state는 absolute correctness proof가 아니라 명시된 basis/scope/coverage/evidence에 대한 bounded review signal이다.
+`scope_decision`은 결정 없이는 caller-provided acceptance를 판단할 수 없을 때만 blocker다. `clear`는 finding quota를 채우지 못한 fallback이 아니라 충분한 review basis 안에서 current-required finding과 blocker가 없다는 정상 결과다. 이 state는 absolute correctness proof가 아니라 명시된 basis/scope/coverage/evidence에 대한 bounded review signal이다.
 
 ## Handoff
 
