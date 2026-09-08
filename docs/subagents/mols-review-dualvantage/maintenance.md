@@ -41,7 +41,7 @@ Specialist → Root handoff는 Root가 전체 context를 재구성하지 않고 
 
 Full repository summary, reasoning transcript와 canonical knowledge를 복제하지 않는다.
 
-Root → caller handoff는 caller-owned format을 따른다. 별도 artifact/report schema를 발명하지 않고 reviewed basis, material finding, scope/authority issue와 useful limitation처럼 다음 owner의 판단에 필요한 의미만 전달한다.
+Root → caller handoff는 caller-owned format을 따른다. 별도 artifact/report schema를 발명하지 않고 reviewed basis, material finding, scope/authority issue와 useful limitation처럼 다음 owner의 판단에 필요한 의미만 전달한다. Material finding이 없으면 빈자리를 채우기 위한 finding을 만들지 않고, 필요한 review basis와 `clear` 의미만 전달할 수 있다.
 
 ## Capability topology
 
@@ -123,6 +123,7 @@ Vendor, model, tool schema 또는 projection이 바뀔 때는 기존 의미를 �
 - parallel-capable runtime에서 같은 delegation wave로 실행되도록 instruction/capability가 정렬되어 있는가?
 - sibling result가 initial brief에 새지 않는가?
 - Root가 third reviewer로 커지지 않았는가?
+- zero-finding 결과를 비정상으로 취급하거나 review effort를 정당화하려고 약한 candidate를 살려두지 않는가?
 - capability가 responsibility보다 넓어지지 않았는가?
 - worker child delegation과 hard invocation budget이 유지되는가?
 - handoff가 next owner 판단에 충분하면서 reasoning transcript나 format ownership을 복제하지 않는가?
