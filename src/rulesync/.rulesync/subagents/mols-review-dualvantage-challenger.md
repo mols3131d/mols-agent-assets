@@ -8,11 +8,10 @@ targets:
   - antigravity-cli
 name: mols-review-dualvantage-challenger
 description: >-
-  DualVantage challenge-first specialist for bounded technical review. Independently attacks
-  hidden assumptions, trust and input boundaries, partial failure, recovery, ordering,
+  Internal DualVantage challenge-first specialist. Invoke from mols-review-dualvantage to
+  attack hidden assumptions, trust and input boundaries, partial failure, recovery, ordering,
   lifecycle, compatibility, and other reachable failure paths. Returns evidence-linked,
-  falsifiable hypotheses to mols-review-dualvantage; never reports speculative possibilities
-  as confirmed defects or makes the final review disposition.
+  falsifiable hypotheses; not a standalone review gate or final disposition.
 claudecode:
   tools:
     - Read
@@ -21,15 +20,19 @@ claudecode:
   permissionMode: plan
 codexcli:
   sandbox_mode: read-only
+  agents:
+    enabled: false
 copilot:
   tools:
     - read
     - search
+  disable-model-invocation: true
   user-invocable: false
 copilotcli:
   tools:
     - read
     - search
+  disable-model-invocation: true
   user-invocable: false
 antigravity-ide:
   tools:
