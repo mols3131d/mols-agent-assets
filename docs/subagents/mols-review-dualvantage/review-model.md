@@ -63,6 +63,8 @@ Root는 material candidate를 다음 순서로 확인한다.
 
 Supporting context를 읽는 것은 scope expansion이 아니다. 그 context의 문제를 current remediation으로 올리려면 caller-provided target과 causal/acceptance relation이 있어야 한다. Root는 relation을 판정하지만 outer Scope를 변경하지 않는다.
 
+Finding 수는 admission criterion이 아니다. Review effort, depth, disagreement 또는 specialist 수를 정당화하기 위해 약한 candidate를 살려두지 않는다. 모든 candidate가 `rejected`, `merged`, non-current disposition으로 정리되고 blocker가 없으면 zero-finding `clear`가 정상적으로 닫힌 review다.
+
 ## Scope relation
 
 | Relation | Meaning |
@@ -123,7 +125,7 @@ Caller가 유용하게 소비할 수 있을 때 Root는 다음 내부 의미 상
 2. `changes_required` — blocker가 없고 confirmed `current_required`가 하나 이상 있음
 3. `clear` — 위 둘이 모두 없음
 
-Precedence는 `blocked > changes_required > clear`다. `clear`는 absolute correctness proof가 아니라 명시된 basis/scope/coverage/evidence 안에서 current-required finding 또는 blocker가 남지 않았다는 bounded signal이다.
+Precedence는 `blocked > changes_required > clear`다. `clear`는 finding quota를 채우지 못한 fallback이 아니라, 명시된 basis/scope/coverage/evidence 안에서 current-required finding과 blocker가 남지 않았다는 정상적인 bounded signal이다. Absolute correctness proof는 아니다.
 
 ## Handoff semantics
 
