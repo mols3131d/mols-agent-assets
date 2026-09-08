@@ -63,8 +63,8 @@ skills/mols-mermaid/	mols-mermaid family에서 관계·절차·구조는 diagram
 skills/mols-text-optimizer/	
 skills/mols-text-optimizer/goal.md	mols-text-optimizer를 변경할 때 보존해야 할 핵심 목표와 책임 경계를 설명하는 maintainer 문서입니다.
 subagents/	
-subagents/mols-review-dualvantage/	DualVantage review family를 이해하거나 변경할 때 Goal, review model, maintenance 문서 중 무엇을 먼저 볼지 선택하는 maintainer entrypoint입니다.
-subagents/mols-review-dualvantage/goal.md	DualVantage family를 변경할 때 가장 먼저 확인해야 하는 최상위 목표, 정체성, 비목표와 보존 조건을 설명하는 maintainer 문서입니다.
-subagents/mols-review-dualvantage/maintenance.md	DualVantage의 역할 경계, handoff, capability topology, 호출 예산과 runtime 변화 시 유지보수 기준을 설명하는 문서입니다.
-subagents/mols-review-dualvantage/review-model.md	DualVantage의 evidence layer, candidate lifecycle, scope disposition, convergence와 final gate semantics를 유지보수할 때 사용하는 문서입니다.
+subagents/mols-review-dualvantage/	DualVantage composable review subagent family를 이해하거나 변경할 때 문서 선택과 ownership boundary를 찾는 maintainer entrypoint입니다.
+subagents/mols-review-dualvantage/goal.md	DualVantage를 변경할 때 composable subagent 정체성, caller ownership, 독립·병렬 review와 bounded execution invariant를 먼저 확인하는 최상위 maintainer 기준입니다.
+subagents/mols-review-dualvantage/maintenance.md	DualVantage의 caller/subagent ownership, independent·parallel delegation, capability, handoff와 invocation budget을 변경·복구할 때 사용합니다.
+subagents/mols-review-dualvantage/review-model.md	DualVantage의 evidence layer, candidate adjudication, scope relation, convergence와 caller handoff 의미를 유지보수할 때 사용합니다.
 using-this-repository.md	이 저장소의 Agent Asset이나 reusable knowledge를 외부 repository·runtime에서 찾고, 직접 사용·설치·고정·가져오는 방법을 선택할 때 사용합니다.
