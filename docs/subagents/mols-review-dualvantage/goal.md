@@ -17,13 +17,14 @@ DualVantage의 목표는 **caller가 소유한 더 큰 workflow 안에서 bounde
 5. **Independent initial discovery** — 두 specialist는 가능한 한 같은 bounded brief를 받고 sibling의 finding, speculation 또는 conclusion 없이 첫 분석을 수행한다.
 6. **Parallel-first when real** — runtime이 independent concurrent subagent execution을 지원하면 두 specialist를 같은 delegation wave에서 시작한다. 지원하지 않을 때만 독립성을 보존한 sequential fallback을 사용한다.
 7. **Candidate, not proof** — specialist output은 evidence나 final finding이 아니라 falsifiable candidate claim이다. Root가 underlying evidence와 caller-provided authority를 기준으로 판정한다.
-8. **Root is not a third reviewer** — Root는 specialist가 놓친 defect나 counterexample을 새로 hunting하지 않는다.
-9. **Evidence discipline** — Observed, Inferred, Unknown을 구분하고 agreement, vote, confidence 또는 반복 주장을 correctness proof로 사용하지 않는다.
-10. **Authority before severity** — issue의 사실성·impact와 current remediation authority를 분리한다. Severity는 scope를 확대하지 않는다.
-11. **Bounded invocation** — 한 bounded review invocation에서 Verifier 최대 1회, Challenger 최대 1회, 총 2회를 넘지 않는다. Timeout, failure, incomplete result, disagreement, uncertainty 또는 refinement 필요도 자동 retry 사유가 아니며 Root가 스스로 새 pass를 만들어 budget을 초기화하지 않는다.
-12. **Evidence convergence** — 추가 작업은 candidate disposition 또는 caller decision을 바꿀 credible information gain이 있을 때만 한다. 같은 evidence를 반복하거나 saturation 이후 탐색을 계속하지 않는다.
-13. **Coverage gaps stay visible** — failed specialist, unavailable capability, stale basis와 decisive unknown을 성공으로 흡수하지 않는다.
-14. **Bounded final claim** — 결과는 caller-provided basis, scope, coverage와 evidence에 대한 bounded review signal이며 absolute correctness proof가 아니다.
+8. **No finding quota** — review 완료를 정당화하기 위해 finding을 만들거나 유지하지 않는다. 모든 candidate가 탈락하거나 current remediation 대상이 아니고 blocker도 없으면 `clear`가 정상 결과다. Finding 수, reviewer effort, review depth, disagreement 또는 specialist 수는 admission 근거가 아니다.
+9. **Root is not a third reviewer** — Root는 specialist가 놓친 defect나 counterexample을 새로 hunting하지 않는다.
+10. **Evidence discipline** — Observed, Inferred, Unknown을 구분하고 agreement, vote, confidence 또는 반복 주장을 correctness proof로 사용하지 않는다.
+11. **Authority before severity** — issue의 사실성·impact와 current remediation authority를 분리한다. Severity는 scope를 확대하지 않는다.
+12. **Bounded invocation** — 한 bounded review invocation에서 Verifier 최대 1회, Challenger 최대 1회, 총 2회를 넘지 않는다. Timeout, failure, incomplete result, disagreement, uncertainty 또는 refinement 필요도 자동 retry 사유가 아니며 Root가 스스로 새 pass를 만들어 budget을 초기화하지 않는다.
+13. **Evidence convergence** — 추가 작업은 candidate disposition 또는 caller decision을 바꿀 credible information gain이 있을 때만 한다. 같은 evidence를 반복하거나 saturation 이후 탐색을 계속하지 않는다.
+14. **Coverage gaps stay visible** — failed specialist, unavailable capability, stale basis와 decisive unknown을 성공으로 흡수하지 않는다.
+15. **Bounded final claim** — 결과는 caller-provided basis, scope, coverage와 evidence에 대한 bounded review signal이며 absolute correctness proof가 아니다.
 
 이 invariant가 사라지면 이름이나 agent 수가 같아도 같은 family로 보지 않는다.
 
@@ -70,6 +71,7 @@ DualVantage의 목표는 **caller가 소유한 더 큰 workflow 안에서 bounde
 - sequential fallback에서도 sibling result가 initial brief에 섞이지 않는다.
 - candidate가 current state basis와 decisive evidence를 가지며 obvious counter-evidence가 있으면 승격되지 않는다.
 - Root가 third full review 없이 candidate를 adjudicate할 수 있다.
+- 모든 candidate가 탈락해도 억지 finding 없이 `clear`로 종료할 수 있다.
 - impact와 remediation authority가 분리되고 speculative/duplicate claim이 억제된다.
 - specialist invocation은 bounded review당 최대 2회에서 끝난다.
 - material coverage/evidence gap은 limitation 또는 blocker signal로 남는다.
