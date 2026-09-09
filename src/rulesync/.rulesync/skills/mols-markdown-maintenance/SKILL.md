@@ -59,7 +59,7 @@ Use the target repository's rumdl configuration when it represents accepted proj
 
 ## Boundary
 
-- Human-readable Markdown composition belongs to `mols-markdown-for-human`.
+- Human-readable document composition and Markdown presentation belong to `mols-documentation`.
 - Engineering dashboard semantics belong to `mols-markdown-dashboard`.
 - Mermaid diagram/chart semantics belong to `mols-mermaid`.
 

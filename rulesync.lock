@@ -21,8 +21,8 @@
         "mols-chatbot-bootstrap": {
           "integrity": "sha256-88c8ff1d6a10f35c2a68008c19ad140baccde4f3009e8c1d3e9fe253027a767d"
         },
-        "mols-markdown-for-human": {
-          "integrity": "sha256-f88d74555607a1ce7b809b09a852678a6b64314da170edc1a2da729e883f0a67"
+        "mols-documentation": {
+          "integrity": "sha256-1f7ec4eb7ee2c3597e0fda64c6a224e58e0cf1bb3c4be33c53e5a5cae3dff8dc"
         },
         "mols-markdown-maintenance": {
           "integrity": "sha256-78411769d42cf0a35be8600e842286b33432491c0ff1d3c0b70eef83d3df9e35"
