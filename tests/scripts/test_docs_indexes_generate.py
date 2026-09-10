@@ -109,16 +109,17 @@ def test_generate_docs_indexes_index_depth_controls_materialization_only(tmp_pat
 def test_generate_docs_indexes_index_depth_minus_one_is_unlimited(tmp_path):
     docs = tmp_path / "docs"
     _write(
-        docs / "one" / "two" / "three" / "guide.md",
+        docs / "references" / "one" / "two" / "three" / "guide.md",
         "---\ndescription: Guide.\n---\n# Guide\n",
     )
 
     assert generate_docs_indexes(docs, index_depth=-1) == []
 
     assert (docs / "INDEX.tsv").exists()
-    assert (docs / "one" / "INDEX.tsv").exists()
-    assert (docs / "one" / "two" / "INDEX.tsv").exists()
-    assert (docs / "one" / "two" / "three" / "INDEX.tsv").exists()
+    assert (docs / "references" / "INDEX.tsv").exists()
+    assert (docs / "references" / "one" / "INDEX.tsv").exists()
+    assert (docs / "references" / "one" / "two" / "INDEX.tsv").exists()
+    assert (docs / "references" / "one" / "two" / "three" / "INDEX.tsv").exists()
 
 
 def test_generate_docs_indexes_rejects_invalid_depths(tmp_path):
