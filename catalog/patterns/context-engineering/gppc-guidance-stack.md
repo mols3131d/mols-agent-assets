@@ -48,6 +48,7 @@ GPPC의 네 layer는 **논리적 책임**이지 section이나 file schema가 아
 - Patterns와 Contracts도 하나의 section에서 함께 다룰 수 있다.
 - Principles와 Patterns는 본질과 실존의 경계를 지우는 방식으로 하나의 구분되지 않은 section에 합치지 않는다.
 - 네 layer를 하나의 file에 모두 정의할 필요는 없다. 필요에 따라 여러 file로 나눌 수 있으며, 하나의 file이 일부 layer만 다뤄도 된다.
+- 모든 guidance가 네 layer를 모두 필요로 하는 것은 아니다. Goal과 Principles만 필요하면 `GP`, Pattern까지 필요하면 `GPP`까지만 구성할 수 있으며, 필요하지 않은 layer를 형식적으로 채우지 않는다.
 - GPPC는 네 layer 이름 외의 section을 금지하지 않는다. Rationale, Context, Examples, Notes처럼 이해와 적용을 보조하는 section이나 domain에 필요한 별도 section을 둘 수 있다.
 - 보조 section은 새로운 GPPC layer를 뜻하지 않는다. 그 안에 guidance가 있다면 해당 내용은 Goal, Principles, Patterns, Contracts 중 적절한 역할과 정합되어야 한다.
 
