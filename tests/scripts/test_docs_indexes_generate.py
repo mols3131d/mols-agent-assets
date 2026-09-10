@@ -159,18 +159,18 @@ def test_generate_docs_indexes_uses_readme_only_for_directory_metadata(tmp_path)
 def test_generate_docs_indexes_keeps_directory_without_entry_description_blank(tmp_path):
     docs = tmp_path / "docs"
     _write(
-        docs / "guides" / "nested" / "guide.md",
+        docs / "development" / "nested" / "guide.md",
         "---\ndescription: Guide.\n---\n# Guide\n",
     )
 
     assert generate_docs_indexes(docs) == []
 
     assert _read_tsv(docs / "INDEX.tsv") == [
-        {"path": "guides/", "description": ""},
-        {"path": "guides/nested/", "description": ""},
-        {"path": "guides/nested/guide.md", "description": "Guide."},
+        {"path": "development/", "description": ""},
+        {"path": "development/nested/", "description": ""},
+        {"path": "development/nested/guide.md", "description": "Guide."},
     ]
-    assert not (docs / "guides" / "INDEX.tsv").exists()
+    assert not (docs / "development" / "INDEX.tsv").exists()
 
 
 def test_generate_docs_indexes_treats_asset_doc_roots_as_boundaries(tmp_path):
@@ -184,6 +184,10 @@ def test_generate_docs_indexes_treats_asset_doc_roots_as_boundaries(tmp_path):
         "---\ndescription: Reviewer maintenance.\n---\n# Maintenance\n",
     )
     _write(
+        docs / "agents" / "planner" / "maintenance.md",
+        "---\ndescription: Planner maintenance.\n---\n# Maintenance\n",
+    )
+    _write(
         docs / "references" / "nested" / "guide.md",
         "---\ndescription: Reference guide.\n---\n# Reference\n",
     )
@@ -191,12 +195,15 @@ def test_generate_docs_indexes_treats_asset_doc_roots_as_boundaries(tmp_path):
     assert generate_docs_indexes(docs, index_depth=-1) == []
 
     assert _read_tsv(docs / "INDEX.tsv") == [
+        {"path": "agents/", "description": ""},
         {"path": "references/", "description": ""},
         {"path": "references/nested/", "description": ""},
         {"path": "references/nested/guide.md", "description": "Reference guide."},
         {"path": "skills/", "description": ""},
         {"path": "subagents/", "description": ""},
     ]
+    assert not (docs / "agents" / "INDEX.tsv").exists()
+    assert not (docs / "agents" / "planner" / "INDEX.tsv").exists()
     assert (docs / "references" / "INDEX.tsv").exists()
     assert (docs / "references" / "nested" / "INDEX.tsv").exists()
     assert not (docs / "skills" / "INDEX.tsv").exists()
