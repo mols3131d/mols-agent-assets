@@ -13,7 +13,7 @@ development/vcs-git.md	저장소 고유 branch 정책, 병렬 작업 격리, bra
 documentation/	저장소 전반의 문서 원칙과 README 작성, 문서 인덱싱, frontmatter, Agent Asset 유지보수 문서 정책을 찾을 때 사용합니다.
 documentation/asset-maintainer-documentation.md	개별 Agent Asset 또는 family의 유지보수 문서를 어디에 두고, 실행 원본과 family 문서, 저장소 전용 문서의 책임을 어떻게 나눌지 정할 때 사용합니다.
 documentation/frontmatter.md	Markdown 문서에 frontmatter를 언제 적용하고, description을 탐색·라우팅에 어떻게 쓰며, README 범위 메타데이터를 어디서 다룰지 확인할 때 사용합니다.
-documentation/indexing.md	README의 Index와 자동 생성 INDEX.tsv 중 어떤 방식을 사용할지 정할 때 적용하는 문서 원칙입니다.
+documentation/indexing.md	README의 Index와 자동 생성 INDEX.tsv 중 어떤 인덱싱 방식을 사용할지 정할 때 적용하는 문서 원칙입니다.
 documentation/principles.md	저장소 전반의 문서를 만들고 배치할 때 목적, 책임 범위, 정본, 신뢰성, 탐색성, 유지보수성을 판단하는 공통 원칙입니다.
 documentation/readme-authoring.md	디렉터리나 문서·파일 묶음의 진입점인 README.md를 언제 만들고 무엇을 담을지, 범위 메타데이터를 어떻게 쓸지 정할 때 사용하는 정책입니다.
 language.md	README·docs·comments·Git/GitHub communication과 Agent Asset에서 한국어와 영어를 어떻게 사용할지 판단할 때 적용하는 repository 언어 정책입니다.
