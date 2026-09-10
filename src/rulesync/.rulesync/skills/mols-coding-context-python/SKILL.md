@@ -18,9 +18,8 @@ targets:
 
 # Mols Coding Context Python
 
-- Version-sensitive Python, standard-library, dependency, or framework behavior는 기억보다 current project/runtime evidence를 우선한다.
 - 처리할 exception과 failure contract를 먼저 식별하고 `try` scope를 실제 failure source 주변으로 좁힌다. Broad catch로 programming, parsing, invariant failure를 정상 fallback으로 바꾸지 않는다.
-- 불확실하다는 이유만으로 type check, coercion, default, validation, fallback을 추가하지 않는다. Type annotation은 runtime validation이 아니며 필요한 검증은 실제 boundary contract에서 파생한다.
+- Type annotation을 runtime validation으로 간주하거나 annotation만을 이유로 runtime type check, coercion, default를 추가하지 않는다. Requiredness, coercion, variant, extra-field semantics가 material하면 실제 boundary behavior를 확인한다.
 - Async/concurrent code에서는 blocking work, task owner와 lifetime, cancellation, failure propagation을 실제 lifecycle에 맞춘다. `async`나 concurrency를 일반적인 개선책으로 도입하지 않는다.
-- Shell semantics가 필요하지 않으면 structured argv나 direct API를 우선한다. External text를 그대로 실행 경계로 넘기지 않으며 `shell=True`, `eval`, `exec` 같은 token만으로 결함을 판정하지 않는다.
-- Python 성능 통념만으로 `async`, threads, processes, native/vectorized path, memoization 또는 data-structure 교체를 선택하지 않는다. Target runtime과 representative workload에서 dominant cost를 확인하고 trade-off와 함께 판단한다.
+- Shell semantics가 필요하지 않으면 structured argv나 direct API를 우선한다. `shell=True`, `eval`, `exec` 같은 token 자체가 아니라 input provenance와 execution semantics로 판단한다.
+- Python 성능 통념만으로 `async`, threads, processes, native/vectorized path, memoization 또는 data-structure 교체를 선택하지 않는다. Target interpreter/build에서 dominant CPU/I/O, allocation/data movement, serialization/interop cost를 확인한다.
