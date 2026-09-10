@@ -37,6 +37,16 @@ Asset별 문서에 README를 둘지와 진입점 역할은 [README Authoring](re
 
 family 문서는 구성 asset과 공통 책임 경계를 설명해야 하므로 `README.md`를 진입점으로 둡니다. README도 대응하는 asset 또는 family와 함께 다른 저장소로 옮겨 쓸 수 있어야 합니다.
 
+## Indexing
+
+`docs/<asset-type>/`는 repository documentation index의 경계입니다. `development`, `documentation`, `references`는 일반 문서 namespace로 계속 재귀 인덱싱합니다.
+
+- 상위 `docs/INDEX.tsv`에는 `<asset-type>/` 자체만 노출하고 `<owner>/**`는 재귀적으로 열거하지 않습니다.
+- `docs/<asset-type>/**` 아래에는 자동 생성 `INDEX.tsv`를 만들지 않습니다.
+- Asset이나 family 내부 탐색은 해당 maintainer README, 경로와 검색을 사용합니다.
+
+이 경계는 asset-type namespace의 존재는 보여 주면서 개별 유지보수 문서를 repository-wide 목록에 중복 투영하지 않도록 합니다.
+
 ## Portability Review
 
 유지보수 문서를 검토할 때 다음을 확인합니다.
