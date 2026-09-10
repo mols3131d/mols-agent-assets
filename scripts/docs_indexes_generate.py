@@ -22,7 +22,7 @@ HEADER = "path\tdescription\n"
 DEFAULT_INDEX_DEPTH = 0
 DEFAULT_DEPTH = -1
 DEFAULT_DIRECTORY_ENTRY_FILES = ("README.md",)
-ASSET_DOC_ROOTS = ("skills", "subagents")
+NON_ASSET_DOC_ROOTS = ("development", "documentation", "references")
 BASE_EXCLUDE = ("AGENTS.md",)
 EXCLUDE_GLOBS = [".*.md", "__*__.md"]
 
@@ -53,7 +53,7 @@ def _route_children(directory: Path) -> list[Path]:
 
 
 def _is_asset_doc_root(directory: Path, docs_root: Path) -> bool:
-    return directory.parent == docs_root and directory.name in ASSET_DOC_ROOTS
+    return directory.parent == docs_root and directory.name not in NON_ASSET_DOC_ROOTS
 
 
 def _index_targets(docs_root: Path, index_depth: int) -> list[Path]:
@@ -89,7 +89,11 @@ def _non_route_directory_globs(directory: Path) -> list[str]:
 def _asset_doc_boundary_globs(directory: Path, docs_root: Path) -> list[str]:
     if directory != docs_root:
         return []
-    return [f"{name}/**" for name in ASSET_DOC_ROOTS]
+    return [
+        f"{child.name}/**"
+        for child in _route_children(docs_root)
+        if _is_asset_doc_root(child, docs_root)
+    ]
 
 
 def _desired_index(
