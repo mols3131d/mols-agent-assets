@@ -32,7 +32,7 @@ references/tooling/github-sensitive-data-removal-runbook.md	GitHub repository에
 references/tooling/mise.md	이 저장소에서 tool version·task entrypoint를 어디에 고정할지, mise와 uv의 ownership을 어떻게 나눌지 확인하거나 setup·check·test·format 명령을 찾을 때 사용합니다.
 references/tooling/promptfoo.md	Promptfoo config·assertion·provider·model grading·debugging의 current official source와 이 저장소의 eval policy·config·runner entrypoint를 찾을 때 사용합니다.
 references/tooling/rulesync.md	Rulesync 자산의 authoring workspace·target·source/derived boundary를 판단하거나 fetch·import·generate 같은 current CLI·schema·target 문서를 찾을 때 사용합니다.
-references/tooling/skills-cli.md	외부 Agent Skill dependency를 lock·sync·install·update할 때 skills CLI, source-native installer와 Rulesync 사이의 책임 경계를 확인할 때 사용합니다.
+references/tooling/skills-cli.md	외부 Agent Skill dependency를 lock·sync·install·update할 때 skills CLI, source-native installer와 Rulesync 사이의 책임 경계를 확인하거나 setup·check·test·format 명령을 찾을 때 사용합니다.
 skills/	
 skills/artifact-consistency-inspector/	
 skills/artifact-consistency-inspector/customization.md	artifact-consistency-inspector를 project에 맞게 조정할 때 변경 가능한 항목과 반드시 보존할 runtime·report invariant, rename 및 frontmatter 동기화 규칙을 확인하는 maintainer 문서입니다.
@@ -42,8 +42,6 @@ skills/mols-agent-asset/validation-and-evaluation.md	Agent Asset의 Review, 결�
 skills/mols-clarify-code/	
 skills/mols-clarify-code/baseline/	
 skills/mols-clarify-code/baseline/decisions.md	mols-clarify-code의 routing, scope, public argument, documentation·validation 전략을 변경하거나 복구할 때 원래 설계 결정과 후속 식별자 변경을 확인하는 protected baseline 기록입니다.
-skills/mols-coding-context-python/	
-skills/mols-coding-context-python/guidance.md	Python coding agent context의 핵심 목적과 유지 원칙을 정의합니다.
 skills/mols-loops/	mols-loops를 유지보수할 때 outer adaptive orchestration, RPI loop kernel, progressive context/composition, intensity와 artifact 결정을 찾는 entrypoint입니다.
 skills/mols-loops/artifacts.md	mols-loops의 artifact 배치, persistence, durable continuation과 lifecycle을 설계하거나 변경할 때 보존해야 할 결정사항을 정리한 maintainer 문서입니다.
 skills/mols-loops/description.md	mols-loops frontmatter description의 Trigger·routing 필수 신호, 보조 신호와 1,024자 압축 경계를 유지보수할 때 사용하는 문서입니다.
