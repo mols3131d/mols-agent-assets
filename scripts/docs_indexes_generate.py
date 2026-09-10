@@ -22,6 +22,7 @@ HEADER = "path\tdescription\n"
 DEFAULT_INDEX_DEPTH = 0
 DEFAULT_DEPTH = -1
 DEFAULT_DIRECTORY_ENTRY_FILES = ("README.md",)
+ASSET_DOC_ROOTS = ("skills", "subagents")
 BASE_EXCLUDE = ("AGENTS.md",)
 EXCLUDE_GLOBS = [".*.md", "__*__.md"]
 
@@ -51,6 +52,10 @@ def _route_children(directory: Path) -> list[Path]:
     ]
 
 
+def _is_asset_doc_root(directory: Path, docs_root: Path) -> bool:
+    return directory.parent == docs_root and directory.name in ASSET_DOC_ROOTS
+
+
 def _index_targets(docs_root: Path, index_depth: int) -> list[Path]:
     if index_depth < -1:
         raise ValueError("index_depth must be -1 or greater")
@@ -64,7 +69,11 @@ def _index_targets(docs_root: Path, index_depth: int) -> list[Path]:
         if index_depth != -1 and current_depth >= index_depth:
             continue
 
-        queue.extend((child, current_depth + 1) for child in _route_children(directory))
+        queue.extend(
+            (child, current_depth + 1)
+            for child in _route_children(directory)
+            if not _is_asset_doc_root(child, docs_root)
+        )
 
     return targets
 
@@ -77,8 +86,15 @@ def _non_route_directory_globs(directory: Path) -> list[str]:
     ]
 
 
+def _asset_doc_boundary_globs(directory: Path, docs_root: Path) -> list[str]:
+    if directory != docs_root:
+        return []
+    return [f"{name}/**" for name in ASSET_DOC_ROOTS]
+
+
 def _desired_index(
     directory: Path,
+    docs_root: Path,
     entry_files: tuple[str, ...],
     depth: int,
 ) -> str | None:
@@ -92,7 +108,11 @@ def _desired_index(
         fields=["path", "description"],
         max_depth=max_depth,
         exclude=[*BASE_EXCLUDE, *entry_files],
-        exclude_globs=[*EXCLUDE_GLOBS, *_non_route_directory_globs(directory)],
+        exclude_globs=[
+            *EXCLUDE_GLOBS,
+            *_asset_doc_boundary_globs(directory, docs_root),
+            *_non_route_directory_globs(directory),
+        ],
         include_without_frontmatter=True,
         include_directories=True,
         directory_entry_files=list(entry_files),
@@ -120,7 +140,7 @@ def expected_docs_indexes(
 
     outputs: dict[Path, str] = {}
     for directory in _index_targets(docs_root, index_depth):
-        desired = _desired_index(directory, entry_files, depth)
+        desired = _desired_index(directory, docs_root, entry_files, depth)
         if desired is not None:
             outputs[directory / INDEX_NAME] = desired
     return outputs
