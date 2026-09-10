@@ -24,6 +24,8 @@
 - runtime이 independent concurrent execution을 지원하면 어느 한쪽 결과를 sibling에게 보여주기 전에 둘을 dispatch할 수 있다.
 - concurrency나 isolation을 지원하지 않으면 순차 호출해도 되지만 먼저 받은 opening을 다음 opening의 context에 넣지 않고, 독립 실행했다고 주장하지 않는다.
 
+Specialist가 unavailable, failed 또는 materially incomplete이면 caller나 sibling이 그 관점을 대신 수행했다고 주장하지 않는다. 해당 perspective를 coverage gap으로 남기고, 남은 evidence만으로 정직한 synthesis가 가능할 때만 제한적으로 계속한다. 그렇지 않으면 `unresolved`로 종료한다.
+
 Opening부터 인위적으로 정반대 결론을 강제하지 않는다. credible antithesis가 없거나 한쪽이 약하다고 판단되면 그 자체가 유효한 결과다.
 
 ## 3. Cross-Examine
