@@ -1,12 +1,13 @@
 ---
 name: mols-coding-context-python
 description: >-
-  Python-specific add-on for code-facing tasks materially dependent on Python code
-  semantics, runtime behavior, or Python-facing tests. Select only together with
-  mols-coding-context. Adds Python-specific judgment for exceptions, async and
-  cancellation, runtime validation boundaries, subprocess or dynamic execution,
-  and Python performance decisions. Do not select for incidental Python files,
-  tooling or mentions, or prose-only edits where Python semantics are irrelevant.
+  Python coding-agent add-on for implementation, debugging, refactoring, review, or
+  testing that materially involves Python code or executable behavior. Select only
+  together with mols-coding-context. Prevents recurring Python agent anti-patterns
+  around exception handling, runtime typing and validation, async and cancellation,
+  shell or dynamic execution, and Python performance mechanisms. Do not select for
+  incidental Python files or mentions, repository or tooling administration,
+  factual lookup, or prose-only work.
 targets:
   - claudecode
   - codexcli
