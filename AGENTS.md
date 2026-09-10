@@ -4,6 +4,7 @@
 - File·directory naming, placement, hierarchy와 source-test 대응 구조는 `docs/development/repository-layout.md`를 따릅니다.
 - Reusable Rulesync 자산은 `src/rulesync/.rulesync/`에서 author/edit합니다. 이 repository에서 직접 사용하는 Rulesync 자산은 실제 필요가 있을 때 root `.rulesync/`에 둡니다.
 - Reusable vendor-native authored 자산은 `src/<vendor>/`에 둡니다. 이 repository에서 직접 사용하는 vendor-native 자산은 해당 vendor가 정의한 native project path에 둡니다.
+- `src/`에서 관리하는 자산은 기본적으로 서로 독립적입니다. 자산 간 의존성이나 호환성은 명시된 경우에만 고려하며, 별도 언급이 없으면 다른 자산을 전제로 적용·변경하지 않습니다.
 - 같은 semantic asset에 Rulesync source와 vendor-native source를 이중 authority로 두지 않습니다. Source 선택은 `docs/development/source-authority.md`를 따릅니다.
 - Generated vendor projection과 Rulesync lock state는 reusable authored source로 commit하지 않습니다.
 - `skills-lock.json`의 외부 Skill dependency가 필요하거나 현재 설치가 lock 상태를 반영하는지 불명확하면 installer를 직접 조합하지 말고 `mise run skills-sync`를 사용합니다. 이 task는 lock의 source/revision을 읽되 lock을 수정하지 않으며, vendor별 payload·설치 방식은 해당 dependency의 native installer에 위임합니다.
