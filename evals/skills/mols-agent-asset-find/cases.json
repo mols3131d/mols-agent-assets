@@ -27,7 +27,7 @@
       "prompt": "이 Skill을 앞으로 계속 쓸 수 있게 현재 target에 설치해줘.",
       "assertions": [
         "Preserves the explicit durable outcome",
-        "Uses the target-native durable mechanism rather than treating temporary load as installation",
+        "Uses the resolved project or target-native durable mechanism rather than treating temporary load as installation",
         "Does not duplicate an already-current asset identity"
       ]
     },
@@ -108,7 +108,7 @@
       "assertions": [
         "Treats the Rule as an Agent Asset rather than forcing it into Skill packaging",
         "Preserves Rule scope, selector, precedence, inheritance, and target attachment semantics",
-        "Uses the target-native durable operation when persistence is requested"
+        "Uses the resolved durable operation when persistence is requested"
       ]
     },
     {
@@ -158,6 +158,15 @@
       "assertions": [
         "Does not treat new asset authoring as mols-agent-asset-find responsibility",
         "Routes material authoring to mols-agent-asset when applicable"
+      ]
+    },
+    {
+      "id": "formal-validation-routes-away-from-find",
+      "mode": "negative",
+      "prompt": "이 Agent Skill이 계약을 제대로 지키는지 formal validation 해줘.",
+      "assertions": [
+        "Does not treat formal Agent Asset validation as mols-agent-asset-find responsibility",
+        "Routes formal validation to mols-agent-asset when its maintained types apply"
       ]
     }
   ]
