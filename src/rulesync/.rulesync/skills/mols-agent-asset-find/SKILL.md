@@ -77,6 +77,21 @@ Interpret common intent conservatively:
 Do not infer persistence from convenience. If current-task use is impossible without a
 persistent mutation, expose that required transition instead of silently escalating.
 
+# Management Surface
+
+Resolve an existing project asset-management surface before choosing a generic delivery
+path.
+
+- If an applicable Rulesync workspace governs the requested asset type, treat its managed
+  local and declarative assets as part of the current project source. For durable reuse,
+  preserve that surface when it can faithfully represent the selected asset.
+- If Rulesync cannot preserve required semantics or supporting resources, or a source-native
+  path is materially simpler and more faithful, use the source- or target-native mechanism
+  instead. Rulesync compatibility alone is not a reason to force Rulesync.
+- Load tool-specific context only after that path is selected: read `references/rulesync.md`
+  only for a Rulesync path and `references/skills-cli.md` only for a skills CLI path. Do not
+  load either reference merely because the tool is available.
+
 # Find
 
 Build the smallest source plan that can satisfy the request.
@@ -92,12 +107,6 @@ Use this order when applicable:
    no more relevant source is established;
 1. external public discovery when the request itself is broad discovery or the caller
    explicitly asks to search beyond the established source.
-
-A Rulesync configuration or `.rulesync/` workspace is part of the current project source
-when it governs the requested asset type. Inspect its managed local and declarative assets
-before falling back to broader discovery. Read `references/rulesync.md` only when the
-selected path actually uses Rulesync. Read `references/skills-cli.md` only when the selected
-Skill discovery or delivery path actually uses the skills CLI.
 
 An explicit source stays bounded unless the caller asks to broaden it. Do not fetch a
 remote source merely to rediscover an equivalent asset already exposed authoritatively by
@@ -152,15 +161,9 @@ Do not create durable state merely to make hypothetical future use easier.
 
 ## Durable reuse
 
-Use the target's native durable mechanism. Before mutation, inspect existing target state
-when supported.
-
-Preserve an existing project asset-management surface instead of bypassing it with a generic
-installer. If Rulesync already governs the selected asset type in the workspace, prefer its
-native dependency or projection path unless it cannot preserve required semantics or
-supporting resources, or a source-native path is materially simpler and more faithful.
-Load only the reference for the chosen path: `references/rulesync.md` for Rulesync or
-`references/skills-cli.md` for the skills CLI.
+Use the resolved management surface's durable mechanism. Before mutation, inspect existing
+project or target state when supported. Do not bypass an applicable project management
+surface with a generic installer.
 
 - Same identity and already current → no mutation.
 - Same identity and stale → update or replace through the target-native update path.
@@ -200,11 +203,9 @@ For an external asset, resolve **who will own future edits** before creating dur
   mechanism when it can preserve the required semantics, then review the result before
   treating it as authoritative.
 
-For an upstream-owned external Skill, prefer the current workspace's existing management
-surface. If Rulesync governs that asset type and can preserve the required package and
-resource semantics, use its dependency path and read `references/rulesync.md`. Otherwise
-use a Skill-native installer such as the skills CLI and read `references/skills-cli.md`.
-Rulesync compatibility alone is not a reason to force Rulesync.
+For an upstream-owned external Skill, preserve its required package and resources through
+the resolved management surface. If no faithful supported path exists, return `Unsupported`
+rather than forcing a degraded installation.
 
 When Rulesync is the chosen canonical framework for an adopted asset, use its native intake
 mechanism rather than inventing a conversion layer. Installation, fetch, import, or
@@ -258,9 +259,7 @@ changes what the caller should trust or do next.
 
 # Boundary
 
-- Authoring, refactoring, or materially changing Agent Asset behavior belongs to
-  `mols-agent-asset` when that Skill's maintained types apply.
-- Formal validation, readiness, adversarial evaluation, regression validation, and
-  validation-driven bounded correction belong to `mols-agent-asset-validator`.
+- Authoring, refactoring, materially changing Agent Asset behavior, formal validation, and
+  evaluation belong to `mols-agent-asset` when that Skill's maintained types apply.
 - Discovery permission does not grant mutation permission. Loading permission does not
   imply durable installation permission.
