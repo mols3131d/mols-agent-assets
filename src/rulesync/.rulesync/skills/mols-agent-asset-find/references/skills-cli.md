@@ -7,5 +7,4 @@
 
 Official documentation:
 
-- [vercel-labs/skills](https://github.com/vercel-labs/skills)
 - [CLI usage](https://github.com/vercel-labs/skills#readme)
