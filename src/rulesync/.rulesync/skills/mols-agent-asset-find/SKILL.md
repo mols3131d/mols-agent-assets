@@ -83,11 +83,10 @@ Resolve an existing project asset-management surface before choosing a generic d
 path.
 
 - If an applicable Rulesync workspace governs the requested asset type, treat its managed
-  local and declarative assets as part of the current project source. For durable reuse,
-  preserve that surface when it can faithfully represent the selected asset.
-- If Rulesync cannot preserve required semantics or supporting resources, or a source-native
-  path is materially simpler while remaining faithful, use the source- or target-native
-  mechanism instead. Rulesync compatibility alone is not a reason to force Rulesync.
+  local and declarative assets as part of the current project source.
+- For durable reuse, use that Rulesync surface when it can faithfully represent the selected
+  asset without material avoidable complexity. Otherwise use the source- or target-native
+  mechanism. Rulesync compatibility alone is not a reason to force Rulesync.
 - Load tool-specific context only after that path is selected: read `references/rulesync.md`
   only for a Rulesync path and `references/skills-cli.md` only for a skills CLI path. Do not
   load either reference merely because the tool is available.
@@ -161,12 +160,12 @@ Do not create durable state merely to make hypothetical future use easier.
 
 ## Durable reuse
 
-Use the resolved management surface's durable mechanism. Before mutation, inspect existing
-project or target state when supported. Do not bypass an applicable project management
-surface with a generic installer.
+Use the resolved durable mechanism. Before mutation, inspect existing project or target
+state when supported. Do not bypass an applicable project management surface with a generic
+installer.
 
 - Same identity and already current → no mutation.
-- Same identity and stale → update or replace through the resolved management path.
+- Same identity and stale → update or replace through the same resolved path.
 - Uncertain identity or same-name collision → do not overwrite automatically; surface the
   minimum decision needed.
 
