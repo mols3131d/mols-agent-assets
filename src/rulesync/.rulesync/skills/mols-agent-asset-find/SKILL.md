@@ -86,8 +86,8 @@ path.
   local and declarative assets as part of the current project source. For durable reuse,
   preserve that surface when it can faithfully represent the selected asset.
 - If Rulesync cannot preserve required semantics or supporting resources, or a source-native
-  path is materially simpler and more faithful, use the source- or target-native mechanism
-  instead. Rulesync compatibility alone is not a reason to force Rulesync.
+  path is materially simpler while remaining faithful, use the source- or target-native
+  mechanism instead. Rulesync compatibility alone is not a reason to force Rulesync.
 - Load tool-specific context only after that path is selected: read `references/rulesync.md`
   only for a Rulesync path and `references/skills-cli.md` only for a skills CLI path. Do not
   load either reference merely because the tool is available.
