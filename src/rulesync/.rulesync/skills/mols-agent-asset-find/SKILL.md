@@ -95,8 +95,9 @@ Use this order when applicable:
 
 A Rulesync configuration or `.rulesync/` workspace is part of the current project source
 when it governs the requested asset type. Inspect its managed local and declarative assets
-before falling back to broader discovery. Read `references/tooling.md` only when actual
-Rulesync or skills CLI commands are needed.
+before falling back to broader discovery. Read `references/rulesync.md` only when the
+selected path actually uses Rulesync. Read `references/skills-cli.md` only when the selected
+Skill discovery or delivery path actually uses the skills CLI.
 
 An explicit source stays bounded unless the caller asks to broaden it. Do not fetch a
 remote source merely to rediscover an equivalent asset already exposed authoritatively by
@@ -158,7 +159,8 @@ Preserve an existing project asset-management surface instead of bypassing it wi
 installer. If Rulesync already governs the selected asset type in the workspace, prefer its
 native dependency or projection path unless it cannot preserve required semantics or
 supporting resources, or a source-native path is materially simpler and more faithful.
-Read `references/tooling.md` before invoking Rulesync or the skills CLI.
+Load only the reference for the chosen path: `references/rulesync.md` for Rulesync or
+`references/skills-cli.md` for the skills CLI.
 
 - Same identity and already current → no mutation.
 - Same identity and stale → update or replace through the target-native update path.
@@ -200,9 +202,9 @@ For an external asset, resolve **who will own future edits** before creating dur
 
 For an upstream-owned external Skill, prefer the current workspace's existing management
 surface. If Rulesync governs that asset type and can preserve the required package and
-resource semantics, use its dependency path. Otherwise use a Skill-native installer such as
-the skills CLI. Rulesync compatibility alone is not a reason to force Rulesync. Read
-`references/tooling.md` for the minimal command paths and official documentation.
+resource semantics, use its dependency path and read `references/rulesync.md`. Otherwise
+use a Skill-native installer such as the skills CLI and read `references/skills-cli.md`.
+Rulesync compatibility alone is not a reason to force Rulesync.
 
 When Rulesync is the chosen canonical framework for an adopted asset, use its native intake
 mechanism rather than inventing a conversion layer. Installation, fetch, import, or
