@@ -1,8 +1,6 @@
 # skills CLI
 
-Read this reference only when the selected Skill discovery, current-task use, installation, or update path uses the skills CLI. Resolve exact options and current behavior from the official documentation before execution.
-
-Use the skills CLI when no applicable Rulesync management surface owns the outcome, or when the Skill-native path better preserves the package and its resources.
+Read this reference only after the selected Skill discovery or delivery path uses the skills CLI. Resolve exact options and current behavior from the official documentation before execution.
 
 - Search: `npx skills find <query>`
 - Use without installing: `npx skills use <source>@<skill>`
