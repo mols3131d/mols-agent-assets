@@ -77,6 +77,20 @@ Interpret common intent conservatively:
 Do not infer persistence from convenience. If current-task use is impossible without a
 persistent mutation, expose that required transition instead of silently escalating.
 
+# Management Surface
+
+Resolve an existing project asset-management surface before choosing a generic delivery
+path.
+
+- If an applicable Rulesync workspace governs the requested asset type, treat its managed
+  local and declarative assets as part of the current project source.
+- For durable reuse, use that Rulesync surface when it can faithfully represent the selected
+  asset without material avoidable complexity. Otherwise use the source- or target-native
+  mechanism. Rulesync compatibility alone is not a reason to force Rulesync.
+- Load tool-specific context only after that path is selected: read `references/rulesync.md`
+  only for a Rulesync path and `references/skills-cli.md` only for a skills CLI path. Do not
+  load either reference merely because the tool is available.
+
 # Find
 
 Build the smallest source plan that can satisfy the request.
@@ -140,17 +154,18 @@ Stop at the least persistent state that satisfies the requested outcome.
 
 1. Use the asset directly when it is already available and applicable to the task.
 1. Otherwise use a temporary or session-scoped load when the runtime supports one.
-1. Use another non-durable target-native mechanism only when it preserves the same outcome.
+1. Use another non-durable supported mechanism only when it preserves the same outcome.
 
 Do not create durable state merely to make hypothetical future use easier.
 
 ## Durable reuse
 
-Use the target's native durable mechanism. Before mutation, inspect existing target state
-when supported.
+Use the resolved durable mechanism. Before mutation, inspect existing project or target
+state when supported. Do not bypass an applicable project management surface with a generic
+installer.
 
 - Same identity and already current → no mutation.
-- Same identity and stale → update or replace through the target-native update path.
+- Same identity and stale → update or replace through the same resolved path.
 - Uncertain identity or same-name collision → do not overwrite automatically; surface the
   minimum decision needed.
 
@@ -187,25 +202,16 @@ For an external asset, resolve **who will own future edits** before creating dur
   mechanism when it can preserve the required semantics, then review the result before
   treating it as authoritative.
 
-For an upstream-owned external Skill, use Rulesync declarative `sources` when doing so is
-both faithful and simpler. If Rulesync requires unnecessary repackaging, adaptation,
-resource-loss workarounds, or a more complex install/update path, use a Skill-native
-installer such as `skills add` instead. Rulesync compatibility alone is not a reason to
-force Rulesync.
+For an upstream-owned external Skill, preserve its required package and resources through
+the resolved management surface. If no faithful supported path exists, return `Unsupported`
+rather than forcing a degraded installation.
 
-When Rulesync is the chosen canonical framework for an adopted asset:
-
-- prefer `rulesync fetch <source> --target <target>` for a remote repository containing a
-  supported target-native asset being adopted into `.rulesync/` authoring source;
-- prefer `rulesync import --targets <target>` when the target-native configuration already
-  exists in the working scope;
-- use `rulesync convert` only for direct target-to-target conversion when no canonical
-  `.rulesync/` source is intended.
-
-Installation, fetch, import, or conversion success is not proof of semantic parity. If
-required behavior, supporting resources, scope, precedence, or dependencies cannot be
-represented, do not force a degraded conversion. Keep the external or vendor-native
-authority, or route a material adaptation to `mols-agent-asset`.
+When Rulesync is the chosen canonical framework for an adopted asset, use its native intake
+mechanism rather than inventing a conversion layer. Installation, fetch, import, or
+conversion success is not proof of semantic parity. If required behavior, supporting
+resources, scope, precedence, or dependencies cannot be represented, do not force a
+degraded conversion. Keep the external or vendor-native authority, or route a material
+adaptation to `mols-agent-asset`.
 
 # Preserve Asset Semantics
 
@@ -252,9 +258,7 @@ changes what the caller should trust or do next.
 
 # Boundary
 
-- Authoring, refactoring, or materially changing Agent Asset behavior belongs to
-  `mols-agent-asset` when that Skill's maintained types apply.
-- Formal validation, readiness, adversarial evaluation, regression validation, and
-  validation-driven bounded correction belong to `mols-agent-asset-validator`.
+- Authoring, refactoring, materially changing Agent Asset behavior, formal validation, and
+  evaluation belong to `mols-agent-asset` when that Skill's maintained types apply.
 - Discovery permission does not grant mutation permission. Loading permission does not
   imply durable installation permission.
