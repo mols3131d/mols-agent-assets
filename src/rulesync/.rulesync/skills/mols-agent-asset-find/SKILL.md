@@ -155,7 +155,7 @@ Stop at the least persistent state that satisfies the requested outcome.
 
 1. Use the asset directly when it is already available and applicable to the task.
 1. Otherwise use a temporary or session-scoped load when the runtime supports one.
-1. Use another non-durable target-native mechanism only when it preserves the same outcome.
+1. Use another non-durable supported mechanism only when it preserves the same outcome.
 
 Do not create durable state merely to make hypothetical future use easier.
 
@@ -166,7 +166,7 @@ project or target state when supported. Do not bypass an applicable project mana
 surface with a generic installer.
 
 - Same identity and already current → no mutation.
-- Same identity and stale → update or replace through the target-native update path.
+- Same identity and stale → update or replace through the resolved management path.
 - Uncertain identity or same-name collision → do not overwrite automatically; surface the
   minimum decision needed.
 
