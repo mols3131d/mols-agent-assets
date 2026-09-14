@@ -93,6 +93,11 @@ Use this order when applicable:
 1. external public discovery when the request itself is broad discovery or the caller
    explicitly asks to search beyond the established source.
 
+A Rulesync configuration or `.rulesync/` workspace is part of the current project source
+when it governs the requested asset type. Inspect its managed local and declarative assets
+before falling back to broader discovery. Read `references/tooling.md` only when actual
+Rulesync or skills CLI commands are needed.
+
 An explicit source stays bounded unless the caller asks to broaden it. Do not fetch a
 remote source merely to rediscover an equivalent asset already exposed authoritatively by
 the active runtime or project.
@@ -149,6 +154,12 @@ Do not create durable state merely to make hypothetical future use easier.
 Use the target's native durable mechanism. Before mutation, inspect existing target state
 when supported.
 
+Preserve an existing project asset-management surface instead of bypassing it with a generic
+installer. If Rulesync already governs the selected asset type in the workspace, prefer its
+native dependency or projection path unless it cannot preserve required semantics or
+supporting resources, or a source-native path is materially simpler and more faithful.
+Read `references/tooling.md` before invoking Rulesync or the skills CLI.
+
 - Same identity and already current → no mutation.
 - Same identity and stale → update or replace through the target-native update path.
 - Uncertain identity or same-name collision → do not overwrite automatically; surface the
@@ -187,25 +198,18 @@ For an external asset, resolve **who will own future edits** before creating dur
   mechanism when it can preserve the required semantics, then review the result before
   treating it as authoritative.
 
-For an upstream-owned external Skill, use Rulesync declarative `sources` when doing so is
-both faithful and simpler. If Rulesync requires unnecessary repackaging, adaptation,
-resource-loss workarounds, or a more complex install/update path, use a Skill-native
-installer such as `skills add` instead. Rulesync compatibility alone is not a reason to
-force Rulesync.
+For an upstream-owned external Skill, prefer the current workspace's existing management
+surface. If Rulesync governs that asset type and can preserve the required package and
+resource semantics, use its dependency path. Otherwise use a Skill-native installer such as
+the skills CLI. Rulesync compatibility alone is not a reason to force Rulesync. Read
+`references/tooling.md` for the minimal command paths and official documentation.
 
-When Rulesync is the chosen canonical framework for an adopted asset:
-
-- prefer `rulesync fetch <source> --target <target>` for a remote repository containing a
-  supported target-native asset being adopted into `.rulesync/` authoring source;
-- prefer `rulesync import --targets <target>` when the target-native configuration already
-  exists in the working scope;
-- use `rulesync convert` only for direct target-to-target conversion when no canonical
-  `.rulesync/` source is intended.
-
-Installation, fetch, import, or conversion success is not proof of semantic parity. If
-required behavior, supporting resources, scope, precedence, or dependencies cannot be
-represented, do not force a degraded conversion. Keep the external or vendor-native
-authority, or route a material adaptation to `mols-agent-asset`.
+When Rulesync is the chosen canonical framework for an adopted asset, use its native intake
+mechanism rather than inventing a conversion layer. Installation, fetch, import, or
+conversion success is not proof of semantic parity. If required behavior, supporting
+resources, scope, precedence, or dependencies cannot be represented, do not force a
+degraded conversion. Keep the external or vendor-native authority, or route a material
+adaptation to `mols-agent-asset`.
 
 # Preserve Asset Semantics
 
