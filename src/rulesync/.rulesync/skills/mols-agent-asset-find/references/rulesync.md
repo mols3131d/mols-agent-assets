@@ -1,7 +1,5 @@
 # Rulesync
 
-Read this reference only after the selected path uses Rulesync. Resolve exact options, target names, and current behavior from the official documentation before execution.
-
 - Add an external dependency: `rulesync add <source> ...`
 - Resolve declared dependencies: `rulesync install`
 - Project managed assets to configured targets: `rulesync generate`
