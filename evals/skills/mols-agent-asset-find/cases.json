@@ -47,7 +47,7 @@
       "prompt": "이 프로젝트는 Rulesync로 Skill을 관리하고 있어. 이 외부 Skill을 앞으로 계속 쓸 수 있게 추가해줘.",
       "assertions": [
         "Preserves the applicable Rulesync management surface instead of bypassing it with a generic installer",
-        "Uses the Rulesync dependency or projection path when it faithfully preserves required Skill semantics and resources",
+        "Uses the Rulesync dependency or projection path when it is faithful and no material complexity exception applies",
         "Loads only the Rulesync reference after that path is selected"
       ]
     },
