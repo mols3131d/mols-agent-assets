@@ -24,7 +24,7 @@
 - runtime이 independent concurrent execution을 지원하면 어느 한쪽 결과를 sibling에게 보여주기 전에 둘을 dispatch할 수 있다.
 - concurrency나 isolation을 지원하지 않으면 순차 호출해도 되지만 먼저 받은 opening을 다음 opening의 context에 넣지 않고, 독립 실행했다고 주장하지 않는다.
 
-Thesis 또는 Antithesis가 unavailable, failed 또는 materially incomplete이면 caller나 sibling이 그 관점을 대신 수행했다고 주장하지 않는다. 해당 perspective를 coverage gap으로 남기고, 남은 evidence를 `mols-dialectic-synthesis`가 정직하게 다룰 수 있을 때만 제한적으로 계속한다. 그렇지 않으면 `unresolved`로 종료한다.
+Thesis 또는 Antithesis의 invocation이 unavailable, failed 또는 materially incomplete이면 caller나 sibling이 그 contribution을 대신 수행했다고 주장하지 않는다. Synthesis 전 단계에서는 해당 contribution을 coverage gap으로 남기고, 남은 evidence를 `mols-dialectic-synthesis`가 정직하게 다룰 수 있을 때만 제한적으로 계속한다. 그렇지 않으면 `unresolved`로 종료한다.
 
 Opening부터 인위적으로 정반대 결론을 강제하지 않는다. credible antithesis가 없거나 한쪽이 약하다고 판단되면 그 자체가 유효한 결과다.
 
@@ -79,6 +79,8 @@ Synthesis가 consequential하고 아직 깨지기 쉬운 핵심 assumption이 �
 1. 현재 Synthesis만 Antithesis에 주고 strongest material challenge를 요청한다.
 2. challenge가 Synthesis의 conclusion, boundary 또는 trade-off를 실제로 바꿀 수 있을 때만 Synthesis를 한 번 더 호출해 revise한다.
 3. challenge가 이미 처리된 주장, wording preference 또는 비결정적 variation이면 재호출하지 않는다.
+
+Optional refinement의 Antithesis challenge가 unavailable, failed 또는 materially incomplete이면 재호출하거나 다른 역할이 대신하지 않는다. 기존 Synthesis가 현재 evidence로 여전히 지지되면 coverage limitation과 함께 유지하고, 그렇지 않으면 `unresolved`로 종료한다.
 
 기본 pass는 Opening 2회 + Cross-review 최대 2회 + Synthesis 1회다. Optional refinement는 Antithesis 1회 + Synthesis 1회를 넘지 않는다. 실패, disagreement 또는 uncertainty만을 이유로 자동 retry하거나 새 cycle을 만들지 않는다.
 
