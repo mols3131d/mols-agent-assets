@@ -13,12 +13,10 @@ Tach를 처음 도입하거나 baseline과 incremental adoption을 설계할 때
 - 모든 현재 관계를 허용해 green baseline을 만드는 것보다 의도와 근거가 명확한 boundary부터 contract로 고정한다.
 - Incremental adoption에 unchecked, exclude, ignore 또는 다른 relaxation이 필요하면 범위와 이유를 명확히 제한한다.
 - Enforcement 밖에 남겨 둔 relationship은 checked된 것으로 취급하지 않는다. Coverage 확대는 별도 architecture change로 판단한다.
-- Baseline 정리 과정에서 unrelated architecture debt를 함께 고치지 않는다.
 
 ## Validate
 
 - Adoption 과정에서 source-root나 module modeling을 바꿨다면 새 violation을 architecture 문제로 해석하기 전에 의도한 imports가 관찰되는지 다시 확인한다.
-- Passing validation은 현재 checked scope만 증명한다. Unchecked, excluded, ignored scope를 숨기지 않는다.
 - External package dependency declaration까지 adoption scope에 포함되면 별도 validation evidence가 필요한지 판단한다.
 
 ## Boundary
