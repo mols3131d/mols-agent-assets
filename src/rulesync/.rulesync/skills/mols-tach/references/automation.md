@@ -32,12 +32,10 @@ Mutation이나 inspection의 성공을 validation 성공으로 해석하지 않�
 - Native Tach command를 그대로 전달하기만 하는 wrapper는 만들지 않는다.
 - Wrapper는 environment/bootstrap, repository-specific scope resolution, 여러 validation의 안정적인 composition, cross-platform entrypoint처럼 실제 repository contract를 제공할 때만 둔다.
 - Wrapper는 underlying Tach failure를 성공으로 바꾸거나 중요한 diagnostics를 버리지 않는다. Version-sensitive option과 schema를 불필요하게 고정하지 않는다.
-- Automation이 checked scope를 좁히면 결과 claim도 같은 범위로 제한한다.
 
 ## Inspection
 
-- `tach show` 같은 inspection은 diagnosis와 review evidence로 사용할 수 있지만 validation gate를 대신하지 않는다.
-- Generated graph나 visualization은 current observation이며 intended architecture의 authority가 아니다.
+`tach show` 같은 inspection은 diagnosis와 review evidence로 사용할 수 있지만 validation gate를 대신하지 않는다.
 
 ## Boundary
 
