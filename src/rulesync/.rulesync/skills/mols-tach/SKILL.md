@@ -1,14 +1,13 @@
 ---
 name: mols-tach
 description: >-
-  Use when introducing Tach architecture enforcement or working in a Python repository
-  governed by Tach and the task materially defines, changes, or diagnoses module
-  boundaries, dependencies, layers, interfaces, visibility, or Tach violations. Treat
-  observed imports as evidence rather than permission, distinguish implementation
-  violations, Tach modeling/configuration errors, and intended contract changes, and do
-  not weaken constraints merely to make validation pass. Do not use for ordinary Python
-  work where Tach boundaries are immaterial, or for Tach installation, generic CLI
-  lookup, or command-reference questions.
+  Use when Tach materially governs Python module architecture: introducing or changing
+  Tach boundaries, diagnosing violations or modeling/configuration problems, or designing
+  and implementing Tach-specific validation automation, scripts, or hooks. Treat observed
+  imports as evidence rather than permission and distinguish implementation violations,
+  Tach modeling/configuration errors, and intended contract changes. Do not use for
+  ordinary Python work, Tach installation, generic CLI lookup, or generic CI/test design
+  where Tach architecture is incidental.
 targets:
   - claudecode
   - codexcli
