@@ -8,7 +8,7 @@ Tach를 CI, local hook, script, wrapper 또는 automated maintenance에 배치�
 
 - **Validation gate** — architecture contract를 바꾸지 않고 위반 여부를 검증한다.
 - **Maintenance mutation** — dependency/module configuration을 동기화하거나 편집한다.
-- **Inspection** — graph나 현재 상태를 보여 주어 판단 evidence를 제공한다.
+- **Inspection** — graph, report 또는 현재 상태를 만들어 판단 evidence를 제공한다.
 
 Mutation이나 inspection의 성공을 validation 성공으로 해석하지 않는다.
 
@@ -35,7 +35,7 @@ Mutation이나 inspection의 성공을 validation 성공으로 해석하지 않�
 
 ## Inspection
 
-`tach show` 같은 inspection은 diagnosis와 review evidence로 사용할 수 있지만 validation gate를 대신하지 않는다.
+Inspection automation은 validation과 별도 evidence artifact로 취급한다. Dependency graph 생성이나 해석이 material하면 `references/visualization.md`를 함께 읽는다.
 
 ## Boundary
 
