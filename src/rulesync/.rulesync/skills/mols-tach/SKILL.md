@@ -47,13 +47,13 @@ Tach가 관리하는 Python module architecture contract를 해석하고, 의도
 - Contract 자체를 변경할 때는 필요한 module, dependency, layer, interface 또는 visibility surface만 변경하고 그 의도를 결과에서 설명 가능하게 유지한다.
 - Tach를 처음 적용할 때 현재 import graph는 initial evidence나 migration seed로 사용할 수 있지만, 기존 관계를 모두 허용해야 하는 architecture로 고정하지 않는다.
 - 자동으로 발견되거나 제안된 dependency는 각각 필요성을 판단한 뒤 채택한다. 현재 code가 사용한다는 이유만으로 허용하지 않는다.
-- Configuration을 자동으로 동기화하거나 module boundary를 편집하는 Tach 작업은 validation과 분리하고, 결과 diff를 architecture 결정으로 검토한 뒤에만 채택한다. 자동 mutation을 checker 통과용 fixer로 사용하지 않는다.
+- `tach sync`나 `tach mod`로 configuration을 변경할 때는 validation과 분리하고 결과 diff를 architecture 결정으로 검토한 뒤에만 채택한다. `tach show` 같은 inspection 결과도 validation을 대신하지 않는다.
 - Repository에 이미 Tach validation entrypoint가 있으면 재사용한다. 별도 owner가 없다면 native Tach validation을 단순 전달하기 위한 wrapper를 새로 만들지 않는다.
 
 ## Verification
 
-- 변경 후에는 repository가 실제로 사용하는 Tach architecture validation을 실행해 선언된 contract와 implementation이 일치하는지 확인한다. 별도 repository owner가 없다면 native boundary validation을 우선한다.
-- External package dependency declaration의 정합성이 task에 material하면 architecture boundary validation과 별도 evidence로 확인한다. 필요하지 않은 검증을 기본 범위에 추가하지 않는다.
+- 변경 후에는 repository가 실제로 사용하는 Tach architecture validation을 실행한다. 별도 repository owner가 없다면 `tach check`를 기본 enforcement evidence로 사용한다.
+- External package dependency declaration의 정합성이 task에 material하면 `tach check-external`을 architecture boundary validation과 별도 evidence로 확인한다. 필요하지 않은 검증을 기본 범위에 추가하지 않는다.
 - Contract를 변경했다면 결과가 의도한 dependency direction과 exposure만 허용하는지 관련 evidence를 다시 확인한다.
 - Passing validation은 실제로 checked된 scope에 대한 evidence다. Unchecked, excluded, ignored 또는 otherwise disabled relationship은 검증된 것으로 주장하지 않는다.
 - Tach validation 성공을 repository 전체 correctness나 architecture correctness로 확대 해석하지 않는다. Tach가 표현하고 관찰할 수 있는 boundary가 만족됐다는 범위에서만 주장한다.
