@@ -203,7 +203,7 @@ For an external asset, resolve **who will own future edits** before creating dur
   treating it as authoritative.
 
 For an upstream-owned external Skill, preserve its required package and resources through
-the resolved management surface. If no faithful supported path exists, return `Unsupported`
+the resolved durable path. If no faithful supported path exists, return `Unsupported`
 rather than forcing a degraded installation.
 
 When Rulesync is the chosen canonical framework for an adopted asset, use its native intake
