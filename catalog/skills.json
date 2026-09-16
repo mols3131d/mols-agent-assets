@@ -17,6 +17,12 @@
       "source": "https://github.com/epoko77-ai/im-not-ai",
       "description": "한국어 텍스트의 번역투와 AI식 문체를 진단하고 의미를 보존하며 자연스럽게 윤문하는 Skill.",
       "installers": ["skills cli", "rulesync"]
+    },
+    {
+      "name": "eli5",
+      "source": "https://github.com/anthropics/claude-plugins-community/tree/main/eli5/skills/eli5",
+      "description": "주제를 큰 그림과 적은 글자의 HTML 아티팩트로 아주 쉽게 설명하는 Skill.",
+      "installers": ["skills cli"]
     }
   ]
 }
