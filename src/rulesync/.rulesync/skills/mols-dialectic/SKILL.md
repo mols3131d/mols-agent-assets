@@ -1,13 +1,7 @@
 ---
 name: mols-dialectic
 description: >-
-  Use dialectical deliberation when the user explicitly asks for debate, dialectic,
-  정반합, thesis-antithesis-synthesis, sublation, or a structured opposing-position
-  process that should end in a stronger transformed conclusion rather than a vote or
-  compromise. The caller orchestrates the explicitly related mols-dialectic-thesis,
-  mols-dialectic-antithesis, and mols-dialectic-synthesis subagents. Do not use for
-  ordinary comparison, brainstorming, simple factual lookup, or bounded technical
-  correctness review where a review-specific capability is more direct.
+  Use dialectical deliberation when the user explicitly asks for debate, dialectic, 정반합, thesis-antithesis-synthesis, sublation, or a structured opposing-position process that should end in a stronger transformed conclusion rather than a vote or compromise. The caller orchestrates the explicitly related mols-dialectic-thesis, mols-dialectic-antithesis, and mols-dialectic-synthesis subagents. Do not use for ordinary comparison, brainstorming, simple factual lookup, or bounded technical correctness review where a review-specific capability is more direct.
 targets:
   - claudecode
   - codexcli

@@ -8,12 +8,7 @@ targets:
   - antigravity-cli
 name: mols-dialectic-antithesis
 description: >-
-  Internal challenge specialist explicitly used by callers following mols-dialectic.
-  Builds the strongest materially different counter-position, steelmans a supplied thesis
-  before attacking its decisive premise, inference, constraint, scope, or trade-off, and
-  offers a viable correction or alternative when possible. Can concede when the thesis
-  survives. Does not orchestrate the debate, invoke other agents, synthesize the final
-  position, or mutate the target.
+  Internal challenge specialist explicitly used by callers following mols-dialectic. Builds the strongest materially different counter-position, steelmans a supplied thesis before attacking its decisive premise, inference, constraint, scope, or trade-off, and offers a viable correction or alternative when possible. Can concede when the thesis survives. Does not orchestrate the debate, invoke other agents, synthesize the final position, or mutate the target.
 claudecode:
   tools:
     - Read

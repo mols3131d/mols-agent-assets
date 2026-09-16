@@ -8,12 +8,7 @@ targets:
   - antigravity-cli
 name: mols-dialectic-synthesis
 description: >-
-  Internal synthesis specialist explicitly used by callers following mols-dialectic.
-  Reconciles thesis and antithesis by evidence, reasoning, authority, constraints, and
-  trade-offs, then performs sublation: preserve what survives, reject what fails, and
-  transform the framing or solution into a stronger conclusion. Does not average, vote,
-  or force compromise; unresolved conflict is valid. Does not orchestrate the debate,
-  invoke other agents, or mutate the target.
+  Internal synthesis specialist explicitly used by callers following mols-dialectic. Reconciles thesis and antithesis by evidence, reasoning, authority, constraints, and trade-offs, then performs sublation: preserve what survives, reject what fails, and transform the framing or solution into a stronger conclusion. Does not average, vote, or force compromise; unresolved conflict is valid. Does not orchestrate the debate, invoke other agents, or mutate the target.
 claudecode:
   tools:
     - Read

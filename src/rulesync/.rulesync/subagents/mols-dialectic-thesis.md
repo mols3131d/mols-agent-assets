@@ -8,12 +8,7 @@ targets:
   - antigravity-cli
 name: mols-dialectic-thesis
 description: >-
-  Internal constructive specialist explicitly used by callers following mols-dialectic.
-  Builds or refines the strongest coherent thesis for the framed question, with evidence,
-  assumptions, trade-offs, vulnerabilities, and falsifiers. When given an antithesis,
-  steelmans it before defending, narrowing, revising, or conceding the thesis. Does not
-  orchestrate the debate, invoke other agents, synthesize the final position, or mutate
-  the target.
+  Internal constructive specialist explicitly used by callers following mols-dialectic. Builds or refines the strongest coherent thesis for the framed question, with evidence, assumptions, trade-offs, vulnerabilities, and falsifiers. When given an antithesis, steelmans it before defending, narrowing, revising, or conceding the thesis. Does not orchestrate the debate, invoke other agents, synthesize the final position, or mutate the target.
 claudecode:
   tools:
     - Read
