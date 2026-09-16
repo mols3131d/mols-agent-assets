@@ -6,11 +6,11 @@ Tach dependency architecture를 시각화하거나 graph를 해석·설명할 �
 
 먼저 무엇을 보여 주려는지 구분한다.
 
-- **Declared module contract** — module 간 선언된 dependency 구조를 보려면 `tach show`를 우선한다. Exact output semantics나 option이 판단에 중요하면 현재 Tach version의 authoritative source를 확인한다.
+- **Declared dependency edges** — module의 선언된 dependency 관계를 보려면 `tach show`를 우선한다. Local output은 현재 Tach에서 Graphviz DOT 또는 Mermaid로 만들 수 있다. Exact output semantics나 option이 판단에 중요하면 현재 Tach version의 authoritative source를 확인한다.
 - **Observed file dependencies** — 실제 file-level dependency를 machine-readable data나 custom analysis에 쓰려면 `tach map`을 고려한다.
 - **Edge evidence** — 특정 module/file의 dependency나 usage가 왜 존재하는지 추적하려면 `tach report`로 import-level evidence를 확인한다.
 
-이 세 surface를 같은 의미로 취급하지 않는다. Contract graph와 observed dependency evidence가 다르면 `SKILL.md`의 Core Contract에 따라 mismatch를 판단한다.
+이 세 surface를 같은 의미로 취급하지 않는다. Declared edge view와 observed dependency evidence가 다르면 `SKILL.md`의 Core Contract에 따라 mismatch를 판단한다.
 
 ## Scope the View
 
@@ -21,8 +21,9 @@ Tach dependency architecture를 시각화하거나 graph를 해석·설명할 �
 
 ## Interpret the Graph
 
-- Graph가 **declared contract**인지 **observed dependency**인지 결과에 명시한다. 둘을 결합하면 edge나 layer를 구분 가능한 방식으로 표현한다.
+- 결과가 **declared dependency view**인지 **observed dependency view**인지 명시한다. 둘을 결합하면 서로 다른 evidence임을 구분 가능한 방식으로 표현한다.
 - Dependency arrow의 의미와 방향을 보존한다. Layout을 보기 좋게 바꾸기 위해 dependency direction을 뒤집지 않는다.
+- `tach show`를 Tach architecture contract 전체의 완전한 시각화로 해석하지 않는다. 현재 local graph는 선언된 module dependency edge를 중심으로 하며 layer, interface, visibility 같은 별도 contract semantics를 모두 표현하지 않는다.
 - `tach show` edge의 부재만으로 dependency가 금지되었거나 code에서 사용되지 않는다고 결론내리지 않는다. Layer rules처럼 명시적 `depends_on` 외의 permission이 있을 수 있다.
 - Layer, public interface와 visibility는 graph layout이나 edge 존재만으로 추론하지 않는다. 해당 Tach configuration을 authority로 확인하고 필요한 observation과 함께 해석한다.
 - Runtime/dynamic coupling처럼 Tach가 관찰하지 못하는 관계는 시각화에도 나타났다고 주장하지 않는다.
