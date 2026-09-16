@@ -6,8 +6,9 @@ description: >-
   or explaining Tach dependency architecture, or designing and implementing Tach-specific
   validation automation, scripts, or hooks. Treat observed imports as evidence rather than
   permission and distinguish implementation violations, Tach modeling/configuration errors,
-  and intended contract changes. Do not use for ordinary Python work, Tach installation,
-  generic CLI lookup, or generic CI/test/diagram design where Tach architecture is incidental.
+  and intended contract changes. Do not use for ordinary Python work, Tach package/dependency
+  installation, generic CLI lookup, or generic CI/test/diagram design where Tach architecture
+  is incidental.
 targets:
   - claudecode
   - codexcli
