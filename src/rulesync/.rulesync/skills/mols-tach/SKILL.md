@@ -53,6 +53,7 @@ Tach가 관리하는 Python module architecture contract를 해석하고, 의도
 ## Verification
 
 - 변경 후에는 repository가 실제로 사용하는 Tach architecture validation을 실행한다. 별도 repository owner가 없다면 `tach check`를 기본 enforcement evidence로 사용한다.
+- Exit success만으로 결과를 축약하지 않는다. Task에 material한 non-failing diagnostic이나 usage가 있으면 함께 판단한다.
 - External package dependency declaration의 정합성이 task에 material하면 `tach check-external`을 architecture boundary validation과 별도 evidence로 확인한다. 필요하지 않은 검증을 기본 범위에 추가하지 않는다.
 - Contract를 변경했다면 결과가 의도한 dependency direction과 exposure만 허용하는지 관련 evidence를 다시 확인한다.
 - Passing validation은 실제로 checked된 scope에 대한 evidence다. Unchecked, excluded, ignored 또는 otherwise disabled relationship은 검증된 것으로 주장하지 않는다.
