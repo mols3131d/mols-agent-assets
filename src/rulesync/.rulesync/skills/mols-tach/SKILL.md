@@ -37,7 +37,6 @@ Tach가 관리하는 Python module architecture contract를 현재 import graph�
 
 - Tach architecture configuration은 선언된 contract다. 현재 import graph와 Tach가 관찰한 dependency, usage, graph, violation은 evidence이지 permission이 아니다.
 - Contract와 implementation이 어긋나면 implementation violation, Tach modeling/configuration error, intended contract change, unclear intent를 먼저 구분한다. Intent가 불분명하면 기존 contract를 임의로 완화하지 않는다.
-- 자동으로 추론·동기화된 dependency나 configuration도 architecture 결정이 아니라 검토할 proposal이다.
 - `ignore`, unchecked boundary, broad utility·dependency·interface·visibility·exclude 같은 relaxation이나 exception은 명시적인 architecture 결정일 때만 사용한다. Checker를 통과시키기 위한 기본 해결책으로 사용하지 않는다.
 - 가장 좁은 잘못된 owner를 수정한다. Code가 contract를 위반하면 code를, Tach가 module/import model을 잘못 해석하면 modeling configuration을, architecture intent가 바뀌었다면 contract를 수정한다.
 - Dynamic import, runtime registration, generated behavior, network·event·URL coupling처럼 import graph 밖의 관계는 Tach가 증명하지 않은 것으로 취급한다.
@@ -52,7 +51,6 @@ Tach가 관리하는 Python module architecture contract를 현재 import graph�
 
 - 기존 contract 안에서 implementation을 바로잡을 수 있으면 constraint relaxation보다 그 변경을 먼저 검토한다.
 - Contract 변경은 필요한 module, dependency, layer, interface 또는 visibility surface로 제한한다.
-- 자동 발견 dependency는 각각 필요성을 판단한 뒤 채택한다. 현재 code가 사용한다는 이유만으로 허용하지 않는다.
 - 현재 작업과 무관한 module rule이나 architecture debt를 함께 정리하지 않는다.
 
 ## Verification
