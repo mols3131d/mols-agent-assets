@@ -2,12 +2,12 @@
 name: mols-tach
 description: >-
   Use when Tach materially governs Python module architecture: introducing or changing
-  Tach boundaries, diagnosing violations or modeling/configuration problems, or designing
-  and implementing Tach-specific validation automation, scripts, or hooks. Treat observed
-  imports as evidence rather than permission and distinguish implementation violations,
-  Tach modeling/configuration errors, and intended contract changes. Do not use for
-  ordinary Python work, Tach installation, generic CLI lookup, or generic CI/test design
-  where Tach architecture is incidental.
+  Tach boundaries, diagnosing violations or modeling/configuration problems, visualizing
+  or explaining Tach dependency architecture, or designing and implementing Tach-specific
+  validation automation, scripts, or hooks. Treat observed imports as evidence rather than
+  permission and distinguish implementation violations, Tach modeling/configuration errors,
+  and intended contract changes. Do not use for ordinary Python work, Tach installation,
+  generic CLI lookup, or generic CI/test/diagram design where Tach architecture is incidental.
 targets:
   - claudecode
   - codexcli
@@ -30,8 +30,9 @@ Tach가 관리하는 Python module architecture contract를 현재 import graph�
 | --- | --- |
 | Tach 도입, baseline, incremental adoption | `references/adoption.md` |
 | CI, hook, script, wrapper, validation orchestration, automated maintenance | `references/automation.md` |
+| Dependency graph 생성·해석, Tach architecture 시각화·설명 | `references/visualization.md` |
 
-두 intent가 모두 포함되면 두 reference를 함께 읽는다. 그 외 Tach architecture 작업에는 reference를 선로드하지 않는다. Command option, schema처럼 version-sensitive detail이 판단에 material하면 현재 authoritative Tach source를 확인하고 이 Skill에 full reference를 복제하지 않는다.
+여러 intent가 실제로 포함되면 해당 reference를 함께 읽는다. 그 외 Tach architecture 작업에는 reference를 선로드하지 않는다. Command option, schema처럼 version-sensitive detail이 판단에 material하면 현재 authoritative Tach source를 확인하고 이 Skill에 full reference를 복제하지 않는다.
 
 ## Core Contract
 
@@ -63,4 +64,4 @@ Tach가 관리하는 Python module architecture contract를 현재 import graph�
 
 ## Boundary
 
-이 Skill은 Tach-specific architecture contract, evidence 해석, adoption과 automation 판단을 소유한다. 일반 Python semantics, 일반 software architecture methodology, dependency installation, generic CI architecture, test strategy와 Tach CLI reference는 소유하지 않는다.
+이 Skill은 Tach-specific architecture contract, evidence 해석, adoption, automation과 visualization 판단을 소유한다. 일반 Python semantics, 일반 software architecture methodology, dependency installation, generic CI architecture, test strategy, generic diagram design과 Tach CLI reference는 소유하지 않는다.
