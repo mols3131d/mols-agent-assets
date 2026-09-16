@@ -20,9 +20,9 @@
     },
     {
       "name": "eli5",
-      "source": "https://github.com/anthropics/claude-plugins-community/tree/main/eli5/skills/eli5",
+      "source": "https://github.com/anthropics/claude-plugins-community/tree/main/eli5/skills",
       "description": "주제를 큰 그림과 적은 글자의 HTML 아티팩트로 아주 쉽게 설명하는 Skill.",
-      "installers": ["skills cli"]
+      "installers": ["skills cli", "rulesync"]
     }
   ]
 }
