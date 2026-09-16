@@ -161,8 +161,8 @@ Do not create durable state merely to make hypothetical future use easier.
 ## Durable reuse
 
 Use the resolved durable mechanism. Before mutation, inspect existing project or target
-state when supported. Do not bypass an applicable project management surface with a generic
-installer.
+state when supported. Once a project management surface has been resolved as a faithful
+durable mechanism for this asset, do not bypass it with a generic installer.
 
 - Same identity and already current → no mutation.
 - Same identity and stale → update or replace through the same resolved path.
