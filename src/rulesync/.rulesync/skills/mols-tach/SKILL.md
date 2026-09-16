@@ -20,7 +20,7 @@ targets:
 
 # Mols Tach
 
-Tach가 관리하는 Python module architecture contract를 현재 import graph와 구분해 해석하고, 필요한 경계만 변경·검증한다.
+Tach가 관리하는 Python module architecture contract와 observed dependency evidence를 구분해 해석하고, 필요한 경계를 변경·검증하며 architecture evidence를 정확히 설명한다.
 
 ## Route
 
