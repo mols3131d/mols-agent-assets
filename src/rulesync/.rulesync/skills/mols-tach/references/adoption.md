@@ -6,7 +6,7 @@ Tach를 처음 도입하거나 baseline과 incremental adoption을 설계할 때
 
 - 현재 import graph는 initial evidence나 migration seed로 사용할 수 있지만 intended architecture 자체로 고정하지 않는다.
 - `tach sync`처럼 현재 imports에서 dependency configuration을 제안·갱신하는 결과는 bootstrap aid다. 생성된 관계는 각각 검토하고 code가 이미 사용한다는 이유만으로 허용하지 않는다.
-- Existing violation은 intended architecture의 증거가 아니다. Core contract의 mismatch classification으로 먼저 판단한다.
+- Existing violation은 intended architecture의 증거가 아니다. `SKILL.md`의 Core Contract에 따라 mismatch를 먼저 분류한다.
 
 ## Stage Enforcement
 
