@@ -13,6 +13,10 @@ BEHAVIOR_SUITE = "behavior"
 SUITES = {TRIGGER_SUITE, BEHAVIOR_SUITE}
 TRIGGER_MODES = {"activation", "activation-negative"}
 
+LANE_CONTRACT = "contract"
+LANE_NATIVE = "native"
+LANES = {LANE_CONTRACT, LANE_NATIVE}
+
 TRIGGER_RESPONSE_KEYS = {"selected_skills", "primary_skill"}
 TRIGGER_RESPONSE_SCHEMA = {
     "type": "object",
@@ -54,15 +58,7 @@ def fixture_path(skill_name: str) -> Path:
 
 
 def skill_path(skill_name: str) -> Path:
-    return (
-        ROOT
-        / "src"
-        / "rulesync"
-        / ".rulesync"
-        / "skills"
-        / skill_name
-        / "SKILL.md"
-    )
+    return ROOT / "src" / "rulesync" / ".rulesync" / "skills" / skill_name / "SKILL.md"
 
 
 def provider_label(skill_name: str, suite: str) -> str:
@@ -236,6 +232,10 @@ def generate_tests(config: dict | None = None) -> list[dict]:
     if suite not in SUITES:
         raise ValueError(f"suite must be one of {sorted(SUITES)}")
 
+    lane = config.get("lane", LANE_CONTRACT)
+    if lane not in LANES:
+        raise ValueError(f"lane must be one of {sorted(LANES)}")
+
     cases = _load_cases(skill_name)
     selected_ids = _selected_case_ids(config, suite, cases)
     semantic = config.get("semantic", suite == BEHAVIOR_SUITE)
@@ -290,6 +290,7 @@ def generate_tests(config: dict | None = None) -> list[dict]:
             "fixture": str(fixture.relative_to(ROOT)),
             "skill": skill_name,
             "suite": suite,
+            "lane": lane,
             "mode": mode,
             "case_id": case_id,
         }
@@ -298,17 +299,27 @@ def generate_tests(config: dict | None = None) -> list[dict]:
             expected, candidates = _trigger_case_contract(case, mode, skill_name)
             vars_["expected_selection"] = expected
             vars_["routing_candidates"] = candidates
-            checks = [
-                {
-                    "type": "python",
-                    "value": f"{EVALUATOR_URI}:assert_trigger",
-                    "metric": (
-                        "trigger-activation"
-                        if skill_name in expected["selected_skills"]
-                        else "trigger-rejection"
-                    ),
-                }
-            ]
+            if lane == LANE_NATIVE:
+                expects_skill = skill_name in expected["selected_skills"]
+                checks = [
+                    {
+                        "type": "skill-used" if expects_skill else "not-skill-used",
+                        "value": skill_name,
+                        "metric": ("skill-used" if expects_skill else "not-skill-used"),
+                    }
+                ]
+            else:
+                checks = [
+                    {
+                        "type": "python",
+                        "value": f"{EVALUATOR_URI}:assert_trigger",
+                        "metric": (
+                            "trigger-activation"
+                            if skill_name in expected["selected_skills"]
+                            else "trigger-rejection"
+                        ),
+                    }
+                ]
         else:
             assertions = case.get("assertions")
             if not isinstance(assertions, list) or not all(
@@ -413,13 +424,24 @@ def _fixture_output(context: dict, suite: str) -> dict:
                 "error": f"fixture trigger case requires valid selection: {error}",
                 "output": "",
             }
-        return {"output": json.dumps(expected, ensure_ascii=False)}
+        selected = expected.get("selected_skills", [])
+        return {
+            "output": json.dumps(expected, ensure_ascii=False),
+            "metadata": {
+                "skillCalls": [{"name": name} for name in selected],
+            },
+        }
     if suite == BEHAVIOR_SUITE:
+        skill_name = context.get("vars", {}).get("skill")
+        skill_calls = [{"name": skill_name}] if skill_name else []
         return {
             "output": (
                 "Promptfoo fixture-mode plumbing response; this is not runtime "
                 "behavior evidence."
-            )
+            ),
+            "metadata": {
+                "skillCalls": skill_calls,
+            },
         }
     return {"error": f"unsupported fixture suite: {suite}", "output": ""}
 
@@ -568,14 +590,25 @@ def _ollama_output(
             return {"error": f"invalid Skill routing input: {error}", "output": ""}
         if isinstance(routed, dict):
             return routed
-        _, route_content = routed
-        return {"output": route_content}
+        parsed, route_content = routed
+        selected = parsed.get("selected_skills", [])
+        return {
+            "output": route_content,
+            "metadata": {
+                "skillCalls": [{"name": name} for name in selected],
+            },
+        }
     if suite == BEHAVIOR_SUITE:
         behavior = _execute_behavior(prompt, skill)
         if isinstance(behavior, dict):
             return behavior
         response, _ = behavior
-        return {"output": response}
+        return {
+            "output": response,
+            "metadata": {
+                "skillCalls": [{"name": skill_name}],
+            },
+        }
     return {"error": f"unsupported Ollama suite: {suite}", "output": ""}
 
 

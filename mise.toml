@@ -78,3 +78,11 @@ run = "npm run eval:promptfoo:mols-loops:trigger"
 [tasks.eval-mols-loops-behavior]
 description = "mols-loops Behavior Promptfoo runtime eval만 local에서 실행"
 run = "npm run eval:promptfoo:mols-loops:behavior"
+
+[tasks.eval-mols-loops-native-smoke]
+description = "mols-loops native-runtime Promptfoo fixture smoke를 local에서 실행"
+run = "npm run eval:promptfoo:mols-loops:native:smoke"
+
+[tasks.eval-mols-loops-native]
+description = "mols-loops native-runtime Promptfoo eval을 local에서 실행"
+run = "npm run eval:promptfoo:mols-loops:native"

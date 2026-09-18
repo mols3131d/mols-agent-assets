@@ -1,0 +1,61 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+
+description: mols-loops local native-runtime lane prototype eval
+
+prompts:
+  - "{{task}}"
+
+providers:
+  - id: file://../../scripts/agent_assets/skills_promptfoo.py:call_api
+    label: mols-loops-native-trigger
+    config:
+      skill: mols-loops
+      mode: ollama
+      suite: trigger
+  - id: file://../../scripts/agent_assets/skills_promptfoo.py:call_api
+    label: mols-loops-native-behavior
+    config:
+      skill: mols-loops
+      mode: ollama
+      suite: behavior
+
+tests:
+  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_tests
+    config:
+      skill: mols-loops
+      suite: trigger
+      lane: native
+      provider_label: mols-loops-native-trigger
+      case_ids:
+        - explicit-rpi-activates
+        - standalone-korean-loop-activates
+        - implicit-complex-work-activates
+        - equivalent-iterative-method-activates
+        - loop-topic-does-not-activate
+        - generic-repeat-does-not-activate
+        - single-review-request-does-not-activate
+        - trivial-work-does-not-activate
+        - specific-owner-remains-primary-when-rpi-composes
+        - specific-owner-one-shot-does-not-pull-rpi
+  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_tests
+    config:
+      skill: mols-loops
+      suite: behavior
+      lane: native
+      provider_label: mols-loops-native-behavior
+      semantic: true
+      rubric_threshold: 0.8
+      case_ids:
+        - three-phase-run-envelope-is-preserved
+        - prepare-blocked-stops-before-main
+        - review-state-matches-open-acceptance
+        - provided-plan-needs-research-support
+        - recursive-authority-never-expands
+
+sharing: false
+writeLatestResults: false
+commandLineOptions:
+  cache: false
+  write: false
+  noShare: true
+  maxConcurrency: 1

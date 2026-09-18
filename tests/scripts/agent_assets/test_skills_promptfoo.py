@@ -13,15 +13,7 @@ CONFIG_DIR = ROOT / "evals" / "promptfoo"
 
 
 def _write_generic_skill(root: Path, skill_name: str = "example-skill") -> None:
-    skill = (
-        root
-        / "src"
-        / "rulesync"
-        / ".rulesync"
-        / "skills"
-        / skill_name
-        / "SKILL.md"
-    )
+    skill = root / "src" / "rulesync" / ".rulesync" / "skills" / skill_name / "SKILL.md"
     skill.parent.mkdir(parents=True)
     skill.write_text(
         "---\n"
@@ -101,7 +93,9 @@ def test_generic_skill_generates_trigger_and_behavior_without_python_adapter(
 
     assert [case["vars"]["case_id"] for case in trigger] == ["activates", "rejects"]
     assert [case["vars"]["case_id"] for case in behavior] == ["behaves"]
-    assert all(case["metadata"]["skill"] == "example-skill" for case in trigger + behavior)
+    assert all(
+        case["metadata"]["skill"] == "example-skill" for case in trigger + behavior
+    )
     assert all(case["vars"]["skill"] == "example-skill" for case in trigger + behavior)
     assert trigger[0]["providers"] == ["example-skill-trigger"]
     assert behavior[0]["providers"] == ["example-skill-behavior"]
@@ -266,6 +260,87 @@ def test_trigger_provider_uses_only_skill_discovery_metadata(
     assert "description: Use for example iterative work." in system
     assert "# Example Skill" not in system
     assert json.loads(result["output"])["primary_skill"] == "example-skill"
+
+
+def test_native_lane_generates_skill_used_and_not_skill_used(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    _write_generic_skill(tmp_path)
+    monkeypatch.setattr(evaluator, "ROOT", tmp_path)
+
+    trigger = evaluator.generate_tests(
+        {"skill": "example-skill", "suite": "trigger", "lane": "native"}
+    )
+    assert len(trigger) == 2
+    activates = next(t for t in trigger if t["metadata"]["case_id"] == "activates")
+    rejects = next(t for t in trigger if t["metadata"]["case_id"] == "rejects")
+
+    assert activates["metadata"]["lane"] == "native"
+    assert activates["assert"][0]["type"] == "skill-used"
+    assert activates["assert"][0]["value"] == "example-skill"
+    assert activates["assert"][0]["metric"] == "skill-used"
+
+    assert rejects["metadata"]["lane"] == "native"
+    assert rejects["assert"][0]["type"] == "not-skill-used"
+    assert rejects["assert"][0]["value"] == "example-skill"
+    assert rejects["assert"][0]["metric"] == "not-skill-used"
+
+
+def test_fixture_and_ollama_providers_populate_skill_calls_metadata(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    _write_generic_skill(tmp_path)
+    monkeypatch.setattr(evaluator, "ROOT", tmp_path)
+
+    expected = {"selected_skills": ["example-skill"], "primary_skill": "example-skill"}
+    trigger_fixture = evaluator.call_api(
+        "ignored",
+        {
+            "config": {
+                "skill": "example-skill",
+                "mode": "fixture",
+                "suite": "trigger",
+            }
+        },
+        {"vars": {"expected_selection": expected}},
+    )
+    assert trigger_fixture["metadata"]["skillCalls"] == [{"name": "example-skill"}]
+
+    behavior_fixture = evaluator.call_api(
+        "ignored",
+        {
+            "config": {
+                "skill": "example-skill",
+                "mode": "fixture",
+                "suite": "behavior",
+            }
+        },
+        {"vars": {"skill": "example-skill"}},
+    )
+    assert behavior_fixture["metadata"]["skillCalls"] == [{"name": "example-skill"}]
+
+    def fake_request(prompt: str, system: str, schema: dict):
+        payload = {
+            "selected_skills": ["example-skill"],
+            "primary_skill": "example-skill",
+        }
+        return payload, json.dumps(payload)
+
+    monkeypatch.setattr(evaluator, "_ollama_request", fake_request)
+    trigger_ollama = evaluator.call_api(
+        "Use the example skill.",
+        {
+            "config": {
+                "skill": "example-skill",
+                "mode": "ollama",
+                "suite": "trigger",
+            }
+        },
+        {"vars": {"skill": "example-skill", "routing_candidates": []}},
+    )
+    assert trigger_ollama["metadata"]["skillCalls"] == [{"name": "example-skill"}]
 
 
 def test_behavior_provider_uses_full_selected_skill(

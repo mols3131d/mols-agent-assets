@@ -13,15 +13,7 @@ CONFIG_DIR = ROOT / "evals" / "promptfoo"
 
 
 def _write_skill(root: Path, skill_name: str = "example-skill") -> None:
-    path = (
-        root
-        / "src"
-        / "rulesync"
-        / ".rulesync"
-        / "skills"
-        / skill_name
-        / "SKILL.md"
-    )
+    path = root / "src" / "rulesync" / ".rulesync" / "skills" / skill_name / "SKILL.md"
     path.parent.mkdir(parents=True)
     path.write_text(
         "---\n"
@@ -78,6 +70,11 @@ def test_load_cases_rejects_malformed_fixture_shape(
 
 
 def test_generator_validates_semantic_and_threshold_types() -> None:
+    with pytest.raises(ValueError, match="lane must be one of"):
+        evaluator.generate_tests(
+            {"skill": "mols-loops", "suite": "trigger", "lane": "invalid"}
+        )
+
     with pytest.raises(ValueError, match="semantic must be a boolean"):
         evaluator.generate_tests(
             {"skill": "mols-loops", "suite": "behavior", "semantic": "false"}
@@ -131,7 +128,10 @@ def test_routing_candidates_accept_serialized_json_and_reject_malformed_json() -
         }
     ]
 
-    assert evaluator._routing_candidates(json.dumps(candidates), "mols-loops") == candidates
+    assert (
+        evaluator._routing_candidates(json.dumps(candidates), "mols-loops")
+        == candidates
+    )
     with pytest.raises(ValueError, match="not valid JSON"):
         evaluator._routing_candidates("not-json", "mols-loops")
 
@@ -254,3 +254,25 @@ def test_runtime_promptfoo_config_selects_valid_cases_and_semantics() -> None:
             evaluator._case_suite(fixture[case_id]["mode"]) == suite
             for case_id in selected
         )
+
+
+def test_native_runtime_promptfoo_config_selects_valid_cases_and_semantics() -> None:
+    fixture = evaluator._load_cases("mols-loops")
+    for config_name in ["mols-loops-native.yaml", "mols-loops-native-smoke.yaml"]:
+        config = yaml.safe_load((CONFIG_DIR / config_name).read_text(encoding="utf-8"))
+        generated_by_suite = {
+            entry["config"]["suite"]: entry["config"] for entry in config["tests"]
+        }
+
+        assert generated_by_suite["trigger"]["lane"] == "native"
+        assert generated_by_suite["behavior"]["lane"] == "native"
+
+        for suite, generated in generated_by_suite.items():
+            selected = generated["case_ids"]
+            assert selected
+            assert len(selected) == len(set(selected))
+            assert all(case_id in fixture for case_id in selected)
+            assert all(
+                evaluator._case_suite(fixture[case_id]["mode"]) == suite
+                for case_id in selected
+            )

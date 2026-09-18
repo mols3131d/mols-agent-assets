@@ -8,6 +8,8 @@
     "eval:promptfoo:mols-loops:smoke": "uv run python scripts/agent_assets/promptfoo_run.py eval -c evals/promptfoo/mols-loops-smoke.yaml",
     "eval:promptfoo:mols-loops": "uv run python scripts/agent_assets/promptfoo_run.py eval -c evals/promptfoo/mols-loops.yaml",
     "eval:promptfoo:mols-loops:trigger": "uv run python scripts/agent_assets/promptfoo_run.py eval -c evals/promptfoo/mols-loops.yaml --filter-metadata suite=trigger",
-    "eval:promptfoo:mols-loops:behavior": "uv run python scripts/agent_assets/promptfoo_run.py eval -c evals/promptfoo/mols-loops.yaml --filter-metadata suite=behavior"
+    "eval:promptfoo:mols-loops:behavior": "uv run python scripts/agent_assets/promptfoo_run.py eval -c evals/promptfoo/mols-loops.yaml --filter-metadata suite=behavior",
+    "eval:promptfoo:mols-loops:native:smoke": "uv run python scripts/agent_assets/promptfoo_run.py eval -c evals/promptfoo/mols-loops-native-smoke.yaml",
+    "eval:promptfoo:mols-loops:native": "uv run python scripts/agent_assets/promptfoo_run.py eval -c evals/promptfoo/mols-loops-native.yaml"
   }
 }
