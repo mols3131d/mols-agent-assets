@@ -12,12 +12,12 @@
 따라서 다음 단계는 모든 자산에 동일한 수의 case를 기계적으로 추가하는 것이 아니다. 각 자산의 책임을 먼저 분류하고, 아래 공통 계약을 자산별로 최소 구현하는 방식이 적절하다.
 
 1. 모든 routed Skill: positive, negative, near-miss routing을 우선 보강한다.
-2. 행동이 중요한 Skill: 선택 이후의 observable outcome, 금지 행동, scope와 evidence handling을 behavior eval로 보강한다.
-3. context/selector Skill: discovery boundary, authority, freshness, no-match, mutation boundary를 우선 평가한다.
-4. orchestration Skill: dependency composition, phase/termination, handoff, non-interference를 평가한다.
-5. renderer/tool-specific Skill: 결과물 구조와 의미 보존을 deterministic outcome으로 평가하고, 실제 runtime 품질은 별도 evidence로 둔다.
-6. Subagent: direct invocation보다 delegation, ownership, handoff, bounded invocation, failure/termination을 중심으로 평가한다.
-7. native-runtime eval은 먼저 `mols-loops` prototype을 공통 adapter와 assertion의 기준선으로 삼고, 이후 자산군별로 확장한다.
+1. 행동이 중요한 Skill: 선택 이후의 observable outcome, 금지 행동, scope와 evidence handling을 behavior eval로 보강한다.
+1. context/selector Skill: discovery boundary, authority, freshness, no-match, mutation boundary를 우선 평가한다.
+1. orchestration Skill: dependency composition, phase/termination, handoff, non-interference를 평가한다.
+1. renderer/tool-specific Skill: 결과물 구조와 의미 보존을 deterministic outcome으로 평가하고, 실제 runtime 품질은 별도 evidence로 둔다.
+1. Subagent: direct invocation보다 delegation, ownership, handoff, bounded invocation, failure/termination을 중심으로 평가한다.
+1. native-runtime eval은 먼저 `mols-loops` prototype을 공통 adapter와 assertion의 기준선으로 삼고, 이후 자산군별로 확장한다.
 
 ## 조사 근거
 
@@ -240,13 +240,13 @@ Subagent는 individual text quality보다 invocation context 안의 system contr
 공통 case family:
 
 1. delegation ownership — caller가 필요한 context만 전달하고 worker가 자체 탐색을 소유하는가
-2. independence — sibling 결과가 초기 context를 오염시키지 않는가
-3. concurrency/fallback — 가능한 경우 같은 wave에서 호출하고, 불가능하면 병렬이라고 주장하지 않는가
-4. invocation budget — timeout·empty result도 호출 1회로 소비하는가
-5. evidence adjudication — reviewer vote/confidence보다 source·state·reachability를 우선하는가
-6. no-finding — quota를 채우려고 약한 finding을 만들지 않는가
-7. handoff — confirmed/rejected/unresolved와 coverage limitation을 caller가 쓸 수 있게 전달하는가
-8. termination — caller lifecycle, retry, mutation과 worker responsibility를 침범하지 않는가
+1. independence — sibling 결과가 초기 context를 오염시키지 않는가
+1. concurrency/fallback — 가능한 경우 같은 wave에서 호출하고, 불가능하면 병렬이라고 주장하지 않는가
+1. invocation budget — timeout·empty result도 호출 1회로 소비하는가
+1. evidence adjudication — reviewer vote/confidence보다 source·state·reachability를 우선하는가
+1. no-finding — quota를 채우려고 약한 finding을 만들지 않는가
+1. handoff — confirmed/rejected/unresolved와 coverage limitation을 caller가 쓸 수 있게 전달하는가
+1. termination — caller lifecycle, retry, mutation과 worker responsibility를 침범하지 않는가
 
 `mols-review-dualvantage` fixture의 9 case는 위 축을 이미 일부 구현한다. 다음 보강은 `review-lead` family와 `mols-dialectic` family를 별도 fixture로 추가하는 것이 가장 자연스럽다.
 
@@ -361,23 +361,23 @@ Subagent는 individual text quality보다 invocation context 안의 system contr
 ## Native-runtime 확장 순서
 
 1. 기존 contract lane을 baseline으로 고정한다.
-2. `mols-loops` native smoke로 provider metadata와 `skill-used`/`not-skill-used` 연결을 검증한다.
-3. 같은 evaluator를 사용해 `mols-agent-asset` / `mols-agent-asset-find` sibling routing을 native lane에 추가한다.
-4. `mols-review-dualvantage`와 `mols-dialectic`은 skill invocation만으로 충분하지 않으므로 delegation trace와 handoff output을 별도 관찰한다.
-5. artifact-producing Skill은 workspace snapshot 또는 generated artifact를 deterministic grader가 읽는 형태로 확장한다.
-6. 반복 trial이 필요한 경우 3회 정도의 fresh run으로 variability를 확인하되, trial 수를 quality quota로 취급하지 않는다.
+1. `mols-loops` native smoke로 provider metadata와 `skill-used`/`not-skill-used` 연결을 검증한다.
+1. 같은 evaluator를 사용해 `mols-agent-asset` / `mols-agent-asset-find` sibling routing을 native lane에 추가한다.
+1. `mols-review-dualvantage`와 `mols-dialectic`은 skill invocation만으로 충분하지 않으므로 delegation trace와 handoff output을 별도 관찰한다.
+1. artifact-producing Skill은 workspace snapshot 또는 generated artifact를 deterministic grader가 읽는 형태로 확장한다.
+1. 반복 trial이 필요한 경우 3회 정도의 fresh run으로 variability를 확인하되, trial 수를 quality quota로 취급하지 않는다.
 
 ## 산출물과 후속 구현 단위
 
 이번 조사 후 바로 추가할 구현 단위는 다음과 같다.
 
 1. Skill fixture 공통 validator 보강: `version`, cases, unique id, mode별 required fields, contract metadata.
-2. asset family matrix를 fixture metadata 또는 별도 report로 유지하되, generated projection과 canonical source를 혼동하지 않는다.
-3. `mols-agent-asset` / `mols-agent-asset-find` native routing config 추가.
-4. `mols-dialectic` family fixture 추가.
-5. `review-lead` / `review-quality` / `review-adversarial` family fixture 추가.
-6. artifact-producing Skill은 각자의 deterministic checker가 준비된 뒤 fixture를 추가한다.
-7. 각 family에서 안정된 capability case만 regression으로 승격한다.
+1. asset family matrix를 fixture metadata 또는 별도 report로 유지하되, generated projection과 canonical source를 혼동하지 않는다.
+1. `mols-agent-asset` / `mols-agent-asset-find` native routing config 추가.
+1. `mols-dialectic` family fixture 추가.
+1. `review-lead` / `review-quality` / `review-adversarial` family fixture 추가.
+1. artifact-producing Skill은 각자의 deterministic checker가 준비된 뒤 fixture를 추가한다.
+1. 각 family에서 안정된 capability case만 regression으로 승격한다.
 
 ## 리스크와 미확인 사항
 
@@ -394,7 +394,7 @@ Subagent는 individual text quality보다 invocation context 안의 system contr
 첫 구현 순서는 다음이 가장 합리적이다.
 
 1. `mols-agent-asset` ↔ `mols-agent-asset-find` sibling routing native eval
-2. `mols-dialectic` specialist family delegation/transform eval
-3. `review-lead` family delegation/independence/handoff eval
-4. context·text Skill의 protected-content와 no-overreach eval
-5. artifact/tool-specific Skill의 deterministic artifact eval
+1. `mols-dialectic` specialist family delegation/transform eval
+1. `review-lead` family delegation/independence/handoff eval
+1. context·text Skill의 protected-content와 no-overreach eval
+1. artifact/tool-specific Skill의 deterministic artifact eval

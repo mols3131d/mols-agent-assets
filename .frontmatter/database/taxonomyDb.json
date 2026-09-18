@@ -1,1 +1,9 @@
-{"taxonomy":{"tags":["agent-asset","agent-skill"],"categories":[]}}
+{
+  "taxonomy": {
+    "categories": [],
+    "tags": [
+      "agent-asset",
+      "agent-skill"
+    ]
+  }
+}
