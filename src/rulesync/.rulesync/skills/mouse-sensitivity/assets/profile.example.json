@@ -1,34 +1,32 @@
 {
   "version": 1,
   "mouse": {
-    "dpi": 1600
+    "dpi": 800
+  },
+  "mousepad": {
+    "width_mm": 450,
+    "height_mm": 400
   },
   "os": {
-    "platform": "windows",
-    "pointer_speed": "default",
-    "acceleration": false
+    "platform": "windows"
   },
   "displays": [
     {
       "name": "main",
-      "resolution": [2560, 1440],
-      "scale": 1.0,
-      "primary": true
+      "primary": true,
+      "resolution": [1920, 1080],
+      "scale": 1.0
     }
   ],
-  "mousepad": {
-    "width_mm": 490,
-    "height_mm": 420
-  },
   "games": {
     "counter-strike-2": {
-      "type": "first-person"
+      "input_context": "first-person"
     },
     "overwatch-2": {
-      "type": "first-person"
+      "input_context": "first-person"
     },
     "valorant": {
-      "type": "first-person"
+      "input_context": "first-person"
     }
   }
 }
