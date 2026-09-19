@@ -1,27 +1,19 @@
 {
   "version": 1,
   "mouse": {
-    "dpi": 2000
+    "dpi": 1600
   },
   "os": {
-    "platform": "windows"
+    "platform": "windows",
+    "pointer_speed": "default",
+    "acceleration": false
   },
   "displays": [
     {
       "name": "main",
       "resolution": [2560, 1440],
-      "scale": 1.75,
+      "scale": 1.0,
       "primary": true
-    },
-    {
-      "name": "sub-1",
-      "resolution": [1920, 1080],
-      "scale": 1.25
-    },
-    {
-      "name": "sub-2",
-      "resolution": [1920, 1080],
-      "scale": 1.25
     }
   ],
   "mousepad": {
@@ -33,8 +25,7 @@
       "type": "first-person"
     },
     "overwatch-2": {
-      "type": "first-person",
-      "sensitivity": 2.6
+      "type": "first-person"
     },
     "valorant": {
       "type": "first-person"
