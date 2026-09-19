@@ -1,35 +1,39 @@
 # User Profile
 
-Profile은 반복 상담에서 다시 측정할 필요가 없는 사용자 설정을 보존하는 선택적 JSON context다. 실제 파일의 위치와 lifecycle은 사용자 또는 workspace가 소유한다.
+Profile은 반복 상담에서 다시 확인할 필요가 없는 사용자 설정을 보존하는 선택적 JSON context다. 실제 파일과 lifecycle은 사용자 또는 workspace가 소유한다.
 
 ## Shape
 
-기본 예시는 `../assets/profile.example.json`을 사용한다. 이 파일은 starter shape와 기본 게임 목록을 보여 주기 위한 예시이며 실제 사용자의 DPI, 모니터 구성, 배율, 감도 같은 개인 설정을 대표하지 않는다. 실제 profile은 확인된 사용자 값으로 별도 유지한다.
+`../assets/profile.example.json`은 starter shape와 기본 게임 목록만 보여 주는 예시다. 실제 사용자의 DPI, 모니터, 마우스패드와 감도를 대표하지 않는다.
 
-필드는 필요한 것만 채우며 알 수 없는 값을 추측하지 않는다. Example은 최소 shape만 보여 주며 모든 게임에 공통 schema를 강제하지 않는다.
+모르는 값은 추측하거나 placeholder로 채우지 말고 생략한다. JSON field order는 의미 계약이 아니지만 사람이 읽기 쉽도록 example과 새 profile은 다음 순서를 권장한다.
 
-## Semantics
+```text
+version → mouse → mousepad → os → displays → games
+```
 
-- `version`: profile shape의 revision. 현재 초안은 `1`이다.
-- `mouse.dpi`: 현재 기본 DPI/CPI. 감도 판단에 사용할 실제 값만 기록한다.
-- `os.platform`: pointer 설정을 해석하는 데 필요한 OS 식별자다.
-- `os.pointer_speed`: 해당 OS의 pointer-speed 상태다. 정확한 native 값이 알려져 있으면 그대로 기록하고, 사용자가 플랫폼 기본값을 쓴다고 확인한 경우 `default`처럼 그 사실을 보존할 수 있다. 다른 OS의 같은 숫자나 label과 직접 비교하지 않는다.
-- `os.acceleration`: OS pointer acceleration/enhancement의 사용 여부다. 플랫폼이 단순 boolean으로 표현되지 않으면 실제 의미를 보존할 수 있는 형태를 사용한다.
-- `displays[].name`: 사용자가 구분하기 위한 local label이다.
-- `displays[].resolution`: `[width, height]` 물리 픽셀 해상도다.
-- `displays[].scale`: OS display scale multiplier다. 예: `1.75`는 175% scaling을 뜻한다.
-- `displays[].primary`: primary display 여부다.
-- `mousepad.width_mm`, `mousepad.height_mm`: 실제 마우스 이동 공간의 물리적 상한을 판단하기 위한 패드 크기(mm)다.
-- `games.<id>.type`: 현재 주로 다루는 입력 맥락. 초안에서는 `first-person` 또는 `third-person`을 사용한다.
-- `games.<id>.sensitivity`: 해당 게임이 노출하는 native sensitivity 값이다. 같은 field 이름을 사용해도 서로 다른 게임의 숫자는 직접 비교하지 않는다.
+## Fields
 
-게임 변환에 FOV, ADS multiplier, scope 값처럼 추가 설정이 실제로 필요하면 해당 game entry에 현재 게임의 의미를 보존한 필드로 기록할 수 있다. 모든 게임의 서로 다른 설정을 억지로 하나의 universal schema로 정규화하지 않는다.
+- `version`: profile shape revision.
+- `mouse.dpi`: 현재 기본 DPI/CPI.
+- `mousepad.width_mm`, `mousepad.height_mm`: 패드의 물리 크기(mm).
+- `os.platform`: pointer setting을 해석하는 데 필요한 OS 식별자.
+- `os.pointer_speed`: optional. OS가 노출하는 native 값이나 사용자가 확인한 `default` 상태를 그대로 보존한다.
+- `os.acceleration`: optional. OS pointer acceleration/enhancement 사용 여부. 단순 boolean으로 의미를 보존할 수 없으면 해당 플랫폼 의미를 유지할 수 있는 형태를 사용한다.
+- `displays[].name`: 사용자가 구분하기 위한 local label.
+- `displays[].primary`: primary display 여부.
+- `displays[].resolution`: `[width, height]` 물리 픽셀 해상도.
+- `displays[].scale`: OS display scale multiplier. 예: `1.75`는 175% scaling.
+- `games.<id>.input_context`: optional routing hint. `first-person`, `third-person`, `pointer` 같은 descriptive label을 사용할 수 있지만 closed enum이 아니다. mixed/ambiguous game은 생략할 수 있다.
+- `games.<id>.sensitivity`: optional. 해당 게임이 노출하는 native sensitivity 값. 같은 field 이름이라도 서로 다른 게임의 숫자는 직접 비교하지 않는다.
+
+FOV, ADS multiplier, scope처럼 추가 game setting이 실제로 필요하면 해당 game entry에 그 게임의 native 의미를 보존해 기록한다. 서로 다른 게임의 설정을 universal schema로 억지로 정규화하지 않는다.
 
 ## Use
 
-- Profile 값은 현재 상태에 대한 evidence다. 사용자가 현재 설정이 다르다고 말하면 profile보다 현재 정보를 우선한다.
-- 사무/코딩 작업에서는 필요한 `os`, `displays`, `mouse` context만 읽는다.
-- 게임 작업에서는 필요한 `mouse`, `mousepad`, 해당 `games` entry만 우선 읽는다. OS pointer 설정은 게임 입력 모델에 실제로 적용될 때만 사용한다.
-- 게임 간 변환에서는 각 game entry의 native sensitivity를 원본 값으로 보존하고, 변환 결과나 공통 `cm/360`을 원래 숫자의 의미처럼 덮어쓰지 않는다.
-- Profile을 갱신할 때는 확인된 값만 바꾸고 다른 게임이나 알 수 없는 extension을 정리하지 않는다.
-- Schema validation이나 자동 migration이 실제로 필요해질 때만 별도 schema/validator를 추가한다.
+- Profile은 현재 상태의 evidence다. 사용자가 더 최신 값을 말하면 그 값을 우선한다.
+- 사무/코딩 작업에서는 필요한 `mouse`, `os`, `displays`만 읽는다.
+- 게임 작업에서는 필요한 `mouse`, `mousepad`, 해당 game entry를 우선 읽고 OS setting은 실제 game input에 적용될 때만 사용한다.
+- 게임 간 변환에서도 native sensitivity를 원본 값으로 보존한다. 환산값이나 `cm/360`으로 덮어쓰지 않는다.
+- 갱신할 때는 확인된 값만 바꾸고 task와 무관한 필드나 알 수 없는 extension을 보존한다.
+- Schema validation이나 migration이 실제로 필요해질 때만 별도 schema/validator를 추가한다.
