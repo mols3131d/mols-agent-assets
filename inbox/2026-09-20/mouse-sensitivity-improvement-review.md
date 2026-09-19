@@ -1,8 +1,8 @@
 # `mouse-sensitivity` 개선 Run — Review
 
-## Current verdict
+## Verdict
 
-`READY FOR DETERMINISTIC GATE`. Semantic review와 wording review에서 merge-blocking defect는 남지 않았다. PR Gate 결과는 아직 진행 중이다.
+`ACCEPT`. Semantic review와 wording review에서 merge-blocking defect가 없고, PR Gate가 source contract, deterministic tests, generated projection, Rulesync validation을 모두 통과했다.
 
 ## Work dispositions
 
@@ -15,13 +15,13 @@
 | Default example | CS2 / Overwatch 2 / Valorant 유지, 실제 사용자 설정과 분리 | ✅ Accept |
 | Conversion | 요청 시 current external research, 고정 source list/DB 제거 | ✅ Accept |
 | Text optimization | 의미·routing·boundary·technical token 보존, wording 중복 감소 | ✅ Accept |
-| Generated route | 공식 generator의 sorting/serialization semantics로 projection 반영 | ⚪ PR Gate pending |
+| Generated route | 공식 generator semantics와 committed projection 일치 | ✅ Accept |
 
 ## Semantic review
 
 ### Responsibility / Fit
 
-하나의 Skill을 유지한다. Desktop과 game은 input pipeline이 다르지만 사용자 intent는 mouse sensitivity/settings라는 하나의 선택 단위로 응집되고, 공통 physical input context를 공유한다. FPS/TPS를 별도 Skill로 만들 독립 activation/ownership 가치는 없다.
+하나의 Skill을 유지한다. Desktop과 game은 input pipeline이 다르지만 사용자 intent는 mouse sensitivity/settings라는 하나의 선택 단위로 응집되고 공통 physical input context를 공유한다. FPS/TPS를 별도 Skill로 만들 독립 activation/ownership 가치는 없다.
 
 ### Activation / Routing
 
@@ -61,12 +61,15 @@ Exact conversion은 기본 경로가 아니다. 요청 또는 decision need가 �
 
 ## Deterministic evidence
 
-- 이전 PR Gate: frontmatter validation ✅, deterministic tests 236 ✅, generated projection drift ❌
-- `route/skills.jsonl`: repository generator 구현을 확인해 final frontmatter description을 name-sorted 위치에 반영
-- 최신 PR Gate: ⚪ running
+최신 PR Gate run #232가 다음 단계를 모두 통과했다.
 
-Connector 환경에서는 repository-local `mise run generated-sync` / `format-changed`를 직접 실행할 수 없었다. Projection exactness와 formatter/source/test checks는 server-side PR Gate 결과로 판정한다.
+- ✅ Validate source contracts
+- ✅ Run deterministic tests
+- ✅ Validate affected generated projections
+- ✅ Validate Rulesync-managed assets
+
+이전 projection drift는 `route/skills.jsonl` 동기화로 해소됐다. Connector 환경에서는 repository-local `mise run generated-sync` / `format-changed`를 직접 실행하지 않았고, server-side PR Gate가 committed result의 authoritative integration evidence를 제공했다.
 
 ## Residual limits
 
-- Runtime selection/behavior eval은 수행하지 않았다. Static semantic validation과 deterministic PR Gate 성공을 실제 model selection 성능으로 확대 해석하지 않는다.
+Runtime selection/behavior eval은 수행하지 않았다. Static semantic validation과 deterministic PR Gate 성공을 실제 model selection이나 추천 품질의 runtime 성능으로 확대 해석하지 않는다.
