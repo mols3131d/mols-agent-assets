@@ -4,14 +4,16 @@ Profile은 반복 상담에서 다시 측정할 필요가 없는 사용자 설�
 
 ## Shape
 
-기본 예시는 `../assets/profile.example.json`을 사용한다. 필드는 필요한 것만 채우며 알 수 없는 값을 추측하지 않는다. Example은 최소 shape만 보여 주며 모든 게임에 공통 schema를 강제하지 않는다.
+기본 예시는 `../assets/profile.example.json`을 사용한다. 이 파일은 starter shape와 기본 게임 목록을 보여 주기 위한 예시이며 실제 사용자의 DPI, 모니터 구성, 배율, 감도 같은 개인 설정을 대표하지 않는다. 실제 profile은 확인된 사용자 값으로 별도 유지한다.
+
+필드는 필요한 것만 채우며 알 수 없는 값을 추측하지 않는다. Example은 최소 shape만 보여 주며 모든 게임에 공통 schema를 강제하지 않는다.
 
 ## Semantics
 
 - `version`: profile shape의 revision. 현재 초안은 `1`이다.
-- `mouse.dpi`: 현재 기본 DPI/CPI. 감도 계산에 사용할 실제 값만 기록한다.
+- `mouse.dpi`: 현재 기본 DPI/CPI. 감도 판단에 사용할 실제 값만 기록한다.
 - `os.platform`: pointer 설정을 해석하는 데 필요한 OS 식별자다.
-- `os.pointer_speed`: 해당 OS가 노출하는 native pointer-speed 값이다. 다른 OS의 같은 숫자와 직접 비교하지 않는다.
+- `os.pointer_speed`: 해당 OS의 pointer-speed 상태다. 정확한 native 값이 알려져 있으면 그대로 기록하고, 사용자가 플랫폼 기본값을 쓴다고 확인한 경우 `default`처럼 그 사실을 보존할 수 있다. 다른 OS의 같은 숫자나 label과 직접 비교하지 않는다.
 - `os.acceleration`: OS pointer acceleration/enhancement의 사용 여부다. 플랫폼이 단순 boolean으로 표현되지 않으면 실제 의미를 보존할 수 있는 형태를 사용한다.
 - `displays[].name`: 사용자가 구분하기 위한 local label이다.
 - `displays[].resolution`: `[width, height]` 물리 픽셀 해상도다.
