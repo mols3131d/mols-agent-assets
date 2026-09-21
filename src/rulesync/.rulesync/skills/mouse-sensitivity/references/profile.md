@@ -25,7 +25,12 @@ version → mouse → mousepad → os → displays → games
 - `displays[].resolution`: `[width, height]` 물리 픽셀 해상도.
 - `displays[].scale`: OS display scale multiplier. 예: `1.75`는 175% scaling.
 - `games.<id>.input_context`: optional routing hint. `first-person`, `third-person`, `pointer` 같은 descriptive label을 사용할 수 있지만 closed enum이 아니다. mixed/ambiguous game은 생략할 수 있다.
-- `games.<id>.sensitivity`: optional. 해당 게임이 노출하는 native sensitivity 값. 같은 field 이름이라도 서로 다른 게임의 숫자는 직접 비교하지 않는다.
+- `games.<id>.sensitivity`: optional. 단일 감도만 쓰면 해당 게임의 native sensitivity 숫자를 기록한다. 여러 감도 단계를 쓰면 object form을 사용할 수 있다. 같은 field 이름이라도 서로 다른 게임의 숫자는 직접 비교하지 않는다.
+- `games.<id>.sensitivity.default`: object form의 기준 native sensitivity 숫자.
+- `games.<id>.sensitivity.relative.<name>`: `default` 대비 변화량. `+15.4%`, `-7.7%`처럼 부호 있는 percentage string으로 기록한다. `slow`, `fast`, `very_fast` 같은 이름은 사용자 정의 label이며 closed enum이 아니다.
+- `games.<id>.sensitivity.heroes.<hero>`: optional. 공통 relative 단계로 표현하지 않는 영웅별 native sensitivity 숫자.
+
+Relative 값은 `default × (1 + percentage / 100)`으로 해석한다. relative 항목에 계산된 native sensitivity나 eDPI를 중복 저장하지 않는다.
 
 FOV, ADS multiplier, scope처럼 추가 game setting이 실제로 필요하면 해당 game entry에 그 게임의 native 의미를 보존해 기록한다. 서로 다른 게임의 설정을 universal schema로 억지로 정규화하지 않는다.
 
