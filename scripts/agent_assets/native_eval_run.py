@@ -51,10 +51,13 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Local Codex SDK Agent Skill eval")
     parser.add_argument("profile", choices=sorted(PROFILES))
     parser.add_argument("--repeat", type=int, default=1)
+    parser.add_argument("--suite", choices=("all", "trigger", "behavior"), default="all")
     parser.add_argument("--output", help="Optional persistent local JSON/CSV eval evidence")
     args = parser.parse_args(argv)
     if args.repeat < 1:
         parser.error("--repeat must be a positive integer")
+    if args.profile == "asset-routing" and args.suite == "behavior":
+        parser.error("asset-routing profile supports trigger only")
 
     skills, config = PROFILES[args.profile]
     # Outside the repository: root AGENTS.md and installed project Skills
@@ -85,6 +88,9 @@ def main(argv: list[str] | None = None) -> int:
                 "--repeat",
                 str(args.repeat),
             ]
+            if args.suite != "all":
+                name = "native-trigger" if args.suite == "trigger" else "behavior"
+                command.extend(["--filter-metadata", f"suite={name}"])
             if output is not None:
                 command.extend(["-o", str(output)])
             return promptfoo_run.main(command)

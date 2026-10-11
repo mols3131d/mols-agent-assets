@@ -32,7 +32,9 @@ Ollama 기반 contract/fixture lane과 별도로 **Codex SDK가 실제 Skill을 
 mise run eval-mols-loops-native
 mise run eval-asset-routing-native
 # 반복 시행은 직접 지정합니다.
-uv run --locked --no-default-groups python -m scripts.agent_assets.native_eval_run mols-loops --repeat 3 --output .tmp/evals/mols-loops-native.json
+uv run --locked --no-default-groups python -m scripts.agent_assets.native_eval_run mols-loops --suite trigger --repeat 3 --output .tmp/evals/mols-loops-trigger.json
+# Grader를 설정한 다음 Behavior만 별도로 실행할 수도 있습니다.
+uv run --locked --no-default-groups python -m scripts.agent_assets.native_eval_run mols-loops --suite behavior --repeat 3 --output .tmp/evals/mols-loops-behavior.json
 ```
 
 - 실행 전 canonical `src/rulesync/.rulesync/skills/<name>/` 전체를
@@ -48,6 +50,10 @@ uv run --locked --no-default-groups python -m scripts.agent_assets.native_eval_r
 - 기본 model은 `gpt-5.5`이며 `CODEX_EVAL_MODEL`로 변경할 수 있습니다.
   Codex는 read-only / no-approval / network-off로 제한합니다. 비교 실행 시
   model, runtime, fixture revision, 인증 조건을 기록해야 합니다.
+- `--suite trigger`는 Grader 없이 native routing만 평가합니다.
+  `--suite behavior`는 `PROMPTFOO_GRADER_PROVIDER` (기본 Ollama)와
+  실제 grader runtime이 필요합니다. 기본 `--suite all`은 두 영역을 함께
+  실행합니다.
 - Native **Routing**은 원래 요청만 전달합니다. Native **Behavior**는
   `$<skill-name>` 직접 호출을 선행해 이미 선택된 Skill의 결과를 평가합니다.
   두 결과를 하나의 Skill 성능 점수로 혼합하지 않습니다.

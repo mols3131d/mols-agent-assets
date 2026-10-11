@@ -118,3 +118,27 @@ def test_native_runner_exports_evidence_outside_ephemeral_workspace(
     assert runner.main(["mols-loops", "--repeat", "3", "--output", str(output)]) == 0
     assert calls[0][-2:] == ["-o", str(output.resolve())]
     assert output.read_text(encoding="utf-8") == "{}"
+
+
+def test_native_runner_filters_behavior_and_trigger_independently(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(runner, "ROOT", tmp_path)
+    package = tmp_path / "src" / "rulesync" / ".rulesync" / "skills" / "mols-loops"
+    package.mkdir(parents=True)
+    (package / "SKILL.md").write_text("# Skill", encoding="utf-8")
+    monkeypatch.setenv("OPENAI_API_KEY", "test-only-key")
+    monkeypatch.delenv("CODEX_EVAL_HOME", raising=False)
+    commands: list[list[str]] = []
+    monkeypatch.setattr(
+        runner.promptfoo_run, "main", lambda args: commands.append(args) or 0
+    )
+    assert runner.main(["mols-loops", "--suite", "trigger"]) == 0
+    assert runner.main(["mols-loops", "--suite", "behavior"]) == 0
+    assert commands[0][-2:] == ["--filter-metadata", "suite=native-trigger"]
+    assert commands[1][-2:] == ["--filter-metadata", "suite=behavior"]
+
+
+def test_native_runner_rejects_missing_profile_suite() -> None:
+    with pytest.raises(SystemExit):
+        runner.main(["asset-routing", "--suite", "behavior"])
