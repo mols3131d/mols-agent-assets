@@ -17,6 +17,8 @@ providers:
       network_access_enabled: false
       web_search_enabled: false
       enable_streaming: true
+      cli_env:
+        CODEX_HOME: "{{ env.CODEX_EVAL_HOME }}"
 
 tests:
   - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_native_tests

@@ -289,6 +289,9 @@ def test_native_behavior_requires_usage_and_semantic_criteria(monkeypatch) -> No
     )
     assert generated[0]["assert"][0]["type"] == "skill-used"
     assert generated[0]["assert"][0]["value"] == "mols-loops"
+    assert generated[0]["vars"]["task"].startswith("Use $mols-loops for this task:")
+    assert "계획서에 배포한다고" in generated[0]["vars"]["task"]
+    assert generated[0]["metadata"]["activation"] == "explicit"
     assert any(check["type"] == "llm-rubric" for check in generated[0]["assert"])
 
 
@@ -315,6 +318,7 @@ def test_native_configs_select_valid_cases() -> None:
         config = yaml.safe_load((CONFIG_DIR / filename).read_text(encoding="utf-8"))
         assert config["providers"][0]["id"] == "openai:codex-sdk"
         assert config["providers"][0]["config"]["sandbox_mode"] == "read-only"
+        assert config["providers"][0]["config"]["cli_env"]["CODEX_HOME"] == "{{ env.CODEX_EVAL_HOME }}"
         assert config["sharing"] is False
         assert config["writeLatestResults"] is False
         for entry in config["tests"]:
@@ -322,3 +326,24 @@ def test_native_configs_select_valid_cases() -> None:
             assert set(fixture["available_skills"]) == staged_skills
             assert entry["path"].endswith(":generate_native_tests")
             assert evaluator.generate_native_tests(fixture)
+
+
+def test_native_behavior_and_routing_are_separate_conditions() -> None:
+    routing = evaluator.generate_native_tests(
+        {
+            "skill": "mols-loops",
+            "suite": "trigger",
+            "case_ids": ["explicit-rpi-activates"],
+        }
+    )[0]
+    behavior = evaluator.generate_native_tests(
+        {
+            "skill": "mols-loops",
+            "suite": "behavior",
+            "case_ids": ["plan-is-not-permission"],
+        }
+    )[0]
+    assert routing["vars"]["task"] == "이 작업 RPI로 진행해줘."
+    assert "Use $mols-loops" not in routing["vars"]["task"]
+    assert behavior["vars"]["task"].startswith("Use $mols-loops")
+    assert behavior["metadata"]["suite"] == "behavior"

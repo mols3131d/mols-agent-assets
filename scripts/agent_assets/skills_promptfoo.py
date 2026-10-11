@@ -365,11 +365,15 @@ def generate_native_tests(config: dict | None = None) -> list[dict]:
     if suite == BEHAVIOR_SUITE:
         tests = generate_tests({**config, "semantic": True})
         for test in tests:
+            # Behavior evaluates an already-selected Skill. Unlike Routing, this
+            # run must explicitly activate the Skill before grading its outcome.
+            test["vars"]["task"] = f"Use ${skill_name} for this task:\n\n{test['vars']['task']}"
             test["assert"].insert(
                 0,
                 {"type": "skill-used", "value": skill_name, "metric": "native-skill-use"},
             )
             test["metadata"]["lane"] = "native"
+            test["metadata"]["activation"] = "explicit"
         return tests
     if suite != TRIGGER_SUITE:
         raise ValueError(f"suite must be one of {sorted(SUITES)}")

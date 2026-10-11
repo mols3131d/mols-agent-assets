@@ -38,10 +38,19 @@ uv run --locked --no-default-groups python -m scripts.agent_assets.native_eval_r
 - 실행 전 canonical `src/rulesync/.rulesync/skills/<name>/` 전체를
   저장소 밖의 별도 임시 workspace에 복사합니다. 평가가 끝나면
   workspace를 제거하며 source/derived projection은 변경하지 않습니다.
-- Promptfoo `openai:codex-sdk`로 실행하며 로컬 Codex 인증 또는 API key,
-  Node.js 및 npx가 필요합니다. 기본 model은 `gpt-5.5`이며 `CODEX_EVAL_MODEL`로
-  명시적으로 변경할 수 있습니다. 실행 중 Codex는 read-only / no-approval /
-  network-off로 제한합니다. 비교 실행 시 모델, 런타임 버전과 인증 조건을 별도로 기록해야 합니다.
+- Promptfoo `openai:codex-sdk`로 실행하며 Node.js >= 22.22.0, npx,
+  Codex SDK 및 인증이 필요합니다. API key (`OPENAI_API_KEY` 또는
+  `CODEX_API_KEY`)가 있으면 별도 임시 `CODEX_HOME`을 생성합니다.
+  ChatGPT 로그인으로 실행하려면 **명시적으로**
+  `CODEX_EVAL_HOME=/path/to/codex-home`을 지정합니다. 로그인
+  Home에 들어 있는 개인 설정·Skill이 측정에 영향을 줄 수 있어
+  baseline 비교에는 **전용 Codex Home**을 권장합니다.
+- 기본 model은 `gpt-5.5`이며 `CODEX_EVAL_MODEL`로 변경할 수 있습니다.
+  Codex는 read-only / no-approval / network-off로 제한합니다. 비교 실행 시
+  model, runtime, fixture revision, 인증 조건을 기록해야 합니다.
+- Native **Routing**은 원래 요청만 전달합니다. Native **Behavior**는
+  `$<skill-name>` 직접 호출을 선행해 이미 선택된 Skill의 결과를 평가합니다.
+  두 결과를 하나의 Skill 성능 점수로 혼합하지 않습니다.
 - Routing은 `skill-used` / `not-skill-used` (Codex Skill 파일 읽기에서
   추론한 **heuristic evidence**)를 사용합니다. 선택 우선순위나 업무 결과의
   품질까지 입증하지 않습니다. Behavior는 사용 여부에 더해

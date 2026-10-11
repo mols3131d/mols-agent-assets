@@ -11,24 +11,40 @@ from scripts.agent_assets import promptfoo_run
 
 ROOT = Path(__file__).resolve().parents[2]
 PROFILES = {
-    "mols-loops": (
-        ("mols-loops",),
-        "mols-loops-native.yaml",
-    ),
+    "mols-loops": (("mols-loops",), "mols-loops-native.yaml"),
     "asset-routing": (
         ("mols-agent-asset", "mols-agent-asset-find"),
         "agent-asset-routing-native.yaml",
     ),
 }
+CODEX_ENV_KEYS = ("CODEX_SKILLS_WORKING_DIR", "CODEX_EVAL_HOME")
 
 
 def stage_skills(workspace: Path, skills: tuple[str, ...]) -> None:
-    """Stage canonical packages, including references, without editing the source."""
+    """Stage canonical packages with references, leaving source untouched."""
     for name in skills:
         source = ROOT / "src" / "rulesync" / ".rulesync" / "skills" / name
         if not (source / "SKILL.md").is_file():
             raise FileNotFoundError(f"canonical Skill missing: {source}")
         shutil.copytree(source, workspace / ".agents" / "skills" / name)
+
+
+def resolve_codex_home(temp: Path, env: dict[str, str]) -> Path:
+    """Avoid personal Skills/config in baseline measurements."""
+    configured = env.get("CODEX_EVAL_HOME")
+    if configured:
+        path = Path(configured).expanduser().resolve()
+        if not path.is_dir():
+            raise ValueError(f"CODEX_EVAL_HOME is not a directory: {path}")
+        return path
+    if not (env.get("OPENAI_API_KEY") or env.get("CODEX_API_KEY")):
+        raise ValueError(
+            "Native Eval needs OPENAI_API_KEY/CODEX_API_KEY or an explicit "
+            "CODEX_EVAL_HOME with authenticated Codex login"
+        )
+    path = temp / "codex-home"
+    path.mkdir()
+    return path
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -40,21 +56,38 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("--repeat must be a positive integer")
 
     skills, config = PROFILES[args.profile]
-    # Keep the workspace outside the repository so root AGENTS.md does not leak in.
+    # Outside the repository: root AGENTS.md and installed project Skills
+    # cannot accidentally influence an otherwise isolated measurement.
     with TemporaryDirectory(prefix=f"native-{args.profile}-") as temp:
-        workspace = Path(temp)
+        temp_root = Path(temp)
+        try:
+            home = resolve_codex_home(temp_root, os.environ)
+        except ValueError as error:
+            print(f"native eval: {error}", file=sys.stderr)
+            return 2
+
+        workspace = temp_root / "workspace"
+        workspace.mkdir()
         stage_skills(workspace, skills)
-        prior = os.environ.get("CODEX_SKILLS_WORKING_DIR")
+        prior = {key: os.environ.get(key) for key in CODEX_ENV_KEYS}
         os.environ["CODEX_SKILLS_WORKING_DIR"] = str(workspace)
+        os.environ["CODEX_EVAL_HOME"] = str(home)
         try:
             return promptfoo_run.main(
-                ["eval", "-c", str(ROOT / "evals" / "promptfoo" / config), "--repeat", str(args.repeat)]
+                [
+                    "eval",
+                    "-c",
+                    str(ROOT / "evals" / "promptfoo" / config),
+                    "--repeat",
+                    str(args.repeat),
+                ]
             )
         finally:
-            if prior is None:
-                os.environ.pop("CODEX_SKILLS_WORKING_DIR", None)
-            else:
-                os.environ["CODEX_SKILLS_WORKING_DIR"] = prior
+            for key, value in prior.items():
+                if value is None:
+                    os.environ.pop(key, None)
+                else:
+                    os.environ[key] = value
 
 
 if __name__ == "__main__":
