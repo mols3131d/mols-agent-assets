@@ -14,6 +14,10 @@
           "very_fast": "+40%"
         }
       }
+    },
+    "apex-legends": {
+      "input_context": "first-person",
+      "sensitivity": 0.75
     }
   }
 }
