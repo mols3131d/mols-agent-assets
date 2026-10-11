@@ -17,7 +17,10 @@
     },
     "apex-legends": {
       "input_context": "first-person",
-      "sensitivity": 0.75
+      "sensitivity": 0.75,
+      "ads": {
+        "common_multiplier": 0.8
+      }
     }
   }
 }
