@@ -254,3 +254,71 @@ def test_runtime_promptfoo_config_selects_valid_cases_and_semantics() -> None:
             evaluator._case_suite(fixture[case_id]["mode"]) == suite
             for case_id in selected
         )
+
+
+def test_native_trigger_projects_real_skill_usage_without_answer_leak() -> None:
+    config = {
+        "skill": "mols-agent-asset",
+        "suite": "trigger",
+        "available_skills": ["mols-agent-asset", "mols-agent-asset-find"],
+        "case_ids": [
+            "skill-authoring-activates",
+            "install-routes-to-find",
+            "human-prose-does-not-activate",
+        ],
+    }
+    generated = evaluator.generate_native_tests(config)
+    assert [test["vars"]["case_id"] for test in generated] == config["case_ids"]
+    assert [[check["type"] for check in test["assert"]] for test in generated] == [
+        ["skill-used", "not-skill-used"],
+        ["not-skill-used", "skill-used"],
+        ["not-skill-used", "not-skill-used"],
+    ]
+    assert all("expected_selection" not in case["vars"] for case in generated)
+    assert all(case["metadata"]["lane"] == "native" for case in generated)
+
+
+def test_native_behavior_requires_usage_and_semantic_criteria(monkeypatch) -> None:
+    monkeypatch.setenv("PROMPTFOO_GRADER_PROVIDER", "ollama:chat:test-grader")
+    generated = evaluator.generate_native_tests(
+        {
+            "skill": "mols-loops",
+            "suite": "behavior",
+            "case_ids": ["plan-is-not-permission"],
+        }
+    )
+    assert generated[0]["assert"][0]["type"] == "skill-used"
+    assert generated[0]["assert"][0]["value"] == "mols-loops"
+    assert any(check["type"] == "llm-rubric" for check in generated[0]["assert"])
+
+
+def test_native_eval_rejects_unstaged_selected_skill() -> None:
+    with pytest.raises(ValueError, match="missing expected Skills"):
+        evaluator.generate_native_tests(
+            {
+                "skill": "mols-agent-asset",
+                "suite": "trigger",
+                "case_ids": ["install-routes-to-find"],
+            }
+        )
+
+
+def test_native_configs_select_valid_cases() -> None:
+    profiles = {
+        "mols-loops-native.yaml": {"mols-loops"},
+        "agent-asset-routing-native.yaml": {
+            "mols-agent-asset",
+            "mols-agent-asset-find",
+        },
+    }
+    for filename, staged_skills in profiles.items():
+        config = yaml.safe_load((CONFIG_DIR / filename).read_text(encoding="utf-8"))
+        assert config["providers"][0]["id"] == "openai:codex-sdk"
+        assert config["providers"][0]["config"]["sandbox_mode"] == "read-only"
+        assert config["sharing"] is False
+        assert config["writeLatestResults"] is False
+        for entry in config["tests"]:
+            fixture = entry["config"]
+            assert set(fixture["available_skills"]) == staged_skills
+            assert entry["path"].endswith(":generate_native_tests")
+            assert evaluator.generate_native_tests(fixture)

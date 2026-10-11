@@ -22,3 +22,31 @@ mise run eval-mols-loops
 Deterministic assertion이 가능한 behavioral contract는 model grader보다 우선하지만, **문장 동기화나 semantic prose consistency를 문자열 regression으로 고정하지 않습니다.** 그런 의미는 authoritative source와 해당 behavioral review/eval이 소유합니다.
 
 Fixture가 존재해도 compatible runner와 실제 model/runtime을 실행하지 않았다면 runtime behavior가 통과했다고 주장하지 않습니다.
+
+## Native Skill Eval (local, non-blocking)
+
+Ollama 기반 contract/fixture lane과 별도로 **Codex SDK가 실제 Skill을 읽고
+호출했는지** 확인하는 native-runtime lane을 제공합니다.
+
+```bash
+mise run eval-mols-loops-native
+mise run eval-asset-routing-native
+# 반복 시행은 직접 지정합니다.
+uv run --locked --no-default-groups python -m scripts.agent_assets.native_eval_run mols-loops --repeat 3
+```
+
+- 실행 전 canonical `src/rulesync/.rulesync/skills/<name>/` 전체를
+  gitignored `.tmp/`의 별도 임시 workspace에 복사합니다. 평가가 끝나면
+  workspace를 제거하며 source/derived projection은 변경하지 않습니다.
+- Promptfoo `openai:codex-sdk`로 실행하며 로컬 Codex 인증 또는 API key,
+  Node.js 및 npx가 필요합니다. 실행 중 Codex는 read-only / no-approval /
+  network-off로 제한합니다. 모델 및 런타임 버전, 인증 방식은 결과와 함께 기록합니다.
+- Routing은 `skill-used` / `not-skill-used` (Codex Skill 파일 읽기에서
+  추론한 **heuristic evidence**)를 사용합니다. 선택 우선순위나 업무 결과의
+  품질까지 입증하지 않습니다. Behavior는 사용 여부에 더해
+  기존 `llm-rubric`을 적용하므로 별도 `PROMPTFOO_GRADER_PROVIDER`
+  설정 또는 기본 Ollama grader가 필요합니다.
+- 기존 `cases.json`을 재사용하며 기대 selection/criteria는 target prompt에
+  노출하지 않습니다. 실패 시 실제 사용 trace 및 grader output을 확인합니다.
+- 이 실행은 CI `PR Gate`에 포함하지 않습니다. 로컬 Codex + grader
+  실행 결과가 없는 상태를 PASS로 보고하지 않습니다.

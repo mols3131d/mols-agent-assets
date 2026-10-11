@@ -345,6 +345,93 @@ def generate_tests(config: dict | None = None) -> list[dict]:
     return tests
 
 
+
+def generate_native_tests(config: dict | None = None) -> list[dict]:
+    """Project canonical cases onto native skill-use and behavior evidence."""
+    config = config or {}
+    skill_name = _skill_name(config)
+    suite = config.get("suite")
+    available = config.get("available_skills", [skill_name])
+    if (
+        not isinstance(available, list)
+        or not available
+        or any(not isinstance(name, str) for name in available)
+        or any(_skill_name({"skill": name}) != name for name in available)
+        or len(available) != len(set(available))
+        or skill_name not in available
+    ):
+        raise ValueError("available_skills must be unique Skill directory names including skill")
+
+    if suite == BEHAVIOR_SUITE:
+        tests = generate_tests({**config, "semantic": True})
+        for test in tests:
+            test["assert"].insert(
+                0,
+                {"type": "skill-used", "value": skill_name, "metric": "native-skill-use"},
+            )
+            test["metadata"]["lane"] = "native"
+        return tests
+    if suite != TRIGGER_SUITE:
+        raise ValueError(f"suite must be one of {sorted(SUITES)}")
+
+    cases = _load_cases(skill_name)
+    selected_ids = _selected_case_ids(config, suite, cases)
+    label = config.get("provider_label", "codex-native")
+    if not isinstance(label, str) or not label:
+        raise ValueError("provider_label must be a non-empty string")
+    available_set = set(available)
+    fixture = str(fixture_path(skill_name).relative_to(ROOT))
+    tests: list[dict] = []
+    seen: set[str] = set()
+    for case_id in selected_ids:
+        if case_id in seen:
+            raise ValueError(f"duplicate Promptfoo case id: {case_id}")
+        seen.add(case_id)
+        if case_id not in cases:
+            raise ValueError(f"unknown Promptfoo case id: {case_id}")
+        case = cases[case_id]
+        mode = case.get("mode")
+        prompt = case.get("prompt")
+        if mode not in TRIGGER_MODES:
+            raise ValueError(f"eval case {case_id} belongs to behavior, not trigger")
+        if not isinstance(prompt, str) or not prompt:
+            raise ValueError(f"invalid eval case: {case_id}")
+        expected, _ = _trigger_case_contract(case, mode, skill_name)
+        unknown = set(expected["selected_skills"]) - available_set
+        if unknown:
+            raise ValueError(
+                f"native eval is missing expected Skills: {sorted(unknown)}"
+            )
+        checks = [
+            {
+                "type": (
+                    "skill-used"
+                    if name in expected["selected_skills"]
+                    else "not-skill-used"
+                ),
+                "value": name,
+                "metric": "native-skill-use",
+            }
+            for name in available
+        ]
+        tests.append(
+            {
+                "description": f"{skill_name}::native-trigger::{case_id}",
+                "vars": {"task": prompt, "case_id": case_id, "skill": skill_name},
+                "metadata": {
+                    "fixture": fixture,
+                    "skill": skill_name,
+                    "suite": "native-trigger",
+                    "mode": mode,
+                    "case_id": case_id,
+                    "lane": "native",
+                },
+                "providers": [label],
+                "assert": checks,
+            }
+        )
+    return tests
+
 def _trigger_response_error(payload: object) -> str | None:
     return _selection_error(payload, "trigger provider output")
 
