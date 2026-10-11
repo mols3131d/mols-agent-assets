@@ -364,6 +364,8 @@ def generate_native_tests(config: dict | None = None) -> list[dict]:
 
     if suite == BEHAVIOR_SUITE:
         tests = generate_tests({**config, "semantic": True})
+        if not tests:
+            raise ValueError("native behavior eval requires at least one case")
         for test in tests:
             # Behavior evaluates an already-selected Skill. Unlike Routing, this
             # run must explicitly activate the Skill before grading its outcome.
@@ -380,6 +382,8 @@ def generate_native_tests(config: dict | None = None) -> list[dict]:
 
     cases = _load_cases(skill_name)
     selected_ids = _selected_case_ids(config, suite, cases)
+    if not selected_ids:
+        raise ValueError("native trigger eval requires at least one case")
     label = config.get("provider_label", "codex-native")
     if not isinstance(label, str) or not label:
         raise ValueError("provider_label must be a non-empty string")

@@ -347,3 +347,11 @@ def test_native_behavior_and_routing_are_separate_conditions() -> None:
     assert "Use $mols-loops" not in routing["vars"]["task"]
     assert behavior["vars"]["task"].startswith("Use $mols-loops")
     assert behavior["metadata"]["suite"] == "behavior"
+
+
+@pytest.mark.parametrize("suite", ["trigger", "behavior"])
+def test_native_eval_rejects_empty_case_selection(suite: str) -> None:
+    with pytest.raises(ValueError, match="requires at least one case"):
+        evaluator.generate_native_tests(
+            {"skill": "mols-loops", "suite": suite, "case_ids": []}
+        )

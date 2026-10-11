@@ -51,6 +51,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Local Codex SDK Agent Skill eval")
     parser.add_argument("profile", choices=sorted(PROFILES))
     parser.add_argument("--repeat", type=int, default=1)
+    parser.add_argument("--output", help="Optional persistent local JSON/CSV eval evidence")
     args = parser.parse_args(argv)
     if args.repeat < 1:
         parser.error("--repeat must be a positive integer")
@@ -66,6 +67,10 @@ def main(argv: list[str] | None = None) -> int:
             print(f"native eval: {error}", file=sys.stderr)
             return 2
 
+        output = Path(args.output).expanduser().resolve() if args.output else None
+        if output is not None:
+            output.parent.mkdir(parents=True, exist_ok=True)
+
         workspace = temp_root / "workspace"
         workspace.mkdir()
         stage_skills(workspace, skills)
@@ -73,15 +78,16 @@ def main(argv: list[str] | None = None) -> int:
         os.environ["CODEX_SKILLS_WORKING_DIR"] = str(workspace)
         os.environ["CODEX_EVAL_HOME"] = str(home)
         try:
-            return promptfoo_run.main(
-                [
-                    "eval",
-                    "-c",
-                    str(ROOT / "evals" / "promptfoo" / config),
-                    "--repeat",
-                    str(args.repeat),
-                ]
-            )
+            command = [
+                "eval",
+                "-c",
+                str(ROOT / "evals" / "promptfoo" / config),
+                "--repeat",
+                str(args.repeat),
+            ]
+            if output is not None:
+                command.extend(["-o", str(output)])
+            return promptfoo_run.main(command)
         finally:
             for key, value in prior.items():
                 if value is None:

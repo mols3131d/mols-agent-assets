@@ -95,3 +95,26 @@ def test_native_stage_fails_on_missing_canonical_skill(
     monkeypatch.setattr(runner, "ROOT", tmp_path)
     with pytest.raises(FileNotFoundError, match="canonical Skill missing"):
         runner.stage_skills(tmp_path / "workspace", ("missing",))
+
+
+def test_native_runner_exports_evidence_outside_ephemeral_workspace(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(runner, "ROOT", tmp_path)
+    package = tmp_path / "src" / "rulesync" / ".rulesync" / "skills" / "mols-loops"
+    package.mkdir(parents=True)
+    (package / "SKILL.md").write_text("# Skill", encoding="utf-8")
+    monkeypatch.setenv("CODEX_API_KEY", "test-only-key")
+    monkeypatch.delenv("CODEX_EVAL_HOME", raising=False)
+    output = tmp_path / ".tmp" / "evals" / "mols-loops.json"
+    calls: list[list[str]] = []
+
+    def fake_promptfoo(args: list[str]) -> int:
+        calls.append(args)
+        output.write_text("{}", encoding="utf-8")
+        return 0
+
+    monkeypatch.setattr(runner.promptfoo_run, "main", fake_promptfoo)
+    assert runner.main(["mols-loops", "--repeat", "3", "--output", str(output)]) == 0
+    assert calls[0][-2:] == ["-o", str(output.resolve())]
+    assert output.read_text(encoding="utf-8") == "{}"

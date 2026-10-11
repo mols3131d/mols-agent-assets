@@ -32,7 +32,7 @@ Ollama 기반 contract/fixture lane과 별도로 **Codex SDK가 실제 Skill을 
 mise run eval-mols-loops-native
 mise run eval-asset-routing-native
 # 반복 시행은 직접 지정합니다.
-uv run --locked --no-default-groups python -m scripts.agent_assets.native_eval_run mols-loops --repeat 3
+uv run --locked --no-default-groups python -m scripts.agent_assets.native_eval_run mols-loops --repeat 3 --output .tmp/evals/mols-loops-native.json
 ```
 
 - 실행 전 canonical `src/rulesync/.rulesync/skills/<name>/` 전체를
@@ -60,3 +60,10 @@ uv run --locked --no-default-groups python -m scripts.agent_assets.native_eval_r
   노출하지 않습니다. 실패 시 실제 사용 trace 및 grader output을 확인합니다.
 - 이 실행은 CI `PR Gate`에 포함하지 않습니다. 로컬 Codex + grader
   실행 결과가 없는 상태를 PASS로 보고하지 않습니다.
+
+- `--output .tmp/evals/<profile>.json`은 로컬에서 재실행 결과를
+  확인하는 선택적 기록 경로입니다. Output은 untracked/disposable로
+  유지합니다. Positive Skill-use control이 성공하지 않으면
+  `not-skill-used`만 통과한 negative case를 routing 성공으로
+  단정하지 않습니다. 실제 실패를 Skill, fixture, runtime, grader,
+  telemetry 누락으로 나눠 해석합니다.
