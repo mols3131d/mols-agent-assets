@@ -18,11 +18,14 @@ def test_native_runner_stages_canonical_packages_and_restores_environment(
     monkeypatch.setattr(runner, "ROOT", tmp_path)
     monkeypatch.setenv("CODEX_SKILLS_WORKING_DIR", "original")
     calls: list[list[str]] = []
+    staged: list[Path] = []
 
     def fake_promptfoo(args: list[str]) -> int:
         calls.append(args)
         workspace = Path(runner.os.environ["CODEX_SKILLS_WORKING_DIR"])
+        staged.append(workspace)
         assert workspace.is_dir()
+        assert tmp_path not in workspace.parents
         for skill in ("mols-agent-asset", "mols-agent-asset-find"):
             package = workspace / ".agents" / "skills" / skill
             assert (package / "SKILL.md").read_text(encoding="utf-8") == f"# {skill}"
@@ -33,7 +36,7 @@ def test_native_runner_stages_canonical_packages_and_restores_environment(
     assert runner.main(["asset-routing", "--repeat", "3"]) == 7
     assert runner.os.environ["CODEX_SKILLS_WORKING_DIR"] == "original"
     assert calls[0][-2:] == ["--repeat", "3"]
-    assert not any((tmp_path / ".tmp" / "native-agent-eval").iterdir())
+    assert not staged[0].exists()
 
 
 def test_native_runner_rejects_invalid_repeat() -> None:

@@ -9,6 +9,7 @@ providers:
   - id: openai:codex-sdk
     label: codex-native
     config:
+      model: "{{ env.CODEX_EVAL_MODEL | default('gpt-5.5') }}"
       working_dir: "{{ env.CODEX_SKILLS_WORKING_DIR }}"
       skip_git_repo_check: true
       sandbox_mode: read-only

@@ -40,9 +40,8 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("--repeat must be a positive integer")
 
     skills, config = PROFILES[args.profile]
-    staging_root = ROOT / ".tmp" / "native-agent-eval"
-    staging_root.mkdir(parents=True, exist_ok=True)
-    with TemporaryDirectory(prefix=f"{args.profile}-", dir=staging_root) as temp:
+    # Keep the workspace outside the repository so root AGENTS.md does not leak in.
+    with TemporaryDirectory(prefix=f"native-{args.profile}-") as temp:
         workspace = Path(temp)
         stage_skills(workspace, skills)
         prior = os.environ.get("CODEX_SKILLS_WORKING_DIR")

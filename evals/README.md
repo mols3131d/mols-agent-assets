@@ -36,10 +36,10 @@ uv run --locked --no-default-groups python -m scripts.agent_assets.native_eval_r
 ```
 
 - 실행 전 canonical `src/rulesync/.rulesync/skills/<name>/` 전체를
-  gitignored `.tmp/`의 별도 임시 workspace에 복사합니다. 평가가 끝나면
+  저장소 밖의 별도 임시 workspace에 복사합니다. 평가가 끝나면
   workspace를 제거하며 source/derived projection은 변경하지 않습니다.
 - Promptfoo `openai:codex-sdk`로 실행하며 로컬 Codex 인증 또는 API key,
-  Node.js 및 npx가 필요합니다. 실행 중 Codex는 read-only / no-approval /
+  Node.js 및 npx가 필요합니다. 기본 model은 `gpt-5.5`이며 `CODEX_EVAL_MODEL`로\n  명시적으로 변경할 수 있습니다. 실행 중 Codex는 read-only / no-approval /
   network-off로 제한합니다. 모델 및 런타임 버전, 인증 방식은 결과와 함께 기록합니다.
 - Routing은 `skill-used` / `not-skill-used` (Codex Skill 파일 읽기에서
   추론한 **heuristic evidence**)를 사용합니다. 선택 우선순위나 업무 결과의
