@@ -21,6 +21,13 @@ Profile의 `input_context`가 있으면 routing hint로 사용하되 실제 게�
 
 게임이 raw mouse input을 사용하면 OS pointer speed나 acceleration이 gameplay input에 적용되지 않을 수 있다. 실제 입력 경로를 확인하고 관련 없는 OS 값을 제외한다.
 
+
+## Same-game DPI Change
+
+같은 게임·입력 상태에서 DPI만 바꾸고 기존 회전 감도를 유지하려면, native sensitivity가 선형으로 적용되는 경우 `new sensitivity = old sensitivity × old DPI / new DPI`를 시작값으로 쓴다. 예: 2000 DPI와 0.9 → 2400 DPI와 0.75. 이 계산은 다른 게임 간의 sensitivity 환산이 아니다.
+
+별도 ADS/scope multiplier를 사용한다면 기본 감도 보정과 구분한다. 동일한 ADS 비율을 유지하려는 경우 multiplier까지 DPI 비율로 중복 조정하지 않는다. 입력 가속, 별도 sensitivity pipeline이나 game-specific 조건이 달라지면 같은 체감이나 정확한 동작을 보장하지 않으므로 실제 게임에서 확인한다.
+
 ## Tune
 
 Camera/aiming에서는 micro correction, tracking, target transition과 필요한 큰 turn 사이의 균형을 본다. 세부 판단은 1인칭 또는 3인칭 reference를 사용한다.
