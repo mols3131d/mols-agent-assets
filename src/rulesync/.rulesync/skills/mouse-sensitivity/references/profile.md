@@ -34,13 +34,12 @@ Relative 값은 `default × (1 + percentage / 100)`으로 해석한다. relative
 
 FOV, ADS multiplier, scope처럼 추가 game setting이 실제로 필요하면 해당 game entry에 그 게임의 native 의미를 보존해 기록한다. 서로 다른 게임의 설정을 universal schema로 억지로 정규화하지 않는다.
 
-
 ## Apex Legends ADS
 
 `games.apex-legends.sensitivity`는 hipfire의 게임 내 감도를 보존한다. ADS는 별도 native multiplier이므로 실제 사용 중인 방식과 확인된 값만 선택적으로 기록한다.
 
 - **공용 ADS**: 배율별 설정이 꺼져 있을 때 `games.apex-legends.ads.common`에 공용 `ADS Mouse Sensitivity Multiplier` 숫자를 기록한다.
-- **배율별 ADS**: 배율별 설정이 켜져 있을 때 `games.apex-legends.ads.per_optic`에 `1x`, `2x`, `3x`, `4x`, `6x`, `8x`, `10x`, `seer_passive` 각각의 native multiplier를 기록한다. `seer_passive`는 조준경 배율이 아니라 시어의 Heart Seeker 패시브 입력이다.
+- **배율별 ADS**: 배율별 설정이 켜져 있을 때 `games.apex-legends.ads.per_optic`에 확인된 native multiplier를 조준 배율 `1x`, `2x`, `3x`, `4x`, `6x`, `8x`, `10x` 또는 시어 패시브 `seer_passive` 키로 기록한다. 모든 키가 필수는 아니며 `seer_passive`는 조준경 배율이 아니다.
 
 공용 모드와 배율별 모드를 동시에 현재 적용 상태로 기록하지 않는다. 미확인 multiplier를 기본값이나 빈 placeholder로 채우지 않으며, mode도 확인 전에는 추측하지 않는다. DPI 변경에 맞춰 hipfire 감도를 보정했다는 이유만으로 기존 ADS multiplier를 또 DPI 비율로 조정하지 않는다.
 
