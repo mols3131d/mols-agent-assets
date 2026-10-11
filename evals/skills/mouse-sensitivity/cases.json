@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "same-game-dpi-equivalence",
+      "mode": "skill",
+      "prompt": "In the same FPS game I used 800 DPI and in-game sensitivity 1.5. I changed only the mouse DPI to 1600. What sensitivity preserves the previous hipfire rotation speed?",
+      "assertions": [
+        "Calculates 0.75 by scaling the native sensitivity inversely to DPI when the game's input scale is linear.",
+        "Distinguishes within-game DPI compensation from cross-game conversion and does not use a cross-game coefficient.",
+        "Notes that equivalent nominal turn speed is conditional on unchanged game input settings."
+      ]
+    },
+    {
+      "id": "ads-multiplier-preservation",
+      "mode": "skill",
+      "prompt": "In Apex Legends, I moved from 800 DPI at hipfire sensitivity 1.5 to 1600 DPI at 0.75. My current ADS mode uses one common multiplier of 0.8. Should I rescale that multiplier too?",
+      "assertions": [
+        "Preserves 0.8 as the common ADS multiplier when keeping the same relative ADS scaling.",
+        "Does not multiply the ADS multiplier by the DPI ratio a second time.",
+        "Does not invent any individual optic sensitivity values."
+      ]
+    },
+    {
+      "id": "apex-profile-common-ads",
+      "mode": "skill",
+      "prompt": "Update this profile entry from a confirmed Apex setting: {\"input_context\":\"first-person\",\"sensitivity\":0.75}. The user uses common ADS 0.8, not per-optic mode. Show the updated entry without changing unrelated fields.",
+      "assertions": [
+        "Keeps the existing hipfire sensitivity at 0.75 and adds \"ads\": {\"common\": 0.8}.",
+        "Does not create per_optic values or rename common to common_multiplier.",
+        "Does not assume the profile was persisted unless an actual write is confirmed."
+      ]
+    },
+    {
+      "id": "per-optic-unknown-values",
+      "mode": "skill",
+      "prompt": "I might switch Apex ADS from one common multiplier to separate 1x, 2x, 3x, 4x, 6x, 8x, 10x and Seer passive settings, but I haven't chosen the values yet. Please store my final sensitivities.",
+      "assertions": [
+        "Does not fabricate numeric values for unknown optic or Seer-passive multipliers.",
+        "Does not overwrite a confirmed currently active common mode with an unconfirmed per-optic mode.",
+        "Distinguishes settings structure from actual confirmed values."
+      ]
+    },
+    {
+      "id": "non-sensitivity-hardware-request",
+      "mode": "negative",
+      "prompt": "Which gaming mouse should I buy for my new desktop? Compare sensor quality, polling rate, weight and prices. I am not asking about sensitivity settings.",
+      "assertions": [
+        "Does not treat hardware shopping and sensor or polling troubleshooting as the mouse-sensitivity Skill's responsibility.",
+        "Routes product selection to an appropriate shopping or hardware capability when available."
+      ]
+    }
+  ]
+}
