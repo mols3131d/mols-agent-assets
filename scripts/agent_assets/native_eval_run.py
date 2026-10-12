@@ -21,6 +21,7 @@ PROFILES = {
     ),
 }
 CODEX_ENV_KEYS = ("CODEX_SKILLS_WORKING_DIR", "CODEX_EVAL_HOME")
+CODEX_SDK_VERSION = "0.156.1"
 
 
 def stage_skills(workspace: Path, skills: tuple[str, ...]) -> None:
@@ -104,7 +105,7 @@ def write_manifest(
         "model": os.environ.get("CODEX_EVAL_MODEL", "gpt-5.5"),
         "auth_mode": auth_mode,
         "promptfoo_version": promptfoo_run.PROMPTFOO_VERSION,
-        "codex_sdk_version": None,  # npx resolves the optional SDK dependency.
+        "codex_sdk_version": CODEX_SDK_VERSION,
         "config_sha256": file_sha256(ROOT / "evals" / "promptfoo" / config),
         "fixture_sha256": {
             name: file_sha256(ROOT / "evals" / "skills" / name / "cases.json")
@@ -190,7 +191,10 @@ def main(argv: list[str] | None = None) -> int:
                 command.extend(["--filter-metadata", f"suite={name}"])
             if output is not None:
                 command.extend(["-o", str(output)])
-            exit_code = promptfoo_run.main(command)
+            exit_code = promptfoo_run.main(
+                command,
+                extra_packages=(f"@openai/codex-sdk@{CODEX_SDK_VERSION}",),
+            )
             if output is not None:
                 if not output.is_file() or (
                     previous_mtime is not None
