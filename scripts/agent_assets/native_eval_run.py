@@ -117,6 +117,7 @@ def write_manifest(
             for name in skills
         },
         "runner_sha256": file_sha256(Path(__file__)),
+        "promptfoo_runner_sha256": file_sha256(Path(promptfoo_run.__file__)),
         "adapter_sha256": file_sha256(
             ROOT / "scripts" / "agent_assets" / "skills_promptfoo.py"
         ),
