@@ -12,12 +12,22 @@ Asset별 차이는 fixture와 tool config가 소유합니다. 같은 평가 cont
 
 Eval을 언제 추가하고 어떤 evidence로 해석할지는 [`docs/development/evaluation.md`](../docs/development/evaluation.md)가 소유합니다. 이 README는 `evals/`의 fixture placement와 local boundary만 소유합니다.
 
-Promptfoo와 model/runtime을 사용하는 behavioral eval은 기본적으로 local에서 실행합니다. Repository correctness는 root `tests/`가 검증하며, 현재 mols-loops Promptfoo entrypoint는 다음과 같습니다.
+Promptfoo와 model/runtime을 사용하는 behavioral eval은 기본적으로 local에서 실행합니다. Repository correctness는 root `tests/`가 검증합니다. **Ollama와 Codex를 모두 평가 backend로 지원**하며 같은 canonical `cases.json`을 공유하되, 측정 방식은 구분합니다.
+
+## Ollama model eval (local, non-blocking)
+
+Ollama는 Skill **메타데이터 기반 선택**과, 선택 후 Skill **내용을 주입한 응답**을 평가합니다. 실제 agent runtime이 Skill 파일을 읽었는지 측정하는 native telemetry가 아닙니다.
 
 ```bash
-mise run eval-mols-loops-smoke
+ollama pull qwen2.5
+mise run eval-mols-loops-smoke       # fixture/plumbing만 점검, 모델 호출 없음
+mise run eval-mols-loops-ollama      # mols-loops Routing + Behavior
+mise run eval-asset-routing-ollama   # mols-agent-asset vs find Routing
+# 기존 명령도 동일한 Ollama mols-loops 평가를 실행합니다.
 mise run eval-mols-loops
 ```
+
+기본 모델은 `PROMPTFOO_RUNTIME_MODEL=qwen2.5`, grader는 `PROMPTFOO_GRADER_PROVIDER=ollama:chat:qwen2.5`, 서버는 `OLLAMA_BASE_URL=http://127.0.0.1:11434`입니다. 두 모델은 별도로 변경할 수 있습니다. Ollama sibling Routing은 Codex native sibling Routing과 **동일한 6개 case ID**를 사용하지만, Ollama의 출력 JSON `selected_skills` / `primary_skill`을 채점합니다. Codex와 결과를 동일한 측정값으로 합산하지 않습니다.
 
 Deterministic assertion이 가능한 behavioral contract는 model grader보다 우선하지만, **문장 동기화나 semantic prose consistency를 문자열 regression으로 고정하지 않습니다.** 그런 의미는 authoritative source와 해당 behavioral review/eval이 소유합니다.
 
@@ -25,8 +35,7 @@ Fixture가 존재해도 compatible runner와 실제 model/runtime을 실행하�
 
 ## Native Skill Eval (local, non-blocking)
 
-Ollama 기반 contract/fixture lane과 별도로 **Codex SDK가 실제 Skill을 읽고
-호출했는지** 확인하는 native-runtime lane을 제공합니다.
+Ollama 모델 평가와 별도로 **Codex SDK가 실제 Skill 파일을 읽었는지** 확인하는 native-runtime lane을 제공합니다.
 
 ```bash
 mise run eval-mols-loops-native
