@@ -43,7 +43,8 @@ def test_native_runner_stages_canonical_packages_and_restores_environment(
     assert runner.main(["asset-routing", "--repeat", "3"]) == 7
     assert runner.os.environ["CODEX_SKILLS_WORKING_DIR"] == "original"
     assert "CODEX_EVAL_HOME" not in runner.os.environ
-    assert calls[0][-2:] == ["--repeat", "3"]
+    assert calls[0][3:5] == ["--repeat", "3"]
+    assert calls[0][5:7] == ["--filter-metadata", "suite=native-trigger"]
     assert not staged[0].exists() and not homes[0].exists()
 
 
