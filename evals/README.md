@@ -27,7 +27,7 @@ mise run eval-asset-routing-ollama   # mols-agent-asset vs find Routing
 mise run eval-mols-loops
 ```
 
-기본 모델은 `PROMPTFOO_RUNTIME_MODEL=qwen2.5`, grader는 `PROMPTFOO_GRADER_PROVIDER=ollama:chat:qwen2.5`, 서버는 `OLLAMA_BASE_URL=http://127.0.0.1:11434`입니다. 두 모델은 별도로 변경할 수 있습니다. Ollama sibling Routing은 Codex native sibling Routing과 **동일한 6개 case ID**를 사용하지만, Ollama의 출력 JSON `selected_skills` / `primary_skill`을 채점합니다. Codex와 결과를 동일한 측정값으로 합산하지 않습니다.
+기본 모델은 `PROMPTFOO_RUNTIME_MODEL=qwen2.5`, grader는 `PROMPTFOO_GRADER_PROVIDER=ollama:chat:qwen2.5`, 서버는 `OLLAMA_BASE_URL=http://127.0.0.1:11434`입니다. 두 모델은 별도로 변경할 수 있습니다. Ollama sibling Routing은 Codex native sibling Routing과 **동일한 6개 case ID와 후보 Skill 집합**을 사용합니다. 후보의 메타데이터는 canonical `SKILL.md`에서 읽으며, Ollama의 출력 JSON `selected_skills` / `primary_skill`을 채점합니다. Codex와 결과를 동일한 측정값으로 합산하지 않습니다.
 
 Deterministic assertion이 가능한 behavioral contract는 model grader보다 우선하지만, **문장 동기화나 semantic prose consistency를 문자열 regression으로 고정하지 않습니다.** 그런 의미는 authoritative source와 해당 behavioral review/eval이 소유합니다.
 
