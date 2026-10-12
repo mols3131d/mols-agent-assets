@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+
+description: sibling skill routing via local Ollama model judgment
+
+prompts:
+  - "{{task}}"
+
+providers:
+  - id: file://../../scripts/agent_assets/skills_promptfoo.py:call_api
+    label: asset-routing-ollama
+    config:
+      skill: mols-agent-asset
+      mode: ollama
+      suite: trigger
+
+tests:
+  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_tests
+    config:
+      skill: mols-agent-asset
+      suite: trigger
+      provider_label: asset-routing-ollama
+      semantic: false
+      case_ids:
+        - skill-authoring-activates
+        - formal-readiness-validation-activates
+        - bounded-prompt-routing-eval-activates
+        - install-routes-to-find
+        - human-prose-does-not-activate
+        - direct-name-scope-bypass-does-not-activate
+
+sharing: false
+writeLatestResults: false
+commandLineOptions:
+  cache: false
+  write: false
+  noShare: true
+  maxConcurrency: 1
