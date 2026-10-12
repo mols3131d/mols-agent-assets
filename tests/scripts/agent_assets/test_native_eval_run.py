@@ -189,4 +189,24 @@ def test_native_runner_fails_when_requested_output_is_missing(
     output = tmp_path / "result.json"
     assert runner.main(["mols-loops", "--output", str(output)]) == 2
     assert not output.with_name(output.name + ".manifest.json").exists()
-    assert "requested output was not written" in capsys.readouterr().err
+    assert "requested output was not written or refreshed" in capsys.readouterr().err
+
+
+
+def test_native_runner_does_not_manifest_stale_output(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys
+) -> None:
+    monkeypatch.setattr(runner, "ROOT", tmp_path)
+    for skill in ("mols-loops", "mols-agent-asset"):
+        package = tmp_path / "src" / "rulesync" / ".rulesync" / "skills" / skill
+        package.mkdir(parents=True)
+        (package / "SKILL.md").write_text("# Skill", encoding="utf-8")
+    monkeypatch.setenv("OPENAI_API_KEY", "test-only-key")
+    monkeypatch.delenv("CODEX_EVAL_HOME", raising=False)
+    monkeypatch.setattr(runner.promptfoo_run, "main", lambda args: 0)
+    output = tmp_path / "result.json"
+    output.write_text("previous result", encoding="utf-8")
+    assert runner.main(["mols-loops", "--output", str(output)]) == 2
+    assert output.read_text(encoding="utf-8") == "previous result"
+    assert not output.with_name(output.name + ".manifest.json").exists()
+    assert "not written or refreshed" in capsys.readouterr().err

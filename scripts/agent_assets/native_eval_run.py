@@ -151,6 +151,9 @@ def main(argv: list[str] | None = None) -> int:
         output = Path(args.output).expanduser().resolve() if args.output else None
         if output is not None:
             output.parent.mkdir(parents=True, exist_ok=True)
+        previous_mtime = (
+            output.stat().st_mtime_ns if output is not None and output.is_file() else None
+        )
 
         workspace = temp_root / "workspace"
         workspace.mkdir()
@@ -173,9 +176,12 @@ def main(argv: list[str] | None = None) -> int:
                 command.extend(["-o", str(output)])
             exit_code = promptfoo_run.main(command)
             if output is not None:
-                if not output.is_file():
+                if not output.is_file() or (
+                    previous_mtime is not None
+                    and output.stat().st_mtime_ns == previous_mtime
+                ):
                     if exit_code == 0:
-                        print("native eval: requested output was not written", file=sys.stderr)
+                        print("native eval: requested output was not written or refreshed", file=sys.stderr)
                         return 2
                 else:
                     write_manifest(
