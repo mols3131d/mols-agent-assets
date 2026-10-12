@@ -24,8 +24,11 @@ def test_native_runner_stages_canonical_packages_and_restores_environment(
     homes: list[Path] = []
     calls: list[list[str]] = []
 
-    def fake_promptfoo(args: list[str]) -> int:
+    def fake_promptfoo(
+        args: list[str], *, extra_packages: tuple[str, ...] = ()
+    ) -> int:
         calls.append(args)
+        assert extra_packages == (f"@openai/codex-sdk@{runner.CODEX_SDK_VERSION}",)
         workspace = Path(runner.os.environ["CODEX_SKILLS_WORKING_DIR"])
         home = Path(runner.os.environ["CODEX_EVAL_HOME"])
         staged.append(workspace)
@@ -64,7 +67,9 @@ def test_native_runner_uses_explicit_login_home(
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     monkeypatch.delenv("CODEX_API_KEY", raising=False)
 
-    def fake_promptfoo(args: list[str]) -> int:
+    def fake_promptfoo(
+        args: list[str], *, extra_packages: tuple[str, ...] = ()
+    ) -> int:
         assert runner.os.environ["CODEX_EVAL_HOME"] == str(existing_home)
         return 0
 
@@ -82,7 +87,7 @@ def test_native_runner_requires_explicit_auth(
     monkeypatch.setattr(
         runner.promptfoo_run,
         "main",
-        lambda args: pytest.fail("should not launch Promptfoo without authentication"),
+        lambda args, **kwargs: pytest.fail("should not launch Promptfoo without authentication"),
     )
     assert runner.main(["mols-loops"]) == 2
     assert "needs OPENAI_API_KEY/CODEX_API_KEY" in capsys.readouterr().err
@@ -127,7 +132,9 @@ def test_native_runner_exports_evidence_outside_ephemeral_workspace(
         fixture.write_text('{"version": 1, "cases": []}', encoding="utf-8")
     calls: list[list[str]] = []
 
-    def fake_promptfoo(args: list[str]) -> int:
+    def fake_promptfoo(
+        args: list[str], *, extra_packages: tuple[str, ...] = ()
+    ) -> int:
         calls.append(args)
         Path(args[-1]).write_text("{}", encoding="utf-8")
         return 0
@@ -145,7 +152,7 @@ def test_native_runner_exports_evidence_outside_ephemeral_workspace(
     assert manifest["runner_exit_code"] == 0
     assert manifest["auth_mode"] == "api-key"
     assert manifest["git_head"] is None
-    assert manifest["codex_sdk_version"] is None
+    assert manifest["codex_sdk_version"] == runner.CODEX_SDK_VERSION
     assert set(manifest["skill_package_sha256"]) == {"mols-loops", "mols-agent-asset"}
     assert set(manifest["fixture_sha256"]) == {"mols-loops", "mols-agent-asset"}
     assert manifest["config_sha256"] == runner.file_sha256(config)
@@ -184,7 +191,7 @@ def test_native_runner_filters_behavior_and_trigger_independently(
     monkeypatch.delenv("CODEX_EVAL_HOME", raising=False)
     commands: list[list[str]] = []
     monkeypatch.setattr(
-        runner.promptfoo_run, "main", lambda args: commands.append(args) or 0
+        runner.promptfoo_run, "main", lambda args, **kwargs: commands.append(args) or 0
     )
     assert runner.main(["mols-loops", "--suite", "trigger"]) == 0
     assert runner.main(["mols-loops", "--suite", "behavior"]) == 0
@@ -207,7 +214,7 @@ def test_native_runner_fails_when_requested_output_is_missing(
         (package / "SKILL.md").write_text("# Skill", encoding="utf-8")
     monkeypatch.setenv("OPENAI_API_KEY", "test-only-key")
     monkeypatch.delenv("CODEX_EVAL_HOME", raising=False)
-    monkeypatch.setattr(runner.promptfoo_run, "main", lambda args: 0)
+    monkeypatch.setattr(runner.promptfoo_run, "main", lambda args, **kwargs: 0)
     output = tmp_path / "result.json"
     assert runner.main(["mols-loops", "--output", str(output)]) == 2
     assert not output.with_name(output.name + ".manifest.json").exists()
@@ -225,7 +232,7 @@ def test_native_runner_does_not_manifest_stale_output(
         (package / "SKILL.md").write_text("# Skill", encoding="utf-8")
     monkeypatch.setenv("OPENAI_API_KEY", "test-only-key")
     monkeypatch.delenv("CODEX_EVAL_HOME", raising=False)
-    monkeypatch.setattr(runner.promptfoo_run, "main", lambda args: 0)
+    monkeypatch.setattr(runner.promptfoo_run, "main", lambda args, **kwargs: 0)
     output = tmp_path / "result.json"
     output.write_text("previous result", encoding="utf-8")
     assert runner.main(["mols-loops", "--output", str(output)]) == 2
@@ -246,7 +253,7 @@ def test_native_runner_rejects_mixed_login_and_api_auth(
     monkeypatch.setattr(
         runner.promptfoo_run,
         "main",
-        lambda args: pytest.fail("ambiguous authentication must not launch Promptfoo"),
+        lambda args, **kwargs: pytest.fail("ambiguous authentication must not launch Promptfoo"),
     )
     assert runner.main(["mols-loops"]) == 2
     assert "cannot be combined with API keys" in capsys.readouterr().err
@@ -276,7 +283,9 @@ def test_native_runner_records_only_executed_suites_and_grader_fingerprint(
     output = tmp_path / "routing.json"
     commands: list[list[str]] = []
 
-    def fake_promptfoo(args: list[str]) -> int:
+    def fake_promptfoo(
+        args: list[str], *, extra_packages: tuple[str, ...] = ()
+    ) -> int:
         commands.append(args)
         output.write_text("{}", encoding="utf-8")
         return 0
