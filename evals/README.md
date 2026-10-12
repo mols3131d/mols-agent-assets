@@ -41,7 +41,9 @@ uv run --locked --no-default-groups python -m scripts.agent_assets.native_eval_r
   저장소 밖의 별도 임시 workspace에 복사합니다. 평가가 끝나면
   workspace를 제거하며 source/derived projection은 변경하지 않습니다.
 - Promptfoo `openai:codex-sdk`로 실행하며 Node.js >= 22.22.0, npx,
-  Codex SDK 및 인증이 필요합니다. API key (`OPENAI_API_KEY` 또는
+  인증이 필요합니다. Native runner는 npx 실행에 Promptfoo
+  `0.122.0`과 Codex SDK `0.156.1`을 함께 명시합니다.
+  실제 SDK/provider 호환성과 모델 실행은 인증된 환경에서 확인해야 합니다. API key (`OPENAI_API_KEY` 또는
   `CODEX_API_KEY`)가 있으면 별도 임시 `CODEX_HOME`을 생성합니다.
   ChatGPT 로그인으로 실행하려면 **명시적으로**
   `CODEX_EVAL_HOME=/path/to/codex-home`을 지정합니다. 로그인
@@ -84,9 +86,10 @@ uv run --locked --no-default-groups python -m scripts.agent_assets.native_eval_r
   (비밀 문자열을 그대로 출력하지 않음), 종료 코드를 기록합니다.
   Routing-only 실행에서는 Grader 식별 해시가 `null`입니다.
   이 manifest는 실행 성공을 주장하지 않으며
-  npx가 해석하는 optional Codex SDK의 **정확한 설치 버전은 미확인(null)** 으로
-  남깁니다. 비교 전 SDK 버전을 별도로 확인하고 output과 manifest를 함께
-  untracked/disposable로 유지합니다.
+  manifest의 SDK 버전은 npx에 지정한 **정확한 버전**으로 기록합니다.
+  이는 SDK가 실제로 정상 동작했음을 보증하는 증거가 아니므로, 첫 실행에서
+  provider 로딩과 positive Skill-use control을 확인해야 합니다.
+  Output과 manifest는 함께 untracked/disposable로 유지합니다.
   Positive Skill-use control이 성공하지 않으면
   `not-skill-used`만 통과한 negative case를 routing 성공으로
   단정하지 않습니다. 실제 실패를 Skill, fixture, runtime, grader,
