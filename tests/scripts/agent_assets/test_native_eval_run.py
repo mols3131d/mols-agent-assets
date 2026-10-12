@@ -113,6 +113,7 @@ def test_native_runner_exports_evidence_outside_ephemeral_workspace(
     (sibling / "SKILL.md").write_text("# Skill", encoding="utf-8")
     monkeypatch.setenv("CODEX_API_KEY", "test-only-key")
     monkeypatch.delenv("CODEX_EVAL_HOME", raising=False)
+    monkeypatch.setenv("PROMPTFOO_GRADER_PROVIDER", "ollama:chat:grader-a")
     output = tmp_path / ".tmp" / "evals" / "mols-loops.json"
     config = tmp_path / "evals" / "promptfoo" / "mols-loops-native.yaml"
     config.parent.mkdir(parents=True)
@@ -128,7 +129,7 @@ def test_native_runner_exports_evidence_outside_ephemeral_workspace(
 
     def fake_promptfoo(args: list[str]) -> int:
         calls.append(args)
-        output.write_text("{}", encoding="utf-8")
+        Path(args[-1]).write_text("{}", encoding="utf-8")
         return 0
 
     monkeypatch.setattr(runner.promptfoo_run, "main", fake_promptfoo)
@@ -154,6 +155,19 @@ def test_native_runner_exports_evidence_outside_ephemeral_workspace(
     ).hexdigest()
     assert manifest["result_sha256"] == runner.file_sha256(output)
     assert "test-only-key" not in str(manifest)
+
+    adapter.write_text("# updated adapter\n", encoding="utf-8")
+    monkeypatch.setenv("PROMPTFOO_GRADER_PROVIDER", "ollama:chat:grader-b")
+    second_output = output.with_name("mols-loops-second.json")
+    assert runner.main(["mols-loops", "--output", str(second_output)]) == 0
+    second = runner.json.loads(
+        second_output.with_name(second_output.name + ".manifest.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert second["adapter_sha256"] != manifest["adapter_sha256"]
+    assert second["grader_provider_sha256"] != manifest["grader_provider_sha256"]
+    assert "grader-b" not in str(second)
 
 
 def test_native_runner_filters_behavior_and_trigger_independently(
