@@ -116,6 +116,9 @@ def test_native_runner_exports_evidence_outside_ephemeral_workspace(
     config = tmp_path / "evals" / "promptfoo" / "mols-loops-native.yaml"
     config.parent.mkdir(parents=True)
     config.write_text("tests: []\n", encoding="utf-8")
+    adapter = tmp_path / "scripts" / "agent_assets" / "skills_promptfoo.py"
+    adapter.parent.mkdir(parents=True)
+    adapter.write_text("# eval adapter\n", encoding="utf-8")
     for skill in ("mols-loops", "mols-agent-asset"):
         fixture = tmp_path / "evals" / "skills" / skill / "cases.json"
         fixture.parent.mkdir(parents=True)
@@ -144,6 +147,10 @@ def test_native_runner_exports_evidence_outside_ephemeral_workspace(
     assert set(manifest["skill_package_sha256"]) == {"mols-loops", "mols-agent-asset"}
     assert set(manifest["fixture_sha256"]) == {"mols-loops", "mols-agent-asset"}
     assert manifest["config_sha256"] == runner.file_sha256(config)
+    assert manifest["adapter_sha256"] == runner.file_sha256(adapter)
+    assert manifest["grader_provider_sha256"] == runner.hashlib.sha256(
+        runner.promptfoo_run.build_env()["PROMPTFOO_GRADER_PROVIDER"].encode("utf-8")
+    ).hexdigest()
     assert manifest["result_sha256"] == runner.file_sha256(output)
     assert "test-only-key" not in str(manifest)
 
@@ -210,3 +217,63 @@ def test_native_runner_does_not_manifest_stale_output(
     assert output.read_text(encoding="utf-8") == "previous result"
     assert not output.with_name(output.name + ".manifest.json").exists()
     assert "not written or refreshed" in capsys.readouterr().err
+
+
+def test_native_runner_rejects_mixed_login_and_api_auth(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys
+) -> None:
+    monkeypatch.setattr(runner, "ROOT", tmp_path)
+    login_home = tmp_path / "codex-auth"
+    login_home.mkdir()
+    monkeypatch.setenv("CODEX_EVAL_HOME", str(login_home))
+    monkeypatch.setenv("OPENAI_API_KEY", "test-only-key")
+    monkeypatch.delenv("CODEX_API_KEY", raising=False)
+    monkeypatch.setattr(
+        runner.promptfoo_run,
+        "main",
+        lambda args: pytest.fail("ambiguous authentication must not launch Promptfoo"),
+    )
+    assert runner.main(["mols-loops"]) == 2
+    assert "cannot be combined with API keys" in capsys.readouterr().err
+
+
+def test_native_runner_records_only_executed_suites_and_grader_fingerprint(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(runner, "ROOT", tmp_path)
+    for skill in ("mols-agent-asset", "mols-agent-asset-find"):
+        package = tmp_path / "src" / "rulesync" / ".rulesync" / "skills" / skill
+        package.mkdir(parents=True)
+        (package / "SKILL.md").write_text("# Skill", encoding="utf-8")
+        fixture = tmp_path / "evals" / "skills" / skill / "cases.json"
+        fixture.parent.mkdir(parents=True)
+        fixture.write_text('{"version": 1, "cases": []}', encoding="utf-8")
+    config = tmp_path / "evals" / "promptfoo" / "agent-asset-routing-native.yaml"
+    config.parent.mkdir(parents=True)
+    config.write_text("tests: []\n", encoding="utf-8")
+    adapter = tmp_path / "scripts" / "agent_assets" / "skills_promptfoo.py"
+    adapter.parent.mkdir(parents=True)
+    adapter.write_text("# fixture adapter\n", encoding="utf-8")
+    monkeypatch.setenv("OPENAI_API_KEY", "test-only-key")
+    monkeypatch.delenv("CODEX_API_KEY", raising=False)
+    monkeypatch.delenv("CODEX_EVAL_HOME", raising=False)
+    monkeypatch.setenv("PROMPTFOO_GRADER_PROVIDER", "grader-sensitive-secret-value")
+    output = tmp_path / "routing.json"
+    commands: list[list[str]] = []
+
+    def fake_promptfoo(args: list[str]) -> int:
+        commands.append(args)
+        output.write_text("{}", encoding="utf-8")
+        return 0
+
+    monkeypatch.setattr(runner.promptfoo_run, "main", fake_promptfoo)
+    assert runner.main(["asset-routing", "--suite", "all", "--output", str(output)]) == 0
+    assert ["--filter-metadata", "suite=native-trigger"] == commands[0][5:7]
+    manifest = runner.json.loads(
+        output.with_name(output.name + ".manifest.json").read_text(encoding="utf-8")
+    )
+    assert manifest["suite"] == "trigger"
+    assert manifest["evidence_scope"] == "skill-file-read-heuristic"
+    assert manifest["grader_provider_sha256"] is None
+    assert manifest["adapter_sha256"] == runner.file_sha256(adapter)
+    assert "grader-sensitive-secret-value" not in str(manifest)
