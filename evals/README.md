@@ -47,9 +47,12 @@ uv run --locked --no-default-groups python -m scripts.agent_assets.native_eval_r
   `CODEX_EVAL_HOME=/path/to/codex-home`을 지정합니다. 로그인
   Home에 들어 있는 개인 설정·Skill이 측정에 영향을 줄 수 있어
   baseline 비교에는 **전용 Codex Home**을 권장합니다.
+  API key와 `CODEX_EVAL_HOME`을 동시에 지정한 실행은 인증 방식이
+  모호하므로 거부합니다. 로그인 Home 사용 시 API key를 해제하세요.
 - 기본 model은 `gpt-5.5`이며 `CODEX_EVAL_MODEL`로 변경할 수 있습니다.
   Codex는 read-only / no-approval / network-off로 제한합니다. 비교 실행 시
   model, runtime, fixture revision, 인증 조건을 기록해야 합니다.
+- `asset-routing` profile은 `--suite all` 요청에서도 Routing만 실행하고 manifest에 `trigger`로 기록합니다.
 - `--suite trigger`는 Grader 없이 native routing만 평가합니다.
   `--suite behavior`는 `PROMPTFOO_GRADER_PROVIDER` (기본 Ollama)와
   실제 grader runtime이 필요합니다. 기본 `--suite all`은 두 영역을 함께
@@ -77,7 +80,10 @@ uv run --locked --no-default-groups python -m scripts.agent_assets.native_eval_r
   확인하는 선택적 기록 경로입니다. 결과 옆에
   `<profile>.json.manifest.json`을 작성하여 profile/suite/repeat, Git HEAD,
   model·인증 방식, Promptfoo 버전, 실제 Skill package·fixture·config·result
-  해시와 종료 코드를 기록합니다. 이 manifest는 실행 성공을 주장하지 않으며
+  해시, 평가 adapter 해시, Grader provider 식별 문자열의 SHA-256
+  (비밀 문자열을 그대로 출력하지 않음), 종료 코드를 기록합니다.
+  Routing-only 실행에서는 Grader 식별 해시가 `null`입니다.
+  이 manifest는 실행 성공을 주장하지 않으며
   npx가 해석하는 optional Codex SDK의 **정확한 설치 버전은 미확인(null)** 으로
   남깁니다. 비교 전 SDK 버전을 별도로 확인하고 output과 manifest를 함께
   untracked/disposable로 유지합니다.
