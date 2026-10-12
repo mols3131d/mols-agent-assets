@@ -35,6 +35,11 @@ def stage_skills(workspace: Path, skills: tuple[str, ...]) -> None:
 def resolve_codex_home(temp: Path, env: dict[str, str]) -> Path:
     """Avoid personal Skills/config in baseline measurements."""
     configured = env.get("CODEX_EVAL_HOME")
+    if configured and (env.get("OPENAI_API_KEY") or env.get("CODEX_API_KEY")):
+        raise ValueError(
+            "CODEX_EVAL_HOME cannot be combined with API keys; unset "
+            "OPENAI_API_KEY and CODEX_API_KEY for a login-based eval"
+        )
     if configured:
         path = Path(configured).expanduser().resolve()
         if not path.is_dir():
@@ -111,6 +116,16 @@ def write_manifest(
             for name in skills
         },
         "runner_sha256": file_sha256(Path(__file__)),
+        "adapter_sha256": file_sha256(
+            ROOT / "scripts" / "agent_assets" / "skills_promptfoo.py"
+        ),
+        "grader_provider_sha256": (
+            hashlib.sha256(
+                promptfoo_run.build_env()["PROMPTFOO_GRADER_PROVIDER"].encode("utf-8")
+            ).hexdigest()
+            if suite != "trigger"
+            else None
+        ),
         "result_sha256": file_sha256(output),
         "runner_exit_code": exit_code,
         "evidence_scope": (
@@ -137,6 +152,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.profile == "asset-routing" and args.suite == "behavior":
         parser.error("asset-routing profile supports trigger only")
 
+    effective_suite = "trigger" if args.profile == "asset-routing" else args.suite
     skills, config = PROFILES[args.profile]
     # Outside the repository: root AGENTS.md and installed project Skills
     # cannot accidentally influence an otherwise isolated measurement.
@@ -169,8 +185,8 @@ def main(argv: list[str] | None = None) -> int:
                 "--repeat",
                 str(args.repeat),
             ]
-            if args.suite != "all":
-                name = "native-trigger" if args.suite == "trigger" else "behavior"
+            if effective_suite != "all":
+                name = "native-trigger" if effective_suite == "trigger" else "behavior"
                 command.extend(["--filter-metadata", f"suite={name}"])
             if output is not None:
                 command.extend(["-o", str(output)])
@@ -187,7 +203,7 @@ def main(argv: list[str] | None = None) -> int:
                     write_manifest(
                         output,
                         args.profile,
-                        args.suite,
+                        effective_suite,
                         args.repeat,
                         skills,
                         config,
