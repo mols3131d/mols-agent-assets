@@ -275,10 +275,16 @@ def test_ollama_sibling_routing_reuses_native_cases_and_avoids_telemetry_claim()
     assert ollama["writeLatestResults"] is False
     fixture = ollama["tests"][0]["config"]
     assert fixture["semantic"] is False
+    assert fixture["available_skills"] == native["tests"][0]["config"]["available_skills"]
     assert fixture["case_ids"] == native["tests"][0]["config"]["case_ids"]
     generated = evaluator.generate_tests(fixture)
     assert len(generated) == 6
     assert all(test["providers"] == ["asset-routing-ollama"] for test in generated)
+    assert all(
+        {fixture["skill"], *(c["name"] for c in test["vars"]["routing_candidates"])}
+        == set(fixture["available_skills"])
+        for test in generated
+    )
     assert all(test["metadata"]["suite"] == "trigger" for test in generated)
     assert all(not any(check["type"] == "skill-used" for check in test["assert"]) for test in generated)
     assert all(not any(check["type"] == "llm-rubric" for check in test["assert"]) for test in generated)
@@ -315,8 +321,46 @@ def test_ollama_sibling_routing_uses_competing_skill_metadata(monkeypatch) -> No
     )
     assert len(systems) == 1
     assert "mols-agent-asset-find" in systems[0]
+    assert "name: mols-agent-asset-find" in systems[0]
     assert "# Mols Agent Asset" not in systems[0]
     assert evaluator.assert_trigger(response["output"], {"vars": install["vars"]})["pass"] is True
+
+
+def test_ollama_all_sibling_cases_use_canonical_metadata() -> None:
+    config = yaml.safe_load(
+        (CONFIG_DIR / "agent-asset-routing-ollama.yaml").read_text(encoding="utf-8")
+    )
+    generated = evaluator.generate_tests(config["tests"][0]["config"])
+    sibling = evaluator.skill_path("mols-agent-asset-find").read_text(encoding="utf-8")
+    frontmatter = evaluator._skill_frontmatter(
+        sibling, evaluator.skill_path("mols-agent-asset-find")
+    )
+    for case in generated:
+        candidates = case["vars"]["routing_candidates"]
+        assert [candidate["name"] for candidate in candidates] == ["mols-agent-asset-find"]
+        assert candidates[0]["description"] == frontmatter
+        assert "expected_selection" not in case["vars"]["task"]
+
+
+def test_ollama_rejects_invalid_or_unstaged_candidates() -> None:
+    with pytest.raises(ValueError, match="unique Skill names including skill"):
+        evaluator.generate_tests(
+            {
+                "skill": "mols-agent-asset",
+                "suite": "trigger",
+                "available_skills": ["mols-agent-asset", "mols-agent-asset"],
+                "case_ids": ["skill-authoring-activates"],
+            }
+        )
+    with pytest.raises(ValueError, match="unavailable Skills"):
+        evaluator.generate_tests(
+            {
+                "skill": "mols-agent-asset",
+                "suite": "trigger",
+                "available_skills": ["mols-agent-asset"],
+                "case_ids": ["install-routes-to-find"],
+            }
+        )
 
 
 def test_native_trigger_projects_real_skill_usage_without_answer_leak() -> None:
