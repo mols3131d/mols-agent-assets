@@ -256,6 +256,69 @@ def test_runtime_promptfoo_config_selects_valid_cases_and_semantics() -> None:
         )
 
 
+def test_ollama_sibling_routing_reuses_native_cases_and_avoids_telemetry_claim() -> None:
+    ollama = yaml.safe_load(
+        (CONFIG_DIR / "agent-asset-routing-ollama.yaml").read_text(encoding="utf-8")
+    )
+    native = yaml.safe_load(
+        (CONFIG_DIR / "agent-asset-routing-native.yaml").read_text(encoding="utf-8")
+    )
+    assert ollama["providers"][0]["id"].endswith(":call_api")
+    assert ollama["providers"][0]["label"] == "asset-routing-ollama"
+    assert ollama["providers"][0]["config"] == {
+        "skill": "mols-agent-asset",
+        "mode": "ollama",
+        "suite": "trigger",
+    }
+    assert ollama["tests"][0]["path"].endswith(":generate_tests")
+    assert ollama["sharing"] is False
+    assert ollama["writeLatestResults"] is False
+    fixture = ollama["tests"][0]["config"]
+    assert fixture["semantic"] is False
+    assert fixture["case_ids"] == native["tests"][0]["config"]["case_ids"]
+    generated = evaluator.generate_tests(fixture)
+    assert len(generated) == 6
+    assert all(test["providers"] == ["asset-routing-ollama"] for test in generated)
+    assert all(test["metadata"]["suite"] == "trigger" for test in generated)
+    assert all(not any(check["type"] == "skill-used" for check in test["assert"]) for test in generated)
+    assert all(not any(check["type"] == "llm-rubric" for check in test["assert"]) for test in generated)
+    assert all("expected_selection" not in test["vars"]["task"] for test in generated)
+    expected = {test["vars"]["case_id"]: test["vars"]["expected_selection"] for test in generated}
+    assert expected["install-routes-to-find"] == {
+        "selected_skills": ["mols-agent-asset-find"],
+        "primary_skill": "mols-agent-asset-find",
+    }
+    assert expected["human-prose-does-not-activate"]["selected_skills"] == []
+
+
+def test_ollama_sibling_routing_uses_competing_skill_metadata(monkeypatch) -> None:
+    config = yaml.safe_load(
+        (CONFIG_DIR / "agent-asset-routing-ollama.yaml").read_text(encoding="utf-8")
+    )
+    install = next(
+        test
+        for test in evaluator.generate_tests(config["tests"][0]["config"])
+        if test["vars"]["case_id"] == "install-routes-to-find"
+    )
+    systems: list[str] = []
+
+    def fake_request(prompt: str, system: str, schema: dict):
+        systems.append(system)
+        response = install["vars"]["expected_selection"]
+        return response, json.dumps(response)
+
+    monkeypatch.setattr(evaluator, "_ollama_request", fake_request)
+    response = evaluator.call_api(
+        install["vars"]["task"],
+        {"config": config["providers"][0]["config"]},
+        {"vars": install["vars"]},
+    )
+    assert len(systems) == 1
+    assert "mols-agent-asset-find" in systems[0]
+    assert "# Mols Agent Asset" not in systems[0]
+    assert evaluator.assert_trigger(response["output"], {"vars": install["vars"]})["pass"] is True
+
+
 def test_native_trigger_projects_real_skill_usage_without_answer_leak() -> None:
     config = {
         "skill": "mols-agent-asset",
