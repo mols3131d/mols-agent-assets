@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
+import json
 import os
 import shutil
+import subprocess
 import sys
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -11,7 +14,7 @@ from scripts.agent_assets import promptfoo_run
 
 ROOT = Path(__file__).resolve().parents[2]
 PROFILES = {
-    "mols-loops": (("mols-loops",), "mols-loops-native.yaml"),
+    "mols-loops": (("mols-loops", "mols-agent-asset"), "mols-loops-native.yaml"),
     "asset-routing": (
         ("mols-agent-asset", "mols-agent-asset-find"),
         "agent-asset-routing-native.yaml",
@@ -45,6 +48,81 @@ def resolve_codex_home(temp: Path, env: dict[str, str]) -> Path:
     path = temp / "codex-home"
     path.mkdir()
     return path
+
+
+def file_sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def package_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    for file in sorted(item for item in path.rglob("*") if item.is_file()):
+        digest.update(file.relative_to(path).as_posix().encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(file.read_bytes())
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def git_head() -> str | None:
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(ROOT), "rev-parse", "HEAD"],
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=5,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    return result.stdout.strip() if result.returncode == 0 else None
+
+
+def write_manifest(
+    output: Path,
+    profile: str,
+    suite: str,
+    repeat: int,
+    skills: tuple[str, ...],
+    config: str,
+    workspace: Path,
+    auth_mode: str,
+    exit_code: int,
+) -> None:
+    """Record comparable inputs without serializing credentials or home paths."""
+    manifest = {
+        "schema_version": 1,
+        "profile": profile,
+        "suite": suite,
+        "repeat": repeat,
+        "git_head": git_head(),
+        "model": os.environ.get("CODEX_EVAL_MODEL", "gpt-5.5"),
+        "auth_mode": auth_mode,
+        "promptfoo_version": promptfoo_run.PROMPTFOO_VERSION,
+        "codex_sdk_version": None,  # npx resolves the optional SDK dependency.
+        "config_sha256": file_sha256(ROOT / "evals" / "promptfoo" / config),
+        "fixture_sha256": {
+            name: file_sha256(ROOT / "evals" / "skills" / name / "cases.json")
+            for name in skills
+            if (ROOT / "evals" / "skills" / name / "cases.json").is_file()
+        },
+        "skill_package_sha256": {
+            name: package_sha256(workspace / ".agents" / "skills" / name)
+            for name in skills
+        },
+        "runner_sha256": file_sha256(Path(__file__)),
+        "result_sha256": file_sha256(output),
+        "runner_exit_code": exit_code,
+        "evidence_scope": (
+            "skill-file-read-heuristic"
+            if suite == "trigger"
+            else "response-only" if suite == "behavior" else "mixed"
+        ),
+    }
+    output.with_name(output.name + ".manifest.json").write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -93,7 +171,25 @@ def main(argv: list[str] | None = None) -> int:
                 command.extend(["--filter-metadata", f"suite={name}"])
             if output is not None:
                 command.extend(["-o", str(output)])
-            return promptfoo_run.main(command)
+            exit_code = promptfoo_run.main(command)
+            if output is not None:
+                if not output.is_file():
+                    if exit_code == 0:
+                        print("native eval: requested output was not written", file=sys.stderr)
+                        return 2
+                else:
+                    write_manifest(
+                        output,
+                        args.profile,
+                        args.suite,
+                        args.repeat,
+                        skills,
+                        config,
+                        workspace,
+                        "explicit-home" if prior["CODEX_EVAL_HOME"] else "api-key",
+                        exit_code,
+                    )
+            return exit_code
         finally:
             for key, value in prior.items():
                 if value is None:

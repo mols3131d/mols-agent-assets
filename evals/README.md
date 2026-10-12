@@ -54,9 +54,15 @@ uv run --locked --no-default-groups python -m scripts.agent_assets.native_eval_r
   `--suite behavior`는 `PROMPTFOO_GRADER_PROVIDER` (기본 Ollama)와
   실제 grader runtime이 필요합니다. 기본 `--suite all`은 두 영역을 함께
   실행합니다.
-- Native **Routing**은 원래 요청만 전달합니다. Native **Behavior**는
-  `$<skill-name>` 직접 호출을 선행해 이미 선택된 Skill의 결과를 평가합니다.
-  두 결과를 하나의 Skill 성능 점수로 혼합하지 않습니다.
+- Native **Routing**은 원래 요청만 전달합니다. `mols-loops`와
+  `mols-agent-asset`을 함께 배치하여 전문 Skill 단독 선택과 RPI 복합 선택도
+  평가합니다. Skill 파일 읽기 기록으로 **동시 사용 여부만** 확인하며
+  어느 Skill이 primary였는지는 증명하지 않습니다.
+- Native **Behavior**는 `$<skill-name>` 직접 호출을 선행해 이미 선택된
+  Skill의 **응답 수준** 결과를 평가합니다. Domain Skill 협업 사례도 포함하지만
+  현재 rubric은 실제 tool call, 승인 확인, 외부 side effect를 검증하지 않습니다.
+  그 behavior를 검증하려면 별도의 observable state/trajectory grader가 필요합니다.
+  Routing과 Behavior를 하나의 Skill 성능 점수로 혼합하지 않습니다.
 - Routing은 `skill-used` / `not-skill-used` (Codex Skill 파일 읽기에서
   추론한 **heuristic evidence**)를 사용합니다. 선택 우선순위나 업무 결과의
   품질까지 입증하지 않습니다. Behavior는 사용 여부에 더해
@@ -68,8 +74,14 @@ uv run --locked --no-default-groups python -m scripts.agent_assets.native_eval_r
   실행 결과가 없는 상태를 PASS로 보고하지 않습니다.
 
 - `--output .tmp/evals/<profile>.json`은 로컬에서 재실행 결과를
-  확인하는 선택적 기록 경로입니다. Output은 untracked/disposable로
-  유지합니다. Positive Skill-use control이 성공하지 않으면
+  확인하는 선택적 기록 경로입니다. 결과 옆에
+  `<profile>.json.manifest.json`을 작성하여 profile/suite/repeat, Git HEAD,
+  model·인증 방식, Promptfoo 버전, 실제 Skill package·fixture·config·result
+  해시와 종료 코드를 기록합니다. 이 manifest는 실행 성공을 주장하지 않으며
+  npx가 해석하는 optional Codex SDK의 **정확한 설치 버전은 미확인(null)** 으로
+  남깁니다. 비교 전 SDK 버전을 별도로 확인하고 output과 manifest를 함께
+  untracked/disposable로 유지합니다.
+  Positive Skill-use control이 성공하지 않으면
   `not-skill-used`만 통과한 negative case를 routing 성공으로
   단정하지 않습니다. 실제 실패를 Skill, fixture, runtime, grader,
   telemetry 누락으로 나눠 해석합니다.

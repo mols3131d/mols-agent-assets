@@ -292,6 +292,11 @@ def test_native_behavior_requires_usage_and_semantic_criteria(monkeypatch) -> No
     assert generated[0]["vars"]["task"].startswith("Use $mols-loops for this task:")
     assert "계획서에 배포한다고" in generated[0]["vars"]["task"]
     assert generated[0]["metadata"]["activation"] == "explicit"
+    assert generated[0]["metadata"]["evidence_scope"] == "response-only"
+    assert any(
+        check["metric"] == "native-response-contract"
+        for check in generated[0]["assert"]
+    )
     assert any(check["type"] == "llm-rubric" for check in generated[0]["assert"])
 
 
@@ -308,7 +313,7 @@ def test_native_eval_rejects_unstaged_selected_skill() -> None:
 
 def test_native_configs_select_valid_cases() -> None:
     profiles = {
-        "mols-loops-native.yaml": {"mols-loops"},
+        "mols-loops-native.yaml": {"mols-loops", "mols-agent-asset"},
         "agent-asset-routing-native.yaml": {
             "mols-agent-asset",
             "mols-agent-asset-find",
@@ -355,3 +360,44 @@ def test_native_eval_rejects_empty_case_selection(suite: str) -> None:
         evaluator.generate_native_tests(
             {"skill": "mols-loops", "suite": suite, "case_ids": []}
         )
+
+
+def test_native_competing_skill_routing_reuses_canonical_cases() -> None:
+    config = yaml.safe_load(
+        (CONFIG_DIR / "mols-loops-native.yaml").read_text(encoding="utf-8")
+    )
+    trigger = next(entry["config"] for entry in config["tests"] if entry["config"]["suite"] == "trigger")
+    assert {
+        "specific-owner-remains-primary-when-rpi-composes",
+        "specific-owner-one-shot-does-not-pull-rpi",
+    } <= set(trigger["case_ids"])
+    cases = {
+        case["vars"]["case_id"]: case
+        for case in evaluator.generate_native_tests(trigger)
+    }
+    composed = cases["specific-owner-remains-primary-when-rpi-composes"]
+    one_shot = cases["specific-owner-one-shot-does-not-pull-rpi"]
+    assert {(x["type"], x["value"]) for x in composed["assert"]} == {
+        ("skill-used", "mols-loops"), ("skill-used", "mols-agent-asset")
+    }
+    assert {(x["type"], x["value"]) for x in one_shot["assert"]} == {
+        ("not-skill-used", "mols-loops"), ("skill-used", "mols-agent-asset")
+    }
+    for case in (composed, one_shot):
+        assert "expected_selection" not in case["vars"]
+        assert case["metadata"]["evidence_scope"] == "skill-file-read-heuristic"
+
+
+def test_native_composition_behavior_grades_response_only() -> None:
+    config = yaml.safe_load(
+        (CONFIG_DIR / "mols-loops-native.yaml").read_text(encoding="utf-8")
+    )
+    behavior = next(entry["config"] for entry in config["tests"] if entry["config"]["suite"] == "behavior")
+    assert "rpi-composes-with-domain-skill" in behavior["case_ids"]
+    generated = evaluator.generate_native_tests(behavior)
+    assert all(test["metadata"]["evidence_scope"] == "response-only" for test in generated)
+    assert all(
+        {check["metric"] for check in test["assert"]}
+        == {"native-skill-use", "native-response-present", "native-response-contract"}
+        for test in generated
+    )

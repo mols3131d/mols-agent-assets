@@ -374,8 +374,15 @@ def generate_native_tests(config: dict | None = None) -> list[dict]:
                 0,
                 {"type": "skill-used", "value": skill_name, "metric": "native-skill-use"},
             )
+            # This lane grades observable response text, not tool side effects.
+            for check in test["assert"]:
+                if check["type"] == "llm-rubric":
+                    check["metric"] = "native-response-contract"
+                elif check["type"] == "python":
+                    check["metric"] = "native-response-present"
             test["metadata"]["lane"] = "native"
             test["metadata"]["activation"] = "explicit"
+            test["metadata"]["evidence_scope"] = "response-only"
         return tests
     if suite != TRIGGER_SUITE:
         raise ValueError(f"suite must be one of {sorted(SUITES)}")
@@ -433,6 +440,7 @@ def generate_native_tests(config: dict | None = None) -> list[dict]:
                     "mode": mode,
                     "case_id": case_id,
                     "lane": "native",
+                    "evidence_scope": "skill-file-read-heuristic",
                 },
                 "providers": [label],
                 "assert": checks,
