@@ -242,6 +242,10 @@ def test_runtime_promptfoo_config_selects_valid_cases_and_semantics() -> None:
     }
 
     assert generated_by_suite["trigger"]["semantic"] is False
+    assert generated_by_suite["trigger"]["available_skills"] == [
+        "mols-loops",
+        "mols-agent-asset",
+    ]
     assert generated_by_suite["behavior"]["semantic"] is True
     assert generated_by_suite["behavior"]["rubric_threshold"] == 0.8
 
@@ -361,6 +365,29 @@ def test_ollama_rejects_invalid_or_unstaged_candidates() -> None:
                 "case_ids": ["install-routes-to-find"],
             }
         )
+
+
+def test_ollama_mols_loops_always_competes_with_domain_skill() -> None:
+    config = yaml.safe_load(
+        (CONFIG_DIR / "mols-loops.yaml").read_text(encoding="utf-8")
+    )
+    trigger = next(
+        entry["config"]
+        for entry in config["tests"]
+        if entry["config"]["suite"] == "trigger"
+    )
+    generated = evaluator.generate_tests(trigger)
+    assert len(generated) == 13
+    assert all(
+        [item["name"] for item in case["vars"]["routing_candidates"]]
+        == ["mols-agent-asset"]
+        for case in generated
+    )
+    assert any(
+        case["vars"]["expected_selection"]["selected_skills"]
+        == ["mols-agent-asset", "mols-loops"]
+        for case in generated
+    )
 
 
 def test_native_trigger_projects_real_skill_usage_without_answer_leak() -> None:
