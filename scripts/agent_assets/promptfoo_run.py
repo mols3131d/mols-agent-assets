@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-PROMPTFOO_VERSION = "0.122.0"
+PROMPTFOO_VERSION = "0.124.1"
 MIN_NODE_VERSION = (22, 22, 0)
 
 
