@@ -254,6 +254,17 @@ def generate_tests(config: dict | None = None) -> list[dict]:
         raise ValueError("rubric_threshold must be between 0 and 1")
 
     grader_provider = os.getenv("PROMPTFOO_GRADER_PROVIDER", "ollama:chat:qwen2.5")
+    available_skills = config.get("available_skills")
+    if suite == TRIGGER_SUITE and available_skills is not None:
+        if (
+            not isinstance(available_skills, list)
+            or not available_skills
+            or any(not isinstance(name, str) for name in available_skills)
+            or any(_skill_name({"skill": name}) != name for name in available_skills)
+            or len(available_skills) != len(set(available_skills))
+            or skill_name not in available_skills
+        ):
+            raise ValueError("available_skills must be unique Skill names including skill")
     fixture = fixture_path(skill_name)
 
     tests: list[dict] = []
@@ -296,6 +307,25 @@ def generate_tests(config: dict | None = None) -> list[dict]:
 
         if suite == TRIGGER_SUITE:
             expected, candidates = _trigger_case_contract(case, mode, skill_name)
+            if available_skills is not None:
+                unavailable = {item["name"] for item in candidates} - set(available_skills)
+                if unavailable:
+                    raise ValueError(
+                        f"routing_candidates contain unavailable Skills: {sorted(unavailable)}"
+                    )
+                # All cases see the same canonical Skill catalog; case-local
+                # routing metadata cannot silently become a stale fork.
+                by_name = {candidate["name"]: candidate for candidate in candidates}
+                for name in available_skills:
+                    if name != skill_name:
+                        source = skill_path(name)
+                        by_name[name] = {
+                            "name": name,
+                            "description": _skill_frontmatter(
+                                source.read_text(encoding="utf-8"), source
+                            ),
+                        }
+                candidates = list(by_name.values())
             vars_["expected_selection"] = expected
             vars_["routing_candidates"] = candidates
             checks = [
