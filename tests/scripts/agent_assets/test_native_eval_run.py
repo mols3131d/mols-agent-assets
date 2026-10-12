@@ -157,6 +157,9 @@ def test_native_runner_exports_evidence_outside_ephemeral_workspace(
     assert set(manifest["fixture_sha256"]) == {"mols-loops", "mols-agent-asset"}
     assert manifest["config_sha256"] == runner.file_sha256(config)
     assert manifest["adapter_sha256"] == runner.file_sha256(adapter)
+    assert manifest["promptfoo_runner_sha256"] == runner.file_sha256(
+        Path(runner.promptfoo_run.__file__)
+    )
     assert manifest["grader_provider_sha256"] == runner.hashlib.sha256(
         runner.promptfoo_run.build_env()["PROMPTFOO_GRADER_PROVIDER"].encode("utf-8")
     ).hexdigest()
