@@ -42,7 +42,9 @@ uv run --locked --no-default-groups python -m scripts.agent_assets.native_eval_r
   workspace를 제거하며 source/derived projection은 변경하지 않습니다.
 - Promptfoo `openai:codex-sdk`로 실행하며 Node.js >= 22.22.0, npx,
   인증이 필요합니다. Native runner는 npx 실행에 Promptfoo
-  `0.122.0`과 Codex SDK `0.156.1`을 함께 명시합니다.
+  `0.124.1`과 Codex SDK `0.156.1`을 함께 명시합니다.
+  현재 Promptfoo의 Codex provider가 지원하는 SDK 범위는 `^0.156.1`이므로
+  최신 SDK `0.162.1`은 검증 없이 대체하지 않습니다.
   실제 SDK/provider 호환성과 모델 실행은 인증된 환경에서 확인해야 합니다. API key (`OPENAI_API_KEY` 또는
   `CODEX_API_KEY`)가 있으면 별도 임시 `CODEX_HOME`을 생성합니다.
   ChatGPT 로그인으로 실행하려면 **명시적으로**
