@@ -1,0 +1,58 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+
+description: mols-loops native Codex routing and behavior evaluation
+
+prompts:
+  - "{{task}}"
+
+providers:
+  - id: openai:codex-sdk
+    label: codex-native
+    config:
+      model: "{{ env.CODEX_EVAL_MODEL | default('gpt-5.5') }}"
+      working_dir: "{{ env.CODEX_SKILLS_WORKING_DIR }}"
+      skip_git_repo_check: true
+      sandbox_mode: read-only
+      approval_policy: never
+      network_access_enabled: false
+      web_search_enabled: false
+      enable_streaming: true
+      cli_env:
+        CODEX_HOME: "{{ env.CODEX_EVAL_HOME }}"
+
+tests:
+  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_native_tests
+    config:
+      skill: mols-loops
+      suite: trigger
+      provider_label: codex-native
+      available_skills: [mols-loops, mols-agent-asset]
+      case_ids:
+        - explicit-rpi-trivial-work-still-activates
+        - equivalent-iterative-method-activates
+        - explicit-rpi-activates
+        - specific-owner-remains-primary-when-rpi-composes
+        - specific-owner-one-shot-does-not-pull-rpi
+        - loop-topic-does-not-activate
+        - trivial-work-does-not-activate
+        - single-review-request-does-not-activate
+  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_native_tests
+    config:
+      skill: mols-loops
+      suite: behavior
+      provider_label: codex-native
+      available_skills: [mols-loops, mols-agent-asset]
+      rubric_threshold: 0.8
+      case_ids:
+        - rpi-composes-with-domain-skill
+        - plan-is-not-permission
+        - recursive-authority-never-expands
+        - review-state-matches-open-acceptance
+
+sharing: false
+writeLatestResults: false
+commandLineOptions:
+  cache: false
+  write: false
+  noShare: true
+  maxConcurrency: 1

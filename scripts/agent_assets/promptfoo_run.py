@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-PROMPTFOO_VERSION = "0.122.0"
+PROMPTFOO_VERSION = "0.124.1"
 MIN_NODE_VERSION = (22, 22, 0)
 
 
@@ -57,7 +57,9 @@ def resolve_npx(env: dict[str, str]) -> str:
     return npx
 
 
-def main(argv: list[str] | None = None) -> int:
+def main(
+    argv: list[str] | None = None, *, extra_packages: tuple[str, ...] = ()
+) -> int:
     args = list(sys.argv[1:] if argv is None else argv)
     if not args:
         args = ["--help"]
@@ -71,7 +73,17 @@ def main(argv: list[str] | None = None) -> int:
         print(f"promptfoo runner: {error}", file=sys.stderr)
         return 2
 
-    command = [npx, "--yes", f"promptfoo@{PROMPTFOO_VERSION}", *args]
+    if extra_packages:
+        command = [
+            npx,
+            "--yes",
+            f"--package=promptfoo@{PROMPTFOO_VERSION}",
+            *(f"--package={package}" for package in extra_packages),
+            "promptfoo",
+            *args,
+        ]
+    else:
+        command = [npx, "--yes", f"promptfoo@{PROMPTFOO_VERSION}", *args]
     return subprocess.run(command, check=False, env=env).returncode
 
 

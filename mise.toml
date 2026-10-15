@@ -78,3 +78,19 @@ run = "npm run eval:promptfoo:mols-loops:trigger"
 [tasks.eval-mols-loops-behavior]
 description = "mols-loops Behavior Promptfoo runtime eval만 local에서 실행"
 run = "npm run eval:promptfoo:mols-loops:behavior"
+
+[tasks.eval-mols-loops-ollama]
+description = "Evaluate mols-loops routing and behavior with local Ollama"
+run = "npm run eval:promptfoo:mols-loops"
+
+[tasks.eval-asset-routing-ollama]
+description = "Evaluate sibling Agent Asset routing with local Ollama"
+run = "npm run eval:promptfoo:asset-routing:ollama"
+
+[tasks.eval-mols-loops-native]
+description = "Evaluate mols-loops using native Codex Skill discovery (local, non-blocking)"
+run = "uv run --locked --no-default-groups python -m scripts.agent_assets.native_eval_run mols-loops"
+
+[tasks.eval-asset-routing-native]
+description = "Evaluate mols-agent-asset sibling routing with native Codex (local, non-blocking)"
+run = "uv run --locked --no-default-groups python -m scripts.agent_assets.native_eval_run asset-routing"
