@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "mouse": {
+    "dpi": 2400
+  },
+  "games": {
+    "overwatch-2": {
+      "input_context": "first-person",
+      "sensitivity": {
+        "default": 2.17,
+        "relative": {
+          "slow": "-7.7%",
+          "fast": "+15.4%",
+          "very_fast": "+40%"
+        }
+      }
+    },
+    "apex-legends": {
+      "input_context": "first-person",
+      "sensitivity": 0.75,
+      "ads": {
+        "common": 0.8
+      }
+    }
+  }
+}

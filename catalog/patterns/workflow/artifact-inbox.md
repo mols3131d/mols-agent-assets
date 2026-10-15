@@ -4,18 +4,13 @@ description: report·research·review·handoff·draft 같은 working/non-canonic
 
 # Artifact Inbox
 
-작업 중 생성되는 report, research, review, handoff, draft 같은 **working / non-canonical artifact**를 canonical surface와 분리해 두는 패턴입니다.
-
-## Purpose
-
-완성 여부와 관계없이 canonical source와 분리해 보관하고 싶은 working / supporting artifact를 위한 명확한 surface를 제공하여, durable source와 작업 산출물을 구분합니다.
+작업 중 생성되는 report, research, review, handoff, draft 같은 **working / non-canonical artifact**를 완성 여부와 관계없이 canonical surface와 분리해 보관하는 패턴입니다.
 
 ## Core
 
 - Inbox는 working artifact를 위한 별도 surface입니다.
 - Inbox에 있다는 이유만으로 artifact가 canonical documentation, source, plan 또는 project state가 되지 않습니다.
 - Root inbox와 nested inbox는 같은 패턴을 서로 다른 scope에서 적용한 형태입니다.
-- Artifact가 durable knowledge가 되면 적절한 canonical owner로 옮길 수 있고, 더 이상 필요하지 않으면 삭제할 수 있습니다.
 
 ## Typical Forms
 
@@ -31,7 +26,7 @@ inbox/
 대표적인 사용 방식은 다음과 같습니다.
 
 - root `inbox/` — repository 또는 project 전체와 관련된 artifact
-- `**/inbox/*` — 특정 directory, domain, component, asset 등 local scope와 가까운 artifact
+- `<scope>/inbox/` — 특정 directory, domain, component, asset 등 local scope와 가까운 artifact
 
 어느 쪽을 사용할지는 artifact의 관계와 project 구조에 따라 정할 수 있으며, 이 패턴 자체는 root와 nested 사이의 고정된 우선순위를 요구하지 않습니다.
 
@@ -61,7 +56,7 @@ Project 필요에 따라 다음을 선택적으로 추가할 수 있습니다.
 
 ## Lifecycle
 
-Artifact는 inbox에서 생성·검토·수정될 수 있습니다. 이후 필요에 따라 canonical owner로 승격하거나, 계속 working artifact로 유지하거나, 삭제할 수 있습니다.
+Artifact는 inbox에서 생성·검토·수정할 수 있습니다. 장기적으로 유효한 지식이 생기면 적절한 canonical owner에 반영할 수 있으며, 원본 artifact는 별도로 유지하거나 삭제할 수 있습니다.
 
 Inbox가 얼마나 오래 artifact를 보존할지와 어떤 승격 절차를 사용할지는 repository가 정합니다.
 
@@ -69,7 +64,8 @@ Inbox가 얼마나 오래 artifact를 보존할지와 어떤 승격 절차를 �
 
 | Pattern | Relationship |
 | --- | --- |
-| [Work Unit Containers](artifact-inbox-work-unit-containers.md) | Branch, issue, Pull Request 같은 work unit identity를 기준으로 여러 Inbox artifact를 grouping할 때 사용하는 확장입니다. |
+| [Work Unit Containers](artifact-inbox-work-unit-containers.md) | 날짜 외에 브랜치·Issue·PR 등 작업 단위로 아티팩트를 묶는 선택적 확장입니다. |
+| [Durable Progress Handoff](durable-progress-handoff.md) | 작업을 이어가기 위해 어떤 상태를 남기고 다시 확인할지 다룹니다. Inbox는 그 기록을 둘 수 있는 하나의 surface입니다. |
 | [Nonstandard Directory Guide](../documentation/nonstandard-directory-guide.md) | `inbox/` 같은 repository-local nonstandard surface에 local guide가 필요할 때 참고합니다. |
 | [Directory Context Capsule](../context-engineering/directory-context-capsule.md) | Inbox 자체에 local agent rule, lifecycle guidance, routing 또는 task-specific context가 필요할 때 entrypoint와 nearby context surface를 붙이는 방식으로 함께 사용할 수 있습니다. |
 
