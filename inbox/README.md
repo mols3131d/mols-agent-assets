@@ -10,10 +10,9 @@
 | --- | --- | --- |
 | Date (기본값) | `inbox/YYYY-MM-DD/<artifact>` | 독립적인 조사나 일회성 작업 등 별도 작업 식별자가 없을 때 |
 | Branch | `inbox/branch-<slug>/<artifact>` | 브랜치가 작업의 주된 단위이고 Issue·PR보다 자연스러울 때 |
-| Issue | `inbox/github-issue-<number>[-<topic>]/<artifact>` | Issue 자체의 조사·계획·추적을 위한 작업일 때 |
-| Pull Request | `inbox/github-pr-<number>[-<topic>]/<artifact>` | 특정 PR의 구현·검증·리뷰를 위한 작업일 때 |
+| GitHub Issue / PR | `inbox/github-<number>/<artifact>` | Issue 또는 PR 번호가 작업의 주된 식별자일 때 |
 
-- 날짜는 artifact 묶음을 처음 만든 날짜를 사용합니다. `<slug>`와 `<topic>`은 짧고 구분 가능한 이름을 사용하며, 번호만으로 충분하면 `<topic>`은 생략합니다.
+- 날짜는 artifact 묶음을 처음 만든 날짜를 사용합니다. `<slug>`는 브랜치 작업을 구분할 수 있는 짧은 이름을 사용합니다. GitHub Issue와 PR은 저장소 내에서 번호를 공유하므로 경로에서 구분하지 않습니다.
 - 이미 적절한 디렉터리가 있다면 재사용합니다. 작업이 Branch에서 PR로 발전해도 자동으로 옮기거나 동일한 artifact를 복제하지 않습니다. 소속을 알아보기 어려울 때만 경로를 정리합니다.
 - 디렉터리는 실제 artifact가 생길 때만 만듭니다. 빈 디렉터리, placeholder, 고정된 파일 세트나 인덱스를 요구하지 않습니다.
 
