@@ -1,45 +1,45 @@
 # Inbox
 
-`inbox/`는 조사·계획·검토·인계 등의 **working / non-canonical artifact**를 보관하는 repository-local workspace입니다. 사람, chat runtime, coding agent와 automation이 같은 구조를 사용하며 특정 도구에 의존하지 않습니다.
+`inbox/`는 조사·계획·검토·인계 등 **정본이 아닌 작업 산출물**을 보관하는 공간입니다. 사람, 챗봇, 코딩 에이전트와 자동화가 함께 사용하며 특정 플랫폼에 종속되지 않습니다.
 
 ## Paths
 
-작업을 나중에 다시 찾기 쉬운 **하나의 기준**으로 artifact를 묶습니다.
+작업을 가장 쉽게 식별할 수 있는 기준으로 아티팩트를 묶습니다. 별도 작업 식별자가 없다면 날짜를 기본으로 사용합니다.
 
 | 기준 | 경로 | 선택할 때 |
 | --- | --- | --- |
-| Date (기본값) | `inbox/YYYY-MM-DD/<artifact>` | 독립적인 조사나 일회성 작업 등 별도 작업 식별자가 없을 때 |
-| Branch | `inbox/branch-<slug>/<artifact>` | 브랜치가 작업의 주된 단위이고 Issue·PR보다 자연스러울 때 |
-| GitHub Issue / PR | `inbox/github-<number>/<artifact>` | Issue 또는 PR 번호가 작업의 주된 식별자일 때 |
+| 날짜 (기본값) | `inbox/YYYY-MM-DD/<artifact>` | 독립적인 조사나 일회성 작업일 때 |
+| 브랜치 | `inbox/branch-<slug>/<artifact>` | 브랜치가 작업의 주된 단위일 때 |
+| GitHub | `inbox/github-<number>/<artifact>` | Issue 또는 PR 번호로 작업을 식별할 때 |
 
-- 날짜는 artifact 묶음을 처음 만든 날짜를 사용합니다. `<slug>`는 브랜치 작업을 구분할 수 있는 짧은 이름을 사용합니다. GitHub Issue와 PR은 저장소 내에서 번호를 공유하므로 경로에서 구분하지 않습니다.
-- 이미 적절한 디렉터리가 있다면 재사용합니다. 작업이 Branch에서 PR로 발전해도 자동으로 옮기거나 동일한 artifact를 복제하지 않습니다. 소속을 알아보기 어려울 때만 경로를 정리합니다.
-- 디렉터리는 실제 artifact가 생길 때만 만듭니다. 빈 디렉터리, placeholder, 고정된 파일 세트나 인덱스를 요구하지 않습니다.
+- 날짜는 작업 디렉터리를 처음 만든 날을 사용합니다. 브랜치의 `<slug>`는 작업을 구분할 수 있는 짧은 이름입니다. 같은 저장소의 GitHub Issue와 PR은 번호를 공유하므로 경로에서 구분하지 않습니다.
+- 같은 작업은 기존 디렉터리를 재사용합니다. 브랜치에서 시작한 작업이 PR로 이어져도 아티팩트를 자동으로 옮기거나 복제하지 않습니다. 식별하기 어려울 때만 위치를 정리합니다.
+- 디렉터리는 실제 아티팩트가 생길 때 만듭니다. 빈 디렉터리나 placeholder는 남기지 않습니다.
 
 ## Artifacts
 
-Artifact는 **단일 문서** 또는 **디렉터리 번들**로 구성할 수 있습니다. 단일 문서 하나를 번들로 취급하거나, 디렉터리 번들에 문서 하나만 두는 것도 허용합니다.
+작업 디렉터리에는 **단일 문서**와 **디렉터리 번들**을 함께 둘 수 있습니다.
 
 ```text
 inbox/github-244/
-├── research.md        # 단일 문서 (번들로도 사용 가능)
-└── review/            # 디렉터리 번들
-    ├── findings.md    # 이 문서 자체도 번들일 수 있음
+├── research.md       # 단일 문서 번들
+└── review/           # 디렉터리 번들
+    ├── findings.md
     └── evidence.md
 ```
 
-디렉터리 번들의 문서는 **바로 아래에 파일로만** 둡니다. 하위 문서를 번들로 구성하더라도 추가 하위 디렉터리는 만들지 않습니다. 파일명은 주제나 역할을 알아볼 수 있게 짓고, research·plan·review·handoff 등 고정된 문서 세트는 요구하지 않습니다.
+문서 하나도 번들로 취급할 수 있고, 디렉터리 번들에 문서 하나만 두어도 됩니다. 디렉터리 번들의 각 문서 역시 단일 문서 번들로 사용할 수 있지만, **번들 안에 추가 하위 디렉터리는 두지 않습니다.**
 
-작업을 이어가는 데 필요하면 현재 상태, 판단 근거, 미해결 사항, 다음 행동과 관련 source·Issue·PR 링크를 남깁니다. 원본이나 Git 기록에 있는 내용을 장황하게 복제하지 않고, 현재 상태는 재개할 때 다시 확인합니다.
+파일명은 주제나 역할을 드러내되, research·plan·review·handoff 같은 고정된 문서 구성은 요구하지 않습니다. 작업을 이어가야 한다면 현재 상태, 판단 근거, 미해결 사항, 다음 행동과 관련 원본 링크만 남기고 재개 시 실제 상태와 대조합니다.
 
 ## Lifecycle
 
-- 장기적으로 유효한 결정과 지식은 적절한 canonical owner에 반영합니다. Inbox 문서 자체는 정본이 아닙니다.
-- 작업이 끝난 artifact는 다시 사용할 가치에 따라 유지·삭제하거나 `inbox/archive/YYYY-MM-DD/<artifact-or-directory>`로 옮길 수 있습니다. 이 날짜는 **아카이브한 날짜**이며, 필요한 경우 원래 작업 식별자를 유지합니다.
-- 변경 이력은 Git history와 PR을 기본으로 사용합니다. 쉽게 재구성할 수 있는 기록을 보존 목적으로 중복 저장하지 않습니다.
+- 오래 유지할 결정이나 지식은 해당 정본 문서에 반영합니다. Inbox 자체는 정본이 아닙니다.
+- 작업이 끝난 아티팩트는 필요에 따라 유지·삭제하거나 `inbox/archive/YYYY-MM-DD/<artifact-or-directory>`로 옮깁니다. 날짜는 **아카이브한 날**이며 필요한 경우 기존 작업 식별자를 보존합니다.
+- 변경 이력은 Git history와 PR을 기본으로 사용합니다. 쉽게 복원할 수 있는 기록을 중복 보관하지 않습니다.
 
 정본 승격과 보존의 공통 원칙은 [Documentation — Working Knowledge](../docs/documentation/README.md#working-knowledge)를 따릅니다.
 
 ## Boundary
 
-`inbox/`는 파일 배치 규칙이지 별도 branch, task tracker 또는 workflow engine이 아닙니다. GitHub 식별자를 경로에 사용할 수 있지만 GitHub 기능이나 플랫폼 전용 metadata는 artifact의 필수 조건이 아닙니다. Secret이나 불필요한 민감 정보는 저장하지 않습니다.
+Inbox는 파일 배치 규칙이지 브랜치, 작업 추적 시스템 또는 워크플로우 엔진이 아닙니다. 경로에 GitHub 번호를 사용해도 GitHub 기능이나 플랫폼 전용 메타데이터를 요구하지 않습니다. 비밀 정보나 불필요한 민감 정보는 저장하지 않습니다.
