@@ -68,6 +68,10 @@ Caller나 governing review asset이 admission, materiality, severity, blocking, 
 
 Policy가 없으면 DualVantage가 `PASS/FAIL`, `clear/blocked`, severity 또는 disposition vocabulary를 새로 만들지 않는다. Root의 고정 내부 state는 evidence accounting용 `confirmed | rejected | merged | unresolved`뿐이다.
 
+### Legacy review callers
+
+기존 `review-lead` 호출자는 `mols-review-dualvantage` Root를 호출하되, 이전 Lead의 **최종 assessment·severity·disposition·응답 계약**은 호출자의 Skill 또는 workflow에서 유지해야 한다. `review-quality`와 `review-adversarial`은 각각 Verifier와 Challenger에 대응하지만, 두 specialist는 Root 내부 역할이므로 외부 호출 지점을 단순히 이름만 바꿔 연결하지 않는다. 기존 이름을 사용하는 소비자는 개별적으로 이관한다.
+
 ## Brief and independence
 
 두 specialist는 가능한 한 같은 최소 bounded basis를 받는다.
