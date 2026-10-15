@@ -64,6 +64,7 @@ Inbox가 얼마나 오래 artifact를 보존할지와 어떤 승격 절차를 �
 
 | Pattern | Relationship |
 | --- | --- |
+| [Work Unit Containers](artifact-inbox-work-unit-containers.md) | 날짜 외에 브랜치·Issue·PR 등 작업 단위로 아티팩트를 묶는 선택적 확장입니다. |
 | [Durable Progress Handoff](durable-progress-handoff.md) | 작업을 이어가기 위해 어떤 상태를 남기고 다시 확인할지 다룹니다. Inbox는 그 기록을 둘 수 있는 하나의 surface입니다. |
 | [Nonstandard Directory Guide](../documentation/nonstandard-directory-guide.md) | `inbox/` 같은 repository-local nonstandard surface에 local guide가 필요할 때 참고합니다. |
 | [Directory Context Capsule](../context-engineering/directory-context-capsule.md) | Inbox 자체에 local agent rule, lifecycle guidance, routing 또는 task-specific context가 필요할 때 entrypoint와 nearby context surface를 붙이는 방식으로 함께 사용할 수 있습니다. |
