@@ -7,6 +7,7 @@
 - `skills.json` — 자주 재사용하는 외부 Agent Skill source와 사용할 수 있는 installer 목록
 - `plugins.json` — 다시 찾아 쓰기 좋은 외부 Plugin source와 지원 platform 목록
 - `patterns/` — 이 repository가 직접 관리하는 canonical reusable pattern library
+- `templates/` — 재사용 가능한 Markdown 결과물 양식과 각 양식의 작성 스펙
 
 ## Skills
 
@@ -36,3 +37,7 @@
 ## Patterns
 
 [`patterns/`](patterns/)는 reusable pattern의 본문, category 구조와 공통 작성 contract를 직접 소유하는 canonical library입니다. Pattern을 찾거나 새 pattern을 추가·수정할 때 이 surface에서 시작합니다.
+
+## Templates
+
+[`templates/`](templates/)는 일반 리뷰와 다관점 리뷰를 위한 범용 Markdown 결과물 양식과 각각의 작성 스펙을 함께 관리합니다. 양식은 출력 구조를, 스펙은 필드의 의미와 작성 조건을 소유하며, 리뷰 실행 방법이나 GitHub 전용 작성 규칙을 대체하지 않습니다.
