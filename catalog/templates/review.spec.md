@@ -1,31 +1,32 @@
 ---
-description: 일반 리뷰 결과를 Markdown으로 작성할 때 대상, 결론, 발견 사항, 검증 근거와 한계의 의미와 최소 작성 조건을 확인합니다.
+description: 일반 리뷰를 Markdown으로 작성할 때 결론, 검토 기준, 발견 사항, 상세 근거와 검증 결과의 작성 계약을 확인합니다.
 ---
 
 # Review Template Spec
 
-[Review template](review.md)은 **하나의 대상이나 변경에 대한 검토 결과**를 전달하는 범용 형식입니다. 코드, 설계, 문서, 운영 검토에 사용할 수 있으며 특정 리뷰 방법·승인 체계·도구를 전제하지 않습니다.
+[Review](review.md)은 코드, 문서, 설계, 운영 등 **하나의 검토 대상에 대한 근거 중심 결과**를 전달하는 범용 Markdown 양식입니다. 해당 작업의 리뷰 방법이나 승인 정책은 이 템플릿이 결정하지 않습니다.
 
-## 작성 계약
+## Fields
 
-- **결론 먼저:** `conclusion`에는 검토 범위에 한정된 판단과 그 판단에 필요한 핵심 조건을 적습니다. 근거가 부족하다면 보류나 판단 불가를 분명히 합니다.
-- **대상과 기준:** `subject`는 읽기 쉬운 제목, `target`은 검토 대상의 식별자, `basis`는 실제로 확인한 revision·version·시점 등의 기준 상태, `scope`는 검토한 부분과 판단 질문입니다. 전체를 보지 않았다면 전체 검토처럼 표현하지 않습니다.
-- **발견 사항:** `findings`는 근거가 뒷받침하는 실질적인 문제만 담습니다. 각 `finding.title`은 문제를 식별하고, `impact`는 영향과 성립 조건을, `evidence`는 확인 가능한 위치·관찰·검사 결과를 담습니다. `action`은 실제 조치가 필요할 때만 씁니다. 재현되지 않은 가능성이나 논쟁 중인 가설을 확인된 문제처럼 싣지 않습니다.
-- **검증과 한계:** `verification`은 실제 확인한 검사와 그 결과를, `limitations`는 검토하지 않았거나 판단이 불충분한 부분을 담습니다. 실행하지 않은 검증을 통과했다고 쓰지 않습니다. 확인한 사항이 없다면 그 사실을 그대로 적습니다.
-- **후속 조치:** `next_actions`는 현재 판단에 필요한 실제 조치가 있을 때만 작성합니다. 실행 여부를 검증하지 않은 조치를 완료로 표시하지 않습니다.
-
-## 조건과 출력
-
-| 항목 | 조건 |
+| Field | Contract |
 | --- | --- |
-| `subject`, `conclusion`, `target`, `basis`, `scope` | 항상 작성 |
-| `findings` | 0개 이상. 없으면 템플릿의 발견 없음 문구 사용 |
-| `findings[].action` | 필요한 경우에만 유지 |
-| `verification`, `limitations` | 항상 작성. 해당 증거가 없거나 확인하지 못한 사실도 명시 |
-| `next_actions` | 필요한 경우에만 섹션 유지 |
+| `title` | 검토 결과를 식별할 제목 |
+| `verdict`, `summary` | 검토 범위에 한정한 판정과 1~3문장의 핵심 근거·필요 조치. 적용되는 정책의 판정 용어 사용 |
+| `target`, `revision`, `scope` | 실제로 본 대상 링크·식별자, 기준 revision/version/baseline, 검토한 범위 |
+| `findings` | 확정된 문제·실질적 관찰만 기입. 각 행은 `F1`… ID, 적용되는 severity, 짧은 finding, 필요한 action |
+| `details` | 요약만으로 판단하기 어려운 finding만 확장. 같은 ID로 Locations, Evidence, Impact, 필요하면 Action 기록 |
+| `validation` | 수행한 check와 결과·근거; 확인이 필요하지만 미수행한 check도 그 상태와 이유를 명시 |
+| `risks_and_limits` | 남은 위험, 확인할 수 없었던 부분, 재검토 조건. 이미 기록한 finding이나 validation을 중복하지 않음 |
 
-작성 후에는 모든 `{{ ... }}`, `{% ... %}` 표기를 없애고 비어 있는 선택 항목을 제거합니다. 근거가 충분하지 않거나 검토 범위 밖인 위험은 발견 사항으로 확정하지 말고 한계에 남깁니다. 중요도·심각도·최종 승인 같은 분류나 결정은 이 템플릿이 임의로 정하지 않으며, 적용되는 작업별 기준이 소유합니다.
+## Rendering
 
-## 경계
+- 결론 callout은 한 번만 작성합니다. Finding이 없으면 `Findings`는 유지하고 "확인된 finding 없음."이라고 씁니다.
+- `Details`와 `Risks and Limits`는 필요할 때만 남깁니다. Detail의 `id`는 Finding 표의 ID와 일치해야 합니다.
+- `Severity`와 `verdict`는 대상 프로젝트의 기준을 따릅니다. 기준이 없으면 임의 등급·승인을 만들어내지 말고 분류가 없음을 명시합니다. 필요 없는 Action은 표에서 `—`로 표기합니다.
+- Validation에는 `✅ Pass` / `❌ Fail` / `⚪ Not Verified`처럼 결과를 구분하는 표기를 권장합니다. 미실행·접근 불가인 경우 통과로 표시하지 않습니다.
+- `{{ value }}`는 확인한 값으로, `{% for ... %}`는 실제 행 수만큼, `{% if ... %}`는 조건에 맞는 section만 렌더링하는 작성용 표기입니다. 최종 문서에는 미치환 표기를 남기지 않습니다.
+- 파일·테스트·요구사항처럼 실제 판단을 뒷받침하는 위치는 직접 탐색 가능한 링크로 남깁니다. 검토하지 않은 범위를 전체 검토로 표현하지 않습니다.
 
-이 템플릿은 **보고 형식**만 다루며 리뷰 실행, 추가 조사, 반복 개선, GitHub Review 제출 또는 승인 여부를 결정하지 않습니다. GitHub PR Review의 특수 필드와 metadata는 [GitHub 전용 템플릿](../../.github/templates/pull-request-review.md)을 사용합니다.
+## Boundaries
+
+이 양식은 결과의 표시 구조일 뿐 리뷰 수행 절차·심각도 기준·승인·merge 권한을 소유하지 않습니다. 대상 환경이 요구하는 frontmatter는 결과물을 작성할 때 그 환경의 계약에 따라 추가합니다. GitHub PR Review의 전용 본문 형식은 [GitHub Templates](../../.github/templates/pull-request-review.md)가 소유합니다.

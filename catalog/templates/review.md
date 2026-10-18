@@ -1,41 +1,71 @@
-# {{ subject }} — 리뷰
+# {{ title }}
 
-## 결론
+> [!IMPORTANT]
+> **{{ verdict }}** — {{ summary }}
 
-{{ conclusion }}
+- **Target** — {{ target }}
+- **Revision** — {{ revision }}
+- **Scope** — {{ scope }}
 
-## 대상과 기준
-
-- **대상:** {{ target }}
-- **기준 상태:** {{ basis }}
-- **검토 범위와 질문:** {{ scope }}
-
-## 발견 사항
+## Findings
 
 {% if findings %}
+| ID | Severity | Finding | Action |
+| --- | --- | --- | --- |
 {% for finding in findings %}
-### {{ finding.title }}
+| {{ finding.id }} | {{ finding.severity }} | {{ finding.summary }} | {{ finding.action }} |
+{% endfor %}
+{% else %}
+확인된 finding 없음.
+{% endif %}
 
-- **문제와 영향:** {{ finding.impact }}
-- **근거:** {{ finding.evidence }}
-{% if finding.action %}
-- **권고 조치:** {{ finding.action }}
+{% if details %}
+## Details
+
+{% for detail in details %}
+### {{ detail.id }} · {{ detail.title }}
+
+{% if detail.locations %}
+#### Locations
+
+{% for location in detail.locations %}
+- {{ location }}
+{% endfor %}
+{% endif %}
+
+#### Evidence
+
+{{ detail.evidence }}
+
+#### Impact
+
+{{ detail.impact }}
+
+{% if detail.action %}
+#### Action
+
+{{ detail.action }}
 {% endif %}
 
 {% endfor %}
-{% else %}
-검토 범위에서 확인된 문제는 발견되지 않았습니다.
 {% endif %}
 
-## 검증과 한계
+## Validation
 
-- **직접 확인한 사항:** {{ verification }}
-- **미검증 사항과 제약:** {{ limitations }}
+{% if validation %}
+| Result | Check | Evidence |
+| --- | --- | --- |
+{% for check in validation %}
+| {{ check.result }} | {{ check.name }} | {{ check.evidence }} |
+{% endfor %}
+{% else %}
+검증 결과가 기록되지 않았습니다.
+{% endif %}
 
-{% if next_actions %}
-## 후속 조치
+{% if risks_and_limits %}
+## Risks and Limits
 
-{% for action in next_actions %}
-- {{ action }}
+{% for item in risks_and_limits %}
+- {{ item }}
 {% endfor %}
 {% endif %}
