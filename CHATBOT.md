@@ -51,4 +51,14 @@ GitHub text를 작성·재작성·형식 검토할 때는 실제 surface에 맞�
 | Agent Asset을 찾기·선택·로드·설치·동기화·이관 | `mols-agent-asset-find` | 기존 Asset의 discovery와 적용이 주 작업일 때 선택합니다. |
 | 사용자가 RPI, 개선 루프, 재귀 루프, 심층 루프를 요구하거나 복합 작업에 반복 Research → Plan → Implementation → Review 및 점진적 context/capability orchestration이 필요 | `mols-loops` + task-specific Asset | Loops가 작업 domain Asset의 authority나 내부 procedure를 대체하지 않습니다. |
 
+## 서브에이전트 실행 대체
+
+작업에 필요한 Subagent를 chat runtime에서 직접 호출할 수 없다면, [`route/ROUTE.md`](route/ROUTE.md)를 따라 필요한 Subagent와 하위 Subagent의 canonical source만 선택해 읽습니다. 실제 호출이 가능하면 native 실행을 우선하고, 불가능할 때는 **호출자가 역할별 작업을 순차적으로 대체 수행**합니다.
+
+1. **계약 보존** — 호출자와 각 Subagent의 역할·책임, 적용 범위, 입력·출력, handoff, 순서·횟수·종료 조건을 유지합니다. 하위 위임은 필요한 역할별 패스로 펼치되 원본의 판단 책임과 최종 결정권을 옮기지 않습니다. 자산의 도구·권한 설정은 현재 runtime에 새로운 권한을 부여하지 않습니다.
+1. **관점 분리** — 역할마다 필요한 최소 출발 맥락과 질문을 구분하고 결과를 별도로 정리합니다. 다른 역할의 후보·결론은 원본 계약에서 허용하는 교차 검토·합성 단계에만 전달하며 초기 검토의 근거로 주입하지 않습니다.
+1. **근거 기반 인계** — 역할별 관찰·추론·미확인 사항, 수행한 검증과 한계를 구분해 원본에서 정한 책임 주체가 근거와 적용 기준으로 대조·판정하게 합니다. 역할 간 합의나 반복은 검증 근거가 아닙니다.
+
+순차적인 단일 문맥 수행은 **실제 Subagent 호출, 독립 실행, 병렬 처리 또는 권한 격리**와 동등하지 않습니다. 수행하지 않은 호출·검증을 주장하지 않으며, 필수 도구·독립성 등 재현할 수 없는 조건은 coverage gap으로 알립니다. 원본 계약이나 사용자 요구가 실제 독립 실행 또는 필수 capability를 요구한다면 대체 수행을 동등한 완료로 보고하지 않습니다.
+
 `CHATBOT.md`는 repository policy, Agent Asset behavior 또는 routing semantics를 재정의하지 않습니다. 연결된 canonical source와 [`.agents/route/ROUTE.md`](.agents/route/ROUTE.md)가 항상 authoritative합니다.
