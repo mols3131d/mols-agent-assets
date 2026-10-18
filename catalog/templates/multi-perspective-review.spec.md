@@ -20,7 +20,7 @@ description: 다관점 리뷰 결과를 Markdown으로 기록할 때 관점별 �
 | 항목 | 조건 |
 | --- | --- |
 | `subject`, `conclusion`, `target`, `basis`, `scope`, `review_method` | 항상 작성 |
-| `perspectives` | 실제 수행한 서로 다른 관점만 작성. 수행하지 않은 관점을 채우지 않음 |
+| `perspectives` | 실제 수행한 서로 다른 관점 2개 이상 작성. 수행하지 않은 관점을 채우지 않음 |
 | `reconciliation` | 항상 작성. 합의·충돌·미해결이 없더라도 검토 근거가 어떻게 통합됐는지 설명 |
 | `findings` | 0개 이상. 없으면 템플릿의 발견 없음 문구 사용 |
 | `findings[].action`, `next_actions` | 실제 필요한 경우에만 유지 |
