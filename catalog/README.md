@@ -1,6 +1,6 @@
 # Catalog
 
-이 디렉토리는 여러 프로젝트에서 다시 찾아 쓰기 좋은 reusable source를 모으는 **catalog surface**입니다. Surface별 authority는 다르게 둡니다. 외부 Skill과 Plugin은 discovery entry만 소유하고, reusable pattern은 이곳이 canonical source를 소유합니다.
+이 디렉토리는 여러 프로젝트에서 다시 찾아 쓰기 좋은 reusable source를 모으는 **catalog surface**입니다. Surface별 authority는 다르게 둡니다. 외부 Skill과 Plugin은 discovery entry만 소유하고, reusable pattern과 Markdown template은 이곳이 canonical source를 소유합니다.
 
 ## Areas
 
