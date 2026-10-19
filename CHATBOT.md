@@ -51,6 +51,16 @@ GitHub text를 작성·재작성·형식 검토할 때는 실제 surface에 맞�
 | Agent Asset을 찾기·선택·로드·설치·동기화·이관 | `mols-agent-asset-find` | 기존 Asset의 discovery와 적용이 주 작업일 때 선택합니다. |
 | 사용자가 RPI, 개선 루프, 재귀 루프, 심층 루프를 요구하거나 복합 작업에 반복 Research → Plan → Implementation → Review 및 점진적 context/capability orchestration이 필요 | `mols-loops` + task-specific Asset | Loops가 작업 domain Asset의 authority나 내부 procedure를 대체하지 않습니다. |
 
+## 제한된 코드 런타임의 스크립트 실행 대체
+
+Shell·CLI로 저장소 스크립트를 직접 호출할 수 없어도 Python·JavaScript 등의 **코드 실행 런타임**이 있다면, 실행 불가로 단정하기 전에 원본 코드를 가져와 실행할 수 있는지 검토하고 가능하면 실제로 수행합니다. 원래 실행 경로가 사용 가능하면 이를 우선합니다.
+
+1. **원본·조건 확인** — 정확한 repository/ref의 스크립트와 필요한 로컬 모듈·설정·입력을 읽고 실행 언어, 의존성, 인자, 경로·환경, 외부 명령, 네트워크와 부작용을 확인합니다. 코드는 실행 전에 안전성을 검토하고 현재 runtime의 권한·도구 제한을 우회하지 않습니다.
+1. **최소 실행 대체** — 허용된 임시 런타임에 원본을 파일로 복사하거나 메모리에 로드해 실행합니다. 필요하면 인자·진입점·입출력만 연결하는 최소 어댑터를 사용하되 원본의 검증 로직과 실행 의미를 바꾸지 않습니다. 필수 조건을 재현할 수 없으면 독립적으로 실행 가능한 범위만 수행하고 나머지는 미검증으로 둡니다.
+1. **근거 구분** — 원본/ref, 입력, 실행 방식·조정, 결과와 재현하지 못한 조건을 기록합니다. 부분 실행을 원본의 완전한 실행이나 repository-native check·CI 통과로 주장하지 않습니다.
+
+임시 실행 결과와 파일은 repository state와 구분하며, 실행 대체가 새로운 쓰기·외부 작업 권한을 부여하지 않습니다.
+
 ## 서브에이전트 실행 대체
 
 작업에 필요한 Subagent를 chat runtime에서 직접 호출할 수 없다면, [`route/ROUTE.md`](route/ROUTE.md)를 따라 필요한 Subagent와 하위 Subagent의 canonical source만 선택해 읽습니다. 실제 호출이 가능하면 native 실행을 우선하고, 불가능할 때는 **호출자가 역할별 작업을 순차적으로 대체 수행**합니다.
