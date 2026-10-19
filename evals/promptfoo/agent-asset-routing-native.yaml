@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+
+description: sibling skill routing via native Codex Skill discovery
+
+prompts:
+  - "{{task}}"
+
+providers:
+  - id: openai:codex-sdk
+    label: codex-native
+    config:
+      model: "{{ env.CODEX_EVAL_MODEL | default('gpt-5.5') }}"
+      working_dir: "{{ env.CODEX_SKILLS_WORKING_DIR }}"
+      skip_git_repo_check: true
+      sandbox_mode: read-only
+      approval_policy: never
+      network_access_enabled: false
+      web_search_enabled: false
+      enable_streaming: true
+      cli_env:
+        CODEX_HOME: "{{ env.CODEX_EVAL_HOME }}"
+
+tests:
+  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_native_tests
+    config:
+      skill: mols-agent-asset
+      suite: trigger
+      provider_label: codex-native
+      available_skills:
+        - mols-agent-asset
+        - mols-agent-asset-find
+      case_ids:
+        - skill-authoring-activates
+        - formal-readiness-validation-activates
+        - bounded-prompt-routing-eval-activates
+        - install-routes-to-find
+        - human-prose-does-not-activate
+        - direct-name-scope-bypass-does-not-activate
+
+sharing: false
+writeLatestResults: false
+commandLineOptions:
+  cache: false
+  write: false
+  noShare: true
+  maxConcurrency: 1

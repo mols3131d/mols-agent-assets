@@ -213,13 +213,13 @@
       "prompt": "이 Agent Skill의 description을 고치고 RPI 개선 루프로 리뷰까지 반복해줘.",
       "routing_candidates": [
         {
-          "name": "agent-skill-authoring",
+          "name": "mols-agent-asset",
           "description": "Create or modify Agent Skills and their trigger or runtime instructions. Use as the primary capability when the requested work changes an Agent Skill."
         }
       ],
       "expected_selection": {
-        "selected_skills": ["agent-skill-authoring", "mols-loops"],
-        "primary_skill": "agent-skill-authoring"
+        "selected_skills": ["mols-agent-asset", "mols-loops"],
+        "primary_skill": "mols-agent-asset"
       }
     },
     {
@@ -228,13 +228,13 @@
       "prompt": "이 Agent Skill의 description만 한 번 수정해줘. RPI나 개선 루프는 필요 없어.",
       "routing_candidates": [
         {
-          "name": "agent-skill-authoring",
+          "name": "mols-agent-asset",
           "description": "Create or modify Agent Skills and their trigger or runtime instructions. Use as the primary capability when the requested work changes an Agent Skill."
         }
       ],
       "expected_selection": {
-        "selected_skills": ["agent-skill-authoring"],
-        "primary_skill": "agent-skill-authoring"
+        "selected_skills": ["mols-agent-asset"],
+        "primary_skill": "mols-agent-asset"
       }
     },
     {

@@ -25,6 +25,7 @@ tests:
       skill: mols-loops
       suite: trigger
       provider_label: mols-loops-trigger
+      available_skills: [mols-loops, mols-agent-asset]
       semantic: false
       case_ids:
         - explicit-rpi-activates
