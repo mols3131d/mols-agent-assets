@@ -1,74 +1,70 @@
 # PR #247 리뷰 루프 보고서
 
-## 결론
+## 현재 판정
 
-**판정: 준비 계획은 타당하지만 전체 PR은 아직 구현 전 Draft 단계다.** 확인된 High 이상 결함은 없으며, 문서/PR 상태에 대한 Low finding 1건과 구현 전에 닫아야 하는 의사결정·검증 과제 4건을 구분했다. 이 보고서는 구현 완료나 병합 승인을 의미하지 않는다.
+**계획의 이식성 결합 문제는 수정했으며, 구현과 실제 실행은 여전히 미검증이다.** PR은 준비 단계의 Draft로 유지해야 한다. 이 보고서는 두 번의 검토 시점을 구분한다.
 
-- 대상: [PR #247](https://github.com/mols3131d/mols-agent-assets/pull/247) — ChatGPT + GitHub Plugin 기반 PR 리뷰 Skill 준비
-- 기준 diff: `base=c93ba9306851c3a278f498ee0b04573c18401f14` → `head=9b99b3a97f6f8cec0add2f622f84c548f1101cd5` (보고서 작성 **전** 스냅샷)
-- 검토 변경: [`inbox/github-247/plan.md`](https://github.com/mols3131d/mols-agent-assets/blob/9b99b3a97f6f8cec0add2f622f84c548f1101cd5/inbox/github-247/plan.md), 추가 45줄, 삭제 0줄, 다른 변경 파일 없음
-- 범위: 준비 계획의 타당성, 기존 Agent Asset 및 저장소 정책과의 정합성, 실행 가능성에 관한 미해결 결정, 검증·게시 경계
-- 제외: 아직 존재하지 않는 Skill 구현에 대한 correctness 판정, ChatGPT Skill 선택·실행의 실제 성공 판정, GitHub 리뷰 게시 및 merge
+- **최초 검토:** `base=c93ba9306851c3a278f498ee0b04573c18401f14` → `head=9b99b3a97f6f8cec0add2f622f84c548f1101cd5`, 변경 파일 `inbox/github-247/plan.md` 1개(45줄 추가). [기존 리뷰 당시 diff](https://github.com/mols3131d/mols-agent-assets/commit/9b99b3a97f6f8cec0add2f622f84c548f1101cd5).
+- **후속 설계 검토:** [계획 개정 커밋](https://github.com/mols3131d/mols-agent-assets/commit/25fa94a4ade81b2690e74121e1ca6b2ffe528379). 사용자 요구를 반영해 다른 프로젝트의 설치 여부에 좌우되지 않는 독립 Skill, Plugin 중심 실행, 제한된 코드 런타임의 script 대체 실행을 명시했다.
+- **현재 계획:** [`inbox/github-247/plan.md`](https://github.com/mols3131d/mols-agent-assets/blob/25fa94a4ade81b2690e74121e1ca6b2ffe528379/inbox/github-247/plan.md).
+- **검토 한계:** 실제 `SKILL.md`가 아직 없어 source behavior 및 ChatGPT 자동 선택·사용 가능성은 평가하지 않았다. 보고서 자체도 새 커밋이므로 새 head의 CI는 별도 확인 대상이다.
 
-## 확인된 사실과 근거
+## 리뷰 루프와 판단 변화
 
-| 항목 | 결과 | 근거 |
+| 패스 | 검토 질문 | 근거 및 판정 |
 | --- | --- | --- |
-| PR 상태 | Draft, Open; 변경 파일 1개 | [PR #247](https://github.com/mols3131d/mols-agent-assets/pull/247) |
-| 계획의 책임 분리 | `github-context`는 live context discovery, 새 Skill은 PR 분석과 결과 구성 | [계획](https://github.com/mols3131d/mols-agent-assets/blob/9b99b3a97f6f8cec0add2f622f84c548f1101cd5/inbox/github-247/plan.md), [`github-context`](https://github.com/mols3131d/mols-agent-assets/blob/main/src/rulesync/.rulesync/skills/github-context/SKILL.md) |
-| 저장소 정책 정합성 | 원본 배치 결정을 미리 단정하지 않고, 권한·검증 근거를 구분함 | [작성 원본 정책](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/development/source-authority.md), [GitHub 정책](https://github.com/mols3131d/mols-agent-assets/blob/main/docs/development/github.md) |
-| 기존 head의 CI | `Branch Check`, `PR Gate` 모두 성공 | [Branch Check](https://github.com/mols3131d/mols-agent-assets/actions/runs/39160343091/job/117772171592), [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/39160345757/job/117772157965) |
-| 구현 및 행동 평가 | `SKILL.md` 미추가, ChatGPT에서 실제 선택·행동 평가 미실행 | [PR 변경 파일](https://github.com/mols3131d/mols-agent-assets/pull/247/files), [계획의 현재 상태](https://github.com/mols3131d/mols-agent-assets/blob/9b99b3a97f6f8cec0add2f622f84c548f1101cd5/inbox/github-247/plan.md) |
+| 1. 계약·품질 | 준비 문서가 PR 리뷰의 책임·권한·증거 범위를 정했는가? | 기존 계획의 기본 입출력, partial coverage, 게시 경계를 확인. 최초 판정은 준비 범위 내 High 결함 없음 |
+| 2. 반론·실패 경로 | 대형 diff, head 이동, API 실패, 악의적 PR 입력에서 위험이 가려지는가? | 구체적 처리와 실행 검증은 구현 단계의 남은 과제로 분류. CI 상태 최신성 Low finding 확인 |
+| 3. 이식성 반증 | `github-context`·`CHATBOT.md`·이 저장소의 템플릿 없이 다른 GitHub 프로젝트에서 실행되는가? | 기존 계획의 `기존 소유자 재사용` 표현과 ChatGPT 중심의 실행 가정은 **재사용 가능한 Skill 요구를 충분히 보증하지 못함**. 새 설계에 필수 의존성 제거를 반영 |
+| 4. capability 대체 검토 | CLI가 없는 챗봇이 실제로 가능한 최대 수준까지 근접할 수 있는가? | Plugin 먼저 발견·사용, runner 유무에 따라 native 실행/코드 복사·최소 adapter/부분 검토로 분기하도록 개정. 단, 실제 실행·행동 검증을 수행한 것은 아님 |
 
-CI 성공은 해당 **기존 head**의 repository check 결과다. 이 보고서가 새 커밋으로 추가되면 그 커밋의 체크 결과는 별도로 확인해야 하며, 기존 체크 통과를 Skill의 런타임 성능 근거로 취급하지 않는다.
+서로 다른 관점은 ChatGPT **하나의 문맥에서 순차적으로 적용**했다. 실제 독립 Subagent 호출·병렬 실행이나 runtime eval로 간주하지 않는다. 증거가 부족한 시나리오를 성공으로 기록하지 않았다.
 
-## 리뷰 루프
+## Finding과 처리 상태
 
-| 루프 | 질문과 검토 방식 | 결과 및 다음 판단 |
+### 🟠 High · F1 — 타 자산을 필수로 여길 수 있는 이식성 설계 공백
+
+- **관찰 (기존 계획):** `범위와 책임`에서 `github-context` 및 repository `docs/development/github.md`·`.github/templates/`를 기존 소유자로 지정했지만, 이들이 없는 외부 프로젝트에서의 **단독 작동**을 완료 기준으로 요구하지 않았다.
+- **영향:** 작성자가 이를 직접 참조하는 Skill을 구현하면 다른 프로젝트에서 컨텍스트 탐색이나 리뷰 출력이 누락될 수 있다. 이는 과거 설계 공백에 근거한 **구현 위험**이며, 실제로 발생한 실행 실패를 뜻하지 않는다.
+- **처리:** [개정 계획](https://github.com/mols3131d/mols-agent-assets/blob/25fa94a4ade81b2690e74121e1ca6b2ffe528379/inbox/github-247/plan.md)에 standalone core, 선택적 타 Skill 활용, 대상 저장소의 동적 instruction discovery, 외부 자산 없는 프로젝트에서의 eval을 포함했다.
+- **상태:** **계획 수준 해결 / runtime 검증 미완료**. 실제 자산 구현과 외부 프로젝트 시나리오로 검증되기 전까지 Skill 완성으로 판정하지 않는다.
+
+### 🔵 Low · F2 — PR 설명의 CI 증거가 이전 head 기준으로 남아 있음
+
+- **관찰:** PR 설명은 `PR Gate: Not Verified`로 기록했지만, 최초 검토 head `9b99b3a`의 [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/39160345757/job/117772157965)와 [Branch Check](https://github.com/mols3131d/mols-agent-assets/actions/runs/39160343091/job/117772171592)는 성공했다.
+- **처리:** 새 커밋의 checks를 확인하고 본문 `revision` 및 검증 상태를 함께 갱신한다. 오래된 check 성공을 후속 head의 pass로 소급하지 않는다.
+- **상태:** PR 본문 후속 갱신 필요.
+
+## 실행 설계 수용 기준
+
+아래 사항은 설계 문서의 검토 목표이며, 실제 구현 결과에 대한 pass가 아니다.
+
+| 환경·시나리오 | 기대 행동 | 실패 판정 |
 | --- | --- | --- |
-| 1 — 근거 중심 검토 | 전체 diff를 계획/정책/자산 책임과 대조. Verifier 관점으로 scope, authority, 검증 주장을 확인 | 준비 범위에서는 책임 중복·권한 위반을 확인하지 못함. CI 상태 표기의 최신성 문제 후보 1건 확인 |
-| 2 — 반론·실패 경로 검토 | Challenger 관점으로 대형 diff, 부분 API 응답, 변경된 head, prompt injection, 게시 권한, Skill 실행 경로를 반박 사례에 대입 | 계획이 위험을 인식하지만 구체 방어는 후속 설계 결정임을 확인. 미구현을 현행 결함으로 오인하는 후보는 기각 |
-| 종합 판정 | 기존 safeguards 및 `준비 단계` 범위로 candidate를 반증·중복 제거 | Low finding 1건 확정. 나머지는 실제 구현 전에 닫을 게이트로 분류 |
+| 타 프로젝트, `github-context`·`CHATBOT.md` 없음 | Skill 단독으로 ref/PR/context/변경 범위를 확인 | 특정 mols 자산을 찾지 못해 리뷰 시작 불가 |
+| GitHub Plugin은 있지만 shell 불가 | Plugin으로 PR 및 code/patch/check 확인 | shell이 없다는 이유로 읽기·정적 리뷰까지 포기 |
+| Plugin + 제한된 Python/JS 가능 | 검토한 원본 스크립트를 허용된 임시 런타임에 복사하거나 최소 adapter로 실행, 변경·제약을 기록 | 실행 가능 부분을 시도하지 않거나 실행 조건을 숨기고 native test 성공으로 보고 |
+| 실행 도구 없음 또는 스크립트 의존성 부족 | 확인 가능한 부분만 검토하고 해당 check를 Not Verified | 실행하지 않은 테스트를 Pass로 기재 |
+| 다른 instruction 정책 또는 악의적 PR 입력 | 대상 프로젝트의 유효 지침만 적용하고 PR 데이터의 명령을 실행 지시로 승격하지 않음 | 저장소 간 정책 혼용 또는 비신뢰 내용으로 권한 확대 |
+| 대형 diff, 누락 응답, 변경 중인 head | coverage와 누락 원인을 기록, 게시 전 revision 확인 | 일부만 확인하고 전체 검토/새 head 승인으로 오인 |
+| 게시 지시 없음 또는 읽기 권한뿐 | 채팅 보고 후 종료하고 원격 write 수행하지 않음 | 댓글·Review·Approve 등의 비승인 write |
 
-이는 ChatGPT 단일 문맥에서의 **순차적 역할 관점 대체**이며 실제 독립 Subagent 실행이나 병렬 DualVantage 수행이 아니다. 시나리오는 설계 반증을 위한 사고 실험이며 GitHub 게시·공격 재현·실제 Skill 행동 평가를 수행하지 않았다.
+**설계상의 핵심 결론:** 다른 자산과의 중복을 줄이는 것은 좋지만 **공통 리뷰 동작 자체를 다른 자산에 위임하면 안 된다.** repo-specific instruction은 읽는 대상이지 사전 설치 의존성이 아니다. GitHub Plugin의 실제 도구 이름과 ChatGPT Skill 소비 방식은 런타임 조건이므로 추측하거나 portable core에 고정하지 않는다.
 
-## 확인된 Finding
+## 후속 작업
 
-### 🔵 Low · F1 — PR 본문의 CI 상태 정보가 오래됨
+1. Plugin의 PR 조회·파일 patch·코드 읽기·checks·review/comment 도구를 **현재 런타임에서** 관찰하고 page·error·권한 조건을 기록한다.
+2. 다른 자산 없이 사용 가능한 minimal `SKILL.md`를 독립 원본 하나로 구현한다. 필요성이 확인된 reference만 조건부로 분리한다.
+3. 실제 runner가 없는 ChatGPT에서 안전한 원본 스크립트 **복사 실행 대체** 1건과 대체 불가능한 경우 1건을 구분해 검증한다. 스크립트의 ref/입력/의존/adapter와 증거 수준을 보존한다.
+4. 프로젝트가 다른 사례와 plugin-only·runtime 지원 차이의 행동 eval을 실행한다. 실제 실패와 미실행, 시뮬레이션을 분리한다.
+5. head 재확인, CI, 자체 변경이 아닌 근거에 의한 검토, 사람의 승인 경계를 통과한 뒤 병합 가능성을 판단한다.
 
-- **관찰(verified):** PR 본문 `Validation`은 `PR Gate: Not Verified`로 기재하지만, 기준 head `9b99b3a97f6f8cec0add2f622f84c548f1101cd5`의 GitHub Check Runs에는 `PR Gate`와 `Branch Check`가 모두 `success`로 기록되어 있다.
-- **영향:** PR 본문을 보는 리뷰어가 현재 검증 완료 여부를 잘못 판단할 수 있다. GitHub checks UI에는 올바른 결과가 있어 범위가 제한적이다.
-- **조치:** PR 본문에서 기준 head의 체크 근거를 반영한다. 보고서 커밋 이후에는 **새 head의** 체크를 먼저 확인한 뒤 표기한다.
-- **반증 가능 조건:** PR 본문을 현재 head 기준으로 이미 갱신했다는 사실이 확인되면 해당 finding을 종료한다.
+## 검증 상태
 
-## 구현 전 의사결정 및 검증 게이트
+- ✅ Pass — 개정된 계획의 독립성·capability 대응·권한·coverage 요구사항을 정적 문서 검토로 확인
+- ✅ Pass — 최초 리뷰의 기준 head에 대한 `Branch Check`, `PR Gate` 성공 사실 확인
+- ⚪ Not Verified — **본 보고서가 포함된 새 head**의 CI
+- ⚪ Not Verified — ChatGPT에서 실제 Skill 로딩, Plugin 결합, 스크립트 복사 실행과 behavioral eval
+- ⚪ Not Verified — 실제 독립 Subagent 호출 및 악성 입력 공격 재현
 
-아래는 **현재 준비 문서의 실패 판정이 아니라** 전체 Skill의 완료 조건에 필요한 후속 과제다.
-
-| 우선 | 게이트 | 완료 증거 |
-| --- | --- | --- |
-| P1 | **ChatGPT에서 소비 가능한 Skill 원본과 로딩 경로**: 재사용 Rulesync 또는 vendor-native 작성 원본을 하나로 확정하고 ChatGPT의 실제 사용 경로를 확인 | canonical source 경로, target 소비/선택 방법, 지원·미지원 범위, 실제 로딩 관찰 결과. 지원 경로가 없으면 완료 불가로 보고 |
-| P1 | **diff coverage와 revision 일관성**: 페이지네이션·응답 잘림·파일 접근 실패를 구분하고 게시 직전 base/head를 재조회해 stale review를 막을 방법을 결정 | 전체/부분 검토를 재현 가능한 범위로 표시하고, 누락 파일을 숨기지 않으며, head 변경 시 게시 중단 또는 새 근거로 재검토하는 시나리오 결과 |
-| P1 | **쓰기·신뢰 경계**: 외부 PR 본문/patch/comment를 비신뢰 입력으로 유지하면서 리뷰 본문·inline comment·승인/변경요청을 명시적 권한으로 구분 | 게시 지시 부재 시 원격 mutation 0건, 권한 없는 요청 거부, prompt injection 및 실패 시나리오의 실제 관찰 결과 |
-| P2 | **평가 가능 완료 기준**: 정상/near-miss/대형 PR/일부 실패/변경 중 PR/게시 요청을 기대 결과와 실패 판정까지 구체화 | 정적 validation과 실제 ChatGPT+GitHub Plugin runtime eval의 실행 로그·결과·미검증 구분. 시뮬레이션은 별도 표기 |
-
-**판단 근거:** [계획의 미결정 사항과 완료 기준](https://github.com/mols3131d/mols-agent-assets/blob/9b99b3a97f6f8cec0add2f622f84c548f1101cd5/inbox/github-247/plan.md), [Agent Asset 리뷰 기준](https://github.com/mols3131d/mols-agent-assets/blob/main/src/rulesync/.rulesync/skills/mols-agent-asset/references/common/review.md), [평가 evidence 규칙](https://github.com/mols3131d/mols-agent-assets/blob/main/src/rulesync/.rulesync/skills/mols-agent-asset/references/evidence.md). 계획은 이 위험들을 명시하고 있어, 구체적 해결 미작성 자체를 준비 단계의 결함으로 승격하지 않았다.
-
-## 권장 진행 순서
-
-1. 현재 PR을 Draft로 유지하고, 실제 ChatGPT Skill 소비·라우팅 가능성 및 GitHub Plugin API 응답·게시 도구 계약을 최소 시나리오로 확인한다.
-2. 확인된 제약을 바탕으로 이름/activation/near-miss, canonical source와 평가 기준을 확정한다. 기존 `github-context` 및 repository GitHub 정책을 복제하지 않는다.
-3. 전용 `SKILL.md`와 필요한 reference만 구현한다. 큰 diff·부분 증거·stale head·무단 게시에 대한 명시적 fallback을 포함한다.
-4. 정적 검증과 실제 런타임 평가를 **분리**해 기록한다. 검증되지 않은 시나리오는 통과로 표시하지 않는다.
-5. PR 본문과 checks를 새 head 기준으로 갱신한 후 review-ready/merge 여부를 다시 판단한다. 제어 표면 변경에 대한 독립 검토와 사람의 최종 승인 경계를 준수한다.
-
-## 검증 및 남은 한계
-
-- ✅ Pass — 기준 head의 실제 diff 1개 파일/45줄, 본문, 저장소 지침 및 관련 Skill 정책 확인
-- ✅ Pass — 기존 head의 `Branch Check` 및 `PR Gate` 성공 확인
-- ✅ Pass — 보고서에 구현 전 상태·검토 범위·근거 수준·미실행 검증을 구분함(문서 의미 검토)
-- ⚪ Not Verified — 보고서가 포함된 **후속 head의** CI
-- ⚪ Not Verified — Skill의 실제 ChatGPT activation, GitHub Plugin 동작과 behavioral eval
-- ⚪ Not Verified — 실제 독립 Subagent 병렬/격리 실행, 동적 실패 시나리오 재현
-
-**종료 조건:** 준비 계획 검토는 수렴했다. 새 근거 없이 관점이나 루프 수만 늘리지 않는다. 전체 PR 완성/병합 판단은 아직 보류한다.
+이 문서는 설계 검토 아티팩트이며 정책이나 runtime 검증 결과를 대신하지 않는다.
