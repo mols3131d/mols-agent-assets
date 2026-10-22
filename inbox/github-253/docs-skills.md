@@ -11,3 +11,7 @@
 ## Coverage Limits
 
 그 밖의 `docs/skills/*`와 동일한 이름의 Skill package들을 전수 대조하지 않았다. Runtime/eval을 실행하지 않았다.
+
+## Retired Asset Check
+
+[별도 조사](retired-assets.md)에서 `route/skills.jsonl`의 현행 식별자와 유지보수 문서의 family를 비교했다. `mols-markdown`은 `mols-documentation`·dashboard·maintenance의 **유효 family**이고, `mols-mermaid`는 chart·diagram의 **유효 family**다. `mols-loops`의 이전 이름 `mols-rpi`는 공개 rename 결정으로만 등장한다. 단독 이름의 Skill 부재를 곧바로 orphan 문서로 판정하지 않는다. 삭제된 `mols-markdown-for-human`, `mols-agent-asset-validator`는 이번 검색에서 과거 `inbox/` 문서의 언급이 확인됐으며 현행 maintainer 문서 전체에 대한 완전한 부재 증명은 아니다.
