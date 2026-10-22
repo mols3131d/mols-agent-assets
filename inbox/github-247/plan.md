@@ -6,7 +6,7 @@ ChatGPT 같은 제한된 챗봇 런타임에서 **연결된 GitHub Plugin과 사
 
 대상은 ChatGPT에서 GitHub 접근 도구를 사용하는 PR 리뷰다. 이 저장소는 Skill의 개발·배포 원본일 뿐, **리뷰 대상 저장소나 실행 환경이 이 저장소의 다른 Skill, Subagent, `CHATBOT.md`, 특정 디렉터리 구조·템플릿을 가진다고 가정하지 않는다.** 핵심 동작은 단일 Skill 설치·로드만으로 이해하고 수행할 수 있어야 한다.
 
-이번 PR의 현재 범위는 계획·검토 아티팩트다. `SKILL.md` 구현, 실제 runtime 검증 및 병합은 후속 변경으로 진행한다.
+이번 PR은 계획에 이어 [독립 Skill 원본](../../src/rulesync/.rulesync/skills/github-pr-review/SKILL.md)과 [평가 fixture](../../evals/skills/github-pr-review/cases.json)를 구현한다. 실제 ChatGPT runtime 검증과 병합 준비 상태는 [구현 검증 기록](implementation.md)에서 구분한다.
 
 ## 독립성·권한의 기본 계약
 
@@ -41,11 +41,11 @@ ChatGPT 같은 제한된 챗봇 런타임에서 **연결된 GitHub Plugin과 사
 ## 구현·검증 계획
 
 1. **실제 capability 조사:** 연결된 GitHub Plugin에서 PR 조회, 파일 목록/patch, page 처리, ref 파일 읽기, checks, review/comment 쓰기의 **사용 가능한 도구 계약**을 확인한다. 특정 도구 이름에 핵심 행동을 고정하지 않는다. ChatGPT의 Skill 원본 선택·로드·소비 경로도 실제로 확인한다.
-2. **독립적 최소 설계:** portable core의 trigger/near-miss, 입력·출력과 오류·권한 경계를 정한다. 다른 Skill·route·template 없이 작동하는 최소 `SKILL.md`를 우선한다. 추가 reference·script는 독립적 loading 또는 실제 실행 이점이 있을 때만 도입한다.
-3. **이식 가능한 작성 원본 선택:** 재사용 Rulesync 또는 적절한 vendor-native 작성 원본 중 **하나만** 선택하고, 생성 projection을 별도 원본으로 관리하지 않는다. 다른 프로젝트에서 설치/주입/로드하는 구체적 경로와 한계를 확인한다.
-4. **검증 시나리오:** 다른 자산이 없는 프로젝트, 프로젝트별 지침이 서로 다른 프로젝트, Plugin-only, Plugin+제한된 Python/JS, native runner가 있는 환경, 코드 실행 불가, 대형/부분 diff, stale head, 공격성 PR 내용, 무단 게시 요청, near-miss를 검토한다. 각 사례에 기대 결과와 실패 조건을 둔다.
-5. **결과 분리:** 정적 자산 validation, 도구 연결·스크립트 대체의 부분 검증, 실제 ChatGPT 행동 eval을 분리한다. 수행하지 못한 테스트는 pass가 아니라 미검증으로 남긴다. 결정적 검증은 가능한 한 실제 실행한다.
-6. 새 head의 checks와 변경 범위를 다시 확인하고 독립 검토·권한 조건을 거쳐 Draft 해제 및 병합 준비를 판단한다.
+1. **독립적 최소 설계:** portable core의 trigger/near-miss, 입력·출력과 오류·권한 경계를 정한다. 다른 Skill·route·template 없이 작동하는 최소 `SKILL.md`를 우선한다. 추가 reference·script는 독립적 loading 또는 실제 실행 이점이 있을 때만 도입한다.
+1. **이식 가능한 작성 원본 선택:** 재사용 Rulesync 또는 적절한 vendor-native 작성 원본 중 **하나만** 선택하고, 생성 projection을 별도 원본으로 관리하지 않는다. 다른 프로젝트에서 설치/주입/로드하는 구체적 경로와 한계를 확인한다.
+1. **검증 시나리오:** 다른 자산이 없는 프로젝트, 프로젝트별 지침이 서로 다른 프로젝트, Plugin-only, Plugin+제한된 Python/JS, native runner가 있는 환경, 코드 실행 불가, 대형/부분 diff, stale head, 공격성 PR 내용, 무단 게시 요청, near-miss를 검토한다. 각 사례에 기대 결과와 실패 조건을 둔다.
+1. **결과 분리:** 정적 자산 validation, 도구 연결·스크립트 대체의 부분 검증, 실제 ChatGPT 행동 eval을 분리한다. 수행하지 못한 테스트는 pass가 아니라 미검증으로 남긴다. 결정적 검증은 가능한 한 실제 실행한다.
+1. 새 head의 checks와 변경 범위를 다시 확인하고 독립 검토·권한 조건을 거쳐 Draft 해제 및 병합 준비를 판단한다.
 
 ## 완료 기준 (전체 PR)
 
@@ -57,5 +57,5 @@ ChatGPT 같은 제한된 챗봇 런타임에서 **연결된 GitHub Plugin과 사
 
 ## 현재 상태
 
-- 준비 완료: 대상 PR 및 기존 정책 조사, 독립성·이식성·제한된 런타임 대체 실행을 포함한 작업 범위 재정의.
-- 미완료: Skill 원본 구현과 로딩 경로 확정, Plugin/코드 런타임 시나리오 실행, 정적 validation, 실제 행동 eval, 병합.
+- 구현: Rulesync single-file 원본, 타 자산 없는 실행 계약, capability별 검증과 게시 경계, 평가 fixture와 [사용 안내](../../docs/skills/github-pr-review/README.md).
+- 검증 결과와 남은 작업: [구현 검증 기록](implementation.md). 최초 설계 검토의 시점별 판단은 [기존 리뷰](review.md)에 남긴다.
