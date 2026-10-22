@@ -35,6 +35,7 @@ class NativeAdapter:
     name: str
     supported_skills: frozenset[str]
     install_script: str
+    windows_install_args: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -50,6 +51,7 @@ NATIVE_ADAPTERS = {
         name="im-not-ai",
         supported_skills=frozenset({"humanize-korean"}),
         install_script="install.sh",
+        windows_install_args=("--copy",),
     ),
 }
 
@@ -124,7 +126,8 @@ def build_sync_plans(skills: list[LockedSkill]) -> list[SyncPlan]:
     for skill in skills:
         if skill.source_type != "github":
             raise SkillSyncError(
-                f"native adapter가 지원하지 않는 sourceType입니다: {skill.source_type!r}"
+                "native adapter가 지원하지 않는 sourceType입니다: "
+                f"{skill.source_type!r}"
             )
 
         source = normalize_github_source(skill.source)
@@ -198,9 +201,7 @@ def ensure_checkout(plan: SyncPlan, cache_root: Path) -> Path:
             ]
         )
 
-    run_checked(
-        ["git", "-C", str(checkout), "remote", "set-url", "origin", source_url]
-    )
+    run_checked(["git", "-C", str(checkout), "remote", "set-url", "origin", source_url])
     run_checked(
         [
             "git",
@@ -222,7 +223,8 @@ def ensure_checkout(plan: SyncPlan, cache_root: Path) -> Path:
 
 
 def run_native_installer(plan: SyncPlan, checkout: Path) -> None:
-    if shutil.which("bash") is None:
+    bash = shutil.which("bash")
+    if bash is None:
         raise SkillSyncError(
             f"{plan.adapter.name} native installer는 bash가 필요합니다."
         )
@@ -231,7 +233,10 @@ def run_native_installer(plan: SyncPlan, checkout: Path) -> None:
     if not installer.is_file():
         raise SkillSyncError(f"native installer를 찾을 수 없습니다: {installer}")
 
-    run_checked(["bash", plan.adapter.install_script], cwd=checkout)
+    command = [bash, plan.adapter.install_script]
+    if sys.platform == "win32":
+        command.extend(plan.adapter.windows_install_args)
+    run_checked(command, cwd=checkout)
 
 
 def sync_locked_skills(
