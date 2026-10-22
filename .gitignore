@@ -8,6 +8,7 @@
 /.codex/
 /.agents/skills/
 /_workspace/
+/mise.local.toml
 /.rulesync/rules/.curated/
 /.rulesync/skills/.curated/
 /rulesync.local.jsonc
