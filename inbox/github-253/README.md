@@ -4,27 +4,27 @@
 
 기준 revision: [`23d649b2eac6e9115ce0e97a823d59de4d37b3c5`](https://github.com/mols3131d/mols-agent-assets/commit/23d649b2eac6e9115ce0e97a823d59de4d37b3c5). 대상은 각 보고서에 명시한 **표본 문서 및 직접 연결된 정본**이며, 저장소 전체 전수 검사는 아니다.
 
-**확인된 차이 3개(동일한 제목 언어 정책 위반 유형):** [docs/development](docs-development.md), [catalog](catalog.md), [evals](evals.md). 서로 다른 파일을 개별 관찰로 기록했으며 공통 원인은 [Language 정책](https://github.com/mols3131d/mols-agent-assets/blob/23d649b2eac6e9115ce0e97a823d59de4d37b3c5/docs/language.md)의 H1–H3 적용 불일치다. 문서 범위 내 기능·권한 충돌은 이번 표본에서 확인되지 않았다.
+**확인된 finding 4개(동일한 제목 언어 정책 위반 유형):** [docs](docs.md), [docs/development](docs-development.md), [catalog](catalog.md), [evals](evals.md). 서로 다른 디렉터리의 관찰로 분리했으며 공통 원인은 [Language 정책](https://github.com/mols3131d/mols-agent-assets/blob/23d649b2eac6e9115ce0e97a823d59de4d37b3c5/docs/language.md)의 H1–H3 적용 불일치다. 문서 범위 내 기능·권한 충돌은 이번 표본에서 확인되지 않았다.
 
 ## Directory Reports
 
 | 범위 | 보고서 | 확인된 이슈 |
 | --- | --- | --- |
 | 루트 | [root.md](root.md) | 없음 |
-| `docs/` | [docs.md](docs.md) | 하위 보고서 참조 |
-| `docs/development/` | [docs-development.md](docs-development.md) | DOC-001 |
+| `docs/` | [docs.md](docs.md) | DOC-001 |
+| `docs/development/` | [docs-development.md](docs-development.md) | DOC-002 |
 | `docs/documentation/` | [docs-documentation.md](docs-documentation.md) | 없음 |
 | `docs/references/` | [docs-references.md](docs-references.md) | 없음 |
 | `docs/skills/` | [docs-skills.md](docs-skills.md) | 없음 |
 | `docs/subagents/` | [docs-subagents.md](docs-subagents.md) | 없음 |
-| `catalog/` | [catalog.md](catalog.md) | DOC-002 |
+| `catalog/` | [catalog.md](catalog.md) | DOC-003 |
 | `src/` | [src.md](src.md) | 없음 |
 | `route/` | [route.md](route.md) | 없음 |
 | `.agents/` | [agents.md](agents.md) | 없음 |
 | `.github/` | [github.md](github.md) | 없음 |
 | `scripts/` | [scripts.md](scripts.md) | 없음 |
 | `tests/` | [tests.md](tests.md) | 없음 |
-| `evals/` | [evals.md](evals.md) | DOC-003 |
+| `evals/` | [evals.md](evals.md) | DOC-004 |
 | `inbox/` | [inbox.md](inbox.md) | 추가 확인 필요 |
 
 ## Method and Limits
