@@ -13,4 +13,4 @@ description: 일반 리뷰와 다관점 리뷰의 범용 Markdown 양식과 개�
 
 양식과 스펙을 함께 선택하고 실제 값으로 치환한 뒤, 사용하지 않는 선택 섹션과 템플릿 표기를 제거합니다. `{{ ... }}`, `{% if ... %}`, `{% for ... %}`는 작성용 표기이며 Jinja2 실행을 요구하지 않습니다.
 
-구조는 HMDA Data Reliability의 [Review](https://github.com/mols3131d/hmda-data-reliability/blob/34519fec148dd2ab38ddf0cc0157c3d3ed9f7247/inbox/_templates/review.md)와 [Multi-perspective Review](https://github.com/mols3131d/hmda-data-reliability/blob/34519fec148dd2ab38ddf0cc0157c3d3ed9f7247/inbox/_templates/review-multi-perspective.md)를 참고했습니다. 참고 저장소 고유의 verdict, severity, frontmatter·Inbox 정책은 가져오지 않습니다. GitHub PR Review 본문은 [전용 템플릿](../../.github/templates/pull-request-review.md)을 사용합니다.
+GitHub PR Review 본문은 [전용 템플릿](../../.github/templates/pull-request-review.md)을 사용합니다.
