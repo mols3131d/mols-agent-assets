@@ -11,3 +11,7 @@
 ## Coverage Limits
 
 `src/rulesync/.rulesync/subagents/` 개별 prompt와의 전문 비교 및 delegation runtime 검증은 수행하지 않았다. 이 결과를 Subagent 전체의 의미 일치로 일반화할 수 없다.
+
+## Retired Subagent Names
+
+[별도 조사](retired-assets.md)에서는 이전 `review-lead`·`review-quality`·`review-adversarial` 원본이 없음을 확인했다. 현행 [DualVantage maintainer](https://github.com/mols3131d/mols-agent-assets/blob/23d649b2eac6e9115ce0e97a823d59de4d37b3c5/docs/subagents/mols-review-dualvantage/maintenance.md)의 `Legacy review callers`는 이관을 위한 설명이며 지우면 오히려 호환성 맥락이 유실된다. 과거 `inbox/2026-08-22/` 연구·계획·리뷰는 당시 자산 상태를 기록한다.
