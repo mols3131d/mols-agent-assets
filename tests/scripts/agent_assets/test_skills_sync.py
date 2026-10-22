@@ -22,7 +22,9 @@ def locked_skill(
 
 
 def test_normalize_github_source_accepts_shorthand_and_url():
-    assert sync.normalize_github_source("epoko77-ai/im-not-ai") == "epoko77-ai/im-not-ai"
+    assert (
+        sync.normalize_github_source("epoko77-ai/im-not-ai") == "epoko77-ai/im-not-ai"
+    )
     assert (
         sync.normalize_github_source("https://github.com/epoko77-ai/im-not-ai.git")
         == "epoko77-ai/im-not-ai"
@@ -206,8 +208,9 @@ def test_ensure_checkout_pins_origin_and_fetches_exact_locked_ref(
     ] in commands
 
 
+@pytest.mark.parametrize(("platform", "args"), [("linux", []), ("win32", ["--copy"])])
 def test_native_installer_delegates_vendor_detection_to_upstream(
-    tmp_path: Path, monkeypatch
+    tmp_path: Path, monkeypatch, platform: str, args: list[str]
 ):
     plan = sync.build_sync_plans([locked_skill()])[0]
     (tmp_path / "install.sh").write_text("#!/usr/bin/env bash\n", encoding="utf-8")
@@ -220,6 +223,8 @@ def test_native_installer_delegates_vendor_detection_to_upstream(
         lambda command, cwd=None: calls.append((command, cwd)),
     )
 
-    sync.run_native_installer(plan, tmp_path)
+    with monkeypatch.context() as patch:
+        patch.setattr(sync.sys, "platform", platform)
+        sync.run_native_installer(plan, tmp_path)
 
-    assert calls == [(["bash", "install.sh"], tmp_path)]
+    assert calls == [(["/usr/bin/bash", "install.sh", *args], tmp_path)]

@@ -3,45 +3,45 @@
   "sources": {
     "mols3131d/mols-agent-assets": {
       "requestedRef": "main",
-      "resolvedRef": "2a5be17db6cfa5ee91abce23bfdb9270166ce27e",
-      "resolvedAt": "2026-09-07T06:27:20.000Z",
+      "resolvedRef": "05fd51354fe53eaef51e9b7166bd0c2d39ae78a4",
+      "resolvedAt": "2026-10-22T02:21:37.515Z",
       "skills": {
         "artifact-consistency-inspector": {
-          "integrity": "sha256-a77e60b98b57b56a4dc62754eb60ab2c45b2109a0b4622e6c63af61f2d533fe3"
+          "integrity": "sha256-e043262be27c80766cec72727368bc12f4be05dc55b9e568dac94d3bbbeaf060"
         },
         "github-context": {
           "integrity": "sha256-ba5201fd19cc7939ddbdd4300ea01f227670a64f1863e26ee6805429f4635191"
         },
         "mols-agent-asset": {
-          "integrity": "sha256-5a1ba25e6fe822b43130b5e1f53726255a52fbe4361589874b1e1a484ff0214e"
+          "integrity": "sha256-ad9d931f7efc62addbc51047c5d9f6bf039d9b47584581fad6fc9a691a8e6d4f"
         },
         "mols-agent-asset-find": {
-          "integrity": "sha256-6ace67d927da8eedcdd359593ddcbd7a80d97a2fa9cab42288f634116382aef6"
+          "integrity": "sha256-e16fff97eb2f8b3b29bb125e324c4a32f763bc03e1a99bd0fbb1cd29f488b980"
         },
         "mols-chatbot-bootstrap": {
-          "integrity": "sha256-88c8ff1d6a10f35c2a68008c19ad140baccde4f3009e8c1d3e9fe253027a767d"
+          "integrity": "sha256-4263958853dab38bea7533b7f3d9c9eb9d218a5980b55e21027c261a9eaa9ab0"
         },
         "mols-documentation": {
-          "integrity": "sha256-1f7ec4eb7ee2c3597e0fda64c6a224e58e0cf1bb3c4be33c53e5a5cae3dff8dc"
-        },
-        "mols-markdown-maintenance": {
-          "integrity": "sha256-78411769d42cf0a35be8600e842286b33432491c0ff1d3c0b70eef83d3df9e35"
-        },
-        "mols-mermaid-chart": {
-          "integrity": "sha256-1ad62e9d16514abd1a9b62782d1e933e20103508b1e44e3608e64f53540e9a2d"
-        },
-        "mols-mermaid-diagram": {
-          "integrity": "sha256-2b7d4d7b2bddbbeb8e3d46d6691501bee11fae1139968ec798d72d7dd1fc40ac"
+          "integrity": "sha256-3e156795c0fa1f811b89b7e2f467611cc47f20f8a41b54cfb0822321c60f625d"
         },
         "mols-loops": {
           "integrity": "sha256-f3f3de0ae4d899fe029748440d537b2a0624074e238a575dce7565916efa5c9f"
+        },
+        "mols-markdown-maintenance": {
+          "integrity": "sha256-9c4141c0961846460bed8dfdb92f063184ad422f381ea84a4a7e5dcd867a2051"
+        },
+        "mols-mermaid-chart": {
+          "integrity": "sha256-d2464570ea685edfa15eabb4fe672dab4101cb031cf4ec729ebe2ebdc35ff1ea"
+        },
+        "mols-mermaid-diagram": {
+          "integrity": "sha256-481f36287ad6d94e98738ecae3dd062f2d0e13148604ddbea8e5f7c96a2a5a61"
         }
       }
     },
     "dyoshikawa/rulesync": {
       "requestedRef": "main",
-      "resolvedRef": "19fad794303990803c6511bb95fa7ea5f34e9e12",
-      "resolvedAt": "2026-09-01T01:02:00.000Z",
+      "resolvedRef": "02654ba214449ca3306dfa56d493ff4aa131d7f3",
+      "resolvedAt": "2026-10-22T02:21:40.881Z",
       "skills": {
         "rulesync": {
           "integrity": "sha256-658851f4f3b4c432820cc1ed54bd294a699f171ee28d1da9a3c89e5a3b26a96f"

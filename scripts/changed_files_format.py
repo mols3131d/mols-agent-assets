@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import shutil
 import subprocess
 from collections.abc import Iterable
 from pathlib import Path
@@ -54,7 +55,8 @@ def select_paths(paths: Iterable[str], suffixes: set[str]) -> list[str]:
 
 
 def _run(root: Path, *args: str) -> None:
-    subprocess.run(args, cwd=root, check=True)
+    executable = shutil.which(args[0]) or args[0]
+    subprocess.run((executable, *args[1:]), cwd=root, check=True)
 
 
 def format_changed(root: Path = ROOT) -> tuple[str, ...]:
