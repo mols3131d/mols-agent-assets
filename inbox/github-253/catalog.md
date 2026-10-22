@@ -1,6 +1,6 @@
 # Catalog — Consistency Findings
 
-## Finding DOC-002 · Verified · Low
+## Finding DOC-003 · Verified · Low
 
 **관찰:** [`docs/language.md`](https://github.com/mols3131d/mols-agent-assets/blob/23d649b2eac6e9115ce0e97a823d59de4d37b3c5/docs/language.md)는 H1–H3 Markdown heading에 영어를 요구한다. [`catalog/patterns/workflow/chatbot-driven-development.md`](https://github.com/mols3131d/mols-agent-assets/blob/23d649b2eac6e9115ce0e97a823d59de4d37b3c5/catalog/patterns/workflow/chatbot-driven-development.md)에는 `## 목표를 어떻게 구체화할까?`, `### 무엇을 질문하고 무엇을 위임할까?`, `## 완료는 어떤 근거로 판단할까?` 등의 한국어 H2–H3가 존재한다.
 
