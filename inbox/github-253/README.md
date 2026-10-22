@@ -6,6 +6,11 @@
 
 **확인된 finding 4개(동일한 제목 언어 정책 위반 유형):** [docs](docs.md), [docs/development](docs-development.md), [catalog](catalog.md), [evals](evals.md). 서로 다른 디렉터리의 관찰로 분리했으며 공통 원인은 [Language 정책](https://github.com/mols3131d/mols-agent-assets/blob/23d649b2eac6e9115ce0e97a823d59de4d37b3c5/docs/language.md)의 H1–H3 적용 불일치다. 문서 범위 내 기능·권한 충돌은 이번 표본에서 확인되지 않았다.
 
+## Retired Asset Documentation
+
+- [삭제·개명 자산 문서 잔존 조사](retired-assets.md): 과거 Skill/Subagent 이름과 남아 있는 문서를 원본·family·이력 기준으로 분리했다. 과거 `inbox/`에 현재형으로 남은 설명과 존재하지 않는 경로 참조가 확인됐지만, 이를 현행 maintainer capsule의 orphan으로 단정하지 않았다.
+- 이전 `mols-rpi`와 `review-*` 언급 가운데 실제 migration/consumer 호환성 설명은 보존 대상이다. `mols-markdown`·`mols-mermaid`처럼 별도 Skill 없이 현재 family로 유지되는 디렉터리도 삭제 후보가 아니다.
+
 ## Directory Reports
 
 | 범위 | 보고서 | 확인된 이슈 |
@@ -25,7 +30,7 @@
 | `scripts/` | [scripts.md](scripts.md) | 없음 |
 | `tests/` | [tests.md](tests.md) | 없음 |
 | `evals/` | [evals.md](evals.md) | DOC-004 |
-| `inbox/` | [inbox.md](inbox.md) | 추가 확인 필요 |
+| `inbox/` | [inbox.md](inbox.md) | 삭제·개명 이름의 과거 기록 확인 (현행 결함과 구분) |
 
 ## Method and Limits
 
