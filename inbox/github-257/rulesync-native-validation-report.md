@@ -4,6 +4,8 @@ description: PR #257에서 사용하는 Rulesync v16.24.1의 자체 진단·생�
 
 # PR #257 — Rulesync 자체 테스트·검증 기능 조사
 
+> **버전 기준 알림 (2026-10-24):** 아래 본문은 업그레이드 **이전 v16.24.1**을 대상으로 수행한 역사적 조사다. PR #257에서 `mise.toml`의 pin을 **v40.2.0**으로 변경했다. 40.x 공식 변경점과 아직 수행하지 않은 CLI·lock migration 검증은 [v40 업그레이드 조사·계획](rulesync-v40-upgrade-plan.md), 실행 인계는 [인계 보고서](rulesync-v40-handoff.md)를 따른다. 아래의 16.x 실행 상태를 v40.x에서의 통과 근거로 인용하지 않는다.
+
 ## 결론
 
 **Rulesync 자체 검증 기능은 있다. 별도의 공개 CLI `rulesync test` 또는 `rulesync validate` 명령이 있는 것은 아니다.** 이 저장소가 고정한 **v16.24.1**은 이미 다음을 제공한다.
