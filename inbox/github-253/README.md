@@ -11,6 +11,12 @@
 - [삭제·개명 자산 문서 잔존 조사](retired-assets.md): 과거 Skill/Subagent 이름과 남아 있는 문서를 원본·family·이력 기준으로 분리했다. 과거 `inbox/`에 현재형으로 남은 설명과 존재하지 않는 경로 참조가 확인됐지만, 이를 현행 maintainer capsule의 orphan으로 단정하지 않았다.
 - 이전 `mols-rpi`와 `review-*` 언급 가운데 실제 migration/consumer 호환성 설명은 보존 대상이다. `mols-markdown`·`mols-mermaid`처럼 별도 Skill 없이 현재 family로 유지되는 디렉터리도 삭제 후보가 아니다.
 
+## Disposition and Next Work
+
+- **DOC-001–004:** 동일한 heading 언어 정책의 디렉터리별 사례다. 이 PR에서는 증거를 보존하고, 실제 제목 수정은 별도 문서 수정 PR에서 처리한다. Heading 변경 시 기존 anchor와 내부 참조 영향도 함께 확인한다.
+- **삭제·개명 자산:** 현행 maintainer 문서의 orphan은 표본에서 검증되지 않았다. 발견된 `inbox/`의 오래된 public Skill·Subagent 이름은 당시 작업 기록으로 남긴다. 현재형으로 읽힐 우려가 있으면 역사적 원문을 일괄 삭제·치환하는 대신 현재 정본이나 superseded 상태를 연결하는 후속 작업을 검토한다.
+- **미검증 범위:** 전체 파일 inventory, 이동·삭제된 모든 경로의 존재 확인, repository-wide link 검사와 runtime 검증은 수행하지 않았다. 추가 전수 검사는 별도 작업이며 이번 표본 결과의 merge 자체를 전체 저장소 정합성 인증으로 해석해서는 안 된다.
+
 ## Directory Reports
 
 | 범위 | 보고서 | 확인된 이슈 |
