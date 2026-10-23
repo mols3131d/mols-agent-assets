@@ -99,4 +99,4 @@ Disposition: **absorb** — 좁은 자식 범위로 contract 대 통합 검증 �
 
 이 변경은 **Parent Review 1 → Nested child Review 2 → Parent 구현 Review 3 → Parent 정합성 Review 4**의 실질적 결정/검토로 진행했다. Child는 parent 목표의 strict subset이며 카운터를 공유한다. `loops_used = 4`, hard ceiling은 Skill 기본 `30`을 그대로 따랐다. **deep intensity는 30회 채우기를 뜻하지 않는다.** 반복 내용이 더 이상 결과를 바꾸지 않아 더 많은 동작이 아닌 새 CI evidence를 기다리는 것으로 Convergence 판단했다.
 
-**Finalize boundary:** GitHub PR Gate의 *현재 HEAD*에서 source contracts, deterministic tests, affected generator drift와 Rulesync validation을 확인해야 저장소 검증 완료를 주장할 수 있다. 독립 실행 환경 없이 설계한 34개 fixture는 실제 model eval PASS로 판정하지 않는다. PR #255는 Draft를 유지하며 병합하지 않는다.
+**Finalize verification:** commit `995f96f`의 [PR Gate run 39961039971](https://github.com/mols3131d/mols-agent-assets/actions/runs/39961039971)에서 source contracts, deterministic tests, affected generated projections, Rulesync validation이 모두 **PASS**한 것을 GitHub job/step result로 확인했다. 같은 revision의 제한된 정적 검사에서 31개 source Skill-route 엔트리 정합성, 34개 eval case 기본 schema·고유 ID·타깃 메타데이터와 문서 상대 링크 27개의 유효성도 확인했다. 이 후속 보고서 커밋의 최신 PR Gate 결과는 별도 확인한다. 34개 eval fixture의 실제 agent model behavior는 여전히 **NOT RUN**이다. Draft 유지, merge 미실행.
