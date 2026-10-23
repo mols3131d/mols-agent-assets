@@ -42,36 +42,36 @@
 
 ### 3. Design — Contract 확정
 
-- [ ] activation description과 negative/near-miss boundary 정의
-- [ ] 역할: test surface 선택, scenario/oracle 선정, fixture/isolation, quality/gap review
-- [ ] 출력: 질문 난이도에 맞춰 최소 충분 설계 또는 review 결과; 고정 양식 강제하지 않기
-- [ ] 테스트 실행 여부와 evidence claim의 명확한 구분
-- [ ] reference는 conditional loading 이득이 있을 때만 추가하기
-- [ ] 범용 원칙과 repository-/tool-specific contract를 분리하기
+- [x] activation description과 negative/near-miss boundary 정의
+- [x] 역할: test surface 선택, scenario/oracle 선정, fixture/isolation, quality/gap review
+- [x] 출력: 질문 난이도에 맞춰 최소 충분 설계 또는 review 결과; 고정 양식 강제하지 않기
+- [x] 테스트 실행 여부와 evidence claim의 명확한 구분
+- [x] reference의 독립 loading 이점을 검토하고 single-file Skill 유지
+- [x] 범용 원칙과 repository-/tool-specific contract를 분리하기
 
 ### 4. Implementation — Canonical Skill
 
-- [ ] `src/rulesync/.rulesync/skills/mols-test-design/SKILL.md` 신규 작성
-- [ ] 실제 독립 가치가 있는 경우에 한해 `references/` 작성
-- [ ] `docs/skills/mols-test-design/`에 유지보수 판단·eval 기준 보존
-- [ ] canonical source 수정 후 공식 generator로 필요한 route/index 재생성, 직접 편집 금지
-- [ ] 불필요한 config, 새로운 framework, 자산 간 hard dependency 도입하지 않기
+- [x] `src/rulesync/.rulesync/skills/mols-test-design/SKILL.md` 신규 작성
+- [x] conditional reference 효용이 없어 추가하지 않음
+- [x] `docs/skills/mols-test-design/`에 goal·evaluation 기준 보존
+- [x] canonical source metadata를 사용해 기존 route generator와 동일한 형식의 distribution route 생성·정합성 점검 (전 저장소 generated validator는 미실행)
+- [x] 불필요한 config, 새로운 framework, 자산 간 hard dependency 도입하지 않음
 
 ### 5. Validate & Evaluate — 근거에 맞는 품질 판정
 
-- [ ] Rulesync structural validation 및 frontmatter·routing 경계 확인
+- [ ] Rulesync structural validation은 미실행; Skill frontmatter·routing 정적 구조 점검은 PASS
 - [ ] `mise run test`와 적용 가능한 repository-native validation 실행
-- [ ] positive/negative/near-miss trigger cases로 과도·부족 activation 검토
-- [ ] behavior cases로 정확한 테스트 설계, 과잉 테스트 방지, 경계·비실행 상태 처리 검토
+- [x] positive 5, negative 6의 trigger fixture 준비 (실제 model eval은 별도)
+- [x] 10개 behavior fixture 및 assertion 준비 (실제 model eval은 별도)
 - [ ] 실제 model/runtime eval이 가능하면 조건·결과·revision을 기록하고 불가능하면 미검증으로 표시
 - [ ] 테스트가 fixture 자체에 과적합하지 않는지 새 scenario 및 반례로 확인
 - [ ] `PR Gate`의 실제 결과와 변경 반영 여부 확인
 
 ### 6. Review & Finalize — 완성 판단
 
-- [ ] 설계 책임, 이식성, token/context 비용, 도구 불필요 의존성 다관점 리뷰
+- [x] 설계 책임, 이식성, context 비용과 도구 의존성 관점의 순차 정적 리뷰 ([review](review.md))
 - [ ] 검증과 리뷰에서 발견한 중요한 문제만 개선, 필요하면 반복
-- [ ] 문서가 원본 instruction을 복제하지 않는지 최종 점검
+- [x] maintainer 문서에 평가 목적·근거와 유지보수 기준만 두고 runtime instruction 복제 여부 점검
 - [ ] [Research](research.md), 이 문서와 PR 본문의 근거/진행 상태 정합화
 - [ ] Draft 해제 가능 조건 재검토; 최종 머지는 별도 사용자 지시에 따름
 
@@ -90,4 +90,4 @@
 - `plan.md`(이 문서): 범위, 진행, 완료 조건과 다음 행동
 - 중요 리뷰 결과는 실제로 필요해질 때 별도 `review.md`로 기록
 - 실행 결과는 정확한 commit/ref, command, 범위, 성공·실패·미실행을 명시
-- **현재 상태(2026-10-23):** 최신 외부 자료를 이용한 심층 조사와 중첩 자식 Research를 마쳤다. [정합화 보고서](research-loop-review.md)에 부모/자식 Review, 결정과 검증 공백을 기록했다. 다음 단계는 상세 계약 설계 및 Skill 구현; 이 PR의 runtime A/B eval, repository-native validation과 CI Gate는 아직 수행하지 않았다.
+- **현재 상태(2026-10-23):** 심층·중첩 조사, portable single-file Skill 작성, 21개 eval fixture, distribution route 갱신, maintainer 문서와 [정적 리뷰](review.md) 반영 완료. 제한된 정적 검사는 통과했지만 repository-native `mise`/Rulesync 검증과 실제 model/runtime A/B Eval은 아직 수행하지 않았다. PR Gate는 현재 head 기준 결과 확인이 필요하며 Draft를 유지한다.
