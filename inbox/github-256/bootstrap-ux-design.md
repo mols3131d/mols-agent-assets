@@ -2,6 +2,8 @@
 
 > PR #256 · 2026-10-24 · 제안된 UX/implementation handoff, **아직 미구현**. 근거와 미확인 사항: [심층 조사](bootstrap-deep-research.md). 기존 명세: [development-environment-bootstrap-spec.md](development-environment-bootstrap-spec.md). 정확한 옵션 지원은 사용 중인 mise/uv 버전에서 검증한다.
 
+CLI 인자와 OS별 실행·호환성 결정을 실제 구현에 반영할 때는 [CLI/OS 조사](bootstrap-cli-os-research.md)와 [CLI/OS 설계 인계](bootstrap-cli-os-design.md)를 함께 확인한다. 특히 현재 배열형 mise setup에 task-level flags를 추가하는 것은 즉시 안전한 동작이 아니다.
+
 ## 사용자 약속
 
 - **Onboarding:** 처음 clone한 개발자는 무엇이 설치되고 무엇이 설치되지 않는지 알 수 있으며 mise 사전 설치 후 하나의 setup 명령으로 작업을 시작한다.
