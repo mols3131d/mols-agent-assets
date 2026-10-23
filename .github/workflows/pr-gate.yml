@@ -53,5 +53,8 @@ jobs:
       - name: Install Rulesync validation tools
         run: mise install node "npm:rulesync"
 
+      - name: Validate root Rulesync configuration
+        run: rulesync doctor --strict
+
       - name: Validate Rulesync-managed assets
         run: npm run rulesync:validate
