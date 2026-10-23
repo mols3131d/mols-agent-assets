@@ -4,9 +4,11 @@
 
 [`docs/README.md`](https://github.com/mols3131d/mols-agent-assets/blob/23d649b2eac6e9115ce0e97a823d59de4d37b3c5/docs/README.md), [`docs/INDEX.tsv`](https://github.com/mols3131d/mols-agent-assets/blob/23d649b2eac6e9115ce0e97a823d59de4d37b3c5/docs/INDEX.tsv), [`docs/language.md`](https://github.com/mols3131d/mols-agent-assets/blob/23d649b2eac6e9115ce0e97a823d59de4d37b3c5/docs/language.md)와 하위 책임 구획을 비교했다.
 
-## Finding DOC-001 · Verified · Low
+## Finding DOC-001 · Resolved · Low
 
 [언어 정책](https://github.com/mols3131d/mols-agent-assets/blob/23d649b2eac6e9115ce0e97a823d59de4d37b3c5/docs/language.md)은 Markdown H1–H3 제목을 영어로 지정하지만, [`docs/using-this-repository.md`](https://github.com/mols3131d/mols-agent-assets/blob/23d649b2eac6e9115ce0e97a823d59de4d37b3c5/docs/using-this-repository.md)는 `# 이 저장소 사용하기`, `## 어떤 방식으로 가져올까?` 등의 한국어 제목을 사용한다. 일반 repository 사용 가이드이며 명시된 non-scope 예외는 확인되지 않았다. 영향은 문서 작성 규칙 적용의 불일치이며 실행 동작의 결함을 주장하지 않는다.
+
+**수정:** [`docs/using-this-repository.md`](../../docs/using-this-repository.md)의 H1–H2 제목 8개를 영어로 변경했다. 서술·명령과 경로는 유지했다.
 
 ## Other Results
 
