@@ -1,4 +1,4 @@
-# 평가 (`evals/`)
+# Evaluations (`evals/`)
 
 `evals/`는 repository-owned behavioral/model evaluation fixture를 저장합니다.
 
