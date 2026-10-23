@@ -6,7 +6,7 @@
 - Audited tree: `80d4c8e16ea05c21229c1200cda6787a46f4069a` (review snapshot following [work plan](work-plan.md)).
 - Follow-up runbook correction: `e5006c6cfbdb444c51b1b45523b7e4eb6f1d4afc`.
 - The PR original comparison base is `23d649b2eac6e9115ce0e97a823d59de4d37b3c5`, not the moving `main`.
-- Git tree reports **439 blobs, 324 Markdown files** at the inspected snapshot. GitHub reads and computed filename relationships are evidence for the paths inspected, not a full runtime evaluation.
+- Git tree reports **440 blobs, 325 Markdown files** at the inspected snapshot. GitHub reads and computed filename relationships are evidence for the paths inspected, not a full runtime evaluation.
 
 ## Relation A — Markdown Links to Current File Tree
 
