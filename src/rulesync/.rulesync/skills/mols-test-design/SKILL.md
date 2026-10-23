@@ -2,12 +2,11 @@
 name: mols-test-design
 description: >-
   Design or review software tests for observable behavior, failure paths, and regression
-  risk. Use when deciding what to test, selecting meaningful cases and oracles, choosing
-  test levels, isolation, cross-component coupling, or assessing gaps, flakiness,
-  mocking, and test quality.
-  Prefer the smallest trustworthy evidence over test count or coverage targets. Do not
-  use for ordinary implementation, test-runner debugging, general architecture redesign,
-  CI orchestration or merge gates, or agent/LLM behavior evaluation when incidental.
+  risk. Use when selecting tests, oracles, levels and isolation, or reviewing
+  cross-component test coupling, flakiness, mocking and test gaps.
+  Prefer the smallest trustworthy evidence over test counts or coverage targets.
+  Do not use for ordinary code implementation, test-runner debugging, module architecture
+  redesign, CI orchestration or merge gates, or agent/LLM evaluation when test design is incidental.
 targets:
   - claudecode
   - codexcli
