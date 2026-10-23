@@ -1,3 +1,10 @@
+[env]
+PYTHONUTF8 = "1"
+# Keep temporary dependency clones stable even when the host enables autocrlf.
+GIT_CONFIG_COUNT = "1"
+GIT_CONFIG_KEY_0 = "core.autocrlf"
+GIT_CONFIG_VALUE_0 = "false"
+
 [tools]
 uv = "0.12.1"
 node = "24.19.0"
