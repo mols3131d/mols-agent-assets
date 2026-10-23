@@ -4,6 +4,8 @@ description: Rulesync의 파일·필드·타입·의미 계약별 검증 책임�
 
 # Rulesync 검증 수준 최적화 제안서
 
+> **적용 버전 주의:** 이 제안서는 처음에 Rulesync **v16.24.1**을 기준으로 작성되었다. PR #257의 CLI pin은 현재 **v40.2.0**이며, CLI 명령은 유지되지만 `skillsPath` lock·frozen integrity 동작이 바뀌었다. 기존 원칙을 보존하되 구체적 migration과 검증 순서는 [v40 업그레이드 계획](rulesync-v40-upgrade-plan.md)과 [인계 보고서](rulesync-v40-handoff.md)가 소유한다. 16.x 확인 결과를 40.x 실제 실행으로 간주하지 않는다.
+
 ## 권고안
 
 **Rulesync의 입력 스키마는 Rulesync가, 저장소 고유의 관계와 생성기는 저장소가, 실제 외부 의존성 설치는 frozen install이 검증한다.** 같은 계약을 Python·pytest·CI에서 각각 재정의하지 않는다.
