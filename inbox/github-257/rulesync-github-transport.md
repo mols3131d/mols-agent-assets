@@ -4,6 +4,8 @@ description: PR #257에서 Rulesync Git transport 대신 GitHub transport를 유
 
 # PR #257 — Rulesync transport를 `github`로 유지
 
+> **v40 업그레이드 추적:** PR #257에서 Rulesync v40.2.0 pin이 추가되었다. 이 문서의 GitHub transport 복귀 요청은 계속 유효하지만 **구현되었다는 뜻은 아니다**. 40.x의 lock `skillsPath` 마이그레이션과 실제 frozen 설치까지 확인한 뒤 config·lock·래퍼를 함께 정리한다. 후속 작업은 [업그레이드 계획](rulesync-v40-upgrade-plan.md)과 [인계 보고서](rulesync-v40-handoff.md)를 따른다.
+
 ## 요청 결론
 
 [PR #257](https://github.com/mols3131d/mols-agent-assets/pull/257)의 Rulesync 원격 소스는 **`git`으로 전환하지 말고 기존 `github` transport를 유지**한다. 현재 두 소스는 모두 GitHub 공개 저장소이며, Git transport 전환으로 얻는 필수 기능이 확인되지 않은 반면 Git checkout의 줄바꿈 보정과 인증 환경 보존을 위한 별도 설치 래퍼가 추가되었다.
