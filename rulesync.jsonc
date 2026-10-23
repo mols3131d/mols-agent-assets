@@ -8,12 +8,10 @@
     "antigravity-ide": ["rules", "skills"],
     "antigravity-cli": ["rules", "skills"]
   },
-  "outputRoots": [
-    "."
-  ],
+  "outputRoots": ["."],
   "sources": [
     {
-      "source": "mols3131d/mols-agent-assets",
+      "source": "https://github.com/mols3131d/mols-agent-assets.git",
       "skills": [
         "artifact-consistency-inspector",
         "github-context",
@@ -26,14 +24,14 @@
         "mols-mermaid-diagram",
         "mols-loops"
       ],
-      "transport": "github",
+      "transport": "git",
       "ref": "main",
       "path": "src/rulesync/.rulesync/skills"
     },
     {
-      "source": "dyoshikawa/rulesync",
+      "source": "https://github.com/dyoshikawa/rulesync.git",
       "skills": ["rulesync"],
-      "transport": "github",
+      "transport": "git",
       "ref": "main",
       "path": "skills"
     }

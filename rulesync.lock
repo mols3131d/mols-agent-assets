@@ -1,7 +1,7 @@
 {
   "lockfileVersion": 1,
   "sources": {
-    "mols3131d/mols-agent-assets": {
+    "https://github.com/mols3131d/mols-agent-assets.git": {
       "requestedRef": "main",
       "resolvedRef": "05fd51354fe53eaef51e9b7166bd0c2d39ae78a4",
       "resolvedAt": "2026-10-22T02:21:37.515Z",
@@ -38,7 +38,7 @@
         }
       }
     },
-    "dyoshikawa/rulesync": {
+    "https://github.com/dyoshikawa/rulesync.git": {
       "requestedRef": "main",
       "resolvedRef": "02654ba214449ca3306dfa56d493ff4aa131d7f3",
       "resolvedAt": "2026-10-22T02:21:40.881Z",
