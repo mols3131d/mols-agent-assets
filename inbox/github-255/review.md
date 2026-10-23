@@ -43,14 +43,14 @@
 | 해당 repo의 `mise run test` | NOT RUN | 이 Chat runtime에는 repository-native test 환경을 재현한 working tree가 없음 |
 | `npm run rulesync:validate`, `mise run generated-validate` | NOT RUN | 원본 Rulesync/mise 실행 및 전 저장소 projection 판정은 수행하지 않음 |
 | 실제 trigger/behavior model eval, A/B baseline | NOT RUN | 적합한 runtime/harness·grader의 실제 실행 근거 없음 |
-| GitHub `PR Gate` | NOT YET VERIFIED | 실제 required check 결과 확인 전 |
+| GitHub `PR Gate` | PASS (commit `f824a78b`) | [run 39958075540](https://github.com/mols3131d/mols-agent-assets/actions/runs/39958075540)에서 source, deterministic tests, affected projections, Rulesync validation 성공 |
 
 검사 표의 PASS는 **명시된 좁은 static subset만** 증명한다. 그 결과로 전체 repository correctness, target compatibility, LLM selection/uplift를 주장하지 않는다.
 
 ## 남은 실질적 작업
 
 1. 동일한 model/runtime 조건에서 `mols-coding-context`만 사용한 baseline과 test-design Skill 추가를 비교한다. Oracle 유효성, 중요한 결함 검출력, 불필요한 테스트와 비용을 함께 보며 hidden grade 누출을 피한다.
-2. repository-native `mise run test`, Rulesync structural validation과 generated projection 검증을 CI 또는 재현 가능한 로컬 checkout에서 실행한다.
-3. CI 오류가 발생하면 근거를 분리해 수정하고 Draft 해제 전에 현재 head 기준 결과를 다시 확인한다.
+2. 해당 검증은 GitHub PR Gate에서 통과했다. 이후 head가 변경되면 **새 head/merge candidate 기준 PR Gate 성공을 다시 확인**한다. 동일 실행을 로컬에서 수행했다고 주장하지 않는다.
+3. CI 오류가 발생하면 근거를 분리해 수정하고 Draft 해제 전에 최신 head 기준 결과를 다시 확인한다.
 
-**Review decision:** 현재 canonical Skill 설계·fixture 준비에 대한 static review는 통과 후보. **PR은 계속 Draft**, runtime uplift 및 CI 검증에 대한 완료/merge 승인 주장은 하지 않는다.
+**Review decision:** 현재 canonical Skill 설계·fixture 준비에 대한 static review는 통과 후보이며, 관찰된 commit `f824a78b`의 PR Gate도 PASS다. **PR은 계속 Draft** — runtime A/B uplift는 미검증이고 이후 commit의 CI 성공은 별도로 확인해야 한다.
