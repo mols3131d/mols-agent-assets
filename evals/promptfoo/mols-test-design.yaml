@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+
+description: mols-test-design local Trigger and Behavior evaluation
+
+prompts:
+  - "{{task}}"
+
+providers:
+  - id: file://../../scripts/agent_assets/skills_promptfoo.py:call_api
+    label: mols-test-design-trigger
+    config:
+      skill: mols-test-design
+      mode: ollama
+      suite: trigger
+  - id: file://../../scripts/agent_assets/skills_promptfoo.py:call_api
+    label: mols-test-design-behavior
+    config:
+      skill: mols-test-design
+      mode: ollama
+      suite: behavior
+      reference_paths:
+        - references/oracle-validation.md
+
+tests:
+  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_tests
+    config:
+      skill: mols-test-design
+      suite: trigger
+      provider_label: mols-test-design-trigger
+      semantic: false
+  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_tests
+    config:
+      skill: mols-test-design
+      suite: behavior
+      provider_label: mols-test-design-behavior
+      semantic: true
+      rubric_threshold: 0.8
+
+sharing: false
+writeLatestResults: false
+commandLineOptions:
+  cache: false
+  write: false
+  noShare: true
+  maxConcurrency: 1
