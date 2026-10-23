@@ -149,6 +149,12 @@ Next: review lockfile diff before committing.
 
 수치 목표를 임의로 설정하지 않는다. 최우선 불변 조건은 **무단 전역 변경 0, setup의 lock 정책 변경 0, 범위 밖 version 변경 0, 필수 실패의 거짓 성공 0**이다. 개선 전후 측정 후 P50/P95 목표를 설정한다. native cache/sources optimization이나 병렬화는 correctness를 먼저 증명해야 채택한다.
 
+## 최신 버전 해석 시 주의사항
+
+mise에서는 도구마다 설정한 허용 범위 외에도 릴리스 경과 시간(minimum_release_age), prerelease 허용 여부, backend 지원이 후보 선택에 영향을 준다. 공식 설정에 따르면 여러 backend의 minimum_release_age 기본값은 24시간이다. 따라서 최신은 단순히 현재 공개된 최고 버전이 아니라 **사전 승인된 모든 선택 정책을 만족하는 최신 후보**로 정의해야 한다. 출시 직후 버전까지 원하는지, 안전성 지연을 허용할지는 실제 버전 범위를 정할 때 함께 결정한다. [공식 설정](https://mise.jdx.dev/configuration/settings.html#minimum_release_age).
+
+최신 mise 문서에 존재하는 머신 관리용 `mise bootstrap`과 이 PR의 프로젝트 `mise run setup`은 책임이 다르다. CI 설정에는 mise 2026.9.2가 지정되어 있으므로, 최신 mise 문서의 기능을 사용할 때는 version skew도 확인해야 한다.
+
 ## 구현 우선순위
 
 - **P0:** locked reconcile, opt-in/global boundary, stage dependency/failure behavior, update version constraints + npm sidecars, state-change collision protection.
