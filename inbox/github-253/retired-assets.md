@@ -18,6 +18,16 @@
 
 위 항목은 **삭제된 이름을 언급하는 문서**이지 전부 **현재 살아 있는 잘못된 문서**라는 뜻이 아니다. 검색에서 발견되지 않은 경우를 결함 없음으로 일반화하지 않는다.
 
+## Additional Historical Usage Evidence
+
+같은 기준 revision에서 옛 public Skill 이름 `mols-rpi`를 직접 호출·참조한 추가 기록도 확인했다.
+
+- [Mermaid diagram examples review](https://github.com/mols3131d/mols-agent-assets/blob/23d649b2eac6e9115ce0e97a823d59de4d37b3c5/inbox/2026-08-29/mermaid-diagram-examples-review.md)는 당시 작업 지침과 체크리스트에 `mols-rpi`를 사용한다. 해당 작업 이력을 현재 사용 가능한 Skill 이름으로 오독하지 않는다.
+- [Promptfoo eval adoption proposal](https://github.com/mols3131d/mols-agent-assets/blob/23d649b2eac6e9115ce0e97a823d59de4d37b3c5/inbox/2026-08-20/promptfoo-eval-adoption-proposal.md)은 `mols-rpi`를 초기 PoC 후보로 언급한다. 채택 당시 제안의 provenance이지 현재 route의 identity 선언이 아니다.
+- [Caveman-ko RPI review](https://github.com/mols3131d/mols-agent-assets/blob/23d649b2eac6e9115ce0e97a823d59de4d37b3c5/inbox/2026-08-22/caveman-ko-rpi-review.md)는 이전 `mols-rpi` eval surface의 CI 판단을 기록한다. 과거 CI 설명으로 보존하고 현재 eval route를 증명하는 자료로 사용하지 않는다.
+
+이 기록들은 구체적인 과거 소비 맥락을 추가하지만, 현행 active maintainer 문서의 orphan이 새로 확인됐다는 뜻은 아니다.
+
 ## Active Maintainer Documents Checked
 
 | 문서 경로 | 현재 연결 | 판정 |
