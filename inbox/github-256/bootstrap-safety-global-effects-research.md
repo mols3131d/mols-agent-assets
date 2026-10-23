@@ -54,7 +54,7 @@
 3. **기존 전역 Agent 링크를 삭제하는 기능.** upstream `prune_stale_agents`가 자신이 심었던 링크 중 현재 범위 밖이거나 dangling 링크를 `rm -f`로 정리한다. 소유권 판별 로직은 있지만, **기본 setup에서 사용자 전역 상태를 정리/삭제하는 행동 자체**가 있다.
 4. **Gemini CLI 전역 extensions link 시도.** `gemini extensions link <checkout>`에 `Y`를 공급하고 등록을 시도한다. 오류를 '이미 등록 또는 수동 필요'로 처리해 install.sh의 전체 exit code 0으로 끝날 수 있어, 성공 요약이 extension 준비 완료의 증거가 아니다.
 5. **설치 원본은 mutable location.** checkout된 cache는 `git checkout --detach --force FETCH_HEAD`, `git clean -fdx`를 실행한다. 캐시에는 사용자가 둔 untracked/ignored 내용이 있으면 제거될 수 있다. 설치 결과가 symlink라면 cache 교체가 다른 CLI에서 사용할 Agent contents에도 영향을 준다.
-6. **결과 무결성 검증 공백.** wrapper는 ``computedHash`를 읽어 확인하지 않고, upstream tag 문자열이 full immutable commit SHA라고 검증하지 않는다. Tag가 변경될 위험은 공급망 설계 리스크이며 **실제로 변경됐다는 증거는 없다**.
+6. **결과 무결성 검증 공백.** wrapper는 `computedHash`를 읽어 확인하지 않고, upstream tag 문자열이 full immutable commit SHA라고 검증하지 않는다. Tag가 변경될 위험은 공급망 설계 리스크이며 **실제로 변경됐다는 증거는 없다**.
 7. **프로세스 권한 전파.** `run_checked`는 `os.environ` 전체를 하위 Git/Bash/CLI에 전달한다(`GIT_TERMINAL_PROMPT=0`만 추가). 승인되지 않은 installer·postinstall이 인증 토큰, 홈 파일과 네트워크에 접근할 잠재적 표면이다. 악성 행위가 있었다는 주장은 아니다.
 
 **Review loop 2.** 외부 installer의 `--dry-run`을 호출하더라도 Bash의 실제 host 접근 권한을 차단하는 sandbox가 되는 것은 아니다. Preview는 사용자가 읽을 **사전 정보**이고, 직접 실행 코드에 대한 **enforced containment**는 별도다. Native adapter를 완전히 재구현하지 않되, host-level 실행을 unconditional setup에서 분리하는 게 가장 작은 안전 개선이다.
