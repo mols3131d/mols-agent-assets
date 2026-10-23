@@ -46,7 +46,7 @@
 - [x] 역할: test surface 선택, scenario/oracle 선정, fixture/isolation, quality/gap review
 - [x] 출력: 질문 난이도에 맞춰 최소 충분 설계 또는 review 결과; 고정 양식 강제하지 않기
 - [x] 테스트 실행 여부와 evidence claim의 명확한 구분
-- [x] reference의 독립 loading 이점을 검토하고 single-file Skill 유지
+- [x] 일반 판단은 Skill 본문에 유지하고, oracle 충돌·고강도 반례일 때만 상세 reference를 사용
 - [x] 범용 원칙과 repository-/tool-specific contract를 분리하기
 
 ### 4. Implementation — Canonical Skill
@@ -65,12 +65,12 @@
 - [x] 25개 behavior fixture 및 assertion 준비 (실제 model eval은 별도)
 - [ ] 실제 model/runtime eval이 가능하면 조건·결과·revision을 기록하고 불가능하면 미검증으로 표시
 - [ ] 테스트가 fixture 자체에 과적합하지 않는지 새 scenario 및 반례로 확인
-- [x] commit `f824a78b`의 [PR Gate run](https://github.com/mols3131d/mols-agent-assets/actions/runs/39958075540) 성공 확인; 이후 변경 head는 재확인
+- [x] 리뷰 이전 head `2bcfd302`의 [PR Gate run](https://github.com/mols3131d/mols-agent-assets/actions/runs/39971017454) PASS 확인; 후속 구현 head는 별도 검증
 
 ### 6. Review & Finalize — 완성 판단
 
 - [x] 설계 책임, 이식성, context 비용과 도구 의존성 관점의 순차 정적 리뷰 ([review](review.md))
-- [ ] 검증과 리뷰에서 발견한 중요한 문제만 개선, 필요하면 반복
+- [x] PR 리뷰의 라우팅 경쟁 후보 및 reference observation 관련 중요한 문제를 구현·테스트·설정으로 보강 (최신 HEAD 검증은 별도)
 - [x] maintainer 문서에 평가 목적·근거와 유지보수 기준만 두고 runtime instruction 복제 여부 점검
 - [x] [Research](research.md), 이 문서와 PR 본문의 작업 단계·근거 상태 정합화 (최신 head 기준 상태는 후속 확인)
 - [ ] Draft 해제 가능 조건 재검토; 최종 머지는 별도 사용자 지시에 따름
@@ -90,22 +90,8 @@
 - `plan.md`(이 문서): 범위, 진행, 완료 조건과 다음 행동
 - 중요 리뷰 결과는 실제로 필요해질 때 별도 `review.md`로 기록
 - 실행 결과는 정확한 commit/ref, command, 범위, 성공·실패·미실행을 명시
-- **현재 상태(2026-10-23):** 심층·중첩 조사, portable 핵심 Skill과 조건부 oracle reference 작성, 45개 eval fixture, distribution route 갱신, maintainer 문서와 [정적 리뷰](review.md) 반영 완료. 제한된 정적 검사는 통과했지만 repository-native `mise`/Rulesync 검증과 실제 model/runtime A/B Eval은 아직 수행하지 않았다. PR Gate는 `f824a78b`에서 PASS를 관찰했으며 후속 문서 커밋의 실행 결과는 재확인한다. Draft를 유지한다.
+- **현재 상태(2026-10-24):** Canonical Skill·조건부 oracle reference, 45개 eval fixture, GP 유지보수 문서, 배포 route는 반영되어 있다. PR 리뷰 이후 경쟁 Skill metadata를 포함한 라우팅 사례, 선택적 reference 로딩 trace와 local Promptfoo 평가 경로를 보강했다. 실제 Ollama/Promptfoo model runtime 평가는 **미실행**이며, 최신 HEAD에 대한 PR Gate 결과와 로딩 경로의 결정론적 테스트가 남은 확인 대상이다. Draft 유지.
 
-
-### 8. Oracle Validation 개선 루프 — 2026-10-23
-
-- [x] [연구 대비 부족점](review-research-coverage.md)의 높은 우선순위 F1/F2 및 mixed-intent F3 보완
-- [x] 정상 사례 수용/결함 사례 거부의 양방향 oracle, 실패 원인 분류, 관찰·재현 가능성, 위험 기반 수용 근거와 종료 기준 개선
-- [x] 필요한 경우에만 읽는 `references/oracle-validation.md` 신설 및 core에서 conditional disclosure
-- [x] 두 번째 boundaries/isolation reference와 tool별 cookbook 확장 보류: 독립 loading 가치 미입증
-- [x] eval fixture 기존 34개 유지 + 11개 추가 = 총 **45개** (activation 10, negative 10, behavior 25)
-- [x] canonical description 변경에 따른 distribution route source metadata 일치 및 정적 schema/경로 점검
-- [x] [Review](review-oracle-improvement.md)에서 불완전한 reference trigger 발견·수정 후 재검토
-- [ ] 최신 변경 HEAD의 PR Gate 결과 확인
-- [ ] 실제 agent selection, behavior, conditional reference loading 및 baseline 성능 비교
-
-**현재 완료 범위:** 스킬 source·reference·평가 계약의 **정적 개선**. 실제 behavioral uplift는 입증하지 않았으며 모델 평가와 reference loading 비용은 별도로 검증해야 한다.
 
 ### 7. Independent Testability 심층 고도화 — 2026-10-23
 
@@ -119,3 +105,29 @@
 - [ ] 실제 routing·behavior model Eval 및 기존 coding-context-only baseline과 비교 (실행 환경/조건이 갖춰진 경우)
 
 **Done의 의미:** 신규 판단과 adversarial regression fixture가 반영되고 재검토됐다는 것이며, 실행하지 않은 실제 model behavior나 framework 전체 호환성을 주장하지 않는다. 이 고도화는 새 아키텍처 Skill, Pact 의존성, 폴더 분리나 CI 개편을 추가하지 않는다.
+
+### 8. Oracle Validation 개선 루프 — 2026-10-23
+
+- [x] [연구 대비 부족점](review-research-coverage.md)의 높은 우선순위 F1/F2 및 mixed-intent F3 보완
+- [x] 정상 사례 수용/결함 사례 거부의 양방향 oracle, 실패 원인 분류, 관찰·재현 가능성, 위험 기반 수용 근거와 종료 기준 개선
+- [x] 필요한 경우에만 읽는 `references/oracle-validation.md` 신설 및 core에서 conditional disclosure
+- [x] 두 번째 boundaries/isolation reference와 tool별 cookbook 확장 보류: 독립 loading 가치 미입증
+- [x] eval fixture 기존 34개 유지 + 11개 추가 = 총 **45개** (activation 10, negative 10, behavior 25)
+- [x] canonical description 변경에 따른 distribution route source metadata 일치 및 정적 schema/경로 점검
+- [x] [Review](review-oracle-improvement.md)에서 불완전한 reference trigger 발견·수정 후 재검토
+- [ ] 리뷰 수정 후 최신 HEAD PR Gate 및 행동 평가 실행 경로 확인
+- [ ] 실제 agent selection, behavior, conditional reference loading 및 baseline 성능 비교
+
+**현재 완료 범위:** 스킬 source·reference·평가 계약의 **정적 개선**. 실제 behavioral uplift는 입증하지 않았으며 모델 평가와 reference loading 비용은 별도로 검증해야 한다.
+
+### 9. PR #255 리뷰 반영 — 2026-10-24
+
+- [x] competing owner를 포함하는 대표 routing fixture 8개 보강: 주담당 owner와 `mols-test-design` 조합·제외 검사
+- [x] 허용된 Skill package `references/` 파일만 모델이 조건부 선택해 읽고 실제 loaded path를 provider metadata에 기록하도록 opt-in 평가 경로 추가
+- [x] reference 필요/불필요 사례의 `expected_loaded_references`와 결정론적 regression checks 보강
+- [x] `mols-test-design` Promptfoo trigger/behavior config 및 local `mise`/npm entrypoint 추가
+- [x] 오래된 단일 CI 요약 교체, 7→8→9 순서 복원
+- [ ] 현재 head PR Gate에서 deterministic tests, source, affected projection, Rulesync 검증 확인
+- [ ] 실제 model/runtime trigger·behavior·reference-loading 및 baseline A/B 비교 수행
+
+**검증 경계:** configuration·fixture·mocked provider 테스트가 성공하더라도 실제 Ollama 모델의 선택 정확도 또는 conditional loading 품질은 미검증이다. 기존 `mols-loops` evaluator의 기본 behavior를 opt-in 변경으로 보존한다.
