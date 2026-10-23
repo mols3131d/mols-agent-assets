@@ -7,7 +7,7 @@
 초기 설정, 반복 복구, 개발 중 bounded update를 설계하는 Skill이 **독립적인 재사용 능력**을 갖추도록 현재 자산과 외부 도구의 운영 semantics를 조사한다. 새 Skill은 일반 dependency upgrade, OS 전역 installer 구현, CI admission workflow 디자인을 소유하지 않는다.
 
 - 조사 대상 기준 ref: PR #256의 `mols/feat/dev-environment-bootstrap` (`7d66775bfbcb5b35227c70bfe3ae9b3e7ba31050`, 조사 시작 시점).
-- 현재 source: [기존 Skill 초안](../../src/rulesync/.rulesync/skills/mols-dev-bootstrap-design/SKILL.md), [부트스트랩 명세](development-environment-bootstrap-spec.md), [mise.toml](../../mise.toml), [mise 가이드](../../docs/references/tooling/mise.md).
+- 현재 source: [기존 Skill 초안 (조사 시작 시 commit)](https://github.com/mols3131d/mols-agent-assets/blob/7d66775bfbcb5b35227c70bfe3ae9b3e7ba31050/src/rulesync/.rulesync/skills/mols-dev-bootstrap-design/SKILL.md), [부트스트랩 명세](development-environment-bootstrap-spec.md), [mise.toml](../../mise.toml), [mise 가이드](../../docs/references/tooling/mise.md).
 - 문서 owner: `docs/skills/<asset>/`는 해당 자산과 함께 이관할 수 있는 maintainer knowledge. 실행 동작은 `SKILL.md`가 소유한다. [Asset Maintainer Documentation](../../docs/documentation/asset-maintainer-documentation.md).
 - 설계 루프 방식: **mols-loops: Prepare → Research → Review → 재탐색 → Review → Finalize**. 연구 결과를 구현 사실로 과장하지 않는다.
 
@@ -52,7 +52,7 @@
 
 ## 결정과 잔여 불확실성
 
-**결정.** 이름을 정확히 `mols-dev-env-bootstrap-design`으로 통일한다. Canonical `SKILL.md` 하나를 유지하고, 유지보수 근거는 `docs/skills/mols-dev-env-bootstrap-design/README.md`에 둔다. 별도 Skill reference는 지금 필요한 conditional loading benefit이 없어 보류한다. `route/skills.jsonl`은 source generator에서 파생되므로 함께 동기화한다. 이름을 남기는 compatibility alias는 필요하지 않다.
+**결정.** 새로운 이름을 정확히 `mols-dev-env-bootstrap-design`으로 통일한다. Canonical `SKILL.md` 하나를 유지하고, 유지보수 근거는 `docs/skills/mols-dev-env-bootstrap-design/README.md`에 둔다. 별도 Skill reference는 지금 필요한 conditional loading benefit이 없어 보류한다. `route/skills.jsonl`은 source generator에서 파생되므로 함께 동기화한다. 이름을 남기는 compatibility alias는 필요하지 않다.
 
 **불확실성.** 실제 사용자 PC, OS 별 자동 설치와 다양한 version-manager 동작은 테스트하지 않았다. Mise/uv 공식 문서는 현재 동작을 설명할 뿐 PR의 실제 실행 결과가 아니다. 사전 정의할 도구별 version 범위는 사용자·프로젝트의 후속 결정이며 Skill이 임의로 선택하지 않는다.
 
