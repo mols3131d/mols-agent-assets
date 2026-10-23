@@ -1,0 +1,214 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "select-contract-tests",
+      "mode": "activation",
+      "prompt": "A Python service changed its public result schema. Decide which observable contracts and regression cases need tests before writing code.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-test-design"
+        ],
+        "primary_skill": "mols-test-design"
+      }
+    },
+    {
+      "id": "select-oracle-quality",
+      "mode": "activation",
+      "prompt": "이 함수 테스트들이 모두 통과해도 실제 버그가 남습니다. 기대값과 테스트 오라클이 타당한지 검토해줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-test-design"
+        ],
+        "primary_skill": "mols-test-design"
+      }
+    },
+    {
+      "id": "select-flaky-test-design",
+      "mode": "activation",
+      "prompt": "우리 integration suite가 실행 순서마다 실패해. fixture와 상태 격리·테스트 구조를 어떻게 개선할지 설계해줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-test-design"
+        ],
+        "primary_skill": "mols-test-design"
+      }
+    },
+    {
+      "id": "select-risk-test-strategy",
+      "mode": "activation",
+      "prompt": "새 결제 환불 기능의 경계값과 실패·중복 요청 시나리오를 어떤 수준에서 검증해야 충분한지 골라줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-test-design"
+        ],
+        "primary_skill": "mols-test-design"
+      }
+    },
+    {
+      "id": "select-test-redundancy",
+      "mode": "activation",
+      "prompt": "이미 unit, integration, contract tests가 많아. 이 변경에서 새 테스트가 필요한지 중복과 실제 보호 범위를 판단해줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-test-design"
+        ],
+        "primary_skill": "mols-test-design"
+      }
+    },
+    {
+      "id": "ignore-ordinary-implementation",
+      "mode": "activation-negative",
+      "prompt": "이 Python 메서드를 읽기 쉽게 리팩터링하고 반환값은 유지해줘.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "ignore-runner-debug",
+      "mode": "activation-negative",
+      "prompt": "pytest가 ModuleNotFoundError를 내. import path를 고쳐줘.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "ignore-generic-test-writing",
+      "mode": "activation-negative",
+      "prompt": "Given this fixed test case and assertion, translate it into a Jest test file without changing the test strategy.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "ignore-ci-design",
+      "mode": "activation-negative",
+      "prompt": "PR Gate의 병합 차단 조건, matrix와 캐시를 설계해서 GitHub Actions workflow를 작성해줘.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "ignore-agent-eval",
+      "mode": "activation-negative",
+      "prompt": "mols-agent-asset Skill의 routing eval과 LLM 행동 평가를 설계해줘.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "ignore-analysis-only",
+      "mode": "activation-negative",
+      "prompt": "테스트 피라미드가 무엇인지 개념을 설명해줘.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "oracle-not-from-implementation",
+      "mode": "skill",
+      "prompt": "The code computes discounted price from a rounded intermediate, but the product contract specifies rounding only the final total. Design tests and expected outcomes without copying the current implementation.",
+      "assertions": [
+        "Uses the product contract rather than the present implementation as the source of expected values.",
+        "Selects an example or boundary that differentiates early rounding from final rounding.",
+        "Does not silently bless the current implementation simply because it is observable."
+      ]
+    },
+    {
+      "id": "test-passes-feature-missing",
+      "mode": "skill",
+      "prompt": "A demo UI renders correctly and all DOM assertions pass, but the request requires exporting a reusable library with stable imports. What tests or acceptance checks remain?",
+      "assertions": [
+        "Distinguishes passing UI tests from completion of the requested deliverable.",
+        "Includes the package import/export or consumer-level observable contract as an outstanding check.",
+        "Does not claim the entire feature is done from the existing tests."
+      ]
+    },
+    {
+      "id": "mock-hides-db-transaction",
+      "mode": "skill",
+      "prompt": "A unit test mocks the database and confirms commit() was called. The feature must atomically update a balance and an audit row and roll back on error. Is that sufficient?",
+      "assertions": [
+        "Identifies transaction atomicity and rollback as behavior not proved by a mock-call assertion.",
+        "Recommends the smallest relevant database integration test or equivalent evidence covering success and failure.",
+        "Does not forbid all mocking or demand a full end-to-end suite without need."
+      ]
+    },
+    {
+      "id": "fix-regression-before-after",
+      "mode": "skill",
+      "prompt": "A bug returns stale cached permissions after a user is revoked. We can run local tests. Design a minimal regression check and verification.",
+      "assertions": [
+        "Defines an observable revoked-user failure and reliable oracle based on authorization behavior.",
+        "Checks the reproduction fails for the intended reason before the fix when practical and passes after it.",
+        "Also considers relevant existing unaffected behavior, without requiring unrelated broad suites."
+      ]
+    },
+    {
+      "id": "flaky-clock-shared-state",
+      "mode": "skill",
+      "prompt": "A suite intermittently fails when tests run in parallel because they depend on the current time and a shared global cache. Review the test design, not the product implementation.",
+      "assertions": [
+        "Identifies clock and shared state/parallel ordering as specific reliability surfaces.",
+        "Suggests controlled time and per-test state isolation or cleanup rather than blind retries.",
+        "Separates potential test harness causes from product defects until evidence exists."
+      ]
+    },
+    {
+      "id": "no-new-test-needed",
+      "mode": "skill",
+      "prompt": "A license comment typo is corrected. Existing static checks and suite are unchanged. Do we need new behavioral test cases?",
+      "assertions": [
+        "Allows no additional behavior test when the change has no material behavior contract.",
+        "Uses existing appropriate validation instead of inventing test scenarios to increase count.",
+        "Does not claim existing checks were executed unless execution evidence was supplied."
+      ]
+    },
+    {
+      "id": "stronger-checks-proportionate",
+      "mode": "skill",
+      "prompt": "A parser already has good example tests but occasionally accepts malformed nested input. Propose additional checks without making mutation or property-based testing mandatory.",
+      "assertions": [
+        "Targets an invariant or malformed-input counterexample that distinguishes acceptance from rejection.",
+        "Offers property-based, metamorphic or targeted mutation only when the ambiguity and cost justify it.",
+        "Avoids a blanket requirement for exhaustive mutation, full E2E or a multi-agent test team."
+      ]
+    },
+    {
+      "id": "no-runner-evidence",
+      "mode": "skill",
+      "prompt": "You can read a repository's product spec and current tests in a chat, but cannot run the code or access its dependencies. Identify the missing tests and evidence status.",
+      "assertions": [
+        "Provides a designable test/expected-outcome plan grounded in accessible contract evidence.",
+        "Clearly marks runtime pass/failure as not run or unknown, not verified.",
+        "Does not pretend a static review or hypothetical test execution proves runtime correctness."
+      ]
+    },
+    {
+      "id": "ambiguous-spec-oracle",
+      "mode": "skill",
+      "prompt": "The product spec says that transfers should be 'quick' but gives no latency budget. An engineer proposes asserting every request finishes under 10ms. Is that a valid oracle?",
+      "assertions": [
+        "Rejects inventing a hard latency threshold unsupported by the contract.",
+        "Surfaces the missing acceptance criterion or explicit working assumption and appropriate authority.",
+        "Can propose measurable dimensions without falsely claiming a 10ms requirement exists."
+      ]
+    },
+    {
+      "id": "existing-tests-not-enough",
+      "mode": "skill",
+      "prompt": "Unit tests cover every line in an API handler and assert all mocked services were called. Production requests can fail on serializer version mismatch with an external consumer. What remains?",
+      "assertions": [
+        "Explains that line coverage and mocked calls cannot establish external compatibility.",
+        "Selects a focused consumer-facing contract or integration check for the serialization boundary.",
+        "Does not impose a fixed coverage target, TDD steps or complete browser E2E."
+      ]
+    }
+  ]
+}
