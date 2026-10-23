@@ -340,6 +340,116 @@
         "Proposes a bounded current-state characterization/integration check and requests the missing contract decision from its owner.",
         "Does not silently invent a new public API, rewrite the module architecture or claim mocks alone provide integration assurance."
       ]
+    },
+    {
+      "id": "mixed-workflow-material-oracle",
+      "mode": "activation",
+      "prompt": "Please implement the new API endpoint, and also decide the contract-level regression cases and expected failure outcomes needed to guard the versioned response.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-test-design"
+        ],
+        "primary_skill": "mols-test-design"
+      }
+    },
+    {
+      "id": "disputed-generated-test-oracle",
+      "mode": "activation",
+      "prompt": "An AI-generated test fails against a documented accepted response. Determine whether the production code, expectation or fixture is wrong and what evidence to gather.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-test-design"
+        ],
+        "primary_skill": "mols-test-design"
+      }
+    },
+    {
+      "id": "ordinary-implementation-tests-incidental",
+      "mode": "activation-negative",
+      "prompt": "Implement this utility method using the provided interface. Follow the repository's normal verification practices; I am not requesting a separate testing strategy or oracle review.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "test-runner-installation-only",
+      "mode": "activation-negative",
+      "prompt": "Configure the local test runner so its existing tests can execute. Do not change assertions, cases, fixtures or the test strategy.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "oracle-rejects-valid-reference",
+      "mode": "skill",
+      "prompt": "A spec says a blank display name is allowed. Existing test asserts that blank names always raise an error. A known accepted example uses a blank name. The test nevertheless kills several other faulty implementations. How should it be evaluated?",
+      "assertions": [
+        "Recognizes that rejecting documented valid behavior invalidates the oracle even if mutants are killed.",
+        "Uses the spec and accepted example rather than mutational score or current product behavior to correct or dispute the test.",
+        "Does not automatically modify production code to comply with the wrong expectation."
+      ]
+    },
+    {
+      "id": "unexpected-failure-product-test-or-environment",
+      "mode": "skill",
+      "prompt": "A checkout test failed once on CI with an assertion that totals are equal. The ledger, expected amount and logs are not provided; the runner also reported a timeout. A coding agent proposes immediately changing the checkout formula. Review that plan.",
+      "assertions": [
+        "Separates possible product defect, invalid expected value and runner/environment timeout rather than guessing the cause.",
+        "Recommends obtaining contract, actual/expected observations and reproducible conditions before selecting a repair owner.",
+        "Does not silently change production logic or claim that a retry proves correctness."
+      ]
+    },
+    {
+      "id": "testability-observation-seam",
+      "mode": "skill",
+      "prompt": "A task scheduler is required to expire tokens after their configured lifetime, but the only test fixture waits for wall-clock time and observes random CI failures. The change request is to design reliable tests, not redesign the scheduler architecture.",
+      "assertions": [
+        "Identifies controllable time and observable expiry outcome as missing testability prerequisites.",
+        "Suggests an appropriately scoped clock control or equivalent fixture seam without mandating global dependency-injection redesign.",
+        "Preserves the real expiry contract and distinguishes test-design recommendations from implementation authority."
+      ]
+    },
+    {
+      "id": "reference-is-not-authority-over-contract",
+      "mode": "skill",
+      "prompt": "An old production implementation and a generated test agree that an HTTP field is required. The new versioned public contract explicitly makes it optional. An agent treats the old implementation as a golden oracle. What should the tests protect?",
+      "assertions": [
+        "Prefers the applicable versioned public contract and examines compatibility scope rather than treating the old implementation as universally authoritative.",
+        "Includes a contract-compliant optional-field scenario and a relevant faulty scenario if evidence supports it.",
+        "Surfaces ambiguity about old-client compatibility instead of silently choosing one interpretation."
+      ]
+    },
+    {
+      "id": "mutation-score-insufficient-signal",
+      "mode": "skill",
+      "prompt": "A unit suite kills 95% of synthetic mutants, but it fails a documented valid edge case and has never tested whether the deliverable exports the requested package entrypoint. Is it sufficient?",
+      "assertions": [
+        "Treats the false rejection of accepted behavior as an oracle defect despite a high mutation score.",
+        "Separately identifies the missing consumer-facing entrypoint acceptance evidence.",
+        "Avoids recommending more indiscriminate mutants as a substitute for fixing the oracle or missing acceptance check."
+      ]
+    },
+    {
+      "id": "simple-test-no-reference-overhead",
+      "mode": "skill",
+      "prompt": "A self-contained arithmetic helper has an explicit contract, accepted examples and a known off-by-one boundary. The user asks for the smallest useful regression case. No conflicting oracle or suspicious execution has been reported.",
+      "assertions": [
+        "Selects a focused boundary case and supported expected result without procedural overexpansion.",
+        "Does not require mutation testing, a separate test runner, or complex multi-agent verification.",
+        "Does not make reading advanced oracle-validation reference a prerequisite for this straightforward request."
+      ]
+    },
+    {
+      "id": "uncertain-expected-behavior-stop",
+      "mode": "skill",
+      "prompt": "The only requirement for an export operation is 'fast enough'. A generated test requires 15ms based on the current machine. No service-level objective, baseline or domain owner decision exists. Can we call the test correct and start changing the product?",
+      "assertions": [
+        "Does not invent a 15ms acceptance threshold from the current machine or code.",
+        "Identifies the missing performance contract or owner decision and states the evidence gap.",
+        "Separates possible measurement design from validated runtime pass/fail and product changes."
+      ]
     }
   ]
 }
