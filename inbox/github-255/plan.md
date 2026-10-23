@@ -28,13 +28,17 @@
 - [x] [Research](research.md)에 repository-local 근거 및 검토할 가설 기록
 - [x] 기존 자산의 responsibility/activation과 repository routing을 검토해 static 설계 공백 확인 (동작 개선 효과는 미검증)
 
-### 2. Research — 판단에 필요한 근거 확보
+### 2. Research — 심층/중첩 조사 완료 (설계 uplift eval은 미실행)
 
 - [x] 2025~2026년 vendor 원문, 동료심사 연구, 벤치마크 품질 감사와 실무 사례 비교
 - [x] 테스트 유형 나열보다 oracle·contract·반례·실행 근거 중심 최소 원칙 추출
 - [x] 신규/기존 테스트, 위험도 높음/낮음, 코드/비코드, 실행 가능/불가능의 경계 정리
 - [ ] 새 Skill이 coding-context만 적용했을 때보다 나은지 **비교 behavior eval** 수행 (설계 공백에 대한 정적 분석은 완료)
 - [x] overfitting·weak oracle·over-mocking·불필요한 멀티에이전트 등 안티패턴과 반례 기록
+- [x] [부모 심층 조사](research-agentic-testing.md) — 최신 논문과 benchmark·vendor 사례의 주장/한계 비교
+- [x] 1차 Review가 제기한 **test oracle 유효성·fault discrimination·cost** gap을 [strict-subset 자식 루프](research-oracle-validation.md)로 독립적으로 좁혀 조사
+- [x] [루프 리뷰](research-loop-review.md) — 자식 결과를 부모로 인계하고 결과를 바꾼 반론/기각/미확인 구분
+- [x] 일반 코딩 Skill 대비 test-specific 설계 책임·이식성·runtime 부재의 evidence 경계 재검토
 
 ### 3. Design — Contract 확정
 
@@ -86,4 +90,4 @@
 - `plan.md`(이 문서): 범위, 진행, 완료 조건과 다음 행동
 - 중요 리뷰 결과는 실제로 필요해질 때 별도 `review.md`로 기록
 - 실행 결과는 정확한 commit/ref, command, 범위, 성공·실패·미실행을 명시
-- **현재 상태(2026-10-23):** 초기 조사 완료. `research.md`에 출처·한계·채택/비채택 원칙 기록. 다음 단계는 상세 계약 설계와 Skill 구현. 실제 비교 runtime eval, repo-native 검증, 최종 CI는 아직 수행하지 않음.
+- **현재 상태(2026-10-23):** 최신 외부 자료를 이용한 심층 조사와 중첩 자식 Research를 마쳤다. [정합화 보고서](research-loop-review.md)에 부모/자식 Review, 결정과 검증 공백을 기록했다. 다음 단계는 상세 계약 설계 및 Skill 구현; 이 PR의 runtime A/B eval, repository-native validation과 CI Gate는 아직 수행하지 않았다.
