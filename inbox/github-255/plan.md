@@ -59,20 +59,20 @@
 
 ### 5. Validate & Evaluate — 근거에 맞는 품질 판정
 
-- [ ] Rulesync structural validation은 미실행; Skill frontmatter·routing 정적 구조 점검은 PASS
-- [ ] `mise run test`와 적용 가능한 repository-native validation 실행
+- [x] GitHub PR Gate의 Rulesync structural validation PASS; 별도 로컬 실행은 미실행
+- [x] GitHub PR Gate에서 repository-owned deterministic test, source/Rulesync 및 affected projection validation PASS 확인 (로컬 `mise run test`는 미실행)
 - [x] positive 5, negative 6의 trigger fixture 준비 (실제 model eval은 별도)
 - [x] 10개 behavior fixture 및 assertion 준비 (실제 model eval은 별도)
 - [ ] 실제 model/runtime eval이 가능하면 조건·결과·revision을 기록하고 불가능하면 미검증으로 표시
 - [ ] 테스트가 fixture 자체에 과적합하지 않는지 새 scenario 및 반례로 확인
-- [ ] `PR Gate`의 실제 결과와 변경 반영 여부 확인
+- [x] commit `f824a78b`의 [PR Gate run](https://github.com/mols3131d/mols-agent-assets/actions/runs/39958075540) 성공 확인; 이후 변경 head는 재확인
 
 ### 6. Review & Finalize — 완성 판단
 
 - [x] 설계 책임, 이식성, context 비용과 도구 의존성 관점의 순차 정적 리뷰 ([review](review.md))
 - [ ] 검증과 리뷰에서 발견한 중요한 문제만 개선, 필요하면 반복
 - [x] maintainer 문서에 평가 목적·근거와 유지보수 기준만 두고 runtime instruction 복제 여부 점검
-- [ ] [Research](research.md), 이 문서와 PR 본문의 근거/진행 상태 정합화
+- [x] [Research](research.md), 이 문서와 PR 본문의 작업 단계·근거 상태 정합화 (최신 head 기준 상태는 후속 확인)
 - [ ] Draft 해제 가능 조건 재검토; 최종 머지는 별도 사용자 지시에 따름
 
 ## Acceptance criteria
@@ -90,4 +90,4 @@
 - `plan.md`(이 문서): 범위, 진행, 완료 조건과 다음 행동
 - 중요 리뷰 결과는 실제로 필요해질 때 별도 `review.md`로 기록
 - 실행 결과는 정확한 commit/ref, command, 범위, 성공·실패·미실행을 명시
-- **현재 상태(2026-10-23):** 심층·중첩 조사, portable single-file Skill 작성, 21개 eval fixture, distribution route 갱신, maintainer 문서와 [정적 리뷰](review.md) 반영 완료. 제한된 정적 검사는 통과했지만 repository-native `mise`/Rulesync 검증과 실제 model/runtime A/B Eval은 아직 수행하지 않았다. PR Gate는 현재 head 기준 결과 확인이 필요하며 Draft를 유지한다.
+- **현재 상태(2026-10-23):** 심층·중첩 조사, portable single-file Skill 작성, 21개 eval fixture, distribution route 갱신, maintainer 문서와 [정적 리뷰](review.md) 반영 완료. 제한된 정적 검사는 통과했지만 repository-native `mise`/Rulesync 검증과 실제 model/runtime A/B Eval은 아직 수행하지 않았다. PR Gate는 `f824a78b`에서 PASS를 관찰했으며 후속 문서 커밋의 실행 결과는 재확인한다. Draft를 유지한다.
