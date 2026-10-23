@@ -1,5 +1,22 @@
 # mols-test-design — 조사 기준선
 
+## 심층 조사·중첩 루프 결과 (2026-10-23)
+
+기존 1차 조사에 더해 **`mols-loops`의 단일 Run 안에서 부모 실태 조사 → Review → strict-subset 자식 Oracle/비용 조사 → Review → 부모 재검토 → 최종 Research 판정**을 진행했다. 실행 순서와 의미 있는 결과, 반례, 수정된 판단은 아래 별도 문서에 둔다.
+
+| 결과물 | 책임 |
+| --- | --- |
+| [심층 조사: Agentic Testing](research-agentic-testing.md) | 2026년 연구/실무 조사, TDD의 다양한 역할, 벤치마크와 생성 테스트의 함정 |
+| [중첩 조사: Oracle/Cost](research-oracle-validation.md) | 테스트 기대값의 정당성, 독립 근거, Mutation의 실제 가치와 비용, 실행 불가 대응 |
+| [루프 리뷰 및 설계 인계](research-loop-review.md) | 중첩 루프 계보, 반론의 채택/기각, 새 Skill activation·behavior 계약 후보 |
+
+**Research-level 최종 결론:** 신설 Skill은 테스트 워크플로를 일괄 강제하는 대신 **검증할 계약 → 근거 있는 oracle → 결함 판별력 → 최소 충분 수준/비용 → 관찰 가능한 evidence**를 고르는 능력을 소유하는 것이 좋다. **올바른 구현에 통과하는 테스트와 결함을 검출하는 테스트, 사용자 요구 전체를 검증하는 테스트는 서로 다른 판정**이다. 강한 추가 기법은 위험과 실제 결함 모델이 요구할 때만 사용한다.
+
+**수정된 판단:** 초기 조사에서 test-first/TDD를 보편 해법으로 보지 않은 점은 유지했다. 다만 2026년 [code-first error propagation 연구](https://arxiv.org/abs/2607.05139)로 인해 **현재 구현에 의존하지 않는 독립적인 oracle 확보**의 우선순위를 높였다. TDD phase나 별도 tester subagent를 강제하는 결론과는 구별한다. [ReqTestAgent 최신 연구](https://www.frontiersin.org/journals/artificial-intelligence/articles/10.3389/frai.2026.1960601/full)에서는 간단한 실행 verifier가 큰 validity 개선을 보인 반면 다단계 agent flow는 추가 비용 대비 작은 marginal improvement에 그쳤다.
+
+**증거 경계:** 이 연구는 검증한 공개 자료에 대한 **문헌 조사와 설계 판단**이며 새 Skill의 실시간 routing/behavior 성능·테스트 실행·pytest/CI 통과를 증명하지 않는다. 다음 단계는 Skill 구현 후 동일 조건의 baseline 비교·trigger/behavior eval이다.
+
+
 PR: [#255](https://github.com/mols3131d/mols-agent-assets/pull/255)  
 조사 단계: repository-owned 자산 비교 및 2025~2026년 외부 연구·실무 사례 비교 완료(2026-10-23). Skill 구현과 실제 routing/behavior 성능 검증은 미진행.
 
