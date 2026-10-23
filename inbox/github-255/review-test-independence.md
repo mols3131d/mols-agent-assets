@@ -59,3 +59,44 @@ Disposition: **absorb** — 좁은 자식 범위로 contract 대 통합 검증 �
 ## Evidence limits
 
 이 문서는 기술적 설계 검토와 루프 전환 결과다. 외부 문서는 원리와 반례의 근거이지 `mols-test-design`의 실제 모델 성능 향상을 측정한 실험이 아니다. 구현 뒤 루프별 Review와 validation evidence를 이어서 기록한다.
+
+---
+
+## Parent Loop 2 — 구현과 정적 Review
+
+**Work:** 단일 canonical `SKILL.md`의 activation과 두 판단 항목(`Choose the observation boundary`, `Check reliability and cost`) 및 owner boundary 보강. `evals/skills/mols-test-design/cases.json`에 13개 시나리오 추가하여 **34개(positive 8, negative 8, behavior 18)**. 유지보수 목적과 평가 계약을 각각의 `docs/skills/mols-test-design/` 원본에 보존. distribution route는 바뀐 canonical description에 맞춰 렌더링 구조·정렬을 유지하며 갱신.
+
+**Sequential review perspectives — isolated subagents 미사용:**
+
+| 렌즈 | 확인한 failure mode | disposition |
+| --- | --- | --- |
+| Correctness | 모듈을 따로 검사한다는 이유로 consumer/provider 호환성, 실제 DB transaction, 공개 protocol 순서를 제거 | **absorb**: 필요한 얇은 계약·통합 evidence 유지, 반례 fixture로 보호 |
+| Parallel work | A 테스트가 B private helper/call order를 assertion하여 무관한 리팩터링에 연쇄 수정, 공유 mutable state로 flaky suite | **absorb**: ownership과 관찰 경계 정렬, fixture/state isolation 판단을 핵심 지침으로 반영 |
+| Portability/context | 모든 팀에 Pact, 특정 CI, test runner, 서브에이전트, 디렉터리 분할 구조 강제 | **reject**: vendor 독립적인 single-file package 유지 |
+| Routing | 테스트 독립성과는 다른 일반 아키텍처 redesign·worktree 구성까지 이 Skill이 가로챔 | **absorb**: activation에 test coupling만 포함, architecture-only/worktree-only negative fixture 추가 |
+
+**Review 3 finding:** 첫 metadata 초안의 영어 `choosing test levels, isolation, cross-component coupling`은 마치 '결합을 선택하라'로 읽히고 architecture-only query에 넓게 반응할 수 있다. **`absorb`**: `reviewing cross-component test coupling`으로 수정, 제외 경계는 `module architecture redesign`으로 구체화. 이 수정으로 description 길이를 줄이면서 ownership 분리가 더 명확해졌다.
+
+## Parent Loop 3 — 수정 후 재검토 및 수용 판정
+
+**정적 검증 (source- and fixture-level inspection):**
+
+- Canonical `name: mols-test-design`, 포터블 7개 targets, metadata description 약 493자 확인.
+- `route/skills.jsonl`의 description과 source path 정합성, 엔트리 이름 순서/중복 없음 확인.
+- Eval JSON parsing, 34개 case ID 고유성, activation selection 구조, behavior assertion 배열 확인.
+- 기존 positive/negative를 보존하면서 private refactor, 호환성·트랜잭션, parallel shared state, protocol-order의 **합당한 예외**, immutable shared fixture, architecture-only near-miss를 추가.
+- Source package에서 repository 특화 도구/다른 mols Skill에 대한 실행 의존성이 없음을 정적 확인.
+- 한 정적 checker가 마지막 YAML target 뒤의 newline을 강제하여 false negative를 냈으나, 실제 source의 닫는 `---` 직전에 newline이 제거된 값이므로 metadata line parser로 재확인해 **7 targets 모두 유효**하다고 판정했다. Source 오류로 오인해 불필요한 변경을 만들지 않음.
+
+**Review 4 dispositions:**
+
+- `absorb` 및 해소: activation이 test design과 architecture redesign을 혼동하는 문구.
+- `reject`: 모든 공유 fixture 금지, 모든 내부 검증 금지, 모든 integration 제거, 반드시 독립 에이전트·워크트리·Pact를 사용해야 한다는 주장.
+- `unresolved`: 실제 model/agent를 통한 routing accuracy 및 behavior uplift, 동일 baseline 조건의 테스트 비용 측정은 실행하지 않았다.
+- 코드와 fixture의 **정적 의미/구조 검토는 충족**했다. 성능·선택 성공률을 검증했다고 해석하지 않는다.
+
+## Loop accounting 및 Finalize 검증 경계
+
+이 변경은 **Parent Review 1 → Nested child Review 2 → Parent 구현 Review 3 → Parent 정합성 Review 4**의 실질적 결정/검토로 진행했다. Child는 parent 목표의 strict subset이며 카운터를 공유한다. `loops_used = 4`, hard ceiling은 Skill 기본 `30`을 그대로 따랐다. **deep intensity는 30회 채우기를 뜻하지 않는다.** 반복 내용이 더 이상 결과를 바꾸지 않아 더 많은 동작이 아닌 새 CI evidence를 기다리는 것으로 Convergence 판단했다.
+
+**Finalize boundary:** GitHub PR Gate의 *현재 HEAD*에서 source contracts, deterministic tests, affected generator drift와 Rulesync validation을 확인해야 저장소 검증 완료를 주장할 수 있다. 독립 실행 환경 없이 설계한 34개 fixture는 실제 model eval PASS로 판정하지 않는다. PR #255는 Draft를 유지하며 병합하지 않는다.
