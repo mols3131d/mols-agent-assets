@@ -20,7 +20,7 @@ description: Rulesync 자산의 authoring workspace·target·source/derived boun
 
 ### Repository-local installation
 
-Root [`rulesync.jsonc`](../../../rulesync.jsonc)의 dependency는 Git transport와 로컬 Git 인증을 사용합니다. [`mise.toml`](../../../mise.toml)의 공통 환경에서 `mise exec -- rulesync install --frozen`으로 설치합니다. 임시 clone의 LF와 PC별 PATH 경계는 [mise](mise.md#shared-and-local-environment)를 따릅니다.
+Root [`rulesync.jsonc`](../../../rulesync.jsonc)의 dependency는 Git transport와 로컬 Git 인증을 사용합니다. `mise run rulesync-install`이 `rulesync install --frozen`을 실행하며, 호출자로부터 상속한 counted `GIT_CONFIG_*` 설정을 보존한 뒤 임시 clone용 `core.autocrlf=false`를 추가합니다. 이 설정은 다른 mise 작업의 Git 동작을 변경하지 않습니다. PC별 PATH 경계는 [mise](mise.md#shared-and-local-environment)를 따릅니다.
 
 Source URL로 옮긴 [`rulesync.lock`](../../../rulesync.lock)은 기존 revision과 integrity를 유지합니다. Rulesync는 GitHub shorthand와 HTTPS Git URL을 같은 source로 정규화하지만, repository route generator와의 대응을 위해 config와 lock의 source 표기는 일치시킵니다. Transport만 변경할 때 `install --update`로 dependency revision을 갱신하지 않습니다.
 

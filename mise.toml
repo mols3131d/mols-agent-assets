@@ -1,9 +1,5 @@
 [env]
 PYTHONUTF8 = "1"
-# Keep temporary dependency clones stable even when the host enables autocrlf.
-GIT_CONFIG_COUNT = "1"
-GIT_CONFIG_KEY_0 = "core.autocrlf"
-GIT_CONFIG_VALUE_0 = "false"
 
 [tools]
 uv = "0.12.1"
@@ -18,11 +14,15 @@ lefthook = "2.1.10"
 description = "Install project dependencies, Agent Skills, and Git hooks"
 run = [
   "uv sync --all-groups",
-  "rulesync install --frozen",
+  "mise run rulesync-install",
   "rulesync generate",
   "uv run python scripts/agent_assets/skills_sync.py",
   "lefthook install",
 ]
+
+[tasks.rulesync-install]
+description = "Install frozen Rulesync dependencies with inherited Git config preserved"
+run = "uv run --locked --no-default-groups python scripts/agent_assets/rulesync_install.py"
 
 [tasks.skills-sync]
 description = "Sync locked external Skills through source-native installers"

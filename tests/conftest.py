@@ -18,7 +18,5 @@ def isolate_git_hook_environment() -> Iterator[None]:
     )
     with pytest.MonkeyPatch.context() as environment:
         for name in result.stdout.splitlines():
-            # Keep mise's counted Git config so LF behavior remains under test.
-            if name != "GIT_CONFIG_COUNT":
-                environment.delenv(name, raising=False)
+            environment.delenv(name, raising=False)
         yield
