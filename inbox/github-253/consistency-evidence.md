@@ -13,7 +13,7 @@
 **Rule:** [Documentation Principles](../../docs/documentation/principles.md) requires discoverable/current documentation. A relative Markdown link should resolve against its containing file at the audited revision.
 
 - Scope scanned: **61** `docs/**/*.md` and **32** `catalog/**/*.md` (93 documents), using GitHub `fetch_file` at fixed commit plus a recursive Git tree to check linked paths or target directories.
-- Procedure: inspect the inline Markdown pattern `[text](relative-url)`, exclude URL schemes and same-file fragments, decode the path, resolve `.` / `..` against the source directory, compare normalized path with tree blobs/directories.
+- Procedure: inspect inline Markdown link destinations, exclude URL schemes and same-file fragments, decode the path, resolve `.` / `..` against the source directory, compare normalized path with tree blobs/directories.
 - Result: **0 missing local link targets discovered in those 93 files.** This is an actual negative scoped check, not a claim that links throughout the repository are valid.
 - Limits: external HTTP availability, reference-style links, image links, angle-bracket variants, generated text, and Markdown anchors are not exhaustively checked; the simple parser may miss paths, and filenames are not equivalent to a fully rendered document.
 
