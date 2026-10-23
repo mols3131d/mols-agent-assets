@@ -6,7 +6,12 @@
 
 ## Result
 
-**확인된 이슈 없음(표본 범위).** 예를 들어 문서의 `npm run rulesync:validate`와 `mise run skills-sync` 진입점은 확인한 package/mise 선언과 대응한다.
+**기존 표본에서 이슈가 없었으나, 확장된 제목 검토에서 다음 두 건을 추가 확인하고 수정했다.** 예를 들어 문서의 `npm run rulesync:validate`와 `mise run skills-sync` 진입점은 확인한 package/mise 선언과 대응한다.
+
+## Findings DOC-005–006 · Resolved · Low
+
+- **DOC-005:** [Agent Asset design principles](../../docs/references/agent-assets/common/design-principles.md)의 `## 판단 순서`가 영어 H2 정책과 불일치했다. `## Decision Order`로 변경했다.
+- **DOC-006:** [GitHub sensitive data removal runbook](../../docs/references/tooling/github-sensitive-data-removal-runbook.md)의 한국어 H1–H3 제목 44개가 같은 정책과 불일치했다. 해당 제목만 영어로 바꾸고 명령·본문·코드 블록은 유지했다. 기존 로컬 heading fragment 링크는 발견되지 않았으나 외부 deep link 영향은 확인하지 못했다.
 
 ## Coverage Limits
 
