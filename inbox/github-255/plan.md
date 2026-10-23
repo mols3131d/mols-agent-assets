@@ -26,15 +26,15 @@
 - [x] 최신 `main` 기반 전용 브랜치와 Draft PR #255 생성
 - [x] [Goal](../../docs/skills/mols-test-design/goal.md)에 유지할 목적과 경계 초안 기록
 - [x] [Research](research.md)에 repository-local 근거 및 검토할 가설 기록
-- [ ] 이전 자산과의 중복·독립 선택 가치, 현재 배포/라우팅 경로 재확인
+- [x] 기존 자산의 responsibility/activation과 repository routing을 검토해 static 설계 공백 확인 (동작 개선 효과는 미검증)
 
 ### 2. Research — 판단에 필요한 근거 확보
 
-- [ ] 공신력 있는 테스트 설계·테스트 오라클·격리·flakiness 참고 자료와 실무 사례 비교
-- [ ] 테스트 유형 나열보다 판단을 돕는 최소 원칙 추출
-- [ ] 신규/기존 테스트, 위험도 높음/낮음, 코드/비코드, 실행 가능/불가능의 경계 정리
-- [ ] 테스트 설계 전문 Skill 신설이 단순 coding-context 보강보다 나은지 반례로 검증
-- [ ] 유지보수 비용과 false confidence를 높이는 안티패턴 및 반대 사례 기록
+- [x] 2025~2026년 vendor 원문, 동료심사 연구, 벤치마크 품질 감사와 실무 사례 비교
+- [x] 테스트 유형 나열보다 oracle·contract·반례·실행 근거 중심 최소 원칙 추출
+- [x] 신규/기존 테스트, 위험도 높음/낮음, 코드/비코드, 실행 가능/불가능의 경계 정리
+- [ ] 새 Skill이 coding-context만 적용했을 때보다 나은지 **비교 behavior eval** 수행 (설계 공백에 대한 정적 분석은 완료)
+- [x] overfitting·weak oracle·over-mocking·불필요한 멀티에이전트 등 안티패턴과 반례 기록
 
 ### 3. Design — Contract 확정
 
@@ -86,4 +86,4 @@
 - `plan.md`(이 문서): 범위, 진행, 완료 조건과 다음 행동
 - 중요 리뷰 결과는 실제로 필요해질 때 별도 `review.md`로 기록
 - 실행 결과는 정확한 commit/ref, command, 범위, 성공·실패·미실행을 명시
-- **현재 상태:** PR 준비 단계. Skill source, runtime eval, 최종 CI 판정은 아직 완료되지 않음.
+- **현재 상태(2026-10-23):** 초기 조사 완료. `research.md`에 출처·한계·채택/비채택 원칙 기록. 다음 단계는 상세 계약 설계와 Skill 구현. 실제 비교 runtime eval, repo-native 검증, 최종 CI는 아직 수행하지 않음.
