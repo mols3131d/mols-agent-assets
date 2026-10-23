@@ -33,7 +33,7 @@ targets:
 
 ## Stronger Evidence When It Pays
 
-- 테스트가 실패하거나 기대값·기준 구현이 의심스러우면 제품 결함, 테스트·oracle 결함, fixture·runner·환경 결함을 구분한 뒤 수정 대상을 결정한다. 필요하면 [Oracle validation](references/oracle-validation.md)을 읽는다. 단순하고 근거가 확실한 사례에는 추가로 로드하지 않는다.
+- 테스트가 실패하면 제품 결함, 테스트·oracle 결함, fixture·runner·환경 결함을 근거로 구분한 뒤 수정 대상을 결정한다. **기대값이 불확실하거나 충돌하거나 중요한 결함을 더 강한 반례로 검증해야 할 때에만** [Oracle validation](references/oracle-validation.md)을 읽는다. 단순하고 근거가 확실한 사례에는 추가로 로드하지 않는다.
 - 버그 수정이라면 가능한 경우 **수정 전 의도한 이유의 실패 → 수정 후 성공 → 관련 기존 동작 보존**을 검증한다. 테스트 통과만으로 요청된 기능 전체나 산출물의 완성을 선언하지 않는다.
 - 일반 불변식이 명확하면 property-based 또는 metamorphic test를, 신뢰 가능한 비교 대상이 있으면 differential test를, 중요한 결함이 기존 테스트를 통과할 위험이 크면 작은 mutation/fault-injection 실험을 고려한다.
 - 강한 검증 기법도 oracle 자체를 정당화하지 못한다. 고위험·불확실성을 줄이는 가치가 실행·유지 비용보다 클 때만 추가한다.
