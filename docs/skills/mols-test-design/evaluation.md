@@ -14,13 +14,15 @@ description: mols-test-design의 선택·행동 평가에서 baseline, 테스트
 | 필요 없을 때 물러나는가? | 일반 구현, runner debugging, CI admission, Agent Asset eval 요청에서 불필요한 선택 억제 | Skill 이름이 프롬프트에 있다는 이유로 모든 요청을 유효화 |
 | 중요한 테스트를 설계하는가? | 실제 계약, 신뢰 가능한 oracle, 현실적인 결함 구별 사례, 최소 충분 경계 | test case 수, coverage, assertions를 correctness의 대리 지표로 사용 |
 | 유효성의 경계를 이해하는가? | 정상 reference와 결함 구현, missing deliverable, flakiness/mocking의 서로 다른 위험 분리 | 현재 코드 또는 test PASS만으로 기능 완성 선언 |
+| 병렬 변경·테스트 독립성을 보존하는가? | 타 소유자의 private helper·상태·순서에 대한 불필요한 결합 축소, 독립 fixture/state와 좁은 검증 범위 | 폴더 수, 무조건 mocking 또는 test file 수로 독립성을 평가 |
+| 실제 컴포넌트 간 호환성을 보호하는가? | 사용 중인 API·메시지 계약과 공유 트랜잭션/상태에 필요한 contract·integration evidence | 모든 상호작용 검증을 없애면 더 독립적이라고 가정 |
 | 실행 근거를 정확히 보고하는가? | verified / inferred / unknown / not run 구분 | 정적 검토·시뮬레이션을 runtime PASS로 보고 |
 | 전문 스킬로서 이득이 있는가? | 동일 모델·하네스·문맥·도구·예산에서 coding-context-only baseline과 비교 | 달라진 model이나 grader로 효과를 단정 |
 
 ## Case Ownership
 
-- **Routing** — positive, negative, near-miss를 구분한다. 유사한 전문 Skill이 후보에 있을 때에는 실제 작업의 주책임자가 선택되는지 별도로 확인한다.
-- **Behavior** — oracle 오류(현재 구현 복제), 높은 coverage와 약한 검증, mock이 실제 경계를 가림, 회귀 결함의 재현, flaky test, no-new-test, 실행 불가를 포함한다.
+- **Routing** — positive, negative, near-miss를 구분한다. 테스트 경계·독립 검증이 주제면 선택하되, 모듈 아키텍처 재설계 또는 작업 공간·worktree 격리만 요청한 경우는 선택하지 않는다. 유사한 전문 Skill이 후보에 있을 때에는 실제 작업의 주책임자가 선택되는지 별도로 확인한다.
+- **Behavior** — oracle 오류(현재 구현 복제), 높은 coverage와 약한 검증, mock이 실제 경계를 가림, 회귀 결함의 재현, flaky test, no-new-test, 실행 불가를 포함한다. 타 컴포넌트 내부 구현 의존과 실제 소비자 계약 위반을 구분하고, 공유 fixture/state 충돌, 필요한 protocol 순서, 통합 예외를 점검한다.
 - **Comparison** — 동일 사례를 일반 코딩 맥락 단독 조건과 새로운 Skill 적용 조건에서 평가한다. 독립적인 요구 명세·known-good/bad sample을 grader에 주되 테스트 대상 에이전트에는 정답을 누출하지 않는다.
 
 ## Interpretation
