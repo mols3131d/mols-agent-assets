@@ -209,6 +209,137 @@
         "Selects a focused consumer-facing contract or integration check for the serialization boundary.",
         "Does not impose a fixed coverage target, TDD steps or complete browser E2E."
       ]
+    },
+    {
+      "id": "cross-team-internal-test-coupling",
+      "mode": "activation",
+      "prompt": "개발자 A가 모듈 A를 테스트하는데 B 팀의 비공개 helper를 import해서 assertion 하고 있어. B 내부 리팩터링에도 A 테스트를 독립적으로 유지하도록 테스트 경계를 검토해줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-test-design"
+        ],
+        "primary_skill": "mols-test-design"
+      }
+    },
+    {
+      "id": "parallel-test-state-isolation",
+      "mode": "activation",
+      "prompt": "독립적인 두 coding agent가 각각 테스트를 통과시키지만 통합할 때 공유 fixture와 전역 상태 때문에 서로의 suite가 깨져. 테스트 설계를 개선해줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-test-design"
+        ],
+        "primary_skill": "mols-test-design"
+      }
+    },
+    {
+      "id": "consumer-provider-compatibility-check",
+      "mode": "activation",
+      "prompt": "서로 병렬 개발하는 consumer와 provider가 JSON API 변경에도 호환되는지 확인하면서 각자 테스트를 실행할 수 있게 검증 전략을 세워줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-test-design"
+        ],
+        "primary_skill": "mols-test-design"
+      }
+    },
+    {
+      "id": "architecture-only-parallel-modules",
+      "mode": "activation-negative",
+      "prompt": "서로 다른 팀이 병렬 개발할 수 있도록 이 모놀리스를 어떤 모듈과 공개 API로 나누고 디렉터리를 재구조화할지 설계해줘. 테스트 전략은 별도로 요청할게.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "worktree-only-isolation",
+      "mode": "activation-negative",
+      "prompt": "3명의 agent가 같은 작업 디렉터리를 만지지 않게 Git worktree와 feature branch를 구성해줘.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "provider-private-refactor-does-not-break-consumer",
+      "mode": "skill",
+      "prompt": "Module A tests call public B.parse() then assert B._cache.keys() and a private helper call sequence. B's implementation changed but public parse result is identical. Improve independent testability.",
+      "assertions": [
+        "Identifies assertions against B's private state/helper order as cross-owner implementation coupling.",
+        "Replaces them with A-owned observable behavior and stable B consumer contract or narrower relevant test evidence.",
+        "Does not weaken protection of public parsing behavior or demand architectural restructuring."
+      ]
+    },
+    {
+      "id": "local-suites-plus-interface-contract",
+      "mode": "skill",
+      "prompt": "Two teams separately change a consumer and provider of a versioned JSON API. Both local unit suites pass; renamed JSON field breaks real consumers. Design a testing boundary that enables parallel work.",
+      "assertions": [
+        "Preserves independently executable consumer/provider tests based on a shared observable request-response contract.",
+        "Includes actual provider compatibility verification or a focused integration check rather than only agreeing on mock behavior.",
+        "Recognizes that isolated unit PASS alone does not prove cross-boundary compatibility or end-to-end business behavior."
+      ]
+    },
+    {
+      "id": "shared-state-parallel-fixtures",
+      "mode": "skill",
+      "prompt": "Separate module suites are correct in isolation but run concurrently against a shared mutable database and global clock. Sometimes one suite wipes the other's records. What test changes improve independent verification?",
+      "assertions": [
+        "Identifies shared mutable state and uncontrolled time as the source of test execution coupling.",
+        "Proposes scoped state isolation, distinct test data/transactions or controlled clock as appropriate without assuming new folders solve it.",
+        "Does not promise parallel safety from retry counts or report unexecuted runs as successful."
+      ]
+    },
+    {
+      "id": "database-atomicity-exception",
+      "mode": "skill",
+      "prompt": "Two modules can be unit-tested independently but a feature must atomically update both tables in one database transaction. A suggestion says every dependency must be mocked so modules never need each other. Evaluate it.",
+      "assertions": [
+        "Rejects a universal mock-only rule that hides the transaction atomicity and rollback contract.",
+        "Selects a focused integrated test using the actual transactional boundary or equivalent trustworthy evidence.",
+        "Retains small independent unit tests where useful, without mandating a monolithic full E2E suite."
+      ]
+    },
+    {
+      "id": "interaction-order-is-a-real-contract",
+      "mode": "skill",
+      "prompt": "A public payment gateway contract requires authorize() to precede capture(), with no capture on authorization failure. A reviewer calls every interaction-order assertion brittle. Decide whether to keep one.",
+      "assertions": [
+        "Distinguishes required protocol sequencing from incidental private implementation order.",
+        "Allows a focused contract-level interaction/sequence assertion that fails on an unsafe capture.",
+        "Avoids banning spies or mocks categorically and checks what interaction the test can actually prove."
+      ]
+    },
+    {
+      "id": "stable-shared-fixture-not-forbidden",
+      "mode": "skill",
+      "prompt": "Two test suites share an immutable, versioned example of a public wire contract. Someone wants to copy it into each folder solely to make tests independent. Evaluate the design.",
+      "assertions": [
+        "Does not duplicate stable shared contract examples solely to enforce physical file isolation.",
+        "Distinguishes shared authoritative contract data from mutable shared test state or private implementation fixtures.",
+        "Evaluates actual ownership, execution independence and coupling cost rather than file/folder counts."
+      ]
+    },
+    {
+      "id": "cross-module-test-no-new-architecture",
+      "mode": "skill",
+      "prompt": "A single module already has isolated tests and its public contract is unchanged after a local internal cleanup. Asked to add module directories, separate test projects and contract tests to support parallel agents.",
+      "assertions": [
+        "Rejects extra physical packages, directories or test layers when no material boundary or regression risk warrants them.",
+        "Reuses the existing appropriate local tests and assesses whether any actual cross-module contract changed.",
+        "Does not claim test execution passed without recorded runtime evidence."
+      ]
+    },
+    {
+      "id": "shared-owner-unclear-cannot-invent-contract",
+      "mode": "skill",
+      "prompt": "A team says modules X and Y must be independently testable, but X currently reads Y's private database schema directly and no interface or ownership contract is agreed. Design tests without redesigning the system.",
+      "assertions": [
+        "Identifies the lack of a stable cross-owner contract or ownership decision as a blocker to strong independent-testability claims.",
+        "Proposes a bounded current-state characterization/integration check and requests the missing contract decision from its owner.",
+        "Does not silently invent a new public API, rewrite the module architecture or claim mocks alone provide integration assurance."
+      ]
     }
   ]
 }
