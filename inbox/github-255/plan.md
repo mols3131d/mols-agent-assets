@@ -101,7 +101,7 @@
 - [x] 평가 fixture에 positive/negative/near-miss·behavior 13개 보강 — 총 34개(8/8/18)
 - [x] canonical description과 distribution route 일치/정렬, fixture JSON·중복 ID·7 target, 자산 독립성의 제한된 정적 검사
 - [x] 리뷰에서 발견한 모호한 activation 문구를 수정하고 다시 확인
-- [ ] 현재 HEAD PR Gate의 성공 확인 및 [review](review-test-independence.md)에 execution evidence 기록
+- [x] commit `995f96f`에서 [PR Gate run 39961039971](https://github.com/mols3131d/mols-agent-assets/actions/runs/39961039971) PASS, [review](review-test-independence.md)에 검증 근거 기록 (후속 doc commit은 최신 HEAD 결과 재확인)
 - [ ] 실제 routing·behavior model Eval 및 기존 coding-context-only baseline과 비교 (실행 환경/조건이 갖춰진 경우)
 
 **Done의 의미:** 신규 판단과 adversarial regression fixture가 반영되고 재검토됐다는 것이며, 실행하지 않은 실제 model behavior나 framework 전체 호환성을 주장하지 않는다. 이 고도화는 새 아키텍처 Skill, Pact 의존성, 폴더 분리나 CI 개편을 추가하지 않는다.
