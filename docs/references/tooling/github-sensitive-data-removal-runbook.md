@@ -2,7 +2,7 @@
 description: GitHub repository에 노출된 회전·폐기 불가능한 민감정보를 Git history rewrite, GitHub 저장면 정리, fork/clone 대응과 Support purge까지 최대한 제거할 때 사용하는 재사용 런북입니다.
 ---
 
-# GitHub Sensitive Data Removal Runbook
+# Maximum Removal of Non-Rotatable Sensitive Data Exposed on GitHub
 
 > **검증 기준:** GitHub.com 및 `git-filter-repo` 공식 문서, 2026-08-23 확인
 >
