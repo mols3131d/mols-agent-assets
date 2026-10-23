@@ -4,6 +4,8 @@ description: PR #257의 Rulesync 관련 CI와 테스트에서 과설계·중복�
 
 # PR #257 — Rulesync CI·테스트 검토 보고서
 
+> **시점:** 본 검토의 코드·CI 관측은 **v16.24.1 기준**이다. 이후 PR #257은 Rulesync pin을 **v40.2.0**으로 변경하고 root `doctor --strict` 단계를 추가했다. 이 보고서의 '현재'와 이전 green CI는 작성 당시의 snapshot이다. 남은 v40 lock/설치 검증과 실제 HEAD 상태는 [업그레이드 계획](rulesync-v40-upgrade-plan.md) 및 [인계 보고서](rulesync-v40-handoff.md)를 참고한다.
+
 ## 결론
 
 **Rulesync 관련 CI와 테스트의 최적화가 필요하다.** 기존 `Branch Check`와 `PR Gate` 자체가 과설계라는 뜻은 아니다. 현재 복잡성의 주요 원인은 (1) Git transport용 설치 래퍼와 그 내부 구현 테스트, (2) 서로 다른 Rulesync workspace의 검증 경계 혼동, (3) upstream이 소유하는 스키마·출력 형식을 자체 검증으로 반복할 가능성이다.
