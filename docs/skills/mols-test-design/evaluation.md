@@ -25,6 +25,14 @@ description: mols-test-design만의 선택 경계, 오라클 품질, 독립적 �
 
 **Conditional reference:** `references/oracle-validation.md`의 추가 판단이 필요한 복잡한 오라클·반례 문제와 필요하지 않은 단순 회귀 테스트를 비교한다. 레퍼런스가 항상 로드되거나 의미 있는 판단 없이 비용만 늘린다면 분리의 가치가 약하다.
 
+## Available local evaluation path
+
+`mise run eval-mols-test-design`은 현재 45개 case를 Trigger/Behavior로 실행하는 Promptfoo 설정을 호출한다. Trigger·Behavior만 실행하려면 각각 `mise run eval-mols-test-design-trigger`, `mise run eval-mols-test-design-behavior`를 사용한다. 이 entrypoint에는 Ollama model/runtime과 Promptfoo가 필요하다.
+
+Behavior 평가에서는 허용된 `references/oracle-validation.md`의 필요 여부를 **별도 모델 요청**으로 먼저 판단하고 선택된 파일만 읽어 본 응답에 제공한다. 실제 선택된 경로를 provider metadata의 `loaded_references`로 남기며, 지정된 양성·음성 사례에서는 이를 검증한다. **참조하지 않은 경우에도 선택 요청 자체의 비용은 발생**한다.
+
+이 경로는 원본 Skill의 선택적 참조를 실험하기 위한 **로컬 평가 하네스**로, 각 target-native Agent의 파일 로딩·도구 호출 동작을 그대로 재현하지 않는다. Fixture·mock-based deterministic test와 실제 Ollama 기반 결과를 구분해 해석한다.
+
 ## Differentiating value
 
 일반적인 코딩 판단만 사용하는 기준 조건과 Skill이 활성화된 조건을 비교할 때, **결함 판별·잘못된 오라클 거부·과잉 테스트 감소의 순효과**에 집중한다. 강한 검증이 불필요하게 늘거나 선택 경계가 넓어져 비용이 증가하는 퇴행도 함께 본다.
