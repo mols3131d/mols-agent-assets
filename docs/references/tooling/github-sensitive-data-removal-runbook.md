@@ -2,7 +2,7 @@
 description: GitHub repository에 노출된 회전·폐기 불가능한 민감정보를 Git history rewrite, GitHub 저장면 정리, fork/clone 대응과 Support purge까지 최대한 제거할 때 사용하는 재사용 런북입니다.
 ---
 
-# GitHub에 노출된 회전 불가능한 민감정보 최대 제거 런북
+# GitHub Sensitive Data Removal Runbook
 
 > **검증 기준:** GitHub.com 및 `git-filter-repo` 공식 문서, 2026-08-23 확인
 >
@@ -10,7 +10,7 @@ description: GitHub repository에 노출된 회전·폐기 불가능한 민감�
 >
 > 이 런북은 새 commit에서 파일을 지우는 수준이 아니라 **확산 중단 → Git history rewrite → GitHub ref 교체 → 별도 저장면 정리 → fork/clone 대응 → 필요 시 GitHub Support purge**까지 다룬다.
 
-## 먼저 결론
+## Summary
 
 회전할 수 없는 민감정보라면 **`git-filter-repo`로 history를 다시 쓰고 원격 ref를 교체하는 것이 최소선**이다. 하지만 이것만으로 GitHub에서 완전히 사라졌다고 볼 수는 없다.
 
@@ -36,7 +36,7 @@ GitHub는 history rewrite 후에도 민감 commit이 다음 위치에 남을 수
 
 ---
 
-## 바로 실행할 순서
+## Immediate Action Sequence
 
 급하면 아래 순서부터 따른다.
 
@@ -56,7 +56,7 @@ GitHub는 history rewrite 후에도 민감 commit이 다음 위치에 남을 수
 
 ---
 
-## 1. 먼저 사고 범위를 판정한다
+## 1. Assess the Exposure Scope
 
 현재 visibility 하나만 보면 부족하다. 다음 네 축을 각각 확인한다.
 
@@ -69,7 +69,7 @@ GitHub는 history rewrite 후에도 민감 commit이 다음 위치에 남을 수
 
 같은 private repository라도 collaborator가 clone을 받아갔다면 **GitHub 밖 사본은 이미 존재한다.**
 
-### 케이스별 대응 강도
+### Response Levels by Case
 
 | 케이스 | 핵심 위험 | 기본 대응 |
 | --- | --- | --- |
@@ -81,7 +81,7 @@ GitHub는 history rewrite 후에도 민감 commit이 다음 위치에 남을 수
 | **F. private지만 여러 clone/CI workspace 존재** | GitHub 밖 object database | 모든 known clone/workspace 정리 |
 | **G. private지만 PR/Actions/Pages/Release에 복제됨** | Git history 밖 별도 저장면 | 각 저장면을 별도로 정리 |
 
-### Case A는 언제 Support 없이 끝내기 쉬운가
+### When Case A Can Be Resolved Without Support
 
 다음이 모두 맞으면 owner-controlled cleanup에서 종료하는 선택이 비교적 합리적이다.
 
@@ -96,7 +96,7 @@ Private repository는 기본적으로 허가된 사용자만 접근할 수 있�
 
 다만 **private이었다는 사실은 history cleanup을 생략해도 된다는 뜻이 아니다.**
 
-### Case B/C에서 중요한 점
+### Key Considerations for Cases B and C
 
 Private repository의 접근 권한을 제거해도 **이미 만들어진 local clone은 사라지지 않는다.** Private fork는 접근권한 변화에 따라 삭제될 수 있지만 local clone은 별도다.[^gh-forks]
 
@@ -108,7 +108,7 @@ GitHub access 제거
 상대방 PC의 clone 삭제
 ```
 
-### Case D/E에서 중요한 점
+### Key Considerations for Cases D and E
 
 현재 private이라도 **한 번이라도 public이었다면 public 노출 이력이 더 중요하다.**
 
@@ -124,7 +124,7 @@ public → private
 
 Known fork가 없어도 public 기간 동안의 unknown clone/download 가능성은 잔존 위험으로 남긴다.
 
-### 빠른 의사결정
+### Quick Decision Guide
 
 ```text
 처음부터 private?
@@ -142,7 +142,7 @@ Known fork가 없어도 public 기간 동안의 unknown clone/download 가능성
 
 ---
 
-## 2. 추가 확산을 먼저 멈춘다
+## 2. Contain Further Exposure
 
 History rewrite 전에 repository를 가능한 한 정지 상태로 만든다.
 
@@ -154,13 +154,13 @@ History rewrite 전에 repository를 가능한 한 정지 상태로 만든다.
 
 GitHub는 history rewrite가 commit SHA를 바꾸기 때문에 open PR의 diff와 review가 깨지거나 혼란을 줄 수 있어, 가능하면 먼저 정리할 것을 권장한다.[^gh-remove]
 
-### Public → Private는 containment이다
+### Public to Private Is Containment
 
 Private 전환은 **추가 노출을 줄이는 수단**이지 기존 흔적을 지우는 수단이 아니다.
 
 Public fork, clone, cached view는 별도로 다뤄야 한다.[^gh-visibility-change]
 
-### Repository 삭제 후 재생성도 purge가 아니다
+### Deleting and Recreating a Repository Is Not Purging
 
 Repository 삭제 역시 완전 삭제 수단으로 보지 않는다.
 
@@ -168,7 +168,7 @@ GitHub의 삭제된 repository는 조건에 따라 복구할 수 있고, public 
 
 ---
 
-## 3. 민감정보가 어디에 복제됐는지 분류한다
+## 3. Identify Sensitive Data Copies
 
 Git file content만 확인하면 부족하다.
 
@@ -193,7 +193,7 @@ Git file content만 확인하면 부족하다.
 
 ---
 
-## 4. Fresh clone과 도구를 준비한다
+## 4. Prepare a Fresh Clone and Tools
 
 GitHub는 `--sensitive-data-removal`을 지원하는 **`git-filter-repo >= 2.47`**을 요구한다.[^gh-remove]
 
@@ -213,7 +213,7 @@ git filter-repo --version
 uv tool install git-filter-repo
 ```
 
-### 반드시 fresh clone에서 시작한다
+### Always Start from a Fresh Clone
 
 ```bash
 git clone https://github.com/OWNER/REPOSITORY.git cleanup-repository
@@ -233,7 +233,7 @@ git filter-repo --analyze
 
 `--analyze`는 과거 path, rename과 object size 보고서를 만들어 filter 범위를 정하는 데 도움을 준다. 분석 자체를 필수 의식으로 만들지는 않는다.[^filter-repo-manual]
 
-### `--sensitive-data-removal`을 기본으로 사용한다
+### Use `--sensitive-data-removal` by Default
 
 이 모드는 단순 표시용 flag가 아니다. `git-filter-repo`는 민감정보 제거에 필요한 추가 정보를 수집한다.[^filter-repo-manual]
 
@@ -250,7 +250,7 @@ first-changed-commits  # original → rewritten mapping
 orphaned_lfs_objects   # LFS orphan이 있을 때
 ```
 
-### 최대 제거 목적이면 `--no-fetch`를 피한다
+### Avoid `--no-fetch` for Maximum Removal
 
 `--no-fetch`를 사용하면 필요한 ref를 확보하지 못할 수 있다.
 
@@ -258,9 +258,9 @@ Upstream은 ref coverage가 불완전한 상태에서 `--mirror`를 사용하면
 
 ---
 
-## 5. 노출 유형에 맞게 history를 rewrite한다
+## 5. Rewrite History for the Exposure Type
 
-### 파일 전체를 제거
+### Remove Entire Files
 
 파일 자체가 필요 없다면 가장 단순하다.
 
@@ -286,7 +286,7 @@ git filter-repo \
 > [!WARNING]
 > `--invert-paths`는 과거 버전뿐 아니라 현재 history에서도 해당 파일을 제거한다. Sanitized 버전이 필요하면 rewrite 후 깨끗한 파일을 다시 추가한다.
 
-### 파일은 유지하고 일부 내용만 제거
+### Remove Content While Keeping Files
 
 Replacement file은 repository **밖**에 둔다.
 
@@ -311,7 +311,7 @@ regex:PATTERN_TO_REMOVE==>REDACTED
 
 민감값 자체를 shell argument에 직접 넣지 않는 편이 안전하다.
 
-### Commit / tag message에 들어간 경우
+### Exposure in Commit or Tag Messages
 
 ```bash
 git filter-repo \
@@ -321,7 +321,7 @@ git filter-repo \
 
 `--replace-message`는 `--replace-text`와 같은 expression file 문법을 사용한다.[^filter-repo-manual]
 
-### Filename / directory path 자체가 민감한 경우
+### Exposure in File or Directory Names
 
 ```bash
 git filter-repo \
@@ -341,13 +341,13 @@ git filter-repo \
   --paths-from-file ../path-rewrites.txt
 ```
 
-### Author / committer / tagger metadata가 민감한 경우
+### Exposure in Author, Committer, or Tagger Metadata
 
 `--mailmap`, `--name-callback`, `--email-callback` 등으로 metadata를 rewrite할 수 있다.[^filter-repo-manual]
 
 이 경우 영향 범위가 넓어질 수 있으므로 별도 fresh clone에서 먼저 실험하고, 예상한 identity만 바뀌는지 확인한 뒤 원격에 반영한다.
 
-### Git LFS가 있다면
+### When Git LFS Is Present
 
 `--sensitive-data-removal`은 rewrite 전후 LFS reference를 비교해 orphaned object가 생겼는지 기록한다.[^filter-repo-manual]
 
@@ -367,11 +367,11 @@ Support를 이용할 경우 orphaned LFS 정보를 함께 제공한다.[^gh-remo
 
 ---
 
-## 6. Force push 전에 검증한다
+## 6. Verify Before Force-Pushing
 
 여기까지는 문제가 있으면 cleanup clone을 버리고 다시 시작하기 쉽다.
 
-### 제거 대상 확인
+### Verify Removal Targets
 
 ```bash
 git log --all --name-status -- path/to/sensitive-file
@@ -388,7 +388,7 @@ git ls-files
 
 Project의 deterministic test가 있다면 현재 tree에 대해 실행한다.
 
-### 변경된 ref와 affected PR 확인
+### Verify Changed Refs and Affected PRs
 
 ```bash
 cat .git/filter-repo/changed-refs
@@ -408,7 +408,7 @@ grep '^refs/pull/.*/head$' .git/filter-repo/changed-refs
 
 예상보다 영향 범위가 크면 **아직 push하지 않는다.**
 
-### First Changed Commit(s)를 기록한다
+### Record First Changed Commits
 
 GitHub Support는 `git-filter-repo`가 `NOTE: First Changed Commit(s)`로 보고한 **원래 commit SHA**를 요구한다.[^gh-remove] 해당 값을 기록하고, 원본 commit과 rewrite 결과의 대응을 보존하는 mapping도 함께 남긴다.[^filter-repo-manual]
 
@@ -424,7 +424,7 @@ cat .git/filter-repo/orphaned_lfs_objects
 
 GitHub Support에 LFS orphan을 알리고, `git-filter-repo`가 지목한 이 파일을 ticket에 첨부한다.[^gh-remove]
 
-### 옛 object가 남았는지 확인한다
+### Check for Remaining Old Objects
 
 ```bash
 git cat-file -t OLD_FIRST_CHANGED_COMMIT_SHA
@@ -442,7 +442,7 @@ First Changed Commit이 여러 개면 각각 `git cat-file -t`가 fatal error를
 
 ---
 
-## 7. GitHub 보호를 최소 범위로 잠시 조정한다
+## 7. Temporarily Adjust GitHub Protection
 
 Force push를 막는 Ruleset/Branch Protection이 있다면 rewrite를 반영하는 동안만 최소 범위로 조정한다.[^gh-remove]
 
@@ -468,7 +468,7 @@ Force push를 막는 Ruleset/Branch Protection이 있다면 rewrite를 반영하
 
 ---
 
-## 8. Rewritten history를 GitHub에 반영한다
+## 8. Push Rewritten History to GitHub
 
 먼저 remote를 확인한다.
 
@@ -495,7 +495,7 @@ GitHub와 `git-filter-repo` upstream 모두 sensitive-data removal에서 전체 
 > [!CAUTION]
 > `--mirror`는 branch와 tag 등 server ref를 강제로 맞추는 강한 작업이다. Cleanup 시작 이후 다른 사람이 올린 변경이 있다면 덮어쓸 수 있다.
 
-### 성공 판정
+### Success Criteria
 
 GitHub의 `refs/pull/*`은 read-only이므로 해당 ref의 push 실패는 예상될 수 있다.[^gh-remove]
 
@@ -510,7 +510,7 @@ refs/pull/*        → read-only로 실패
 
 ---
 
-## 9. GitHub 보호를 즉시 복구한다
+## 9. Restore GitHub Protection
 
 Force push 직후 다음을 되돌린다.
 
@@ -524,7 +524,7 @@ Cleanup 완료와 보호 복구는 하나의 작업으로 취급한다.
 
 ---
 
-## 10. Git history 밖의 GitHub 저장면을 정리한다
+## 10. Clean Up GitHub Surfaces Outside Git History
 
 History rewrite는 GitHub의 다른 저장면을 자동으로 정리하지 않는다.
 
@@ -577,7 +577,7 @@ Release asset은 Git object와 별도 저장면이다. 민감 파일이 올라�
 
 ---
 
-## 11. Fork와 clone을 별도로 정리한다
+## 11. Handle Forks and Clones Separately
 
 ### Fork
 
@@ -642,7 +642,7 @@ git cat-file -t OLD_FIRST_CHANGED_COMMIT_SHA
 
 ---
 
-## 12. Support 없이 어디까지 끝냈다고 볼 수 있는가
+## 12. Scope of Cleanup Without Support
 
 다음이 모두 끝났다면 repository owner가 직접 할 수 있는 범위에서는 강한 cleanup이다.
 
@@ -670,7 +670,7 @@ GitHub server-side unreachable objects
 
 ---
 
-## 13. GitHub Support를 사용할 기준
+## 13. When to Contact GitHub Support
 
 > [!IMPORTANT]
 > GitHub Support는 non-sensitive data를 제거하지 않으며, credential rotation으로 위험을 완화할 수 없다고 판단한 sensitive data에 한해 제거를 지원한다.[^gh-remove]
@@ -705,7 +705,7 @@ GitHub가 조건을 확인한 뒤 수행할 수 있는 작업:[^gh-remove]
 
 ---
 
-## 14. Private Information Removal은 별도 경로다
+## 14. Private Information Removal Is Separate
 
 일반 sensitive-data cleanup Support와 **Private Information Removal Request**는 같은 절차가 아니다.
 
@@ -727,7 +727,7 @@ Fork가 문제라면 해당 fork도 명시적으로 식별한다.
 
 ---
 
-## 15. 하지 말아야 할 것
+## 15. What Not to Do
 
 | 하지 말 것 | 이유 |
 | --- | --- |
@@ -743,7 +743,7 @@ Fork가 문제라면 해당 fork도 명시적으로 식별한다.
 
 ---
 
-## 16. 완료 체크리스트
+## 16. Completion Checklist
 
 ### Owner-controlled cleanup
 
@@ -768,7 +768,7 @@ Fork가 문제라면 해당 fork도 명시적으로 식별한다.
 - [ ] old First Changed Commit SHA가 cleaned clone에 남지 않았는지 확인했다.
 - [ ] orphaned LFS가 있다면 통제하는 local clone의 해당 object를 정리했다.
 
-### GitHub-side purge까지 완료
+### GitHub-Side Purge Completed
 
 - [ ] Owner-controlled cleanup을 완료했다.
 - [ ] PR을 제외한 ref에서 민감 commit reference를 제거했다.
@@ -783,9 +783,9 @@ Fork가 문제라면 해당 fork도 명시적으로 식별한다.
 
 ---
 
-## 17. 최종 상태 기록 예시
+## 17. Final Status Examples
 
-### Support를 사용하지 않은 경우
+### Without GitHub Support
 
 ```text
 Status: 소유자 통제 범위 정리 완료
@@ -804,7 +804,7 @@ Residual risk:
 - GitHub server-side purge는 요청하지 않음
 ```
 
-### GitHub Support purge까지 끝난 경우
+### After GitHub Support Purge
 
 ```text
 Status: GitHub 측 정리 완료
