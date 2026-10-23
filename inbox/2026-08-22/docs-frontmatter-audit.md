@@ -1,5 +1,7 @@
 # Docs Frontmatter Audit
 
+> **Historical snapshot:** 이 문서의 경로 및 현황 표는 명시된 과거 baseline의 조사 기록이다. 예를 들어 `docs/skills/mols-agent-asset-validator/baseline/DIRECTIVE.md`는 현재 존재하지 않는다. 현재 문서 inventory와 정본은 [`docs/`](../../docs/README.md) 및 관련 실제 경로에서 다시 확인한다.
+
 Current `main` 기준으로 repository documentation의 frontmatter 상태를 전수조사하고, 서로 충돌 없이 병렬 처리할 수 있는 작업 단위로 분리한다.
 
 - Baseline: `e3c85134f435d10284d88eba513c0ffba2fdb021`

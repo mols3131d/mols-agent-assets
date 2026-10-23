@@ -7,7 +7,7 @@ description: 에이전트 자산을 추가, 분리, 중복 제거, 단순화할 
 
 목표는 규칙을 늘리는 것이 아니라 **행동 신뢰성과 authority를 보존하면서 불필요한 local context와 설계 복잡성을 만들지 않는 것**입니다.
 
-## 판단 순서
+## Decision Order
 
 1. **Standard First / Local Delta Only** — 적용 가능한 표준, source framework, target/runtime contract 또는 확립된 project authority가 이미 행동을 결정하면 local source에 다시 소유하지 않습니다. Local source는 deviation, extension, ambiguity resolution만 소유합니다.
 1. **YAGNI** — 현재 요구, 관찰된 failure, accepted policy 또는 보존해야 할 credible invariant가 없는 구조·호환성·metadata·instruction을 만들지 않습니다. 가상의 미래 요구나 막연한 model failure는 충분한 근거가 아닙니다.

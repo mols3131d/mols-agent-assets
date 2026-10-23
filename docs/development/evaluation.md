@@ -8,7 +8,7 @@ Evaluation은 repository correctness test만으로 충분히 판단하기 어려
 
 `evals/`가 behavioral contract를 소유합니다. Promptfoo 같은 도구는 contract의 authority가 아니라 실행·채점 backend입니다.
 
-## Test와 Eval
+## Tests and Evaluations
 
 Test와 Eval은 **grader가 deterministic인지가 아니라 무엇을 검증하는지**로 구분합니다.
 
@@ -39,7 +39,7 @@ Eval을 만들기 전에 **무엇을 어떤 조건에서 증명하려는지** �
 
 서로 다른 model, runtime, harness 또는 조건의 결과를 직접 비교하려면 차이가 결과를 왜곡하지 않을 정도로 evaluation setup을 맞춥니다. Setup이 바뀌면 그 차이를 결과와 함께 해석합니다.
 
-## Eval을 추가할 때
+## When to Add Evaluations
 
 다음 중 하나가 실제로 필요할 때 eval을 추가합니다.
 
@@ -51,7 +51,7 @@ Eval을 만들기 전에 **무엇을 어떤 조건에서 증명하려는지** �
 
 단순히 case 수를 늘리기 위해 fixture를 추가하지 않습니다. 새 case는 보호하려는 behavior나 failure mode가 분명해야 합니다.
 
-### Capability와 Regression
+### Capability and Regression
 
 - **Capability eval**은 아직 불안정하거나 개선하려는 behavior의 현재 수준을 측정합니다. 낮은 pass rate 자체가 eval 실패를 의미하지 않습니다.
 - **Regression eval**은 이미 지켜야 하는 behavior가 계속 유지되는지 확인합니다. 반복 가능한 성공 기준과 높은 신뢰도가 필요합니다.
@@ -70,7 +70,7 @@ Capability case가 충분히 안정되고 계속 보호할 가치가 생기면 r
 - target의 intended context보다 eval harness가 assertion, expected answer, hidden reference를 더 노출하면 contamination 가능성을 결과와 분리합니다.
 - 같은 case를 반복 조정하며 Asset을 맞출수록 fixture 자체에 과적합할 위험이 커집니다. 새로운 evidence가 없는 cosmetic variation은 추가하지 않습니다.
 
-## Outcome과 Trajectory
+## Outcome and Trajectory
 
 기본적으로 **목표 달성 outcome을 먼저 평가**합니다. Agent가 유효한 다른 경로를 찾을 수 있는데도 특정 tool sequence나 문장 형태를 강제하지 않습니다.
 

@@ -4,6 +4,8 @@ description: repository-wide documentation principles를 재작성하기 위한 
 
 # Documentation Principles Research and Plan
 
+> **Historical snapshot:** 이 문서의 `mols-markdown-for-human` owner 서술은 작성 당시 계획이다. 현재 Markdown 작성·표현 책임은 [`mols-documentation`](../../src/rulesync/.rulesync/skills/mols-documentation/SKILL.md) 및 관련 Markdown Skill에 분리되어 있다. 현행 정책·호출 지침으로 사용하지 않는다.
+
 이 문서는 `docs/documentation/principles.md`를 고도화하기 전에 조사한 내용을 보존하고, 발견한 원칙을 어디에 둘지 결정하기 위한 작업 계획입니다.
 
 핵심 방향은 **repository-wide 판단 기준은 원칙 문서에, 독립적으로 탐색·유지할 구체 규칙은 별도 문서에, README는 scope-local한 작은 규칙의 예외적인 수용처로만 사용**하는 것입니다.

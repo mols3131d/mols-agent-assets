@@ -3,11 +3,11 @@ title: Using This Repository
 description: 이 저장소의 Agent Asset이나 reusable knowledge를 외부 repository·runtime에서 찾고, 직접 사용·설치·고정·가져오는 방법을 선택할 때 사용합니다.
 ---
 
-# 이 저장소 사용하기
+# Using This Repository
 
 이 저장소는 Agent Asset과 reusable knowledge의 **upstream library**입니다. Consumer는 필요한 자산과 지식만 선택해 사용하고, project나 runtime에 맞춘 변경은 consumer가 소유합니다.
 
-## 어떤 방식으로 가져올까?
+## Choose an Import Method
 
 | 목적 | 권장 방식 |
 | --- | --- |
@@ -24,7 +24,7 @@ description: 이 저장소의 Agent Asset이나 reusable knowledge를 외부 rep
 
 `catalog/skills.json`은 외부 Skill source의 curated discovery surface이고, `catalog/patterns/`는 이 repository가 직접 소유하는 canonical pattern library입니다.
 
-## Reusable knowledge 사용하기
+## Use Reusable Knowledge
 
 Reusable knowledge는 책임에 따라 두 surface에 나뉩니다.
 
@@ -41,7 +41,7 @@ https://raw.githubusercontent.com/mols3131d/mols-agent-assets/refs/heads/main/do
 https://raw.githubusercontent.com/mols3131d/mols-agent-assets/refs/heads/main/catalog/patterns/<category>/<pattern>.md
 ```
 
-## Agent Asset 찾기
+## Find Agent Assets
 
 Reusable authored source는 [`src/rulesync/.rulesync/`](../src/rulesync/.rulesync/)에 있습니다.
 
@@ -53,7 +53,7 @@ Reusable authored source는 [`src/rulesync/.rulesync/`](../src/rulesync/.rulesyn
 
 `route/`는 이 repository가 **제공하는 Agent Asset**을 빠르게 찾기 위한 derived discovery surface입니다. 먼저 asset kind를 고르고, 해당 route에서 `name`과 `description`으로 필요한 자산만 선택합니다. 자산 본문의 authority는 `src/`의 canonical source에 있습니다. 외부 upstream Skill 중 자주 다시 쓰는 source shortlist는 [`catalog/skills.json`](../catalog/skills.json)이 소유합니다.
 
-## 일회성으로 Skill 사용하기
+## Use a Skill Without Installation
 
 Runtime이 URL을 읽을 수 있다면 설치 없이 필요한 `SKILL.md`를 직접 제공할 수 있습니다.
 
@@ -69,7 +69,7 @@ Skill에 `references/`, `scripts/` 같은 supporting files가 있으면 `SKILL.m
 https://raw.githubusercontent.com/mols3131d/mols-agent-assets/<commit-sha>/src/rulesync/.rulesync/skills/<skill-name>/SKILL.md
 ```
 
-## 이 repository의 Skill을 Rulesync로 설치하기
+## Install Repository Skills with Rulesync
 
 이 repository가 작성한 Skill을 consumer repository에서 지속적으로 사용한다면 Rulesync declarative source로 설치하는 것이 자연스럽습니다. 외부 catalog의 Skill은 이 절차로 일반화하지 않고 upstream 구조와 runtime 요구사항에 맞는 dependency 경로를 선택합니다. 판단 기준은 [External Skill Dependency Routing](../catalog/patterns/context-engineering/external-skill-dependency-routing.md)을 참고합니다.
 
@@ -96,7 +96,7 @@ rulesync generate
 
 Rulesync의 현재 CLI, target과 declarative source semantics는 이 저장소의 [Rulesync reference](references/tooling/rulesync.md)와 upstream official documentation을 기준으로 확인합니다.
 
-## Subagent 또는 직접 수정할 자산 가져오기
+## Import Subagents or Adapted Assets
 
 현재 Rulesync declarative source 설치는 Rules와 Skills를 대상으로 합니다. 이 저장소의 Subagent나 consumer가 직접 수정해야 하는 자산은 필요한 canonical source만 복사해 downstream에서 소유합니다.
 
@@ -104,7 +104,7 @@ Rulesync를 사용하는 consumer라면 Subagent source를 `.rulesync/subagents/
 
 Skill을 직접 복사할 때는 `SKILL.md` 하나가 아니라 **Skill directory 전체**를 복사해 supporting files를 보존합니다. Upstream notice, attribution 또는 license 정보가 자산에 포함되어 있으면 함께 보존합니다.
 
-## 가져오지 말아야 할 것
+## What Not to Import
 
 - root `.rulesync/`와 root `rulesync.jsonc`는 **이 repository 자체의 consumer configuration**이므로 다른 project의 template이 아닙니다.
 - generated vendor projection은 canonical source가 아닙니다.
