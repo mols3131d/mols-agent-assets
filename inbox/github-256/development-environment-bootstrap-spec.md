@@ -20,6 +20,8 @@
 
 - [부트스트랩 심층 조사](bootstrap-deep-research.md) — 현재 실행 구조, mise/uv 최신 공식 동작, 잠금·설치 권한·성능·UX 대안과 미해결 근거.
 - [UX 구현 인계](bootstrap-ux-design.md) — setup/update 사용자 여정, 단계별 상태·실패·복구 모델, 안전한 병렬화와 테스트/성능 측정 계획.
+- [CLI·인자·OS 심층 조사](bootstrap-cli-os-research.md) — mise task args 전달, 안전한 flags, Windows native/WSL/macOS/Linux 및 shell·arch·파일시스템 차이.
+- [CLI·OS 설계 인계](bootstrap-cli-os-design.md) — 최소 공개 CLI, 옵션 도입 기준, 운영체제별 capability/지원 테스트와 실패 UX.
 
 이 문서의 버전·권한 정책은 현재 초안이다. 새 조사에서 발견한 mise lockfile sidecar, uv managed Python 다운로드, task runner의 의존성 오류 전파와 minimum release age처럼 정확한 동작에 영향을 주는 조건은 구현 전에 PoC로 판단한다. 벤더 문서의 최신 기능이 CI에 설정된 mise 버전에서 지원되는지도 검증한다.
 
