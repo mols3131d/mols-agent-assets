@@ -91,3 +91,17 @@
 - 중요 리뷰 결과는 실제로 필요해질 때 별도 `review.md`로 기록
 - 실행 결과는 정확한 commit/ref, command, 범위, 성공·실패·미실행을 명시
 - **현재 상태(2026-10-23):** 심층·중첩 조사, portable single-file Skill 작성, 21개 eval fixture, distribution route 갱신, maintainer 문서와 [정적 리뷰](review.md) 반영 완료. 제한된 정적 검사는 통과했지만 repository-native `mise`/Rulesync 검증과 실제 model/runtime A/B Eval은 아직 수행하지 않았다. PR Gate는 `f824a78b`에서 PASS를 관찰했으며 후속 문서 커밋의 실행 결과는 재확인한다. Draft를 유지한다.
+
+
+### 7. Independent Testability 심층 고도화 — 2026-10-23
+
+- [x] 모듈 분할이 아닌 **다른 작업자의 내부 변경과 독립적인 테스트 소유·실행 경계**를 목표로 한정
+- [x] [중첩 심층 검토](review-test-independence.md)에서 실제 consumer/provider 계약·트랜잭션 검증을 제거하면 안 된다는 반례 검증
+- [x] canonical Skill과 description에 안정 계약, cross-component 내부 결합, 독립 test/fixture·state와 실행 비용의 판단 반영
+- [x] 평가 fixture에 positive/negative/near-miss·behavior 13개 보강 — 총 34개(8/8/18)
+- [x] canonical description과 distribution route 일치/정렬, fixture JSON·중복 ID·7 target, 자산 독립성의 제한된 정적 검사
+- [x] 리뷰에서 발견한 모호한 activation 문구를 수정하고 다시 확인
+- [ ] 현재 HEAD PR Gate의 성공 확인 및 [review](review-test-independence.md)에 execution evidence 기록
+- [ ] 실제 routing·behavior model Eval 및 기존 coding-context-only baseline과 비교 (실행 환경/조건이 갖춰진 경우)
+
+**Done의 의미:** 신규 판단과 adversarial regression fixture가 반영되고 재검토됐다는 것이며, 실행하지 않은 실제 model behavior나 framework 전체 호환성을 주장하지 않는다. 이 고도화는 새 아키텍처 Skill, Pact 의존성, 폴더 분리나 CI 개편을 추가하지 않는다.
