@@ -4,7 +4,7 @@ description: mols-test-design의 검증 설계 목적과 독립적인 책임 경
 
 # Test Design Goal
 
-이 문서는 `mols-test-design`의 지속적인 목표와 유지보수 경계를 기록한다. Agent가 실제로 따르는 지침의 정본은 완성될 `src/rulesync/.rulesync/skills/mols-test-design/SKILL.md`가 소유한다.
+이 문서는 `mols-test-design`의 지속적인 목표와 유지보수 경계를 기록한다. Agent가 실제로 따르는 지침의 정본은 `src/rulesync/.rulesync/skills/mols-test-design/SKILL.md`가 소유한다.
 
 ## Goal
 
