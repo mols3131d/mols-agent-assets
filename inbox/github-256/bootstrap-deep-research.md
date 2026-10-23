@@ -116,6 +116,12 @@ Dev Containers, Devbox/Nix는 호스트 동등성/OS 종속 패키지가 필요�
 
 **Review 3 — UX 반증.** "모든 단계마다 물어보면 안전하다"는 과잉 UX다. 선언된 project-local 설치는 batch하고 user-global/host write만 고지·승인한다. "매번 dry run 후 apply"가 강제되면 잦은 업데이트의 마찰이 커지므로 별도 preview command와 explicit update를 분리한다. "모든 오류가 nonzero"도 optional 사용자 기능의 누락 때문에 필수 개발 환경이 unusable인 것과 같게 취급하면 복잡하다. 종료코드는 **필수 준비 여부**, 상세 상태는 summary에서 표현한다.
 
+## 추가 검토 — 실제 최신 후보와 버전별 기능 차이
+
+mise는 여러 backend에 대해 `minimum_release_age`의 기본값이 24시간이므로, 출시 직후 허용 범위 내 새 버전도 resolver 후보에서 제외될 수 있다. 안정성 지연을 의도한 정책으로 둘지, 곧바로 출시 최신을 대상으로 할지 별도 결정이 필요하다. `prerelease` 허용 여부도 범위와 별개의 선택 정책이다. [mise settings](https://mise.jdx.dev/configuration/settings.html#minimum_release_age).
+
+공식 사이트는 mise 2026.10.18 문서이지만 repository CI는 mise 2026.9.2를 설정한다. 현재 관찰된 `mise bootstrap` 등 기능이 과거 버전에서 존재하는지, npm dependency sidecar가 예상대로 재현되는지 확인 전에는 도입을 확정하지 않는다. Python package backend sidecar에는 최신 문서의 uv 버전 요구사항도 있으므로 현재 uv 0.12.1과 무조건 호환된다고 전제하지 않는다.
+
 ## 최종 결정 / 확인해야 할 미해결 사항
 
 1. 기존 `mise run setup`를 일상 진입점으로 유지하고 `mise run update`를 명시적 별도 command로 구현한다. 첫 사용에만 다른 bootstrap product를 요구하지 않는다.
