@@ -1,40 +1,47 @@
 ---
-description: mols-test-design의 선택·행동 평가에서 baseline, 테스트 오라클의 품질, 실행 근거와 비용을 어떻게 비교할지 판단할 때 사용합니다.
+description: mols-test-design의 목표와 원칙이 실제 Agent 선택·테스트 설계·근거 보고에 반영되는지 평가할 때 비교 조건과 증거 경계를 정합니다.
 ---
 
-# Test Design Evaluation
+# Test Design — Evaluation
 
-이 문서는 `mols-test-design`의 **평가 목적과 비교 근거**를 유지한다. 실행 동작의 정본은 `src/rulesync/.rulesync/skills/mols-test-design/SKILL.md`이며 평가 사례의 원본은 `evals/skills/mols-test-design/cases.json`이다. 이식성·중복 방지 관점에서 모든 agent/harness가 동일한 evaluator를 갖는다고 가정하지 않는다.
+이 문서는 [Goal and Guidance](goal.md)의 **목표·판단 원칙이 실제 실행에서 성립하는지** 검증하는 평가 계약이다. 실행용 지침을 다시 정의하지 않으며, `evals/skills/mols-test-design/cases.json`은 사례·기대 조건의 정본이다. 평가 도구나 모델은 그 계약을 실행·관찰하는 수단이지 기대 동작의 출처가 아니다.
 
-## Core Claims
+## Claims and observable evidence
 
-| 평가 질문 | 관찰할 결과 | 오해하면 안 되는 것 |
+| 지키려는 기준 | 평가할 행동·결과 | 배제할 잘못된 대리지표 |
 | --- | --- | --- |
-| 필요한 시점에 선택되는가? | test strategy, oracle, sufficiency, fixture/isolation 요구에서 올바른 selection | metadata 문구가 충분하다는 정적 검토를 실측 routing success로 해석 |
-| 필요 없을 때 물러나는가? | 일반 구현, runner debugging, CI admission, Agent Asset eval 요청에서 불필요한 선택 억제 | Skill 이름이 프롬프트에 있다는 이유로 모든 요청을 유효화 |
-| 중요한 테스트를 설계하는가? | 실제 계약, 신뢰 가능한 oracle, 현실적인 결함 구별 사례, 최소 충분 경계 | test case 수, coverage, assertions를 correctness의 대리 지표로 사용 |
-| 유효성의 경계를 이해하는가? | 정상 reference와 결함 구현, missing deliverable, flakiness/mocking의 서로 다른 위험 분리 | 현재 코드 또는 test PASS만으로 기능 완성 선언 |
-| 두 방향의 오라클을 검증하는가? | 확정된 정상 동작의 수용과 중요한 결함 사례의 거부를 구분하며 잘못된 기대값을 수정 | mutation 점수 또는 현재 구현의 통과를 oracle의 정확성으로 해석 |
-| 실패 원인과 수정 책임을 구분하는가? | 제품 코드/테스트·expectation/fixture·runner·환경의 근거를 분리해 조치 제안 | 알 수 없는 실패를 임의의 코드 변경이나 무조건 retry로 덮음 |
-| 병렬 변경·테스트 독립성을 보존하는가? | 타 소유자의 private helper·상태·순서에 대한 불필요한 결합 축소, 독립 fixture/state와 좁은 검증 범위 | 폴더 수, 무조건 mocking 또는 test file 수로 독립성을 평가 |
-| 실제 컴포넌트 간 호환성을 보호하는가? | 사용 중인 API·메시지 계약과 공유 트랜잭션/상태에 필요한 contract·integration evidence | 모든 상호작용 검증을 없애면 더 독립적이라고 가정 |
-| 실행 근거를 정확히 보고하는가? | verified / inferred / unknown / not run 구분 | 정적 검토·시뮬레이션을 runtime PASS로 보고 |
-| 전문 스킬로서 이득이 있는가? | 동일 모델·하네스·문맥·도구·예산에서 coding-context-only baseline과 비교 | 달라진 model이나 grader로 효과를 단정 |
+| 필요한 경우에만 선택 | 테스트 전략·오라클·충분성·격리 요청과, 구현 중 **실질적인 테스트 설계 하위 작업**은 선택; 일반 구현·runner 오류·CI/Agent Eval은 제외 | 스킬 이름이나 관련 단어가 있다는 이유만으로 선택 |
+| 신뢰할 수 있는 계약·오라클 | 요구·소비자 계약에서 기대값을 정당화하고 정상 동작을 수용하면서 중요한 결함 사례를 거부 | 현재 코드 통과, assertion 수, mutation 점수만으로 오라클 승인 |
+| 유효한 수용 범위 | 테스트가 통과하더라도 요구된 패키지·연결·소비자 경로가 누락된 경우 미완료로 판단 | 주어진 테스트가 모두 PASS면 산출물 전체 완료 |
+| 실패 원인의 구별 | 제품 동작·테스트 기대값·fixture/환경의 원인을 근거로 분리하고, 모르면 보류 | 알 수 없는 실패를 임의의 코드 수정이나 retry로 덮음 |
+| 독립성과 실제 경계 신뢰 | 타 소유자의 비공개 구현 결합·공유 가변 상태를 줄이되 필요한 호환성·트랜잭션 검증 유지 | 폴더 수·무조건적인 mock·모든 integration 제거 |
+| 최소 충분 검증 | 위험한 미검증 동작을 우선하고 중복·과도한 테스트 또는 불필요한 강한 검증을 줄임 | 테스트 개수, coverage, 기법 수 최대화 |
+| 근거 보고의 정확성 | 실행된 결과와 설계·추론·미실행·불명확한 부분을 구분 | 정적 리뷰 또는 모의 실행을 실제 테스트 PASS로 주장 |
 
-## Case Ownership
+## Test scenarios and loading
 
-- **Routing** — positive, negative, near-miss를 구분한다. 기능 구현 요청 중에 테스트 설계가 실제 하위 작업인지, 테스트 실행만 암묵적으로 필요한 상황인지 구분한다. 테스트 경계·독립 검증이 주제면 선택하되, 모듈 아키텍처 재설계 또는 작업 공간·worktree 격리만 요청한 경우는 선택하지 않는다. 유사한 전문 Skill이 후보에 있을 때에는 실제 작업의 주책임자가 선택되는지 별도로 확인한다.
-- **Behavior** — oracle 오류(현재 구현 복제), 높은 coverage와 약한 검증, mock이 실제 경계를 가림, 회귀 결함의 재현, flaky test, no-new-test, 실행 불가를 포함한다. 정상 참조 동작의 부당한 실패, product/test/runner 오류 분류, 관찰·재현 불가능한 동작, 레퍼런스를 읽지 않아도 되는 단순 사례까지 구분한다. 타 컴포넌트 내부 구현 의존과 실제 소비자 계약 위반을 구분하고, 공유 fixture/state 충돌, 필요한 protocol 순서, 통합 예외를 점검한다.
-- **Comparison** — 동일 사례를 일반 코딩 맥락 단독 조건과 새로운 Skill 적용 조건에서 평가한다. 독립적인 요구 명세·known-good/bad sample을 grader에 주되 테스트 대상 에이전트에는 정답을 누출하지 않는다.
+- **Activation:** 적합한 요청, 제외해야 할 요청, 실행·구현과 테스트 설계가 섞인 near-miss를 모두 둔다. 스킬 적용 범위를 무조건 넓히는 변경은 부정 사례에서도 검증한다.
+- **Behavior:** 올바른 사례를 거부하는 오라클, 결함이 통과하는 약한 테스트, 잘못된 기준 구현, 실패 원인 미확정, 재현 불가, 수용 산출물 누락, 병렬 fixture 간섭, mock이 가린 실제 계약을 시험한다.
+- **Conditional reference:** `references/oracle-validation.md`는 불확실·충돌하는 기대값 또는 의미 있는 강한 반례가 필요한 사례에서만 읽을 이유가 있다. 명확한 단순 회귀 테스트에서는 로딩 없이 충분해야 한다. 참조를 제공한 것만으로 로딩 효율이나 성능 개선을 입증할 수는 없다.
 
-## Conditional Reference
+사례가 평가하려는 결론을 프롬프트에서 직접 알려 주거나 정답·grader를 누출하지 않도록 점검한다. Fixture가 단지 구조적으로 유효하다는 사실은 Agent의 실제 성능 근거가 아니다.
 
-`references/oracle-validation.md`는 **불확실한 오라클·테스트 실패의 의미·강한 반례 검증**이 필요한 경우에만 로딩한다. 동일한 보통 테스트 설계 문제에서 불필요한 참조가 증가하거나 내용을 거의 항상 읽게 된다면 코어로 통합하거나 삭제할지 다시 평가한다. 평가 중 실제 로딩과 비용을 관찰하지 않았으면 progressive loading 효과를 주장하지 않는다.
+## Comparison contract
 
-## Interpretation
+새 Skill의 고유한 가치를 평가할 때는 **일반 코딩 판단만 적용한 baseline**과 추가 Skill을 적용한 조건을 같은 모델·하네스·코드/명세·도구 접근·예산·grader로 비교한다. 각 trial의 source revision, 실행 조건, 관찰된 출력·비용, 실패 이유를 남긴다.
 
-Fixture/schema 구조 검사는 deterministic test로 수행할 수 있으나 **행동 성능 검증은 실제 모델·런타임이 실행돼야 한다.** 관찰 가능한 defect discrimination을 실행할 수 있으면 deterministic oracle을 우선한다. 실제 코드를 실행할 수 없다면 모델의 설계 결과를 근거에 따라 평가하되 behavior execution 성공으로 올리지 않는다.
+다음 차이를 **함께** 본다.
 
-비교에서 개선과 퇴행을 함께 본다. 잘못된 oracle을 거부하는 비율이 올라가도 불필요한 E2E/mutation/서브에이전트 도입이나 토큰·실행 시간이 크게 증가하면 순편익을 다시 판단한다.
+- 선택의 누락·과도 활성화와 중요한 테스트 계약의 판별력.
+- 잘못된 오라클 수정, 미검증 acceptance 발견, test/product/environment 진단.
+- 테스트 수·실행 범위·문맥/지연 비용과 조건부 reference의 실제 로딩 빈도.
 
-실제 model/runtime, harness, source commit, 반복 횟수, grader/기준과 실패를 기록하기 전에는 효과, 안정성, 범용 호환성을 검증했다고 주장하지 않는다. 현재 fixture는 평가 설계이며 **실행 결과를 보유하지 않는다.**
+오라클 품질이 개선돼도 과도한 실행·컨텍스트 비용이나 불필요한 선택이 늘면 순효과를 다시 판단한다. 관찰 가능한 good/bad 구현의 차이가 있으면 deterministic grader를 우선하고, 모델 채점은 해석 불일치·모호성에 주의한다.
+
+## Evidence boundary
+
+- **정적/구조 검증:** frontmatter, Skill 경로, reference link, fixture schema와 generated route가 유효한지 확인할 수 있다.
+- **Behavioral Eval:** 실제 Agent·모델·도구·문맥에서 요청을 실행해야 선택·출력 품질·비용을 평가할 수 있다.
+- **미실행:** 테스트 설계, 문헌 조사, 리뷰, fixture 준비만으로 Agent behavior가 개선됐다고 주장하지 않는다.
+
+현재 문서는 **평가 방법과 판정 기준**을 제공한다. 이 문서 자체는 실행 기록이 아니며, 실제 실행 조건·결과를 수집하기 전까지 성능 향상은 미검증이다.
