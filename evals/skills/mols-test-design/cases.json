@@ -7,10 +7,17 @@
       "prompt": "A Python service changed its public result schema. Decide which observable contracts and regression cases need tests before writing code.",
       "expected_selection": {
         "selected_skills": [
-          "mols-test-design"
+          "mols-test-design",
+          "mols-coding-context"
         ],
         "primary_skill": "mols-test-design"
-      }
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-coding-context",
+          "description": "Core engineering judgment for code-facing implementation, debugging, testing, refactoring, review, API or data-model changes, dependency decisions, performance, and maintainability work, including routine changes. Select when solving the task materially depends on reasoning about code or executable behavior. Language-specific add-ons may supplement it. Adds judgment, not workflow. Do not select for factual programming lookup, repository administration without code-facing work, or prose-only work."
+        }
+      ]
     },
     {
       "id": "select-oracle-quality",
@@ -70,36 +77,68 @@
       "mode": "activation-negative",
       "prompt": "pytest가 ModuleNotFoundError를 내. import path를 고쳐줘.",
       "expected_selection": {
-        "selected_skills": [],
-        "primary_skill": null
-      }
+        "selected_skills": [
+          "mols-coding-context"
+        ],
+        "primary_skill": "mols-coding-context"
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-coding-context",
+          "description": "Core engineering judgment for code-facing implementation, debugging, testing, refactoring, review, API or data-model changes, dependency decisions, performance, and maintainability work, including routine changes. Select when solving the task materially depends on reasoning about code or executable behavior. Language-specific add-ons may supplement it. Adds judgment, not workflow. Do not select for factual programming lookup, repository administration without code-facing work, or prose-only work."
+        }
+      ]
     },
     {
       "id": "ignore-generic-test-writing",
       "mode": "activation-negative",
       "prompt": "Given this fixed test case and assertion, translate it into a Jest test file without changing the test strategy.",
       "expected_selection": {
-        "selected_skills": [],
-        "primary_skill": null
-      }
+        "selected_skills": [
+          "mols-coding-context"
+        ],
+        "primary_skill": "mols-coding-context"
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-coding-context",
+          "description": "Core engineering judgment for code-facing implementation, debugging, testing, refactoring, review, API or data-model changes, dependency decisions, performance, and maintainability work, including routine changes. Select when solving the task materially depends on reasoning about code or executable behavior. Language-specific add-ons may supplement it. Adds judgment, not workflow. Do not select for factual programming lookup, repository administration without code-facing work, or prose-only work."
+        }
+      ]
     },
     {
       "id": "ignore-ci-design",
       "mode": "activation-negative",
       "prompt": "PR Gate의 병합 차단 조건, matrix와 캐시를 설계해서 GitHub Actions workflow를 작성해줘.",
       "expected_selection": {
-        "selected_skills": [],
-        "primary_skill": null
-      }
+        "selected_skills": [
+          "mols-ci-design"
+        ],
+        "primary_skill": "mols-ci-design"
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-ci-design",
+          "description": "Design lightweight, risk-proportional CI with strict admission to main and an implementation-ready handoff. Use for CI planning, review, or redesign involving tests, evals, change-impact routing, evidence boundaries, and maintenance automation. Do not implement workflows unless explicitly requested."
+        }
+      ]
     },
     {
       "id": "ignore-agent-eval",
       "mode": "activation-negative",
       "prompt": "mols-agent-asset Skill의 routing eval과 LLM 행동 평가를 설계해줘.",
       "expected_selection": {
-        "selected_skills": [],
-        "primary_skill": null
-      }
+        "selected_skills": [
+          "mols-agent-asset"
+        ],
+        "primary_skill": "mols-agent-asset"
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-agent-asset",
+          "description": "Create, tune, modify, simplify, refactor, review, validate, or evaluate agent Skills, Rules or scoped instructions, and agent or subagent definitions. Also use for bounded review, validation, or evaluation of prompts, tools, guardrails, references, configs, scripts, hooks, and eval fixtures when they affect agent behavior. Covers deterministic and semantic validation plus routing and behavior evaluation. Use mols-agent-asset-find for discovery, selection, loading, installation, synchronization, or invocation. Do not use for ordinary product code, human-facing prose, prompt authoring, hook setup, or MCP setup."
+        }
+      ]
     },
     {
       "id": "ignore-analysis-only",
@@ -238,10 +277,17 @@
       "prompt": "서로 병렬 개발하는 consumer와 provider가 JSON API 변경에도 호환되는지 확인하면서 각자 테스트를 실행할 수 있게 검증 전략을 세워줘.",
       "expected_selection": {
         "selected_skills": [
-          "mols-test-design"
+          "mols-test-design",
+          "mols-coding-context"
         ],
         "primary_skill": "mols-test-design"
-      }
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-coding-context",
+          "description": "Core engineering judgment for code-facing implementation, debugging, testing, refactoring, review, API or data-model changes, dependency decisions, performance, and maintainability work, including routine changes. Select when solving the task materially depends on reasoning about code or executable behavior. Language-specific add-ons may supplement it. Adds judgment, not workflow. Do not select for factual programming lookup, repository administration without code-facing work, or prose-only work."
+        }
+      ]
     },
     {
       "id": "architecture-only-parallel-modules",
@@ -347,10 +393,17 @@
       "prompt": "Please implement the new API endpoint, and also decide the contract-level regression cases and expected failure outcomes needed to guard the versioned response.",
       "expected_selection": {
         "selected_skills": [
+          "mols-coding-context",
           "mols-test-design"
         ],
-        "primary_skill": "mols-test-design"
-      }
+        "primary_skill": "mols-coding-context"
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-coding-context",
+          "description": "Core engineering judgment for code-facing implementation, debugging, testing, refactoring, review, API or data-model changes, dependency decisions, performance, and maintainability work, including routine changes. Select when solving the task materially depends on reasoning about code or executable behavior. Language-specific add-ons may supplement it. Adds judgment, not workflow. Do not select for factual programming lookup, repository administration without code-facing work, or prose-only work."
+        }
+      ]
     },
     {
       "id": "disputed-generated-test-oracle",
@@ -368,9 +421,17 @@
       "mode": "activation-negative",
       "prompt": "Implement this utility method using the provided interface. Follow the repository's normal verification practices; I am not requesting a separate testing strategy or oracle review.",
       "expected_selection": {
-        "selected_skills": [],
-        "primary_skill": null
-      }
+        "selected_skills": [
+          "mols-coding-context"
+        ],
+        "primary_skill": "mols-coding-context"
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-coding-context",
+          "description": "Core engineering judgment for code-facing implementation, debugging, testing, refactoring, review, API or data-model changes, dependency decisions, performance, and maintainability work, including routine changes. Select when solving the task materially depends on reasoning about code or executable behavior. Language-specific add-ons may supplement it. Adds judgment, not workflow. Do not select for factual programming lookup, repository administration without code-facing work, or prose-only work."
+        }
+      ]
     },
     {
       "id": "test-runner-installation-only",
