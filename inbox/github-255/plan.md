@@ -90,7 +90,7 @@
 - `plan.md`(이 문서): 범위, 진행, 완료 조건과 다음 행동
 - 중요 리뷰 결과는 실제로 필요해질 때 별도 `review.md`로 기록
 - 실행 결과는 정확한 commit/ref, command, 범위, 성공·실패·미실행을 명시
-- **현재 상태(2026-10-24):** Canonical Skill·조건부 oracle reference, 45개 eval fixture, GP 유지보수 문서, 배포 route는 반영되어 있다. PR 리뷰 이후 경쟁 Skill metadata를 포함한 라우팅 사례, 선택적 reference 로딩 trace와 local Promptfoo 평가 경로를 보강했다. 실제 Ollama/Promptfoo model runtime 평가는 **미실행**이며, 최신 HEAD에 대한 PR Gate 결과와 로딩 경로의 결정론적 테스트가 남은 확인 대상이다. Draft 유지.
+- **현재 상태(2026-10-24):** Skill·조건부 oracle reference, 45개 eval fixture, GP 문서와 route에 더해 경쟁 Skill routing fixture 8개, opt-in reference loading trace, Promptfoo config·local task·deterministic tests를 반영했다. 리뷰 수정 코드 head `9fe29998`에서 PR Gate PASS. 실제 Ollama/Promptfoo model runtime·baseline A/B는 **미실행**, 현재 문서 head 검증은 별도로 확인한다. Draft 유지.
 
 
 ### 7. Independent Testability 심층 고도화 — 2026-10-23
@@ -127,7 +127,7 @@
 - [x] reference 필요/불필요 사례의 `expected_loaded_references`와 결정론적 regression checks 보강
 - [x] `mols-test-design` Promptfoo trigger/behavior config 및 local `mise`/npm entrypoint 추가
 - [x] 오래된 단일 CI 요약 교체, 7→8→9 순서 복원
-- [ ] 현재 head PR Gate에서 deterministic tests, source, affected projection, Rulesync 검증 확인
+- [x] 리뷰 수정 코드 head `9fe29998` [PR Gate run 39981853716](https://github.com/mols3131d/mols-agent-assets/actions/runs/39981853716) PASS. 최종 문서 head에서는 다시 확인
 - [ ] 실제 model/runtime trigger·behavior·reference-loading 및 baseline A/B 비교 수행
 
 **검증 경계:** configuration·fixture·mocked provider 테스트가 성공하더라도 실제 Ollama 모델의 선택 정확도 또는 conditional loading 품질은 미검증이다. 기존 `mols-loops` evaluator의 기본 behavior를 opt-in 변경으로 보존한다.
