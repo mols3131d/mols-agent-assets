@@ -6,6 +6,17 @@
 
 하나의 개발환경 진입점에서 **처음 사용하는 머신의 설정**과 **개발 중 반복하는 유지·업데이트**를 지원한다. 업데이트 범위는 미리 선언하고, 실행기는 그 범위를 재정의하지 않고 최신 허용 버전을 선택한다. 자동 설치가 부적절하거나 불가능한 도구 때문에 독립적인 나머지 작업이 중단되지 않으면서도, 불완전한 환경을 성공으로 오인하지 않게 한다.
 
+이 PR은 위 동작을 **실제 repository 부트스트랩으로 구현·검증**하고, 다른 프로젝트에서도 유사한 설계를 재사용할 수 있는 **독립적인 Agent Skill `mols-dev-bootstrap-design`을 개발·검증**하는 두 결과물을 함께 완성한다. 스킬은 설계 판단을, 이 저장소의 `mise` 태스크와 스크립트는 실제 실행 동작을 소유한다. 스킬을 실행하기 위해 이 PR의 스크립트가 필요해서는 안 된다.
+
+## 재사용 설계 스킬
+
+- **Canonical source:** [`mols-dev-bootstrap-design/SKILL.md`](../../src/rulesync/.rulesync/skills/mols-dev-bootstrap-design/SKILL.md)
+- **책임:** 초기 setup, 개발 중 유지/업데이트, 버전 허용 범위와 lock, 누락된 도구의 권한·부작용, 부분 실패·복구·검증을 평가하고 실행 가능한 설계 인계를 만든다.
+- **이식성:** mise/uv/Rulesync에 종속하지 않는다. 도구별 실제 version manager, lock, installer semantics와 프로젝트 정책을 조회하고, 적합한 native 방법을 선택한다.
+- **범위 밖:** 사용자가 요청하지 않은 환경 설치·업데이트 실행, 일반 패키지 업데이트, CI만의 admission design. 실행 가능한 부트스트랩 구현은 이 PR의 별도 결과물이며 스킬이 실행 결과를 대신 증명하지 않는다.
+- **완료 조건:** positive/near-miss activation을 분리하고, 허용 범위 외 버전 차단·미설치 host tool 회피·user/global side-effect 보호·독립 단계 지속·거짓 성공 방지 사례를 설계 근거로 검증한다. Rulesync structural validation과 route drift check를 수행하고, 실제 runtime/eval 미수행은 구분한다.
+
+
 ## 사용자 진입점과 의미
 
 | 진입점(목표) | 기대 동작 | 버전 변경 |
@@ -90,6 +101,7 @@ Git branch `main` 같은 이동 ref는 명시적인 SemVer 허용 범위가 아�
 | 3. 실행 경로 | mise task와 필요 최소 wrapper | setup은 기존 lock 재현, update는 범위 내 lock만 갱신, 필수/선택적 오류 격리 |
 | 4. 외부 연동 | Rulesync, Skill installer, Lefthook | user-level 부작용은 opt-in 또는 명시된 승인 경로로 제한 |
 | 5. 검증·운영 안내 | deterministic tests, mise reference, CI | 재실행 안전성, 실제 누락/복구, 업데이트 제한, 단계별 종료 상태 확인 |
+| 6. 재사용 설계 스킬 | `src/rulesync/.rulesync/skills/mols-dev-bootstrap-design/SKILL.md`, `route/skills.jsonl` | 단일 canonical Skill, 독립적인 activation/설계 책임, route 갱신·구조 검증, 대표·경계 사례 검토 |
 
 최소 회귀 시나리오:
 
@@ -107,4 +119,4 @@ Git branch `main` 같은 이동 ref는 명시적인 SemVer 허용 범위가 아�
 
 - 현재 구현: [mise.toml](../../mise.toml), [skills_sync.py](../../scripts/agent_assets/skills_sync.py), [mise reference](../../docs/references/tooling/mise.md), [skills CLI reference](../../docs/references/tooling/skills-cli.md)
 - 외부 계약: [mise lockfile](https://mise.jdx.dev/dev-tools/mise-lock.html), [mise upgrade](https://mise.jdx.dev/cli/upgrade.html), [mise task auto-install](https://mise.jdx.dev/dev-tools/), [uv locking/sync](https://docs.astral.sh/uv/concepts/projects/sync/)
-- 이번 PR에서 현재 구현을 일부 설명했지만 **setup/update runtime 개편, mise.lock 생성, 업데이트 동작 및 회귀 테스트는 아직 구현·실행되지 않았다.**
+- 이번 PR에서 현재 구현 일부를 설명하고 재사용 Skill 초안과 distribution route를 추가했다. **setup/update runtime 개편, mise.lock 생성, 업데이트 동작 및 회귀 테스트는 아직 구현·실행되지 않았다.** Skill의 구조 검증·실제 라우팅 및 행동 평가는 수행한 근거만 별도로 보고한다.
