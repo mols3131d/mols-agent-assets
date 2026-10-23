@@ -600,6 +600,7 @@ def _select_behavior_references(
     selected = payload.get("references") if isinstance(payload, dict) else None
     if (
         not isinstance(selected, list)
+        or any(not isinstance(path, str) for path in selected)
         or len(selected) != len(set(selected))
         or any(path not in allowed for path in selected)
     ):

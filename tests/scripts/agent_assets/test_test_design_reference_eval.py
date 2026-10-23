@@ -115,8 +115,30 @@ def test_trivial_case_skips_reference_body_but_reports_decision(
     assert all("VALID REFERENCE MARKER" not in system for system in observed)
 
 
+@pytest.mark.parametrize(
+    "selected",
+    [
+        pytest.param(["references/../secrets.md"], id="traversal"),
+        pytest.param(["references/unavailable.md"], id="unavailable"),
+        pytest.param(
+            ["references/oracle-validation.md", "references/oracle-validation.md"],
+            id="duplicate",
+        ),
+        pytest.param([{}], id="object-element"),
+        pytest.param([[]], id="array-element"),
+        pytest.param(
+            ["references/oracle-validation.md", {}], id="mixed-object-element"
+        ),
+        pytest.param(["references/oracle-validation.md", []], id="mixed-array-element"),
+        pytest.param([None], id="null-element"),
+        pytest.param([True], id="boolean-element"),
+        pytest.param([1], id="number-element"),
+        pytest.param(None, id="null-selection"),
+        pytest.param("references/oracle-validation.md", id="string-selection"),
+    ],
+)
 def test_invalid_model_reference_selection_fails_closed(
-    tmp_path: Path, monkeypatch
+    tmp_path: Path, monkeypatch, selected: object
 ) -> None:
     _write_skill_package(tmp_path)
     monkeypatch.setattr(evaluator, "ROOT", tmp_path)
@@ -124,10 +146,16 @@ def test_invalid_model_reference_selection_fails_closed(
     def model_request(prompt: str, system: str, schema: dict):
         raise_if_behavior = schema == evaluator.BEHAVIOR_RESPONSE_SCHEMA
         assert not raise_if_behavior
-        data = {"references": ["references/../secrets.md"]}
+        data = {"references": selected}
         return data, json.dumps(data)
 
+    def unexpected_reference_read(*args):
+        pytest.fail("invalid reference selection must not load reference files")
+
     monkeypatch.setattr(evaluator, "_ollama_request", model_request)
+    monkeypatch.setattr(
+        evaluator, "_read_behavior_references", unexpected_reference_read
+    )
     result = evaluator.call_api(
         "Disputed test oracle",
         {
@@ -139,7 +167,10 @@ def test_invalid_model_reference_selection_fails_closed(
         },
         {"vars": {"skill": "example-skill"}},
     )
-    assert "invalid or unavailable reference selection" in result["error"]
+    assert result == {
+        "error": "invalid or unavailable reference selection",
+        "output": "",
+    }
 
 
 def test_reference_assertion_uses_actual_provider_metadata() -> None:
