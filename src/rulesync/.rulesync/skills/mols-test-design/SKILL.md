@@ -1,0 +1,49 @@
+---
+name: mols-test-design
+description: >-
+  Design or review software tests for observable behavior, failure paths, and regression
+  risk. Use when deciding what to test, selecting meaningful cases and oracles, choosing
+  test levels and isolation, or assessing gaps, flakiness, mocking, and test quality.
+  Prefer the smallest trustworthy evidence over test count or coverage targets. Do not
+  use for ordinary code implementation or test-runner debugging, CI orchestration and
+  merge gates, or evaluation of agent/LLM behavior when test design is incidental.
+targets:
+  - claudecode
+  - codexcli
+  - copilot
+  - copilotcli
+  - antigravity-ide
+  - antigravity-cli
+  - agentsskills
+---
+
+# Mols Test Design
+
+중요한 software behavior를 **실제로 구분하고 보호할 수 있는 최소한의 테스트**를 설계하거나, 기존 테스트가 그 목적을 달성하는지 검토한다. 테스트 수·coverage·기법 자체가 목표는 아니다.
+
+## Design Judgment
+
+적용되는 요구사항과 repository contract, 기존 test·failure evidence를 먼저 확인한다. 모든 단계나 출력 양식을 매번 강제하지 않고 현재 질문의 중요한 판단만 수행한다.
+
+1. **Protect the contract** — 사용자·consumer가 관찰할 동작, 불변식, 변경 영향과 실패 비용을 식별한다. 이미 충분한 검증이 있거나 테스트 추가의 실익이 없으면 기존 검증을 재사용하거나 추가하지 않을 수 있다.
+2. **Ground the oracle** — 성공·실패를 구별할 관찰점과 기대값을 명세, 외부 계약, 확정된 예시, 신뢰할 만한 기준 동작 또는 독립적인 성질에서 도출한다. **현재 구현을 정답의 유일한 근거로 삼지 않는다.** 명세·기준 동작이 불명확하거나 충돌하면 임의로 기대값을 확정하지 말고 gap 또는 가정을 드러낸다.
+3. **Discriminate failures** — 대표 정상·경계·예외·회귀 사례 중 중요한 결함을 구별할 최소 집합을 고른다. *어떤 현실적인 잘못된 구현이 이 검증에서 실패해야 하는가?*를 따져, 실행만 하는 테스트·동어반복 assertion·구현 세부에 과적합된 기대값을 경계한다.
+4. **Choose the observation boundary** — 로컬 순수 동작에는 좁은 test를, 실제 의존성·상태·권한·API 계약·사용자 흐름이 핵심일 때는 해당 경계를 관찰하는 integration·contract·end-to-end 검증을 고려한다. 가장 싼 충분한 수준을 택하며 테스트 피라미드나 고정된 테스트 배합을 강제하지 않는다.
+5. **Check reliability and cost** — fixture와 상태 격리, mocking의 충실도, 시간·순서·병렬성·외부 환경으로 인한 flakiness, 중복, 진단 용이성과 유지보수 비용을 함께 판단한다. Mock 자체를 금지하지 않고, 실제로 보호해야 할 상호작용을 가리는지를 본다.
+
+## Stronger Evidence When It Pays
+
+- 버그 수정이라면 가능한 경우 **수정 전 의도한 이유의 실패 → 수정 후 성공 → 관련 기존 동작 보존**을 검증한다. 테스트 통과만으로 요청된 기능 전체나 산출물의 완성을 선언하지 않는다.
+- 일반 불변식이 명확하면 property-based 또는 metamorphic test를, 신뢰 가능한 비교 대상이 있으면 differential test를, 중요한 결함이 기존 테스트를 통과할 위험이 크면 작은 mutation/fault-injection 실험을 고려한다.
+- 강한 검증 기법도 oracle 자체를 정당화하지 못한다. 고위험·불확실성을 줄이는 가치가 실행·유지 비용보다 클 때만 추가한다.
+- 독립 근거가 중요하지만 별도 에이전트, strict TDD 순서, 도구 설치나 전체 suite 실행은 보편적인 전제 조건이 아니다.
+
+## Evidence and Handoff
+
+설계 판단과 **실제로 실행·관찰한 결과**를 구분한다. 실행 가능하고 현재 작업에 포함되면 프로젝트의 기존 도구·실행 경로로 확인하되, 직접 실행할 수 없으면 검증 가능한 테스트 시나리오·oracle·실행 방법과 미확인 사항을 제공한다. 정적 검토나 가정한 결과를 PASS로 표현하지 않는다.
+
+결과는 규모에 비례해 제시한다. 핵심 계약, 우선할 테스트/관찰값, 필요한 test boundary, 기존 evidence와 남은 gap을 명확히 하되 단순한 요청에 보고서나 테이블을 강제하지 않는다.
+
+## Boundary
+
+이 Skill은 **software test selection, oracle, design sufficiency and quality**에 대한 판단을 소유한다. 일반적인 코드 구현·디버깅, test runner 운영, CI trigger·merge admission, 에이전트/LLM의 routing·behavior evaluation 체계, 저장소별 정책은 소유하지 않는다. 해당 업무에서는 적용되는 프로젝트·도구·전문 owner를 우선하며, 이 Skill은 테스트 설계가 실질적인 하위 문제일 때만 보조한다. 다른 Skill, vendor, 언어, 프레임워크 또는 저장소 파일에 의존하지 않는다.
