@@ -66,15 +66,7 @@ def fixture_path(skill_name: str) -> Path:
 
 
 def skill_path(skill_name: str) -> Path:
-    return (
-        ROOT
-        / "src"
-        / "rulesync"
-        / ".rulesync"
-        / "skills"
-        / skill_name
-        / "SKILL.md"
-    )
+    return ROOT / "src" / "rulesync" / ".rulesync" / "skills" / skill_name / "SKILL.md"
 
 
 def provider_label(skill_name: str, suite: str) -> str:
@@ -336,7 +328,10 @@ def generate_tests(config: dict | None = None) -> list[dict]:
             ]
             expected_references = case.get("expected_loaded_references")
             if expected_references is not None:
-                vars_["expected_loaded_references"] = _reference_paths(expected_references)
+                # Promptfoo expands arrays of strings into separate evaluations.
+                vars_["expected_loaded_references"] = json.dumps(
+                    _reference_paths(expected_references)
+                )
                 checks.append(
                     {
                         "type": "python",
@@ -427,6 +422,8 @@ def assert_behavior_output(output: str, context: dict) -> dict:
 def assert_reference_loading(output: str, context: dict) -> dict:
     expected = context.get("vars", {}).get("expected_loaded_references")
     try:
+        if isinstance(expected, str):
+            expected = json.loads(expected)
         expected = _reference_paths(expected)
     except ValueError as error:
         return {"pass": False, "score": 0, "reason": str(error)}
@@ -435,7 +432,11 @@ def assert_reference_loading(output: str, context: dict) -> dict:
     if metadata is None:
         metadata = (context.get("providerResponse") or {}).get("metadata")
     if not isinstance(metadata, dict):
-        return {"pass": False, "score": 0, "reason": "reference loading metadata missing"}
+        return {
+            "pass": False,
+            "score": 0,
+            "reason": "reference loading metadata missing",
+        }
     loaded = metadata.get("loaded_references")
     if not isinstance(loaded, list):
         return {"pass": False, "score": 0, "reason": "loaded_references trace missing"}
@@ -632,7 +633,10 @@ def _execute_behavior(
     )
     if references:
         for path, body in references.items():
-            system += f"\n<loaded-reference path={json.dumps(path)}>\n{body}\n</loaded-reference>"
+            system += (
+                f"\n<loaded-reference path={json.dumps(path)}>\n"
+                f"{body}\n</loaded-reference>"
+            )
     result = _ollama_request(prompt, system, BEHAVIOR_RESPONSE_SCHEMA)
     if isinstance(result, dict):
         return result
@@ -691,7 +695,10 @@ def _ollama_output(
         try:
             references = _read_behavior_references(path, chosen)
         except OSError as error:
-            return {"error": f"failed to read selected reference: {error}", "output": ""}
+            return {
+                "error": f"failed to read selected reference: {error}",
+                "output": "",
+            }
         behavior = _execute_behavior(prompt, skill, references)
         if isinstance(behavior, dict):
             return behavior

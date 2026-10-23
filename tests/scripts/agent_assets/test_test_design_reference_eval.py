@@ -159,6 +159,71 @@ def test_reference_assertion_uses_actual_provider_metadata() -> None:
     assert no_trace["pass"] is False
 
 
+@pytest.mark.parametrize(
+    "paths",
+    [[], ["references/oracle-validation.md"], ["references/a.md", "references/b.md"]],
+)
+def test_reference_expectation_remains_one_promptfoo_variable(
+    tmp_path: Path, monkeypatch, paths: list[str]
+) -> None:
+    fixture = tmp_path / "evals" / "skills" / "example-skill" / "cases.json"
+    fixture.parent.mkdir(parents=True)
+    fixture.write_text(
+        json.dumps(
+            {
+                "version": 1,
+                "cases": [
+                    {
+                        "id": "reference-transport",
+                        "mode": "behavior",
+                        "prompt": "Review this disputed oracle.",
+                        "assertions": ["Uses an independent oracle."],
+                        "expected_loaded_references": paths,
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(evaluator, "ROOT", tmp_path)
+
+    generated = evaluator.generate_tests(
+        {"skill": "example-skill", "suite": "behavior", "semantic": False}
+    )
+    expected = generated[0]["vars"]["expected_loaded_references"]
+
+    # Promptfoo expands arrays of strings into separate evaluations.
+    assert isinstance(expected, str)
+    assert json.loads(expected) == paths
+
+
+@pytest.mark.parametrize("paths", [[], ["references/oracle-validation.md"]])
+def test_reference_assertion_decodes_transported_expectation(paths: list[str]) -> None:
+    context = {
+        "vars": {"expected_loaded_references": json.dumps(paths)},
+        "providerResponse": {"metadata": {"loaded_references": paths}},
+    }
+
+    assert evaluator.assert_reference_loading("observable response", context)["pass"]
+
+
+@pytest.mark.parametrize(
+    "expected", ["not-json", "null", '{"paths": []}', '["../outside.md"]']
+)
+def test_reference_assertion_rejects_invalid_transported_expectation(
+    expected: str,
+) -> None:
+    result = evaluator.assert_reference_loading(
+        "observable response",
+        {
+            "vars": {"expected_loaded_references": expected},
+            "metadata": {"loaded_references": []},
+        },
+    )
+
+    assert result["pass"] is False
+
+
 def test_test_design_eval_config_projects_all_cases_and_reference_checks() -> None:
     config = yaml.safe_load(
         (ROOT / "evals" / "promptfoo" / "mols-test-design.yaml").read_text(
@@ -169,9 +234,7 @@ def test_test_design_eval_config_projects_all_cases_and_reference_checks() -> No
     provider = next(
         x for x in config["providers"] if x["config"]["suite"] == "behavior"
     )
-    assert provider["config"]["reference_paths"] == [
-        "references/oracle-validation.md"
-    ]
+    assert provider["config"]["reference_paths"] == ["references/oracle-validation.md"]
 
     for spec in config["tests"]:
         generator = spec["config"]
