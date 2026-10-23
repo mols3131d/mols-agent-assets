@@ -1,0 +1,155 @@
+# mols-test-design — PR #255 작업 계획
+
+## 목표와 경계
+
+**Goal:** 개발 에이전트가 테스트를 새로 설계하거나 기존 테스트의 적정성을 판단할 때, 중요한 observable behavior를 가장 작은 유효 검증으로 보호하도록 돕는 독립·이식 가능한 `mols-test-design` Skill을 완성한다.
+
+### In scope
+
+- 책임 경계/activation/near-miss 설계 및 근거 조사
+- canonical Rulesync Skill source와 필요한 최소 supporting references
+- Skill을 옮겨도 독립적으로 이해·유지할 수 있는 maintainer 문서
+- behavior/trigger fixture 및 적용 가능한 deterministic·runtime evaluation
+- 공식 generator를 통한 필요한 derived discovery 갱신
+- 리뷰·개선과 병합 준비
+
+### Out of scope
+
+- 모든 언어·프레임워크 테스트 방법론의 재작성, 범용 test runner·CLI 신규 구현
+- 특정 저장소의 테스트를 이 PR에서 대량 작성·변경
+- `mols-ci-design`, `mols-coding-context`, `mols-agent-asset`의 책임 재정의
+- GitHub Actions, Ruleset, CI policy 자체 변경
+- 계획하지 않은 외부 Skill dependency 또는 vendor-specific package 생성
+
+## 진행 단계
+
+### 1. Prepare — 완료된 초기 기반
+
+- [x] 최신 `main` 기반 전용 브랜치와 Draft PR #255 생성
+- [x] [Goal](../../docs/skills/mols-test-design/goal.md)에 유지할 목적과 경계 초안 기록
+- [x] [Research](research.md)에 repository-local 근거 및 검토할 가설 기록
+- [x] 기존 자산의 responsibility/activation과 repository routing을 검토해 static 설계 공백 확인 (동작 개선 효과는 미검증)
+
+### 2. Research — 심층/중첩 조사 완료 (설계 uplift eval은 미실행)
+
+- [x] 2025~2026년 vendor 원문, 동료심사 연구, 벤치마크 품질 감사와 실무 사례 비교
+- [x] 테스트 유형 나열보다 oracle·contract·반례·실행 근거 중심 최소 원칙 추출
+- [x] 신규/기존 테스트, 위험도 높음/낮음, 코드/비코드, 실행 가능/불가능의 경계 정리
+- [ ] 새 Skill이 coding-context만 적용했을 때보다 나은지 **비교 behavior eval** 수행 (설계 공백에 대한 정적 분석은 완료)
+- [x] overfitting·weak oracle·over-mocking·불필요한 멀티에이전트 등 안티패턴과 반례 기록
+- [x] [부모 심층 조사](research-agentic-testing.md) — 최신 논문과 benchmark·vendor 사례의 주장/한계 비교
+- [x] 1차 Review가 제기한 **test oracle 유효성·fault discrimination·cost** gap을 [strict-subset 자식 루프](research-oracle-validation.md)로 독립적으로 좁혀 조사
+- [x] [루프 리뷰](research-loop-review.md) — 자식 결과를 부모로 인계하고 결과를 바꾼 반론/기각/미확인 구분
+- [x] 일반 코딩 Skill 대비 test-specific 설계 책임·이식성·runtime 부재의 evidence 경계 재검토
+
+### 3. Design — Contract 확정
+
+- [x] activation description과 negative/near-miss boundary 정의
+- [x] 역할: test surface 선택, scenario/oracle 선정, fixture/isolation, quality/gap review
+- [x] 출력: 질문 난이도에 맞춰 최소 충분 설계 또는 review 결과; 고정 양식 강제하지 않기
+- [x] 테스트 실행 여부와 evidence claim의 명확한 구분
+- [x] 일반 판단은 Skill 본문에 유지하고, oracle 충돌·고강도 반례일 때만 상세 reference를 사용
+- [x] 범용 원칙과 repository-/tool-specific contract를 분리하기
+
+### 4. Implementation — Canonical Skill
+
+- [x] `src/rulesync/.rulesync/skills/mols-test-design/SKILL.md` 신규 작성
+- [x] 초기 single-file 구현 당시 reference 생성을 보류했으며, 후속 연구 대비 리뷰에서 별도 conditional oracle 검증 경로를 입증해 reference 하나를 추가
+- [x] `docs/skills/mols-test-design/`에 goal·evaluation 기준 보존
+- [x] canonical source metadata를 사용해 distribution route 생성·정합성 점검; 로컬 `mise run generated-validate`로 전체 index·route 검증 PASS
+- [x] 불필요한 config, 새로운 framework, 자산 간 hard dependency 도입하지 않음
+
+### 5. Validate & Evaluate — 근거에 맞는 품질 판정
+
+- [x] GitHub PR Gate 및 로컬 `mise exec -- npm run rulesync:validate`의 Rulesync structural validation PASS
+- [x] GitHub PR Gate의 deterministic test·source·affected projection PASS 확인; 로컬 `mise run test`도 252개 PASS ([인계 기록](#10-local-environment-인계--2026-10-24))
+- [x] positive 10, negative 10의 trigger fixture 준비 (실제 model eval은 별도)
+- [x] 25개 behavior fixture 및 assertion 준비 (실제 model eval은 별도)
+- [ ] 실제 model/runtime eval이 가능하면 조건·결과·revision을 기록하고 불가능하면 미검증으로 표시
+- [ ] 테스트가 fixture 자체에 과적합하지 않는지 새 scenario 및 반례로 확인
+- [x] 리뷰 이전 head `2bcfd302`의 [PR Gate run](https://github.com/mols3131d/mols-agent-assets/actions/runs/39971017454) PASS 확인; 후속 구현 head는 별도 검증
+
+### 6. Review & Finalize — 완성 판단
+
+- [x] 설계 책임, 이식성, context 비용과 도구 의존성 관점의 순차 정적 리뷰 ([review](review.md))
+- [x] PR 리뷰의 라우팅 경쟁 후보 및 reference observation 관련 문제를 구현·테스트·설정으로 보강; 로컬 Promptfoo 연결 검증에서 발견한 reference 기대값 전달 결함도 수정
+- [x] maintainer 문서에 평가 목적·근거와 유지보수 기준만 두고 runtime instruction 복제 여부 점검
+- [x] [Research](research.md), 이 문서와 PR 본문의 작업 단계·근거 상태 정합화; 인계 기준 head `ae5ada60`의 PR Gate PASS 확인
+- [ ] Draft 해제 가능 조건 재검토; 최종 머지는 별도 사용자 지시에 따름
+
+## Acceptance criteria
+
+1. Skill이 **독립적인 일반 소프트웨어 테스트 설계 판단**을 소유하면서, coding/CI/Agent eval의 기존 owner와 충돌하지 않는다.
+1. 실제 의도가 테스트 설계/충분성/품질 판단인 요청에는 적절히 선택되고, 일반 코드 작성·CI orchestration·Agent eval에 무분별하게 활성화되지 않는다.
+1. 가장 적은 유용한 수준에서 중요한 정상·경계·실패/회귀 사례와 oracle을 제안하며, 의미 없는 테스트·mock·coverage·수준 고정을 피한다.
+1. 대상 언어, 프레임워크, 저장소, 다른 이 레포 Skill을 모르는 환경에서도 핵심 설계 결정을 내릴 수 있다.
+1. 설계·검토 근거와 실행·검증·평가 근거를 혼동하지 않고, 미실행 테스트에 통과 판정을 내리지 않는다.
+1. 관련 source, route, 문서와 eval 계약이 일관되고, 실제 실행한 필수 검사에서 blocker가 없다.
+
+## 운영 기록 규칙
+
+- `research.md`: 근거, 비교, 대안과 남은 불확실성
+- `plan.md`(이 문서): 범위, 진행, 완료 조건과 다음 행동
+- 중요 리뷰 결과는 실제로 필요해질 때 별도 `review.md`로 기록
+- 실행 결과는 정확한 commit/ref, command, 범위, 성공·실패·미실행을 명시
+- **현재 상태(2026-10-24):** 인계 기준 head `ae5ada608c2ae4c2b3a4163f9ecef6bbe000af7f`의 [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/39982171000) PASS와 리뷰 스레드 2개 해결을 확인했다. 로컬 도구·의존성·hook을 준비하고 reference 기대값의 Promptfoo 전달 결함을 수정했다. 전체 테스트 252개와 연결 검증은 PASS; 실제 Ollama model/runtime·baseline A/B는 **미실행**이다. 상세 근거와 다음 행동은 [로컬 인계](#10-local-environment-인계--2026-10-24)를 따른다. Draft 유지.
+
+### 7. Independent Testability 심층 고도화 — 2026-10-23
+
+- [x] 모듈 분할이 아닌 **다른 작업자의 내부 변경과 독립적인 테스트 소유·실행 경계**를 목표로 한정
+- [x] [중첩 심층 검토](review-test-independence.md)에서 실제 consumer/provider 계약·트랜잭션 검증을 제거하면 안 된다는 반례 검증
+- [x] canonical Skill과 description에 안정 계약, cross-component 내부 결합, 독립 test/fixture·state와 실행 비용의 판단 반영
+- [x] 평가 fixture에 positive/negative/near-miss·behavior 13개 보강 — 총 34개(8/8/18)
+- [x] canonical description과 distribution route 일치/정렬, fixture JSON·중복 ID·7 target, 자산 독립성의 제한된 정적 검사
+- [x] 리뷰에서 발견한 모호한 activation 문구를 수정하고 다시 확인
+- [x] commit `995f96f`에서 [PR Gate run 39961039971](https://github.com/mols3131d/mols-agent-assets/actions/runs/39961039971) PASS, [review](review-test-independence.md)에 검증 근거 기록 (후속 doc commit은 최신 HEAD 결과 재확인)
+- [ ] 실제 routing·behavior model Eval 및 기존 coding-context-only baseline과 비교 (실행 환경/조건이 갖춰진 경우)
+
+**Done의 의미:** 신규 판단과 adversarial regression fixture가 반영되고 재검토됐다는 것이며, 실행하지 않은 실제 model behavior나 framework 전체 호환성을 주장하지 않는다. 이 고도화는 새 아키텍처 Skill, Pact 의존성, 폴더 분리나 CI 개편을 추가하지 않는다.
+
+### 8. Oracle Validation 개선 루프 — 2026-10-23
+
+- [x] [연구 대비 부족점](review-research-coverage.md)의 높은 우선순위 F1/F2 및 mixed-intent F3 보완
+- [x] 정상 사례 수용/결함 사례 거부의 양방향 oracle, 실패 원인 분류, 관찰·재현 가능성, 위험 기반 수용 근거와 종료 기준 개선
+- [x] 필요한 경우에만 읽는 `references/oracle-validation.md` 신설 및 core에서 conditional disclosure
+- [x] 두 번째 boundaries/isolation reference와 tool별 cookbook 확장 보류: 독립 loading 가치 미입증
+- [x] eval fixture 기존 34개 유지 + 11개 추가 = 총 **45개** (activation 10, negative 10, behavior 25)
+- [x] canonical description 변경에 따른 distribution route source metadata 일치 및 정적 schema/경로 점검
+- [x] [Review](review-oracle-improvement.md)에서 불완전한 reference trigger 발견·수정 후 재검토
+- [x] 리뷰 반영 head `ae5ada60`의 PR Gate 및 로컬 행동 평가 실행 경로 확인; 이후 source 수정의 PR Gate는 새 revision에서 확인
+- [ ] 실제 agent selection, behavior, conditional reference loading 및 baseline 성능 비교
+
+**현재 완료 범위:** 스킬 source·reference·평가 계약의 **정적 개선**. 실제 behavioral uplift는 입증하지 않았으며 모델 평가와 reference loading 비용은 별도로 검증해야 한다.
+
+### 9. PR #255 리뷰 반영 — 2026-10-24
+
+- [x] competing owner를 포함하는 대표 routing fixture 8개 보강: 주담당 owner와 `mols-test-design` 조합·제외 검사
+- [x] 허용된 Skill package `references/` 파일만 모델이 조건부 선택해 읽고 실제 loaded path를 provider metadata에 기록하도록 opt-in 평가 경로 추가
+- [x] reference 필요/불필요 사례의 `expected_loaded_references`와 결정론적 regression checks 보강
+- [x] `mols-test-design` Promptfoo trigger/behavior config 및 local `mise`/npm entrypoint 추가
+- [x] 오래된 단일 CI 요약 교체, 7→8→9 순서 복원
+- [x] 리뷰 수정 코드 head `9fe29998` [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/39981853716)와 최종 인계 head `ae5ada60` [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/39982171000) PASS 확인
+- [ ] 실제 model/runtime trigger·behavior·reference-loading 및 baseline A/B 비교 수행
+
+**검증 경계:** configuration·fixture·mocked provider 테스트가 성공하더라도 실제 Ollama 모델의 선택 정확도 또는 conditional loading 품질은 미검증이다. 기존 `mols-loops` evaluator의 기본 behavior를 opt-in 변경으로 보존한다.
+
+### 10. Local environment 인계 — 2026-10-24
+
+`mols/feat/mols-test-design`의 head `ae5ada608c2ae4c2b3a4163f9ecef6bbe000af7f`에서 인계받았다. 아래 수정 후 검증은 이 commit에 reference 전달 수정과 회귀 검사를 더한 working tree에서 실행했다.
+
+**환경:** Windows, Python 3.13.11의 project `.venv`, [mise 고정 도구](../../mise.toml), Rulesync frozen dependency·projection, Git hook 3종을 준비했다. `mise run setup`은 기존 `humanize-korean` copy와의 충돌로 native installer 단계에서 종료됐다. Lock의 `v2.3.2` checkout `bad4ef0a2b514318b2278b65cb4545414ad84d82`와 설치된 Claude Skill 3개·agent 4개 및 Codex Skill의 모든 파일이 SHA-256 기준 일치함을 확인했다. Hook은 `mise exec -- lefthook install`로 별도 설치했다. 재설치 task 자체의 성공으로 기록하지 않는다.
+
+**수정:** Promptfoo 0.122.0은 문자열 배열인 test variable을 개별 값으로 펼친다. 기존 `expected_loaded_references` 양성 사례 4개가 올바른 trace에도 `reference_paths must be a list`로 실패했다. [공통 evaluator](../../scripts/agent_assets/skills_promptfoo.py)에서 기대 목록을 JSON 문자열로 전달하고 assertion에서 복원하도록 수정했다. [회귀 검사](../../tests/scripts/agent_assets/test_test_design_reference_eval.py)는 빈 목록·단일/복수 경로·잘못된 직렬화와 provider metadata를 검증한다.
+
+| 로컬 검증 | 관찰 결과 |
+| --- | --- |
+| `mise run check` | PASS — 고정 도구·lock·hook·설정 |
+| `mise run test` | PASS — 수정 후 252개 |
+| `mise run generated-validate` | PASS — docs index, distribution route, repository route |
+| `mise exec -- npm run rulesync:validate` | PASS — config, configured projection |
+| `mise run eval-mols-loops-smoke` | PASS — fixture-only 71개; 실제 모델 실행 아님 |
+| #255 Promptfoo 임시 연결 probe | 수정 전 4/8 실패 → 수정 후 8/8 PASS; trigger 2개와 reference trace 6개, fixture-only |
+| 신규 결정론적 회귀 검사 | 수정 전 5개 실패 재현 → 수정 후 관련 evaluator 검사 41개 PASS |
+| 실제 model/runtime·baseline A/B | NOT RUN — 로컬 Ollama 명령 없음, 기본 `127.0.0.1:11434` 연결 거부, 별도 endpoint·model 미지정 |
+
+**다음 행동:** 사용할 Ollama endpoint·runtime model·grader를 정한 뒤 `mise run eval-mols-test-design`을 실행한다. 이후 같은 조건에서 coding-context-only baseline과 비교하고 새 시나리오의 oracle·reference 비용을 검토한다. 이번 source 수정의 최신 PR Gate를 별도로 확인하며, runtime 근거와 Draft 해제 조건 확인 전까지 Draft를 유지한다.

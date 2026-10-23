@@ -1,0 +1,530 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "select-contract-tests",
+      "mode": "activation",
+      "prompt": "A Python service changed its public result schema. Decide which observable contracts and regression cases need tests before writing code.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-test-design",
+          "mols-coding-context"
+        ],
+        "primary_skill": "mols-test-design"
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-coding-context",
+          "description": "Core engineering judgment for code-facing implementation, debugging, testing, refactoring, review, API or data-model changes, dependency decisions, performance, and maintainability work, including routine changes. Select when solving the task materially depends on reasoning about code or executable behavior. Language-specific add-ons may supplement it. Adds judgment, not workflow. Do not select for factual programming lookup, repository administration without code-facing work, or prose-only work."
+        }
+      ]
+    },
+    {
+      "id": "select-oracle-quality",
+      "mode": "activation",
+      "prompt": "이 함수 테스트들이 모두 통과해도 실제 버그가 남습니다. 기대값과 테스트 오라클이 타당한지 검토해줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-test-design"
+        ],
+        "primary_skill": "mols-test-design"
+      }
+    },
+    {
+      "id": "select-flaky-test-design",
+      "mode": "activation",
+      "prompt": "우리 integration suite가 실행 순서마다 실패해. fixture와 상태 격리·테스트 구조를 어떻게 개선할지 설계해줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-test-design"
+        ],
+        "primary_skill": "mols-test-design"
+      }
+    },
+    {
+      "id": "select-risk-test-strategy",
+      "mode": "activation",
+      "prompt": "새 결제 환불 기능의 경계값과 실패·중복 요청 시나리오를 어떤 수준에서 검증해야 충분한지 골라줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-test-design"
+        ],
+        "primary_skill": "mols-test-design"
+      }
+    },
+    {
+      "id": "select-test-redundancy",
+      "mode": "activation",
+      "prompt": "이미 unit, integration, contract tests가 많아. 이 변경에서 새 테스트가 필요한지 중복과 실제 보호 범위를 판단해줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-test-design"
+        ],
+        "primary_skill": "mols-test-design"
+      }
+    },
+    {
+      "id": "ignore-ordinary-implementation",
+      "mode": "activation-negative",
+      "prompt": "이 Python 메서드를 읽기 쉽게 리팩터링하고 반환값은 유지해줘.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "ignore-runner-debug",
+      "mode": "activation-negative",
+      "prompt": "pytest가 ModuleNotFoundError를 내. import path를 고쳐줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-coding-context"
+        ],
+        "primary_skill": "mols-coding-context"
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-coding-context",
+          "description": "Core engineering judgment for code-facing implementation, debugging, testing, refactoring, review, API or data-model changes, dependency decisions, performance, and maintainability work, including routine changes. Select when solving the task materially depends on reasoning about code or executable behavior. Language-specific add-ons may supplement it. Adds judgment, not workflow. Do not select for factual programming lookup, repository administration without code-facing work, or prose-only work."
+        }
+      ]
+    },
+    {
+      "id": "ignore-generic-test-writing",
+      "mode": "activation-negative",
+      "prompt": "Given this fixed test case and assertion, translate it into a Jest test file without changing the test strategy.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-coding-context"
+        ],
+        "primary_skill": "mols-coding-context"
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-coding-context",
+          "description": "Core engineering judgment for code-facing implementation, debugging, testing, refactoring, review, API or data-model changes, dependency decisions, performance, and maintainability work, including routine changes. Select when solving the task materially depends on reasoning about code or executable behavior. Language-specific add-ons may supplement it. Adds judgment, not workflow. Do not select for factual programming lookup, repository administration without code-facing work, or prose-only work."
+        }
+      ]
+    },
+    {
+      "id": "ignore-ci-design",
+      "mode": "activation-negative",
+      "prompt": "PR Gate의 병합 차단 조건, matrix와 캐시를 설계해서 GitHub Actions workflow를 작성해줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-ci-design"
+        ],
+        "primary_skill": "mols-ci-design"
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-ci-design",
+          "description": "Design lightweight, risk-proportional CI with strict admission to main and an implementation-ready handoff. Use for CI planning, review, or redesign involving tests, evals, change-impact routing, evidence boundaries, and maintenance automation. Do not implement workflows unless explicitly requested."
+        }
+      ]
+    },
+    {
+      "id": "ignore-agent-eval",
+      "mode": "activation-negative",
+      "prompt": "mols-agent-asset Skill의 routing eval과 LLM 행동 평가를 설계해줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-agent-asset"
+        ],
+        "primary_skill": "mols-agent-asset"
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-agent-asset",
+          "description": "Create, tune, modify, simplify, refactor, review, validate, or evaluate agent Skills, Rules or scoped instructions, and agent or subagent definitions. Also use for bounded review, validation, or evaluation of prompts, tools, guardrails, references, configs, scripts, hooks, and eval fixtures when they affect agent behavior. Covers deterministic and semantic validation plus routing and behavior evaluation. Use mols-agent-asset-find for discovery, selection, loading, installation, synchronization, or invocation. Do not use for ordinary product code, human-facing prose, prompt authoring, hook setup, or MCP setup."
+        }
+      ]
+    },
+    {
+      "id": "ignore-analysis-only",
+      "mode": "activation-negative",
+      "prompt": "테스트 피라미드가 무엇인지 개념을 설명해줘.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "oracle-not-from-implementation",
+      "mode": "skill",
+      "prompt": "The code computes discounted price from a rounded intermediate, but the product contract specifies rounding only the final total. Design tests and expected outcomes without copying the current implementation.",
+      "assertions": [
+        "Uses the product contract rather than the present implementation as the source of expected values.",
+        "Selects an example or boundary that differentiates early rounding from final rounding.",
+        "Does not silently bless the current implementation simply because it is observable."
+      ],
+      "expected_loaded_references": [
+        "references/oracle-validation.md"
+      ]
+    },
+    {
+      "id": "test-passes-feature-missing",
+      "mode": "skill",
+      "prompt": "A demo UI renders correctly and all DOM assertions pass, but the request requires exporting a reusable library with stable imports. What tests or acceptance checks remain?",
+      "assertions": [
+        "Distinguishes passing UI tests from completion of the requested deliverable.",
+        "Includes the package import/export or consumer-level observable contract as an outstanding check.",
+        "Does not claim the entire feature is done from the existing tests."
+      ]
+    },
+    {
+      "id": "mock-hides-db-transaction",
+      "mode": "skill",
+      "prompt": "A unit test mocks the database and confirms commit() was called. The feature must atomically update a balance and an audit row and roll back on error. Is that sufficient?",
+      "assertions": [
+        "Identifies transaction atomicity and rollback as behavior not proved by a mock-call assertion.",
+        "Recommends the smallest relevant database integration test or equivalent evidence covering success and failure.",
+        "Does not forbid all mocking or demand a full end-to-end suite without need."
+      ]
+    },
+    {
+      "id": "fix-regression-before-after",
+      "mode": "skill",
+      "prompt": "A bug returns stale cached permissions after a user is revoked. We can run local tests. Design a minimal regression check and verification.",
+      "assertions": [
+        "Defines an observable revoked-user failure and reliable oracle based on authorization behavior.",
+        "Checks the reproduction fails for the intended reason before the fix when practical and passes after it.",
+        "Also considers relevant existing unaffected behavior, without requiring unrelated broad suites."
+      ]
+    },
+    {
+      "id": "flaky-clock-shared-state",
+      "mode": "skill",
+      "prompt": "A suite intermittently fails when tests run in parallel because they depend on the current time and a shared global cache. Review the test design, not the product implementation.",
+      "assertions": [
+        "Identifies clock and shared state/parallel ordering as specific reliability surfaces.",
+        "Suggests controlled time and per-test state isolation or cleanup rather than blind retries.",
+        "Separates potential test harness causes from product defects until evidence exists."
+      ]
+    },
+    {
+      "id": "no-new-test-needed",
+      "mode": "skill",
+      "prompt": "A license comment typo is corrected. Existing static checks and suite are unchanged. Do we need new behavioral test cases?",
+      "assertions": [
+        "Allows no additional behavior test when the change has no material behavior contract.",
+        "Uses existing appropriate validation instead of inventing test scenarios to increase count.",
+        "Does not claim existing checks were executed unless execution evidence was supplied."
+      ],
+      "expected_loaded_references": []
+    },
+    {
+      "id": "stronger-checks-proportionate",
+      "mode": "skill",
+      "prompt": "A parser already has good example tests but occasionally accepts malformed nested input. Propose additional checks without making mutation or property-based testing mandatory.",
+      "assertions": [
+        "Targets an invariant or malformed-input counterexample that distinguishes acceptance from rejection.",
+        "Offers property-based, metamorphic or targeted mutation only when the ambiguity and cost justify it.",
+        "Avoids a blanket requirement for exhaustive mutation, full E2E or a multi-agent test team."
+      ]
+    },
+    {
+      "id": "no-runner-evidence",
+      "mode": "skill",
+      "prompt": "You can read a repository's product spec and current tests in a chat, but cannot run the code or access its dependencies. Identify the missing tests and evidence status.",
+      "assertions": [
+        "Provides a designable test/expected-outcome plan grounded in accessible contract evidence.",
+        "Clearly marks runtime pass/failure as not run or unknown, not verified.",
+        "Does not pretend a static review or hypothetical test execution proves runtime correctness."
+      ]
+    },
+    {
+      "id": "ambiguous-spec-oracle",
+      "mode": "skill",
+      "prompt": "The product spec says that transfers should be 'quick' but gives no latency budget. An engineer proposes asserting every request finishes under 10ms. Is that a valid oracle?",
+      "assertions": [
+        "Rejects inventing a hard latency threshold unsupported by the contract.",
+        "Surfaces the missing acceptance criterion or explicit working assumption and appropriate authority.",
+        "Can propose measurable dimensions without falsely claiming a 10ms requirement exists."
+      ]
+    },
+    {
+      "id": "existing-tests-not-enough",
+      "mode": "skill",
+      "prompt": "Unit tests cover every line in an API handler and assert all mocked services were called. Production requests can fail on serializer version mismatch with an external consumer. What remains?",
+      "assertions": [
+        "Explains that line coverage and mocked calls cannot establish external compatibility.",
+        "Selects a focused consumer-facing contract or integration check for the serialization boundary.",
+        "Does not impose a fixed coverage target, TDD steps or complete browser E2E."
+      ]
+    },
+    {
+      "id": "cross-team-internal-test-coupling",
+      "mode": "activation",
+      "prompt": "개발자 A가 모듈 A를 테스트하는데 B 팀의 비공개 helper를 import해서 assertion 하고 있어. B 내부 리팩터링에도 A 테스트를 독립적으로 유지하도록 테스트 경계를 검토해줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-test-design"
+        ],
+        "primary_skill": "mols-test-design"
+      }
+    },
+    {
+      "id": "parallel-test-state-isolation",
+      "mode": "activation",
+      "prompt": "독립적인 두 coding agent가 각각 테스트를 통과시키지만 통합할 때 공유 fixture와 전역 상태 때문에 서로의 suite가 깨져. 테스트 설계를 개선해줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-test-design"
+        ],
+        "primary_skill": "mols-test-design"
+      }
+    },
+    {
+      "id": "consumer-provider-compatibility-check",
+      "mode": "activation",
+      "prompt": "서로 병렬 개발하는 consumer와 provider가 JSON API 변경에도 호환되는지 확인하면서 각자 테스트를 실행할 수 있게 검증 전략을 세워줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-test-design",
+          "mols-coding-context"
+        ],
+        "primary_skill": "mols-test-design"
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-coding-context",
+          "description": "Core engineering judgment for code-facing implementation, debugging, testing, refactoring, review, API or data-model changes, dependency decisions, performance, and maintainability work, including routine changes. Select when solving the task materially depends on reasoning about code or executable behavior. Language-specific add-ons may supplement it. Adds judgment, not workflow. Do not select for factual programming lookup, repository administration without code-facing work, or prose-only work."
+        }
+      ]
+    },
+    {
+      "id": "architecture-only-parallel-modules",
+      "mode": "activation-negative",
+      "prompt": "서로 다른 팀이 병렬 개발할 수 있도록 이 모놀리스를 어떤 모듈과 공개 API로 나누고 디렉터리를 재구조화할지 설계해줘. 테스트 전략은 별도로 요청할게.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "worktree-only-isolation",
+      "mode": "activation-negative",
+      "prompt": "3명의 agent가 같은 작업 디렉터리를 만지지 않게 Git worktree와 feature branch를 구성해줘.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "provider-private-refactor-does-not-break-consumer",
+      "mode": "skill",
+      "prompt": "Module A tests call public B.parse() then assert B._cache.keys() and a private helper call sequence. B's implementation changed but public parse result is identical. Improve independent testability.",
+      "assertions": [
+        "Identifies assertions against B's private state/helper order as cross-owner implementation coupling.",
+        "Replaces them with A-owned observable behavior and stable B consumer contract or narrower relevant test evidence.",
+        "Does not weaken protection of public parsing behavior or demand architectural restructuring."
+      ]
+    },
+    {
+      "id": "local-suites-plus-interface-contract",
+      "mode": "skill",
+      "prompt": "Two teams separately change a consumer and provider of a versioned JSON API. Both local unit suites pass; renamed JSON field breaks real consumers. Design a testing boundary that enables parallel work.",
+      "assertions": [
+        "Preserves independently executable consumer/provider tests based on a shared observable request-response contract.",
+        "Includes actual provider compatibility verification or a focused integration check rather than only agreeing on mock behavior.",
+        "Recognizes that isolated unit PASS alone does not prove cross-boundary compatibility or end-to-end business behavior."
+      ]
+    },
+    {
+      "id": "shared-state-parallel-fixtures",
+      "mode": "skill",
+      "prompt": "Separate module suites are correct in isolation but run concurrently against a shared mutable database and global clock. Sometimes one suite wipes the other's records. What test changes improve independent verification?",
+      "assertions": [
+        "Identifies shared mutable state and uncontrolled time as the source of test execution coupling.",
+        "Proposes scoped state isolation, distinct test data/transactions or controlled clock as appropriate without assuming new folders solve it.",
+        "Does not promise parallel safety from retry counts or report unexecuted runs as successful."
+      ]
+    },
+    {
+      "id": "database-atomicity-exception",
+      "mode": "skill",
+      "prompt": "Two modules can be unit-tested independently but a feature must atomically update both tables in one database transaction. A suggestion says every dependency must be mocked so modules never need each other. Evaluate it.",
+      "assertions": [
+        "Rejects a universal mock-only rule that hides the transaction atomicity and rollback contract.",
+        "Selects a focused integrated test using the actual transactional boundary or equivalent trustworthy evidence.",
+        "Retains small independent unit tests where useful, without mandating a monolithic full E2E suite."
+      ]
+    },
+    {
+      "id": "interaction-order-is-a-real-contract",
+      "mode": "skill",
+      "prompt": "A public payment gateway contract requires authorize() to precede capture(), with no capture on authorization failure. A reviewer calls every interaction-order assertion brittle. Decide whether to keep one.",
+      "assertions": [
+        "Distinguishes required protocol sequencing from incidental private implementation order.",
+        "Allows a focused contract-level interaction/sequence assertion that fails on an unsafe capture.",
+        "Avoids banning spies or mocks categorically and checks what interaction the test can actually prove."
+      ]
+    },
+    {
+      "id": "stable-shared-fixture-not-forbidden",
+      "mode": "skill",
+      "prompt": "Two test suites share an immutable, versioned example of a public wire contract. Someone wants to copy it into each folder solely to make tests independent. Evaluate the design.",
+      "assertions": [
+        "Does not duplicate stable shared contract examples solely to enforce physical file isolation.",
+        "Distinguishes shared authoritative contract data from mutable shared test state or private implementation fixtures.",
+        "Evaluates actual ownership, execution independence and coupling cost rather than file/folder counts."
+      ]
+    },
+    {
+      "id": "cross-module-test-no-new-architecture",
+      "mode": "skill",
+      "prompt": "A single module already has isolated tests and its public contract is unchanged after a local internal cleanup. Asked to add module directories, separate test projects and contract tests to support parallel agents.",
+      "assertions": [
+        "Rejects extra physical packages, directories or test layers when no material boundary or regression risk warrants them.",
+        "Reuses the existing appropriate local tests and assesses whether any actual cross-module contract changed.",
+        "Does not claim test execution passed without recorded runtime evidence."
+      ]
+    },
+    {
+      "id": "shared-owner-unclear-cannot-invent-contract",
+      "mode": "skill",
+      "prompt": "A team says modules X and Y must be independently testable, but X currently reads Y's private database schema directly and no interface or ownership contract is agreed. Design tests without redesigning the system.",
+      "assertions": [
+        "Identifies the lack of a stable cross-owner contract or ownership decision as a blocker to strong independent-testability claims.",
+        "Proposes a bounded current-state characterization/integration check and requests the missing contract decision from its owner.",
+        "Does not silently invent a new public API, rewrite the module architecture or claim mocks alone provide integration assurance."
+      ]
+    },
+    {
+      "id": "mixed-workflow-material-oracle",
+      "mode": "activation",
+      "prompt": "Please implement the new API endpoint, and also decide the contract-level regression cases and expected failure outcomes needed to guard the versioned response.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-coding-context",
+          "mols-test-design"
+        ],
+        "primary_skill": "mols-coding-context"
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-coding-context",
+          "description": "Core engineering judgment for code-facing implementation, debugging, testing, refactoring, review, API or data-model changes, dependency decisions, performance, and maintainability work, including routine changes. Select when solving the task materially depends on reasoning about code or executable behavior. Language-specific add-ons may supplement it. Adds judgment, not workflow. Do not select for factual programming lookup, repository administration without code-facing work, or prose-only work."
+        }
+      ]
+    },
+    {
+      "id": "disputed-generated-test-oracle",
+      "mode": "activation",
+      "prompt": "An AI-generated test fails against a documented accepted response. Determine whether the production code, expectation or fixture is wrong and what evidence to gather.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-test-design"
+        ],
+        "primary_skill": "mols-test-design"
+      }
+    },
+    {
+      "id": "ordinary-implementation-tests-incidental",
+      "mode": "activation-negative",
+      "prompt": "Implement this utility method using the provided interface. Follow the repository's normal verification practices; I am not requesting a separate testing strategy or oracle review.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-coding-context"
+        ],
+        "primary_skill": "mols-coding-context"
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-coding-context",
+          "description": "Core engineering judgment for code-facing implementation, debugging, testing, refactoring, review, API or data-model changes, dependency decisions, performance, and maintainability work, including routine changes. Select when solving the task materially depends on reasoning about code or executable behavior. Language-specific add-ons may supplement it. Adds judgment, not workflow. Do not select for factual programming lookup, repository administration without code-facing work, or prose-only work."
+        }
+      ]
+    },
+    {
+      "id": "test-runner-installation-only",
+      "mode": "activation-negative",
+      "prompt": "Configure the local test runner so its existing tests can execute. Do not change assertions, cases, fixtures or the test strategy.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "oracle-rejects-valid-reference",
+      "mode": "skill",
+      "prompt": "A spec says a blank display name is allowed. Existing test asserts that blank names always raise an error. A known accepted example uses a blank name. The test nevertheless kills several other faulty implementations. How should it be evaluated?",
+      "assertions": [
+        "Recognizes that rejecting documented valid behavior invalidates the oracle even if mutants are killed.",
+        "Uses the spec and accepted example rather than mutational score or current product behavior to correct or dispute the test.",
+        "Does not automatically modify production code to comply with the wrong expectation."
+      ],
+      "expected_loaded_references": [
+        "references/oracle-validation.md"
+      ]
+    },
+    {
+      "id": "unexpected-failure-product-test-or-environment",
+      "mode": "skill",
+      "prompt": "A checkout test failed once on CI with an assertion that totals are equal. The ledger, expected amount and logs are not provided; the runner also reported a timeout. A coding agent proposes immediately changing the checkout formula. Review that plan.",
+      "assertions": [
+        "Separates possible product defect, invalid expected value and runner/environment timeout rather than guessing the cause.",
+        "Recommends obtaining contract, actual/expected observations and reproducible conditions before selecting a repair owner.",
+        "Does not silently change production logic or claim that a retry proves correctness."
+      ],
+      "expected_loaded_references": [
+        "references/oracle-validation.md"
+      ]
+    },
+    {
+      "id": "testability-observation-seam",
+      "mode": "skill",
+      "prompt": "A task scheduler is required to expire tokens after their configured lifetime, but the only test fixture waits for wall-clock time and observes random CI failures. The change request is to design reliable tests, not redesign the scheduler architecture.",
+      "assertions": [
+        "Identifies controllable time and observable expiry outcome as missing testability prerequisites.",
+        "Suggests an appropriately scoped clock control or equivalent fixture seam without mandating global dependency-injection redesign.",
+        "Preserves the real expiry contract and distinguishes test-design recommendations from implementation authority."
+      ]
+    },
+    {
+      "id": "reference-is-not-authority-over-contract",
+      "mode": "skill",
+      "prompt": "An old production implementation and a generated test agree that an HTTP field is required. The new versioned public contract explicitly makes it optional. An agent treats the old implementation as a golden oracle. What should the tests protect?",
+      "assertions": [
+        "Prefers the applicable versioned public contract and examines compatibility scope rather than treating the old implementation as universally authoritative.",
+        "Includes a contract-compliant optional-field scenario and a relevant faulty scenario if evidence supports it.",
+        "Surfaces ambiguity about old-client compatibility instead of silently choosing one interpretation."
+      ]
+    },
+    {
+      "id": "mutation-score-insufficient-signal",
+      "mode": "skill",
+      "prompt": "A unit suite kills 95% of synthetic mutants, but it fails a documented valid edge case and has never tested whether the deliverable exports the requested package entrypoint. Is it sufficient?",
+      "assertions": [
+        "Treats the false rejection of accepted behavior as an oracle defect despite a high mutation score.",
+        "Separately identifies the missing consumer-facing entrypoint acceptance evidence.",
+        "Avoids recommending more indiscriminate mutants as a substitute for fixing the oracle or missing acceptance check."
+      ],
+      "expected_loaded_references": [
+        "references/oracle-validation.md"
+      ]
+    },
+    {
+      "id": "simple-test-no-reference-overhead",
+      "mode": "skill",
+      "prompt": "A self-contained arithmetic helper has an explicit contract, accepted examples and a known off-by-one boundary. The user asks for the smallest useful regression case. No conflicting oracle or suspicious execution has been reported.",
+      "assertions": [
+        "Selects a focused boundary case and supported expected result without procedural overexpansion.",
+        "Does not require mutation testing, a separate test runner, or complex multi-agent verification.",
+        "Does not make reading advanced oracle-validation reference a prerequisite for this straightforward request."
+      ],
+      "expected_loaded_references": []
+    },
+    {
+      "id": "uncertain-expected-behavior-stop",
+      "mode": "skill",
+      "prompt": "The only requirement for an export operation is 'fast enough'. A generated test requires 15ms based on the current machine. No service-level objective, baseline or domain owner decision exists. Can we call the test correct and start changing the product?",
+      "assertions": [
+        "Does not invent a 15ms acceptance threshold from the current machine or code.",
+        "Identifies the missing performance contract or owner decision and states the evidence gap.",
+        "Separates possible measurement design from validated runtime pass/fail and product changes."
+      ]
+    }
+  ]
+}
