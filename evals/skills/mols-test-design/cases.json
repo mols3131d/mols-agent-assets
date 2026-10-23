@@ -157,6 +157,9 @@
         "Uses the product contract rather than the present implementation as the source of expected values.",
         "Selects an example or boundary that differentiates early rounding from final rounding.",
         "Does not silently bless the current implementation simply because it is observable."
+      ],
+      "expected_loaded_references": [
+        "references/oracle-validation.md"
       ]
     },
     {
@@ -207,7 +210,8 @@
         "Allows no additional behavior test when the change has no material behavior contract.",
         "Uses existing appropriate validation instead of inventing test scenarios to increase count.",
         "Does not claim existing checks were executed unless execution evidence was supplied."
-      ]
+      ],
+      "expected_loaded_references": []
     },
     {
       "id": "stronger-checks-proportionate",
@@ -450,6 +454,9 @@
         "Recognizes that rejecting documented valid behavior invalidates the oracle even if mutants are killed.",
         "Uses the spec and accepted example rather than mutational score or current product behavior to correct or dispute the test.",
         "Does not automatically modify production code to comply with the wrong expectation."
+      ],
+      "expected_loaded_references": [
+        "references/oracle-validation.md"
       ]
     },
     {
@@ -460,6 +467,9 @@
         "Separates possible product defect, invalid expected value and runner/environment timeout rather than guessing the cause.",
         "Recommends obtaining contract, actual/expected observations and reproducible conditions before selecting a repair owner.",
         "Does not silently change production logic or claim that a retry proves correctness."
+      ],
+      "expected_loaded_references": [
+        "references/oracle-validation.md"
       ]
     },
     {
@@ -490,6 +500,9 @@
         "Treats the false rejection of accepted behavior as an oracle defect despite a high mutation score.",
         "Separately identifies the missing consumer-facing entrypoint acceptance evidence.",
         "Avoids recommending more indiscriminate mutants as a substitute for fixing the oracle or missing acceptance check."
+      ],
+      "expected_loaded_references": [
+        "references/oracle-validation.md"
       ]
     },
     {
@@ -500,7 +513,8 @@
         "Selects a focused boundary case and supported expected result without procedural overexpansion.",
         "Does not require mutation testing, a separate test runner, or complex multi-agent verification.",
         "Does not make reading advanced oracle-validation reference a prerequisite for this straightforward request."
-      ]
+      ],
+      "expected_loaded_references": []
     },
     {
       "id": "uncertain-expected-behavior-stop",
