@@ -14,6 +14,12 @@ Repository tool version authority는 root [`mise.toml`](../../../mise.toml)입�
 
 Python을 `mise.toml`에 중복 선언하지 않습니다. Non-Python tool을 Python dependency group에 넣지 않습니다. npm backend로 관리하는 CLI는 `mise.toml`에서 exact version을 pin하며 repository task는 `@latest`를 직접 호출하지 않습니다.
 
+## Current bootstrap boundary
+
+현재 `mise run setup`은 Python 의존성 동기화, Rulesync 설치·생성, 외부 Skill 동기화와 Git Hook 설치를 순서대로 수행합니다. 개발 중 사용할 **허용 버전 범위 내 최신 업데이트**를 전담하는 별도 task는 아직 없습니다. 현재 `mise.toml`의 도구 버전은 exact pin이며, 업데이트 정책과 실제 설치·적용 동작을 혼동하지 않습니다.
+
+`mise` 자체나 system package manager, Git·Bash와 같은 host prerequisite는 repository-local Python dependency와 구분합니다. 기존 `setup`은 user-level Skill installer도 실행하므로 초기 설치는 실행 전에 side effect 범위를 확인해야 합니다.
+
 ## Common entry points
 
 ```bash
