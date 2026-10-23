@@ -42,6 +42,12 @@
 
 [`inbox/2026-09-07/mols-coding-context/migration.md`](https://github.com/mols3131d/mols-agent-assets/blob/23d649b2eac6e9115ce0e97a823d59de4d37b3c5/inbox/2026-09-07/mols-coding-context/migration.md)는 `coding-context`의 교체·삭제를 *계획*하지만, [현재 원본](https://github.com/mols3131d/mols-agent-assets/blob/23d649b2eac6e9115ce0e97a823d59de4d37b3c5/src/rulesync/.rulesync/skills/coding-context/SKILL.md)과 [route entry](https://github.com/mols3131d/mols-agent-assets/blob/23d649b2eac6e9115ce0e97a823d59de4d37b3c5/route/skills.jsonl)는 여전히 존재한다. 이 항목은 **삭제된 자산의 orphan 문서가 아니며**, 별도의 완료/현재 지원 범위 확인 후보로 둔다. 계획 문서만으로 실제 삭제 완료를 주장하면 잘못이다.
 
+## Applied Historical-Reference Corrections
+
+- [Documentation principles research plan](../2026-08-31/documentation-principles-research-plan.md)에 현재는 삭제된 `mols-markdown-for-human`의 과거 owner 문구가 현행 계약이 아님을 알리는 **Historical snapshot** 안내를 추가했다.
+- [Docs frontmatter audit](../2026-08-22/docs-frontmatter-audit.md)에 사라진 `mols-agent-asset-validator` 경로 및 시점이 지난 inventory를 현재 작업 지침으로 오독하지 않도록 안내를 추가했다.
+- 두 문서의 당시 관찰·검토·수치·이력 원문은 수정하거나 삭제하지 않았다. 기타 과거 `review-*`, `mols-rpi` 기록 및 현행 migration 설명은 이력 보존 대상으로 유지했다.
+
 ## Disposition
 
 1. **보존** — 현재 자산·family의 maintainer 문서와 migration 설명. `docs/skills/mols-markdown/`, `docs/skills/mols-mermaid/`, `docs/skills/mols-loops/`, `docs/subagents/mols-review-dualvantage/`를 이름만으로 삭제하지 않는다.
@@ -51,4 +57,4 @@
 
 ## Evidence Limits
 
-`route/*.jsonl`이 제공하는 canonical 이름 목록과 개별 GitHub 원본 경로 조회로 현재 존재 여부를 확인했다. 검색은 index coverage 제한이 있고 `inbox/`의 모든 파일을 검사하지 않았다. 현재 live `main`은 조사 시작 기준 이후 별도로 진전될 수 있으므로 새 revision에 결론을 자동 승계하지 않는다. 파일 삭제·이동, 대규모 기록 정리와 merge는 이 조사의 범위 밖이다.
+`route/*.jsonl`이 제공하는 canonical 이름 목록과 개별 GitHub 원본 경로 조회로 현재 존재 여부를 확인했다. 검색은 index coverage 제한이 있고 `inbox/`의 모든 파일을 검사하지 않았다. 현재 live `main`은 조사 시작 기준 이후 별도로 진전될 수 있으므로 새 revision에 결론을 자동 승계하지 않는다. 이 조사의 역사적 자산 분석은 표본 기준이며, 이번 PR에서는 검증된 현재형 오인 위험 두 문서에 안내를 추가했다. 파일 삭제·이동과 대규모 이력 정리는 수행하지 않았다.
