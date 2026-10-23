@@ -6,6 +6,12 @@
 
 **제목 언어 정책 불일치 6개 그룹(DOC-001–006), 활성 문서 9개 수정.** 초기 DOC-001–004와 확장 조사에서 확인한 DOC-005–006은 모두 [Language 정책](../../docs/language.md)의 H1–H3 영어 규칙을 기준으로 다뤘다. 이 그룹 안에서 추가로 확인된 같은 유형의 파일도 함께 수정했다.
 
+## Review and Durable Work
+
+**현재 판단: 확인된 수정은 적용됐지만 전체 문서 정합성 완료는 미검증.** [PR 리뷰 보고서](review.md)는 목표/범위 검증 공백(F1)과 보안 런북 제목에서의 의미 손실(F2)을 확인했다. F2는 이 브랜치에서 수정했으며 F1은 [관계별 조사 근거](consistency-evidence.md)로 검증 범위를 넓히고 미확인 사항을 보존한다. 전체 완료나 병합을 자동으로 선언하지 않는다.
+
+세션 간 재개는 **[handoff.md](handoff.md)**를 시작점으로 삼고, 진행을 [작업 계획](work-plan.md) → [리뷰 보고서](review.md) → [증거](consistency-evidence.md) → [수정 이력](remediation-log.md) → [검증](validation.md) 순서로 읽는다. 각 파일은 특정 commit을 근거로 하므로 live PR head와 CI 상태를 다시 확인해야 한다.
+
 ## Applied Fixes
 
 | 그룹 | 변경 대상 | 결과 |
