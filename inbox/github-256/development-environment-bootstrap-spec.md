@@ -1,0 +1,110 @@
+# 개발환경 부트스트랩 개편 명세 (Draft)
+
+> 대상: [PR #256](https://github.com/mols3131d/mols-agent-assets/pull/256). 이 문서는 제안된 구현 계약이며 **현재 동작을 서술하는 운영 지침이 아니다.** 적용된 사실은 `mise.toml`과 실제 스크립트·lockfile이 소유한다.
+
+## Goal
+
+하나의 개발환경 진입점에서 **처음 사용하는 머신의 설정**과 **개발 중 반복하는 유지·업데이트**를 지원한다. 업데이트 범위는 미리 선언하고, 실행기는 그 범위를 재정의하지 않고 최신 허용 버전을 선택한다. 자동 설치가 부적절하거나 불가능한 도구 때문에 독립적인 나머지 작업이 중단되지 않으면서도, 불완전한 환경을 성공으로 오인하지 않게 한다.
+
+## 사용자 진입점과 의미
+
+| 진입점(목표) | 기대 동작 | 버전 변경 |
+| --- | --- | --- |
+| `mise run setup` | 최초 또는 반복 실행 시 승인된 프로젝트 환경을 재현하고 누락된 관리 대상만 채운다 | committed lock을 따른다. 버전 탐색·승격 없음 |
+| `mise run update` | **명시적으로 실행한 경우에만** 선언된 허용 범위 안의 최신 릴리스로 해석·검증·반영한다 | 변경된 lockfile을 검토 가능한 변경으로 남긴다 |
+| `mise run check` / `mise run test` | 설치 여부와 기능 상태를 진단·검증한다 | lockfile이나 버전 정책을 갱신하지 않는다 |
+
+두 경로는 동일한 적용·검증 동작을 재사용하되, `setup`은 **현재 잠긴 상태를 복구**하고 `update`는 **허용 범위 안에서 잠긴 상태 자체를 갱신**한다. `setup`을 실행했다고 최신 버전으로 변경되면 안 되며, `update`를 자동 또는 매 세션 시작 시 실행하지 않는다.
+
+`mise`가 미설치 상태라면 `mise run` 자체를 호출할 수 없으므로 설치를 지시하는 짧은 **최소 사전 요구사항**을 문서화한다. 이를 이유로 `curl | sh`, OS package manager, `sudo`, 전역 환경 재구성용 별도 bootstrap chain을 자동 실행하지 않는다.
+
+## 버전 정책과 상태 소유권
+
+| 대상 | 사전 선언하는 정책 | 실제 선택 결과 | setup / update |
+| --- | --- | --- | --- |
+| mise-managed 개발 CLI (`uv`, Node, rumdl, Lefthook, Biome, Rulesync, skills CLI) | `mise.toml`의 도구별 version request (지원하는 major/minor prefix 등) | `mise.lock` 도입 후 정확한 해석 결과 기록 | `setup`: locked install, `update`: 허용된 request에 대해 lock 재해석 후 설치 |
+| Python 실행환경 | `.python-version` 및 `pyproject.toml`의 요구조건 | uv가 관리하는 interpreter와 `.venv` | `setup`: 선언된 Python 사용 및 lock대로 동기화. Python 버전 범위가 불명확하면 자동 범위 승격 금지 |
+| Python 패키지 | `pyproject.toml`의 dependency specifier | `uv.lock` | `setup`: `uv sync --locked --all-groups`, `update`: `uv lock --upgrade` 후 locked sync |
+| Rulesync 외부 source | `rulesync.jsonc`의 source/ref와 허용 정책 | `rulesync.lock` | `setup`: `rulesync install --frozen`. 허용 범위 없는 Git ref/commit은 임의 업데이트 금지 |
+| 외부 native Skill | `skills-lock.json`의 source/ref, native installer | 잠긴 revision과 설치 결과 | `setup`: 선택된 설치 경로를 실행. 허용 범위 없는 ref는 `update`에서도 유지 |
+
+**허용 범위는 선언부가 소유한다.** 스크립트에 `latest`, 특정 major, upper bound, 예외 버전을 별도로 하드코딩하지 않는다. Exact pin은 길이 0인 허용 범위로 보고 업데이트하지 않는다. 범위를 넓히는 작업은 일반 `update`가 아니라 별도 정책 변경과 검토다.
+
+현재 `mise.toml`은 CLI를 모두 exact version으로 고정한다. 이는 의도적으로 허용 범위를 정하기 전에는 `update`로 갱신할 수 있는 CLI가 없다는 뜻이다. 구현 단계에서 **도구별 호환성 판단 후**, 필요한 항목만 제한된 prefix/range request로 옮긴다. 현재의 모든 정확한 버전을 무작정 `latest`로 바꾸지 않는다.
+
+`mise.lock`을 도입한다면 `[settings] lockfile = true`와 `mise lock`으로 명시적으로 생성·commit한다. `setup`은 잠긴 해석 결과를 사용하고, `update`는 `mise lock --bump`로 사전 정의된 요청 범위 안의 최신을 해석한다. 설치는 `mise install --locked`로 분리한다. `mise upgrade --bump`처럼 request 자체를 넘어서는 명령을 업데이트 자동화에서 사용하지 않는다.
+
+`uv lock --upgrade`는 `pyproject.toml`의 기존 dependency bounds 안에서만 패키지를 올리므로 업데이트에 적합하다. `uv sync --all-groups`만 단독으로 실행하는 것은 초기 셋업과 업데이트의 경계를 모호하게 만들 수 있으므로 locked sync로 바꾼다.
+
+Git branch `main` 같은 이동 ref는 명시적인 SemVer 허용 범위가 아니다. 따라서 현재 `rulesync.lock`의 `resolvedRef`와 `skills-lock.json`의 pinned ref를 일반 CLI 업데이트와 같이 무조건 최신으로 갱신하지 않는다. 외부 source 업데이트 규칙을 별도로 승인하기 전까지 **skip + 사유 보고**한다.
+
+## 누락된 도구와 자동 설치 권한
+
+**설치 위치와 영향 반경**으로 정책을 나눈다. `명령이 존재하지 않는다`는 이유만으로 OS 전역 패키지를 설치하지 않는다.
+
+| 분류 | 예시 | 기본 정책 | 누락 시 |
+| --- | --- | --- | --- |
+| 진입점 prerequisite | `mise`, 필요 시 Git·셸 | 사용자 관리 | 실행 전 확인 또는 가능한 단계에서 진단 후 공식 설치 안내. 자동 OS 전역 설치 금지 |
+| mise-managed versioned tool | Node, uv, Rulesync, Biome 등 | **mise 관리 영역에만** 선언된 잠긴 버전 자동 설치 허용 | 설치 실패 시 그 도구를 요구하는 단계만 BLOCKED, 나머지 독립 단계 계속 |
+| 프로젝트 격리 의존성 | Python `.venv` 패키지 | locked 자동 설치·복구 허용 | 해당 기능만 실패 처리 |
+| 저장소 로컬 연동 | Rulesync-generated project files, `.git/hooks` | 사전 점검 후 기존 사용자 변경 보존하며 설정 | 충돌 또는 부재 시 단계 skip/blocked와 복구 안내 |
+| 사용자/OS 공유 영역 | OS package manager, 전역 npm/pip, `sudo`, 사용자 홈 vendor Skill installer | **무인 설치 금지**; 명시적으로 요청된 허용 경로만 실행 | 다른 단계 계속, 정확한 수동 명령 또는 opt-in 작업 안내 |
+
+`mise`는 기본 설정에서 task가 시작되기 전에 누락된 도구를 자동 설치할 수 있다. 그러므로 `setup`의 개별 단계에서 '누락되면 skip'을 구현하려면 **mise의 task/tool auto-install 단계에서 선행 실패하지 않는지**도 함께 확인해야 한다. 구현 때 task별 tool scope 또는 `task.run_auto_install` 설정을 검증하고, 프로젝트에서 허용한 mise-managed 설치만 일어나도록 해야 한다. 모든 task에서 `continue-on-error`를 켜 의존 단계까지 실행하는 방식은 피한다.
+
+현재 `skills_sync.py`는 upstream `install.sh`를 호출하여 사용자 홈의 벤더별 설치 디렉터리를 바꿀 수 있다. 이를 Python의 프로젝트-local 설치와 동일하게 취급하지 않는다. 초기 설정 시 해당 동작을 명시적으로 opt-in하거나 기존 사용자 설정을 훼손하지 않는다는 근거가 확인된 경로만 기본 실행에 포함한다. 반대로 이미 설치한 외부 Skill의 lock drift를 진단하는 read-only 단계는 자동으로 수행할 수 있다.
+
+## 실행 모델과 실패 처리
+
+`setup`과 `update`는 preflight → eligible tasks 실행 → 결과 요약 순서로 구성한다.
+
+1. **Preflight:** 현재 root/ref, 영향을 받는 tracked lockfile의 수정 여부, 필수 host tool, 네트워크 요구, 작업별 설치 영역·권한, 허용 범위를 확인한다. 사용자가 수정 중인 lockfile이나 hook을 조용히 덮어쓰지 않는다.
+2. **Resolve:** `setup`은 변경 없는 lock 조회. `update`만 도구 및 패키지의 최신 허용 해석 결과를 lock에 반영하며, 해석 실패나 범위 위반이면 대상 업데이트를 중단한다.
+3. **Apply:** 해당 도구가 충족된 독립 단계만 실행한다. 일단 실패한 의존성을 요구하는 후속 단계는 수행하지 않는다. 설치·생성·hook·user-level Skill 등 변경 경계를 로그에서 구분한다.
+4. **Verify:** 실제 실행 가능한 도구·프로젝트 의존성을 최소 검증한다. 설치 자체가 끝났다는 사실을 정상 작동의 충분한 증거로 보지 않는다.
+5. **Report:** 성공, 기존 상태 유지, 업데이트, skip, 실패와 수동 복구 명령을 단계별로 보여준다. 가능하면 machine-readable 상태도 지원하되 필수 로그 경로를 추가하지 않는다.
+
+권장 최종 상태:
+
+- `READY` (exit 0): 필요한 모든 작업 완료·검증.
+- `DEGRADED` (exit 0, 눈에 띄는 warning): 선택적 작업이 skip되었으나 필수 개발 기능은 준비됨. 전체 완료로 표현하지 않음.
+- `BLOCKED` 또는 `FAILED` (non-zero): 필수 준비가 누락됐거나 실제 실행·검증이 실패함. 다른 독립 작업의 성공은 보고하되 전체 성공으로 취급하지 않음.
+
+미설치 여부를 정확히 알 수 없으면 '정상'으로 추정하지 않는다. 외부 설치기를 실행한 경우 어떤 scope를 건드렸는지 추적 가능하게 남기고, 실패 시 전체 repository나 사용자 홈을 자동 초기화·rollback하지 않는다. 완료하지 못한 단계만 다음 실행에서 안전하게 재시도한다.
+
+## 구현 경계
+
+- `mise.toml`은 command entrypoint·version requests를 소유하며, Python wrapper를 만든다면 **누락 분류, 부분 실패 집계, 상호 의존 순서, 사용자별 권한**처럼 mise 태스크만으로 표현하기 어려운 동작에 한정한다.
+- Python/CLI/installer/Rulesync의 공식 업데이트·설치 semantics를 로컬 wrapper가 다시 구현하지 않는다.
+- `setup`은 버전 정책 파일, `uv.lock`, `mise.lock`, `rulesync.lock`, `skills-lock.json`을 몰래 수정하지 않는다.
+- `update`만 해당 lockfile을 의도적으로 변경하며, 자동 commit/push/merge, host-level installer, 기존 버전 무단 pruning은 하지 않는다.
+- CI 검증에서는 환경 복구와 버전 업데이트를 분리하고, 기존 `--locked`/ `--frozen` 계약을 보존한다.
+- `check`, `test`, `format`, `skills-sync`, 기존 Rulesync workflow 같은 별도 entrypoint를 삭제하거나 한 거대한 설정 스크립트로 흡수하지 않는다.
+
+## 작업 계획과 완료 조건
+
+| 단계 | 변경 대상 | 수용 기준 |
+| --- | --- | --- |
+| 1. 정책 및 명세 | 이 문서, mise reference | 설정 소유권, setup/update 및 미설치 분류가 모순 없음 |
+| 2. 버전 정책 정비 | `mise.toml`, 필요시 `mise.lock`, `pyproject.toml` | 정확한 pin vs 허용 범위가 항목별로 명시되고 initial setup 재현 가능 |
+| 3. 실행 경로 | mise task와 필요 최소 wrapper | setup은 기존 lock 재현, update는 범위 내 lock만 갱신, 필수/선택적 오류 격리 |
+| 4. 외부 연동 | Rulesync, Skill installer, Lefthook | user-level 부작용은 opt-in 또는 명시된 승인 경로로 제한 |
+| 5. 검증·운영 안내 | deterministic tests, mise reference, CI | 재실행 안전성, 실제 누락/복구, 업데이트 제한, 단계별 종료 상태 확인 |
+
+최소 회귀 시나리오:
+
+- 깨끗한 환경에서 locked `setup`이 의존성과 도구를 준비한다.
+- 같은 `setup`을 다시 실행해 허용되지 않은 버전·파일·사용자 환경 변경이 없다.
+- `update`가 범위 내 새 버전은 선택하고 범위 밖 새 버전은 선택하지 않는다.
+- 정확한 pin만 남은 대상의 update는 변경 없이 종료된다.
+- uv lock upgrade는 dependency upper bound를 넘지 않는다.
+- Git, Bash, mise가 없는 경우를 분리해서 안내하고 독립적인 작업은 계속한다.
+- user-level native installer는 opt-in 없이 실행되지 않는다.
+- 중간 실패 시 재실행으로 안전하게 복구할 수 있고, 보고된 종료 코드가 실제 준비 상태와 일치한다.
+- CI/기존 hook은 독립적으로 검증을 계속한다.
+
+## 근거와 현재 상태
+
+- 현재 구현: [mise.toml](../../mise.toml), [skills_sync.py](../../scripts/agent_assets/skills_sync.py), [mise reference](../../docs/references/tooling/mise.md), [skills CLI reference](../../docs/references/tooling/skills-cli.md)
+- 외부 계약: [mise lockfile](https://mise.jdx.dev/dev-tools/mise-lock.html), [mise upgrade](https://mise.jdx.dev/cli/upgrade.html), [mise task auto-install](https://mise.jdx.dev/dev-tools/), [uv locking/sync](https://docs.astral.sh/uv/concepts/projects/sync/)
+- 이번 PR에서 현재 구현을 일부 설명했지만 **setup/update runtime 개편, mise.lock 생성, 업데이트 동작 및 회귀 테스트는 아직 구현·실행되지 않았다.**
