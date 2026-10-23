@@ -16,6 +16,13 @@
 - **범위 밖:** 사용자가 요청하지 않은 환경 설치·업데이트 실행, 일반 패키지 업데이트, CI만의 admission design. 실행 가능한 부트스트랩 구현은 이 PR의 별도 결과물이며 스킬이 실행 결과를 대신 증명하지 않는다.
 - **완료 조건:** positive/near-miss activation을 분리하고, 허용 범위 외 버전 차단·미설치 host tool 회피·user/global side-effect 보호·독립 단계 지속·거짓 성공 방지 사례를 설계 근거로 검증한다. Rulesync structural validation과 route drift check를 수행하고, 실제 runtime/eval 미수행은 구분한다.
 
+## UX 심층 조사와 설계 인계
+
+- [부트스트랩 심층 조사](bootstrap-deep-research.md) — 현재 실행 구조, mise/uv 최신 공식 동작, 잠금·설치 권한·성능·UX 대안과 미해결 근거.
+- [UX 구현 인계](bootstrap-ux-design.md) — setup/update 사용자 여정, 단계별 상태·실패·복구 모델, 안전한 병렬화와 테스트/성능 측정 계획.
+
+이 문서의 버전·권한 정책은 현재 초안이다. 새 조사에서 발견한 mise lockfile sidecar, uv managed Python 다운로드, task runner의 의존성 오류 전파와 minimum release age처럼 정확한 동작에 영향을 주는 조건은 구현 전에 PoC로 판단한다. 벤더 문서의 최신 기능이 CI에 설정된 mise 버전에서 지원되는지도 검증한다.
+
 ## 사용자 진입점과 의미
 
 | 진입점(목표) | 기대 동작 | 버전 변경 |
