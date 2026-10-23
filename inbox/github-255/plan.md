@@ -52,7 +52,7 @@
 ### 4. Implementation — Canonical Skill
 
 - [x] `src/rulesync/.rulesync/skills/mols-test-design/SKILL.md` 신규 작성
-- [x] conditional reference 효용이 없어 추가하지 않음
+- [x] 초기 single-file 구현 당시 reference 생성을 보류했으며, 후속 연구 대비 리뷰에서 별도 conditional oracle 검증 경로를 입증해 reference 하나를 추가
 - [x] `docs/skills/mols-test-design/`에 goal·evaluation 기준 보존
 - [x] canonical source metadata를 사용해 기존 route generator와 동일한 형식의 distribution route 생성·정합성 점검 (전 저장소 generated validator는 미실행)
 - [x] 불필요한 config, 새로운 framework, 자산 간 hard dependency 도입하지 않음
@@ -61,8 +61,8 @@
 
 - [x] GitHub PR Gate의 Rulesync structural validation PASS; 별도 로컬 실행은 미실행
 - [x] GitHub PR Gate에서 repository-owned deterministic test, source/Rulesync 및 affected projection validation PASS 확인 (로컬 `mise run test`는 미실행)
-- [x] positive 5, negative 6의 trigger fixture 준비 (실제 model eval은 별도)
-- [x] 10개 behavior fixture 및 assertion 준비 (실제 model eval은 별도)
+- [x] positive 10, negative 10의 trigger fixture 준비 (실제 model eval은 별도)
+- [x] 25개 behavior fixture 및 assertion 준비 (실제 model eval은 별도)
 - [ ] 실제 model/runtime eval이 가능하면 조건·결과·revision을 기록하고 불가능하면 미검증으로 표시
 - [ ] 테스트가 fixture 자체에 과적합하지 않는지 새 scenario 및 반례로 확인
 - [x] commit `f824a78b`의 [PR Gate run](https://github.com/mols3131d/mols-agent-assets/actions/runs/39958075540) 성공 확인; 이후 변경 head는 재확인
@@ -90,8 +90,22 @@
 - `plan.md`(이 문서): 범위, 진행, 완료 조건과 다음 행동
 - 중요 리뷰 결과는 실제로 필요해질 때 별도 `review.md`로 기록
 - 실행 결과는 정확한 commit/ref, command, 범위, 성공·실패·미실행을 명시
-- **현재 상태(2026-10-23):** 심층·중첩 조사, portable single-file Skill 작성, 21개 eval fixture, distribution route 갱신, maintainer 문서와 [정적 리뷰](review.md) 반영 완료. 제한된 정적 검사는 통과했지만 repository-native `mise`/Rulesync 검증과 실제 model/runtime A/B Eval은 아직 수행하지 않았다. PR Gate는 `f824a78b`에서 PASS를 관찰했으며 후속 문서 커밋의 실행 결과는 재확인한다. Draft를 유지한다.
+- **현재 상태(2026-10-23):** 심층·중첩 조사, portable 핵심 Skill과 조건부 oracle reference 작성, 45개 eval fixture, distribution route 갱신, maintainer 문서와 [정적 리뷰](review.md) 반영 완료. 제한된 정적 검사는 통과했지만 repository-native `mise`/Rulesync 검증과 실제 model/runtime A/B Eval은 아직 수행하지 않았다. PR Gate는 `f824a78b`에서 PASS를 관찰했으며 후속 문서 커밋의 실행 결과는 재확인한다. Draft를 유지한다.
 
+
+### 8. Oracle Validation 개선 루프 — 2026-10-23
+
+- [x] [연구 대비 부족점](review-research-coverage.md)의 높은 우선순위 F1/F2 및 mixed-intent F3 보완
+- [x] 정상 사례 수용/결함 사례 거부의 양방향 oracle, 실패 원인 분류, 관찰·재현 가능성, 위험 기반 수용 근거와 종료 기준 개선
+- [x] 필요한 경우에만 읽는 `references/oracle-validation.md` 신설 및 core에서 conditional disclosure
+- [x] 두 번째 boundaries/isolation reference와 tool별 cookbook 확장 보류: 독립 loading 가치 미입증
+- [x] eval fixture 기존 34개 유지 + 11개 추가 = 총 **45개** (activation 10, negative 10, behavior 25)
+- [x] canonical description 변경에 따른 distribution route source metadata 일치 및 정적 schema/경로 점검
+- [x] [Review](review-oracle-improvement.md)에서 불완전한 reference trigger 발견·수정 후 재검토
+- [ ] 최신 변경 HEAD의 PR Gate 결과 확인
+- [ ] 실제 agent selection, behavior, conditional reference loading 및 baseline 성능 비교
+
+**현재 완료 범위:** 스킬 source·reference·평가 계약의 **정적 개선**. 실제 behavioral uplift는 입증하지 않았으며 모델 평가와 reference loading 비용은 별도로 검증해야 한다.
 
 ### 7. Independent Testability 심층 고도화 — 2026-10-23
 
