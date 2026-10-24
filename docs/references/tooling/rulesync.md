@@ -18,6 +18,27 @@ description: Rulesync 자산의 authoring workspace·target·source/derived boun
 
 두 workspace는 독립적입니다. Repository-specific asset을 reusable library에 넣지 않고, library를 root에 mirror하거나 자동 활성화하지 않습니다.
 
+### Repository-local installation
+
+Root [`rulesync.jsonc`](../../../rulesync.jsonc)의 dependency는 GitHub shorthand와 `github` transport를 사용합니다. `mise run setup`은 공식 `rulesync install --frozen`을 직접 실행합니다. Git clone이나 LF 보정 wrapper를 사용하지 않으므로 `core.autocrlf`와 상속한 `GIT_CONFIG_*` 인증 설정을 변경하지 않습니다. PC별 PATH 경계는 [mise](mise.md#shared-and-local-environment)를 따릅니다.
+
+GitHub transport는 Git credential helper 대신 `GITHUB_TOKEN` 또는 `GH_TOKEN`을 사용합니다. 공개 저장소도 지원 파일이 많으면 무인증 API rate limit에 도달할 수 있으므로 설치 프로세스에만 유효한 토큰을 전달합니다. 예를 들어 PowerShell에서는 다음처럼 기존 환경을 보존한 채 GitHub CLI의 인증을 사용할 수 있습니다. 토큰 값은 로그나 committed config에 남기지 않습니다.
+
+```powershell
+$previousToken = $env:GITHUB_TOKEN
+try {
+    $env:GITHUB_TOKEN = gh auth token
+    if ($LASTEXITCODE -ne 0) { throw "GitHub CLI authentication is required" }
+    mise run setup
+} finally {
+    $env:GITHUB_TOKEN = $previousToken
+}
+```
+
+[`rulesync.lock`](../../../rulesync.lock)은 공식 CLI가 소유합니다. Config와 lock의 source 표기를 일치시키고, transport나 lock schema를 이전할 때 `install --update`로 dependency revision을 갱신하지 않습니다. Plain `rulesync install`은 기존 locked ref에서 legacy entry를 다시 읽어 `skillSelection`·`skillsPath`와 integrity를 기록합니다. Windows Git transport에서 생성한 hash가 경로 구분자를 포함했다면 GitHub transport의 POSIX 경로 hash와 다를 수 있으므로, 이를 수용하기 전에 동일 revision의 전체 파일 목록과 바이트가 같은지 확인합니다. 이후 `install --frozen`으로 새 설치와 재실행의 성공 및 lock 불변을 검증합니다.
+
+Git에서 제외된 `rulesync.local.jsonc`는 PR로 변경하지 않습니다. 각 checkout에서 이전 transport·URL만 중복한 `sources` override를 검토하고 불필요한 항목만 제거합니다. 다른 로컬 설정이나 유효한 PATH·인증 정보는 보존합니다.
+
 ### Canonical and Derived
 
 ```text

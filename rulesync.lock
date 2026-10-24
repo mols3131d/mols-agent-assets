@@ -4,49 +4,66 @@
     "mols3131d/mols-agent-assets": {
       "requestedRef": "main",
       "resolvedRef": "05fd51354fe53eaef51e9b7166bd0c2d39ae78a4",
-      "resolvedAt": "2026-10-22T02:21:37.515Z",
+      "resolvedAt": "2026-10-24T15:14:56.267Z",
       "skills": {
         "artifact-consistency-inspector": {
-          "integrity": "sha256-e043262be27c80766cec72727368bc12f4be05dc55b9e568dac94d3bbbeaf060"
+          "integrity": "sha256-6cb2ff6eafb3ea0d0d7974bdb8068d0f8098d9a40321ab808509b6bf8cd2d43b"
         },
         "github-context": {
           "integrity": "sha256-ba5201fd19cc7939ddbdd4300ea01f227670a64f1863e26ee6805429f4635191"
         },
-        "mols-agent-asset": {
-          "integrity": "sha256-ad9d931f7efc62addbc51047c5d9f6bf039d9b47584581fad6fc9a691a8e6d4f"
-        },
         "mols-agent-asset-find": {
-          "integrity": "sha256-e16fff97eb2f8b3b29bb125e324c4a32f763bc03e1a99bd0fbb1cd29f488b980"
+          "integrity": "sha256-0894496b554b42aae1e0284e5a47b1fa8a3d5b6bfa3026cd412c45daf0381420"
+        },
+        "mols-agent-asset": {
+          "integrity": "sha256-ba10320d7fadba56e9619c4336d3d6adb57c52fcd2f2a45b8347ffe5d8b84d59"
         },
         "mols-chatbot-bootstrap": {
-          "integrity": "sha256-4263958853dab38bea7533b7f3d9c9eb9d218a5980b55e21027c261a9eaa9ab0"
+          "integrity": "sha256-bbd2c76d95263bc4beb579ff727219a39f3ad922f3339c00254c1f902a3c7687"
         },
         "mols-documentation": {
-          "integrity": "sha256-3e156795c0fa1f811b89b7e2f467611cc47f20f8a41b54cfb0822321c60f625d"
+          "integrity": "sha256-1f7ec4eb7ee2c3597e0fda64c6a224e58e0cf1bb3c4be33c53e5a5cae3dff8dc"
         },
         "mols-loops": {
           "integrity": "sha256-f3f3de0ae4d899fe029748440d537b2a0624074e238a575dce7565916efa5c9f"
         },
         "mols-markdown-maintenance": {
-          "integrity": "sha256-9c4141c0961846460bed8dfdb92f063184ad422f381ea84a4a7e5dcd867a2051"
+          "integrity": "sha256-360d1b22d74b8027004d60b266c8a4adf040c8adbad11526fac61fb14ccbcb43"
         },
         "mols-mermaid-chart": {
-          "integrity": "sha256-d2464570ea685edfa15eabb4fe672dab4101cb031cf4ec729ebe2ebdc35ff1ea"
+          "integrity": "sha256-b12a3c7ac7cab501778842571ee739672014fd4913b2e01953a218967c06a204"
         },
         "mols-mermaid-diagram": {
-          "integrity": "sha256-481f36287ad6d94e98738ecae3dd062f2d0e13148604ddbea8e5f7c96a2a5a61"
+          "integrity": "sha256-da671d353ab39b2bbd5ec6675e7c0bf67e2937c5bf1f71a028b4b74923edf76e"
         }
-      }
+      },
+      "skillSelection": [
+        "artifact-consistency-inspector",
+        "github-context",
+        "mols-agent-asset",
+        "mols-agent-asset-find",
+        "mols-chatbot-bootstrap",
+        "mols-documentation",
+        "mols-loops",
+        "mols-markdown-maintenance",
+        "mols-mermaid-chart",
+        "mols-mermaid-diagram"
+      ],
+      "skillsPath": "src/rulesync/.rulesync/skills"
     },
     "dyoshikawa/rulesync": {
       "requestedRef": "main",
       "resolvedRef": "02654ba214449ca3306dfa56d493ff4aa131d7f3",
-      "resolvedAt": "2026-10-22T02:21:40.881Z",
+      "resolvedAt": "2026-10-24T15:14:56.484Z",
       "skills": {
         "rulesync": {
           "integrity": "sha256-658851f4f3b4c432820cc1ed54bd294a699f171ee28d1da9a3c89e5a3b26a96f"
         }
-      }
+      },
+      "skillSelection": [
+        "rulesync"
+      ],
+      "skillsPath": "skills"
     }
   }
 }

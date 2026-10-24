@@ -33,6 +33,18 @@ BEHAVIOR_RESPONSE_SCHEMA = {
     "required": ["response"],
     "additionalProperties": False,
 }
+REFERENCE_SELECTION_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "references": {
+            "type": "array",
+            "items": {"type": "string", "minLength": 1},
+            "uniqueItems": True,
+        }
+    },
+    "required": ["references"],
+    "additionalProperties": False,
+}
 
 
 def _skill_name(config: dict) -> str:
@@ -54,15 +66,7 @@ def fixture_path(skill_name: str) -> Path:
 
 
 def skill_path(skill_name: str) -> Path:
-    return (
-        ROOT
-        / "src"
-        / "rulesync"
-        / ".rulesync"
-        / "skills"
-        / skill_name
-        / "SKILL.md"
-    )
+    return ROOT / "src" / "rulesync" / ".rulesync" / "skills" / skill_name / "SKILL.md"
 
 
 def provider_label(skill_name: str, suite: str) -> str:
@@ -322,6 +326,19 @@ def generate_tests(config: dict | None = None) -> list[dict]:
                     "metric": "behavior-output",
                 }
             ]
+            expected_references = case.get("expected_loaded_references")
+            if expected_references is not None:
+                # Promptfoo expands arrays of strings into separate evaluations.
+                vars_["expected_loaded_references"] = json.dumps(
+                    _reference_paths(expected_references)
+                )
+                checks.append(
+                    {
+                        "type": "python",
+                        "value": f"{EVALUATOR_URI}:assert_reference_loading",
+                        "metric": "reference-loading",
+                    }
+                )
             if semantic:
                 checks.append(
                     {
@@ -400,6 +417,36 @@ def assert_behavior_output(output: str, context: dict) -> dict:
         "score": 1,
         "reason": "behavior provider returned observable response text",
     }
+
+
+def assert_reference_loading(output: str, context: dict) -> dict:
+    expected = context.get("vars", {}).get("expected_loaded_references")
+    try:
+        if isinstance(expected, str):
+            expected = json.loads(expected)
+        expected = _reference_paths(expected)
+    except ValueError as error:
+        return {"pass": False, "score": 0, "reason": str(error)}
+
+    metadata = context.get("metadata")
+    if metadata is None:
+        metadata = (context.get("providerResponse") or {}).get("metadata")
+    if not isinstance(metadata, dict):
+        return {
+            "pass": False,
+            "score": 0,
+            "reason": "reference loading metadata missing",
+        }
+    loaded = metadata.get("loaded_references")
+    if not isinstance(loaded, list):
+        return {"pass": False, "score": 0, "reason": "loaded_references trace missing"}
+    if loaded != expected:
+        return {
+            "pass": False,
+            "score": 0,
+            "reason": f"expected loaded references {expected}, got {loaded}",
+        }
+    return {"pass": True, "score": 1, "reason": "observed reference loading matched"}
 
 
 def _fixture_output(context: dict, suite: str) -> dict:
@@ -515,7 +562,65 @@ def _route(
     return parsed, content
 
 
-def _execute_behavior(prompt: str, skill: str) -> tuple[str, str] | dict:
+def _reference_paths(value: object) -> list[str]:
+    if not isinstance(value, list):
+        raise ValueError("reference_paths must be a list")
+    paths: list[str] = []
+    for path in value:
+        if (
+            not isinstance(path, str)
+            or not path.startswith("references/")
+            or not path.endswith(".md")
+            or any(part in {"", ".", ".."} for part in path.split("/"))
+            or "\\" in path
+            or path in paths
+        ):
+            raise ValueError(f"invalid reference path: {path!r}")
+        paths.append(path)
+    return paths
+
+
+def _select_behavior_references(
+    prompt: str, skill: str, allowed: list[str]
+) -> list[str] | dict:
+    schema = json.dumps(REFERENCE_SELECTION_SCHEMA, ensure_ascii=False)
+    system = (
+        "An already-activated Skill may optionally read reference documents. "
+        "Using the user's task and SKILL.md, select only the references whose "
+        "detailed guidance materially changes the next decision. Do not load "
+        "references for straightforward requests, and do not infer file contents. "
+        "Return a JSON object with references as a list of exact allowed paths.\n\n"
+        f"Allowed paths: {json.dumps(allowed, ensure_ascii=False)}\n"
+        f"JSON schema: {schema}\n\n<skill>\n{skill}\n</skill>"
+    )
+    response = _ollama_request(prompt, system, REFERENCE_SELECTION_SCHEMA)
+    if isinstance(response, dict):
+        return response
+    payload, _ = response
+    selected = payload.get("references") if isinstance(payload, dict) else None
+    if (
+        not isinstance(selected, list)
+        or any(not isinstance(path, str) for path in selected)
+        or len(selected) != len(set(selected))
+        or any(path not in allowed for path in selected)
+    ):
+        return {"error": "invalid or unavailable reference selection", "output": ""}
+    return selected
+
+
+def _read_behavior_references(path: Path, selected: list[str]) -> dict[str, str]:
+    contents = {}
+    for name in selected:
+        # Validate the package-local path independently of model output.
+        _reference_paths([name])
+        reference = path.parent / name
+        contents[name] = reference.read_text(encoding="utf-8")
+    return contents
+
+
+def _execute_behavior(
+    prompt: str, skill: str, references: dict[str, str] | None = None
+) -> tuple[str, str] | dict:
     schema_text = json.dumps(BEHAVIOR_RESPONSE_SCHEMA, ensure_ascii=False)
     system = (
         "Execute one already-activated Agent Skill behavioral evaluation. Routing "
@@ -527,6 +632,12 @@ def _execute_behavior(prompt: str, skill: str) -> tuple[str, str] | dict:
         f"{schema_text}\n\n"
         f"<skill>\n{skill}\n</skill>"
     )
+    if references:
+        for path, body in references.items():
+            system += (
+                f"\n<loaded-reference path={json.dumps(path)}>\n"
+                f"{body}\n</loaded-reference>"
+            )
     result = _ollama_request(prompt, system, BEHAVIOR_RESPONSE_SCHEMA)
     if isinstance(result, dict):
         return result
@@ -550,6 +661,7 @@ def _ollama_output(
     suite: str,
     context: dict,
     skill_name: str,
+    config: dict | None = None,
 ) -> dict:
     path = skill_path(skill_name)
     try:
@@ -571,11 +683,32 @@ def _ollama_output(
         _, route_content = routed
         return {"output": route_content}
     if suite == BEHAVIOR_SUITE:
-        behavior = _execute_behavior(prompt, skill)
+        try:
+            allowed = _reference_paths((config or {}).get("reference_paths", []))
+        except ValueError as error:
+            return {"error": str(error), "output": ""}
+        chosen: list[str] = []
+        if allowed:
+            selection = _select_behavior_references(prompt, skill, allowed)
+            if isinstance(selection, dict):
+                return selection
+            chosen = selection
+        try:
+            references = _read_behavior_references(path, chosen)
+        except OSError as error:
+            return {
+                "error": f"failed to read selected reference: {error}",
+                "output": "",
+            }
+        behavior = _execute_behavior(prompt, skill, references)
         if isinstance(behavior, dict):
             return behavior
         response, _ = behavior
-        return {"output": response}
+        result = {"output": response}
+        if allowed:
+            result["metadata"] = {"loaded_references": chosen}
+            result["tokenUsage"] = {"numRequests": 2}
+        return result
     return {"error": f"unsupported Ollama suite: {suite}", "output": ""}
 
 
@@ -607,5 +740,5 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
     if mode == "fixture":
         return _fixture_output(context, suite)
     if mode == "ollama":
-        return _ollama_output(prompt, suite, context, skill_name)
+        return _ollama_output(prompt, suite, context, skill_name, config)
     return {"error": f"unsupported Promptfoo runtime mode: {mode}", "output": ""}

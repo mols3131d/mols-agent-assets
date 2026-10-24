@@ -1,10 +1,13 @@
+[env]
+PYTHONUTF8 = "1"
+
 [tools]
 uv = "0.12.1"
 node = "24.19.0"
 rumdl = "0.2.54"
 lefthook = "2.1.10"
 "npm:@biomejs/biome" = "2.5.6"
-"npm:rulesync" = "16.24.1"
+"npm:rulesync" = "40.2.0"
 "npm:skills" = "1.5.23"
 
 [settings]
@@ -65,6 +68,18 @@ run = [
 [tasks.test]
 description = "Run repository tests"
 run = "uv run --locked --no-default-groups --group test pytest"
+
+[tasks.eval-mols-test-design]
+description = "mols-test-design local Trigger + Behavior runtime eval"
+run = "npm run eval:promptfoo:mols-test-design"
+
+[tasks.eval-mols-test-design-trigger]
+description = "mols-test-design local Trigger eval"
+run = "npm run eval:promptfoo:mols-test-design:trigger"
+
+[tasks.eval-mols-test-design-behavior]
+description = "mols-test-design local Behavior eval"
+run = "npm run eval:promptfoo:mols-test-design:behavior"
 
 [tasks.eval-mols-loops-smoke]
 description = "mols-loops Promptfoo fixture smoke를 local에서 실행"

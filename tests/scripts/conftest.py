@@ -1,5 +1,4 @@
 import os
-import subprocess
 import sys
 from pathlib import Path
 
@@ -11,15 +10,7 @@ sys.path.insert(0, str(ROOT))
 
 
 @pytest.fixture(autouse=True)
-def isolate_git_repository_environment(monkeypatch):
-    result = subprocess.run(
-        ["git", "rev-parse", "--local-env-vars"],
-        check=True,
-        capture_output=True,
-        text=True,
-    )
-    for name in result.stdout.splitlines():
-        monkeypatch.delenv(name, raising=False)
+def isolate_git_user_configuration(monkeypatch):
     monkeypatch.setenv("GIT_CONFIG_NOSYSTEM", "1")
     monkeypatch.setenv("GIT_CONFIG_GLOBAL", os.devnull)
     monkeypatch.setenv("GIT_CONFIG_COUNT", "1")

@@ -20,7 +20,7 @@ Generator의 parsing, ordering, failure behavior와 output semantics는 determin
 
 CI와 Git hook에서 project Python을 사용할 때는 `uv.lock`을 암묵적으로 갱신하지 않는 `--locked` 실행을 사용합니다.
 
-임시 Git repository를 만드는 script test는 hook이 상속한 `GIT_DIR`·`GIT_WORK_TREE`·index 등 repository-local 환경을 제거하고 user/global config와 hooks를 격리합니다. [`tests/scripts/conftest.py`](../../tests/scripts/conftest.py)가 Git의 `--local-env-vars` 목록을 사용해 이 경계를 적용합니다. 임시 fixture의 commit/config가 호출한 checkout·공유 repository를 바꾸면 안 됩니다.
+임시 Git repository를 만드는 test는 hook이 상속한 `GIT_DIR`·`GIT_WORK_TREE`·index 등 repository-local 환경을 제거합니다. [`tests/conftest.py`](../../tests/conftest.py)가 Git의 `--local-env-vars` 목록으로 session 경계를 적용하고, [`tests/scripts/conftest.py`](../../tests/scripts/conftest.py)는 script fixture의 user/global config와 hooks를 추가 격리합니다. 임시 fixture의 commit/config가 호출한 checkout·공유 repository를 바꾸면 안 됩니다.
 
 ## Evidence Boundary
 
