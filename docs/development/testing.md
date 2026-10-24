@@ -20,6 +20,8 @@ Generator의 parsing, ordering, failure behavior와 output semantics는 determin
 
 CI와 Git hook에서 project Python을 사용할 때는 `uv.lock`을 암묵적으로 갱신하지 않는 `--locked` 실행을 사용합니다.
 
+임시 Git repository를 만드는 script test는 hook이 상속한 `GIT_DIR`·`GIT_WORK_TREE`·index 등 repository-local 환경을 제거하고 user/global config와 hooks를 격리합니다. [`tests/scripts/conftest.py`](../../tests/scripts/conftest.py)가 Git의 `--local-env-vars` 목록을 사용해 이 경계를 적용합니다. 임시 fixture의 commit/config가 호출한 checkout·공유 repository를 바꾸면 안 됩니다.
+
 ## Evidence Boundary
 
 Deterministic test success는 해당 repository-owned executable behavior의 검증 근거입니다. Structural validation, projection freshness, semantic routing과 live runtime behavior까지 검증했다고 확대 해석하지 않습니다.
