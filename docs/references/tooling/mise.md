@@ -33,6 +33,19 @@ Promptfoo처럼 Node runtime이 필요한 기존 command는 mise environment에�
 mise exec -- npm run eval:promptfoo:mols-loops
 ```
 
+## Shared and local environment
+
+공통 실행 환경은 [`mise.toml`](../../../mise.toml)의 `[env]`가 소유하며 Python에 UTF-8을 적용합니다. Git 설정은 mise나 설치 wrapper에서 덮어쓰지 않습니다. Rulesync dependency는 GitHub transport로 설치하므로 Git 임시 clone의 LF 보정이 필요하지 않습니다. 설치 명령과 API 인증은 [Rulesync](rulesync.md#repository-local-installation)를 따릅니다.
+
+PC별 설치 경로만 Git에서 제외된 `mise.local.toml`에 둡니다. 예를 들어 Windows에서 Git Bash를 PATH에 추가해야 한다면 다음처럼 설정합니다.
+
+```toml
+[env]
+_.path = ["C:/Program Files/Git/bin"]
+```
+
+Git에서 제외된 로컬 파일은 PR로 자동 변경하지 않습니다. 각 PC에서 기존 `PYTHONUTF8` 중복과 이전 LF 보정 전용 `GIT_CONFIG_*` 값을 검토한 뒤 불필요한 항목만 제거합니다. PC별 PATH, 인증용 Git 설정과 상위 프로세스 환경은 보존하고 Git 전역 설정은 변경하지 않습니다. Rulesync의 로컬 설정 정리는 [Rulesync](rulesync.md#repository-local-installation)를 따릅니다.
+
 ## Official sources
 
 - [mise configuration](https://mise.jdx.dev/configuration.html)

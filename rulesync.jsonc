@@ -8,9 +8,7 @@
     "antigravity-ide": ["rules", "skills"],
     "antigravity-cli": ["rules", "skills"]
   },
-  "outputRoots": [
-    "."
-  ],
+  "outputRoots": ["."],
   "sources": [
     {
       "source": "mols3131d/mols-agent-assets",
