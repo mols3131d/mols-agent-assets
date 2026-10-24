@@ -14,7 +14,7 @@ Skill을 선택한 작업자는 서로 다른 repository/tool manager에서도 �
 
 - **Lifecycle:** 최초 setup, 동일 명령 반복 실행을 통한 reconcile/repair, 명시적으로 요청한 update의 차이를 확인한다.
 - **Version ownership:** 허용 범위를 정하는 manifest/config owner, 구체 버전 선택을 기록하는 lock/resolution owner, installer와 verification owner를 구분한다.
-- **Safe provisioning:** 로컬 virtual environment, tool-manager cache, 사용자 홈의 공유 도구, OS 전역 영역의 변경 권한과 부작용을 다르게 판단한다. 기존 도구는 프로젝트 계약에 적합하면 재사용하도록 설계하고, 새 설치는 범위·영향을 제시해 사용자 허가를 받도록 한다.
+- **Safe provisioning:** 호스트 도구, 언어 인터프리터, 프로젝트 격리 환경·패키지, tool-manager cache 및 OS/사용자 공유 상태를 분리한다. 기존 자산 재사용은 **프로젝트의 관리 주체와 격리 계약을 먼저 충족**할 때만 설계한다. 특히 Python 인터프리터가 사용 가능하다고 전역 Python 패키지나 전역 Ruff를 프로젝트 의존성 대신 쓰지 않는다. 새 설치는 범위·영향을 제시해 사용자 허가를 받도록 한다.
 - **Partial recovery:** 누락·실패한 의존 단계는 중단하되 독립적으로 가능한 단계는 계속 진행하도록 설계한다. 끝까지 준비되지 않은 부분을 완료로 포장하지 않는다.
 - **Portable handoff:** 특정 도구의 vendor command를 알고 있어야만 설계할 수 있는 Skill이 아니라, 실제 프로젝트에 맞는 authoritative semantics를 확인하고 최소 실행 변경안을 제시한다.
 
@@ -37,6 +37,7 @@ Skill을 선택한 작업자는 서로 다른 repository/tool manager에서도 �
 1. **Setup은 미지의 최신 버전을 탐색하지 않는다.** 승인된 locked state에 맞추는 작업과 새 버전의 resolve/promote는 별도 intent다. Exact pin, prefix/range, floating Git ref를 동일하게 취급하지 않는다.
 1. **'미설치'는 설치 권한이 아니다.** Bootstrap entrypoint가 없으면 그 안에서 자기 자신을 설치할 수 없다. Host prerequisite는 사람에게 경로를 제시한다. 사용자에게 설치 영향 범위를 설명하고 에이전트가 실제 실행하기 전 허가받는 설계를 우선한다. 명확한 하나의 설치 범위는 묶어 승인받을 수 있지만, 허가 없이 manager 공유 cache를 변경하는 것까지 허용하는 것은 아니다.
 1. **부분 진척과 준비 완료는 다르다.** 독립 단계의 성공은 유용하지만 필수 의존성 누락 또는 검증 실패를 숨기지 않는다. 겉보기 간단함을 위해 전부 성공/전부 중단 중 하나로 강제하지 않는다.
+1. **환경 격리가 재사용보다 우선이다.** Git 같은 독립 호스트 도구는 적합하면 재사용할 수 있으나 Python처럼 런타임과 패키지 환경이 분리되는 경우 인터프리터와 프로젝트 전용 dependency environment를 구분한다. 기존 PATH의 바이너리·전역 site-packages 존재만으로 재현성을 충족했다고 판정하지 않는다.
 1. **Native owner 우선.** 이미 tool manager가 잠금, range, update, install, validation을 제공한다면 동일 동작을 custom YAML, wrapper, 범용 framework로 재구현하지 않는다. Wrapper가 필요하면 사전에 관찰된 orchestration/reporting gap을 근거로 한정한다.
 1. **가장 작은 deployable package.** 모든 설계에서 함께 필요한 판단은 하나의 `SKILL.md`에 둔다. 분명한 조건부 loading 가치가 생기기 전에는 references나 script를 분할하지 않는다. 이 README는 유지보수 대상이지 runtime resource가 아니다.
 
