@@ -63,8 +63,9 @@ description: PR #257에서 Rulesync 16.24.1을 40.2.0으로 이전하기 위한 
 - [x] GitHub transport 전환과 Git 전용 우회 제거; hash 8개 변경은 동일 98개 파일의 경로 표기 차이로 입증
 - [x] repository-owned route/index drift, targeted pytest 64개 및 전체 pytest 237개 통과
 - [x] Windows Git auth/LF 대표 smoke 및 임시 HOME의 전체 setup 통과
-- [ ] 새 head PR Gate 및 root frozen-install admission — 기본 토큰을 쓰는 CI 변경은 사람 승인 확인 전 보류
-- [ ] 이 보고서 및 [인계 보고서](rulesync-v40-handoff.md)와 최신 PR validation evidence 최종 갱신
+- [x] 구현 head `d9797a740d5e430788c7df8c72b7ef470c2c4e48`의 PR Gate 및 Branch Check 통과 — [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/40107200255), [Branch Check](https://github.com/mols3131d/mols-agent-assets/actions/runs/40107197801)
+- [ ] Root frozen-install admission — 기본 토큰을 쓰는 CI 변경은 사람 승인 확인 전 보류
+- [x] 이 보고서 및 [인계 보고서](rulesync-v40-handoff.md)와 PR validation evidence 갱신. 최종 exact revision과 최신 CI 상태는 PR 본문이 소유
 
 ## 판정 경계 및 주의
 
