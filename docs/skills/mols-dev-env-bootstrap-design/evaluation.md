@@ -17,6 +17,8 @@ Trigger는 expected selection과 deterministic하게 비교하며 Skill body를 
 
 이 suite는 **capability 평가**다. 작은 단일 trial의 성공률을 regression gate나 다른 model/runtime의 보장으로 사용하지 않는다. Negative 요청에서 해당 Skill을 선택하지 않는 것은 의도한 성공이지 평가 누락이 아니다.
 
+**2026-10-25 추가:** 기존 10-case 실행 이후, 설계 전용 책임·기존 도구 재사용·사용자 설치 허가를 판단하는 behavior case를 더해 현재 fixture는 **11건**이다. 아래 수치는 변경 전 10-case에서 얻은 **과거 실행 근거**이며, 새 11-case suite를 재실행·통과했다는 뜻이 아니다. 실제 도구 설치 및 승인 준수는 이 프롬프트 평가만으로 입증되지 않는다.
+
 ## Run locally
 
 이미 사용 가능한 Ollama 모델을 선택한 뒤 repository root에서 실행한다. 기본 runtime/grader 이름에 해당하는 모델이 설치되어 있다고 가정하지 않는다.
