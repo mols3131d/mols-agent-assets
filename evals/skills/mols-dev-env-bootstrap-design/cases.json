@@ -104,11 +104,11 @@
     {
       "id": "existing-tool-reuse-and-install-approval",
       "mode": "behavior",
-      "prompt": "개발환경 부트스트랩을 설계만 해줘. 시스템에 Ruff와 Biome이 이미 있고 일부 버전은 프로젝트 정책에 맞지만, Node는 정확한 mise pin과 충돌해. 에이전트가 환경을 실제로 설정할 때 사용자에게 설치 여부를 허가받게 해줘. 허가 전 설치하거나 파일을 수정하지 말고, 적합한 기존 도구 재사용과 필요한 별도 설치, 설치 위치·공유 캐시 영향, 한 번에 승인 가능한 범위를 설계 인계에 포함해.",
+      "prompt": "개발환경 부트스트랩을 설계만 해줘. 시스템에는 Python 3.13, 전역 Ruff, Biome과 Git이 이미 있어. 프로젝트는 `.python-version` 3.13, `uv.lock`·`.venv`로 Ruff/pytest를 관리하고, Node·Biome은 mise exact pin을 사용해. 호스트 Git과 허용되는 Python interpreter는 재사용할 수 있어도, 전역 Ruff와 site-packages를 프로젝트 의존성으로 재사용해서는 안 돼. 승인 전 설치/파일 변경 없이 재사용·격리·설치 대상과 사용자 허가 범위를 설계해줘.",
       "assertions": [
         "Keeps this Skill design-only and does not perform or claim installations, updates, or file edits",
-        "Reuses compatible existing tools when project ownership, version and reproducibility policy allow it, but preserves exact managed pins and avoids overwriting conflicting global installations",
-        "Requires explicit informed user approval before agent-run installation including manager-shared caches; presents a bounded batch of planned changes and re-requests approval when the scope expands"
+        "Distinguishes host Git, eligible Python interpreter, project .venv/uv.lock dependencies, and mise-managed tools; never treats global Ruff or Python site-packages as a replacement for locked project dependencies",
+        "Requires explicit informed user approval before agent-run installation including manager-shared caches and changes within project .venv; presents a bounded batch of planned writes and re-requests approval when scope expands"
       ]
     }
   ]
