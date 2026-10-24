@@ -1,12 +1,14 @@
 ---
 name: mols-dev-env-bootstrap-design
 description: >-
-  Design or review a developer-environment bootstrap that supports first-time
-  setup, repeatable day-to-day repair, and explicitly requested updates within
-  predeclared version constraints. Use for toolchain provisioning boundaries,
-  dependency locks, missing-tool handling, installation side effects, partial
-  failures, recovery and verification. Do not use for ordinary dependency
-  upgrades, a one-off installation command, or CI-only pipeline design.
+  Use only when the requested outcome is a design, review, or implementation
+  handoff for a developer-environment bootstrap lifecycle: first-time setup,
+  repeatable repair, or explicit updates within predeclared constraints.
+  Within that lifecycle, assess provisioning authority, locks, missing tools,
+  installer side effects, partial failures, recovery, and verification.
+  Do not select for executing an ordinary package upgrade, installing one tool,
+  explaining a single command, or designing a CI-only pipeline; shared words
+  such as setup, lock, install, and update do not make those tasks applicable.
 targets:
   - claudecode
   - codexcli
@@ -33,11 +35,11 @@ Design a bootstrap that can be used both on a new machine and throughout develop
 ## Procedure
 
 1. **Inspect the current environment contract.** Identify the requested lifecycle, supported platforms, repository setup commands, declared tool versions, dependency manifests, existing lockfiles, native update commands, install destinations and verification paths. Separate observed behavior from desired behavior; check changing vendor semantics at the actual installed version when it matters.
-2. **Assign owners.** For every managed item, identify who declares the permitted version set, who selects the concrete version, who installs it, and who verifies it. Distinguish exact pins, bounded ranges, floating branch refs and unbounded latest requests. A movable ref without an explicit update policy is not automatically eligible for upgrade.
-3. **Design two paths.** Setup reuses locked results, installs missing *authorized* dependencies and safely reapplies project integration. Update is explicit: resolve the latest admissible version using the native resolver, inspect resulting lockfile diffs, install and verify. Do not silently broaden the allowed range or auto-commit changes. If the native manager cannot reproduce a locked state, surface the limitation and propose the least invasive fix.
-4. **Decide missing-tool behavior by impact.** For each dependency, classify it as required or optional and installation as project-scoped, manager-controlled, user-shared or system-wide. Automatically install only within the declared authority and understood side-effect boundary; tool-manager ownership alone is not blanket consent. Missing entrypoint prerequisites cannot be repaired *from inside* that entrypoint: provide a short manual preflight and official installation instructions. For unapproved host or user-global changes, skip and report rather than invoking sudo, system package managers, global npm/pip or remote shell installers.
-5. **Define execution and recovery.** Build the smallest prerequisite graph necessary to prevent invalid dependent execution; do not fail unrelated tasks because another optional component is absent. Specify preflight, resolve, apply, verify and summary. Distinguish missing prerequisite, unavailable network, version-constraint conflict, installer failure and verification failure. Prefer safe retries and incremental reconciliation over wiping state or an unproven rollback.
-6. **Prepare the handoff.** State the entrypoints, affected manifests/locks, installation permissions, failure/exit semantics and test scenarios. Reuse existing scripts and native task mechanisms; add a wrapper only when orchestration or reporting cannot reasonably be expressed there.
+1. **Assign owners.** For every managed item, identify who declares the permitted version set, who selects the concrete version, who installs it, and who verifies it. Distinguish exact pins, bounded ranges, floating branch refs and unbounded latest requests. A movable ref without an explicit update policy is not automatically eligible for upgrade.
+1. **Design two paths.** Setup reuses locked results, installs missing *authorized* dependencies and safely reapplies project integration. Update is explicit: resolve the latest admissible version using the native resolver, inspect resulting lockfile diffs, install and verify. Do not silently broaden the allowed range or auto-commit changes. If the native manager cannot reproduce a locked state, surface the limitation and propose the least invasive fix.
+1. **Decide missing-tool behavior by impact.** For each dependency, classify it as required or optional and installation as project-scoped, manager-controlled, user-shared or system-wide. Automatically install only within the declared authority and understood side-effect boundary; tool-manager ownership alone is not blanket consent. Missing entrypoint prerequisites cannot be repaired *from inside* that entrypoint: provide a short manual preflight and official installation instructions. For unapproved host or user-global changes, skip and report rather than invoking sudo, system package managers, global npm/pip or remote shell installers.
+1. **Define execution and recovery.** Build the smallest prerequisite graph necessary to prevent invalid dependent execution; do not fail unrelated tasks because another optional component is absent. Specify preflight, resolve, apply, verify and summary. Distinguish missing prerequisite, unavailable network, version-constraint conflict, installer failure and verification failure. Prefer safe retries and incremental reconciliation over wiping state or an unproven rollback.
+1. **Prepare the handoff.** State the entrypoints, affected manifests/locks, installation permissions, failure/exit semantics and test scenarios. Reuse existing scripts and native task mechanisms; add a wrapper only when orchestration or reporting cannot reasonably be expressed there.
 
 ## Decision Checks
 

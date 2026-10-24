@@ -6,7 +6,7 @@
 
 - `setup`/`update`를 [`development_bootstrap.py`](../../scripts/development_bootstrap.py)의 좁은 orchestration으로 연결했다. Setup은 exact CLI pin 설치·버전 검증과 locked uv sync, update는 기존 Python dependency constraints의 native resolution을 수행한다.
 - Tool prefix/range 확대와 `mise.lock`은 **도입하지 않았다.** 모든 exact pin과 외부 Asset revision은 유지하며, 향후 range를 도입하면 먼저 locked install·platform/npm sidecar 검증을 추가해야 한다.
-- User HOME Skill·Git hook뿐 아니라 기존 projection의 소유권을 확정하기 어려운 Rulesync 설치·생성도 기본 실행에서 분리했다. Core 준비 성공은 `DEGRADED`로 보고하고 선택적 기능을 준비됐다고 주장하지 않는다.
+- User HOME Skill·Git hook뿐 아니라 기존 projection의 소유권을 확정하기 어려운 Rulesync 설치·생성도 기본 실행에서 분리했다. 이번 PR의 기본 완료 범위는 **core toolchain/Python**으로 확정한다. Core 검증 통과는 `READY`이며 별도 연동은 `excluded and not verified`로 표시한다.
 - 최초 mise/uv/Python은 사용자가 명시적으로 준비한다. Task pre-install을 끄고 인자를 단일 parser로 전달하며, runner는 외부 venv/junction·dirty update lock·같은 checkout의 동시 실행을 차단한다.
 - 아래의 범위·OS·성능·전체 연동 수용 조건은 **원래 목표**다. Deterministic test와 실제 Windows CLI 검증을 전체 host bootstrap·native installer·Skill runtime eval 성공으로 확대하지 않는다.
 
@@ -15,6 +15,16 @@
 하나의 개발환경 진입점에서 **처음 사용하는 머신의 설정**과 **개발 중 반복하는 유지·업데이트**를 지원한다. 업데이트 범위는 미리 선언하고, 실행기는 그 범위를 재정의하지 않고 최신 허용 버전을 선택한다. 자동 설치가 부적절하거나 불가능한 도구 때문에 독립적인 나머지 작업이 중단되지 않으면서도, 불완전한 환경을 성공으로 오인하지 않게 한다.
 
 이 PR은 위 동작을 **실제 repository 부트스트랩으로 구현·검증**하고, 다른 프로젝트에서도 유사한 설계를 재사용할 수 있는 **독립적인 Agent Skill `mols-dev-env-bootstrap-design`을 개발·검증**하는 두 결과물을 함께 완성한다. 스킬은 설계 판단을, 이 저장소의 `mise` 태스크와 스크립트는 실제 실행 동작을 소유한다. 스킬을 실행하기 위해 이 PR의 스크립트가 필요해서는 안 된다.
+
+## 이번 PR의 수용 범위
+
+리뷰 F1을 수용해 설계 문서만으로 완료 처리하지 않고 실행 코드·회귀 검증을 함께 반영한다. 현재 수용 범위는 다음과 같으며, 아래 초기 설계의 더 넓은 조건을 모두 달성했다는 뜻은 아니다.
+
+- **필수 구현:** exact CLI pin reconcile·버전 검증, locked Python setup, 선언된 dependency constraint 안의 명시적 update, 경로·dirty lock 보호, 의존 단계 skip/독립 단계 지속, 실제 실패 exit와 안전한 재시도.
+- **선택적 별도 연동:** Rulesync dependency/projection, native HOME Skill, Git hooks. 기본 core readiness와 분리하고 기존 명시적 실행 경로·사전 검토 안내를 유지한다. 기본 setup의 필수 기능을 조용히 생략하는 대신 설치 권한과 완료 계약을 이 범위로 명시한다.
+- **허용 버전:** 현재 exact CLI pin은 그대로이며 tool update의 no-op도 정상이다. Python bounded update는 native uv resolver가 소유한다. Tool range/`mise.lock`/npm sidecar 도입은 별도 설계·검증 전까지 범위 밖이다.
+- **검증:** deterministic 회귀와 격리된 실제 Windows first-venv/warm setup, 로컬 wheel bounded update, Skill positive/near-miss·behavior capability eval을 각각 구분한다. 기존 tool cache를 재사용한 실행을 clean-machine tool install로 표기하지 않는다.
+- **미완료 근거:** Linux/macOS/WSL host bootstrap, cold tool-cache 설치, OS-level containment와 HOME native installer는 별도 검증이 필요하다. 이번 push는 해당 플랫폼의 지원 완료나 merge-ready 선언이 아니며 Draft를 유지한다.
 
 ## 재사용 설계 스킬
 
@@ -35,7 +45,9 @@
 
 이 문서의 버전·권한 정책은 현재 초안이다. 새 조사에서 발견한 mise lockfile sidecar, uv managed Python 다운로드, task runner의 의존성 오류 전파와 minimum release age처럼 정확한 동작에 영향을 주는 조건은 구현 전에 PoC로 판단한다. 벤더 문서의 최신 기능이 CI에 설정된 mise 버전에서 지원되는지도 검증한다.
 
-## 사용자 진입점과 의미
+## 초기 설계의 사용자 진입점과 의미
+
+아래 절부터 작업 계획까지는 초기 설계의 확장 목표를 보존한다. 현재 실행·수용 여부는 위 **이번 PR의 수용 범위**와 [운영 안내](../../docs/references/tooling/mise.md)가 우선한다. 특히 `mise.lock` 기반 tool range 갱신, 자동 Rulesync/hook/HOME 연동, `DEGRADED` 상태는 현재 runner의 제공 기능이 아니다.
 
 | 진입점(목표) | 기대 동작 | 버전 변경 |
 | --- | --- | --- |
@@ -137,4 +149,4 @@ Git branch `main` 같은 이동 ref는 명시적인 SemVer 허용 범위가 아�
 
 - 현재 구현: [mise.toml](../../mise.toml), [skills_sync.py](../../scripts/agent_assets/skills_sync.py), [mise reference](../../docs/references/tooling/mise.md), [skills CLI reference](../../docs/references/tooling/skills-cli.md)
 - 외부 계약: [mise lockfile](https://mise.jdx.dev/dev-tools/mise-lock.html), [mise upgrade](https://mise.jdx.dev/cli/upgrade.html), [mise task auto-install](https://mise.jdx.dev/dev-tools/), [uv locking/sync](https://docs.astral.sh/uv/concepts/projects/sync/)
-- 설계·조사와 독립적인 Skill 초안 이후, 이 문서 상단의 제한된 setup/update 구현과 deterministic 회귀 테스트를 추가했다. `mise.lock`·tool range 확대·자동 projection/hook/native installer는 미포함이다. 실제 다중 OS cold/warm bootstrap과 Skill runtime behavior는 아직 검증하지 않았으며 PR에서 수행한 근거와 구분한다.
+- 설계·조사와 독립적인 Skill 초안 이후, 이 문서 상단의 제한된 setup/update 구현과 deterministic 회귀 테스트를 추가했다. `mise.lock`·tool range 확대·자동 projection/hook/native installer는 미포함이다. 실제 Windows first-venv/warm setup은 기존 tool cache를 재사용해 확인했다. Skill runtime은 두 로컬 모델에서 capability 평가했으며 [실패·grader 한계](../../docs/skills/mols-dev-env-bootstrap-design/evaluation.md)를 포함한다. 다중 OS/cold tool-cache/HOME containment는 미검증으로 유지한다.

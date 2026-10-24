@@ -106,7 +106,9 @@ def test_setup_reconciles_exact_pins_without_lock_promotion(project, native, cap
     )
     assert not any("skills_sync" in " ".join(command) for command in args)
     assert any("--check" in command for command in args)
-    assert "Result: DEGRADED" in capsys.readouterr().out
+    output = capsys.readouterr().out
+    assert "Result: READY (core toolchain/Python verified;" in output
+    assert "optional integrations excluded and not verified" in output
     assert not (project / ".tmp" / "bootstrap.lock").exists()
 
 
@@ -285,7 +287,7 @@ def test_failed_verification_does_not_report_ready(project, native, capsys):
     assert bootstrap.main(["setup"], root=project) == 1
     output = capsys.readouterr().out
     assert "Result: FAILED" in output
-    assert "Result: DEGRADED" not in output
+    assert "Result: READY" not in output
     assert "sensitive output hidden" not in output
 
 

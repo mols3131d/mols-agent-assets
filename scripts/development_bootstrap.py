@@ -375,8 +375,8 @@ class Bootstrap:
             )
             return 1
         print(
-            "Result: DEGRADED (core toolchain/Python verified; "
-            "optional integrations not verified)."
+            "Result: READY (core toolchain/Python verified; "
+            "optional integrations excluded and not verified)."
         )
         return 0
 

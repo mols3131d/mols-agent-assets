@@ -33,6 +33,8 @@ mise run setup
 
 두 task는 단일 명령과 `raw_args`를 사용하며, [`development_bootstrap.py`](../../../scripts/development_bootstrap.py)가 인자 검증·경로 보호·실패 집계를 소유합니다. `--help`와 `--dry-run`만 공개하며 `--yes`, `--force`, `--global` 등은 실행 전 거부합니다.
 
+**이번 bootstrap의 완료 범위는 core 개발환경(toolchain + project Python)**입니다. Rulesync dependency/projection, 사용자 HOME Skill과 Git hooks는 선택적 별도 연동으로 확정하며, core 성공의 전제 조건으로 설치하거나 검증하지 않습니다. `READY`도 이 core 범위만 뜻하고 선택적 기능의 설치·준비 완료를 뜻하지 않습니다.
+
 | Command | 동작 |
 | --- | --- |
 | `mise run setup` | 기존 exact CLI pin 설치·실행 버전 검증 후 `uv sync --locked --all-groups`, `uv sync --check` |
@@ -50,7 +52,7 @@ Setup은 policy/lock을 갱신하지 않습니다. Update는 기존 미커밋 po
 - 승인된 기본 쓰기는 **mise-managed tool/cache**와 repository **`.venv`**입니다. 네트워크·공유 cache 접근은 필요할 수 있습니다. Python 자동 다운로드는 끄며 interpreter 누락 시 최초 준비를 명시적으로 수행합니다.
 - `UV_PROJECT_ENVIRONMENT`가 다른 환경을 가리키거나 `.venv`/package·실행 디렉터리가 외부 symlink/junction이면 차단합니다. 활성 foreign venv와 project/config override는 child process에서 제거합니다.
 - Native tool은 exact request로 경로와 실행 버전을 확인합니다. npm CLI는 설치된 package metadata에서 bin을 찾고 pinned Node로 실행하여 Windows `.cmd` shim을 직접 실행하지 않습니다. Package 내부의 동작까지 sandbox로 제한하지는 않습니다.
-- Node 실패 시 npm 단계는 건너뛰되 uv/Python 등 독립 단계는 계속합니다. 필수 실패는 `FAILED`/`BLOCKED`, nonzero입니다. Core 검증만 통과하면 선택적 연동이 미검증이므로 `DEGRADED`, exit 0이며 전체 준비 완료라고 표시하지 않습니다.
+- Node 실패 시 npm 단계는 건너뛰되 uv/Python 등 독립 단계는 계속합니다. 필수 실패는 `FAILED`/`BLOCKED`, nonzero입니다. 필수 core 검증이 전부 통과하면 `READY`, exit 0이며 별도 선택적 연동은 `excluded and not verified`로 명시합니다. 선택적 설치를 시도하다 실패한 상태를 exit 0으로 숨기는 경로는 없습니다.
 - 같은 checkout의 동시 실행은 `.tmp/bootstrap.lock`으로 차단합니다. 정상 종료·Ctrl-C는 자기 lock만 해제합니다. 강제 종료로 남은 lock은 해당 process가 끝났는지 확인한 뒤 수동 정리합니다. 다른 worktree의 공용 mise cache는 native manager 책임이며 HOME 설치를 병렬 실행하지 않습니다.
 - 실패하면 표시한 native 명령을 직접 점검하고 policy/lock diff를 보존한 채 setup을 재실행합니다. 사용자 파일 삭제, `git clean`/reset, hook 덮어쓰기, 전역 설정 변경은 하지 않습니다.
 
@@ -70,7 +72,9 @@ mise run skills-sync
 
 외부 Skill dependency의 lock과 source-native 동기화 경계는 [skills CLI](skills-cli.md)를 따릅니다. `skills-sync`는 기존 명시적 실행 경로이며 HOME 쓰기·native installer의 권한을 sandbox로 제한하거나 설치 결과를 보증하는 새 기능이 아닙니다.
 
-**검증 범위:** Windows에서 mise 인자 전달, runner의 격리 fixture·symlink/junction·부분 실패 테스트를 확인했습니다. 로컬 wheel만 제공하는 실제 uv fixture에서 범위 밖 `2.0.0` 대신 허용된 `1.1.0` 선택, sync/check와 setup 재실행의 lock 보존도 확인합니다. 실제 사용자 HOME installer, cold/warm toolchain 전체 설치, Linux/macOS/WSL host smoke와 Skill runtime eval은 별도 검증이 필요합니다.
+**검증 범위:** Windows에서 mise 인자 전달, runner의 격리 fixture·symlink/junction·부분 실패 테스트를 확인했습니다. 로컬 wheel만 제공하는 실제 uv fixture에서 범위 밖 `2.0.0` 대신 허용된 `1.1.0` 선택, sync/check와 setup 재실행의 lock 보존도 확인합니다. 실제 Windows 임시 snapshot에서 기존 exact tool cache를 사용해 새 `.venv` setup과 warm 재실행이 모두 `READY`/exit 0이며 policy/lock hash와 비어 있는 임시 HOME이 유지됨을 확인했습니다. 이는 clean-machine/cold tool-cache 설치나 OS sandbox 검증이 아닙니다.
+
+Linux/macOS/WSL host smoke와 사용자 HOME installer 실행은 아직 미검증입니다. Skill의 실제 로컬 모델 capability 결과와 실패 사례는 [Skill Evaluation](../../skills/mols-dev-env-bootstrap-design/evaluation.md)에서 별도로 다룹니다.
 
 Promptfoo처럼 Node runtime이 필요한 기존 command는 mise environment에서 실행합니다.
 

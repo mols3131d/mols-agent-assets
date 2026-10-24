@@ -48,6 +48,8 @@ Skill을 선택한 작업자는 서로 다른 repository/tool manager에서도 �
 
 유지보수 시에는 해당 사례로 description selection과 행동 계약을 별도로 검토한다. Skill `name`과 package path, 배포용 generated route 일치 및 Rulesync structural validation을 확인한다. 정적·의미 검토 결과를 실제 tool execution이나 runtime behavioral eval 통과로 표시하지 않는다.
 
+[Evaluation](evaluation.md)은 positive/near-miss와 behavior의 분리, 공통 Promptfoo entrypoint, 실제 로컬 모델 결과와 남은 capability 한계를 소유한다.
+
 ## Repository application
 
 이 저장소에서의 적용 예시는 [mise bootstrap 안내](../../references/tooling/mise.md)와 [`development_bootstrap.py`](../../../scripts/development_bootstrap.py)가 소유한다. Exact tool pin 유지, bounded Python update, HOME/hook/projection의 기본 분리는 이 repository의 선택이며 portable Skill의 필수 도구·CLI가 아니다. 해당 runner의 deterministic test success를 Skill activation 또는 runtime behavioral eval 통과로 취급하지 않는다.
