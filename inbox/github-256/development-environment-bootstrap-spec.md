@@ -1,6 +1,8 @@
 # 개발환경 부트스트랩 개편 명세 (Draft)
 
-> 대상: [PR #256](https://github.com/mols3131d/mols-agent-assets/pull/256). 이 문서는 원래의 설계 계약과 후속 구현 범위를 구분하는 작업 자료다. **운영 지침은 [mise](../../docs/references/tooling/mise.md)**, 실행 동작은 `mise.toml`과 실제 스크립트·lockfile이 소유한다.
+> 대상: [PR #256](https://github.com/mols3131d/mols-agent-assets/pull/256). 이 문서는 원래의 설계 계약과 후속 구현 범위를 구분하는 **비정본 작업 자료**다. **개발환경 구축·실제 설치 허가의 운영 정책 정본은 [Development Environment](../../docs/development/development-environment.md)**이며, 도구별 실행은 [mise 안내](../../docs/references/tooling/mise.md), 정확한 정책 값과 실행 동작은 `mise.toml`·native config/lock·스크립트가 소유한다.
+
+> **최신 결정(2026-10-25):** 재사용 Skill은 설계·리뷰·구현 인계만 소유하며 구현은 일반 코딩 에이전트의 작업이다. 에이전트가 실제 설치·업데이트를 실행하려면 설치 대상·위치·영향을 안내하고 사용자의 명시적 허가를 받아야 한다. 한 번에 승인한 작업 범위 안에서만 재확인 없이 실행한다. [토론·인계](bootstrap-authorization-update-discussion.md).
 
 ## 구현 상태 — 2026-10-25
 
@@ -31,7 +33,7 @@
 - **Canonical source:** [`mols-dev-env-bootstrap-design/SKILL.md`](../../src/rulesync/.rulesync/skills/mols-dev-env-bootstrap-design/SKILL.md)
 - **책임:** 초기 setup, 개발 중 유지/업데이트, 버전 허용 범위와 lock, 누락된 도구의 권한·부작용, 부분 실패·복구·검증을 평가하고 실행 가능한 설계 인계를 만든다.
 - **이식성:** mise/uv/Rulesync에 종속하지 않는다. 도구별 실제 version manager, lock, installer semantics와 프로젝트 정책을 조회하고, 적합한 native 방법을 선택한다.
-- **범위 밖:** 사용자가 요청하지 않은 환경 설치·업데이트 실행, 일반 패키지 업데이트, CI만의 admission design. 실행 가능한 부트스트랩 구현은 이 PR의 별도 결과물이며 스킬이 실행 결과를 대신 증명하지 않는다.
+- **범위 밖:** 실제 설치·업데이트 실행 및 구현 코드 자체의 작성, 일반 패키지 업데이트, CI만의 admission design. 부트스트랩 구현은 이 PR의 **별도 결과물**이며 일반 엔지니어링 작업이 소유한다. 스킬이 실행 결과나 설치 권한을 대신 증명하지 않는다.
 - **완료 조건:** positive/near-miss activation을 분리하고, 허용 범위 외 버전 차단·미설치 host tool 회피·user/global side-effect 보호·독립 단계 지속·거짓 성공 방지 사례를 설계 근거로 검증한다. Rulesync structural validation과 route drift check를 수행하고, 실제 runtime/eval 미수행은 구분한다.
 
 ## UX 심층 조사와 설계 인계
