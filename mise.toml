@@ -14,15 +14,11 @@ lefthook = "2.1.10"
 description = "Install project dependencies, Agent Skills, and Git hooks"
 run = [
   "uv sync --all-groups",
-  "mise run rulesync-install",
+  "rulesync install --frozen",
   "rulesync generate",
   "uv run python scripts/agent_assets/skills_sync.py",
   "lefthook install",
 ]
-
-[tasks.rulesync-install]
-description = "Install frozen Rulesync dependencies with inherited Git config preserved"
-run = "uv run --locked --no-default-groups python scripts/agent_assets/rulesync_install.py"
 
 [tasks.skills-sync]
 description = "Sync locked external Skills through source-native installers"

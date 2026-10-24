@@ -4,6 +4,8 @@ description: PR #257에서 Rulesync 16.24.1을 40.2.0으로 이전하기 위한 
 
 # PR #257 — Rulesync v40.2.0 업그레이드 조사·계획
 
+> **2026-10-25 후속 상태:** GitHub transport·공식 lock migration·wrapper 제거와 Windows 실제 설치를 완료했다. [후속 실행 결과](rulesync-v40-handoff.md#후속-실행-결과--2026-10-25-kst)에 payload 동등성·hash 변경 사유와 검증을 기록했다. 아래 조사·실행 절차는 최초 계획이며, 현재 완료 상태는 체크리스트와 PR 본문을 따른다. Root frozen CI admission은 기본 토큰 사용에 대한 사람 승인 확인 전 보류한다.
+
 ## 결정 및 작업 경계
 
 **목표:** PR #257 안에서 repository toolchain의 Rulesync를 `16.24.1` → `40.2.0`으로 변경하고 실제 root 설치, library validation, generated route, CI 및 PC별 Git 인증을 확인하여 merge 가능한 상태로 만든다. 최신 버전을 동적으로 따라가지 않고 **검증한 정확한 버전으로 고정**한다.
@@ -38,30 +40,31 @@ description: PR #257에서 Rulesync 16.24.1을 40.2.0으로 이전하기 위한 
 ### A. 원격에서 안전하게 가능한 작업
 
 1. 현 PR 브랜치에서 `mise.toml`의 Rulesync pin을 `40.2.0`으로 정확히 바꾼다. Node 조건을 충족하는지 정적 확인한다.
-2. 기존 v16 조사 문서에 **이전 버전 기준 기록** 표시 및 본 계획 연결. 새 vendor 기능을 무작정 옛 보고서에 덮어쓰지 않는다.
-3. PR 설명에 업그레이드를 범위로 넣고 **미실행/기존 버전에서만 실행한 검증**을 분리한다.
-4. 이어지는 작업의 증거·결정·검증 상태를 같은 `inbox/github-257/` 아래 유지한다.
+1. 기존 v16 조사 문서에 **이전 버전 기준 기록** 표시 및 본 계획 연결. 새 vendor 기능을 무작정 옛 보고서에 덮어쓰지 않는다.
+1. PR 설명에 업그레이드를 범위로 넣고 **미실행/기존 버전에서만 실행한 검증**을 분리한다.
+1. 이어지는 작업의 증거·결정·검증 상태를 같은 `inbox/github-257/` 아래 유지한다.
 
 ### B. 로컬 에이전트: 실제 CLI를 통한 마이그레이션
 
 1. PR head를 최신으로 받아 독립 checkout/worktree에서 `mise install node "npm:rulesync"`, `rulesync --version` → **40.2.0** 확인. `mise run check`도 수행.
-2. 변경 전 lock·source config snapshot을 보존하고, **루트**에서 `rulesync doctor --strict`. `src/rulesync`에서도 `rulesync doctor --strict`, `rulesync generate --dry-run`, `npm run rulesync:validate` 실행. warning/exit code를 기록.
-3. **기존 `git` transport + frozen lock**으로 `mise run rulesync-install` 또는 `rulesync install --frozen`을 실행하여 40.x와 legacy lock의 호환 여부를 먼저 재현한다. source 재다운로드·수정 여부, 잠긴 11개 Skill과 lock 불변 여부를 검사한다.
-4. [transport 변경 요구](rulesync-github-transport.md)에 따라 root source를 `github` transport로 통일한다. **Rulesync CLI 소유 lock을 공식 설치/lock 생성 경로로 갱신**하되 lock `resolvedRef`·`requestedRef`·Skill selection과 integrity를 가능한 한 보존한다. `install --update`는 잠긴 revision을 갱신할 수 있으므로 무분별하게 사용하지 않는다. 사용이 불가피하면 변경 범위와 각 integrity 증거를 먼저 검토한다.
-5. 변경 후 `rulesync install --frozen`, lock 불변, 11개 선택 Skill 존재, route/index generator의 config↔lock 대응 및 `mise run generated-validate`를 확인한다.
-6. Git transport만을 위한 `rulesync_install.py`와 해당 unit tests가 더는 필요 없으면 `mise run rulesync-install`을 native `rulesync install --frozen`으로 되돌리고 wrapper·테스트 및 관련 문서를 함께 제거한다. `tests/conftest.py` Git hook 격리는 무관한 실제 재현 여부로 별도 판단한다.
-7. 최소 CI 보강: PR merge candidate의 **루트 `doctor --strict`**와 루트 source/lock 변경 시 **frozen install**·lock 불변을 검토하되, 새 CI 프레임워크/상시 OS matrix를 추가하지 않는다. 설치 검사는 ephemeral runner에서 네트워크/인증 오류를 분명히 구분한다.
-8. `mise run test`, `mise run generated-validate`, `npm run rulesync:validate`, `mise run check`, `mise run setup` 또는 이에 준하는 smoke 및 PR Gate를 **새 HEAD**에서 확인한다. Windows는 PR 원래 LF·Git auth 변경의 영향이 있으므로 최소 한 번 실행한다. Linux/macOS는 영향받는 환경에서 선택 검증한다.
+1. 변경 전 lock·source config snapshot을 보존하고, **루트**에서 `rulesync doctor --strict`. `src/rulesync`에서도 `rulesync doctor --strict`, `rulesync generate --dry-run`, `npm run rulesync:validate` 실행. warning/exit code를 기록.
+1. **기존 `git` transport + frozen lock**으로 `mise run rulesync-install` 또는 `rulesync install --frozen`을 실행하여 40.x와 legacy lock의 호환 여부를 먼저 재현한다. source 재다운로드·수정 여부, 잠긴 11개 Skill과 lock 불변 여부를 검사한다.
+1. [transport 변경 요구](rulesync-github-transport.md)에 따라 root source를 `github` transport로 통일한다. **Rulesync CLI 소유 lock을 공식 설치/lock 생성 경로로 갱신**하되 lock `resolvedRef`·`requestedRef`·Skill selection과 integrity를 가능한 한 보존한다. `install --update`는 잠긴 revision을 갱신할 수 있으므로 무분별하게 사용하지 않는다. 사용이 불가피하면 변경 범위와 각 integrity 증거를 먼저 검토한다.
+1. 변경 후 `rulesync install --frozen`, lock 불변, 11개 선택 Skill 존재, route/index generator의 config↔lock 대응 및 `mise run generated-validate`를 확인한다.
+1. Git transport만을 위한 `rulesync_install.py`와 해당 unit tests가 더는 필요 없으면 `mise run rulesync-install`을 native `rulesync install --frozen`으로 되돌리고 wrapper·테스트 및 관련 문서를 함께 제거한다. `tests/conftest.py` Git hook 격리는 무관한 실제 재현 여부로 별도 판단한다.
+1. 최소 CI 보강: PR merge candidate의 **루트 `doctor --strict`**와 루트 source/lock 변경 시 **frozen install**·lock 불변을 검토하되, 새 CI 프레임워크/상시 OS matrix를 추가하지 않는다. 설치 검사는 ephemeral runner에서 네트워크/인증 오류를 분명히 구분한다.
+1. `mise run test`, `mise run generated-validate`, `npm run rulesync:validate`, `mise run check`, `mise run setup` 또는 이에 준하는 smoke 및 PR Gate를 **새 HEAD**에서 확인한다. Windows는 PR 원래 LF·Git auth 변경의 영향이 있으므로 최소 한 번 실행한다. Linux/macOS는 영향받는 환경에서 선택 검증한다.
 
 ### C. 완료 기준
 
-- [ ] Rulesync v40.2.0 설치 및 `rulesync --version` 실제 확인
-- [ ] 루트·라이브러리의 공식 doctor, library generate/JSON warning fail-closed 통과
-- [ ] root source + lock이 공식 도구로 일치하며 `install --frozen` 성공·lock 불변·11개 Skill 일치
-- [ ] GitHub transport 전환, Git 전용 우회 제거 또는 반례를 문서화한 유지 결정
-- [ ] repository-owned route/index drift 및 pytest 통과
-- [ ] 새 head PR Gate, Windows Git auth/LF 대표 smoke 근거
-- [ ] 이 보고서 및 [인계 보고서](rulesync-v40-handoff.md)와 PR validation evidence 갱신
+- [x] Rulesync v40.2.0 설치 및 `rulesync --version` 실제 확인
+- [x] 루트·라이브러리의 공식 doctor, library generate/JSON warning fail-closed 통과
+- [x] root source + lock이 공식 도구로 일치하며 `install --frozen` 성공·lock 불변·11개 Skill 일치
+- [x] GitHub transport 전환과 Git 전용 우회 제거; hash 8개 변경은 동일 98개 파일의 경로 표기 차이로 입증
+- [x] repository-owned route/index drift, targeted pytest 64개 및 전체 pytest 237개 통과
+- [x] Windows Git auth/LF 대표 smoke 및 임시 HOME의 전체 setup 통과
+- [ ] 새 head PR Gate 및 root frozen-install admission — 기본 토큰을 쓰는 CI 변경은 사람 승인 확인 전 보류
+- [ ] 이 보고서 및 [인계 보고서](rulesync-v40-handoff.md)와 최신 PR validation evidence 최종 갱신
 
 ## 판정 경계 및 주의
 

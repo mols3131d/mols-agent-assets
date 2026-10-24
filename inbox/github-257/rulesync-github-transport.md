@@ -4,7 +4,7 @@ description: PR #257에서 Rulesync Git transport 대신 GitHub transport를 유
 
 # PR #257 — Rulesync transport를 `github`로 유지
 
-> **v40 업그레이드 추적:** PR #257에서 Rulesync v40.2.0 pin이 추가되었다. 이 문서의 GitHub transport 복귀 요청은 계속 유효하지만 **구현되었다는 뜻은 아니다**. 40.x의 lock `skillsPath` 마이그레이션과 실제 frozen 설치까지 확인한 뒤 config·lock·래퍼를 함께 정리한다. 후속 작업은 [업그레이드 계획](rulesync-v40-upgrade-plan.md)과 [인계 보고서](rulesync-v40-handoff.md)를 따른다.
+> **2026-10-25 구현 상태:** GitHub transport 복귀·v40 공식 lock migration·Git 전용 wrapper 제거와 Windows frozen 설치를 완료했다. 8개 integrity 변경은 동일 98개 파일의 Windows/POSIX 경로 hash 차이로 입증했고 revision은 유지했다. 실제 검증과 CI 승인 대기는 [인계 보고서의 후속 실행 결과](rulesync-v40-handoff.md#후속-실행-결과--2026-10-25-kst)를 따른다. 아래 본문은 최초 변경 요청을 보존한다.
 
 ## 요청 결론
 
@@ -26,11 +26,11 @@ description: PR #257에서 Rulesync Git transport 대신 GitHub transport를 유
 ## PR 수정 요청
 
 1. [`rulesync.jsonc`](../../rulesync.jsonc)의 두 소스를 `mols3131d/mols-agent-assets`, `dyoshikawa/rulesync` shorthand로 돌리고 `transport: "github"`를 사용한다. 기존 `ref`, `path`, `skills`, `targets`는 유지한다.
-2. [`rulesync.lock`](../../rulesync.lock)의 source 키도 설정과 일치시키되 `requestedRef`, `resolvedRef`, `resolvedAt`, 모든 Skill의 `integrity`를 보존한다. Transport 복귀에 `install --update`를 사용하지 않는다.
-3. [`mise.toml`](../../mise.toml)의 `setup` 설치 단계를 단순화한다. Git transport에만 필요한 [`scripts/agent_assets/rulesync_install.py`](../../scripts/agent_assets/rulesync_install.py), `rulesync-install` task와 해당 [전용 테스트](../../tests/scripts/agent_assets/test_rulesync_install.py)는 **다른 사용처가 없는지 확인한 뒤** 제거하는 방향으로 정리한다. 기본 후보는 `rulesync install --frozen`을 직접 호출하는 것이다.
-4. [Rulesync 운영 문서](../../docs/references/tooling/rulesync.md)와 [mise 운영 문서](../../docs/references/tooling/mise.md)의 Git transport·LF 전용 설치 안내를 새 경로에 맞게 정리한다. Git에서 제외된 `mise.local.toml`, `rulesync.local.jsonc`의 오래된 중복 override는 **각 PC에서 검토 후** 정리하도록 안내하되, 필요한 PATH·인증 등 사용자별 설정은 보존한다.
-5. 공통 `PYTHONUTF8=1` 설정과 [`tests/conftest.py`](../../tests/conftest.py)의 Git hook 환경 격리는 Git transport와 독립적으로 필요한 개선인지 판단해 **유효하면 유지**한다. 관련 없는 개선까지 기계적으로 되돌리지 않는다.
-6. 실제 변경에 맞게 PR 제목·본문의 목적, 검증 결과, 남은 위험을 갱신한다. 이 인박스 문서를 구현 완료의 근거로 사용하지 않는다.
+1. [`rulesync.lock`](../../rulesync.lock)의 source 키도 설정과 일치시키되 `requestedRef`, `resolvedRef`, `resolvedAt`, 모든 Skill의 `integrity`를 보존한다. Transport 복귀에 `install --update`를 사용하지 않는다.
+1. [`mise.toml`](../../mise.toml)의 `setup` 설치 단계를 단순화한다. Git transport에만 필요했던 `scripts/agent_assets/rulesync_install.py`, `rulesync-install` task와 전용 `tests/scripts/agent_assets/test_rulesync_install.py`는 **다른 사용처가 없는지 확인한 뒤** 제거한다. 후속 구현에서 삭제했으며 `rulesync install --frozen`을 직접 호출한다.
+1. [Rulesync 운영 문서](../../docs/references/tooling/rulesync.md)와 [mise 운영 문서](../../docs/references/tooling/mise.md)의 Git transport·LF 전용 설치 안내를 새 경로에 맞게 정리한다. Git에서 제외된 `mise.local.toml`, `rulesync.local.jsonc`의 오래된 중복 override는 **각 PC에서 검토 후** 정리하도록 안내하되, 필요한 PATH·인증 등 사용자별 설정은 보존한다.
+1. 공통 `PYTHONUTF8=1` 설정과 [`tests/conftest.py`](../../tests/conftest.py)의 Git hook 환경 격리는 Git transport와 독립적으로 필요한 개선인지 판단해 **유효하면 유지**한다. 관련 없는 개선까지 기계적으로 되돌리지 않는다.
+1. 실제 변경에 맞게 PR 제목·본문의 목적, 검증 결과, 남은 위험을 갱신한다. 이 인박스 문서를 구현 완료의 근거로 사용하지 않는다.
 
 ## 완료 조건 및 검증
 
@@ -46,4 +46,4 @@ description: PR #257에서 Rulesync Git transport 대신 GitHub transport를 유
 - [Rulesync 운영 문서](../../docs/references/tooling/rulesync.md) — 현재 저장소 설치 경로
 - [Rulesync 공식 문서 — Declarative Sources](https://rulesync.dyoshikawa.com/guide/declarative-sources.html) — transport 및 선언형 소스 기능
 
-**상태:** 변경 요청 작성. 설정·코드 되돌림 및 재검증은 아직 수행하지 않음.
+**현재 상태:** 설정·공식 lock migration·wrapper 제거 및 Windows 재검증 완료. Root frozen CI admission은 사람 승인 대기이며 PR은 Draft를 유지한다.

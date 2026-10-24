@@ -11,7 +11,7 @@
   "outputRoots": ["."],
   "sources": [
     {
-      "source": "https://github.com/mols3131d/mols-agent-assets.git",
+      "source": "mols3131d/mols-agent-assets",
       "skills": [
         "artifact-consistency-inspector",
         "github-context",
@@ -24,14 +24,14 @@
         "mols-mermaid-diagram",
         "mols-loops"
       ],
-      "transport": "git",
+      "transport": "github",
       "ref": "main",
       "path": "src/rulesync/.rulesync/skills"
     },
     {
-      "source": "https://github.com/dyoshikawa/rulesync.git",
+      "source": "dyoshikawa/rulesync",
       "skills": ["rulesync"],
-      "transport": "git",
+      "transport": "github",
       "ref": "main",
       "path": "skills"
     }

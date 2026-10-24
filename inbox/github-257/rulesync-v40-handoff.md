@@ -4,9 +4,43 @@ description: PR #257의 Rulesync 40.2.0 업그레이드에서 원격으로 완�
 
 # Handoff — PR #257 Rulesync v40.2.0
 
-## 바로 이어받을 결론
+## 후속 실행 결과 — 2026-10-25 KST
 
-**버전 pin과 공식 루트 설정 검사 CI는 반영했지만 업그레이드는 아직 완료되지 않았다.** 40.2.0의 실제 네이티브 설치 및 root lock migration, GitHub transport 복귀, Git 전용 installer 제거, Windows LF/auth 회귀 검증이 남아 있다. **merge/Ready for review로 판정하지 말 것.**
+**GitHub transport 복귀, 공식 CLI lock migration, Git 전용 installer 제거와 Windows 실제 설치 검증을 완료했다.** 후속 작업은 인계 head `03d10ae4fe25a6b5e379e2bed1fecf9183161865`에서 dedicated branch로 수행했다. **Root frozen 설치를 required CI에 넣는 작업은 기본 토큰 전달에 대한 사람 승인을 확인하지 못해 보류했다. PR은 Draft를 유지하며 merge하지 않는다.** 최신 head의 서버 CI 결과와 exact revision pair는 PR 본문이 소유한다.
+
+### 마이그레이션과 payload 근거
+
+- Windows / PowerShell, Node `24.19.0`, Rulesync `40.2.0`에서 검증했다. 두 source를 GitHub shorthand와 `transport: "github"`로 복귀시키고 native `rulesync install`로 lock을 생성했다. `install --update`와 vendor lock 수동 편집은 사용하지 않았다.
+- `requestedRef`, `resolvedRef`, 11개 Skill selection은 그대로다. CLI가 source key를 정규화하고 `skillSelection`·`skillsPath`와 새 `resolvedAt`을 기록했다.
+- 기존 lock의 8개 integrity는 Windows Git 경로 `\`를 hash에 포함했다. Git LF와 GitHub transport로 받은 **98개 파일의 경로 목록과 바이트가 모두 동일**함을 대조했고, 동일 파일로 Windows/POSIX 경로 hash를 계산해 8개 차이를 전부 재현했다. 나머지 3개 hash는 동일하다. GitHub POSIX hash를 vendor 출력 그대로 채택했으며 dependency content/revision 변경은 없다.
+- `mise run setup`은 공식 `rulesync install --frozen`을 직접 호출한다. Git 전용 Python wrapper, 그 전용 pytest와 task를 제거했다. 공통 `PYTHONUTF8=1`과 독립적으로 유효한 Git hook 환경 격리는 유지했다.
+
+### 실제 검증
+
+| 결과 | 명령 / 범위 | 관찰 |
+| --- | --- | --- |
+| ✅ Pass | `rulesync --version`, `node --version`, `mise run check` | 고정 버전, lock, native Skill dry-run 및 기존 도구 검사 성공 |
+| ✅ Pass | `rulesync doctor --strict`, `npm run rulesync:validate` | root doctor 및 library doctor/dry-run, JSON warning fail-closed 성공 |
+| ✅ Pass | targeted pytest 64개, 전체 `pytest -q tests` 237개 | Rulesync validator·route·projection regression과 repository suite 성공 |
+| ✅ Pass | `mise run generated-validate`, documentation frontmatter, changed-file formatting | docs index와 distribution/repository route에 drift 없음 |
+| ✅ Pass | 새 임시 디렉터리의 authenticated `rulesync install --frozen` 및 재실행 | 11개 Skill, supporting files와 lock byte 불변 확인 |
+| ✅ Pass | counted Git 인증 환경·`core.autocrlf=true`를 상속한 새 frozen 설치 | GitHub API 인증으로 성공하며 Git 설정·lock 불변 |
+| ✅ Pass | isolated clone + temporary HOME/cache의 `mise run setup` | uv sync → frozen install → generate → source-native Skill sync → hook 설치 성공. Rulesync·skills·uv lock 모두 byte 불변 |
+| ⚪ Not Verified | root frozen 설치의 required CI admission | 설치 단계에만 읽기 전용 기본 토큰을 전달하는 CI 변경은 사람 승인 확인 전 게시하지 않음 |
+| ⚪ Not Verified | 다른 PC의 ignored override 정리, Linux/macOS native 설치 | 사용자별 PATH·인증·로컬 파일은 변경하지 않음 |
+
+### 남은 운영 조건
+
+- 무인증 fresh GitHub 설치는 API rate limit(403/429)으로 실패했고 lock은 변하지 않았다. `GITHUB_TOKEN`을 설치 프로세스에만 전달한 재시도는 성공했다. 인증 방법과 기존 환경 복구 예제는 [Rulesync 운영 문서](../../docs/references/tooling/rulesync.md#repository-local-installation)에 반영했다.
+- 사용자 HOME을 사용하는 최초 setup은 이미 설치된 외부 Skill을 vendor installer가 덮어쓰지 않고 거부했다. `--force`로 우회하지 않고 임시 HOME/cache로 격리해 전체 setup 성공과 `.codex` native Skill·clone hook 출력을 확인했다. 개인 Skill과 로컬 override는 보존했다.
+- Root `generate`는 기존처럼 root rule 부재 안내를 출력한다. Root가 현재 외부 Skill consumer라는 이유로 unrelated Rule을 추가하지 않았다. Library validation에는 warning이 없다.
+- **사람 승인 후 필요한 후속:** required PR Gate에 root frozen install과 lock 불변 검사를 넣고 해당 단계에만 기존 `contents: read` 범위의 `${{ github.token }}`을 전달한다. 이 변경은 현재 diff에 포함하지 않는다. 이후 새 head의 CI·독립 검토를 마친 뒤 Draft 해제를 판단한다.
+
+## 최초 인계 당시 결론
+
+아래 내용은 2026-10-24 원격 세션의 미완료 상태와 실행 지시를 보존한 기록이다. 현재 구현·검증 상태는 위 후속 실행 결과와 최신 PR 본문을 따른다.
+
+**최초 인계 시에는 버전 pin과 공식 루트 설정 검사 CI만 반영된 상태였다.** 40.2.0 실제 설치·root lock migration·GitHub transport·Git 전용 installer 제거·Windows LF/auth 검증은 후속 실행에서 처리했다.
 
 - Repository: [`mols3131d/mols-agent-assets`](https://github.com/mols3131d/mols-agent-assets)
 - PR: [#257](https://github.com/mols3131d/mols-agent-assets/pull/257)
@@ -25,7 +59,8 @@ description: PR #257의 Rulesync 40.2.0 업그레이드에서 원격으로 완�
 | ✅ Applied | 기존 `rulesync-native-validation-report.md`, `rulesync-ci-test-review.md`, `rulesync-verification-proposal.md`, `rulesync-github-transport.md`에 **이전 v16 시점과 v40 migration** 구분 | 해당 PR 변경 커밋 참조 |
 | ✅ Pass (CI 한정) | 기존 PR Gate의 Rulesync v40 검사와 추가된 root doctor | [PR Gate #40022402679](https://github.com/mols3131d/mols-agent-assets/actions/runs/40022402679) — head `b97889a4d790f40ac3ab166e71555c74f90b178f`에서 `Install Rulesync validation tools`, `Validate root Rulesync configuration`, `Validate Rulesync-managed assets`, pytest/projection 단계 성공. **최신 head 및 root frozen 설치의 통과 근거는 아님** |
 | ✅ Pass (이전 head CI) | 40.2.0 pin 이후의 서버 검증 | [Branch Check #40022396814](https://github.com/mols3131d/mols-agent-assets/actions/runs/40022396814) 및 상기 PR Gate가 `b97889a`에서 성공. **보고서 커밋 이후 head에 대한 check는 별도 확인** |
-| ⚪ Not Verified (로컬) | `rulesync install --frozen`·40.x lock 마이그레이션·Windows 실제 설치 | 이 세션의 npm registry DNS 접근은 `EAI_AGAIN`으로 실패. GitHub CI의 `doctor`/library dry-run 성공이 root 설치를 대신하지 않음 |\n| ⏳ Pending | `rulesync.jsonc`, `rulesync.lock`, `rulesync_install.py`, 테스트, 운영 문서의 GitHub transport migration | Vendor tool 실행과 변경 검증이 필요하여 임의로 수동 변경하지 않음 |
+| ⚪ Not Verified (로컬) | `rulesync install --frozen`·40.x lock 마이그레이션·Windows 실제 설치 | 이 세션의 npm registry DNS 접근은 `EAI_AGAIN`으로 실패. GitHub CI의 `doctor`/library dry-run 성공이 root 설치를 대신하지 않음 |
+| ⏳ Pending | `rulesync.jsonc`, `rulesync.lock`, `rulesync_install.py`, 테스트, 운영 문서의 GitHub transport migration | Vendor tool 실행과 변경 검증이 필요하여 임의로 수동 변경하지 않음 |
 
 **정적 근거:** upstream 공식 [v40.2.0 release](https://github.com/dyoshikawa/rulesync/releases/tag/v40.2.0), [v40.2.0 package](https://github.com/dyoshikawa/rulesync/blob/v40.2.0/package.json), [CLI](https://github.com/dyoshikawa/rulesync/blob/v40.2.0/docs/reference/cli-commands.md), [v34.0.0](https://github.com/dyoshikawa/rulesync/releases/tag/v34.0.0), [v37.0.0](https://github.com/dyoshikawa/rulesync/releases/tag/v37.0.0), [v39.0.0](https://github.com/dyoshikawa/rulesync/releases/tag/v39.0.0), [v40.0.0](https://github.com/dyoshikawa/rulesync/releases/tag/v40.0.0). v40 Node 요구 `>=22`와 repository Node pin `24.19.0`은 정적으로 호환된다.
 
@@ -99,4 +134,4 @@ mise run test
 
 ---
 
-**인계 상태:** `HANDOFF`. 원격에서 실제로 편집한 pin·CI·문서는 커밋됐고, 네이티브 v40 설치/lock migration/transport 단순화는 **미완료**다.
+**현재 상태:** 로컬 구현·Windows 설치 검증 완료, root frozen CI admission에 필요한 사람 승인 대기. 최초 `HANDOFF`의 미완료 목록은 위 후속 실행 결과로 갱신했으며, merge·Draft 해제는 수행하지 않는다.
