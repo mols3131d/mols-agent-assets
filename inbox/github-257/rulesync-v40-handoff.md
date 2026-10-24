@@ -12,7 +12,9 @@ description: PR #257의 Rulesync 40.2.0 업그레이드에서 원격으로 완�
 
 - 현재 작업은 기존 로컬안의 게시를 승인받은 새 `mols-loops` Run이다. 이전 승인 대기 Run은 역사적 `BLOCKED` 기록으로 유지하며 승인으로 소급 해석하지 않는다.
 - PR Gate의 새 step은 merge candidate의 첫 부모 대비 root config·lock, tool pin 또는 workflow가 바뀌면 공식 `rulesync install --frozen`을 blocking으로 실행한다. 설치 전후 `sha256sum --check`로 lock 바이트 불변을 확인한다. 기본 토큰은 이 step에만 전달하며 추가 권한·validator·테스트·OS matrix는 도입하지 않는다.
-- 기존 로컬 10개 무인증 scenario·정적 검증 근거는 유지한다. 새 head의 실제 frozen 설치·lock 불변 CI 성공을 확인한 뒤 High thread를 해결하고 정확한 실행 링크는 PR 본문에 갱신한다. 확인 전에는 기존 green CI로 finding이 해결됐다고 주장하지 않는다.
+- CI 구현 commit `0146bab35b24ae52bda517128c9ea88d6a56029a`의 [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/40110662690)와 [Branch Check](https://github.com/mols3131d/mols-agent-assets/actions/runs/40110657650)가 성공했다. 새 step의 실제 로그에서 `Installed 11 skill(s) and 0 rule(s) from 2 source(s).`와 `rulesync.lock: OK`를 확인했다. PR merge candidate는 기존 main의 테스트도 포함해 263개 pytest를 통과했고 local pre-push는 PR branch의 237개를 통과했다.
+- High [review thread](https://github.com/mols3131d/mols-agent-assets/pull/257#discussion_r4367632077)에 설치·checksum 근거를 게시하고 해결 처리했다. 기존 로컬 10개 무인증 scenario는 failure-path 근거로 유지한다. 후속 문서 commit을 포함한 최종 exact head와 최신 CI는 PR 본문이 소유한다.
+- 최종 셀프 리뷰: 관련 변경의 blocking 설치와 raw-byte checksum, step-only 기본 토큰·최소 read 권한, 설치된 외부 Skill의 supporting files와 기존 library 검증 경계를 확인했다. 추가 High는 확인하지 않았다. 이는 독립적인 사람 검토나 merge 승인을 대신하지 않는다. 기술적 finding은 해소됐지만 **Draft 해제·merge는 별도 사람 승인 전 보류**한다.
 
 ### 이전 승인 대기 기록
 
@@ -41,7 +43,7 @@ description: PR #257의 Rulesync 40.2.0 업그레이드에서 원격으로 완�
 | ✅ Pass | counted Git 인증 환경·`core.autocrlf=true`를 상속한 새 frozen 설치 | GitHub API 인증으로 성공하며 Git 설정·lock 불변 |
 | ✅ Pass | isolated clone + temporary HOME/cache의 `mise run setup` | uv sync → frozen install → generate → source-native Skill sync → hook 설치 성공. Rulesync·skills·uv lock 모두 byte 불변 |
 | ✅ Pass (로컬만) | frozen CI step의 YAML·Bash 검증 | Token은 설치 step에만 선언하고 `contents: read` 유지. 무인증 stub으로 관련·무관 diff, 설치 실패, 내용·CRLF-only lock drift, lock 삭제 등 10개 scenario 검증 |
-| ⚪ Not Verified (게시 전) | root frozen 설치의 required CI admission | 사용자 push 승인에 따라 게시·검증을 진행한다. 최신 exact head의 실제 step 실행과 lock 불변 결과는 PR 본문에서 확인 |
+| ✅ Pass | root frozen 설치의 required CI admission | 구현 head `0146bab35b24ae52bda517128c9ea88d6a56029a`의 PR Gate에서 11개 Skill 실제 설치와 `rulesync.lock: OK` 확인. High thread 해결. 최종 exact head의 실행 링크는 PR 본문이 소유 |
 | ⚪ Not Verified | 다른 PC의 ignored override 정리, Linux/macOS native 설치 | 사용자별 PATH·인증·로컬 파일은 변경하지 않음 |
 
 ### 남은 운영 조건
@@ -49,7 +51,7 @@ description: PR #257의 Rulesync 40.2.0 업그레이드에서 원격으로 완�
 - 무인증 fresh GitHub 설치는 API rate limit(403/429)으로 실패했고 lock은 변하지 않았다. `GITHUB_TOKEN`을 설치 프로세스에만 전달한 재시도는 성공했다. 인증 방법과 기존 환경 복구 예제는 [Rulesync 운영 문서](../../docs/references/tooling/rulesync.md#repository-local-installation)에 반영했다.
 - 사용자 HOME을 사용하는 최초 setup은 이미 설치된 외부 Skill을 vendor installer가 덮어쓰지 않고 거부했다. `--force`로 우회하지 않고 임시 HOME/cache로 격리해 전체 setup 성공과 `.codex` native Skill·clone hook 출력을 확인했다. 개인 Skill과 로컬 override는 보존했다.
 - Root `generate`는 기존처럼 root rule 부재 안내를 출력한다. Root가 현재 외부 Skill consumer라는 이유로 unrelated Rule을 추가하지 않았다. Library validation에는 warning이 없다.
-- **서버 검증 및 최종 검토:** 승인받은 CI 변경의 새 head에서 frozen 설치·lock 불변이 실제 실행됐는지 확인한다. `${{ github.token }}`은 해당 step의 `GITHUB_TOKEN`에만 전달하며 기존 `contents: read`를 유지한다. 성공 후 High thread를 해결하고 최종 셀프 리뷰·남은 위험을 PR에 기록한다. 통제 표면의 사람 검토·Draft 해제·merge는 각각 별도의 권한과 gate이며 이번 push 지시로 승인된 것은 아니다.
+- **서버 검증 및 최종 검토:** 구현 head에서 frozen 설치·lock 불변 성공을 확인하고 High thread를 해결했다. `${{ github.token }}`은 해당 step의 `GITHUB_TOKEN`에만 전달하며 기존 `contents: read`를 유지한다. 원격 API·일시 장애는 설치 실패로 명확히 남으며 다른 PC의 local override와 전체 native setup 검증은 별도다. 통제 표면의 독립적인 사람 검토·Draft 해제·merge는 각각 별도 gate이며 이번 push 지시로 승인된 것은 아니다.
 
 ## 최초 인계 당시 결론
 
@@ -149,4 +151,4 @@ mise run test
 
 ---
 
-**현재 상태:** 설치 migration 구현·Windows 검증은 게시 완료. Root frozen CI feedback의 게시·검증은 사용자 push 지시로 승인되었으며, 새 head의 결과와 High thread 상태는 PR 본문을 따른다. 이전 승인 대기는 역사적 기록이다. Merge·Draft 해제는 승인되지 않았으므로 수행하지 않는다.
+**현재 상태:** 설치 migration·Windows 검증·root frozen CI 보강은 게시 및 검증 완료. 11개 Skill 실제 설치·lock 불변의 서버 근거로 High thread를 해결했다. 최신 exact head·CI 상태는 PR 본문을 따른다. 이전 승인 대기는 역사적 기록이다. Merge·Draft 해제는 승인되지 않았으므로 수행하지 않는다.

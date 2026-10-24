@@ -46,4 +46,4 @@ description: PR #257에서 Rulesync Git transport 대신 GitHub transport를 유
 - [Rulesync 운영 문서](../../docs/references/tooling/rulesync.md) — 현재 저장소 설치 경로
 - [Rulesync 공식 문서 — Declarative Sources](https://rulesync.dyoshikawa.com/guide/declarative-sources.html) — transport 및 선언형 소스 기능
 
-**현재 상태:** 설정·공식 lock migration·wrapper 제거 및 Windows 재검증 완료. Root frozen CI admission은 사람 승인 대기이며 PR은 Draft를 유지한다.
+**현재 상태:** 설정·공식 lock migration·wrapper 제거 및 Windows 재검증 완료. 사용자 push 승인 후 root frozen CI의 실제 11개 Skill 설치·lock 불변을 확인하고 High thread를 해결했다. 최신 실행 근거는 [인계 보고서](rulesync-v40-handoff.md#승인-후-게시검증)와 PR 본문을 따른다. Draft 해제·merge는 별도 승인 없이는 하지 않는다.

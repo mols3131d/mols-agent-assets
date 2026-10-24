@@ -64,7 +64,7 @@ description: PR #257에서 Rulesync 16.24.1을 40.2.0으로 이전하기 위한 
 - [x] repository-owned route/index drift, targeted pytest 64개 및 전체 pytest 237개 통과
 - [x] Windows Git auth/LF 대표 smoke 및 임시 HOME의 전체 setup 통과
 - [x] 구현 head `d9797a740d5e430788c7df8c72b7ef470c2c4e48`의 PR Gate 및 Branch Check 통과 — [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/40107200255), [Branch Check](https://github.com/mols3131d/mols-agent-assets/actions/runs/40107197801)
-- [ ] Root frozen-install admission — step-scoped 기본 토큰·관련 diff 선택·공식 frozen install·lock byte 불변의 최소 patch 게시·검증은 사용자 push 지시로 승인되었다. 이전 로컬 10개 scenario는 유지하며 새 head의 실제 CI 성공 뒤 High를 해결한다. 정확한 실행·revision은 PR 본문에서 확인
+- [x] Root frozen-install admission — 사용자 push 승인 후 구현 head `0146bab35b24ae52bda517128c9ea88d6a56029a`의 [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/40110662690)에서 11개 Skill 실제 설치와 `rulesync.lock: OK` 확인. High thread 해결·셀프 리뷰 완료. Step-only 기본 토큰과 `contents: read` 유지, 10개 로컬 scenario는 failure-path 근거. 최종 exact head의 실행·revision은 PR 본문에서 확인
 - [x] 이 보고서 및 [인계 보고서](rulesync-v40-handoff.md)와 PR validation evidence 갱신. 최종 exact revision과 최신 CI 상태는 PR 본문이 소유
 
 ## 판정 경계 및 주의
