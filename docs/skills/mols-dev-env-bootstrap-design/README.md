@@ -4,7 +4,7 @@ description: mols-dev-env-bootstrap-design의 설계 의도, 재사용 경계, s
 
 # Developer Environment Bootstrap Design — Maintainer Guide
 
-`mols-dev-env-bootstrap-design`은 개발환경 부트스트랩의 **설계와 리뷰, 구현 준비 인계**를 위한 재사용 Skill이다. 처음 환경을 설정하고, 개발 중 반복적으로 상태를 맞추며, **사전에 승인된 버전 범위 안에서만 명시적으로 업데이트**하도록 설계할 때 사용한다.
+`mols-dev-env-bootstrap-design`은 개발환경 부트스트랩의 **설계와 리뷰, 구현 준비 인계**만을 담당하는 재사용 Skill이다. 실제 구현은 에이전트의 일반 엔지니어링 역량과 대상 프로젝트의 지침이 담당하며, Skill 자체가 설치 작업을 실행하지 않는다. 처음 환경을 설정하고, 개발 중 반복적으로 상태를 맞추며, **사전에 승인된 버전 범위 안에서만 명시적으로 업데이트**하도록 설계할 때 사용한다.
 
 실행 행동은 [SKILL.md](../../../src/rulesync/.rulesync/skills/mols-dev-env-bootstrap-design/SKILL.md)가 소유한다. 이 문서는 **왜 이런 책임을 선택했는지, 무엇을 보존해야 하는지, 어떻게 검토하는지**를 기록한다. 실행 절차를 다른 authority로 중복하지 않는다.
 
@@ -14,7 +14,7 @@ Skill을 선택한 작업자는 서로 다른 repository/tool manager에서도 �
 
 - **Lifecycle:** 최초 setup, 동일 명령 반복 실행을 통한 reconcile/repair, 명시적으로 요청한 update의 차이를 확인한다.
 - **Version ownership:** 허용 범위를 정하는 manifest/config owner, 구체 버전 선택을 기록하는 lock/resolution owner, installer와 verification owner를 구분한다.
-- **Safe provisioning:** 로컬 virtual environment, tool-manager cache, 사용자 홈의 공유 도구, OS 전역 영역의 변경 권한과 부작용을 다르게 판단한다.
+- **Safe provisioning:** 로컬 virtual environment, tool-manager cache, 사용자 홈의 공유 도구, OS 전역 영역의 변경 권한과 부작용을 다르게 판단한다. 기존 도구는 프로젝트 계약에 적합하면 재사용하도록 설계하고, 새 설치는 범위·영향을 제시해 사용자 허가를 받도록 한다.
 - **Partial recovery:** 누락·실패한 의존 단계는 중단하되 독립적으로 가능한 단계는 계속 진행하도록 설계한다. 끝까지 준비되지 않은 부분을 완료로 포장하지 않는다.
 - **Portable handoff:** 특정 도구의 vendor command를 알고 있어야만 설계할 수 있는 Skill이 아니라, 실제 프로젝트에 맞는 authoritative semantics를 확인하고 최소 실행 변경안을 제시한다.
 
@@ -35,7 +35,7 @@ Skill을 선택한 작업자는 서로 다른 repository/tool manager에서도 �
 
 1. **설계 Skill은 실행 스크립트가 아니다.** Script 설치·업데이트를 직접 수행하는 것은 사용자와 대상 repository가 별도로 요청·허용하는 작업이다. 일반 dependency update와 CI-only workflow design을 포괄하면 activation이 흐려진다.
 1. **Setup은 미지의 최신 버전을 탐색하지 않는다.** 승인된 locked state에 맞추는 작업과 새 버전의 resolve/promote는 별도 intent다. Exact pin, prefix/range, floating Git ref를 동일하게 취급하지 않는다.
-1. **'미설치'는 설치 권한이 아니다.** Bootstrap entrypoint가 없으면 그 안에서 자기 자신을 설치할 수 없다. Host prerequisite는 사람에게 경로를 제시한다. Tool manager의 사용자 공유 cache와 외부 native installer도 일반 project-local package 설치처럼 취급하지 않는다.
+1. **'미설치'는 설치 권한이 아니다.** Bootstrap entrypoint가 없으면 그 안에서 자기 자신을 설치할 수 없다. Host prerequisite는 사람에게 경로를 제시한다. 사용자에게 설치 영향 범위를 설명하고 에이전트가 실제 실행하기 전 허가받는 설계를 우선한다. 명확한 하나의 설치 범위는 묶어 승인받을 수 있지만, 허가 없이 manager 공유 cache를 변경하는 것까지 허용하는 것은 아니다.
 1. **부분 진척과 준비 완료는 다르다.** 독립 단계의 성공은 유용하지만 필수 의존성 누락 또는 검증 실패를 숨기지 않는다. 겉보기 간단함을 위해 전부 성공/전부 중단 중 하나로 강제하지 않는다.
 1. **Native owner 우선.** 이미 tool manager가 잠금, range, update, install, validation을 제공한다면 동일 동작을 custom YAML, wrapper, 범용 framework로 재구현하지 않는다. Wrapper가 필요하면 사전에 관찰된 orchestration/reporting gap을 근거로 한정한다.
 1. **가장 작은 deployable package.** 모든 설계에서 함께 필요한 판단은 하나의 `SKILL.md`에 둔다. 분명한 조건부 loading 가치가 생기기 전에는 references나 script를 분할하지 않는다. 이 README는 유지보수 대상이지 runtime resource가 아니다.
@@ -52,7 +52,7 @@ Skill을 선택한 작업자는 서로 다른 repository/tool manager에서도 �
 
 ## Repository application
 
-이 저장소에서의 적용 예시는 [mise bootstrap 안내](../../references/tooling/mise.md)와 [`development_bootstrap.py`](../../../scripts/development_bootstrap.py)가 소유한다. Exact tool pin 유지, bounded Python update, HOME/hook/projection의 기본 분리는 이 repository의 선택이며 portable Skill의 필수 도구·CLI가 아니다. 해당 runner의 deterministic test success를 Skill activation 또는 runtime behavioral eval 통과로 취급하지 않는다.
+이 저장소의 **개발환경 구축·설치 승인 정책 정본은 [Development Environment](../../development/development-environment.md)**이며, 도구별 실행 안내는 [mise bootstrap 안내](../../references/tooling/mise.md), 실제 실행 로직은 [`development_bootstrap.py`](../../../scripts/development_bootstrap.py)가 소유한다. 이 Skill은 그 저장소 정책을 대체하거나 복제하지 않는다. Exact tool pin 유지, bounded Python update, HOME/hook/projection의 기본 분리는 이 repository의 선택이며 portable Skill의 필수 도구·CLI가 아니다. 해당 runner의 deterministic test success를 Skill activation 또는 runtime behavioral eval 통과로 취급하지 않는다.
 
 ## Upstream references
 
