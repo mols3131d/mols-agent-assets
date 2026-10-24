@@ -6,7 +6,9 @@
       "mode": "activation",
       "prompt": "새 개발자가 처음 설치하고 기존 개발자가 반복 복구할 수 있는 개발환경 부트스트랩을 설계해줘. 잠금 파일과 설치 권한도 검토해줘.",
       "expected_selection": {
-        "selected_skills": ["mols-dev-env-bootstrap-design"],
+        "selected_skills": [
+          "mols-dev-env-bootstrap-design"
+        ],
         "primary_skill": "mols-dev-env-bootstrap-design"
       }
     },
@@ -15,7 +17,9 @@
       "mode": "activation",
       "prompt": "Review our developer-environment setup/update lifecycle. Setup must keep locks unchanged, and explicit updates must stay inside previously declared version constraints.",
       "expected_selection": {
-        "selected_skills": ["mols-dev-env-bootstrap-design"],
+        "selected_skills": [
+          "mols-dev-env-bootstrap-design"
+        ],
         "primary_skill": "mols-dev-env-bootstrap-design"
       }
     },
@@ -24,7 +28,9 @@
       "mode": "activation",
       "prompt": "개발환경 bootstrap에서 Git이 없으면 Python 준비도 멈추고, 외부 installer는 HOME을 수정해. 최초 설정과 반복 실행의 부작용·부분 실패·복구 설계를 리뷰해줘.",
       "expected_selection": {
-        "selected_skills": ["mols-dev-env-bootstrap-design"],
+        "selected_skills": [
+          "mols-dev-env-bootstrap-design"
+        ],
         "primary_skill": "mols-dev-env-bootstrap-design"
       }
     },
@@ -32,19 +38,28 @@
       "id": "single-package-upgrade-near-miss",
       "mode": "activation-negative",
       "prompt": "잠금 파일에서 pytest 한 패키지만 9.0.3으로 업데이트해줘. 개발환경 setup이나 bootstrap 설계를 바꾸는 요청은 아니야.",
-      "expected_selection": { "selected_skills": [], "primary_skill": null }
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
     },
     {
       "id": "one-off-tool-install-near-miss",
       "mode": "activation-negative",
       "prompt": "내 Windows PC에 Git 한 개 설치하는 공식 명령만 알려줘. 프로젝트 bootstrap이나 유지보수 설계는 필요 없어.",
-      "expected_selection": { "selected_skills": [], "primary_skill": null }
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
     },
     {
       "id": "ci-only-pipeline-near-miss",
       "mode": "activation-negative",
       "prompt": "GitHub Actions PR Gate의 job 의존성만 설계해줘. 개발자 로컬 환경의 setup·repair·update는 범위 밖이야.",
-      "expected_selection": { "selected_skills": [], "primary_skill": null }
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
     },
     {
       "id": "portable-owner-and-update-handoff",
@@ -84,6 +99,16 @@
         "Protects the external Python environment, dirty lockfile and shared/custom hooks before writes; does not propose force reset or destructive cleanup",
         "Distinguishes Ubuntu/static evidence from unverified Windows/macOS host behavior and proposes platform-specific validation",
         "Provides a bounded handoff with blockers, preserved partial state and recovery rather than claiming full readiness or completed execution"
+      ]
+    },
+    {
+      "id": "existing-tool-reuse-and-install-approval",
+      "mode": "behavior",
+      "prompt": "개발환경 부트스트랩을 설계만 해줘. 시스템에 Ruff와 Biome이 이미 있고 일부 버전은 프로젝트 정책에 맞지만, Node는 정확한 mise pin과 충돌해. 에이전트가 환경을 실제로 설정할 때 사용자에게 설치 여부를 허가받게 해줘. 허가 전 설치하거나 파일을 수정하지 말고, 적합한 기존 도구 재사용과 필요한 별도 설치, 설치 위치·공유 캐시 영향, 한 번에 승인 가능한 범위를 설계 인계에 포함해.",
+      "assertions": [
+        "Keeps this Skill design-only and does not perform or claim installations, updates, or file edits",
+        "Reuses compatible existing tools when project ownership, version and reproducibility policy allow it, but preserves exact managed pins and avoids overwriting conflicting global installations",
+        "Requires explicit informed user approval before agent-run installation including manager-shared caches; presents a bounded batch of planned changes and re-requests approval when the scope expands"
       ]
     }
   ]
