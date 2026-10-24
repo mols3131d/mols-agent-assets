@@ -38,7 +38,7 @@
 - Agent Asset 설계 지식 → [Agent Asset Design](docs/references/agent-assets/README.md)
 - Reusable design patterns → [Patterns](catalog/patterns/README.md)
 - Agent-facing repository rules → [`AGENTS.md`](AGENTS.md)
-- 개발환경 최초 설정·반복 복구·명시적 업데이트 → [mise bootstrap](docs/references/tooling/mise.md)
+- 개발환경 최초 설정·반복 복구·명시적 업데이트·설치 허가 → [Development Environment](docs/development/development-environment.md)
 - Repository development → [Development](docs/development/README.md)
 - Documentation → [Documentation](docs/documentation/README.md)
 - Rulesync source/workspace → [Rulesync](docs/references/tooling/rulesync.md)
