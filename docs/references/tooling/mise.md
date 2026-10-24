@@ -51,7 +51,7 @@ Setup은 policy/lock을 갱신하지 않습니다. Update는 기존 미커밋 po
 
 ### Installation scope and recovery
 
-- 승인된 기본 쓰기는 **mise-managed tool/cache**와 repository **`.venv`**입니다. 네트워크·공유 cache 접근은 필요할 수 있습니다. Python 자동 다운로드는 끄며 interpreter 누락 시 최초 준비를 명시적으로 수행합니다.
+- 기본 setup이 수행할 수 있는 쓰기 대상은 **mise-managed tool/cache**와 repository **`.venv`**입니다. 실행 전 사용자 설치 허가는 [Development Environment](../../development/development-environment.md)가 소유합니다. 네트워크·공유 cache 접근은 필요할 수 있습니다. Python 자동 다운로드는 끄며 interpreter 누락 시 최초 준비를 명시적으로 수행합니다.
 - `UV_PROJECT_ENVIRONMENT`가 다른 환경을 가리키거나 `.venv`/package·실행 디렉터리가 외부 symlink/junction이면 차단합니다. 활성 foreign venv와 project/config override는 child process에서 제거합니다.
 - Native tool은 exact request로 경로와 실행 버전을 확인합니다. npm CLI는 설치된 package metadata에서 bin을 찾고 pinned Node로 실행하여 Windows `.cmd` shim을 직접 실행하지 않습니다. Package 내부의 동작까지 sandbox로 제한하지는 않습니다.
 - Node 실패 시 npm 단계는 건너뛰되 uv/Python 등 독립 단계는 계속합니다. 필수 실패는 `FAILED`/`BLOCKED`, nonzero입니다. 필수 core 검증이 전부 통과하면 `READY`, exit 0이며 별도 선택적 연동은 `excluded and not verified`로 명시합니다. 선택적 설치를 시도하다 실패한 상태를 exit 0으로 숨기는 경로는 없습니다.
