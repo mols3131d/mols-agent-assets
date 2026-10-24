@@ -4,7 +4,7 @@ description: PR #257에서 Rulesync 16.24.1을 40.2.0으로 이전하기 위한 
 
 # PR #257 — Rulesync v40.2.0 업그레이드 조사·계획
 
-> **2026-10-25 후속 상태:** GitHub transport·공식 lock migration·wrapper 제거와 Windows 실제 설치를 완료했다. [후속 실행 결과](rulesync-v40-handoff.md#후속-실행-결과--2026-10-25-kst)에 payload 동등성·hash 변경 사유와 검증을 기록했다. 아래 조사·실행 절차는 최초 계획이며, 현재 완료 상태는 체크리스트와 PR 본문을 따른다. Root frozen CI admission은 기본 토큰 사용에 대한 사람 승인 확인 전 보류한다.
+> **2026-10-25 후속 상태:** GitHub transport·공식 lock migration·wrapper 제거와 Windows 실제 설치를 완료했다. [후속 실행 결과](rulesync-v40-handoff.md#후속-실행-결과--2026-10-25-kst)에 payload 동등성·hash 변경 사유와 검증을 기록했다. 사용자의 명시적 push 지시로 최소 root frozen CI 변경의 게시·검증이 승인되었다. 아래 조사·실행 절차는 최초 계획이며, 현재 완료 상태는 체크리스트와 PR 본문을 따른다. Draft 해제·merge는 별도 승인 없이는 하지 않는다.
 
 ## 결정 및 작업 경계
 
@@ -64,7 +64,7 @@ description: PR #257에서 Rulesync 16.24.1을 40.2.0으로 이전하기 위한 
 - [x] repository-owned route/index drift, targeted pytest 64개 및 전체 pytest 237개 통과
 - [x] Windows Git auth/LF 대표 smoke 및 임시 HOME의 전체 setup 통과
 - [x] 구현 head `d9797a740d5e430788c7df8c72b7ef470c2c4e48`의 PR Gate 및 Branch Check 통과 — [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/40107200255), [Branch Check](https://github.com/mols3131d/mols-agent-assets/actions/runs/40107197801)
-- [ ] Root frozen-install admission — 기본 토큰을 쓰는 CI 변경은 사람 승인 확인 전 보류
+- [ ] Root frozen-install admission — step-scoped 기본 토큰·관련 diff 선택·공식 frozen install·lock byte 불변의 최소 patch 게시·검증은 사용자 push 지시로 승인되었다. 이전 로컬 10개 scenario는 유지하며 새 head의 실제 CI 성공 뒤 High를 해결한다. 정확한 실행·revision은 PR 본문에서 확인
 - [x] 이 보고서 및 [인계 보고서](rulesync-v40-handoff.md)와 PR validation evidence 갱신. 최종 exact revision과 최신 CI 상태는 PR 본문이 소유
 
 ## 판정 경계 및 주의

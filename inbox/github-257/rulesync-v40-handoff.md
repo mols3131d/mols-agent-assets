@@ -6,7 +6,21 @@ description: PR #257의 Rulesync 40.2.0 업그레이드에서 원격으로 완�
 
 ## 후속 실행 결과 — 2026-10-25 KST
 
-**GitHub transport 복귀, 공식 CLI lock migration, Git 전용 installer 제거와 Windows 실제 설치 검증을 완료했다.** 후속 작업은 인계 head `03d10ae4fe25a6b5e379e2bed1fecf9183161865`에서 dedicated branch로 수행했다. **Root frozen 설치를 required CI에 넣는 작업은 기본 토큰 전달에 대한 사람 승인을 확인하지 못해 보류했다. PR은 Draft를 유지하며 merge하지 않는다.** 최신 head의 서버 CI 결과와 exact revision pair는 PR 본문이 소유한다.
+**GitHub transport 복귀, 공식 CLI lock migration, Git 전용 installer 제거와 Windows 실제 설치 검증을 완료했다.** 후속 작업은 인계 head `03d10ae4fe25a6b5e379e2bed1fecf9183161865`에서 dedicated branch로 수행했다. **Root frozen CI 변경의 게시·검증은 2026-10-25 01:10 KST 사용자의 명시적 push 지시로 승인되었다.** 승인 범위는 앞서 고지한 step-scoped 기본 토큰, 기존 `contents: read`, 최소 frozen 설치·lock 불변 검사와 commit·push·서버 검증이다. **Draft 해제나 merge는 승인되지 않았으므로 수행하지 않는다.** 최신 head의 서버 CI 결과와 exact revision pair는 PR 본문이 소유한다.
+
+### 승인 후 게시·검증
+
+- 현재 작업은 기존 로컬안의 게시를 승인받은 새 `mols-loops` Run이다. 이전 승인 대기 Run은 역사적 `BLOCKED` 기록으로 유지하며 승인으로 소급 해석하지 않는다.
+- PR Gate의 새 step은 merge candidate의 첫 부모 대비 root config·lock, tool pin 또는 workflow가 바뀌면 공식 `rulesync install --frozen`을 blocking으로 실행한다. 설치 전후 `sha256sum --check`로 lock 바이트 불변을 확인한다. 기본 토큰은 이 step에만 전달하며 추가 권한·validator·테스트·OS matrix는 도입하지 않는다.
+- 기존 로컬 10개 무인증 scenario·정적 검증 근거는 유지한다. 새 head의 실제 frozen 설치·lock 불변 CI 성공을 확인한 뒤 High thread를 해결하고 정확한 실행 링크는 PR 본문에 갱신한다. 확인 전에는 기존 green CI로 finding이 해결됐다고 주장하지 않는다.
+
+### 이전 승인 대기 기록
+
+- `mols-loops`의 Prepare에서 현재 HEAD·원격 PR·리뷰·인계·정책을 재확인했다. 로컬과 PR head는 `dda4ff51a7e11ae6bcddcb46b2ac2f9549e6f192`로 동일하며 incoming commit은 없다. 이전 세션의 미커밋 CI patch와 문서 변경은 보존했다.
+- PR conversation과 review에는 토큰을 사용하는 CI 변경의 명시적 사람 승인이 없다. 이번 승인 질문도 사용자 응답을 받지 못했다. 요청의 **미승인 시 구현 보류** 조건에 따라 CI 구현 변경·commit·push·실제 설치 실행은 수행하지 않았다. 이 Run은 **Prepare `BLOCKED`, `loops_used=0`**이며 완료로 판정하지 않는다.
+- 현재 head의 [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/40107413186)와 [Branch Check](https://github.com/mols3131d/mols-agent-assets/actions/runs/40107408018)는 성공이다. 이 실행에는 로컬 frozen CI patch가 포함되지 않으므로 High finding 해결 근거가 아니다.
+- 기존 patch의 한정된 정적 셀프 리뷰: YAML·Bash syntax, 설치 step에만 선언된 기본 토큰, `contents: read`, 실패 차단·관련 path·raw-byte checksum을 재확인했다. 앞선 무인증 10개 scenario 결과는 유효한 과거 근거로 유지하며 실제 서버 설치나 독립 리뷰로 확대하지 않는다. 새 validator·테스트·matrix는 추가하지 않았다.
+- Effective main rules는 required `PR Gate`, review thread resolution과 squash merge를 요구한다. 현재 High [review thread](https://github.com/mols3131d/mols-agent-assets/pull/257#discussion_r4367632077)는 미해결이며 PR은 `Draft` / `BLOCKED`다. **병합 불가:** 승인 후 patch 게시, 새 head CI의 frozen 설치·lock 불변 성공, thread 해결 및 통제 표면 검토가 필요하다. Draft 해제·merge는 별도 사람 승인 없이는 수행하지 않는다.
 
 ### 마이그레이션과 payload 근거
 
@@ -26,7 +40,8 @@ description: PR #257의 Rulesync 40.2.0 업그레이드에서 원격으로 완�
 | ✅ Pass | 새 임시 디렉터리의 authenticated `rulesync install --frozen` 및 재실행 | 11개 Skill, supporting files와 lock byte 불변 확인 |
 | ✅ Pass | counted Git 인증 환경·`core.autocrlf=true`를 상속한 새 frozen 설치 | GitHub API 인증으로 성공하며 Git 설정·lock 불변 |
 | ✅ Pass | isolated clone + temporary HOME/cache의 `mise run setup` | uv sync → frozen install → generate → source-native Skill sync → hook 설치 성공. Rulesync·skills·uv lock 모두 byte 불변 |
-| ⚪ Not Verified | root frozen 설치의 required CI admission | 설치 단계에만 읽기 전용 기본 토큰을 전달하는 CI 변경은 사람 승인 확인 전 게시하지 않음 |
+| ✅ Pass (로컬만) | frozen CI step의 YAML·Bash 검증 | Token은 설치 step에만 선언하고 `contents: read` 유지. 무인증 stub으로 관련·무관 diff, 설치 실패, 내용·CRLF-only lock drift, lock 삭제 등 10개 scenario 검증 |
+| ⚪ Not Verified (게시 전) | root frozen 설치의 required CI admission | 사용자 push 승인에 따라 게시·검증을 진행한다. 최신 exact head의 실제 step 실행과 lock 불변 결과는 PR 본문에서 확인 |
 | ⚪ Not Verified | 다른 PC의 ignored override 정리, Linux/macOS native 설치 | 사용자별 PATH·인증·로컬 파일은 변경하지 않음 |
 
 ### 남은 운영 조건
@@ -34,7 +49,7 @@ description: PR #257의 Rulesync 40.2.0 업그레이드에서 원격으로 완�
 - 무인증 fresh GitHub 설치는 API rate limit(403/429)으로 실패했고 lock은 변하지 않았다. `GITHUB_TOKEN`을 설치 프로세스에만 전달한 재시도는 성공했다. 인증 방법과 기존 환경 복구 예제는 [Rulesync 운영 문서](../../docs/references/tooling/rulesync.md#repository-local-installation)에 반영했다.
 - 사용자 HOME을 사용하는 최초 setup은 이미 설치된 외부 Skill을 vendor installer가 덮어쓰지 않고 거부했다. `--force`로 우회하지 않고 임시 HOME/cache로 격리해 전체 setup 성공과 `.codex` native Skill·clone hook 출력을 확인했다. 개인 Skill과 로컬 override는 보존했다.
 - Root `generate`는 기존처럼 root rule 부재 안내를 출력한다. Root가 현재 외부 Skill consumer라는 이유로 unrelated Rule을 추가하지 않았다. Library validation에는 warning이 없다.
-- **사람 승인 후 필요한 후속:** required PR Gate에 root frozen install과 lock 불변 검사를 넣고 해당 단계에만 기존 `contents: read` 범위의 `${{ github.token }}`을 전달한다. 이 변경은 현재 diff에 포함하지 않는다. 이후 새 head의 CI·독립 검토를 마친 뒤 Draft 해제를 판단한다.
+- **서버 검증 및 최종 검토:** 승인받은 CI 변경의 새 head에서 frozen 설치·lock 불변이 실제 실행됐는지 확인한다. `${{ github.token }}`은 해당 step의 `GITHUB_TOKEN`에만 전달하며 기존 `contents: read`를 유지한다. 성공 후 High thread를 해결하고 최종 셀프 리뷰·남은 위험을 PR에 기록한다. 통제 표면의 사람 검토·Draft 해제·merge는 각각 별도의 권한과 gate이며 이번 push 지시로 승인된 것은 아니다.
 
 ## 최초 인계 당시 결론
 
@@ -134,4 +149,4 @@ mise run test
 
 ---
 
-**현재 상태:** 로컬 구현·Windows 설치 검증 완료, root frozen CI admission에 필요한 사람 승인 대기. 최초 `HANDOFF`의 미완료 목록은 위 후속 실행 결과로 갱신했으며, merge·Draft 해제는 수행하지 않는다.
+**현재 상태:** 설치 migration 구현·Windows 검증은 게시 완료. Root frozen CI feedback의 게시·검증은 사용자 push 지시로 승인되었으며, 새 head의 결과와 High thread 상태는 PR 본문을 따른다. 이전 승인 대기는 역사적 기록이다. Merge·Draft 해제는 승인되지 않았으므로 수행하지 않는다.
