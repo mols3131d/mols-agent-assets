@@ -34,11 +34,11 @@ Skill을 선택한 작업자는 서로 다른 repository/tool manager에서도 �
 ## Durable decisions
 
 1. **설계 Skill은 실행 스크립트가 아니다.** Script 설치·업데이트를 직접 수행하는 것은 사용자와 대상 repository가 별도로 요청·허용하는 작업이다. 일반 dependency update와 CI-only workflow design을 포괄하면 activation이 흐려진다.
-2. **Setup은 미지의 최신 버전을 탐색하지 않는다.** 승인된 locked state에 맞추는 작업과 새 버전의 resolve/promote는 별도 intent다. Exact pin, prefix/range, floating Git ref를 동일하게 취급하지 않는다.
-3. **'미설치'는 설치 권한이 아니다.** Bootstrap entrypoint가 없으면 그 안에서 자기 자신을 설치할 수 없다. Host prerequisite는 사람에게 경로를 제시한다. Tool manager의 사용자 공유 cache와 외부 native installer도 일반 project-local package 설치처럼 취급하지 않는다.
-4. **부분 진척과 준비 완료는 다르다.** 독립 단계의 성공은 유용하지만 필수 의존성 누락 또는 검증 실패를 숨기지 않는다. 겉보기 간단함을 위해 전부 성공/전부 중단 중 하나로 강제하지 않는다.
-5. **Native owner 우선.** 이미 tool manager가 잠금, range, update, install, validation을 제공한다면 동일 동작을 custom YAML, wrapper, 범용 framework로 재구현하지 않는다. Wrapper가 필요하면 사전에 관찰된 orchestration/reporting gap을 근거로 한정한다.
-6. **가장 작은 deployable package.** 모든 설계에서 함께 필요한 판단은 하나의 `SKILL.md`에 둔다. 분명한 조건부 loading 가치가 생기기 전에는 references나 script를 분할하지 않는다. 이 README는 유지보수 대상이지 runtime resource가 아니다.
+1. **Setup은 미지의 최신 버전을 탐색하지 않는다.** 승인된 locked state에 맞추는 작업과 새 버전의 resolve/promote는 별도 intent다. Exact pin, prefix/range, floating Git ref를 동일하게 취급하지 않는다.
+1. **'미설치'는 설치 권한이 아니다.** Bootstrap entrypoint가 없으면 그 안에서 자기 자신을 설치할 수 없다. Host prerequisite는 사람에게 경로를 제시한다. Tool manager의 사용자 공유 cache와 외부 native installer도 일반 project-local package 설치처럼 취급하지 않는다.
+1. **부분 진척과 준비 완료는 다르다.** 독립 단계의 성공은 유용하지만 필수 의존성 누락 또는 검증 실패를 숨기지 않는다. 겉보기 간단함을 위해 전부 성공/전부 중단 중 하나로 강제하지 않는다.
+1. **Native owner 우선.** 이미 tool manager가 잠금, range, update, install, validation을 제공한다면 동일 동작을 custom YAML, wrapper, 범용 framework로 재구현하지 않는다. Wrapper가 필요하면 사전에 관찰된 orchestration/reporting gap을 근거로 한정한다.
+1. **가장 작은 deployable package.** 모든 설계에서 함께 필요한 판단은 하나의 `SKILL.md`에 둔다. 분명한 조건부 loading 가치가 생기기 전에는 references나 script를 분할하지 않는다. 이 README는 유지보수 대상이지 runtime resource가 아니다.
 
 ## Review / validation
 
@@ -47,6 +47,10 @@ Skill을 선택한 작업자는 서로 다른 repository/tool manager에서도 �
 **비적용 사례:** lockfile의 개별 package 한 건 업데이트, OS에 도구 한 개 설치, CI admission gate만 설계. 이름이 유사한 bootstrap script 관련 task라 해도 lifecycle **설계 또는 리뷰**가 핵심이 아니면 이 Skill을 호출할 이유가 없다.
 
 유지보수 시에는 해당 사례로 description selection과 행동 계약을 별도로 검토한다. Skill `name`과 package path, 배포용 generated route 일치 및 Rulesync structural validation을 확인한다. 정적·의미 검토 결과를 실제 tool execution이나 runtime behavioral eval 통과로 표시하지 않는다.
+
+## Repository application
+
+이 저장소에서의 적용 예시는 [mise bootstrap 안내](../../references/tooling/mise.md)와 [`development_bootstrap.py`](../../../scripts/development_bootstrap.py)가 소유한다. Exact tool pin 유지, bounded Python update, HOME/hook/projection의 기본 분리는 이 repository의 선택이며 portable Skill의 필수 도구·CLI가 아니다. 해당 runner의 deterministic test success를 Skill activation 또는 runtime behavioral eval 통과로 취급하지 않는다.
 
 ## Upstream references
 

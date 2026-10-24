@@ -1,6 +1,14 @@
 # 개발환경 부트스트랩 개편 명세 (Draft)
 
-> 대상: [PR #256](https://github.com/mols3131d/mols-agent-assets/pull/256). 이 문서는 제안된 구현 계약이며 **현재 동작을 서술하는 운영 지침이 아니다.** 적용된 사실은 `mise.toml`과 실제 스크립트·lockfile이 소유한다.
+> 대상: [PR #256](https://github.com/mols3131d/mols-agent-assets/pull/256). 이 문서는 원래의 설계 계약과 후속 구현 범위를 구분하는 작업 자료다. **운영 지침은 [mise](../../docs/references/tooling/mise.md)**, 실행 동작은 `mise.toml`과 실제 스크립트·lockfile이 소유한다.
+
+## 구현 상태 — 2026-10-25
+
+- `setup`/`update`를 [`development_bootstrap.py`](../../scripts/development_bootstrap.py)의 좁은 orchestration으로 연결했다. Setup은 exact CLI pin 설치·버전 검증과 locked uv sync, update는 기존 Python dependency constraints의 native resolution을 수행한다.
+- Tool prefix/range 확대와 `mise.lock`은 **도입하지 않았다.** 모든 exact pin과 외부 Asset revision은 유지하며, 향후 range를 도입하면 먼저 locked install·platform/npm sidecar 검증을 추가해야 한다.
+- User HOME Skill·Git hook뿐 아니라 기존 projection의 소유권을 확정하기 어려운 Rulesync 설치·생성도 기본 실행에서 분리했다. Core 준비 성공은 `DEGRADED`로 보고하고 선택적 기능을 준비됐다고 주장하지 않는다.
+- 최초 mise/uv/Python은 사용자가 명시적으로 준비한다. Task pre-install을 끄고 인자를 단일 parser로 전달하며, runner는 외부 venv/junction·dirty update lock·같은 checkout의 동시 실행을 차단한다.
+- 아래의 범위·OS·성능·전체 연동 수용 조건은 **원래 목표**다. Deterministic test와 실제 Windows CLI 검증을 전체 host bootstrap·native installer·Skill runtime eval 성공으로 확대하지 않는다.
 
 ## Goal
 
@@ -80,10 +88,10 @@ Git branch `main` 같은 이동 ref는 명시적인 SemVer 허용 범위가 아�
 `setup`과 `update`는 preflight → eligible tasks 실행 → 결과 요약 순서로 구성한다.
 
 1. **Preflight:** 현재 root/ref, 영향을 받는 tracked lockfile의 수정 여부, 필수 host tool, 네트워크 요구, 작업별 설치 영역·권한, 허용 범위를 확인한다. 사용자가 수정 중인 lockfile이나 hook을 조용히 덮어쓰지 않는다.
-2. **Resolve:** `setup`은 변경 없는 lock 조회. `update`만 도구 및 패키지의 최신 허용 해석 결과를 lock에 반영하며, 해석 실패나 범위 위반이면 대상 업데이트를 중단한다.
-3. **Apply:** 해당 도구가 충족된 독립 단계만 실행한다. 일단 실패한 의존성을 요구하는 후속 단계는 수행하지 않는다. 설치·생성·hook·user-level Skill 등 변경 경계를 로그에서 구분한다.
-4. **Verify:** 실제 실행 가능한 도구·프로젝트 의존성을 최소 검증한다. 설치 자체가 끝났다는 사실을 정상 작동의 충분한 증거로 보지 않는다.
-5. **Report:** 성공, 기존 상태 유지, 업데이트, skip, 실패와 수동 복구 명령을 단계별로 보여준다. 가능하면 machine-readable 상태도 지원하되 필수 로그 경로를 추가하지 않는다.
+1. **Resolve:** `setup`은 변경 없는 lock 조회. `update`만 도구 및 패키지의 최신 허용 해석 결과를 lock에 반영하며, 해석 실패나 범위 위반이면 대상 업데이트를 중단한다.
+1. **Apply:** 해당 도구가 충족된 독립 단계만 실행한다. 일단 실패한 의존성을 요구하는 후속 단계는 수행하지 않는다. 설치·생성·hook·user-level Skill 등 변경 경계를 로그에서 구분한다.
+1. **Verify:** 실제 실행 가능한 도구·프로젝트 의존성을 최소 검증한다. 설치 자체가 끝났다는 사실을 정상 작동의 충분한 증거로 보지 않는다.
+1. **Report:** 성공, 기존 상태 유지, 업데이트, skip, 실패와 수동 복구 명령을 단계별로 보여준다. 가능하면 machine-readable 상태도 지원하되 필수 로그 경로를 추가하지 않는다.
 
 권장 최종 상태:
 
@@ -129,4 +137,4 @@ Git branch `main` 같은 이동 ref는 명시적인 SemVer 허용 범위가 아�
 
 - 현재 구현: [mise.toml](../../mise.toml), [skills_sync.py](../../scripts/agent_assets/skills_sync.py), [mise reference](../../docs/references/tooling/mise.md), [skills CLI reference](../../docs/references/tooling/skills-cli.md)
 - 외부 계약: [mise lockfile](https://mise.jdx.dev/dev-tools/mise-lock.html), [mise upgrade](https://mise.jdx.dev/cli/upgrade.html), [mise task auto-install](https://mise.jdx.dev/dev-tools/), [uv locking/sync](https://docs.astral.sh/uv/concepts/projects/sync/)
-- 이번 PR에서 현재 구현 일부를 설명하고 재사용 Skill 초안과 distribution route를 추가했다. **setup/update runtime 개편, mise.lock 생성, 업데이트 동작 및 회귀 테스트는 아직 구현·실행되지 않았다.** Skill의 구조 검증·실제 라우팅 및 행동 평가는 수행한 근거만 별도로 보고한다.
+- 설계·조사와 독립적인 Skill 초안 이후, 이 문서 상단의 제한된 setup/update 구현과 deterministic 회귀 테스트를 추가했다. `mise.lock`·tool range 확대·자동 projection/hook/native installer는 미포함이다. 실제 다중 OS cold/warm bootstrap과 Skill runtime behavior는 아직 검증하지 않았으며 PR에서 수행한 근거와 구분한다.

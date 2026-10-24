@@ -7,15 +7,18 @@ lefthook = "2.1.10"
 "npm:rulesync" = "16.24.1"
 "npm:skills" = "1.5.23"
 
+[settings]
+task.run_auto_install = false
+
 [tasks.setup]
-description = "Install project dependencies, Agent Skills, and Git hooks"
-run = [
-  "uv sync --all-groups",
-  "rulesync install --frozen",
-  "rulesync generate",
-  "uv run python scripts/agent_assets/skills_sync.py",
-  "lefthook install",
-]
+description = "Reconcile pinned tools and locked Python; leave shared integrations manual"
+raw_args = true
+run = "uv run --no-project --no-python-downloads python scripts/development_bootstrap.py setup"
+
+[tasks.update]
+description = "Update Python within declared constraints; retain exact tool and asset pins"
+raw_args = true
+run = "uv run --no-project --no-python-downloads python scripts/development_bootstrap.py update"
 
 [tasks.skills-sync]
 description = "Sync locked external Skills through source-native installers"

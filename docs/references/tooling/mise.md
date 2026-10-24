@@ -1,6 +1,6 @@
 ---
 title: mise
-description: 이 저장소에서 tool version·task entrypoint를 어디에 고정할지, mise와 uv의 ownership을 어떻게 나눌지 확인하거나 setup·check·test·format 명령을 찾을 때 사용합니다.
+description: 이 저장소의 mise·uv 소유권, setup/update의 exact pin·lock·설치 권한, 최초 준비와 실패 복구, 선택적 Skill·hook 연동 경계를 확인할 때 사용합니다.
 ---
 
 # mise
@@ -14,24 +14,63 @@ Repository tool version authority는 root [`mise.toml`](../../../mise.toml)입�
 
 Python을 `mise.toml`에 중복 선언하지 않습니다. Non-Python tool을 Python dependency group에 넣지 않습니다. npm backend로 관리하는 CLI는 `mise.toml`에서 exact version을 pin하며 repository task는 `@latest`를 직접 호출하지 않습니다.
 
-## Current bootstrap boundary
+## First use
 
-현재 `mise run setup`은 Python 의존성 동기화, Rulesync 설치·생성, 외부 Skill 동기화와 Git Hook 설치를 순서대로 수행합니다. 개발 중 사용할 **허용 버전 범위 내 최신 업데이트**를 전담하는 별도 task는 아직 없습니다. 현재 `mise.toml`의 도구 버전은 exact pin이며, 업데이트 정책과 실제 설치·적용 동작을 혼동하지 않습니다.
+Repository root에서 시작합니다. `mise`는 [공식 설치 안내](https://mise.jdx.dev/getting-started.html)에 따라 사용자가 먼저 설치하고 repository config의 신뢰 여부를 판단합니다. Task가 시작하기 전의 자동 도구 설치는 `task.run_auto_install = false`로 끕니다. 누락된 host tool을 OS package manager나 remote shell installer로 자동 설치하지 않습니다.
 
-`mise` 자체나 system package manager, Git·Bash와 같은 host prerequisite는 repository-local Python dependency와 구분합니다. 기존 `setup`은 user-level Skill installer도 실행하므로 초기 설치는 실행 전에 side effect 범위를 확인해야 합니다.
-
-## Common entry points
+`setup` 자체를 시작하려면 `uv`와 [`.python-version`](../../../.python-version)의 Python이 이미 필요합니다. 이 최초 준비는 관리형 도구·Python cache 쓰기를 승인한 뒤 명시적으로 수행합니다.
 
 ```bash
-mise install
+mise install uv
+mise exec uv -- uv python install
+mise run setup --dry-run
 mise run setup
-mise run skills-sync
-mise run check
-mise run test
-mise run format
 ```
 
-외부 Skill dependency의 lock과 source-native 동기화 경계는 [skills CLI](skills-cli.md)를 따릅니다.
+`mise exec uv`는 전체 toolchain 대신 선언된 uv만 선택합니다. 최초 준비를 생략하면 help도 시작하지 못할 수 있으며, 출력된 missing prerequisite를 먼저 해결합니다. 직접 실행할 수 있는 Python 3.13 이상이 있다면 `python scripts/development_bootstrap.py setup --dry-run`으로 mise/uv 진입 전 계획을 확인할 수도 있습니다.
+
+## Setup, update and diagnosis
+
+두 task는 단일 명령과 `raw_args`를 사용하며, [`development_bootstrap.py`](../../../scripts/development_bootstrap.py)가 인자 검증·경로 보호·실패 집계를 소유합니다. `--help`와 `--dry-run`만 공개하며 `--yes`, `--force`, `--global` 등은 실행 전 거부합니다.
+
+| Command | 동작 |
+| --- | --- |
+| `mise run setup` | 기존 exact CLI pin 설치·실행 버전 검증 후 `uv sync --locked --all-groups`, `uv sync --check` |
+| `mise run update` | clean policy/lock을 확인하고 `uv lock --upgrade`로 기존 Python dependency constraint 안에서 해석한 뒤 setup과 같은 sync·검증 |
+| `mise run setup --dry-run` / `mise run update --dry-run` | 안전 조건과 실행 계획만 표시. 후보 버전 해석·설치·lock 갱신 없음 |
+| `mise run check` / `mise run test` | 기존 toolchain/lock 검사와 deterministic tests. update의 대체 경로가 아님 |
+| `mise run format-changed` | 변경된 파일만 기존 formatter로 정규화 |
+
+현재 CLI 정책은 모두 exact pin이므로 `update`도 CLI 버전을 바꾸지 않습니다. `mise.lock`과 npm dependency sidecar의 검증 경로를 도입하기 전에는 prefix/range tool request를 거부합니다. Python package의 허용 범위는 [`pyproject.toml`](../../../pyproject.toml)이 소유하며 wrapper는 별도 범위를 만들지 않습니다. Rulesync/Skill source revision은 일반 update에서 유지합니다.
+
+Setup은 policy/lock을 갱신하지 않습니다. Update는 기존 미커밋 policy/lock이 있으면 차단하며, 갱신된 `uv.lock`을 자동 commit하거나 rollback하지 않습니다. 작업 도중의 변경도 감지하되 다른 process가 파일을 바꾸는 모든 race를 격리하는 sandbox는 아닙니다.
+
+### Installation scope and recovery
+
+- 승인된 기본 쓰기는 **mise-managed tool/cache**와 repository **`.venv`**입니다. 네트워크·공유 cache 접근은 필요할 수 있습니다. Python 자동 다운로드는 끄며 interpreter 누락 시 최초 준비를 명시적으로 수행합니다.
+- `UV_PROJECT_ENVIRONMENT`가 다른 환경을 가리키거나 `.venv`/package·실행 디렉터리가 외부 symlink/junction이면 차단합니다. 활성 foreign venv와 project/config override는 child process에서 제거합니다.
+- Native tool은 exact request로 경로와 실행 버전을 확인합니다. npm CLI는 설치된 package metadata에서 bin을 찾고 pinned Node로 실행하여 Windows `.cmd` shim을 직접 실행하지 않습니다. Package 내부의 동작까지 sandbox로 제한하지는 않습니다.
+- Node 실패 시 npm 단계는 건너뛰되 uv/Python 등 독립 단계는 계속합니다. 필수 실패는 `FAILED`/`BLOCKED`, nonzero입니다. Core 검증만 통과하면 선택적 연동이 미검증이므로 `DEGRADED`, exit 0이며 전체 준비 완료라고 표시하지 않습니다.
+- 같은 checkout의 동시 실행은 `.tmp/bootstrap.lock`으로 차단합니다. 정상 종료·Ctrl-C는 자기 lock만 해제합니다. 강제 종료로 남은 lock은 해당 process가 끝났는지 확인한 뒤 수동 정리합니다. 다른 worktree의 공용 mise cache는 native manager 책임이며 HOME 설치를 병렬 실행하지 않습니다.
+- 실패하면 표시한 native 명령을 직접 점검하고 policy/lock diff를 보존한 채 setup을 재실행합니다. 사용자 파일 삭제, `git clean`/reset, hook 덮어쓰기, 전역 설정 변경은 하지 않습니다.
+
+`--dry-run`은 **runner의 read-only 계획**이지 resolver 후보 preview나 전체 host 무변경 보장이 아닙니다. Mise config 평가·trust와 uv의 interpreter/cache probing은 script 이전 경계입니다. 그 경계까지 제외하려면 이미 설치된 Python으로 script를 직접 실행합니다. `mise run --dry-run setup`은 mise task 자체의 preview이므로 bootstrap의 안전 진단과도 다릅니다.
+
+### Optional integrations
+
+기본 setup/update는 Rulesync 설치·projection, 외부 native Skill installer, Git hook 설치를 실행하지 않습니다. 기존 source/대상·symlink/custom 파일·Git shared config를 검토한 뒤 아래 경로를 **별도로** 실행합니다.
+
+```bash
+rulesync install --frozen
+rulesync generate --dry-run
+# 출력 대상과 기존 파일을 검토한 뒤 rulesync generate
+mise run skills-sync
+# core.hooksPath와 기존 hook을 검토한 뒤 lefthook install
+```
+
+외부 Skill dependency의 lock과 source-native 동기화 경계는 [skills CLI](skills-cli.md)를 따릅니다. `skills-sync`는 기존 명시적 실행 경로이며 HOME 쓰기·native installer의 권한을 sandbox로 제한하거나 설치 결과를 보증하는 새 기능이 아닙니다.
+
+**검증 범위:** Windows에서 mise 인자 전달, runner의 격리 fixture·symlink/junction·부분 실패 테스트를 확인했습니다. 로컬 wheel만 제공하는 실제 uv fixture에서 범위 밖 `2.0.0` 대신 허용된 `1.1.0` 선택, sync/check와 setup 재실행의 lock 보존도 확인합니다. 실제 사용자 HOME installer, cold/warm toolchain 전체 설치, Linux/macOS/WSL host smoke와 Skill runtime eval은 별도 검증이 필요합니다.
 
 Promptfoo처럼 Node runtime이 필요한 기존 command는 mise environment에서 실행합니다.
 
