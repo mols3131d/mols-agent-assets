@@ -5,6 +5,8 @@ description: 이 저장소의 mise·uv 소유권, setup/update의 exact pin·loc
 
 # mise
 
+이 문서는 **mise·uv의 실제 사용법과 통합 동작 안내**입니다. 개발환경 구축·복구·업데이트 및 **사용자 설치 허가의 운영 정책 정본은 [Development Environment](../../development/development-environment.md)**입니다. 에이전트가 설치 명령을 실행하기 전에 해당 정책의 명시적 허가 절차를 적용합니다.
+
 Repository tool version authority는 root [`mise.toml`](../../../mise.toml)입니다. Python 자체의 version과 dependency environment는 uv가 소유합니다.
 
 | Owner | Scope |
