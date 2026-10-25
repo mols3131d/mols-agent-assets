@@ -19,6 +19,14 @@ Trigger는 expected selection과 deterministic하게 비교하며 Skill body를 
 
 현재 fixture는 **11건**이다. 설계 전용 책임·기존 도구 재사용·사용자 설치 허가를 판단하는 behavior case가 과거 10-case에 추가됐다. 실제 도구 설치 및 승인 준수는 이 프롬프트 평가만으로 입증되지 않는다.
 
+## Portability coverage
+
+평가는 [범용 재사용 범위](README.md#portability)에 맞춰, 서로 다른 저장소·기술 스택·도구 조합에서도 대상 프로젝트의 기존 정책과 native owner를 따르며 설계 계약을 유지하는지 확인해야 한다. 이 저장소에 적용한 결과만으로 범용성의 성공 여부를 판정하지 않는다.
+
+현재 11건에는 Python/uv와 Node/Volta/pnpm 등의 설계 시나리오가 포함된다. 이는 대표 입력 사례이며 다른 저장소의 실제 실행이나 모든 스택·도구 조합의 호환성을 검증한 결과는 아니다. 지원·성능 주장은 실제 평가한 조합과 claim에 맞는 근거로 한정한다. 추가 사례는 필요한 재사용 범위나 관찰된 실패에 근거해 선택한다.
+
+Promptfoo/Ollama, 실행용 Node/Python과 이 저장소의 npm 진입점은 현재 평가 harness의 구성이다. 배포된 Skill을 적용하는 다른 프로젝트의 필수 도구나 설치 절차로 전제하지 않는다.
+
 ## Run locally
 
 이미 사용 가능한 Ollama 모델을 선택한 뒤 repository root에서 실행한다. 기본 runtime/grader 이름에 해당하는 모델이 설치되어 있다고 가정하지 않는다.

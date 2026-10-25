@@ -1,12 +1,20 @@
 ---
-description: mols-dev-env-bootstrap-design의 설계 의도, 재사용 경계, setup/update와 설치 권한의 불변 조건, 리뷰·검증 방법을 유지보수할 때 사용합니다.
+description: mols-dev-env-bootstrap-design의 저장소·기술 스택·도구에 독립적인 재사용 범위, 설계 의도와 검증 경계를 유지보수할 때 사용합니다.
 ---
 
 # Developer Environment Bootstrap Design — Maintainer Guide
 
-`mols-dev-env-bootstrap-design`은 개발환경 부트스트랩의 **설계와 리뷰, 구현 준비 인계**만을 담당하는 재사용 Skill이다. 실제 구현은 에이전트의 일반 엔지니어링 역량과 대상 프로젝트의 지침이 담당하며, Skill 자체가 설치 작업을 실행하지 않는다. 처음 환경을 설정하고, 개발 중 반복적으로 상태를 맞추며, **사전에 승인된 버전 범위 안에서만 명시적으로 업데이트**하도록 설계할 때 사용한다.
+`mols-dev-env-bootstrap-design`은 **이 저장소뿐 아니라 다른 저장소, 다른 기술 스택과 도구 조합에서도 재사용하는 범용 Skill**이다. 개발환경 부트스트랩의 **설계와 리뷰, 구현 준비 인계**를 담당한다. 실제 구현은 에이전트의 일반 엔지니어링 역량과 대상 프로젝트의 지침이 담당하며, Skill 자체가 설치 작업을 실행하지 않는다. 처음 환경을 설정하고, 개발 중 반복적으로 상태를 맞추며, **사전에 승인된 버전 범위 안에서만 명시적으로 업데이트**하도록 설계할 때 사용한다.
 
 실행 행동은 [SKILL.md](../../../src/rulesync/.rulesync/skills/mols-dev-env-bootstrap-design/SKILL.md)가 소유한다. 이 문서는 **왜 이런 책임을 선택했는지, 무엇을 보존해야 하는지, 어떻게 검토하는지**를 기록한다. 실행 절차를 다른 authority로 중복하지 않는다.
+
+## Portability
+
+- **대상 프로젝트 기준:** 각 저장소의 지침, 개발환경 문서 또는 동등한 기존 정책과 설정을 따른다. 이 저장소의 디렉터리, task, CI나 실행기를 적용 대상에 전제하지 않는다.
+- **기술 스택·도구 독립성:** 대상의 언어, 버전·패키지 관리자와 기존 CLI/API가 소유하는 선언·잠금·설치·업데이트 계약을 활용한다. 특정 스택으로의 전환이나 새 resolver·installer·설정 체계를 요구하지 않는다. Native 도구의 재현성 한계는 한계로 보고한다.
+- **예시와 의존성 구분:** `mise`·`uv`·`Rulesync`·`npm`, Python 또는 Volta/pnpm은 적용·평가 사례다. 이를 사용하지 않는 프로젝트에도 같은 설계 책임을 적용할 수 있으며, 이 도구들은 Skill의 필수 의존성이 아니다.
+
+범용성은 유지보수·개선 시 보존해야 할 설계 목표다. 실제 성능은 [Evaluation](evaluation.md)에 기록한 저장소·스택·도구·모델·런타임과 측정 범위 안에서 판단한다. 한 조합의 성공을 다른 모든 조합의 검증 완료로 확대하지 않는다.
 
 ## Design goals
 
@@ -29,7 +37,7 @@ Skill을 선택한 작업자는 서로 다른 repository/tool manager에서도 �
 | 구현 코드, native integration, 테스트와 실행 로그 | 대상 프로젝트의 implementation/verification surface |
 | 설계 의도·이식성·변경시 검토해야 할 불변 조건 | 이 유지보수 문서 |
 
-특히 **권한은 스킬에서 생성되지 않는다.** 설계자가 tool-managed 설치를 합리적이라고 평가해도 현재 프로젝트·사용자 권한이 없는 OS/global/user-shared 변경을 실행해도 된다는 뜻은 아니다. `mise`·`uv`·`Rulesync`·`npm`은 적용 예시일 뿐 required dependency가 아니다.
+특히 **권한은 스킬에서 생성되지 않는다.** 설계자가 tool-managed 설치를 합리적이라고 평가해도 현재 프로젝트·사용자 권한이 없는 OS/global/user-shared 변경을 실행해도 된다는 뜻은 아니다.
 
 ## Durable decisions
 
