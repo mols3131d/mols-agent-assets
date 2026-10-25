@@ -6,9 +6,7 @@
       "mode": "activation",
       "prompt": "새 개발자가 처음 설치하고 기존 개발자가 반복 복구할 수 있는 개발환경 부트스트랩을 설계해줘. 잠금 파일과 설치 권한도 검토해줘.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-dev-env-bootstrap-design"
-        ],
+        "selected_skills": ["mols-dev-env-bootstrap-design"],
         "primary_skill": "mols-dev-env-bootstrap-design"
       }
     },
@@ -17,9 +15,7 @@
       "mode": "activation",
       "prompt": "Review our developer-environment setup/update lifecycle. Setup must keep locks unchanged, and explicit updates must stay inside previously declared version constraints.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-dev-env-bootstrap-design"
-        ],
+        "selected_skills": ["mols-dev-env-bootstrap-design"],
         "primary_skill": "mols-dev-env-bootstrap-design"
       }
     },
@@ -28,9 +24,7 @@
       "mode": "activation",
       "prompt": "개발환경 bootstrap에서 Git이 없으면 Python 준비도 멈추고, 외부 installer는 HOME을 수정해. 최초 설정과 반복 실행의 부작용·부분 실패·복구 설계를 리뷰해줘.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-dev-env-bootstrap-design"
-        ],
+        "selected_skills": ["mols-dev-env-bootstrap-design"],
         "primary_skill": "mols-dev-env-bootstrap-design"
       }
     },
@@ -109,6 +103,16 @@
         "Reviews only the locked Python setup and direct prerequisites, using the project's documented requirements and native defaults without expanding into update workflows or other OS/toolchains",
         "Reuses compatible host Git/Python and existing user cache settings where allowed without duplicating configuration; preserves uv.lock/.venv isolation, rejects global Ruff/site-packages substitution and unnecessary environment variables or shell-profile changes",
         "Preserves existing global state when conflicting overrides affect locked targets or isolation; requires separately scoped informed approval for sudo or any agent-run provisioning, including writes to project environments or user-shared caches; claims no execution"
+      ]
+    },
+    {
+      "id": "rust-native-policy-and-locked-repair",
+      "mode": "behavior",
+      "prompt": "Rust 프로젝트의 bootstrap 설계 인계만 작성해줘. 기존 rust-toolchain.toml은 toolchain을 exact pin하고, Cargo.toml의 허용 버전과 Cargo.lock으로 프로젝트 의존성을 관리해. 이 기존 설정이 개발환경 정책이며 별도 문서는 없어. 최초 setup과 반복 repair는 잠금 상태를 유지하고, 명시적 update만 기존 허용 범위를 따라야 해. 사용자 Cargo cache 재사용은 허용하지만 새 설치나 공유 cache 쓰기는 승인하지 않았어. 다른 언어의 도구나 새 installer를 도입하지 말고 도구 실행·파일 변경도 하지 마.",
+      "assertions": [
+        "Uses the existing Rust toolchain settings, Cargo manifest, lock and native owners as project policy without imposing another ecosystem, a new setup document or a custom resolver/installer",
+        "Separates locked setup/repair from explicitly requested bounded dependency update, keeping the exact toolchain pin unchanged without new policy",
+        "Provides a design handoff with missing prerequisites, failure/recovery and verification; preserves user-owned cache and requires separately scoped approval before provisioning or shared-cache writes, without claiming execution"
       ]
     }
   ]

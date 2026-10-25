@@ -6,6 +6,7 @@
     "rulesync:preview": "uv run --locked --no-default-groups python scripts/agent_assets/rulesync_run.py preview",
     "rulesync:validate": "uv run --locked --no-default-groups python scripts/agent_assets/rulesync_validate.py",
     "eval:promptfoo:mols-dev-env-bootstrap-design": "uv run --locked --no-default-groups --group test python scripts/agent_assets/promptfoo_run.py eval -c evals/promptfoo/mols-dev-env-bootstrap-design.yaml",
+    "eval:promptfoo:mols-dev-env-bootstrap-design:grader": "uv run --locked --no-default-groups --group test python scripts/agent_assets/promptfoo_run.py eval -c evals/promptfoo/mols-dev-env-bootstrap-design-grader.yaml",
     "eval:promptfoo:mols-test-design": "uv run python scripts/agent_assets/promptfoo_run.py eval --no-cache --no-write -c evals/promptfoo/mols-test-design.yaml",
     "eval:promptfoo:mols-test-design:trigger": "uv run python scripts/agent_assets/promptfoo_run.py eval --no-cache --no-write -c evals/promptfoo/mols-test-design.yaml --filter-metadata suite=trigger",
     "eval:promptfoo:mols-test-design:behavior": "uv run python scripts/agent_assets/promptfoo_run.py eval --no-cache --no-write -c evals/promptfoo/mols-test-design.yaml --filter-metadata suite=behavior",

@@ -1,5 +1,7 @@
 # 로컬 에이전트 인계 — PR #256 Skill 모델 Eval
 
+최신 후속 작업은 [Eval 개선 인계](bootstrap-eval-improvement-handoff-2026-10-25.md)를 따른다. 아래는 기존 11-case 실행 계획과 그 당시의 인계 기록이다.
+
 > 대상: `mols3131d/mols-agent-assets` · 브랜치: `mols/feat/dev-environment-bootstrap` · [PR #256](https://github.com/mols3131d/mols-agent-assets/pull/256) (Draft)
 >
 > **인계 실행 완료 / 행동 품질 미달.** 최신 11건을 두 로컬 모델로 실행하고 [결과·개별 기준 판정](bootstrap-eval-results-2026-10-25.md)을 남겼다. 자동 채점 위양성과 provider 오류를 구분했으며 Draft를 유지한다. 다음 과제는 grader 보정과 제한된 행동 개선이다. 아래 절차는 재평가 시 참고한다. 환경 부트스트랩 구현은 [PR #258](https://github.com/mols3131d/mols-agent-assets/pull/258)의 별도 작업.
