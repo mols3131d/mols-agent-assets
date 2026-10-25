@@ -18,4 +18,4 @@
 
 ## 검증 경계
 
-이번 변경은 **GitHub의 코드·테스트·문서 수정**이며 사용자 시스템에서 설치·갱신하지 않았다. 기존 PR Gate 315 tests 성공은 과거 revision의 근거다. 새 회귀 테스트 및 최종 PR Gate 결과는 별도로 확인해야 한다. pinned mise/uv의 오염 환경과 Windows/macOS/WSL cold-cache 실제 실행은 아직 검증하지 않았다. 상세 작업 순서는 [구현 인계](implementation-handoff.md)에 둔다.
+이번 변경은 **GitHub의 코드·테스트·문서 수정**이며 사용자 시스템에서 설치·갱신하지 않았다. 기존 PR Gate 315 tests 성공은 과거 revision의 근거다. 새 회귀 테스트를 포함한 [PR Gate #40191470826](https://github.com/mols3131d/mols-agent-assets/actions/runs/40191470826)은 코드·테스트·초기 인계 커밋 `a6c181708d21b46d143c7335994877bbe43094a2`에서 **320 tests passed / 성공**이었다. 후속 문서 커밋의 CI는 별도 결과로 구분한다. pinned mise/uv의 오염 환경과 Windows/macOS/WSL cold-cache 실제 실행은 아직 검증하지 않았다. 상세 작업 순서는 [구현 인계](implementation-handoff.md)에 둔다.
