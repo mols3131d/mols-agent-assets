@@ -42,7 +42,9 @@ def native(monkeypatch):
         calls.append((args, kwargs))
         output = ""
         code = 0
-        if args[1:3] == ["status", "--porcelain"]:
+        if args[1:3] == ["rev-parse", "--show-toplevel"]:
+            output = str(kwargs["cwd"])
+        elif args[1:3] == ["status", "--porcelain"]:
             output = ""
         elif args[1] == "install":
             code = int(args[2] in failed)
@@ -135,7 +137,8 @@ def test_plan_does_not_install_resolve_or_create_state(project, native, mode, ca
     assert bootstrap.main([mode, "--dry-run"], root=project) == 0
     assert sorted(path.relative_to(project) for path in project.rglob("*")) == before
     assert all(
-        command[0] == "git" and command[1] == "status" for command in commands(native)
+        command[0] == "git" and command[1] in {"rev-parse", "status"}
+        for command in commands(native)
     )
     assert "Result: PLAN" in capsys.readouterr().out
 
@@ -291,13 +294,88 @@ def test_failed_verification_does_not_report_ready(project, native, capsys):
     assert "sensitive output hidden" not in output
 
 
+@pytest.mark.parametrize("key", ["GIT_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE"])
+def test_foreign_git_selection_cannot_hide_dirty_update(
+    project, native, monkeypatch, key
+):
+    monkeypatch.setenv(key, str(project.parent / "another-repository"))
+    monkeypatch.setenv("GIT_CONFIG_GLOBAL", str(project.parent / "user.gitconfig"))
+    original_run = bootstrap.subprocess.run
+
+    def run(args, **kwargs):
+        if args[:2] == ["git", "status"]:
+            assert key not in kwargs["env"]
+            assert kwargs["env"]["GIT_CONFIG_GLOBAL"] == str(
+                project.parent / "user.gitconfig"
+            )
+            return subprocess.CompletedProcess(args, 0, " M uv.lock\\n", "")
+        return original_run(args, **kwargs)
+
+    monkeypatch.setattr(bootstrap.subprocess, "run", run)
+    assert bootstrap.main(["update"], root=project) == 1
+    assert not any(args[1] == "install" for args in commands(native))
+    assert (project / "uv.lock").read_text(encoding="utf-8") == "original\\n"
+
+
+def test_update_rejects_mismatched_git_worktree(project, native, monkeypatch):
+    original_run = bootstrap.subprocess.run
+
+    def run(args, **kwargs):
+        if args[:2] == ["git", "rev-parse"]:
+            return subprocess.CompletedProcess(args, 0, str(project.parent), "")
+        return original_run(args, **kwargs)
+
+    monkeypatch.setattr(bootstrap.subprocess, "run", run)
+    assert bootstrap.main(["update"], root=project) == 1
+    assert not any(args[1] == "install" for args in commands(native))
+
+
+@pytest.mark.parametrize("key,value", [("UV_NO_GROUP", "dev"), ("UV_NO_DEV", "1")])
+def test_uv_group_exclusions_do_not_change_core_sync(
+    project, native, monkeypatch, key, value
+):
+    monkeypatch.setenv(key, value)
+    monkeypatch.setenv("HTTPS_PROXY", "http://example.invalid:3128")
+    assert bootstrap.main(["setup"], root=project) == 0
+    sync_calls = [
+        (args, kwargs)
+        for args, kwargs in native[0]
+        if len(args) > 1 and args[1] == "sync"
+    ]
+    assert len(sync_calls) == 2
+    for args, kwargs in sync_calls:
+        assert key not in kwargs["env"]
+        assert kwargs["env"]["HTTPS_PROXY"] == "http://example.invalid:3128"
+        assert "--all-groups" in args
+    assert any(key in kwargs["env"] for args, kwargs in native[0] if args[1] == "install")
+
+
+@pytest.mark.parametrize("system_packages,expected", [(True, 1), (False, 0)])
+def test_existing_venv_system_site_packages_isolated(
+    project, native, system_packages, expected
+):
+    target = project / ".venv"
+    target.mkdir()
+    config = target / "pyvenv.cfg"
+    original = (
+        "home = python\\ninclude-system-site-packages = "
+        + ("true" if system_packages else "false")
+        + "\\n"
+    )
+    config.write_text(original, encoding="utf-8")
+    assert bootstrap.main(["setup"], root=project) == expected
+    assert config.read_text(encoding="utf-8") == original
+    if system_packages:
+        assert not native[0]
+
+
 def test_dirty_update_state_is_not_overwritten(project, native, monkeypatch):
     original = bootstrap.Bootstrap.command
 
-    def command(self, args):
+    def command(self, args, **kwargs):
         if args[1] == "status":
             return subprocess.CompletedProcess(args, 0, " M uv.lock\n", "")
-        return original(self, args)
+        return original(self, args, **kwargs)
 
     monkeypatch.setattr(bootstrap.Bootstrap, "command", command)
     assert bootstrap.main(["update"], root=project) == 1
@@ -310,8 +388,8 @@ def test_unexpected_policy_mutation_stops_without_rollback(
 ):
     original = bootstrap.Bootstrap.command
 
-    def command(self, args):
-        result = original(self, args)
+    def command(self, args, **kwargs):
+        result = original(self, args, **kwargs)
         if args[1] == "install":
             (self.root / "rulesync.lock").write_text("unexpected mutation")
         return result
