@@ -1,5 +1,6 @@
 [env]
 PYTHONUTF8 = "1"
+_.file = ".env"
 
 [tools]
 uv = "0.12.1"
