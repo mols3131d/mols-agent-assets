@@ -17,7 +17,7 @@ Trigger는 expected selection과 deterministic하게 비교하며 Skill body를 
 
 이 suite는 **capability 평가**다. 작은 단일 trial의 성공률을 regression gate나 다른 model/runtime의 보장으로 사용하지 않는다. Negative 요청에서 해당 Skill을 선택하지 않는 것은 의도한 성공이지 평가 누락이 아니다.
 
-**2026-10-25 추가:** 기존 10-case 실행 이후, 설계 전용 책임·기존 도구 재사용·사용자 설치 허가를 판단하는 behavior case를 더해 현재 fixture는 **11건**이다. 아래 수치는 변경 전 10-case에서 얻은 **과거 실행 근거**이며, 새 11-case suite를 재실행·통과했다는 뜻이 아니다. 실제 도구 설치 및 승인 준수는 이 프롬프트 평가만으로 입증되지 않는다.
+현재 fixture는 **11건**이다. 설계 전용 책임·기존 도구 재사용·사용자 설치 허가를 판단하는 behavior case가 과거 10-case에 추가됐다. 실제 도구 설치 및 승인 준수는 이 프롬프트 평가만으로 입증되지 않는다.
 
 ## Run locally
 
@@ -29,7 +29,20 @@ npm run eval:promptfoo:mols-dev-env-bootstrap-design
 
 `PROMPTFOO_RUNTIME_MODEL`과 `PROMPTFOO_GRADER_PROVIDER`를 명시하고, 필요하면 `-- --filter-metadata suite=trigger` 또는 `suite=behavior`로 분리한다. 네트워크 모델 다운로드는 이 평가의 자동 선행 작업이 아니다. 현재 공통 runner가 선택한 Promptfoo version·local/no-sharing 설정을 재사용한다.
 
-## Evidence and limitations
+## Current 11-case evidence
+
+2026-10-25, HEAD `81eb4579eac6b25b45878b31d86697863b3c25bd`의 한국어 Skill과 최신 fixture를 두 로컬 모델로 각각 1회 실행했다. Grader는 `ollama:chat:qwen2.5-coder:7b`로 고정했다. [실행 조건·사례별 근거](../../../inbox/github-256/bootstrap-eval-results-2026-10-25.md)에 원문 판정과 오류·채점 차이를 기록했다.
+
+| Target | Trigger | Behavior 자동 | Behavior 원문 기준 15개 |
+| --- | --- | --- | --- |
+| `nemotron-3-nano:4b` | 6/6 | 3 PASS / 1 FAIL / 1 ERROR | 충족 3 / 미충족 9 / 불명 3 |
+| `qwen2.5-coder:7b` | 3/6: negative 3건 모두 오선택 | 3 PASS / 2 FAIL | 충족 4 / 미충족 11 |
+
+자동 behavior PASS는 두 모델 모두 3건씩 위양성이었다. 필수 기준을 모두 충족한 behavior case는 없었다. OS 지원 증거 과장, 전역 Ruff 대체 수용, 설치 승인·부분 실패·복구 누락이 관찰됐다. Nemotron exact-pin case의 JSON parse error는 동일 조건 1회 재시도에서도 재현됐으며 모델의 의미 실패와 분리했다.
+
+이 결과는 작은 모델의 isolated prompt capability와 현재 grader의 한계를 보여 준다. 자동 점수로 안전성이나 merge readiness를 판단하지 않으며 native multi-Skill routing, 실제 설치·승인 이행 또는 OS 지원을 보장하지 않는다.
+
+## Historical 10-case evidence
 
 2026-10-25에 로컬 Ollama와 Promptfoo 0.122.0으로 실제 runtime을 실행했다. 첫 `qwen2.5-coder:7b` trigger trial은 positive 3/3, near-miss 0/3이었다. Broad topic keyword가 별도 activation처럼 읽히지 않도록 canonical description의 lifecycle-design 조건을 좁혔다.
 
