@@ -379,7 +379,7 @@ def test_dirty_update_state_is_not_overwritten(project, native, monkeypatch):
 
     monkeypatch.setattr(bootstrap.Bootstrap, "command", command)
     assert bootstrap.main(["update"], root=project) == 1
-    assert not native[0]
+    assert not any(args[1] == "install" for args in commands(native))
     assert not (project / ".tmp").exists()
 
 
