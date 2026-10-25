@@ -16,15 +16,13 @@ from contextlib import contextmanager
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-POLICY_FILES = (
+UPDATE_INPUTS = (
     "mise.toml",
     "pyproject.toml",
     ".python-version",
     "uv.lock",
-    "rulesync.jsonc",
-    "rulesync.lock",
-    "skills-lock.json",
 )
+POLICY_FILES = (*UPDATE_INPUTS, "rulesync.jsonc", "rulesync.lock", "skills-lock.json")
 TOOL_COMMANDS = {
     "uv": ("uv", "--version"),
     "node": ("node", "--version"),
@@ -204,12 +202,12 @@ class Bootstrap:
                 "environment and repository location first."
             )
         result = self.command(
-            [git, "status", "--porcelain", "--untracked-files=all", "--", *POLICY_FILES],
+            [git, "status", "--porcelain", "--untracked-files=all", "--", *UPDATE_INPUTS],
             env=git_env,
         )
         if result.returncode or result.stdout.strip():
             raise BootstrapError(
-                "update requires clean tracked policy/lock files; inspect Git status "
+                "update requires clean bootstrap inputs/lock; inspect Git status "
                 "and preserve or commit your work first."
             )
 
