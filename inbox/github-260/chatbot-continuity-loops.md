@@ -45,5 +45,5 @@
 - Canonical: `src/rulesync/.rulesync/skills/mols-chatbot-continuity/SKILL.md`
 - Conditional: `src/rulesync/.rulesync/skills/mols-chatbot-continuity/references/resumable-work.md`
 - Derived route: `route/skills.jsonl`. 재생성·정합성 검사는 기존 CI가 소유한다.
-- **검증**: GitHub PR Gate / Branch Check의 새 head 결과를 확인해야 한다. 정적 리뷰를 런타임 성능이나 모델 eval로 해석하지 않는다.
+- **검증**: 구현 revision `a500e7d6a435d6076f81df8060f99667bb14e619`에서 GitHub Actions PR Gate와 Branch Check가 모두 통과했다. 이 인계 기록 갱신 이후의 head는 PR의 최신 check로 확인한다. 구조 검사와 정적 리뷰는 런타임 성능이나 모델 eval이 아니다.
 - **다음 단계**: 사용자 도그푸딩에서 관찰되는 실제 오동작(예약 불가, 상태 접근 불가, 재시도·중단 실패, 불필요한 context 로딩)만 좁게 수정. 별도 행동 eval 없음.
