@@ -28,6 +28,25 @@
 - **다음 단계:** child 결론으로 parent 계획을 보강한 뒤 실행 안전성/재현성 게이트를 재검토하여 최종 계획을 검증한다.
 - **공유 카운터:** parent 첫 substantive Review 종료 시 `loops_used=1`. child는 같은 Run의 카운터를 이어받으며 새 Run/ceiling을 만들지 않는다.
 
-## Review 2 (parent)
+## Review 2 (parent, `loops_used=3`)
 
-후속 child 근거 반영 및 계획 업데이트 뒤 작성할 것. 현재 **pending**, 완료로 보고하지 않음.
+### Verify
+
+- Child `grader-calibration` 결과를 parent 실행 계획 v2에 반영했다. 각 criterion의 사람 판정, `0.8` grader score의 한계, 오류·판정 차이 분류와 최소 재실행 조건을 명시했다.
+- 평가 실행과 모델 다운로드는 아직 하지 않았다. 현재까지는 repository source에 대한 정적 근거만 있다.
+
+### Challenge → Reconcile
+
+- **absorb / High:** `promptfoo_run.py::build_env`는 `PROMPTFOO_CONFIG_DIR`, `PROMPTFOO_LOG_DIR`, `PROMPTFOO_CACHE_PATH`, `PROMPTFOO_PYTHON`을 `setdefault`로 지정한다. **이미 존재하는 사용자/전역 override는 보존**하므로 cache/log/python 경로가 반드시 `.tmp/promptfoo`로 격리된다고 단정할 수 없다. 이는 실행 영향·안전 승인의 근거를 바꾼다.
+- **absorb / Medium:** `npm/npx`, `uv`, Ollama endpoint도 공유 자원·네트워크·저장 공간을 사용할 수 있다. 최초 preflight와 11-case 평가의 `safe to start` 경계를 기존 도구의 경로/설치 상태에 근거해 확정해야 한다.
+- **reject:** 버전 관리자, 캐시 추적기, OS별 installer wrapper를 새로 만들면 위험 제어보다 유지비가 더 커진다. 기존 도구의 조회 기능과 프로젝트 정책으로 한정한다.
+
+### Dispatch
+
+- **재귀 child push 2:** `runtime-side-effects` — **기존 runner의 쓰기/네트워크/전역 설정 영향과 재현성**만을 조사·계획·리뷰한다. parent의 eval 계획/PR 범위와 권한 경계를 상속하며 실행은 하지 않는다.
+- **공유 카운터:** 지금까지 parent Review 1, child grader Review 1, parent Review 2 = `loops_used=3`. child는 이 카운터를 이어받는다.
+
+## Review 3 (parent)
+
+두 번째 child 결과와 최신 실행 계획을 검토한 뒤 기록할 것. 현재 **pending**.
+
