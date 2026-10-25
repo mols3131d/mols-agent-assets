@@ -4,7 +4,7 @@
 >
 > **성격:** 과업 실행량·조사 범위·검토 강도·산출물 범위에 대한 **정적 다관점 리뷰 및 개선 인계**. 저장소 운영 정책의 정본이나 모델 실행 결과가 아니다. 실제 작성 원본은 [SKILL.md](../../src/rulesync/.rulesync/skills/mols-dev-env-bootstrap-design/SKILL.md).
 >
-> **관련:** [기존 과설계/문구·구조 검토](bootstrap-overengineering-review-2026-10-25.md), [안전성 반례 보고서](bootstrap-isolation-review-2026-10-25.md), [개발환경 운영 정본](../../docs/development/development-environment.md). 이 문서는 특히 **스킬을 호출한 에이전트가 불필요한 일을 실제로 더 하게 되는지**에 초점을 둔다.
+> **관련:** [기존 과설계/문구·구조 검토](https://github.com/mols3131d/mols-agent-assets/blob/dfa9f45ce7da69673f08d3e53df88f5a7a23fe7d/inbox/github-258/bootstrap-overengineering-review-2026-10-25.md), [안전성 반례 보고서](https://github.com/mols3131d/mols-agent-assets/blob/dfa9f45ce7da69673f08d3e53df88f5a7a23fe7d/inbox/github-258/bootstrap-isolation-review-2026-10-25.md), [개발환경 운영 정본](https://github.com/mols3131d/mols-agent-assets/pull/258). 이 문서는 특히 **스킬을 호출한 에이전트가 불필요한 일을 실제로 더 하게 되는지**에 초점을 둔다.
 
 ## 결론
 
@@ -76,8 +76,8 @@
 
 ## 기존 보호·정본과의 관계
 
-- 이 보고서는 설치 승인 자체를 약화하지 않는다. 실행 에이전트의 실제 설치 허가 기준은 [Development Environment](../../docs/development/development-environment.md)가 소유한다.
-- [이전 안전 보고서](bootstrap-isolation-review-2026-10-25.md)의 Git 상태·uv group·venv 격리 결함은 *실제 코드*의 독립된 개선 대상이다. 스킬 간소화 때문에 그 수정을 생략해서는 안 된다.
+- 이 보고서는 설치 승인 자체를 약화하지 않는다. 실행 에이전트의 실제 설치 허가 기준은 [Development Environment](https://github.com/mols3131d/mols-agent-assets/pull/258)가 소유한다.
+- [이전 안전 보고서](https://github.com/mols3131d/mols-agent-assets/blob/dfa9f45ce7da69673f08d3e53df88f5a7a23fe7d/inbox/github-258/bootstrap-isolation-review-2026-10-25.md)의 Git 상태·uv group·venv 격리 결함은 *실제 코드*의 독립된 개선 대상이다. 스킬 간소화 때문에 그 수정을 생략해서는 안 된다.
 - Skill이 “설계만 한다”는 결정은 유지한다. 별도 구현 요청은 호출자의 일반 개발 작업이 소유하고, **설계 Skill의 선택만으로 저장소 파일·호스트 상태를 수정하지 않는다.**
 
 ## 검증과 인계

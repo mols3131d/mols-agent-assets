@@ -51,9 +51,9 @@ Skill을 선택한 작업자는 서로 다른 repository/tool manager에서도 �
 
 [Evaluation](evaluation.md)은 positive/near-miss와 behavior의 분리, 공통 Promptfoo entrypoint, 실제 로컬 모델 결과와 남은 capability 한계를 소유한다.
 
-## Repository application
+## Repository application (separate PR)
 
-이 저장소의 **개발환경 구축·설치 승인 정책 정본은 [Development Environment](../../development/development-environment.md)**이며, 도구별 실행 안내는 [mise bootstrap 안내](../../references/tooling/mise.md), 실제 실행 로직은 [`development_bootstrap.py`](../../../scripts/development_bootstrap.py)가 소유한다. 이 Skill은 그 저장소 정책을 대체하거나 복제하지 않는다. Exact tool pin 유지, bounded Python update, HOME/hook/projection의 기본 분리는 이 repository의 선택이며 portable Skill의 필수 도구·CLI가 아니다. 해당 runner의 deterministic test success를 Skill activation 또는 runtime behavioral eval 통과로 취급하지 않는다.
+이 저장소에 특화된 개발환경 구축 정책, `mise` task, Python bootstrap 실행 코드와 그 테스트는 [PR #258](https://github.com/mols3131d/mols-agent-assets/pull/258)에서 별도로 관리한다. 이 Skill은 어떤 저장소의 스크립트·실제 설치 상태에도 의존하지 않는다. 실제 구현의 테스트 결과는 이 Skill의 activation/behavior 평가 통과를 의미하지 않는다.
 
 ## Upstream references
 

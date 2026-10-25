@@ -22,7 +22,7 @@
 2. `docs/skills/mols-dev-env-bootstrap-design/README.md`에 목적, non-obvious rationale, scope, update-safe invariants, 검증 방법을 기록한다.
 3. 구 `SKILL.md`를 삭제한다. 동일 identity를 두 path에서 운영하지 않는다.
 4. 정본을 따라 `route/skills.jsonl`의 기존 entry를 새 이름·URL로 갱신한다. 가능하면 generator와 바이트 동일성 확인.
-5. `inbox/github-256/development-environment-bootstrap-spec.md` 내 이름/링크를 갱신하고 작업 상태를 반영한다.
+5. `inbox/github-258/development-environment-bootstrap-spec.md` 내 이름/링크를 갱신하고 작업 상태를 반영한다.
 6. PR 설명과 revision metadata를 최신 head 기준으로 갱신한다.
 
 **Review 1 — 결함 탐색.** 새 README를 Skill package 안에 추가하면 runtime context가 불필요하게 커진다. `docs/skills/` placement를 지켜 분리한다. 이름을 path만 바꾸면 frontmatter, route, PR 명세가 stale 상태가 된다. 따라서 identity는 원자적으로 확인하며 rollback 대신 이후 revision에서 부족분을 보완한다.
@@ -39,7 +39,7 @@
 | Maintainer docs | `docs/skills/mols-dev-env-bootstrap-design/README.md` | why, invariants, troubleshooting of instruction, long-term maintenance | portable, no runtime instruction duplication, frontmatter |
 | Generated distribution | `route/skills.jsonl` | name+description+canonical URL from source | regenerated content equality; no old row |
 | PR plan evidence | `inbox/github-256/*` | repo-specific spec/research/plan & decisions | path resolution, state separation |
-| PR description | GitHub PR #256 | two deliverables and current progress | exact base/head revision metadata |
+| PR description | GitHub PR #256 | portable Skill only; project bootstrap in PR #258 | exact base/head revision metadata |
 
 **Review 2 — 경계 반증.**
 - OS별 설치 예시는 이 Skill의 책임이 아니다. 공식 tool documentation을 실무 적용 시 참조한다.
@@ -59,6 +59,6 @@
 
 ## 구현 준비 인계
 
-다음 독립 Workstream은 [개발환경 부트스트랩 명세](development-environment-bootstrap-spec.md)에 따라 local `mise.toml`, uv/Rulesync/skills lock owner, shared-state installer safety와 검증을 실제 구현할 것. 이 Skill은 **그 구현의 판단에 사용 가능**해야 하지만 구현이 존재해야만 작동해서는 안 된다.
+별도 [PR #258](https://github.com/mols3131d/mols-agent-assets/pull/258)의 독립 Workstream은 [개발환경 부트스트랩 명세](https://github.com/mols3131d/mols-agent-assets/blob/dfa9f45ce7da69673f08d3e53df88f5a7a23fe7d/inbox/github-258/development-environment-bootstrap-spec.md)에 따라 local `mise.toml`, uv/Rulesync/skills lock owner, shared-state installer safety와 검증을 실제 구현할 것. 이 Skill은 **그 구현의 판단에 사용 가능**해야 하지만 구현이 존재해야만 작동해서는 안 된다.
 
 **Plan Run exit:** 이름/문서/route/spec의 정합성을 실현할 수 있는 bounded plan이 수립되었다. Repository-specific bootstrap runtime correctness는 미검증이며 이후 구현·테스트 Run으로 인계한다.

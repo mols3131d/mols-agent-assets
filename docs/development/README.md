@@ -9,7 +9,6 @@ description: 저장소 개발 작업에서 공통 개발 원칙, VCS/Git, GitHub
 ## Local Policies
 
 - [Development Principles](principles.md) — 여러 유효한 구현 사이에서 효과성, 운영 편의성, 단순성, 추상화와 변경 범위를 판단하는 공통 원칙
-- [Development Environment](development-environment.md) — 개발환경 구축·복구·업데이트 운영 정책의 정본과 사용자 설치 허가 경계
 - [VCS / Git](vcs-git.md) — branch policy와 naming, commit convention과 enforcement boundary
 - [GitHub](github.md) — Issues, Pull Requests, PR Reviews, Merge, Rulesets와 Actions의 local policy. 본문 작성 구조는 [GitHub Authoring Templates](../../.github/templates/README.md)를 참고합니다.
 - [Continuous Integration](ci.md) — local·CLI·API·MCP·Plugin·agent write path부터 branch validation, PR admission, deferred evidence와 projection gate까지의 integration lifecycle

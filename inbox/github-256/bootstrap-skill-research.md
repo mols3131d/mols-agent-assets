@@ -7,7 +7,7 @@
 초기 설정, 반복 복구, 개발 중 bounded update를 설계하는 Skill이 **독립적인 재사용 능력**을 갖추도록 현재 자산과 외부 도구의 운영 semantics를 조사한다. 새 Skill은 일반 dependency upgrade, OS 전역 installer 구현, CI admission workflow 디자인을 소유하지 않는다.
 
 - 조사 대상 기준 ref: PR #256의 `mols/feat/dev-environment-bootstrap` (`7d66775bfbcb5b35227c70bfe3ae9b3e7ba31050`, 조사 시작 시점).
-- 현재 source: [기존 Skill 초안 (조사 시작 시 commit)](https://github.com/mols3131d/mols-agent-assets/blob/7d66775bfbcb5b35227c70bfe3ae9b3e7ba31050/src/rulesync/.rulesync/skills/mols-dev-bootstrap-design/SKILL.md), [부트스트랩 명세](development-environment-bootstrap-spec.md), [mise.toml](../../mise.toml), [mise 가이드](../../docs/references/tooling/mise.md).
+- 현재 source: [기존 Skill 초안 (조사 시작 시 commit)](https://github.com/mols3131d/mols-agent-assets/blob/7d66775bfbcb5b35227c70bfe3ae9b3e7ba31050/src/rulesync/.rulesync/skills/mols-dev-bootstrap-design/SKILL.md), [부트스트랩 명세](https://github.com/mols3131d/mols-agent-assets/blob/dfa9f45ce7da69673f08d3e53df88f5a7a23fe7d/inbox/github-258/development-environment-bootstrap-spec.md), [mise.toml](../../mise.toml), [mise 가이드](../../docs/references/tooling/mise.md).
 - 문서 owner: `docs/skills/<asset>/`는 해당 자산과 함께 이관할 수 있는 maintainer knowledge. 실행 동작은 `SKILL.md`가 소유한다. [Asset Maintainer Documentation](../../docs/documentation/asset-maintainer-documentation.md).
 - 설계 루프 방식: **mols-loops: Prepare → Research → Review → 재탐색 → Review → Finalize**. 연구 결과를 구현 사실로 과장하지 않는다.
 
