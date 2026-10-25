@@ -531,8 +531,8 @@ def test_policy_edit_during_tool_install_blocks_before_resolution(
 ):
     original = bootstrap.Bootstrap.command
 
-    def command(self, args):
-        result = original(self, args)
+    def command(self, args, **kwargs):
+        result = original(self, args, **kwargs)
         if args[1] == "install":
             (self.root / "uv.lock").write_text("concurrent user edit")
         return result
