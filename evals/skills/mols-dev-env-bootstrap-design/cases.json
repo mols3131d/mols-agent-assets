@@ -46,7 +46,7 @@
     {
       "id": "one-off-tool-install-near-miss",
       "mode": "activation-negative",
-      "prompt": "내 Windows PC에 Git 한 개 설치하는 공식 명령만 알려줘. 프로젝트 bootstrap이나 유지보수 설계는 필요 없어.",
+      "prompt": "Windows 개발 PC에서 Git이 없는데 공식 설치 명령어가 뭐야?",
       "expected_selection": {
         "selected_skills": [],
         "primary_skill": null
