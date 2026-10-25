@@ -67,6 +67,17 @@ def check_environment(root: Path, env: dict[str, str]) -> None:
             raise BootstrapError(
                 "Existing .venv is not an ordinary virtual environment."
             )
+        for line in config.read_text(encoding="utf-8").splitlines():
+            name, sep, value = line.partition("=")
+            if (
+                sep
+                and name.strip().lower() == "include-system-site-packages"
+                and value.strip().lower() == "true"
+            ):
+                raise BootstrapError(
+                    "Existing .venv exposes system site-packages; "
+                    "inspect it before replacing or recreating."
+                )
         for directory in (
             target / "Lib",
             target / "lib",
@@ -162,11 +173,13 @@ class Bootstrap:
         self.failed = False
         self.binaries: dict[str, str] = {}
 
-    def command(self, args: list[str]) -> subprocess.CompletedProcess[str]:
+    def command(
+        self, args: list[str], *, env: dict[str, str] | None = None
+    ) -> subprocess.CompletedProcess[str]:
         return subprocess.run(
             args,
             cwd=self.root,
-            env=self.env,
+            env=self.env if env is None else env,
             capture_output=True,
             text=True,
             encoding="utf-8",
@@ -181,8 +194,18 @@ class Bootstrap:
             raise BootstrapError(
                 "update requires Git to protect uncommitted policy/locks."
             )
+        git_env = self.env.copy()
+        for key in ("GIT_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE"):
+            git_env.pop(key, None)
+        top = self.command([git, "rev-parse", "--show-toplevel"], env=git_env)
+        if top.returncode or Path(top.stdout.strip()).resolve() != self.root:
+            raise BootstrapError(
+                "update requires the intended Git worktree; inspect Git "
+                "environment and repository location first."
+            )
         result = self.command(
-            [git, "status", "--porcelain", "--untracked-files=all", "--", *POLICY_FILES]
+            [git, "status", "--porcelain", "--untracked-files=all", "--", *POLICY_FILES],
+            env=git_env,
         )
         if result.returncode or result.stdout.strip():
             raise BootstrapError(
@@ -203,11 +226,18 @@ class Bootstrap:
                     "Inspect the diff before retrying."
                 )
 
-    def step(self, name: str, args: list[str], recovery: str) -> bool:
+    def step(
+        self,
+        name: str,
+        args: list[str],
+        recovery: str,
+        *,
+        env: dict[str, str] | None = None,
+    ) -> bool:
         self.unchanged_policy()
         print(f"[run] {name}", flush=True)
         try:
-            result = self.command(args)
+            result = self.command(args) if env is None else self.command(args, env=env)
         except OSError:
             detail = "could not start the native command"
         else:
@@ -321,11 +351,15 @@ class Bootstrap:
             ):
                 return
         check_environment(self.root, self.env)
+        uv_env = self.env.copy()
+        for key in ("UV_NO_GROUP", "UV_NO_DEV"):
+            uv_env.pop(key, None)
         if self.step(
             "locked Python sync",
             [uv, "sync", "--locked", "--all-groups", "--no-python-downloads"],
             "inspect `uv sync --locked --all-groups --no-python-downloads`; "
             "rerun setup",
+            env=uv_env,
         ):
             self.step(
                 "verify Python environment",
@@ -339,6 +373,7 @@ class Bootstrap:
                 ],
                 "repair the project .venv and rerun setup; "
                 "do not delete user environments",
+                env=uv_env,
             )
 
     def report(self) -> int:
