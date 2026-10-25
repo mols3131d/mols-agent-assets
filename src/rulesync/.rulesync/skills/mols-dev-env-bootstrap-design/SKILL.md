@@ -1,14 +1,12 @@
 ---
 name: mols-dev-env-bootstrap-design
 description: >-
-  Use only when the requested outcome is a design, review, or implementation
-  handoff for a developer-environment bootstrap lifecycle: first-time setup,
-  repeatable repair, or explicit updates within predeclared constraints.
-  Within that lifecycle, assess provisioning authority, locks, missing tools,
-  installer side effects, partial failures, recovery, and verification.
-  Do not select for executing an ordinary package upgrade, installing one tool,
-  explaining a single command, or designing a CI-only pipeline; shared words
-  such as setup, lock, install, and update do not make those tasks applicable.
+  개발환경 부트스트랩의 최초 설정(setup), 반복 복구, 사전에 선언된 제약 안에서의
+  명시적 업데이트(update)를 설계·리뷰하거나 구현 인계안을 작성할 때만 사용한다.
+  설치 권한, 잠금 상태, 누락 도구, 설치 부작용, 부분 실패, 복구 및 검증을
+  요청 범위에서 판단한다. 일반 패키지 업데이트, 도구 한 개 설치, 명령 하나의
+  설명, CI 전용 파이프라인 설계에는 사용하지 않는다. setup, lock, install,
+  update 같은 단어만으로 이 Skill을 선택하지 않는다.
 targets:
   - claudecode
   - codexcli
@@ -19,29 +17,29 @@ targets:
   - agentsskills
 ---
 
-# Developer Environment Bootstrap Design
+# 개발환경 부트스트랩 설계
 
-Design or review developer-environment setup, repair, or bounded update. This Skill owns design and, when requested, implementation handoff—not implementation, installation, or host changes. Separate implementation requests belong to the project's normal engineering workflow.
+개발환경의 최초 설정, 반복 복구, 허용 범위 내 업데이트를 설계·리뷰한다. 요청받은 경우에만 구현 인계안을 작성한다. 설치·구현·호스트 변경은 이 Skill의 책임이 아니며, 별도로 요청한 구현은 프로젝트의 일반 개발 절차에 맡긴다.
 
-## Principles
+## 원칙
 
-- **Scope to the request.** Inspect only affected tools, direct prerequisites, platforms, and lifecycle stages. Stop when further investigation will not change the decision. Do not turn a narrow review into a full bootstrap redesign.
-- **Keep native owners.** The project's development-environment document or equivalent policy governs installation scope; manifests and locks declare allowed and resolved versions. Use existing tools' defaults, CLI/API, and native tasks instead of recreating their version resolution, installation, cache handling, or verification.
-- **Separate setup and update.** Setup reconciles to the declared or locked state without implicit upgrades or lock rewrites. Only an explicit update may resolve newer versions within existing constraints through the native owner; review lock changes without auto-committing. Do not move exact pins or floating refs without an approved update policy.
-- **Respect isolation.** Reuse existing host tools, interpreters, user/global settings, and caches when compatible with the project's version, provenance, and isolation contract. Global packages must not silently replace declared project dependencies; keep project-isolated packages out of user/system environments. Shared cache writes require user-scoped approval.
-- **Avoid configuration growth.** Use native defaults, project documentation/configuration, and compatible existing user/global settings instead of duplicating them. Introduce variables, flags, modes, or wrappers only for a demonstrated gap. If an inherited setting conflicts with a lock, environment target, or isolation, preserve global state and use a safe project-scoped solution or report the blocker; do not persistently rewrite PATH or shell profiles.
-- **Propose, do not automate, risky changes.** Design approval is not installation permission. For privileged commands, deletion, unreviewed scripts, HOME/hook/global writes, or uncertain effects, describe the risk and propose a safer native/manual path; leave the risky step out of automatic setup. Any agent-executed installation (including project environments or shared manager storage) needs informed approval of its scope and effects, renewed if scope changes. Approval does not override project or platform safety constraints.
-- **Preserve state and report honestly.** Protect dirty locks, user files, shared hooks, and existing environments. Do not force-reset, overwrite, or claim rollback without proof. Skip dependent steps when blocked, continue independent safe work, and never report partial readiness as full success.
+- **요청 범위 우선.** 영향받는 도구, 직접 선행조건, 플랫폼과 작업 단계만 살핀다. 좁은 리뷰를 전체 환경 재설계로 확장하지 않는다.
+- **기존 도구 우선.** 설치 정책은 프로젝트 개발환경 문서, 허용 버전과 확정 버전은 기존 설정·잠금 파일이 소유한다. 기본값·CLI/API·기존 작업을 활용하고 버전 결정, 설치, 캐시 관리, 검증을 중복 구현하지 않는다.
+- **설정과 업데이트 구분.** Setup은 선언·잠금 상태에 맞추며 버전이나 잠금 파일을 암묵적으로 갱신하지 않는다. Update는 명시적으로 요청한 경우에만 기존 허용 범위에서 해석하고 변경 내용을 검토한다. 자동 커밋하거나 승인된 정책 없이 정확한 버전 고정값·이동 가능한 참조를 바꾸지 않는다.
+- **격리와 재사용.** 프로젝트의 버전·출처·격리 조건에 맞으면 기존 호스트 도구, 인터프리터, 사용자·전역 설정과 캐시를 재사용한다. 전역 패키지로 프로젝트 의존성을 몰래 대체하거나 프로젝트 전용 패키지를 사용자·시스템 환경에 동기화하지 않는다. 공유 캐시에 쓰려면 해당 범위의 승인이 필요하다.
+- **설정 추가 최소화.** 기본값, 프로젝트 문서·설정, 호환되는 기존 전역 설정으로 해결한다. 확인된 공백이 없으면 환경변수·옵션·모드·래퍼를 만들지 않는다. 상속 설정이 잠금·환경 대상·격리와 충돌하면 전역 상태를 보존한 채 프로젝트 범위에서 해결하거나 차단 사항으로 보고한다. PATH·셸 프로필을 임의로 영구 변경하지 않는다.
+- **위험 작업은 제안만.** 설계 요청은 설치 승인이 아니다. 권한 상승, 삭제, 미검토 스크립트, HOME·훅·전역 설정 변경 또는 영향이 불확실한 작업은 위험과 안전한 기존 도구·수동 대안을 제시하고 기본 자동화에서 제외한다. 에이전트가 프로젝트 환경이나 공유 저장소에 설치하려면 위치·영향을 설명하고 사전 승인을 받아야 한다. 범위 변경 시 다시 승인받으며, 승인만으로 프로젝트·플랫폼 안전 조건을 우회할 수 없다.
+- **기존 상태 보존.** 미커밋 잠금 파일, 사용자 파일, 공유 훅과 기존 환경을 보호한다. 강제 초기화·덮어쓰기·근거 없는 롤백을 제안하지 않는다. 선행조건이 막히면 의존 단계만 건너뛰고 독립 작업은 진행하되 부분 성공을 전체 준비 완료로 보고하지 않는다.
 
-## Procedure
+## 절차
 
-1. **Bound and inspect.** Identify the requested outcome, relevant project docs/manifests/locks, native defaults, and existing global settings only where they affect it. Distinguish observed facts from proposals; check version-specific semantics only when consequential.
-2. **Design the requested path.** For setup, reconcile to declared/locked state and allow safe reruns; for update, preserve bounds and review resolved changes. Detail both only if requested. Reuse native CLI/API/tasks; if they cannot reproduce the declared state, state the limitation and propose the least invasive fix, not a custom resolver. If the entrypoint is missing, suggest manual preflight rather than a self-installer.
-3. **Check relevant risk.** Identify writes, ownership, approval, isolation, and recovery only for affected steps. If effects are unsafe or unknown, report the blocked step and safer option; do not invent a flag or installer to bypass it.
-4. **Review proportionately.** Challenge only applicable failure paths: first run, rerun, bounded update, partial failure, environment/installer boundary, or claimed platform support. Distinguish design assumptions and static checks from actual host/runtime evidence.
+1. **범위 확인.** 요청한 결과와 관련 프로젝트 문서·설정·잠금 파일, 도구 기본값, 필요한 전역 설정만 확인한다. 관찰한 사실과 제안을 구분하고, 결과에 영향을 줄 때만 버전별 동작을 확인한다.
+2. **해당 경로 설계.** Setup은 선언·잠금 상태와 재실행 안전성을, Update는 허용 범위와 변경 검토를 다룬다. 두 경로 모두 요청된 때만 함께 설계한다. 기존 CLI/API·작업으로 재현할 수 없다면 한계와 최소 수정안을 제시하며 자체 버전 결정기를 만들지 않는다. 진입 도구가 없으면 자체 설치기 대신 짧은 수동 사전 준비를 안내한다.
+3. **관련 위험 확인.** 영향받는 쓰기 대상, 소유권, 승인 지점, 격리와 복구만 검토한다. 위험하거나 영향이 불명확한 단계는 차단 사항과 안전한 대안을 제시하며 새 옵션·설치기로 우회하지 않는다.
+4. **필요한 만큼 검토.** 최초 실행, 재실행, 제한된 업데이트, 부분 실패, 환경·설치 경계, 플랫폼 지원 주장 중 해당 사례만 점검한다. 설계 가정·정적 검사·실제 실행 증거를 구분한다.
 
-## Result
+## 결과
 
-For a **review**, return findings, evidence, risks, and the smallest corrective action; no unsolicited implementation plan. For a **design**, give only the affected entrypoints, ownership/permissions, behavior, recovery, and verification needed to implement it. Prepare a fuller implementation handoff only when requested. Mark important behavior as existing, proposed, or unverified and stop at the requested outcome.
+**리뷰**는 발견 사항·근거·위험·최소 조치만 보고한다. **설계**는 영향을 받는 진입점, 소유권·승인, 동작·복구·검증만 제시한다. 상세 구현 인계는 별도로 요청된 때만 작성한다. 주요 판단은 기존·제안·미검증으로 구분하고 요청한 결과에서 멈춘다.
 
-Do not duplicate vendor commands or platform instructions without need; confirm the applicable native contract before suggesting a specific invocation.
+공식 문서가 소유하는 명령·옵션·OS별 설치 절차를 불필요하게 복제하지 않는다. 구체적인 명령을 제안할 때만 해당 도구의 현재 계약을 확인한다.
