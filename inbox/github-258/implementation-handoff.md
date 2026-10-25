@@ -5,7 +5,7 @@
 ## 반영 완료
 
 - **Update 사전 검사 축소:** `scripts/development_bootstrap.py`의 dirty 검사는 `mise.toml`, `pyproject.toml`, `.python-version`, `uv.lock`만 대상으로 한다. 별도 Rulesync·Skill 파일의 기존 변경은 보존하며, 실행 도중의 예상치 않은 정책 파일 변경 감지는 유지했다.
-- `tests/scripts/test_development_bootstrap.py`에 관련 5개 회귀 사례를 추가하고 `docs/references/tooling/mise.md`의 설명을 맞췄다. **현재 revision의 CI 통과 여부는 별도로 확인할 것.**
+- `tests/scripts/test_development_bootstrap.py`에 관련 5개 회귀 사례를 추가하고 `docs/references/tooling/mise.md`의 설명을 맞췄다. [PR Gate #40191470826](https://github.com/mols3131d/mols-agent-assets/actions/runs/40191470826)에서 **320 tests passed**를 확인했다. 후속 변경은 각각 재검증한다.
 - 근거·남은 위험: [Skill ↔ 실행기 검토](bootstrap-skill-script-alignment-review-2026-10-25.md). 이전 F1 Git, F2 uv 그룹, F3 `.venv` 격리 수정은 그대로 유지했다.
 
 ## 남은 작업
