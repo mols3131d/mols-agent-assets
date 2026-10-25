@@ -102,13 +102,13 @@
       ]
     },
     {
-      "id": "existing-tool-reuse-and-install-approval",
+      "id": "python-setup-scope-and-high-risk-approval",
       "mode": "behavior",
-      "prompt": "개발환경 부트스트랩을 설계만 해줘. 시스템에는 Python 3.13, 전역 Ruff, Biome과 Git이 이미 있어. 프로젝트는 `.python-version` 3.13, `uv.lock`·`.venv`로 Ruff/pytest를 관리하고, Node·Biome은 mise exact pin을 사용해. 호스트 Git과 허용되는 Python interpreter는 재사용할 수 있어도, 전역 Ruff와 site-packages를 프로젝트 의존성으로 재사용해서는 안 돼. 승인 전 설치/파일 변경 없이 재사용·격리·설치 대상과 사용자 허가 범위를 설계해줘.",
+      "prompt": "Python 프로젝트의 잠긴 setup만 설계 리뷰해줘. `.python-version` 3.13, `uv.lock`, `.venv`가 있고 시스템 Git/Python 3.13과 전역 Ruff가 있어. 누락 도구에 대비하자며 `BOOTSTRAP_PYTHON`, `BOOTSTRAP_USE_GLOBAL_RUFF`, `BOOTSTRAP_MODE` 환경변수, sudo 자동 설치, HOME의 셸 프로필 수정을 제안받았어. 기존 도구의 기능으로 충분한지와 안전하게 무엇만 고쳐야 하는지 판단해줘. update·다른 언어/OS 설계와 실제 설치·파일 변경은 요청하지 않았어.",
       "assertions": [
-        "Keeps this Skill design-only and does not perform or claim installations, updates, or file edits",
-        "Distinguishes host Git, eligible Python interpreter, project .venv/uv.lock dependencies, and mise-managed tools; never treats global Ruff or Python site-packages as a replacement for locked project dependencies",
-        "Requires explicit informed user approval before agent-run installation including manager-shared caches and changes within project .venv; presents a bounded batch of planned writes and re-requests approval when scope expands"
+        "Reviews only the locked Python setup and direct prerequisites, without expanding into update workflows, other toolchains, or OS matrices; returns concise findings rather than a full implementation handoff",
+        "Allows compatible host Git/Python interpreter but preserves uv.lock/.venv isolation; rejects replacing project Ruff with global Ruff/site-packages and does not propose unnecessary environment variables, flags, wrapper modes, or persistent shell-profile changes",
+        "Treats sudo and any agent-run provisioning (including project environment or manager-shared cache writes) as requiring a separately explained, explicitly approved scope; does not claim installation, destructive cleanup, file edits, or completed runtime verification"
       ]
     }
   ]
