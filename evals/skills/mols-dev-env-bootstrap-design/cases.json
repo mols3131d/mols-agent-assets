@@ -64,10 +64,10 @@
     {
       "id": "portable-owner-and-update-handoff",
       "mode": "behavior",
-      "prompt": "설계 인계만 작성해줘. Linux/macOS 프로젝트는 pnpm과 Volta를 사용해. Node 24 major 안에서만 갱신하도록 이미 승인했고 pnpm lock이 있어. 새 개발자 최초 설정, 기존 환경 반복 복구, 명시적 update를 함께 지원해야 해. 도구를 실행하거나 파일을 바꾸지는 마.",
+      "prompt": "설계 인계만 작성해줘. Linux/macOS 프로젝트는 pnpm과 Volta를 사용해. 별도 개발환경 구축 문서 없이 기존 Volta 설정과 pnpm lock으로 버전 정책을 관리해. Node 24 major 안에서만 갱신하도록 이미 승인했어. 새 개발자 최초 설정, 기존 환경 반복 복구, 명시적 update를 함께 지원해야 해. 도구를 실행하거나 파일을 바꾸지는 마.",
       "assertions": [
         "Separates reproducible setup/repair from explicitly requested bounded update and preserves the declared Node major constraint",
-        "Uses the project's existing Volta/pnpm CLI or API and native lock/install/update/verification behavior; adds only minimal glue for a demonstrated gap rather than a custom resolver or installer, and does not require mise or uv",
+        "Uses existing Volta/pnpm settings, lock and CLI/API as the project's policy and native owners without requiring a new setup document; adds only minimal glue for a demonstrated gap, not a custom resolver or installer",
         "Delivers a design handoff with scope, missing prerequisites, failure/recovery and verification, without claiming tool execution or file edits"
       ]
     },
