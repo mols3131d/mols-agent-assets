@@ -16,6 +16,8 @@
 
 ## 머지 전 필수
 
+> **최소 구현 범위:** [현재 작업 계획](next-steps-minimal-scope.md)의 기본값·프로젝트 native 설정·호환되는 사용자 전역 설정 우선 원칙을 적용한다. 확인된 F1–F3만 최소 수정하며 환경변수 강제·초기화와 새로운 추상화를 확대하지 않는다.
+
 1. [격리·안전성 리뷰](bootstrap-isolation-review-2026-10-25.md) F1 외부 `GIT_DIR/GIT_WORK_TREE/GIT_INDEX_FILE` 상속, F2 `UV_NO_GROUP`에 의한 false READY, F3 기존 `.venv`의 system-site-packages 노출에 대한 최소 수정과 회귀 검증.
 2. 문서 INDEX 생성·검증 및 PR Gate 통과. (이관 시 docs index 누락 행은 추가함. 실제 gate는 별도 확인.)
 3. 기존 exact CLI pin과 사용자 허가를 유지한 채 초기 의도인 bounded tool update를 이 PR에 구현할지, 별도 후속으로 이관할지 acceptance 확정.
