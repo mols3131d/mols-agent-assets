@@ -369,6 +369,43 @@ def test_existing_venv_system_site_packages_isolated(
         assert not native[0]
 
 
+
+def test_update_allows_unrelated_asset_changes(project, native, monkeypatch):
+    assets = ("rulesync.jsonc", "rulesync.lock", "skills-lock.json")
+    for name in assets:
+        (project / name).write_text("user edit\n", encoding="utf-8")
+    original = bootstrap.Bootstrap.command
+
+    def command(self, args, **kwargs):
+        if args[1:3] == ["status", "--porcelain"]:
+            assert args[args.index("--") + 1 :] == list(bootstrap.UPDATE_INPUTS)
+        return original(self, args, **kwargs)
+
+    monkeypatch.setattr(bootstrap.Bootstrap, "command", command)
+    assert bootstrap.main(["update"], root=project) == 0
+    assert all(
+        (project / name).read_text(encoding="utf-8") == "user edit\n"
+        for name in assets
+    )
+    assert (project / "uv.lock").read_text(encoding="utf-8") == "upgraded\n"
+
+
+@pytest.mark.parametrize("name", bootstrap.UPDATE_INPUTS)
+def test_update_blocks_dirty_bootstrap_inputs(project, native, monkeypatch, name):
+    original = bootstrap.Bootstrap.command
+
+    def command(self, args, **kwargs):
+        if args[1:3] == ["status", "--porcelain"]:
+            assert name in args[args.index("--") + 1 :]
+            return subprocess.CompletedProcess(args, 0, f" M {name}\n", "")
+        return original(self, args, **kwargs)
+
+    monkeypatch.setattr(bootstrap.Bootstrap, "command", command)
+    assert bootstrap.main(["update"], root=project) == 1
+    assert not any(args[1] == "install" for args in commands(native))
+    assert (project / "uv.lock").read_text(encoding="utf-8") == "original\n"
+
+
 def test_dirty_update_state_is_not_overwritten(project, native, monkeypatch):
     original = bootstrap.Bootstrap.command
 
