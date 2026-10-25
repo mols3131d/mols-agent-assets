@@ -47,7 +47,7 @@ mise run setup
 
 현재 CLI 정책은 모두 exact pin이므로 `update`도 CLI 버전을 바꾸지 않습니다. `mise.lock`과 npm dependency sidecar의 검증 경로를 도입하기 전에는 prefix/range tool request를 거부합니다. Python package의 허용 범위는 [`pyproject.toml`](../../../pyproject.toml)이 소유하며 wrapper는 별도 범위를 만들지 않습니다. Rulesync/Skill source revision은 일반 update에서 유지합니다.
 
-Setup은 policy/lock을 갱신하지 않습니다. Update는 기존 미커밋 policy/lock이 있으면 차단하며, 갱신된 `uv.lock`을 자동 commit하거나 rollback하지 않습니다. 작업 도중의 변경도 감지하되 다른 process가 파일을 바꾸는 모든 race를 격리하는 sandbox는 아닙니다.
+Setup은 policy/lock을 갱신하지 않습니다. Update는 `mise.toml`, `pyproject.toml`, `.python-version`, `uv.lock`의 기존 미커밋 변경을 사전 차단하며, 갱신된 `uv.lock`을 자동 commit하거나 rollback하지 않습니다. 별도 Rulesync/Skill 파일의 기존 미커밋 변경은 차단하지 않지만 작업 도중 감지한 예기치 않은 policy/lock 변경은 중단합니다. 모든 동시 수정 경쟁을 차단하는 sandbox는 아닙니다.
 
 ### Installation scope and recovery
 
