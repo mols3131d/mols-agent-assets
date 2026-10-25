@@ -8,6 +8,7 @@ description: PR 256의 간결한 Eval 개선 작업을 이어받을 때 현재 �
 
 ## 먼저 읽기
 
+- [한국어 지원·평가 타당성 정정](bootstrap-eval-language-validity-review-2026-10-25.md): 기존 결과는 언어와 Skill의 영향을 분리하지 못했다. 모델 크기나 Skill 단독 결함을 원인으로 단정하지 않는다.
 - [준비·범위](bootstrap-eval-improvement-prepare-2026-10-25.md)
 - [계획 v3](bootstrap-eval-improvement-plan-2026-10-25.md)
 - [검토와 계획 변경 근거](bootstrap-eval-improvement-review-2026-10-25.md)

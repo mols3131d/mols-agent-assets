@@ -86,4 +86,4 @@ node "$cli" eval -c evals/promptfoo/mols-dev-env-bootstrap-design.yaml --no-cach
 - Targeted **43 passed**, 공식 `mise run test` **279 passed**. 이는 grader의 의미 정확성이나 모델 행동 성공과 별도 근거다.
 - 최종 변경 파일 포맷, 문서 frontmatter, index/route drift, Rulesync `config`·`configured-projection`, `git diff --check`를 통과했다. 최종 세 source hash는 위 평가 당시 값과 동일하다. 원격 PR head와 로컬 HEAD가 같은 `b381dbd`임을 fetch 후 확인했으며, 반영 후 commit·CI 상태는 [PR #256](https://github.com/mols3131d/mols-agent-assets/pull/256)이 소유한다.
 
-남은 한계는 작은 모델의 행동 누락과 자동 grader 오판이다. Native 기반의 보완·진단·제한된 개선·재평가·근거 기록은 수행했으며, 표본을 더 조정해 PASS를 만드는 대신 현재 한계를 인계한다. Draft를 유지한다.
+관찰된 한계는 이 모델·한국어 Skill·harness 조합의 행동 누락과 자동 grader 오판이다. [한국어 지원·평가 타당성 정정](bootstrap-eval-language-validity-review-2026-10-25.md)처럼 언어와 Skill의 영향을 분리하지 않았으므로 모델 크기를 원인으로 단정할 수 없다. Native 기반의 보완·진단·제한된 개선·재평가·근거 기록은 수행했으며, 표본을 더 조정해 PASS를 만드는 대신 현재 한계를 인계한다. Draft를 유지한다.
