@@ -36,7 +36,7 @@ Design or review developer-environment setup, repair, or bounded update. This Sk
 ## Procedure
 
 1. **Bound and inspect.** Identify the requested outcome, relevant project docs/manifests/locks, native defaults, and existing global settings only where they affect it. Distinguish observed facts from proposals; check version-specific semantics only when consequential.
-2. **Design the requested path.** For setup, reconcile to declared/locked state and allow safe reruns; for update, preserve bounds and review resolved changes. Detail both only if requested. Reuse native CLI/API/tasks; propose minimal glue only for a demonstrated gap, never a parallel installer or resolver. If the entrypoint is missing, suggest manual preflight rather than a self-installer.
+2. **Design the requested path.** For setup, reconcile to declared/locked state and allow safe reruns; for update, preserve bounds and review resolved changes. Detail both only if requested. Reuse native CLI/API/tasks; if they cannot reproduce the declared state, state the limitation and propose the least invasive fix, not a custom resolver. If the entrypoint is missing, suggest manual preflight rather than a self-installer.
 3. **Check relevant risk.** Identify writes, ownership, approval, isolation, and recovery only for affected steps. If effects are unsafe or unknown, report the blocked step and safer option; do not invent a flag or installer to bypass it.
 4. **Review proportionately.** Challenge only applicable failure paths: first run, rerun, bounded update, partial failure, environment/installer boundary, or claimed platform support. Distinguish design assumptions and static checks from actual host/runtime evidence.
 
