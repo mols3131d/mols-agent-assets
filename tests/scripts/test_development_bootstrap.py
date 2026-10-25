@@ -308,13 +308,13 @@ def test_foreign_git_selection_cannot_hide_dirty_update(
             assert kwargs["env"]["GIT_CONFIG_GLOBAL"] == str(
                 project.parent / "user.gitconfig"
             )
-            return subprocess.CompletedProcess(args, 0, " M uv.lock\\n", "")
+            return subprocess.CompletedProcess(args, 0, " M uv.lock\n", "")
         return original_run(args, **kwargs)
 
     monkeypatch.setattr(bootstrap.subprocess, "run", run)
     assert bootstrap.main(["update"], root=project) == 1
     assert not any(args[1] == "install" for args in commands(native))
-    assert (project / "uv.lock").read_text(encoding="utf-8") == "original\\n"
+    assert (project / "uv.lock").read_text(encoding="utf-8") == "original\n"
 
 
 def test_update_rejects_mismatched_git_worktree(project, native, monkeypatch):
@@ -358,9 +358,9 @@ def test_existing_venv_system_site_packages_isolated(
     target.mkdir()
     config = target / "pyvenv.cfg"
     original = (
-        "home = python\\ninclude-system-site-packages = "
+        "home = python\ninclude-system-site-packages = "
         + ("true" if system_packages else "false")
-        + "\\n"
+        + "\n"
     )
     config.write_text(original, encoding="utf-8")
     assert bootstrap.main(["setup"], root=project) == expected
