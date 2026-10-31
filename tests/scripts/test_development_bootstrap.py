@@ -47,7 +47,8 @@ def native(monkeypatch):
         elif args[1:3] == ["status", "--porcelain"]:
             output = ""
         elif args[1] == "install":
-            code = int(args[2] in failed)
+            target = args[3] if len(args) > 3 and args[2] == "--locked" else args[2]
+            code = int(target in failed)
         elif args[1] == "which":
             output = str(Path(kwargs["cwd"]) / "tools" / f"{args[2]}.exe")
             paths[output] = args[2]
@@ -101,7 +102,7 @@ def test_setup_reconciles_exact_pins_without_lock_promotion(project, native, cap
         name: (project / name).read_bytes() for name in bootstrap.POLICY_FILES
     }
     args = commands(native)
-    assert ["mise", "install", "uv@1.2.3"] in args
+    assert ["mise", "install", "--locked", "uv@1.2.3"] in args
     assert not any("--upgrade" in command for command in args)
     assert not any(
         "rulesync" == command[0] or "lefthook" == command[0] for command in args
@@ -186,6 +187,7 @@ def test_project_uv_target_and_active_foreign_env_are_handled(
         assert kwargs["env"]["UV_PROJECT_ENVIRONMENT"] == str(project / ".venv")
         assert kwargs["env"]["UV_PYTHON_DOWNLOADS"] == "never"
         assert kwargs["env"]["MISE_LOCKFILE"] == "1"
+        assert kwargs["env"]["MISE_LOCKED"] == "1"
         assert kwargs["env"]["MISE_AUTO_INSTALL"] == "0"
         assert "VIRTUAL_ENV" not in kwargs["env"]
         assert "UV_PROJECT" not in kwargs["env"]
@@ -251,9 +253,10 @@ def test_failed_node_skips_npm_but_continues_python_and_other_tools(
     native[1].add("node@1.2.3")
     assert bootstrap.main(["setup"], root=project) == 1
     args = commands(native)
-    assert ["mise", "install", "rumdl@1.2.3"] in args
+    assert ["mise", "install", "--locked", "rumdl@1.2.3"] in args
     assert not any(
-        command[1] == "install" and command[2].startswith("npm:") for command in args
+        command[1] == "install" and len(command) > 3 and command[3].startswith("npm:")
+        for command in args
     )
     assert any("sync" in command for command in args)
     assert "Result: FAILED" in capsys.readouterr().out
@@ -262,7 +265,7 @@ def test_failed_node_skips_npm_but_continues_python_and_other_tools(
 def test_failed_uv_skips_python_but_continues_independent_tools(project, native):
     native[1].add("uv@1.2.3")
     assert bootstrap.main(["setup"], root=project) == 1
-    assert ["mise", "install", "node@1.2.3"] in commands(native)
+    assert ["mise", "install", "--locked", "node@1.2.3"] in commands(native)
     assert not any("sync" in command for command in commands(native))
 
 
@@ -671,3 +674,13 @@ def test_mise_lock_mutation_during_setup_is_blocked(project, monkeypatch):
         bootstrap.BootstrapError, match="mise.lock changed during bootstrap"
     ):
         runner.step("test step", ["cmd"], "recovery")
+
+
+def test_locked_install_mode_preserves_lock_on_failure(project, native):
+    original_lock = (project / "mise.lock").read_bytes()
+    native[1].add("uv@1.2.3")
+    assert bootstrap.main(["setup"], root=project) == 1
+    assert (project / "mise.lock").read_bytes() == original_lock
+    assert any(
+        command[:3] == ["mise", "install", "--locked"] for command in commands(native)
+    )

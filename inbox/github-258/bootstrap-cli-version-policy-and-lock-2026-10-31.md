@@ -45,14 +45,15 @@
 
 ## 4. `mise.lock` 잠금 아키텍처 및 구현
 
-1. **멀티 플랫폼 체크섬 잠금:**
-   - `mise lock`을 통해 7개 도구에 대해 총 7개 플랫폼(`linux-arm64`, `linux-arm64-musl`, `linux-x64`, `linux-x64-musl`, `macos-arm64`, `macos-x64`, `windows-x64`)의 아티팩트 URL, sha256 체크섬, GitHub provenance를 `mise.lock`에 고정.
+1. **플랫폼별 아티팩트 및 버전 잠금 보장 범위 구분:**
+   - **바이너리 도구 4종(`uv`, `node`, `rumdl`, `lefthook`):** 7개 플랫폼(`linux-arm64`, `linux-arm64-musl`, `linux-x64`, `linux-x64-musl`, `macos-arm64`, `macos-x64`, `windows-x64`)의 아티팩트 URL, sha256 체크섬, GitHub provenance를 `mise.lock`에 고정.
+   - **npm 도구 3종(`biome`, `rulesync`, `skills`):** 최상위 패키지 버전 잠금 적용 (npm 전이 의존성 sidecar는 이번 PR의 필수 범위에 포함하지 않음).
    - `mise.toml`에 `[settings] lockfile = true` 활성화.
-1. **실행기(`scripts/development_bootstrap.py`) 연동:**
+1. **실행기(`scripts/development_bootstrap.py`) 연동 및 Strict Locked Mode 강제:**
    - `mise.lock`을 `UPDATE_INPUTS` 및 `POLICY_FILES`에 등록.
-   - child process에 `"MISE_LOCKFILE": "1"`을 전달하여 mise 설치가 잠금 파일을 따르도록 보장.
+   - `setup` 실행 시 `[mise, "install", "--locked", request]` 및 child process `MISE_LOCKED="1"`을 전달하여 mise의 **native strict locked mode**를 강제. 잠금 누락 시 즉시 실패.
    - `setup` 도중 `mise.lock`이 변조되면 `unchanged_policy()`에서 즉시 실행 차단.
    - `update` 시 미커밋된 `mise.lock` 변경을 `check_update_state()`에서 사전 차단.
-1. **Setup vs Update 불변성:**
-   - `setup`은 언제나 `mise.lock`에 기록된 정확한 바이너리를 재현하며 네트워크를 통한 임의의 상위 버전 조회를 차단함.
-   - `update`만 허용 범위 내에서 잠금을 갱신할 수 있음 (현재는 도구별 허용 범위 검증 전까지 exact pin 유지).
+1. **Setup vs Update 불변성 및 범위 한정:**
+   - `setup`은 언제나 `mise.lock`에 기록된 정확한 바이너리/버전을 재현하며 네트워크를 통한 임의의 상위 버전 조회를 차단함 (Zero Drift).
+   - **현재 구현에서 `update`는 Python 의존성(`uv.lock`)의 bounded upgrade만 수행**하며, CLI 도구의 자동 갱신은 수행하지 않고 exact pin을 유지함. CLI 자동 갱신은 후속 과제로 분리.

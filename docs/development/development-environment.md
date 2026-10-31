@@ -45,7 +45,7 @@ description: 이 저장소의 개발환경 구축·격리·도구 관리 정책,
   1. **메이저 버전 준수하는 최신 버전 (장기 지원 선호):** 지원 수명 주기(LTS)를 준수하며 검증된 최신 메이저 라인 추적. Node.js 짝수 Active LTS 등 플랫폼 런타임에 적용.
   1. **최신 버전 (장기 지원 선호):** SemVer 상한 없는 최신 안정 릴리스 추적 (`latest`). 빠르게 진화하는 외부 생태계 연동 도구에 적용하되 lock 재현 필수.
   - *7개 CLI 도구별 구체적인 케이스 매핑, 현재 pin 버전 및 잠금 소유자는 [mise 안내: CLI 도구 버전 정책](../references/tooling/mise.md#cli-tool-versioning-policy-and-cases)에 명시합니다.*
-- **현재 저장소 상태:** `mise.lock`이 도입되어 7개 CLI 도구의 7개 플랫폼별 아티팩트 URL·체크섬이 잠금 관리되며, 모든 CLI 도구는 Exact Pin(허용 범위 0) 상태를 유지하여 임의의 자동 승격을 차단합니다.
+- **현재 저장소 상태:** `mise.lock`이 도입되어 네이티브 바이너리 도구 4종의 7개 플랫폼별 아티팩트 URL·체크섬 및 npm 도구 3종의 버전이 잠금 관리됩니다. 현재 모든 CLI 도구는 Exact Pin(허용 범위 0) 상태를 유지하며, `update`는 Python 의존성(`uv.lock`)의 bounded upgrade만 수행합니다. CLI 도구의 자동 갱신(range 확장)은 별도 후속 과제로 분리합니다.
 
 ---
 

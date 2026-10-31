@@ -150,6 +150,7 @@ class Bootstrap:
             "GIT_OPTIONAL_LOCKS": "0",
             "MISE_AUTO_INSTALL": "0",
             "MISE_LOCKFILE": "1",
+            "MISE_LOCKED": "1",
         }
         for key in (
             "VIRTUAL_ENV",
@@ -300,8 +301,12 @@ class Bootstrap:
                 )
                 continue
             request = f"{tool}@{version}"
-            recovery = f"inspect `mise install {request}` and rerun {self.mode}"
-            if not self.step(f"tool {request}", [mise, "install", request], recovery):
+            recovery = (
+                f"inspect `mise install --locked {request}` and rerun {self.mode}"
+            )
+            if not self.step(
+                f"tool {request}", [mise, "install", "--locked", request], recovery
+            ):
                 continue
             try:
                 command = self.tool_command(mise, tool, version, binary)
