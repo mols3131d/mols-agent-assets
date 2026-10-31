@@ -173,7 +173,7 @@ def test_plan_does_not_install_resolve_or_create_state(project, native, mode, ca
     assert bootstrap.main([mode, "--dry-run"], root=project) == 0
     assert sorted(path.relative_to(project) for path in project.rglob("*")) == before
     assert all(
-        command[0] == "git" and command[1] in {"rev-parse", "status"}
+        command[0] == "git" and command[1] in {"rev-parse", "ls-files", "status"}
         for command in commands(native)
     )
     assert "Result: PLAN" in capsys.readouterr().out
@@ -469,6 +469,66 @@ def test_update_blocks_dirty_bootstrap_inputs(project, native, monkeypatch, name
     assert bootstrap.main(["update"], root=project) == 1
     assert not any(args[1] == "install" for args in commands(native))
     assert (project / "uv.lock").read_text(encoding="utf-8") == "original\n"
+
+
+@pytest.mark.parametrize(
+    "flag,edited,expected",
+    [
+        (None, False, 0),
+        (None, True, 1),
+        ("--assume-unchanged", False, 1),
+        ("--assume-unchanged", True, 1),
+        ("--skip-worktree", False, 1),
+        ("--skip-worktree", True, 1),
+    ],
+)
+def test_update_plan_checks_real_git_inputs_without_changing_flags(
+    project, capsys, flag, edited, expected
+):
+    def git(*args):
+        return subprocess.run(
+            ["git", *args],
+            cwd=project,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+
+    git("init", "-b", "review/bootstrap-inputs")
+    git("add", "--", *bootstrap.POLICY_FILES)
+    git(
+        "-c",
+        "user.name=Bootstrap test",
+        "-c",
+        "user.email=bootstrap@example.invalid",
+        "commit",
+        "-m",
+        "test: record bootstrap inputs",
+    )
+    if flag:
+        git("update-index", flag, "--", "uv.lock")
+    if edited:
+        (project / "uv.lock").write_text("user edit\n", encoding="utf-8")
+    before = {name: (project / name).read_bytes() for name in bootstrap.POLICY_FILES}
+    index_before = git("ls-files", "-v", "-z", "--", *bootstrap.UPDATE_INPUTS).stdout
+
+    assert bootstrap.main(["update", "--dry-run"], root=project) == expected
+
+    assert before == {name: (project / name).read_bytes() for name in before}
+    assert (
+        git("ls-files", "-v", "-z", "--", *bootstrap.UPDATE_INPUTS).stdout
+        == index_before
+    )
+    assert not (project / ".tmp").exists()
+    output = capsys.readouterr()
+    if flag:
+        assert "index flags" in output.err
+    if expected:
+        assert "Result: BLOCKED" in output.err
+        assert "Result: PLAN" not in output.out
+    else:
+        assert "Result: PLAN" in output.out
 
 
 def test_dirty_update_state_is_not_overwritten(project, native, monkeypatch):

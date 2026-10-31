@@ -73,10 +73,10 @@ mise run setup
 - **Setup 원칙 (Strict Locked Mode):** `mise run setup`은 도구별 설치 명령 `mise install --locked <tool@version>`으로 **native strict locked install**을 적용합니다. `mise.lock`에 등록되지 않은 도구 버전이나 플랫폼 아티팩트 URL이 누락되면 네트워크 조회를 차단하고 즉시 중단하여 0-drift setup 계약을 강제합니다.
 - **Update 원칙 및 범위 한정:** 현재 `mise run update`는 **Python 의존성(`uv.lock`)의 bounded upgrade만 수행**하며, CLI 도구의 자동 갱신은 수행하지 않습니다. CLI 도구의 허용 범위 기반 자동 갱신(`mise upgrade` 등)은 추후 검증 후 별도 과제로 분리합니다.
 - **잠금 보장 범위 구분:**
-  - **네이티브/Aqua 바이너리 4종(`uv`, `node`, `rumdl`, `lefthook`):** 7개 플랫폼(`linux-arm64`, `linux-arm64-musl`, `linux-x64`, `linux-x64-musl`, `macos-arm64`, `macos-x64`, `windows-x64`)의 아티팩트 다운로드 URL, sha256 체크섬, GitHub provenance 잠금 적용.
+  - **네이티브/Aqua 바이너리 4종(`uv`, `node`, `rumdl`, `lefthook`):** 7개 플랫폼(`linux-arm64`, `linux-arm64-musl`, `linux-x64`, `linux-x64-musl`, `macos-arm64`, `macos-x64`, `windows-x64`)의 아티팩트 다운로드 URL과 sha256 체크섬을 기록합니다. Aqua 도구 3종(`uv`, `rumdl`, `lefthook`)에는 `provenance = "github-attestations"` 메타데이터도 기록하며, `core:node`에는 해당 필드가 없습니다.
   - **npm 패키지 3종(`biome`, `rulesync`, `skills`):** 최상위 패키지 버전(top-level version) 잠금 적용. (npm 전이 의존성 그래프 sidecar인 format 2는 이번 범위에 미포함).
 
-Setup은 policy/lock을 갱신하지 않습니다. Update는 `mise.toml`, `pyproject.toml`, `.python-version`, `uv.lock`, `mise.lock`의 기존 미커밋 변경을 사전 차단하며, 갱신된 `uv.lock` 및 `mise.lock`을 자동 commit하거나 rollback하지 않습니다. 별도 Rulesync/Skill 파일의 기존 미커밋 변경은 차단하지 않지만 작업 도중 감지한 예기치 않은 policy/lock 변경은 중단합니다. 모든 동시 수정 경쟁을 차단하는 sandbox는 아닙니다.
+Setup은 policy/lock을 갱신하지 않습니다. Update는 `mise.toml`, `pyproject.toml`, `.python-version`, `uv.lock`, `mise.lock`의 기존 미커밋 변경을 사전 차단합니다. 보호 대상에 `assume-unchanged`·`skip-worktree`가 설정되어 있거나 Git index 플래그를 읽지 못하면 중단하며, 사용자 플래그와 파일은 변경하지 않습니다. 갱신된 `uv.lock`은 자동 commit하거나 rollback하지 않습니다. 별도 Rulesync/Skill 파일의 기존 미커밋 변경은 차단하지 않지만 작업 도중 감지한 예기치 않은 policy/lock 변경은 중단합니다. 모든 동시 수정 경쟁을 차단하는 sandbox는 아닙니다.
 
 ### Installation scope and recovery
 

@@ -194,6 +194,19 @@ class Bootstrap:
                 "update requires the intended Git worktree; inspect Git "
                 "environment and repository location first."
             )
+        index = self.command(
+            [git, "ls-files", "-v", "-z", "--", *UPDATE_INPUTS], env=git_env
+        )
+        # -v lowercases assume-unchanged tags; S denotes skip-worktree.
+        if index.returncode or any(
+            entry[:1] == "S" or entry[:1].islower()
+            for entry in index.stdout.split("\0")
+        ):
+            raise BootstrapError(
+                "update cannot verify clean bootstrap inputs with these Git "
+                "index flags; inspect assume-unchanged/skip-worktree and "
+                "preserve your work first."
+            )
         result = self.command(
             [
                 git,

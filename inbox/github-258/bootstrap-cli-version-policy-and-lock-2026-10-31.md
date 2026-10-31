@@ -46,7 +46,7 @@
 ## 4. `mise.lock` 잠금 아키텍처 및 구현
 
 1. **플랫폼별 아티팩트 및 버전 잠금 보장 범위 구분:**
-   - **바이너리 도구 4종(`uv`, `node`, `rumdl`, `lefthook`):** 7개 플랫폼(`linux-arm64`, `linux-arm64-musl`, `linux-x64`, `linux-x64-musl`, `macos-arm64`, `macos-x64`, `windows-x64`)의 아티팩트 URL, sha256 체크섬, GitHub provenance를 `mise.lock`에 고정.
+   - **바이너리 도구 4종(`uv`, `node`, `rumdl`, `lefthook`):** 7개 플랫폼(`linux-arm64`, `linux-arm64-musl`, `linux-x64`, `linux-x64-musl`, `macos-arm64`, `macos-x64`, `windows-x64`)의 아티팩트 URL과 sha256 체크섬을 `mise.lock`에 기록. Aqua 도구 3종(`uv`, `rumdl`, `lefthook`)에는 `provenance = "github-attestations"` 메타데이터도 기록하며, `core:node`에는 해당 필드가 없음.
    - **npm 도구 3종(`biome`, `rulesync`, `skills`):** 최상위 패키지 버전 잠금 적용 (npm 전이 의존성 sidecar는 이번 PR의 필수 범위에 포함하지 않음).
    - `mise.toml`에 `[settings] lockfile = true` 활성화.
 1. **실행기(`scripts/development_bootstrap.py`) 연동 및 Strict Locked Mode 강제:**
