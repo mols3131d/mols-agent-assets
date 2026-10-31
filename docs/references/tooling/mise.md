@@ -70,7 +70,7 @@ mise run setup
 | `npm:rulesync` | `40.2.0` | Case 3 (메이저 준수) | 프로젝트 호환성 검증 안정 라인 exact pin 유지 | `mise.lock` (패키지 버전 잠금) |
 | `npm:skills` | `1.5.23` | Case 4 (최신 안정) | 외부 스킬 저장소 연동 지향 exact pin 유지 | `mise.lock` (패키지 버전 잠금) |
 
-- **Setup 원칙 (Strict Locked Mode):** `mise run setup`은 `[mise, "install", "--locked"]` 및 `MISE_LOCKED=1`을 적용하여 **strict native locked mode**로 실행됩니다. `mise.lock`에 등록되지 않은 도구 버전이나 플랫폼 아티팩트 URL이 누락되면 네트워크 조회를 차단하고 즉시 중단하여 0-drift setup 계약을 강제합니다.
+- **Setup 원칙 (Strict Locked Mode):** `mise run setup`은 도구별 설치 명령 `mise install --locked <tool@version>`으로 **native strict locked install**을 적용합니다. `mise.lock`에 등록되지 않은 도구 버전이나 플랫폼 아티팩트 URL이 누락되면 네트워크 조회를 차단하고 즉시 중단하여 0-drift setup 계약을 강제합니다.
 - **Update 원칙 및 범위 한정:** 현재 `mise run update`는 **Python 의존성(`uv.lock`)의 bounded upgrade만 수행**하며, CLI 도구의 자동 갱신은 수행하지 않습니다. CLI 도구의 허용 범위 기반 자동 갱신(`mise upgrade` 등)은 추후 검증 후 별도 과제로 분리합니다.
 - **잠금 보장 범위 구분:**
   - **네이티브/Aqua 바이너리 4종(`uv`, `node`, `rumdl`, `lefthook`):** 7개 플랫폼(`linux-arm64`, `linux-arm64-musl`, `linux-x64`, `linux-x64-musl`, `macos-arm64`, `macos-x64`, `windows-x64`)의 아티팩트 다운로드 URL, sha256 체크섬, GitHub provenance 잠금 적용.

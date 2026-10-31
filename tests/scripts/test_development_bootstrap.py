@@ -178,6 +178,7 @@ def test_external_uv_target_is_blocked_before_native_work(
 def test_project_uv_target_and_active_foreign_env_are_handled(
     project, native, monkeypatch
 ):
+    monkeypatch.delenv("MISE_LOCKED", raising=False)
     monkeypatch.setenv("UV_PROJECT_ENVIRONMENT", ".venv")
     monkeypatch.setenv("VIRTUAL_ENV", str(project.parent / "other-env"))
     monkeypatch.setenv("UV_PROJECT", str(project.parent))
@@ -187,7 +188,7 @@ def test_project_uv_target_and_active_foreign_env_are_handled(
         assert kwargs["env"]["UV_PROJECT_ENVIRONMENT"] == str(project / ".venv")
         assert kwargs["env"]["UV_PYTHON_DOWNLOADS"] == "never"
         assert kwargs["env"]["MISE_LOCKFILE"] == "1"
-        assert kwargs["env"]["MISE_LOCKED"] == "1"
+        assert "MISE_LOCKED" not in kwargs["env"]
         assert kwargs["env"]["MISE_AUTO_INSTALL"] == "0"
         assert "VIRTUAL_ENV" not in kwargs["env"]
         assert "UV_PROJECT" not in kwargs["env"]

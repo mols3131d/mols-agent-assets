@@ -150,7 +150,6 @@ class Bootstrap:
             "GIT_OPTIONAL_LOCKS": "0",
             "MISE_AUTO_INSTALL": "0",
             "MISE_LOCKFILE": "1",
-            "MISE_LOCKED": "1",
         }
         for key in (
             "VIRTUAL_ENV",

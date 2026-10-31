@@ -51,7 +51,7 @@
    - `mise.toml`에 `[settings] lockfile = true` 활성화.
 1. **실행기(`scripts/development_bootstrap.py`) 연동 및 Strict Locked Mode 강제:**
    - `mise.lock`을 `UPDATE_INPUTS` 및 `POLICY_FILES`에 등록.
-   - `setup` 실행 시 `[mise, "install", "--locked", request]` 및 child process `MISE_LOCKED="1"`을 전달하여 mise의 **native strict locked mode**를 강제. 잠금 누락 시 즉시 실패.
+   - `setup` 실행 시 `mise install --locked <tool@version>`으로 mise의 **native strict locked install**을 강제. 잠금 누락 시 즉시 실패.
    - `setup` 도중 `mise.lock`이 변조되면 `unchanged_policy()`에서 즉시 실행 차단.
    - `update` 시 미커밋된 `mise.lock` 변경을 `check_update_state()`에서 사전 차단.
 1. **Setup vs Update 불변성 및 범위 한정:**
