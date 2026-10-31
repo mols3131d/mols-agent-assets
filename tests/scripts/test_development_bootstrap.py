@@ -129,7 +129,42 @@ def test_update_uses_native_bounded_resolution_and_retains_other_policy(
     assert args[resolve][1:] == ["lock", "--upgrade", "--no-python-downloads"]
     assert (project / "uv.lock").read_bytes() != original.pop("uv.lock")
     assert original == {name: (project / name).read_bytes() for name in original}
-    assert "[changed] uv.lock" in capsys.readouterr().out
+    output = capsys.readouterr().out
+    assert "[changed] uv.lock" in output
+    assert "[unchanged] mise.lock" in output
+
+
+@pytest.mark.parametrize("returncode", [0, 1])
+def test_update_blocks_mise_lock_mutation_before_sync_without_rollback(
+    project, native, monkeypatch, capsys, returncode
+):
+    original = bootstrap.Bootstrap.command
+    before = {name: (project / name).read_bytes() for name in bootstrap.POLICY_FILES}
+
+    def command(self, args, **kwargs):
+        result = original(self, args, **kwargs)
+        if args[1:] == ["lock", "--upgrade", "--no-python-downloads"]:
+            (self.root / "mise.lock").write_text(
+                "unexpected mutation\n", encoding="utf-8"
+            )
+            result.returncode = returncode
+        return result
+
+    monkeypatch.setattr(bootstrap.Bootstrap, "command", command)
+    assert bootstrap.main(["update"], root=project) == 1
+
+    assert not any("sync" in args for args in commands(native))
+    assert (project / "mise.lock").read_text(
+        encoding="utf-8"
+    ) == "unexpected mutation\n"
+    assert (project / "uv.lock").read_text(encoding="utf-8") == "upgraded\n"
+    for name in before.keys() - {"mise.lock", "uv.lock"}:
+        assert (project / name).read_bytes() == before[name]
+    output = capsys.readouterr()
+    assert "Result: BLOCKED" in output.err
+    assert "mise.lock changed during bootstrap" in output.err
+    assert "Result: READY" not in output.out
+    assert not (project / ".tmp" / "bootstrap.lock").exists()
 
 
 @pytest.mark.parametrize("mode", ["setup", "update"])
@@ -663,8 +698,9 @@ def test_mise_lock_included_in_policy_files_and_update_inputs():
     assert "mise.lock" in bootstrap.UPDATE_INPUTS
 
 
-def test_mise_lock_mutation_during_setup_is_blocked(project, monkeypatch):
-    runner = bootstrap.Bootstrap(project, "setup", {})
+@pytest.mark.parametrize("mode", ["setup", "update"])
+def test_mise_lock_mutation_during_step_is_blocked(project, monkeypatch, mode):
+    runner = bootstrap.Bootstrap(project, mode, {})
 
     def mutate(*args, **kwargs):
         (project / "mise.lock").write_text("mutated\n", encoding="utf-8")

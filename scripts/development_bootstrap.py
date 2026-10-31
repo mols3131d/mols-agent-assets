@@ -213,7 +213,7 @@ class Bootstrap:
 
     def unchanged_policy(self) -> None:
         for name, content in self.original.items():
-            if name in ("uv.lock", "mise.lock") and self.mode == "update":
+            if name == "uv.lock" and self.mode == "update":
                 continue
             path = self.root / name
             if linked(path) or not path.is_file() or path.read_bytes() != content:
@@ -379,18 +379,12 @@ class Bootstrap:
     def report(self) -> int:
         self.unchanged_policy()
         uv_changed = (self.root / "uv.lock").read_bytes() != self.original["uv.lock"]
-        mise_changed = (self.root / "mise.lock").read_bytes() != self.original[
-            "mise.lock"
-        ]
         if self.mode == "update":
             print(
                 f"[{'changed' if uv_changed else 'unchanged'}] uv.lock; "
                 "review before committing."
             )
-            print(
-                f"[{'changed' if mise_changed else 'unchanged'}] mise.lock; "
-                "review before committing."
-            )
+            print("[unchanged] mise.lock; exact CLI lock retained.")
             print(
                 "[unchanged] Exact CLI pins and external Agent Asset revisions "
                 "are retained."
