@@ -138,10 +138,10 @@ def python_requirements(root, warnings):
         warnings.append(f"Cannot read requirements.txt: {exc}")
         return []
     # A custom index may host names that must not be disclosed to the public PyPI API.
-    private_index = any(re.match(r"^\s*(?:-i(?:\s|=)|--(?:extra-)?index-url(?:\s|=)|-f(?:\s|=)|--find-links(?:\s|=))", line)
+    private_index = any(re.match(r"^\s*(?:-i(?:\s|=)|--(?:extra-)?index-url(?:\s|=)|--no-index(?:\s|$)|-f(?:\s|=)|--find-links(?:\s|=))", line)
                         for line in lines)
     if private_index:
-        warnings.append("Custom Python package index or find-links found; skip all PyPI online lookups by default")
+        warnings.append("Custom Python package index, --no-index or find-links found; skip all PyPI online lookups by default")
     for line_no, raw in enumerate(lines, 1):
         value = raw.strip()
         if not value or value.startswith("#"):
