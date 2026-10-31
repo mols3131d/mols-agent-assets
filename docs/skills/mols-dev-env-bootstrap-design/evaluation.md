@@ -64,6 +64,14 @@ Grader는 두 실행 모두 `ollama:chat:nemotron-3-nano:4b`다. 고정 보정 �
 
 이전 exact-pin empty JSON은 이전 Skill에 `think=false`를 명시한 통제 요청에서 해소됐다. 최신 실행의 다른 trigger에서 생긴 selection 불일치는 같은 조건 재시도에도 재현돼 schema 오류로 보존했다. 이전 11-case와 설정·case 수·grader가 달라 전체 점수를 직접 비교해 Skill 개선 효과를 주장하지 않는다.
 
+## Language and Skill validity evidence
+
+한국어 지시와 영어 루브릭의 언어 불일치 영향을 분리하기 위해, 대표 실패 사례 3건에 대해 **한국어/영어 × Skill 미적용/적용** 36건을 3개 로컬 모델(`qwen2.5-coder:7b`, `nemotron-3-nano:4b`, `qwen3.5:4b`)에서 교차 실행하고 2인의 블라인드 평가를 수행했다 ([상세 결과](../../../inbox/github-256/bootstrap-eval-language-comparison-results-2026-10-31.md)).
+
+- **언어 격차 미미:** Skill 적용 시 영어(29.6%)와 한국어(25.9%)의 기준 충족률 차이는 3.7%p(27개 중 1개 기준 차이)에 불과해, 낮은 통과율의 주원인이 언어 불일치가 아님을 확인했다.
+- **Skill 개선 효과:** 한국어 환경에서 Skill 적용 시 기준 충족률이 11.1~18.5%에서 25.9%로 향상(+7.4~14.8%p)되어 Skill 지침의 안전·범위 경계 강화 효과를 확인했다.
+- **소형 모델 한계:** 다중 제약·부정 조건을 동시에 충족해야 하는 복합 루브릭 특성상 4B~7B 모델에서는 전 기준 충족 사례가 없었으며, 이는 모델의 instruction-following 역량 경계로 보존한다.
+
 ## Previous 11-case evidence
 
 2026-10-25, HEAD `81eb4579eac6b25b45878b31d86697863b3c25bd`의 한국어 Skill과 최신 fixture를 두 로컬 모델로 각각 1회 실행했다. Grader는 `ollama:chat:qwen2.5-coder:7b`로 고정했다. [실행 조건·사례별 근거](../../../inbox/github-256/bootstrap-eval-results-2026-10-25.md)에 원문 판정과 오류·채점 차이를 기록했다.
