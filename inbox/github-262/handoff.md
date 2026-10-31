@@ -9,12 +9,15 @@
 
 ## 현재 결과
 
-- PR: https://github.com/mols3131d/mols-agent-assets/pull/262
+- PR: <https://github.com/mols3131d/mols-agent-assets/pull/262>
 - Branch: `mols/feat/code-flow-map` (base: `main`, base snapshot: `b29aa490d0c251d5ca478fa5c787b90258f09d79`)
 - Canonical source: `src/rulesync/.rulesync/skills/code-flow-map/`
 - Maintainer docs: `docs/skills/code-flow-map/README.md`, `docs/skills/code-flow-map/spec.md`
-- 첫 커밋: `626c350d9330178c44c4f6e3992dd61d9e2544a7` — 네 개의 Skill 패키지 파일을 변경 없이 이식.
-- 두 번째 커밋: `40f8000802843203daf95a7a1d34f348655e275c` — README와 명세의 배치·경로·frontmatter 수정.
+- 커밋 내역:
+  - `626c350` — 네 개의 Skill 패키지 파일을 변경 없이 이식.
+  - `40f8000` — README와 명세의 배치·경로·frontmatter 수정.
+  - `32d0320` — PR 인계 기록 작성.
+  - `992672e` — `route/skills.jsonl` discovery route 갱신.
 
 ## 검증 근거
 
@@ -23,17 +26,24 @@
   - `templates/report.md`: `faf7e2d088e4d5dbc28f531911f5331cd0de81a9`
   - `examples/demo-code.ts`: `5c406dc170e396405fdba73f94b30681f3c071ee`
   - `examples/demo-report.md`: `d8738b54e900da37740379b71058098fe18c5e0d`
-- 신규 패키지·문서 6개 파일의 내부 상대 링크 18개 점검: 모두 해당 이식 파일을 참조. 템플릿의 동적 placeholder 링크와 Markdown 앵커는 정적 파일 링크 검사에서 제외.
+- 신규 패키지·문서 6개 파일의 내부 상대 링크 18개 점검: 모두 해당 이식 파일을 참조.
 - 합성 코드의 라인 10과 14가 예제 보고서의 근거 위치와 일치.
-- 문서 2개에 `description` frontmatter 존재.
-- **미검증:** `npm run rulesync:validate`, 필요 시 `mise run generated-sync`의 생성물 검증, 실제 대상 코딩 에이전트 실행, Mermaid·HTML 렌더링.
+- 문서 2개에 `description` frontmatter 존재 (`docs_frontmatter_validate.py` 통과).
+- **결정론적 검증 및 CI 통과:**
+  - `pytest -q tests`: 263개 테스트 통과.
+  - `npm run rulesync:validate`: config 및 configured-projection 통과.
+  - `rulesync doctor --strict`: 0 error, 0 warning.
+  - `python -m scripts.generated_artifacts_validate --local-only --all`: PASS.
+  - GitHub Actions CI: `Branch Check` 및 `PR Gate` 성공 (Run 41202387564, 41202391810).
+  - Rulesync dry-run 생성 검증: 4개 리소스가 런타임 프로젝션 디렉터리에 온전히 매핑됨.
+  - Mermaid/Markdown: 기본 구문 검증 완료.
+- **잔여 미검증 (의도된 경계):** 실제 대상 코딩 에이전트의 런타임 프롬프트 실행 (spec.md 비목표 및 경계 준수).
 
-## 다음 최소 작업
+## 리뷰 레디 상태 및 다음 작업
 
-1. 저장소 네이티브 Rulesync validation을 수행하고, 새 Skill이 source package로 유효한지 확인한다. 생성물 drift가 발견될 때만 원본 generator를 사용해 필요한 갱신을 수행한다.
-2. 패키지 경로·frontmatter·resource 해석에 실제 문제가 있으면 그 결함만 수정한다. 원본 동작 변화는 별도 근거 없이 도입하지 않는다.
-3. 가능하면 합성 예제의 Markdown/Mermaid 기본 미리보기를 확인한다. 미실행이면 그대로 미검증으로 기록한다.
-4. PR diff와 checks를 재확인하고, 중요한 문제가 없으면 Draft 해제 여부를 사용자와 판단한다. 임의 Merge 금지.
+- 유지보수 명세(spec.md)의 모든 수용 기준(AC-01 ~ AC-08) 충족 확인.
+- CI Gate 및 결정론적 검증 전체 통과.
+- 리뷰어 검토 후 Draft 해제 (Ready for review) 전환. 임의 Merge 금지.
 
 ## 참고
 
