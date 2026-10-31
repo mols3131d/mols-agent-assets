@@ -26,7 +26,7 @@ python src/rulesync/.rulesync/skills/check-dependencies/scripts/check_dependenci
 
 In another repository, invoke the copy of `scripts/check_dependencies.py` bundled with the installed Skill instead of assuming this source-repository path exists.
 
-Review the offline JSON inventory **before** authorizing online lookups. The script skips lock entries pointing at non-public npm registries and Python requirements with custom package indexes. Unknown origins or registry configuration outside these files may still be private.
+Review the offline JSON inventory **before** authorizing online lookups. The script skips lock entries pointing at non-public npm registries and Python requirements with custom package indexes or `--no-index`. Unknown origins or registry configuration outside these files may still be private.
 
 The script prints JSON to stdout and does not modify project files. A package not listed by a queried public registry may still exist elsewhere. Empty OSV advisory results never establish safety.
 
