@@ -1,3 +1,5 @@
+<!-- rumdl-disable MD040 -->
+
 # Code Flow — {{TOPIC}}
 
 > **Finding:** {{ONE_SENTENCE_CONCLUSION}}
@@ -40,7 +42,7 @@ flowchart TD
 - **Observation:** {{EXACT_SOURCE_FACT}}
 - **Limit:** This shows a code-level relationship, **not** an executed runtime call.
 
-```text {{LANGUAGE}}
+```{{LANGUAGE}}
 {{SMALL_RELEVANT_SOURCE_SNIPPET}}
 ```
 

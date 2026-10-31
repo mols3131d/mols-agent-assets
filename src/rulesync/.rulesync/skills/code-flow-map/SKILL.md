@@ -37,7 +37,7 @@ Produce a **navigable, evidence-backed Markdown report** for a specific code pat
 
 ## Produce the report
 
-- Load [templates/report.md](./templates/report.md) when writing a report. Replace every `{{PLACEHOLDER}}`; remove irrelevant example nodes/sections rather than inventing values.
+- Load [templates/report.md](./templates/report.md) when writing a report. Replace every `{{PLACEHOLDER}}` (including setting `{{LANGUAGE}}` to the source code language identifier such as `ts` or `py`); remove irrelevant example nodes/sections rather than inventing values.
 - Default output: `docs/code-flows/<short-kebab-topic>.md` relative to the repository root **when the user wants a file**. Otherwise answer inline. Check before overwriting an existing report.
 - Use portable Markdown for headings, evidence tables, source links and Mermaid `flowchart TD` blocks. Prefer small overview diagrams (roughly 9 nodes or fewer); split large flows into an overview and focused sections.
 - Use **inline HTML only for `<details>`, `<summary>`, `<strong>`, `<code>` and optional explicit anchors**. Keep critical caveats and evidence status visible even when details are collapsed.
