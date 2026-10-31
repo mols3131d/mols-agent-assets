@@ -137,6 +137,16 @@ class DependencyChecks(unittest.TestCase):
         self.assertEqual(packages[0]["registry"], "SKIPPED")
         self.assertEqual(packages[0]["osv"], "NOT_CHECKED")
 
+    def test_python_no_index_skips_public_api(self):
+        (self.root / "requirements.txt").write_text(
+            "--no-index\ninternal-lib==9.8.7\n", encoding="utf-8")
+        packages, warnings = audit.inventory(self.root)
+        self.assertEqual(packages[0]["public_origin"], "NONPUBLIC_ORIGIN")
+        self.assertTrue(any("--no-index" in x for x in warnings))
+        with patch.object(audit, "request_json", side_effect=AssertionError("network called")):
+            self.assertEqual(audit.verify_online(packages, warnings, 50, 5, False), 0)
+        self.assertEqual((packages[0]["registry"], packages[0]["osv"]), ("SKIPPED", "NOT_CHECKED"))
+
     def test_unknown_origin_requires_manual_review_warning(self):
         (self.root / "package-lock.json").write_text(json.dumps({
             "lockfileVersion": 3,
