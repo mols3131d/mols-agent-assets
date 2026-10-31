@@ -3,7 +3,7 @@
 > **Illustration only:** The linked code is a tiny synthetic fixture. Both edges are statically resolved; no runtime test or trace was executed. The diagram is **not** proof that any particular request ran these calls.
 
 | Field | Value |
-|---|---|
+| --- | --- |
 | Source | [demo-code.ts](./demo-code.ts) |
 | Scope | `postLogin` → `authenticate` → `lookupUser` |
 | Runtime evidence | Not collected |
@@ -19,7 +19,7 @@ flowchart TD
 ## Evidence table
 
 | ID | Edge | Status | Source fact |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | [E1](#e1) | `postLogin` → `authenticate` | STATIC | [demo-code.ts](./demo-code.ts), line 14: direct call |
 | [E2](#e2) | `authenticate` → `lookupUser` | STATIC | [demo-code.ts](./demo-code.ts), line 10: direct call |
 

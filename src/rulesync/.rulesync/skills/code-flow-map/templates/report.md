@@ -5,7 +5,7 @@
 > **Evidence boundary:** `OBSERVED` = seen in an identified scenario; `STATIC` = resolved in source; `INFERRED` = hypothesis; `UNRESOLVED` = insufficient evidence. Neither source existence nor a diagram proves actual runtime execution.
 
 | Field | Value |
-|---|---|
+| --- | --- |
 | Repository / revision | `{{REPOSITORY}}` / `{{COMMIT_OR_WORKTREE}}` |
 | Question | {{QUESTION}} |
 | Entry point | `{{ENTRY_SYMBOL_OR_PATH}}` |
@@ -21,12 +21,12 @@ flowchart TD
   B -.->|"E2 · INFERRED · event"| C["N3 · {{HYPOTHESIZED_STEP}}"]
 ```
 
-**Legend:** `-->` = source-resolved or scenario-observed connection (**read status label**); `-.->` = inferred or unresolved connection. Arrows indicate the **reported relationship direction**, not automatically a guaranteed runtime order.
+**Legend:** `-->` = source-resolved or scenario-observed connection (**read status label**); `-.->` = inferred or candidate-bounded unresolved connection. Arrows indicate the **reported relationship direction**, not automatically a guaranteed runtime order.
 
 ## Edge evidence
 
 | ID | From → To | Relation | Status | Evidence and limits |
-|---|---|---|---|---|
+| --- | --- | --- | --- | --- |
 | [E1](#e1) | N1 → N2 | call | STATIC | [{{FILE_A}}]({{RELATIVE_FILE_LINK_A}}), lines {{LINE_RANGE_A}}; {{WHAT_THIS_PROVES}} |
 | [E2](#e2) | N2 → N3 | event | INFERRED | No direct edge evidence; {{WHAT_IS_MISSING}} |
 
@@ -40,7 +40,7 @@ flowchart TD
 - **Observation:** {{EXACT_SOURCE_FACT}}
 - **Limit:** This shows a code-level relationship, **not** an executed runtime call.
 
-```{{LANGUAGE}}
+```text {{LANGUAGE}}
 {{SMALL_RELEVANT_SOURCE_SNIPPET}}
 ```
 
@@ -66,7 +66,7 @@ flowchart TD
 ## Verification record
 
 | Check | Result |
-|---|---|
+| --- | --- |
 | Source paths/line ranges reread | {{PASS_FAIL_NOT_RUN}} |
 | Call targets resolved | {{PASS_FAIL_PARTIAL_AND_SCOPE}} |
 | Runtime tests/traces | {{OBSERVED_DETAILS_OR_NOT_RUN}} |

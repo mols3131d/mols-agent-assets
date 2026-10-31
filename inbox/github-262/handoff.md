@@ -18,23 +18,25 @@
   - `40f8000` — README와 명세의 배치·경로·frontmatter 수정.
   - `32d0320` — PR 인계 기록 작성.
   - `992672e` — `route/skills.jsonl` discovery route 갱신.
+  - `1297abb` — PR #262 검증 결과 및 리뷰 레디 상태 갱신.
+  - 후속 커밋 — Owner 리뷰 피드백(Review #5722871862) 반영 (targets 선언, secret 마스킹, UNRESOLVED 간선 규칙 보완).
 
 ## 검증 근거
 
-- 첨부 ZIP 원본과 신규 Git blob SHA가 **정확히 일치**:
-  - `SKILL.md`: `37049f19406c6b826146857d34c85e9d19b59ac8`
-  - `templates/report.md`: `faf7e2d088e4d5dbc28f531911f5331cd0de81a9`
-  - `examples/demo-code.ts`: `5c406dc170e396405fdba73f94b30681f3c071ee`
-  - `examples/demo-report.md`: `d8738b54e900da37740379b71058098fe18c5e0d`
-- 신규 패키지·문서 6개 파일의 내부 상대 링크 18개 점검: 모두 해당 이식 파일을 참조.
+- 첨부 ZIP 원본과 초기 Git blob SHA 일치 확인 후, 리뷰 피드백에 따른 최소 계약·안전 지침 보강.
+- 신규 패키지·문서 파일의 내부 상대 링크 점검 완료.
 - 합성 코드의 라인 10과 14가 예제 보고서의 근거 위치와 일치.
 - 문서 2개에 `description` frontmatter 존재 (`docs_frontmatter_validate.py` 통과).
+- **리뷰 피드백 반영 사항 (Review #5722871862):**
+  - `SKILL.md`: `targets` 명시 (6개 타깃 지원 선언).
+  - `SKILL.md`: 보고서 스니펫/로그에서 secret·민감정보 제외 및 마스킹 지침 추가.
+  - `SKILL.md` / `spec.md` / `templates/report.md`: `UNRESOLVED` 연결 시 대상·방향 미확정 건 다이어그램 생략 및 미해결 항목 기록 분리.
 - **결정론적 검증 및 CI 통과:**
   - `pytest -q tests`: 263개 테스트 통과.
   - `npm run rulesync:validate`: config 및 configured-projection 통과.
   - `rulesync doctor --strict`: 0 error, 0 warning.
   - `python -m scripts.generated_artifacts_validate --local-only --all`: PASS.
-  - GitHub Actions CI: `Branch Check` 및 `PR Gate` 성공 (Run 41202387564, 41202391810).
+  - GitHub Actions CI: `Branch Check` 및 `PR Gate` 성공.
   - Rulesync dry-run 생성 검증: 4개 리소스가 런타임 프로젝션 디렉터리에 온전히 매핑됨.
   - Mermaid/Markdown: 기본 구문 검증 완료.
 - **잔여 미검증 (의도된 경계):** 실제 대상 코딩 에이전트의 런타임 프롬프트 실행 (spec.md 비목표 및 경계 준수).
@@ -42,8 +44,9 @@
 ## 리뷰 레디 상태 및 다음 작업
 
 - 유지보수 명세(spec.md)의 모든 수용 기준(AC-01 ~ AC-08) 충족 확인.
+- Owner 리뷰 지적 사항 4건(High 1, Medium 2, Low 1) 조치 완료.
 - CI Gate 및 결정론적 검증 전체 통과.
-- 리뷰어 검토 후 Draft 해제 (Ready for review) 전환. 임의 Merge 금지.
+- PR Ready for review 상태 유지. 승인 후 Merge 진행.
 
 ## 참고
 
