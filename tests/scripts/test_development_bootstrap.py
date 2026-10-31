@@ -410,6 +410,32 @@ def test_existing_venv_system_site_packages_isolated(
         assert not native[0]
 
 
+@pytest.mark.parametrize("mode", ["setup", "update"])
+def test_tool_install_cannot_expose_system_packages_to_python(
+    project, native, monkeypatch, capsys, mode
+):
+    original = bootstrap.Bootstrap.install_tools
+
+    def install_tools(self, *args):
+        original(self, *args)
+        target = self.root / ".venv"
+        target.mkdir()
+        (target / "pyvenv.cfg").write_text(
+            "include-system-site-packages = true\n", encoding="utf-8"
+        )
+
+    monkeypatch.setattr(bootstrap.Bootstrap, "install_tools", install_tools)
+    assert bootstrap.main([mode], root=project) == 1
+    assert not any("--upgrade" in args or "sync" in args for args in commands(native))
+    assert (project / ".venv" / "pyvenv.cfg").read_text(
+        encoding="utf-8"
+    ) == "include-system-site-packages = true\n"
+    output = capsys.readouterr()
+    assert "system site-packages" in output.err
+    assert "Result: READY" not in output.out
+    assert not (project / ".tmp" / "bootstrap.lock").exists()
+
+
 def test_update_allows_unrelated_asset_changes(project, native, monkeypatch):
     assets = ("rulesync.jsonc", "rulesync.lock", "skills-lock.json")
     for name in assets:

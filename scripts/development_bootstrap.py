@@ -337,8 +337,8 @@ class Bootstrap:
                 "repair uv and rerun."
             )
             return
-        check_environment(self.root, self.env)
         if self.mode == "update":
+            check_environment(self.root, self.env)
             if (self.root / "uv.lock").read_bytes() != self.original["uv.lock"]:
                 raise BootstrapError(
                     "uv.lock changed after preflight; inspect before retry."
