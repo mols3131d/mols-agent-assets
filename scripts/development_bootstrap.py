@@ -154,7 +154,6 @@ class Bootstrap:
             "UV_PYTHON_DOWNLOADS": "never",
             "GIT_TERMINAL_PROMPT": "0",
             "GIT_OPTIONAL_LOCKS": "0",
-            "MISE_TASK_RUN_AUTO_INSTALL": "false",
             "MISE_AUTO_INSTALL": "0",
             "MISE_LOCKFILE": "0",
         }
