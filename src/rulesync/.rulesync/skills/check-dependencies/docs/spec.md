@@ -10,7 +10,7 @@ description: check-dependencies 스킬의 입력 범위, 상태 의미, 개인�
 
 Input: repository root and optionally explicit public lookup permission. Default output: read-only JSON inventory; optional Markdown report. The Skill does not install packages, patch manifests or diagnose application behavior unrelated to dependencies.
 
-**Privacy default:** no network. Online mode shares selected package names and exact versions with public providers; requires explicit user authorization. npm `@scope/name` entries are excluded by default even in online mode. Lock entries with explicit non-public npm `resolved` origins and Python requirements declaring custom indexes are skipped, even with `--online`. Entries with unknown origins may still be private; review the offline inventory and external `.npmrc`/pip configuration before opting in. The script does not automatically discover private registry overrides outside the manifests.
+**Privacy default:** no network. Online mode shares selected package names and exact versions with public providers; requires explicit user authorization. npm `@scope/name` entries are excluded by default even in online mode. Lock entries with explicit non-public npm `resolved` origins and Python requirements declaring custom indexes or `--no-index` are skipped, even with `--online`. Entries with unknown origins may still be private; review the offline inventory and external `.npmrc`/pip configuration before opting in. The script does not automatically discover private registry overrides outside the manifests.
 
 ## Source ownership
 
@@ -52,7 +52,7 @@ Input: repository root and optionally explicit public lookup permission. Default
 | DC-09 | Unsupported dependency file | Named coverage omission |
 | DC-10 | Markdown report | Source scope and unknowns visible without running HTML scripts |
 | DC-11 | npm lock entry resolved at non-public host | No network lookup; entry explicitly `SKIPPED` |
-| DC-12 | requirements.txt has custom `--index-url` | No PyPI/OSV lookup for any pinned Python package |
+| DC-12 | requirements.txt has custom `--index-url` or `--no-index` | No PyPI/OSV lookup for any pinned Python package |
 
 ## Verification
 
