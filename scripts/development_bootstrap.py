@@ -21,6 +21,7 @@ UPDATE_INPUTS = (
     "pyproject.toml",
     ".python-version",
     "uv.lock",
+    "mise.lock",
 )
 POLICY_FILES = (*UPDATE_INPUTS, "rulesync.jsonc", "rulesync.lock", "skills-lock.json")
 TOOL_COMMANDS = {
@@ -114,14 +115,7 @@ def read_tools(root: Path) -> dict[str, str]:
         not isinstance(version, str) or not EXACT_VERSION.fullmatch(version)
         for version in tools.values()
     ):
-        raise BootstrapError(
-            "Bootstrap currently requires exact tool pins. Introduce and validate "
-            "mise.lock before using bounded tool requests."
-        )
-    if (root / "mise.lock").exists():
-        raise BootstrapError(
-            "mise.lock needs a reviewed locked-install bootstrap path."
-        )
+        raise BootstrapError("Bootstrap currently requires exact tool pins.")
     return tools
 
 
@@ -155,7 +149,7 @@ class Bootstrap:
             "GIT_TERMINAL_PROMPT": "0",
             "GIT_OPTIONAL_LOCKS": "0",
             "MISE_AUTO_INSTALL": "0",
-            "MISE_LOCKFILE": "0",
+            "MISE_LOCKFILE": "1",
         }
         for key in (
             "VIRTUAL_ENV",
@@ -218,10 +212,8 @@ class Bootstrap:
             )
 
     def unchanged_policy(self) -> None:
-        if (self.root / "mise.lock").exists():
-            raise BootstrapError("Unexpected mise.lock; inspect it before retrying.")
         for name, content in self.original.items():
-            if name == "uv.lock" and self.mode == "update":
+            if name in ("uv.lock", "mise.lock") and self.mode == "update":
                 continue
             path = self.root / name
             if linked(path) or not path.is_file() or path.read_bytes() != content:
@@ -382,10 +374,17 @@ class Bootstrap:
 
     def report(self) -> int:
         self.unchanged_policy()
-        changed = (self.root / "uv.lock").read_bytes() != self.original["uv.lock"]
+        uv_changed = (self.root / "uv.lock").read_bytes() != self.original["uv.lock"]
+        mise_changed = (self.root / "mise.lock").read_bytes() != self.original[
+            "mise.lock"
+        ]
         if self.mode == "update":
             print(
-                f"[{'changed' if changed else 'unchanged'}] uv.lock; "
+                f"[{'changed' if uv_changed else 'unchanged'}] uv.lock; "
+                "review before committing."
+            )
+            print(
+                f"[{'changed' if mise_changed else 'unchanged'}] mise.lock; "
                 "review before committing."
             )
             print(

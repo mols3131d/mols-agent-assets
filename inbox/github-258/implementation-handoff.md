@@ -4,6 +4,7 @@
 
 ## 반영 완료
 
+- **mise.lock 도입:** `mise lock`을 통해 7개 CLI 도구의 7개 플랫폼(Linux, macOS, Windows) 다운로드 URL, sha256 체크섬, provenance를 `mise.lock`으로 잠금 관리한다. `development_bootstrap.py`에서 `mise.lock`을 정책 파일 및 update 입력에 편입하고 `unchanged_policy()` 및 `check_update_state()` 보호를 적용했다.
 - **CLI 버전 정책 확정:** 7개 CLI 도구를 4개 케이스(1. 패치 준수 최신, 2. 마이너 준수 최신, 3. 메이저 준수 최신, 4. 최신 안정)로 분류하고, 허용 범위·잠금 소유자·`setup`(잠금 재현) vs `update`(범위 내 갱신) 원칙을 [`docs/references/tooling/mise.md`](../../docs/references/tooling/mise.md)에 정립했다. [`mise.toml`](../../mise.toml)에는 exact pin 정책과 문서 참조를 명시했다.
 - **실행기 간소화:** `scripts/development_bootstrap.py`에서 `mise.toml`의 `[settings] task.run_auto_install = false`와 중복되는 `MISE_TASK_RUN_AUTO_INSTALL` 강제 설정을 제거했다. Windows `.cmd`/pinned Node 격리를 위한 `tool_command()` 및 버전 검증은 안전하게 유지했다.
 - **개발환경 정본 문서 구조 정돈:** [`docs/development/development-environment.md`](../../docs/development/development-environment.md)를 주제별 일반 거버넌스 정책(격리 경계, 재사용 원칙, 버전 수명 주기)과 부트스트랩 운영 절차(에이전트 승인 게이트, Core vs 선택적 연동, setup/update 경계)로 체계화하고 세부 명령은 `mise.md`로 연결했다.

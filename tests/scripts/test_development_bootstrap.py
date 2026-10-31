@@ -185,7 +185,7 @@ def test_project_uv_target_and_active_foreign_env_are_handled(
         assert kwargs["cwd"] == project
         assert kwargs["env"]["UV_PROJECT_ENVIRONMENT"] == str(project / ".venv")
         assert kwargs["env"]["UV_PYTHON_DOWNLOADS"] == "never"
-        assert kwargs["env"]["MISE_LOCKFILE"] == "0"
+        assert kwargs["env"]["MISE_LOCKFILE"] == "1"
         assert kwargs["env"]["MISE_AUTO_INSTALL"] == "0"
         assert "VIRTUAL_ENV" not in kwargs["env"]
         assert "UV_PROJECT" not in kwargs["env"]
@@ -652,3 +652,22 @@ def test_native_uv_update_respects_upper_bound_and_setup_lock(tmp_path):
         setup.python_environment()
     assert not setup.failed
     assert (root / "uv.lock").read_bytes() == lock
+
+
+def test_mise_lock_included_in_policy_files_and_update_inputs():
+    assert "mise.lock" in bootstrap.POLICY_FILES
+    assert "mise.lock" in bootstrap.UPDATE_INPUTS
+
+
+def test_mise_lock_mutation_during_setup_is_blocked(project, monkeypatch):
+    runner = bootstrap.Bootstrap(project, "setup", {})
+
+    def mutate(*args, **kwargs):
+        (project / "mise.lock").write_text("mutated\n", encoding="utf-8")
+        return subprocess.CompletedProcess(args[0], 0, stdout="", stderr="")
+
+    monkeypatch.setattr(runner, "command", mutate)
+    with pytest.raises(
+        bootstrap.BootstrapError, match="mise.lock changed during bootstrap"
+    ):
+        runner.step("test step", ["cmd"], "recovery")

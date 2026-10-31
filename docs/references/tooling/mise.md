@@ -45,7 +45,7 @@ mise run setup
 | `mise run check` / `mise run test` | 기존 toolchain/lock 검사와 deterministic tests. update의 대체 경로가 아님 |
 | `mise run format-changed` | 변경된 파일만 기존 formatter로 정규화 |
 
-현재 CLI 정책은 모두 exact pin이므로 `update`도 CLI 버전을 바꾸지 않습니다. `mise.lock`과 npm dependency sidecar의 검증 경로를 도입하기 전에는 prefix/range tool request를 거부합니다. Python package의 허용 범위는 [`pyproject.toml`](../../../pyproject.toml)이 소유하며 wrapper는 별도 범위를 만들지 않습니다. Rulesync/Skill source revision은 일반 update에서 유지합니다.
+현재 CLI 정책은 모두 exact pin이므로 `update`도 CLI 버전을 바꾸지 않습니다. `mise.lock`이 도입되어 도구별 릴리스 아티팩트 URL, 체크섬 및 provenance가 플랫폼별로 잠금 관리됩니다. Python package의 허용 범위는 [`pyproject.toml`](../../../pyproject.toml)이 소유하며 wrapper는 별도 범위를 만들지 않습니다. Rulesync/Skill source revision은 일반 update에서 유지합니다.
 
 ### CLI tool versioning policy and cases
 
@@ -62,19 +62,19 @@ mise run setup
 
 | 도구 | 현재 Pin (`mise.toml`) | 버전 정책 케이스 | 허용 범위 및 규칙 | 잠금 소유자 |
 | --- | --- | --- | --- | --- |
-| `uv` | `0.12.1` | Case 1 (패치 준수) | 0.x 단계에서 resolver·동작 변경 방지를 위해 패치만 허용 | `mise.toml` (추후 `mise.lock`) |
-| `node` | `24.19.0` | Case 2 & 3 (LTS 메이저 준수) | Node 짝수 Active LTS 메이저 내 최신 마이너/패치 | `mise.toml` (추후 `mise.lock`) |
-| `rumdl` | `0.2.54` | Case 1 (패치 준수) | 0.x 단계 Markdown 포맷팅 churn 방지를 위해 패치만 허용 | `mise.toml` (추후 `mise.lock`) |
-| `lefthook` | `2.1.10` | Case 2 (마이너 준수) | v2 메이저 호환성 유지 하에 하위 호환 마이너 업데이트 | `mise.toml` (추후 `mise.lock`) |
-| `npm:@biomejs/biome` | `2.5.6` | Case 1 (패치 준수) | 린트/포맷 규칙 변경으로 인한 대량 diff 방지 | `mise.toml` (추후 `mise.lock`) |
-| `npm:rulesync` | `40.2.0` | Case 3 (메이저 준수) | 프로젝트 호환성이 검증된 안정 릴리스 라인 유지 | `mise.toml` (추후 `mise.lock`) |
-| `npm:skills` | `1.5.23` | Case 4 (최신 안정) | 외부 스킬 저장소·프로토콜 연동을 위한 최신 안정 지향 | `mise.toml` (추후 `mise.lock`) |
+| `uv` | `0.12.1` | Case 1 (패치 준수) | 0.x 단계에서 resolver·동작 변경 방지를 위해 패치만 허용 | `mise.lock` |
+| `node` | `24.19.0` | Case 2 & 3 (LTS 메이저 준수) | Node 짝수 Active LTS 메이저 내 최신 마이너/패치 | `mise.lock` |
+| `rumdl` | `0.2.54` | Case 1 (패치 준수) | 0.x 단계 Markdown 포맷팅 churn 방지를 위해 패치만 허용 | `mise.lock` |
+| `lefthook` | `2.1.10` | Case 2 (마이너 준수) | v2 메이저 호환성 유지 하에 하위 호환 마이너 업데이트 | `mise.lock` |
+| `npm:@biomejs/biome` | `2.5.6` | Case 1 (패치 준수) | 린트/포맷 규칙 변경으로 인한 대량 diff 방지 | `mise.lock` |
+| `npm:rulesync` | `40.2.0` | Case 3 (메이저 준수) | 프로젝트 호환성이 검증된 안정 릴리스 라인 유지 | `mise.lock` |
+| `npm:skills` | `1.5.23` | Case 4 (최신 안정) | 외부 스킬 저장소·프로토콜 연동을 위한 최신 안정 지향 | `mise.lock` |
 
-- **Setup 원칙 (Zero Drift):** 어떤 정책 케이스이든 `mise run setup`은 항상 선언된 exact pin(또는 lockfile)을 100% 그대로 재현합니다. 네트워크 resolver를 통한 임의의 버전 승격은 발생하지 않습니다.
+- **Setup 원칙 (Zero Drift):** 어떤 정책 케이스이든 `mise run setup`은 항상 선언된 exact pin과 `mise.lock`의 사전 확인된 URL·체크섬을 100% 그대로 재현합니다. 네트워크 resolver를 통한 임의의 버전 승격은 발생하지 않습니다.
 - **Update 원칙 (Bounded Update):** `mise run update`만 선언된 정책 범위 내에서 최신 버전을 탐색하고 lockfile/manifest를 갱신합니다.
-- **현재 구현 상태:** `mise.lock` 및 npm dependency sidecar의 무결성 검증 경로가 마련되기 전까지는 임의의 prefix/range/latest 요청을 거부하며, 모든 CLI 도구의 허용 범위를 길이 0(Exact Pin)으로 유지합니다.
+- **현재 구현 상태:** `mise.lock`이 활성화되어 7개 CLI 도구의 7개 플랫폼(Linux, macOS, Windows) 바이너리가 잠금 관리되며, 현재는 모든 CLI 도구의 허용 범위를 길이 0(Exact Pin)으로 유지합니다.
 
-Setup은 policy/lock을 갱신하지 않습니다. Update는 `mise.toml`, `pyproject.toml`, `.python-version`, `uv.lock`의 기존 미커밋 변경을 사전 차단하며, 갱신된 `uv.lock`을 자동 commit하거나 rollback하지 않습니다. 별도 Rulesync/Skill 파일의 기존 미커밋 변경은 차단하지 않지만 작업 도중 감지한 예기치 않은 policy/lock 변경은 중단합니다. 모든 동시 수정 경쟁을 차단하는 sandbox는 아닙니다.
+Setup은 policy/lock을 갱신하지 않습니다. Update는 `mise.toml`, `pyproject.toml`, `.python-version`, `uv.lock`, `mise.lock`의 기존 미커밋 변경을 사전 차단하며, 갱신된 `uv.lock` 및 `mise.lock`을 자동 commit하거나 rollback하지 않습니다. 별도 Rulesync/Skill 파일의 기존 미커밋 변경은 차단하지 않지만 작업 도중 감지한 예기치 않은 policy/lock 변경은 중단합니다. 모든 동시 수정 경쟁을 차단하는 sandbox는 아닙니다.
 
 ### Installation scope and recovery
 
