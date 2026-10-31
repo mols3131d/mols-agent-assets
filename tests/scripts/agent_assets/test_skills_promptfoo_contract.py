@@ -13,15 +13,7 @@ CONFIG_DIR = ROOT / "evals" / "promptfoo"
 
 
 def _write_skill(root: Path, skill_name: str = "example-skill") -> None:
-    path = (
-        root
-        / "src"
-        / "rulesync"
-        / ".rulesync"
-        / "skills"
-        / skill_name
-        / "SKILL.md"
-    )
+    path = root / "src" / "rulesync" / ".rulesync" / "skills" / skill_name / "SKILL.md"
     path.parent.mkdir(parents=True)
     path.write_text(
         "---\n"
@@ -112,15 +104,25 @@ def test_semantic_behavior_projection_preserves_rubric_contract(monkeypatch) -> 
         }
     )
 
-    semantic = next(
+    semantics = [
         check for check in generated[0]["assert"] if check["type"] == "llm-rubric"
-    )
-    assert semantic["provider"] == "ollama:chat:test-grader"
-    assert semantic["threshold"] == 0.85
-    assert semantic["metric"] == "behavior-contract"
-    assert "observable assistant response" in semantic["value"]
-    for assertion in cases[case_id]["assertions"]:
-        assert assertion in semantic["value"]
+    ]
+    assert len(semantics) == len(cases[case_id]["assertions"])
+    for semantic, assertion in zip(
+        semantics, cases[case_id]["assertions"], strict=True
+    ):
+        assert semantic["provider"] == {
+            "id": "ollama:chat:test-grader",
+            "config": {"temperature": 0},
+        }
+        assert semantic["threshold"] == 0.85
+        assert semantic["metric"] == "behavior-contract"
+        assert "observable assistant response" in semantic["value"]
+        assert (
+            json.dumps(cases[case_id]["prompt"], ensure_ascii=False)
+            in semantic["value"]
+        )
+        assert semantic["value"].endswith(f"Criterion: {assertion}")
 
 
 def test_routing_candidates_accept_serialized_json_and_reject_malformed_json() -> None:
@@ -131,7 +133,10 @@ def test_routing_candidates_accept_serialized_json_and_reject_malformed_json() -
         }
     ]
 
-    assert evaluator._routing_candidates(json.dumps(candidates), "mols-loops") == candidates
+    assert (
+        evaluator._routing_candidates(json.dumps(candidates), "mols-loops")
+        == candidates
+    )
     with pytest.raises(ValueError, match="not valid JSON"):
         evaluator._routing_candidates("not-json", "mols-loops")
 

@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+
+description: Frozen positive and negative responses for bootstrap grader calibration
+
+prompts:
+  - "{{candidate_response}}"
+
+providers:
+  - id: echo
+    label: mols-dev-env-bootstrap-design-grader
+
+tests:
+  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_grader_tests
+    config:
+      skill: mols-dev-env-bootstrap-design
+
+sharing: false
+writeLatestResults: false
+commandLineOptions:
+  cache: false
+  write: false
+  noShare: true
+  maxConcurrency: 1

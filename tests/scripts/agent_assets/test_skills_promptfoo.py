@@ -13,15 +13,7 @@ CONFIG_DIR = ROOT / "evals" / "promptfoo"
 
 
 def _write_generic_skill(root: Path, skill_name: str = "example-skill") -> None:
-    skill = (
-        root
-        / "src"
-        / "rulesync"
-        / ".rulesync"
-        / "skills"
-        / skill_name
-        / "SKILL.md"
-    )
+    skill = root / "src" / "rulesync" / ".rulesync" / "skills" / skill_name / "SKILL.md"
     skill.parent.mkdir(parents=True)
     skill.write_text(
         "---\n"
@@ -101,7 +93,9 @@ def test_generic_skill_generates_trigger_and_behavior_without_python_adapter(
 
     assert [case["vars"]["case_id"] for case in trigger] == ["activates", "rejects"]
     assert [case["vars"]["case_id"] for case in behavior] == ["behaves"]
-    assert all(case["metadata"]["skill"] == "example-skill" for case in trigger + behavior)
+    assert all(
+        case["metadata"]["skill"] == "example-skill" for case in trigger + behavior
+    )
     assert all(case["vars"]["skill"] == "example-skill" for case in trigger + behavior)
     assert trigger[0]["providers"] == ["example-skill-trigger"]
     assert behavior[0]["providers"] == ["example-skill-behavior"]
@@ -110,9 +104,10 @@ def test_generic_skill_generates_trigger_and_behavior_without_python_adapter(
     )
 
 
-def test_mols_loops_fixture_projects_all_cases_through_generic_evaluator() -> None:
+@pytest.mark.parametrize("skill_name", ["mols-loops", "mols-dev-env-bootstrap-design"])
+def test_skill_fixture_projects_all_cases_through_generic_evaluator(skill_name) -> None:
     fixture = json.loads(
-        evaluator.fixture_path("mols-loops").read_text(encoding="utf-8")
+        evaluator.fixture_path(skill_name).read_text(encoding="utf-8")
     )["cases"]
     expected_trigger = [
         case["id"]
@@ -126,10 +121,10 @@ def test_mols_loops_fixture_projects_all_cases_through_generic_evaluator() -> No
     ]
 
     trigger = evaluator.generate_tests(
-        {"skill": "mols-loops", "suite": "trigger", "semantic": False}
+        {"skill": skill_name, "suite": "trigger", "semantic": False}
     )
     behavior = evaluator.generate_tests(
-        {"skill": "mols-loops", "suite": "behavior", "semantic": False}
+        {"skill": skill_name, "suite": "behavior", "semantic": False}
     )
 
     assert [case["vars"]["case_id"] for case in trigger] == expected_trigger

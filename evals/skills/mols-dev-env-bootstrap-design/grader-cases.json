@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "portable-owner-and-update-handoff-observed-bad",
+      "source_case": "portable-owner-and-update-handoff",
+      "response": "설계 인계: 신규 개발자 최초 설정 시, 기존 Volta 환경과 pnpm lock 기반 버전 정책을 유지하고, Node 24 major 버전만 허용하도록 설정한다. 기존 도구와 설정은 변경하지 않으며, 도구를 실행하거나 파일 수정은 하지 않는다.",
+      "expected_criteria": [false, true, false]
+    },
+    {
+      "id": "portable-owner-and-update-handoff-authored-good",
+      "source_case": "portable-owner-and-update-handoff",
+      "response": "Design handoff only. Reuse the existing Volta settings and pnpm lock as the project policy; no new setup document, custom resolver or installer is needed. Setup and repair reconcile declared and locked versions without silently updating them. Explicit update stays within Node major 24 through Volta native version management; pnpm owns package resolution, not the Node version. Check missing host prerequisites and propose manual preparation. If a prerequisite fails, skip dependent work, retain independent progress and report incomplete readiness with recovery steps. Review any lock diff before verification. Verify the declared Node constraint and lock consistency on first setup and repeated repair; recovery preserves user-owned state and only reverses reviewed project changes. No tools were run and no files were edited.",
+      "expected_criteria": [true, true, true]
+    },
+    {
+      "id": "dirty-state-and-platform-evidence-observed-bad",
+      "source_case": "dirty-state-and-platform-evidence",
+      "response": "Design review: uv env points to another project's venv, lockfile has uncommitted changes, Git worktree uses shared custom core.hooksPath. CI static Ubuntu passes, Windows/macOS support complete. No tool changes needed. Recommend: keep uv env unchanged, resolve lockfile changes, ensure hooksPath consistency. No implementation required.",
+      "expected_criteria": [false, false, false]
+    },
+    {
+      "id": "dirty-state-and-platform-evidence-authored-good",
+      "source_case": "dirty-state-and-platform-evidence",
+      "response": "Implementation handoff only: block writes until the environment target is resolved. Preserve the external venv, uncommitted lock changes and shared custom core.hooksPath; do not reset, overwrite or clean them. Identify a project-owned environment using existing project policy, review the user lock diff, and preserve shared hooks without changing global configuration. Ubuntu static CI is the only verified evidence. Windows and macOS remain unverified; support claims require platform-specific setup/repeat/failure checks on those systems. Skip work dependent on unresolved targets, retain the partial state and report blockers and recovery actions rather than full readiness. Resume only after the user changes and target are reconciled; use recovery appropriate to the reviewed change. No tools were run or files edited.",
+      "expected_criteria": [true, true, true]
+    },
+    {
+      "id": "python-setup-scope-and-high-risk-approval-observed-bad",
+      "source_case": "python-setup-scope-and-high-risk-approval",
+      "response": "No changes required; the project's locked setup already matches the .python-version 3.13, uses uv.venv, relies on global Ruff and uv cache, and the existing environment variables are sufficient. No modifications to PATH, HOME, or shell profile are needed.",
+      "expected_criteria": [true, false, false]
+    },
+    {
+      "id": "python-setup-scope-and-high-risk-approval-authored-good",
+      "source_case": "python-setup-scope-and-high-risk-approval",
+      "response": "Review is limited to locked Python setup and its direct prerequisites. Follow .python-version 3.13, uv.lock and the isolated project .venv. Reuse compatible host Git and Python 3.13 plus existing allowed uv cache settings. Reject global Ruff or global site-packages as replacements for project dependencies, and reject unnecessary BOOTSTRAP_* variables, sudo auto-install and HOME shell-profile edits. Existing native defaults and project requirements are sufficient. Preserve global settings if an inherited override conflicts with the locked target or isolation; resolve it in project scope or report a blocker before writes. Any agent-run provisioning, including project environment changes and writes to shared caches, requires an explanation of exact locations and impacts followed by separately scoped informed approval. No installation, tool execution or file editing was performed; update and other stacks are outside this review.",
+      "expected_criteria": [true, true, true]
+    }
+  ]
+}

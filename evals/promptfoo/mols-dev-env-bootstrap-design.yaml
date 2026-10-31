@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+
+description: mols-dev-env-bootstrap-design local Trigger and Behavior capability eval
+
+prompts:
+  - "{{task}}"
+
+providers:
+  - id: file://../../scripts/agent_assets/skills_promptfoo.py:call_api
+    label: mols-dev-env-bootstrap-design-trigger
+    config:
+      skill: mols-dev-env-bootstrap-design
+      mode: ollama
+      suite: trigger
+  - id: file://../../scripts/agent_assets/skills_promptfoo.py:call_api
+    label: mols-dev-env-bootstrap-design-behavior
+    config:
+      skill: mols-dev-env-bootstrap-design
+      mode: ollama
+      suite: behavior
+
+tests:
+  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_tests
+    config:
+      skill: mols-dev-env-bootstrap-design
+      suite: trigger
+      semantic: false
+  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_tests
+    config:
+      skill: mols-dev-env-bootstrap-design
+      suite: behavior
+      semantic: true
+      rubric_threshold: 0.8
+
+sharing: false
+writeLatestResults: false
+commandLineOptions:
+  cache: false
+  write: false
+  noShare: true
+  maxConcurrency: 1
