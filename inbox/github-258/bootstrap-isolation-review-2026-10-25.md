@@ -6,7 +6,7 @@
 >
 > **대상 revision:** base `b29aa490d0c251d5ca478fa5c787b90258f09d79` → head `530bc8b31d543e45ea7470131f705ba33f64388a` (2026-10-25). 이후 브랜치 head 이동 시 재검증이 필요하다.
 >
-> **정본:** [개발환경 구축·승인 정책](../../docs/development/development-environment.md). [mise 운영 안내](../../docs/references/tooling/mise.md)와 [스킬 원본](../../src/rulesync/.rulesync/skills/mols-dev-env-bootstrap-design/SKILL.md)은 각자의 책임만 소유한다.
+> **정본:** [개발환경 구축·승인 정책](../../docs/development/development-environment.md). [mise 운영 안내](../../docs/references/tooling/mise.md)와 [스킬 원본](https://github.com/mols3131d/mols-agent-assets/blob/1f1efa63efaad63f4bda19fe4781920bb2c6c541/src/rulesync/.rulesync/skills/mols-dev-env-bootstrap-design/SKILL.md)은 각자의 책임만 소유한다.
 
 ## 결론
 
@@ -26,7 +26,7 @@ F1은 이전 PR 리뷰에도 제출된 문제이며 **이번 revision에서도 �
 ### Loop 1 — Research / 현재 계약 수집
 
 - `CHATBOT.md` → `AGENTS.md` → `.agents/route/ROUTE.md` → `github-context`, `mols-agent-asset`, `mols-loops`, `mols-documentation`과 Skill review 기준을 확인했다.
-- [정본](../../docs/development/development-environment.md), [mise 안내](../../docs/references/tooling/mise.md), [`mise.toml`](../../mise.toml), [runner](../../scripts/development_bootstrap.py), [테스트](../../tests/scripts/test_development_bootstrap.py), [Skill](../../src/rulesync/.rulesync/skills/mols-dev-env-bootstrap-design/SKILL.md), [평가 fixture](../../evals/skills/mols-dev-env-bootstrap-design/cases.json), [`docs/INDEX.tsv`](../../docs/INDEX.tsv), PR 리뷰 이력을 교차 읽었다.
+- [정본](../../docs/development/development-environment.md), [mise 안내](../../docs/references/tooling/mise.md), [`mise.toml`](../../mise.toml), [runner](../../scripts/development_bootstrap.py), [테스트](../../tests/scripts/test_development_bootstrap.py), [Skill](https://github.com/mols3131d/mols-agent-assets/blob/1f1efa63efaad63f4bda19fe4781920bb2c6c541/src/rulesync/.rulesync/skills/mols-dev-env-bootstrap-design/SKILL.md), [평가 fixture](https://github.com/mols3131d/mols-agent-assets/blob/1f1efa63efaad63f4bda19fe4781920bb2c6c541/evals/skills/mols-dev-env-bootstrap-design/cases.json), [`docs/INDEX.tsv`](../../docs/INDEX.tsv), PR 리뷰 이력을 교차 읽었다.
 - 프로젝트 구현은 exact-pin mise CLI, `uv.lock`을 따르는 프로젝트 `.venv`, `setup`/명시적 `update` 분리다. HOME Skill·Rulesync projection·Git hook 자동 설치는 기본 core 경로에서 제외한다. 사용자의 **실제 설치 승인 확인은 호출 에이전트의 책임**이며 스크립트 자체에는 대화형 승인 게이트가 없다. 이는 정본에 명시된 경계다.
 - 버전 semantics 확인: [uv group 우선순위](https://docs.astral.sh/uv/reference/cli/#uv-sync), [uv exact sync](https://docs.astral.sh/uv/concepts/projects/sync/#handling-of-extraneous-packages), [Python venv](https://docs.python.org/3/library/venv.html), [Python site](https://docs.python.org/3/library/site.html), [mise 자동 설치](https://mise.jdx.dev/dev-tools/) 등 공식 문서. 외부 문서의 최신 정보와 PR의 pinned `uv=0.12.1`을 동일한 실행 증거로 간주하지 않는다.
 
@@ -34,10 +34,10 @@ F1은 이전 PR 리뷰에도 제출된 문제이며 **이번 revision에서도 �
 
 사용자 컴퓨터나 해당 PR checkout은 변경하지 않고 **독립된 임시 디렉터리**에서 다음을 확인했다.
 
-1. **Git 교차 저장소:** 임시 Git 저장소 A의 `uv.lock`을 dirty하게 만들고 저장소 B는 clean 유지. A에서 일반 `git status --porcelain --untracked-files=all -- uv.lock`은 ` M uv.lock`; `GIT_DIR=B/.git`, `GIT_WORK_TREE=B`를 상속시키면 같은 A cwd에서 **출력 없음**.
-2. **uv group 상속:** 로컬 `uv 0.10.0`, 임시 Python 3.13 프로젝트, dependency group `dev`의 로컬 wheel `probe-group-tool==1.0.0`으로 네트워크 없이 테스트. `UV_NO_GROUP=dev uv sync --locked --all-groups ...`는 dev 패키지를 설치하지 않았고, 동일 env에서 `uv sync --check --locked --all-groups ...`는 **exit 0**. 변수를 제거하자 패키지 설치 및 import 성공.
-3. **시스템 패키지 노출 venv:** `python -m venv --system-site-packages .venv`를 만들고 임시 단순 프로젝트에서 `uv sync --locked`와 `uv sync --check --locked` 실행. 둘 다 성공한 뒤에도 `pyvenv.cfg`는 `include-system-site-packages = true`, Python `sys.path`에는 시스템 패키지 경로가 남았다. 이 시험 역시 로컬 `uv 0.10.0` 기준이다.
-4. **문서 인덱스 정적 대조:** 정본 신규 Markdown에는 유효한 `description` frontmatter가 있지만 `docs/INDEX.tsv`에 해당 상대 경로 행이 없다. generator·validator가 docs Markdown source와 `INDEX.tsv`를 대응시키는 코드를 확인했다.
+1. **Git 교차 저장소:** 임시 Git 저장소 A의 `uv.lock`을 dirty하게 만들고 저장소 B는 clean 유지. A에서 일반 `git status --porcelain --untracked-files=all -- uv.lock`은 `M uv.lock`; `GIT_DIR=B/.git`, `GIT_WORK_TREE=B`를 상속시키면 같은 A cwd에서 **출력 없음**.
+1. **uv group 상속:** 로컬 `uv 0.10.0`, 임시 Python 3.13 프로젝트, dependency group `dev`의 로컬 wheel `probe-group-tool==1.0.0`으로 네트워크 없이 테스트. `UV_NO_GROUP=dev uv sync --locked --all-groups ...`는 dev 패키지를 설치하지 않았고, 동일 env에서 `uv sync --check --locked --all-groups ...`는 **exit 0**. 변수를 제거하자 패키지 설치 및 import 성공.
+1. **시스템 패키지 노출 venv:** `python -m venv --system-site-packages .venv`를 만들고 임시 단순 프로젝트에서 `uv sync --locked`와 `uv sync --check --locked` 실행. 둘 다 성공한 뒤에도 `pyvenv.cfg`는 `include-system-site-packages = true`, Python `sys.path`에는 시스템 패키지 경로가 남았다. 이 시험 역시 로컬 `uv 0.10.0` 기준이다.
+1. **문서 인덱스 정적 대조:** 정본 신규 Markdown에는 유효한 `description` frontmatter가 있지만 `docs/INDEX.tsv`에 해당 상대 경로 행이 없다. generator·validator가 docs Markdown source와 `INDEX.tsv`를 대응시키는 코드를 확인했다.
 
 ### Loop 3 — Review / 반증·우선순위·범위 정리
 
@@ -97,10 +97,10 @@ F1은 이전 PR 리뷰에도 제출된 문제이며 **이번 revision에서도 �
 ### 우선 작업 순서
 
 1. **P0:** F1 Git worktree/index 환경 고정 및 dirty-lock 회귀 테스트.
-2. **P0:** F2 uv dependency group override 차단 및 실제 도구 버전에서 누락/거짓 READY 재현 테스트.
-3. **P0:** F3 기존 venv `pyvenv.cfg` 격리 preflight·회귀. 기존 venv 보존, 무단 reset/삭제 금지.
-4. **P1:** F4 docs index를 기존 generator로 재생성하고 validation 수행.
-5. **검토 마감:** 수정된 diff에 대해 isolation/permission 관점 재리뷰, 관련 pytest, generated validation, Skill fixture(capability) 평가를 **각각 별도의 근거**로 수집한다. 변동하는 runtime 버전 및 추가 플랫폼은 미검증으로 남긴다.
+1. **P0:** F2 uv dependency group override 차단 및 실제 도구 버전에서 누락/거짓 READY 재현 테스트.
+1. **P0:** F3 기존 venv `pyvenv.cfg` 격리 preflight·회귀. 기존 venv 보존, 무단 reset/삭제 금지.
+1. **P1:** F4 docs index를 기존 generator로 재생성하고 validation 수행.
+1. **검토 마감:** 수정된 diff에 대해 isolation/permission 관점 재리뷰, 관련 pytest, generated validation, Skill fixture(capability) 평가를 **각각 별도의 근거**로 수집한다. 변동하는 runtime 버전 및 추가 플랫폼은 미검증으로 남긴다.
 
 ### 의도적으로 확대하지 않은 범위
 

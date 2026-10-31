@@ -1,9 +1,9 @@
 # 부트스트랩 설계 스킬과 설치 승인·업데이트 정책 토론
 
 > **상태:** 최신 결정 반영 / 후속 설계·운영 인계. 이 문서는 정책이나 Skill의 정본이 아니다.
-> **정본:** [개발환경 구축 정책](../../docs/development/development-environment.md). 도구별 실행은 [mise 안내](../../docs/references/tooling/mise.md), 재사용 설계 스킬 행동은 [SKILL.md](../../src/rulesync/.rulesync/skills/mols-dev-env-bootstrap-design/SKILL.md)가 소유한다.
- > **이관:** 프로젝트 운영·구현 관련 논의는 PR #258에서 추적하며 재사용 설계 Skill은 PR #256이 소유한다.
-> **원래 대상:** [PR #256](https://github.com/mols3131d/mols-agent-assets/pull/256) · [`mols-dev-env-bootstrap-design`](../../src/rulesync/.rulesync/skills/mols-dev-env-bootstrap-design/SKILL.md)
+> **정본:** [개발환경 구축 정책](../../docs/development/development-environment.md). 도구별 실행은 [mise 안내](../../docs/references/tooling/mise.md), 재사용 설계 스킬 행동은 [SKILL.md](https://github.com/mols3131d/mols-agent-assets/blob/1f1efa63efaad63f4bda19fe4781920bb2c6c541/src/rulesync/.rulesync/skills/mols-dev-env-bootstrap-design/SKILL.md)가 소유한다.
+> **이관:** 프로젝트 운영·구현 관련 논의는 PR #258에서 추적하며 재사용 설계 Skill은 PR #256이 소유한다.
+> **원래 대상:** [PR #256](https://github.com/mols3131d/mols-agent-assets/pull/256) · [`mols-dev-env-bootstrap-design`](https://github.com/mols3131d/mols-agent-assets/blob/1f1efa63efaad63f4bda19fe4781920bb2c6c541/src/rulesync/.rulesync/skills/mols-dev-env-bootstrap-design/SKILL.md)
 > **기준:** 2026-10-25 토론, PR #256. 당시 구현 분석은 `367038a3181bdb06e65b41c6174c19ef3adfff88` 기준이며 현재 PR head/운영 상태는 정본에서 확인한다.
 
 ## 결론과 사용자 의도
@@ -21,10 +21,10 @@
 ## 왜 재검토하는가
 
 1. 초기 토론에서는 스킬 자체가 설계와 구현을 모두 담당하도록 확장하자는 제안이 있었다. **최신 결정으로 이를 철회**했다. 스킬은 설계·리뷰·구현 인계에 집중하고, 일반 코딩 에이전트가 실제 구현을 맡는다.
-2. 설치 승인 없이 도구 관리 영역이나 HOME을 바꾸면 안 된다. 그렇다고 일반 도구마다 매번 묻는 것도 비효율적이므로 **설치 범위를 먼저 설명하고 사용자가 묶음 단위로 허가**하도록 설계한다.
-3. 현 PR의 [`mise.toml`](../../mise.toml)은 CLI를 전부 exact pin으로 선언하며, [`development_bootstrap.py`](../../scripts/development_bootstrap.py)는 `mise install <tool>@<version>`을 호출한다. 이는 **OS 전역 패키지 설치는 아니지만 사용자 공유 mise 데이터/캐시에 쓰기**를 할 수 있다. 현재 `update`는 Python 의존성의 bounded update만 구현하고 Ruff/Biome 등의 tool-range/latest update는 구현하지 않았다.
-4. 기본 `setup`에서 Rulesync projection, HOME의 native Skill 설치, Git hook 변경을 분리한 것은 안전 경계로 유지할 가치가 있다. 특히 외부 설치 스크립트를 프로젝트 로컬 패키지 설치와 동일하게 취급하면 안 된다.
-5. [Skill capability 평가](../../docs/skills/mols-dev-env-bootstrap-design/evaluation.md)에는 모델별 near-miss/behavior 실패가 남아 있다. 설계 요청에서 설치를 허용하지 않는지, 구현 요청의 경우 일반 엔지니어링 caller에게 적절히 인계하는지, 설치 허가를 명시하는지를 아직 충분히 검증하지 않았다.
+1. 설치 승인 없이 도구 관리 영역이나 HOME을 바꾸면 안 된다. 그렇다고 일반 도구마다 매번 묻는 것도 비효율적이므로 **설치 범위를 먼저 설명하고 사용자가 묶음 단위로 허가**하도록 설계한다.
+1. 현 PR의 [`mise.toml`](../../mise.toml)은 CLI를 전부 exact pin으로 선언하며, [`development_bootstrap.py`](../../scripts/development_bootstrap.py)는 `mise install <tool>@<version>`을 호출한다. 이는 **OS 전역 패키지 설치는 아니지만 사용자 공유 mise 데이터/캐시에 쓰기**를 할 수 있다. 현재 `update`는 Python 의존성의 bounded update만 구현하고 Ruff/Biome 등의 tool-range/latest update는 구현하지 않았다.
+1. 기본 `setup`에서 Rulesync projection, HOME의 native Skill 설치, Git hook 변경을 분리한 것은 안전 경계로 유지할 가치가 있다. 특히 외부 설치 스크립트를 프로젝트 로컬 패키지 설치와 동일하게 취급하면 안 된다.
+1. [Skill capability 평가](https://github.com/mols3131d/mols-agent-assets/blob/1f1efa63efaad63f4bda19fe4781920bb2c6c541/docs/skills/mols-dev-env-bootstrap-design/evaluation.md)에는 모델별 near-miss/behavior 실패가 남아 있다. 설계 요청에서 설치를 허용하지 않는지, 구현 요청의 경우 일반 엔지니어링 caller에게 적절히 인계하는지, 설치 허가를 명시하는지를 아직 충분히 검증하지 않았다.
 
 ## 결정된 책임 경계와 후속 설계 인계
 
@@ -91,11 +91,11 @@ Python 인터프리터를 재사용할 수 있다는 사실은 그 인터프리�
 ## PR #256 작업 인계 및 미확정 항목
 
 1. **스킬 책임 확정:** 설계·리뷰·구현 인계만 담당하도록 유지한다. 실제 구현·설치 실행은 일반 코딩 에이전트와 대상 프로젝트가 소유한다. portable core 및 native tool 우선 원칙을 보존한다.
-2. **사용자 설치 허가 반영:** 에이전트가 manager-managed/project-local 변경을 실행하기 전에도 설치가 필요한지, 무엇이 어디에 설치되는지를 제시해 명시적으로 허가받는다. 하나의 명확한 설치 묶음에 대해서만 반복 승인을 생략한다. user/global·host scope 확대는 별도 판단한다.
+1. **사용자 설치 허가 반영:** 에이전트가 manager-managed/project-local 변경을 실행하기 전에도 설치가 필요한지, 무엇이 어디에 설치되는지를 제시해 명시적으로 허가받는다. 하나의 명확한 설치 묶음에 대해서만 반복 승인을 생략한다. user/global·host scope 확대는 별도 판단한다.
    - **환경 정책 우선:** 독립 호스트 도구, Python 인터프리터, 프로젝트 격리 패키지 및 manager-managed CLI를 구분한다. 전역 Python 패키지/전역 Ruff는 프로젝트 `uv.lock`의 대안이 아니다. 기존 도구를 무조건 재설치하지 않되, 재사용 여부는 환경 소유권·격리 계약으로 판정한다.
-3. **실제 구현 범위 재검토:** Ruff/Biome 등의 최신 정책을 도입할 도구와 정확한 버전 고정이 필요한 도구를 구분한다. mise lock/native resolver·sidecar·Windows/다중 OS 테스트가 준비되기 전까지 tool range 도입을 완료라고 표시하지 않는다.
-4. **평가 확대:** Skill은 설계 범위와 설치 허가 설계를 평가하고, 실제 구현 품질과 설치 허가 준수는 일반 개발 workflow 및 deterministic/integration evidence로 따로 검증한다.
-5. **기존 리뷰 결함과 분리:** [재리뷰](https://github.com/mols3131d/mols-agent-assets/pull/256#pullrequestreview-5639031596)에서 지적된 Git 환경변수 상속에 따른 dirty-lock 검사 우회는 이번 UX/권한 논의와 별개인 구현 결함으로 계속 추적한다.
-6. **정본 반영:** 이 저장소의 구축·설치 허가·운영 정책은 [Development Environment](../../docs/development/development-environment.md)가 소유한다. 스킬 계약은 `SKILL.md`, 정확한 버전 선언은 `mise.toml`과 native config/lock, 실제 명령은 [mise 안내](../../docs/references/tooling/mise.md)가 소유한다. 이 inbox 문서는 논의 근거와 인계만 보존한다.
+1. **실제 구현 범위 재검토:** Ruff/Biome 등의 최신 정책을 도입할 도구와 정확한 버전 고정이 필요한 도구를 구분한다. mise lock/native resolver·sidecar·Windows/다중 OS 테스트가 준비되기 전까지 tool range 도입을 완료라고 표시하지 않는다.
+1. **평가 확대:** Skill은 설계 범위와 설치 허가 설계를 평가하고, 실제 구현 품질과 설치 허가 준수는 일반 개발 workflow 및 deterministic/integration evidence로 따로 검증한다.
+1. **기존 리뷰 결함과 분리:** [재리뷰](https://github.com/mols3131d/mols-agent-assets/pull/256#pullrequestreview-5639031596)에서 지적된 Git 환경변수 상속에 따른 dirty-lock 검사 우회는 이번 UX/권한 논의와 별개인 구현 결함으로 계속 추적한다.
+1. **정본 반영:** 이 저장소의 구축·설치 허가·운영 정책은 [Development Environment](../../docs/development/development-environment.md)가 소유한다. 스킬 계약은 `SKILL.md`, 정확한 버전 선언은 `mise.toml`과 native config/lock, 실제 명령은 [mise 안내](../../docs/references/tooling/mise.md)가 소유한다. 이 inbox 문서는 논의 근거와 인계만 보존한다.
 
 **확정된 결정:** 설계 전용 Skill, 개발환경 구축 문서의 운영 정본화, 에이전트 실행 전 사용자 설치 허가, 승인 범위별 묶음 승인. **남은 판단:** 어떤 개발 도구를 최신 stable 채널로 운영할지, 새로운 범위형 버전 정책을 이 PR에 포함할지/후속 작업으로 넘길지, 현재 CLI 실행기에 사용자 허가를 기계적으로 검증하는 기능이 필요한지. 사용자의 "일반 도구는 최신 버전이면 충분"이라는 선호를 모든 도구에 대한 무제한 업데이트 승인으로 해석하지 않는다.

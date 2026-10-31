@@ -202,7 +202,14 @@ class Bootstrap:
                 "environment and repository location first."
             )
         result = self.command(
-            [git, "status", "--porcelain", "--untracked-files=all", "--", *UPDATE_INPUTS],
+            [
+                git,
+                "status",
+                "--porcelain",
+                "--untracked-files=all",
+                "--",
+                *UPDATE_INPUTS,
+            ],
             env=git_env,
         )
         if result.returncode or result.stdout.strip():

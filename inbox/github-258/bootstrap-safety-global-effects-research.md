@@ -50,12 +50,12 @@
 확인된 기능과 실패/보안 리스크:
 
 1. **기본 설치 모드 = symlink.** `~/.claude/skills/{humanize-korean,humanize,humanize-redo}`, `~/.claude/agents/*.md`, `~/.codex/skills/humanize-korean` 등을 가리키는 링크/디렉터리를 생성한다. 즉 repository setup이 다른 workspace의 AI agent discovery를 변경한다.
-2. **다른 목적지의 기존 symlink도 이동함.** upstream `prepare_target`의 `-L` 분기는 대상이 동일한 링크가 아니면 `--force` 확인 없이 `.bak.<timestamp>`으로 옮긴다. 일반 기존 파일/디렉터리는 `--force` 없이 거부한다. 'force를 안 줬으니 기존 링크는 안전'하다는 주장은 거짓이다.
-3. **기존 전역 Agent 링크를 삭제하는 기능.** upstream `prune_stale_agents`가 자신이 심었던 링크 중 현재 범위 밖이거나 dangling 링크를 `rm -f`로 정리한다. 소유권 판별 로직은 있지만, **기본 setup에서 사용자 전역 상태를 정리/삭제하는 행동 자체**가 있다.
-4. **Gemini CLI 전역 extensions link 시도.** `gemini extensions link <checkout>`에 `Y`를 공급하고 등록을 시도한다. 오류를 '이미 등록 또는 수동 필요'로 처리해 install.sh의 전체 exit code 0으로 끝날 수 있어, 성공 요약이 extension 준비 완료의 증거가 아니다.
-5. **설치 원본은 mutable location.** checkout된 cache는 `git checkout --detach --force FETCH_HEAD`, `git clean -fdx`를 실행한다. 캐시에는 사용자가 둔 untracked/ignored 내용이 있으면 제거될 수 있다. 설치 결과가 symlink라면 cache 교체가 다른 CLI에서 사용할 Agent contents에도 영향을 준다.
-6. **결과 무결성 검증 공백.** wrapper는 `computedHash`를 읽어 확인하지 않고, upstream tag 문자열이 full immutable commit SHA라고 검증하지 않는다. Tag가 변경될 위험은 공급망 설계 리스크이며 **실제로 변경됐다는 증거는 없다**.
-7. **프로세스 권한 전파.** `run_checked`는 `os.environ` 전체를 하위 Git/Bash/CLI에 전달한다(`GIT_TERMINAL_PROMPT=0`만 추가). 승인되지 않은 installer·postinstall이 인증 토큰, 홈 파일과 네트워크에 접근할 잠재적 표면이다. 악성 행위가 있었다는 주장은 아니다.
+1. **다른 목적지의 기존 symlink도 이동함.** upstream `prepare_target`의 `-L` 분기는 대상이 동일한 링크가 아니면 `--force` 확인 없이 `.bak.<timestamp>`으로 옮긴다. 일반 기존 파일/디렉터리는 `--force` 없이 거부한다. 'force를 안 줬으니 기존 링크는 안전'하다는 주장은 거짓이다.
+1. **기존 전역 Agent 링크를 삭제하는 기능.** upstream `prune_stale_agents`가 자신이 심었던 링크 중 현재 범위 밖이거나 dangling 링크를 `rm -f`로 정리한다. 소유권 판별 로직은 있지만, **기본 setup에서 사용자 전역 상태를 정리/삭제하는 행동 자체**가 있다.
+1. **Gemini CLI 전역 extensions link 시도.** `gemini extensions link <checkout>`에 `Y`를 공급하고 등록을 시도한다. 오류를 '이미 등록 또는 수동 필요'로 처리해 install.sh의 전체 exit code 0으로 끝날 수 있어, 성공 요약이 extension 준비 완료의 증거가 아니다.
+1. **설치 원본은 mutable location.** checkout된 cache는 `git checkout --detach --force FETCH_HEAD`, `git clean -fdx`를 실행한다. 캐시에는 사용자가 둔 untracked/ignored 내용이 있으면 제거될 수 있다. 설치 결과가 symlink라면 cache 교체가 다른 CLI에서 사용할 Agent contents에도 영향을 준다.
+1. **결과 무결성 검증 공백.** wrapper는 `computedHash`를 읽어 확인하지 않고, upstream tag 문자열이 full immutable commit SHA라고 검증하지 않는다. Tag가 변경될 위험은 공급망 설계 리스크이며 **실제로 변경됐다는 증거는 없다**.
+1. **프로세스 권한 전파.** `run_checked`는 `os.environ` 전체를 하위 Git/Bash/CLI에 전달한다(`GIT_TERMINAL_PROMPT=0`만 추가). 승인되지 않은 installer·postinstall이 인증 토큰, 홈 파일과 네트워크에 접근할 잠재적 표면이다. 악성 행위가 있었다는 주장은 아니다.
 
 **Review loop 2.** 외부 installer의 `--dry-run`을 호출하더라도 Bash의 실제 host 접근 권한을 차단하는 sandbox가 되는 것은 아니다. Preview는 사용자가 읽을 **사전 정보**이고, 직접 실행 코드에 대한 **enforced containment**는 별도다. Native adapter를 완전히 재구현하지 않되, host-level 실행을 unconditional setup에서 분리하는 게 가장 작은 안전 개선이다.
 
@@ -79,7 +79,7 @@ mise.lock은 다운로드 artifact를 검증할 수 있어도 **기존에 설치
 
 **OS privilege**: 관리자 권한·sudo·Homebrew/apt/winget·Windows machine PATH·PowerShell ExecutionPolicy 변경은 `setup`/`update`의 기본 권한 밖. PowerShell은 Process, CurrentUser, LocalMachine, Group Policy 등 범위가 분리돼 있으므로 미설치 CLI 때문에 영구적인 LocalMachine 정책을 바꾸지 않는다 [S10]. mise shell activation용 profile 변경도 user-wide configuration이므로 사전 승인 또는 명시적인 사용자 안내를 기본으로 한다.
 
-**Git/worktree**: `core.hooksPath`는 system/global/local 범위에서 설정할 수 있으며 Git config는 일반적으로 worktree 사이에 공유된다 [S05][S06]. 단순히 `.git/hooks`에 쓰는 게 local-only라고 가정하지 않는다. Lefthook 설치는 hook 파일/설정에 영향을 주고 기존 `core.hooksPath`가 있으면 멈추며 강제 플래그는 의도적인 별도 선택이다 [S11].
+**Git/worktree**: `core.hooksPath`는 system/global/local 범위에서 설정할 수 있으며 Git config는 일반적으로 worktree 사이에 공유된다 [S05, S06]. 단순히 `.git/hooks`에 쓰는 게 local-only라고 가정하지 않는다. Lefthook 설치는 hook 파일/설정에 영향을 주고 기존 `core.hooksPath`가 있으면 멈추며 강제 플래그는 의도적인 별도 선택이다 [S11].
 
 ### 3.3 위협·오작동 모델
 

@@ -36,10 +36,10 @@
 ### 탐지할 정보 (필요한 경우)
 
 1. Runtime OS: Windows / macOS / Linux, architecture x64/arm64, Linux에서 필요한 경우 libc glibc/musl 및 distro release.
-2. Execution mode: Windows PowerShell/cmd/Git Bash, WSL Linux, Unix sh/bash/zsh, non-TTY/CI; runner가 선택한 shell의 availability/version.
-3. Runtime capability: mise/uv/Git/Bash/Node/Rulesync/Lefthook 등 필요한 명령과 version, PATH resolution, platform artifact 사용 가능 여부.
-4. Working directory: repository root, tracked config/lock, current filesystem 성질. WSL + Windows-mounted location은 **성능 경고**이지 무조건 실패로 취급하지 않는다.
-5. Installation authority: managed cache, project local, user-home, OS-global 중 어디를 변경하는지와 permission/승인.
+1. Execution mode: Windows PowerShell/cmd/Git Bash, WSL Linux, Unix sh/bash/zsh, non-TTY/CI; runner가 선택한 shell의 availability/version.
+1. Runtime capability: mise/uv/Git/Bash/Node/Rulesync/Lefthook 등 필요한 명령과 version, PATH resolution, platform artifact 사용 가능 여부.
+1. Working directory: repository root, tracked config/lock, current filesystem 성질. WSL + Windows-mounted location은 **성능 경고**이지 무조건 실패로 취급하지 않는다.
+1. Installation authority: managed cache, project local, user-home, OS-global 중 어디를 변경하는지와 permission/승인.
 
 OS fingerprint에는 개인 디렉터리·사용자명 등 식별 데이터를 기본 출력하지 않는다. OS/version과 capability만으로 진단 가능하면 나머지는 수집하지 않는다.
 
@@ -122,10 +122,10 @@ Next: install missing prerequisite using the official instructions; rerun setup.
 ## 우선 구현 계획
 
 1. **P0 CLI 안전성:** 기존 mise 배열형 `run`의 task args 전달 위험 제거/사전 차단, 사용 도구 설치 범위, 정확한 bootstrap state 종료 코드.
-2. **P0 OS 안전성:** 실제 OS/shell/capability 탐지, native Windows/MSYS2/WSL 구분, user/global installer guard, Python interpreter shell chain 검증.
-3. **P1 UX:** 필수 0 args·help/description, optional read-only preview와 next action, non-TTY 규칙.
-4. **P1 호환성:** 최소 지원 OS/arch/shell target을 정해 Tool 7개 + optional installer + hooks capability test.
-5. **P2 성능:** cold/warm, macOS ARM64 vs Intel, WSL Linux FS vs Windows mount 실측. 불필요한 프로세스 실행/네트워크와 plugin 설치를 줄인다.
-6. **보류:** JSON 출력 schema, 대규모 flag matrix, cross-OS installer wrapper, 전체 OS 자동 업그레이드.
+1. **P0 OS 안전성:** 실제 OS/shell/capability 탐지, native Windows/MSYS2/WSL 구분, user/global installer guard, Python interpreter shell chain 검증.
+1. **P1 UX:** 필수 0 args·help/description, optional read-only preview와 next action, non-TTY 규칙.
+1. **P1 호환성:** 최소 지원 OS/arch/shell target을 정해 Tool 7개 + optional installer + hooks capability test.
+1. **P2 성능:** cold/warm, macOS ARM64 vs Intel, WSL Linux FS vs Windows mount 실측. 불필요한 프로세스 실행/네트워크와 plugin 설치를 줄인다.
+1. **보류:** JSON 출력 schema, 대규모 flag matrix, cross-OS installer wrapper, 전체 OS 자동 업그레이드.
 
 이 설계는 `mols-dev-env-bootstrap-design` Skill의 일반 설계 판단을 실제 repository에 적용한 **로컬 delta**이다. 실행지침의 정본은 Skill, 실제 CLI 동작의 정본은 코드/버전별 도구 문서에 남긴다.

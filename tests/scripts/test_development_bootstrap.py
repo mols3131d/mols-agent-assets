@@ -347,7 +347,9 @@ def test_uv_group_exclusions_do_not_change_core_sync(
         assert key not in kwargs["env"]
         assert kwargs["env"]["HTTPS_PROXY"] == "http://example.invalid:3128"
         assert "--all-groups" in args
-    assert any(key in kwargs["env"] for args, kwargs in native[0] if args[1] == "install")
+    assert any(
+        key in kwargs["env"] for args, kwargs in native[0] if args[1] == "install"
+    )
 
 
 @pytest.mark.parametrize("system_packages,expected", [(True, 1), (False, 0)])
@@ -369,7 +371,6 @@ def test_existing_venv_system_site_packages_isolated(
         assert not native[0]
 
 
-
 def test_update_allows_unrelated_asset_changes(project, native, monkeypatch):
     assets = ("rulesync.jsonc", "rulesync.lock", "skills-lock.json")
     for name in assets:
@@ -384,8 +385,7 @@ def test_update_allows_unrelated_asset_changes(project, native, monkeypatch):
     monkeypatch.setattr(bootstrap.Bootstrap, "command", command)
     assert bootstrap.main(["update"], root=project) == 0
     assert all(
-        (project / name).read_text(encoding="utf-8") == "user edit\n"
-        for name in assets
+        (project / name).read_text(encoding="utf-8") == "user edit\n" for name in assets
     )
     assert (project / "uv.lock").read_text(encoding="utf-8") == "upgraded\n"
 

@@ -13,8 +13,8 @@
 ## 로컬 에이전트에게 남긴 판단
 
 1. **CLI 정책:** `mise.toml`의 7개 도구는 현재 모두 exact pin이며 `update`는 Python lock만 갱신한다. 호환성 우선과 bounded 최신 stable 지향 도구를 실제 사용처·native lock 지원에 근거해 구분한다. 검증 전에는 무조건 `latest`·range로 바꾸지 않는다.
-2. **스크립트 경량화:** 강제 설정 7개, 제거 6개, Node `PATH` 조정과 `tool_command()`의 npm metadata 탐색을 항목별로 평가한다. 특히 Windows `.cmd` 실행과 정확한 pinned Node 선택을 native `mise exec`로 동등하게 처리하는지 확인하기 전에는 기존 구현을 삭제하지 않는다. 무관한 사용자 프록시·인증·캐시 설정은 유지한다.
-3. **문서 구조:** `development-environment.md`의 주제별 책임을 정리하고 부트스트랩 고유 내용을 별도 섹션에 모은다. 명령 상세는 mise 가이드로 연결한다.
+1. **스크립트 경량화:** 강제 설정 7개, 제거 6개, Node `PATH` 조정과 `tool_command()`의 npm metadata 탐색을 항목별로 평가한다. 특히 Windows `.cmd` 실행과 정확한 pinned Node 선택을 native `mise exec`로 동등하게 처리하는지 확인하기 전에는 기존 구현을 삭제하지 않는다. 무관한 사용자 프록시·인증·캐시 설정은 유지한다.
+1. **문서 구조:** `development-environment.md`의 주제별 책임을 정리하고 부트스트랩 고유 내용을 별도 섹션에 모은다. 명령 상세는 mise 가이드로 연결한다.
 
 ## 검증 경계
 

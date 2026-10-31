@@ -5,12 +5,12 @@
 ## 최우선 불변 조건
 
 1. **No surprise global writes:** 명시적으로 허용한 프로젝트 및 관리형 도구 영역 밖의 변경은 사전에 경로·효과를 식별하고 별도 opt-in/명령 없이는 진행하지 않는다.
-2. **No accidental system-Python sync:** 실제 `uv` sync 목적지는 이 저장소가 소유한 canonical project venv로만 제한한다. 환경변수, symlink 또는 상대경로가 `/usr/local`·다른 venv·외부 사용자 디렉터리로 향하면 거부한다.
-3. **Setup never promotes policy:** setup은 승인된 lock state만 재현한다. 버전 정책·lock을 재해석하거나 불필요한 repository 파일을 변경하지 않는다.
-4. **Ownership before cleanup:** 삭제, 교체, 백업/이동, 외부 Git checkout의 `clean`은 소유한 경로임을 확인하기 전에는 수행하지 않는다. `--force`·OS 관리자 권한·global config rewrite는 default에서 금지한다.
-5. **Failure is visible:** 필수 도구 누락·사용자 공유 작업 미승인·실패한 외부 installer·검증 실패는 정확히 단계별 기록하고, 실제 READY 여부를 거짓으로 보고하지 않는다.
-6. **Process authorization != install authorization:** config trust, Git ref lock, task dry-run과 OS-level sandbox는 서로 대체할 수 없으며, 외부 코드가 읽을 수 있는 환경(토큰·SSH agent·HOME·네트워크)도 영향 범위에 포함한다.
-7. **Platform claims require evidence:** Windows에서 Linux/macOS용 mise sandbox 정책은 filesystem/network를 강제하지 않는다. Windows native에서 동일한 containment를 보장한다고 쓰지 않는다.
+1. **No accidental system-Python sync:** 실제 `uv` sync 목적지는 이 저장소가 소유한 canonical project venv로만 제한한다. 환경변수, symlink 또는 상대경로가 `/usr/local`·다른 venv·외부 사용자 디렉터리로 향하면 거부한다.
+1. **Setup never promotes policy:** setup은 승인된 lock state만 재현한다. 버전 정책·lock을 재해석하거나 불필요한 repository 파일을 변경하지 않는다.
+1. **Ownership before cleanup:** 삭제, 교체, 백업/이동, 외부 Git checkout의 `clean`은 소유한 경로임을 확인하기 전에는 수행하지 않는다. `--force`·OS 관리자 권한·global config rewrite는 default에서 금지한다.
+1. **Failure is visible:** 필수 도구 누락·사용자 공유 작업 미승인·실패한 외부 installer·검증 실패는 정확히 단계별 기록하고, 실제 READY 여부를 거짓으로 보고하지 않는다.
+1. **Process authorization != install authorization:** config trust, Git ref lock, task dry-run과 OS-level sandbox는 서로 대체할 수 없으며, 외부 코드가 읽을 수 있는 환경(토큰·SSH agent·HOME·네트워크)도 영향 범위에 포함한다.
+1. **Platform claims require evidence:** Windows에서 Linux/macOS용 mise sandbox 정책은 filesystem/network를 강제하지 않는다. Windows native에서 동일한 containment를 보장한다고 쓰지 않는다.
 
 ## 설계안: 두 단계 승인 경계
 
@@ -86,10 +86,10 @@ Result: BLOCKED; no apply started
 ## MVP implementation phases
 
 1. **P0 위험 차단**: 기존 setup의 user-home installer를 자동 경로에서 분리; managed tool install의 선행 범위 통제; absolute/external `UV_PROJECT_ENVIRONMENT` 차단; PATH/tool/cache/host fingerprint 확인; history/lock update 금지.
-2. **P0 충돌/불일치 처리**: symlink/hook/projection 관리 범위 점검, user-managed files 변경하지 않음, optional 실패 exit/status, network/capability errors.
-3. **P1 보안/공급망 강화**: upstream adapter source immutable SHA/검증 근거; ref/integrity mismatch block; 실행 전에 env exposure 최소화; 실제 installer outcome verification; 필요 시 OS 격리. 단순 Git tag 문자열을 immutable artifact로 취급하지 않는다.
-4. **P1 UX**: 첫 사용/반복 사용에서 영향 목록과 다음 행동을 한 화면으로 표기, 충돌시 clear manual path, read-only diagnosis와 process scope detection.
-5. **P2 최적화**: verified no-op, installed cache reuse, safe concurrency, 디스크 quota·성능 baseline. 안정성 증명 전 병렬화하지 않음.
+1. **P0 충돌/불일치 처리**: symlink/hook/projection 관리 범위 점검, user-managed files 변경하지 않음, optional 실패 exit/status, network/capability errors.
+1. **P1 보안/공급망 강화**: upstream adapter source immutable SHA/검증 근거; ref/integrity mismatch block; 실행 전에 env exposure 최소화; 실제 installer outcome verification; 필요 시 OS 격리. 단순 Git tag 문자열을 immutable artifact로 취급하지 않는다.
+1. **P1 UX**: 첫 사용/반복 사용에서 영향 목록과 다음 행동을 한 화면으로 표기, 충돌시 clear manual path, read-only diagnosis와 process scope detection.
+1. **P2 최적화**: verified no-op, installed cache reuse, safe concurrency, 디스크 quota·성능 baseline. 안정성 증명 전 병렬화하지 않음.
 
 변경 대상 후보는 `mise.toml`, narrow preflight/orchestration code(필요성이 입증될 경우), `scripts/agent_assets/skills_sync.py` (native installer 호출과 검증 guard), bootstrap guidance/test harness. OS-global manager, system configuration, 사용자 HOME 파일을 실제로 바꾸는 코드는 이 계획에 포함하지 않는다.
 

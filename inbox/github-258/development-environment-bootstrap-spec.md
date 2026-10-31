@@ -1,7 +1,7 @@
 # 개발환경 부트스트랩 개편 명세 (Draft)
 
 > 대상: [PR #258](https://github.com/mols3131d/mols-agent-assets/pull/258). 기존 [PR #256](https://github.com/mols3131d/mols-agent-assets/pull/256)에서 프로젝트 구현 부분을 분리했습니다. 이 문서는 원래의 설계 계약과 후속 구현 범위를 구분하는 **비정본 작업 자료**다. **개발환경 구축·실제 설치 허가의 운영 정책 정본은 [Development Environment](../../docs/development/development-environment.md)**이며, 도구별 실행은 [mise 안내](../../docs/references/tooling/mise.md), 정확한 정책 값과 실행 동작은 `mise.toml`·native config/lock·스크립트가 소유한다.
-
+>
 > **최신 결정(2026-10-25):** 재사용 Skill은 설계·리뷰·구현 인계만 소유하며 구현은 일반 코딩 에이전트의 작업이다. 에이전트가 실제 설치·업데이트를 실행하려면 설치 대상·위치·영향을 안내하고 사용자의 명시적 허가를 받아야 한다. 한 번에 승인한 작업 범위 안에서만 재확인 없이 실행한다. [토론·인계](bootstrap-authorization-update-discussion.md).
 
 ## 구현 상태 — 2026-10-25
@@ -30,7 +30,7 @@
 
 ## 재사용 설계 스킬
 
-- **Canonical source:** [`mols-dev-env-bootstrap-design/SKILL.md`](../../src/rulesync/.rulesync/skills/mols-dev-env-bootstrap-design/SKILL.md)
+- **Canonical source:** [`mols-dev-env-bootstrap-design/SKILL.md`](https://github.com/mols3131d/mols-agent-assets/blob/1f1efa63efaad63f4bda19fe4781920bb2c6c541/src/rulesync/.rulesync/skills/mols-dev-env-bootstrap-design/SKILL.md)
 - **책임:** 초기 setup, 개발 중 유지/업데이트, 버전 허용 범위와 lock, 누락된 도구의 권한·부작용, 부분 실패·복구·검증을 평가하고 실행 가능한 설계 인계를 만든다.
 - **이식성:** mise/uv/Rulesync에 종속하지 않는다. 도구별 실제 version manager, lock, installer semantics와 프로젝트 정책을 조회하고, 적합한 native 방법을 선택한다.
 - **범위 밖:** 실제 설치·업데이트 실행 및 구현 코드 자체의 작성, 일반 패키지 업데이트, CI만의 admission design. 부트스트랩 구현은 이 PR의 **별도 결과물**이며 일반 엔지니어링 작업이 소유한다. 스킬이 실행 결과나 설치 권한을 대신 증명하지 않는다.
@@ -151,4 +151,4 @@ Git branch `main` 같은 이동 ref는 명시적인 SemVer 허용 범위가 아�
 
 - 현재 구현: [mise.toml](../../mise.toml), [skills_sync.py](../../scripts/agent_assets/skills_sync.py), [mise reference](../../docs/references/tooling/mise.md), [skills CLI reference](../../docs/references/tooling/skills-cli.md)
 - 외부 계약: [mise lockfile](https://mise.jdx.dev/dev-tools/mise-lock.html), [mise upgrade](https://mise.jdx.dev/cli/upgrade.html), [mise task auto-install](https://mise.jdx.dev/dev-tools/), [uv locking/sync](https://docs.astral.sh/uv/concepts/projects/sync/)
-- 설계·조사와 독립적인 Skill 초안 이후, 이 문서 상단의 제한된 setup/update 구현과 deterministic 회귀 테스트를 추가했다. `mise.lock`·tool range 확대·자동 projection/hook/native installer는 미포함이다. 실제 Windows first-venv/warm setup은 기존 tool cache를 재사용해 확인했다. Skill runtime은 두 로컬 모델에서 capability 평가했으며 [실패·grader 한계](../../docs/skills/mols-dev-env-bootstrap-design/evaluation.md)를 포함한다. 다중 OS/cold tool-cache/HOME containment는 미검증으로 유지한다.
+- 설계·조사와 독립적인 Skill 초안 이후, 이 문서 상단의 제한된 setup/update 구현과 deterministic 회귀 테스트를 추가했다. `mise.lock`·tool range 확대·자동 projection/hook/native installer는 미포함이다. 실제 Windows first-venv/warm setup은 기존 tool cache를 재사용해 확인했다. Skill runtime은 두 로컬 모델에서 capability 평가했으며 [실패·grader 한계](https://github.com/mols3131d/mols-agent-assets/blob/1f1efa63efaad63f4bda19fe4781920bb2c6c541/docs/skills/mols-dev-env-bootstrap-design/evaluation.md)를 포함한다. 다중 OS/cold tool-cache/HOME containment는 미검증으로 유지한다.

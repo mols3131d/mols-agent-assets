@@ -11,8 +11,8 @@
 ## 남은 작업
 
 1. **버전 정책부터 확정:** [리뷰](https://github.com/mols3131d/mols-agent-assets/pull/258#pullrequestreview-5642776539)에 따라 `mise.toml`의 7개 CLI를 실제 사용·호환성 기준으로 분류하고, 허용 범위/lock 소유자를 정한다. `setup`은 잠금을 재현하고 `update`만 승인된 범위 내에서 새 버전을 선택·검증하도록 native mise 기능을 우선한다. 검증 전 임의의 `latest`·range 선언 금지.
-2. **실행기 간소화:** [리뷰](https://github.com/mols3131d/mols-agent-assets/pull/258#pullrequestreview-5642787295)를 기준으로 환경변수 강제 지정 7개·제거 6개, Node `PATH`, npm metadata 탐색, 중복 버전 확인을 검토한다. 기본값·기존 사용자 설정·mise/uv/Git native 기능으로 동등하게 처리할 수 있는 부분만 줄인다. Windows `.cmd`/pinned Node 실행 검증 없이 `tool_command()`을 제거하지 않는다.
-3. **개발환경 문서 정돈:** `docs/development/development-environment.md`는 주제별 일반 정책을 중심에 두고, 부트스트랩 고유 절차·승인·setup/update는 부트스트랩 섹션으로 모은다. 중복 명령은 [mise 안내](../../docs/references/tooling/mise.md)를 참조한다.
+1. **실행기 간소화:** [리뷰](https://github.com/mols3131d/mols-agent-assets/pull/258#pullrequestreview-5642787295)를 기준으로 환경변수 강제 지정 7개·제거 6개, Node `PATH`, npm metadata 탐색, 중복 버전 확인을 검토한다. 기본값·기존 사용자 설정·mise/uv/Git native 기능으로 동등하게 처리할 수 있는 부분만 줄인다. Windows `.cmd`/pinned Node 실행 검증 없이 `tool_command()`을 제거하지 않는다.
+1. **개발환경 문서 정돈:** `docs/development/development-environment.md`는 주제별 일반 정책을 중심에 두고, 부트스트랩 고유 절차·승인·setup/update는 부트스트랩 섹션으로 모은다. 중복 명령은 [mise 안내](../../docs/references/tooling/mise.md)를 참조한다.
 
 ## 변경·검증 경계
 

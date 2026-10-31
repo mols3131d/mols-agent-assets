@@ -73,11 +73,11 @@ mise는 Windows native에서 PowerShell/shims/`mise exec`/`mise run`을 지원�
 ### OS 감지 및 기능 검사 결론
 
 1. Host fingerprint: OS/kernel, version, architecture, libc(필요 시), shell, WSL/container, cwd/filesystem, interactive 여부, PATH에 설치된 실제 command 경로. 이 값 중 **의사결정에 사용하는 것만** 출력하거나 검증한다.
-2. OS 이름은 초기 routing의 힌트다. 실제로 Git, Bash, uv, Node 등 명령 실행 가능 여부는 capability probe(`--version`, native diagnostic, PATH 확인)로 결정한다. Windows/WSL이므로 자동으로 설치되어 있다고 판단하지 않는다.
-3. Python `platform.system()`은 Windows/Darwin/Linux kernel을 구분하지만 WSL은 Linux로 보이므로 subsystem 판정이 별도 필요하다. 환경변수 기반 판정은 spoofable이므로 보조 신호로만 쓰고 독립된 실행 capability를 확인한다.
-4. `MISE_OS` 같은 tool-manager OS override는 **실제 host detection 증거가 아니라 target artifact 선택 설정**이다. `--os`를 진단 인자로 쓰더라도 실제 설치 정책을 바꾸게 해서는 안 된다. [S7]
-5. OS별 설정 파일을 늘리기보다 공통 task로 시작하고 실제 필요한 최소 platform delta만 `run_windows` 또는 별도 script에 둔다. OS별 lock/platform artifact가 필요해도 명확한 owner가 확인된 후에만 채택한다.
-6. PATH 충돌은 Windows에서 대소문자·확장자와 함께, Unix는 login/interactive shell activation과 함께 비교한다. `mise exec -- ...`는 사용자의 shell profile을 수정하지 않고도 project tools를 실행하는 경로다. [S5]
+1. OS 이름은 초기 routing의 힌트다. 실제로 Git, Bash, uv, Node 등 명령 실행 가능 여부는 capability probe(`--version`, native diagnostic, PATH 확인)로 결정한다. Windows/WSL이므로 자동으로 설치되어 있다고 판단하지 않는다.
+1. Python `platform.system()`은 Windows/Darwin/Linux kernel을 구분하지만 WSL은 Linux로 보이므로 subsystem 판정이 별도 필요하다. 환경변수 기반 판정은 spoofable이므로 보조 신호로만 쓰고 독립된 실행 capability를 확인한다.
+1. `MISE_OS` 같은 tool-manager OS override는 **실제 host detection 증거가 아니라 target artifact 선택 설정**이다. `--os`를 진단 인자로 쓰더라도 실제 설치 정책을 바꾸게 해서는 안 된다. [S7]
+1. OS별 설정 파일을 늘리기보다 공통 task로 시작하고 실제 필요한 최소 platform delta만 `run_windows` 또는 별도 script에 둔다. OS별 lock/platform artifact가 필요해도 명확한 owner가 확인된 후에만 채택한다.
+1. PATH 충돌은 Windows에서 대소문자·확장자와 함께, Unix는 login/interactive shell activation과 함께 비교한다. `mise exec -- ...`는 사용자의 shell profile을 수정하지 않고도 project tools를 실행하는 경로다. [S5]
 
 ### 파일/경로/캐시/권한 UX
 

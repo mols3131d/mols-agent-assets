@@ -76,7 +76,7 @@ mise run skills-sync
 
 **검증 범위:** Windows에서 mise 인자 전달, runner의 격리 fixture·symlink/junction·부분 실패 테스트를 확인했습니다. 로컬 wheel만 제공하는 실제 uv fixture에서 범위 밖 `2.0.0` 대신 허용된 `1.1.0` 선택, sync/check와 setup 재실행의 lock 보존도 확인합니다. 실제 Windows 임시 snapshot에서 기존 exact tool cache를 사용해 새 `.venv` setup과 warm 재실행이 모두 `READY`/exit 0이며 policy/lock hash와 비어 있는 임시 HOME이 유지됨을 확인했습니다. 이는 clean-machine/cold tool-cache 설치나 OS sandbox 검증이 아닙니다.
 
-Linux/macOS/WSL host smoke와 사용자 HOME installer 실행은 아직 미검증입니다. Skill의 실제 로컬 모델 capability 결과와 실패 사례는 [Skill Evaluation](../../skills/mols-dev-env-bootstrap-design/evaluation.md)에서 별도로 다룹니다.
+Linux/macOS/WSL host smoke와 사용자 HOME installer 실행은 아직 미검증입니다.
 
 Promptfoo처럼 Node runtime이 필요한 기존 command는 mise environment에서 실행합니다.
 
