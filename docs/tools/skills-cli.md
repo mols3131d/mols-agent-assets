@@ -18,6 +18,10 @@ skills CLI는 외부 Agent Skill dependency를 선택·설치하는 도구입니
 
 CLI 갱신과 dependency 갱신을 구분해 diff를 검토하고, 필요한 vendor의 payload·지원 resource와 native installer 호환성을 확인합니다. 세부 설치 경계는 [skills CLI 통합 reference](../development/tooling/skills-cli.md), 원본·installer 선택은 [작성 원본과 권한](../development/source-authority.md)을 따릅니다.
 
+## 권장 버전 정책
+
+**Minor**(mise 요청 `1`)를 권장합니다. CLI만 갱신하며 `skills-lock.json`의 외부 Skill source·revision은 자동 승격하지 않습니다. 최초 전환과 이후 갱신에서 source-native installer의 옵션·payload와 HOME 쓰기 경계를 확인합니다.
+
 ## Official Sources
 
 - [Repository and CLI usage](https://github.com/vercel-labs/skills)
