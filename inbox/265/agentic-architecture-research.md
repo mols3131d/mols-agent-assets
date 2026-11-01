@@ -4,7 +4,7 @@ description: PR #265의 에이전틱 병렬 개발 아키텍처 패턴을 심층
 
 # PR #265 — Agentic Architecture Research and Review
 
-상태: 과거 설계 조사 기록 및 2026-11-02 개편 근거(실제 모델 행동 평가 미실시). 정본 패턴은 [Agentic Parallel Development Architecture](../../catalog/patterns/software-engineering/agentic-parallel-development-architecture.md)입니다. 아래 이전 Iteration 기록은 당시 설계에 대한 평가이며 현재 개편본의 검증으로 해석하지 않습니다.
+상태: 과거 설계 조사 기록 및 2026-11-02 개편 근거(실제 모델 행동 평가 미실시). 정본 패턴은 [Software Architecture for Multi-Agent Development](../../catalog/patterns/software-engineering/multi-agent-development-architecture.md)입니다. 아래 이전 Iteration 기록은 당시 설계에 대한 평가이며 현재 개편본의 검증으로 해석하지 않습니다.
 
 ## Goal / Scope
 
