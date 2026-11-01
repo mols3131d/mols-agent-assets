@@ -18,6 +18,12 @@ mise는 개발 CLI의 설치·버전과 공통 task를 관리합니다. 설정·
 
 바이너리 4종(uv·Node·rumdl·Lefthook)의 lock에는 7개 플랫폼 URL·sha256이 있습니다. Aqua 도구 3종에는 `github-attestations` 메타데이터도 있으나 Node에는 해당 필드가 없습니다. npm CLI 3종(Biome·Rulesync·skills)은 최상위 패키지 버전만 잠그며 전이 의존성 그래프까지 고정하지 않습니다.
 
+## 권장 버전 정책의 적용 경계
+
+mise 자체는 **Latest**를 우선 검토하는 호스트 선행 도구로, 이 저장소가 설치·업데이트하지 않습니다. mise 관리 CLI 7종의 Exact·Patch·Minor·Latest·LTS 배정은 [도구별 권장 정책](README.md#도구별-권장-정책)을 따릅니다.
+
+현재 bootstrap은 Exact 요청만 허용하고 실행 버전도 `mise.toml`의 Exact 값과 비교하므로, 숫자 prefix나 `lts`로 설정만 바꾸면 실패합니다. 범위 정책 적용 시 **mise가 결정한 lock 버전**을 native API로 확인하도록 최소한의 수정·검증이 필요합니다. 별도 SemVer/LTS 선택기를 구현하지 않습니다.
+
 ## CLI Version Updates
 
 CLI 7종은 현재 `mise.toml`에서 exact version을 선택하고 `mise.lock`으로 재현합니다. 보안 수정이나 지원 수명 변경도 채택 근거지만, 실행 시마다 자동 갱신하지 않습니다. 현행 Exact pin은 **선택한 새 버전을 `mise.toml`에 먼저 반영**해야 합니다. [SemVer 선택지](README.md#semver-버전-선택지)의 prefix·alias를 추후 지원할 경우에만 `mise lock --bump`로 허용 범위 내 최신 버전을 선택할 수 있습니다.
