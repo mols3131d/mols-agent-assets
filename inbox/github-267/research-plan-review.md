@@ -66,3 +66,9 @@
 - **미검증:** 모델·서비스별 실제 tool inventory, 선택 이후 body loading, behavior parity, 경로 전환 발생률.
 - **다음 작업자:** [plan.md](plan.md)의 순서로 좁은 Skill delta → static review → 가능한 런타임의 3~5개 사례에서 관찰·평가 → 필요할 때만 후속 reference 정비.
 - **중단 기준:** 구현이 새로운 라우팅 규칙의 소유권이나 상시 agent manager 역할을 만들기 시작하면 범위에서 제외하고 재검토.
+
+## 후속 검토에 따른 목표 확장
+
+앞 단계의 결론인 **작은 계약 개선 + 기존 route 재사용**은 `harness execution fidelity` 문제에 대한 판단이다. 이것만으로 **대상 런타임에 최적인 하네스 설계**가 완성됐다고 주장할 수는 없다. 이후 [architecture–plan review](architecture-plan-review.md)에서 현재 네이티브 기능만 쓰는 `no-op`, runtime pointer, 경량 selection bridge 및 실제 권한 기반 capability adaptation의 **대안 선택**, 컨텍스트/호출/설정·유지보수 비용, Skill activation/분리 경계를 추가 검토했다.
+
+계속 유효한 계약: native-first, 필요한 본문만 지연 로딩, 불확실한 권한·실행 결과를 완료로 가장하지 않음. 새 작업의 범위·최종 인계는 [plan.md](plan.md)가 소유하며 이 문서의 초기 초안 결론을 구현 상한으로 해석하지 않는다.
