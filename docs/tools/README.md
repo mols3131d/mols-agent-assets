@@ -9,9 +9,27 @@ description: 이 프로젝트에서 사용하는 도구의 기본 설정·버전
 ## 공통 원칙
 
 - **기본 설정 우선:** 공식 기본값과 native 설정·명령을 먼저 사용합니다. 기본값을 그대로 옮겨 적거나 wrapper에서 중복 강제하지 않습니다. 프로젝트 요구 때문에 다른 값이 필요할 때만 설정과 이유를 남깁니다.
-- **버전 선택:** 신규 도입·갱신 시 공식 최신 안정 릴리스를 먼저 검토합니다. 보안 권고·지원 종료는 우선 대응하고, Node LTS·포맷 출력·생성물·평가 재현성처럼 실제 호환성 제약이 있으면 검증된 버전을 선택합니다. Prerelease는 별도 근거 없이 채택하지 않습니다.
+- **버전 선택:** SemVer 기반 허용 범위를 도구별로 선택하고, 명시적 갱신 시 그 범위의 적절한 안정 릴리스를 검토합니다. 보안 권고·지원 종료는 우선 대응하며, formatter 출력·생성물·평가 재현성 등 호환성 제약을 고려합니다. Prerelease는 별도 근거 없이 채택하지 않습니다.
 - **선택과 실행 분리:** 최신 버전을 선호해도 매 실행에서 `latest`를 해석하거나 설치를 자동 갱신하지 않습니다. 검토·채택한 버전은 manifest와 lock에 고정하고, `setup`은 이를 재현합니다. **Exact pin은 재현성 장치이지 영구 동결 정책이 아닙니다.**
 - **설정의 정본 유지:** 실행 가능한 설정·버전·잠금 값은 각 native 파일이 소유합니다. 문서는 값 전체를 복제하지 않고 기본값과 다른 선택, 갱신 시 확인할 항목, 운영 경계를 설명합니다.
+
+## SemVer 버전 선택지
+
+mise에서 사용하는 버전 요청 예시입니다. 선택지는 **허용할 변경의 폭**이며, 실제 실행 버전은 lockfile에 따로 고정합니다.
+
+| 선택지 | mise 요청 예시 | 갱신 허용 범위 |
+| --- | --- | --- |
+| Exact | `2.5.6` | 지정한 버전만 |
+| Patch | `2.5` | `2.5.x` |
+| Minor | `2` | `2.x.y` |
+| 전체 Major 허용 | `latest` | 새 Major도 후보. backend의 `latest` 선택 의미를 확인해야 함 |
+
+- 버전 요청 문법은 manager별로 다릅니다. mise의 prefix를 npm `^`·`~` 또는 Python dependency range와 같은 문법으로 간주하지 않습니다.
+- SemVer `0.x`는 하위 호환성이 보장되지 않으므로 Minor 추적을 자동 기본값으로 삼지 않습니다. 도구의 실제 호환성 공지를 확인합니다.
+- **LTS는 독립적인 SemVer 단계가 아닌 선택적 지원 수명 조건**입니다. LTS 제도가 있는 도구에서만 적용하며, 특정 LTS Major를 유지할지 또는 최신 LTS Major로 전환할지 별도 선택합니다. 새 LTS Major 자동 전환은 기본값이 아닙니다. [Node.js 예시](node.md#선택적-lts-조건)를 참고합니다.
+- 범위를 넘어서는 보안·EOL 대응은 버전 정책 자체의 변경으로 검토합니다. 정해진 범위가 취약 버전을 계속 유지해야 한다는 뜻은 아닙니다.
+
+**현재 상태:** 위 선택지는 적용 후보입니다. `mise.toml`의 7개 CLI는 여전히 Exact이고 [bootstrap 실행기](../../scripts/development_bootstrap.py)도 Exact만 허용합니다. 범위 적용은 실행기·lock 검증과 함께 별도로 변경해야 합니다.
 
 ## 설정과 잠금
 
@@ -26,7 +44,7 @@ description: 이 프로젝트에서 사용하는 도구의 기본 설정·버전
 ## 버전 갱신 방법
 
 1. **후보 확인:** upstream release note·보안 권고·지원 수명과 이 저장소의 사용처를 확인합니다. 특히 formatter 출력, Rulesync projection, Node 실행 호환성, 평가 모델·데이터의 비교 조건을 구분합니다.
-1. **명시적 채택:** CLI는 `mise.toml`의 exact pin을 바꾸고 `mise.lock`을 native `mise lock`으로 재생성합니다. `mise lock --bump`만으로는 exact pin이 최신으로 변하지 않습니다. Python 의존성은 별도 `uv.lock`, 외부 Agent Asset은 각각의 lock이 소유합니다.
+1. **Lock 갱신:** 현재 Exact pin의 변경은 `mise.toml`에서 새 버전을 선택한 뒤 `mise lock`으로 재생성합니다. 향후 허용 범위 정책을 적용하면 `mise lock --bump`로 범위 안에서 재선택할 수 있습니다. 해당 명령은 Exact pin의 버전이나 `mise.toml`을 바꾸지 않습니다. Python 의존성은 별도 `uv.lock`, 외부 Agent Asset은 각각의 lock이 소유합니다.
 1. **확인 후 통합:** 플랫폼별 잠금·체크섬과 필요한 npm dependency sidecar를 검토하고, 승인된 격리 환경에서 `mise install --locked`, `mise run check`, `mise run test` 및 영향 범위 검증을 수행합니다. 포맷·생성 결과 diff를 검토한 다음 PR Gate로 통합합니다. 설치 승인은 [개발환경 정책](../development/development-environment.md)이 소유합니다.
 
 `mise run update`는 현재 **Python 의존성만** 갱신합니다. CLI·Node major·formatter·Rulesync 버전은 별도 명시적 변경이며, 검사 없이 자동으로 최신화하지 않습니다. [mise 운영 안내](mise.md#cli-version-updates)에 실행 경계를 두고, 실제 버전값은 정본 파일만 봅니다.
