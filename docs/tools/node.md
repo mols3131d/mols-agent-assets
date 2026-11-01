@@ -16,7 +16,7 @@ Node.js는 npm CLI와 평가 runner의 실행환경입니다. Node와 관리형 
 - bootstrap의 npm 실행은 잠근 Node와 설치 package identity·경로를 검증합니다. Windows `.cmd` shim과 호스트 PATH의 동명 CLI로 묵시적으로 대체하지 않습니다.
 - [Promptfoo](promptfoo.md)는 별도의 runner pin과 최소 Node 요구조건을 갖습니다. mise의 npm CLI lock이나 `package.json`만으로 Promptfoo 전이 의존성까지 잠겼다고 주장하지 않습니다.
 
-## 선택적 LTS 조건
+## 선택적 LTS 필터
 
 LTS는 SemVer의 Exact·Patch·Minor·전체 Major 선택을 대체하지 않습니다. 공식 지원 수명과 결합할 때 다음 중 하나를 명시적으로 택합니다.
 
