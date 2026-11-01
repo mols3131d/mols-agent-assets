@@ -41,3 +41,21 @@ description: PR #265의 에이전틱 병렬 개발 아키텍처 패턴을 심층
 - **Counterexample C:** 한 기능의 API·스키마를 세 agent가 동시에 바꾸면 파일이 분리되어도 계약 불일치로 통합 실패할 수 있다. 먼저 경계가 안정된 부분을 식별하는 방법이 필요하다.
 
 마지막 단계에서 실제 문서 개정·검토 결과, 잔여 리스크를 갱신합니다.
+
+
+## Iteration 1 — Research → Plan → Work → Review
+
+- **Implemented:** change-scenario mapping; vertical capability/feature packaging comparison; public surface and data-authority decisions; legacy seam / expand-migrate-contract options; ETL counterexample; representative-change evaluation.
+- **Structural review (architecture):** improves ability to propose architecture candidates, but the Before/After example does not yet make `ordering`'s authoritative data and dependency directions explicit. A directory reshuffle could still be mistaken for domain decoupling.
+- **Review (refactor safety):** migration strategy mentions regression and compat but does not yet exemplify the *first low-risk change* and the exact point where consumers can work independently.
+- **Review (agent collaboration):** distinguishes distinct tasks and same-task agents, but no explicit producer-consumer case shows which work can proceed concurrently after contract stabilization.
+- **Review (minimality):** GPP and optional seam choices maintained. No mandatory linter/microservice/large checklist.
+- **Disposition:** absorb architecture example and producer-consumer decisions in next loop; reject adding a mandatory plan template or directory schema.
+
+## Iteration 2 — Dry-run assumptions (not runtime agent eval)
+
+**Scenario A — existing layered shop:** `controllers/`, `services/`, `repositories/`, shared `Order` table; jobs: change pricing, change shipping provider, and change order status. A credible plan should compare (A) keeping layout with local seam, (B) packaging pricing/shipping/ordering boundaries in modular monolith, (C) early service split. With no independent deployment requirement, (B) is a reasonable provisional candidate, but shared order-state writes must remain with their authoritative owner. Plan migration should first expose order-state read/command seam and verify regression, then move pricing, then shipping, with versioned/compatible consumers where needed.
+**Scenario B — new ETL:** repeated tasks are connector-specific and schema mapping changes. `ingestion/`-`normalization/`-`quality/` by technical stages can cause every connector addition to touch all three. A connector-centered slice with stable normalized record/quality contract is a more promising candidate if each connector owns all three; if normalization is shared policy, centralize its invariant and test consumer adapters.
+**Scenario C — two agents one feature:** one agent changing the public error schema while another writes a consumer, a third writes integration tests. Passing local tests is insufficient. Freeze an interface baseline or coordinate a compatible transition; consumer work is parallel only if acceptance/error semantics are already stable.
+
+**Decision:** enrich the pattern with one compact alternative-comparison and *dependency-focused* example instead of producing a large step-by-step plan template.
