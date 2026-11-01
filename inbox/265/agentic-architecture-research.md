@@ -59,3 +59,22 @@ description: PR #265의 에이전틱 병렬 개발 아키텍처 패턴을 심층
 **Scenario C — two agents one feature:** one agent changing the public error schema while another writes a consumer, a third writes integration tests. Passing local tests is insufficient. Freeze an interface baseline or coordinate a compatible transition; consumer work is parallel only if acceptance/error semantics are already stable.
 
 **Decision:** enrich the pattern with one compact alternative-comparison and *dependency-focused* example instead of producing a large step-by-step plan template.
+
+
+## Iteration 2 — Scenario dry-run and review
+
+- **Work:** architecture candidates A/B/C compared explicitly; example reshaped around `ordering` as state authority and `billing`/`shipping` as invoked capabilities. Migration now uses one pricing-function extraction and checkout behavior preservation before later consumer conversion. ETL scenario evaluates connector slices versus shared normalization.
+- **Review / planning usefulness:** For shop example, an agent can now identify current structure, target boundary, dependency shape, initial low-risk change, consumer migration, and integration feedback. For ETL, the agent can choose a different axis instead of blindly applying business domain packages.
+- **Review / adverse conditions:** Shared order state cannot be solved by directory moves; a strong transaction requirement may invalidate separation. A consumer contract change remains an ordered/compatible update even when code paths are disjoint. Avoid presenting implementation details as an enforceable schema.
+- **Remaining:** narrow semantic guidance for error/validation contracts during migration, clearer within-one-task agent scenario, and evidence-supported notes against over-aggressive extraction. Resolve in next review/work.
+- **Evidence limit:** these are role-separated *reasoned dry runs*, not separate subagent executions, multi-model evals, or empirical productivity measurements.
+
+## Iteration 3 — Adversarial perspectives
+
+1. **Domain designer:** Failure mode is identifying domain packages from nouns rather than invariants and information authority; response: put data/command owner and context-specific model explicitly before folder names. Good in current draft.
+2. **Legacy maintainer:** Failure mode is changing error semantics, input validation, security, or transaction order while moving modules; response: add these as examples of behavioral equivalence, not a new mandatory gate.
+3. **Agent collaboration designer:** Failure mode is a producer agent changing the schema under a consumer agent and reviewers thinking separate files imply independence; response: add a compact scenario of stable interface versus breaking interface.
+4. **Minimalist / operations:** Failure mode is introducing new event infrastructure, wrapper or microservice merely for parallelism; response: prefer in-process module calls and existing seam where sufficient, use one extra abstraction only for actual replacement.
+5. **Evaluation skeptic:** Correlation in co-change and published agent benchmarks cannot certify an optimal structure; response: distinguish heuristic, synthetic scenario exercise, and real measurement.
+
+**Disposition:** absorb (2)(3) with small targeted additions. Do not add procedural checklist, module-size metrics, mandatory lints, or model evaluation claims.
