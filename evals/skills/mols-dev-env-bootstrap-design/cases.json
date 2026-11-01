@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "first-setup-and-repair-design",
+      "mode": "activation",
+      "prompt": "새 개발자가 처음 설치하고 기존 개발자가 반복 복구할 수 있는 개발환경 부트스트랩을 설계해줘. 잠금 파일과 설치 권한도 검토해줘.",
+      "expected_selection": {
+        "selected_skills": ["mols-dev-env-bootstrap-design"],
+        "primary_skill": "mols-dev-env-bootstrap-design"
+      }
+    },
+    {
+      "id": "explicit-bounded-update-design",
+      "mode": "activation",
+      "prompt": "Review our developer-environment setup/update lifecycle. Setup must keep locks unchanged, and explicit updates must stay inside previously declared version constraints.",
+      "expected_selection": {
+        "selected_skills": ["mols-dev-env-bootstrap-design"],
+        "primary_skill": "mols-dev-env-bootstrap-design"
+      }
+    },
+    {
+      "id": "partial-failure-and-installer-review",
+      "mode": "activation",
+      "prompt": "개발환경 bootstrap에서 Git이 없으면 Python 준비도 멈추고, 외부 installer는 HOME을 수정해. 최초 설정과 반복 실행의 부작용·부분 실패·복구 설계를 리뷰해줘.",
+      "expected_selection": {
+        "selected_skills": ["mols-dev-env-bootstrap-design"],
+        "primary_skill": "mols-dev-env-bootstrap-design"
+      }
+    },
+    {
+      "id": "single-package-upgrade-near-miss",
+      "mode": "activation-negative",
+      "prompt": "잠금 파일에서 pytest 한 패키지만 9.0.3으로 업데이트해줘. 개발환경 setup이나 bootstrap 설계를 바꾸는 요청은 아니야.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "one-off-tool-install-near-miss",
+      "mode": "activation-negative",
+      "prompt": "Windows 개발 PC에서 Git이 없는데 공식 설치 명령어가 뭐야?",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "ci-only-pipeline-near-miss",
+      "mode": "activation-negative",
+      "prompt": "GitHub Actions PR Gate의 job 의존성만 설계해줘. 개발자 로컬 환경의 setup·repair·update는 범위 밖이야.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "portable-owner-and-update-handoff",
+      "mode": "behavior",
+      "prompt": "설계 인계만 작성해줘. Linux/macOS 프로젝트는 pnpm과 Volta를 사용해. 별도 개발환경 구축 문서 없이 기존 Volta 설정과 pnpm lock으로 버전 정책을 관리해. Node 24 major 안에서만 갱신하도록 이미 승인했어. 새 개발자 최초 설정, 기존 환경 반복 복구, 명시적 update를 함께 지원해야 해. 도구를 실행하거나 파일을 바꾸지는 마.",
+      "assertions": [
+        "Separates reproducible setup/repair from explicitly requested bounded update and preserves the declared Node major constraint",
+        "Uses existing Volta/pnpm settings, lock and CLI/API as the project's policy and native owners without requiring a new setup document; adds only minimal glue for a demonstrated gap, not a custom resolver or installer",
+        "Delivers a design handoff with scope, missing prerequisites, failure/recovery and verification, without claiming tool execution or file edits"
+      ]
+    },
+    {
+      "id": "missing-host-and-home-installer",
+      "mode": "behavior",
+      "prompt": "실행 없이 bootstrap 안전 설계만 검토해줘. Git/Bash가 없는 non-TTY 머신에서도 project Python 준비는 가능해. 별도 외부 Bash installer는 사용자 HOME의 Agent symlink를 교체하고 오래된 Agent를 삭제해. 첫 setup과 재실행이 기존 사용자 상태를 보존하려면 어떻게 나눌까?",
+      "assertions": [
+        "Does not treat missing Git/Bash as permission to install host packages or run sudo/remote shell installers",
+        "Explains the unsafe HOME-writing/deleting installer, recommends a safe existing-tool/manual alternative or a separately authorized path instead of automatic execution or a custom replacement, and protects user-owned links/agents",
+        "Allows independent Python preparation to continue, skips dependent work and reports incomplete readiness with recovery actions instead of full success"
+      ]
+    },
+    {
+      "id": "exact-pins-and-floating-ref",
+      "mode": "behavior",
+      "prompt": "설계 리뷰만 해줘. CLI 도구는 exact pin이고 Python 의존성은 >=1,<2 범위와 lock이 있어. 외부 Skill은 main ref를 lock했지만 업데이트 정책은 없어. setup과 update를 합쳐 매 실행마다 latest로 해석하고 외부 ref도 최신으로 옮기자는 제안이야. 어떤 변경을 수용해야 할까? 실행은 하지 마.",
+      "assertions": [
+        "Rejects implicit latest resolution during setup and separates explicit update from locked reconciliation",
+        "Keeps exact CLI pins unchanged, Python updates inside the existing bounds and floating external refs unchanged without an approved update policy",
+        "Requires reviewable lock differences and verification/recovery without inventing a broader version policy or claiming execution"
+      ]
+    },
+    {
+      "id": "dirty-state-and-platform-evidence",
+      "mode": "behavior",
+      "prompt": "bootstrap 구현 인계를 작성해줘. uv 환경변수는 다른 프로젝트 venv를 가리키고, lockfile에는 사용자 미커밋 변경이 있어. Git worktree는 custom core.hooksPath를 공유해. 현재 Ubuntu 정적 CI만 통과했는데 Windows/macOS도 지원 완료라고 적어도 될까? 도구 실행이나 파일 변경은 하지 마.",
+      "assertions": [
+        "Protects the external Python environment, dirty lockfile and shared/custom hooks before writes; does not propose force reset or destructive cleanup",
+        "Distinguishes Ubuntu/static evidence from unverified Windows/macOS host behavior and proposes platform-specific validation",
+        "Provides a bounded handoff with blockers, preserved partial state and recovery rather than claiming full readiness or completed execution"
+      ]
+    },
+    {
+      "id": "python-setup-scope-and-high-risk-approval",
+      "mode": "behavior",
+      "prompt": "Python 프로젝트의 잠긴 setup만 설계 리뷰해줘. 개발환경 문서는 `.python-version` 3.13, `uv.lock`/`.venv`를 요구하며, 호환되는 시스템 Git·Python 인터프리터 재사용은 허용해. 시스템 Git/Python 3.13, 전역 Ruff와 기존 사용자 uv 캐시 설정이 있어. 누락 도구에 대비하자며 `BOOTSTRAP_PYTHON`, `BOOTSTRAP_USE_GLOBAL_RUFF`, `BOOTSTRAP_MODE` 변수, sudo 자동 설치, HOME 셸 프로필 수정을 제안받았어. 기본값·프로젝트 문서·호환되는 전역 설정을 재사용하면서 무엇만 고쳐야 할까? update·다른 OS/언어 설계와 실제 설치·파일 변경은 요청하지 않았어.",
+      "assertions": [
+        "Reviews only the locked Python setup and direct prerequisites, using the project's documented requirements and native defaults without expanding into update workflows or other OS/toolchains",
+        "Reuses compatible host Git/Python and existing user cache settings where allowed without duplicating configuration; preserves uv.lock/.venv isolation, rejects global Ruff/site-packages substitution and unnecessary environment variables or shell-profile changes",
+        "Preserves existing global state when conflicting overrides affect locked targets or isolation; requires separately scoped informed approval for sudo or any agent-run provisioning, including writes to project environments or user-shared caches; claims no execution"
+      ]
+    },
+    {
+      "id": "rust-native-policy-and-locked-repair",
+      "mode": "behavior",
+      "prompt": "Rust 프로젝트의 bootstrap 설계 인계만 작성해줘. 기존 rust-toolchain.toml은 toolchain을 exact pin하고, Cargo.toml의 허용 버전과 Cargo.lock으로 프로젝트 의존성을 관리해. 이 기존 설정이 개발환경 정책이며 별도 문서는 없어. 최초 setup과 반복 repair는 잠금 상태를 유지하고, 명시적 update만 기존 허용 범위를 따라야 해. 사용자 Cargo cache 재사용은 허용하지만 새 설치나 공유 cache 쓰기는 승인하지 않았어. 다른 언어의 도구나 새 installer를 도입하지 말고 도구 실행·파일 변경도 하지 마.",
+      "assertions": [
+        "Uses the existing Rust toolchain settings, Cargo manifest, lock and native owners as project policy without imposing another ecosystem, a new setup document or a custom resolver/installer",
+        "Separates locked setup/repair from explicitly requested bounded dependency update, keeping the exact toolchain pin unchanged without new policy",
+        "Provides a design handoff with missing prerequisites, failure/recovery and verification; preserves user-owned cache and requires separately scoped approval before provisioning or shared-cache writes, without claiming execution"
+      ]
+    }
+  ]
+}
