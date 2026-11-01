@@ -13,25 +13,37 @@ description: 이 프로젝트에서 사용하는 도구의 기본 설정·버전
 - **선택과 실행 분리:** 최신 버전을 선호해도 매 실행에서 `latest`를 해석하거나 설치를 자동 갱신하지 않습니다. 검토·채택한 버전은 manifest와 lock에 고정하고, `setup`은 이를 재현합니다. **Exact pin은 재현성 장치이지 영구 동결 정책이 아닙니다.**
 - **설정의 정본 유지:** 실행 가능한 설정·버전·잠금 값은 각 native 파일이 소유합니다. 문서는 값 전체를 복제하지 않고 기본값과 다른 선택, 갱신 시 확인할 항목, 운영 경계를 설명합니다.
 
-## SemVer 버전 선택지
+## mise 버전 선택지
 
-mise에서 사용하는 버전 요청 예시입니다. 선택지는 **허용할 변경의 폭**이며, 실제 실행 버전은 lockfile에 따로 고정합니다.
+실제 버전 선택은 mise의 native 요청을 사용하며, lock 갱신과 설치는 분리합니다.
 
-| 선택지 | mise 요청 예시 | 갱신 허용 범위 |
+| 선택지 | mise 요청 예시 | 허용 범위 |
 | --- | --- | --- |
-| Exact | `2.5.6` | 지정한 버전만 |
-| Patch | `2.5` | `2.5.x` |
-| Minor | `2` | `2.x.y` |
-| 전체 Major 허용 | `latest` | 새 Major도 후보. backend의 `latest` 선택 의미를 확인해야 함 |
+| Exact | `2.5.6` | 지정한 버전 |
+| Patch | `2.5` | 2.5.x |
+| Minor | `2` | 2.x |
+| Latest | `latest` | backend가 선택하는 최신 버전; Major 전환 가능 |
+| LTS | `node = "lts"` | Node.js가 제공하는 LTS alias; Major 전환 가능 |
 
-- 버전 요청 문법은 manager별로 다릅니다. mise의 prefix를 npm `^`·`~` 또는 Python dependency range와 같은 문법으로 간주하지 않습니다.
-- SemVer `0.x`는 하위 호환성이 보장되지 않으므로 Minor 추적을 자동 기본값으로 삼지 않습니다. 도구의 실제 호환성 공지를 확인합니다.
-- **LTS는 선택적 필터**입니다. LTS 상태를 공식적으로 제공하는 도구에서 켜면 위 SemVer 범위와 *현재 지원 중인 LTS 릴리스 라인*의 교집합에서만 선택합니다. 끄거나 미지정하면 범위만 적용합니다. 후보가 없거나 LTS 상태를 확인할 수 없으면 비-LTS 버전 또는 범위 밖 Major로 대체하지 않습니다. [Node.js 예시](node.md#선택적-lts-필터)를 참고합니다.
-- 범위를 넘어서는 보안·EOL 대응은 버전 정책 자체의 변경으로 검토합니다. 정해진 범위가 취약 버전을 계속 유지해야 한다는 뜻은 아닙니다.
+LTS는 **지원되는 도구에 한해 사용하는 별도의 native 요청 방식**입니다. mise의 버전 prefix와 `lts` alias를 임의로 결합하는 정책 엔진은 만들지 않습니다. `0.x` 도구의 Minor 변경, formatter 출력, 생성물과 평가 조건에는 특히 주의합니다.
 
-**mise 적용 경계:** `lts = true`는 정책 표현이지 mise의 `[tools]`에 바로 넣을 수 있는 지원 문법이 아닙니다. `node = "lts"`는 LTS 선택을, `node = "24"`는 24.x 범위를 각각 표현하지만 두 조건의 임의 교집합은 직접 강제하지 않습니다. 범위와 LTS를 함께 적용하려면 잠금 갱신 전에 공식 지원 상태를 확인해야 합니다.
+### 도구별 권장 정책
 
-**현재 상태:** 위 선택지는 적용 후보입니다. `mise.toml`의 7개 CLI는 여전히 Exact이고 [bootstrap 실행기](../../scripts/development_bootstrap.py)도 Exact만 허용합니다. 범위 적용은 실행기·lock 검증과 함께 별도로 변경해야 합니다.
+아래는 **추후 버전 범위 전환 시 적용할 제안**입니다. 현재 실행 설정은 `mise.toml` 및 lockfile이 정본입니다.
+
+| 대상 | 권장 | 요청/경계 | 갱신 시 핵심 확인 |
+| --- | --- | --- | --- |
+| Node.js | LTS | `lts` | 새 LTS Major와 npm CLI·평가 runner 호환성 |
+| uv | Patch | `0.13` | `0.x` 인터페이스·bootstrap·보안 수정 |
+| rumdl | Patch | `0.3` | Markdown format·lint diff |
+| Lefthook | Minor | `2` | hook 명령과 설치 영향 |
+| Biome | Minor | `2` | schema·formatter diff |
+| Rulesync | Minor | `43` | config·lock·projection 호환성 |
+| skills CLI | Minor | `1` | 외부 Skill revision 유지·installer 호환성 |
+
+별도 관리자: Python 인터프리터는 uv의 3.13 계열 Patch, Ruff는 0.x Patch(현재 선언에 상한 없음), pytest는 9.x Minor(현재 선언에 상한 없음)를 권장합니다. Promptfoo는 평가 비교를 위한 **Exact**, Front Matter CMS 확장은 편집기 관리의 **Latest**로 구분합니다. [uv·Python](uv.md), [Promptfoo](promptfoo.md), [Front Matter CMS](front-matter-cms.md)의 정본을 따릅니다.
+
+**전환 조건:** 현재 7개 CLI는 Exact pin이고 [bootstrap 실행기](../../scripts/development_bootstrap.py)도 Exact만 받습니다. 이 문서는 선택 기준을 정리할 뿐, `mise.toml`, 잠금, 스크립트 또는 바이너리를 갱신하지 않습니다. 범위 정책을 실제 적용하려면 bootstrap의 잠금 버전 검증과 플랫폼별 실행을 먼저 수정·검증해야 합니다.
 
 ## 설정과 잠금
 
@@ -46,7 +58,7 @@ mise에서 사용하는 버전 요청 예시입니다. 선택지는 **허용할 
 ## 버전 갱신 방법
 
 1. **후보 확인:** upstream release note·보안 권고·지원 수명과 이 저장소의 사용처를 확인합니다. 특히 formatter 출력, Rulesync projection, Node 실행 호환성, 평가 모델·데이터의 비교 조건을 구분합니다.
-1. **Lock 갱신:** 현재 Exact pin의 변경은 `mise.toml`에서 새 버전을 선택한 뒤 `mise lock`으로 재생성합니다. 향후 허용 범위 정책을 적용하면 `mise lock --bump`로 범위 안에서 재선택할 수 있습니다. 해당 명령은 Exact pin의 버전이나 `mise.toml`을 바꾸지 않습니다. Python 의존성은 별도 `uv.lock`, 외부 Agent Asset은 각각의 lock이 소유합니다.
+1. **Lock 갱신:** 현재 Exact pin은 `mise.toml`에서 버전을 먼저 바꿔야 합니다. 추후 range·alias를 활성화하면 `mise lock --bump`로 허용된 후보를 잠급니다. Lock 갱신이 `mise.toml`의 정책 변경이나 Python·외부 Agent Asset 갱신을 의미하지는 않습니다.
 1. **확인 후 통합:** 플랫폼별 잠금·체크섬과 필요한 npm dependency sidecar를 검토하고, 승인된 격리 환경에서 `mise install --locked`, `mise run check`, `mise run test` 및 영향 범위 검증을 수행합니다. 포맷·생성 결과 diff를 검토한 다음 PR Gate로 통합합니다. 설치 승인은 [개발환경 정책](../development/development-environment.md)이 소유합니다.
 
 `mise run update`는 현재 **Python 의존성만** 갱신합니다. CLI·Node major·formatter·Rulesync 버전은 별도 명시적 변경이며, 검사 없이 자동으로 최신화하지 않습니다. [mise 운영 안내](mise.md#cli-version-updates)에 실행 경계를 두고, 실제 버전값은 정본 파일만 봅니다.
