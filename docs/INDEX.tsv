@@ -1,6 +1,7 @@
 path	description
 development/	저장소 개발 작업에서 공통 개발 원칙, VCS/Git, GitHub, CI, 작성 원본과 권한, repository layout, formatting, validation, testing, evaluation 중 적용할 local policy를 찾을 때 사용합니다.
 development/ci.md	저장소의 change lifecycle, branch validation, main admission, blocking·deferred evidence, projection 검증과 local·agent·API write path의 경계를 설계·운영할 때 사용하는 정책입니다.
+development/development-environment.md	이 저장소의 개발환경 구축·격리·도구 관리 정책, 버전 수명 주기 거버넌스 및 부트스트랩 승인·운영 절차를 확인할 때 사용합니다.
 development/evaluation.md	Agent Asset의 behavioral evaluation을 설계·실행·해석하고 deterministic test, runtime evidence, regression contract를 구분할 때 사용하는 repository-local policy입니다.
 development/formatting.md	저장소 파일을 포맷할 때 changed-only와 전체 포맷 중 어떤 경로를 사용하고 formatter와 CI의 책임을 어떻게 나눌지 확인하는 정책입니다.
 development/github.md	GitHub의 Issues, Pull Requests, PR Reviews, coding agents, automations, GitHub Agentic Workflows, Rulesets, Actions와 Merge에 적용되는 저장소 협업 정책, 작성 의미와 권한 경계를 확인할 때 사용합니다.
@@ -29,7 +30,7 @@ references/agent-assets/skills/specification.md	Agent Skills 작업에서 공통
 references/tooling/	외부 tooling과 specification의 authority routing, integration knowledge와 중복 경계를 찾을 때 사용하는 directory entrypoint입니다.
 references/tooling/front-matter-cms.md	Front Matter CMS 설정, 공식 옵션, frontmatter.json 변경 근거를 확인할 때 사용합니다.
 references/tooling/github-sensitive-data-removal-runbook.md	GitHub repository에 노출된 회전·폐기 불가능한 민감정보를 Git history rewrite, GitHub 저장면 정리, fork/clone 대응과 Support purge까지 최대한 제거할 때 사용하는 재사용 런북입니다.
-references/tooling/mise.md	이 저장소에서 tool version·task entrypoint를 어디에 고정할지, mise와 uv의 ownership을 어떻게 나눌지 확인하거나 setup·check·test·format 명령을 찾을 때 사용합니다.
+references/tooling/mise.md	이 저장소의 mise·uv 소유권, setup/update의 exact pin·lock·설치 권한, 최초 준비와 실패 복구, 선택적 Skill·hook 연동 경계를 확인할 때 사용합니다.
 references/tooling/promptfoo.md	Promptfoo config·assertion·provider·model grading·debugging의 current official source와 이 저장소의 eval policy·config·runner entrypoint를 찾을 때 사용합니다.
 references/tooling/rulesync.md	Rulesync 자산의 authoring workspace·target·source/derived boundary를 판단하거나 fetch·import·generate 같은 current CLI·schema·target 문서를 찾을 때 사용합니다.
 references/tooling/skills-cli.md	외부 Agent Skill dependency를 lock·sync·install·update할 때 skills CLI, source-native installer와 Rulesync 사이의 책임 경계를 확인할 때 사용합니다.
