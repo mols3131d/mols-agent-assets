@@ -4,6 +4,8 @@
 
 `mols-chatbot-bootstrap` 개선의 핵심은 라우터 파일을 추가하거나 사전에 자산을 전부 읽게 하는 것이 아니다. **챗봇이 작업에 적용되는 지침과 자산을 선택적으로 발견하고, 선택한 canonical source를 실제로 로드하여 작업에 적용할 수 있는 호환 경로**를 구성하는 것이다.
 
+**목표 확장:** 이것은 최소 요구사항이며, 최종적으로는 **현재 런타임에서 원본 하네스의 정확성·권한 경계를 보존하면서 운영·컨텍스트·도구 비용이 작은 유효한 하네스 구조를 선택·구축**하는 것이 목표다. 단순 연결 성공과 환경별 최적 설계는 다르다. 자세한 설계 후보와 비교 기준은 [architecture options](harness-architecture-options.md)를 따른다.
+
 이 문서는 실행 원본을 복제하지 않는 작업용 판단 기록이다. 실제 Skill 계약은 [SKILL.md](../../src/rulesync/.rulesync/skills/mols-chatbot-bootstrap/SKILL.md)가 소유한다.
 
 ## 문제 정의
@@ -22,6 +24,14 @@
 5. **범위 변경 시 재평가:** 작업 의도, 경로, ref, 대상이 실질적으로 바뀌면 관련 지침과 자산을 다시 선택한다. 변화가 없다면 같은 리비전의 이미 유효하게 로드된 자산을 재사용한다.
 6. **저빈도 부트스트랩:** 이 Skill은 일회성·저빈도 호환성 provision/repair 책임을 맡는다. 매 작업의 상시 실행 관리자나 새로운 policy owner가 아니다.
 7. **부족한 기능만 대체:** 필수 도구·권한·독립 에이전트 실행이 없는 런타임에서는 가능한 범위와 동등하지 않은 부분을 구분한다. 권한 확대나 미수행 행동의 완료 선언을 금지한다.
+
+## 추가 설계 Findings
+
+- **설계 선택 부재:** 기존 Skill은 '최소한의 호환 경로'를 권장하지만 **네이티브만으로 충분한 경우**, 포인터만 필요한 경우, 선택적 라우팅이 필요한 경우 중 어느 구성이 가장 낮은 비용으로 실제 결과를 내는지 비교·판정하는 지침은 제한적이다.
+- **비용 기준 부재:** 정확성·안전만 확보해도 매 요청에 전체 asset catalog를 재검색하거나 많은 Skill 본문을 선로딩하면 실무적인 최적 하네스라고 부를 수 없다. 실제 비용/품질 비교는 아직 실측되지 않았다.
+- **Capability와 권한 혼동 위험:** 동일 제품에서도 Chat/Agent/Desktop/API와 account·connector가 달라 runtime 정보만으로는 실행 가능성·authorization을 결정할 수 없다.
+- **Skill scope 결정 보류:** 현 bootstrap Skill이 경량 설계 기능까지 소유할지, 독립적으로 사용되는 harness design capability가 별도 Skill을 필요로 하는지는 실제 activation/near-miss와 유지보수 비용을 보고 결정한다.
+- **검증 계획:** [평가 전략](harness-evaluation-strategy.md)의 design validity, fidelity, safety, cost, UX를 함께 평가한다. 테스트 전에는 최적성·parity를 `verified`로 부르지 않는다.
 
 ## 작업 시 기대하는 연결
 
