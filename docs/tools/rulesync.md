@@ -19,6 +19,10 @@ Rulesync는 선택한 작성 원본에서 벤더별 Agent Asset을 생성하고 
 
 버전 갱신 시 `npm run rulesync:doctor`, `npm run rulesync:preview`, `npm run rulesync:validate`와 관련 projection diff를 확인합니다. structural validation 통과를 runtime 의미의 동등성이나 검토 승인으로 해석하지 않습니다.
 
+## 권장 버전 정책
+
+**Minor**(초기 전환 후보 `43`)를 권장합니다. 현재 `40.x`에서 `43.x`로 옮기는 첫 단계는 Major 전환이므로 config·lock schema와 projection 결과를 별도로 검증해야 합니다. 이후 43.x 내 갱신에도 `doctor`·`preview`·`validate`와 생성 diff를 확인합니다. CLI 범위와 외부 Agent Asset revision 잠금은 독립적으로 관리합니다.
+
 ## 상세 경계와 공식 문서
 
 [Rulesync 통합 reference](../development/tooling/rulesync.md)는 workspace·target·source/derived 경계와 공식 문서 탐색을 맡습니다. 이 문서는 프로젝트의 설정·버전 선택과 운영 예외만 설명합니다.
