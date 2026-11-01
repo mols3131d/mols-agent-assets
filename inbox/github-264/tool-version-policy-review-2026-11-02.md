@@ -8,7 +8,11 @@ description: PR #264의 도구 버전 고정 정책, 2026-11-02 upstream 안정 
 
 ## 판단
 
-**Exact pin을 버리지 않는다.** `scripts/development_bootstrap.py`는 CLI 7종의 `X.Y.Z` 형태를 요구하며, `mise.lock`에 잠긴 도구로 `setup`을 재현한다. `latest`·`lts`·range를 선언만 바꾸면 실행 계약과 충돌한다. 반대로 보안·지원 종료·호환성 위험을 무시하고 pin을 오래 유지하는 것도 적절하지 않다. **명시적으로 검토하고 버전을 채택한 다음, 다시 exact pin과 lock으로 고정하는 운영 방식**을 우선한다.
+**현재 실행 계약은 Exact pin을 요구한다.** `scripts/development_bootstrap.py`는 CLI 7종의 `X.Y.Z` 형태를 요구하며, `mise.lock`에 잠긴 도구로 `setup`을 재현한다. 이 문서 작성 시점의 계약은 유지하되, 후속 논의에서 **mise의 native 범위 요청 + lock 재현**을 권장 정책으로 정했다. `latest`·`lts`·prefix만 선언하면 현재 bootstrap과 충돌한다. 새 정책으로 전환할 때는 실행기와 lock 검증을 함께 수정해야 한다.
+
+## 후속 정책 결정
+
+PR #264에서는 mise의 다섯 native 선택지(Exact·Patch·Minor·Latest·LTS)를 사용하고 자체 LTS 필터를 구현하지 않는 방식을 권장한다. CLI별 제안은 Node.js LTS, uv·rumdl Patch, Lefthook·Biome·Rulesync·skills CLI Minor다. Python은 3.13 Patch, Ruff Patch, pytest Minor를 uv의 선언·lock으로 관리한다. Promptfoo는 Exact, Front Matter CMS는 editor Latest를 권장한다. 이 표는 **실제 업그레이드 완료 상태가 아니다**. 정책 정본은 [Tools](../../docs/tools/README.md#도구별-권장-정책)다.
 
 ## 현재 선택과 공식 최신 안정 릴리스
 
