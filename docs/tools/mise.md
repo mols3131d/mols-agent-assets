@@ -18,12 +18,22 @@ mise는 개발 CLI의 설치·버전과 공통 task를 관리합니다. 설정·
 
 바이너리 4종(uv·Node·rumdl·Lefthook)의 lock에는 7개 플랫폼 URL·sha256이 있습니다. Aqua 도구 3종에는 `github-attestations` 메타데이터도 있으나 Node에는 해당 필드가 없습니다. npm CLI 3종(Biome·Rulesync·skills)은 최상위 패키지 버전만 잠그며 전이 의존성 그래프까지 고정하지 않습니다.
 
+## CLI Version Updates
+
+CLI 7종은 현재 `mise.toml`에서 exact version을 선택하고 `mise.lock`으로 재현합니다. 보안 수정이나 지원 수명 변경도 채택 근거지만, 실행 시마다 자동 갱신하지 않습니다. `mise lock --bump`는 exact pin의 버전을 올리지 않으므로 **선택한 새 버전을 `mise.toml`에 먼저 반영**해야 합니다.
+
+1. [공통 갱신 기준](README.md#버전-갱신-방법)으로 후보·영향 범위를 검토하고 새 exact pin을 반영합니다.
+1. `mise lock`으로 기존 플랫폼의 URL·checksum을 갱신하고 `mise.lock` diff를 검토합니다. 새 지원 플랫폼이 필요하면 `mise lock --platform ...`을 사용합니다. npm backend가 dependency sidecar를 생성한 경우 해당 산출물도 함께 검토·관리합니다.
+1. 승인된 환경에서 `mise install --locked`와 프로젝트 검증 명령을 실행합니다. Node·npm CLI 경로, formatter 출력, Rulesync schema·projection을 확인하고 기존 버전 제거·전역 변경은 자동으로 수행하지 않습니다.
+
+Bootstrap은 [현재 코드](../../scripts/development_bootstrap.py)상 exact pin을 요구합니다. `latest`, `lts`, `^X.Y` 같은 range로 `mise.toml`을 단독 변경하는 것은 이 실행기와 호환되지 않으므로, range 추적을 채택하려면 별도 설계·검증이 필요합니다.
+
 ## First Use
 
 실제 설치 전에 [개발환경의 설치 승인 경계](../development/development-environment.md#부트스트랩-운영-절차)를 확인합니다. 사용자가 [공식 설치 안내](https://mise.jdx.dev/getting-started.html)에 따라 mise를 준비하고 repository config의 신뢰 여부를 판단합니다. `setup` 진입에도 uv와 [`.python-version`](../../.python-version)의 Python이 먼저 필요합니다.
 
 ```bash
-mise install uv
+mise install --locked uv
 mise exec uv -- uv python install
 mise run setup --dry-run
 mise run setup

@@ -16,7 +16,7 @@ Biome은 JSON·JSONC·JavaScript·TypeScript 계열의 format·lint를 맡습니
 - VCS 연동과 Git ignore를 사용합니다. 별도 wrapper에 같은 ignore 정책을 복제하지 않습니다.
 - `$schema`와 실제 CLI 버전을 함께 검토합니다. schema URL만 최신으로 바꾸거나, 새 formatter를 검증 없이 기존 pin 대신 실행하지 않습니다.
 
-버전 갱신 시 [Formatting](../development/formatting.md)의 changed-only 경로와 관련 config 검사를 사용하고 출력 diff를 검토합니다. 일상 작업에서 최신화를 이유로 저장소 전체를 다시 포맷하지 않습니다.
+버전 갱신 시 `biome.json`의 `$schema`와 CLI pin을 함께 갱신하고, `mise run check` 및 [Formatting](../development/formatting.md)의 changed-only 경로에서 출력 diff를 검토합니다. 일상 작업에서 최신화를 이유로 저장소 전체를 다시 포맷하지 않습니다.
 
 ## Official Sources
 

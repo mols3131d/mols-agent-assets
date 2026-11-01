@@ -11,7 +11,7 @@ uv는 Python 인터프리터와 프로젝트 패키지를 관리합니다. uv �
 
 [공통 원칙](README.md#공통-원칙)에 따라 최신 안정 uv·Python·패키지를 우선 검토합니다. Python은 프로젝트 요구조건과 dependency 지원이 확인된 버전을 선택하며, 문서에서 최신 버전 숫자를 별도로 관리하지 않습니다.
 
-- uv는 resolver·명령 호환성을 확인한 exact pin을 사용합니다. Python은 mise에 중복 선언하지 않습니다.
+- uv는 resolver·명령 호환성을 확인한 exact pin을 사용합니다. Python은 mise에 중복 선언하지 않습니다. uv 자체의 보안 권고·인증서 갱신은 Python 패키지 업데이트와 별개로 우선 검토합니다.
 - 패키지는 프로젝트 `.venv`에 격리합니다. 활성화된 외부 venv나 시스템·사용자 site-packages로 프로젝트 의존성을 대신하지 않습니다.
 - bootstrap은 Python 자동 다운로드를 끄고 `.python-version`의 interpreter를 먼저 준비하게 합니다. 일반 uv 사용 전체의 기본값을 바꾼다는 의미는 아닙니다.
 - `setup`은 `--locked`로 기존 잠금을 재현하며, `update`만 `pyproject.toml`의 constraint 안에서 `uv lock --upgrade`를 수행합니다. 범위 확대와 Python 자체의 버전 변경은 별도로 검토합니다.

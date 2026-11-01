@@ -9,8 +9,8 @@ description: 이 프로젝트에서 사용하는 도구의 기본 설정·버전
 ## 공통 원칙
 
 - **기본 설정 우선:** 공식 기본값과 native 설정·명령을 먼저 사용합니다. 기본값을 그대로 옮겨 적거나 wrapper에서 중복 강제하지 않습니다. 프로젝트 요구 때문에 다른 값이 필요할 때만 설정과 이유를 남깁니다.
-- **최신 안정 버전 선호:** 새 도구를 선택하거나 버전을 명시적으로 갱신할 때는 공식 최신 안정 릴리스를 우선 검토합니다. prerelease는 기본 선택에서 제외하고, 지원 수명·호환성·출력 변화 때문에 유지할 버전이 있으면 도구별 예외로 설명합니다.
-- **선택과 실행 분리:** 최신 버전을 선호한다고 매 실행에서 `latest`를 해석하거나 기존 설치를 자동 갱신하지 않습니다. 검토한 버전과 의존성은 native manifest·lock에 기록하고, 일반 실행과 `setup`은 그 결정을 재현합니다.
+- **버전 선택:** 신규 도입·갱신 시 공식 최신 안정 릴리스를 먼저 검토합니다. 보안 권고·지원 종료는 우선 대응하고, Node LTS·포맷 출력·생성물·평가 재현성처럼 실제 호환성 제약이 있으면 검증된 버전을 선택합니다. Prerelease는 별도 근거 없이 채택하지 않습니다.
+- **선택과 실행 분리:** 최신 버전을 선호해도 매 실행에서 `latest`를 해석하거나 설치를 자동 갱신하지 않습니다. 검토·채택한 버전은 manifest와 lock에 고정하고, `setup`은 이를 재현합니다. **Exact pin은 재현성 장치이지 영구 동결 정책이 아닙니다.**
 - **설정의 정본 유지:** 실행 가능한 설정·버전·잠금 값은 각 native 파일이 소유합니다. 문서는 값 전체를 복제하지 않고 기본값과 다른 선택, 갱신 시 확인할 항목, 운영 경계를 설명합니다.
 
 ## 설정과 잠금
@@ -23,7 +23,13 @@ description: 이 프로젝트에서 사용하는 도구의 기본 설정·버전
 | 외부 Agent Asset | [`rulesync.jsonc`](../../rulesync.jsonc), [`rulesync.lock`](../../rulesync.lock), [`skills-lock.json`](../../skills-lock.json) | CLI 최신화와 자산 revision 갱신은 별개입니다. 일반 bootstrap에서 외부 자산과 HOME 설치를 갱신하지 않습니다. |
 | 선택적 연동 | [`lefthook.yml`](../../lefthook.yml), [`frontmatter.json`](../../frontmatter.json) | Git hook 설치와 에디터 연동은 core bootstrap의 성공 조건이 아닙니다. |
 
-도구의 버전 갱신은 호환성 검사와 diff 검토를 거쳐 별도로 반영합니다. 지금의 exact pin을 최신 안정 버전보다 항상 오래된 버전을 선호한다는 정책으로 해석하지 않으며, 문서 작성만으로 선언 범위를 확대하거나 실제 설치를 실행하지 않습니다.
+## 버전 갱신 방법
+
+1. **후보 확인:** upstream release note·보안 권고·지원 수명과 이 저장소의 사용처를 확인합니다. 특히 formatter 출력, Rulesync projection, Node 실행 호환성, 평가 모델·데이터의 비교 조건을 구분합니다.
+1. **명시적 채택:** CLI는 `mise.toml`의 exact pin을 바꾸고 `mise.lock`을 native `mise lock`으로 재생성합니다. `mise lock --bump`만으로는 exact pin이 최신으로 변하지 않습니다. Python 의존성은 별도 `uv.lock`, 외부 Agent Asset은 각각의 lock이 소유합니다.
+1. **확인 후 통합:** 플랫폼별 잠금·체크섬과 필요한 npm dependency sidecar를 검토하고, 승인된 격리 환경에서 `mise install --locked`, `mise run check`, `mise run test` 및 영향 범위 검증을 수행합니다. 포맷·생성 결과 diff를 검토한 다음 PR Gate로 통합합니다. 설치 승인은 [개발환경 정책](../development/development-environment.md)이 소유합니다.
+
+`mise run update`는 현재 **Python 의존성만** 갱신합니다. CLI·Node major·formatter·Rulesync 버전은 별도 명시적 변경이며, 검사 없이 자동으로 최신화하지 않습니다. [mise 운영 안내](mise.md#cli-version-updates)에 실행 경계를 두고, 실제 버전값은 정본 파일만 봅니다.
 
 ## Index
 
