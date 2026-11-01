@@ -4,7 +4,7 @@ description: PR #265의 다중 코딩 에이전트 소프트웨어 아키텍처 
 
 # PR #265 — Multi-Agent Architecture Follow-up Research
 
-상태: 최종 셀프 리뷰 기록 완료 / 추가 근거 조사 중. 대상: [Software Architecture for Multi-Agent Development](../../catalog/patterns/software-engineering/multi-agent-development-architecture.md) (검토 기준 `8dfd8f94bc2370f1fe85844a05db58eb10f43cd0`).
+상태: 조사 완료 및 카탈로그 개편 반영(실제 multi-agent runtime 평가 미실시). 대상: [Software Architecture for Multi-Agent Development](../../catalog/patterns/software-engineering/multi-agent-development-architecture.md) (검토 기준 `8dfd8f94bc2370f1fe85844a05db58eb10f43cd0`).
 
 ## Review findings (2026-11-02)
 
@@ -127,9 +127,9 @@ tests/
 
 **검토 결론:** '모든 에이전트를 항상 병렬화 가능하게 만들기'는 목표가 아니다. **독립 가능한 범위를 높이고, 독립 불가능한 공유 의미를 숨기지 않으며, 전체 검증 책임을 잃지 않는 구조**가 목표다.
 
-## Document revision proposal (not applied)
+## Document revision proposal (2026-11-02에 적용한 설계안)
 
-다음 패턴 개정은 새 'multi-agent architecture' 방법론을 과하게 발명하기보다 현재 본문의 비중을 수정하는 방식이 적합하다.
+다음 내용은 개편 전에 도출한 설계안이며, 아래 Application disposition에서 실제 반영 여부를 구분한다. 새 'multi-agent architecture' 방법론을 과하게 발명하기보다 본문의 비중을 수정하는 방식이 적합하다고 판단했다.
 
 1. Goal/Principles에서 작업 하나의 `locate → understand → edit → verify → integrate`를 유지하되, **여러 동시 변경이 안전하게 결합되는 비용**을 주목적으로 명시한다.
 2. Patterns의 중심을 **(a) 병렬 변경의 완결 단위, (b) 공유 schema·불변식의 단일 의미 소유권, (c) 상위 조합/통합 경계, (d) 변화 중인 계약의 호환 경계**로 이동한다. 고정 개수·레이어·용어는 강제하지 않는다.
@@ -149,6 +149,29 @@ tests/
 
 ## Research closure
 
-**이번 추가 조사 결과:** 구조적 선택지는 확인했지만, 최종 pattern 본문에는 아직 반영하지 않았다. 심층 근거는 다중 agent 협업 문제의 존재를 지지하고, 특정 고정된 코드 레이아웃을 일반적 정답으로 증명하지 않는다. 다음 행동은 이 연구안에 따라 **표준 패턴을 간결하게 개편하고 실제 사례 평가를 분리**하는 것.
+**당시 추가 조사 결과:** 구조적 선택지는 확인했지만, 조사 종료 시점에는 최종 pattern 본문에 아직 반영하지 않았다. 심층 근거는 다중 agent 협업 문제의 존재를 지지하고, 특정 고정된 코드 레이아웃을 일반적 정답으로 증명하지 않는다. 다음 행동은 이 연구안에 따라 **표준 패턴을 간결하게 개편하고 실제 사례 평가를 분리**하는 것.
 
 **Scope/verification:** public sources and live PR/file content checked; dry-run scenario reasoning performed. No actual multi-agent runtime experiment or CI; no architectural source code modified; PR stays Draft/unmerged.
+
+## Application disposition (2026-11-02)
+
+정본 [Software Architecture for Multi-Agent Development](../../catalog/patterns/software-engineering/multi-agent-development-architecture.md)을 PR #265의 기존 브랜치에서 개편했다(적용 커밋 `67ec17b0a203dac942acbeb0fd468950eafdaca5`).
+
+| Review finding | 적용 결과 |
+| --- | --- |
+| High — 다중 agent 독립 변경·조합 구조 불명확 | **반영:** '독립 변경 단위', '공유 계약 소유권', '조합 책임·통합 검증', '의존성 종류'를 주된 Patterns로 재구성 |
+| High — 하나의 기능을 여러 agent가 개발하는 예시 부족 | **반영:** 카드/계좌이체/할인/주문 상태를 개발하는 A 횡단 구조, B 선택적 구조, C 최소 개선 대안 및 shared contract 반례 추가 |
+| Medium — harness와 소프트웨어 아키텍처가 혼재 | **반영:** 검색/맥락 복원은 보조 패턴으로 축소; 파일 탐색 convention, 세션 인계, CI·worktree·tooling은 별도 owner로 명시 |
+| Medium — 효과 실증 부족 | **부분 해소:** 근거의 해석 범위와 측정 방법 명확화. 실제 agent 행동·성능 평가는 여전히 미실시 |
+
+### Review against counterexamples
+
+- **안정된 계약·서로 다른 provider 구현:** 한 공개 결과 의미를 공유하며 각 implementation과 test를 바꿀 수 있는 경계를 제안하되, 통합된 checkout의 correctness는 별도로 검증해야 한다고 설명함.
+- **변화 중인 결과 schema:** 별도 파일이어도 producer/consumer가 독립적이지 않음을 밝히고 계약 안정화·호환 이전·결합 변경을 구분함.
+- **외부 결제와 주문 DB:** 로컬 단일 트랜잭션으로 외부 결제 결과까지 원자화할 수 없음을 명시하고 정합성·재시도·중복 처리의 실제 소유 분석을 요구함.
+- **소형 프로젝트:** 현 구조 유지 또는 작은 seam 개선(C)을 명시해 새로운 package·interface를 강요하지 않음.
+- **단일 agent 탐색 최적화와의 구별:** 협업 후 정합성과 공동 변경 비용을 Goal로 정의하고, 탐색·컨텍스트는 독립 변경 경계에 필요한 보조 항목으로 축소함.
+
+**확인한 범위:** GitHub에서 정본 내용과 GPPC GPP 구조를 검사하고 시나리오 반례에 대해 문서 의미 검토. 실제 코딩 agent에 대한 통제 실험, repository-native markdown lint, CI, 운영 시스템의 동작 검증은 수행하지 않았다.
+
+**최종 상태:** 설계안 문서 반영 완료. PR은 Draft·미병합. 설계 효과의 실증은 후속 작업으로 남긴다.
