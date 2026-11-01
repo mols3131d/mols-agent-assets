@@ -19,6 +19,10 @@
 | 품질과 비용을 동시에 평가해야 '최적'을 주장할 수 있음 | **설계 평가 추가**. 실행 관찰 없이 성능 통과 주장 금지 | [평가 전략](harness-evaluation-strategy.md) |
 | 기존 스킬과 별도 architect Skill의 activation 차이 | **결정 게이트**. 이름/책임 확대를 가정하지 않고 케이스 기반 판단 | [설계 대안](harness-architecture-options.md) |
 
+## Cross-runtime Discovery Check
+
+현재 원본 `mols-chatbot-bootstrap/SKILL.md`의 frontmatter는 `targets: [agentsskills]`를 선언한다. **portable한 스킬 본문**과 **각 채팅 서비스에서 실제로 스킬을 발견·호출·실행할 수 있음**은 다른 조건이다. 이 값만으로 다른 서비스의 지원 여부나 자동 로딩 성공을 단정하지 않는다. 구현 D0–D1에서 해당 런타임의 native Skill 지원, 배포·등록 방식, 실제 activation 및 필요 시 승인된 first-hop을 확인하고, 증명되지 않은 target projection을 일괄 추가하지 않는다.
+
 ## Scope and Ownership
 
 **기본 변경 대상:** `src/rulesync/.rulesync/skills/mols-chatbot-bootstrap/SKILL.md`의 목적·activation metadata, Contract, Workflow, Validation, Boundary. **모든 부분을 반드시 수정하라는 뜻은 아니다**. 현재 계약으로 해결된 사항은 수정하지 않는다.
