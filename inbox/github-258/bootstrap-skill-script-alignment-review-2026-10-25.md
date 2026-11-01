@@ -8,7 +8,7 @@
 
 - **불필요한 update 차단 제거:** [실행기](../../scripts/development_bootstrap.py)의 Git 사전 dirty 검사를 실제 bootstrap 입력 4개(`mise.toml`, `pyproject.toml`, `.python-version`, `uv.lock`)로 축소했다. 무관한 `rulesync.jsonc`/`rulesync.lock`/`skills-lock.json`의 기존 사용자 변경만으로 Python update를 막지 않는다.
 - **안전장치는 유지:** 업데이트 대상 Git worktree 식별, 대상 4개 입력의 dirty 차단, 실행 도중 7개 policy 파일의 예상치 않은 수정 감지, F1 Git 오염·F2 uv 그룹·F3 `.venv` 격리를 보존했다.
-- [회귀 테스트](../../tests/scripts/test_development_bootstrap.py)에 별도 자산의 기존 수정 허용/보존 1건과 부트스트랩 입력별 dirty 거부 4건을 추가했다. [mise 운영 안내](../../docs/references/tooling/mise.md)도 이 경계를 반영했다.
+- [회귀 테스트](../../tests/scripts/test_development_bootstrap.py)에 별도 자산의 기존 수정 허용/보존 1건과 부트스트랩 입력별 dirty 거부 4건을 추가했다. [mise 운영 안내](../../docs/development/tooling/mise.md)도 이 경계를 반영했다.
 
 ## 로컬 에이전트에게 남긴 판단
 

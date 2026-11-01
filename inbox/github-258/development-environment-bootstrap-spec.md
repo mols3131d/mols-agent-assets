@@ -1,6 +1,6 @@
 # 개발환경 부트스트랩 구현 범위와 초기 설계
 
-> 대상: [PR #258](https://github.com/mols3131d/mols-agent-assets/pull/258). 기존 [PR #256](https://github.com/mols3131d/mols-agent-assets/pull/256)에서 프로젝트 구현 부분을 분리했습니다. 이 문서는 원래의 설계 계약과 후속 구현 범위를 구분하는 **비정본 작업 자료**다. **개발환경 구축·실제 설치 허가의 운영 정책 정본은 [Development Environment](../../docs/development/development-environment.md)**이며, 도구별 실행은 [mise 안내](../../docs/references/tooling/mise.md), 정확한 정책 값과 실행 동작은 `mise.toml`·native config/lock·스크립트가 소유한다.
+> 대상: [PR #258](https://github.com/mols3131d/mols-agent-assets/pull/258). 기존 [PR #256](https://github.com/mols3131d/mols-agent-assets/pull/256)에서 프로젝트 구현 부분을 분리했습니다. 이 문서는 원래의 설계 계약과 후속 구현 범위를 구분하는 **비정본 작업 자료**다. **개발환경 구축·실제 설치 허가의 운영 정책 정본은 [Development Environment](../../docs/development/development-environment.md)**이며, 도구별 실행은 [mise 안내](../../docs/development/tooling/mise.md), 정확한 정책 값과 실행 동작은 `mise.toml`·native config/lock·스크립트가 소유한다.
 >
 > **최신 결정(2026-10-25):** 재사용 Skill은 설계·리뷰·구현 인계만 소유하며 구현은 일반 코딩 에이전트의 작업이다. 에이전트가 실제 설치·업데이트를 실행하려면 설치 대상·위치·영향을 안내하고 사용자의 명시적 허가를 받아야 한다. 한 번에 승인한 작업 범위 안에서만 재확인 없이 실행한다. [토론·인계](bootstrap-authorization-update-discussion.md).
 
@@ -51,7 +51,7 @@
 
 ## 초기 설계의 사용자 진입점과 의미
 
-아래 절부터 작업 계획까지는 초기 설계의 확장 목표를 보존한다. 현재 실행·수용 여부는 위 **이번 PR의 수용 범위**와 [운영 안내](../../docs/references/tooling/mise.md)가 우선한다. `mise.lock` 자체는 도입했지만 tool range 갱신, 자동 Rulesync/hook/HOME 연동, `DEGRADED` 상태는 현재 runner의 제공 기능이 아니다.
+아래 절부터 작업 계획까지는 초기 설계의 확장 목표를 보존한다. 현재 실행·수용 여부는 위 **이번 PR의 수용 범위**와 [운영 안내](../../docs/development/tooling/mise.md)가 우선한다. `mise.lock` 자체는 도입했지만 tool range 갱신, 자동 Rulesync/hook/HOME 연동, `DEGRADED` 상태는 현재 runner의 제공 기능이 아니다.
 
 | 진입점(목표) | 기대 동작 | 버전 변경 |
 | --- | --- | --- |
@@ -151,6 +151,6 @@ Git branch `main` 같은 이동 ref는 명시적인 SemVer 허용 범위가 아�
 
 ## 근거와 현재 상태
 
-- 현재 구현: [mise.toml](../../mise.toml), [skills_sync.py](../../scripts/agent_assets/skills_sync.py), [mise reference](../../docs/references/tooling/mise.md), [skills CLI reference](../../docs/references/tooling/skills-cli.md)
+- 현재 구현: [mise.toml](../../mise.toml), [skills_sync.py](../../scripts/agent_assets/skills_sync.py), [mise reference](../../docs/development/tooling/mise.md), [skills CLI reference](../../docs/development/tooling/skills-cli.md)
 - 외부 계약: [mise lockfile](https://mise.jdx.dev/dev-tools/mise-lock.html), [mise upgrade](https://mise.jdx.dev/cli/upgrade.html), [mise task auto-install](https://mise.jdx.dev/dev-tools/), [uv locking/sync](https://docs.astral.sh/uv/concepts/projects/sync/)
 - 현재 구현은 exact CLI pin·`mise.lock` 기반 setup과 Python-only update다. Windows·WSL cold-cache 설치·반복 복구·update의 source와 검증 한계는 [후속 검증 기록](bootstrap-simplification-review-2026-11-01.md)을 따른다. macOS native E2E는 미검증으로 유지한다. 별도 설계 Skill runtime의 [실패·grader 한계](https://github.com/mols3131d/mols-agent-assets/blob/1f1efa63efaad63f4bda19fe4781920bb2c6c541/docs/skills/mols-dev-env-bootstrap-design/evaluation.md)는 이 core 실행기 검증과 구분한다.

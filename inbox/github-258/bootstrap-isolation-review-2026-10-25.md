@@ -6,7 +6,7 @@
 >
 > **대상 revision:** base `b29aa490d0c251d5ca478fa5c787b90258f09d79` → head `530bc8b31d543e45ea7470131f705ba33f64388a` (2026-10-25). 이후 브랜치 head 이동 시 재검증이 필요하다.
 >
-> **정본:** [개발환경 구축·승인 정책](../../docs/development/development-environment.md). [mise 운영 안내](../../docs/references/tooling/mise.md)와 [스킬 원본](https://github.com/mols3131d/mols-agent-assets/blob/1f1efa63efaad63f4bda19fe4781920bb2c6c541/src/rulesync/.rulesync/skills/mols-dev-env-bootstrap-design/SKILL.md)은 각자의 책임만 소유한다.
+> **정본:** [개발환경 구축·승인 정책](../../docs/development/development-environment.md). [mise 운영 안내](../../docs/development/tooling/mise.md)와 [스킬 원본](https://github.com/mols3131d/mols-agent-assets/blob/1f1efa63efaad63f4bda19fe4781920bb2c6c541/src/rulesync/.rulesync/skills/mols-dev-env-bootstrap-design/SKILL.md)은 각자의 책임만 소유한다.
 
 ## 결론
 
@@ -26,7 +26,7 @@ F1은 이전 PR 리뷰에도 제출된 문제이며 **이번 revision에서도 �
 ### Loop 1 — Research / 현재 계약 수집
 
 - `CHATBOT.md` → `AGENTS.md` → `.agents/route/ROUTE.md` → `github-context`, `mols-agent-asset`, `mols-loops`, `mols-documentation`과 Skill review 기준을 확인했다.
-- [정본](../../docs/development/development-environment.md), [mise 안내](../../docs/references/tooling/mise.md), [`mise.toml`](../../mise.toml), [runner](../../scripts/development_bootstrap.py), [테스트](../../tests/scripts/test_development_bootstrap.py), [Skill](https://github.com/mols3131d/mols-agent-assets/blob/1f1efa63efaad63f4bda19fe4781920bb2c6c541/src/rulesync/.rulesync/skills/mols-dev-env-bootstrap-design/SKILL.md), [평가 fixture](https://github.com/mols3131d/mols-agent-assets/blob/1f1efa63efaad63f4bda19fe4781920bb2c6c541/evals/skills/mols-dev-env-bootstrap-design/cases.json), [`docs/INDEX.tsv`](../../docs/INDEX.tsv), PR 리뷰 이력을 교차 읽었다.
+- [정본](../../docs/development/development-environment.md), [mise 안내](../../docs/development/tooling/mise.md), [`mise.toml`](../../mise.toml), [runner](../../scripts/development_bootstrap.py), [테스트](../../tests/scripts/test_development_bootstrap.py), [Skill](https://github.com/mols3131d/mols-agent-assets/blob/1f1efa63efaad63f4bda19fe4781920bb2c6c541/src/rulesync/.rulesync/skills/mols-dev-env-bootstrap-design/SKILL.md), [평가 fixture](https://github.com/mols3131d/mols-agent-assets/blob/1f1efa63efaad63f4bda19fe4781920bb2c6c541/evals/skills/mols-dev-env-bootstrap-design/cases.json), [`docs/INDEX.tsv`](../../docs/INDEX.tsv), PR 리뷰 이력을 교차 읽었다.
 - 프로젝트 구현은 exact-pin mise CLI, `uv.lock`을 따르는 프로젝트 `.venv`, `setup`/명시적 `update` 분리다. HOME Skill·Rulesync projection·Git hook 자동 설치는 기본 core 경로에서 제외한다. 사용자의 **실제 설치 승인 확인은 호출 에이전트의 책임**이며 스크립트 자체에는 대화형 승인 게이트가 없다. 이는 정본에 명시된 경계다.
 - 버전 semantics 확인: [uv group 우선순위](https://docs.astral.sh/uv/reference/cli/#uv-sync), [uv exact sync](https://docs.astral.sh/uv/concepts/projects/sync/#handling-of-extraneous-packages), [Python venv](https://docs.python.org/3/library/venv.html), [Python site](https://docs.python.org/3/library/site.html), [mise 자동 설치](https://mise.jdx.dev/dev-tools/) 등 공식 문서. 외부 문서의 최신 정보와 PR의 pinned `uv=0.12.1`을 동일한 실행 증거로 간주하지 않는다.
 

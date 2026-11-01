@@ -20,7 +20,7 @@ description: Rulesync 자산의 authoring workspace·target·source/derived boun
 
 ### Repository-local installation
 
-Root [`rulesync.jsonc`](../../../rulesync.jsonc)의 dependency는 GitHub shorthand와 `github` transport를 사용합니다. `mise run setup`은 공식 `rulesync install --frozen`을 직접 실행합니다. Git clone이나 LF 보정 wrapper를 사용하지 않으므로 `core.autocrlf`와 상속한 `GIT_CONFIG_*` 인증 설정을 변경하지 않습니다. PC별 PATH 경계는 [mise](mise.md#shared-and-local-environment)를 따릅니다.
+Root [`rulesync.jsonc`](../../../rulesync.jsonc)의 dependency는 GitHub shorthand와 `github` transport를 사용합니다. `mise run setup`은 dependency를 설치하지 않으며, 별도 승인 후 공식 `rulesync install --frozen`을 실행합니다. Git clone이나 LF 보정 wrapper를 사용하지 않으므로 `core.autocrlf`와 상속한 `GIT_CONFIG_*` 인증 설정을 변경하지 않습니다. 프로젝트의 설정·버전 예외는 [Rulesync](../../tools/rulesync.md), PC별 PATH 경계는 [mise](../../tools/mise.md#shared-and-local-environment)를 따릅니다.
 
 GitHub transport는 Git credential helper 대신 `GITHUB_TOKEN` 또는 `GH_TOKEN`을 사용합니다. 공개 저장소도 지원 파일이 많으면 무인증 API rate limit에 도달할 수 있으므로 설치 프로세스에만 유효한 토큰을 전달합니다. 예를 들어 PowerShell에서는 다음처럼 기존 환경을 보존한 채 GitHub CLI의 인증을 사용할 수 있습니다. 토큰 값은 로그나 committed config에 남기지 않습니다.
 
@@ -29,7 +29,7 @@ $previousToken = $env:GITHUB_TOKEN
 try {
     $env:GITHUB_TOKEN = gh auth token
     if ($LASTEXITCODE -ne 0) { throw "GitHub CLI authentication is required" }
-    mise run setup
+    mise exec -- rulesync install --frozen
 } finally {
     $env:GITHUB_TOKEN = $previousToken
 }
@@ -139,12 +139,12 @@ Rulesync-specific detail을 판단할 때 기억이나 이 문서보다 current 
 CLI에서 bundled documentation을 직접 조회할 수도 있습니다.
 
 ```bash
-npx --yes rulesync@latest docs
-npx --yes rulesync@latest docs <document>
-npx --yes rulesync@latest docs --search <term>
+rulesync docs
+rulesync docs <document>
+rulesync docs --search <term>
 ```
 
-Historical compatibility를 조사할 때만 해당 release/tag의 문서를 고정해서 봅니다.
+프로젝트에서는 mise로 준비한 CLI를 사용합니다. 최신 upstream 문서는 공식 사이트에서 조회하고, historical compatibility를 조사할 때는 해당 release/tag의 문서를 확인합니다.
 
 ## Boundary
 

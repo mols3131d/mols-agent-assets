@@ -6,7 +6,8 @@ description: 이 저장소의 개발환경 구축·격리·도구 관리 정책,
 
 이 문서는 **이 저장소의 개발환경 구축과 유지보수 운영 정책의 정본**입니다. 개발환경의 격리·재사용 경계, 버전 수명 주기 거버넌스, 부트스트랩 실행 시의 사용자 설치 승인 여부를 판단할 때 먼저 확인합니다.
 
-- **도구별 구체적인 실행 명령·복구·운영 방법:** [mise 안내](../references/tooling/mise.md)
+- **도구 기본 설정·버전 선택·예외:** [Tools](../tools/README.md)
+- **구체적인 실행 명령·복구·운영 방법:** [mise 안내](../tools/mise.md)
 - **도구 및 버전 선언:** [`mise.toml`](../../mise.toml) 및 각 native manifest/lockfile
 - **실제 부트스트랩 실행기:** [부트스트랩 스크립트](../../scripts/development_bootstrap.py)
 - **재사용 가능한 부트스트랩 설계 판단:** [`mols-dev-env-bootstrap-design` 설계 Skill (PR #256)](https://github.com/mols3131d/mols-agent-assets/pull/256) (설계 판단 자료이며 이 저장소의 권한 정책 정본이 아님)
@@ -37,15 +38,10 @@ description: 이 저장소의 개발환경 구축·격리·도구 관리 정책,
 
 ### 3. 버전 정책 및 수명 주기 거버넌스
 
+- **기본값과 최신 안정 버전 우선:** 도구의 기본 설정을 사용하고 명시적인 도입·갱신에서는 최신 안정 릴리스를 우선 검토합니다. 지원 수명·호환성·출력 일관성 때문에 필요한 예외와 근거는 [도구별 안내](../tools/README.md)가 소유합니다.
 - **재현성 우선 (Zero Drift):** 개발환경 복구 및 초기 준비(`setup`)는 언제나 선언된 잠금(Exact Pin 또는 Lockfile)을 100% 재현해야 합니다. 임의의 네트워크 resolver가 최신 버전을 자동으로 탐색·승격하지 않습니다.
 - **제한된 갱신 (Bounded Update):** 도구 및 의존성의 버전 갱신(`update`)은 사전에 승인된 정책 허용 범위 내에서만 수행하며, 변경된 lockfile diff를 검토할 수 있도록 보존합니다.
-- **4가지 버전 정책 케이스 분류:**
-  1. **패치 버전 준수하는 최신 버전 (장기 지원 선호):** Major.Minor 고정, Patch만 추적 (`~X.Y.Z`). 포맷팅/린터/코어 resolver 등 극도의 호환성이 요구되는 도구에 적용.
-  1. **마이너 버전 준수하는 최신 버전 (장기 지원 선호):** Major 고정, Minor.Patch 최신 추적 (`^X.Y.Z`). SemVer 하위 호환성을 신뢰할 수 있는 성숙한 도구에 적용.
-  1. **메이저 버전 준수하는 최신 버전 (장기 지원 선호):** 지원 수명 주기(LTS)를 준수하며 검증된 최신 메이저 라인 추적. Node.js 짝수 Active LTS 등 플랫폼 런타임에 적용.
-  1. **최신 버전 (장기 지원 선호):** SemVer 상한 없는 최신 안정 릴리스 추적 (`latest`). 빠르게 진화하는 외부 생태계 연동 도구에 적용하되 lock 재현 필수.
-  - *7개 CLI 도구별 구체적인 케이스 매핑, 현재 pin 버전 및 잠금 소유자는 [mise 안내: CLI 도구 버전 정책](../references/tooling/mise.md#cli-tool-versioning-policy-and-cases)에 명시합니다.*
-- **현재 저장소 상태:** `mise.lock`이 도입되어 네이티브 바이너리 도구 4종의 7개 플랫폼별 아티팩트 URL·체크섬 및 npm 도구 3종의 버전이 잠금 관리됩니다. 현재 모든 CLI 도구는 Exact Pin(허용 범위 0) 상태를 유지하며, `update`는 Python 의존성(`uv.lock`)의 bounded upgrade만 수행합니다. CLI 도구의 자동 갱신(range 확장)은 별도 후속 과제로 분리합니다.
+- **현재 저장소 상태:** 모든 관리형 CLI는 exact pin을 유지하며 `update`는 Python 의존성(`uv.lock`)만 갱신합니다. CLI 자동 갱신은 별도 후속 과제입니다. 잠금의 실제 보장 범위와 도구별 갱신 확인 사항은 [mise](../tools/mise.md)와 각 도구 안내를 따릅니다.
 
 ---
 
@@ -67,7 +63,7 @@ description: 이 저장소의 개발환경 구축·격리·도구 관리 정책,
 | **Core 부트스트랩** | `mise.toml` 관리 CLI 7종, Python 인터프리터, `.venv` 패키지 동기화 | 기본 `setup`/`update`에서 실행 및 검증. 실패 시 nonzero 및 `FAILED`/`BLOCKED` |
 | **선택적 연동 (별도)** | Rulesync 외부 설치·projection, 사용자 HOME Skill 동기화, Lefthook Git hooks | 기본 부트스트랩에서 제외. 호스트/사용자 영향 검토 후 명시적 별도 명령으로만 실행 |
 
-- `mise run skills-sync`, `rulesync install --frozen`, `lefthook install` 등은 Core 부트스트랩 완료 후 별도의 영향 설명과 승인을 거쳐 실행합니다. 세부 절차는 [mise 안내: 선택적 연동](../references/tooling/mise.md#optional-integrations)을 참조합니다.
+- `mise run skills-sync`, `rulesync install --frozen`, `lefthook install` 등은 Core 부트스트랩 완료 후 별도의 영향 설명과 승인을 거쳐 실행합니다. 세부 절차는 [mise 안내: 선택적 연동](../tools/mise.md#optional-integrations)을 참조합니다.
 
 ### 3. Setup / Update 작업 경계
 
@@ -77,7 +73,7 @@ description: 이 저장소의 개발환경 구축·격리·도구 관리 정책,
 | **`setup` (반복 복구)** | 확정된 exact pin과 lockfile 재현; 암묵적 latest 갱신 없음 | 사전 설치 허가 필요. 승인된 mise 관리 영역과 프로젝트 `.venv`에 한정 |
 | **`update`** | 선언된 허용 범위 내 최신 해석 후 lock diff 검토 | 사전 업데이트 허가 필요. 버전 정책 임의 확대 불허, 자동 commit 금지 |
 
-- 세부 실행 명령(`mise run setup`, `mise run update`, `--dry-run` 등)과 단계별 복구 절차는 [mise 안내: Setup, update and diagnosis](../references/tooling/mise.md#setup-update-and-diagnosis)를 따릅니다.
+- 세부 실행 명령(`mise run setup`, `mise run update`, `--dry-run` 등)과 단계별 복구 절차는 [mise 안내: Setup, update and diagnosis](../tools/mise.md#setup-update-and-diagnosis)를 따릅니다.
 
 ### 4. 확인 및 종료 조건
 

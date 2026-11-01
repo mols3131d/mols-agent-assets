@@ -2,7 +2,7 @@
 PYTHONUTF8 = "1"
 
 # CLI tool version authority. Exact pins guarantee zero-drift setup.
-# Version policies (Case 1~4) and update boundaries: docs/references/tooling/mise.md
+# Tool defaults, version preferences and exceptions: docs/tools/README.md
 [tools]
 uv = "0.12.1"
 node = "24.19.0"

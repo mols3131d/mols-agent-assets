@@ -44,4 +44,4 @@ README의 `Index`는 본문 탐색을 위한 섹션이며 frontmatter를 대신�
 
 어떤 인덱싱 방식을 사용할지는 [Document Indexing](indexing.md)의 원칙을 따릅니다.
 
-Front Matter CMS의 설정, 공식 옵션, 원본 선택과 라우팅은 [Front Matter CMS](../references/tooling/front-matter-cms.md)를 참고합니다.
+Front Matter CMS의 설정, 공식 옵션, 원본 선택과 라우팅은 [Front Matter CMS](../development/tooling/front-matter-cms.md)를 참고합니다.

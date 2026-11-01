@@ -28,7 +28,7 @@ description: PR #257에서 Rulesync Git transport 대신 GitHub transport를 유
 1. [`rulesync.jsonc`](../../rulesync.jsonc)의 두 소스를 `mols3131d/mols-agent-assets`, `dyoshikawa/rulesync` shorthand로 돌리고 `transport: "github"`를 사용한다. 기존 `ref`, `path`, `skills`, `targets`는 유지한다.
 1. [`rulesync.lock`](../../rulesync.lock)의 source 키도 설정과 일치시키되 `requestedRef`, `resolvedRef`, `resolvedAt`, 모든 Skill의 `integrity`를 보존한다. Transport 복귀에 `install --update`를 사용하지 않는다.
 1. [`mise.toml`](../../mise.toml)의 `setup` 설치 단계를 단순화한다. Git transport에만 필요했던 `scripts/agent_assets/rulesync_install.py`, `rulesync-install` task와 전용 `tests/scripts/agent_assets/test_rulesync_install.py`는 **다른 사용처가 없는지 확인한 뒤** 제거한다. 후속 구현에서 삭제했으며 `rulesync install --frozen`을 직접 호출한다.
-1. [Rulesync 운영 문서](../../docs/references/tooling/rulesync.md)와 [mise 운영 문서](../../docs/references/tooling/mise.md)의 Git transport·LF 전용 설치 안내를 새 경로에 맞게 정리한다. Git에서 제외된 `mise.local.toml`, `rulesync.local.jsonc`의 오래된 중복 override는 **각 PC에서 검토 후** 정리하도록 안내하되, 필요한 PATH·인증 등 사용자별 설정은 보존한다.
+1. [Rulesync 운영 문서](../../docs/development/tooling/rulesync.md)와 [mise 운영 문서](../../docs/development/tooling/mise.md)의 Git transport·LF 전용 설치 안내를 새 경로에 맞게 정리한다. Git에서 제외된 `mise.local.toml`, `rulesync.local.jsonc`의 오래된 중복 override는 **각 PC에서 검토 후** 정리하도록 안내하되, 필요한 PATH·인증 등 사용자별 설정은 보존한다.
 1. 공통 `PYTHONUTF8=1` 설정과 [`tests/conftest.py`](../../tests/conftest.py)의 Git hook 환경 격리는 Git transport와 독립적으로 필요한 개선인지 판단해 **유효하면 유지**한다. 관련 없는 개선까지 기계적으로 되돌리지 않는다.
 1. 실제 변경에 맞게 PR 제목·본문의 목적, 검증 결과, 남은 위험을 갱신한다. 이 인박스 문서를 구현 완료의 근거로 사용하지 않는다.
 
@@ -43,7 +43,7 @@ description: PR #257에서 Rulesync Git transport 대신 GitHub transport를 유
 ## 참고
 
 - [PR #257](https://github.com/mols3131d/mols-agent-assets/pull/257) — 변경 대상과 당시 검증 근거
-- [Rulesync 운영 문서](../../docs/references/tooling/rulesync.md) — 현재 저장소 설치 경로
+- [Rulesync 운영 문서](../../docs/development/tooling/rulesync.md) — 현재 저장소 설치 경로
 - [Rulesync 공식 문서 — Declarative Sources](https://rulesync.dyoshikawa.com/guide/declarative-sources.html) — transport 및 선언형 소스 기능
 
 **현재 상태:** 설정·공식 lock migration·wrapper 제거 및 Windows 재검증 완료. 사용자 push 승인 후 root frozen CI의 실제 11개 Skill 설치·lock 불변을 확인하고 High thread를 해결했다. 최신 실행 근거는 [인계 보고서](rulesync-v40-handoff.md#승인-후-게시검증)와 PR 본문을 따른다. Draft 해제·merge는 별도 승인 없이는 하지 않는다.

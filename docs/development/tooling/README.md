@@ -4,7 +4,7 @@ description: 외부 tooling과 specification의 authority routing, integration k
 
 # Tooling References
 
-`docs/references/tooling/`는 외부 tool과 specification을 사용할 때 반복해서 필요한 **authority routing과 integration knowledge**를 보관합니다.
+`docs/development/tooling/`는 외부 tool과 specification을 사용할 때 반복해서 필요한 **authority routing과 integration knowledge**를 보관합니다.
 
 ## Ownership
 
@@ -15,8 +15,9 @@ description: 외부 tooling과 specification의 authority routing, integration k
 
 ## Boundary
 
-- 이 repository에만 적용되는 development workflow와 operational rule은 [`docs/development/`](../../development/)가 소유합니다.
+- 이 프로젝트에서 사용하는 도구의 기본 설정·버전 선택·예외와 운영 안내는 [Tools](../../tools/README.md)가 소유합니다. 이곳의 공식 source routing과 integration reference를 프로젝트 설정 목록으로 복제하지 않습니다.
+- 이 repository에만 적용되는 development workflow와 operational rule은 상위 [Development](../README.md)의 해당 정책이 소유합니다.
 - 여러 repository에서 재사용할 설계 pattern은 [`catalog/patterns/`](../../../catalog/patterns/)가 소유합니다.
-- `references/` 전체의 공통 ownership contract는 [References](../README.md)가 소유합니다.
+- Agent Asset 자체의 설계 지식은 [Agent Assets](../agent-assets/README.md)가 소유합니다.
 
 이 README는 tool inventory를 복제하지 않습니다. Filesystem과 search로 찾을 수 있는 목록보다 이 directory의 책임과 ownership boundary만 소유합니다.

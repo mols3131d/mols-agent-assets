@@ -38,7 +38,7 @@ description: Rulesync의 파일·필드·타입·의미 계약별 검증 책임�
 | `targets`, `sources`, `transport`, `path`, `skills`의 필드명·값 타입·enum | **검증 필요, 규칙 복제 금지** | pinned Rulesync v16.24.1의 schema/doctor가 contract owner. 필드별 수동 화이트리스트는 유지보수 부담 |
 | 오타·알 수 없는 config key | **`doctor --strict` 필수** | non-strict schema가 알 수 없는 필드를 무시할 수 있어 일반 parse만으로는 부족 |
 | `SKILL.md`, Rule, Subagent 형식과 frontmatter `name`, `description`, `targets` 타입 | **검증 필요, upstream 우선** | Rulesync가 실제 사용하는 파일 형식과 target parser를 재사용 |
-| 재사용 asset의 `targets` **명시 필수**, `["*"]` 사용 금지 | **좁은 자체 검사 고려** | [저장소 Rulesync 정책](../../docs/references/tooling/rulesync.md#target-and-schema)이 upstream보다 엄격하다. Upstream이 허용하는 누락 또는 wildcard를 차단할 필요가 있는지 확인한 뒤 작은 검사만 추가 |
+| 재사용 asset의 `targets` **명시 필수**, `["*"]` 사용 금지 | **좁은 자체 검사 고려** | [저장소 Rulesync 정책](../../docs/development/tooling/rulesync.md#target-and-schema)이 upstream보다 엄격하다. Upstream이 허용하는 누락 또는 wildcard를 차단할 필요가 있는지 확인한 뒤 작은 검사만 추가 |
 | 원격 source에서 선택한 Skill 이름·실제 `SKILL.md` 위치 | **검증 필요, 수동 파일 열거 금지** | `install --frozen` 및 현 repository route generator의 name drift 검사. 모든 파일명을 별도 snapshot으로 유지하지 않음 |
 | `rulesync.lock`의 `lockfileVersion`, `resolvedRef`, integrity 등 모든 필드와 타입 | **자체 전수 검증 비권장** | lock 구조는 upstream-owned. `install --frozen`으로 lock coverage·원격 integrity를 확인하고 route generator의 실제 필요값만 검증 |
 | `.agents/route/*.jsonl`의 schema·source 관계 및 갱신 여부 | **저장소 검사 유지** | upstream Rulesync가 아닌 이 저장소의 생성기·route contract |
@@ -125,7 +125,7 @@ CI의 한 단계가 한 계약만 검증해야 한다는 뜻은 아니다. 추�
 
 ## 근거
 
-- Repository: [PR #257](https://github.com/mols3131d/mols-agent-assets/pull/257), [CI 정책](../../docs/development/ci.md), [Testing](../../docs/development/testing.md), [Validation](../../docs/development/validation.md), [Rulesync 통합 문서](../../docs/references/tooling/rulesync.md)
+- Repository: [PR #257](https://github.com/mols3131d/mols-agent-assets/pull/257), [CI 정책](../../docs/development/ci.md), [Testing](../../docs/development/testing.md), [Validation](../../docs/development/validation.md), [Rulesync 통합 문서](../../docs/development/tooling/rulesync.md)
 - 현재 고정 버전 v16.24.1: [CLI Commands](https://github.com/dyoshikawa/rulesync/blob/v16.24.1/docs/reference/cli-commands.md), [Declarative Sources](https://github.com/dyoshikawa/rulesync/blob/v16.24.1/docs/guide/declarative-sources.md)
 - Upstream current docs: [Doctor 관련 FAQ](https://rulesync.dyoshikawa.com/faq.html), [Dry Run vs Check](https://rulesync.dyoshikawa.com/guide/dry-run), [Configuration schema](https://rulesync.dyoshikawa.com/guide/configuration)
 

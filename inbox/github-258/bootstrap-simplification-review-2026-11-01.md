@@ -6,7 +6,7 @@ description: PR #258의 Windows·WSL cold-cache 설치와 복구, native mise �
 
 **Windows와 WSL Ubuntu의 격리 설치·반복 복구·Python-only update는 통과했다. WSL의 native 잠금 실패 경계와 전체 테스트 335개도 통과했다.** npm 실행의 단순한 mise 위임은 Windows에서 호스트 명령 fallback이 재현되어 채택하지 않는다. macOS native E2E는 미검증이다.
 
-이 문서는 2026-11-01의 비정본 검토·실증 기록이다. 정본은 [개발환경 정책](../../docs/development/development-environment.md)과 [mise 운영 안내](../../docs/references/tooling/mise.md)가 소유한다. 최초 검토와 변경 과정은 Git history에서 확인한다.
+이 문서는 2026-11-01의 비정본 검토·실증 기록이다. 정본은 [개발환경 정책](../../docs/development/development-environment.md)과 [mise 운영 안내](../../docs/development/tooling/mise.md)가 소유한다. 최초 검토와 변경 과정은 Git history에서 확인한다.
 
 ## 판단과 반영
 

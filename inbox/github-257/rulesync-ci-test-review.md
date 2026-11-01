@@ -79,7 +79,7 @@ description: PR #257의 Rulesync 관련 CI와 테스트에서 과설계·중복�
 
 ## 근거와 한계
 
-- 저장소: [CI 정책](../../docs/development/ci.md), [Testing](../../docs/development/testing.md), [Validation](../../docs/development/validation.md), [Rulesync 통합 문서](../../docs/references/tooling/rulesync.md)
+- 저장소: [CI 정책](../../docs/development/ci.md), [Testing](../../docs/development/testing.md), [Validation](../../docs/development/validation.md), [Rulesync 통합 문서](../../docs/development/tooling/rulesync.md)
 - Rulesync v16.24.1: [CLI 명령](https://github.com/dyoshikawa/rulesync/blob/v16.24.1/docs/reference/cli-commands.md), [Declarative Sources](https://github.com/dyoshikawa/rulesync/blob/v16.24.1/docs/guide/declarative-sources.md)
 - Rulesync FAQ: [unknown keys / doctor](https://rulesync.dyoshikawa.com/faq.html)
 

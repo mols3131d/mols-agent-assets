@@ -98,7 +98,7 @@ git diff --exit-code -- rulesync.lock
 
 ### Repository와 기존 검토
 
-- [Rulesync 운영 문서](../../docs/references/tooling/rulesync.md), [Validation](../../docs/development/validation.md), [Testing](../../docs/development/testing.md), [CI](../../docs/development/ci.md)
+- [Rulesync 운영 문서](../../docs/development/tooling/rulesync.md), [Validation](../../docs/development/validation.md), [Testing](../../docs/development/testing.md), [CI](../../docs/development/ci.md)
 - [Rulesync CI·테스트 리뷰](rulesync-ci-test-review.md), [검증 최적화 제안](rulesync-verification-proposal.md)
 
 **✅ 확인:** 고정 버전 공식 태그의 명령·소스와 현 PR 구성의 정적 대조.  
