@@ -23,6 +23,12 @@ Ruff·pytest는 별도 전역 CLI가 아니라 uv의 `dev`·`test` group에 둡�
 
 Ruff는 `pyproject.toml`의 lint 선택(`F`, `E`, `I`)과 import 정렬 설정을 적용합니다. pytest는 같은 파일의 import mode·Python path·test 경로를 사용합니다. 기본값과 다른 선택은 이 native 설정이 정본이며 일반 명령은 [Formatting](../development/formatting.md)과 [Testing](../development/testing.md)을 따릅니다.
 
+## 권장 버전 정책
+
+uv CLI는 **Patch**(초기 전환 후보 `0.13`)를 권장합니다. `0.x`의 Minor 변경은 별도로 검토하고, 보안 수정·bootstrap·`uv.lock` 재현성을 확인합니다. Python 인터프리터는 uv가 관리하는 `3.13` 계열의 Patch 선택을 유지합니다.
+
+Python 개발 의존성은 mise가 아닌 `pyproject.toml`·`uv.lock`의 정책을 따릅니다. Ruff는 **Patch**(0.x의 Minor 상한 필요), pytest는 **Minor**(9.x 상한 필요)를 권장합니다. 현재 선언에는 상한이 없으므로 실제 적용 전 의존성 범위와 테스트를 검증해야 합니다.
+
 ## Official Sources
 
 - [uv projects](https://docs.astral.sh/uv/concepts/projects/) · [Python versions](https://docs.astral.sh/uv/concepts/python-versions/)
