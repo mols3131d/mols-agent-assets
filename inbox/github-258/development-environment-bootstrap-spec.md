@@ -1,16 +1,17 @@
-# 개발환경 부트스트랩 개편 명세 (Draft)
+# 개발환경 부트스트랩 구현 범위와 초기 설계
 
 > 대상: [PR #258](https://github.com/mols3131d/mols-agent-assets/pull/258). 기존 [PR #256](https://github.com/mols3131d/mols-agent-assets/pull/256)에서 프로젝트 구현 부분을 분리했습니다. 이 문서는 원래의 설계 계약과 후속 구현 범위를 구분하는 **비정본 작업 자료**다. **개발환경 구축·실제 설치 허가의 운영 정책 정본은 [Development Environment](../../docs/development/development-environment.md)**이며, 도구별 실행은 [mise 안내](../../docs/references/tooling/mise.md), 정확한 정책 값과 실행 동작은 `mise.toml`·native config/lock·스크립트가 소유한다.
 >
 > **최신 결정(2026-10-25):** 재사용 Skill은 설계·리뷰·구현 인계만 소유하며 구현은 일반 코딩 에이전트의 작업이다. 에이전트가 실제 설치·업데이트를 실행하려면 설치 대상·위치·영향을 안내하고 사용자의 명시적 허가를 받아야 한다. 한 번에 승인한 작업 범위 안에서만 재확인 없이 실행한다. [토론·인계](bootstrap-authorization-update-discussion.md).
 
-## 구현 상태 — 2026-10-25
+## 구현 상태 — 2026-11-01
 
 - `setup`/`update`를 [`development_bootstrap.py`](../../scripts/development_bootstrap.py)의 좁은 orchestration으로 연결했다. Setup은 exact CLI pin 설치·버전 검증과 locked uv sync, update는 기존 Python dependency constraints의 native resolution을 수행한다.
-- Tool prefix/range 확대와 `mise.lock`은 **도입하지 않았다.** 모든 exact pin과 외부 Asset revision은 유지하며, 향후 range를 도입하면 먼저 locked install·platform/npm sidecar 검증을 추가해야 한다.
+- `mise.lock`을 도입하고 `mise install --locked`를 사용한다. 네이티브 도구 4종의 7개 플랫폼별 아티팩트 URL·체크섬과 npm 도구 3종의 버전을 잠근다. npm 전이 의존성 그래프 전체를 잠근다는 뜻은 아니다. Tool prefix/range 확대는 도입하지 않았으며 모든 CLI exact pin과 외부 Asset revision을 유지한다.
 - User HOME Skill·Git hook뿐 아니라 기존 projection의 소유권을 확정하기 어려운 Rulesync 설치·생성도 기본 실행에서 분리했다. 이번 PR의 기본 완료 범위는 **core toolchain/Python**으로 확정한다. Core 검증 통과는 `READY`이며 별도 연동은 `excluded and not verified`로 표시한다.
-- 최초 mise/uv/Python은 사용자가 명시적으로 준비한다. Task pre-install을 끄고 인자를 단일 parser로 전달하며, runner는 외부 venv/junction·dirty update lock·같은 checkout의 동시 실행을 차단한다.
-- 아래의 범위·OS·성능·전체 연동 수용 조건은 **원래 목표**다. Deterministic test와 실제 Windows CLI 검증을 전체 host bootstrap·native installer·Skill runtime eval 성공으로 확대하지 않는다.
+- 최초 mise/uv/Python은 사용자가 명시적으로 준비한다. Task pre-install을 끄고 인자를 단일 parser로 전달하며, runner는 외부 venv/junction·dirty update 입력·Git의 assume-unchanged/skip-worktree 입력·같은 checkout의 동시 실행을 차단한다. Python-only update의 변경 예외는 `uv.lock` 한 파일이며 예기치 않은 `mise.lock` 변경도 보존하면서 중단한다.
+- 현재 구현 근거는 [`f70a8bd`](https://github.com/mols3131d/mols-agent-assets/commit/f70a8bd258895dbdd5616157131abb32b48d5836)다. Windows·WSL cold-cache 설치와 반복 복구·update의 실행 source 및 한계는 [후속 검증 기록](bootstrap-simplification-review-2026-11-01.md)에 구분해 남겼다.
+- 아래의 범위·OS·성능·전체 연동 수용 조건은 **원래 목표**다. Deterministic test와 Windows·WSL CLI 검증을 전체 host bootstrap·다른 OS·native HOME installer·Skill runtime eval 성공으로 확대하지 않는다.
 
 ## Goal
 
@@ -24,9 +25,10 @@
 
 - **필수 구현:** exact CLI pin reconcile·버전 검증, locked Python setup, 선언된 dependency constraint 안의 명시적 update, 경로·dirty lock 보호, 의존 단계 skip/독립 단계 지속, 실제 실패 exit와 안전한 재시도.
 - **선택적 별도 연동:** Rulesync dependency/projection, native HOME Skill, Git hooks. 기본 core readiness와 분리하고 기존 명시적 실행 경로·사전 검토 안내를 유지한다. 기본 setup의 필수 기능을 조용히 생략하는 대신 설치 권한과 완료 계약을 이 범위로 명시한다.
-- **허용 버전:** 현재 exact CLI pin은 그대로이며 tool update의 no-op도 정상이다. Python bounded update는 native uv resolver가 소유한다. Tool range/`mise.lock`/npm sidecar 도입은 별도 설계·검증 전까지 범위 밖이다.
-- **검증:** deterministic 회귀와 격리된 실제 Windows first-venv/warm setup, 로컬 wheel bounded update, Skill positive/near-miss·behavior capability eval을 각각 구분한다. 기존 tool cache를 재사용한 실행을 clean-machine tool install로 표기하지 않는다.
-- **미완료 근거:** Linux/macOS/WSL host bootstrap, cold tool-cache 설치, OS-level containment와 HOME native installer는 별도 검증이 필요하다. 이번 push는 해당 플랫폼의 지원 완료나 merge-ready 선언이 아니며 Draft를 유지한다.
+- **허용 버전:** 현재 exact CLI pin과 `mise.lock`을 유지하며 tool update의 no-op도 정상이다. Python bounded update는 native uv resolver가 소유한다. CLI range 확대·자동 갱신과 npm 전이 의존성 잠금 도입은 별도 후속 과제다.
+- **검증:** deterministic 회귀, 격리된 실제 Windows·WSL Ubuntu x86_64 cold-cache/반복 setup·Python-only update와 로컬 wheel bounded update를 각각 구분한다. WSL은 사용자 승인 후 실제 CLI 7종 설치·task 진입점·native lock 누락/플랫폼 불일치 실패와 전체 테스트 335개를 확인했다. 설치 실증은 기존 mise·Python을 재사용했으며 완전한 host 초기 설치가 아니다. 설계 Skill의 positive/near-miss·behavior capability eval은 별도 PR #256의 근거이며 이 실행기의 성공을 대신하지 않는다.
+- **남은 실환경 검증:** macOS 실행 환경은 확보하지 못해 native setup/replay/update가 미검증이다. WSL x86_64 성공을 Linux arm64·musl 등 다른 플랫폼의 성공으로 확대하지 않는다. Python 최초 다운로드·OS-level containment와 HOME native installer는 이번 core 설치 묶음 밖이다.
+- **PR 상태:** 2026-11-01 확인 시 Draft가 아닌 Ready for review 상태이며 Branch Check와 PR Gate가 통과했다. 이 상태를 미검증 플랫폼의 지원 완료나 merge 승인으로 해석하지 않는다.
 
 ## 재사용 설계 스킬
 
@@ -45,11 +47,11 @@
 - [안정성·전역 영향 심층 조사](bootstrap-safety-global-effects-research.md) — pre-task auto-install, system Python sync 위험, 외부 Skill installer의 HOME·Agent 변경, Git hooks, 캐시·공급망 신뢰 경계.
 - [안전 설계 인계](bootstrap-safety-design.md) — 실제 쓰기 대상 preflight, 사용자/OS 전역 변경 승인, 실패·복구·격리와 회귀 테스트.
 
-이 문서의 버전·권한 정책은 현재 초안이다. 새 조사에서 발견한 mise lockfile sidecar, uv managed Python 다운로드, task runner의 의존성 오류 전파와 minimum release age처럼 정확한 동작에 영향을 주는 조건은 구현 전에 PoC로 판단한다. 벤더 문서의 최신 기능이 CI에 설정된 mise 버전에서 지원되는지도 검증한다.
+아래 초기 설계는 당시의 확장 목표를 보존한 자료이며 현재 운영 정책이나 구현 계약이 아니다. 이후 범위를 넓힐 때 mise lockfile sidecar, uv managed Python 다운로드, task runner의 의존성 오류 전파와 minimum release age처럼 정확한 동작에 영향을 주는 조건은 별도 PoC로 판단한다. 벤더 문서의 최신 기능이 CI에 설정된 mise 버전에서 지원되는지도 검증한다.
 
 ## 초기 설계의 사용자 진입점과 의미
 
-아래 절부터 작업 계획까지는 초기 설계의 확장 목표를 보존한다. 현재 실행·수용 여부는 위 **이번 PR의 수용 범위**와 [운영 안내](../../docs/references/tooling/mise.md)가 우선한다. 특히 `mise.lock` 기반 tool range 갱신, 자동 Rulesync/hook/HOME 연동, `DEGRADED` 상태는 현재 runner의 제공 기능이 아니다.
+아래 절부터 작업 계획까지는 초기 설계의 확장 목표를 보존한다. 현재 실행·수용 여부는 위 **이번 PR의 수용 범위**와 [운영 안내](../../docs/references/tooling/mise.md)가 우선한다. `mise.lock` 자체는 도입했지만 tool range 갱신, 자동 Rulesync/hook/HOME 연동, `DEGRADED` 상태는 현재 runner의 제공 기능이 아니다.
 
 | 진입점(목표) | 기대 동작 | 버전 변경 |
 | --- | --- | --- |
@@ -151,4 +153,4 @@ Git branch `main` 같은 이동 ref는 명시적인 SemVer 허용 범위가 아�
 
 - 현재 구현: [mise.toml](../../mise.toml), [skills_sync.py](../../scripts/agent_assets/skills_sync.py), [mise reference](../../docs/references/tooling/mise.md), [skills CLI reference](../../docs/references/tooling/skills-cli.md)
 - 외부 계약: [mise lockfile](https://mise.jdx.dev/dev-tools/mise-lock.html), [mise upgrade](https://mise.jdx.dev/cli/upgrade.html), [mise task auto-install](https://mise.jdx.dev/dev-tools/), [uv locking/sync](https://docs.astral.sh/uv/concepts/projects/sync/)
-- 설계·조사와 독립적인 Skill 초안 이후, 이 문서 상단의 제한된 setup/update 구현과 deterministic 회귀 테스트를 추가했다. `mise.lock`·tool range 확대·자동 projection/hook/native installer는 미포함이다. 실제 Windows first-venv/warm setup은 기존 tool cache를 재사용해 확인했다. Skill runtime은 두 로컬 모델에서 capability 평가했으며 [실패·grader 한계](https://github.com/mols3131d/mols-agent-assets/blob/1f1efa63efaad63f4bda19fe4781920bb2c6c541/docs/skills/mols-dev-env-bootstrap-design/evaluation.md)를 포함한다. 다중 OS/cold tool-cache/HOME containment는 미검증으로 유지한다.
+- 현재 구현은 exact CLI pin·`mise.lock` 기반 setup과 Python-only update다. Windows·WSL cold-cache 설치·반복 복구·update의 source와 검증 한계는 [후속 검증 기록](bootstrap-simplification-review-2026-11-01.md)을 따른다. macOS native E2E는 미검증으로 유지한다. 별도 설계 Skill runtime의 [실패·grader 한계](https://github.com/mols3131d/mols-agent-assets/blob/1f1efa63efaad63f4bda19fe4781920bb2c6c541/docs/skills/mols-dev-env-bootstrap-design/evaluation.md)는 이 core 실행기 검증과 구분한다.
