@@ -4,7 +4,7 @@ description: PR #265의 에이전틱 병렬 개발 아키텍처 패턴을 심층
 
 # PR #265 — Agentic Architecture Research and Review
 
-상태: 진행 중. 정본 패턴은 [Agentic Parallel Development Architecture](../../catalog/patterns/software-engineering/agentic-parallel-development-architecture.md)이며, 이 파일은 조사·검토 근거입니다.
+상태: 검토 완료(실제 모델 행동 평가 미실시). 정본 패턴은 [Agentic Parallel Development Architecture](../../catalog/patterns/software-engineering/agentic-parallel-development-architecture.md)이며, 이 파일은 조사·검토 근거입니다.
 
 ## Goal / Scope
 
@@ -78,3 +78,27 @@ description: PR #265의 에이전틱 병렬 개발 아키텍처 패턴을 심층
 5. **Evaluation skeptic:** Correlation in co-change and published agent benchmarks cannot certify an optimal structure; response: distinguish heuristic, synthetic scenario exercise, and real measurement.
 
 **Disposition:** absorb (2)(3) with small targeted additions. Do not add procedural checklist, module-size metrics, mandatory lints, or model evaluation claims.
+
+
+## Iteration 4 — Final architecture challenge and disposition
+
+| Planning case (reasoned dry-run) | Expected structural decision | Outcome / residual |
+| --- | --- | --- |
+| Layer-first shop with shared Order writes | Compare seam-only, modular monolith, service split; keep order-state authority, move pricing first, migrate consumer calls with unchanged behavior | **Adequate for plan drafting.** True transaction atomicity or real code dependency analysis still needed before applying it. |
+| New connector-heavy data pipeline | Compare stage-first with source-specific vertical slices; centralize genuinely shared normalized-record invariants, not every helper | **Adequate for choosing candidate axis.** Relative cost depends on measured change patterns. |
+| Two agents implementing one changing checkout API | Reject false independence; choose stable producer-consumer baseline or compatible migration; keep integration and error semantics visible | **Adequate for expressing dependencies.** No actual parallel-run test conducted. |
+| Tiny CRUD tool with one developer and shallow code | Keep native framework layout and direct tests; extra domain packages/interfaces would add navigation cost | **Adequate anti-overdesign behavior.** |
+| Payment/order transaction with strong consistency | Keep invariant and state transition ownership cohesive; do not propose event-driven split just to add parallelism | **Adequate caution.** Concrete transactional design still application-specific. |
+
+**Multi-perspective reconciliation:** Architecture design (pass), brownfield safety (pass), multi-agent integration logic (pass), small-project minimalism (pass), model-behavior evidence (not verified). One material gap remained after Iteration 3: cyclic inter-module dependencies were only identified, not resolved. The final small correction compares a higher-level orchestration owner with extraction of a genuinely shared policy, while warning against an interface that hides a cycle rather than removing it.
+
+**Scope fidelity:** Only pattern guidance and this durable research/review record were changed. GPP without a compulsory Contracts layer, no CI/tooling instructions, no fixed artifact schema, and no microservice-by-default.
+
+## Validation and limits
+
+- **Verified via live GitHub source reads:** The pattern has YAML `description`, GPP headings, a scenario-driven Patterns section, paired fences, no mandatory `Contracts` heading, and links to existing local patterns. The research document has its own frontmatter and relative link.
+- **Semantic review:** Three distinct planning cases and two counterexamples were compared against the proposed guidance, with separate failure lenses; these are *simulated reasoning exercises*, not actual independent agent results.
+- **Not verified:** Repository-native `rumdl` formatting, generated index/route synchronization where relevant, full CI, implementation tests, controlled multi-agent performance improvement, or applicability to every stack.
+- **Further evidence if needed:** Use a real representative codebase and identical planning prompts with/without the pattern. Compare target boundary accuracy, dependency ownership, first safe migration step, integration risk handling, and unintended abstractions; score blind and verify on concrete changes rather than treating prose similarity as success.
+
+**Finalization intent:** Keep PR #265 Draft and unmerged. The durable output is the catalog pattern; this file records sources, scenarios, iteration findings, and unresolved empirical verification.
