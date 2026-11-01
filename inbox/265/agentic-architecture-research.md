@@ -4,7 +4,7 @@ description: PR #265의 에이전틱 병렬 개발 아키텍처 패턴을 심층
 
 # PR #265 — Agentic Architecture Research and Review
 
-상태: 검토 완료(실제 모델 행동 평가 미실시). 정본 패턴은 [Agentic Parallel Development Architecture](../../catalog/patterns/software-engineering/agentic-parallel-development-architecture.md)이며, 이 파일은 조사·검토 근거입니다.
+상태: 과거 설계 조사 기록 및 2026-11-02 개편 근거(실제 모델 행동 평가 미실시). 정본 패턴은 [Agentic Parallel Development Architecture](../../catalog/patterns/software-engineering/agentic-parallel-development-architecture.md)입니다. 아래 이전 Iteration 기록은 당시 설계에 대한 평가이며 현재 개편본의 검증으로 해석하지 않습니다.
 
 ## Goal / Scope
 
@@ -102,3 +102,19 @@ description: PR #265의 에이전틱 병렬 개발 아키텍처 패턴을 심층
 - **Further evidence if needed:** Use a real representative codebase and identical planning prompts with/without the pattern. Compare target boundary accuracy, dependency ownership, first safe migration step, integration risk handling, and unintended abstractions; score blind and verify on concrete changes rather than treating prose similarity as success.
 
 **Finalization intent:** Keep PR #265 Draft and unmerged. The durable output is the catalog pattern; this file records sources, scenarios, iteration findings, and unresolved empirical verification.
+
+
+## 2026-11-02 — Agent-native architecture reframing
+
+**Research question:** 기존 DDD·모듈화·점진적 리팩터링에 agent라는 단어를 추가한 것이 아니라, agent의 작업 특성 때문에 다른 아키텍처 선택이 나오는가?
+
+- **발견 1 / 위치 탐색:** [CORE-Bench](https://aclanthology.org/2026.emnlp-main.1604/)와 [RepoNav](https://aclanthology.org/2026.emnlp-main.1474/)는 코딩 에이전트가 저장소 전체에서 올바른 수정 위치와 주변 맥락을 찾는 일이 독자적인 문제임을 보여준다. 대응은 고정 폴더 구조가 아니라 검색→실제 변경 지점→검증 경로가 서로 연결되도록 하는 것.
+- **발견 2 / 국소 피드백:** [OpenAI Harness Engineering](https://openai.com/index/harness-engineering/)은 환경 및 관측 가능성이 실제 agent 작업 완료와 연결되는 사례다. 구조 차원의 선택은 의미 있는 동작을 국소 재현·검증할 경계를 제공하는 것이며 특정 lint나 test runner를 강제하는 것은 별도 문제.
+- **발견 3 / 협업:** [AsynCodeBench](https://arxiv.org/abs/2609.32662)는 개별 코딩 성공과 agent 간 의존성 충족이 다를 수 있음을 보여준다. [ESEM 2026](https://doi.org/10.4230/LIPIcs.ESEM.2026.18)는 제한된 환경에서 실행 상태 관찰이 유의미함을 보고하지만, 공유 worktree 사용을 일반적으로 권고하지는 않는다. 구조는 의미적 의존성 유형을 드러내고 실행·격리 정책은 별도 owner에 맡긴다.
+- **발견 4 / 설계 후보 선택:** [CodeTaste](https://proceedings.mlr.press/v306/thillen26a.html)는 리팩터링을 구현하는 일과 적절한 후보를 발견하는 일의 차이를 뒷받침한다. '변경하지 않음'과 '탐색·검증만 보강'을 구조 재편의 실질적 대안에 포함한다.
+
+**디자인 결정:** 패턴의 중심 평가 단위를 `locate → understand → edit → verify → integrate`의 *agent change episode*로 바꾼다. 기능/도메인 구조 자체는 가능한 수단일 뿐이다. 사람에게 유리한 구조와 같은 선택이 나올 수도 있지만, 이미 모듈화된 코드에서는 재분할이 아니라 국소 피드백을 강화하는 다른 결론을 내릴 수 있어야 한다.
+
+**건식 검토:** 입력원 추가가 잦은 ETL에서 올바른 adapter 검색과 shared schema 소유를 구분하는 계획을 유도하는지, 이미 모듈화된 결제 시스템에서 무의미한 재구조화 대신 관찰·검증 문제를 찾아내는지, 상호의존적 API 변경을 병렬 독립 작업으로 착각하지 않는지 점검했다. 결과는 문서의 추론 가능성에 대한 검토이지 독립 모델 실행 결과가 아니다.
+
+**잔여 한계:** 실제 저장소에서 동일 모델/조건으로 개편 전후의 목표 위치 적중률, 맥락 탐색 비용, 첫 유효 검증까지의 시간, 통합 재작업을 측정하지 못했다. 특정 디렉터리 레이아웃의 agent 생산성 우월성을 주장하지 않는다.
