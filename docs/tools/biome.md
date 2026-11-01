@@ -18,6 +18,10 @@ Biome은 JSON·JSONC·JavaScript·TypeScript 계열의 format·lint를 맡습니
 
 버전 갱신 시 `biome.json`의 `$schema`와 CLI pin을 함께 갱신하고, `mise run check` 및 [Formatting](../development/formatting.md)의 changed-only 경로에서 출력 diff를 검토합니다. 일상 작업에서 최신화를 이유로 저장소 전체를 다시 포맷하지 않습니다.
 
+## 권장 버전 정책
+
+**Minor**(mise 요청 `2`)를 권장합니다. 새로운 Minor도 formatter 출력을 바꿀 수 있으므로 `biome.json`의 schema URL과 CLI 호환성을 확인하고 변경 파일의 format·lint diff를 검토합니다. 정상적인 버전 갱신을 이유로 저장소 전체 재포맷을 자동 수행하지 않습니다.
+
 ## Official Sources
 
 - [Configuration](https://biomejs.dev/reference/configuration/)
