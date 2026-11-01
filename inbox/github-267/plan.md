@@ -1,75 +1,79 @@
-# Mols Chatbot Bootstrap — Improvement Plan
+# Chatbot Harness Design — Implementation Preparation Plan
 
-## Goal
+> PR #267 작업용 정본 계획 · 2026-11-02. **계획/조사 상태**, Skill 소스 변경 및 실제 런타임 평가 미수행.
 
-챗봇의 저장소 하네스 호환성을 **진입점 접근 가능성**에 머무르지 않고, 해당 작업에 필요한 지침·Skill·Rule의 **선택적 발견 → canonical source 로딩 → 행동 적용**까지 지원하도록 `mols-chatbot-bootstrap`을 최소 보강한다.
+## Target Outcome
 
-이 PR의 초기 상태는 **계획·인계 단계**다. Skill 구현이나 런타임 통과를 완료했다고 주장하지 않는다. 판단 근거와 유지해야 할 경계는 [findings.md](findings.md)를 따른다.
+현재 `mols-chatbot-bootstrap`을 단순한 `CHATBOT.md` 연결 복구보다 발전시켜, **다양한 챗봇 런타임에서 원본 저장소의 하네스를 충실하고 효율적으로 활용하도록 필요한 최소 하네스 구성을 진단·설계·구축·복구하는 Skill**로 개선할 준비를 한다.
 
-## 변경 범위와 책임
+'최적'은 모든 서비스에 동일한 구조를 설치한다는 뜻이 아니다. 하네스 준수, 대상 authority와 실제 권한, 첫 진입점·canonical source 접근을 **필수 조건**으로 지키고, 그 범위 안에서 context/token, 호출/latency, 구성·유지보수·사용자 설정 비용을 줄이는 **환경별 최소 유효 설계**를 뜻한다. 이것은 실측하기 전까지 개선 가설이지 보장된 모델 성능이 아니다.
 
-| Surface | 의도 |
-| --- | --- |
-| `src/rulesync/.rulesync/skills/mols-chatbot-bootstrap/SKILL.md` | 기존 lifecycle을 유지하면서 end-to-end harness fidelity와 lazy loading의 완료·검증 기준을 필요한 만큼만 명확히 한다 |
-| 기존 `references/routes.md` | 기존 fallback route의 소비 절차가 이 요구를 충족하지 못하는 경우에만 최소 수정한다 |
-| `docs/skills/mols-chatbot-bootstrap/` | 설계 이유·이식성 등 유지보수 판단이 정본으로 확정되면 반영한다. PR #266의 변경을 병합된 것으로 가정하지 않는다 |
-| 대상 저장소의 `CHATBOT.md`, route, runtime-side instruction | 변경이 필요한 대상에 적용할 때 그 저장소의 권한과 기존 하네스를 확인한 뒤 별도 결정한다. 이 PR에서 일괄 변경하지 않는다 |
+## Existing Evidence → Decisions
 
-새 라우팅 구조, 에이전트 상주 오케스트레이터, 범용 생성기, 상시 검사 CI를 요구하지 않는다.
-
-## 진행 계획
-
-1. **Baseline 확인:** Skill이 이미 보장하는 native-first, no-op, target convention, optional references, runtime first-hop, validation 계약을 확인하고 중복 추가할 내용은 제외한다.
-2. **실패 경계 명확화:** entrypoint를 읽어도 routing metadata나 선택한 canonical source를 읽지 않은 경우, 선택한 자산을 읽고 적용한 경우를 구분한다. 보강 문장은 필요 최소량으로 제한한다.
-3. **소유권을 지킨 구현:** 부트스트랩 Skill은 호환 경로를 provision/review하고, 평상시 선택·로드·행동은 생성 또는 복구된 대상 하네스와 실제 canonical 자산이 담당하게 한다.
-4. **검증:** 정적 문서 검토로 완료 조건과 기존 기능 보존을 확인하고, 실제 챗봇 런타임이 사용 가능할 때만 작은 대표 시나리오로 routing·loading·application을 관찰한다. 런타임 미확보 시 결과는 `Not Verified`로 둔다.
-5. **마무리:** 중복·과설계가 생겼는지 review 후 필요한 문서만 정본화한다. 실제 소스 변경과 검증 근거가 준비되면 Draft PR을 리뷰 가능한 상태로 전환하도록 제안한다.
-
-## 대표 평가 시나리오
-
-| Case | 기대 행동 | 실패 신호 |
+| 근거 | 판단 | 관련 자료 |
 | --- | --- | --- |
-| 관련 자산 없는 단순 작업 | 필요한 기본 지침만 고려하고 불필요한 Skill 본문은 로드하지 않음 | 전체 카탈로그/본문 선로드 |
-| 특정 Skill이 필요한 작업 | route metadata로 선택한 뒤 canonical `SKILL.md` 본문과 필요한 reference만 읽고 적용 | metadata만 보고 본문 미로딩; 본문은 읽었으나 계약 무시 |
-| 두 책임이 결합된 작업 | 독립적으로 필요한 자산만 선택·적용 | 한 자산만 적용하거나 전체 자산 로딩 |
-| 작업 경로·ref·의도 변경 | 바뀐 범위의 적용 지침·자산을 재평가하고 유효한 로딩 결과 재사용 | 오래된 지침 계속 사용; 매 단계마다 전체 재로딩 |
-| runtime first-hop 또는 필수 source 접근 불가 | 확인 가능한 범위를 설명하고 필요한 handoff 제공; 미검증을 성공으로 선언하지 않음 | 링크만 존재하는데 호환성 완료 주장 |
+| 기존 Skill의 native-first, no-op, 일회성 provisioning | **보존**. 일반 작업의 상주 orchestrator로 확대하지 않음 | [현재 Skill](../../src/rulesync/.rulesync/skills/mols-chatbot-bootstrap/SKILL.md) |
+| `CHATBOT.md` 읽기와 실제 Skill body 로딩의 단절 가능성 | **보강**. first-hop/route/본문/적용의 완료 수준 구분 | [fidelity 조사](research-harness-fidelity.md), [findings](findings.md) |
+| 서비스·모드마다 connector, Python, browser, computer, 저장소 접근 차이 | **조건부 적응**. 플랫폼 이름 대신 현재 exposed tool/권한 | [서비스 조사](chatbot-runtime-landscape.md) |
+| N0 native-only vs N1 pointer vs N2 bridge vs N3 제한적 capability 대체 | **비교 선택**. 더 큰 토폴로지는 확인된 공백을 해결할 때만 | [설계 대안](harness-architecture-options.md) |
+| 품질과 비용을 동시에 평가해야 '최적'을 주장할 수 있음 | **설계 평가 추가**. 실행 관찰 없이 성능 통과 주장 금지 | [평가 전략](harness-evaluation-strategy.md) |
+| 기존 스킬과 별도 architect Skill의 activation 차이 | **결정 게이트**. 이름/책임 확대를 가정하지 않고 케이스 기반 판단 | [설계 대안](harness-architecture-options.md) |
 
-평가에서 특정 파일 fetch 순서를 하나로 고정하지 않는다. 기존 native discovery가 동등한 결과를 제공하면 추가 수동 fetch가 필요하지 않을 수 있다. **해당 런타임에서 필요한 계약이 실제로 사용됐는지**를 판정한다.
+## Scope and Ownership
+
+**기본 변경 대상:** `src/rulesync/.rulesync/skills/mols-chatbot-bootstrap/SKILL.md`의 목적·activation metadata, Contract, Workflow, Validation, Boundary. **모든 부분을 반드시 수정하라는 뜻은 아니다**. 현재 계약으로 해결된 사항은 수정하지 않는다.
+
+**조건부 변경 대상:** `references/routes.md`는 현재 selector/source 소비로 표현할 수 없는 구체적 결함이 확인되면, `references/tuning.md`는 실제 자동화 필요 시에만. Maintainer document는 지속적으로 가치 있는 결정만 반영한다.
+
+**명시적 비범위:** 이 PR에서 대상 저장소의 `CHATBOT.md`/router, branch·정본, 범용 generator/CI, 외부 tool/plugin 설치, 상시 scheduled agent, runtime-side project instruction, account connection을 임의로 변경하지 않는다. PR #266은 독립 maintainer 문서 작업이다.
+
+**Skill 소유권 판정:** 현 스킬의 단일한 구축·복구 목적에 부합하는 경량 design comparison은 **우선 현 Skill에 포함**한다. 다음 경우에만 별도 design Skill 또는 rename을 재논의한다: 독립된 사용 의도가 반복 확인되고, 실제 activation 충돌·과도한 상시 context 또는 유지보수 이점이 입증됨. 분리/rename은 이번 단계에서 확정하지 않는다.
+
+## Proposed Skill Behavior
+
+1. **Input / scope:** user goal, target repository/path/ref, 현재 챗봇 mode, 승인·변경 가능 범위를 확인한다. 사용자가 이미 제공한 정보를 중복 질문하지 않는다.
+2. **Discover relevant capability:** 실제 노출된 도구·연결·파일/코드·네트워크·브라우저·권한 중 **구축 결정에 영향을 주는 것만** 확인한다. 제품 소개 기능을 권한으로 가정하지 않는다.
+3. **Inspect existing authority:** native discovery와 대상의 실재하는 instruction, routing, Skill/Rule/agent 소유권, scope 적용 여부를 확인한다.
+4. **Compare smallest valid options:** N0/no-op → 기존 native + 최소 pointer → 필요 시 작은 selection bridge → 별도 필요한 capability 대체. 기존 구조가 충분하면 중단.
+5. **Build/repair within authority:** 가장 작은 변경으로 필요한 first-hop 및 task-relevant canonical source의 로딩 경로를 구성한다. 실효 권한 없으면 정확한 사용자 handoff를 남긴다. router가 source body/policy를 복제하지 않는다.
+6. **Verify in tiers:** `configured`(구성), `reachable`(접근), `observed applied`(실행 관찰)을 구분한다. 선택한 본문을 native 경로로 이미 로드한다면 별도 fetch를 강제하지 않는다.
+7. **Outcome / handoff:** 채택한 구성과 이유, 실제 변경·필요한 사용자 설정, 검증된 범위·미검증·남은 위험을 간결히 제시한다. 일반 작업은 구축 Skill의 지속 로딩 없이 진행되도록 한다.
+
+**Key guardrail:** 도구가 더 많다는 이유로 더 큰 하네스 구성을 채택하지 않는다. 도구·연결의 사용 가능성과 side effect를 남길 권한은 별개이며, 사용자 승인 없는 계정·명의 전환은 금지한다.
+
+## Implementation Stages
+
+| 단계 | 의도한 작업 | 완료 근거 |
+| --- | --- | --- |
+| D0 — Baseline | 현 Skill, 기존 reference, 대상별 authority 및 activation 근거 재확인 | 중복·기존 계약 보존 목록 |
+| D1 — Scope | 구축/복구와 일반 agent-asset authoring/CI/장기 연속성의 Skill trigger 충돌 점검 | positive/negative/near-miss 분류 및 유지·rename·분리 판단 |
+| D2 — Minimal revision | 핵심 목표·옵션 비교·capability relevance·lazy load·완료 수준을 작은 delta로 반영 | 변경된 Skill의 실제 문장과 반례 검토 |
+| D3 — Review | task owner 및 efficiency 관점의 source review; 권한/의도치 않은 activation/중복 제거 | 정적 계약·링크·regression 결과 |
+| D4 — Runtime evidence | 가능한 실제 chatbot runtime에서 소수의 유효·비유효·제약 사례 수행 | [평가 전략](harness-evaluation-strategy.md)의 observed evidence 또는 `not verified` |
+| D5 — Close | 더 큰 장치가 필요한지 판단, 유지할 정본만 반영, 실제 변경 diff와 PR 인계 | 검증 범위·미해결 상태·최소성 설명 |
+
+D0–D5는 작업 의존성이지 독립 PR·Skill·runner 또는 모든 환경에서 고정 실행해야 할 단계 수가 아니다.
 
 ## Acceptance Criteria
 
-- 실제 작업에 필요한 자산을 **선택적으로** 탐색·로드하는 경로가 설명 가능하고 사용 가능한 상태다.
-- entrypoint, route metadata, canonical body, conditional references의 역할이 구분되며, 선택된 자산의 본문 로딩이 생략되지 않는다.
-- 전체 자산 사전 로딩이나 매 요청·tool 호출마다 무조건 전수 탐색하도록 만들지 않는다.
-- 기존 native 기능, target-specific authority, 사용자가 승인한 라우팅과 runtime-side 권한 경계를 보존한다.
-- 기본 bootstrap lifecycle은 저빈도 provision/repair이며, 평상시 작업은 bootstrap Skill의 지속 로드에 의존하지 않는다.
-- 실제 행동을 실행하지 않았다면 하네스 준수·runtime parity를 검증했다고 주장하지 않는다.
+- 진입점 읽기 또는 route metadata 발견만으로 하네스 구축 성공을 주장하지 않는다.
+- 네이티브만으로 충분한 대상에서 **no-op을 올바른 최적 결과**로 선택한다.
+- 부분 native 지원 시 **누락된 책임만** 복구한다. 실제 task-relevant canonical Skill/Rule/conditional reference 접근을 확보한다.
+- 모든 Skill·Rule·reference 선로딩, 반복적 전수 검사·fetch, 복제한 policy·새 router/CI 강제를 피한다.
+- 하네스 정확성·권한 경계는 최우선, 컨텍스트/도구/설정·유지보수 비용은 그 제약 안에서 비교한다.
+- 로컬과 다른 챗봇 환경에서 툴/connector/Python/shell/브라우저 기능을 추측하지 않는다.
+- 증거가 없는 권한·실행 성공·model parity를 선언하지 않는다.
+- 새로운 Skill 분리나 rename은 독립 trigger/ownership 근거가 있을 때만 채택한다.
+- 최소 변경의 결과물을 사람이 사용할 수 있는 수준으로 설명하고 권한 밖 변경은 명확한 handoff를 제공한다.
 
-## 챗봇 서비스 런타임 조사
+## Working Artifacts / Handoff
 
-[주요 챗봇 서비스의 도구·플러그인·런타임 조사](chatbot-runtime-landscape.md)에서 ChatGPT, Claude, Gemini, Microsoft Copilot, Perplexity, Grok, Poe의 채팅·에이전트 모드를 구분하고, 연결 앱/MCP, 격리 코드 실행, 로컬·클라우드 컴퓨터, 브라우저 조작, 지속 작업과 계정·권한 제약을 정리했다.
+- [findings.md](findings.md) — 핵심 문제·보존 제약
+- [chatbot-runtime-landscape.md](chatbot-runtime-landscape.md) — 7개 서비스의 모드/도구 조사 (환경별 보장 아님)
+- [research-harness-fidelity.md](research-harness-fidelity.md) — 로딩 경로·실패 단계 조사
+- [research-plan-review.md](research-plan-review.md) — 초기 조사→계획→리뷰 기록
+- [harness-architecture-options.md](harness-architecture-options.md) — 이번 작업에서 추가한 설계 대안·트레이드오프·책임
+- [harness-evaluation-strategy.md](harness-evaluation-strategy.md) — 품질/비용 기준과 런타임 평가 계획
+- [architecture-plan-review.md](architecture-plan-review.md) — 추가 설계·반례·최종 인계 리뷰
 
-이 조사 결과는 **capability 후보와 확인 질문**이지 모든 대상 런타임이 지원한다는 근거가 아니다. Skill에 서비스별 기능표를 복제하지 말고, 실제 사용 가능 도구와 권한을 작업별로 확인하는 범용 원칙만 필요한 경우 반영한다. 런타임 평가 시에는 특히 **웹 읽기만 가능 / 연결 도구 + 격리 Python / 컴퓨터·브라우저 조작 가능** 시나리오의 차이를 확인한다.
-
-## 조사·계획 루프의 최종 결정
-
-상세 근거와 반례는 [harness fidelity 연구](research-harness-fidelity.md) 및 [Research–Plan 검토 루프](research-plan-review.md)를 따른다.
-
-**최소 구현 delta:**
-1. **Contract:** 서비스명이나 제품 소개가 아닌 현재 작업에 필요한 tool/connector/runtime capability 및 실제 권한으로 판단한다. 접근 가능성과 실행 권한을 분리한다.
-2. **Workflow:** native 경로가 충분하면 no-op; 부족하면 가장 작은 first-hop을 복구한다. `route metadata로 선택`과 `canonical body를 실제로 소비`한 상태가 구분되도록 호환 경로를 확인한다.
-3. **Validation:** `configured`(연결 구성), `reachable`(정본에 도달 가능한 경로 확인), `observed applied`(대상 런타임이 실제 로드하고 작업에 적용한 증거)를 구분한다. 런타임 관찰이 없으면 마지막 수준을 통과로 선언하지 않는다.
-
-**재사용:** 기존 라우터, `github-context`, target-native Skill 로더 및 동일 ref에서 이미 로드된 유효 문맥을 이용한다. 능력을 자동 감지하는 새 전역 inventory, 별도 상주 controller, 서비스별 adapter, generator, CI는 만들지 않는다.
-
-**구현 이후 확인할 최소 사례:** (a) 필요 Skill 없는 요청 → 무관 Skill 선로드 없음, (b) 특정 Skill 필요한 요청 → 선택·본문·필요 reference·적용, (c) 경로/의도 변화 → 바뀐 적용 지침만 갱신, (d) 필수 source 접근 실패 → 부분 수행/정확한 handoff와 미검증 표시. 하나의 정해진 tool call 순서가 아니라 **observable 계약과 결과**로 평가한다. 실제 실행에 접근하지 못하면 사례는 계획으로 남긴다.
-
-**구현 중단·재검토 조건:** 기존 대상 하네스의 소유권을 가져오거나 범용 경로/형식을 강제하려는 변경, 전수 선로딩, 지속적인 bootstrap Skill 상주, 계정·연결·권한 자동 전환, runtime evidence 없이 완료 선언하는 변경이 필요해질 때.
-
-## Handoff / Current State
-
-- **완료:** 대상 Skill·하네스 정적 검토, 공식 문서 기반 서비스·표준 조사, 조사→계획→리뷰→반례 보완 루프, 최종 최소 변경 범위와 인계 계획.
-- **미착수:** `SKILL.md` 구현 변경, runtime behavioral eval, CI/validator 변경.
-- **다음 작업:** 기존 Skill의 Contract/Workflow/Validation에 최소 delta를 구현하고, 독립적인 정적 리뷰와 실제 접근 가능한 챗봇 런타임에서의 소수 대표 시나리오로 검증한다.
-- **관련 PR:** [#266 — 유지보수 문서의 범용성 기준](https://github.com/mols3131d/mols-agent-assets/pull/266) (별도 작업).
+**현재 완료:** 전초 조사, 설계 후보, 구현·평가·비용 측정 계획, 문서 간 정합성 검토. **미완료:** `SKILL.md` 구현, 실제 서비스별 capability·behavior eval, 정본 승격, 병합. 다음 작업은 D0–D2에서 **현 스킬의 activation과 설계 범위**를 먼저 점검한 후 작은 Skill diff를 만드는 것이다.
