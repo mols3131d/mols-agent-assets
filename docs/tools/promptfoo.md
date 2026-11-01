@@ -18,6 +18,10 @@ Promptfoo는 Agent Asset의 model/runtime 평가에 사용합니다. 실행 진�
 
 CLI·provider·model을 갱신하면 config·assertion 호환성과 결과 변화를 구분해 확인합니다. deterministic test와 model 평가의 증거 수준은 [Evaluation](../development/evaluation.md)이 소유합니다.
 
+## 권장 버전 정책
+
+**Exact**를 유지합니다. 동일한 평가를 비교할 때 CLI 버전, 평가 데이터, provider·model과 grader 조건을 구분할 수 있어야 하기 때문입니다. 버전 전환은 `promptfoo_run.py`에서 명시적으로 수행하고 별도 평가 검증으로 확인합니다. mise의 범위 추적이나 자동 `latest`로 이 pin을 대체하지 않습니다.
+
 ## 상세 안내
 
 - [Promptfoo reference](../development/tooling/promptfoo.md): config·provider·grading·data boundary의 공식 source
