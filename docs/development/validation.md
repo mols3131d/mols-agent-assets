@@ -17,7 +17,7 @@ Validation은 이 repository가 유지하는 **네 가지 구조·파생 계약*
 
 각 검증은 계약을 소유하는 기존 도구와 source를 재사용합니다. Schema나 projection semantics를 별도 validator에서 다시 구현하지 않습니다.
 
-문서 frontmatter의 적용 범위는 [Frontmatter](../documentation/frontmatter.md), index 정책은 [Document Indexing](../documentation/indexing.md), Rulesync contract는 [Rulesync](../references/tooling/rulesync.md)가 소유합니다.
+문서 frontmatter의 적용 범위는 [Frontmatter](../documentation/frontmatter.md), index 정책은 [Document Indexing](../documentation/indexing.md), Rulesync contract는 [Rulesync](../development/tooling/rulesync.md)가 소유합니다.
 
 ## Projection Validation
 

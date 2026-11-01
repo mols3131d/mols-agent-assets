@@ -157,7 +157,9 @@ def test_generate_docs_indexes_uses_readme_only_for_directory_metadata(tmp_path)
     assert not (docs / "references" / "INDEX.tsv").exists()
 
 
-def test_generate_docs_indexes_keeps_directory_without_entry_description_blank(tmp_path):
+def test_generate_docs_indexes_keeps_directory_without_entry_description_blank(
+    tmp_path,
+):
     docs = tmp_path / "docs"
     _write(
         docs / "development" / "nested" / "guide.md",
@@ -192,6 +194,10 @@ def test_generate_docs_indexes_treats_asset_doc_roots_as_boundaries(tmp_path):
         docs / "references" / "nested" / "guide.md",
         "---\ndescription: Reference guide.\n---\n# Reference\n",
     )
+    _write(
+        docs / "tools" / "mise.md",
+        "---\ndescription: Tool configuration.\n---\n# mise\n",
+    )
 
     assert generate_docs_indexes(docs, index_depth=-1) == []
 
@@ -202,6 +208,8 @@ def test_generate_docs_indexes_treats_asset_doc_roots_as_boundaries(tmp_path):
         {"path": "references/nested/guide.md", "description": "Reference guide."},
         {"path": "skills/", "description": ""},
         {"path": "subagents/", "description": ""},
+        {"path": "tools/", "description": ""},
+        {"path": "tools/mise.md", "description": "Tool configuration."},
     ]
     assert not (docs / "agents" / "INDEX.tsv").exists()
     assert not (docs / "agents" / "planner" / "INDEX.tsv").exists()
@@ -211,6 +219,7 @@ def test_generate_docs_indexes_treats_asset_doc_roots_as_boundaries(tmp_path):
     assert not (docs / "skills" / "example-skill" / "INDEX.tsv").exists()
     assert not (docs / "subagents" / "INDEX.tsv").exists()
     assert not (docs / "subagents" / "reviewer" / "INDEX.tsv").exists()
+    assert (docs / "tools" / "INDEX.tsv").exists()
 
 
 def test_generate_docs_indexes_excludes_non_markdown_directories_recursively(tmp_path):

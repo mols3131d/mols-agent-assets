@@ -10,9 +10,9 @@ description: 문서 작업을 시작하기 전에 docs/의 상위 영역과 하�
 | --- | --- |
 | [`using-this-repository.md`](using-this-repository.md) | 이 저장소가 관리하는 Agent Asset과 재사용 지식을 외부에서 찾고 사용하는 방법 |
 | [`language.md`](language.md) | 저장소에서 쓰는 언어 정책과 Agent Asset 역할별 언어 규칙 |
-| [`development/`](development/) | 이 저장소의 개발 규칙과 관행 |
+| [`development/`](development/) | 이 저장소의 개발 규칙과 관행, Agent Asset 설계 지식과 도구·명세 참고 자료 |
 | [`documentation/`](documentation/) | 이 저장소 전체에 적용되는 문서 원칙과 정책 |
-| [`references/`](references/) | 여러 저장소에서 다시 쓸 수 있는 Agent Asset 설계 지식과 도구·명세 참고 자료 |
+| [`tools/`](tools/) | 이 프로젝트에서 사용하는 도구의 기본 설정·버전 선택과 예외 |
 | `<asset-type>/<owner>/` | 하나의 asset 또는 family에 대한 이식 가능한 유지보수 문서 |
 
 ## Nested Directory Ownership

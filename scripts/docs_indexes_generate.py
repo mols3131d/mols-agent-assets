@@ -22,7 +22,7 @@ HEADER = "path\tdescription\n"
 DEFAULT_INDEX_DEPTH = 0
 DEFAULT_DEPTH = -1
 DEFAULT_DIRECTORY_ENTRY_FILES = ("README.md",)
-NON_ASSET_DOC_ROOTS = ("development", "documentation", "references")
+NON_ASSET_DOC_ROOTS = ("development", "documentation", "references", "tools")
 BASE_EXCLUDE = ("AGENTS.md",)
 EXCLUDE_GLOBS = [".*.md", "__*__.md"]
 
@@ -180,12 +180,16 @@ def generate_docs_indexes(
                     index_path.unlink()
             continue
 
-        current = index_path.read_text(encoding="utf-8") if index_path.exists() else None
+        current = (
+            index_path.read_text(encoding="utf-8") if index_path.exists() else None
+        )
         if current == desired:
             continue
         if check:
             drift.append(
-                f"outdated: {relative}" if current is not None else f"missing: {relative}"
+                f"outdated: {relative}"
+                if current is not None
+                else f"missing: {relative}"
             )
         else:
             index_path.write_text(desired, encoding="utf-8")
@@ -213,19 +217,28 @@ def main(argv: list[str] | None = None) -> int:
         "--index-depth",
         type=int,
         default=DEFAULT_INDEX_DEPTH,
-        help="Maximum depth where INDEX files are materialized (0=root only, -1=unlimited)",
+        help=(
+            "Maximum depth where INDEX files are materialized "
+            "(0=root only, -1=unlimited)"
+        ),
     )
     parser.add_argument(
         "--depth",
         type=int,
         default=DEFAULT_DEPTH,
-        help="Maximum subtree depth included in each INDEX (0=current directory entries, -1=unlimited)",
+        help=(
+            "Maximum subtree depth included in each INDEX "
+            "(0=current directory entries, -1=unlimited)"
+        ),
     )
     parser.add_argument(
         "--directory-entry-files",
         nargs="+",
         default=list(DEFAULT_DIRECTORY_ENTRY_FILES),
-        help="Ordered directory entrypoint filenames whose frontmatter supplies directory metadata",
+        help=(
+            "Ordered directory entrypoint filenames whose frontmatter "
+            "supplies directory metadata"
+        ),
     )
     args = parser.parse_args(argv)
 
