@@ -52,9 +52,24 @@
 
 이 조사 결과는 **capability 후보와 확인 질문**이지 모든 대상 런타임이 지원한다는 근거가 아니다. Skill에 서비스별 기능표를 복제하지 말고, 실제 사용 가능 도구와 권한을 작업별로 확인하는 범용 원칙만 필요한 경우 반영한다. 런타임 평가 시에는 특히 **웹 읽기만 가능 / 연결 도구 + 격리 Python / 컴퓨터·브라우저 조작 가능** 시나리오의 차이를 확인한다.
 
+## 조사·계획 루프의 최종 결정
+
+상세 근거와 반례는 [harness fidelity 연구](research-harness-fidelity.md) 및 [Research–Plan 검토 루프](research-plan-review.md)를 따른다.
+
+**최소 구현 delta:**
+1. **Contract:** 서비스명이나 제품 소개가 아닌 현재 작업에 필요한 tool/connector/runtime capability 및 실제 권한으로 판단한다. 접근 가능성과 실행 권한을 분리한다.
+2. **Workflow:** native 경로가 충분하면 no-op; 부족하면 가장 작은 first-hop을 복구한다. `route metadata로 선택`과 `canonical body를 실제로 소비`한 상태가 구분되도록 호환 경로를 확인한다.
+3. **Validation:** `configured`(연결 구성), `reachable`(정본에 도달 가능한 경로 확인), `observed applied`(대상 런타임이 실제 로드하고 작업에 적용한 증거)를 구분한다. 런타임 관찰이 없으면 마지막 수준을 통과로 선언하지 않는다.
+
+**재사용:** 기존 라우터, `github-context`, target-native Skill 로더 및 동일 ref에서 이미 로드된 유효 문맥을 이용한다. 능력을 자동 감지하는 새 전역 inventory, 별도 상주 controller, 서비스별 adapter, generator, CI는 만들지 않는다.
+
+**구현 이후 확인할 최소 사례:** (a) 필요 Skill 없는 요청 → 무관 Skill 선로드 없음, (b) 특정 Skill 필요한 요청 → 선택·본문·필요 reference·적용, (c) 경로/의도 변화 → 바뀐 적용 지침만 갱신, (d) 필수 source 접근 실패 → 부분 수행/정확한 handoff와 미검증 표시. 하나의 정해진 tool call 순서가 아니라 **observable 계약과 결과**로 평가한다. 실제 실행에 접근하지 못하면 사례는 계획으로 남긴다.
+
+**구현 중단·재검토 조건:** 기존 대상 하네스의 소유권을 가져오거나 범용 경로/형식을 강제하려는 변경, 전수 선로딩, 지속적인 bootstrap Skill 상주, 계정·연결·권한 자동 전환, runtime evidence 없이 완료 선언하는 변경이 필요해질 때.
+
 ## Handoff / Current State
 
-- **완료:** 대상 Skill 및 현재 하네스의 정적 검토, 핵심 문제와 비목표 범위 정리, 이 PR 준비, 주요 챗봇 서비스 공식 문서 기반 런타임 조사.
+- **완료:** 대상 Skill·하네스 정적 검토, 공식 문서 기반 서비스·표준 조사, 조사→계획→리뷰→반례 보완 루프, 최종 최소 변경 범위와 인계 계획.
 - **미착수:** `SKILL.md` 구현 변경, runtime behavioral eval, CI/validator 변경.
-- **다음 작업:** 기존 Skill의 Validation과 Workflow에서 필요한 최소 delta를 제안하고, 대표 시나리오를 실제 사용 가능한 챗봇 런타임에서 검증한다.
+- **다음 작업:** 기존 Skill의 Contract/Workflow/Validation에 최소 delta를 구현하고, 독립적인 정적 리뷰와 실제 접근 가능한 챗봇 런타임에서의 소수 대표 시나리오로 검증한다.
 - **관련 PR:** [#266 — 유지보수 문서의 범용성 기준](https://github.com/mols3131d/mols-agent-assets/pull/266) (별도 작업).
