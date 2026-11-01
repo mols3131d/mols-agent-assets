@@ -56,7 +56,7 @@
 
 - 약 540줄 전용 테스트에는 native 명령의 정확한 호출 인자·npm 설치 내부 구조와 관련된 여러 케이스가 있다. 파괴적 경로 보호 검사는 가치가 있으나, native 실행에 전부 위임할 수 있다는 검증이 확보되면 **그 내부 구조를 모방한 테스트도 함께 제거**할 수 있다.
 - 반대로 F1/F2/F3을 보완할 때는 각각 **하나의 대표 회귀 실패→통과 케이스 및 필요한 경계 케이스**면 우선 충분하다. 모든 UV 옵션×모든 OS×모든 설치 주체의 조합 테스트나 새로운 Eval harness를 만들 필요는 없다.
-- Inbox의 대규모 연구·명세는 사용자가 명시적으로 요청한 반복 연구의 **작업 근거**이므로 길이만으로 삭제하지 않는다. 관리 비용을 줄이려면 [개발환경 구축 정본](../../docs/development/development-environment.md)에서 현재 규칙만 유지하고, 기존 연구는 비정본 상태·정본 링크로 구분한다. 정본과 [mise 운영 안내](../../docs/references/tooling/mise.md), [Skill maintainer](https://github.com/mols3131d/mols-agent-assets/blob/1f1efa63efaad63f4bda19fe4781920bb2c6c541/docs/skills/mols-dev-env-bootstrap-design/README.md) 간 규칙 복제를 늘리지 않는다.
+- Inbox의 대규모 연구·명세는 사용자가 명시적으로 요청한 반복 연구의 **작업 근거**이므로 길이만으로 삭제하지 않는다. 관리 비용을 줄이려면 [개발환경 구축 정본](../../docs/development/development-environment.md)에서 현재 규칙만 유지하고, 기존 연구는 비정본 상태·정본 링크로 구분한다. 정본과 [mise 운영 안내](../../docs/development/tooling/mise.md), [Skill maintainer](https://github.com/mols3131d/mols-agent-assets/blob/1f1efa63efaad63f4bda19fe4781920bb2c6c541/docs/skills/mols-dev-env-bootstrap-design/README.md) 간 규칙 복제를 늘리지 않는다.
 
 ## 스킬 자체: activation·지침·평가 과설계 검토
 

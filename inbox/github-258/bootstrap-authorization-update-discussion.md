@@ -1,7 +1,7 @@
 # 부트스트랩 설계 스킬과 설치 승인·업데이트 정책 토론
 
 > **상태:** 최신 결정 반영 / 후속 설계·운영 인계. 이 문서는 정책이나 Skill의 정본이 아니다.
-> **정본:** [개발환경 구축 정책](../../docs/development/development-environment.md). 도구별 실행은 [mise 안내](../../docs/references/tooling/mise.md), 재사용 설계 스킬 행동은 [SKILL.md](https://github.com/mols3131d/mols-agent-assets/blob/1f1efa63efaad63f4bda19fe4781920bb2c6c541/src/rulesync/.rulesync/skills/mols-dev-env-bootstrap-design/SKILL.md)가 소유한다.
+> **정본:** [개발환경 구축 정책](../../docs/development/development-environment.md). 도구별 실행은 [mise 안내](../../docs/development/tooling/mise.md), 재사용 설계 스킬 행동은 [SKILL.md](https://github.com/mols3131d/mols-agent-assets/blob/1f1efa63efaad63f4bda19fe4781920bb2c6c541/src/rulesync/.rulesync/skills/mols-dev-env-bootstrap-design/SKILL.md)가 소유한다.
 > **이관:** 프로젝트 운영·구현 관련 논의는 PR #258에서 추적하며 재사용 설계 Skill은 PR #256이 소유한다.
 > **원래 대상:** [PR #256](https://github.com/mols3131d/mols-agent-assets/pull/256) · [`mols-dev-env-bootstrap-design`](https://github.com/mols3131d/mols-agent-assets/blob/1f1efa63efaad63f4bda19fe4781920bb2c6c541/src/rulesync/.rulesync/skills/mols-dev-env-bootstrap-design/SKILL.md)
 > **기준:** 2026-10-25 토론, PR #256. 당시 구현 분석은 `367038a3181bdb06e65b41c6174c19ef3adfff88` 기준이며 현재 PR head/운영 상태는 정본에서 확인한다.
@@ -96,6 +96,6 @@ Python 인터프리터를 재사용할 수 있다는 사실은 그 인터프리�
 1. **실제 구현 범위 재검토:** Ruff/Biome 등의 최신 정책을 도입할 도구와 정확한 버전 고정이 필요한 도구를 구분한다. mise lock/native resolver·sidecar·Windows/다중 OS 테스트가 준비되기 전까지 tool range 도입을 완료라고 표시하지 않는다.
 1. **평가 확대:** Skill은 설계 범위와 설치 허가 설계를 평가하고, 실제 구현 품질과 설치 허가 준수는 일반 개발 workflow 및 deterministic/integration evidence로 따로 검증한다.
 1. **기존 리뷰 결함과 분리:** [재리뷰](https://github.com/mols3131d/mols-agent-assets/pull/256#pullrequestreview-5639031596)에서 지적된 Git 환경변수 상속에 따른 dirty-lock 검사 우회는 이번 UX/권한 논의와 별개인 구현 결함으로 계속 추적한다.
-1. **정본 반영:** 이 저장소의 구축·설치 허가·운영 정책은 [Development Environment](../../docs/development/development-environment.md)가 소유한다. 스킬 계약은 `SKILL.md`, 정확한 버전 선언은 `mise.toml`과 native config/lock, 실제 명령은 [mise 안내](../../docs/references/tooling/mise.md)가 소유한다. 이 inbox 문서는 논의 근거와 인계만 보존한다.
+1. **정본 반영:** 이 저장소의 구축·설치 허가·운영 정책은 [Development Environment](../../docs/development/development-environment.md)가 소유한다. 스킬 계약은 `SKILL.md`, 정확한 버전 선언은 `mise.toml`과 native config/lock, 실제 명령은 [mise 안내](../../docs/development/tooling/mise.md)가 소유한다. 이 inbox 문서는 논의 근거와 인계만 보존한다.
 
 **확정된 결정:** 설계 전용 Skill, 개발환경 구축 문서의 운영 정본화, 에이전트 실행 전 사용자 설치 허가, 승인 범위별 묶음 승인. **남은 판단:** 어떤 개발 도구를 최신 stable 채널로 운영할지, 새로운 범위형 버전 정책을 이 PR에 포함할지/후속 작업으로 넘길지, 현재 CLI 실행기에 사용자 허가를 기계적으로 검증하는 기능이 필요한지. 사용자의 "일반 도구는 최신 버전이면 충분"이라는 선호를 모든 도구에 대한 무제한 업데이트 승인으로 해석하지 않는다.

@@ -185,5 +185,5 @@ GitHub Agentic Workflows는 자연어 Markdown으로 작성하더라도 일반 �
 - deterministic executable behavior → [Testing](testing.md)
 - 구조·파생 계약 검증 → [Validation](validation.md)
 - behavioral evaluation과 근거 해석 → [Evaluation](evaluation.md)
-- Agent Asset의 설계, activation과 runtime behavior → 해당 Agent Asset의 원본과 [Agent Assets](../references/agent-assets/README.md)
+- Agent Asset의 설계, activation과 runtime behavior → 해당 Agent Asset의 원본과 [Agent Assets](../development/agent-assets/README.md)
 - GitHub 기능의 일반 사용법과 빠르게 변하는 현재 동작 → GitHub 공식 문서

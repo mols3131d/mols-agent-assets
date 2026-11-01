@@ -141,5 +141,5 @@ Trigger eval은 wording 자체가 아니라 이 decision boundary를 보호해�
 - Skill runtime behavior → `SKILL.md`
 - Trigger/Behavior behavioral contract → `evals/skills/mols-loops/cases.json`
 - Promptfoo suite와 grader/runtime evidence → [Evaluation](evaluation.md)
-- repository-wide Skill description convention → [Skill Authoring Conventions](../../references/agent-assets/skills/skill-authoring-conventions.md)
-- field limit와 vendor-specific discovery behavior → [Agent Skills Specification](../../references/agent-assets/skills/specification.md)에서 applicable official source로 resolve
+- repository-wide Skill description convention → [Skill Authoring Conventions](../../development/agent-assets/skills/skill-authoring-conventions.md)
+- field limit와 vendor-specific discovery behavior → [Agent Skills Specification](../../development/agent-assets/skills/specification.md)에서 applicable official source로 resolve

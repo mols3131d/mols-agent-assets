@@ -1,7 +1,7 @@
 # 부트스트랩 CLI 버전 정책 및 mise.lock 잠금 설계
 
 > **상태:** 확정 및 구현 완료 (2026-10-31). 이 문서는 PR #258의 버전 정책 논의 및 `mise.lock` 도입 작업 자료다.
-> **정본:** [개발환경 운영 정책 정본](../../docs/development/development-environment.md). 도구별 상세 버전 정책·허용 범위는 [mise 안내](../../docs/references/tooling/mise.md), 실제 선언은 [`mise.toml`](../../mise.toml) 및 [`mise.lock`](../../mise.lock)이 소유한다.
+> **정본:** [개발환경 운영 정책 정본](../../docs/development/development-environment.md). 도구별 상세 버전 정책·허용 범위는 [mise 안내](../../docs/development/tooling/mise.md), 실제 선언은 [`mise.toml`](../../mise.toml) 및 [`mise.lock`](../../mise.lock)이 소유한다.
 > **대상 PR:** [PR #258](https://github.com/mols3131d/mols-agent-assets/pull/258) · 브랜치 `mols/feat/repository-dev-bootstrap`
 
 ---

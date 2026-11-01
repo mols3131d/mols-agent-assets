@@ -1,10 +1,10 @@
 ---
-description: 저장소 개발 작업에서 공통 개발 원칙, VCS/Git, GitHub, CI, 작성 원본과 권한, repository layout, formatting, validation, testing, evaluation 중 적용할 local policy를 찾을 때 사용합니다.
+description: 저장소 개발 작업의 local policy, Agent Asset 설계 지식과 도구·명세 참고 자료를 찾을 때 사용합니다.
 ---
 
 # Development
 
-이 디렉터리는 **이 repository의 개발 규칙과 관행**을 소유합니다.
+이 디렉터리는 **이 repository의 개발 규칙과 관행, Agent Asset 설계 지식과 도구·명세 참고 자료**를 소유합니다. 설계 지식과 공식 자료는 다른 repository에서도 필요한 부분을 참고·채택할 수 있지만, 이곳의 local policy가 consumer에 자동 적용되지는 않습니다.
 
 ## Local Policies
 
@@ -20,13 +20,18 @@ description: 저장소 개발 작업에서 공통 개발 원칙, VCS/Git, GitHub
 - [Testing](testing.md) — deterministic test 설계와 repository-owned executable behavior의 evidence boundary
 - [Evaluation](evaluation.md) — Agent Asset behavioral evaluation과 evidence 해석
 
+## Design and Tooling References
+
+- [Agent Asset Design](agent-assets/README.md) — 공통 설계 원칙, instruction 설계, naming과 Skill-specific specification·authoring convention
+- [Tooling References](tooling/README.md) — 외부 도구·명세의 공식 source routing과 integration knowledge
+
 ## Related Owners
 
 - Repository agent rules → [`AGENTS.md`](../../AGENTS.md)
 - Documentation rules and conventions → [`docs/documentation/`](../documentation/)
-- Reusable knowledge → [References](../references/README.md)
-- Agent Asset design knowledge → [Agent Assets](../references/agent-assets/README.md)
-- Rulesync source/workspace boundary → [Rulesync](../references/tooling/rulesync.md)
-- Skill authoring convention → [Skill Authoring Conventions](../references/agent-assets/skills/skill-authoring-conventions.md)
+- 프로젝트 도구의 기본 설정·버전 선택·예외 → [Tools](../tools/README.md)
+- Reusable solution patterns → [Patterns](../../catalog/patterns/README.md)
+- Rulesync source/workspace boundary → [Rulesync](tooling/rulesync.md)
+- Skill authoring convention → [Skill Authoring Conventions](agent-assets/skills/skill-authoring-conventions.md)
 
 이 README는 development entrypoint이며 linked policy의 본문을 복제하지 않습니다.

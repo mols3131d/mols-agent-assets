@@ -15,7 +15,7 @@ description: 이 저장소의 Agent Asset이나 reusable knowledge를 외부 rep
 | 이 repository가 제공하는 Agent Asset을 agent가 찾게 한다 | [`route/ROUTE.md`](../route/ROUTE.md)에서 discovery 시작 |
 | 자주 다시 쓰는 외부 Skill source를 찾는다 | [`catalog/skills.json`](../catalog/skills.json)에서 source를 선택하고 upstream installer contract를 따른다 |
 | project에서 Skill을 지속적으로 사용한다 | source semantics를 보존하는 dependency 경로와 해당 lock/update contract를 따른다 |
-| reusable Agent Asset 설계 지식이나 tooling reference를 참고·채택한다 | [`docs/references/`](references/)에서 필요한 reference만 선택 |
+| reusable Agent Asset 설계 지식이나 tooling reference를 참고·채택한다 | [Development](development/README.md#design-and-tooling-references)에서 필요한 reference만 선택 |
 | reusable pattern을 참고·채택한다 | [`catalog/patterns/`](../catalog/patterns/)에서 필요한 pattern만 선택 |
 | 자산을 수정해서 자기 project 전용으로 쓴다 | 필요한 source만 복사하고 downstream adaptation으로 관리 |
 | Subagent를 가져온다 | canonical source를 consumer의 Rulesync 또는 vendor-native 위치로 복사 |
@@ -26,18 +26,19 @@ description: 이 저장소의 Agent Asset이나 reusable knowledge를 외부 rep
 
 ## Reusable knowledge 사용하기
 
-Reusable knowledge는 책임에 따라 두 surface에 나뉩니다.
+Reusable knowledge는 설계 지식, pattern과 tooling reference로 나뉩니다.
 
-- Agent Asset 설계 지식: [`references/agent-assets/`](references/agent-assets/)
+- Agent Asset 설계 지식: [`development/agent-assets/`](development/agent-assets/)
 - Reusable patterns: [`catalog/patterns/`](../catalog/patterns/)
-- Tooling과 specification routing: [`references/tooling/`](references/tooling/)
+- Tooling과 specification routing: [`development/tooling/`](development/tooling/)
 
 Reference나 pattern은 다른 repository나 agent instruction에서 URL로 직접 가리키거나 필요한 내용을 downstream policy에 채택할 수 있습니다. 이 repository에 있다는 사실만으로 consumer의 mandatory policy가 되지는 않으며, 실제 적용 범위와 authority는 consumer가 소유합니다.
 
 최신 상태를 그대로 참고하려면 `main`의 Markdown URL을 사용하고, 재현 가능한 기준점이 필요하면 commit SHA에 고정합니다.
 
 ```text
-https://raw.githubusercontent.com/mols3131d/mols-agent-assets/refs/heads/main/docs/references/<path>.md
+https://raw.githubusercontent.com/mols3131d/mols-agent-assets/refs/heads/main/docs/development/agent-assets/<path>.md
+https://raw.githubusercontent.com/mols3131d/mols-agent-assets/refs/heads/main/docs/development/tooling/<tool>.md
 https://raw.githubusercontent.com/mols3131d/mols-agent-assets/refs/heads/main/catalog/patterns/<category>/<pattern>.md
 ```
 
@@ -94,7 +95,7 @@ rulesync generate
 
 재현 가능한 설치가 필요하면 consumer repository가 `rulesync.jsonc`와 `rulesync.lock`을 함께 관리합니다. 새 upstream 상태를 받아들이려면 `rulesync install --update`로 lock을 갱신하고 변경 내용을 검토합니다.
 
-Rulesync의 현재 CLI, target과 declarative source semantics는 이 저장소의 [Rulesync reference](references/tooling/rulesync.md)와 upstream official documentation을 기준으로 확인합니다.
+Rulesync의 현재 CLI, target과 declarative source semantics는 이 저장소의 [Rulesync reference](development/tooling/rulesync.md)와 upstream official documentation을 기준으로 확인합니다.
 
 ## Subagent 또는 직접 수정할 자산 가져오기
 

@@ -48,7 +48,7 @@ description: PR #257의 Rulesync 40.2.0 업그레이드에서 원격으로 완�
 
 ### 남은 운영 조건
 
-- 무인증 fresh GitHub 설치는 API rate limit(403/429)으로 실패했고 lock은 변하지 않았다. `GITHUB_TOKEN`을 설치 프로세스에만 전달한 재시도는 성공했다. 인증 방법과 기존 환경 복구 예제는 [Rulesync 운영 문서](../../docs/references/tooling/rulesync.md#repository-local-installation)에 반영했다.
+- 무인증 fresh GitHub 설치는 API rate limit(403/429)으로 실패했고 lock은 변하지 않았다. `GITHUB_TOKEN`을 설치 프로세스에만 전달한 재시도는 성공했다. 인증 방법과 기존 환경 복구 예제는 [Rulesync 운영 문서](../../docs/development/tooling/rulesync.md#repository-local-installation)에 반영했다.
 - 사용자 HOME을 사용하는 최초 setup은 이미 설치된 외부 Skill을 vendor installer가 덮어쓰지 않고 거부했다. `--force`로 우회하지 않고 임시 HOME/cache로 격리해 전체 setup 성공과 `.codex` native Skill·clone hook 출력을 확인했다. 개인 Skill과 로컬 override는 보존했다.
 - Root `generate`는 기존처럼 root rule 부재 안내를 출력한다. Root가 현재 외부 Skill consumer라는 이유로 unrelated Rule을 추가하지 않았다. Library validation에는 warning이 없다.
 - **서버 검증 및 최종 검토:** 구현 head에서 frozen 설치·lock 불변 성공을 확인하고 High thread를 해결했다. `${{ github.token }}`은 해당 step의 `GITHUB_TOKEN`에만 전달하며 기존 `contents: read`를 유지한다. 원격 API·일시 장애는 설치 실패로 명확히 남으며 다른 PC의 local override와 전체 native setup 검증은 별도다. 통제 표면의 독립적인 사람 검토·Draft 해제·merge는 각각 별도 gate이며 이번 push 지시로 승인된 것은 아니다.

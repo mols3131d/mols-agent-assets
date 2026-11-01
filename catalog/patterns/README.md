@@ -64,7 +64,7 @@ Pattern은 **본질은 분명하게, 적용은 유연하게** 작성합니다.
 - Category `README.md`는 해당 directory의 책임과 routing을 소유하며 개별 pattern의 본문을 복제하지 않습니다.
 - 다른 capsule과 내용이 겹치는 것은 self-containment와 재사용성에 도움이 되면 허용합니다.
 - 다른 pattern의 핵심 책임을 자기 규칙처럼 소유하지 않습니다.
-- Agent Asset type-specific 설계 지식은 [`docs/references/agent-assets/`](../../docs/references/agent-assets/)가 소유합니다.
+- Agent Asset type-specific 설계 지식은 [`docs/development/agent-assets/`](../../docs/development/agent-assets/)가 소유합니다.
 - 외부 standard나 tool behavior가 authority라면 필요에 따라 reference하고 pattern이 이를 재정의하지 않습니다.
 - 같은 capsule이나 bundle 내부의 의미 없는 반복은 피합니다.
 

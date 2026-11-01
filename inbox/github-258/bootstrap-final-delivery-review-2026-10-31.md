@@ -1,7 +1,7 @@
 # 부트스트랩 최종 인계 및 PR #258 완료 검토
 
 > **상태:** 검토 및 검증 완료 (2026-10-31). PR Gate #41206679705 통과.
-> **정본:** [개발환경 운영 정책 정본](../../docs/development/development-environment.md). 실행 안내는 [mise 안내](../../docs/references/tooling/mise.md), 실행기는 [`scripts/development_bootstrap.py`](../../scripts/development_bootstrap.py).
+> **정본:** [개발환경 운영 정책 정본](../../docs/development/development-environment.md). 실행 안내는 [mise 안내](../../docs/development/tooling/mise.md), 실행기는 [`scripts/development_bootstrap.py`](../../scripts/development_bootstrap.py).
 > **대상 PR:** [PR #258](https://github.com/mols3131d/mols-agent-assets/pull/258) · 브랜치 `mols/feat/repository-dev-bootstrap`
 
 ---
@@ -16,7 +16,7 @@ PR #258은 PR #256에서 분리되어 저장소 개발환경의 실제 부트스
 | **F2: uv group 격리** | 상속된 `UV_NO_GROUP`으로 dev/test 누락 가능 | `uv sync` 시 `UV_NO_GROUP`, `UV_NO_DEV` 제거 (proxy/auth/cache 보존) | [`development_bootstrap.py`](../../scripts/development_bootstrap.py) |
 | **F3: .venv 격리** | 시스템 패키지 노출 venv 오염 가능 | `include-system-site-packages = true`, 외부 symlink/junction 차단 | [`development_bootstrap.py`](../../scripts/development_bootstrap.py) |
 | **Update 검사 최적화** | 무관한 Rulesync·Skill 수정까지 차단 | `UPDATE_INPUTS` 5개 파일(`mise.toml`, `pyproject.toml`, `.python-version`, `uv.lock`, `mise.lock`)로 한정 | [`development_bootstrap.py`](../../scripts/development_bootstrap.py) |
-| **CLI 버전 정책** | 단순 exact pin 나열 | 4개 케이스 분류 정립 및 7개 도구 매핑 완료 | [`docs/references/tooling/mise.md`](../../docs/references/tooling/mise.md) |
+| **CLI 버전 정책** | 단순 exact pin 나열 | 4개 케이스 분류 정립 및 7개 도구 매핑 완료 | [`docs/references/tooling/mise.md`](../../docs/development/tooling/mise.md) |
 | **잠금 체계 완성** | `mise.lock` 도입 차단 상태 | `mise.lock` 도입(바이너리 4종 7개 플랫폼 체크섬·URL + npm 3종 버전) 및 `--locked` strict lock 연동 | [`mise.lock`](../../mise.lock) |
 | **실행기 간소화** | `MISE_TASK_RUN_AUTO_INSTALL` 강제 | `mise.toml` native 설정과 중복되는 환경변수 제거, Windows/Node 방어 보존 | [`development_bootstrap.py`](../../scripts/development_bootstrap.py) |
 | **문서 구조 정돈** | 명령과 정책 혼재 | 일반 거버넌스(격리·재사용·버전) vs 부트스트랩 섹션 분리 | [`docs/development/development-environment.md`](../../docs/development/development-environment.md) |
