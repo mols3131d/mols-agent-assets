@@ -18,6 +18,10 @@ Lefthook은 로컬 Git hook의 명령 실행을 관리합니다. hook 구성은 
 
 hook이 설치됐거나 통과했다는 사실로 remote write와 PR의 검증을 대신하지 않습니다. [CI](../development/ci.md)의 admission 경계와 [VCS / Git](../development/vcs-git.md)의 사용자 작업 보호를 유지합니다.
 
+## 권장 버전 정책
+
+**Minor**(mise 요청 `2`)를 권장합니다. 최초 범위 전환과 이후 lock 갱신 시 `lefthook validate`, hook 명령·staged 파일 처리 동작을 확인합니다. 도구 버전 갱신은 Git hook을 설치하거나 사용자 `core.hooksPath`를 변경할 권한이 아닙니다.
+
 ## Official Sources
 
 - [Configuration](https://lefthook.dev/configuration/)
