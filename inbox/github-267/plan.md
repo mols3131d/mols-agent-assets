@@ -46,9 +46,15 @@
 - 기본 bootstrap lifecycle은 저빈도 provision/repair이며, 평상시 작업은 bootstrap Skill의 지속 로드에 의존하지 않는다.
 - 실제 행동을 실행하지 않았다면 하네스 준수·runtime parity를 검증했다고 주장하지 않는다.
 
+## 챗봇 서비스 런타임 조사
+
+[주요 챗봇 서비스의 도구·플러그인·런타임 조사](chatbot-runtime-landscape.md)에서 ChatGPT, Claude, Gemini, Microsoft Copilot, Perplexity, Grok, Poe의 채팅·에이전트 모드를 구분하고, 연결 앱/MCP, 격리 코드 실행, 로컬·클라우드 컴퓨터, 브라우저 조작, 지속 작업과 계정·권한 제약을 정리했다.
+
+이 조사 결과는 **capability 후보와 확인 질문**이지 모든 대상 런타임이 지원한다는 근거가 아니다. Skill에 서비스별 기능표를 복제하지 말고, 실제 사용 가능 도구와 권한을 작업별로 확인하는 범용 원칙만 필요한 경우 반영한다. 런타임 평가 시에는 특히 **웹 읽기만 가능 / 연결 도구 + 격리 Python / 컴퓨터·브라우저 조작 가능** 시나리오의 차이를 확인한다.
+
 ## Handoff / Current State
 
-- **완료:** 대상 Skill 및 현재 하네스의 정적 검토, 핵심 문제와 비목표 범위 정리, 이 PR 준비.
+- **완료:** 대상 Skill 및 현재 하네스의 정적 검토, 핵심 문제와 비목표 범위 정리, 이 PR 준비, 주요 챗봇 서비스 공식 문서 기반 런타임 조사.
 - **미착수:** `SKILL.md` 구현 변경, runtime behavioral eval, CI/validator 변경.
 - **다음 작업:** 기존 Skill의 Validation과 Workflow에서 필요한 최소 delta를 제안하고, 대표 시나리오를 실제 사용 가능한 챗봇 런타임에서 검증한다.
 - **관련 PR:** [#266 — 유지보수 문서의 범용성 기준](https://github.com/mols3131d/mols-agent-assets/pull/266) (별도 작업).
