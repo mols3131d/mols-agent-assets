@@ -85,3 +85,7 @@
 - 부속 generator 파싱 이슈는 직접적인 harness execution fidelity의 blocker가 아니므로 이번 범위에서 분리.
 
 이 조사 결과의 구현·검증 순서와 acceptance는 [plan.md](plan.md)를 정본 working plan으로 사용한다.
+
+## 설계 범위로의 연결
+
+이 조사는 entrypoint/route/body/application의 **실행 충실도** 및 런타임 권한 경계를 연구한 부분 결과다. 더 넓은 목표인 '**현재 대상 환경에서 가장 단순하고 효율적인 유효한 챗봇 하네스 구축**'을 달성하려면, 이것에 더해 [harness architecture options](harness-architecture-options.md)의 no-op/브리지 대안 비교와 [evaluation strategy](harness-evaluation-strategy.md)의 context·tool·maintenance 비용·사용성 평가를 적용한다. 실행 충실도만으로 최적성을 증명하지 않으며, 초기 작은 계약 개선안은 변경 범위 검토의 출발점이다.
