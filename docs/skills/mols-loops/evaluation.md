@@ -95,12 +95,14 @@ Model grader failure는 target failure와 구분합니다. Transport, parse, gra
 
 Repository-owned fixture를 Promptfoo 전용 fixture로 복제하지 않습니다.
 
+기본 실행 config는 Promptfoo native Ollama chat provider와 공통 system/user chat template을 사용합니다. Python generator는 fixture를 Promptfoo case와 assertion으로 변환하며 실제 모델 HTTP 요청은 Promptfoo가 처리합니다. 별도 fixture-mode smoke는 기존 Python provider를 유지합니다.
+
 `evals/promptfoo/mols-loops.yaml`은 같은 Python generator를 두 번 호출합니다.
 
 - `suite: trigger` → `mols-loops-trigger` provider만 실행
 - `suite: behavior` → `mols-loops-behavior` provider만 실행
 
-Generator는 각 test에 다음 metadata를 붙입니다.
+Native generator는 case별 `system` 변수를 제공하고 Trigger에서는 frontmatter만, Behavior에서는 full Skill을 전달합니다. Generator는 각 test에 다음 metadata를 붙입니다.
 
 - `suite`
 - `mode`
