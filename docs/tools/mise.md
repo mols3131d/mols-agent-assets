@@ -82,7 +82,9 @@ Tool 선택과 Python lock 상태가 필요한 경우 `mise ls --project --json`
 - `mise run eval -c evals/promptfoo/<config>.yaml [Promptfoo CLI flags]` passes the config and filter options to the pinned Promptfoo runner. Evaluations may invoke models or write results; never run them as an implicit environment health check.
 - `mise run rulesync-doctor`, `mise run rulesync-preview`, and `mise run rulesync-validate` replace the former npm scripts. Rulesync CLI versions continue to be owned by mise's npm backend, independent of the removed root `package.json`.
 
-Mise also provides native `mise doctor project` using `[doctor.checks]`, but this feature was introduced **after** the `2026.9.2` mise version presently pinned in PR Gate (`2026.9.6` release). Do not add project Doctor checks to the default task until the supported host/CI version and read-only probe behavior are verified. 지원되는 버전과 진단 계약을 검증하기 전까지 효과가 불충분한 `preflight` task 대신 필요한 native 명령을 직접 사용합니다.
+**mise `2026.9.6` 이상**에서는 `mise doctor project`가 `[doctor.checks]`로 선언한 Python lock과 루트 Rulesync 설정을 검사합니다. CI도 해당 버전으로 맞췄으며, `mise run check`가 이를 재사용합니다. Doctor의 exit code가 상태 판정을 소유하고, 설치·업데이트·생성물 쓰기는 수행하지 않습니다. 구버전 mise에서는 `uv lock --check`와 `rulesync doctor --strict`를 직접 실행할 수 있습니다.
+
+`mise run generated sync`와 `mise run generated validate`는 동일한 CLI의 별도 서브커맨드입니다. `sync --staged`만 영향받는 파일을 생성·stage하며, `validate --changed-from REV`, `validate --local-only --all`은 파일을 수정하지 않고 결과를 비교합니다.
 
 ### Optional Integrations
 

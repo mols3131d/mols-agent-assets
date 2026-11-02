@@ -21,7 +21,7 @@ Validation은 이 repository가 유지하는 **네 가지 구조·파생 계약*
 
 ## Projection Validation
 
-Index와 route의 갱신은 canonical source와 공식 generator가 소유합니다. Local authoring에서는 필요하면 `mise run generated-sync`로 committed projection을 동기화합니다.
+Index와 route의 갱신은 canonical source와 공식 generator가 소유합니다. Local authoring에서는 필요하면 `mise run generated sync`로 committed projection을 동기화합니다.
 
 Validation은 projection을 새로운 source처럼 수정하지 않습니다. CI에서는 runner의 ephemeral working tree에서 공식 generator를 실행한 뒤 committed output과 비교할 수 있으며, 차이가 있으면 drift로 판정합니다. 이 generation은 검증 수단이며 repository write-back을 뜻하지 않습니다.
 

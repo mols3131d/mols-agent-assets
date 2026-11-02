@@ -134,3 +134,10 @@
 - ✅ Pass — diff는 `package.json`, `rulesync_run.py` 삭제와 의도한 문서/CI/`mise.toml` 변경으로 한정됐으며, mouse-sensitivity 제거를 비롯한 최신 main의 다른 변경을 유지했다.
 - ⚪ Not Verified — 별도 로컬 Windows task 실행 및 실제 모델·원격 provider 평가. 이 PR Gate의 성공을 이 범위의 실증으로 확대하지 않는다.
 - 작업 완료 판단: 별칭 최소화와 중복 npm 계층 제거 완료. `preflight` 재도입은 실제 관찰된 진단/축약 필요와 해당 mise 버전의 네이티브 지원 검증이 있을 때 별도 판단한다.
+
+## 생성물 단일 CLI와 mise Doctor (2026-11-02)
+
+- `generated_artifacts_sync.py`는 생성·Git 영향/충돌/staging 로직, `generated_artifacts_validate.py`는 expected content 비교·실패 판정 로직을 유지한다. 각 모듈의 argparse/`__main__` 진입을 제거하고 `scripts/generated_artifacts.py` 한 곳에서 `sync [--staged]` / `validate [--local-only] [--all | --changed-from REV]`를 파싱한다.
+- `mise.toml` task 2개를 `generated` 하나로 합치고, Lefthook·branch check·PR Gate·실패 복구 메시지·문서·테스트 호출자를 함께 이관. 세부 소유 함수는 변경하지 않아 생성과 read-only 검증의 계약을 보존한다.
+- `mise doctor project`를 처음 지원하는 mise 버전은 `2026.9.6`(공식 GitHub 릴리스 확인). 호스트 mise는 저장소가 설치하지 않으며 PR Gate만 `2026.9.6`으로 맞춘다. `[doctor.checks]`에 `uv lock --check`, `rulesync doctor --strict`를 선언하고 기존 `check` task와 PR Gate에서 Doctor를 재사용한다. Doctor는 설치 및 write sandbox가 아니므로 검사 command는 read-only만 유지한다.
+- 검증 전 위험: CI가 `mise doctor project`를 지원하더라도 설치 도구/PATH/실제 환경 보존이 통과한다는 보장은 없다. CI 실패 시 native 기능 자체보다 실행 환경 구성을 우선 확인하고 최소 수정한다.
