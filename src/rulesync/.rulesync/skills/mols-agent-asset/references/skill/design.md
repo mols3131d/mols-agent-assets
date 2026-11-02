@@ -34,6 +34,10 @@ Metadata는 후보를 좁히고, entrypoint는 실제 applicability와 필요한
 - maintainer-only artifact를 deployable Skill에 섞지 않는다.
 - package naming과 placement는 source framework의 자연스러운 layout을 우선한다.
 
+## Installed package portability
+
+Skill의 authoring path와 사용자가 설치한 package path는 독립적으로 취급한다. Bundled script, reference, template의 실행·읽기 지침은 **설치된 Skill 디렉터리**에서 resource를 찾도록 작성한다. 작성 저장소의 루트에서 실행해야만 맞는 예시, 상대 경로 또는 repo-local CLI task를 일반 호출 방식으로 제시하지 않는다. Workspace 실행 사례가 필요한 경우 사용 조건과 consumer의 대체 경로를 분리한다.
+
 ## Variants
 
 같은 capability의 project, target, invocation 차이는 전체 Skill 복제보다 reusable core와 작은 delta로 표현할 수 있는지 본다.
