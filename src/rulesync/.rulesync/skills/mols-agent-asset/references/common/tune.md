@@ -24,8 +24,7 @@
 
 - 원본의 핵심 intent와 유효한 behavior를 먼저 보존한다.
 - 목적, 상황, 저장소, target에 필요한 차이만 delta로 추가한다.
-- reusable core를 그대로 복제하지 않는다.
-- 현재 작성·튜닝 중인 repository의 동작을 전체 consumer의 필수 조건으로 격상하지 않는다. Project-local 차이는 그 project의 owner에 한정한다. 분리가 실제 duplication을 줄일 때만 core와 delta를 나눈다.
+- reusable core를 그대로 복제하지 않는다. 분리가 실제 duplication을 줄일 때만 core와 delta를 나눈다.
 - target-specific field, path, permission, packaging, runtime behavior는 필요할 때 authoritative source를 확인한다.
 - 저장소 convention을 일반 규칙처럼 원본에 역전파하지 않는다.
 - 튜닝을 빌미로 관련 없는 구조 개선이나 정규화를 함께 수행하지 않는다.
