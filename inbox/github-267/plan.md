@@ -87,6 +87,14 @@ D0–D5는 작업 의존성이지 독립 PR·Skill·runner 또는 모든 환경�
 - 유지보수 README는 범용 판단 이유를 소유하고, 타깃의 `CHATBOT.md`와 같은 소비 surface는 대상별 실제 호환성 지침만 소유한다. 현재 저장소의 `CHATBOT.md` 내용 자체는 이번 PR에서 수정하지 않는다.
 - 이 보강은 실제 독립 Subagent 실행, 동등한 CLI 검증, 장기 작업 성공을 증명하지 않는다. 사용자에게 중요한 미지원·부분·생략·인계가 드러나는 설계를 우선한다.
 
+## 보완 구현 및 소스 리뷰
+
+- 기존 실행 스킬의 조사/로딩 경로를 **task → entrypoint → path/ref별 canonical source → 필수 실행 책임**으로 구체화하고, 불필요한 전수 inventory를 피하도록 했다.
+- 원본이 요구하는 command, script, delegation은 해당 대상이 실제 사용하면 고려하고, `configured`, `reachable`, `observed applied`의 증거 경계를 유지한다.
+- `CHATBOT.md` 등 타깃 소유 소비 진입점은 순수 라우터만 허용하는 것으로 한정하지 않는다. **타깃이 실제 읽고 다른 좁은 owner가 없을 때에만** 조건부 실행 보조 지침을 둘 수 있다.
+- `references/execution-adaptation.md`에 원본/트리거/판정/배치/사용자 공개를 갖춘 작고 실행 가능한 지침 예시를 추가했다. 최종 사용자에게 미완료 범위를 알려야 한다는 요구를 설정 보고서뿐 아니라 소비 하네스에도 반영한다.
+- [자산 설계 평가](asset-design-assessment.md)의 후속 리뷰를 갱신했다. 새 Skill, target projection, parser, generator, CI 또는 provider-specific patch를 만들지 않았다.
+
 ## 구현 및 정적 리뷰 결과
 
 - **D0–D2 / 구현:** 기존 스킬을 유지하며 metadata의 설계 activation과 workflow의 N0–N3 선택, 현재 노출된 관련 도구·권한 판단, canonical body 소비 확인, 완료 근거 수준, 정확한 handoff를 반영했다.
