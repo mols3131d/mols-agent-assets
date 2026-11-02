@@ -10,7 +10,7 @@
 - Pull request: https://github.com/mols3131d/mols-agent-assets/pull/253
 - Base originally reviewed: `23d649b2eac6e9115ce0e97a823d59de4d37b3c5`
 - Write branch: `mols/docs/document-consistency-audit`
-- Last confirmed work-stage commit **before this handoff file is added**: `572e3c577c59561979f92078aa0ae6bb3077b593`
+- Last confirmed work-stage commit **before this handoff file is added**: `6e924097e884d5daea92d84742a7813a34a8bb36` (merged `origin/main` at `9c08b43`)
 - Exhaustive audit artifact: [exhaustive-consistency-audit.md](exhaustive-consistency-audit.md)
 
 **Never assume the last recorded SHA is still the active head.** Re-query the PR and latest Actions on resume.
