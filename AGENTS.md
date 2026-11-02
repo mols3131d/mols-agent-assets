@@ -10,6 +10,11 @@
 - `.inbox/`의 조사·계획·검토·인계 자료는 참고 근거이며 정본 정책이나 현재 작업 지침이 아닙니다. 명시적으로 채택해 해당 owner 문서에 반영하기 전에는 지침으로 적용하지 않습니다.
 - `catalog/`는 외부 프로젝트 등을 위한 재사용 자산·패턴 탐색 공간입니다. Skill·Plugin 목록의 등재는 설치·사용을 뜻하지 않습니다. 이곳이 소유하는 패턴·템플릿의 작성 원본도 이 저장소의 mandatory policy를 대신하지 않습니다.
 
+## Agent Asset 작업 워크플로
+
+- 이 저장소가 관리하는 Skill·Rule·Subagent 등 Agent Asset을 신설·개선·리뷰·평가·제공·삭제할 때는 [저장소 전용 워크플로 라우터](.rulesync/skills/repository-agent-asset-workflow/SKILL.md)에서 필요한 절차를 선택합니다. Skill을 발견·로드할 수 없다면 [Agent Asset Workflows](docs/development/agent-asset-workflows.md)를 직접 확인합니다. 이 연결은 기존 경로 규칙·전문 Skill·권한을 대체하지 않습니다.
+- 자산의 **작성 원본을 변경했다면** [Agent Asset Lifecycle](docs/development/agent-asset-lifecycle.md)에 따라 문서 영향과 필요한 정본 반영을 반드시 판단합니다. `.inbox/` 인계만으로 정본 문서 작업을 완료했다고 간주하지 않습니다.
+
 ## 자산 탐색
 
 - 이 저장소가 **제공하는** Agent Asset의 외부 탐색은 `route/README.md`를 따릅니다.
