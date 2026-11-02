@@ -29,8 +29,6 @@ Promptfoo/Ollama, 실행용 Node/Python과 이 저장소의 mise task 진입점�
 
 ## Run locally
 
-아래 명령과 환경변수는 **현재 작성 저장소의 평가 하네스 예시**이며, 다른 저장소에서 이 Skill을 사용하거나 유지보수할 때 요구되는 설정이 아니다. 다른 호스트에서는 그곳의 평가 실행기를 선택한다.
-
 사용 가능한 native provider와 독립적인 grader를 선택한 뒤 repository root에서 실행한다. Ollama가 기본값이지만 필수는 아니며, 기본 runtime/grader 이름에 해당하는 모델이 설치되어 있다고 가정하지 않는다.
 
 ```bash
