@@ -29,7 +29,7 @@
 ## 원본·의존성
 
 - 재사용 가능한 Rulesync 자산은 `src/rulesync/.rulesync/`에서 작성·수정합니다. 이 저장소가 직접 사용하는 Rulesync 자산은 필요할 때만 root `.rulesync/`에 둡니다.
-- 재사용 가능한 vendor-native 자산은 `src/<vendor>/`에서 작성·수정합니다. 이 저장소가 직접 사용하는 vendor-native 자산은 해당 vendor의 native project path에 둡니다.
+- 재사용 가능한 vendor-native 자산은 `src/<vendor>/`에서 작성·수정합니다. 이 저장소의 runtime-local 작성 원본을 vendor-specific 경로에 추가하지 않습니다.
 - `src/`의 자산은 기본적으로 독립적입니다. 명시되지 않은 자산 간 의존성이나 호환성을 전제하지 않습니다.
 - 같은 semantic asset에 Rulesync와 vendor-native 작성 원본을 중복해서 두지 않습니다. 원본 선택은 `docs/development/source-authority.md`를 따릅니다.
 - Generated vendor projection과 Rulesync lock state는 재사용 가능한 작성 원본으로 commit하지 않습니다.
