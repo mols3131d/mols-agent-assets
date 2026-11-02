@@ -1,6 +1,6 @@
 # 개발 도구 실행 경로·진단 최적화 구현 계획
 
-> 상태: 준비 완료, 구현·검증 미착수. 이 문서는 PR 진행 중의 작업 근거이며 저장소 정책이나 도구 설정의 정본이 아니다.
+> 상태: 1차 구현·PR Gate 검증 완료, 추가 검토 중. 이 문서는 PR 진행 중의 작업 근거이며 저장소 정책이나 도구 설정의 정본이 아니다.
 
 ## 목표와 범위
 
@@ -83,6 +83,14 @@
 6. **`package.json` 제거와 npm 생태계 제거를 혼동하지 않는다.** 프로젝트 루트의 `package.json`은 현재 scripts-only이고 패키지 의존성 선언이 없다. 직접 호출하는 CI·문서·task를 이관하면 삭제 가능성이 높다. 반면 `mise.toml`의 `npm:` backend, Node와 `npx`는 별도 기능이므로 필요성을 개별 판단한다. bootstrap이 확인하는 **설치 패키지의 package.json**은 프로젝트 루트 파일을 삭제해도 필요하다.
 7. **최적화는 삭제가 목적이 아니라 안전한 경로 단순화다.** 예전 Windows fallback에서 검증된 실행/잠금 경계를 성급히 제거하지 않고, 대표 테스트로 비용·실패 의미·호환성을 비교한다. `--locked`는 lockfile 수정을 막지만, uv 환경 동기화까지 원천 차단하는 읽기 전용 옵션은 아니다.
 8. **동시 PR은 과거 가정을 무효화할 수 있다.** PR #272가 Promptfoo 실행 방식과 mise task를 함께 고치므로 작업 직전 최신 ref·diff·사용자를 확인하고 새 개선 사항을 덮어쓰지 않는다.
+
+## 실행 기록과 추가 교훈 (2026-11-02)
+
+- 신규 커밋 `5f4008e324ef451e8442568176632d8926ba20df`: 루트 `package.json` 삭제. mise의 `eval` 범용 task 및 Rulesync 세 작업 task 추가; CI의 npm 검증 호출을 mise로 이전; 문서 정합화. 기존 CLI pin·bootstrap·Promptfoo runner와 provider 로직은 변경하지 않음.
+- **실제 PR Gate 성공:** GitHub Actions run `41452133512`에서 문서 계약, 결정론적 tests, 생성물 검증, mise 설치 및 Rulesync doctor/install/validate 단계 모두 통과. 이는 대상 CI 경로에 대한 evidence이며 로컬 OS·Promptfoo 실모델 eval 성공을 뜻하지 않음.
+- **후속 검토로 발견한 문서 잔여:** `docs/skills/mols-test-design/evaluation.md`의 옛 별칭 및 `--no-cache --no-write` 기본값, `docs/skills/mols-loops/evaluation.md`의 과거 별칭 설명을 명시적 옵션 예시로 교체. Bootstrap evaluation 문서의 옛 npm 서술과 mise 인수 구분 기호도 수정.
+- **mise Doctor 지원 버전 교훈:** 프로젝트 Doctor가 처음 도입된 버전은 `2026.9.6`, 현재 CI의 mise 설치 버전은 `2026.9.2`이다. 최신 upstream 문서의 기능을 현 환경에서 사용 가능하다고 추정하면 안 된다. 호스트 및 CI 업그레이드가 검증되기 전에는 기존 `mise ls --project --json`과 `uv lock --check`로 경량 점검을 제공한다. `preflight`는 완전한 실행/설치 상태 검증이 아니며 자동 update를 하지 않는다.
+- **확인된 범위 밖:** `pyproject.toml` 자체의 dependency group을 재편성할 이유는 발견되지 않아 변경하지 않았고, `development_bootstrap.py`의 Windows/npm shim·격리 검증은 재현 계약을 보존하기 위해 그대로 두었다. PR #272의 Promptfoo provider 변경은 독립 진행 중이며 후속 동기화 시 새 head 검토 필요.
 
 ## 준비 시 검증 상태
 

@@ -118,10 +118,10 @@ mise run eval -c evals/promptfoo/mols-loops.yaml --filter-metadata suite=trigger
 mise run eval -c evals/promptfoo/mols-loops.yaml --filter-metadata suite=behavior
 ```
 
-- `eval-mols-loops-smoke` — fixture/provider/assertion plumbing만 확인
-- `eval-mols-loops` — default Trigger + Behavior runtime suite
-- `eval-mols-loops-trigger` — metadata filter로 Trigger만 실행
-- `eval-mols-loops-behavior` — metadata filter로 Behavior만 실행
+- `mols-loops-smoke.yaml` — fixture/provider/assertion plumbing만 확인
+- `mols-loops.yaml` — default Trigger + Behavior runtime suite
+- `--filter-metadata suite=trigger` — Trigger만 실행
+- `--filter-metadata suite=behavior` — Behavior만 실행
 
 Runtime model은 `PROMPTFOO_RUNTIME_MODEL`, model grader는 `PROMPTFOO_GRADER_PROVIDER`로 선택합니다. 서로 다른 model/runtime을 비교할 때는 다른 조건도 결과를 왜곡하지 않도록 맞추고 사용한 조건을 함께 기록합니다.
 

@@ -25,7 +25,7 @@ Trigger는 expected selection과 deterministic하게 비교하며 Skill body를 
 
 현재 사례에는 Python/uv, Node/Volta/pnpm, Rust/Cargo 설계 시나리오가 포함된다. 이는 대표 입력 사례이며 다른 저장소의 실제 실행이나 모든 스택·도구 조합의 호환성을 검증한 결과는 아니다. 지원·성능 주장은 실제 평가한 조합과 claim에 맞는 근거로 한정한다. 추가 사례는 필요한 재사용 범위나 관찰된 실패에 근거해 선택한다.
 
-Promptfoo/Ollama, 실행용 Node/Python과 이 저장소의 npm 진입점은 현재 평가 harness의 구성이다. 배포된 Skill을 적용하는 다른 프로젝트의 필수 도구나 설치 절차로 전제하지 않는다.
+Promptfoo/Ollama, 실행용 Node/Python과 이 저장소의 mise task 진입점은 현재 평가 harness의 구성이다. 배포된 Skill을 적용하는 다른 프로젝트의 필수 도구나 설치 절차로 전제하지 않는다.
 
 ## Run locally
 
@@ -35,7 +35,7 @@ Promptfoo/Ollama, 실행용 Node/Python과 이 저장소의 npm 진입점은 현
 mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design.yaml
 ```
 
-`PROMPTFOO_RUNTIME_MODEL`과 `PROMPTFOO_GRADER_PROVIDER`를 명시하고, 필요하면 `-- --filter-metadata suite=trigger` 또는 `suite=behavior`로 분리한다. 네트워크 모델 다운로드는 이 평가의 자동 선행 작업이 아니다. 현재 공통 runner가 선택한 Promptfoo version·local/no-sharing 설정을 재사용한다.
+`PROMPTFOO_RUNTIME_MODEL`과 `PROMPTFOO_GRADER_PROVIDER`를 명시하고, 필요하면 `--filter-metadata suite=trigger` 또는 `--filter-metadata suite=behavior`로 분리한다. 네트워크 모델 다운로드는 이 평가의 자동 선행 작업이 아니다. 현재 공통 runner가 선택한 Promptfoo version·local/no-sharing 설정을 재사용한다.
 
 Ollama grader에는 native `temperature=0`을 지정한다. Structured JSON에서 thinking만 반환하고 content가 비는 모델은 해당 실행에 한해 `PROMPTFOO_RUNTIME_THINK=false`를 지정할 수 있다. 기본 thinking 동작은 변경하지 않으며, 이 설정을 바꾼 결과는 이전 조건과 구분한다. Transport/envelope 오류와 content JSON 오류는 별도로 기록하고 잘못된 content와 종료 metadata를 보존한다.
 

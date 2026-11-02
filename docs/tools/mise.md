@@ -75,7 +75,16 @@ Node 실패 시 npm 단계는 차단하되 독립적인 uv/Python 단계는 계�
 
 실패하면 표시한 native 명령과 policy·lock diff를 점검한 뒤 `setup`을 재실행합니다. 자동 rollback, 사용자 파일 삭제, `git clean`/reset, hook 덮어쓰기나 전역 설정 변경은 하지 않습니다.
 
-### Optional Integrations
+### Project diagnostics and evaluation tasks
+
+- `mise run preflight` reports selected project tool versions through mise and checks the Python lock. It is an inspection aid, **not** proof that all binaries, environment packages, or optional integrations are ready.
+- `mise run outdated` explicitly queries newer project-managed tool releases. It is a read-only, network-dependent maintenance report and is **not** part of session-start or PR blocking checks; a newer release does not authorize an update.
+- `mise run eval -c evals/promptfoo/<config>.yaml [Promptfoo CLI flags]` passes the config and filter options to the pinned Promptfoo runner. Evaluations may invoke models or write results; never run them as an implicit environment health check.
+- `mise run rulesync-doctor`, `mise run rulesync-preview`, and `mise run rulesync-validate` replace the former npm scripts. Rulesync CLI versions continue to be owned by mise's npm backend, independent of the removed root `package.json`.
+
+Mise also provides native `mise doctor project` using `[doctor.checks]`, but this feature was introduced **after** the `2026.9.2` mise version presently pinned in PR Gate (`2026.9.6` release). Do not add project Doctor checks to the default task until the supported host/CI version and read-only probe behavior are verified. In the meantime the preflight stays small and works with the current task tools.
+
+## Optional Integrations
 
 기본 `setup`/`update`는 Rulesync dependency·projection, HOME Skills와 Git hooks를 설치하지 않습니다. 각 설치 범위와 기존 파일을 검토하고 별도 승인 후 실행합니다.
 
