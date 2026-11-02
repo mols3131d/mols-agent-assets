@@ -21,6 +21,8 @@
 
 길이, 규칙 수, 파일 수만으로 instruction bottleneck이나 context noise를 판정하지 않는다. Human comprehension finding도 문체 취향이 아니라 잘못된 변경, 느린 검토, ownership 혼란 같은 실제 비용과 연결한다.
 
+재사용 자산이 다른 소비 환경에서도 적용되는지 검토할 때는 언어·runner·workspace layout, 동반 Skill과 저장소 CI의 유무를 대조한다. 특정 사례를 공통 계약으로 승격하지 않고, repository-local 자산은 의도된 적용 범위에서 판단한다. 이 대조는 정적 리뷰이며 실제 설치·활성화·행동 평가가 아니다.
+
 ## Multiple perspectives
 
 다관점 검토가 materially useful하고 환경이 지원하면 필요한 reviewer만 선택한다.
