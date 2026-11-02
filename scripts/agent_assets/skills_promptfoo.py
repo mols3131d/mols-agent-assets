@@ -401,8 +401,8 @@ def generate_native_tests(config: dict | None = None) -> list[dict]:
                 "Use the canonical Skill below as the complete task-specific behavior "
                 "contract. Follow its instructions and boundaries when responding to "
                 "the user's scenario. Do not claim tool actions you did not perform. "
-                "Respond directly with the answer, not a JSON envelope.\\n\\n"
-                f"<skill>\\n{skill}\\n</skill>"
+                "Respond directly with the answer, not a JSON envelope.\n\n"
+                f"<skill>\n{skill}\n</skill>"
             )
         test["vars"]["system"] = system
     return tests
