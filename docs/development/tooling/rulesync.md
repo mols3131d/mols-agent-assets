@@ -79,8 +79,9 @@ Rulesync의 `fetch`는 현재 upstream에서 development 상태로 명시되어 
 
 실제 target applicability는 가능한 한 **개별 asset이 소유**합니다.
 
-- Rule, Skill, Subagent는 `targets`를 명시하고 그 asset이 실제로 의미 있게 projection될 수 있는 target만 선언합니다.
+- Rule, Skill, Subagent, Command는 `targets`를 명시하고 그 asset이 실제로 의미 있게 projection될 수 있는 target만 선언합니다.
 - upstream Rulesync나 target runtime이 해당 asset type 또는 필요한 semantics를 지원하지 않으면 그 target을 선언하지 않습니다.
+- 재사용 Command는 `src/rulesync/.rulesync/commands/*.md`에서 작성합니다. 신규 Command의 target을 정할 때 native 지원 범위, Skill 변환·이름 충돌, 기능 폐지 여부를 확인합니다.
 - 이 repository의 reusable asset에서는 생략 또는 `targets: ["*"]`에 의존하지 않습니다. Broad portability도 현재 유지 대상들을 명시적으로 열거합니다.
 - workspace target에 포함되어 있다는 이유만으로 모든 asset이 그 target을 지원한다고 간주하지 않습니다.
 - `agentsskills`는 vendor support ceiling에 포함하지 않습니다. Root self-consumer나 ChatGPT compatibility처럼 **실제 내부 consumer가 필요한 Skill에만** internal projection target으로 사용할 수 있습니다. 이는 Agent Skills 생태계 전체를 지원한다는 약속이 아닙니다.
