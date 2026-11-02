@@ -48,12 +48,13 @@ This is a low-frequency provisioning Skill, not baseline operational context.
   surface, approved scope, and execution identity. Available tools do not by themselves
   authorize side effects; never switch accounts or connections to overcome a denial.
 - Recover only behavior the target chat runtime is actually missing. Consider applicable
-  instruction, selection, execution/delegation, and authority responsibilities; do not
-  assume all repositories or runtimes have the same agent asset kinds. Partial native
-  support is a valid target state.
+  instruction, selection, execution/delegation, and authority responsibilities—including
+  commands or agents when the target uses them—without assuming a universal asset inventory.
+  Partial native support is a valid target state.
 - If a required execution capability cannot be reproduced, design an explicit bounded
   adaptation, partial result, optional skip, or user-visible handoff rather than silently
-  omitting work or claiming equivalent execution.
+  omitting work or claiming equivalent execution. Put disclosure in the target's normal-task
+  instructions when future users will encounter the limitation, not only in the design report.
 - When the runtime does not natively discover the repository entrypoint, connect a
   guaranteed runtime-side instruction surface to that entrypoint. If that surface cannot
   be changed or verified with current authority, return the exact required handoff and do
@@ -88,13 +89,15 @@ Do not copy project policy, Skill bodies, Rule bodies, catalogs, or static path 
 1. Resolve the requested design, provisioning, repair, or review outcome; the relevant
    repository/ref/path, current runtime mode, and authorized change boundary. Reuse
    already-provided facts rather than requiring a full environment questionnaire.
-1. Inspect the existing native instruction, Skill, and Rule discovery paths and only the
-   tools/permissions needed to evaluate them. Distinguish a configured locator from
-   actually reading the authoritative source.
+1. Inspect the target's native instruction, asset-selection, and execution paths and
+   only the tools/permissions relevant to the requested harness behavior. Follow one
+   applicable task from its guaranteed entry surface to its scoped source and required
+   action where feasible; do not inventory every asset. Distinguish a configured locator
+   from actually reading the authoritative source.
 1. Identify missing responsibilities separately: runtime first-hop, applicable repository
-   guidance, task-specific asset selection, canonical body/conditional reference loading,
-   and required execution or delegation semantics. If existing mechanisms cover them,
-   select no-op and do not add structure.
+   guidance, task-specific source selection and scope/ref resolution, canonical body or
+   conditional reference loading, and required execution/delegation semantics. If existing
+   mechanisms cover them, select no-op and do not add structure.
 1. Compare the smallest viable options without treating them as mandatory stages:
    native/no-op; a runtime-side pointer to an existing entrypoint; a narrow selection
    bridge only for uncovered scope/loading; or bounded reuse of available native tools
@@ -115,9 +118,11 @@ Do not copy project policy, Skill bodies, Rule bodies, catalogs, or static path 
 1. Verify in evidence tiers: `configured` means the connection exists; `reachable`
    means the active runtime can follow it to the applicable canonical sources; and
    `observed applied` requires an actual task result consistent with their contract.
-   For selected Skills/Rules, check canonical body and necessary conditional reference
-   loading, not only route metadata. Existing native loading evidence may suffice
-   without a redundant fetch. If behavior cannot be observed, report `not verified`.
+   For selected instructions/assets, check the applicable path/ref, canonical body and
+   needed conditional references, not only route metadata; execution-specific fidelity
+   also needs evidence for the actual action or explicitly reported gap. Existing native
+   loading evidence may suffice without a redundant fetch. If behavior cannot be
+   observed, report `not verified`.
 1. Report the selected design/no-op, concrete changes and required user-side settings,
    authority constraints, validated tier, any adapted/partial/skipped/handed-off behavior,
    and relevant cost tradeoffs. Ensure the target's normal-task instructions re-evaluate
@@ -155,8 +160,8 @@ Verify only claims relevant to the resulting harness:
   the runtime lacks them;
 - Skill selection remains semantic and Rule applicability preserves authoritative selector
   meaning;
-- task-relevant canonical Skill/Rule bodies and necessary conditional references can be
-  consumed through the selected route, rather than stopping at names or metadata;
+- applicable canonical instructions/asset bodies and necessary conditional references
+  can be consumed at the correct scope/ref, rather than stopping at names or metadata;
 - configuration, source reachability, and observed behavior are reported at their actual
   evidence tier; a missing trace is not converted into a successful runtime evaluation;
 - any generated metadata is deterministic for the assumptions actually used;
@@ -165,8 +170,9 @@ Verify only claims relevant to the resulting harness:
   authority rather than assumption;
 - if the runtime-side first hop could not be established or observed, that limitation is
   reported rather than counted as completed compatibility;
-- adaptations preserve material execution semantics, report meaningful limitations, and
-  do not silently skip required work or present partial results as complete;
+- any persistent execution fallback is triggered only for a confirmed gap, uses a
+  target-owned surface the chatbot reads, and reports meaningful partial, skipped, or
+  handed-off work to the task user; required semantics and permissions are not weakened;
 - normal repository work no longer depends on this Skill being loaded or installed.
 
 Prefer the smallest valid result over a uniform repository layout.
