@@ -59,7 +59,7 @@ Input: repository root and optionally explicit public lookup permission. Default
 Run built-in unit tests without network:
 
 ```sh
-python -m unittest discover -s src/rulesync/.rulesync/skills/check-dependencies/tests -v
+python -m unittest discover -s "<installed-skill-dir>/tests" -v
 ```
 
 Then, in a disposable test project, run offline inventory and review paths, package identities and unknowns. Online integration tests are optional and must use intentionally public fixture packages, with permission for outbound requests. Do not equate mocked API coverage with actual network verification.

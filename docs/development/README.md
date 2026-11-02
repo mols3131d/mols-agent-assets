@@ -8,6 +8,8 @@ description: 저장소 개발 작업의 local policy, Agent Asset 설계 지식�
 
 ## Local Policies
 
+- [Agent Asset Workflows](agent-asset-workflows.md) — Agent Asset 신설·개선·리뷰·평가·제공·삭제·문서 작업의 상황별 절차
+- [Agent Asset Lifecycle](agent-asset-lifecycle.md) — 자산의 관리·사용 상태와 문서·검증·인계 종료 기준
 - [Development Principles](principles.md) — 여러 유효한 구현 사이에서 효과성, 운영 편의성, 단순성, 추상화와 변경 범위를 판단하는 공통 원칙
 - [Development Environment](development-environment.md) — 개발환경 구축·복구·업데이트 운영 정책의 정본과 사용자 설치 허가 경계
 - [VCS / Git](vcs-git.md) — branch policy와 naming, commit convention과 enforcement boundary

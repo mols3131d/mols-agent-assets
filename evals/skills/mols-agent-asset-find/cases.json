@@ -32,12 +32,12 @@
       ]
     },
     {
-      "id": "rulesync-project-source-precedes-fallback",
+      "id": "rulesync-project-source-precedes-external",
       "mode": "select",
       "prompt": "이 프로젝트는 rulesync.jsonc와 .rulesync로 Agent Asset을 관리해. 여기서 PR 리뷰용 Skill을 찾아줘. 설치는 하지 마.",
       "assertions": [
         "Treats the applicable Rulesync-managed assets as part of the current project source",
-        "Inspects that project source before the fallback repository or broader public discovery",
+        "Inspects that project source before optional declared catalogs or broader public discovery",
         "Does not load Rulesync or skills CLI command references unless the selected path actually needs that tool"
       ]
     },
@@ -167,6 +167,16 @@
       "assertions": [
         "Does not treat formal Agent Asset validation as mols-agent-asset-find responsibility",
         "Routes formal validation to mols-agent-asset when its maintained types apply"
+      ]
+    },
+    {
+      "id": "no-author-repository-default",
+      "mode": "select",
+      "prompt": "다른 회사의 GitLab 프로젝트에서 사용할 CI 리뷰 Skill을 찾아줘. 이 프로젝트에는 별도 자산 목록이 없고, 특정 라이브러리도 지정하지 않았어.",
+      "assertions": [
+        "Does not treat the Skill author's GitHub repository as an automatically authoritative fallback",
+        "Uses the actual target or caller-declared source boundary before broad external discovery",
+        "Does not silently claim installed, authorized, or applicable assets from an unrelated repository"
       ]
     }
   ]

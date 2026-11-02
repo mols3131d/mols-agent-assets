@@ -144,7 +144,7 @@ def generate() -> dict[Path, str]:
         route_rows.append(
             {
                 "name": "subagents",
-                "description": "전문 역할로 위임하거나 독립 검토할 때 사용하는 reusable Subagent",
+                "description": "사용자가 직접 선택하거나 다른 Agent가 위임하는 reusable Agent",
                 "source": f"{RAW_ROOT}/route/subagents.jsonl",
             }
         )

@@ -10,7 +10,7 @@
 - **Granularity** — 분리된 surface마다 독립적인 적용, loading, reuse, ownership 가치가 있는가?
 - **Context** — routing/reference가 context를 실제로 좁히며 stale·중복·불필요한 context가 없는가?
 - **Core and delta** — reusable core를 불필요한 fork나 중복으로 반복하지 않는가?
-- **Consumer portability** — 다른 프로젝트로 source를 옮겨도 작성 저장소의 경로·지침·의존 자산을 암묵적으로 요구하지 않는가? 특정 사례를 공통 계약으로 승격하지 않았는가?
+- **Portability** — 작성 저장소의 환경·경로를 재사용 자산의 필수 실행 조건으로 오인하지 않았는가?
 - **Structure** — naming과 placement가 탐색을 돕되 자연스러운 구조를 왜곡하지 않는가?
 - **Instruction cost** — material failure를 방지하지 않는 과도한 절차·조건이 판단을 방해하지 않는가?
 - **Context noise** — 항상 로드되는 저관련성 자산, 중복·stale context, signal dilution이 없는가?
@@ -21,7 +21,7 @@
 
 길이, 규칙 수, 파일 수만으로 instruction bottleneck이나 context noise를 판정하지 않는다. Human comprehension finding도 문체 취향이 아니라 잘못된 변경, 느린 검토, ownership 혼란 같은 실제 비용과 연결한다.
 
-재사용 자산의 portability가 중요한 경우, 작성 저장소와 다른 **대조 소비 환경**을 적용해 본다. 언어·runner·workspace layout이 달라지고 동반 Skill이나 저장소 CI가 없는 환경에서도 핵심 선택·행동 계약이 유지되는지 묻는다. 이는 정적 리뷰이며 실제 설치·활성화·행동 평가로 주장하지 않는다. 명시적으로 repository-local인 자산에는 그 범위를 전제로 검토한다.
+재사용 자산이 다른 소비 환경에서도 적용되는지 검토할 때는 언어·runner·workspace layout, 동반 Skill과 저장소 CI의 유무를 대조한다. 특정 사례를 공통 계약으로 승격하지 않고, repository-local 자산은 의도된 적용 범위에서 판단한다. 이 대조는 정적 리뷰이며 실제 설치·활성화·행동 평가가 아니다.
 
 ## Multiple perspectives
 
