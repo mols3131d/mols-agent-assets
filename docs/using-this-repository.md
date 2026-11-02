@@ -1,6 +1,6 @@
 ---
 title: 에이전트 자산과 지식 사용하기
-description: 외부 프로젝트와 에이전트 런타임에서 필요한 Skill·Subagent·패턴·참고 지식을 찾아 사용하거나 설치하고 업데이트할 때 참고하는 가이드입니다.
+description: 이 저장소의 Agent Asset이나 reusable knowledge를 외부 repository·runtime에서 찾고, 직접 사용·설치·고정·가져오는 방법을 선택할 때 사용합니다.
 ---
 
 # 에이전트 자산과 지식 사용하기
