@@ -4,7 +4,7 @@ description: mols-dev-env-bootstrap-design의 positive·near-miss routing과 설
 
 # Bootstrap Design Evaluation
 
-이 Skill의 [case fixture](../../../evals/skills/mols-dev-env-bootstrap-design/cases.json)가 behavioral contract를 소유하며, [Promptfoo config](../../../evals/promptfoo/mols-dev-env-bootstrap-design.yaml)는 기존 [공통 evaluator](../../../scripts/agent_assets/skills_promptfoo.py)에 연결한다. 별도 Skill 전용 provider나 grader는 만들지 않는다.
+이 Skill의 [case fixture](../../../evals/skills/mols-dev-env-bootstrap-design/cases.json)가 behavioral contract를 소유하며, [Promptfoo config](../../../evals/promptfoo/mols-dev-env-bootstrap-design.yaml)는 native `ollama:chat` provider와 [공통 평가 generator](../../../scripts/agent_assets/skills_promptfoo.py)를 사용한다. 모델 호출은 Promptfoo에 위임하고 별도 Skill 전용 provider나 grader는 만들지 않는다.
 
 ## What this measures
 
