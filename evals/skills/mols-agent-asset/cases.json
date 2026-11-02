@@ -6,7 +6,9 @@
       "mode": "activation",
       "prompt": "새로운 SQL 리뷰 Skill을 설계해서 만들어줘.",
       "expected_selection": {
-        "selected_skills": ["mols-agent-asset"],
+        "selected_skills": [
+          "mols-agent-asset"
+        ],
         "primary_skill": "mols-agent-asset"
       }
     },
@@ -15,7 +17,9 @@
       "mode": "activation",
       "prompt": "이 agent asset을 readiness 기준으로 심층 검증해줘.",
       "expected_selection": {
-        "selected_skills": ["mols-agent-asset"],
+        "selected_skills": [
+          "mols-agent-asset"
+        ],
         "primary_skill": "mols-agent-asset"
       }
     },
@@ -24,7 +28,9 @@
       "mode": "activation",
       "prompt": "이 prompt가 positive와 negative 요청을 올바르게 구분하는지 eval 해줘.",
       "expected_selection": {
-        "selected_skills": ["mols-agent-asset"],
+        "selected_skills": [
+          "mols-agent-asset"
+        ],
         "primary_skill": "mols-agent-asset"
       }
     },
@@ -33,7 +39,9 @@
       "mode": "activation",
       "prompt": "이 MCP tool schema와 approval rule을 적대적으로 검증해줘.",
       "expected_selection": {
-        "selected_skills": ["mols-agent-asset"],
+        "selected_skills": [
+          "mols-agent-asset"
+        ],
         "primary_skill": "mols-agent-asset"
       }
     },
@@ -102,7 +110,9 @@
         }
       ],
       "expected_selection": {
-        "selected_skills": ["mols-agent-asset-find"],
+        "selected_skills": [
+          "mols-agent-asset-find"
+        ],
         "primary_skill": "mols-agent-asset-find"
       }
     },
@@ -275,6 +285,17 @@
         "Treats instruction bottleneck as a review axis rather than a validation type",
         "Connects the finding to material reasoning or maintenance cost rather than length alone",
         "Does not manufacture a finding merely because the asset is long"
+      ]
+    },
+    {
+      "id": "portable-skill-independent-of-authoring-repository",
+      "mode": "skill",
+      "prompt": "지금 자산 라이브러리에서 다른 회사의 Python/Go 저장소에서도 사용할 범용 PR 리뷰 Skill을 만들어줘. 현재 작업 저장소에는 mise task와 전용 GitHub 설정이 있지만 소비자 저장소에는 없어.",
+      "assertions": [
+        "Defines the reusable Skill around PR review responsibility rather than the author's repository layout or workflow",
+        "Does not require the author's source checkout path, mise tasks, GitHub repository, or account in the portable runtime contract",
+        "Keeps any truly project-local behavior in the consumer's scoped instruction or configuration",
+        "Resolves bundled runtime resources relative to the installed Skill package when applicable"
       ]
     }
   ]
