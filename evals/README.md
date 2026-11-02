@@ -1,4 +1,4 @@
-# 평가 (`evals/`)
+# Evaluations (`evals/`)
 
 `evals/`는 repository-owned behavioral/model evaluation fixture를 저장합니다.
 
@@ -26,7 +26,7 @@ mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design-grader.yaml
 mise run eval --no-cache --no-write -c evals/promptfoo/mols-test-design.yaml
 ```
 
-## Promptfoo provider 선택
+## Promptfoo Provider Selection
 
 기본값으로 실행할 때는 `.env`가 필요하지 않습니다. 설정을 바꿀 때는 프로젝트 루트의 [`.env.example`](../.env.example)을 복사해 변수 값을 수정합니다. 예제의 로컬 Ollama 기본값은 주석 없이 활성화되어 있습니다. `.env`와 API credential은 Git에 포함하지 않습니다.
 
@@ -60,7 +60,7 @@ Runtime만 원격으로 바꾸면 기본 grader는 계속 Ollama이므로 behavi
 
 **원격 provider 또는 grader를 선택하면 Skill·평가 prompt 또는 응답·rubric이 외부로 전송될 수 있으며 비용이 발생합니다.** Telemetry·sharing·remote generation 비활성화는 이 전송을 막는 통제가 아닙니다. 데이터 전송과 비용 허가를 먼저 확인하며 모델 다운로드나 유료 API 실행은 자동 수행하지 않습니다.
 
-### Provider별 옵션
+### Provider-Specific Options
 
 공통 config는 `temperature: 0`만 지정하고 Trigger의 JSON 응답은 system의 schema 지시와 기존 strict assertion으로 판정합니다. 제공자마다 다른 JSON 강제 옵션을 공통으로 주입하지 않으며, JSON을 따르지 않은 출력은 실패입니다. Grader 선택과 별개로 runtime의 모델·sampling·structured-output 설정도 평가 조건에 기록합니다.
 

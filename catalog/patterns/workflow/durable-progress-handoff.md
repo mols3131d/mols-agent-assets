@@ -38,7 +38,7 @@ Handoff의 상대는 반드시 다른 agent일 필요도 없습니다. 같은 ag
 
 또한 handoff boundary가 항상 예고되는 것은 아닙니다. 긴 작업에서 context loss나 worker 전환 가능성이 의미 있다면 **handoff 순간에 처음 요약하기보다 material checkpoint에서 resume-critical state를 갱신해 두는 형태**도 고려할 수 있습니다. 그렇다고 모든 작은 행동을 실시간으로 기록할 필요는 없습니다.
 
-## 언제 유용한지
+## When It Is Useful
 
 다음 조건이 많이 겹칠수록 durable handoff의 가치가 커질 수 있습니다.
 
@@ -51,7 +51,7 @@ Handoff의 상대는 반드시 다른 agent일 필요도 없습니다. 같은 ag
 
 반대로 짧은 작업이거나 현재 상태를 source, Git history, issue와 canonical documentation에서 쉽게 재구성할 수 있다면 별도 handoff artifact를 만들지 않는 편이 더 단순할 수 있습니다.
 
-## 무엇을 남길지
+## What to Preserve
 
 다음은 handoff content로 가치가 높은 대표적인 상태입니다. 모두 필요하다는 뜻은 아닙니다.
 
@@ -82,7 +82,7 @@ Handoff의 상대는 반드시 다른 agent일 필요도 없습니다. 같은 ag
 
 Handoff는 **history archive가 아니라 resumption surface**에 가깝습니다.
 
-## 기대하는 Boundary에 맞는 Surface를 선택합니다
+## Choose a Surface for the Required Boundary
 
 하나의 정해진 파일이나 directory가 필요한 것은 아닙니다. 이미 필요한 상태를 소유하는 surface가 있다면 그것을 재사용하는 편이 단순합니다.
 
@@ -100,11 +100,11 @@ Handoff는 **history archive가 아니라 resumption surface**에 가깝습니�
 
 여러 artifact를 사용하는 경우에는 서로의 관계를 다시 추측하지 않도록 stable task name, link, heading 또는 다른 가벼운 identity cue로 lineage를 연결할 수 있습니다. 그렇다고 모든 작업에 별도 ID schema나 artifact registry를 만들 필요는 없습니다.
 
-## Handoff는 기록과 재개를 함께 봅니다
+## Handoff Covers Both Capture and Resumption
 
 Durable artifact를 썼다는 사실만으로 continuation이 안전해지는 것은 아닙니다. Handoff는 **상태를 남기는 쪽과 다시 읽는 쪽이 함께** 성립할 때 유용합니다.
 
-### 상태를 남길 때
+### Capturing State
 
 - 현재 상태를 사실대로 갱신하고 완료되지 않은 일을 완료로 표시하지 않습니다.
 - 다음 작업의 판단을 바꾸는 material delta를 우선 남깁니다.
@@ -113,7 +113,7 @@ Durable artifact를 썼다는 사실만으로 continuation이 안전해지는 �
 - freshness 판단에 기준점이 필요하면 현재 revision이나 task state를 가볍게 연결합니다.
 - 작업이 멈춘 이유와 다음 시작점이 중요하다면 명시합니다.
 
-### 다시 시작할 때
+### Resuming Work
 
 Handoff artifact를 곧바로 현재 truth로 가정하지 않습니다. 먼저 상태 기준점과 source, Git state, canonical documentation이나 필요한 runtime 상태를 비교해 **artifact가 아직 현재 상태를 설명하는지** 확인합니다.
 
@@ -121,7 +121,7 @@ Handoff artifact를 곧바로 현재 truth로 가정하지 않습니다. 먼저 
 
 Handoff는 다음 작업자의 탐색을 줄이는 **evidence와 navigation surface**이지, 현재 repository state보다 높은 authority가 아닙니다.
 
-## Artifact-rich와 Compact Handoff는 둘 다 가능합니다
+## Rich and Compact Handoffs
 
 작업이 복잡할수록 research, plan, implementation evidence, review를 분리한 여러 artifact가 유용할 수 있습니다. 반대로 하나의 progress note와 Git history만으로 충분한 경우도 있습니다.
 
@@ -139,7 +139,7 @@ Artifact-rich
 
 RPI workflow를 사용한다면 Research, Plan, Review 같은 기존 artifact가 이미 handoff state의 상당 부분을 소유할 수 있습니다. 이 경우 같은 내용을 별도 `handoff.md`에 다시 복제하기보다 기존 artifact를 continuation surface로 재사용할 수 있습니다.
 
-## 비용과 수명
+## Cost and Lifecycle
 
 Handoff artifact도 유지비가 있습니다. 작업 상태가 자주 바뀌는데 artifact를 계속 동기화해야 한다면 기록 비용이 continuation에서 절약하는 비용보다 커질 수 있습니다.
 
@@ -149,31 +149,31 @@ Handoff artifact도 유지비가 있습니다. 작업 상태가 자주 바뀌는
 
 ## Limits and Responses
 
-### Handoff가 stale하면 오히려 재개를 방해할 수 있습니다
+### Stale Handoffs Can Hinder Resumption
 
 오래된 progress나 plan이 현재 source와 다르면 다음 작업자가 잘못된 상태에서 시작할 수 있습니다.
 
 **대응:** handoff를 현재 truth가 아니라 resume candidate로 취급하고, 상태 기준점과 중요한 state·verification을 현재 source에 맞춰 확인합니다. Material change가 생기면 같은 내용을 여러 곳에 복제하기보다 현재 owner를 갱신합니다.
 
-### Artifact가 많아지면 새로운 탐색 문제가 생길 수 있습니다
+### Artifact Sprawl Can Complicate Discovery
 
 Research, plan, note, review, task state가 계속 늘어나면 어느 것이 최신인지 찾는 일 자체가 새로운 비용이 됩니다.
 
 **대응:** 기존 surface를 우선 재사용하고, 하나의 작업에 필요한 artifact만 둡니다. 여러 artifact가 실제로 필요할 때만 가벼운 lineage를 두고, artifact framework나 registry를 선제적으로 만들지 않습니다.
 
-### 기록된 결정이 잘못된 가정을 오래 살릴 수 있습니다
+### Recorded Decisions Can Preserve Wrong Assumptions
 
 Durable하다는 이유로 이전 판단이 더 옳아지는 것은 아닙니다. 잘못된 assumption도 잘 정리된 handoff를 통해 그대로 전달될 수 있습니다.
 
 **대응:** decision과 evidence basis를 구분하고 residual uncertainty를 숨기지 않습니다. 현재 source나 새 evidence와 충돌하면 handoff를 수정하거나 폐기합니다.
 
-### Canonical knowledge와 working state가 섞일 수 있습니다
+### Canonical Knowledge Can Mix with Working State
 
 Handoff에 project rule이나 architecture truth를 복제하면 시간이 지나며 canonical source와 다른 두 번째 authority가 생길 수 있습니다.
 
 **대응:** handoff에는 현재 작업에 필요한 state와 reference를 남기고, 장기적으로 유효한 knowledge는 해당 canonical owner가 소유하게 합니다.
 
-### 민감한 context가 불필요하게 지속될 수 있습니다
+### Sensitive Context Can Persist Unnecessarily
 
 Conversation에만 있던 credential, 개인 정보나 민감한 운영 세부사항을 그대로 durable artifact에 복사하면 보존 범위가 불필요하게 넓어질 수 있습니다.
 

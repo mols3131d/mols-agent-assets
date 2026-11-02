@@ -43,7 +43,7 @@ Executable output check는 구현 방법을 세세하게 지시하기보다 **�
 
 이 패턴은 일반적인 testing strategy나 quality gate 체계 전체를 소유하지 않습니다. 함수와 기능의 behavior correctness, design·naming·abstraction·readability처럼 맥락 판단이 필요한 품질, security·compliance처럼 독립적인 assurance가 필요한 보호 모델은 각각 더 적합한 testing, review, security mechanism의 책임으로 남깁니다.
 
-## 무엇을 Check할지
+## Choose What to Check
 
 검사할 수 있다는 이유만으로 check를 추가하지는 않습니다. **놓쳤을 때의 비용과 check 자체의 비용을 함께** 봅니다.
 
@@ -60,7 +60,7 @@ Executable output check는 구현 방법을 세세하게 지시하기보다 **�
 
 사람이 review에서 같은 객관적 지적을 반복하고 있다면 좋은 check 후보일 수 있습니다. 반대로 사고 이력이 없더라도 놓쳤을 때의 비용이 크고 property가 충분히 안정적이며 값싸게 판정할 수 있다면 선제적인 check를 고려할 수 있습니다.
 
-## 더 직접적인 Mechanism이 있으면 먼저 사용합니다
+## Prefer More Direct Mechanisms
 
 Output을 사후에 검사하기보다 해당 성질을 이미 직접 보장하는 native mechanism이 있다면 별도 output check가 필요 없을 수 있습니다.
 
@@ -78,7 +78,7 @@ Output을 사후에 검사하기보다 해당 성질을 이미 직접 보장하�
 
 판정 logic을 local script, test와 CI에 각각 복제할 필요는 없습니다. 하나의 의미를 여러 surface에서 사용한다면 가능한 한 판정 logic의 owner는 하나로 두고 필요한 위치에서 호출합니다. 반대로 check 하나 때문에 미래 확장을 예상해 중앙 checker framework나 registry부터 만들 필요도 없습니다.
 
-## 결과와 Feedback 강도를 분리합니다
+## Separate Results from Feedback Strength
 
 Check 결과와 그 결과를 얼마나 강하게 취급할지는 별개의 결정입니다.
 
@@ -104,7 +104,7 @@ Executable하다는 이유만으로 blocking할 필요는 없습니다. **판정
 
 기존 repository에 이미 많은 위반이 있다면 처음부터 blocking으로 강제하기보다 signal이나 warning으로 실제 유용성과 noise를 관찰한 뒤 조정하는 방식도 가능합니다.
 
-## 실행 위치와 시점도 별도 선택입니다
+## Choose Execution Location and Timing
 
 하나의 check를 어디서 언제 실행할지는 구현 형태와 feedback 강도와도 별개의 결정입니다.
 
@@ -117,7 +117,7 @@ Executable하다는 이유만으로 blocking할 필요는 없습니다. **판정
 
 모든 check를 PR Gate에 넣을 필요는 없습니다. 빠른 local signal이면 충분한 항목도 있고, 전체 repository나 외부 환경을 읽어야 하는 비싼 검사는 필요한 시점에만 실행하는 편이 나을 수 있습니다.
 
-## 대표 사례
+## Representative Cases
 
 | Output에서 관찰할 문제 | 가능한 executable form | 가능한 feedback |
 | --- | --- | --- |
@@ -130,7 +130,7 @@ Executable하다는 이유만으로 blocking할 필요는 없습니다. **판정
 
 이 표는 구현 계약이 아니라 별도 관찰이 필요한 경우의 선택지를 보여주는 예시입니다. Native visibility나 module constraint가 같은 문제를 직접 예방한다면 표의 check를 추가하지 않는 편이 더 단순할 수 있습니다.
 
-## 예시: Generated Output을 확인하기
+## Example: Checking Generated Output
 
 Schema가 generated type의 source-of-truth라고 가정합니다.
 
@@ -177,7 +177,7 @@ Agent가 수정하거나 다시 판단
 
 기능 test가 통과하더라도 generated artifact 누락, configuration drift, structural 문제처럼 다른 종류의 결함이 남을 수 있습니다. 결과는 단순한 `false`보다 **무엇을 관찰했고, 어느 output이 관련되며, 무엇을 다시 확인하면 되는지**가 드러날수록 agent와 사람 모두에게 유용합니다.
 
-## 비용과 수명
+## Cost and Lifecycle
 
 Check는 한 번 추가하면 끝나는 자산이 아닙니다. 유지보수, false positive, 예외, 실행 시간, feedback noise와 tooling 변화 대응 비용이 따라옵니다.
 
@@ -187,43 +187,43 @@ Custom checker가 지키던 성질을 이후 compiler나 native tooling이 자�
 
 ## Limits and Responses
 
-### Machine-checkable은 전체 품질을 뜻하지 않습니다
+### Machine-Checkable Does Not Mean Complete Quality
 
 자동화하기 쉬운 항목이 software quality 전체를 대표하지는 않습니다. Design, cohesion, naming, simplicity처럼 맥락 판단이 필요한 품질은 여전히 review가 필요합니다.
 
 **대응:** clean result를 전체 품질 보증으로 해석하지 않고, check가 담당하는 machine-observable property의 증거로만 사용합니다.
 
-### Deterministic한 Check도 틀리거나 일부만 볼 수 있습니다
+### Deterministic Checks May Be Wrong or Incomplete
 
 같은 입력에서 같은 결과가 나온다는 사실은 판정 기준이 옳다는 뜻이 아닙니다. 잘못된 요구나 오래된 assumption을 일관되게 구현할 수 있고, targeted check는 일부 path나 state만 볼 수도 있습니다. 평가 대상과 checker가 같은 구현 경로나 가정을 공유하면 같은 blind spot을 가질 수도 있습니다.
 
 **대응:** check가 실제로 관찰하는 범위보다 넓은 의미를 부여하지 않습니다. 더 높은 assurance가 필요한 문제에서는 더 독립적이거나 넓은 verification이 필요한지 별도로 판단합니다.
 
-### Checker 자체도 실패하거나 불안정할 수 있습니다
+### Checkers Can Fail or Become Unstable
 
 Network, wall-clock time, 외부 service나 불안정한 environment에 의존하는 check는 같은 output에도 다른 결과를 낼 수 있습니다. Flaky warning과 failure가 반복되면 중요한 signal까지 무시되기 쉽습니다.
 
 **대응:** output finding과 checker의 `판정 불가`를 구분하고, 신뢰도가 낮은 판정을 강한 gate로 사용하지 않습니다.
 
-### 오래된 Rule과 예외가 숨은 Policy가 될 수 있습니다
+### Stale Rules Can Become Hidden Policy
 
 처음에는 유효했던 boundary나 convention도 시간이 지나면 달라질 수 있습니다. Allowlist, ignore와 suppression이 늘어나면 check의 실제 의미가 예외 목록에 숨어버릴 수 있습니다.
 
 **대응:** 예외나 우회가 반복되면 더 추가하기 전에 보호하려는 property 자체가 여전히 유효한지 봅니다. 필요하면 범위나 강도를 바꾸거나 check를 제거합니다.
 
-### Check 통과 자체가 목표가 될 수 있습니다
+### Passing Checks Can Become the Goal
 
 좁은 syntactic rule은 실제 품질보다 check 통과를 최적화하는 wrapper, rename과 우회 구조를 만들 수 있습니다.
 
 **대응:** 가능한 한 보호하려는 output property를 직접 관찰하고, 우회가 반복되면 check가 실제 문제를 잘 모델링하는지 다시 봅니다. Passing 자체를 품질 목표로 삼지 않습니다.
 
-### Check가 많아지면 비용과 Noise가 커집니다
+### More Checks Increase Cost and Noise
 
 작은 script, lint rule, test와 warning도 누적되면 별도의 subsystem이 됩니다. 의미가 약한 warning이 많아지면 중요한 signal까지 습관적으로 무시될 수 있습니다.
 
 **대응:** 새로운 check보다 기존 mechanism으로 표현할 수 있는지 먼저 비교하고, 가치가 낮거나 중복되는 check는 만들지 않거나 정리합니다.
 
-### Agent가 Checker 자체를 수정할 수 있습니다
+### Agents Can Modify the Checker
 
 Agent가 output과 checker를 함께 수정할 수 있다면 warning을 없애거나 checker를 약하게 만드는 변경도 가능합니다. 일반 품질 feedback에서는 review가 충분할 수 있지만 executable check만으로 독립적인 assurance가 생기지는 않습니다.
 
