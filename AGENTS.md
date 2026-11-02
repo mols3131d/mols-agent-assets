@@ -22,9 +22,8 @@
 
 ## 원본·의존성
 
-- 이 저장소 전용 Agent Asset의 작성 원본은 루트 `.rulesync/`에만 둡니다. `src/`의 자산은 다른 프로젝트에서 재사용할 수 있어야 하며, 작성·사용 범위 판단은 [작성 원본과 권한](docs/development/source-authority.md)을 따릅니다.
-- 재사용 가능한 Rulesync 자산은 `src/rulesync/.rulesync/`에서 작성·수정합니다.
-- 재사용 가능한 vendor-native 자산은 `src/<vendor>/`에서 작성·수정합니다. 이 저장소의 runtime-local 작성 원본을 vendor-specific 경로에 추가하지 않습니다.
+- **저장소 전용:** Agent Asset 작성 원본은 루트 `.rulesync/`에만 둡니다.
+- **재사용:** Rulesync 원본은 `src/rulesync/.rulesync/`, vendor-native 원본은 `src/<vendor>/`에서 관리합니다. 이 저장소에서도 사용할 수 있지만 적용 범위를 여기로 제한하지 않습니다. 원본·사용의 구분은 [작성 원본과 권한](docs/development/source-authority.md)을 따릅니다.
 - `src/`의 자산은 기본적으로 독립적입니다. 명시되지 않은 자산 간 의존성이나 호환성을 전제하지 않습니다.
 - 같은 semantic asset에 Rulesync와 vendor-native 작성 원본을 중복해서 두지 않습니다. 원본 선택은 `docs/development/source-authority.md`를 따릅니다.
 - Generated vendor projection과 Rulesync lock state는 재사용 가능한 작성 원본으로 commit하지 않습니다.
