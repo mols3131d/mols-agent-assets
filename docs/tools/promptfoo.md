@@ -13,6 +13,7 @@ Promptfoo는 Agent Asset의 model/runtime 평가에 사용합니다. 실행 진�
 
 - runner는 telemetry·update check·remote generation·sharing을 끄는 값을 기본으로 제공합니다. `setdefault` 기반이므로 이미 지정한 환경값을 강제로 덮어쓰는 보안 통제가 아닙니다. 민감한 평가에서는 실제 환경과 provider를 확인합니다.
 - 상태·log·cache는 기본적으로 프로젝트 `.tmp/promptfoo` 아래에 둡니다. 다른 경로를 명시했다면 그 설정이 적용됩니다.
+- 기본 단일-call 평가는 Promptfoo native Ollama provider가 HTTP 통신을 소유하며, Python generator는 fixture 변환을 담당합니다. 조건부 Reference 선택은 기존 Python provider를 유지합니다.
 - Python adapter는 실행 중인 Python을, runtime model과 grader는 runner의 기본값 또는 명시한 환경값을 사용합니다. 외부 API·모델 다운로드·hosted 기능의 사용 권한이나 비용 승인을 자동으로 부여하지 않습니다.
 - cache와 결과 쓰기는 각 task의 인자를 따릅니다. 모든 task가 `--no-cache`·`--no-write`를 사용한다고 가정하지 않습니다.
 
