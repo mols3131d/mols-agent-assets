@@ -24,6 +24,7 @@ def test_runner_preserves_explicit_model_and_grader_settings() -> None:
     defaults = runner.build_env({})
     assert defaults["PROMPTFOO_RUNTIME_MODEL"] == "qwen2.5"
     assert defaults["PROMPTFOO_GRADER_PROVIDER"] == "ollama:chat:qwen2.5"
+    assert defaults["REQUEST_TIMEOUT_MS"] == "120000"
 
     overrides = runner.build_env(
         {
@@ -37,4 +38,5 @@ def test_runner_preserves_explicit_model_and_grader_settings() -> None:
     assert overrides["PROMPTFOO_GRADER_PROVIDER"] == "ollama:chat:custom-grader"
     assert overrides["OLLAMA_BASE_URL"] == "http://127.0.0.1:11434"
     assert overrides["PROMPTFOO_RUNTIME_TIMEOUT_SECONDS"] == "75"
+    assert overrides["REQUEST_TIMEOUT_MS"] == "75000"
     assert overrides["PROMPTFOO_DISABLE_REMOTE_GENERATION"] == "true"
