@@ -21,7 +21,7 @@ Rulesync는 선택한 작성 원본에서 벤더별 Agent Asset을 생성하고 
 
 ## 권장 버전 정책
 
-**Minor**(초기 전환 후보 `43`)를 권장합니다. 현재 `40.x`에서 `43.x`로 옮기는 첫 단계는 Major 전환이므로 config·lock schema와 projection 결과를 별도로 검증해야 합니다. 이후 43.x 내 갱신에도 `doctor`·`preview`·`validate`와 생성 diff를 확인합니다. CLI 범위와 외부 Agent Asset revision 잠금은 독립적으로 관리합니다.
+**Minor**(현재 범위 전환 후보 `43`)를 권장합니다. 실제 CLI 버전은 [`mise.toml`](../../mise.toml)의 exact pin을 따르며, 범위 추적은 bootstrap 호환성 검증 후 별도로 도입합니다. 향후 Major 전환에서는 config·lock schema와 projection 결과를 검증하고, 같은 Major 내 갱신에도 `doctor`·`preview`·`validate`와 생성 diff를 확인합니다. CLI 범위와 외부 Agent Asset revision 잠금은 독립적으로 관리합니다.
 
 ## 상세 경계와 공식 문서
 
