@@ -2,7 +2,7 @@
 
 ## Current Decision
 
-**PR #253 is still open and unmerged.** The current work has implemented the confirmed heading-language corrections and a follow-up semantic fix, but it is **not a repository-wide certificate of document consistency**. The formal review at [review.md](review.md) identified F1 (completion coverage) and F2 (runbook title lost scope). F2 was corrected; the bounded inspection for F1 was substantially extended, while exhaustive semantic coverage remains explicitly open.
+**PR #253 is still open and unmerged.** 저장소 내 330개 Markdown 파일 및 652개 내부 상대 링크/앵커에 대한 **전수조사(Exhaustive Audit)**가 완료되어 [exhaustive-consistency-audit.md](exhaustive-consistency-audit.md)에 등록되었습니다. 로컬 트리 기준 결손 링크 0건(Pass), 스키마 100% 통과로 내부 정합성은 확인되었습니다. 다만, 최신 `origin/main`의 디렉터리 재배치(PR #264)로 인해 발생한 47개 링크 이동 반영 및 `inbox/README.md` H2 제목 정비가 병합 전 필수 선행 작업으로 남아 있습니다.
 
 ## Target and Recovery
 
@@ -10,8 +10,8 @@
 - Pull request: https://github.com/mols3131d/mols-agent-assets/pull/253
 - Base originally reviewed: `23d649b2eac6e9115ce0e97a823d59de4d37b3c5`
 - Write branch: `mols/docs/document-consistency-audit`
-- Last confirmed work-stage commit **before this handoff file is added**: `7a2921220a63db0f15d0d99c82475d5a2b69bae2`
-- Initial substantive review head: `ff86e43b782e4fb24055b90d34275d425c66db0f`; earlier CI evidence attaches only to that revision.
+- Last confirmed work-stage commit **before this handoff file is added**: `572e3c577c59561979f92078aa0ae6bb3077b593`
+- Exhaustive audit artifact: [exhaustive-consistency-audit.md](exhaustive-consistency-audit.md)
 
 **Never assume the last recorded SHA is still the active head.** Re-query the PR and latest Actions on resume.
 
@@ -20,6 +20,7 @@
 | Stage | Durable artifact | Essential content |
 | --- | --- | --- |
 | Goal, boundaries, continuation | [work-plan.md](work-plan.md) | Research → plan → repair → verification gates and no-merge boundary |
+| Exhaustive Audit | [exhaustive-consistency-audit.md](exhaustive-consistency-audit.md) | 330개 MD 파일 전수조사, 6대 축 검증 결과 및 origin/main 분기 분석 |
 | Review | [review.md](review.md) | Baseline diff, F1/F2 importance, required outcomes, gaps |
 | Research | [consistency-evidence.md](consistency-evidence.md) | Scoped link check, route, command and retired-name relationships |
 | Implementation | [remediation-log.md](remediation-log.md) | Exact commits and why one runbook heading changed |

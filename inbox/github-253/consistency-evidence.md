@@ -12,10 +12,10 @@
 
 **Rule:** [Documentation Principles](../../docs/documentation/principles.md) requires discoverable/current documentation. A relative Markdown link should resolve against its containing file at the audited revision.
 
-- Scope scanned: **61** `docs/**/*.md` and **32** `catalog/**/*.md` (93 documents), using GitHub `fetch_file` at fixed commit plus a recursive Git tree to check linked paths or target directories.
-- Procedure: inspect inline Markdown link destinations, exclude URL schemes and same-file fragments, decode the path, resolve `.` / `..` against the source directory, compare normalized path with tree blobs/directories.
-- Result: **0 missing local link targets discovered in those 93 files.** This is an actual negative scoped check, not a claim that links throughout the repository are valid.
-- Limits: external HTTP availability, reference-style links, image links, angle-bracket variants, generated text, and Markdown anchors are not exhaustively checked; the simple parser may miss paths, and filenames are not equivalent to a fully rendered document.
+- **전수조사 완료**: [전체 문서 정합성 전수조사 보고서](exhaustive-consistency-audit.md)를 통해 저장소 내 추적 대상 **330개 Markdown 파일** 전체와 **652개 내부 상대 링크 및 앵커**를 전수 파싱하여 대상 파일 및 앵커 슬러그를 검증했습니다.
+- Procedure: 모든 인라인 링크, 참조 링크, 이미지 링크 대상을 추출하고 `#fragment` 앵커 슬러그와 실제 파일/헤딩을 대조.
+- Result: **0건 결손 (0 missing local link targets or broken anchors across all 330 tracked Markdown files).**
+- Limits: 외부 HTTP 링크 유효성 및 외부 소비자의 헤딩 프래그먼트 의존성은 별도 미검증으로 유지. 최신 `origin/main`의 경로 이동(PR #264)으로 인한 47개 링크 갱신 필요.
 
 ## Relation B — Documented Entrypoints to Source
 

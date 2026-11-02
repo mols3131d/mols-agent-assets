@@ -8,9 +8,9 @@
 
 ## Review and Durable Work
 
-**현재 판단: 확인된 수정은 적용됐지만 전체 문서 정합성 완료는 미검증.** [PR 리뷰 보고서](review.md)는 목표/범위 검증 공백(F1)과 보안 런북 제목에서의 의미 손실(F2)을 확인했다. F2는 이 브랜치에서 수정했으며 F1은 [관계별 조사 근거](consistency-evidence.md)로 검증 범위를 넓히고 미확인 사항을 보존한다. 전체 완료나 병합을 자동으로 선언하지 않는다.
+**현재 판단: 저장소 330개 Markdown 전수조사 완료, 최신 `main` 동기화 선행 필요.** [전체 문서 정합성 전수조사 보고서](exhaustive-consistency-audit.md)를 통해 전체 330개 파일, 652개 내부 상대 링크 및 앵커를 전수 검증했습니다. 내부 결손 링크와 앵커는 0건(Pass)이나, `origin/main`의 디렉터리 재배치(PR #264)로 인해 이동된 `docs/references/` 경로를 가리키는 47개 링크의 갱신과 `inbox/README.md`의 H2 제목 정비가 선행되어야 합니다.
 
-세션 간 재개는 **[handoff.md](handoff.md)**를 시작점으로 삼고, 진행을 [작업 계획](work-plan.md) → [리뷰 보고서](review.md) → [증거](consistency-evidence.md) → [수정 이력](remediation-log.md) → [검증](validation.md) 순서로 읽는다. 각 파일은 특정 commit을 근거로 하므로 live PR head와 CI 상태를 다시 확인해야 한다.
+세션 간 재개는 **[handoff.md](handoff.md)**를 시작점으로 삼고, 진행을 [작업 계획](work-plan.md) → [전수조사 보고서](exhaustive-consistency-audit.md) → [리뷰 보고서](review.md) → [증거](consistency-evidence.md) → [수정 이력](remediation-log.md) → [검증](validation.md) 순서로 읽는다. 각 파일은 특정 commit을 근거로 하므로 live PR head와 CI 상태를 다시 확인해야 한다.
 
 ## Applied Fixes
 

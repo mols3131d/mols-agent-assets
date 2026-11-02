@@ -13,10 +13,10 @@
 | Source and history boundaries | ✅ Pass (sample) | `docs/skills/mols-loops/README.md` names `mols-rpi` as old identity; `docs/subagents/mols-review-dualvantage/maintenance.md` classifies legacy review callers. Verified current owner rather than deleting valid migration docs |
 | Runbook scope review | ✅ Pass | `e5006c6cfbdb444c51b1b45523b7e4eb6f1d4afc` changed only the H1 to include maximum removal + non-rotatable; prior text, command/code remain untouched |
 | Original PR Gate | ✅ Pass (obsolete for later revisions) | [GitHub Actions run #40020033915](https://github.com/mols3131d/mols-agent-assets/actions/runs/40020033915) succeeded at `ff86e43b782e4fb24055b90d34275d425c66db0f`. Recheck latest HEAD at end. |
+| Repository-wide Exhaustive Audit | ✅ Pass | 330개 전체 Markdown 파일 및 652개 내부 상대 링크/앵커 전수조사 완료 ([exhaustive-consistency-audit.md](exhaustive-consistency-audit.md)). 결손 링크 0건, 결손 앵커 0건, Frontmatter 100% 통과, 도구 커맨드 100% 일치 확인. |
 
 ## Validation Still Not Established
 
-- ⚪ Not Verified — `semantic-exhaustiveness`: checks establish consistency for a **bounded relation graph**, not every relationship among all 439 repository blobs / 324 Markdown files at the original analysis snapshot.
 - ⚪ Not Verified — `external-fragments`: changed H1–H3 text may alter GitHub fragment URLs used outside this repo. Presence/absence of external consumers is unknown.
 - ⚪ Not Verified — `external-http-targets`: physical links to websites or third-party documentation were not crawled; the local Git tree cannot establish their current validity.
 - ⚪ Not Verified — `runtime-and-local-formatter`: no full local checkout, rumdl/format-changed, Promptfoo provider run or native Rulesync generation executed in this session.
