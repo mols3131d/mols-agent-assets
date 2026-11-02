@@ -1,12 +1,12 @@
 ---
 name: mols-project-task-command-design
 description: >-
-  Design, review, or refactor a project's shared developer command interface:
-  build, test, check, generate, or release commands exposed through task runners,
-  package scripts, build targets, and CLIs. Use to decide which commands to
-  keep, expose, parameterize, combine, split, or remove while preserving callers
-  and execution semantics. Not for personal to-do tasks, agent job orchestration,
-  CI admission policies, dependency upgrades alone, or single-command usage help.
+  Design or simplify shared project commands (build/test/check/generate/release
+  tasks, runner targets, package scripts, CLI entrypoints). Use to decide which
+  commands to expose, retain, parameterize, combine, split, or remove without
+  breaking callers, environments, or side effects. Not for personal tasks,
+  agent orchestration, CI admission design, dependency updates alone, or
+  single-command how-to.
 targets:
   - claudecode
   - codexcli
