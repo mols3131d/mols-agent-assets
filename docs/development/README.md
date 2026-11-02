@@ -8,10 +8,12 @@ description: 저장소 개발 작업의 local policy, Agent Asset 설계 지식�
 
 ## Local Policies
 
+- [Agent Asset Workflows](agent-asset-workflows.md) — Agent Asset 신설·개선·리뷰·평가·제공·삭제·문서 작업의 상황별 절차
+- [Agent Asset Lifecycle](agent-asset-lifecycle.md) — 자산의 관리·사용 상태와 문서·검증·인계 종료 기준
 - [Development Principles](principles.md) — 여러 유효한 구현 사이에서 효과성, 운영 편의성, 단순성, 추상화와 변경 범위를 판단하는 공통 원칙
 - [Development Environment](development-environment.md) — 개발환경 구축·복구·업데이트 운영 정책의 정본과 사용자 설치 허가 경계
 - [VCS / Git](vcs-git.md) — branch policy와 naming, commit convention과 enforcement boundary
-- [GitHub](github.md) — Issues, Pull Requests, PR Reviews, Merge, Rulesets와 Actions의 local policy. 본문 작성 구조는 [GitHub Authoring Templates](../../.github/templates/README.md)를 참고합니다.
+- [GitHub](github.md) — Issues, Pull Requests, PR Reviews, Merge, Rulesets와 Actions의 local policy. Issue·PR은 [native Issue](../../.github/ISSUE_TEMPLATE/issue.md) 및 [PR template](../../.github/pull_request_template.md)을, Review·Comment는 [작성 보조 템플릿](../../.github/templates/README.md)을 사용합니다.
 - [Continuous Integration](ci.md) — local·CLI·API·MCP·Plugin·agent write path부터 branch validation, PR admission, deferred evidence와 projection gate까지의 integration lifecycle
 - [작성 원본과 권한](source-authority.md) — 작성 원본, 표준, 대상과 저장소 고유 권한의 경계
 - [Repository Layout](repository-layout.md) — 파일·디렉터리의 이름과 배치, 계층, source와 test의 대응

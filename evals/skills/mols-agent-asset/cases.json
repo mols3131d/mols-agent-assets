@@ -276,6 +276,17 @@
         "Connects the finding to material reasoning or maintenance cost rather than length alone",
         "Does not manufacture a finding merely because the asset is long"
       ]
+    },
+    {
+      "id": "portable-skill-independent-of-authoring-repository",
+      "mode": "skill",
+      "prompt": "지금 자산 라이브러리에서 다른 회사의 Python/Go 저장소에서도 사용할 범용 PR 리뷰 Skill을 만들어줘. 현재 작업 저장소에는 mise task와 전용 GitHub 설정이 있지만 소비자 저장소에는 없어.",
+      "assertions": [
+        "Defines the reusable Skill around PR review responsibility rather than the author's repository layout or workflow",
+        "Does not require the author's source checkout path, mise tasks, GitHub repository, or account in the portable runtime contract",
+        "Keeps any truly project-local behavior in the consumer's scoped instruction or configuration",
+        "Resolves bundled runtime resources relative to the installed Skill package when applicable"
+      ]
     }
   ]
 }

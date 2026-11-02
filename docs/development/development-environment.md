@@ -11,7 +11,7 @@ description: 이 저장소의 개발환경 구축·격리·도구 관리 정책,
 - **도구 및 버전 선언:** [`mise.toml`](../../mise.toml) 및 각 native manifest/lockfile
 - **실제 부트스트랩 실행기:** [부트스트랩 스크립트](../../scripts/development_bootstrap.py)
 - **재사용 가능한 부트스트랩 설계 판단:** [`mols-dev-env-bootstrap-design` 설계 Skill (PR #256)](https://github.com/mols3131d/mols-agent-assets/pull/256) (설계 판단 자료이며 이 저장소의 권한 정책 정본이 아님)
-- **조사 및 논의 근거:** [PR #258 작업 문서](../../inbox/github-258/development-environment-bootstrap-spec.md) (논의 근거일 뿐 운영 지침을 대체하지 않음)
+- **조사 및 논의 근거:** [PR #258 작업 문서](../../.inbox/github-258/development-environment-bootstrap-spec.md) (논의 근거일 뿐 운영 지침을 대체하지 않음)
 
 ---
 

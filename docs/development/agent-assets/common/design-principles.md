@@ -20,6 +20,8 @@ description: 에이전트 자산을 추가, 분리, 중복 제거, 단순화할 
 
 ## Local Delta
 
+재사용 자산에는 작성 저장소의 경로·명령·권한·평가 환경을 필수 조건으로 넣지 않습니다. 프로젝트 전용 동작은 해당 프로젝트가 소유합니다.
+
 Local Agent Asset content를 추가하기 전에 다음 중 하나인지 확인합니다.
 
 - **Deviation** — upstream/default와 의도적으로 다르게 행동해야 합니다.

@@ -26,7 +26,9 @@ mise 자체는 **Latest**를 우선 검토하는 호스트 선행 도구로, 이
 
 ## CLI Version Updates
 
-CLI 7종은 현재 `mise.toml`에서 exact version을 선택하고 `mise.lock`으로 재현합니다. 보안 수정이나 지원 수명 변경도 채택 근거지만, 실행 시마다 자동 갱신하지 않습니다. 현행 Exact pin은 **선택한 새 버전을 `mise.toml`에 먼저 반영**해야 합니다. [mise 선택지](README.md#mise-버전-선택지)의 prefix·alias를 추후 지원할 경우에만 `mise lock --bump`로 허용 범위 내 최신 버전을 선택할 수 있습니다.
+CLI 7종의 현재 버전은 [`mise.toml`](../../mise.toml)의 exact pin과 [`mise.lock`](../../mise.lock)이 소유합니다. 플랫폼별 URL·checksum은 `mise lock`으로 재생성하고 수동으로 작성하지 않습니다. `mise` 자체는 호스트 선행 도구로 이 저장소가 설치·갱신하지 않으며, CI에서 사용하는 버전은 [PR Gate](../../.github/workflows/pr-gate.yml)가 소유합니다.
+
+보안 수정이나 지원 수명 변경도 갱신 근거지만, 실행 시마다 자동 갱신하지 않습니다. 선택한 새 버전을 `mise.toml`에 먼저 반영해야 하며, [mise 선택지](README.md#mise-버전-선택지)의 prefix·alias를 추후 지원할 경우에만 `mise lock --bump`로 허용 범위 내 후보를 선택할 수 있습니다.
 
 1. [공통 갱신 기준](README.md#버전-갱신-방법)으로 후보·영향 범위를 검토하고 새 exact pin을 반영합니다.
 1. `mise lock`으로 기존 플랫폼의 URL·checksum을 갱신하고 `mise.lock` diff를 검토합니다. 새 지원 플랫폼이 필요하면 `mise lock --platform ...`을 사용합니다. npm backend가 dependency sidecar를 생성한 경우 해당 산출물도 함께 검토·관리합니다.
@@ -67,13 +69,24 @@ mise run setup
 
 승인된 기본 쓰기 대상은 mise 관리 설치·cache와 프로젝트 `.venv`입니다. Python 자동 다운로드는 끄고, interpreter 누락 시 최초 준비를 명시적으로 수행합니다. 외부 환경을 가리키는 `UV_PROJECT_ENVIRONMENT`, `.venv` symlink/junction과 외부 package 경로는 차단합니다.
 
-Native 도구는 exact request의 경로와 실행 버전을 확인합니다. npm CLI는 package identity·managed prefix를 확인하고 잠근 Node로 실행해 Windows `.cmd` shim을 직접 호출하지 않습니다. package 내부 동작까지 sandbox로 제한하는 것은 아닙니다. 단순한 `mise exec --locked` 위임을 채택하지 않은 근거는 [Windows fallback 실증](../../inbox/github-258/bootstrap-simplification-review-2026-11-01.md)에 있습니다.
+Native 도구는 exact request의 경로와 실행 버전을 확인합니다. npm CLI는 package identity·managed prefix를 확인하고 잠근 Node로 실행해 Windows `.cmd` shim을 직접 호출하지 않습니다. package 내부 동작까지 sandbox로 제한하는 것은 아닙니다. 단순한 `mise exec --locked` 위임을 채택하지 않은 근거는 [Windows fallback 실증](../../.inbox/github-258/bootstrap-simplification-review-2026-11-01.md)에 있습니다.
 
 Node 실패 시 npm 단계는 차단하되 독립적인 uv/Python 단계는 계속합니다. 필수 실패는 `FAILED`/`BLOCKED`와 nonzero로 보고하고, core 검증이 모두 통과했을 때만 `READY`를 반환합니다. 선택적 연동은 성공 범위에서 제외합니다.
 
 같은 checkout의 중복 실행은 `.tmp/bootstrap.lock`으로 차단합니다. 정상 종료·Ctrl-C는 자기 lock을 해제하며, 강제 종료로 남은 lock은 process 종료를 확인한 뒤 수동 정리합니다. 다른 worktree와 공유하는 mise cache의 동시성은 native manager 책임입니다.
 
 실패하면 표시한 native 명령과 policy·lock diff를 점검한 뒤 `setup`을 재실행합니다. 자동 rollback, 사용자 파일 삭제, `git clean`/reset, hook 덮어쓰기나 전역 설정 변경은 하지 않습니다.
+
+### Project diagnostics and evaluation tasks
+
+Tool 선택과 Python lock 상태가 필요한 경우 `mise ls --project --json` 및 `uv lock --check`를 직접 실행합니다. 두 명령의 성공만으로 설치된 모든 바이너리와 런타임 준비를 보장하지 않습니다. 신규 릴리스 후보는 `mise outdated --no-global --bump --json`으로 **명시적으로** 조회하며, 최신성 조회는 세션 시작이나 PR 검증의 필수 단계가 아닙니다. 조회 결과는 설치·버전 변경의 승인이 아닙니다.
+
+- `mise run eval -c evals/promptfoo/<config>.yaml [Promptfoo CLI flags]` passes the config and filter options to the pinned Promptfoo runner. Evaluations may invoke models or write results; never run them as an implicit environment health check.
+- `mise run rulesync-doctor`, `mise run rulesync-preview`, and `mise run rulesync-validate` replace the former npm scripts. Rulesync CLI versions continue to be owned by mise's npm backend, independent of the removed root `package.json`.
+
+**mise `2026.9.6` 이상**에서는 `mise doctor project`가 `[doctor.checks]`로 선언한 Python lock과 루트 Rulesync 설정을 검사합니다. PR Gate는 `2026.10.25`를 사용하며, `mise run check`가 이를 재사용합니다. Doctor의 exit code가 상태 판정을 소유하고, 설치·업데이트·생성물 쓰기는 수행하지 않습니다. 구버전 mise에서는 `uv lock --check`와 `rulesync doctor --strict`를 직접 실행할 수 있습니다.
+
+`mise run generated sync`와 `mise run generated validate`는 동일한 CLI의 별도 서브커맨드입니다. `sync --staged`만 영향받는 파일을 생성·stage하며, `validate --changed-from REV`, `validate --local-only --all`은 파일을 수정하지 않고 결과를 비교합니다.
 
 ### Optional Integrations
 

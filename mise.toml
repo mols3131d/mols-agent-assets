@@ -5,13 +5,13 @@ _.file = ".env"
 # CLI tool version authority. Exact pins guarantee zero-drift setup.
 # Tool defaults, version preferences and exceptions: docs/tools/README.md
 [tools]
-uv = "0.12.1"
-node = "24.19.0"
-rumdl = "0.2.54"
-lefthook = "2.1.10"
-"npm:@biomejs/biome" = "2.5.6"
-"npm:rulesync" = "40.2.0"
-"npm:skills" = "1.5.23"
+uv = "0.13.6"
+node = "26.13.0"
+rumdl = "0.3.2"
+lefthook = "2.2.2"
+"npm:@biomejs/biome" = "2.6.3"
+"npm:rulesync" = "43.2.0"
+"npm:skills" = "1.7.4"
 
 [settings]
 task.run_auto_install = false
@@ -29,21 +29,18 @@ run = "uv run --no-project --no-python-downloads python scripts/development_boot
 
 [tasks.skills-sync]
 description = "Sync locked external Skills through source-native installers"
-run = "uv run python scripts/agent_assets/skills_sync.py"
+run = "uv run --locked --no-default-groups python scripts/agent_assets/skills_sync.py"
 
-[tasks.generated-sync]
-description = "Regenerate committed indexes and routes"
-run = "uv run python -m scripts.generated_artifacts_sync"
-
-[tasks.generated-validate]
-description = "Validate committed indexes and routes without writing"
-run = "uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts_validate"
+[tasks.generated]
+description = "Sync or validate committed projections with native subcommands"
+raw_args = true
+run = "uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts"
 
 [tasks.format]
 description = "Format the entire repository"
 run = [
-  "uv run ruff check --fix .",
-  "uv run ruff format .",
+  "uv run --locked --no-default-groups --group dev ruff check --fix .",
+  "uv run --locked --no-default-groups --group dev ruff format .",
   "rumdl fmt .",
   "rumdl check --fix .",
   "biome format --write .",
@@ -63,40 +60,48 @@ run = [
   "biome --version",
   "rulesync --version",
   "skills --version",
-  "uv lock --check",
+  "mise doctor project",
   "uv run --locked --no-default-groups python scripts/agent_assets/skills_sync.py --dry-run",
   "lefthook validate",
-  "biome check biome.json package.json .vscode/tasks.json",
+  "biome check biome.json .vscode/tasks.json",
 ]
 
 [tasks.test]
 description = "Run repository tests"
 run = "uv run --locked --no-default-groups --group test pytest"
 
-[tasks.eval-mols-test-design]
-description = "mols-test-design local Trigger + Behavior runtime eval"
-run = "npm run eval:promptfoo:mols-test-design"
+# Task names do not grow with evaluation fixtures; Promptfoo owns -c and filter flags.
+[tasks.eval]
+description = "Run a selected Promptfoo configuration with native CLI arguments"
+raw_args = true
+run = "uv run --locked --no-default-groups --group test python scripts/agent_assets/promptfoo_run.py eval"
 
-[tasks.eval-mols-test-design-trigger]
-description = "mols-test-design local Trigger eval"
-run = "npm run eval:promptfoo:mols-test-design:trigger"
+[tasks.rulesync-doctor]
+description = "Validate the reusable Rulesync workspace configuration"
+dir = "src/rulesync"
+raw_args = true
+run = "rulesync doctor --strict"
 
-[tasks.eval-mols-test-design-behavior]
-description = "mols-test-design local Behavior eval"
-run = "npm run eval:promptfoo:mols-test-design:behavior"
+[tasks.rulesync-preview]
+description = "Preview reusable Rulesync projections without writing"
+dir = "src/rulesync"
+raw_args = true
+run = "rulesync generate --dry-run"
 
-[tasks.eval-mols-loops-smoke]
-description = "mols-loops Promptfoo fixture smoke를 local에서 실행"
-run = "npm run eval:promptfoo:mols-loops:smoke"
+[tasks.rulesync-validate]
+description = "Validate reusable Rulesync configuration and projections"
+run = "uv run --locked --no-default-groups python scripts/agent_assets/rulesync_validate.py"
 
-[tasks.eval-mols-loops]
-description = "mols-loops Trigger + Behavior Promptfoo runtime eval을 local에서 실행"
-run = "npm run eval:promptfoo:mols-loops"
+# Project state inspection only; never install dependencies or rewrite outputs.
+# Project diagnostics require mise >= 2026.9.6.
+[doctor.checks.python-lock]
+description = "Python lockfile is consistent with pyproject.toml"
+run = "uv lock --check"
+hint = "Review pyproject.toml and uv.lock; update explicitly when approved"
+timeout = "30s"
 
-[tasks.eval-mols-loops-trigger]
-description = "mols-loops Trigger Promptfoo runtime eval만 local에서 실행"
-run = "npm run eval:promptfoo:mols-loops:trigger"
-
-[tasks.eval-mols-loops-behavior]
-description = "mols-loops Behavior Promptfoo runtime eval만 local에서 실행"
-run = "npm run eval:promptfoo:mols-loops:behavior"
+[doctor.checks.rulesync-root]
+description = "Root Rulesync configuration is structurally valid"
+run = "rulesync doctor --strict"
+hint = "Inspect root rulesync.jsonc and the pinned Rulesync CLI"
+timeout = "30s"

@@ -4,7 +4,7 @@ description: mols-dev-env-bootstrap-design의 positive·near-miss routing과 설
 
 # Bootstrap Design Evaluation
 
-이 Skill의 [case fixture](../../../evals/skills/mols-dev-env-bootstrap-design/cases.json)가 behavioral contract를 소유하며, [Promptfoo config](../../../evals/promptfoo/mols-dev-env-bootstrap-design.yaml)는 기존 [공통 evaluator](../../../scripts/agent_assets/skills_promptfoo.py)에 연결한다. 별도 Skill 전용 provider나 grader는 만들지 않는다.
+이 Skill의 [case fixture](../../../evals/skills/mols-dev-env-bootstrap-design/cases.json)가 behavioral contract를 소유하며, [Promptfoo config](../../../evals/promptfoo/mols-dev-env-bootstrap-design.yaml)는 선택 가능한 native provider와 [공통 평가 generator](../../../scripts/agent_assets/skills_promptfoo.py)를 사용한다. 모델 호출은 Promptfoo에 위임하고 별도 Skill 전용 provider나 grader는 만들지 않는다.
 
 ## What this measures
 
@@ -25,26 +25,26 @@ Trigger는 expected selection과 deterministic하게 비교하며 Skill body를 
 
 현재 사례에는 Python/uv, Node/Volta/pnpm, Rust/Cargo 설계 시나리오가 포함된다. 이는 대표 입력 사례이며 다른 저장소의 실제 실행이나 모든 스택·도구 조합의 호환성을 검증한 결과는 아니다. 지원·성능 주장은 실제 평가한 조합과 claim에 맞는 근거로 한정한다. 추가 사례는 필요한 재사용 범위나 관찰된 실패에 근거해 선택한다.
 
-Promptfoo/Ollama, 실행용 Node/Python과 이 저장소의 npm 진입점은 현재 평가 harness의 구성이다. 배포된 Skill을 적용하는 다른 프로젝트의 필수 도구나 설치 절차로 전제하지 않는다.
+Promptfoo/Ollama, 실행용 Node/Python과 이 저장소의 mise task 진입점은 현재 평가 harness의 구성이다. 배포된 Skill을 적용하는 다른 프로젝트의 필수 도구나 설치 절차로 전제하지 않는다.
 
 ## Run locally
 
-이미 사용 가능한 Ollama 모델을 선택한 뒤 repository root에서 실행한다. 기본 runtime/grader 이름에 해당하는 모델이 설치되어 있다고 가정하지 않는다.
+사용 가능한 native provider와 독립적인 grader를 선택한 뒤 repository root에서 실행한다. Ollama가 기본값이지만 필수는 아니며, 기본 runtime/grader 이름에 해당하는 모델이 설치되어 있다고 가정하지 않는다.
 
 ```bash
-npm run eval:promptfoo:mols-dev-env-bootstrap-design
+mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design.yaml
 ```
 
-`PROMPTFOO_RUNTIME_MODEL`과 `PROMPTFOO_GRADER_PROVIDER`를 명시하고, 필요하면 `-- --filter-metadata suite=trigger` 또는 `suite=behavior`로 분리한다. 네트워크 모델 다운로드는 이 평가의 자동 선행 작업이 아니다. 현재 공통 runner가 선택한 Promptfoo version·local/no-sharing 설정을 재사용한다.
+`PROMPTFOO_RUNTIME_PROVIDER`와 `PROMPTFOO_GRADER_PROVIDER`를 `.env` 또는 환경변수로 지정한다. 이 mise 진입점은 runner가 기본값을 정하기 전에 `.env`를 읽는다. 전체 runtime ID 미지정 시 기존 `PROMPTFOO_RUNTIME_MODEL` 설정을 사용한다. Trigger만 실행하려면 `mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design.yaml --filter-metadata suite=trigger`를 사용하며, Behavior는 `suite=behavior`로 바꾼다. 환경 로딩·provider 선택과 데이터 전송 경계는 [평가 실행 안내](../../../evals/README.md#promptfoo-provider-선택)를 따른다. 네트워크 모델 다운로드는 이 평가의 자동 선행 작업이 아니며 현재 공통 runner가 선택한 Promptfoo version·no-sharing 설정을 재사용한다.
 
-Ollama grader에는 native `temperature=0`을 지정한다. Structured JSON에서 thinking만 반환하고 content가 비는 모델은 해당 실행에 한해 `PROMPTFOO_RUNTIME_THINK=false`를 지정할 수 있다. 기본 thinking 동작은 변경하지 않으며, 이 설정을 바꾼 결과는 이전 조건과 구분한다. Transport/envelope 오류와 content JSON 오류는 별도로 기록하고 잘못된 content와 종료 metadata를 보존한다.
+Ollama grader에는 native `temperature=0`을 지정한다. `PROMPTFOO_RUNTIME_THINK`는 기존 custom Python Ollama provider 전용 설정이며 native provider에는 자동 적용되지 않는다. Native 모델의 thinking·structured output 등은 해당 provider의 공식 config로 설정하며, 이 설정을 바꾼 결과는 이전 조건과 구분한다. Transport/envelope 오류와 content JSON 오류는 별도로 기록한다.
 
 ## Grader calibration
 
 [고정 응답 6개](../../../evals/skills/mols-dev-env-bootstrap-design/grader-cases.json)는 기존 사례의 요청·기준을 참조하는 정상/오답 3쌍이다. [Echo config](../../../evals/promptfoo/mols-dev-env-bootstrap-design-grader.yaml)는 같은 공통 assertion generator를 재사용하며 target inference 없이 grader만 실행한다. 기대 판정은 보고용 metadata에만 두며 grader에 제공하지 않는다.
 
 ```bash
-npm run eval:promptfoo:mols-dev-env-bootstrap-design:grader
+mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design-grader.yaml
 ```
 
 이 보정 실행의 CLI FAIL은 의도한 오답 거부일 수 있다. `expected_criteria`와 semantic `componentResults`의 기준별 판정을 비교하고 오류는 별도로 분류한다. 정상도 오답도 확인해야 하며, 보정 표본과 기대 판정은 재검토 가능한 agent 작성 자료다. 독립적인 사람 검수나 미사용 사례의 성능 보장이 아니다.
@@ -53,7 +53,7 @@ Grader 변경 전후는 서로 다른 측정이다. 자동 판정과 원문 검�
 
 ## Current 12-case evidence
 
-2026-10-25, 요청 맥락·기준별 grading과 native Ollama grader temperature=0으로 최신 fixture를 두 모델에서 실행했다. [개선 계획·실행 결과](../../../inbox/github-256/bootstrap-eval-improvement-results-2026-10-25.md)에 보정 표본 비교, 정확한 조건과 source hash, 개별 원문 판정을 남겼다.
+2026-10-25, 요청 맥락·기준별 grading과 native Ollama grader temperature=0으로 최신 fixture를 두 모델에서 실행했다. [개선 계획·실행 결과](../../../.inbox/github-256/bootstrap-eval-improvement-results-2026-10-25.md)에 보정 표본 비교, 정확한 조건과 source hash, 개별 원문 판정을 남겼다.
 
 | Target | Trigger | Behavior 자동 | Behavior 원문 18기준 |
 | --- | --- | --- | --- |
@@ -66,7 +66,7 @@ Grader는 두 실행 모두 `ollama:chat:nemotron-3-nano:4b`다. 고정 보정 �
 
 ## Language and Skill validity evidence
 
-한국어 지시와 영어 루브릭의 언어 불일치 영향을 분리하기 위해, 대표 실패 사례 3건에 대해 **한국어/영어 × Skill 미적용/적용** 36건을 3개 로컬 모델(`qwen2.5-coder:7b`, `nemotron-3-nano:4b`, `qwen3.5:4b`)에서 교차 실행하고 2인의 블라인드 평가를 수행했다 ([상세 결과](../../../inbox/github-256/bootstrap-eval-language-comparison-results-2026-10-31.md)).
+한국어 지시와 영어 루브릭의 언어 불일치 영향을 분리하기 위해, 대표 실패 사례 3건에 대해 **한국어/영어 × Skill 미적용/적용** 36건을 3개 로컬 모델(`qwen2.5-coder:7b`, `nemotron-3-nano:4b`, `qwen3.5:4b`)에서 교차 실행하고 2인의 블라인드 평가를 수행했다 ([상세 결과](../../../.inbox/github-256/bootstrap-eval-language-comparison-results-2026-10-31.md)).
 
 - **언어 격차 미미:** Skill 적용 시 영어(29.6%)와 한국어(25.9%)의 기준 충족률 차이는 3.7%p(27개 중 1개 기준 차이)에 불과해, 낮은 통과율의 주원인이 언어 불일치가 아님을 확인했다.
 - **Skill 개선 효과:** 한국어 환경에서 Skill 적용 시 기준 충족률이 11.1~18.5%에서 25.9%로 향상(+7.4~14.8%p)되어 Skill 지침의 안전·범위 경계 강화 효과를 확인했다.
@@ -74,7 +74,7 @@ Grader는 두 실행 모두 `ollama:chat:nemotron-3-nano:4b`다. 고정 보정 �
 
 ## Previous 11-case evidence
 
-2026-10-25, HEAD `81eb4579eac6b25b45878b31d86697863b3c25bd`의 한국어 Skill과 최신 fixture를 두 로컬 모델로 각각 1회 실행했다. Grader는 `ollama:chat:qwen2.5-coder:7b`로 고정했다. [실행 조건·사례별 근거](../../../inbox/github-256/bootstrap-eval-results-2026-10-25.md)에 원문 판정과 오류·채점 차이를 기록했다.
+2026-10-25, HEAD `81eb4579eac6b25b45878b31d86697863b3c25bd`의 한국어 Skill과 최신 fixture를 두 로컬 모델로 각각 1회 실행했다. Grader는 `ollama:chat:qwen2.5-coder:7b`로 고정했다. [실행 조건·사례별 근거](../../../.inbox/github-256/bootstrap-eval-results-2026-10-25.md)에 원문 판정과 오류·채점 차이를 기록했다.
 
 | Target | Trigger | Behavior 자동 | Behavior 원문 기준 15개 |
 | --- | --- | --- | --- |

@@ -3,24 +3,20 @@
 description: mols-loops local Trigger and Behavior runtime eval
 
 prompts:
-  - "{{task}}"
+  - file://skill-chat.json
 
 providers:
-  - id: file://../../scripts/agent_assets/skills_promptfoo.py:call_api
+  - id: "{{ env.PROMPTFOO_RUNTIME_PROVIDER }}"
     label: mols-loops-trigger
     config:
-      skill: mols-loops
-      mode: ollama
-      suite: trigger
-  - id: file://../../scripts/agent_assets/skills_promptfoo.py:call_api
+      temperature: 0
+  - id: "{{ env.PROMPTFOO_RUNTIME_PROVIDER }}"
     label: mols-loops-behavior
     config:
-      skill: mols-loops
-      mode: ollama
-      suite: behavior
+      temperature: 0
 
 tests:
-  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_tests
+  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_native_tests
     config:
       skill: mols-loops
       suite: trigger
@@ -40,7 +36,7 @@ tests:
         - loop-identifier-in-task-does-not-activate
         - single-review-request-does-not-activate
         - trivial-work-does-not-activate
-  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_tests
+  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_native_tests
     config:
       skill: mols-loops
       suite: behavior

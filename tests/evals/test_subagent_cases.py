@@ -1,9 +1,9 @@
 import json
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[2]
 SUBAGENT_EVAL_ROOT = ROOT / "evals" / "subagents"
+SUBAGENT_SOURCE_ROOT = ROOT / "src" / "rulesync" / ".rulesync" / "subagents"
 
 
 def test_subagent_behavior_fixtures_have_minimal_contract():
@@ -17,6 +17,13 @@ def test_subagent_behavior_fixtures_have_minimal_contract():
         system = data["system_under_evaluation"]
         assert isinstance(system, list) and system, path
         assert all(isinstance(item, str) and item for item in system), path
+        for name in system:
+            source = SUBAGENT_SOURCE_ROOT / f"{name}.md"
+            assert source.is_file(), (
+                f"{path.relative_to(ROOT)} targets missing Subagent "
+                f"{source.relative_to(ROOT)}; "
+                "remove or migrate its evals with the asset"
+            )
 
         cases = data["cases"]
         assert isinstance(cases, list) and cases, path

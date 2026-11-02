@@ -1,5 +1,7 @@
 path	description
 development/	저장소 개발 작업의 local policy, Agent Asset 설계 지식과 도구·명세 참고 자료를 찾을 때 사용합니다.
+development/agent-asset-lifecycle.md	이 저장소에서 Agent Asset의 제안·작성·검증·제공·사용·은퇴 상태와 문서 반영, 완료·차단·인계 조건을 구분하는 라이프사이클 정본입니다.
+development/agent-asset-workflows.md	이 저장소의 Agent Asset 신설·개선·리뷰·평가·제공·폐기·문서 작업에서 상황에 맞는 절차와 기존 하네스·전문 자산을 선택하는 정본입니다.
 development/agent-assets/	Agent Asset 자체의 공통 설계 의미와 Skill-specific specification·authoring convention 중 어떤 reference를 볼지 선택할 때 사용합니다.
 development/agent-assets/common/	
 development/agent-assets/common/design-principles.md	에이전트 자산을 추가, 분리, 중복 제거, 단순화할 때 적용하는 공통 판단 순서
@@ -46,4 +48,4 @@ tools/rulesync.md	이 프로젝트의 Rulesync 설정·버전 선택, 자산 rev
 tools/rumdl.md	rumdl의 Markdown 설정 정본, 기본값과 다른 문서 표현 규칙 및 버전 갱신 시 확인할 예외를 찾을 때 사용합니다.
 tools/skills-cli.md	skills CLI의 최신 안정 버전 선택과 외부 Skill revision 고정, native installer·HOME 설치 예외를 확인할 때 사용합니다.
 tools/uv.md	uv·Python의 관리 경계, 버전 선택과 프로젝트 가상환경, Python 개발 도구의 설정·갱신 예외를 확인할 때 사용합니다.
-using-this-repository.md	이 저장소의 Agent Asset이나 reusable knowledge를 외부 repository·runtime에서 찾고, 직접 사용·설치·고정·가져오는 방법을 선택할 때 사용합니다.
+using-this-repository.md	외부 프로젝트에서 src/, catalog/, route/의 에이전트 자산과 재사용 지식을 찾아 참조·설치·채택하는 방법을 안내합니다.

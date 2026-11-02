@@ -102,8 +102,7 @@ Use this order when applicable:
    capability;
 1. the current repository or workspace routing, index, manifest, registry, or asset root;
 1. scoped direct discovery inside that source when no sufficient index exists;
-1. the declared fallback repository `https://github.com/mols3131d/mols-agent-assets` when
-   no more relevant source is established;
+1. another asset library explicitly declared by the caller or active project, when relevant;
 1. external public discovery when the request itself is broad discovery or the caller
    explicitly asks to search beyond the established source.
 

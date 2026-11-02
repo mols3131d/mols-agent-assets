@@ -10,6 +10,7 @@
 - **Granularity** — 분리된 surface마다 독립적인 적용, loading, reuse, ownership 가치가 있는가?
 - **Context** — routing/reference가 context를 실제로 좁히며 stale·중복·불필요한 context가 없는가?
 - **Core and delta** — reusable core를 불필요한 fork나 중복으로 반복하지 않는가?
+- **Portability** — 작성 저장소의 환경·경로를 재사용 자산의 필수 실행 조건으로 오인하지 않았는가?
 - **Structure** — naming과 placement가 탐색을 돕되 자연스러운 구조를 왜곡하지 않는가?
 - **Instruction cost** — material failure를 방지하지 않는 과도한 절차·조건이 판단을 방해하지 않는가?
 - **Context noise** — 항상 로드되는 저관련성 자산, 중복·stale context, signal dilution이 없는가?

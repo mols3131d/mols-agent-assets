@@ -7,8 +7,13 @@
 
 ## 작업 자료와 지침의 경계
 
-- `inbox/`의 조사·계획·검토·인계 자료는 참고 근거이며 정본 정책이나 현재 작업 지침이 아닙니다. 명시적으로 채택해 해당 owner 문서에 반영하기 전에는 지침으로 적용하지 않습니다.
+- `.inbox/`의 조사·계획·검토·인계 자료는 참고 근거이며 정본 정책이나 현재 작업 지침이 아닙니다. 명시적으로 채택해 해당 owner 문서에 반영하기 전에는 지침으로 적용하지 않습니다.
 - `catalog/`는 외부 프로젝트 등을 위한 재사용 자산·패턴 탐색 공간입니다. Skill·Plugin 목록의 등재는 설치·사용을 뜻하지 않습니다. 이곳이 소유하는 패턴·템플릿의 작성 원본도 이 저장소의 mandatory policy를 대신하지 않습니다.
+
+## Agent Asset 작업 워크플로
+
+- 이 저장소가 관리하는 Skill·Rule·Subagent 등 Agent Asset을 신설·개선·리뷰·평가·제공·삭제할 때는 [저장소 전용 워크플로 라우터](.rulesync/skills/repository-agent-asset-workflow/SKILL.md)에서 필요한 절차를 선택합니다. Skill을 발견·로드할 수 없다면 [Agent Asset Workflows](docs/development/agent-asset-workflows.md)를 직접 확인합니다. 이 연결은 기존 경로 규칙·전문 Skill·권한을 대체하지 않습니다.
+- 자산의 **작성 원본을 변경했다면** [Agent Asset Lifecycle](docs/development/agent-asset-lifecycle.md)에 따라 문서 영향과 필요한 정본 반영을 반드시 판단합니다. `.inbox/` 인계만으로 정본 문서 작업을 완료했다고 간주하지 않습니다.
 
 ## 자산 탐색
 
@@ -22,8 +27,8 @@
 
 ## 원본·의존성
 
-- 재사용 가능한 Rulesync 자산은 `src/rulesync/.rulesync/`에서 작성·수정합니다. 이 저장소가 직접 사용하는 Rulesync 자산은 필요할 때만 root `.rulesync/`에 둡니다.
-- 재사용 가능한 vendor-native 자산은 `src/<vendor>/`에서 작성·수정합니다. 이 저장소가 직접 사용하는 vendor-native 자산은 해당 vendor의 native project path에 둡니다.
+- **저장소 전용:** Agent Asset 작성 원본은 루트 `.rulesync/`에만 둡니다.
+- **재사용:** Rulesync 원본은 `src/rulesync/.rulesync/`, vendor-native 원본은 `src/<vendor>/`에서 관리합니다. 이 저장소에서도 사용할 수 있지만 적용 범위를 여기로 제한하지 않습니다. 원본·사용의 구분은 [작성 원본과 권한](docs/development/source-authority.md)을 따릅니다.
 - `src/`의 자산은 기본적으로 독립적입니다. 명시되지 않은 자산 간 의존성이나 호환성을 전제하지 않습니다.
 - 같은 semantic asset에 Rulesync와 vendor-native 작성 원본을 중복해서 두지 않습니다. 원본 선택은 `docs/development/source-authority.md`를 따릅니다.
 - Generated vendor projection과 Rulesync lock state는 재사용 가능한 작성 원본으로 commit하지 않습니다.

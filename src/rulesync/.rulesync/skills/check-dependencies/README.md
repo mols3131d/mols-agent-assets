@@ -1,10 +1,10 @@
 ---
-description: check-dependencies 스킬 초안의 사용 경로, 오프라인 기본 동작과 이식 시 유지할 실행 범위를 확인할 때 참고합니다.
+description: check-dependencies의 실행 방법, 오프라인 기본값과 공개 레지스트리 조회 조건을 확인할 때 참고합니다.
 ---
 
 # Check Dependencies
 
-Dependency inventory and optional public package/vulnerability verification Skill. This repository maintains the reusable source at [SKILL.md](SKILL.md), together with its script, tests and report template.
+Dependency inventory and optional public package/vulnerability verification Skill. The reusable package contains [SKILL.md](SKILL.md), a script, tests and a report template.
 
 ## Use
 
@@ -12,19 +12,17 @@ Dependency inventory and optional public package/vulnerability verification Skil
 /check-dependencies Inventory dependencies offline, identify unresolved versions, and create a Markdown report.
 ```
 
-From this repository root, **offline / no network**:
+Resolve paths from the **installed Skill package** and the repository to inspect. Replace the placeholders before running. **Offline / no network**:
 
 ```sh
-python src/rulesync/.rulesync/skills/check-dependencies/scripts/check_dependencies.py --root .
+python "<installed-skill-dir>/scripts/check_dependencies.py" --root "<target-repo-dir>"
 ```
 
 After explicit authorization to submit package names/versions to public endpoints:
 
 ```sh
-python src/rulesync/.rulesync/skills/check-dependencies/scripts/check_dependencies.py --root . --online --max-packages 50
+python "<installed-skill-dir>/scripts/check_dependencies.py" --root "<target-repo-dir>" --online --max-packages 50
 ```
-
-In another repository, invoke the copy of `scripts/check_dependencies.py` bundled with the installed Skill instead of assuming this source-repository path exists.
 
 Review the offline JSON inventory **before** authorizing online lookups. The script skips lock entries pointing at non-public npm registries and Python requirements with custom package indexes or `--no-index`. Unknown origins or registry configuration outside these files may still be private.
 
