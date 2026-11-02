@@ -1,6 +1,6 @@
 # 개발 도구 실행 경로·진단 최적화 구현 계획
 
-> 상태: 1차 구현·PR Gate 검증 완료, 추가 검토 중. 이 문서는 PR 진행 중의 작업 근거이며 저장소 정책이나 도구 설정의 정본이 아니다.
+> 상태: 구현 및 최신 PR Gate 통과. 실제 모델·별도 로컬 플랫폼 검증은 제외되며, PR 별도 검토·병합은 남아 있다. 아래 초기 계획은 당시 판단 기록이며 최종 변경은 'Task 정리 구현 및 main 정합성 갱신' 이후를 기준으로 한다. 이 문서는 PR 진행 중의 작업 근거이며 저장소 정책이나 도구 설정의 정본이 아니다.
 
 ## 목표와 범위
 
@@ -19,7 +19,7 @@
 5. Promptfoo runner는 CLI 버전을 코드에 고정하나 `npx`로 해석되는 전이 의존성까지 완전히 lock하지 않는다. `PROMPTFOO_*` 설정·외부 provider·네트워크/쓰기 영향과 평가 비교 가능성을 보존해야 한다.
 6. Promptfoo 평가 실행은 `mise.toml`에서 asset별 `eval-mols-*` task를, `package.json`에서 asset별 `eval:promptfoo:*` npm script를 반복 선언한다. 현재 차이는 주로 `-c` 설정 파일, `--filter-metadata suite=...`와 `--no-cache --no-write` 옵션이다. PR #272에는 Bootstrap 평가·grader 보정 별칭 2개가 더 추가되어 중복이 계속 증가한다. 실질적으로 독립된 작업 계약이 없다면 별칭을 새로 만들지 않는다.
 7. `mise run check`의 버전 출력은 자체로 선언/실행 버전 일치 증명이 아니다. 전체 검증·가벼운 환경 진단·외부 최신성 조회가 구분되어 있지 않다.
-8. **열린 PR #272**가 `mise.toml`, `scripts/agent_assets/promptfoo_run.py`, 관련 eval과 문서를 변경 중이다. 작업 전에 최신 head와 병합 상태를 다시 확인하고 변경을 덮어쓰지 않는다. 새 PR은 생성 시점의 main에서 독립적으로 시작한다.
+8. **PR #272가 병합됨.** 과거에는 독립 진행 상태였지만 최종 통합 시 main의 Promptfoo native provider·grader·timeout 계약을 보존했으며 해당 부분을 구버전 파일로 되돌리지 않았다. 새 PR은 생성 시점의 main에서 독립적으로 시작한다.
 
 ## 네이티브 우선 검토와 결정 기준
 
@@ -55,7 +55,7 @@
 
 1. **호출 관계 및 기준선:** 실제 소비자(로컬 task, CI, pytest, eval, docs)를 모두 확인한다. 변경 전 Windows/Linux 경로, 기존 실패 상태, 설치/네트워크 부작용을 구분한다. PR #272 중복 영역을 재확인한다.
 2. **실행 계층 단순화:** `mise run eval` 하나에 Promptfoo CLI 인수를 전달하는 계약을 우선 구현·검증한다. 기존 asset/suite별 `mise`·`npm` 별칭을 실제 소비자 필요에 따라 제거 또는 축소한다. `mise.toml`이 작업 entrypoint를 소유하도록 `npm run` 중복 경유를 없앨 수 있는지 검증한다. `package.json`은 npm dependencies 없는 scripts-only 파일이므로 **삭제를 기본 제안**으로 삼되, 먼저 모든 실제 소비자를 옮기고 삭제 후 검증한다. 특히 PR Gate의 `npm run rulesync:validate`, `mise run check`의 `biome check ... package.json`, Rulesync·Node·Promptfoo·Validation 문서의 링크/명령 및 평가 문서, 필요시 hook과 CI를 확인한다. npm backend가 설치하는 **패키지 내부**의 `package.json`과는 다른 대상이다. Promptfoo의 평가 config/모델/데이터/exit code 계약은 유지한다.
-3. **진단과 최신성 분리:** 기존 검증과 겹치지 않는 최소 `preflight`(로컬, 빠름, 변경 없음)와 `outdated`(네트워크 필요, 알림 성격)을 배치한다. 새 릴리스 존재는 기본적으로 비차단, 선택/실행 버전 불일치와 필수 도구 결손은 적절하게 실패한다. 미확인 상황을 성공으로 둔갑시키지 않는다.
+3. **진단과 최신성 분리:** 초기에는 `preflight`·`outdated` task를 시도했으나, 최종 리뷰에서 프로젝트 고유 판정 없이 기본 CLI를 감싼다는 점을 확인해 모두 제거했다. 빠른 현황·잠금 검사와 외부 최신성 조회는 필요 시 각각 네이티브 명령으로 직접 실행하며, 새 릴리스 존재만으로 업데이트를 승인하지 않는다.
 4. **부트스트랩 단순화:** 이전 Windows/Node/npm backend 테스트가 지키는 안전 계약을 존중한다. mise/uv가 동일한 것을 native로 검증하는지 **실제로 확인한 항목만** 코드에서 제거한다. 설치 승인·잠금 불변·경로 격리·Windows 실행·실패 시 부분 상태 보존은 유지한다. 임의 전역 변경 금지.
 5. **Python·평가 실행 일관화:** 일반 task의 `uv run --locked`와 group 선택을 정리한다. Promptfoo의 `npx` 사용은 보존/대체 시 비용·재현성·실제 사용 빈도를 비교해 판단하며, 선택적 평가 실행이 기본 bootstrap에 자동 포함되도록 만들지 않는다.
 6. **검증 및 정본 갱신:** 관련 단위 테스트, native 명령 실행, Windows/Linux 호환성 검증, `mise run check`, `mise run test`, PR Gate 및 문서 갱신으로 마무리한다. 본인 환경에서 실행하지 못한 검증은 CI 결과/미검증으로 구분한다.
@@ -117,7 +117,7 @@
 - ✅ Pass — `main`의 관련 manifest, 주요 bootstrap/runner, 기존 테스트·CI 호출 경로 직접 조회.
 - ✅ Pass — mise Doctor/Outdated 및 uv Locked의 공식 문서에서 기본 의미 확인.
 - ⚪ Not Verified — 로컬 mise 버전의 Doctor 기능, Windows/Linux 실행, 최신성 탐지 결과, 구현 후 테스트와 CI.
-- ⚪ Not Verified — PR #272 최종 diff 반영(작업 착수 시 다시 점검).
+- ✅ Pass — PR #272 병합 변경을 최신 main에서 보존하며 통합했고 변경 대상 파일과 mergeable 상태를 검토했다.
 
 이 문서는 준비 근거만 보존한다. 구현이 끝나면 결과와 검증 근거는 PR·정본 문서·코드에 반영하고, 중복 작업 문서는 `.inbox/` 수명 주기에 따라 정리한다.
 
@@ -127,3 +127,10 @@
 - **삭제:** `outdated`는 기존 mise native 명령의 단순 별칭이므로 제거. `preflight`는 두 검사 실행을 단순 연결하며 환경 준비 판정이나 컨텍스트 절약을 보장하지 않아 제거. 필요 시 각각 `mise outdated --no-global --bump --json`, `mise ls --project --json`, `uv lock --check`를 직접 사용한다.
 - **유지:** `skills-sync`는 repository harness의 공식 진입점, `rulesync-doctor`/ `rulesync-preview`는 작업 공간 선택 계약이 있어 보존. 나머지 task의 별도 실행 의미는 기존 검토 결과 유지.
 - **검증 상태:** 해당 통합 커밋 이후의 CI로 최종 결과를 확인해야 하며 로컬 Windows 실행·실모델 eval은 미검증으로 보존한다.
+
+## 최종 구현 확인 (2026-11-02)
+
+- ✅ Pass — 커밋 `93a04bf6e7e258fc71436fa8abd9a1fee5f48c5b` [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/41454867640): success. Promptfoo provider 변경을 포함한 최신 main에 합친 결과의 deterministic test·Rulesync validation·generated artifacts 검증 통과.
+- ✅ Pass — diff는 `package.json`, `rulesync_run.py` 삭제와 의도한 문서/CI/`mise.toml` 변경으로 한정됐으며, mouse-sensitivity 제거를 비롯한 최신 main의 다른 변경을 유지했다.
+- ⚪ Not Verified — 별도 로컬 Windows task 실행 및 실제 모델·원격 provider 평가. 이 PR Gate의 성공을 이 범위의 실증으로 확대하지 않는다.
+- 작업 완료 판단: 별칭 최소화와 중복 npm 계층 제거 완료. `preflight` 재도입은 실제 관찰된 진단/축약 필요와 해당 mise 버전의 네이티브 지원 검증이 있을 때 별도 판단한다.
