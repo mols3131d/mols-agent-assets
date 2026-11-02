@@ -34,6 +34,15 @@ Filesystem은 탐색을 돕는 단서로 사용하되, 가독성을 위해 frame
 - customization의 scope와 owner를 분명히 한다.
 - 실제로 여러 layer가 겹칠 때만 precedence나 merge rule을 추가한다.
 
+## Consumer portability
+
+재사용 목적인 Agent Asset은 **작성 저장소에서 작동한 조건**과 **다른 소비자가 준비해야 할 조건**을 구분한다.
+
+- 소비자에게 필요한 capability, source, runtime, 명시된 dependency만 portable contract로 남긴다. 작성 저장소의 harness, 경로, CI, 이미 설치된 도구·Skill은 기본 전제로 승격하지 않는다.
+- 특정 프로젝트의 사례는 설계 증거일 뿐 보편 규칙이 아니다. 소비자별 차이는 가능한 작은 local delta로 남기고, 없는 설정·도구·권한을 추측하지 않는다.
+- 정적 설계 시 작성 저장소와 다른 기술 스택·디렉터리·runner를 갖는 소비자를 대입해 숨은 의존성이 있는지 점검한다. 이 사고 실험은 실제 소비자 runtime 검증이 아니다.
+- 명시적으로 repository-local asset을 만드는 경우에는 범용성을 강요하지 않는다. 의도된 적용 범위와 portable core 여부를 먼저 분명히 한다.
+
 ## Authority and precision
 
 권한은 concern별로 구분한다. 사용자와 프로젝트는 outcome과 scope를, source framework는 canonical representation을, target runtime은 target behavior를, repository는 local delta를 소유한다.
