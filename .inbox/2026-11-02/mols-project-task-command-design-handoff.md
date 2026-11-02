@@ -1,6 +1,6 @@
 # Handoff — `mols-project-task-command-design` 준비 PR
 
-> 상태: **설계·인계 준비 완료 / 정식 Skill 미작성·미평가**. 이 문서는 비정본이며 실행 지침이 아니다.
+> 상태: **정식 Skill 구현 및 정적 검증 진행 중 / 런타임 평가 미수행**. 이 문서는 비정본 참고 자료이며 실행 지침이 아니다.
 
 ## 목표와 기준
 
@@ -16,7 +16,7 @@
 
 **준비 완료:** 이름·설계 책임, 인접 Skill 소유권, task 존치/제거 판단, native 도구 우선, 인수/CLI 통합, CI·hook 소비자와 write boundary 보존, realistic positive/near-miss 사례.
 
-**미완료:** `SKILL.md` 구현, runtime route/등록·설치, 관련 테스트·설계 검증, 실제 Skill 선택·행동 평가, 최종 리뷰와 Merge. 미완성 placeholder Skill을 임의로 배포하지 않는다.
+**후속 상태:** 정본 `SKILL.md` 및 유지보수 안내가 생성되었고, 제공용 `route/skills.jsonl`도 정본 메타데이터에 맞춰 갱신한다. 실제 프로젝트 내 설치·선택, 모델 행동 평가, 별도 리뷰 및 Merge는 검증 근거에 따라 구분한다.
 
 ## 구현 순서
 
@@ -51,3 +51,10 @@
 - **범위 밖:** #275 코드 수정/병합, 전체 저장소 task 개편, 새로운 범용 도구 설치기·CI 정책·외부 자동화.
 
 정본 Skill을 작성·검증하기 전까지 이 PR은 **Draft**로 유지한다.
+
+## 구현 인계 갱신 (2026-11-02)
+
+- 신규 정본: `src/rulesync/.rulesync/skills/mols-project-task-command-design/SKILL.md` (단일 실행 파일), `docs/skills/mols-project-task-command-design/README.md` (유지보수 판단).
+- 배포용 derived route `route/skills.jsonl`은 기존 정본에서 생성된 metadata와 신규 source의 `name`·`description`을 같은 정렬·JSONL 포맷으로 재산출한다. CI의 공식 generated validation이 최종 기준이며, root `.agents/route`는 이 저장소가 사용하는 locked dependency만 취급하므로 신규 source 추가만으로 자체 사용을 주장하지 않는다.
+- PR #275는 현재 `main`에 통합됨. 준비 당시 독립 PR이라고 한 부분은 과거 시점 기록이며, 이 변경은 새 `main`을 병합 부모로 보존한다.
+- 정적 설계·현재 CI 검증의 합격을 실제 routing/behavior eval이나 모든 target runtime의 설치 성공으로 표현하지 않는다.

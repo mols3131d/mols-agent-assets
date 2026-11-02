@@ -88,7 +88,7 @@ def test_validate_reports_drift_and_recovery(capsys):
     assert result == 1
     assert "FAIL example" in captured.err
     assert "outdated: generated.txt" in captured.err
-    assert "mise run generated-sync" in captured.err
+    assert "mise run generated sync" in captured.err
 
 
 def test_validate_noop_when_no_projection_is_affected(capsys):

@@ -46,7 +46,7 @@
 
 ## PR #275에서 확인된 사례
 
-참조: [개발 도구 task 정리 PR #275](https://github.com/mols3131d/mols-agent-assets/pull/275). **2026-11-02 시점 독립적으로 진행 중인 PR**이며, 아래 내용을 main의 확정 구현으로 간주하지 않는다.
+참조: [개발 도구 task 정리 PR #275](https://github.com/mols3131d/mols-agent-assets/pull/275). **준비 당시에는 독립 PR이었으나 이번 구현 시점에 `main`에 병합된 것을 확인했다.** 아래 내용은 설계 사례이지 이 Skill이 강제하는 명령 목록이 아니다.
 
 - scripts-only 프로젝트 루트 `package.json`은 task 실행이 mise로 일원화되면 제거 가능. 다만 Node와 mise의 npm backend는 별도 필요성을 가진다. CI·문서의 `npm run` 소비자도 이관해야 한다.
 - Promptfoo 평가별 alias는 `mise run eval -c <config> --filter-metadata suite=<name>`처럼 인수를 활용. 기존 일부 평가의 `--no-cache --no-write` 정책과 원격 모델 비용/전송 경계는 보존한다.

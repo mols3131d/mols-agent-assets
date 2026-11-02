@@ -1,11 +1,8 @@
-#!/usr/bin/env python3
 """Commit되는 projection을 재생성하고 pre-commit에서 영향받는 output을 stage한다."""
 
 from __future__ import annotations
 
-import argparse
 import subprocess
-import sys
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
@@ -269,25 +266,3 @@ def sync_all(
     return tuple(projection.name for projection in projections)
 
 
-def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "--staged",
-        action="store_true",
-        help="staged 변경에 영향받는 projection만 재생성하고 output을 stage한다.",
-    )
-    args = parser.parse_args(argv)
-
-    try:
-        names = sync_staged() if args.staged else sync_all()
-    except GeneratedArtifactSyncError as exc:
-        print(str(exc), file=sys.stderr)
-        return 1
-
-    for name in names:
-        print(f"generated: {name}")
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())

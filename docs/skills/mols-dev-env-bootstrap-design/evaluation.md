@@ -25,17 +25,17 @@ Trigger는 expected selection과 deterministic하게 비교하며 Skill body를 
 
 현재 사례에는 Python/uv, Node/Volta/pnpm, Rust/Cargo 설계 시나리오가 포함된다. 이는 대표 입력 사례이며 다른 저장소의 실제 실행이나 모든 스택·도구 조합의 호환성을 검증한 결과는 아니다. 지원·성능 주장은 실제 평가한 조합과 claim에 맞는 근거로 한정한다. 추가 사례는 필요한 재사용 범위나 관찰된 실패에 근거해 선택한다.
 
-Promptfoo/Ollama, 실행용 Node/Python과 이 저장소의 npm 진입점은 현재 평가 harness의 구성이다. 배포된 Skill을 적용하는 다른 프로젝트의 필수 도구나 설치 절차로 전제하지 않는다.
+Promptfoo/Ollama, 실행용 Node/Python과 이 저장소의 mise task 진입점은 현재 평가 harness의 구성이다. 배포된 Skill을 적용하는 다른 프로젝트의 필수 도구나 설치 절차로 전제하지 않는다.
 
 ## Run locally
 
 사용 가능한 native provider와 독립적인 grader를 선택한 뒤 repository root에서 실행한다. Ollama가 기본값이지만 필수는 아니며, 기본 runtime/grader 이름에 해당하는 모델이 설치되어 있다고 가정하지 않는다.
 
 ```bash
-mise run eval-mols-dev-env-bootstrap-design
+mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design.yaml
 ```
 
-`PROMPTFOO_RUNTIME_PROVIDER`와 `PROMPTFOO_GRADER_PROVIDER`를 `.env` 또는 환경변수로 지정한다. 이 mise 진입점은 runner가 기본값을 정하기 전에 `.env`를 읽는다. 전체 runtime ID 미지정 시 기존 `PROMPTFOO_RUNTIME_MODEL` 설정을 사용한다. Trigger만 실행하려면 `mise run eval-mols-dev-env-bootstrap-design -- --filter-metadata suite=trigger`를 사용하며, Behavior는 `suite=behavior`로 바꾼다. 직접 `npm run`을 사용하는 경우의 환경 전달 조건은 [.env 로딩·provider 선택과 데이터 전송 경계](../../../evals/README.md#promptfoo-provider-선택)를 따른다. 네트워크 모델 다운로드는 이 평가의 자동 선행 작업이 아니며 현재 공통 runner가 선택한 Promptfoo version·no-sharing 설정을 재사용한다.
+`PROMPTFOO_RUNTIME_PROVIDER`와 `PROMPTFOO_GRADER_PROVIDER`를 `.env` 또는 환경변수로 지정한다. 이 mise 진입점은 runner가 기본값을 정하기 전에 `.env`를 읽는다. 전체 runtime ID 미지정 시 기존 `PROMPTFOO_RUNTIME_MODEL` 설정을 사용한다. Trigger만 실행하려면 `mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design.yaml --filter-metadata suite=trigger`를 사용하며, Behavior는 `suite=behavior`로 바꾼다. 환경 로딩·provider 선택과 데이터 전송 경계는 [평가 실행 안내](../../../evals/README.md#promptfoo-provider-선택)를 따른다. 네트워크 모델 다운로드는 이 평가의 자동 선행 작업이 아니며 현재 공통 runner가 선택한 Promptfoo version·no-sharing 설정을 재사용한다.
 
 Ollama grader에는 native `temperature=0`을 지정한다. `PROMPTFOO_RUNTIME_THINK`는 기존 custom Python Ollama provider 전용 설정이며 native provider에는 자동 적용되지 않는다. Native 모델의 thinking·structured output 등은 해당 provider의 공식 config로 설정하며, 이 설정을 바꾼 결과는 이전 조건과 구분한다. Transport/envelope 오류와 content JSON 오류는 별도로 기록한다.
 
@@ -44,7 +44,7 @@ Ollama grader에는 native `temperature=0`을 지정한다. `PROMPTFOO_RUNTIME_T
 [고정 응답 6개](../../../evals/skills/mols-dev-env-bootstrap-design/grader-cases.json)는 기존 사례의 요청·기준을 참조하는 정상/오답 3쌍이다. [Echo config](../../../evals/promptfoo/mols-dev-env-bootstrap-design-grader.yaml)는 같은 공통 assertion generator를 재사용하며 target inference 없이 grader만 실행한다. 기대 판정은 보고용 metadata에만 두며 grader에 제공하지 않는다.
 
 ```bash
-mise run eval-mols-dev-env-bootstrap-design-grader
+mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design-grader.yaml
 ```
 
 이 보정 실행의 CLI FAIL은 의도한 오답 거부일 수 있다. `expected_criteria`와 semantic `componentResults`의 기준별 판정을 비교하고 오류는 별도로 분류한다. 정상도 오답도 확인해야 하며, 보정 표본과 기대 판정은 재검토 가능한 agent 작성 자료다. 독립적인 사람 검수나 미사용 사례의 성능 보장이 아니다.

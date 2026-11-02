@@ -16,13 +16,14 @@ Eval을 언제 추가하고 어떤 evidence로 해석할지는 [`docs/developmen
 
 기본 Trigger/Behavior 평가 중 `mols-loops`와 `mols-dev-env-bootstrap-design`은 선택 가능한 Promptfoo native provider를 사용합니다. 공통 Python generator는 canonical fixture로부터 case별 system prompt와 assertion을 구성하지만 모델 HTTP 호출은 하지 않습니다. Reference를 조건부로 선택해야 하는 `mols-test-design`과 fixture-mode smoke는 기존 Python provider를 사용합니다. 모든 경로는 실제 IDE/CLI agent의 tool·routing 실행을 재현하지 않습니다.
 
-Promptfoo CLI는 기본적으로 개발자의 로컬 환경에서 실행하며, 모델 호출 위치는 선택한 provider가 결정합니다. Repository correctness는 root `tests/`가 검증하며, 주요 Promptfoo entrypoint는 다음과 같습니다.
+Promptfoo CLI는 기본적으로 개발자의 로컬 환경에서 실행하며, 모델 호출 위치는 선택한 provider가 결정합니다. Repository correctness는 root `tests/`가 검증하며, Promptfoo의 공통 실행 진입점은 `mise run eval`입니다. 평가 설정 파일과 CLI 옵션은 인수로 전달합니다. 예시:
 
 ```bash
-mise run eval-mols-loops-smoke
-mise run eval-mols-loops
-mise run eval-mols-dev-env-bootstrap-design
-mise run eval-mols-dev-env-bootstrap-design-grader
+mise run eval -c evals/promptfoo/mols-loops-smoke.yaml
+mise run eval -c evals/promptfoo/mols-loops.yaml
+mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design.yaml
+mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design-grader.yaml
+mise run eval --no-cache --no-write -c evals/promptfoo/mols-test-design.yaml
 ```
 
 ## Promptfoo provider 선택
@@ -55,7 +56,7 @@ Model·provider·grader 선택과 timeout의 빈 값·공백은 미지정으로 
 
 Runtime만 원격으로 바꾸면 기본 grader는 계속 Ollama이므로 behavior 평가에는 로컬 grader 모델도 필요합니다. 모든 모델 호출을 다른 제공자로 실행하려면 runtime과 grader를 각각 선택합니다. 기존 로컬 경로는 전체 ID를 미지정하고 `PROMPTFOO_RUNTIME_MODEL`, `OLLAMA_BASE_URL`을 설정하면 유지되며, 사용할 모델이 이미 준비되어 있어야 합니다.
 
-`mise run eval-mols-loops-smoke`는 모델 없이 fixture 연결만 확인합니다. 조건부 Reference를 읽는 `mols-test-design`은 기존 custom Ollama 경로여서 `PROMPTFOO_RUNTIME_PROVIDER`의 적용 대상이 아닙니다.
+`mise run eval -c evals/promptfoo/mols-loops-smoke.yaml`은 모델 없이 fixture 연결만 확인합니다. 조건부 Reference를 읽는 `mols-test-design`은 기존 custom Ollama 경로여서 `PROMPTFOO_RUNTIME_PROVIDER`의 적용 대상이 아닙니다.
 
 **원격 provider 또는 grader를 선택하면 Skill·평가 prompt 또는 응답·rubric이 외부로 전송될 수 있으며 비용이 발생합니다.** Telemetry·sharing·remote generation 비활성화는 이 전송을 막는 통제가 아닙니다. 데이터 전송과 비용 허가를 먼저 확인하며 모델 다운로드나 유료 API 실행은 자동 수행하지 않습니다.
 
@@ -79,9 +80,9 @@ providers:
 
 Promptfoo 0.122.0에서 여러 `--config` 파일의 provider 항목은 ID나 label 기준으로 덮어쓰지 않고 합쳐질 수 있습니다. Provider 설정 변경을 단순 overlay로 간주하지 않습니다. CLI·native provider 호환성 확인과 실제 모델의 응답 품질 평가는 별도이며, 한 제공자의 성공을 다른 제공자의 검증으로 확대하지 않습니다.
 
-`mise.toml`은 파일이 존재할 때만 `.env`를 읽습니다. 파일이 없으면 runner의 기존 기본값이 유지됩니다. mise가 읽은 `.env` 값은 부모 셸의 동일한 환경변수보다 우선할 수 있으므로, 일회성 변경은 `.env`를 편집하거나 mise가 시작한 자식 프로세스에서 설정합니다. 로컬 설정을 사용하는 공식 경로는 `mise run ...`이며, Bootstrap 평가와 grader 보정도 위 진입점을 사용합니다. 두 Bootstrap task는 `--` 뒤의 인자를 기존 npm script로 전달합니다.
+`mise.toml`은 파일이 존재할 때만 `.env`를 읽습니다. 파일이 없으면 runner의 기존 기본값이 유지됩니다. mise가 읽은 `.env` 값은 부모 셸의 동일한 환경변수보다 우선할 수 있으므로, 일회성 변경은 `.env`를 편집하거나 mise가 시작한 자식 프로세스에서 설정합니다. 로컬 평가의 공식 경로는 `mise run eval -c ...`이며, 평가별 mise task·npm script를 거치지 않고 CLI 옵션을 공통 Promptfoo runner에 전달합니다.
 
-`npm run ...`을 직접 실행할 때는 필요한 값을 **Python runner가 시작하기 전에** 환경변수로 전달해야 합니다. 예를 들어 `mise exec -- npm run eval:promptfoo:mols-dev-env-bootstrap-design`처럼 기존 mise 환경 로딩을 사용할 수 있습니다. Promptfoo 0.122.0 자체의 기본 dotenv 로딩은 runner가 이미 설정한 provider·grader·model·timeout 기본값을 덮어쓰지 않으므로, `.env`를 만들었다는 사실만으로 직접 실행에도 같은 설정이 적용된다고 가정하지 않습니다.
+Python runner 또는 Promptfoo CLI를 직접 실행하면 mise의 `.env` 로딩을 보장하지 않으므로, 평가 조건을 재현하려면 필요한 환경변수를 명시적으로 전달합니다.
 
 Deterministic assertion이 가능한 behavioral contract는 model grader보다 우선하지만, **문장 동기화나 semantic prose consistency를 문자열 regression으로 고정하지 않습니다.** 그런 의미는 authoritative source와 해당 behavioral review/eval이 소유합니다.
 
