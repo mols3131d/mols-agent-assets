@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Commit되는 projection을 재생성하고 pre-commit에서 영향받는 output을 stage한다."""
 
 from __future__ import annotations

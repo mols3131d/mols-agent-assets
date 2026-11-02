@@ -141,3 +141,9 @@
 - `mise.toml` task 2개를 `generated` 하나로 합치고, Lefthook·branch check·PR Gate·실패 복구 메시지·문서·테스트 호출자를 함께 이관. 세부 소유 함수는 변경하지 않아 생성과 read-only 검증의 계약을 보존한다.
 - `mise doctor project`를 처음 지원하는 mise 버전은 `2026.9.6`(공식 GitHub 릴리스 확인). 호스트 mise는 저장소가 설치하지 않으며 PR Gate만 `2026.9.6`으로 맞춘다. `[doctor.checks]`에 `uv lock --check`, `rulesync doctor --strict`를 선언하고 기존 `check` task와 PR Gate에서 Doctor를 재사용한다. Doctor는 설치 및 write sandbox가 아니므로 검사 command는 read-only만 유지한다.
 - 검증 전 위험: CI가 `mise doctor project`를 지원하더라도 설치 도구/PATH/실제 환경 보존이 통과한다는 보장은 없다. CI 실패 시 native 기능 자체보다 실행 환경 구성을 우선 확인하고 최소 수정한다.
+
+## 최종 검증 기록 (2026-11-02)
+
+- ✅ Pass — 단일 생성물 CLI·Doctor를 구현한 [PR Gate #677](https://github.com/mols3131d/mols-agent-assets/actions/runs/41456923081) 전체 성공. Doctor는 CI의 `mise 2026.9.6`에서 Python lock·Rulesync 루트 상태를 통과했으며, source/test/generated/Rulesync 검사도 통과.
+- 구현 리뷰: `generated_artifacts_sync.py`, `generated_artifacts_validate.py`의 command parser/`__main__`를 제거한 뒤 오해 소지가 있는 executable shebang도 제거하여 **CLI 진입점은 `scripts/generated_artifacts.py` 하나만 유지**. `--changed-from` 경로 전달까지 CLI 테스트에서 직접 판정한다.
+- 별도 Windows 로컬 실행, 실제 Promptfoo model/grader 및 원격 provider 사용은 하지 않았고 이 PR의 합격 근거로 주장하지 않는다.

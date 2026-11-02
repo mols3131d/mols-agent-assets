@@ -51,12 +51,17 @@ def test_validate_scope(monkeypatch, args, local_only):
 
 
 def test_validate_changed_from_and_exit_code(monkeypatch):
+    seen = []
+
+    def select(paths, *, local_only=False):
+        seen.append((paths, local_only))
+        return ()
+
     monkeypatch.setattr(validation, "changed_paths", lambda rev: {"docs/a.md"})
-    monkeypatch.setattr(
-        validation, "select_for_validation", lambda paths, local_only=False: (paths,)
-    )
+    monkeypatch.setattr(validation, "select_for_validation", select)
     monkeypatch.setattr(validation, "validate", lambda _: 1)
     assert cli.main(["validate", "--changed-from", "HEAD~1"]) == 1
+    assert seen == [({"docs/a.md"}, False)]
 
 
 def test_validate_unknown_impact_falls_back_to_all(monkeypatch, capsys):

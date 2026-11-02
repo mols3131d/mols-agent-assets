@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Validate committed generated projections without modifying repository files."""
 
 from __future__ import annotations
