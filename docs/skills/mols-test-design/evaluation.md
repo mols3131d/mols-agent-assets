@@ -27,6 +27,8 @@ description: mols-test-design만의 선택 경계, 오라클 품질, 독립적 �
 
 ## Available local evaluation path
 
+이 절의 명령·경로는 **작성 저장소의 로컬 평가 하네스**에만 해당합니다. 다른 저장소에 배포된 Skill의 사용·유지보수에 필요한 실행 계약이 아닙니다.
+
 기존 45개 case를 Trigger/Behavior로 실행하는 Promptfoo 설정은 `mise run eval`에 파일 경로와 필터를 전달한다. 이 평가에서는 기존의 결과 무기록·캐시 미사용 옵션을 명시적으로 유지한다.
 
 ```bash
