@@ -71,18 +71,16 @@ This is a low-frequency provisioning Skill, not baseline operational context.
 
 # CHATBOT.md
 
-For mols `CHATBOT.md` compatibility, keep one root `CHATBOT.md` and treat it as a minimal
-repository entry/router, not another policy owner.
+For mols `CHATBOT.md` compatibility, keep one root `CHATBOT.md` as an actionable
+runtime entrypoint, not a second owner of repository policy or Agent Asset behavior.
+Its first responsibility is to connect the runtime to existing instruction and asset
+selection sources for applicable `AGENTS.md`, Skills, Rules, and other needed contracts.
 
-It should connect the runtime to the smallest useful existing or repository-local routing
-surface needed to recover missing behavior such as:
-
-- applicable `AGENTS.md` guidance;
-- task-relevant Skill discovery and loading;
-- target-path Rule discovery and loading.
-
-Do not copy project policy, Skill bodies, Rule bodies, catalogs, or static path tables into
-`CHATBOT.md`.
+A target-specific execution fallback may also live there **only if that entrypoint is
+the effective consumer surface and a smaller established owner would not suffice**.
+Keep it conditional, anchored to canonical sources, and user-visible on partial or
+blocked execution; otherwise link to a target-owned reference. Do not copy project
+policy, asset bodies, catalogs, or static path tables into `CHATBOT.md`.
 
 # Workflow
 
