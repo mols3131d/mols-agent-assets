@@ -34,6 +34,15 @@ Filesystem은 탐색을 돕는 단서로 사용하되, 가독성을 위해 frame
 - customization의 scope와 owner를 분명히 한다.
 - 실제로 여러 layer가 겹칠 때만 precedence나 merge rule을 추가한다.
 
+## Portability boundary
+
+재사용 자산은 작성 중인 저장소가 아니라 **적용될 대상 작업**을 기준으로 설계한다. 먼저 호스트 저장소에서만 의미가 있는 경로·명령·자동화·예시를 제거하거나 명확한 local delta로 분리한다.
+
+- 현재 repository에서만 사용되는 자산이 명시적으로 요청되지 않았다면, 다른 저장소 구조와 runtime에서 같은 책임을 수행할 수 있어야 한다.
+- Script, template, reference 등 deployable resource는 설치된 자산 패키지를 기준으로 resolve한다. 작성 원본의 checkout path를 consumer path로 가정하지 않는다.
+- 특정 GitHub repo, local CI, project task나 개인 계정은 계약의 필수 조건이 아니라면 source citation 또는 검증 사례로만 남긴다.
+- 서로 다른 가상의 consumer 상황을 한 번씩 대입해 source-local 전제가 행동 조건으로 승격되지 않았는지 확인한다.
+
 ## Authority and precision
 
 권한은 concern별로 구분한다. 사용자와 프로젝트는 outcome과 scope를, source framework는 canonical representation을, target runtime은 target behavior를, repository는 local delta를 소유한다.
