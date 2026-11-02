@@ -35,7 +35,7 @@ ChatGPT Work의 별도 컴퓨터·브라우저, Codex의 코드 작업 환경, �
 ## 주요 설계 판단
 
 1. **Workflow 우선.** OpenSpec는 `propose`(planning만 생성), `apply`(코드 구현), `update`(기존 계획 수정·확인), `verify`(report-only), `sync`(정본 spec 업데이트), `archive`(확인 후 보관)를 구분한다. 이 구분을 일반적인 파일 수정으로 평탄화하지 않는다.
-2. **Root 누락은 호출 의도에 따라 다르다.** 공식 Skill이 자동 선택되었다면 OpenSpec 없이 본래 요청을 처리할 수 있다. 명시적인 OpenSpec 요청이면 초기화·외부 store·OpenSpec 없이 진행 중 선택을 먼저 요청하며, 무단 `openspec/` 생성을 하지 않는다.
+2. **Root 누락은 호출 의도에 따라 다르다.** 공식 Skill이 자동 선택되었다면 OpenSpec 없이 본래 요청을 처리할 수 있다. 명시적인 **OpenSpec Skill** 요청이면 초기화·외부 store·OpenSpec 없이 진행 중 선택을 먼저 요청한다. 반면 사용자가 직접 요청한 **CLI 명령**은 해당 명령의 원본 부작용 계약을 따른다. 예를 들어 `openspec new change`는 root가 없어도 암묵적 디렉터리를 만들 수 있으므로 실행·대체 전에 쓰기 권한과 사용자의 의도를 확인한다.
 3. **도구 최소 조합.** 작업과 관련된 연결 앱·파일·검증만 찾는다. Remote read → 필요시 분석 → authorized write → remote readback을 명시하고, 원격 쓰기 도구가 없다고 무조건 아무 결과도 만들지 않는 것은 피한다.
 4. **Computed CLI semantics는 추측하지 않는다.** `status/instructions/templates`의 schema dependency resolution, `validate` exit/result는 단순한 텍스트 검토로 대체되지 않는다. 가능한 확인 부분만 증거 수준대로 기록한다.
 5. **손상 위험 분리.** `sync/archive`는 여러 파일·정본 데이터를 바꿀 수 있다. 승인, 충돌 검토, 복구 가능한 변경 단위가 없으면 실행을 멈춘다.
@@ -46,7 +46,8 @@ ChatGPT Work의 별도 컴퓨터·브라우저, Codex의 코드 작업 환경, �
 | 상황 | 기대 결과 |
 | --- | --- |
 | 공식 CLI 또는 설치된 OpenSpec Skill이 정확한 상태에서 실행 가능 | 원본 기능 우선, 별도 adapter 강제하지 않음 |
-| 명시적 OpenSpec 요청이나 root 없음 | 쓰기 전에 init/store/비OpenSpec 진행 선택 요청 |
+| 명시적 OpenSpec Skill 요청이나 root 없음 | 쓰기 전에 init/store/비OpenSpec 진행 선택 요청 |
+| CLI `openspec new change` 요청이나 root 없음 | CLI 원본의 암묵적 root 생성 부작용을 인지하고 허가된 쓰기 범위 확인 |
 | Chat이 OpenSpec을 자동 선택했으나 root 없음 | OpenSpec 파일을 만들지 않고 원래 사용자 작업을 처리 |
 | 읽기만 가능하고 상태 조회 요청 | 확인한 아티팩트만 기술, 계산된 CLI status와 구분 |
 | GitHub로 proposal 작성 가능 | effective schema·선행 artifacts 확인 후 planning만 커밋; 코드 구현하지 않음 |
