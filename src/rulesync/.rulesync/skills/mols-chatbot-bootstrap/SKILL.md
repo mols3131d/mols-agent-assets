@@ -1,18 +1,19 @@
 ---
 name: mols-chatbot-bootstrap
 description: >-
-  Establish, repair, or review mols CHATBOT.md compatibility when a chat runtime cannot
-  natively reach applicable AGENTS.md guidance, Skills, or path-scoped Rules. Use for the
-  runtime first-hop to repository entry/router compatibility path. Do not use for unrelated
-  route or index generation, tuning, validation, or CI.
+  Design, establish, repair, or review the smallest chatbot harness that reaches applicable
+  repository instructions, Skills, and scoped Rules when native discovery or loading is
+  missing or uncertain. Use for runtime first-hop and selective canonical loading, not
+  routine repository work, general agent architecture, route tuning, CI, or ongoing automation.
 targets:
   - agentsskills
 ---
 
 # Mols Chatbot Bootstrap
 
-Establish or repair the smallest compatibility path from a chat runtime's guaranteed
-instruction surface into repository guidance and Agent Assets it cannot discover natively.
+Design, establish, or repair the smallest effective compatibility path from the active chat
+runtime into authoritative repository guidance and task-relevant Agent Assets. If native
+discovery and loading are sufficient, keep the existing harness unchanged.
 
 # Lifecycle
 
@@ -38,7 +39,13 @@ This is a low-frequency provisioning Skill, not baseline operational context.
 - Inspect the target before changing it. A review-only request stays read-only, and an
   already-sufficient harness is a valid no-op result.
 - Reuse native runtime behavior and established repository mechanisms before adding a
-  compatibility layer.
+  compatibility layer. A no-op is an acceptable design outcome.
+- Judge capabilities from the active runtime's exposed tools, access, and permission
+  boundaries, not the product name or advertised features. Inspect only capabilities
+  relevant to the missing harness behavior.
+- Before changing repository or runtime state, confirm the intended target/ref, writable
+  surface, approved scope, and execution identity. Available tools do not by themselves
+  authorize side effects; never switch accounts or connections to overcome a denial.
 - Recover only behavior the target chat runtime is actually missing. Treat missing
   `AGENTS.md`, Skill, and Rule discovery responsibilities independently; partial native
   support is a valid target state.
@@ -73,30 +80,40 @@ Do not copy project policy, Skill bodies, Rule bodies, catalogs, or static path 
 
 # Workflow
 
-1. Inspect caller intent and the target runtime/repository state only as far as they can
-   affect the compatibility decision: native discovery, guaranteed runtime instruction
-   surfaces, existing guidance, entrypoints, routing surfaces, generators, validators, and
-   CI.
-1. Determine the exact missing or stale compatibility behavior. If native or existing
-   mechanisms already cover it, reuse them and stop adding structure.
-1. Establish or repair the smallest repository-side entrypoint and routing surface that
-   closes the repository gap. Use the target's established representation when one exists.
-1. If the runtime does not natively discover that entrypoint, establish the smallest
-   runtime-side bootstrap that explicitly points to it and requires loading its routing
-   guidance. When the runtime-side surface is outside current write authority, provide the
-   exact handoff instead of pretending the first hop exists.
-1. When no established route convention exists and a separate route surface is justified,
-   use [Fallback route convention](references/routes.md) as the mols fallback rather than
-   as a universal schema.
-1. Use generation only when deterministic regeneration or drift checking provides concrete
-   value. Prefer target-native or existing tooling; otherwise use the bundled reference
-   generator only when its assumptions fit or a small adaptation is justified.
-1. Tune routing metadata only when selection materially improves. Do not duplicate asset
-   bodies or redefine authoritative applicability.
-1. Add or adapt validation proportional to the created drift risk. Reuse existing local or
-   CI checks before introducing another persistent mechanism.
-1. Verify authority boundaries, preservation of intentional tuning, and that the resulting
-   repository works without this Skill remaining active.
+1. Resolve the requested design, provisioning, repair, or review outcome; the relevant
+   repository/ref/path, current runtime mode, and authorized change boundary. Reuse
+   already-provided facts rather than requiring a full environment questionnaire.
+1. Inspect the existing native instruction, Skill, and Rule discovery paths and only the
+   tools/permissions needed to evaluate them. Distinguish a configured locator from
+   actually reading the authoritative source.
+1. Identify missing responsibilities separately: runtime first-hop, applicable repository
+   guidance, task-specific Skill/Rule selection, canonical body/conditional reference
+   loading, and any essential tool capability. If existing mechanisms cover the required
+   path, select no-op and do not add structure.
+1. Compare the smallest viable options without treating them as mandatory stages:
+   native/no-op; a runtime-side pointer to an existing entrypoint; a narrow selection
+   bridge only for uncovered scope/loading; or bounded reuse of available native tools
+   when an actual capability gap prevents access. Prefer the valid option with fewer
+   new surfaces, context loads, tool calls, and maintenance obligations. Do not invent
+   tools or install adapters as a default response to missing capability.
+1. Establish or repair only the missing path within approved authority. Preserve the
+   target's routing and customization; keep canonical policies and asset bodies in their
+   owners. If no established route is sufficient and a separate route is justified, use
+   [Fallback route convention](references/routes.md) only as a mols fallback. If an
+   instruction surface or required tool is inaccessible, provide an exact handoff.
+1. Generate, tune, or validate routing metadata only where recurring drift or selection
+   failure justifies it. Reuse target-native generators and checks before bundled
+   [Generation and tuning](references/tuning.md) resources; do not create new CI by default.
+1. Verify in evidence tiers: `configured` means the connection exists; `reachable`
+   means the active runtime can follow it to the applicable canonical sources; and
+   `observed applied` requires an actual task result consistent with their contract.
+   For selected Skills/Rules, check canonical body and necessary conditional reference
+   loading, not only route metadata. Existing native loading evidence may suffice
+   without a redundant fetch. If behavior cannot be observed, report `not verified`.
+1. Report the selected design/no-op, concrete changes and required user-side settings,
+   authority constraints, validated tier, remaining gaps, and relevant cost tradeoffs.
+   Do not claim equivalence across runtimes or normal operation requiring this Skill
+   to stay loaded.
 
 # Resources
 
@@ -126,6 +143,10 @@ Verify only claims relevant to the resulting harness:
   the runtime lacks them;
 - Skill selection remains semantic and Rule applicability preserves authoritative selector
   meaning;
+- task-relevant canonical Skill/Rule bodies and necessary conditional references can be
+  consumed through the selected route, rather than stopping at names or metadata;
+- configuration, source reachability, and observed behavior are reported at their actual
+  evidence tier; a missing trace is not converted into a successful runtime evaluation;
 - any generated metadata is deterministic for the assumptions actually used;
 - validation checks factual drift without erasing approved semantic tuning;
 - target-specific paths, formats, permissions, and CI behavior came from observable target
@@ -142,8 +163,10 @@ Prefer the smallest valid result over a uniform repository layout.
   guidance, Skill behavior, Rule behavior, routing semantics owned elsewhere, or routine
   repository work.
 - It does not define a portable chatbot standard or guarantee automatic discovery of
-  `CHATBOT.md` or any route path.
+  `CHATBOT.md` or any route path. Native sufficiency can require no compatibility files.
 - It does not grant authority to modify runtime-side project, system, workspace, plugin, or
   harness configuration merely because such a bootstrap would complete the chain.
+- It does not own generic tool provisioning or guarantee behavior parity when the runtime
+  cannot execute the source harness's required capabilities.
 - It does not justify a separate Skill for bootstrap, repair, review, generation, tuning,
   or validation merely because those workflow branches exist inside the same outcome.
