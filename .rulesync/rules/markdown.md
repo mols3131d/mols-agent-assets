@@ -11,4 +11,4 @@ Do not hard-wrap authored or materially edited Markdown prose to a fixed column 
 
 Preserve structural breaks in lists, tables, fences, blockquotes, explicit line breaks, and structured YAML. Do not reflow unrelated existing prose for source-style cleanup.
 
-Formatting and lint normalization belong to repository tooling, not manual wrapping. Load documentation or Markdown-maintenance Skills only when the task itself calls for them.
+Formatting and lint normalization belong to repository tooling, not manual wrapping.
