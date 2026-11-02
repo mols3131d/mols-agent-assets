@@ -37,13 +37,13 @@
 | `catalog/` | 외부 프로젝트 등에서 재사용할 Skill·Plugin의 탐색 목록과 이 저장소가 작성하는 패턴·템플릿 |
 | `route/` | 외부 consumer를 위한 제공 자산의 파생 탐색 정보 |
 | `.agents/route/` | 이 저장소 작업에 사용할 자산의 탐색 정보. 직접 관리하는 자산과 외부 의존성을 모두 포함할 수 있습니다. |
-| `inbox/` | 조사·검토·계획·인계 등 작업 자료. 정본 지침이나 현재 정책으로 간주하지 않습니다. |
+| `.inbox/` | 조사·검토·계획·인계 등 작업 자료. 정본 지침이나 현재 정책으로 간주하지 않습니다. |
 | 프레임워크·벤더별 프로젝트 경로 | 이 저장소 자체에서 직접 사용하는 runtime-local 자산 |
 
-`catalog/`에서 관리하는 패턴·템플릿의 원본은 재사용 콘텐츠의 정본일 수 있지만, 이 저장소에 자동 적용되는 개발 규칙은 아닙니다. `inbox/`의 내용도 별도로 채택해 해당 정본에 반영하기 전에는 작업 근거일 뿐입니다. 작성 원본·사용 연결·생성 결과의 구분은 [작성 원본과 권한](docs/development/source-authority.md)을 따릅니다.
+`catalog/`에서 관리하는 패턴·템플릿의 원본은 재사용 콘텐츠의 정본일 수 있지만, 이 저장소에 자동 적용되는 개발 규칙은 아닙니다. `.inbox/`의 내용도 별도로 채택해 해당 정본에 반영하기 전에는 작업 근거일 뿐입니다. 작성 원본·사용 연결·생성 결과의 구분은 [작성 원본과 권한](docs/development/source-authority.md)을 따릅니다.
 
 ## 더 찾아보기
 
 - **자산과 지식** — [외부 Skill 카탈로그](catalog/README.md), [설계 패턴](catalog/patterns/README.md), [Agent Asset 설계](docs/development/agent-assets/README.md), [도구·명세 참고 자료](docs/development/tooling/README.md)
 - **저장소 운영** — [개발환경](docs/development/development-environment.md), [도구 설정](docs/tools/README.md), [문서 정책](docs/documentation/README.md), [Rulesync](docs/development/tooling/rulesync.md)
-- **탐색·작업 자료** — [제공 자산 라우팅](route/README.md), [저장소 내부 라우팅](.agents/route/ROUTE.md), [작업 자료](inbox/README.md)
+- **탐색·작업 자료** — [제공 자산 라우팅](route/README.md), [저장소 내부 라우팅](.agents/route/ROUTE.md), [작업 자료](.inbox/README.md)
