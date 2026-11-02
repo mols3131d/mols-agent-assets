@@ -6,9 +6,7 @@
       "mode": "activation",
       "prompt": "새로운 SQL 리뷰 Skill을 설계해서 만들어줘.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-agent-asset"
-        ],
+        "selected_skills": ["mols-agent-asset"],
         "primary_skill": "mols-agent-asset"
       }
     },
@@ -17,9 +15,7 @@
       "mode": "activation",
       "prompt": "이 agent asset을 readiness 기준으로 심층 검증해줘.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-agent-asset"
-        ],
+        "selected_skills": ["mols-agent-asset"],
         "primary_skill": "mols-agent-asset"
       }
     },
@@ -28,9 +24,7 @@
       "mode": "activation",
       "prompt": "이 prompt가 positive와 negative 요청을 올바르게 구분하는지 eval 해줘.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-agent-asset"
-        ],
+        "selected_skills": ["mols-agent-asset"],
         "primary_skill": "mols-agent-asset"
       }
     },
@@ -39,9 +33,7 @@
       "mode": "activation",
       "prompt": "이 MCP tool schema와 approval rule을 적대적으로 검증해줘.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-agent-asset"
-        ],
+        "selected_skills": ["mols-agent-asset"],
         "primary_skill": "mols-agent-asset"
       }
     },
@@ -110,9 +102,7 @@
         }
       ],
       "expected_selection": {
-        "selected_skills": [
-          "mols-agent-asset-find"
-        ],
+        "selected_skills": ["mols-agent-asset-find"],
         "primary_skill": "mols-agent-asset-find"
       }
     },
