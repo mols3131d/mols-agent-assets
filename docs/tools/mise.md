@@ -67,7 +67,7 @@ mise run setup
 
 승인된 기본 쓰기 대상은 mise 관리 설치·cache와 프로젝트 `.venv`입니다. Python 자동 다운로드는 끄고, interpreter 누락 시 최초 준비를 명시적으로 수행합니다. 외부 환경을 가리키는 `UV_PROJECT_ENVIRONMENT`, `.venv` symlink/junction과 외부 package 경로는 차단합니다.
 
-Native 도구는 exact request의 경로와 실행 버전을 확인합니다. npm CLI는 package identity·managed prefix를 확인하고 잠근 Node로 실행해 Windows `.cmd` shim을 직접 호출하지 않습니다. package 내부 동작까지 sandbox로 제한하는 것은 아닙니다. 단순한 `mise exec --locked` 위임을 채택하지 않은 근거는 [Windows fallback 실증](../../inbox/github-258/bootstrap-simplification-review-2026-11-01.md)에 있습니다.
+Native 도구는 exact request의 경로와 실행 버전을 확인합니다. npm CLI는 package identity·managed prefix를 확인하고 잠근 Node로 실행해 Windows `.cmd` shim을 직접 호출하지 않습니다. package 내부 동작까지 sandbox로 제한하는 것은 아닙니다. 단순한 `mise exec --locked` 위임을 채택하지 않은 근거는 [Windows fallback 실증](../../.inbox/github-258/bootstrap-simplification-review-2026-11-01.md)에 있습니다.
 
 Node 실패 시 npm 단계는 차단하되 독립적인 uv/Python 단계는 계속합니다. 필수 실패는 `FAILED`/`BLOCKED`와 nonzero로 보고하고, core 검증이 모두 통과했을 때만 `READY`를 반환합니다. 선택적 연동은 성공 범위에서 제외합니다.
 
