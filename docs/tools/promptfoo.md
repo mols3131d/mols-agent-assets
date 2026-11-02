@@ -5,7 +5,11 @@ description: Promptfoo의 평가 재현용 버전 고정, 저장소 runner의 �
 
 # Promptfoo
 
-Promptfoo는 Agent Asset의 model/runtime 평가에 사용합니다. 실행 진입점은 [`package.json`](../../package.json), CLI pin과 환경 기본값은 [`promptfoo_run.py`](../../scripts/agent_assets/promptfoo_run.py), 평가 조건은 [`evals/promptfoo/`](../../evals/promptfoo/)가 소유합니다.
+Promptfoo는 Agent Asset의 model/runtime 평가에 사용합니다. 실행 진입점은 [`mise.toml`](../../mise.toml)의 `eval` task, CLI pin과 환경 기본값은 [`promptfoo_run.py`](../../scripts/agent_assets/promptfoo_run.py), 평가 조건은 [`evals/promptfoo/`](../../evals/promptfoo/)가 소유합니다.
+
+## 실행
+
+`mise run eval -c evals/promptfoo/<config>.yaml`로 대상을 고르고, `--filter-metadata suite=trigger` 같은 Promptfoo 기본 옵션을 그대로 전달합니다. Fixture smoke, 실제 모델 평가, grader 보정은 각각 해당 config와 의도된 CLI 인수를 명시적으로 선택합니다. 모델 평가에는 외부 provider 호출·비용·파일 쓰기가 포함될 수 있으므로 세션 시작 진단에 포함하지 않습니다.
 
 ## 기본 설정과 예외
 

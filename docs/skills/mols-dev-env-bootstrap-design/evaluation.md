@@ -32,7 +32,7 @@ Promptfoo/Ollama, 실행용 Node/Python과 이 저장소의 npm 진입점은 현
 이미 사용 가능한 Ollama 모델을 선택한 뒤 repository root에서 실행한다. 기본 runtime/grader 이름에 해당하는 모델이 설치되어 있다고 가정하지 않는다.
 
 ```bash
-npm run eval:promptfoo:mols-dev-env-bootstrap-design
+mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design.yaml
 ```
 
 `PROMPTFOO_RUNTIME_MODEL`과 `PROMPTFOO_GRADER_PROVIDER`를 명시하고, 필요하면 `-- --filter-metadata suite=trigger` 또는 `suite=behavior`로 분리한다. 네트워크 모델 다운로드는 이 평가의 자동 선행 작업이 아니다. 현재 공통 runner가 선택한 Promptfoo version·local/no-sharing 설정을 재사용한다.
@@ -44,7 +44,7 @@ Ollama grader에는 native `temperature=0`을 지정한다. Structured JSON에�
 [고정 응답 6개](../../../evals/skills/mols-dev-env-bootstrap-design/grader-cases.json)는 기존 사례의 요청·기준을 참조하는 정상/오답 3쌍이다. [Echo config](../../../evals/promptfoo/mols-dev-env-bootstrap-design-grader.yaml)는 같은 공통 assertion generator를 재사용하며 target inference 없이 grader만 실행한다. 기대 판정은 보고용 metadata에만 두며 grader에 제공하지 않는다.
 
 ```bash
-npm run eval:promptfoo:mols-dev-env-bootstrap-design:grader
+mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design-grader.yaml
 ```
 
 이 보정 실행의 CLI FAIL은 의도한 오답 거부일 수 있다. `expected_criteria`와 semantic `componentResults`의 기준별 판정을 비교하고 오류는 별도로 분류한다. 정상도 오답도 확인해야 하며, 보정 표본과 기대 판정은 재검토 가능한 agent 작성 자료다. 독립적인 사람 검수나 미사용 사례의 성능 보장이 아니다.

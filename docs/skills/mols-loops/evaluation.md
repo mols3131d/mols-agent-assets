@@ -112,10 +112,10 @@ Promptfoo의 test-level provider filter가 서로 다른 provider의 cartesian p
 ## Entrypoints
 
 ```bash
-mise run eval-mols-loops-smoke
-mise run eval-mols-loops
-mise run eval-mols-loops-trigger
-mise run eval-mols-loops-behavior
+mise run eval -c evals/promptfoo/mols-loops-smoke.yaml
+mise run eval -c evals/promptfoo/mols-loops.yaml
+mise run eval -c evals/promptfoo/mols-loops.yaml --filter-metadata suite=trigger
+mise run eval -c evals/promptfoo/mols-loops.yaml --filter-metadata suite=behavior
 ```
 
 - `eval-mols-loops-smoke` — fixture/provider/assertion plumbing만 확인

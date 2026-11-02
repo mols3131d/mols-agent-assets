@@ -29,6 +29,6 @@ Generator 자체의 parsing, ordering, failure behavior 같은 executable semant
 
 ## Rulesync
 
-`npm run rulesync:validate`는 Rulesync-managed assets의 structural validation entrypoint입니다. 통과 결과를 semantic quality, routing quality나 runtime behavior까지 확대 해석하지 않습니다.
+`mise run rulesync-validate`는 Rulesync-managed assets의 structural validation entrypoint입니다. 통과 결과를 semantic quality, routing quality나 runtime behavior까지 확대 해석하지 않습니다.
 
 Validation target을 PR Gate, manual 또는 다른 execution surface에 배치하는 admission 결정은 [Continuous Integration](ci.md)을 따릅니다.

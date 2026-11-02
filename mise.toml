@@ -29,11 +29,11 @@ run = "uv run --no-project --no-python-downloads python scripts/development_boot
 
 [tasks.skills-sync]
 description = "Sync locked external Skills through source-native installers"
-run = "uv run python scripts/agent_assets/skills_sync.py"
+run = "uv run --locked --no-default-groups python scripts/agent_assets/skills_sync.py"
 
 [tasks.generated-sync]
 description = "Regenerate committed indexes and routes"
-run = "uv run python -m scripts.generated_artifacts_sync"
+run = "uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts_sync"
 
 [tasks.generated-validate]
 description = "Validate committed indexes and routes without writing"
@@ -42,8 +42,8 @@ run = "uv run --locked --no-default-groups --group test python -m scripts.genera
 [tasks.format]
 description = "Format the entire repository"
 run = [
-  "uv run ruff check --fix .",
-  "uv run ruff format .",
+  "uv run --locked --no-default-groups --group dev ruff check --fix .",
+  "uv run --locked --no-default-groups --group dev ruff format .",
   "rumdl fmt .",
   "rumdl check --fix .",
   "biome format --write .",
@@ -66,37 +66,43 @@ run = [
   "uv lock --check",
   "uv run --locked --no-default-groups python scripts/agent_assets/skills_sync.py --dry-run",
   "lefthook validate",
-  "biome check biome.json package.json .vscode/tasks.json",
+  "biome check biome.json .vscode/tasks.json",
 ]
 
 [tasks.test]
 description = "Run repository tests"
 run = "uv run --locked --no-default-groups --group test pytest"
 
-[tasks.eval-mols-test-design]
-description = "mols-test-design local Trigger + Behavior runtime eval"
-run = "npm run eval:promptfoo:mols-test-design"
+# Task names do not grow with evaluation fixtures; Promptfoo owns -c and filter flags.
+[tasks.eval]
+description = "Run a selected Promptfoo configuration with native CLI arguments"
+raw_args = true
+run = "uv run --locked --no-default-groups --group test python scripts/agent_assets/promptfoo_run.py eval"
 
-[tasks.eval-mols-test-design-trigger]
-description = "mols-test-design local Trigger eval"
-run = "npm run eval:promptfoo:mols-test-design:trigger"
+[tasks.rulesync-doctor]
+description = "Validate the reusable Rulesync workspace configuration"
+raw_args = true
+run = "uv run --locked --no-default-groups python scripts/agent_assets/rulesync_run.py doctor"
 
-[tasks.eval-mols-test-design-behavior]
-description = "mols-test-design local Behavior eval"
-run = "npm run eval:promptfoo:mols-test-design:behavior"
+[tasks.rulesync-preview]
+description = "Preview reusable Rulesync projections without writing"
+raw_args = true
+run = "uv run --locked --no-default-groups python scripts/agent_assets/rulesync_run.py preview"
 
-[tasks.eval-mols-loops-smoke]
-description = "mols-loops Promptfoo fixture smoke를 local에서 실행"
-run = "npm run eval:promptfoo:mols-loops:smoke"
+[tasks.rulesync-validate]
+description = "Validate reusable Rulesync configuration and projections"
+run = "uv run --locked --no-default-groups python scripts/agent_assets/rulesync_validate.py"
 
-[tasks.eval-mols-loops]
-description = "mols-loops Trigger + Behavior Promptfoo runtime eval을 local에서 실행"
-run = "npm run eval:promptfoo:mols-loops"
+# Local diagnostics do not install or upgrade. This reports the selected project tools
+# and checks lock consistency; it is not a guarantee of full environment readiness.
+[tasks.preflight]
+description = "Inspect project tool selection and Python lock without updating"
+run = [
+  "mise ls --project --json",
+  "uv lock --check",
+]
 
-[tasks.eval-mols-loops-trigger]
-description = "mols-loops Trigger Promptfoo runtime eval만 local에서 실행"
-run = "npm run eval:promptfoo:mols-loops:trigger"
-
-[tasks.eval-mols-loops-behavior]
-description = "mols-loops Behavior Promptfoo runtime eval만 local에서 실행"
-run = "npm run eval:promptfoo:mols-loops:behavior"
+# Network lookup only when explicitly requested; availability is not a merge gate.
+[tasks.outdated]
+description = "Report newer project tool releases without upgrading"
+run = "mise outdated --no-global --bump --json"

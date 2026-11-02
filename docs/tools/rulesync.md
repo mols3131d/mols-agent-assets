@@ -17,7 +17,7 @@ Rulesync는 선택한 작성 원본에서 벤더별 Agent Asset을 생성하고 
 - root dependency는 GitHub transport를 사용합니다. 필요한 인증은 설치 프로세스에만 전달하고 token을 config·로그에 남기지 않습니다. Git 전역 설정과 로컬 override를 임의로 바꾸지 않습니다.
 - 문서 조회도 기존 설치본의 `rulesync docs`를 우선합니다. 프로젝트 실행을 `npx rulesync@latest`로 대체하지 않습니다.
 
-버전 갱신 시 `npm run rulesync:doctor`, `npm run rulesync:preview`, `npm run rulesync:validate`와 관련 projection diff를 확인합니다. structural validation 통과를 runtime 의미의 동등성이나 검토 승인으로 해석하지 않습니다.
+버전 갱신 시 `mise run rulesync-doctor`, `mise run rulesync-preview`, `mise run rulesync-validate`와 관련 projection diff를 확인합니다. structural validation 통과를 runtime 의미의 동등성이나 검토 승인으로 해석하지 않습니다.
 
 ## 권장 버전 정책
 
