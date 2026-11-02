@@ -11,13 +11,13 @@
 
 ## 자산 탐색
 
-- 이 저장소를 작업할 때 사용할 Agent Asset은 `.agents/route/ROUTE.md`에서 선택합니다. 이 저장소가 **제공하는** Agent Asset의 외부 탐색은 `route/README.md`를 따릅니다.
+- 네이티브 발견만으로 필요한 Agent Asset을 찾을 수 없다면 `.agents/route/ROUTE.md`를 보조 탐색에 사용합니다. 이 저장소가 **제공하는** Agent Asset의 외부 탐색은 `route/README.md`를 따릅니다.
 - `.agents/route/families.json`은 현재 Skill family membership의 정본입니다. 생성되는 `.agents/route/routes.jsonl`과 Skill family `*.jsonl`은 직접 수정하지 않습니다.
 
 ## 자산의 관리와 사용
 
 - **관리**(작성 원본의 유지·변경)와 **사용**(이 저장소의 작업·runtime에 선택·설치·적용)은 별개입니다. 같은 자산을 관리하면서 사용할 수도 있습니다.
-- 관리 여부는 작성 원본과 소유권으로, 사용 여부는 실제 routing·dependency·runtime 설정으로 판단합니다. `src/`에 있다는 이유로 사용한다고 추정하거나, `.agents/route/`에 있다는 이유로 외부 자산이라고 추정하지 않습니다. 설치된 Skill의 revision은 `rulesync.lock` 또는 `skills-lock.json`에서 확인하며 `src/` 수정이 곧바로 설치본에 반영된다고 가정하지 않습니다.
+- 관리 여부는 작성 원본과 소유권으로, 사용 여부는 실제 routing·dependency·runtime 설정으로 판단합니다. `src/`에 있다는 이유로 사용한다고 추정하거나, `.agents/route/`에 있다는 이유로 외부 자산이라고 추정하지 않습니다. `rulesync.lock`과 `skills-lock.json`은 의존성의 고정 기준이지 현재 설치본의 일치 증거가 아닙니다. 실제 적용 상태는 설치·동기화 결과로 확인하며 `src/` 변경이 곧바로 설치본에 반영된다고 가정하지 않습니다.
 
 ## 원본·의존성
 
