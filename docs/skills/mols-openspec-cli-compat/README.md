@@ -4,7 +4,7 @@ description: ChatGPT Chat용 OpenSpec 실행 호환 Skill의 목적, 타깃 런�
 
 # OpenSpec CLI Compatibility — Maintainer Guide
 
-실행 동작과 activation의 정본은 [`mols-openspec-cli-compat`](../../../src/.openai-chatgpt-chat/skills/mols-openspec-cli-compat/SKILL.md)이다. 이 문서는 설계 선택과 검증 근거만 맡으며, 실제 Chat에서 자동으로 실행되는 지침은 아니다.
+실행 동작과 activation의 정본은 [`mols-openspec-cli-compat`](../../../src/openai-chatgpt-chat/skills/mols-openspec-cli-compat/SKILL.md)이다. 이 문서는 설계 선택과 검증 근거만 맡으며, 실제 Chat에서 자동으로 실행되는 지침은 아니다.
 
 ## 목표와 책임
 
@@ -39,7 +39,7 @@ ChatGPT Work의 별도 컴퓨터·브라우저, Codex의 코드 작업 환경, �
 3. **도구 최소 조합.** 작업과 관련된 연결 앱·파일·검증만 찾는다. Remote read → 필요시 분석 → authorized write → remote readback을 명시하고, 원격 쓰기 도구가 없다고 무조건 아무 결과도 만들지 않는 것은 피한다.
 4. **Computed CLI semantics는 추측하지 않는다.** `status/instructions/templates`의 schema dependency resolution, `validate` exit/result는 단순한 텍스트 검토로 대체되지 않는다. 가능한 확인 부분만 증거 수준대로 기록한다.
 5. **손상 위험 분리.** `sync/archive`는 여러 파일·정본 데이터를 바꿀 수 있다. 승인, 충돌 검토, 복구 가능한 변경 단위가 없으면 실행을 멈춘다.
-6. **작성 원본과 소비 분리.** `src/.openai-chatgpt-chat/skills/mols-openspec-cli-compat/SKILL.md`는 하나의 관리 정본이며, Chat Skill 설치·선택은 별도의 관찰 대상이다. Rulesync와 두 번째 작성 원본을 만들지 않는다.
+6. **작성 원본과 소비 분리.** `src/openai-chatgpt-chat/skills/mols-openspec-cli-compat/SKILL.md`는 하나의 관리 정본이며, Chat Skill 설치·선택은 별도의 관찰 대상이다. Rulesync와 두 번째 작성 원본을 만들지 않는다.
 
 ## 검증 계획과 관찰할 행동
 

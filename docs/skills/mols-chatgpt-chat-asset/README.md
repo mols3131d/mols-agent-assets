@@ -4,7 +4,7 @@ description: ChatGPT Chat 전용 Agent Asset 생성·튜닝·유지보수 Skill�
 
 # ChatGPT Chat Agent Asset — Maintainer Guide
 
-실행·activation 계약은 [`mols-chatgpt-chat-asset`](../../../src/.openai-chatgpt-chat/skills/mols-chatgpt-chat-asset/SKILL.md)가 소유한다. 이 문서는 제품별 기능 변화를 반영할 **설계 판단과 검증 계획**만 유지한다.
+실행·activation 계약은 [`mols-chatgpt-chat-asset`](../../../src/openai-chatgpt-chat/skills/mols-chatgpt-chat-asset/SKILL.md)가 소유한다. 이 문서는 제품별 기능 변화를 반영할 **설계 판단과 검증 계획**만 유지한다.
 
 ## 책임과 자산 위치
 
@@ -16,7 +16,7 @@ ChatGPT **Chat** 환경은 사용 가능한 도구와 소비 가능한 자산 �
 - `mols-chatgpt-chat-asset` — Chat에 최적화된 새 자산 생성, 기존 자산의 target-specific 조정, **제작 대상의 소비 표면 결정**·패키징·유지보수.
 - 특정 작업 Skill(예: OpenSpec CLI 호환) — 그 작업의 실제 domain 실행 의미.
 
-작성 원본은 `src/.openai-chatgpt-chat/skills/mols-chatgpt-chat-asset/SKILL.md` 한 곳이다. 이 경로는 **저장소에서 관리하는 vendor-native 원본**이며 자동 설치 경로가 아니다. 필요에 따라 이 스킬 자체도 Chat에 배포해 사용 가능하지만, 이 저장소의 작업에서 읽을 수 있다는 사실만으로 설치되었다고 주장하지 않는다.
+작성 원본은 `src/openai-chatgpt-chat/skills/mols-chatgpt-chat-asset/SKILL.md` 한 곳이다. 이 경로는 **저장소에서 관리하는 vendor-native 원본**이며 자동 설치 경로가 아니다. 필요에 따라 이 스킬 자체도 Chat에 배포해 사용 가능하지만, 이 저장소의 작업에서 읽을 수 있다는 사실만으로 설치되었다고 주장하지 않는다.
 
 ## 리뷰 범위 — 제작 대상과 제작 스킬을 혼동하지 않기
 

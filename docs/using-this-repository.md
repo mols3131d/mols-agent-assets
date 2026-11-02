@@ -44,7 +44,7 @@ rulesync generate
 
 ### Import Subagents and Runtime-Specific Assets
 
-[Rulesync Subagent 원본](../src/rulesync/.rulesync/subagents/)이나 [ChatGPT Chat 전용 자산](../src/.openai-chatgpt-chat/README.md)은 각 런타임에서 지원하는 형식·설치 경로·권한을 확인하고 가져옵니다. 원본 파일이 존재한다는 사실만으로 해당 런타임에서 자동 설치되거나 실행되는 것은 아닙니다.
+[Rulesync Subagent 원본](../src/rulesync/.rulesync/subagents/)이나 [ChatGPT Chat 전용 자산](../src/openai-chatgpt-chat/README.md)은 각 런타임에서 지원하는 형식·설치 경로·권한을 확인하고 가져옵니다. 원본 파일이 존재한다는 사실만으로 해당 런타임에서 자동 설치되거나 실행되는 것은 아닙니다.
 
 수정해서 사용한다면 필요한 파일과 지원 리소스를 함께 가져오고, 이후의 프로젝트별 변경은 소비자 프로젝트가 소유합니다.
 
