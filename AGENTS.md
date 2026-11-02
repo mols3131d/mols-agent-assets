@@ -4,6 +4,7 @@
 
 - 현재 작업 경로에 적용되는 `AGENTS.md`와 런타임이 지원하는 scoped Rule을 따릅니다. Skill은 네이티브 발견·선택 기능을 우선 사용하고, 필요한 자산을 찾을 수 없을 때만 `.agents/route/ROUTE.md`를 추가 탐색합니다. `CHATBOT.md`는 로컬 에이전트의 필수 진입점이 아닙니다.
 - 작업과 무관한 지침·Skill·참고 문서는 미리 로드하지 않습니다. 특정 작업의 세부 정책은 아래 정본 진입점에서 필요한 부분만 확인합니다.
+
 ## 작업 자료와 지침의 경계
 
 - `inbox/`의 조사·계획·검토·인계 자료는 참고 근거이며 정본 정책이나 현재 작업 지침이 아닙니다. 명시적으로 채택해 해당 owner 문서에 반영하기 전에는 지침으로 적용하지 않습니다.
@@ -11,7 +12,7 @@
 
 ## 자산 탐색
 
-- 네이티브 발견만으로 필요한 Agent Asset을 찾을 수 없다면 `.agents/route/ROUTE.md`를 보조 탐색에 사용합니다. 이 저장소가 **제공하는** Agent Asset의 외부 탐색은 `route/README.md`를 따릅니다.
+- 이 저장소가 **제공하는** Agent Asset의 외부 탐색은 `route/README.md`를 따릅니다.
 - `.agents/route/families.json`은 현재 Skill family membership의 정본입니다. 생성되는 `.agents/route/routes.jsonl`과 Skill family `*.jsonl`은 직접 수정하지 않습니다.
 
 ## 자산의 관리와 사용
