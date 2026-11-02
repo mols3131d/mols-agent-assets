@@ -268,6 +268,31 @@ def test_trigger_provider_uses_only_skill_discovery_metadata(
     assert json.loads(result["output"])["primary_skill"] == "example-skill"
 
 
+
+
+def test_ollama_request_respects_local_runtime_configuration(monkeypatch) -> None:
+    monkeypatch.setenv("PROMPTFOO_RUNTIME_MODEL", "local-model")
+    monkeypatch.setenv("OLLAMA_BASE_URL", "http://127.0.0.1:12555/")
+    monkeypatch.setenv("PROMPTFOO_RUNTIME_TIMEOUT_SECONDS", "45")
+    observed: dict[str, object] = {}
+
+    def fake_urlopen(api_request, timeout):
+        observed["url"] = api_request.full_url
+        observed["timeout"] = timeout
+        observed["body"] = json.loads(api_request.data.decode("utf-8"))
+        return _fake_response({"response": "configured"})
+
+    monkeypatch.setattr(evaluator.request, "urlopen", fake_urlopen)
+    result = evaluator._ollama_request(
+        "prompt", "system", evaluator.BEHAVIOR_RESPONSE_SCHEMA
+    )
+
+    assert isinstance(result, tuple)
+    assert result[0] == {"response": "configured"}
+    assert observed["url"] == "http://127.0.0.1:12555/api/chat"
+    assert observed["timeout"] == 45.0
+    assert observed["body"]["model"] == "local-model"
+
 def test_behavior_provider_uses_full_selected_skill(
     tmp_path: Path,
     monkeypatch,
