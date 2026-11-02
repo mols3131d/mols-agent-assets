@@ -9,8 +9,9 @@ description: GitHub의 Issues, Pull Requests, PR Reviews, coding agents, automat
 ## Authority
 
 - 저장소의 GitHub 협업 정책과 GitHub object의 cross-surface 작성 의미 → 이 문서
-- GitHub authoring template directory의 notation과 공통 rendering convention → [GitHub Authoring Templates](../../.github/templates/README.md)
-- 각 GitHub authoring surface의 field, optional section, exact literal과 rendering structure → `.github/templates/`의 해당 template file
+- GitHub native Issue·PR 작성 본문 → [Issue template](../../.github/ISSUE_TEMPLATE/issue.md), [PR template](../../.github/pull_request_template.md)
+- PR Review·Comment 작성 보조 notation → [Review and Comment Authoring Templates](../../.github/templates/README.md)
+- Review·Comment의 field, optional section과 rendering structure → `.github/templates/`의 해당 template file
 - agent에게 적용되는 저장소 instruction과 Agent Asset → 각 instruction과 asset의 원본
 - GitHub에서 실제로 강제되는 조건과 actor 권한 → repository settings, Rulesets와 GitHub 권한 모델
 - GitHub 기능의 현재 동작과 preview 상태 → GitHub 공식 문서
@@ -35,7 +36,7 @@ Issue, PR 본문, comment와 저장소 내용은 agent에게 입력일 뿐입니
 
 ## Authoring
 
-Issue, Pull Request, PR Review와 comment에 공통으로 적용되는 작성 의미와 convention은 이 section이 소유합니다. Directory-level notation과 공통 rendering convention은 [GitHub Authoring Templates](../../.github/templates/README.md)가, 구체적인 field와 optional section은 각 template file이 소유합니다.
+Issue, Pull Request, PR Review와 comment에 공통으로 적용되는 작성 의미와 convention은 이 section이 소유합니다. Issue와 Pull Request의 GitHub UI 작성 본문은 native template 파일이 소유합니다. GitHub가 native template을 제공하지 않는 Review·Comment의 작성 보조 notation은 [Review and Comment Authoring Templates](../../.github/templates/README.md)가, 구체적인 field와 optional section은 해당 template file이 소유합니다. Native template은 GitHub UI의 작성 시작점을 제공하며 API·Plugin으로 생성되는 object의 본문을 자동 보정하지 않습니다.
 
 - 결론과 판단에 필요한 최종 결과와 근거를 먼저 둡니다. 작업 과정이나 시행착오는 판단에 필요할 때만 남깁니다.
 - GitHub UI, CI 또는 canonical artifact가 이미 소유하는 정보는 필요 없이 복제하지 않습니다. 요구사항이나 결정의 source가 따로 있으면 다시 쓰기보다 연결합니다.
@@ -65,12 +66,20 @@ PR conversation comment의 optional workflow status는 다음 의미로 사용�
 
 같은 finding을 review body와 inline comment에 완전히 중복하지 않습니다. Line-specific finding은 inline comment에 두고, review body에는 cross-cutting finding이나 전체 판단에 필요한 요약을 둡니다.
 
-현재 repository-local authoring template이 다루는 Issue, Pull Request, PR Review와 PR comment에서는 `author`와 `revision`으로 필요한 provenance를 기록합니다.
+Issue, Pull Request, PR Review와 PR comment에서는 GitHub UI, API, Plugin 등 작성 경로와 무관하게 `author`와 `revision`으로 필요한 provenance를 기록합니다.
 
 - `author` — agent가 최종 GitHub text의 내용이나 구조를 실질적으로 작성하거나 재작성했다면 반드시 기록합니다. GitHub object가 사람의 account나 credential로 생성되어도 같습니다. 사람이 완성한 text를 agent가 그대로 게시하거나, 사람이 이미 정한 title·state·label 같은 값을 그대로 설정하는 기계적 mutation만 수행한 경우는 agent 주도 작성으로 보지 않습니다. 각 항목은 `<user-id>:<provider>-<service>` 형식을 사용합니다.
 - `revision` — Pull Request description이나 PR Review가 의존하는 exact diff pair입니다. `base`와 `head`를 함께 full commit SHA로 기록합니다. PR description을 새 pair 기준으로 갱신하면 함께 갱신하고, 이미 제출된 review의 pair는 이후 head가 바뀌어도 변경하지 않습니다.
 
-`author`는 Issue, Pull Request, PR Review, PR conversation comment와 PR inline review comment에 적용하며 위 조건에서 필수입니다. `revision`은 Pull Request와 PR Review에만 사용합니다. 각 field의 의미와 적용 조건은 이 문서가 소유하고, Metadata의 공통 Markdown rendering convention과 surface별 표현 구조는 [GitHub Authoring Templates](../../.github/templates/README.md)와 해당 template file이 소유합니다.
+`author`는 Issue, Pull Request, PR Review, PR conversation comment와 PR inline review comment에 적용하며 위 조건에서 필수입니다. `revision`은 Pull Request와 PR Review에만 사용합니다. Metadata는 **본문 끝의 단일 fenced `yaml` block**으로 표현하고, 해당 surface에 필요한 field만 남깁니다. YAML frontmatter나 GitHub object metadata로 해석하지 않으며 별도의 Metadata heading을 만들지 않습니다. Native template에는 실제 값이 없는 metadata를 미리 삽입하지 않습니다.
+
+```yaml
+author:
+  - <user-id>:<provider>-<service>
+revision:
+  base: <full-base-commit-sha>
+  head: <full-head-commit-sha>
+```
 
 ## Issues
 
@@ -177,8 +186,9 @@ GitHub Agentic Workflows는 자연어 Markdown으로 작성하더라도 일반 �
 
 ## Boundary
 
-- GitHub authoring template directory의 notation과 공통 rendering convention → [GitHub Authoring Templates](../../.github/templates/README.md)
-- 각 GitHub authoring surface의 field, optional section, exact literal과 rendering structure → `.github/templates/`의 해당 template file
+- GitHub native Issue·PR 작성 본문 → [Issue template](../../.github/ISSUE_TEMPLATE/issue.md), [PR template](../../.github/pull_request_template.md)
+- PR Review·Comment 작성 보조 notation → [Review and Comment Authoring Templates](../../.github/templates/README.md)
+- Review·Comment의 field, optional section과 rendering structure → `.github/templates/`의 해당 template file
 - working state, worktree, base, branch policy와 naming, Git history와 commit convention → [VCS / Git](vcs-git.md)
 - 작성 원본과 저장소 권한 결정 → [작성 원본과 권한](source-authority.md)
 - CI admission, PR Gate와 workflow evidence orchestration → [Continuous Integration](ci.md)
