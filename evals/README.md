@@ -12,6 +12,8 @@ Asset별 차이는 fixture와 tool config가 소유합니다. 같은 평가 cont
 
 Eval을 언제 추가하고 어떤 evidence로 해석할지는 [`docs/development/evaluation.md`](../docs/development/evaluation.md)가 소유합니다. 이 README는 `evals/`의 fixture placement와 local boundary만 소유합니다.
 
+기본 Trigger/Behavior 평가 중 `mols-loops`와 `mols-dev-env-bootstrap-design`은 Promptfoo의 native `ollama:chat` provider를 사용합니다. 공통 Python generator는 canonical fixture로부터 case별 system prompt와 assertion을 구성하지만 모델 HTTP 호출은 하지 않습니다. Reference를 조건부로 선택해야 하는 `mols-test-design`과 fixture-mode smoke는 기존 Python provider를 사용합니다. 모든 경로는 실제 IDE/CLI agent의 tool·routing 실행을 재현하지 않습니다.
+
 Promptfoo와 model/runtime을 사용하는 behavioral eval은 기본적으로 local에서 실행합니다. Repository correctness는 root `tests/`가 검증하며, 현재 mols-loops Promptfoo entrypoint는 다음과 같습니다.
 
 ```bash
