@@ -50,18 +50,6 @@ jobs:
           install: false
           cache: true
 
-      # Temporary preview step: refresh platform lock metadata in the ephemeral CI checkout.
-      # This step outputs only the public mise.lock (base64), with no environment secrets.
-      - name: Preview refreshed mise lock for all supported platforms
-        shell: bash
-        run: |
-          set -euo pipefail
-          mise lock --platform linux-arm64,linux-arm64-musl,linux-x64,linux-x64-musl,macos-arm64,macos-x64,windows-x64
-          echo "MISE_LOCK_BEGIN"
-          base64 -w0 mise.lock
-          echo
-          echo "MISE_LOCK_END"
-
       - name: Install Rulesync validation tools
         run: mise install node "npm:rulesync"
 

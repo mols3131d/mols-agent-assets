@@ -147,3 +147,11 @@
 - ✅ Pass — 단일 생성물 CLI·Doctor를 구현한 [PR Gate #677](https://github.com/mols3131d/mols-agent-assets/actions/runs/41456923081) 전체 성공. Doctor는 CI의 `mise 2026.9.6`에서 Python lock·Rulesync 루트 상태를 통과했으며, source/test/generated/Rulesync 검사도 통과.
 - 구현 리뷰: `generated_artifacts_sync.py`, `generated_artifacts_validate.py`의 command parser/`__main__`를 제거한 뒤 오해 소지가 있는 executable shebang도 제거하여 **CLI 진입점은 `scripts/generated_artifacts.py` 하나만 유지**. `--changed-from` 경로 전달까지 CLI 테스트에서 직접 판정한다.
 - 별도 Windows 로컬 실행, 실제 Promptfoo model/grader 및 원격 provider 사용은 하지 않았고 이 PR의 합격 근거로 주장하지 않는다.
+
+## 최신 안정 도구 갱신과 mise Doctor 검증 (2026-11-02)
+
+- 릴리스 정본 확인: uv 0.13.6, Node 26.13.0(LTS), rumdl 0.3.2, Lefthook 2.2.2, Biome 2.6.3, Rulesync 43.2.0, skills CLI 1.7.4, mise 2026.10.25. 모두 prerelease 제외. Node 27 alpha는 사용하지 않음.
+- `mise.toml`의 7개 Exact pin을 갱신하고 `mise.lock`은 네이티브 `mise lock --platform linux-arm64,linux-arm64-musl,linux-x64,linux-x64-musl,macos-arm64,macos-x64,windows-x64`에서 생성된 값을 사용. SHA256 28건과 pin 일치 여부를 확인했고 수동 checksum 생성은 하지 않았다.
+- CI uv setup 0.13.6, PR Gate mise action 2026.10.25. 임시 preview step은 lock metadata 추출 후 제거. `mise doctor project`는 PR #275에 이미 도입한 설정을 유지하며 새 mise에서 정상 동작하는지 재검증.
+- `mise.lock`을 갱신한 뒤 **locked install**과 native doctor, Rulesync 43의 compatibility, Node 26, Python tests, 기타 formatter의 후속 결과를 반드시 별도로 확인한다. 새 tool 버전 채택은 단순 upstream 존재 확인만으로 성공 판정하지 않는다.
+- 범위: 이 커밋은 mise가 관리하는 CLI 7종과 CI 호스트 선택을 갱신한다. Promptfoo CLI pin·Python/uv.lock·Skill revision 등 평가 조건 및 외부 자산은 별도의 변경/검증 문제로 분리한다.

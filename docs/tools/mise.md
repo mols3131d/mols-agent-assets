@@ -26,6 +26,10 @@ mise 자체는 **Latest**를 우선 검토하는 호스트 선행 도구로, 이
 
 ## CLI Version Updates
 
+2026-11-02 갱신에서는 검토한 최신 안정 릴리스를 `mise.toml`에 **Exact pin**으로 반영하고 `mise lock`으로 7개 플랫폼의 URL·checksum을 재생성했습니다. Node는 현행 Active LTS(26.x)를 선택하며 27 Alpha는 대상이 아닙니다. `mise.lock`은 수동으로 checksum을 꾸미지 않습니다. `mise` 자체는 이 저장소가 호스트에서 설치/갱신하지 않지만 PR Gate에서는 `2026.10.25`로 확인합니다.
+
+
+
 CLI 7종은 현재 `mise.toml`에서 exact version을 선택하고 `mise.lock`으로 재현합니다. 보안 수정이나 지원 수명 변경도 채택 근거지만, 실행 시마다 자동 갱신하지 않습니다. 현행 Exact pin은 **선택한 새 버전을 `mise.toml`에 먼저 반영**해야 합니다. [mise 선택지](README.md#mise-버전-선택지)의 prefix·alias를 추후 지원할 경우에만 `mise lock --bump`로 허용 범위 내 최신 버전을 선택할 수 있습니다.
 
 1. [공통 갱신 기준](README.md#버전-갱신-방법)으로 후보·영향 범위를 검토하고 새 exact pin을 반영합니다.
@@ -82,7 +86,7 @@ Tool 선택과 Python lock 상태가 필요한 경우 `mise ls --project --json`
 - `mise run eval -c evals/promptfoo/<config>.yaml [Promptfoo CLI flags]` passes the config and filter options to the pinned Promptfoo runner. Evaluations may invoke models or write results; never run them as an implicit environment health check.
 - `mise run rulesync-doctor`, `mise run rulesync-preview`, and `mise run rulesync-validate` replace the former npm scripts. Rulesync CLI versions continue to be owned by mise's npm backend, independent of the removed root `package.json`.
 
-**mise `2026.9.6` 이상**에서는 `mise doctor project`가 `[doctor.checks]`로 선언한 Python lock과 루트 Rulesync 설정을 검사합니다. CI도 해당 버전으로 맞췄으며, `mise run check`가 이를 재사용합니다. Doctor의 exit code가 상태 판정을 소유하고, 설치·업데이트·생성물 쓰기는 수행하지 않습니다. 구버전 mise에서는 `uv lock --check`와 `rulesync doctor --strict`를 직접 실행할 수 있습니다.
+**mise `2026.9.6` 이상**에서는 `mise doctor project`가 `[doctor.checks]`로 선언한 Python lock과 루트 Rulesync 설정을 검사합니다. PR Gate는 `2026.10.25`를 사용하며, `mise run check`가 이를 재사용합니다. Doctor의 exit code가 상태 판정을 소유하고, 설치·업데이트·생성물 쓰기는 수행하지 않습니다. 구버전 mise에서는 `uv lock --check`와 `rulesync doctor --strict`를 직접 실행할 수 있습니다.
 
 `mise run generated sync`와 `mise run generated validate`는 동일한 CLI의 별도 서브커맨드입니다. `sync --staged`만 영향받는 파일을 생성·stage하며, `validate --changed-from REV`, `validate --local-only --all`은 파일을 수정하지 않고 결과를 비교합니다.
 
