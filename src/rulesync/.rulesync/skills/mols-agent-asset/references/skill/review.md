@@ -13,6 +13,7 @@ Skill 리뷰는 선택 경계와 loading 효율을 중심으로 본다. 공통 �
 - **Variants** — target/mode별 fork가 core를 복제하지 않는가? public option은 의미 있는 선택만 노출하는가?
 - **Package** — instruction, reference, script, output asset이 각자의 역할과 실제 benefit을 갖는가?
 - **Authority** — portable intent, source representation, target behavior, local delta가 섞이지 않았는가?
+- **Consumer portability** — 설치된 Skill을 다른 저장소에서 호출해도 bundled resource를 찾고 같은 책임을 수행하는가? source checkout 경로, 이 저장소 전용 명령·평가·GitHub 상태가 필수 실행 조건으로 숨어 있지 않은가?
 - **Regression** — 기존 책임과 유효한 behavior를 보존했는가?
 
 항상 적용되어야 하는 authority나 safety boundary가 Skill selection 실패로 누락될 수 있으면 finding이다. 정적 리뷰로 runtime trigger precision, behavioral parity, target compatibility를 확정하지 않는다.
