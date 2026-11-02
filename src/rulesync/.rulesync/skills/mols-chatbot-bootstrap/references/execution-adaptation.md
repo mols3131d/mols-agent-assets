@@ -65,6 +65,12 @@ Prefer direct, executable wording over an abstract decision matrix in the result
 runtime instruction. Do not install an adapter or add a new persistent asset merely
 because one is available.
 
+When proposing or making a durable change, identify the target file/instruction owner,
+the actual trigger, the minimal text or patch, and how a future task will reach it.
+Check the applicable scope/ref and whether existing instructions conflict. If the
+entry surface cannot be changed, provide that same actionable patch as a user-side
+handoff rather than claiming it is installed.
+
 ## Representative patterns
 
 **Scripts / CLI.** When shell/CLI is absent but a permitted code executor is available,
@@ -95,13 +101,43 @@ the active runtime has no approved durable execution mechanism. Use existing aut
 scheduling only when its actual behavior and access are known; otherwise describe the
 bounded work completed now and the user's next step.
 
+## Example instruction shapes
+
+The following are **illustrative conditionals**, not text to copy into every
+`CHATBOT.md`. Adapt the source path, trigger, approval boundary, and actual tools
+to the target's own contract.
+
+**No shell, but a permitted code executor:**
+
+> When a task requires the repository's original validation script but shell execution
+> is unavailable, inspect that script at the task's ref, its dependencies and side
+> effects. Use the available code executor only if the same verification and required
+> environment can be preserved without new permissions. Otherwise run only a
+> separately meaningful check and tell the user which original validation remains
+> unexecuted, or hand it off with the exact command and prerequisites. Never call
+> a partial substitute a passing repository-native validation.
+
+**No native agent delegation:**
+
+> When a selected workflow requires a Subagent and native delegation is unavailable,
+> inspect the canonical role and independence requirements. If sequential
+> shared-context passes are allowed, preserve role boundaries and distinguish them
+> from independent agents in the result. If independence, separate permissions,
+> isolation, or concurrency is essential, do not claim a substitute ran; report
+> the blocked role and the required delegation environment to the user.
+
+For these and other gaps, the fallback must apply **only** when the canonical behavior
+is needed for the current task. Keep the user's final outcome and missing-work
+disclosure in the normal task flow; do not bury it solely in maintainer documentation.
+
 ## Review and maintenance
 
 - Check native-sufficient, reproducible-adaptation, partial-only, optional-skip, and
   required-block scenarios; focus on preserving the intended outcome and safety, not
   matching an arbitrary tool sequence.
-- Ensure target changes are scoped to the actual consumer, can be revisited when target
-  path/ref, runtime mode, or exposed capabilities change, and do not require this
+- Ensure target changes are scoped to the actual consumer and are discoverable in a
+  normal task. Re-evaluate source selection and fallback applicability on material
+  task/path/ref, runtime mode, or exposed capability changes, without requiring this
   provisioning Skill to remain in normal-task context.
 - Prefer a small edit to the existing instruction owner. Remove obsolete fallback
   guidance when native support becomes sufficient; do not keep a catalog of speculative
