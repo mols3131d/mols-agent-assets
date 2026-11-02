@@ -10,7 +10,6 @@
 - 적용 범위나 routing이 실제 필요보다 복잡한가?
 - 불필요한 context, reference, layer, surface가 남아 있는가?
 - reusable core를 project/target별로 반복하고 있는가?
-- 재사용 자산이 작성 repository의 checkout path·도구·실행 task를 consumer의 기본 실행 경로로 요구하고 있지 않은가?
 - stale metadata, obsolete reference, derived copy를 사람이 유지하고 있는가?
 - native mechanism이나 기존 check로 충분한 문제를 새 abstraction으로 풀고 있는가?
 
