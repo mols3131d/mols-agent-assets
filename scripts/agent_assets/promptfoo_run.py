@@ -7,6 +7,11 @@ import subprocess
 import sys
 from pathlib import Path
 
+if __package__:
+    from . import promptfoo_env
+else:
+    import promptfoo_env
+
 ROOT = Path(__file__).resolve().parents[2]
 PROMPTFOO_VERSION = "0.122.0"
 MIN_NODE_VERSION = (22, 22, 0)
@@ -23,16 +28,18 @@ def build_env(base: dict[str, str] | None = None) -> dict[str, str]:
     env.setdefault("PROMPTFOO_LOG_DIR", str(state_dir / "logs"))
     env.setdefault("PROMPTFOO_CACHE_PATH", str(state_dir / "cache"))
     env.setdefault("PROMPTFOO_PYTHON", sys.executable)
-    env.setdefault("PROMPTFOO_RUNTIME_MODEL", "qwen2.5")
-    env.setdefault(
-        "PROMPTFOO_RUNTIME_PROVIDER", f"ollama:chat:{env['PROMPTFOO_RUNTIME_MODEL']}"
+    env["PROMPTFOO_RUNTIME_MODEL"] = promptfoo_env.setting(
+        env, "PROMPTFOO_RUNTIME_MODEL", promptfoo_env.DEFAULT_RUNTIME_MODEL
     )
-    env.setdefault("PROMPTFOO_GRADER_PROVIDER", "ollama:chat:qwen2.5")
-    # Native Promptfoo providers use milliseconds; keep the existing local knob.
-    env.setdefault(
-        "REQUEST_TIMEOUT_MS",
-        str(int(float(env.get("PROMPTFOO_RUNTIME_TIMEOUT_SECONDS", "120")) * 1000)),
+    env["PROMPTFOO_RUNTIME_PROVIDER"] = promptfoo_env.setting(
+        env,
+        "PROMPTFOO_RUNTIME_PROVIDER",
+        f"ollama:chat:{env['PROMPTFOO_RUNTIME_MODEL']}",
     )
+    env["PROMPTFOO_GRADER_PROVIDER"] = promptfoo_env.setting(
+        env, "PROMPTFOO_GRADER_PROVIDER", promptfoo_env.DEFAULT_GRADER_PROVIDER
+    )
+    env["REQUEST_TIMEOUT_MS"] = str(promptfoo_env.request_timeout_ms(env))
     return env
 
 
@@ -73,10 +80,9 @@ def main(argv: list[str] | None = None) -> int:
     if not args:
         args = ["--help"]
 
-    env = build_env()
-    Path(env["PROMPTFOO_CONFIG_DIR"]).mkdir(parents=True, exist_ok=True)
-
     try:
+        env = build_env()
+        Path(env["PROMPTFOO_CONFIG_DIR"]).mkdir(parents=True, exist_ok=True)
         npx = resolve_npx(env)
     except (OSError, subprocess.SubprocessError, ValueError, RuntimeError) as error:
         print(f"promptfoo runner: {error}", file=sys.stderr)

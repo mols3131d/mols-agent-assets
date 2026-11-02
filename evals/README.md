@@ -23,7 +23,7 @@ mise run eval-mols-loops
 
 ## Promptfoo provider 선택
 
-프로젝트 루트의 [`.env.example`](../.env.example)을 복사해 개발자별 `.env`를 생성합니다. `.env`와 API credential은 Git에 포함하지 않습니다.
+기본값으로 실행할 때는 `.env`가 필요하지 않습니다. 설정을 바꿀 때만 프로젝트 루트의 [`.env.example`](../.env.example)을 복사해 필요한 항목의 주석을 해제합니다. 기본값을 모두 재선언하지 않으며 `.env`와 API credential은 Git에 포함하지 않습니다.
 
 ```powershell
 Copy-Item .env.example .env
@@ -37,7 +37,8 @@ Native 평가의 `PROMPTFOO_RUNTIME_PROVIDER`에는 `ollama:chat:qwen2.5`, `open
 | `PROMPTFOO_RUNTIME_MODEL` | 전체 ID 미지정 시 `ollama:chat:<model>`을 구성하는 기존 설정. 기본 `qwen2.5`; custom Ollama 평가에서도 계속 사용 |
 | `PROMPTFOO_GRADER_PROVIDER` | 독립적인 semantic grader ID. 기본 `ollama:chat:qwen2.5`; runtime 변경에 따라 자동 변경하지 않음 |
 | `OLLAMA_BASE_URL` | Ollama를 선택한 runtime 또는 grader의 endpoint |
-| `PROMPTFOO_RUNTIME_TIMEOUT_SECONDS` | 기존 초 단위 요청 timeout. Native 경로에는 `REQUEST_TIMEOUT_MS`로 변환하며 명시한 밀리초 값이 우선 |
+| `REQUEST_TIMEOUT_MS` | Native·custom 경로에 공통으로 적용되는 요청별 timeout. 기본 `120000`; 양의 정수 밀리초 |
+| `PROMPTFOO_RUNTIME_TIMEOUT_SECONDS` | 기존 초 단위 호환 설정. `REQUEST_TIMEOUT_MS` 미지정 시에만 사용하며 유한한 `0.001`초 이상 값 |
 
 예를 들어 `.env`에서 다음과 같이 선택할 수 있습니다. 선택한 provider의 API key 또는 인증은 해당 제공자의 공식 방식으로 별도 설정합니다.
 
@@ -45,6 +46,8 @@ Native 평가의 `PROMPTFOO_RUNTIME_PROVIDER`에는 `ollama:chat:qwen2.5`, `open
 PROMPTFOO_RUNTIME_PROVIDER=openai:chat:gpt-4o-mini
 PROMPTFOO_GRADER_PROVIDER=openai:chat:gpt-4o-mini
 ```
+
+Model·provider·grader 선택과 timeout의 빈 값·공백은 미지정으로 처리합니다. Timeout은 **명시한 `REQUEST_TIMEOUT_MS` → 기존 초 단위 값 → 기본 120초** 순서로 하나만 해석합니다. 유효한 밀리초 값을 지정하면 사용하지 않는 초 단위 값이 잘못돼도 실행을 막지 않습니다. 선택된 timeout이 잘못되면 모델 호출 전에 nonzero와 변수명 기반 오류를 반환하고, custom provider는 같은 오류를 provider error로 보고합니다. Credential·endpoint 등 native 제공자 변수는 임의로 정규화하거나 이름을 바꾸지 않습니다. 요청별 timeout과 retry/backoff를 포함한 전체 실행 시간은 다릅니다.
 
 Runtime만 원격으로 바꾸면 기본 grader는 계속 Ollama이므로 behavior 평가에는 로컬 grader 모델도 필요합니다. 모든 모델 호출을 다른 제공자로 실행하려면 runtime과 grader를 각각 선택합니다. 기존 로컬 경로는 전체 ID를 미지정하고 `PROMPTFOO_RUNTIME_MODEL`, `OLLAMA_BASE_URL`을 설정하면 유지되며, 사용할 모델이 이미 준비되어 있어야 합니다.
 

@@ -109,3 +109,44 @@ def test_runner_passes_native_provider_environment_to_promptfoo(
     assert env["PROMPTFOO_RUNTIME_PROVIDER"] == "openai:chat:example-model"
     assert env["PROMPTFOO_GRADER_PROVIDER"] == "anthropic:messages:example-grader"
     assert env["PROMPTFOO_PYTHON"]
+
+
+def test_native_timeout_does_not_evaluate_shadowed_legacy_value() -> None:
+    env = runner.build_env(
+        {
+            "REQUEST_TIMEOUT_MS": "9000",
+            "PROMPTFOO_RUNTIME_TIMEOUT_SECONDS": "invalid",
+        }
+    )
+    assert env["REQUEST_TIMEOUT_MS"] == "9000"
+
+
+def test_empty_owned_settings_use_local_defaults() -> None:
+    env = runner.build_env(
+        {
+            "PROMPTFOO_RUNTIME_PROVIDER": " ",
+            "PROMPTFOO_RUNTIME_MODEL": "",
+            "PROMPTFOO_GRADER_PROVIDER": "",
+            "REQUEST_TIMEOUT_MS": "",
+        }
+    )
+    assert env["PROMPTFOO_RUNTIME_PROVIDER"] == "ollama:chat:qwen2.5"
+    assert env["PROMPTFOO_RUNTIME_MODEL"] == "qwen2.5"
+    assert env["PROMPTFOO_GRADER_PROVIDER"] == "ollama:chat:qwen2.5"
+    assert env["REQUEST_TIMEOUT_MS"] == "120000"
+
+
+def test_invalid_environment_reports_error_before_filesystem_or_cli(
+    tmp_path, monkeypatch, capsys
+) -> None:
+    state = tmp_path / "not-created"
+    monkeypatch.setenv("PROMPTFOO_CONFIG_DIR", str(state))
+    monkeypatch.setenv("REQUEST_TIMEOUT_MS", "invalid-secret-like-value")
+    monkeypatch.setattr(runner, "resolve_npx", lambda env: pytest.fail("CLI started"))
+
+    assert runner.main(["--help"]) == 2
+    error = capsys.readouterr().err
+    assert "REQUEST_TIMEOUT_MS must be a positive integer" in error
+    assert "invalid-secret-like-value" not in error
+    assert "Traceback" not in error
+    assert not state.exists()

@@ -267,6 +267,7 @@ def test_ollama_request_respects_local_runtime_configuration(monkeypatch) -> Non
     monkeypatch.setenv("PROMPTFOO_RUNTIME_MODEL", "local-model")
     monkeypatch.setenv("OLLAMA_BASE_URL", "http://127.0.0.1:12555/")
     monkeypatch.setenv("PROMPTFOO_RUNTIME_TIMEOUT_SECONDS", "45")
+    monkeypatch.delenv("REQUEST_TIMEOUT_MS", raising=False)
     observed: dict[str, object] = {}
 
     def fake_urlopen(api_request, timeout):
@@ -285,6 +286,34 @@ def test_ollama_request_respects_local_runtime_configuration(monkeypatch) -> Non
     assert observed["url"] == "http://127.0.0.1:12555/api/chat"
     assert observed["timeout"] == 45.0
     assert observed["body"]["model"] == "local-model"
+
+
+def test_custom_provider_uses_native_timeout_before_legacy(monkeypatch) -> None:
+    monkeypatch.setenv("REQUEST_TIMEOUT_MS", "250")
+    monkeypatch.setenv("PROMPTFOO_RUNTIME_TIMEOUT_SECONDS", "invalid")
+    observed = {}
+
+    def fake_urlopen(api_request, timeout):
+        observed["timeout"] = timeout
+        return _fake_response({"response": "configured"})
+
+    monkeypatch.setattr(evaluator.request, "urlopen", fake_urlopen)
+    result = evaluator._ollama_request("task", "system", {})
+
+    assert isinstance(result, tuple)
+    assert observed["timeout"] == 0.25
+
+
+def test_custom_provider_rejects_bad_timeout_before_http(monkeypatch) -> None:
+    monkeypatch.setenv("REQUEST_TIMEOUT_MS", "-1")
+    monkeypatch.setattr(
+        evaluator.request, "urlopen", lambda *args, **kwargs: pytest.fail("HTTP called")
+    )
+
+    result = evaluator._ollama_request("task", "system", {})
+
+    assert "REQUEST_TIMEOUT_MS must be a positive integer" in result["error"]
+    assert result["output"] == ""
 
 
 def test_behavior_provider_uses_full_selected_skill(

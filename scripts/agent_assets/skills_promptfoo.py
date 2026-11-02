@@ -5,6 +5,11 @@ import os
 from pathlib import Path
 from urllib import request
 
+if __package__:
+    from . import promptfoo_env
+else:
+    import promptfoo_env
+
 ROOT = Path(__file__).resolve().parents[2]
 EVALUATOR_URI = "file://../../scripts/agent_assets/skills_promptfoo.py"
 
@@ -263,7 +268,9 @@ def generate_tests(config: dict | None = None) -> list[dict]:
     ):
         raise ValueError("rubric_threshold must be between 0 and 1")
 
-    grader_id = os.getenv("PROMPTFOO_GRADER_PROVIDER", "ollama:chat:qwen2.5")
+    grader_id = promptfoo_env.setting(
+        os.environ, "PROMPTFOO_GRADER_PROVIDER", promptfoo_env.DEFAULT_GRADER_PROVIDER
+    )
     grader_provider = (
         {"id": grader_id, "config": {"temperature": 0}}
         if grader_id.startswith("ollama:")
@@ -602,8 +609,13 @@ def _skill_catalog(
 
 
 def _ollama_request(prompt: str, system: str, schema: dict) -> tuple[dict, str] | dict:
-    model = os.getenv("PROMPTFOO_RUNTIME_MODEL", "qwen2.5")
-    timeout = float(os.getenv("PROMPTFOO_RUNTIME_TIMEOUT_SECONDS", "120"))
+    model = promptfoo_env.setting(
+        os.environ, "PROMPTFOO_RUNTIME_MODEL", promptfoo_env.DEFAULT_RUNTIME_MODEL
+    )
+    try:
+        timeout = promptfoo_env.request_timeout_ms(os.environ) / 1000
+    except ValueError as error:
+        return {"error": str(error), "output": ""}
     base_url = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")
     body = {
         "model": model,
