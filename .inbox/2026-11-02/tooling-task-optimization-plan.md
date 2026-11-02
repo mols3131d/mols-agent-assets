@@ -17,6 +17,7 @@
 3. `package.json`은 npm dependencies 없이 scripts만 선언한다. `mise` 평가 task → `npm run` → `uv run` → `promptfoo_run.py` → `npx --yes promptfoo@0.122.0`으로 이어지는 다중 실행 계층이 있다. CI의 `npm run rulesync:validate`도 별도 소비자다.
 4. npm은 단순히 `npm run`에서만 사용되는 것이 아니다. Biome·Rulesync·skills CLI는 mise의 `npm:` backend가 설치한다. Node.js와 npm backend의 필요성, package.json을 task runner로 사용하는 필요성은 분리해 판단한다. npm 제거를 목표로 삼지 않는다.
 5. Promptfoo runner는 CLI 버전을 코드에 고정하나 `npx`로 해석되는 전이 의존성까지 완전히 lock하지 않는다. `PROMPTFOO_*` 설정·외부 provider·네트워크/쓰기 영향과 평가 비교 가능성을 보존해야 한다.
+8. Promptfoo 평가 실행은 `mise.toml`에서 asset별 `eval-mols-*` task를, `package.json`에서 asset별 `eval:promptfoo:*` npm script를 반복 선언한다. 현재 차이는 주로 `-c` 설정 파일, `--filter-metadata suite=...`와 `--no-cache --no-write` 옵션이다. PR #272에는 Bootstrap 평가·grader 보정 별칭 2개가 더 추가되어 중복이 계속 증가한다. 실질적으로 독립된 작업 계약이 없다면 별칭을 새로 만들지 않는다.
 6. `mise run check`의 버전 출력은 자체로 선언/실행 버전 일치 증명이 아니다. 전체 검증·가벼운 환경 진단·외부 최신성 조회가 구분되어 있지 않다.
 7. **열린 PR #272**가 `mise.toml`, `scripts/agent_assets/promptfoo_run.py`, 관련 eval과 문서를 변경 중이다. 작업 전에 최신 head와 병합 상태를 다시 확인하고 변경을 덮어쓰지 않는다. 새 PR은 생성 시점의 main에서 독립적으로 시작한다.
 
@@ -31,6 +32,17 @@
 | Python 실행 | `uv run --locked`와 필요한 group 지정 | bootstrap setup/update만 승인된 재현·갱신 경계 유지 |
 | Rulesync 진단 | `rulesync doctor --strict` 및 기존 검증기 | 경로·warning 정책 같은 실제 계약이 필요한 최소 래퍼 유지 |
 
+### Promptfoo 평가 task 정리 결정
+
+- **하나의 매개변수화된 진입점 우선:** 기존 `promptfoo_run.py`의 `eval` 인수를 재사용하며, `mise` task는 `raw_args = true`로 Promptfoo 네이티브 CLI 인수를 전달한다. 예: `mise run eval -c evals/promptfoo/mols-loops.yaml --filter-metadata suite=trigger`.
+- **설정 선택은 Promptfoo가 소유:** `-c`, `--filter-metadata`, `--no-cache`, `--no-write`, grader 옵션 등을 mise에 중복 구현하거나 asset별 별칭으로 복제하지 않는다. 설정 파일·fixture가 평가 semantics를 소유한다.
+- **별칭의 존치 기준:** 실제 외부 소비자/자동화의 안정적 인터페이스이거나, smoke·grader처럼 별도의 계약을 가진 경우에만 좁게 유지할 수 있다. 단순 편의를 위한 동일 옵션의 조합은 제거한다. 기존 문서/CI/사용자 진입점 전환·호환성 영향을 확인한다.
+- **중요한 차이 보존:** `mols-test-design` 평가의 `--no-cache --no-write`와 smoke/실모델 평가 구분을 무시하지 않는다. PR #272가 추가한 `PROMPTFOO_RUNTIME_PROVIDER`·timeout·grader 설정 및 평가 프로토콜을 보존한다.
+- **기본 실행이 의도치 않은 쓰기/모델 호출을 유발하지 않도록 검토:** 단일 `eval` 실행은 외부 API·결과 기록 가능성이 있으므로 세션 기본 `preflight`에 포함하지 않고, 사용자가 어떤 config를 실행하는지 명시해야 한다.
+- **검증:** 전체/trigger/behavior/smoke/grader 사례의 CLI args, 선택 fixture, cache/write semantics, error/exit code, `.env` 전달을 회귀 테스트한다. 플랫폼별 인수 quoting과 실제 Promptfoo 버전에서 지원하는 옵션을 확인한다.
+
+공식 참고: https://mise.jdx.dev/tasks/running-tasks.html · https://mise.jdx.dev/tasks/task-configuration.html · https://www.promptfoo.dev/docs/usage/command-line/
+
 `mise doctor project`는 공식 문서에 존재하지만 현재 CI의 mise 설치 버전과 사용자 PC 버전에서 지원하는지는 미확인이다. 진단 명령도 shell을 실행하며 샌드박스가 아니므로 read-only 검사를 명시해야 한다. `uv run --locked`는 lock 변경을 막지만 환경 동기화까지 자동으로 비활성화하지 않으므로 '읽기 전용 세션 진단'에 무조건 사용하지 않는다.
 
 공식 근거:
@@ -42,7 +54,7 @@
 ## 구현 순서
 
 1. **호출 관계 및 기준선:** 실제 소비자(로컬 task, CI, pytest, eval, docs)를 모두 확인한다. 변경 전 Windows/Linux 경로, 기존 실패 상태, 설치/네트워크 부작용을 구분한다. PR #272 중복 영역을 재확인한다.
-2. **실행 계층 단순화:** `mise.toml`이 작업 entrypoint를 소유하도록 `npm run` 중복 경유를 없앨 수 있는지 검증한다. `package.json`은 남은 필수 소비자가 없을 때만 삭제하고 CI의 `rulesync:validate` 호출·문서도 함께 옮긴다. Promptfoo의 평가 config/모델/데이터/exit code 계약은 유지한다.
+2. **실행 계층 단순화:** `mise run eval` 하나에 Promptfoo CLI 인수를 전달하는 계약을 우선 구현·검증한다. 기존 asset/suite별 `mise`·`npm` 별칭을 실제 소비자 필요에 따라 제거 또는 축소한다. `mise.toml`이 작업 entrypoint를 소유하도록 `npm run` 중복 경유를 없앨 수 있는지 검증한다. `package.json`은 남은 필수 소비자가 없을 때만 삭제하고 CI의 `rulesync:validate` 호출·문서도 함께 옮긴다. Promptfoo의 평가 config/모델/데이터/exit code 계약은 유지한다.
 3. **진단과 최신성 분리:** 기존 검증과 겹치지 않는 최소 `preflight`(로컬, 빠름, 변경 없음)와 `outdated`(네트워크 필요, 알림 성격)을 배치한다. 새 릴리스 존재는 기본적으로 비차단, 선택/실행 버전 불일치와 필수 도구 결손은 적절하게 실패한다. 미확인 상황을 성공으로 둔갑시키지 않는다.
 4. **부트스트랩 단순화:** 이전 Windows/Node/npm backend 테스트가 지키는 안전 계약을 존중한다. mise/uv가 동일한 것을 native로 검증하는지 **실제로 확인한 항목만** 코드에서 제거한다. 설치 승인·잠금 불변·경로 격리·Windows 실행·실패 시 부분 상태 보존은 유지한다. 임의 전역 변경 금지.
 5. **Python·평가 실행 일관화:** 일반 task의 `uv run --locked`와 group 선택을 정리한다. Promptfoo의 `npx` 사용은 보존/대체 시 비용·재현성·실제 사용 빈도를 비교해 판단하며, 선택적 평가 실행이 기본 bootstrap에 자동 포함되도록 만들지 않는다.
@@ -54,6 +66,7 @@
 - 일반 작업이 의도치 않게 `uv.lock`, `mise.lock`, 도구 pin을 갱신하지 않는다.
 - 가벼운 진단과 최신성 조회가 분리되고 정상·실패·미확인 상태를 구별한다. 자동 설치/업데이트, 외부 서비스 호출, 권한 변경은 발생하지 않는다.
 - 기존 bootstrap의 설치 승인, 보존 경계, exact 잠금 검증, Windows fallback에 회귀가 없다. 정책 변화가 꼭 필요하면 명시적으로 기록하고 검증한다.
+- 새 평가 대상을 추가할 때 `mise.toml`과 `package.json`에 asset별 task/script를 더 만들 필요가 없고, config와 CLI 매개변수로 선택할 수 있다. 기존 필터·cache/write·grader·smoke 계약은 보존한다.
 - Promptfoo/Rulesync/Skills 실행 경로가 깨지지 않고 기존 평가/검증 결과 의미가 유지된다. PR #272의 유효한 신규 동작을 반영한다.
 - 테스트와 문서, CI에서 새 단일 entrypoint를 사용하고, 프로젝트 정본과 충돌하는 설명이 없다.
 - `main`에는 별도 승인과 PR Gate 없이 병합하지 않는다.
