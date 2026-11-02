@@ -1,4 +1,4 @@
-# Subagent Review
+# Agent/Subagent Review
 
 Agent/Subagent 리뷰는 직접 선택형 최상위 실행과 하위 위임을 구분하고, 실제 실행 역할에 맞는 책임·호출·권한·인계 경계를 중심으로 본다. 공통 기준은 `../common/review.md`를 따른다.
 
@@ -16,4 +16,4 @@ Agent/Subagent 리뷰는 직접 선택형 최상위 실행과 하위 위임을 �
 - **Termination** — completion boundary가 명확하고 recursive/circular delegation이 없는가?
 - **Failure visibility** — unavailable capability, incomplete context, blocked delegation이 visible한가?
 
-Subagent 수 자체를 finding으로 만들지 않는다. 각 delegation boundary가 독립적인 책임과 실행 이점을 제공하는지가 핵심이다.
+Agent 수나 실행 계층만으로 finding을 만들지 않는다. 직접 선택형은 독립 책임, 위임형은 delegation boundary의 실질적 이점을 기준으로 판단한다.
