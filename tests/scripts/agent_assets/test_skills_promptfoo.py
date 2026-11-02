@@ -320,16 +320,59 @@ def test_behavior_provider_uses_full_selected_skill(
 
 
 def test_promptfoo_configs_use_generic_skill_evaluator() -> None:
-    for name in ("mols-loops.yaml", "mols-loops-smoke.yaml"):
+    smoke = yaml.safe_load(
+        (CONFIG_DIR / "mols-loops-smoke.yaml").read_text(encoding="utf-8")
+    )
+    for provider in smoke["providers"]:
+        assert provider["id"].endswith("skills_promptfoo.py:call_api")
+        assert provider["config"]["skill"] == "mols-loops"
+    for generated in smoke["tests"]:
+        assert generated["path"].endswith("skills_promptfoo.py:generate_tests")
+
+    for name in ("mols-loops.yaml", "mols-dev-env-bootstrap-design.yaml"):
         config = yaml.safe_load((CONFIG_DIR / name).read_text(encoding="utf-8"))
+        assert config["prompts"] == ["file://skill-chat.json"]
         for provider in config["providers"]:
-            assert provider["id"].endswith("skills_promptfoo.py:call_api")
-            assert provider["config"]["skill"] == "mols-loops"
+            assert provider["id"].startswith("ollama:chat:")
+            assert provider["config"]["temperature"] == 0
+        assert config["providers"][0]["config"]["format"] == "json"
         for generated in config["tests"]:
-            assert generated["path"].endswith("skills_promptfoo.py:generate_tests")
-            assert generated["config"]["skill"] == "mols-loops"
+            assert generated["path"].endswith(
+                "skills_promptfoo.py:generate_native_tests"
+            )
         assert config["sharing"] is False
         assert config["writeLatestResults"] is False
         assert config["commandLineOptions"]["cache"] is False
         assert config["commandLineOptions"]["write"] is False
         assert config["commandLineOptions"]["noShare"] is True
+
+
+def test_native_generator_keeps_trigger_and_behavior_context_separate() -> None:
+    trigger = evaluator.generate_native_tests(
+        {"skill": "mols-loops", "suite": "trigger", "case_ids": ["explicit-rpi-activates"]}
+    )[0]
+    behavior = evaluator.generate_native_tests(
+        {
+            "skill": "mols-loops",
+            "suite": "behavior",
+            "case_ids": ["rpi-composes-with-domain-skill"],
+            "semantic": False,
+        }
+    )[0]
+    assert "skill-catalog" in trigger["vars"]["system"]
+    assert "# Mols Loops" not in trigger["vars"]["system"]
+    assert "# Mols Loops" in behavior["vars"]["system"]
+    assert "Respond directly" in behavior["vars"]["system"]
+    assert trigger["providers"] == ["mols-loops-trigger"]
+    assert behavior["providers"] == ["mols-loops-behavior"]
+
+
+def test_native_generator_rejects_reference_loading() -> None:
+    with pytest.raises(ValueError, match="cannot select Skill references"):
+        evaluator.generate_native_tests(
+            {
+                "skill": "mols-test-design",
+                "suite": "behavior",
+                "reference_paths": ["references/oracle-validation.md"],
+            }
+        )
