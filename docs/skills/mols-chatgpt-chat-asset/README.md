@@ -12,10 +12,20 @@ ChatGPT **Chat** 환경은 사용 가능한 도구와 소비 가능한 자산 �
 
 - `mols-agent-asset` — 공통 설계·튜닝·검토·검증 및 Eval의 방법론.
 - `mols-chatbot-bootstrap` — 챗봇이 저장소의 정본과 필요한 실행 의미에 도달하도록 첫 진입점을 구축·복구하는 낮은 빈도의 하네스 작업.
-- `mols-chatgpt-chat-asset` — Chat에 최적화된 새 자산 생성, 기존 자산의 target-specific 조정, 선택·패키징·유지보수.
+- `mols-agent-asset-find` — 기존 Agent Asset 탐색·선택·로딩·설치·동기화.
+- `mols-chatgpt-chat-asset` — Chat에 최적화된 새 자산 생성, 기존 자산의 target-specific 조정, **제작 대상의 소비 표면 결정**·패키징·유지보수.
 - 특정 작업 Skill(예: OpenSpec CLI 호환) — 그 작업의 실제 domain 실행 의미.
 
 작성 원본은 `src/.openai-chatgpt-chat/skills/mols-chatgpt-chat-asset/SKILL.md` 한 곳이다. 이 경로는 **저장소에서 관리하는 vendor-native 원본**이며 자동 설치 경로가 아니다. 필요에 따라 이 스킬 자체도 Chat에 배포해 사용 가능하지만, 이 저장소의 작업에서 읽을 수 있다는 사실만으로 설치되었다고 주장하지 않는다.
+
+## 리뷰 범위 — 제작 대상과 제작 스킬을 혼동하지 않기
+
+**이 Skill이 만든/수정한 Agent Asset의 Chat 소비 계약**과 **이 제작 Skill 자체가 호출되는 하네스 경로**는 별개의 문제다. 리뷰에서 둘을 혼동하지 않는다.
+
+- **평가 대상:** 사용자 요청에 맞는 Agent Asset 유형(Skill, Project instructions 등) 선택, 기존 원본의 의도·selector·격리·권한·검증 계약 보존, Chat 전용 조정의 정확성, 생성 패키지의 규격·최소성, **제작 결과물**의 지원되는 배포·선택·행동 검증 가능성.
+- **평가 범위 밖:** `mols-chatgpt-chat-asset` **자체**를 누가 어떻게 발견·라우팅·로딩·설치하는지, 이 스킬이 `mols-agent-asset`·`mols-agent-asset-find` 등을 직접 호출하거나 로드하는 오케스트레이션, 저장소 first-hop/`CHATBOT.md` 구축. 이는 각 하네스·런타임 및 관련 owner가 담당한다. 인접 owner의 이름을 문서에 적은 것은 **책임 구분**이지 스킬 내 필수 호출 순서를 추가하라는 뜻이 아니다.
+- **예외를 정확히 분리:** 이 스킬의 `description`이 사용자 제작·튜닝 요청을 포착하는지에 대한 activation 설계/평가는 정상적인 **Skill 품질 검토**이다. 그러나 발견·호출 인프라의 구성이나 설치 경로를 이 제작 스킬의 실행 책임으로 요구해서는 안 된다. 마찬가지로 제작 결과물의 소비 계약을 설계·검토하는 것은 허용되지만 설치만 요청한 별도 작업의 실행을 이 스킬에 부과하지 않는다.
+- **리뷰 판정 게이트:** 지적한 문제의 주체가 *제작 결과물*인지 *제작 스킬을 소비하는 하네스*인지 먼저 분류한다. 하네스 쪽 문제를 이 스킬의 결함으로 표시하거나, 근거 없는 router·asset loader·Creator 호출 절차 추가를 개선안으로 제시하지 않는다. 실제로 제작·튜닝 산출물의 정확성에 영향을 준 문제만 이 Skill의 수정 후보로 남긴다.
 
 ## Chat 소비 표면과 기술 선택 근거
 
@@ -52,11 +62,11 @@ ChatGPT **Chat** 환경은 사용 가능한 도구와 소비 가능한 자산 �
 
 | 요청/상황 | 기대하는 결과 |
 | --- | --- |
-| "ChatGPT Chat 전용 Skill을 새로 만들어줘" | 이 Skill을 선택하고 실제 consumer/activation과 최소 package를 작성 |
+| "ChatGPT Chat 전용 Skill을 새로 만들어줘" | 제작 대상의 Chat 소비 계약과 최소 Skill 패키지를 올바르게 설계 |
 | "기존 Rule을 Chat Project 지침으로 튜닝해줘" | selector·상시 적용·자동 enforcement 차이를 분리하고 보존 가능한 delta만 작성 |
 | "Subagent를 Chat에서 똑같이 돌리도록 바꿔줘" | 독립성/격리 필수 여부 확인, 동등성 불가 시 명시적 제한·인계 |
 | "GitHub 연결을 사용하는 Skill을 설계해줘" | 현재 연결 identity·action·permission을 명시적으로 확인하고 tool/text 역할을 분리 |
-| "Skill 생성은 되었는데 Chat에서 안 보여" | 관리 원본, 설치·업로드·플러그인 배포와 실제 activation을 구분 |
+| "작성한 Chat Skill이 대상 환경에서 보이지 않아. 제작 결과물의 배포 계약을 검토해줘" | 원본·배포 요구·설치 상태·활성화 증거의 차이를 검토하되, 설치 실행은 별도 owner로 분리 |
 | "범용 Codex Skill을 만들어줘" | Chat 대상 범위가 아니므로 이 Skill은 선택하지 않음 |
 | "ChatGPT 첫 진입점과 전체 하네스를 고쳐줘" | `mols-chatbot-bootstrap`의 책임으로 분리 |
 | "일반 글을 써줘" | Agent Asset 제작 요청이 아니므로 비활성 |
