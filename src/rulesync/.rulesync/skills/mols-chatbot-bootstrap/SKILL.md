@@ -1,10 +1,10 @@
 ---
 name: mols-chatbot-bootstrap
 description: >-
-  Design, establish, repair, or review the smallest chatbot harness that reaches applicable
-  repository instructions, Skills, and scoped Rules when native discovery or loading is
-  missing or uncertain. Use for runtime first-hop and selective canonical loading, not
-  routine repository work, general agent architecture, route tuning, CI, or ongoing automation.
+  Design, establish, repair, or review the smallest chatbot harness when native instruction
+  discovery, canonical loading, or required agent execution/delegation semantics need
+  compatibility guidance. Use for runtime first-hop and bounded execution adaptation, not
+  routine task execution, general agent architecture, route tuning, CI, or ongoing automation.
 targets:
   - agentsskills
 ---
@@ -12,8 +12,9 @@ targets:
 # Mols Chatbot Bootstrap
 
 Design, establish, or repair the smallest effective compatibility path from the active chat
-runtime into authoritative repository guidance and task-relevant Agent Assets. If native
-discovery and loading are sufficient, keep the existing harness unchanged.
+runtime into authoritative repository guidance and applicable agent behavior. If the
+required discovery, loading, and execution semantics are already sufficient, leave the
+existing harness unchanged.
 
 # Lifecycle
 
@@ -46,9 +47,13 @@ This is a low-frequency provisioning Skill, not baseline operational context.
 - Before changing repository or runtime state, confirm the intended target/ref, writable
   surface, approved scope, and execution identity. Available tools do not by themselves
   authorize side effects; never switch accounts or connections to overcome a denial.
-- Recover only behavior the target chat runtime is actually missing. Treat missing
-  `AGENTS.md`, Skill, and Rule discovery responsibilities independently; partial native
+- Recover only behavior the target chat runtime is actually missing. Consider applicable
+  instruction, selection, execution/delegation, and authority responsibilities; do not
+  assume all repositories or runtimes have the same agent asset kinds. Partial native
   support is a valid target state.
+- If a required execution capability cannot be reproduced, design an explicit bounded
+  adaptation, partial result, optional skip, or user-visible handoff rather than silently
+  omitting work or claiming equivalent execution.
 - When the runtime does not natively discover the repository entrypoint, connect a
   guaranteed runtime-side instruction surface to that entrypoint. If that surface cannot
   be changed or verified with current authority, return the exact required handoff and do
@@ -87,9 +92,9 @@ Do not copy project policy, Skill bodies, Rule bodies, catalogs, or static path 
    tools/permissions needed to evaluate them. Distinguish a configured locator from
    actually reading the authoritative source.
 1. Identify missing responsibilities separately: runtime first-hop, applicable repository
-   guidance, task-specific Skill/Rule selection, canonical body/conditional reference
-   loading, and any essential tool capability. If existing mechanisms cover the required
-   path, select no-op and do not add structure.
+   guidance, task-specific asset selection, canonical body/conditional reference loading,
+   and required execution or delegation semantics. If existing mechanisms cover them,
+   select no-op and do not add structure.
 1. Compare the smallest viable options without treating them as mandatory stages:
    native/no-op; a runtime-side pointer to an existing entrypoint; a narrow selection
    bridge only for uncovered scope/loading; or bounded reuse of available native tools
@@ -99,8 +104,11 @@ Do not copy project policy, Skill bodies, Rule bodies, catalogs, or static path 
 1. Establish or repair only the missing path within approved authority. Preserve the
    target's routing and customization; keep canonical policies and asset bodies in their
    owners. If no established route is sufficient and a separate route is justified, use
-   [Fallback route convention](references/routes.md) only as a mols fallback. If an
-   instruction surface or required tool is inaccessible, provide an exact handoff.
+   [Fallback route convention](references/routes.md) only as a mols fallback. For an
+   actual execution gap, use [Execution adaptation](references/execution-adaptation.md)
+   to decide whether target-owned conditional guidance is needed. Never substitute an
+   unauthorized tool or imply independent execution when only sequential work is possible.
+   If an essential instruction surface or tool is inaccessible, provide an exact handoff.
 1. Generate, tune, or validate routing metadata only where recurring drift or selection
    failure justifies it. Reuse target-native generators and checks before bundled
    [Generation and tuning](references/tuning.md) resources; do not create new CI by default.
@@ -111,9 +119,10 @@ Do not copy project policy, Skill bodies, Rule bodies, catalogs, or static path 
    loading, not only route metadata. Existing native loading evidence may suffice
    without a redundant fetch. If behavior cannot be observed, report `not verified`.
 1. Report the selected design/no-op, concrete changes and required user-side settings,
-   authority constraints, validated tier, remaining gaps, and relevant cost tradeoffs.
-   Do not claim equivalence across runtimes or normal operation requiring this Skill
-   to stay loaded.
+   authority constraints, validated tier, any adapted/partial/skipped/handed-off behavior,
+   and relevant cost tradeoffs. Ensure the target's normal-task instructions re-evaluate
+   applicable source/scope when the task or ref changes, without keeping this Skill loaded.
+   Do not claim equivalence across runtimes.
 
 # Resources
 
@@ -121,6 +130,9 @@ Load only the resource needed for the current decision:
 
 - [Fallback route convention](references/routes.md) — when a separate routing surface is
   needed and the target has no stronger established representation.
+- [Execution adaptation](references/execution-adaptation.md) — only when an applicable
+  tool, command, script, delegation, or other execution contract is not natively supported
+  and chatbot-facing fallback, partial, skip, or handoff guidance must be designed.
 - [Generation and tuning](references/tuning.md) — when generation, regeneration, semantic
   route tuning, or drift validation is materially justified.
 - `scripts/generate_routes.py` — when a compatible deterministic baseline generator or
@@ -153,6 +165,8 @@ Verify only claims relevant to the resulting harness:
   authority rather than assumption;
 - if the runtime-side first hop could not be established or observed, that limitation is
   reported rather than counted as completed compatibility;
+- adaptations preserve material execution semantics, report meaningful limitations, and
+  do not silently skip required work or present partial results as complete;
 - normal repository work no longer depends on this Skill being loaded or installed.
 
 Prefer the smallest valid result over a uniform repository layout.
@@ -166,7 +180,8 @@ Prefer the smallest valid result over a uniform repository layout.
   `CHATBOT.md` or any route path. Native sufficiency can require no compatibility files.
 - It does not grant authority to modify runtime-side project, system, workspace, plugin, or
   harness configuration merely because such a bootstrap would complete the chain.
-- It does not own generic tool provisioning or guarantee behavior parity when the runtime
-  cannot execute the source harness's required capabilities.
+- It does not own generic tool provisioning, ongoing task execution, or runtime tool/agent
+  contracts. It designs target-specific guidance for unavailable capabilities but cannot
+  guarantee behavior parity when the source harness requires unsupported semantics.
 - It does not justify a separate Skill for bootstrap, repair, review, generation, tuning,
   or validation merely because those workflow branches exist inside the same outcome.
