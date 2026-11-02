@@ -5,9 +5,10 @@
 ## 진입과 자산 선택
 
 1. 현재 작업의 저장소·ref·대상 경로를 확인하고, 해당 ref의 [`AGENTS.md`](AGENTS.md)와 경로에 적용되는 지침을 읽습니다. 런타임의 네이티브 지침 탐색이 충분하다면 이를 재사용합니다.
-2. Skill·Rule은 네이티브 발견·적용을 우선합니다. 필요한 자산에 접근할 수 없을 때 이 저장소에서 사용하는 [`.agents/route/ROUTE.md`](.agents/route/ROUTE.md)를 따라 관련 route와 canonical source만 선택·로드합니다. 이 저장소가 외부에 제공하는 자산이나 Subagent가 필요한 경우에는 [`route/ROUTE.md`](route/ROUTE.md)에서 해당 종류의 route만 선택합니다. Route 목록이나 lock의 존재만으로 실제 설치·적용을 단정하지 않습니다.
-3. 구체적인 GitHub 대상에 대한 작업에서는 `github-context`를 선택하고, 그 Skill이 정의한 대상·지침·자산 확인을 후속 대상 의존 작업 전에 완료합니다. 해당 Skill을 찾아 읽는 데 필요한 좁은 조회는 가능합니다. GitHub 작업의 상세 탐색 절차와 저장소 정책은 각각 그 Skill과 [GitHub 정책](docs/development/github.md)이 소유합니다.
-4. 작업의 대상·ref·범위 또는 실제 런타임 기능이 실질적으로 달라지면 적용 지침과 자산 선택을 다시 확인합니다. `inbox/`와 `catalog/`의 자료는 별도 채택 전까지 강제 지침이 아닙니다.
+2. **Skill**은 네이티브 발견을 우선합니다. 필요한 Skill을 찾을 수 없을 때만 이 저장소가 사용하는 [`.agents/route/ROUTE.md`](.agents/route/ROUTE.md)를 따라 task-relevant Skill의 canonical source를 로드합니다. 외부 제공 자산이나 Subagent는 [`route/ROUTE.md`](route/ROUTE.md)의 해당 종류 route로 찾습니다. 목록이나 lock만으로 설치·적용을 단정하지 않습니다.
+3. **경로별 Rule**은 네이티브 적용을 우선합니다. 지원이 부족하면 현재 ref의 [`.rulesync/rules/`](.rulesync/rules/)에서 실제 작업 경로·대상에 맞는 selector를 확인하고 적용 가능한 원본만 조건부로 참조합니다. 이 저장소의 `.agents/route/`는 Rule 인덱스가 아니며, 수동으로 원본을 읽은 것만으로 네이티브 Rule 적용을 증명할 수 없습니다.
+4. 구체적인 GitHub 대상에 대한 작업에서는 `github-context`를 선택하고, 그 Skill이 정의한 대상·지침·자산 확인을 후속 대상 의존 작업 전에 완료합니다. 해당 Skill을 찾아 읽는 데 필요한 좁은 조회는 가능합니다. GitHub 작업의 상세 탐색 절차와 저장소 정책은 각각 그 Skill과 [GitHub 정책](docs/development/github.md)이 소유합니다.
+5. 작업의 대상·ref·범위 또는 실제 런타임 기능이 실질적으로 달라지면 적용 지침과 자산 선택을 다시 확인합니다. `inbox/`와 `catalog/`의 자료는 별도 채택 전까지 강제 지침이 아닙니다.
 
 ## 네이티브 실행을 사용할 수 없을 때
 
