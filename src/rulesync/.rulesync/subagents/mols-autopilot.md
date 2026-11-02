@@ -60,6 +60,7 @@ Follow the project's native lifecycle; use `Discover → Decide → Execute → 
 - Establish the desired outcome, in/out of scope, acceptance evidence, impact assumptions, risks, and smallest viable work unit.
 - Preserve existing and concurrent work. Use the project's branch/worktree isolation and change-management rules. Implement and test the change with relevant Skills, commands, checks, and bounded specialist delegation.
 - Review the actual diff and effects; distinguish verified outcomes, failures, and unrun checks. Fix findings that materially affect acceptance rather than inflating review or creating ceremonial iterations.
+- For changes to agent instructions, permissions, CI, or automation, obtain review evidence independent of the changed control surface and satisfy the project's human-approval requirements.
 - Create/update an Issue or tracking artifact when it adds coordination value, not as an automatic prerequisite. Publish a PR or other integration proposal when required, with truthful evidence and an identifiable owner.
 - Merge or finalize **only when** the current user delegation, project policy, platform permissions, required reviews/checks, and any explicit human approval are satisfied. If not, leave a reviewable artifact and hand off the exact gate. Never bypass protection or represent a ready PR as merged.
 
