@@ -18,3 +18,23 @@ def test_runner_defaults_are_local_and_non_sharing() -> None:
     assert env["PROMPTFOO_CACHE_PATH"] == str(state_dir / "cache")
     assert env["PROMPTFOO_PYTHON"]
     assert runner.parse_node_version("v22.22.0") == (22, 22, 0)
+
+
+def test_runner_preserves_explicit_model_and_grader_settings() -> None:
+    defaults = runner.build_env({})
+    assert defaults["PROMPTFOO_RUNTIME_MODEL"] == "qwen2.5"
+    assert defaults["PROMPTFOO_GRADER_PROVIDER"] == "ollama:chat:qwen2.5"
+
+    overrides = runner.build_env(
+        {
+            "PROMPTFOO_RUNTIME_MODEL": "custom-local-model",
+            "PROMPTFOO_GRADER_PROVIDER": "ollama:chat:custom-grader",
+            "OLLAMA_BASE_URL": "http://127.0.0.1:11434",
+            "PROMPTFOO_RUNTIME_TIMEOUT_SECONDS": "75",
+        }
+    )
+    assert overrides["PROMPTFOO_RUNTIME_MODEL"] == "custom-local-model"
+    assert overrides["PROMPTFOO_GRADER_PROVIDER"] == "ollama:chat:custom-grader"
+    assert overrides["OLLAMA_BASE_URL"] == "http://127.0.0.1:11434"
+    assert overrides["PROMPTFOO_RUNTIME_TIMEOUT_SECONDS"] == "75"
+    assert overrides["PROMPTFOO_DISABLE_REMOTE_GENERATION"] == "true"

@@ -1,5 +1,6 @@
 [env]
 PYTHONUTF8 = "1"
+_.file = ".env"
 
 # CLI tool version authority. Exact pins guarantee zero-drift setup.
 # Tool defaults, version preferences and exceptions: docs/tools/README.md
