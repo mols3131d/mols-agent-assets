@@ -79,6 +79,14 @@ D0–D5는 작업 의존성이지 독립 PR·Skill·runner 또는 모든 환경�
 - 새로운 Skill 분리나 rename은 독립 trigger/ownership 근거가 있을 때만 채택한다.
 - 최소 변경의 결과물을 사람이 사용할 수 있는 수준으로 설명하고 권한 밖 변경은 명확한 handoff를 제공한다.
 
+## 실행 적응 보강 (추가 요구)
+
+- [자산 설계 평가](asset-design-assessment.md)에서 기존 구조의 강점과 실행 의미 보존·운영 지속성의 부족을 분리해 평가했다. 런타임 실측의 부재 자체를 설계 결함으로 보지 않는다.
+- [대체 실행 설계](execution-adaptation-design.md)를 기준으로 [조건부 참조](../../src/rulesync/.rulesync/skills/mols-chatbot-bootstrap/references/execution-adaptation.md)를 추가했다. 대상 하네스의 필수 실행 책임이 현재 채팅 런타임에서 빠졌을 때 Native / 의미 보존 대체 / 부분 수행 / 선택적 생략 / 사용자 인계를 판단하도록 한다.
+- `SKILL.md`의 activation·Workflow·Resources·Validation은 필요한 경우에만 해당 참조를 선택하게 했고, 배포용 `route/skills.jsonl`의 description은 정본 변경에 맞춰 갱신했다.
+- 유지보수 README는 범용 판단 이유를 소유하고, 타깃의 `CHATBOT.md`와 같은 소비 surface는 대상별 실제 호환성 지침만 소유한다. 현재 저장소의 `CHATBOT.md` 내용 자체는 이번 PR에서 수정하지 않는다.
+- 이 보강은 실제 독립 Subagent 실행, 동등한 CLI 검증, 장기 작업 성공을 증명하지 않는다. 사용자에게 중요한 미지원·부분·생략·인계가 드러나는 설계를 우선한다.
+
 ## 구현 및 정적 리뷰 결과
 
 - **D0–D2 / 구현:** 기존 스킬을 유지하며 metadata의 설계 activation과 workflow의 N0–N3 선택, 현재 노출된 관련 도구·권한 판단, canonical body 소비 확인, 완료 근거 수준, 정확한 handoff를 반영했다.
