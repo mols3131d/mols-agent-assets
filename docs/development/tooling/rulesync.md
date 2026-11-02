@@ -103,7 +103,7 @@ Reusable Agent Asset validation은 `scripts/agent_assets/rulesync_validate.py`�
 | reusable Rulesync workspace와 canonical assets | [`src/rulesync/`](../../../src/rulesync/) |
 | library configuration | [`src/rulesync/rulesync.jsonc`](../../../src/rulesync/rulesync.jsonc) |
 | Agent Asset Rulesync validator | [`scripts/agent_assets/rulesync_validate.py`](../../../scripts/agent_assets/rulesync_validate.py) |
-| direct doctor·preview wrapper | [`scripts/agent_assets/rulesync_run.py`](../../../scripts/agent_assets/rulesync_run.py) |
+| direct doctor·preview task | [`mise.toml`](../../../mise.toml) (native Rulesync CLI with `dir = "src/rulesync"`) |
 | repository command entrypoints | [`mise.toml`](../../../mise.toml) |
 
 현재 값이나 command를 이 문서에 복제하지 않습니다. 작업 시 위 source를 읽습니다.

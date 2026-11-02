@@ -81,13 +81,15 @@ run = "uv run --locked --no-default-groups --group test python scripts/agent_ass
 
 [tasks.rulesync-doctor]
 description = "Validate the reusable Rulesync workspace configuration"
+dir = "src/rulesync"
 raw_args = true
-run = "uv run --locked --no-default-groups python scripts/agent_assets/rulesync_run.py doctor"
+run = "rulesync doctor --strict"
 
 [tasks.rulesync-preview]
 description = "Preview reusable Rulesync projections without writing"
+dir = "src/rulesync"
 raw_args = true
-run = "uv run --locked --no-default-groups python scripts/agent_assets/rulesync_run.py preview"
+run = "rulesync generate --dry-run"
 
 [tasks.rulesync-validate]
 description = "Validate reusable Rulesync configuration and projections"

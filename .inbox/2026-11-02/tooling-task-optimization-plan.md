@@ -92,6 +92,11 @@
 - **mise Doctor 지원 버전 교훈:** 프로젝트 Doctor가 처음 도입된 버전은 `2026.9.6`, 현재 CI의 mise 설치 버전은 `2026.9.2`이다. 최신 upstream 문서의 기능을 현 환경에서 사용 가능하다고 추정하면 안 된다. 호스트 및 CI 업그레이드가 검증되기 전에는 기존 `mise ls --project --json`과 `uv lock --check`로 경량 점검을 제공한다. `preflight`는 완전한 실행/설치 상태 검증이 아니며 자동 update를 하지 않는다.
 - **확인된 범위 밖:** `pyproject.toml` 자체의 dependency group을 재편성할 이유는 발견되지 않아 변경하지 않았고, `development_bootstrap.py`의 Windows/npm shim·격리 검증은 재현 계약을 보존하기 위해 그대로 두었다. PR #272의 Promptfoo provider 변경은 독립 진행 중이며 후속 동기화 시 새 head 검토 필요.
 
+### Native task simplification follow-up
+
+- `scripts/agent_assets/rulesync_run.py` performed only a working-directory change and forwarded `doctor --strict` / `generate --dry-run`. Replace it with mise task `dir = "src/rulesync"` and direct Rulesync commands, and remove the extra wrapper. Preserve Rulesync's native exit code and argument forwarding. `rulesync_validate.py` remains because it enforces repository-specific warning/JSON validation policy not identical to a plain doctor command.
+- This follows the session lesson: native tools can own simple `cwd`, argument passing and subcommands without Python orchestration. CLI portability on Windows requires checking mise's task `dir` behavior; actual local execution is not claimed here.
+
 ## 준비 시 검증 상태
 
 - ✅ Pass — `main`의 관련 manifest, 주요 bootstrap/runner, 기존 테스트·CI 호출 경로 직접 조회.
