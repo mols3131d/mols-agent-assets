@@ -113,8 +113,6 @@ Promptfoo의 test-level provider filter가 서로 다른 provider의 cartesian p
 
 ## Entrypoints
 
-아래 명령은 **현재 작성 저장소의 평가 실행 예시**이며 배포 Skill의 runtime prerequisite이 아닙니다. 다른 프로젝트는 자체 평가 하네스를 사용합니다.
-
 ```bash
 mise run eval -c evals/promptfoo/mols-loops-smoke.yaml
 mise run eval -c evals/promptfoo/mols-loops.yaml
