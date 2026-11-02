@@ -1,6 +1,6 @@
 # Project Task/Command Design — 설계 조사
 
-> 상태: 신규 Skill **준비 자료(비정본)**. 향후 `SKILL.md`가 실행 계약을 소유한다. 본 자료 자체는 Skill이나 저장소 정책이 아니다.
+> 상태: 신규 Skill 구현의 **작업 근거(비정본)**. 현재 실행 계약은 `src/rulesync/.rulesync/skills/mols-project-task-command-design/SKILL.md`가 소유한다. 이 자료 자체는 Skill이나 저장소 정책이 아니다.
 
 ## 문제와 목표
 
@@ -63,8 +63,8 @@
 
 Activation description은 키워드 나열보다 **프로젝트 명령 표면의 설계·최적화 의도**와 비해당 범위를 나타내야 한다.
 
-## 아직 결정하지 않은 부분
+## 정본 채택에서 결정한 범위
 
-- Skill이 설계·리뷰 및 구현 인계만 기본 수행할지, 명시적 요청 시 실제 실행 파일 변경까지 지원할지는 작성 시 기존 owner와 scope를 검토해 결정한다.
-- 도구별 command reference, maintainer doc, scripts, eval fixture를 관성적으로 추가하지 않는다. 독립적인 loading·reuse·validation 필요가 있는 경우에만 분리한다.
-- 주기적 task 최적화나 무인 실행을 새 Skill의 목표로 자동 확장하지 않는다.
+- 설계·리뷰가 기본이며, 구현은 사용자가 명시적으로 요청한 때 대상 프로젝트의 일반 개발 절차로 수행한다.
+- 단일 `SKILL.md`에 runtime 행동을 모으고, `docs/skills/mols-project-task-command-design/README.md`는 이식성·유지보수 근거만 소유한다. 별도 runtime reference·script·eval framework는 추가하지 않는다.
+- 주기적 task 최적화나 무인 실행은 새 Skill의 범위가 아니다. 이 저장소에서 제공하는 Skill이 곧 로컬에 설치·사용됨을 의미하지도 않는다.

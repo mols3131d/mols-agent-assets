@@ -1,6 +1,6 @@
 # Handoff — `mols-project-task-command-design` 준비 PR
 
-> 상태: **정식 Skill 구현 및 정적 검증 진행 중 / 런타임 평가 미수행**. 이 문서는 비정본 참고 자료이며 실행 지침이 아니다.
+> 상태: **정식 Skill 구현·정적 검증 및 PR Gate 통과 / 실제 런타임 평가 미수행**. 이 문서는 비정본 참고 자료이며 실행 지침이 아니다.
 
 ## 목표와 기준
 
@@ -50,7 +50,7 @@
 - **선택적:** 실제 agent 선택·행동 평가는 목적과 비용을 보고 소규모로 실시. 시뮬레이션/정적 분석을 runtime 실증으로 표시하지 않는다.
 - **범위 밖:** #275 코드 수정/병합, 전체 저장소 task 개편, 새로운 범용 도구 설치기·CI 정책·외부 자동화.
 
-정본 Skill을 작성·검증하기 전까지 이 PR은 **Draft**로 유지한다.
+정본 Skill의 정적 검증과 CI는 완료했으며, **실제 자동 선택·행동 평가 및 독립 리뷰는 수행하지 않았다**. PR은 리뷰를 위한 상태로 전환할 수 있으나 병합에는 별도 승인이 필요하다.
 
 ## 구현 인계 갱신 (2026-11-02)
 
@@ -58,3 +58,11 @@
 - 배포용 derived route `route/skills.jsonl`은 기존 정본에서 생성된 metadata와 신규 source의 `name`·`description`을 같은 정렬·JSONL 포맷으로 재산출한다. CI의 공식 generated validation이 최종 기준이며, root `.agents/route`는 이 저장소가 사용하는 locked dependency만 취급하므로 신규 source 추가만으로 자체 사용을 주장하지 않는다.
 - PR #275는 현재 `main`에 통합됨. 준비 당시 독립 PR이라고 한 부분은 과거 시점 기록이며, 이 변경은 새 `main`을 병합 부모로 보존한다.
 - 정적 설계·현재 CI 검증의 합격을 실제 routing/behavior eval이나 모든 target runtime의 설치 성공으로 표현하지 않는다.
+
+## 정식 구현 완료 후 검증 (2026-11-02)
+
+- ✅ Pass — `SKILL.md` 단일 package와 `docs/skills/mols-project-task-command-design/README.md` 유지보수 안내 작성. `route/skills.jsonl`의 정본 frontmatter 기반 generated metadata를 동기화.
+- ✅ Pass — [PR Gate #693](https://github.com/mols3131d/mols-agent-assets/actions/runs/41467665398): Rulesync asset validation, generated drift, docs frontmatter, deterministic tests 및 project doctor를 포함한 서버 측 검사 전체 성공.
+- ✅ Pass (정적 의미 검토) — 10개 AC를 기준으로 공식 명령 유지, 불필요한 alias 제거, CLI subcommand 통합, 효과·권한 경계, near-miss 비활성화와 기존 owner 경계를 대조. 새 runtime script/framework 없이 재사용 가능한 설계 판단으로 표현했음을 확인.
+- ⚪ Not Verified — 실제 agent 자동 선택·행동 routing/eval, 다른 대상 런타임의 설치·실행 호환성, 독립적인 사람/다른 모델의 review. 셀프 검토와 CI 성공을 독립 리뷰 또는 runtime eval로 취급하지 않는다.
+- 현재 기준 main에 [PR #275](https://github.com/mols3131d/mols-agent-assets/pull/275)가 병합됐고, 이 PR은 당시 최신 main commit `452b153ea484d8a32a0400318dd5d1a1e4645603`를 병합 부모로 포함했다. 추가로 main이 이동했다면 별도 동기화 검토 필요.
