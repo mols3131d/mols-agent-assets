@@ -2,9 +2,9 @@
 
 `.agents/route/`는 이 repository를 관리·개발할 때 **사용하는 Agent Asset**의 repository-local routing surface입니다.
 
-이 entrypoint를 읽었다면 먼저 [`routes.jsonl`](routes.jsonl)을 읽습니다. 서로 다른 `kind`의 Agent Asset이 독립적으로 적용되면 필요한 kind의 route만 선택합니다. 현재 generated `kind`인 `skills`에서는 **현재 작업 범위를 가장 좁게 설명하는 family route 하나**를 선택하고, 적절한 좁은 family가 없거나 작업이 여러 family를 가로지르면 `all`을 사용합니다. 여러 Skill family route나 `all`을 함께 선로드하지 않습니다.
+로컬 에이전트의 네이티브 Skill 발견 기능으로 필요한 자산을 직접 찾을 수 있다면 이 route를 중복 로드하지 않습니다. 추가 탐색이 필요할 때 [`routes.jsonl`](routes.jsonl)을 읽고 관련 `kind`와 가장 좁은 family를 선택합니다. 작업이 여러 family에 걸치면 **필요한 family route만 각각** 읽습니다. `uncategorized`에는 분류되지 않은 Skill이 있고, `all`은 적절한 route를 알 수 없을 때만 사용하는 최후의 fallback입니다. `all`과 개별 family를 함께 선로드하지 않습니다.
 
-선택한 Skill route의 JSONL에서 `name`과 `description`으로 task-relevant Skill만 고르고 각 `source`를 읽은 뒤 작업을 계속합니다. `rulesync.lock`과 `skills-lock.json`에서 가져오는 외부 Skill도 같은 routing 대상입니다. 작업 범위가 실질적으로 바뀔 때만 route 선택을 다시 평가합니다.
+선택한 Skill route의 `name`과 `description`으로 task-relevant Skill만 고르고 실제 필요한 `source`만 로드합니다. 여러 family가 같은 Skill을 제시해도 한 번만 로드합니다. `rulesync.lock`과 `skills-lock.json`의 dependency도 이 탐색 대상이지만, 설치된 revision은 lock을 따릅니다. 작업 범위가 실질적으로 바뀔 때만 route 선택을 다시 평가합니다.
 
 `uncategorized`는 어떤 family에도 아직 배정되지 않은 lock-backed Skill을 노출해 discovery 누락을 막습니다. Skill family membership은 [`families.json`](families.json)이 소유합니다.
 
