@@ -25,6 +25,11 @@ def build_env(base: dict[str, str] | None = None) -> dict[str, str]:
     env.setdefault("PROMPTFOO_PYTHON", sys.executable)
     env.setdefault("PROMPTFOO_RUNTIME_MODEL", "qwen2.5")
     env.setdefault("PROMPTFOO_GRADER_PROVIDER", "ollama:chat:qwen2.5")
+    # Native Promptfoo providers use milliseconds; keep the existing local knob.
+    env.setdefault(
+        "REQUEST_TIMEOUT_MS",
+        str(int(float(env.get("PROMPTFOO_RUNTIME_TIMEOUT_SECONDS", "120")) * 1000)),
+    )
     return env
 
 
