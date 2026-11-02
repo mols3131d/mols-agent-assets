@@ -1,74 +1,20 @@
 # `CHATBOT.md`
 
-이 파일은 이 repository를 작업하는 chatbot의 **compatibility entrypoint**입니다. Chat runtime에서 가능한 한 local agent harness와 같은 repository context discovery가 작동하도록 연결합니다.
+이 파일은 이 저장소를 작업하는 챗봇의 **호환 진입점**입니다. 런타임에서 부족한 지침·Agent Asset 탐색과 실행 연결만 보완하며, 저장소 정책이나 Skill·Rule 동작의 정본을 새로 소유하지 않습니다.
 
-## Bootstrap
+## 진입과 자산 선택
 
-1. 먼저 root [`AGENTS.md`](AGENTS.md)를 읽고 현재 작업에 적용되는 repository instruction을 따릅니다.
-1. [`.agents/route/ROUTE.md`](.agents/route/ROUTE.md)를 읽고 아래 routing table의 trigger를 참고해 현재 작업에 필요한 Agent Asset만 선택합니다. 아래 표는 route contract를 대체하지 않습니다.
-1. 구체적인 GitHub target(repository, path, ref, Pull Request, Issue, check, workflow, release 등)을 대상으로 작업하거나 GitHub Plugin, connector 또는 tool로 target-dependent action을 수행한다면 `github-context`를 필수로 선택합니다. 이름 있는 target의 ID/ref만 더 식별해야 하는 경우도 concrete target으로 봅니다.
-1. `github-context`가 필요한 경우 downstream target read/review/change/tool action보다 먼저 로드하고, 현재 repository/ref/object, 적용되는 repository instruction과 필요한 live GitHub state를 확인합니다. Root instruction·route를 읽거나 `github-context`를 로드·수행하는 데 필요한 좁은 GitHub read는 context discovery 자체이므로 gate 완료 전에도 수행할 수 있지만, 그 결과에 의존하는 downstream 판단이나 action은 gate 완료 후에만 수행합니다.
-1. 아직 concrete repository 또는 GitHub object가 하나도 특정되지 않은 broad discovery는 `github-context`보다 먼저 수행할 수 있습니다. Discovery가 concrete target을 식별하면 이후 downstream target-dependent action 전에 `github-context` loading을 완료합니다.
-1. 작업 대상 경로가 정해지면 `github-context`가 관련 ref의 repository root부터 해당 경로까지 적용되는 instruction과 task-relevant Agent Asset을 확인하도록 합니다. Route 선택은 [`.agents/route/ROUTE.md`](.agents/route/ROUTE.md)의 현재 계약을 따릅니다. 필요한 Skill이 여러 family에 있으면 해당 family만 선택하고, 선택한 route 안에서도 task-relevant Skill만 로드합니다.
-1. 작업 범위, target repository, ref/object 또는 대상 경로가 실질적으로 바뀌면 적용되는 instruction, GitHub context와 route selection을 다시 평가합니다.
+1. 현재 작업의 저장소·ref·대상 경로를 확인하고, 해당 ref의 [`AGENTS.md`](AGENTS.md)와 경로에 적용되는 지침을 읽습니다. 런타임의 네이티브 지침 탐색이 충분하다면 이를 재사용합니다.
+2. Skill·Rule은 네이티브 발견·적용을 우선합니다. 필요한 자산에 접근할 수 없을 때 이 저장소에서 사용하는 [`.agents/route/ROUTE.md`](.agents/route/ROUTE.md)를 따라 관련 route와 canonical source만 선택·로드합니다. 이 저장소가 외부에 제공하는 자산이나 Subagent가 필요한 경우에는 [`route/ROUTE.md`](route/ROUTE.md)에서 해당 종류의 route만 선택합니다. Route 목록이나 lock의 존재만으로 실제 설치·적용을 단정하지 않습니다.
+3. 구체적인 GitHub 대상에 대한 작업에서는 `github-context`를 선택하고, 그 Skill이 정의한 대상·지침·자산 확인을 후속 대상 의존 작업 전에 완료합니다. 해당 Skill을 찾아 읽는 데 필요한 좁은 조회는 가능합니다. GitHub 작업의 상세 탐색 절차와 저장소 정책은 각각 그 Skill과 [GitHub 정책](docs/development/github.md)이 소유합니다.
+4. 작업의 대상·ref·범위 또는 실제 런타임 기능이 실질적으로 달라지면 적용 지침과 자산 선택을 다시 확인합니다. `inbox/`와 `catalog/`의 자료는 별도 채택 전까지 강제 지침이 아닙니다.
 
-## Git / GitHub 문서 라우팅
+## 네이티브 실행을 사용할 수 없을 때
 
-여러 trigger가 동시에 맞으면 필요한 문서를 함께 읽습니다. 일반적인 Git/GitHub 개념 설명만 요청하고 이 repository의 policy나 state가 판단에 필요하지 않으면 repository-local 문서를 강제로 로드하지 않습니다. 표는 **언제 어디로 갈지**만 연결하며 각 문서의 정책을 복제하지 않습니다.
+원본 자산의 작업에 필수적인 도구·명령·위임 기능이 현재 런타임에 없을 때만 대체 가능성을 판단합니다. 원본의 권한·입출력·검증·독립성 요구를 보존하는 **허용된 대체 실행**을 우선하고, 불가능하면 안전하게 완료할 수 있는 부분 수행, 원본 계약상 선택적인 단계의 생략, 필요한 도구·승인을 명시한 사용자 인계 중 적절한 결과를 선택합니다. 필수 작업을 임의로 선택 사항으로 바꾸지 않습니다.
 
-| Trigger | Load | 역할 |
-| --- | --- | --- |
-| working tree, worktree, branch, ref, base, commit, amend, rebase, reset, cherry-pick, stash, push, force update, Git history, branch naming | [`docs/development/vcs-git.md`](docs/development/vcs-git.md) | repository의 VCS/Git 상태·history·branch 안전성 |
-| commit message를 작성하거나 검토 | [`docs/development/vcs-git.md`](docs/development/vcs-git.md), [`.gitmessage`](.gitmessage) | commit authoring convention과 그 소유 관계 |
-| Issue, Pull Request, PR Review, PR comment, Merge, Ruleset, GitHub Actions, coding agent, automation, GitHub permission·collaboration | [`docs/development/github.md`](docs/development/github.md) | repository의 GitHub 협업·권한·surface 정책 |
-| CI, PR Gate, GitHub Actions workflow orchestration, required check, trigger, blocking·deferred evidence, projection gate, branch push와 PR CI | [`docs/development/ci.md`](docs/development/ci.md) | `main` admission과 CI evidence orchestration |
-| Issue/PR/Review/comment 본문을 작성·재작성·형식 검토 | [`docs/development/github.md`](docs/development/github.md), [`.github/templates/README.md`](.github/templates/README.md), 아래 surface template | cross-surface 작성 의미와 실제 rendering structure |
-| format, formatter, `format-changed`, Ruff·rumdl·Biome을 통한 repository file 정규화 | [`docs/development/formatting.md`](docs/development/formatting.md) | formatting write path와 automation boundary |
-| 문서 frontmatter, `INDEX.tsv`, Agent Asset routing, Rulesync-managed asset validation | [`docs/development/validation.md`](docs/development/validation.md) | repository-owned validation 범위와 실행 경계 |
-| test, pytest, deterministic test, repository-owned executable behavior | [`docs/development/testing.md`](docs/development/testing.md) | deterministic test evidence의 의미와 범위 |
-| Agent Asset behavior, model/runtime evidence, behavioral regression·evaluation | [`docs/development/evaluation.md`](docs/development/evaluation.md) | test와 behavioral eval의 경계와 evidence 해석 |
+- **스크립트·CLI:** 정확한 ref의 원본 코드와 의존성·인자·환경·외부 명령·부작용을 확인합니다. Shell이 없어도 허용된 코드 실행기가 있다면 원본의 의미와 검증 로직을 유지하는 최소 호출 어댑터를 검토할 수 있습니다. 재현하지 못한 필수 조건이 있다면 실행 범위를 구분하고 원래 명령의 성공으로 보고하지 않습니다.
+- **Subagent:** 네이티브 위임을 우선합니다. 사용할 수 없으면 실제 원본 역할·인계·종료 조건을 확인하고, **공유 문맥의 순차 수행이 허용되는 경우에만** 역할별 검토로 대체할 수 있습니다. 독립성·격리·별도 권한·병렬 실행이 필수라면 동등하게 대체했다고 주장하지 않고 해당 작업을 인계합니다.
+- **기타 도구·외부 작업:** 현재 연결·권한·실행 명의를 확인하고 허용된 기능만 사용합니다. 접근이나 쓰기 권한 부족을 다른 계정·도구의 임의 전환으로 우회하지 않습니다.
 
-GitHub text를 작성·재작성·형식 검토할 때는 실제 surface에 맞는 template만 추가로 읽습니다.
-
-| Surface | Template |
-| --- | --- |
-| Issue | [`.github/templates/issue.md`](.github/templates/issue.md) |
-| Pull Request description | [`.github/templates/pull-request.md`](.github/templates/pull-request.md) |
-| PR Review | [`.github/templates/pull-request-review.md`](.github/templates/pull-request-review.md) |
-| PR conversation comment | [`.github/templates/pull-request-comment.md`](.github/templates/pull-request-comment.md) |
-| PR inline review comment | [`.github/templates/pull-request-inline-comment.md`](.github/templates/pull-request-inline-comment.md) |
-
-## Agent Asset 라우팅
-
-이 표는 repository 작업에서 자주 교차 적용되는 Asset의 **selection trigger**만 명시합니다. 실제 source와 전체 후보는 [`.agents/route/ROUTE.md`](.agents/route/ROUTE.md)에서 선택합니다.
-
-| Trigger | Select | Boundary |
-| --- | --- | --- |
-| 구체적인 GitHub repository/path/ref/PR/Issue/check/workflow/release를 읽기·검토·변경하거나 GitHub Plugin·connector·tool로 해당 target에 action을 수행, 또는 이미 확정된 GitHub target의 follow-up | `github-context` | downstream target-dependent action 전에 live repository/ref/object와 적용 context를 확인합니다. 이름 있는 target의 ID/ref resolution도 concrete로 봅니다. 아직 concrete repository/object가 없는 broad discovery와 generic Git/GitHub 설명에는 선택하지 않습니다. |
-| CI architecture, PR Gate, merge gate, blocking·deferred evidence, impact routing, projection gate 또는 maintenance automation을 설계·검토·재설계 | `mols-ci-design` | CI의 admission evidence system을 설계·handoff하며 workflow 구현은 명시적으로 요청된 경우에만 수행합니다. |
-| `CHATBOT.md` compatibility, chat runtime first-hop, repository entry/router를 생성·수정·복구하거나 그 compatibility를 검토 | `mols-chatbot-bootstrap` | bootstrap과 routing 연결을 다루며 repository policy를 새로 소유하지 않습니다. |
-| Skill, Rule, scoped instruction, agent/subagent 또는 agent behavior를 구성하는 bounded asset을 작성·수정·단순화·리팩터링·리뷰·검증·평가 | `mols-agent-asset` | authoring, review, validation, evaluation의 task-specific contract를 소유하며 실제 evidence보다 강한 결론을 만들지 않습니다. |
-| Agent Asset을 찾기·선택·로드·설치·동기화·이관 | `mols-agent-asset-find` | 기존 Asset의 discovery와 적용이 주 작업일 때 선택합니다. |
-| 사용자가 RPI, 개선 루프, 재귀 루프, 심층 루프를 요구하거나 복합 작업에 반복 Research → Plan → Implementation → Review 및 점진적 context/capability orchestration이 필요 | `mols-loops` + task-specific Asset | Loops가 작업 domain Asset의 authority나 내부 procedure를 대체하지 않습니다. |
-
-## 제한된 코드 런타임의 스크립트 실행 대체
-
-Shell·CLI로 저장소 스크립트를 직접 호출할 수 없어도 Python·JavaScript 등의 **코드 실행 런타임**이 있다면, 실행 불가로 단정하기 전에 원본 코드를 가져와 실행할 수 있는지 검토하고 가능하면 실제로 수행합니다. 원래 실행 경로가 사용 가능하면 이를 우선합니다.
-
-1. **원본·조건 확인** — 정확한 repository/ref의 스크립트와 필요한 로컬 모듈·설정·입력을 읽고 실행 언어, 의존성, 인자, 경로·환경, 외부 명령, 네트워크와 부작용을 확인합니다. 코드는 실행 전에 안전성을 검토하고 현재 runtime의 권한·도구 제한을 우회하지 않습니다.
-1. **최소 실행 대체** — 허용된 임시 런타임에 원본을 파일로 복사하거나 메모리에 로드해 실행합니다. 필요하면 인자·진입점·입출력만 연결하는 최소 어댑터를 사용하되 원본의 검증 로직과 실행 의미를 바꾸지 않습니다. 필수 조건을 재현할 수 없으면 독립적으로 실행 가능한 범위만 수행하고 나머지는 미검증으로 둡니다.
-1. **근거 구분** — 원본/ref, 입력, 실행 방식·조정, 결과와 재현하지 못한 조건을 기록합니다. 부분 실행을 원본의 완전한 실행이나 repository-native check·CI 통과로 주장하지 않습니다.
-
-임시 실행 결과와 파일은 repository state와 구분하며, 실행 대체가 새로운 쓰기·외부 작업 권한을 부여하지 않습니다.
-
-## 서브에이전트 실행 대체
-
-작업에 필요한 Subagent를 chat runtime에서 직접 호출할 수 없다면, [`route/ROUTE.md`](route/ROUTE.md)를 따라 필요한 Subagent와 하위 Subagent의 canonical source만 선택해 읽습니다. 실제 호출이 가능하면 native 실행을 우선하고, 불가능할 때는 **호출자가 역할별 작업을 순차적으로 대체 수행**합니다.
-
-1. **계약 보존** — 호출자와 각 Subagent의 역할·책임, 적용 범위, 입력·출력, handoff, 순서·횟수·종료 조건을 유지합니다. 하위 위임은 필요한 역할별 패스로 펼치되 원본의 판단 책임과 최종 결정권을 옮기지 않습니다. 자산의 도구·권한 설정은 현재 runtime에 새로운 권한을 부여하지 않습니다.
-1. **관점 분리** — 역할마다 필요한 최소 출발 맥락과 질문을 구분하고 결과를 별도로 정리합니다. 다른 역할의 후보·결론은 원본 계약에서 허용하는 교차 검토·합성 단계에만 전달하며 초기 검토의 근거로 주입하지 않습니다.
-1. **근거 기반 인계** — 역할별 관찰·추론·미확인 사항, 수행한 검증과 한계를 구분해 원본에서 정한 책임 주체가 근거와 적용 기준으로 대조·판정하게 합니다. 역할 간 합의나 반복은 검증 근거가 아닙니다.
-
-순차적인 단일 문맥 수행은 **실제 Subagent 호출, 독립 실행, 병렬 처리 또는 권한 격리**와 동등하지 않습니다. 수행하지 않은 호출·검증을 주장하지 않으며, 필수 도구·독립성 등 재현할 수 없는 조건은 coverage gap으로 알립니다. 원본 계약이나 사용자 요구가 실제 독립 실행 또는 필수 capability를 요구한다면 대체 수행을 동등한 완료로 보고하지 않습니다.
-
-`CHATBOT.md`는 repository policy, Agent Asset behavior 또는 routing semantics를 재정의하지 않습니다. 연결된 canonical source와 [`.agents/route/ROUTE.md`](.agents/route/ROUTE.md)가 항상 authoritative합니다.
+최종 결과에는 실제 수행·관찰한 작업, 대체 수행, 생략·미검증·차단된 부분과 필요한 다음 조치를 구분해 알립니다. 이 호환 지침은 새로운 실행 권한을 부여하지 않으며, 원본 Skill·Rule이나 저장소 정책을 대체하지 않습니다.

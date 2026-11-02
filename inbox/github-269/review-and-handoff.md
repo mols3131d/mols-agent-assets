@@ -54,3 +54,12 @@ description: PR #269의 로컬 에이전트 하네스 다관점 셀프 리뷰, �
 - GitHub API/Plugin을 통한 브랜치 수정은 로컬 hook 실행을 증명하지 않는다.
 - CI의 성공도 런타임 Skill activation·semantic behavior의 독립 증거가 아니다.
 - 이 문서에 적은 미완료 검증은 후속 작업 대상으로 남겨두며, merge 승인으로 간주하지 않는다.
+
+## PR #267 병합 후 챗봇 호환성 개선 루프 (2026-11-02)
+
+- **적용한 정본:** main에 병합된 PR #267의 `mols-chatbot-bootstrap/SKILL.md` 및 조건부 `references/execution-adaptation.md`. 이 자산은 저빈도 하네스 구축·복구용이며, 일반 작업마다 상주할 필요가 없다. PR #269에서 스킬 원본이나 lock을 수정하지 않았다.
+- **Loop 1 — 탐색·권한:** `CHATBOT.md`가 `github-context`의 대상 확인과 GitHub 정책·템플릿 라우팅을 중복 소유한 문제를 확인했다. 런타임의 네이티브 발견을 우선하고, 접근이 부족한 경우에만 repository-local route를 따라 canonical Skill에 도달하도록 연결을 단순화했다. `AGENTS.md`에서는 GitHub 정책 정본의 직접 연결을 추가했다.
+- **Loop 2 — 실행·회귀:** 코드 실행과 Subagent 대체는 실제 런타임의 필요에 한정된 조건부 안내로 유지했다. 원본 검증·권한·독립성 요구를 보존할 수 없을 때는 부분 수행·선택적 생략·인계를 구분하도록 하고, 독립성이 필요한 Subagent를 순차 검토로 대체 완료 처리하지 않도록 명확히 했다.
+- **설계 경계:** `route/`는 제공 자산·Subagent, `.agents/route/`는 저장소에서 사용하는 Skill의 탐색에 한정한다. 정적 path table, 스킬 본문 복제, 새로운 router·CI·generator는 추가하지 않는다. `github-context`와 PR #267 스킬 본문은 수정하지 않는다.
+- **검증 경계:** 정본 링크·현재 ref·문서 간 책임을 확인하는 것은 `configured`/`reachable` 근거에 가깝다. 전체 챗봇의 실제 behavioral routing·코드 실행 parity·독립 Subagent 결과는 관찰되지 않았다. PR Gate와 로컬 런타임 검증은 최신 head에서 별도 판단한다.
+- **추가 확인:** Chatbot 런타임의 first-hop이 실제로 `CHATBOT.md`를 읽는 설정인지, 정상 GitHub 작업에서 `github-context`와 필요한 템플릿까지 도달하는지, 선택 조건 없는 불필요한 route 로딩이 줄었는지는 향후 실제 작업에서 관찰할 사항이다. 단순 스킬 수정 자체를 사용자 설정 완료나 런타임 활성화로 간주하지 않는다.

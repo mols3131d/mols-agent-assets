@@ -32,6 +32,7 @@
 ## 저장소 작업
 
 - Git 변경은 `docs/development/vcs-git.md`를 따릅니다. `main`은 직접 수정하지 않고 dedicated branch를 사용합니다.
+- GitHub의 Issue·PR·Review·Merge·Actions 협업 정책은 `docs/development/github.md`를 따릅니다. 관련 작업의 세부 문서는 해당 정책과 `github-context`가 작업에 맞게 선택합니다.
 - 파일·디렉터리 이름과 배치, 계층, source-test 대응은 `docs/development/repository-layout.md`를 따릅니다.
 - 개발 규칙은 `docs/development/README.md`, 문서 규칙과 artifact lifecycle은 `docs/documentation/README.md`에서 찾습니다.
 - Formatting은 `docs/development/formatting.md`, validation은 `docs/development/validation.md`, deterministic testing은 `docs/development/testing.md`, PR Gate는 `docs/development/ci.md`를 따릅니다.
