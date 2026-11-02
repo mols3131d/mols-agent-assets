@@ -4,7 +4,7 @@ description: mols-dev-env-bootstrap-design의 positive·near-miss routing과 설
 
 # Bootstrap Design Evaluation
 
-이 Skill의 [case fixture](../../../evals/skills/mols-dev-env-bootstrap-design/cases.json)가 behavioral contract를 소유하며, [Promptfoo config](../../../evals/promptfoo/mols-dev-env-bootstrap-design.yaml)는 native `ollama:chat` provider와 [공통 평가 generator](../../../scripts/agent_assets/skills_promptfoo.py)를 사용한다. 모델 호출은 Promptfoo에 위임하고 별도 Skill 전용 provider나 grader는 만들지 않는다.
+이 Skill의 [case fixture](../../../evals/skills/mols-dev-env-bootstrap-design/cases.json)가 behavioral contract를 소유하며, [Promptfoo config](../../../evals/promptfoo/mols-dev-env-bootstrap-design.yaml)는 선택 가능한 native provider와 [공통 평가 generator](../../../scripts/agent_assets/skills_promptfoo.py)를 사용한다. 모델 호출은 Promptfoo에 위임하고 별도 Skill 전용 provider나 grader는 만들지 않는다.
 
 ## What this measures
 
@@ -29,15 +29,15 @@ Promptfoo/Ollama, 실행용 Node/Python과 이 저장소의 npm 진입점은 현
 
 ## Run locally
 
-이미 사용 가능한 Ollama 모델을 선택한 뒤 repository root에서 실행한다. 기본 runtime/grader 이름에 해당하는 모델이 설치되어 있다고 가정하지 않는다.
+사용 가능한 native provider와 독립적인 grader를 선택한 뒤 repository root에서 실행한다. Ollama가 기본값이지만 필수는 아니며, 기본 runtime/grader 이름에 해당하는 모델이 설치되어 있다고 가정하지 않는다.
 
 ```bash
 npm run eval:promptfoo:mols-dev-env-bootstrap-design
 ```
 
-`PROMPTFOO_RUNTIME_MODEL`과 `PROMPTFOO_GRADER_PROVIDER`를 명시하고, 필요하면 `-- --filter-metadata suite=trigger` 또는 `suite=behavior`로 분리한다. 네트워크 모델 다운로드는 이 평가의 자동 선행 작업이 아니다. 현재 공통 runner가 선택한 Promptfoo version·local/no-sharing 설정을 재사용한다.
+`PROMPTFOO_RUNTIME_PROVIDER`와 `PROMPTFOO_GRADER_PROVIDER`를 명시하고, 필요하면 `-- --filter-metadata suite=trigger` 또는 `suite=behavior`로 분리한다. 전체 runtime ID 미지정 시 기존 `PROMPTFOO_RUNTIME_MODEL` 설정을 사용한다. [.env 로딩·provider 선택과 데이터 전송 경계](../../../evals/README.md#promptfoo-provider-선택)를 확인한다. 네트워크 모델 다운로드는 이 평가의 자동 선행 작업이 아니며 현재 공통 runner가 선택한 Promptfoo version·no-sharing 설정을 재사용한다.
 
-Ollama grader에는 native `temperature=0`을 지정한다. Structured JSON에서 thinking만 반환하고 content가 비는 모델은 해당 실행에 한해 `PROMPTFOO_RUNTIME_THINK=false`를 지정할 수 있다. 기본 thinking 동작은 변경하지 않으며, 이 설정을 바꾼 결과는 이전 조건과 구분한다. Transport/envelope 오류와 content JSON 오류는 별도로 기록하고 잘못된 content와 종료 metadata를 보존한다.
+Ollama grader에는 native `temperature=0`을 지정한다. `PROMPTFOO_RUNTIME_THINK`는 기존 custom Python Ollama provider 전용 설정이며 native provider에는 자동 적용되지 않는다. Native 모델의 thinking·structured output 등은 해당 provider의 공식 config로 설정하며, 이 설정을 바꾼 결과는 이전 조건과 구분한다. Transport/envelope 오류와 content JSON 오류는 별도로 기록한다.
 
 ## Grader calibration
 

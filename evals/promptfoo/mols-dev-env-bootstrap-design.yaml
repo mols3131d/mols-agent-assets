@@ -6,12 +6,11 @@ prompts:
   - file://skill-chat.json
 
 providers:
-  - id: "ollama:chat:{{ env.PROMPTFOO_RUNTIME_MODEL }}"
+  - id: "{{ env.PROMPTFOO_RUNTIME_PROVIDER }}"
     label: mols-dev-env-bootstrap-design-trigger
     config:
       temperature: 0
-      format: json
-  - id: "ollama:chat:{{ env.PROMPTFOO_RUNTIME_MODEL }}"
+  - id: "{{ env.PROMPTFOO_RUNTIME_PROVIDER }}"
     label: mols-dev-env-bootstrap-design-behavior
     config:
       temperature: 0

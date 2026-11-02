@@ -375,10 +375,10 @@ def generate_tests(config: dict | None = None) -> list[dict]:
 
 
 def generate_native_tests(config: dict | None = None) -> list[dict]:
-    """Project single-call Skill evaluations onto Promptfoo's native Ollama provider."""
+    """Project single-call Skill evaluations onto Promptfoo's native providers."""
     config = config or {}
     if config.get("reference_paths"):
-        raise ValueError("native Ollama evaluation cannot select Skill references")
+        raise ValueError("native provider evaluation cannot select Skill references")
 
     tests = generate_tests(config)
     skill_name = _skill_name(config)
@@ -388,7 +388,9 @@ def generate_native_tests(config: dict | None = None) -> list[dict]:
 
     for test in tests:
         if "expected_loaded_references" in test["vars"]:
-            raise ValueError("reference-loading evaluations require the Python provider")
+            raise ValueError(
+                "reference-loading evaluations require the Python provider"
+            )
         if suite == TRIGGER_SUITE:
             candidates = _routing_candidates(
                 test["vars"].get("routing_candidates"), skill_name
@@ -666,7 +668,6 @@ def _routing_system(skill: str, candidates: list[dict[str, str]], path: Path) ->
         f"{schema_text}\n\n"
         f"{_skill_catalog(skill, candidates, path)}"
     )
-
 
 
 def _route(

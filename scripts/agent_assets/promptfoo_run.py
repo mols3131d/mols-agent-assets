@@ -24,6 +24,9 @@ def build_env(base: dict[str, str] | None = None) -> dict[str, str]:
     env.setdefault("PROMPTFOO_CACHE_PATH", str(state_dir / "cache"))
     env.setdefault("PROMPTFOO_PYTHON", sys.executable)
     env.setdefault("PROMPTFOO_RUNTIME_MODEL", "qwen2.5")
+    env.setdefault(
+        "PROMPTFOO_RUNTIME_PROVIDER", f"ollama:chat:{env['PROMPTFOO_RUNTIME_MODEL']}"
+    )
     env.setdefault("PROMPTFOO_GRADER_PROVIDER", "ollama:chat:qwen2.5")
     # Native Promptfoo providers use milliseconds; keep the existing local knob.
     env.setdefault(
@@ -58,7 +61,10 @@ def resolve_npx(env: dict[str, str]) -> str:
     if version < MIN_NODE_VERSION:
         required = ".".join(str(part) for part in MIN_NODE_VERSION)
         actual = ".".join(str(part) for part in version)
-        raise RuntimeError(f"Promptfoo {PROMPTFOO_VERSION} requires Node.js >= {required}; found {actual}")
+        raise RuntimeError(
+            f"Promptfoo {PROMPTFOO_VERSION} requires Node.js >= {required}; "
+            f"found {actual}"
+        )
     return npx
 
 

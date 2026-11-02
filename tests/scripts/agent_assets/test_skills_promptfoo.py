@@ -263,8 +263,6 @@ def test_trigger_provider_uses_only_skill_discovery_metadata(
     assert json.loads(result["output"])["primary_skill"] == "example-skill"
 
 
-
-
 def test_ollama_request_respects_local_runtime_configuration(monkeypatch) -> None:
     monkeypatch.setenv("PROMPTFOO_RUNTIME_MODEL", "local-model")
     monkeypatch.setenv("OLLAMA_BASE_URL", "http://127.0.0.1:12555/")
@@ -287,6 +285,7 @@ def test_ollama_request_respects_local_runtime_configuration(monkeypatch) -> Non
     assert observed["url"] == "http://127.0.0.1:12555/api/chat"
     assert observed["timeout"] == 45.0
     assert observed["body"]["model"] == "local-model"
+
 
 def test_behavior_provider_uses_full_selected_skill(
     tmp_path: Path,
@@ -333,9 +332,8 @@ def test_promptfoo_configs_use_generic_skill_evaluator() -> None:
         config = yaml.safe_load((CONFIG_DIR / name).read_text(encoding="utf-8"))
         assert config["prompts"] == ["file://skill-chat.json"]
         for provider in config["providers"]:
-            assert provider["id"].startswith("ollama:chat:")
-            assert provider["config"]["temperature"] == 0
-        assert config["providers"][0]["config"]["format"] == "json"
+            assert provider["id"] == "{{ env.PROMPTFOO_RUNTIME_PROVIDER }}"
+            assert "format" not in provider["config"]
         for generated in config["tests"]:
             assert generated["path"].endswith(
                 "skills_promptfoo.py:generate_native_tests"
@@ -349,7 +347,11 @@ def test_promptfoo_configs_use_generic_skill_evaluator() -> None:
 
 def test_native_generator_keeps_trigger_and_behavior_context_separate() -> None:
     trigger = evaluator.generate_native_tests(
-        {"skill": "mols-loops", "suite": "trigger", "case_ids": ["explicit-rpi-activates"]}
+        {
+            "skill": "mols-loops",
+            "suite": "trigger",
+            "case_ids": ["explicit-rpi-activates"],
+        }
     )[0]
     behavior = evaluator.generate_native_tests(
         {
@@ -360,6 +362,7 @@ def test_native_generator_keeps_trigger_and_behavior_context_separate() -> None:
         }
     )[0]
     assert "skill-catalog" in trigger["vars"]["system"]
+    assert json.dumps(evaluator.TRIGGER_RESPONSE_SCHEMA) in trigger["vars"]["system"]
     assert "# Mols Loops" not in trigger["vars"]["system"]
     assert "# Mols Loops" in behavior["vars"]["system"]
     assert "Respond directly" in behavior["vars"]["system"]

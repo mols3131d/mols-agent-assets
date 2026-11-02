@@ -115,7 +115,7 @@ Eval config, fixture, adapter, assertion, runner의 구조적 correctness는 roo
 
 Fixture-mode smoke는 provider/generator/assertion plumbing을 Promptfoo 자체를 통해 확인하는 local integration check이며 runtime behavior evidence가 아닙니다. 실제 model/runtime eval과 semantic grading은 기본적으로 비차단 evidence이지만, 중요한 admission risk를 deterministic evidence로 대체할 수 없으면 CI 정책에 따라 bounded blocking evidence로 승격할 수 있습니다.
 
-단일 Ollama 호출은 Promptfoo native `ollama:chat` provider를 사용합니다. 공통 Python generator는 fixture를 Promptfoo 테스트로 변환하고, Reference를 별도로 선택하는 평가에서만 custom Python provider를 유지합니다. 이 경로는 실제 IDE/CLI agent 동작을 재현하지 않습니다.
+단일 모델 호출은 Promptfoo native provider를 사용하며 특정 제공자로 고정하지 않습니다. 로컬 Ollama는 API key 없이 사용할 수 있는 기본값이고, 다른 제공자는 [평가 실행 설정](../../evals/README.md#promptfoo-provider-선택)에 따라 명시적으로 선택합니다. 공통 Python generator는 fixture를 Promptfoo 테스트로 변환하며, 조건부 Reference 선택과 fixture-mode smoke는 custom Python provider를 유지합니다. 이 경로는 실제 IDE/CLI agent 동작을 재현하지 않습니다.
 
 Promptfoo-specific config는 `evals/promptfoo/`, Agent Asset 평가 adapter와 runner는 `scripts/agent_assets/`가 소유합니다. 저장소 수준 실행 entrypoint는 `mise.toml`이 소유합니다. Tool 사용법과 current upstream source는 [Promptfoo](../development/tooling/promptfoo.md), deterministic test의 의미는 [Testing](testing.md), PR Gate의 execution boundary는 [Continuous Integration](ci.md)을 따릅니다.
 
