@@ -8,6 +8,8 @@
 - Agent behavior를 실행하지 않아도 판정할 repository correctness → `tests/`
 - Deployable Agent Asset package 안에는 repository eval을 두지 않습니다.
 
+평가 대상은 로컬 runtime에 설치된 자산 목록이 아니라 이 저장소가 관리하는 작성 원본을 기준으로 합니다. 자산을 삭제하거나 이름을 바꿀 때는 해당 fixture와 tool config도 같은 변경에서 제거하거나 새 owner로 이관합니다. `tests/evals/`는 Skill별 fixture 디렉터리와 Subagent fixture의 `system_under_evaluation`이 현재 작성 원본을 가리키는지 검사합니다. 테스트 시나리오에 명시적으로 주입한 가상 routing candidate는 이 저장소의 평가 대상 자산과 구분합니다.
+
 Asset별 차이는 fixture와 tool config가 소유합니다. 같은 평가 contract를 실행하기 위해 asset마다 별도 adapter를 만드는 대신 재사용 가능한 evaluator가 실제로 필요할 때 `scripts/agent_assets/`의 공통 실행 surface를 확장합니다.
 
 Eval을 언제 추가하고 어떤 evidence로 해석할지는 [`docs/development/evaluation.md`](../docs/development/evaluation.md)가 소유합니다. 이 README는 `evals/`의 fixture placement와 local boundary만 소유합니다.
