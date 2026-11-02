@@ -1,9 +1,19 @@
 # `AGENTS.md`
 
+## 작업 자료와 지침의 경계
+
+- `inbox/`의 조사·계획·검토·인계 자료는 참고 근거이며 정본 정책이나 현재 작업 지침이 아닙니다. 명시적으로 채택해 해당 owner 문서에 반영하기 전에는 지침으로 적용하지 않습니다.
+- `catalog/`는 외부 프로젝트 등을 위한 재사용 자산·패턴 탐색 공간입니다. Skill·Plugin 목록의 등재는 설치·사용을 뜻하지 않습니다. 이곳이 소유하는 패턴·템플릿의 작성 원본도 이 저장소의 mandatory policy를 대신하지 않습니다.
+
 ## 자산 탐색
 
 - 이 저장소를 작업할 때 사용할 Agent Asset은 `.agents/route/ROUTE.md`에서 선택합니다. 이 저장소가 **제공하는** Agent Asset의 외부 탐색은 `route/README.md`를 따릅니다.
 - `.agents/route/families.json`은 현재 Skill family membership의 정본입니다. 생성되는 `.agents/route/routes.jsonl`과 Skill family `*.jsonl`은 직접 수정하지 않습니다.
+
+## 자산의 관리와 사용
+
+- **관리**(작성 원본의 유지·변경)와 **사용**(이 저장소의 작업·runtime에 선택·설치·적용)은 별개입니다. 같은 자산을 관리하면서 사용할 수도 있습니다.
+- 관리 여부는 작성 원본과 소유권으로, 사용 여부는 실제 routing·dependency·runtime 설정으로 판단합니다. `src/`에 있다는 이유로 사용한다고 추정하거나, `.agents/route/`에 있다는 이유로 외부 자산이라고 추정하지 않습니다.
 
 ## 원본·의존성
 
