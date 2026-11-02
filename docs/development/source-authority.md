@@ -79,7 +79,7 @@ Rulesync 형식과 벤더 고유 형식 중 무엇을 선택할지는 이식성�
 | --- | --- |
 | 재사용 자산의 Rulesync 작성 원본 관리 | `src/rulesync/...` |
 | 재사용 자산의 벤더 고유 작성 원본 관리 | `src/<vendor>/...` |
-| 이 저장소에서 직접 작성하는 runtime-local 자산 | 프레임워크 또는 벤더가 정의한 native project path (Rulesync는 필요한 경우 root `.rulesync/`) |
+| 이 저장소 전용 Agent Asset의 작성 원본 | 루트 `.rulesync/` |
 | 이 저장소에서 자산 사용 | 실제 routing, dependency·installation, runtime 설정으로 확인 |
 
 `src/`에서 관리하는 자산을 이 저장소에서도 사용할 수 있습니다. 이때 동일한 의미의 작성 원본을 두 벌로 만들지 않고, 소비 연결과 파생 결과를 작성 원본과 구분합니다. `src/<vendor>/`는 재사용 원본의 보관 위치이며 vendor runtime이 직접 탐색하는 프로젝트 경로를 대체하지 않습니다.
