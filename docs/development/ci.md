@@ -179,7 +179,7 @@ canonical source
 → committed projection과 비교
 ```
 
-차이가 생기면 stale projection으로 실패합니다. CI가 생성 결과를 자동 commit하거나 push해서 drift를 숨기지 않습니다. Repository-wide generated projection을 갱신하는 기본 local entrypoint는 `mise run generated-sync`입니다.
+차이가 생기면 stale projection으로 실패합니다. CI가 생성 결과를 자동 commit하거나 push해서 drift를 숨기지 않습니다. Repository-wide generated projection을 갱신하는 기본 local entrypoint는 `mise run generated sync`입니다.
 
 ### Deferred Evidence
 

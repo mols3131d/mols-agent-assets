@@ -114,16 +114,16 @@ Promptfoo의 test-level provider filter가 서로 다른 provider의 cartesian p
 ## Entrypoints
 
 ```bash
-mise run eval-mols-loops-smoke
-mise run eval-mols-loops
-mise run eval-mols-loops-trigger
-mise run eval-mols-loops-behavior
+mise run eval -c evals/promptfoo/mols-loops-smoke.yaml
+mise run eval -c evals/promptfoo/mols-loops.yaml
+mise run eval -c evals/promptfoo/mols-loops.yaml --filter-metadata suite=trigger
+mise run eval -c evals/promptfoo/mols-loops.yaml --filter-metadata suite=behavior
 ```
 
-- `eval-mols-loops-smoke` — fixture/provider/assertion plumbing만 확인
-- `eval-mols-loops` — default Trigger + Behavior runtime suite
-- `eval-mols-loops-trigger` — metadata filter로 Trigger만 실행
-- `eval-mols-loops-behavior` — metadata filter로 Behavior만 실행
+- `mols-loops-smoke.yaml` — fixture/provider/assertion plumbing만 확인
+- `mols-loops.yaml` — default Trigger + Behavior runtime suite
+- `--filter-metadata suite=trigger` — metadata filter로 Trigger만 실행
+- `--filter-metadata suite=behavior` — metadata filter로 Behavior만 실행
 
 Native runtime은 전체 ID인 `PROMPTFOO_RUNTIME_PROVIDER`, model grader는 독립적인 `PROMPTFOO_GRADER_PROVIDER`로 선택합니다. Runtime ID를 생략하면 기존 `PROMPTFOO_RUNTIME_MODEL`의 Ollama 경로를 사용합니다. Provider별 설정과 외부 전송 경계는 [평가 실행 설정](../../../evals/README.md#promptfoo-provider-선택)을 따릅니다. 서로 다른 model/runtime을 비교할 때는 다른 조건도 결과를 왜곡하지 않도록 맞추고 사용한 조건을 함께 기록합니다.
 
