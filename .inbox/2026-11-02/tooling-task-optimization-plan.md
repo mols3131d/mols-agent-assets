@@ -161,3 +161,11 @@
 - [PR Gate #681](https://github.com/mols3131d/mols-agent-assets/actions/runs/41459484877)에서 **`mise install --locked` 7개 도구 전부 설치, `mise run check`의 버전 출력·Python lock·Rulesync Doctor·Skills dry-run·Lefthook validate·Biome check 성공**. Doctor 결과는 2 passed, 0 failed.
 - 추가 `rumdl check docs/tools/mise.md`에서 이번 문서 수정으로 생긴 연속 빈 줄(MD012) 두 곳을 발견하여 수정. Biome은 `2.6.3` 실행에 `biome.json`의 `2.5.6` 스키마를 알림으로 보고했으므로 스키마 URL을 동기화. 실행 의미/규칙의 임의 확대 없음.
 - Latest CLI와 새 mise Doctor는 실행 검증됨. 전체 리포지토리 formatter 자동수정·외부 Skill 실제 설치·Promptfoo behavioral eval은 이번 검사에서 수행하지 않음.
+
+## 최신 도구 업그레이드 완료 검증 (2026-11-02)
+
+- ✅ Pass — [PR Gate #680](https://github.com/mols3131d/mols-agent-assets/actions/runs/41459203425)에서 새 `mise.lock`을 사용한 기본 PR Gate 성공.
+- ✅ Pass — [PR Gate #683](https://github.com/mols3131d/mols-agent-assets/actions/runs/41460059293)에서 `mise install --locked`로 7개 CLI 전체 설치한 뒤 `mise run check` 및 `rumdl check docs/tools/mise.md` 성공. Python 테스트·생성물 검증·Rulesync native Doctor 및 검증도 모두 성공.
+- ✅ Pass — Biome config schema를 설치된 2.6.3에 맞췄으며, 임시 전체 설치 검증 step은 후속 커밋에서 제거하여 기본 PR Gate 비용을 늘리지 않는다.
+- ⚪ Not Verified — Windows/macOS 실제 실행·전체 저장소 포맷 변경 영향 및 Promptfoo 모델 평가. mise.lock은 7개 플랫폼 URL/SHA를 포함하지만 모든 플랫폼 실행 검증을 뜻하지 않는다.
+- 외부 Secret이나 모델 데이터를 새 버전 조회·실행 로그에 작성하지 않았다. 최신 upstream 버전은 정확히 고정되어 있으므로 호스트가 새 버전을 자동 수집하지 않는다.
