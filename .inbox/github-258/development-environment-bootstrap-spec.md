@@ -2,7 +2,7 @@
 
 > 대상: [PR #258](https://github.com/mols3131d/mols-agent-assets/pull/258). 기존 [PR #256](https://github.com/mols3131d/mols-agent-assets/pull/256)에서 프로젝트 구현 부분을 분리했습니다. 이 문서는 원래의 설계 계약과 후속 구현 범위를 구분하는 **비정본 작업 자료**다. **개발환경 구축·실제 설치 허가의 운영 정책 정본은 [Development Environment](../../docs/development/development-environment.md)**이며, 도구별 실행은 [mise 안내](../../docs/development/tooling/mise.md), 정확한 정책 값과 실행 동작은 `mise.toml`·native config/lock·스크립트가 소유한다.
 >
-> **최신 결정(2026-10-25):** 재사용 Skill은 설계·리뷰·구현 인계만 소유하며 구현은 일반 코딩 에이전트의 작업이다. 에이전트가 실제 설치·업데이트를 실행하려면 설치 대상·위치·영향을 안내하고 사용자의 명시적 허가를 받아야 한다. 한 번에 승인한 작업 범위 안에서만 재확인 없이 실행한다. [토론·인계](bootstrap-authorization-update-discussion.md).
+> **최신 결정(2026-10-25):** 재사용 Skill은 설계·리뷰·구현 인계만 소유하며 구현은 일반 코딩 에이전트의 작업이다. 에이전트가 실제 설치·업데이트를 실행하려면 설치 대상·위치·영향을 안내하고 사용자의 명시적 허가를 받아야 한다. 한 번에 승인한 작업 범위 안에서만 재확인 없이 실행한다. [토론·인계](https://github.com/mols3131d/mols-agent-assets/blob/2c4660113beb52f2327317fcfa6496a1b859bab2/inbox/github-258/bootstrap-authorization-update-discussion.md).
 
 ## 구현 상태 — 2026-11-01
 
@@ -40,12 +40,12 @@
 
 ## UX 심층 조사와 설계 인계
 
-- [부트스트랩 심층 조사](bootstrap-deep-research.md) — 현재 실행 구조, mise/uv 최신 공식 동작, 잠금·설치 권한·성능·UX 대안과 미해결 근거.
-- [UX 구현 인계](bootstrap-ux-design.md) — setup/update 사용자 여정, 단계별 상태·실패·복구 모델, 안전한 병렬화와 테스트/성능 측정 계획.
-- [CLI·인자·OS 심층 조사](bootstrap-cli-os-research.md) — mise task args 전달, 안전한 flags, Windows native/WSL/macOS/Linux 및 shell·arch·파일시스템 차이.
-- [CLI·OS 설계 인계](bootstrap-cli-os-design.md) — 최소 공개 CLI, 옵션 도입 기준, 운영체제별 capability/지원 테스트와 실패 UX.
-- [안정성·전역 영향 심층 조사](bootstrap-safety-global-effects-research.md) — pre-task auto-install, system Python sync 위험, 외부 Skill installer의 HOME·Agent 변경, Git hooks, 캐시·공급망 신뢰 경계.
-- [안전 설계 인계](bootstrap-safety-design.md) — 실제 쓰기 대상 preflight, 사용자/OS 전역 변경 승인, 실패·복구·격리와 회귀 테스트.
+- [부트스트랩 심층 조사](https://github.com/mols3131d/mols-agent-assets/blob/2c4660113beb52f2327317fcfa6496a1b859bab2/inbox/github-258/bootstrap-deep-research.md) — 현재 실행 구조, mise/uv 최신 공식 동작, 잠금·설치 권한·성능·UX 대안과 미해결 근거.
+- [UX 구현 인계](https://github.com/mols3131d/mols-agent-assets/blob/2c4660113beb52f2327317fcfa6496a1b859bab2/inbox/github-258/bootstrap-ux-design.md) — setup/update 사용자 여정, 단계별 상태·실패·복구 모델, 안전한 병렬화와 테스트/성능 측정 계획.
+- [CLI·인자·OS 심층 조사](https://github.com/mols3131d/mols-agent-assets/blob/2c4660113beb52f2327317fcfa6496a1b859bab2/inbox/github-258/bootstrap-cli-os-research.md) — mise task args 전달, 안전한 flags, Windows native/WSL/macOS/Linux 및 shell·arch·파일시스템 차이.
+- [CLI·OS 설계 인계](https://github.com/mols3131d/mols-agent-assets/blob/2c4660113beb52f2327317fcfa6496a1b859bab2/inbox/github-258/bootstrap-cli-os-design.md) — 최소 공개 CLI, 옵션 도입 기준, 운영체제별 capability/지원 테스트와 실패 UX.
+- [안정성·전역 영향 심층 조사](https://github.com/mols3131d/mols-agent-assets/blob/2c4660113beb52f2327317fcfa6496a1b859bab2/inbox/github-258/bootstrap-safety-global-effects-research.md) — pre-task auto-install, system Python sync 위험, 외부 Skill installer의 HOME·Agent 변경, Git hooks, 캐시·공급망 신뢰 경계.
+- [안전 설계 인계](https://github.com/mols3131d/mols-agent-assets/blob/2c4660113beb52f2327317fcfa6496a1b859bab2/inbox/github-258/bootstrap-safety-design.md) — 실제 쓰기 대상 preflight, 사용자/OS 전역 변경 승인, 실패·복구·격리와 회귀 테스트.
 
 아래 초기 설계는 당시의 확장 목표를 보존한 자료이며 현재 운영 정책이나 구현 계약이 아니다. 이후 범위를 넓힐 때 mise lockfile sidecar, uv managed Python 다운로드, task runner의 의존성 오류 전파와 minimum release age처럼 정확한 동작에 영향을 주는 조건은 별도 PoC로 판단한다. 벤더 문서의 최신 기능이 CI에 설정된 mise 버전에서 지원되는지도 검증한다.
 

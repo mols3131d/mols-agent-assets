@@ -4,7 +4,7 @@ description: PR 256의 grader 보정·JSON 진단·Skill 보강 후 12-case 실�
 
 # Eval 개선 결과
 
-**간결한 Promptfoo 개선·재평가를 수행했다. 자동 채점 신뢰성과 모델 행동 품질은 아직 미달이다.** 원래 기대 답안은 완화하지 않았다. 실제 OS·IDE 검증이나 새 모델 설치는 하지 않았다. 다음 작업은 [인계](bootstrap-eval-improvement-handoff-2026-10-25.md)를 따른다.
+**간결한 Promptfoo 개선·재평가를 수행했다. 자동 채점 신뢰성과 모델 행동 품질은 아직 미달이다.** 원래 기대 답안은 완화하지 않았다. 실제 OS·IDE 검증이나 새 모델 설치는 하지 않았다. 다음 작업은 [인계](https://github.com/mols3131d/mols-agent-assets/blob/2c4660113beb52f2327317fcfa6496a1b859bab2/inbox/github-256/bootstrap-eval-improvement-handoff-2026-10-25.md)를 따른다.
 
 ## 변경과 실행 조건
 
