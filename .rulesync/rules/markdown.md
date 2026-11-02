@@ -9,6 +9,6 @@ globs: ["**/*.md"]
 
 Do not hard-wrap authored or materially edited Markdown prose to a fixed column width. Keep a paragraph on one physical source line unless Markdown syntax, an embedded format, or a meaningful break requires otherwise. This also applies to prose-valued YAML frontmatter when permitted.
 
-Preserve structural breaks in lists, tables, fences, blockquotes, explicit line breaks, and structured YAML. Do not reflow unrelated existing prose for source-style cleanup.
+Preserve structural breaks in lists, tables, fences, blockquotes, explicit line breaks, and structured YAML. Do not reflow unrelated existing prose unless the task explicitly includes formatting or source-style cleanup.
 
 Formatting and lint normalization belong to repository tooling, not manual wrapping.
