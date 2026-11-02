@@ -14,11 +14,13 @@ Eval을 언제 추가하고 어떤 evidence로 해석할지는 [`docs/developmen
 
 기본 Trigger/Behavior 평가 중 `mols-loops`와 `mols-dev-env-bootstrap-design`은 선택 가능한 Promptfoo native provider를 사용합니다. 공통 Python generator는 canonical fixture로부터 case별 system prompt와 assertion을 구성하지만 모델 HTTP 호출은 하지 않습니다. Reference를 조건부로 선택해야 하는 `mols-test-design`과 fixture-mode smoke는 기존 Python provider를 사용합니다. 모든 경로는 실제 IDE/CLI agent의 tool·routing 실행을 재현하지 않습니다.
 
-Promptfoo CLI는 기본적으로 개발자의 로컬 환경에서 실행하며, 모델 호출 위치는 선택한 provider가 결정합니다. Repository correctness는 root `tests/`가 검증하며, 현재 mols-loops Promptfoo entrypoint는 다음과 같습니다.
+Promptfoo CLI는 기본적으로 개발자의 로컬 환경에서 실행하며, 모델 호출 위치는 선택한 provider가 결정합니다. Repository correctness는 root `tests/`가 검증하며, 주요 Promptfoo entrypoint는 다음과 같습니다.
 
 ```bash
 mise run eval-mols-loops-smoke
 mise run eval-mols-loops
+mise run eval-mols-dev-env-bootstrap-design
+mise run eval-mols-dev-env-bootstrap-design-grader
 ```
 
 ## Promptfoo provider 선택
@@ -75,7 +77,9 @@ providers:
 
 Promptfoo 0.122.0에서 여러 `--config` 파일의 provider 항목은 ID나 label 기준으로 덮어쓰지 않고 합쳐질 수 있습니다. Provider 설정 변경을 단순 overlay로 간주하지 않습니다. CLI·native provider 호환성 확인과 실제 모델의 응답 품질 평가는 별도이며, 한 제공자의 성공을 다른 제공자의 검증으로 확대하지 않습니다.
 
-`mise.toml`은 파일이 존재할 때만 `.env`를 읽습니다. 파일이 없으면 runner의 기존 기본값이 유지됩니다. mise가 읽은 `.env` 값은 부모 셸의 동일한 환경변수보다 우선할 수 있으므로, 일회성 변경은 `.env`를 편집하거나 mise가 시작한 자식 프로세스에서 설정합니다. `npm run ...`을 직접 실행하면 mise의 `.env` 로딩을 거치지 않으므로, 로컬 설정을 사용하는 공식 경로는 `mise run ...`입니다.
+`mise.toml`은 파일이 존재할 때만 `.env`를 읽습니다. 파일이 없으면 runner의 기존 기본값이 유지됩니다. mise가 읽은 `.env` 값은 부모 셸의 동일한 환경변수보다 우선할 수 있으므로, 일회성 변경은 `.env`를 편집하거나 mise가 시작한 자식 프로세스에서 설정합니다. 로컬 설정을 사용하는 공식 경로는 `mise run ...`이며, Bootstrap 평가와 grader 보정도 위 진입점을 사용합니다. 두 Bootstrap task는 `--` 뒤의 인자를 기존 npm script로 전달합니다.
+
+`npm run ...`을 직접 실행할 때는 필요한 값을 **Python runner가 시작하기 전에** 환경변수로 전달해야 합니다. 예를 들어 `mise exec -- npm run eval:promptfoo:mols-dev-env-bootstrap-design`처럼 기존 mise 환경 로딩을 사용할 수 있습니다. Promptfoo 0.122.0 자체의 기본 dotenv 로딩은 runner가 이미 설정한 provider·grader·model·timeout 기본값을 덮어쓰지 않으므로, `.env`를 만들었다는 사실만으로 직접 실행에도 같은 설정이 적용된다고 가정하지 않습니다.
 
 Deterministic assertion이 가능한 behavioral contract는 model grader보다 우선하지만, **문장 동기화나 semantic prose consistency를 문자열 regression으로 고정하지 않습니다.** 그런 의미는 authoritative source와 해당 behavioral review/eval이 소유합니다.
 
