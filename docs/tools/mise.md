@@ -29,7 +29,6 @@ mise 자체는 **Latest**를 우선 검토하는 호스트 선행 도구로, 이
 2026-11-02 갱신에서는 검토한 최신 안정 릴리스를 `mise.toml`에 **Exact pin**으로 반영하고 `mise lock`으로 7개 플랫폼의 URL·checksum을 재생성했습니다. Node는 현행 Active LTS(26.x)를 선택하며 27 Alpha는 대상이 아닙니다. `mise.lock`은 수동으로 checksum을 꾸미지 않습니다. `mise` 자체는 이 저장소가 호스트에서 설치/갱신하지 않지만 PR Gate에서는 `2026.10.25`로 확인합니다.
 
 
-
 CLI 7종은 현재 `mise.toml`에서 exact version을 선택하고 `mise.lock`으로 재현합니다. 보안 수정이나 지원 수명 변경도 채택 근거지만, 실행 시마다 자동 갱신하지 않습니다. 현행 Exact pin은 **선택한 새 버전을 `mise.toml`에 먼저 반영**해야 합니다. [mise 선택지](README.md#mise-버전-선택지)의 prefix·alias를 추후 지원할 경우에만 `mise lock --bump`로 허용 범위 내 최신 버전을 선택할 수 있습니다.
 
 1. [공통 갱신 기준](README.md#버전-갱신-방법)으로 후보·영향 범위를 검토하고 새 exact pin을 반영합니다.

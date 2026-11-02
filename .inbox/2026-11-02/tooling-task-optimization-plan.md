@@ -155,3 +155,9 @@
 - CI uv setup 0.13.6, PR Gate mise action 2026.10.25. 임시 preview step은 lock metadata 추출 후 제거. `mise doctor project`는 PR #275에 이미 도입한 설정을 유지하며 새 mise에서 정상 동작하는지 재검증.
 - `mise.lock`을 갱신한 뒤 **locked install**과 native doctor, Rulesync 43의 compatibility, Node 26, Python tests, 기타 formatter의 후속 결과를 반드시 별도로 확인한다. 새 tool 버전 채택은 단순 upstream 존재 확인만으로 성공 판정하지 않는다.
 - 범위: 이 커밋은 mise가 관리하는 CLI 7종과 CI 호스트 선택을 갱신한다. Promptfoo CLI pin·Python/uv.lock·Skill revision 등 평가 조건 및 외부 자산은 별도의 변경/검증 문제로 분리한다.
+
+## 최신 도구 전체 설치·진단 검증 (2026-11-02)
+
+- [PR Gate #681](https://github.com/mols3131d/mols-agent-assets/actions/runs/41459484877)에서 **`mise install --locked` 7개 도구 전부 설치, `mise run check`의 버전 출력·Python lock·Rulesync Doctor·Skills dry-run·Lefthook validate·Biome check 성공**. Doctor 결과는 2 passed, 0 failed.
+- 추가 `rumdl check docs/tools/mise.md`에서 이번 문서 수정으로 생긴 연속 빈 줄(MD012) 두 곳을 발견하여 수정. Biome은 `2.6.3` 실행에 `biome.json`의 `2.5.6` 스키마를 알림으로 보고했으므로 스키마 URL을 동기화. 실행 의미/규칙의 임의 확대 없음.
+- Latest CLI와 새 mise Doctor는 실행 검증됨. 전체 리포지토리 formatter 자동수정·외부 Skill 실제 설치·Promptfoo behavioral eval은 이번 검사에서 수행하지 않음.
