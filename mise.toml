@@ -73,6 +73,14 @@ run = [
 description = "Run repository tests"
 run = "uv run --locked --no-default-groups --group test pytest"
 
+[tasks.eval-mols-dev-env-bootstrap-design]
+description = "mols-dev-env-bootstrap-design local Trigger + Behavior capability eval"
+run = "npm run eval:promptfoo:mols-dev-env-bootstrap-design --"
+
+[tasks.eval-mols-dev-env-bootstrap-design-grader]
+description = "mols-dev-env-bootstrap-design local grader calibration"
+run = "npm run eval:promptfoo:mols-dev-env-bootstrap-design:grader --"
+
 [tasks.eval-mols-test-design]
 description = "mols-test-design local Trigger + Behavior runtime eval"
 run = "npm run eval:promptfoo:mols-test-design"
