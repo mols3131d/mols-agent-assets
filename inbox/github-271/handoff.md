@@ -30,3 +30,11 @@ ChatGPT **Chat 모드**용 Agent Asset을 새로 작성하거나 기존 Rule·Sk
 - 기존 Rule의 selector, Subagent의 격리·독립성, CLI/Command의 실행을 프롬프트 텍스트만으로 재현했다고 주장하지 않는다.
 - `inbox/`는 작업 인계·근거를 위한 비정본이다. 실행 의미는 canonical `SKILL.md`가 소유한다.
 - 새 범용 schema/generator/CI를 먼저 만들지 않는다. 이미 있는 검사·설치 경로를 재사용한다.
+
+## 2026-11-02 인계 후 갱신
+
+- #270 브랜치 이동을 감지해 구 버전 기준 쓰기를 중단하고 최신 HEAD를 다시 조회했다.
+- 새로운 PR #271 commit은 #270 최신 HEAD와 #271 기존 HEAD를 모두 부모로 하는 **비강제 병합**이다. 최신 #270의 OpenSpec 동작과 문서를 유지한다.
+- Chat runtime의 실제 Skill/Plugin/연결 도구·계정 권한, source/installed/selected/observed 구분과 공식 지원 계정 조건을 보강했다.
+- #271의 review 대상은 Skill·maintainer guide·디렉터리 README·인계 2개 파일이며, inbox는 정본이 아니다.
+- 실제 Chat 도그푸딩, 공식 validator 및 CI는 확인된 증거 없이 Pass 처리하지 않는다.

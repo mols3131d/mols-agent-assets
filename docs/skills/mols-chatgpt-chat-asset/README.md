@@ -30,7 +30,7 @@ ChatGPT **Chat** 환경은 사용 가능한 도구와 소비 가능한 자산 �
 | 기존 GPT 자산을 관리 | 해당 workspace에서 **실제 지원되는 경우에만** GPT 기능 | 개인 계정에서 신규 GPT 생성이 항상 가능한 것으로 가정 |
 | 로컬 agent 명령·hook·독립 Subagent | 명세된 실행 의도가 가능한 **native tool 또는 제한적 대체 지침** | 역할별 문장·Python sandbox만으로 격리·독립 명령 실행까지 재현했다고 가정 |
 
-공식 [Skills in ChatGPT](https://help.openai.com/en/articles/20001066-skills-in-chatgpt)는 지원되는 계정·워크스페이스에서 **Chat 내 생성, 편집, 업로드와 설치** 경로를 안내한다. [Build skills](https://learn.chatgpt.com/docs/build-skills)는 Agent Skills 표준, description 기반 활성화, Plugin 묶음 배포와 Codex 로컬 로딩 차이를 설명한다. **Plugin 배포만이 유일한 Skill 소비 경로라고 단정하지 않는다.** 같은 문서에서 기능 제공 범위가 구분되므로 작성 원본의 존재를 활성화 증거로 삼지 않는다.
+공식 [Skills in ChatGPT](https://help.openai.com/en/articles/20001066-skills-in-chatgpt)는 해당 기능이 제공되는 **Business·Enterprise·Healthcare·Edu의 적격 계정/워크스페이스**에서 Chat 내 직접 생성·편집·업로드·설치 경로를 안내한다. **모든 개인 플랜에서 직접 설치할 수 있다고 가정하지 않는다.** [Build skills](https://learn.chatgpt.com/docs/build-skills)는 Agent Skills 표준, description 기반 활성화, Plugin 묶음 배포와 Codex 로컬 로딩 차이를 설명한다. **Plugin 배포만이 유일한 Skill 소비 경로라고 단정하지 않는다.** 같은 문서에서 기능 제공 범위가 구분되므로 작성 원본의 존재를 활성화 증거로 삼지 않는다.
 
 [Projects](https://help.openai.com/en/articles/10169521-projects-in-chatgpt)는 파일과 프로젝트 지침의 역할을 소유하고, [Plugins](https://learn.chatgpt.com/docs/plugins)는 설치 가능한 Skill·도구 번들의 의미를 소유한다. [GPT creation and editing](https://help.openai.com/en/articles/8554397-creating-and-editing-gpts)에 따르면 신규 GPT 작성·게시의 지원이 계정·워크스페이스와 시점에 따라 제한되므로, Skill 설계의 기본 출력으로 GPT를 선택하지 않는다.
 
@@ -41,6 +41,12 @@ ChatGPT **Chat** 환경은 사용 가능한 도구와 소비 가능한 자산 �
 3. **도구 가능성과 권한을 분리한다.** 연결 앱, Project 파일, Python 분석, 웹, native Skill creator 등의 사용 가능성을 작업별로 판단한다. 설치·계정 전환·공유·원격 쓰기는 별도 승인 대상이다.
 4. **검증 가능한 최소 패키지.** 단일 `SKILL.md`에서 시작한다. 선택적 runtime resource에 로딩 이점이 있을 때에만 `references/`·scripts를 추가한다. 정본을 Rulesync와 Chat-native 원본으로 중복 관리하지 않는다.
 5. **관리와 실제 소비는 별개다.** 작성되었다(`authored`), 배포 경로가 연결되었다(`reachable`), Chat에서 선택·행동이 관찰되었다(`observed`)의 근거를 분리한다.
+
+## Chat runtime 최대 활용 기준
+
+별도 실행기를 새로 작성하기 전에 **현재 대상 Chat의 native Creator/Editor, Skill 및 Plugin 설치 상태, 연결 앱의 실제 read/write action, Project·첨부 파일, 웹, 코드·파일 분석** 중 작업의 목적에 필요한 것만 발견한다. 연결의 identity·permission, 읽기→분석→쓰기→readback 경계를 명시하며, 실행 도구가 존재한다는 이유로 사용자 승인이나 provider 권한을 추정하지 않는다.
+
+동일한 외부 쓰기가 연결 앱에서 가능하면 임의의 CLI나 sandbox 네트워크 호출보다 해당 action을 우선 검토한다. 반대로 independent agent, shell, Rule selector가 필요한 경우는 capability가 실제 확인되지 않으면 부분 대체·인계로 제한한다. 최종 산출은 **canonical source**, **Chat consumer**, **필수 도구·권한**, **관찰 가능한 행동 검증**을 분리한다.
 
 ## 검증 계획
 

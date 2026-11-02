@@ -28,3 +28,10 @@
 실행 가능한 도구가 있으면 공식 validator를 재사용한다. 실제 Chat Skills가 지원되는 계정/워크스페이스에서는 설치 후 스킬을 지목하지 않은 요청의 선택률, 원본 리소스 로딩, 도구 권한 경계와 대표 결과를 비교한다. Chat 실행이 불가능하면 시나리오는 **static/simulated**만으로 보고하고, 수행하지 않은 CI/런타임 Eval은 `not verified`로 남긴다.
 
 수정·평가가 끝나면 PR 본문은 해당 시점의 정확한 diff pair와 근거만 반영한다. 새 과제는 실제 결함과 사용자 목표에 관련될 때만 추가한다.
+
+## 2026-11-02 정적 리뷰 기록
+
+- ✅ 공식 Chat Skills 지원 대상(적격 Business/Enterprise/Healthcare/Edu), Plugin과 별도 provider 권한을 문서와 비교하고 범용 설치 가정을 제거.
+- ✅ 기존 Skill 원본의 activation/owner 경계와 native 도구 재사용·부분 수행·인계 판단을 정적 점검. 이는 실행 Eval이 아님.
+- ✅ 최신 #270에 추가된 OpenSpec 유지보수 문서·README 변경을 보존하는 비강제 병합을 수행.
+- ⚪ 공식 `skills-ref validate` CLI, 저장소 CI, 실제 Chat 설치·암묵 라우팅·도구 호출은 이 세션에서 미실행.
