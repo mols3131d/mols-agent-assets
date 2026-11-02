@@ -44,6 +44,10 @@ Metadata는 후보를 좁히고, entrypoint는 실제 applicability와 필요한
 - option마다 별도 capability, permission, owner가 생기면 하나의 parameterized Skill로 묶지 않는다.
 - configuration layer가 실제로 겹칠 때만 merge/precedence를 정의한다.
 
+## Reusable Skill boundary
+
+재사용 Skill의 `SKILL.md`는 소비 프로젝트만 제공받아도 자신의 capability, 선택 기준과 실행 책임을 설명할 수 있어야 한다. 작성 저장소의 `AGENTS.md`, CI, 설치된 sibling Skill, maintainer 문서나 임시 조사 기록을 **숨은 필수 선행조건**으로 두지 않는다. 실제 의존성이 필요하면 공식 package 또는 dependency 계약으로 드러내고, 없는 소비 환경에서는 지원 한계를 명확히 표현한다.
+
 ## Source and target
 
 Canonical source와 target projection을 구분한다. Source framework가 여러 target으로 투영하면 canonical source를 수정하고, target-specific discovery, metadata, permission, packaging, runtime behavior는 target contract를 따른다. Project-local 차이는 portable core 전체를 fork하지 않고 필요한 delta만 유지한다.

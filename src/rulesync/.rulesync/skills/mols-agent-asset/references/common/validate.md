@@ -19,5 +19,6 @@ Validation은 **정해진 계약을 충족하거나 의도한 계약이 올바�
 - check 실패와 실행 불가를 구분한다. 실행하지 않은 중요한 check는 `not_run` 또는 `unknown`으로 남긴다.
 - Deterministic pass를 Semantic pass로 확대하지 않고, Semantic pass를 runtime performance로 확대하지 않는다.
 - source와 projection의 일치가 generator 전체의 semantic correctness나 실제 runtime behavior를 증명하지 않는다.
+- 재사용 자산의 Semantic Validation에는 **소비자 독립성**을 포함한다. 하나 이상의 대조 소비 환경에서 작성 저장소의 특정 경로·정책·설치 도구·동반 Skill 없이도 핵심 계약을 적용할 수 있는지 확인하고, 의도된 dependency인지 project leakage인지 구분한다. 이는 정적 의미 검증이지 실제 이식·runtime eval이 아니다.
 - 의미론적 검증은 현재 문구가 존재하는지만 보지 않고, authoritative intent와 현재 표현의 의미가 일치하는지 판단한다.
 - 실제 selection, application, delegation, tool use, behavior, compatibility의 성능을 확인하려면 Eval을 사용한다.

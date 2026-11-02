@@ -66,3 +66,11 @@
 - ✅ Pass (정적 의미 검토) — 10개 AC를 기준으로 공식 명령 유지, 불필요한 alias 제거, CLI subcommand 통합, 효과·권한 경계, near-miss 비활성화와 기존 owner 경계를 대조. 새 runtime script/framework 없이 재사용 가능한 설계 판단으로 표현했음을 확인.
 - ⚪ Not Verified — 실제 agent 자동 선택·행동 routing/eval, 다른 대상 런타임의 설치·실행 호환성, 독립적인 사람/다른 모델의 review. 셀프 검토와 CI 성공을 독립 리뷰 또는 runtime eval로 취급하지 않는다.
 - 현재 기준 main에 [PR #275](https://github.com/mols3131d/mols-agent-assets/pull/275)가 병합됐고, 이 PR은 당시 최신 main commit `452b153ea484d8a32a0400318dd5d1a1e4645603`를 병합 부모로 포함했다. 추가로 main이 이동했다면 별도 동기화 검토 필요.
+
+## 범용성 결함 재검토 및 제작 하네스 개선 (2026-11-03)
+
+- **원인:** 현재 Skill은 작성 저장소 경로를 강제하지는 않으나 metadata와 maintainer 사례가 mise/PR #275에서 출발해 타 프로젝트 의도를 인식하기 어렵고, CI 통과를 재사용성 근거로 오인하기 쉬웠다.
+- **1차 수정:** Skill은 프로젝트 명령 인터페이스의 목표·소비자·계약을 우선하고, 메타데이터에 빌드·테스트·검증·생성·배포를 포함. 공식 명령의 발견성·안정 API·사용성 등 유지 이유를 보강. Make/C, Node workspace, Gradle/Java, Python CLI, Windows shell, Bazel 대조 사례로 maintainer 가이드를 개선.
+- **2차 수정:** 자산 제작 방법론 정본 `mols-agent-asset/references/common/{design,review,validate}.md`와 `references/skill/design.md`에 작성 저장소·소비자 계약 분리 및 대조 환경의 숨은 의존성 검토를 추가. 명시적 repository-local asset에 범용성을 강요하지 않으며 별도 CI framework/새 Rule은 만들지 않음.
+- **다관점 정적 검토:** (a) 선택 — 개인 TODO·agent scheduling·CI admission 비적용, (b) 구조 — 짧은 공식 API 유지 가치와 native 기능 비교, (c) 대조 소비 — 특정 runner가 없어도 명령 소유권·부작용 기준 적용, (d) 안전 — 설치권·비밀값·외부 비용·Git staging 권한을 새로 부여하지 않음.
+- **검증 한계:** 사고 실험은 semantic review에 해당하며 실제 외부 프로젝트 이식, target runtime 자동 선택, 독립 리뷰, 행동 eval은 수행하지 않았다. 각 코드 스냅샷의 CI 통과는 별도 실행 기록에 의존한다.
