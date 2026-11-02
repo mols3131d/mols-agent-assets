@@ -30,15 +30,7 @@ Local Agent Asset content를 추가하기 전에 다음 중 하나인지 확인�
 
 Local Delta가 필요해도 prose instruction이 항상 올바른 mechanism은 아닙니다. 해당 concern을 더 직접적으로 소유·검증하는 established native 또는 deterministic mechanism이 있고, 그것을 사용해도 competing authority나 필요한 portability가 생기지 않으면 그 owner를 우선합니다. 특정 target의 편의만으로 별도 canonical source를 만들지 않습니다. Semantic judgment와 예외 판단처럼 모델이 해석해야 하는 behavior는 readable instruction에 남깁니다.
 
-## 작성 저장소와 적용 대상의 분리
-
-이 라이브러리에서 개발한다는 사실과 자산이 **이 라이브러리에서만 사용되는 것**은 다릅니다. 재사용 Agent Asset을 설계할 때는 요청의 도메인 책임을 먼저 정의하고, 현재 checkout의 경로·스크립트·CLI task·CI·PR·계정·저장소 지침은 필요한 경우에만 **대상 프로젝트의 실제 환경**으로 해석합니다. 작성 저장소의 특수한 구성을 자산의 보편적 기본값으로 올리지 않습니다.
-
-- **실행 독립성:** 자산 패키지를 다른 저장소로 옮겨도 해당 패키지 및 대상에서 확인한 계약만으로 실행·검토할 수 있어야 합니다. 부속 script와 template은 설치된 패키지 위치를 기준으로 찾습니다.
-- **정본 경계:** 작성 저장소에서만 필요한 명령·권한·자동화는 해당 저장소의 scoped local owner에 두고, 재사용 자산에는 일반화 가능한 책임과 필요한 최소 조건만 둡니다.
-- **반례 검토:** 설계·리뷰에서 서로 다른 저장소 구조나 도구 조합에도 동일한 기본 동작이 타당한지 검토합니다. 실제로 특정 프로젝트만 목표인 요청은 명시적인 local scope를 따르며 범용화 자체를 강제하지 않습니다.
-
-저장소에서 자산을 관리한다는 이유만으로 runtime에 설치됐다고 가정하지 않으며, 자산의 source path가 consumer의 install path와 같다고 추정하지 않습니다.
+재사용 자산은 작성 저장소의 경로·명령·권한·평가 환경을 소비자에게 요구하지 않습니다. 다른 프로젝트에서도 핵심 책임을 수행할 수 있는지 확인하며, 프로젝트 전용 동작은 해당 프로젝트의 owner에 둡니다.
 
 ## Context Test
 
