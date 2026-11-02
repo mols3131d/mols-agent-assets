@@ -14,4 +14,4 @@ description: OpenAI ChatGPT의 Chat 모드에서 사용하는 전용 Agent Asset
 
 - [OpenSpec CLI Compatibility](skills/mols-openspec-cli-compat/SKILL.md) — OpenSpec CLI 실행을 사용할 수 없는 Chat 세션에서 기존 도구로 보존 가능한 작업 범위와 정확한 인계 경계를 판단하는 Skill.
 
-실행 지침은 각 Skill의 `SKILL.md`가 소유하며, 유지보수 맥락은 [Skill maintainer guide](../../docs/skills/mols-openspec-cli-compat/README.md)를 참고합니다.
+실행 지침은 각 Skill의 `SKILL.md`가 소유하며, 유지보수 맥락은 각 자산의 maintainer guide가 담당합니다.
