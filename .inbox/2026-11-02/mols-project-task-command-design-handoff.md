@@ -6,7 +6,7 @@
 
 프로젝트의 개발·검증·자동화 task/command 진입점을 **최소 복잡성으로 설계·검토·리팩터링**하는 재사용 가능한 Skill을 신설한다. 특정 mise/Make/just/npm 버전에 종속되는 매뉴얼이나 이슈 관리 Skill로 만들지 않는다.
 
-- 저장소: `mols3131d/mols-agent-assets`, 준비 브랜치: `mols/feat/project-task-command-design`
+- 준비 PR: [#278](https://github.com/mols3131d/mols-agent-assets/pull/278) (Draft), 브랜치: `mols/feat/project-task-command-design`
 - 준비 당시 base `main`: `f0ef1221259d19a70e91a5e9d742f4553df78ed4`
 - 정식 Skill 원본 후보: `src/rulesync/.rulesync/skills/mols-project-task-command-design/SKILL.md`
 - 설계 근거: [조사 문서](mols-project-task-command-design-research.md)
