@@ -23,7 +23,7 @@ mise run eval-mols-loops
 
 ## Promptfoo provider 선택
 
-기본값으로 실행할 때는 `.env`가 필요하지 않습니다. 설정을 바꿀 때만 프로젝트 루트의 [`.env.example`](../.env.example)을 복사해 필요한 항목의 주석을 해제합니다. 기본값을 모두 재선언하지 않으며 `.env`와 API credential은 Git에 포함하지 않습니다.
+기본값으로 실행할 때는 `.env`가 필요하지 않습니다. 설정을 바꿀 때는 프로젝트 루트의 [`.env.example`](../.env.example)을 복사해 변수 값을 수정합니다. 예제의 로컬 Ollama 기본값은 주석 없이 활성화되어 있습니다. `.env`와 API credential은 Git에 포함하지 않습니다.
 
 ```powershell
 Copy-Item .env.example .env
