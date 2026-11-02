@@ -18,6 +18,8 @@ description: 에이전트 자산을 추가, 분리, 중복 제거, 단순화할 
 
 앞 단계에서 제거할 수 있는 문제를 뒤 단계의 abstraction이나 더 많은 instruction으로 해결하지 않습니다.
 
+재사용 자산은 작성 저장소의 경로·명령·권한·평가 환경을 소비자에게 요구하지 않습니다. 다른 프로젝트에서도 핵심 책임을 수행할 수 있는지 확인하며, 프로젝트 전용 동작은 해당 프로젝트의 owner에 둡니다.
+
 ## Local Delta
 
 Local Agent Asset content를 추가하기 전에 다음 중 하나인지 확인합니다.
@@ -29,8 +31,6 @@ Local Agent Asset content를 추가하기 전에 다음 중 하나인지 확인�
 셋 중 어느 것도 아니면 작성하지 않는 것이 기본입니다. Upstream detail이 판단에 필요하면 authoritative source를 링크하거나 작업 시점에 확인하고, fast-changing semantics를 local prose로 복제하지 않습니다.
 
 Local Delta가 필요해도 prose instruction이 항상 올바른 mechanism은 아닙니다. 해당 concern을 더 직접적으로 소유·검증하는 established native 또는 deterministic mechanism이 있고, 그것을 사용해도 competing authority나 필요한 portability가 생기지 않으면 그 owner를 우선합니다. 특정 target의 편의만으로 별도 canonical source를 만들지 않습니다. Semantic judgment와 예외 판단처럼 모델이 해석해야 하는 behavior는 readable instruction에 남깁니다.
-
-재사용 자산은 작성 저장소의 경로·명령·권한·평가 환경을 소비자에게 요구하지 않습니다. 다른 프로젝트에서도 핵심 책임을 수행할 수 있는지 확인하며, 프로젝트 전용 동작은 해당 프로젝트의 owner에 둡니다.
 
 ## Context Test
 
