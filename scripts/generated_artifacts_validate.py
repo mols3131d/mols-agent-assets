@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-import argparse
 import subprocess
 import sys
 from collections.abc import Callable, Iterable
@@ -180,48 +179,8 @@ def validate(
             print(f"PASS {projection.name}")
 
     if drift_found:
-        print("Regenerate committed projections with: mise run generated-sync", file=sys.stderr)
+        print("Regenerate committed projections with: mise run generated sync", file=sys.stderr)
 
     return 1 if failed else 0
 
 
-def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "--local-only",
-        action="store_true",
-        help="Validate only network-free docs-index and distribution-route projections.",
-    )
-    parser.add_argument(
-        "--all",
-        action="store_true",
-        dest="all_projections",
-        help="Validate all selected projection owners explicitly.",
-    )
-    parser.add_argument(
-        "--changed-from",
-        metavar="REV",
-        help="Validate projections affected by git changes from REV to HEAD.",
-    )
-    args = parser.parse_args(argv)
-
-    if args.all_projections and args.changed_from:
-        parser.error("--all and --changed-from cannot be used together")
-
-    paths: set[str] | None
-    if args.changed_from:
-        paths = changed_paths(args.changed_from)
-        if paths is None:
-            print(
-                f"WARN unable to resolve changes from {args.changed_from}; validating all projections.",
-                file=sys.stderr,
-            )
-    else:
-        paths = None
-
-    projections = select_for_validation(paths, local_only=args.local_only)
-    return validate(projections)
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())

@@ -31,13 +31,10 @@ run = "uv run --no-project --no-python-downloads python scripts/development_boot
 description = "Sync locked external Skills through source-native installers"
 run = "uv run --locked --no-default-groups python scripts/agent_assets/skills_sync.py"
 
-[tasks.generated-sync]
-description = "Regenerate committed indexes and routes"
-run = "uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts_sync"
-
-[tasks.generated-validate]
-description = "Validate committed indexes and routes without writing"
-run = "uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts_validate"
+[tasks.generated]
+description = "Sync or validate committed projections with native subcommands"
+raw_args = true
+run = "uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts"
 
 [tasks.format]
 description = "Format the entire repository"
@@ -63,7 +60,7 @@ run = [
   "biome --version",
   "rulesync --version",
   "skills --version",
-  "uv lock --check",
+  "mise doctor project",
   "uv run --locked --no-default-groups python scripts/agent_assets/skills_sync.py --dry-run",
   "lefthook validate",
   "biome check biome.json .vscode/tasks.json",
@@ -94,3 +91,17 @@ run = "rulesync generate --dry-run"
 [tasks.rulesync-validate]
 description = "Validate reusable Rulesync configuration and projections"
 run = "uv run --locked --no-default-groups python scripts/agent_assets/rulesync_validate.py"
+
+# Project state inspection only; never install dependencies or rewrite outputs.
+# Project diagnostics require mise >= 2026.9.6.
+[doctor.checks.python-lock]
+description = "Python lockfile is consistent with pyproject.toml"
+run = "uv lock --check"
+hint = "Review pyproject.toml and uv.lock; update explicitly when approved"
+timeout = "30s"
+
+[doctor.checks.rulesync-root]
+description = "Root Rulesync configuration is structurally valid"
+run = "rulesync doctor --strict"
+hint = "Inspect root rulesync.jsonc and the pinned Rulesync CLI"
+timeout = "30s"

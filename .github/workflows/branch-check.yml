@@ -36,4 +36,4 @@ jobs:
         run: uv run --locked --no-default-groups --group test pytest -q tests
 
       - name: Validate local generated projections
-        run: uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts_validate --local-only --all
+        run: uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts validate --local-only --all
