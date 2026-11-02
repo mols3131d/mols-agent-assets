@@ -103,6 +103,15 @@
 - ⚪ Not Verified — Promptfoo 실제 모델 품질/비용, 프로젝트 Doctor의 구버전 CI 사용, Windows 로컬 task runtime 및 PR #272와의 최종 결합.
 - 수정되지 않은 `pyproject.toml`, `development_bootstrap.py`는 검토 후 유지한 선택으로서 추가 변경이 목적 자체가 되지 않도록 한다.
 
+## mise task 존치 기준 재검토 (2026-11-02)
+
+- **라인 수·인수 개수는 존치 기준이 아니다.** CI·문서·에이전트가 공유하는 안정된 프로젝트 명령, 재현성 옵션·group·환경, 선택 workspace, 실패 판정, 권한 경계를 캡슐화한다면 한 줄짜리도 유효하다. 반대로 한 줄 명령의 단순 별칭이나 외부 CLI 옵션 복제는 task를 늘릴 이유가 약하다.
+- **우선 삭제 후보는 `outdated`.** 네이티브 `mise outdated --no-global --bump --json`로 직접 실행할 수 있고, 별도 저장소 고유 실행 계약이나 자동화 소비자가 아직 확인되지 않았다. 단, 주기적 모니터링에서 안정적인 CI 인터페이스로 소비한다면 존치할 근거가 생길 수 있다.
+- **`preflight`는 이름에 비해 동작이 약하다.** `mise ls --project --json` + `uv lock --check`는 전체 환경 준비나 실제 도구 버전 일치를 증명하지 않으며 성공 시 JSON 전체 출력으로 에이전트 컨텍스트 비용을 줄인다는 목적에도 미달한다. 대상 mise 버전의 native Doctor 사용 가능성, 실패·미확인 상태 및 요약 출력이 확인될 때 개선하거나 그 전에는 task 제거를 검토한다.
+- **`skills-sync`는 유지해야 한다.** 루트 `AGENTS.md`가 의존 Skill 동기화의 지정 진입점으로 명시하고 있으며 네이티브 installer 조합·계정/사용자 공유 상태 경계를 감춘 편의 별칭이 아니다. **`rulesync-doctor`, `rulesync-preview`도 `dir = "src/rulesync"`으로 root workspace와 reusable library workspace를 구분하므로 단순 한 줄 alias와 다르다.** 실제 소비자 빈도·대체 실행의 안전성이 확인되지 않으면 유지한다.
+- **`setup`, `update`, `test`, `eval`, `check`, `format`, `format-changed`, `generated-*`, `rulesync-validate`는 목적·잠금/group·여러 단계·검증 계약·공통 인터페이스 관점에서 유지 근거가 있다.** 단 `check`의 버전 출력은 일치 검증이 아니라는 점을 계속 보완해야 한다.
+- 후속 구현은 **기존 task 소비자 조사 → 별칭성 판단 → 제거 시 CI·문서·선언된 harness 수정 → 실제 테스트** 순서. 막연한 '최소 task 수' 지표를 강제하지 않는다. 현재 단계에서는 이 판단만 기록하고 `mise.toml`을 즉시 재수정하지 않는다.
+
 ## 준비 시 검증 상태
 
 - ✅ Pass — `main`의 관련 manifest, 주요 bootstrap/runner, 기존 테스트·CI 호출 경로 직접 조회.
