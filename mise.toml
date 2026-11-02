@@ -94,17 +94,3 @@ run = "rulesync generate --dry-run"
 [tasks.rulesync-validate]
 description = "Validate reusable Rulesync configuration and projections"
 run = "uv run --locked --no-default-groups python scripts/agent_assets/rulesync_validate.py"
-
-# Local diagnostics do not install or upgrade. This reports the selected project tools
-# and checks lock consistency; it is not a guarantee of full environment readiness.
-[tasks.preflight]
-description = "Inspect project tool selection and Python lock without updating"
-run = [
-  "mise ls --project --json",
-  "uv lock --check",
-]
-
-# Network lookup only when explicitly requested; availability is not a merge gate.
-[tasks.outdated]
-description = "Report newer project tool releases without upgrading"
-run = "mise outdated --no-global --bump --json"

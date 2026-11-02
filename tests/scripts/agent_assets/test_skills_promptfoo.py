@@ -263,12 +263,11 @@ def test_trigger_provider_uses_only_skill_discovery_metadata(
     assert json.loads(result["output"])["primary_skill"] == "example-skill"
 
 
-
-
 def test_ollama_request_respects_local_runtime_configuration(monkeypatch) -> None:
     monkeypatch.setenv("PROMPTFOO_RUNTIME_MODEL", "local-model")
     monkeypatch.setenv("OLLAMA_BASE_URL", "http://127.0.0.1:12555/")
     monkeypatch.setenv("PROMPTFOO_RUNTIME_TIMEOUT_SECONDS", "45")
+    monkeypatch.delenv("REQUEST_TIMEOUT_MS", raising=False)
     observed: dict[str, object] = {}
 
     def fake_urlopen(api_request, timeout):
@@ -287,6 +286,35 @@ def test_ollama_request_respects_local_runtime_configuration(monkeypatch) -> Non
     assert observed["url"] == "http://127.0.0.1:12555/api/chat"
     assert observed["timeout"] == 45.0
     assert observed["body"]["model"] == "local-model"
+
+
+def test_custom_provider_uses_native_timeout_before_legacy(monkeypatch) -> None:
+    monkeypatch.setenv("REQUEST_TIMEOUT_MS", "250")
+    monkeypatch.setenv("PROMPTFOO_RUNTIME_TIMEOUT_SECONDS", "invalid")
+    observed = {}
+
+    def fake_urlopen(api_request, timeout):
+        observed["timeout"] = timeout
+        return _fake_response({"response": "configured"})
+
+    monkeypatch.setattr(evaluator.request, "urlopen", fake_urlopen)
+    result = evaluator._ollama_request("task", "system", {})
+
+    assert isinstance(result, tuple)
+    assert observed["timeout"] == 0.25
+
+
+def test_custom_provider_rejects_bad_timeout_before_http(monkeypatch) -> None:
+    monkeypatch.setenv("REQUEST_TIMEOUT_MS", "-1")
+    monkeypatch.setattr(
+        evaluator.request, "urlopen", lambda *args, **kwargs: pytest.fail("HTTP called")
+    )
+
+    result = evaluator._ollama_request("task", "system", {})
+
+    assert "REQUEST_TIMEOUT_MS must be a positive integer" in result["error"]
+    assert result["output"] == ""
+
 
 def test_behavior_provider_uses_full_selected_skill(
     tmp_path: Path,
@@ -320,16 +348,63 @@ def test_behavior_provider_uses_full_selected_skill(
 
 
 def test_promptfoo_configs_use_generic_skill_evaluator() -> None:
-    for name in ("mols-loops.yaml", "mols-loops-smoke.yaml"):
+    smoke = yaml.safe_load(
+        (CONFIG_DIR / "mols-loops-smoke.yaml").read_text(encoding="utf-8")
+    )
+    for provider in smoke["providers"]:
+        assert provider["id"].endswith("skills_promptfoo.py:call_api")
+        assert provider["config"]["skill"] == "mols-loops"
+    for generated in smoke["tests"]:
+        assert generated["path"].endswith("skills_promptfoo.py:generate_tests")
+
+    for name in ("mols-loops.yaml", "mols-dev-env-bootstrap-design.yaml"):
         config = yaml.safe_load((CONFIG_DIR / name).read_text(encoding="utf-8"))
+        assert config["prompts"] == ["file://skill-chat.json"]
         for provider in config["providers"]:
-            assert provider["id"].endswith("skills_promptfoo.py:call_api")
-            assert provider["config"]["skill"] == "mols-loops"
+            assert provider["id"] == "{{ env.PROMPTFOO_RUNTIME_PROVIDER }}"
+            assert "format" not in provider["config"]
         for generated in config["tests"]:
-            assert generated["path"].endswith("skills_promptfoo.py:generate_tests")
-            assert generated["config"]["skill"] == "mols-loops"
+            assert generated["path"].endswith(
+                "skills_promptfoo.py:generate_native_tests"
+            )
         assert config["sharing"] is False
         assert config["writeLatestResults"] is False
         assert config["commandLineOptions"]["cache"] is False
         assert config["commandLineOptions"]["write"] is False
         assert config["commandLineOptions"]["noShare"] is True
+
+
+def test_native_generator_keeps_trigger_and_behavior_context_separate() -> None:
+    trigger = evaluator.generate_native_tests(
+        {
+            "skill": "mols-loops",
+            "suite": "trigger",
+            "case_ids": ["explicit-rpi-activates"],
+        }
+    )[0]
+    behavior = evaluator.generate_native_tests(
+        {
+            "skill": "mols-loops",
+            "suite": "behavior",
+            "case_ids": ["rpi-composes-with-domain-skill"],
+            "semantic": False,
+        }
+    )[0]
+    assert "skill-catalog" in trigger["vars"]["system"]
+    assert json.dumps(evaluator.TRIGGER_RESPONSE_SCHEMA) in trigger["vars"]["system"]
+    assert "# Mols Loops" not in trigger["vars"]["system"]
+    assert "# Mols Loops" in behavior["vars"]["system"]
+    assert "Respond directly" in behavior["vars"]["system"]
+    assert trigger["providers"] == ["mols-loops-trigger"]
+    assert behavior["providers"] == ["mols-loops-behavior"]
+
+
+def test_native_generator_rejects_reference_loading() -> None:
+    with pytest.raises(ValueError, match="cannot select Skill references"):
+        evaluator.generate_native_tests(
+            {
+                "skill": "mols-test-design",
+                "suite": "behavior",
+                "reference_paths": ["references/oracle-validation.md"],
+            }
+        )

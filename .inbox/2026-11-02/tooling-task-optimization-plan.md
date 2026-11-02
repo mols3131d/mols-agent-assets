@@ -120,3 +120,10 @@
 - ⚪ Not Verified — PR #272 최종 diff 반영(작업 착수 시 다시 점검).
 
 이 문서는 준비 근거만 보존한다. 구현이 끝나면 결과와 검증 근거는 PR·정본 문서·코드에 반영하고, 중복 작업 문서는 `.inbox/` 수명 주기에 따라 정리한다.
+
+## Task 정리 구현 및 main 정합성 갱신 (2026-11-02)
+
+- **main 갱신 확인:** PR #272가 병합되어 Promptfoo의 native provider 선택·timeout·grader 계약이 main 정본에 반영됐다. 현재 PR의 과거 파일 버전으로 이를 덮어쓰지 않고 최신 main을 기반으로 변경을 통합했다. 후속 main 변경 중 mouse-sensitivity 삭제도 유지한다.
+- **삭제:** `outdated`는 기존 mise native 명령의 단순 별칭이므로 제거. `preflight`는 두 검사 실행을 단순 연결하며 환경 준비 판정이나 컨텍스트 절약을 보장하지 않아 제거. 필요 시 각각 `mise outdated --no-global --bump --json`, `mise ls --project --json`, `uv lock --check`를 직접 사용한다.
+- **유지:** `skills-sync`는 repository harness의 공식 진입점, `rulesync-doctor`/ `rulesync-preview`는 작업 공간 선택 계약이 있어 보존. 나머지 task의 별도 실행 의미는 기존 검토 결과 유지.
+- **검증 상태:** 해당 통합 커밋 이후의 CI로 최종 결과를 확인해야 하며 로컬 Windows 실행·실모델 eval은 미검증으로 보존한다.

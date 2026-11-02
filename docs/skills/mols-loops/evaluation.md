@@ -95,12 +95,14 @@ Model grader failure는 target failure와 구분합니다. Transport, parse, gra
 
 Repository-owned fixture를 Promptfoo 전용 fixture로 복제하지 않습니다.
 
+기본 실행 config는 선택 가능한 Promptfoo native provider와 공통 system/user chat template을 사용합니다. Python generator는 fixture를 Promptfoo case와 assertion으로 변환하며 실제 모델 HTTP 요청은 Promptfoo가 처리합니다. 별도 fixture-mode smoke는 기존 Python provider를 유지합니다.
+
 `evals/promptfoo/mols-loops.yaml`은 같은 Python generator를 두 번 호출합니다.
 
 - `suite: trigger` → `mols-loops-trigger` provider만 실행
 - `suite: behavior` → `mols-loops-behavior` provider만 실행
 
-Generator는 각 test에 다음 metadata를 붙입니다.
+Native generator는 case별 `system` 변수를 제공하고 Trigger에서는 frontmatter만, Behavior에서는 full Skill을 전달합니다. Generator는 각 test에 다음 metadata를 붙입니다.
 
 - `suite`
 - `mode`
@@ -120,10 +122,10 @@ mise run eval -c evals/promptfoo/mols-loops.yaml --filter-metadata suite=behavio
 
 - `mols-loops-smoke.yaml` — fixture/provider/assertion plumbing만 확인
 - `mols-loops.yaml` — default Trigger + Behavior runtime suite
-- `--filter-metadata suite=trigger` — Trigger만 실행
-- `--filter-metadata suite=behavior` — Behavior만 실행
+- `--filter-metadata suite=trigger` — metadata filter로 Trigger만 실행
+- `--filter-metadata suite=behavior` — metadata filter로 Behavior만 실행
 
-Runtime model은 `PROMPTFOO_RUNTIME_MODEL`, model grader는 `PROMPTFOO_GRADER_PROVIDER`로 선택합니다. 서로 다른 model/runtime을 비교할 때는 다른 조건도 결과를 왜곡하지 않도록 맞추고 사용한 조건을 함께 기록합니다.
+Native runtime은 전체 ID인 `PROMPTFOO_RUNTIME_PROVIDER`, model grader는 독립적인 `PROMPTFOO_GRADER_PROVIDER`로 선택합니다. Runtime ID를 생략하면 기존 `PROMPTFOO_RUNTIME_MODEL`의 Ollama 경로를 사용합니다. Provider별 설정과 외부 전송 경계는 [평가 실행 설정](../../../evals/README.md#promptfoo-provider-선택)을 따릅니다. 서로 다른 model/runtime을 비교할 때는 다른 조건도 결과를 왜곡하지 않도록 맞추고 사용한 조건을 함께 기록합니다.
 
 ## Trial and Stability
 

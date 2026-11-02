@@ -5,6 +5,11 @@ import os
 from pathlib import Path
 from urllib import request
 
+if __package__:
+    from . import promptfoo_env
+else:
+    import promptfoo_env
+
 ROOT = Path(__file__).resolve().parents[2]
 EVALUATOR_URI = "file://../../scripts/agent_assets/skills_promptfoo.py"
 
@@ -263,7 +268,9 @@ def generate_tests(config: dict | None = None) -> list[dict]:
     ):
         raise ValueError("rubric_threshold must be between 0 and 1")
 
-    grader_id = os.getenv("PROMPTFOO_GRADER_PROVIDER", "ollama:chat:qwen2.5")
+    grader_id = promptfoo_env.setting(
+        os.environ, "PROMPTFOO_GRADER_PROVIDER", promptfoo_env.DEFAULT_GRADER_PROVIDER
+    )
     grader_provider = (
         {"id": grader_id, "config": {"temperature": 0}}
         if grader_id.startswith("ollama:")
@@ -371,6 +378,42 @@ def generate_tests(config: dict | None = None) -> list[dict]:
                 "assert": checks,
             }
         )
+    return tests
+
+
+def generate_native_tests(config: dict | None = None) -> list[dict]:
+    """Project single-call Skill evaluations onto Promptfoo's native providers."""
+    config = config or {}
+    if config.get("reference_paths"):
+        raise ValueError("native provider evaluation cannot select Skill references")
+
+    tests = generate_tests(config)
+    skill_name = _skill_name(config)
+    path = skill_path(skill_name)
+    skill = path.read_text(encoding="utf-8")
+    suite = config["suite"]
+
+    for test in tests:
+        if "expected_loaded_references" in test["vars"]:
+            raise ValueError(
+                "reference-loading evaluations require the Python provider"
+            )
+        if suite == TRIGGER_SUITE:
+            candidates = _routing_candidates(
+                test["vars"].get("routing_candidates"), skill_name
+            )
+            system = _routing_system(skill, candidates, path)
+        else:
+            system = (
+                "Execute one already-activated Agent Skill behavioral evaluation. "
+                "Routing has already selected the Skill; do not re-decide activation. "
+                "Use the canonical Skill below as the complete task-specific behavior "
+                "contract. Follow its instructions and boundaries when responding to "
+                "the user's scenario. Do not claim tool actions you did not perform. "
+                "Respond directly with the answer, not a JSON envelope.\n\n"
+                f"<skill>\n{skill}\n</skill>"
+            )
+        test["vars"]["system"] = system
     return tests
 
 
@@ -566,8 +609,13 @@ def _skill_catalog(
 
 
 def _ollama_request(prompt: str, system: str, schema: dict) -> tuple[dict, str] | dict:
-    model = os.getenv("PROMPTFOO_RUNTIME_MODEL", "qwen2.5")
-    timeout = float(os.getenv("PROMPTFOO_RUNTIME_TIMEOUT_SECONDS", "120"))
+    model = promptfoo_env.setting(
+        os.environ, "PROMPTFOO_RUNTIME_MODEL", promptfoo_env.DEFAULT_RUNTIME_MODEL
+    )
+    try:
+        timeout = promptfoo_env.request_timeout_ms(os.environ) / 1000
+    except ValueError as error:
+        return {"error": str(error), "output": ""}
     base_url = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")
     body = {
         "model": model,
@@ -616,14 +664,9 @@ def _ollama_request(prompt: str, system: str, schema: dict) -> tuple[dict, str] 
     return parsed, content
 
 
-def _route(
-    prompt: str,
-    skill: str,
-    candidates: list[dict[str, str]],
-    path: Path,
-) -> tuple[dict, str] | dict:
+def _routing_system(skill: str, candidates: list[dict[str, str]], path: Path) -> str:
     schema_text = json.dumps(TRIGGER_RESPONSE_SCHEMA, ensure_ascii=False)
-    system = (
+    return (
         "Route this user request across the available Agent Skills using only "
         "the discovery metadata below. Select every Skill that is independently "
         "applicable to the request and choose exactly one primary Skill when any "
@@ -637,6 +680,15 @@ def _route(
         f"{schema_text}\n\n"
         f"{_skill_catalog(skill, candidates, path)}"
     )
+
+
+def _route(
+    prompt: str,
+    skill: str,
+    candidates: list[dict[str, str]],
+    path: Path,
+) -> tuple[dict, str] | dict:
+    system = _routing_system(skill, candidates, path)
     result = _ollama_request(prompt, system, TRIGGER_RESPONSE_SCHEMA)
     if isinstance(result, dict):
         return result

@@ -9,7 +9,7 @@ Promptfoo는 Agent Asset의 model/runtime 평가에 사용합니다. 실행 진�
 
 ## 실행
 
-`mise run eval -c evals/promptfoo/<config>.yaml`로 대상을 고르고, `--filter-metadata suite=trigger` 같은 Promptfoo 기본 옵션을 그대로 전달합니다. Fixture smoke, 실제 모델 평가, grader 보정은 각각 해당 config와 의도된 CLI 인수를 명시적으로 선택합니다. 모델 평가에는 외부 provider 호출·비용·파일 쓰기가 포함될 수 있으므로 세션 시작 진단에 포함하지 않습니다.
+`mise run eval -c evals/promptfoo/<config>.yaml`로 설정을 선택하고 `--filter-metadata suite=trigger` 등 Promptfoo CLI 옵션을 전달합니다. `mols-test-design`의 기존 cache·결과 쓰기 방지 조건에는 `--no-cache --no-write`를 지정해야 합니다. 실제 모델·grader 평가는 네트워크·외부 전송·비용이 발생할 수 있으므로 세션 진단에 포함하지 않습니다.
 
 ## 기본 설정과 예외
 
@@ -17,7 +17,8 @@ Promptfoo는 Agent Asset의 model/runtime 평가에 사용합니다. 실행 진�
 
 - runner는 telemetry·update check·remote generation·sharing을 끄는 값을 기본으로 제공합니다. `setdefault` 기반이므로 이미 지정한 환경값을 강제로 덮어쓰는 보안 통제가 아닙니다. 민감한 평가에서는 실제 환경과 provider를 확인합니다.
 - 상태·log·cache는 기본적으로 프로젝트 `.tmp/promptfoo` 아래에 둡니다. 다른 경로를 명시했다면 그 설정이 적용됩니다.
-- Python adapter는 실행 중인 Python을, runtime model과 grader는 runner의 기본값 또는 명시한 환경값을 사용합니다. 외부 API·모델 다운로드·hosted 기능의 사용 권한이나 비용 승인을 자동으로 부여하지 않습니다.
+- 기본 단일-call 평가는 선택한 Promptfoo native provider가 HTTP 통신을 소유하며, Python generator는 fixture 변환을 담당합니다. 조건부 Reference 선택과 fixture-mode smoke는 기존 Python provider를 유지합니다.
+- Python adapter는 실행 중인 Python을 사용합니다. Native runtime은 전체 provider ID로 선택하며, 미지정 시 기존 Ollama model 설정을 사용합니다. Grader는 독립적으로 선택합니다. 기본값은 별도 `.env` 없이 제공하며, 요청 timeout은 native `REQUEST_TIMEOUT_MS`를 우선하고 기존 초 단위 설정은 호환용으로 유지합니다. [평가 실행 설정](../../evals/README.md#promptfoo-provider-선택)을 따르며, 외부 API·모델 다운로드·hosted 기능의 사용 권한이나 비용 승인을 자동으로 부여하지 않습니다.
 - cache와 결과 쓰기는 각 task의 인자를 따릅니다. 모든 task가 `--no-cache`·`--no-write`를 사용한다고 가정하지 않습니다.
 
 CLI·provider·model을 갱신하면 config·assertion 호환성과 결과 변화를 구분해 확인합니다. deterministic test와 model 평가의 증거 수준은 [Evaluation](../development/evaluation.md)이 소유합니다.

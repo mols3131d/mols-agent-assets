@@ -77,12 +77,12 @@ Node 실패 시 npm 단계는 차단하되 독립적인 uv/Python 단계는 계�
 
 ### Project diagnostics and evaluation tasks
 
-- `mise run preflight` reports selected project tool versions through mise and checks the Python lock. It is an inspection aid, **not** proof that all binaries, environment packages, or optional integrations are ready.
-- `mise run outdated` explicitly queries newer project-managed tool releases. It is a read-only, network-dependent maintenance report and is **not** part of session-start or PR blocking checks; a newer release does not authorize an update.
+Tool 선택과 Python lock 상태가 필요한 경우 `mise ls --project --json` 및 `uv lock --check`를 직접 실행합니다. 두 명령의 성공만으로 설치된 모든 바이너리와 런타임 준비를 보장하지 않습니다. 신규 릴리스 후보는 `mise outdated --no-global --bump --json`으로 **명시적으로** 조회하며, 최신성 조회는 세션 시작이나 PR 검증의 필수 단계가 아닙니다. 조회 결과는 설치·버전 변경의 승인이 아닙니다.
+
 - `mise run eval -c evals/promptfoo/<config>.yaml [Promptfoo CLI flags]` passes the config and filter options to the pinned Promptfoo runner. Evaluations may invoke models or write results; never run them as an implicit environment health check.
 - `mise run rulesync-doctor`, `mise run rulesync-preview`, and `mise run rulesync-validate` replace the former npm scripts. Rulesync CLI versions continue to be owned by mise's npm backend, independent of the removed root `package.json`.
 
-Mise also provides native `mise doctor project` using `[doctor.checks]`, but this feature was introduced **after** the `2026.9.2` mise version presently pinned in PR Gate (`2026.9.6` release). Do not add project Doctor checks to the default task until the supported host/CI version and read-only probe behavior are verified. In the meantime the preflight stays small and works with the current task tools.
+Mise also provides native `mise doctor project` using `[doctor.checks]`, but this feature was introduced **after** the `2026.9.2` mise version presently pinned in PR Gate (`2026.9.6` release). Do not add project Doctor checks to the default task until the supported host/CI version and read-only probe behavior are verified. 지원되는 버전과 진단 계약을 검증하기 전까지 효과가 불충분한 `preflight` task 대신 필요한 native 명령을 직접 사용합니다.
 
 ### Optional Integrations
 
