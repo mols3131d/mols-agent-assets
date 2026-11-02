@@ -53,6 +53,13 @@ jobs:
       - name: Install Rulesync validation tools
         run: mise install node "npm:rulesync"
 
+      # Temporary upgrade gate; remove after collecting compatibility evidence.
+      - name: Exercise all upgraded CLI versions against the locked toolchain
+        run: |
+          mise install --locked
+          mise run check
+          rumdl check docs/tools/mise.md
+
       - name: Validate project requirements with mise Doctor
         run: mise doctor project
 
