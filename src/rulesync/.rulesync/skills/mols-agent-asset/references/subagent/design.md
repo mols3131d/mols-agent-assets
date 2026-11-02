@@ -1,4 +1,4 @@
-# Subagent Design
+# Agent/Subagent Design
 
 Agent/Subagent 설계에서는 **자산 유형과 실행 역할**을 구분한다. 같은 정의가 런타임에 따라 사용자 선택형 최상위 Agent 또는 위임된 Subagent로 실행될 수 있으므로 실제 invocation, context, authority와 책임 경계를 먼저 본다. 공통 설계 원칙은 `../common/design.md`를 따른다.
 
@@ -23,7 +23,7 @@ Agent/Subagent 설계에서는 **자산 유형과 실행 역할**을 구분한�
 
 ## Handoff
 
-Assigned decision에 필요한 최소 충분한 context만 넘긴다.
+위임 시 assigned decision에 필요한 최소 충분한 context만 넘긴다. 최상위 실행은 사용자에게 유효한 결과와 다음 판단을 인계한다.
 
 - target과 relevant revision 또는 observable state
 - assigned question 또는 expected outcome
