@@ -1,6 +1,6 @@
 # Catalog
 
-이 디렉토리는 이 저장소와 외부 프로젝트 등에서 **재사용할 자산·지식을 모아 탐색하는 공간**를 위한 catalog입니다. 외부 Skill과 Plugin은 discovery entry만 소유하고, reusable pattern과 Markdown template은 이곳이 작성 원본을 소유합니다.
+이 디렉터리는 이 저장소와 외부 프로젝트 등에서 재사용할 자산·지식을 모아 탐색하는 **카탈로그**입니다. 외부 Skill과 Plugin은 discovery entry만 소유하고, reusable pattern과 Markdown template은 이곳이 작성 원본을 소유합니다.
 
 여기서 **작성 원본(canonical source)**은 재사용 콘텐츠 자체의 소유권을 뜻하며, 해당 콘텐츠가 이 저장소의 작업 지침·개발 정책으로 자동 적용된다는 뜻이 아닙니다. Catalog 등재 또한 이 저장소에서 설치·사용 중이라는 증거가 아닙니다.
 
