@@ -1,5 +1,5 @@
 ---
-description: check-dependencies 스킬 초안의 사용 경로, 오프라인 기본 동작과 이식 시 유지할 실행 범위를 확인할 때 참고합니다.
+description: check-dependencies의 실행 방법, 오프라인 기본값과 공개 레지스트리 조회 조건을 확인할 때 참고합니다.
 ---
 
 # Check Dependencies
@@ -23,8 +23,6 @@ After explicit authorization to submit package names/versions to public endpoint
 ```sh
 python "<installed-skill-dir>/scripts/check_dependencies.py" --root "<target-repo-dir>" --online --max-packages 50
 ```
-
-The script path is independent of the target repository; no checkout of the authoring repository is required.
 
 Review the offline JSON inventory **before** authorizing online lookups. The script skips lock entries pointing at non-public npm registries and Python requirements with custom package indexes or `--no-index`. Unknown origins or registry configuration outside these files may still be private.
 
