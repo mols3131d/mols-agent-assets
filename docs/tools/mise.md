@@ -84,7 +84,7 @@ Node 실패 시 npm 단계는 차단하되 독립적인 uv/Python 단계는 계�
 
 Mise also provides native `mise doctor project` using `[doctor.checks]`, but this feature was introduced **after** the `2026.9.2` mise version presently pinned in PR Gate (`2026.9.6` release). Do not add project Doctor checks to the default task until the supported host/CI version and read-only probe behavior are verified. In the meantime the preflight stays small and works with the current task tools.
 
-## Optional Integrations
+### Optional Integrations
 
 기본 `setup`/`update`는 Rulesync dependency·projection, HOME Skills와 Git hooks를 설치하지 않습니다. 각 설치 범위와 기존 파일을 검토하고 별도 승인 후 실행합니다.
 

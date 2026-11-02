@@ -97,6 +97,12 @@
 - `scripts/agent_assets/rulesync_run.py` performed only a working-directory change and forwarded `doctor --strict` / `generate --dry-run`. Replace it with mise task `dir = "src/rulesync"` and direct Rulesync commands, and remove the extra wrapper. Preserve Rulesync's native exit code and argument forwarding. `rulesync_validate.py` remains because it enforces repository-specific warning/JSON validation policy not identical to a plain doctor command.
 - This follows the session lesson: native tools can own simple `cwd`, argument passing and subcommands without Python orchestration. CLI portability on Windows requires checking mise's task `dir` behavior; actual local execution is not claimed here.
 
+## 최신 검증 근거
+
+- ✅ Pass — 구현 최종 변경 `17cdbbe26d18b3464863ded70e535bb2dbc7ce02` [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/41452750692): success. 수정 후 source-contract, unit test, generated validation, root Rulesync doctor/install 및 reusable Rulesync validation이 통과함.
+- ⚪ Not Verified — Promptfoo 실제 모델 품질/비용, 프로젝트 Doctor의 구버전 CI 사용, Windows 로컬 task runtime 및 PR #272와의 최종 결합.
+- 수정되지 않은 `pyproject.toml`, `development_bootstrap.py`는 검토 후 유지한 선택으로서 추가 변경이 목적 자체가 되지 않도록 한다.
+
 ## 준비 시 검증 상태
 
 - ✅ Pass — `main`의 관련 manifest, 주요 bootstrap/runner, 기존 테스트·CI 호출 경로 직접 조회.
