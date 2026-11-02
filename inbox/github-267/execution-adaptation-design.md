@@ -52,6 +52,13 @@
 
 **예약·장시간 작업:** 현재 환경이 지속 실행을 제공하지 않으면 완료 시점을 속이거나 background 수행을 약속하지 않는다. 승인된 native scheduling capability가 있다면 사용자 요구에 맞춰 사용하고, 아니면 실행 가능한 다음 단계나 handoff만 제공한다.
 
+## 반영 결과
+
+- `mols-chatbot-bootstrap/SKILL.md`의 activation, 책임 식별, Workflow, 조건부 Resources, Validation 및 Boundary에 실행 적응 선택을 반영했다.
+- `references/execution-adaptation.md`에 적용 조건·대안 판정·미완료 사용자 공개·지침 작성 기준·대표 사례·유지보수 판단을 담았다.
+- Skill description 변경에 따른 배포용 `route/skills.jsonl`과 asset 유지보수 README를 동기화했다. 실제 `CHATBOT.md`는 이번 변경 범위에서 수정하지 않았다.
+- 이는 **authoring 계약의 개선**이며 개별 런타임의 실제 capability·행동 성공을 주장하지 않는다.
+
 ## 유지보수·평가 경계
 
 - 이 레퍼런스는 **다른 챗봇 자산을 설계할 때 참고하는 작성 지침**이지 런타임에서 모든 대체를 실행하라는 명령이 아니다.
