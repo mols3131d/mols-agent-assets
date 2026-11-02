@@ -1,13 +1,12 @@
 {
   "$schema": "https://github.com/dyoshikawa/rulesync/releases/latest/download/config-schema.json",
-  "targets": [
-    "claudecode",
-    "codexcli",
-    "copilot",
-    "copilotcli",
-    "antigravity-ide",
-    "antigravity-cli"
-  ],
-  "features": ["rules", "skills", "subagents"],
+  "targets": {
+    "claudecode": ["rules", "skills", "subagents", "commands"],
+    "codexcli": ["rules", "skills", "subagents"],
+    "copilot": ["rules", "skills", "subagents", "commands"],
+    "copilotcli": ["rules", "skills", "subagents"],
+    "antigravity-ide": ["rules", "skills", "subagents"],
+    "antigravity-cli": ["rules", "skills", "subagents"]
+  },
   "outputRoots": ["."]
 }
