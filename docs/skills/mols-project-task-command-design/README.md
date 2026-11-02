@@ -1,34 +1,34 @@
 ---
-description: 프로젝트 개발·검증·자동화 명령의 공개 진입점을 설계하는 Skill의 이식성과 책임 경계, 주요 리뷰 사례를 유지보수할 때 사용합니다.
+description: 서로 다른 기술 스택에서 프로젝트의 공유 명령 인터페이스를 설계하는 Skill의 이식성, 책임 경계와 리뷰 사례를 유지보수할 때 사용합니다.
 ---
 
 # Project Task/Command Design — Maintainer Guide
 
-실제 선택·행동 계약은 [SKILL.md](../../../src/rulesync/.rulesync/skills/mols-project-task-command-design/SKILL.md)가 소유한다. 이 문서는 재사용 설계의 **보존해야 할 판단과 검토 사례**를 기록하며 실행 지침을 복제하지 않는다.
+실행·선택 계약은 [SKILL.md](../../../src/rulesync/.rulesync/skills/mols-project-task-command-design/SKILL.md)가 소유한다. 이 문서는 다른 프로젝트와 런타임으로 옮겨도 보존해야 하는 설계 의도와 평가 경계만 기록한다.
 
-## Scope and portability
+## 범용성 기준
 
-`task`는 프로젝트 runner의 명령이지 개인 To-do, GitHub Issue 또는 에이전트의 계획·작업 분해가 아니다. `mise`, `Make`, `just`, `npm scripts`, 언어별 CLI가 달라도 적용 가능해야 한다. 각 도구의 정확한 명령·지원 버전·OS semantics는 소비하는 프로젝트와 해당 upstream이 소유하며 이 Skill이 고정하지 않는다.
+- **소비 프로젝트 우선:** 저장소·언어·모노레포 여부·운영체제·CI 서비스·task runner를 미리 지정하지 않는다. 환경에 이미 존재하는 source와 native 기능을 검토한다.
+- **도메인 분리:** 공개 프로젝트 명령의 이름·인수·중복 호출·진입점은 이 Skill이 설계한다. 설치와 의존성 갱신의 안전 정책, CI admission 기준, 제품 코드 구조는 각각 실제 프로젝트의 다른 owner에 남긴다.
+- **명령 유지 가치:** wrapper 제거만을 최적화로 오해하지 않는다. 안정된 이름, 발견 가능성, 온보딩, 빠른 로컬 피드백, 도구 교체 시 호출자 안정성도 task의 유효한 계약이다.
+- **하나의 표면, 여러 구현:** CLI 서브커맨드 통합은 내부 코드를 한 파일로 합치라는 뜻이 아니다. 읽기 전용·쓰기·배포·비용 경계를 구현에서도 보존한다.
+- **근거 한정:** 소스 확인과 정적 시나리오 리뷰를 다른 플랫폼·실제 CLI 실행·모델 Skill activation의 검증으로 확대하지 않는다.
 
-`mols-dev-env-bootstrap-design`은 설치·잠금·업데이트 안전성, `mols-ci-design`은 CI admission/증거 설계, `mols-code-comprehension-refactor`는 일반 코드 이해비용을 소유한다. 이 Skill은 그 정책을 바꾸지 않고, 해당 작업에 **진입하는 명령 인터페이스**의 중복·호환성을 다룬다.
+## 교차 프로젝트 검토 사례
 
-## Durable decisions
+| 소비 환경 | 요청 | 합리적인 판단 |
+| --- | --- | --- |
+| Make 기반 C 프로젝트 | `make test`는 한 줄의 `ctest` 호출 | 팀의 공식 검증 계약이면 유지, 단 길이로 판단하지 않음 |
+| Node 다중 패키지 workspace | 거의 동일한 package scripts가 필터만 다름 | workspace filter·인수 전달을 활용하되 패키지별 작업 차이는 보존 |
+| Gradle 기반 Java 프로젝트 | CI용 `check` wrapper와 Gradle task 중복 | Gradle native lifecycle·캐시·daemon·출력 및 CI 호출자 차이를 검토 |
+| Python CLI 서비스 | `generate`와 `verify`가 같은 스크립트의 플래그를 공유 | subcommand 통합을 검토하되 검증은 읽기 전용·생성만 write |
+| 여러 OS를 지원하는 CLI | POSIX shell wrapper를 제거하고 native runner 사용 | PowerShell·Windows 인수·환경·작업 디렉터리 동등성 확인 전 단정 금지 |
+| Bazel 모노레포 | 수백 개 세부 target을 한 상위 명령으로 묶으려 함 | 탐색 편의성과 cache·증분·target 범위를 함께 고려해 선택 |
+| 임의의 프로젝트 | `ci` alias가 checkout·secret·배포도 실행 | 검증과 변경·원격 부작용을 별도 명령으로 분리 |
+| 도구가 없는 프로젝트 | 명령 설계를 요청했으나 manifest 미제공 | 설치/전환을 강제하지 않고 필요한 source와 가정 명시 |
 
-- One-liner 자체는 삭제 신호가 아니다. 안정적 팀 호출점과 cwd, locked env, 실패 판정이 있으면 task를 유지한다.
-- 명령 진입점 통합과 도메인 구현 파일 통합은 다른 결정이다. 읽기 전용 검사와 쓰기·staging의 경계를 보존한다.
-- Native 도구 옵션과 버전을 확인한 뒤에만 자체 wrapper 제거를 제안한다. 기존 CI·hook·IDE·문서 호출자는 계약의 일부다.
-- 새로운 추상화·스크립트·참조 파일의 비용이 절감되는 호출 계층보다 크면 추가하지 않는다. 실제 프로젝트 변경은 별도 실행 권한과 검증에 따른다.
+**근접 비적용:** 개인 할 일 정렬, 에이전트 작업 스케줄링, 단일 라이브러리 버전 문의, CI gate의 승인 정책만 변경하는 요청, 기존 명령 사용법 질문. `task`라는 문자열이 포함됐다는 사실만으로 선택하지 않는다.
 
-## Review cases
+## 검토 방법
 
-| Scenario | Expected decision |
-| --- | --- |
-| `mise run test`가 단 한 줄이지만 잠금/group을 지정 | 단순 줄 수로 제거하지 않음 |
-| `mise run outdated`가 native 조회와 완전히 동일 | 소비자·독립 정책이 없으면 직접 호출 |
-| suite별 고정 npm/mise alias 다수 | config/필터 인수로 통합하되 cache·write·원격 비용 보존 |
-| `generated sync`와 `validate`를 한 CLI로 통합 | sync의 생성·staging과 검증의 읽기 전용 계약 유지 |
-| cwd만 설정하는 Python wrapper | runner native cwd·OS 실행 호환성을 검토 |
-| 구버전 runner에 새 Doctor subcommand 사용 제안 | 실제 지원 버전 확인 후 대안 또는 미도입 |
-| 할 일 task 정리, agent orchestration, CI gate 자체 설계 | 근접 비적용 사례로 구별 |
-
-각 사례는 **선택 경계와 의사결정 품질을 리뷰하기 위한 정적 시나리오**다. 실제 Skill 자동 선택이나 런타임 수행을 시험한 결과가 아니며, 해당 성능을 입증하려면 별도 routing/behavior eval이 필요하다. 정식 Skill을 관리할 때 소스·파생 route 정합성과 Rulesync 구조 검증도 함께 확인한다.
+대상 프로젝트의 **목표 → 명령·소비자 그래프 → 가능한 최소 변경 → 호출 계약 → 검증 범위**를 각 사례에 대입해, 특정 도구가 없어도 유효한 판단을 제시할 수 있는지 검토한다. 모든 사례를 자동으로 실행하지 않으며, 이 표는 정적 기대 행동이지 통과한 runtime benchmark가 아니다. Routing 성능은 실제 모델·호스트에서 별도로 평가해야 한다.
