@@ -1,12 +1,12 @@
 # Subagent Improve
 
-Subagent 개선은 agent 수를 늘리기보다 responsibility와 handoff를 더 직접적으로 만드는 데 집중한다. 공통 개선 원칙은 `../common/improve.md`를 따른다.
+Agent/Subagent 개선은 최상위 실행과 위임 실행을 혼동하지 않고 responsibility, invocation과 handoff를 더 직접적으로 만드는 데 집중한다. 공통 개선 원칙은 `../common/improve.md`를 따른다.
 
 ## Signals
 
-- separate agent가 실제 benefit 없이 존재한다.
+- 직접 선택형 Agent로서 독립 책임이 없거나, 위임 Agent가 실제 benefit 없이 존재한다.
 - responsibility가 caller나 sibling과 겹친다.
-- delegation condition이 너무 넓거나 모호하다.
+- 직접 선택·모델 위임의 허용 조건이 너무 넓거나 모호하며, 호출 제한의 실제 강제 여부를 구분하지 않는다.
 - 여러 delegation hop이 context를 좁히지 않고 전달만 한다.
 - handoff가 과도하거나 필요한 authority, state basis, unknown이 빠져 있다.
 - full conversation, reasoning transcript, canonical knowledge를 불필요하게 복제한다.
@@ -18,7 +18,7 @@ Subagent 개선은 agent 수를 늘리기보다 responsibility와 handoff를 더
 
 ## Improve
 
-- specialization, isolation, capability, independence, coordination benefit이 없는 delegation layer는 제거하거나 caller에 흡수한다.
+- specialization, isolation, capability, independence, coordination benefit이 없는 delegation layer는 제거하거나 caller에 흡수한다. 독립적인 최상위 실행 역할에는 delegation 이점의 부재만으로 같은 기준을 적용하지 않는다.
 - context는 assigned decision에 필요한 최소 충분한 state로 줄이고 canonical knowledge를 복제하지 않는다.
 - independence가 목적이면 다른 reviewer의 결론과 speculative diagnosis를 brief에서 제거한다.
 - session/worker boundary를 넘는 handoff는 목표, current state, 중요한 evidence, unknown, next owner와 필요한 state basis만 남긴다.
