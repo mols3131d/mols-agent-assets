@@ -77,7 +77,7 @@ feature/login:src/auth/login.py
 1. **Inspect:** 위 위치의 실제 파일과 권한을 읽고, 기존 `status`가 있는 Task 파일·기존 `changes/`, `specs/`를 식별한다. Task root가 프로젝트 루트처럼 넓으면 unrelated Markdown을 작업으로 취급하지 않는다.
 2. **Propose:** 선택된 `repo/ref/root`, 새로 만들 파일과 목적을 짧게 제시한다. 사용자가 이미 경로와 작업 내용을 명확히 요청했다면 중복 확인을 요구하지 않는다.
 3. **Create only what is needed:** 초기 작업이 정해졌다면 첫 Task 파일 하나를 만들고, 요구사항 변경이 정해졌다면 해당 Change delta를 만든다. 전체 디렉터리 트리, 빈 `specs/`, 샘플 작업·가짜 완료 기록, 상태 인덱스, 설정 manifest는 자동 생성하지 않는다. Git은 빈 디렉터리를 추적하지 않는다.
-4. **Empty bootstrap:** 아직 실제 작업·변경이 없다면 경로/ref 선택과 사용법 안내까지만 수행한다. 사용자가 **비어 있는 초기 저장소를 영속적으로 남기길 명시한 경우에만** 선택한 root에 짧은 `README.md`를 생성할 수 있다. README는 작업 인덱스나 상태 정본이 아니다.
+4. **Empty bootstrap:** 아직 실제 작업·변경이 없다면 경로/ref 선택과 사용법 안내까지만 수행한다. 사용자가 **비어 있는 초기 저장소를 영속적으로 남기길 명시한 경우에만** 선택한 root에 짧은 `README.md`를 생성할 수 있다. 기존 README를 무단 덮어쓰지 않는다. README는 작업 인덱스나 상태 정본이 아니다.
 5. **Verify:** 생성/갱신된 파일을 지정 ref에서 다시 읽어 제목·경로·상태·의존 참조를 확인한다. 작성 성공, 코드 브랜치의 변경, 테스트 실행은 각각 실제 결과로만 보고한다.
 
 ### First Task File
@@ -87,7 +87,6 @@ feature/login:src/auth/login.py
 ```markdown
 ---
 status: todo
-depends_on: [backend/db-schema]
 ---
 # 로그인 API 구현
 
@@ -97,10 +96,10 @@ depends_on: [backend/db-schema]
 - 지정된 성공·실패 사례가 검증된다.
 
 ## 다음 행동
-- 선행 작업 완료를 확인하고 로그인 API 구현을 시작한다.
+- 로그인 API의 기존 구현과 테스트를 확인한다.
 ```
 
-선행 작업이 존재하지 않으면 `depends_on`을 임의로 쓰지 않는다. 참조할 경우 `backend/db-schema.md`가 **같은 Task root/ref에 실제로 존재하는지** 확인한다. 의존 관계가 없다면 frontmatter는 `status: todo`만 사용한다.
+선행 작업이 **실제 존재하는 경우에만** frontmatter에 `depends_on: [backend/db-schema]`를 추가한다. 이때 `backend/db-schema.md`는 **같은 Task root/ref에 존재**해야 한다. 부트스트랩을 위해 가짜 선행 작업을 만들지 않는다.
 
 ### First Spec Change
 
