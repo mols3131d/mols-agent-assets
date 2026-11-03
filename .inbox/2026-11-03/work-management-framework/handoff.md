@@ -24,6 +24,13 @@ PR #284에서 **`mols-project-workflow` Skill 하나로 작업 관리 + Spec/Tes
 
 단계 4에서 기존 `store.py`의 로직을 참고할 수는 있지만 전체 스크립트를 기본 이관하지 않는다. 반복적으로 발생하는 위험을 줄일 때만 작은 deterministic helper를 추가한다. 포괄적인 템플릿·Registry·JSON Workflow 엔진이나 해당 테스트를 그대로 옮기는 일은 하지 않는다.
 
+## Bootstrap — Newly Added
+
+- **작성 원본:** `src/rulesync/.rulesync/skills/mols-project-workflow/references/bootstrap.md`, `SKILL.md`에서 신규 프로젝트의 최초 설정에 한해 로드.
+- **절차:** 기존 정본 탐색 → Task/Spec 사용 여부 결정 → 사용자 지정 `repository/ref/root` 선택 → 필요한 첫 파일만 생성 → ref별 재조회와 위치·다음 작업 보고.
+- **디렉터리:** Task는 선택한 root 아래 작업별 Markdown, Spec은 선택한 root 아래 `changes/` 및 `specs/`. 두 영역은 같은 브랜치 또는 서로 다른 브랜치에서 관리 가능.
+- **검증 대상:** 위치 미지정, 기존 owner가 있는 프로젝트, 단일 Task 첫 파일, Spec-only 시작, 별도 Task ref, 권한·참조 누락, 빈 저장소. 검증은 아직 미실행.
+
 ## Default Workflow — Newly Created
 
 - **작성 원본:** `src/rulesync/.rulesync/skills/mols-project-workflow/SKILL.md`와 [Default Workflow](../../../src/rulesync/.rulesync/skills/mols-project-workflow/references/default-workflow.md). 별도 JSON workflow engine이 아니다.
