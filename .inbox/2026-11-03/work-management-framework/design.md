@@ -1,78 +1,93 @@
 ---
-description: 외부 프로젝트에 재사용할 Work Management Skill을 설계할 때 기존 도구 비교, 책임 경계, 행동 시나리오와 실패 조건을 확인합니다.
+description: 파일 시스템과 Git을 정본으로 사용하는 벤더 중립적 Work Management Skill의 저장 모델, 동작 경계, 검증 시나리오를 설계합니다.
 ---
 
-# Work Management Skill — Design Context
+# Work Management — Design
 
-## Problem
+## Direction
 
-소프트웨어 변경 스펙·테스트·구현의 8단계를 작업 관리에도 적용하면 작은 버그, 운영 이슈, 여러 작업 사이의 의존성 관리에 불필요한 문서·단계·상태가 발생한다. 반대로 전용 작업 관리 Skill이 스펙 문서와 테스트 결과까지 소유하면 책임이 중복된다. **두 개의 독립 선택 가능한 Skill**을 후보로 두되, 두 프레임워크를 강제로 연동하거나 새 백엔드를 만드는 것이 목표는 아니다.
+**작업 파일이 상태의 정본이고 Git은 변경 이력과 협업 전파 수단이다.** GitHub Issues, Projects, Beads, SaaS API나 별도 DB 없이 작업 발견·분해·선택·진행·중단·재개·인계를 할 수 있어야 한다. Git 호스팅 서비스는 선택 사항이다.
 
-## Existing Capability Baseline
+이전 초안의 "기존 외부 tracker가 정본"이라는 전제를 폐기한다. 외부 이슈·PR은 선택적인 참조/연동일 뿐 작업 상태의 기본 owner가 아니다. 단, 이미 자체 작업 시스템을 운영하는 소비 프로젝트에 별도 정본을 무단으로 도입하지 않는다. 파일 기반 관리를 채택할 때만 저장 구조를 만든다.
 
-- [GitHub Issues dependencies](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/creating-issue-dependencies): blocked-by/blocking의 정본 관계 지원. [Sub-issues](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/adding-sub-issues): 작업 분해·계층 지원. [Projects best practices](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/best-practices-for-projects): 기존 Issue/PR 데이터와 프로젝트 관리 활용.
-- [Beads quickstart](https://github.com/gastownhall/beads/blob/main/docs/getting-started/quickstart.md) 및 [core concepts](https://github.com/gastownhall/beads/blob/main/docs/core-concepts/index.md): dependency와 ready work queue를 제공. 이 도구는 로컬 runtime 및 별도 저장 상태가 필요하므로 Chat에서 실행 가능하다고 추정하면 안 된다.
-- [Agent Skills format](https://agentskills.io/specification): `SKILL.md` + 필요시 references/scripts/assets로 하나의 실행·배포 단위를 구성. Script 동작은 실제 host가 지원할 때만 가능하다.
+## Ownership and Activation
 
-**가설:** 새 tracker를 만들지 않고 기존 provider의 native task API/CLI를 사용하는 Skill이라면 가치가 있을 수 있다. 그러나 '일반 task 관리 사용법'만 반복하는 Skill이라면 별도 제품의 가치가 부족하다.
+- **Work Management:** 여러 작업의 식별, 분해, 의존성, 우선순위, 다음 작업 선택, 상태 전환, 인계·재개를 맡는다.
+- **각 작업의 실행 워크플로:** 선택된 작업 안에서 수행할 조사, 구현, 테스트, 리뷰 등의 순서를 결정한다. 이 Skill이 전역 개발 방법론을 강제하지 않는다.
+- **Spec/Test-driven:** 선택된 소프트웨어 변경의 스펙·테스트·구현 정합성과 도메인 명세를 맡는다. `mols-spec-stdd`와 상호 필수 의존성을 만들지 않고 필요한 작업/스펙 참조만 교환한다.
+- **사용 시점:** 백로그 구성·정리, 여러 작업의 선택·차단 관계, 다중 에이전트 인계, 중단된 작업 재개, Git 기반 작업 관리 도입을 요청할 때. 단일 버그 수정, 개별 스펙 작성, 한 작업 안의 RPI 루프, 개인 캘린더, build/test 명령 관리에는 자동 개입하지 않는다.
 
-## Boundary and Collaboration
+## Filesystem Contract
 
-| User intent | Work Management | Spec/Test-driven |
-| --- | --- | --- |
-| 여러 이슈 중 다음 작업을 정해줘 | 주 담당 | 불필요 |
-| 이 기능의 API 동작·수락 조건을 명세해줘 | 불필요 | 주 담당 |
-| 이슈를 쪼개고 blocker를 추적해줘 | 주 담당 | 스펙 하위 계약을 변경하지 않음 |
-| 스펙 결함 때문에 테스트를 수정해야 해 | 영향받은 work item의 진행에 필요할 때만 반영 | 원인·스펙·테스트·구현 영향 검토 주 담당 |
-| 한 작업의 RPI 개선 루프를 실행해줘 | 작업 기록이 필요할 때만 | 스펙/테스트가 관련할 때만 |
+프로젝트가 정한 작업 루트를 우선한다. 새로 도입할 때 제안하는 기본값은 `.work/`이며, 실제 경로는 소비 프로젝트에서 결정한다.
 
-**Workflow 소유권:** Work Management는 **작업 간**의 우선순위·의존성·재개를 소유한다. Spec/Test-driven은 **한 소프트웨어 변경 안**의 산출물·검증 의존성을 소유한다. 작업 내부 반복 방법을 전역적으로 지배하는 제3의 엔진은 만들지 않는다.
+```text
+<work-root>/
+  items/
+    <stable-id>.md
+    <stable-id>.md
+```
 
-**Persistence 소유권:** 원본 task tracker의 상태가 정본이다. 연결이 없으면 사용자가 제공한 작업과 현재 세션의 확인 가능한 정보로 제안을 작성할 수 있으나 영구 상태를 갱신했다고 선언하지 않는다. 별도의 tracker나 동기화 미들웨어는 범위 밖이다.
+**한 작업 = 한 Markdown 파일.** 인덱스·캐시·DB·별도 상태 로그를 기본 생성하지 않는다. 식별자는 파일명을 바꿔도 유지되는 고유 ID로, 시간 정보와 충돌 방지 접미사 등을 조합할 수 있다. 자동 연번은 병렬 브랜치에서 충돌하기 쉬우므로 사용하지 않는다. 생성 시 기존 ID 중복을 확인한다.
 
-## Representative Design Tests
+예시(최소 계약의 모양; 필수 필드는 `id`, `status`, 작업 목표다):
 
-1. **Tiny fix:** 단일 버그 수정에 제안서·스펙·테스트 설계 또는 추적 task 생성이 자동 강제되지 않아야 한다.
-2. **Priority change:** GitHub Issues의 blocker 관계가 우선순위보다 먼저 고려되어야 하지만, 실제 조회가 불완전하면 준비된 작업을 확정적으로 주장하지 않는다.
-3. **Planning:** 소프트웨어 스펙 1개가 작업 5개에 대응하거나, 여러 소프트웨어 변경이 하나의 Issue 아래에 있어도 매핑 가능해야 한다.
-4. **Interrupted work:** 새로운 세션에서 이전 메시지의 task state를 믿지 않고, 실제 provider와 마지막 작업 근거를 다시 조회한다.
-5. **Permissions:** 특정 GitHub 연결 계정만 사용하도록 명시되면 다른 계정 전환 없이 부분 수행/차단한다.
-6. **No tracker:** tracker 선택·설치·외부 기록을 무단으로 수행하지 않고 로컬 제안 또는 기존 프로젝트 수단을 제시한다.
-7. **Near miss:** `mise` 작업 명령 설계, Spec/Test-driven 검증, 테스트 코드 품질, 단순 개인 일정 관리 요청에는 활성화하지 않는다.
+```markdown
+---
+id: w-20261103-a1b2c3
+status: todo
+priority: normal
+depends_on: []
+---
+# 범위가 분명한 작업 제목
 
-## First Implementation Design
+## Outcome
+수행할 결과와 경계.
 
-이 절은 구현 전 설계 결정이다. 실제 Skill 동작 계약은 이후 작성 원본이 소유하며, 이 Inbox 문서는 정본 지침이 아니다.
+## Completion
+완료를 판단할 최소 조건 또는 별도 정본 링크.
 
-### Scope and Activation
+## Progress
+현재 확인된 근거·중단 지점·다음 행동.
+```
 
-- 제안 이름: `mols-work-management`. 재사용 작성 원본은 `src/rulesync/.rulesync/skills/mols-work-management/SKILL.md` 한 개로 시작한다. 스크립트·데이터베이스·provider adapter는 만들지 않는다.
-- 여러 작업의 발견·분해·선택, 의존 관계와 우선순위, 중단·재개·인계를 요청할 때 활성화한다. 단일 코드 수정, 스펙·테스트 구현, 한 작업 안의 RPI 루프, 개인 일정, build/test 명령 관리에는 기본적으로 개입하지 않는다.
-- 기존 tracker가 이미 충분한 판단을 제공하면 반복 절차·상태 파일을 추가하지 않는다. 독립 가치는 불완전한 증거, 다양한 도구, 세션 경계에서 실행 가능한 다음 작업을 안전하게 판단하는 데 있다.
+- 상태: `todo | doing | paused | done | cancelled`. `blocked`는 별도 상태가 아니라 미완료 선행 작업이나 명시된 외부 차단 요소로 **판정하는 결과**다. `unknown`은 참조 불명·조회 제한 등으로 판정할 수 없는 경우다.
+- `depends_on`은 안정적인 다른 Work Item ID를 참조한다. 자기 의존·순환 의존·중복 ID·해결되지 않은 참조를 탐지한다. 누락된 참조를 성공한 선행 작업으로 가정하지 않는다.
+- `priority`는 선택적이며 선행 조건을 우회하지 못한다. 필요할 때만 부모 작업 ID, 다른 작업·스펙·커밋·PR 링크를 둔다. 계층과 의존 관계는 다른 의미로 취급한다.
+- `Progress`는 재개에 필요한 마지막 사실과 다음 행동만 남긴다. 커밋 이력·스펙 본문·테스트 결과를 복제하지 않는다. 변경 시 작업 파일과 실제 산출물 간 정합성을 확인한다.
+- 완료 여부는 실제 완료 조건/검증 근거로 판단한다. 파일 생성, `git commit`, PR 생성만으로 `done`으로 승격하지 않는다.
 
-### Work Item and State
+## Agent Procedure
 
-- Work Item은 고정 schema가 아닌 기존 issue/task/PR 등 원본 객체의 **참조 단위**다. Issue와 소프트웨어 변경 사이에 1:1 관계를 강제하지 않는다.
-- 정본 상태·우선순위·담당자·의존 관계는 원본 tracker가 소유한다. Skill의 `ready / blocked / unknown`은 이번 판단의 임시 결과이지 provider에 기록하는 별도 상태가 아니다.
-- 실행 가능성 판단은 실제 blocker·권한·프로젝트 제약을 먼저 고려한다. 실행 가능한 후보 사이에서만 기존 우선순위·긴급도·목표로 다음 작업을 선택한다. 확인되지 않은 선행 작업이 있으면 `ready`를 확정하지 않는다.
-- 이전 대화나 인계 문서는 단서일 뿐 재개의 정본이 아니다. 최근 상태, 남은 blocker, 계정·권한을 다시 조회한다. 별도 `tasks.json` 또는 중복 백로그를 생성하지 않는다.
+1. 작업 관리가 실제 요청 범위인지 판단하고 기존 작업 루트·작업 파일·현재 Git ref·workspace 상태를 확인한다. 단일 작업에 파일 생성 절차를 강제하지 않는다.
+2. 선택에 필요한 파일을 읽어 고유 ID, 선행 관계, 현재 상태 및 충돌·불명확성을 확인한다. 선행 작업이 끝나지 않았거나 외부 차단 요소가 있으면 `blocked`, 근거가 부족하면 `unknown`으로 판정한다.
+3. 실행 가능한 후보 중 프로젝트 목표·사용자 우선순위와 작업 크기를 고려해 다음 작업을 제안하거나 선택한다. 큰 작업만 필요한 수준으로 분해하고, 관계를 원본 파일에 반영한다.
+4. 승인된 쓰기 범위에서 파일을 원자적으로 갱신할 수 있는 수단을 사용하고 실제 저장 결과를 확인한다. Git 명령이나 API는 현재 runtime이 지원할 때만 호출한다. 새 브랜치·커밋·push·PR을 일률적으로 강제하지 않고 프로젝트 Git 정책을 따른다.
+5. 중단·세션 인계 때는 작업 ID·현재 ref·확인된 진행 근거·미해결 차단·다음 행동을 해당 작업 파일에 최소한으로 남긴다. 재개 시 원본 파일·최근 Git 변경·실제 산출물을 다시 확인한 다음 판단을 갱신한다.
+6. 파일·Git 접근이 없는 환경에서는 읽은 근거만으로 제안하거나 인계한다. 쓰기/커밋을 하지 않았다면 수행했다고 주장하지 않는다. 연결 계정·Git 작성 명의와 권한을 임의로 변경하지 않는다.
 
-### Execution Boundary
+## Git and Concurrency
 
-1. 사용자 목표, 작업 집합, 프로젝트의 원본 tracker와 요청된 읽기·쓰기 범위를 확인한다.
-2. 실제 연결 계정·명의·허용된 도구 액션·권한을 확인한다. 플랫폼 native 기능과 현재 plugin/CLI가 실제 노출하는 기능을 구별한다.
-3. 선택에 필요한 후보 및 중요한 의존 관계만 현재 조회해 ready/blocked/unknown을 구분한다. 데이터가 부족하면 조건부 권고로 남긴다.
-4. 요청된 작업 분해·선택·상태 갱신을 가능한 native 도구로 수행한다. 쓰기 전 객체·계정·중복·부작용·승인 조건을 확인한다. 하위 이슈/의존성 API가 없으면 조작을 완료한 것으로 표시하지 않는다.
-5. 기본 출력은 다음 작업과 이유, 막힌 요소·미확인 요소, 다음 행동이다. 인계가 필요할 때만 기존 객체 링크와 마지막 확인 근거를 추가한다. 영속 문서 생성은 강제하지 않는다.
-6. 재개 시 원본과 비교하여 오래된 판단을 교체한다. 관찰한 것, 추론한 것, 실행한 것, 실패·미검증을 분리한다.
+- Git은 버전·diff·branch·merge·history를 제공하지만 **task lock, 전역 queue, 분산 트랜잭션을 제공하지 않는다**. `git log`는 변경 근거이지 실제 task 상태를 대체하지 않는다.
+- 판단의 기준을 **어느 ref의 어떤 파일을 읽었는지**와 함께 유지한다. 작업 브랜치에만 존재하는 업데이트는 통합 브랜치의 전역 상태로 주장하지 않는다.
+- 같은 Work Item을 다른 브랜치/에이전트가 수정하면 최신 변경을 비교하고 충돌·중복 수행을 확인한다. 담당자/claim 텍스트는 조정 힌트일 뿐 독점 lock이 아니다. 자동 덮어쓰기·강제 push를 하지 않는다.
+- Git 원격·GitHub 계정·CI·CLI가 없는 경우에도 파일 읽기와 작성이 가능하면 기본 동작은 성립한다. Git 이력의 보존·공유는 실제 Git 기능이 있을 때만 보장한다.
 
-### Ownership and Portability
+## Implementation Shape
 
-- Work Management는 **작업들 사이**의 선택·연결·진행을 다룬다. `mols-spec-stdd`와 실행 workflow는 **각 작업 안**의 명세·테스트·구현을 다룬다. 두 Skill은 서로 필수 의존성이 아니다.
-- 외부 프로젝트의 자체 workflow, 다른 provider, 로컬 CLI 없는 환경을 고려하되 해당 저장소 하네스·연결·설치 도구를 숨은 전제로 요구하지 않는다.
+- 후보 이름: `mols-work-management`.
+- 재사용 Rulesync 작성 원본: `src/rulesync/.rulesync/skills/mols-work-management/SKILL.md`. 소비 프로젝트의 하네스나 sibling Skill 설치를 숨은 필수 조건으로 두지 않는다.
+- 우선 Skill의 자연어 워크플로와 작은 작업 파일 계약으로 dogfood한다. 의존 그래프 검증과 ready 목록에 실제 반복 오류가 있으면 **bundled deterministic helper**를 검토하되, 별도 서버·DB·provider adapter·종속된 CLI는 초기에 도입하지 않는다.
+- 초기 배포는 프로젝트의 기존 작업 폴더를 존중하고 명시적 도입 요청이 있을 때만 파일을 만든다. 특정 Git 호스트 전용 기능은 optional integration으로만 둔다.
 
-### Verification and Deferrals
+## Design Validation Scenarios
 
-- Design Tests 1–7로 활성화/비활성화, blocker 우선, multi-mapping, 새 세션 재조회, 지정 계정 준수, tracker 부재, near-miss를 평가한다. native 도구만 사용한 기준선과 불필요한 파일·호출·절차를 비교한다.
-- 구조적 검증, 책임·activation의 semantic review, 실제 runtime 행동 평가는 별개로 기록한다. 실제 실행이 없으면 통과로 보고하지 않는다.
-- 자체 스케줄러·영속 상태·provider registry·양방향 동기화·범용 CLI·복잡한 상태 머신은 실패 사례가 정당화할 때까지 보류한다.
+1. 새 저장소에서 외부 API 없이 파일만으로 작업 5개를 등록하고 선행 관계를 따라 다음 작업을 선택한다.
+2. 의존성 순환, 누락 ID, 중복 ID, 차단된 고우선순위 작업을 발견하고 `ready`를 잘못 확정하지 않는다.
+3. 큰 작업을 하위 항목으로 분해하고 기존 작업·스펙과 N:M 참조를 연결하되 정본을 복제하지 않는다.
+4. 중단 후 새 세션에서 작업 파일과 Git diff를 확인해 오래된 인계를 갱신한다.
+5. 서로 다른 브랜치가 같은 작업 상태를 바꾼 경우 충돌·stale 근거를 감지하고 무단 덮어쓰기를 막는다.
+6. CLI 또는 Git 원격이 없는 runtime에서 가능한 파일 읽기/쓰기만 수행하고 미실행 Git 작업은 미검증으로 남긴다.
+7. 단일 수정·Spec/Test-driven·프로젝트 build task 요청에는 과잉 활성화하지 않으며, 명시된 계정/명의를 바꾸지 않는다.
+
+구조·참조 검증, 의미적 설계 검토, 실제 runtime 행동 평가는 구분한다. 이 문서는 **설계 작업 자료**이며, Skill 실행 규칙의 정본은 구현될 `SKILL.md`다.
