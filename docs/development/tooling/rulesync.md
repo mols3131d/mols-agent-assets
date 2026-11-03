@@ -152,5 +152,5 @@ rulesync docs --search <term>
 - authored source placement와 target authority → [작성 원본과 권한](../../development/source-authority.md)
 - runtime semantics → target contract
 - Skill authoring → [Skill Authoring Conventions](../agent-assets/skills/skill-authoring-conventions.md)
-- filesystem naming → [Naming](../agent-assets/common/naming.md)
+- filesystem naming → [Naming](../agent-assets/naming.md)
 - verification → [Testing](../../development/testing.md)
