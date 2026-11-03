@@ -12,6 +12,10 @@ description: 개인 개발용 통합 Project Workflow Skill의 설계 이유와 
 
 가벼운 Task-only 요청에서 Spec과 RPI 전체 절차를 로드할 이유가 없으므로, 진입점은 작업 모드·정본·안전 조건만 소유하고 다단계 개발에서만 Default Workflow를 읽는다. 범용 `mols-loops`가 같은 런타임에서 독립적으로 활성화되면 바깥 Run 조율을 중복하지 않는다.
 
+## Bootstrap Decision
+
+실제 최초 설정 절차는 [Project Bootstrap](../../../src/rulesync/.rulesync/skills/mols-project-workflow/references/bootstrap.md)가 소유한다. 설정 manifest·전용 CLI 대신 **사용자 지정 Task/Spec 디렉터리와 각 Git ref**, 필요한 첫 Markdown만 쓰도록 설계했다. 기존 프로젝트 지침이 위치를 소유하면 그 선택을 재사용한다. 빈 저장소에 가짜 작업을 만들지 않고, 경로가 미정이면 부트스트랩을 완료했다고 주장하지 않는다.
+
 ## Maintenance and Evaluation
 
 - **Activation:** 단순 코드 수정은 불필요한 task/spec 생성을 일으키지 않아야 한다. Task-only/Spec-only/Combined 요청은 서로 필요한 파일만 선택해야 한다.
