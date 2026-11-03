@@ -12,7 +12,7 @@
 | `test-implementation` | code | 실제 테스트 경로, 변경된 assertion과 실행·실패 증거 |
 | `code-implementation` | code | 실제 제품 코드 경로·commit 및 스펙과 검증 증거 |
 
-문서 종류는 사용자에게 별도 파일 생성을 강제하지 않는다. 기존 spec store, Issue, design docs 또는 프로젝트가 제공하는 문서 위치에 **동일한 의미의 정본**이 있으면 참조해 재사용한다. 내용과 출처를 확인하지 않은 채 파일 존재만으로 완료를 선언하지 않는다. 다중 파일의 테스트·코드 구현은 한 항목의 Markdown 파일로 복제하지 않는다.
+문서 종류는 사용자에게 별도 파일 생성을 강제하지 않는다. 문서를 새로 생성해야 할 때는 Registry의 `template` 경로에 있는 최소 구조를 참고한다. 기존 spec store, Issue, design docs 또는 프로젝트가 제공하는 문서 위치에 **동일한 의미의 정본**이 있으면 참조해 재사용한다. 내용과 출처를 확인하지 않은 채 파일 존재만으로 완료를 선언하지 않는다. 다중 파일의 테스트·코드 구현은 한 항목의 Markdown 파일로 복제하지 않는다.
 
 `review`는 **단계이자 판정 활동**이며 기본 Artifact ID가 아니다. 리뷰 findings와 evidence는 기존 PR·Issue 또는 프로젝트가 정한 현재 작업 근거에 기록할 수 있다. 기계적 routing이 필요할 때는 Workflow Reference의 JSON report를 입력으로 사용할 수 있으나 이를 별도의 영구 저장 파일로 중복 관리할 필요는 없다.
 
