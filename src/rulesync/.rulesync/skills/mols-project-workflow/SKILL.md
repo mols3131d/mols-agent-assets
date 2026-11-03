@@ -2,8 +2,9 @@
 name: mols-project-workflow
 description: >-
   Manage work and drive spec/test-based software changes in personal or
-  small-scale projects. Use for task selection, dependencies, progress,
-  resumption, domain-spec changes, or an integrated development workflow.
+  small-scale projects. Use to bootstrap user-chosen task/spec directories,
+  select dependent tasks, resume progress, evolve domain specs, or run an
+  integrated spec/test development workflow.
   Keep task and spec stores in user-selected directories and Git refs.
   Do not use for ordinary one-off code edits without a work-management
   or specification need, enterprise scheduling, or build-task execution.
@@ -29,6 +30,17 @@ targets:
 - **Small edit:** 작업 관리나 명세가 필요 없는 간단한 수정에는 이 Skill의 기록·절차를 활성화하지 않는다.
 
 **여러 단계의 개발 변경 또는 반복 검토가 필요한 작업**에는 [Default Workflow](references/default-workflow.md)를 적용한다. 단순 조회·상태 갱신·작은 변경은 해당 절차의 필요한 판단만 사용한다. 이 Skill은 범용 `mols-loops`의 설치나 별도 런타임을 요구하지 않는다.
+
+## Bootstrap — First Use
+
+프로젝트에 처음 도입하거나 Task/Spec 저장 위치를 설정해 달라는 요청에는 [Project Bootstrap](references/bootstrap.md)을 **먼저 읽고 적용**한다.
+
+1. 기존 프로젝트의 실제 Task/Spec 정본과 Git 상태를 확인한다. 사용할 기능이 Task-only인지 Spec-only인지 Combined인지 결정한다.
+2. 사용자에게 **필요한 디렉터리와 선택적 Git ref**를 고르게 한다. 이미 명확히 선택했으면 다시 묻지 않는다. 지정되지 않은 경로나 브랜치 이름을 기본값으로 확정하지 않는다.
+3. 선택된 `repo/ref/root`별로 최소한의 최초 파일만 생성한다. Task는 **작업당 Markdown 하나**, Spec은 **실제로 필요한 `changes/<change>/specs/<domain>/spec.md`**부터 시작한다. 아직 검증되지 않은 Domain Spec은 미리 만들지 않는다.
+4. 지정 ref에서 생성 결과를 다시 확인하고 위치·생성 파일·다음 행동을 보고한다. 별도 index/manifest·고정 루트·샘플 작업·빈 디렉터리는 강제하지 않는다.
+
+저장 위치가 결정되지 않았으면 **후보 구조를 예시로 제시하고 기록은 보류**한다. 최초 작업·변경이 없는 빈 프로젝트는 필요할 경우 선택한 위치만 합의하고, 사용자가 영속적인 빈 부트스트랩을 명시적으로 원할 때만 README를 둘 수 있다.
 
 ## Locations and Ref Safety
 
