@@ -18,8 +18,8 @@
     },
     "specification": {
       "kind": "document",
-      "default_file": "specification.md",
-      "template": "templates/specification.md"
+      "default_file": "specs/<domain-path>/spec.md",
+      "template": "templates/specification-delta.md"
     },
     "test-design": {
       "kind": "document",
