@@ -16,7 +16,7 @@ description: 이 저장소의 Agent Asset 신설·개선·리뷰·평가·제공
 | 기존 자산 개선·타깃 적응 | [개선·튜닝](#개선튜닝), `mols-agent-asset` improve/tune |
 | 품질 리뷰·검증·평가 | [리뷰·검증·평가](#리뷰검증평가), `mols-agent-asset` review/validate/eval |
 | 배포 route·설치·소비 연결 | [제공·사용](#제공사용), `mols-agent-asset-find`, Rulesync·lock·route |
-| rename·deprecation·삭제 | [은퇴·삭제](#은퇴삭제), 실제 소비자와 문서·fixture |
+| rename·deprecation·삭제 | [은퇴·삭제](#은퇴삭제), 삭제 시 `mols-agent-asset-delete`, 실제 소비자와 문서·fixture |
 | 문서 개선·문서만 변경 | [문서 작업](#문서-작업), `mols-documentation`·문서 정책 |
 | 중단·인계·복잡한 반복 | [인계](#인계), Lifecycle 및 필요 시 `mols-loops` |
 
@@ -40,7 +40,7 @@ description: 이 저장소의 Agent Asset 신설·개선·리뷰·평가·제공
 
 ## 은퇴·삭제
 
-원본뿐 아니라 실제 소비자, dependent asset, route, lock, 예제, 평가 fixture, 문서와 이전 경로를 범위 내에서 확인한다. 사용 중인 소비자와의 연결을 끊는 변경은 명시적 범위·권한을 확인하고 수행한다. 불필요한 archive나 흔적 보존을 기본으로 만들지 않는다. 필요한 마이그레이션과 문서 영향 확인을 완료하지 못하면 [Lifecycle](agent-asset-lifecycle.md)에 따라 인계한다.
+작성 원본 또는 agent-facing capability를 삭제할 때는 재사용 Skill `mols-agent-asset-delete`의 영향 추적·처리 결정·제거·잔여 검증 절차를 사용한다. 이 저장소에서는 실제 소비자, dependent asset, route, lock, 예제, 평가 fixture, 문서와 이전 경로를 관련 owner에 따라 확인한다. 단순 설치 해제나 rename에는 삭제 절차를 확대 적용하지 않는다. 사용 중인 소비자와의 연결을 끊는 변경은 명시적 범위·권한을 확인하고 수행한다. 불필요한 archive나 흔적 보존을 기본으로 만들지 않는다. 필요한 마이그레이션과 문서 영향 확인을 완료하지 못하면 [Lifecycle](agent-asset-lifecycle.md)에 따라 인계한다.
 
 ## 문서 작업
 
