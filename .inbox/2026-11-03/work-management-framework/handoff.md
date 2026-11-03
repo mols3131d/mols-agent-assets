@@ -1,60 +1,55 @@
 ---
-description: 개인용 통합 Project Workflow Skill을 구현하기 위한 작업 순서, 검증 기준과 기존 Spec Skill 이관 조건입니다.
+description: 개인용 통합 Project Workflow Skill을 신규 구현하고 구 Spec Skill을 정리하는 실행 계획입니다.
 ---
 
 # Personal Project Workflow — Implementation Plan
 
-## Goal and Current State
+## Outcome
 
-PR #284의 목표를 독립 Work Management Skill 생성에서 **`mols-project-workflow` 단일 Skill로 작업 관리 + Spec/Test-driven 개발을 통합**하는 것으로 변경한다. 대상은 개인 토이 프로젝트·소규모 개발이다. 작업만 필요한 경우 스펙을 강제하지 않고, 스펙만 필요한 경우 백로그를 강제하지 않는다.
+PR #284에서 **`mols-project-workflow` Skill 하나로 작업 관리 + Spec/Test-driven 개발**을 제공한다. 개인 토이 프로젝트를 대상으로 하며 **레거시 호환성·기존 데이터 자동 이관·병행 지원은 범위 밖**이다.
 
-**현재는 설계와 구현 계획만 완료한 Draft.** Skill source 변경, 기존 Spec 자산 이동·은퇴, 정적/실행 검증, PR 머지는 아직 수행하지 않았다. 현재 PR head는 `main`과 분기되어 있어 `mols-spec-stdd` 작성 원본이 없는 상태다. 최신 `main`을 먼저 통합한다. 설계의 의미·저장 모델은 [Design](design.md)을 따른다.
+사용자 지정 Task/Spec 디렉터리와 Git ref, 사람 중심 Markdown, 가벼운 ready 판단·세션 재개, 변경 delta → 계층형 도메인 스펙 반영과 검증 안전성을 구현한다. 구 `mols-spec-stdd`는 **필요한 동작의 참고 원본**이지 그대로 복사할 패키지가 아니다. 상세 설계는 [Design](design.md)이 소유한다.
 
-## Ordered Work
+**현재 상태:** Draft / 설계·계획만 반영. PR 브랜치는 `main`과 분기되어 기존 Spec source가 포함되지 않았다. 구현·테스트·기존 자산 제거·머지는 수행하지 않았다.
 
-| 단계 | 작업 | 완료 기준 |
+## Execution Order
+
+| 순서 | 작업 | 완료 판단 |
 | --- | --- | --- |
-| 0. 기준점 맞추기 | 최신 `main`을 PR branch에 안전하게 통합, 실제 diff·충돌 확인 | 기존 Spec Skill·테스트·유지보수 문서가 같은 ref에 보이고 기존 PR 문서가 보존됨 |
-| 1. 소유권·이관 지도 | 기존 `mols-spec-stdd`의 entrypoint, references, templates, workflow JSON, Python scripts, tests, eval, docs, route/consumer 참조 조사 | 새 Skill로 **보존·단순화·은퇴**할 항목별 판정과 수정 범위 정리 |
-| 2. 통합 패키지 | Rulesync 작성 원본 `src/rulesync/.rulesync/skills/mols-project-workflow/`에 **하나의 SKILL.md** 진입점과 조건부 Spec 자원 이동·정리 | task-only·spec-only·combined 요청이 서로 불필요한 단계·context를 강제하지 않음 |
-| 3. 경량 작업 관리 | 사용자 지정 directory/task ref/code ref, 사람 중심 Markdown 파일·의존성·ready 판단·중단 재개 구현 | 외부 task DB/서비스 없이도 작은 작업을 관리, 별도 task branch에서 정확한 ref 사용 |
-| 4. 정합성·최적화 | 기존 Spec 안전 계약, task→change 연결, 실제 소규모 예제를 리뷰하고 중복 문서·메타데이터 제거 | task `done`과 spec delta 흡수는 별도 근거로 판정; 핵심 Spec 기능 유지 |
-| 5. 검증과 전환 | 기존 Spec deterministic tests, 새 task 케이스, routing/behavior eval, 문서·route·lock/소비자 영향 점검 | 이관 후 동작 근거 확보. 기존 `mols-spec-stdd`는 대체 가능성 확인 후만 은퇴, PR Ready 조건 보고 |
+| 1. 기준점 정리 | 최신 `main`과 PR 브랜치를 동기화하고 현재 Spec 관련 source를 확인 | 기존 PR 계획 보존, 필요한 현재 원본을 같은 ref에서 조회 가능 |
+| 2. 단일 진입점 | `src/rulesync/.rulesync/skills/mols-project-workflow/SKILL.md` 신설, task-only/spec-only/combined/단순 수정 분기 | 요청과 무관한 자료·파일·개발 단계는 만들거나 로드하지 않음 |
+| 3. 작업 관리 | 사용자가 정한 task directory/ref에서 파일 식별·의존 관계·ready/blocked/unknown·상태·재개 구현 | Markdown만으로 직접 읽고 수정 가능; 별도 task branch 지원 |
+| 4. Spec 기능 | `changes/` delta, 계층형 `specs/`, 필요에 따른 테스트·구현·Review 복귀, 근거·baseline 확인 후 정본 반영 구현 | 기존 패키지 형식에 종속되지 않고 안전한 스펙 변경 가능 |
+| 5. 정리·검증 | 필요한 테스트·행동 사례를 새 계약 기준으로 작성하고, 구 Skill의 원본·불필요한 resources·문서·route·eval·tests 제거/갱신 | **새 Skill 하나**가 발견되고 현재 문서·참조가 일치; 검증 결과 확인 |
 
-각 단계에서 실제 파일 수정 전 현재 branch·계정·권한을 확인한다. 별도 브랜치/commit/PR 생성, 작업별 문서 생성, 스크립트 실행을 무조건 강제하지 않는다. 이 표는 구현 우선순위이며 날짜·예상 소요 시간은 약속하지 않는다.
+단계 4에서 기존 `store.py`의 로직을 참고할 수는 있지만 전체 스크립트를 기본 이관하지 않는다. 반복적으로 발생하는 위험을 줄일 때만 작은 deterministic helper를 추가한다. 포괄적인 템플릿·Registry·JSON Workflow 엔진이나 해당 테스트를 그대로 옮기는 일은 하지 않는다.
 
-## Migration and Artifact Inventory
+## Explicitly Drop
 
-- **이전할 핵심:** `src/rulesync/.rulesync/skills/mols-spec-stdd/SKILL.md`, `references/{artifacts,spec-store,workflow}.md`, `assets/artifacts.json`, `assets/templates/`, `assets/workflows/`, `scripts/{flow,store}.py` 및 이에 결합된 테스트.
-- **기존 검증 기반:** `tests/skills/mols-spec-stdd/`, `evals/skills/mols-spec-stdd/cases.json`. 새 이름으로 경로를 이전할 때 expectation과 import/path 참조를 함께 갱신한다. 기존의 task-priority **비활성화** case는 통합 Skill에서 **활성화**되는 사례로 바뀐다.
-- **문서/발견:** `docs/skills/mols-spec-stdd/README.md`, `route/skills.jsonl`, 관련 유지보수/사용 문서·하네스의 참조를 범위 내에서 확인하고 이전한다. 생성 라우트·lock은 독립 정본으로 직접 편집하지 않는다.
-- **중복 정본 금지:** 새 패키지를 완성하기 전 구패키지·문서를 제거하지 않고, 이전한 후에는 장기적인 중복 Skill 소유권을 남기지 않는다. 설치된 외부 소비자·권한을 확인할 수 없다면 구 Skill의 은퇴는 별도 후속 작업으로 넘긴다.
-- **범위 제외:** Beads/Dolt 도입, DB·daemon·scheduling, 조직적 다중 에이전트 협업, Git remote 필수화, 프로젝트 전체에서 항상 적용하는 글로벌 workflow 정책.
+- 구 Skill 이름/파일 레이아웃을 지원하는 alias, 호환 layer, 데이터 migration, deprecation stub, 다중 버전 지원
+- `artifacts.json`, 8단계 Workflow JSON, `flow.py`, 형식만 위한 proposal/research/plan/test-design 템플릿
+- Task/Spec의 N:M 관계 모델, 교차 브랜치 자동 완료·흡수, 상태 cache/index/dashboard
+- Beads/Dolt/DB·MCP·서버, 작업 claim/lock, scheduler, 필수 Git 원격·PR 생성
+- 필수 `.work/`·`spec/` 경로, 모든 일상 작업의 파일 등록, 자동 archive
 
-## Acceptance and Test Scenarios
+**드랍하지 않을 핵심:** delta와 도메인 정본 구분, 계층형 도메인, 근거 없는 완료/흡수 차단, 오래된 정본 덮어쓰기 방지, 필요한 단계만 재검토하는 Review.
 
-| 구분 | 확인할 동작 |
+## Verification
+
+| 시나리오 | 수락 조건 |
 | --- | --- |
-| Task-only | 사용자 지정 폴더·task branch에서 파일 생성/조회, 순위·의존·ready/blocked/unknown 판정. 스펙 산출물 없음 |
-| Spec-only | task 파일 없이 계층 도메인 변경 delta, Review 복귀, stale baseline 거절, 완료 시 정본 흡수 |
-| Combined | `Work Item ↔ Change ↔ Domain Spec`의 참조 연결. 하나의 작업이 여러 변경에, 하나의 변경이 여러 작업에 연결되어도 중복 상태 없음 |
-| Small change | 단일 이름 변경·작은 버그 등은 task/spec 문서와 8단계 workflow를 강제하지 않음 |
-| Human readability | 탐색기·에디터·Git diff에서 의미 있는 파일명·H1·목적·완료 조건·다음 행동을 명확히 인식 |
-| Git/ref | task와 code/spec ref가 다를 때 각각 올바른 원본에서 읽고 씀. 읽을 수 없는 ref를 기본 branch로 자동 대체하지 않음 |
-| Resume | 중단 후 최신 task 파일·code ref·spec 정본을 조회, 오래된 기록·경쟁 수정 확인 |
-| Safety | `done`만으로 spec 흡수 금지, 리뷰 PASS만으로 task 완료 금지, 계정 전환·실행 증거 없는 완료 주장 금지 |
-| Regression | `flow.py`/ `store.py`의 동작·테스트, 경로·route·eval fixtures·관련 문서 정합성 유지 |
+| Task-only | 서로 다른 위치의 작업 5개, 선행·취소·누락·순환 참조 처리, 다음 작업·중단·재개 |
+| Spec-only | 작업 파일을 추가하지 않고 변경 delta를 도메인 정본으로 안전하게 반영 |
+| Combined | 작업 기록에서 spec change를 링크하되 두 객체의 상태를 중복 관리하지 않음 |
+| Different refs | task·spec·code가 서로 다른 ref여도 실제 선택한 위치에만 쓰고 미조회 ref로 대체하지 않음 |
+| Human readability | 의미 있는 제목·파일명·핵심 완료 조건/다음 행동으로 사람이 쉽게 분류·이해 |
+| Simple edit | 불필요한 skill activation·spec/task 기록·8단계 절차 없음 |
+| Safety | stale baseline, write conflict, 미실행 테스트, 권한 부족을 PASS·완료로 처리하지 않음 |
 
-정적 검증, 의미 검토, 실제 모델/도구 행동 평가는 별도 근거다. 실행하지 않은 CI·스크립트·ChatGPT Chat 호환성 검증은 PASS로 기록하지 않는다.
+검증은 구조/링크·필수 정본 갱신의 **결정적 검사**, Skill 설계·가독성 **의미 리뷰**, 실제 환경에서의 **행동 평가**를 구별한다. 설치·호환성·실제 런타임 평가는 수행한 근거만 보고한다.
 
-## Implementation Guardrails
+## Closure
 
-- 사용자에게 task 저장 디렉터리와 필요시 task Git ref를 선택할 권한을 둔다. `.work/`·`spec/`를 **강제 생성하지 않는다**. 스펙의 `changes/`와 `specs/` 상대 구조는 spec root 안의 기존 기능으로 보존한다.
-- 기존 `mols-spec-stdd`의 stale baseline, Review·정본 흡수·아카이브 보호 조건은 유지한다. 8단계 Default workflow는 모든 작은 변경의 필수 순서가 아니다.
-- Skill의 가벼운 진입점이 일반적인 작업 관리와 스펙 작업을 선택하고, 복잡한 Spec 자료는 **필요한 경우에만 로드**한다. 소유권만 합쳤다는 이유로 전체 스펙 패키지를 매번 로드하지 않는다.
-- GitHub 연결 등 실제 제공 도구의 능력·계정·쓰기 권한을 확인하고, 로컬 파일/Git CLI 접근을 임의로 가정하지 않는다.
-- PR을 먼저 머지하거나 기존 스펙 Skill을 선삭제하지 않는다. 증거가 부족하면 Task 관리 기능만 먼저 평가하고 은퇴를 후속 조치로 남긴다.
+구 `mols-spec-stdd`의 삭제는 **동일 PR에서 통합 Skill 및 새 검증 계약 완성 후** 수행한다. 구 이름의 외부 소비자까지 호환되게 유지하려는 별도 작업은 하지 않는다. 다만 저장소에 남은 잘못된 route·문서·테스트 참조는 삭제 범위에 포함해 정리한다. 생성 결과물과 lock은 정본인 척 수동 수정하지 않는다.
 
-## Immediate Next Action
-
-**단계 0부터 시작한다.** 현재 PR branch와 `main`이 분기되어 있으므로 기존 Spec Skill과 최신 저장소 문서가 같은 ref에 있도록 통합 전략·충돌 범위를 확인한 뒤 implementation에 착수한다. 이미 기록한 인계·설계 텍스트는 보존한다.
+구현에 착수할 때는 최신 head·base, 프로젝트 하네스와 실제 GitHub 계정·쓰기 권한을 확인한다. 이번 계획 수정으로 Skill 구현, 브랜치 병합 또는 구 자산 삭제를 수행했다고 주장하지 않는다.
