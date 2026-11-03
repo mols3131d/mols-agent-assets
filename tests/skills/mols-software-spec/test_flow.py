@@ -137,3 +137,14 @@ def test_focused_workflow_limits_recheck(tmp_path: Path) -> None:
     assert json.loads(result.stdout)["recheck_steps"] == [
         "specification", "code-implementation", "review"
     ]
+
+def test_registry_document_templates_exist_and_are_not_code_placeholders() -> None:
+    data = json.loads((PACKAGE / "assets" / "artifacts.json").read_text(encoding="utf-8"))
+    assert len(data["artifacts"]) == 7
+    documents = {name: data for name, data in data["artifacts"].items() if data["kind"] == "document"}
+    assert len(documents) == 5
+    for name, definition in documents.items():
+        template = PACKAGE / "assets" / definition["template"]
+        assert template.is_file(), name
+        assert template.read_text(encoding="utf-8").startswith("# ")
+    assert all("template" not in data for data in data["artifacts"].values() if data["kind"] == "code")
