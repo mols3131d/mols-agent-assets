@@ -1,12 +1,13 @@
 ---
 name: mols-spec-stdd
 description: >-
-  Drive a software change through behavior specifications, test decisions,
-  implementation evidence, and review-directed rework using configurable
-  artifact-aware workflows. Use for substantial spec/test-driven feature or
-  behavior changes, specification-to-code alignment, and review feedback that
-  must return to an affected development stage. Do not use for general task
-  tracking, backlog prioritization, routine code edits without a spec need,
+  Drive software changes through behavior specifications, test-first
+  decisions, code-verification alignment, and review-directed rework.
+  Manage change-scoped requirement deltas under changes/ and promote completed
+  changes into nested canonical domain specs under specs/. Use for substantial
+  spec/test-driven development, domain-spec evolution, and reviewing the
+  impact of changed requirements. Do not use for general task tracking,
+  backlog prioritization, routine code edits without a spec need,
   or standalone test-design advice.
 targets:
   - claudecode
