@@ -1,6 +1,6 @@
 path	description
 development/	저장소 개발 작업의 local policy, Agent Asset 설계 지식과 도구·명세 참고 자료를 찾을 때 사용합니다.
-development/agent-assets/	Agent Asset 자체의 공통 설계 의미와 Skill-specific specification·authoring convention 중 어떤 reference를 볼지 선택할 때 사용합니다.
+development/agent-assets/	Agent Asset의 설계·워크플로·라이프사이클과 Skill-specific 작성 규약 중 필요한 공통 지식을 선택할 때 사용합니다.
 development/agent-assets/common/	
 development/agent-assets/common/agent-asset-lifecycle.md	Agent Asset의 관리·제공·실제 사용 상태를 구분하고 변경·은퇴 작업의 완료, 차단과 인계 기준을 판단하는 공통 라이프사이클 가이드입니다.
 development/agent-assets/common/agent-asset-workflows.md	Agent Asset 신설·개선·검토·검증·제공·은퇴·삭제와 문서 작업에서 상황별 책임과 진행 순서를 선택하는 공통 워크플로 가이드입니다.
