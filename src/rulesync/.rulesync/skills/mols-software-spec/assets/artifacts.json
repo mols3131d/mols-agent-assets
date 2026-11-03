@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "artifacts": {
+    "proposal": {
+      "kind": "document",
+      "default_file": "proposal.md"
+    },
+    "research": {
+      "kind": "document",
+      "default_file": "research.md"
+    },
+    "plan": {
+      "kind": "document",
+      "default_file": "plan.md"
+    },
+    "specification": {
+      "kind": "document",
+      "default_file": "specification.md"
+    },
+    "test-design": {
+      "kind": "document",
+      "default_file": "test-design.md"
+    },
+    "test-implementation": {
+      "kind": "code"
+    },
+    "code-implementation": {
+      "kind": "code"
+    }
+  }
+}
