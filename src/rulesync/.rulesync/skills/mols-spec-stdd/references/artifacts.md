@@ -16,4 +16,4 @@
 
 `review`는 **단계이자 판정 활동**이며 기본 Artifact ID가 아니다. 리뷰 findings와 evidence는 기존 PR·Issue 또는 프로젝트가 정한 현재 작업 근거에 기록할 수 있다. 기계적 routing이 필요할 때는 Workflow Reference의 JSON report를 입력으로 사용할 수 있으나 이를 별도의 영구 저장 파일로 중복 관리할 필요는 없다.
 
-새 저장소에 기존 소유자가 없다면 `spec/changes/<change-id>/`를 문서의 기본 위치로 **제안**한다. 코드와 테스트는 원래 프로젝트의 적절한 경로에 둔다. 새 폴더 생성을 요청·승인받지 않았거나 기존 schema/store가 있으면 생성하지 않는다. 변경 완료 후 장기 스펙 정본에 반영할지는 실제 프로젝트가 정한다.
+스펙 저장 위치의 기본값은 `spec/`이다. 해당 루트에서 변경 단위 산출물은 `changes/<change-id>/`에, `specification` Artifact는 변경 내부의 `specs/<domain-path>/spec.md` **delta**에 둔다. 장기 정본은 독립된 `specs/<domain-path>/spec.md`로 유지하며 변경이 완료되면 delta를 병합한다. 도메인 경로는 하위 계층을 허용한다. 자세한 병합·아카이브 경계는 [Spec Store](spec-store.md)를 따른다. 코드와 테스트는 원래 프로젝트의 적절한 경로에 둔다. 기존 spec store가 있다면 중복 생성하지 않는다.
