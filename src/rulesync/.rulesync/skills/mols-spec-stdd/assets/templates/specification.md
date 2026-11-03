@@ -1,13 +1,14 @@
-# Specification
+# <domain-path> Specification
 
-## Observable Behaviors
+## Purpose
 
-Define expected inputs, outputs, state transitions, and constraints independently of implementation details.
+Describe the existing capability and its role.
 
-## Acceptance Criteria
+## Requirements
 
-Give testable criteria with stable references where useful. Cover important failure and boundary behavior.
+### Requirement: Observable behavior
+The system SHALL provide the stated behavior.
 
-## Unresolved Contracts
-
-List ambiguities that must be resolved before claiming completion.
+#### Scenario: Expected outcome
+- WHEN the stated condition is satisfied
+- THEN the observable outcome follows
