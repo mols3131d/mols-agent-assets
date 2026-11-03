@@ -92,7 +92,7 @@ Skill의 조건부 보조 resource에는 [Agent Asset Design Principles](../comm
 - General Agent Asset naming → [Agent Asset Naming Convention](../common/naming.md)
 - Progressive context routing → [Progressive Context Routing](../../../../catalog/patterns/context-engineering/progressive-context-routing.md)
 - Argument와 argument-gated disclosure → [Argument-Driven Assets](../../../../catalog/patterns/context-engineering/argument-driven-assets.md)
-- Maintainer documentation → [Asset Maintainer Documentation](../common/asset-maintainer-documentation.md)
+- Maintainer documentation → [Agent Asset Management](../common/agent-asset-management.md#유지보수-문서)
 - 작성 원본과 권한 → [작성 원본과 권한](../../../development/source-authority.md)
 - Repository-managed asset validation → [Validation](../../../development/validation.md)
 - Deterministic test 설계와 PR Gate → [Testing](../../../development/testing.md)

@@ -15,7 +15,7 @@ description: Agent Asset의 설계·워크플로·라이프사이클·유지보�
 | [`common/`](common/) | 자산 유형 공통의 설계·instruction·naming, 작업 흐름·라이프사이클과 유지보수 문서 배치 |
 | [`skills/`](skills/) | Skill-specific specification routing과 mols authoring convention |
 
-유지보수 문서의 배치·책임은 [Asset Maintainer Documentation](common/asset-maintainer-documentation.md)을 따릅니다. 이 README는 child inventory를 복제하지 않습니다.
+유지보수 문서의 배치·책임은 [Agent Asset Management](common/agent-asset-management.md#유지보수-문서)을 따릅니다. 이 README는 child inventory를 복제하지 않습니다.
 
 ## Ownership
 
