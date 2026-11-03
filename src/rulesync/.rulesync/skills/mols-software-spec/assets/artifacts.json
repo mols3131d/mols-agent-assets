@@ -3,23 +3,28 @@
   "artifacts": {
     "proposal": {
       "kind": "document",
-      "default_file": "proposal.md"
+      "default_file": "proposal.md",
+      "template": "templates/proposal.md"
     },
     "research": {
       "kind": "document",
-      "default_file": "research.md"
+      "default_file": "research.md",
+      "template": "templates/research.md"
     },
     "plan": {
       "kind": "document",
-      "default_file": "plan.md"
+      "default_file": "plan.md",
+      "template": "templates/plan.md"
     },
     "specification": {
       "kind": "document",
-      "default_file": "specification.md"
+      "default_file": "specification.md",
+      "template": "templates/specification.md"
     },
     "test-design": {
       "kind": "document",
-      "default_file": "test-design.md"
+      "default_file": "test-design.md",
+      "template": "templates/test-design.md"
     },
     "test-implementation": {
       "kind": "code"
