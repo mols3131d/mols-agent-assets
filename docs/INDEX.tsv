@@ -2,9 +2,9 @@ path	description
 development/	저장소 개발 작업의 local policy, Agent Asset 설계 지식과 도구·명세 참고 자료를 찾을 때 사용합니다.
 development/agent-assets/	Agent Asset의 설계·워크플로·라이프사이클·유지보수 문서 배치와 Skill-specific 작성 규약 중 필요한 지식을 선택할 때 사용합니다.
 development/agent-assets/common/	
-development/agent-assets/common/agent-asset-lifecycle.md	Agent Asset의 관리·제공·실제 사용 상태를 구분하고 변경·은퇴 작업의 완료, 차단과 인계 기준을 판단하는 공통 라이프사이클 가이드입니다.
-development/agent-assets/common/agent-asset-workflows.md	Agent Asset 신설·개선·검토·검증·제공·은퇴·삭제와 문서 작업에서 상황별 책임과 진행 순서를 선택하는 공통 워크플로 가이드입니다.
-development/agent-assets/common/asset-maintainer-documentation.md	개별 Agent Asset 또는 family의 유지보수 문서를 어디에 두고, 실행 원본과 family 문서, 저장소 전용 문서의 책임을 어떻게 나눌지 정할 때 사용합니다.
+development/agent-assets/common/agent-asset-lifecycle.md	Agent Asset의 관리·제공·사용 상태와 변경 작업의 완료·차단·인계 기준을 판단할 때 사용합니다.
+development/agent-assets/common/agent-asset-workflows.md	Agent Asset 신설·개선·검증·제공·은퇴·삭제에서 필요한 절차와 책임을 선택할 때 사용합니다.
+development/agent-assets/common/asset-maintainer-documentation.md	Agent Asset과 family의 유지보수 문서 배치, 이식성, 실행 원본과의 책임 경계를 정할 때 사용합니다.
 development/agent-assets/common/design-principles.md	에이전트 자산을 추가, 분리, 중복 제거, 단순화할 때 적용하는 공통 판단 순서
 development/agent-assets/common/instruction-design.md	에이전트 instruction이 언제 적용되고 무엇을 하며 어디까지 판단·행동할 수 있는지, 무엇으로 검증하고 언제 멈출지를 설계하는 공통 원칙
 development/agent-assets/common/naming.md	flat namespace에서 관리 편의와 이름 충돌 방지를 위한 최소 naming convention
