@@ -12,8 +12,8 @@
 
 ## Agent Asset 작업 워크플로
 
-- 이 저장소가 관리하는 Skill·Rule·Subagent 등 Agent Asset을 신설·개선·리뷰·평가·제공·삭제할 때는 [저장소 전용 워크플로 라우터](.rulesync/skills/repository-agent-asset-workflow/SKILL.md)에서 필요한 절차를 선택합니다. Skill을 발견·로드할 수 없다면 [Agent Asset Workflows](docs/development/agent-asset-workflows.md)를 직접 확인합니다. 이 연결은 기존 경로 규칙·전문 Skill·권한을 대체하지 않습니다.
-- 자산의 **작성 원본을 변경했다면** [Agent Asset Lifecycle](docs/development/agent-asset-lifecycle.md)에 따라 문서 영향과 필요한 정본 반영을 반드시 판단합니다. `.inbox/` 인계만으로 정본 문서 작업을 완료했다고 간주하지 않습니다.
+- 이 저장소가 관리하는 Skill·Rule·Subagent 등 Agent Asset을 신설·개선·리뷰·평가·제공·삭제할 때는 [저장소 전용 워크플로 라우터](.rulesync/skills/repository-agent-asset-workflow/SKILL.md)에서 필요한 절차를 선택합니다. Skill을 발견·로드할 수 없다면 [Agent Asset Workflows](docs/development/agent-assets/common/agent-asset-workflows.md)를 직접 확인합니다. 이 연결은 기존 경로 규칙·전문 Skill·권한을 대체하지 않습니다.
+- 자산의 **작성 원본을 변경했다면** [Agent Asset Lifecycle](docs/development/agent-assets/common/agent-asset-lifecycle.md)에 따라 문서 영향과 필요한 정본 반영을 반드시 판단합니다. `.inbox/` 인계만으로 정본 문서 작업을 완료했다고 간주하지 않습니다.
 
 ## 자산 탐색
 
