@@ -25,7 +25,7 @@ description: 개별 Agent Asset 또는 family의 유지보수 문서를 어디�
 - 실행 동작의 정본을 문서에 복제하지 않습니다. 유지보수 문서는 맥락을 보존하기 위한 자료이지 실행 원본을 대신하지 않습니다.
 - 실행에 필요한 instruction, reference, script, template 같은 자산은 유지보수 문서가 아니라 대응하는 runtime package가 소유합니다.
 
-이 문서 묶음 안의 중복 경계는 이 문서의 Ownership과 Contract가 정합니다. 저장소 전반의 중복 판단은 [Documentation Principles](principles.md)를 따릅니다.
+이 문서 묶음 안의 중복 경계는 이 문서의 Ownership과 Contract가 정합니다. 저장소 전반의 중복 판단은 [Documentation Principles](../../../documentation/principles.md)를 따릅니다.
 
 ## Anti-patterns
 
@@ -33,7 +33,7 @@ description: 개별 Agent Asset 또는 family의 유지보수 문서를 어디�
 
 ## Entrypoint
 
-Asset별 문서에 README를 둘지와 진입점 역할은 [README Authoring](readme-authoring.md)을 따릅니다.
+Asset별 문서에 README를 둘지와 진입점 역할은 [README Authoring](../../../documentation/readme-authoring.md)을 따릅니다.
 
 family 문서는 구성 asset과 공통 책임 경계를 설명해야 하므로 `README.md`를 진입점으로 둡니다. README도 대응하는 asset 또는 family와 함께 다른 저장소로 옮겨 쓸 수 있어야 합니다.
 

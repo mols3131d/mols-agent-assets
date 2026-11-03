@@ -1,9 +1,10 @@
 path	description
 development/	저장소 개발 작업의 local policy, Agent Asset 설계 지식과 도구·명세 참고 자료를 찾을 때 사용합니다.
-development/agent-assets/	Agent Asset의 설계·워크플로·라이프사이클과 Skill-specific 작성 규약 중 필요한 공통 지식을 선택할 때 사용합니다.
+development/agent-assets/	Agent Asset의 설계·워크플로·라이프사이클·유지보수 문서 배치와 Skill-specific 작성 규약 중 필요한 지식을 선택할 때 사용합니다.
 development/agent-assets/common/	
 development/agent-assets/common/agent-asset-lifecycle.md	Agent Asset의 관리·제공·실제 사용 상태를 구분하고 변경·은퇴 작업의 완료, 차단과 인계 기준을 판단하는 공통 라이프사이클 가이드입니다.
 development/agent-assets/common/agent-asset-workflows.md	Agent Asset 신설·개선·검토·검증·제공·은퇴·삭제와 문서 작업에서 상황별 책임과 진행 순서를 선택하는 공통 워크플로 가이드입니다.
+development/agent-assets/common/asset-maintainer-documentation.md	개별 Agent Asset 또는 family의 유지보수 문서를 어디에 두고, 실행 원본과 family 문서, 저장소 전용 문서의 책임을 어떻게 나눌지 정할 때 사용합니다.
 development/agent-assets/common/design-principles.md	에이전트 자산을 추가, 분리, 중복 제거, 단순화할 때 적용하는 공통 판단 순서
 development/agent-assets/common/instruction-design.md	에이전트 instruction이 언제 적용되고 무엇을 하며 어디까지 판단·행동할 수 있는지, 무엇으로 검증하고 언제 멈출지를 설계하는 공통 원칙
 development/agent-assets/common/naming.md	flat namespace에서 관리 편의와 이름 충돌 방지를 위한 최소 naming convention
@@ -28,8 +29,7 @@ development/tooling/rulesync.md	Rulesync 자산의 authoring workspace·target·
 development/tooling/skills-cli.md	외부 Agent Skill dependency를 lock·sync·install·update할 때 skills CLI, source-native installer와 Rulesync 사이의 책임 경계를 확인할 때 사용합니다.
 development/validation.md	문서 frontmatter·INDEX.tsv, Agent Asset routing, Rulesync 관리 자산의 repository validation 범위와 실행 경계를 확인할 때 사용하는 정책입니다.
 development/vcs-git.md	저장소 고유 branch 정책, 병렬 작업 격리, branch naming, Git history 안전성과 commit convention을 확인할 때 사용합니다.
-documentation/	저장소 전반의 문서 원칙과 README 작성, 문서 인덱싱, frontmatter, Agent Asset 유지보수 문서 정책을 찾을 때 사용합니다.
-documentation/asset-maintainer-documentation.md	개별 Agent Asset 또는 family의 유지보수 문서를 어디에 두고, 실행 원본과 family 문서, 저장소 전용 문서의 책임을 어떻게 나눌지 정할 때 사용합니다.
+documentation/	저장소 전반의 문서 원칙과 README 작성, 문서 인덱싱, frontmatter 정책을 찾을 때 사용합니다.
 documentation/frontmatter.md	Markdown 문서에 frontmatter를 언제 적용하고, description을 탐색·라우팅에 어떻게 쓰며, README 범위 메타데이터를 어디서 다룰지 확인할 때 사용합니다.
 documentation/indexing.md	README의 Index와 자동 생성 INDEX.tsv 중 어떤 인덱싱 방식을 사용할지 정할 때 적용하는 문서 원칙입니다.
 documentation/principles.md	저장소 전반의 문서를 만들고 배치할 때 목적, 책임 범위, 정본, 신뢰성, 탐색성, 유지보수성을 판단하는 공통 원칙입니다.
