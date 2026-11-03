@@ -1,16 +1,34 @@
 ---
-description: 소규모 프로젝트에서 사용자 지정 디렉터리·Git ref를 작업 저장소로 사용하는 경량 Work Management Skill의 설계 기준입니다.
+description: 개인 개발용 작업 관리와 Spec/Test-driven 개발을 하나의 선택형 Skill로 통합하는 설계와 제약입니다.
 ---
 
-# Work Management — Lightweight Design
+# Personal Project Workflow — Integration Design
 
 ## Goal and Boundary
 
-개인 토이 프로젝트와 국지적 작업에서 할 일을 구분하고, 선행 관계에 따라 다음 작업을 선택하고, 새 세션에서도 이어가도록 돕는 독립 Skill `mols-work-management`를 설계한다.
+개인 토이 프로젝트와 국지적인 소프트웨어 개발을 위한 **단일 진입점 Skill `mols-project-workflow`**을 설계한다. 작업 관리와 스펙/테스트 기반 개발은 함께 제공하되 **요청에 필요한 경로만 실행**한다. 모든 단일 수정에 스펙·작업 파일을 강제하지 않는다.
 
-**정본은 사용자가 지정한 위치의 Markdown 작업 파일**이다. Git은 선택적인 이력·협업 수단이며, Git branch 자체를 작업 기록의 독립 저장 공간으로 선택할 수 있다. Beads의 작업·의존 관계·ready queue·재개 개념만 참고한다. Beads, Dolt, GitHub Issues, DB, 서버, MCP, 전용 CLI는 설치하거나 복제하지 않는다.
+**작업 정본은 사용자 지정 위치의 Markdown**, **도메인 동작 정본은 사용자 지정 spec root의 `specs/`**가 소유한다. Git은 선택적 변경 이력·ref 관리 수단이다. task directory·task Git ref·code Git ref는 같거나 달라도 된다. Beads에서는 작업 단위·의존 관계·ready 판단·재개만 참고하며 Beads, Dolt, GitHub Issues, DB, 서버, MCP, 전용 CLI를 실행 전제로 두지 않는다.
 
-작업 관리 자체가 필요 없는 단일·단기 변경에는 활성화를 강제하지 않는다. 기존 프로젝트의 정본 tracker가 있다면 사용자의 명시적 선택 없이 두 번째 정본을 만들지 않는다. 이 Skill은 **여러 작업 사이**의 관리만 소유하고, 선택된 작업 안의 RPI·명세·테스트·구현은 프로젝트 또는 해당 Skill의 책임이다. `mols-spec-stdd`는 선택적이고 독립적이다.
+현재 `main`의 `mols-spec-stdd`가 **이미 소유한** change-scoped delta, 계층형 domain spec, workflow, Review 복귀, 완료 후 스펙 흡수는 유지한다. 처음부터 재구현하지 않고 기존 구현을 새 통합 패키지로 **이전·단순화**한다. 이 PR의 현재 작업 브랜치는 `main`과 분기되어 해당 Skill이 아직 없으므로 구현 전에 최신 `main`과 안전하게 통합한다.
+
+사용자가 파일 기반 작업 관리를 채택하지 않았거나 기존 정본 tracker가 있다면 별도 task 정본을 무단 생성하지 않는다. 스펙 전용 요청은 task 파일 없이, 단순 작업 관리는 스펙 파일 없이 수행할 수 있다.
+
+## Integrated Ownership and Selection
+
+| 사용자 의도 | 실행할 기능 | 생성하지 않을 것 |
+| --- | --- | --- |
+| 작업 목록 정리, 의존·우선순위, 다음 작업, 재개 | Work Management | 스펙 변경·테스트 산출물 |
+| 작은 버그 수정·코드 정리 | 프로젝트의 기본 개발 방법 | 새 task/spec 기록(필요 없을 때) |
+| 의미 있는 API·도메인 요구사항 변경 | Spec/Test-driven + Review | 불필요한 task 항목 |
+| 작업을 선택해 실제 기능 개발 | Work Management → 필요 시 Spec/Test-driven | 둘의 상태를 복제한 제3의 문서 |
+| 스펙 변경 완료·정본 흡수 | Spec Store의 승인·검증 조건 | task `done` 자동 변경 |
+| 작업 기록 완료 | task의 완료 근거 확인 | spec delta 자동 archive |
+
+- **Work Item**은 여러 작업의 우선순위·의존성·인계를 소유한다. **Change**는 소프트웨어 요구사항 변경 제안·delta·검증 산출물을 소유한다. **Domain Spec**은 현재 기대 동작의 장기 정본이다. 이 셋은 동일 객체가 아니며 1:1 관계를 강제하지 않는다.
+- 서로 연결할 때는 기존 Markdown 링크 또는 ref만 사용한다. 별도 연결 테이블, task 상태와 spec 상태를 병행 기록하는 파일, 필수 lifecycle 미들웨어를 만들지 않는다.
+- 스펙 변경의 Review PASS와 delta 흡수는 여전히 기존 검증 근거가 필요하다. task가 `done`이어도 자동 흡수하거나, 스펙이 흡수됐다는 이유로 다른 task를 자동 완료시키지 않는다.
+- 통합 Skill에는 **하나의 discoverable `SKILL.md`**만 둔다. 작업 관리의 짧은 절차는 entrypoint에, 상대적으로 무거운 Spec Store·Workflow·Script 설명은 필요할 때만 읽는 package resource에 둔다. 독립 `mols-spec-stdd`를 런타임 필수 의존성으로 두지 않는다.
 
 ## Storage: User-selected Directory and Ref
 
@@ -107,6 +125,26 @@ Git branch·commit·PR 생성은 **사용자의 저장소 운영 방식**을 따
 | 같은 파일의 서로 다른 Git ref 수정 | 최신 ref 확인·충돌 인지, 자동 덮어쓰기 없음 |
 | 단일 수정·스펙/테스트·build task | 불필요한 작업 파일이나 단계 생성 없이 비활성화 |
 
-초기 구현은 독립 `SKILL.md` 하나(`src/rulesync/.rulesync/skills/mols-work-management/SKILL.md`)로 시작한다. DB·서버·인덱스·자동 스케줄러·provider adapter·스크립트는 확인된 필요가 없으므로 도입하지 않는다. 구조·의미 검토와 실제 런타임 평가는 구분한다.
+## Existing Spec Implementation: Preserve vs. Simplify
 
-이 파일은 PR 인계용 설계 근거다. 실제 에이전트 동작의 정본은 구현될 Skill이 소유한다.
+| 현재 `mols-spec-stdd` 구성 | 통합 시 원칙 |
+| --- | --- |
+| `changes/<change-id>/specs/<domain>/spec.md` → `specs/<domain>/spec.md` | **보존:** delta와 도메인 정본 분리, 계층형 domain, 완료 시 정본 흡수 |
+| `changes/archive/`와 stale baseline·충돌 검사 | **보존:** 기존 문서·스크립트의 안전한 완료 계약 |
+| Default / Focused Workflow, Review finding 복귀 | **보존:** 상황에 따라 선택, 전체 8단계 강제 금지 |
+| Artifact Registry, templates, `flow.py`, `store.py` | **우선 재사용:** 실제 기여를 확인하고 불필요한 것만 단순화; 테스트 없이 제거하지 않음 |
+| 기존 maintainer guide, tests, eval cases, route | **이관 대상:** 현재 경로와 활성화 계약에 맞추어 함께 갱신 |
+
+작업 파일의 storage locator와 별개로 **spec root/ref도 프로젝트가 결정**한다. 기존 `spec/` 제안은 소비 프로젝트에 경로를 강제하는 규칙이 아니다. Task ref와 spec ref가 다르면 스펙 흡수나 task 완료를 **교차 브랜치 원자적 작업**으로 취급하지 않는다. 각각의 원본·권한·최신 상태·완료 근거를 확인하고 필요한 참조만 연결한다.
+
+## Implementation Strategy
+
+1. **Baseline:** PR #284 브랜치에 최신 `main`을 안전하게 통합하고 `mols-spec-stdd` 원본·테스트·eval·route·유지보수 문서 inventory를 확보한다. 이 상태에서는 기존 Skill을 삭제하지 않는다.
+2. **Unify:** `src/rulesync/.rulesync/skills/mols-project-workflow/`를 단일 재사용 작성 원본으로 정하고 기존 Spec package의 의미·실행 자원을 보존하며 통합 Skill로 이전한다. 초기 migration 동안 중복 파일이 존재하더라도 *두 활성 정본*으로 배포하지 않는다.
+3. **Add Tasks:** 사용자 지정 task directory/ref, 가독성 높은 Markdown, 의존성/ready/blocked/unknown 판정, 세션 재개를 entrypoint에 추가한다. 스펙 문서·스크립트는 task 처리 시 로드하지 않는다.
+4. **Streamline:** 실제 소규모 사례로 Default/Focused·template·script의 사용성을 비교한다. 검증 보호장치나 핵심 스펙 기능은 성급히 삭제하지 않고, 필요 없는 진입 절차와 파일만 제거한다.
+5. **Validate & Retire:** 기존 Spec deterministic tests·새 task 사례·integration 동작 평가를 수행하고, 관련 route/lock 영향·eval·maintainer 문서와 소비자 참조를 확인한다. 기능 대체가 확인된 뒤 기존 `mols-spec-stdd`를 안전하게 은퇴한다. 미검증이면 유지하거나 후속 작업으로 명시한다.
+
+**이번 단계의 산출물은 설계·계획뿐이다.** 실제 Skill 작성·파일 이동·삭제·branch 동기화·CI·모델 행동 평가는 후속 작업이다. 구조·의미 검토와 실제 런타임 평가는 구분한다.
+
+이 파일은 PR 인계용 설계 근거다. 실제 에이전트 동작의 정본은 구현될 통합 Skill이 소유한다.
