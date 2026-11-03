@@ -1,110 +1,39 @@
 ---
-description: 소프트웨어 개발용 Spec Framework의 초기 요구사항과 작업 관리 Skill 분리 검토, 기본 워크플로 및 향후 설계 쟁점을 정리합니다.
+description: PR #283의 Spec/Test-driven Skill 설계·구현 근거와 범위, 결정 및 후속 검증 항목을 확인합니다.
 ---
 
-# Software Spec Framework — Design Preparation
+# Software Spec Framework — Implementation Record
 
-## Objective
+## Scope Decision
 
-외부 프로젝트에서 재사용할 **소프트웨어 개발 전용 Spec-driven Development Framework**를 설계한다. 첫 번째 목표는 CLI 의존 없이 ChatGPT Chat 수준의 도구로도 명세 기반 작업을 진행할 수 있게 하는 것이다. 초기에는 **하나의 Agent Skill**을 고려했으며, 필요하면 문서·템플릿·스크립트·검증 코드를 포함하는 방향이었다. 다만 작업 관리와의 책임 중첩 및 비효율 문제가 발견되어 **Skill 분리 여부를 재검토 중**이다.
+소프트웨어 변경의 명세·테스트·구현 정합성과 Review 기반 재작업은 이 Skill이 맡는다. 작업 분해, 여러 작업의 우선순위·의존성·진행·재개는 **별도 Work Management Skill PR #284**로 인계했다. 둘은 독립적으로 선택·설치되며 상호 호출이나 서로의 상태 저장소를 필수로 하지 않는다.
 
-이 문서는 작업 중인 설계 근거이며 실행 정본이 아니다. 장기 보존할 설계 의도와 유지보수 경계는 [Maintainer Guide](../../docs/skills/mols-software-spec/README.md)에 분리했다. 이번 작업은 **문서·PR 준비까지만** 포함하며 Skill·CLI·스크립트를 구현하거나 설치하지 않는다.
+기본 워크플로 후보는 사용자가 제안한 **Proposal → Research → Plan → Specification → Test Design → Test Implementation → Code Implementation → Review**의 8단계이다. Review가 근거에 따라 해당 단계로 돌아가고 다시 검증한다. 단, 작은 변경에는 8개 문서와 단계를 강제하지 않는다.
 
-## Agreed Design Direction
+## Implemented Design
 
-| 구분 | 방향 |
-| --- | --- |
-| 제품 범위 | 소프트웨어 변경의 명세·테스트·코드 구현 및 리뷰 기반 반복 |
-| 배포 단위 (재검토 중) | 초기안은 단일 Skill 패키지였지만, **작업 관리 Skill + Spec/Test-driven Skill**의 두 패키지 분리를 검토한다 |
-| Artifact definitions | 종류·의미·형식·검증 기준을 정의하고 순서는 모름 |
-| Workflow definitions | 단계·순서·전환·재진입·선택적 단계/재사용을 소유 |
-| Runtime | 실제 가용 도구·권한·원본 상태를 확인해 실행하고 없는 기능은 꾸미지 않음 |
-| Script | 결정적인 초기화·검사·상태 처리; CLI 설치를 필수로 하지 않음 |
-| 완료 판정 | 실증된 결과로만 통과; 실패 시 원인에 맞는 단계로 복귀 또는 차단·인계 |
+- 단일 Skill의 작성 원본: `src/rulesync/.rulesync/skills/mols-software-spec/`.
+- **Artifact Registry** `assets/artifacts.json`: 문서 5종과 코드 산출물 2종을 정의. Review는 활동이므로 artifact가 아니다.
+- **Workflow** `assets/workflows/default.json`(8단계), `focused.json`(명세·구현·리뷰). 단계 순서와 `after` 의존성만 소유한다.
+- **Skill과 references:** 활성화·명세·테스트 실행·Review 재확인 절차를 정의한다. 프로젝트의 기존 스펙 정본과 도구를 우선한다.
+- **Bundled script:** `flow.py validate`, `flow.py route --review report.json`의 읽기 전용 결정적 subset. pass는 candidate로만 반환하며 실제 테스트/CI 실행과 구분한다.
+- **Tests:** 기본·간소화 워크플로 검증, 잘못된 순서/참조 거부, 단일·여러 finding 복귀, PASS/BLOCKED 근거 경계 등을 다룬다.
 
-### Default Eight-Step Workflow
+초기 Draft는 스크립트 전체가 CLI 없는 ChatGPT Chat에서 실행될 것이라고 가정하지 않는다. 실제 GitHub 연결에서 원본 Skill 리소스를 읽고, 승인된 파일을 변경하며, 필요할 때 수동 전이 판정을 구현하는 경로와 **완전한 원본 스크립트 실행**을 구분한다.
 
-```text
-1. Proposal (제안서)
-2. Research (조사 보고서)
-3. Plan (계획서)
-4. Specification (스펙)
-5. Test Design (테스트 설계)
-6. Test Implementation (테스트 구현)
-7. Code Implementation (코드 구현)
-8. Review (검토)
-```
+## Design Tradeoffs
 
-1~5는 문서 산출물을 중심으로 한다. 6과 7은 실제 테스트·제품 코드이며, 별도 문서 파일이 반드시 필요한 것은 아니다. Review는 단계이자 결과 판정으로, 리뷰 기록이 별도 문서 종류인지까지 지금 확정하지 않는다. 단계와 산출물은 1:1 관계를 강제하지 않는다.
+- **중복 상태 미생성:** 독립 task tracker/진행 DB, 자체 문제 관리 큐, 별도 스펙 sync service는 구현하지 않았다.
+- **검증 범위 보수적:** `after` 의존 관계의 downstream을 재확인 후보로 반환하지만 모든 산출물 재작성·실패를 강제하지 않는다.
+- **기본 test-first:** 코드보다 테스트 구현을 먼저 하는 기본값을 제공하되, 기존 프로젝트의 테스트·코드 상태와 사용자 선택에 따라 focused 워크플로 사용 가능.
+- **계획서의 잠정성:** 기본 순서는 사용자 제안을 존중하나, 스펙보다 먼저 작성된 Plan을 최종 구현 계약으로 오인하지 않는다.
+- **OpenSpec과 공존:** OpenSpec의 별도 canonical store를 만들거나 공식 CLI 결과와 동일하다고 주장하지 않는다.
 
-기본 순서에서 테스트를 먼저 구현하므로 **코드 구현 전 테스트 실패는 예상 가능한 중간 상태**다. 단계별 가벼운 확인은 허용하지만 마지막 Review를 생략하거나 통과한 것으로 간주해서는 안 된다. 워크플로를 바꾸더라도 Artifact 정의는 재사용되어야 한다.
+## Review and Next Validation
 
-### Review-Driven Rework
+1. 변경된 구조의 JSON 및 Python 테스트를 실행하고, `mols-agent-asset`의 Skill review/validate 기준으로 activation·portable context·리소스 연결을 검토한다.
+2. `mise run rulesync-validate`, `mise run generated sync/validate` 등 저장소 정책의 정본 도구가 필요한지 확인한다. Chat GitHub Plugin만으로 실행하지 못하면 미검증으로 기록한다.
+3. **Runtime dogfood 미완료:** 실제 외부 샘플 프로젝트의 8단계 작업 한 건, Specification 결함→테스트·코드 재확인, test assertion 오류→test stage 복귀, 작은 변경의 경량 경로, 연결 읽기 전용/스크립트 미지원, 새 Chat 세션에서 최신 ref 재조회가 필요하다.
+4. 필요 시 README·참조·스크립트에 최소 수정한다. 실제 결함 없이 별도 CLI 제품·복잡한 상태 엔진·템플릿 수를 늘리지 않는다.
 
-| 발견한 결함 | 우선 검토할 복귀 단계 |
-| --- | --- |
-| 잘못된 목표·범위 | Proposal |
-| 근거 부족·기술 가정 오류 | Research |
-| 실행 전략·의존 관계 오류 | Plan |
-| 요구사항·수락 조건 오류 | Specification |
-| 누락된 테스트 시나리오 | Test Design |
-| 오류 있는 테스트 코드 | Test Implementation |
-| 제품 구현 결함 | Code Implementation |
-
-Review는 finding, 근거, 원인 후보, 영향받은 산출물과 복귀 제안을 남긴다. **Workflow가 유효한 복귀 단계와 재실행 범위를 결정**한다. 이전 단계부터 필요하다면 순서대로 다시 진행하되, 영향이 없는 산출물은 재사용한다. 복귀 이후에는 다시 Review로 수렴해야 한다. 원인을 특정하지 못하거나 실행 권한이 없으면 임의로 성공·완료 처리하지 않는다.
-
-예시: 동시성 요구 누락 → Specification 수정 → 영향을 받는 Test Design / Test Implementation / Code Implementation만 재검증·수정 → Review. 테스트 assertion 자체가 잘못된 경우에는 Test Implementation부터 수정하고 제품 코드를 불필요하게 변경하지 않는다.
-
-## New Finding — Task Management Boundary (2026-11-03)
-
-**관찰·문제 제기:** 기존 8단계 설계는 명세·테스트 기반 개발과 작업 진행 관리가 섞여 있다. 그런데 범용 작업 관리 수단으로 사용하기에는 순서와 산출물이 무겁고 비효율적일 가능성이 높다. 이 문제를 해결하지 않고 단일 Skill로 구현하면 가벼운 수정·다중 작업·중단 및 인계 같은 일상적 개발 관리에서 불필요한 문서 생성과 단계 수행을 강제할 수 있다. **이는 설계 우려이며 실제 비교·평가로 검증된 결함은 아니다.**
-
-**새 설계 가설 (미확정):** 역할이 다른 두 Skill을 독립 배포·선택 가능한 단위로 둔다.
-
-| 후보 | 맡을 책임 후보 | 맡지 않아야 할 책임 후보 |
-| --- | --- | --- |
-| **작업 관리 프레임워크 Skill** | 작업의 분해·우선순위·의존성·진행 상태·중단·재개·인계, 여러 작업 간 조정 | 모든 작업에 요구사항 스펙과 테스트 설계 문서를 강제하거나 제품의 수락 계약을 소유하는 일 |
-| **Spec/Test-driven 프레임워크 Skill** | 소프트웨어 동작 명세, 테스트 설계·구현, 코드 구현과 스펙의 추적·정합성·검증 | 범용 task queue·우선순위·전역 일정·다중 작업의 진행 상태를 중복 관리하는 일 |
-
-두 Skill의 관계는 **선택적 협력**을 우선 검토한다. 한쪽만 사용하는 프로젝트도 유효해야 하며, 서로 연결될 때는 작업 ID / change ID / 관련 산출물 참조를 전달하되 소유한 상태를 복제하지 않는 방향이 후보이다. 두 Skill이 무조건 서로를 설치·호출해야 한다는 뜻은 아니다.
-
-### Design Tensions to Resolve
-
-1. **제안·조사·계획·리뷰의 소유권:** 현재 8단계에는 작업 관리에도 자연스러운 활동이 포함된다. Spec Skill의 필수 문서 유형인지, 개발 워크플로의 선택적 단계인지, 작업 관리에서 사용하는 자료인지 정해야 한다. 하나의 활동 이름이 같은 책임을 뜻하지는 않는다.
-2. **워크플로의 소유권:** Artifact 종류와 순서의 분리는 유지하되, 작업 관리가 작업 단위의 순서·상태를 소유하고 Spec/Test-driven Skill이 명세·테스트·구현의 관계와 검증 게이트를 소유하도록 나눌 수 있는지 비교한다. **두 Skill이 모두 전역 실행 순서를 강제하는 구조를 피한다.**
-3. **리뷰 이후 복귀:** 스펙/테스트 결함의 수정 지점과 작업 재계획/재우선순위는 다른 결정이다. 어느 Skill이 finding을 판정하고 누가 작업을 재개·재배치하는지 명확히 한다.
-4. **중복 상태·문서 비용:** 작업 상태, 변경 상태, 테스트 실행 증거, 리뷰 findings를 어디에 영속화하고 무엇을 서로 참조할지 구분한다. 실제 가치가 없는 progress metadata, 모든 작업의 8단계 강제, 상시 문서 생성을 피한다.
-5. **호환성과 독립성:** ChatGPT Chat의 제한된 도구·파일 접근에서도 두 Skill이 독립적으로 설치·선택·동작 가능한지 확인한다. 코딩 에이전트의 기존 작업 관리·워크플로를 덮어쓰지 않는 활성화 조건이 필요하다.
-
-### Tomorrow — First Decision
-
-**두 Skill 분리가 정말 더 단순한가**부터 판단한다. 예시 작업 세 가지를 비교한다: (a) 작은 버그 수정, (b) 스펙·테스트 설계가 필요한 기능 개발, (c) 여러 작업의 우선순위·중단·재개 관리. 각 사례에서 단일 Skill과 두 Skill의 **필요 산출물 수, 상태 중복, 호출·연결 비용, 리뷰 복귀의 자연스러움**을 비교한다. 그 결과로 책임 표와 기본 워크플로의 소유자를 정하고, 그 후 패키지 구조·구현 순서를 다시 계획한다.
-
-**오늘의 결론:** 8단계는 유효한 **기본 개발 흐름 후보**로 보존하되, 모든 작업의 공통 절차로 확정하지 않는다. 단일 Skill 가정 및 기존 구현 순서는 **보류**한다. 이 분리안을 아직 승인된 최종 설계라고 표현하지 않는다.
-
-## Questions to Resolve Before Implementation
-
-1. **Source and distribution:** 작성 원본을 Rulesync 표준 Skill 패키지 또는 벤더 네이티브 어느 쪽으로 관리할지, scripts/assets가 목표 런타임에 온전히 전달되는지 실증한다. `mols-software-spec`은 작업명이다.
-2. **Artifact contract:** 문서별 최소 필드, 스키마·템플릿, 변경 ID, 파일 경로, 업데이트/중복/충돌 규칙을 정한다. 코드 산출물에는 경로·commit·테스트 참조 등 무엇을 기록할지 정한다.
-3. **Workflow and state:** step 상태, 선행 조건, 순서 변경, 조건부 생략, 여러 finding의 복귀 대상 충돌, 중간 상태 저장 및 세션 재개 규칙을 정한다.
-4. **Review semantics:** finding의 심각도·근거, 영향도 추적, 무효화·재검증, 완료·재작업·차단·인계의 기계 판독 형태를 정한다. 검토만으로 테스트 성공을 선언하지 않는다.
-5. **Spec lifecycle:** 여러 변경에서의 장기 스펙 정본, 변경 명세와 코드 사이 추적, 동시 변경, 완료 후 정리·아카이브의 안전한 동작을 정한다.
-6. **Runtime parity:** ChatGPT Chat의 원격 저장소 연결과 분석/스크립트 환경 간 경계를 확인하고, native/adapted/partial/blocked 판단과 실제 실행 증거를 정의한다.
-7. **Termination:** review → rework 반복의 수렴·중단·인계 기준과 프로젝트 하네스·기존 개발 워크플로와의 충돌 해결을 정한다.
-
-## Proposed Implementation Slices (Superseded Pending Ownership Review)
-
-아래는 **분리 검토 이전의 단일 Skill 구현 구상**이다. 위의 작업 관리 경계 평가와 소유권 결정이 먼저이며, 이후 필요하면 단계와 수락 기준을 수정한다.
-
-1. Artifact 계약과 기본 Workflow 계약을 최소 예제로 정의하고, Review 복귀·영향 추적을 종이에 먼저 검증한다.
-2. 단일 `SKILL.md`와 필요한 참조·템플릿만 작성한다. 기본 시나리오의 positive / negative / near-miss 활성화·절차를 평가한다.
-3. 반복적이고 결정적인 연산만 `scripts/`로 구현하고 단위 테스트한다. 별도 CLI·서비스·여러 Skill은 실제 수요가 확인될 때만 도입한다.
-4. 실제 외부 샘플 프로젝트에서 ChatGPT Chat 및 실행 가능한 코딩 에이전트의 동일 명세 처리, 리뷰 복귀, 새 세션 재개, 근거 기반 완료를 비교·검증한다.
-
-## Acceptance for the Next Work (Prior Draft)
-
-아래 구현 수락 시나리오 역시 분리 경계 결정 이후 갱신할 초안이며, **내일의 우선 작업은 구현이 아니라 두 Skill 책임 분리 검토**다.
-
-다음 구현 PR의 최소 수락 시나리오는 **제안서에서 시작해 Review까지 한 번 진행하고, Specification 결함을 발견해 해당 단계로 되돌아가 영향받은 테스트·구현을 다시 확인하는 흐름**이다. 필요한 검증기가 없는 Chat 환경에서는 수행 가능한 부분만 보고해야 한다. 테스트 실행이 없는데 통과했다고 표시하거나 실제 파일을 갱신하지 않았는데 완료했다고 표시하면 실패로 본다.
-
-이번 문서 PR에서는 범위·책임·미결정 사항을 정확히 구분하고, 향후 구현 작업을 위한 근거를 남기는 것으로 충분하다.
+이 문서는 Draft PR의 작업 근거로, Skill이나 소비 프로젝트의 정본 실행 계약이 아니다.
