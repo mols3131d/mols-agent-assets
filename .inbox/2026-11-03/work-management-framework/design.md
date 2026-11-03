@@ -40,15 +40,39 @@ description: 외부 프로젝트에 재사용할 Work Management Skill을 설계
 6. **No tracker:** tracker 선택·설치·외부 기록을 무단으로 수행하지 않고 로컬 제안 또는 기존 프로젝트 수단을 제시한다.
 7. **Near miss:** `mise` 작업 명령 설계, Spec/Test-driven 검증, 테스트 코드 품질, 단순 개인 일정 관리 요청에는 활성화하지 않는다.
 
-## Decisions to Defer Until Evidence
+## First Implementation Design
 
-- 지원할 provider 종류와 portable adapter 추상화. 처음부터 provider 플러그인 레지스트리를 만들지 않는다.
-- 자체 상태 파일, 재개 로그, 양방향 sync가 필요한지. 첫 dogfood 전까지 불필요하다.
-- 언제 task를 자동 생성·수정할 수 있는지와 승인 범위. 실제 provider 권한·부작용에 따라 판단한다.
-- 스크립트가 제공할 수 있는 결정적 가치가 있는지. native API와 동일한 래퍼는 만들지 않는다.
+이 절은 구현 전 설계 결정이다. 실제 Skill 동작 계약은 이후 작성 원본이 소유하며, 이 Inbox 문서는 정본 지침이 아니다.
 
-## Recommended Work Sequence
+### Scope and Activation
 
-(1) 독립 Skill이 필요한 실패 사례 확인 → (2) source owner·activation·두 Skill 간 경계 확정 → (3) 최소 Skill 작성 → (4) GitHub read-only·write-confirmed·unavailable 환경의 행동 평가 → (5) 발견된 문제에만 필요한 script/reference 추가.
+- 제안 이름: `mols-work-management`. 재사용 작성 원본은 `src/rulesync/.rulesync/skills/mols-work-management/SKILL.md` 한 개로 시작한다. 스크립트·데이터베이스·provider adapter는 만들지 않는다.
+- 여러 작업의 발견·분해·선택, 의존 관계와 우선순위, 중단·재개·인계를 요청할 때 활성화한다. 단일 코드 수정, 스펙·테스트 구현, 한 작업 안의 RPI 루프, 개인 일정, build/test 명령 관리에는 기본적으로 개입하지 않는다.
+- 기존 tracker가 이미 충분한 판단을 제공하면 반복 절차·상태 파일을 추가하지 않는다. 독립 가치는 불완전한 증거, 다양한 도구, 세션 경계에서 실행 가능한 다음 작업을 안전하게 판단하는 데 있다.
 
-이 자료는 **설계 및 인계 근거**이며, 새 Skill의 실행 규칙이나 repository policy 정본이 아니다.
+### Work Item and State
+
+- Work Item은 고정 schema가 아닌 기존 issue/task/PR 등 원본 객체의 **참조 단위**다. Issue와 소프트웨어 변경 사이에 1:1 관계를 강제하지 않는다.
+- 정본 상태·우선순위·담당자·의존 관계는 원본 tracker가 소유한다. Skill의 `ready / blocked / unknown`은 이번 판단의 임시 결과이지 provider에 기록하는 별도 상태가 아니다.
+- 실행 가능성 판단은 실제 blocker·권한·프로젝트 제약을 먼저 고려한다. 실행 가능한 후보 사이에서만 기존 우선순위·긴급도·목표로 다음 작업을 선택한다. 확인되지 않은 선행 작업이 있으면 `ready`를 확정하지 않는다.
+- 이전 대화나 인계 문서는 단서일 뿐 재개의 정본이 아니다. 최근 상태, 남은 blocker, 계정·권한을 다시 조회한다. 별도 `tasks.json` 또는 중복 백로그를 생성하지 않는다.
+
+### Execution Boundary
+
+1. 사용자 목표, 작업 집합, 프로젝트의 원본 tracker와 요청된 읽기·쓰기 범위를 확인한다.
+2. 실제 연결 계정·명의·허용된 도구 액션·권한을 확인한다. 플랫폼 native 기능과 현재 plugin/CLI가 실제 노출하는 기능을 구별한다.
+3. 선택에 필요한 후보 및 중요한 의존 관계만 현재 조회해 ready/blocked/unknown을 구분한다. 데이터가 부족하면 조건부 권고로 남긴다.
+4. 요청된 작업 분해·선택·상태 갱신을 가능한 native 도구로 수행한다. 쓰기 전 객체·계정·중복·부작용·승인 조건을 확인한다. 하위 이슈/의존성 API가 없으면 조작을 완료한 것으로 표시하지 않는다.
+5. 기본 출력은 다음 작업과 이유, 막힌 요소·미확인 요소, 다음 행동이다. 인계가 필요할 때만 기존 객체 링크와 마지막 확인 근거를 추가한다. 영속 문서 생성은 강제하지 않는다.
+6. 재개 시 원본과 비교하여 오래된 판단을 교체한다. 관찰한 것, 추론한 것, 실행한 것, 실패·미검증을 분리한다.
+
+### Ownership and Portability
+
+- Work Management는 **작업들 사이**의 선택·연결·진행을 다룬다. `mols-spec-stdd`와 실행 workflow는 **각 작업 안**의 명세·테스트·구현을 다룬다. 두 Skill은 서로 필수 의존성이 아니다.
+- 외부 프로젝트의 자체 workflow, 다른 provider, 로컬 CLI 없는 환경을 고려하되 해당 저장소 하네스·연결·설치 도구를 숨은 전제로 요구하지 않는다.
+
+### Verification and Deferrals
+
+- Design Tests 1–7로 활성화/비활성화, blocker 우선, multi-mapping, 새 세션 재조회, 지정 계정 준수, tracker 부재, near-miss를 평가한다. native 도구만 사용한 기준선과 불필요한 파일·호출·절차를 비교한다.
+- 구조적 검증, 책임·activation의 semantic review, 실제 runtime 행동 평가는 별개로 기록한다. 실제 실행이 없으면 통과로 보고하지 않는다.
+- 자체 스케줄러·영속 상태·provider registry·양방향 동기화·범용 CLI·복잡한 상태 머신은 실패 사례가 정당화할 때까지 보류한다.
