@@ -63,6 +63,8 @@ The first command is a **read-only preview**. `--apply` writes the canonical spe
 
 5. Re-read the updated domain specs and archive; verify that the files really changed and no active change was inadvertently removed. At a GitHub connector boundary, use the actual ref, branch, account and conditional file version provided by the connector; do not call a write successful until the host confirms it. Preserve source history.
 
+The [canonical specification template](../assets/templates/specification.md) documents the expected final domain format; change deltas use the distinct delta template. Do not copy the full current spec into a change as a competing canonical source.
+
 The helper uses atomic per-file writes and attempts to roll back on filesystem failures, but **does not guarantee a multi-file database transaction across crashes or concurrent writers**. Avoid parallel archive operations, re-check ref/working-tree freshness before applying, and review the final diff. Never use a second account to work around a permission failure.
 
 ## Workflow Boundary
