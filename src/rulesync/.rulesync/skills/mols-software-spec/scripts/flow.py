@@ -59,6 +59,12 @@ def load_artifacts() -> dict[str, dict[str, str]]:
             path = Path(filename)
             if path.is_absolute() or ".." in path.parts or path.suffix != ".md":
                 raise ContractError(f"artifact {name}: unsafe default_file")
+            template = require_text(artifact.get("template"), f"artifact {name}.template")
+            template_path = Path(template)
+            if template_path.is_absolute() or ".." in template_path.parts or template_path.suffix != ".md":
+                raise ContractError(f"artifact {name}: unsafe template")
+            if not (PACKAGE_ROOT / "assets" / template_path).is_file():
+                raise ContractError(f"artifact {name}: missing template {template}")
     return artifacts
 
 
