@@ -22,13 +22,21 @@ description: PR #283의 Spec/Test-driven Skill 설계·구현 근거와 범위, 
 
 초기 Draft는 스크립트 전체가 CLI 없는 ChatGPT Chat에서 실행될 것이라고 가정하지 않는다. 실제 GitHub 연결에서 원본 Skill 리소스를 읽고, 승인된 파일을 변경하며, 필요할 때 수동 전이 판정을 구현하는 경로와 **완전한 원본 스크립트 실행**을 구분한다.
 
+## Added Domain Specification Lifecycle
+
+- `spec/`은 기존 project owner가 없을 때의 기본값이다. `changes/<change-id>/`는 변경별 문서와 도메인 delta를 소유하고, `specs/<domain-path>/spec.md`는 완성된 도메인별 현재 행위 정본을 소유한다.
+- 도메인 디렉터리 계층에는 최대 깊이를 강제하지 않는다. 하나의 변경이 `payments/refunds/validation`과 `accounts/permissions` 등 여러 도메인을 수정할 수 있다.
+- 변경이 실제로 검토·검증된 뒤 ADDED/MODIFIED/REMOVED Requirement delta를 동명 도메인의 정본에 병합하며, 원본 변경은 `changes/archive/<date>-<change-id>/`에 보존한다.
+- `scripts/store.py`는 명시적인 baseline hash, 읽기 전용 preview, Review PASS 근거, `--apply` 옵션을 이용해 병합과 archive를 수행한다. 충돌·stale baseline·기존 archive 덮어쓰기·마지막 Requirement 제거는 중단한다.
+- 이 변경은 코드나 테스트를 복사하거나 기존 Issue/task tracker를 대체하지 않는다. 자동 테스트 실행·CI 판정, 동시 쓰기 완전 트랜잭션, 외부 Chat runtime behavior 검증은 포함하지 않는다.
+
 ## Design Tradeoffs
 
 - **중복 상태 미생성:** 독립 task tracker/진행 DB, 자체 문제 관리 큐, 별도 스펙 sync service는 구현하지 않았다.
 - **검증 범위 보수적:** `after` 의존 관계의 downstream을 재확인 후보로 반환하지만 모든 산출물 재작성·실패를 강제하지 않는다.
 - **기본 test-first:** 코드보다 테스트 구현을 먼저 하는 기본값을 제공하되, 기존 프로젝트의 테스트·코드 상태와 사용자 선택에 따라 focused 워크플로 사용 가능.
 - **계획서의 잠정성:** 기본 순서는 사용자 제안을 존중하나, 스펙보다 먼저 작성된 Plan을 최종 구현 계약으로 오인하지 않는다.
-- **OpenSpec과 공존:** OpenSpec의 별도 canonical store를 만들거나 공식 CLI 결과와 동일하다고 주장하지 않는다.
+- **OpenSpec과 공존:** 구조는 OpenSpec의 change delta → domain spec promotion을 참고하지만, 기존 OpenSpec 프로젝트를 만나면 공식 owner·명령을 우선한다. 이 Skill 내부 구현을 공식 OpenSpec CLI와 동등하다고 주장하지 않는다.
 
 ## Review and Next Validation
 
