@@ -1,12 +1,12 @@
 path	description
 development/	저장소 개발 작업의 local policy, Agent Asset 설계 지식과 도구·명세 참고 자료를 찾을 때 사용합니다.
-development/agent-assets/	Agent Asset의 설계·워크플로·라이프사이클·유지보수 문서 배치와 Skill-specific 작성 규약 중 필요한 지식을 선택할 때 사용합니다.
+development/agent-assets/	Agent Asset 공통 설계·관리 지식과 Skill 전용 작성 규약 중 필요한 정본을 선택할 때 사용합니다.
 development/agent-assets/agent-asset-management.md	Agent Asset 신설·개선·검증·제공·폐기 절차, 관리·사용 상태, 유지보수 문서 배치와 완료 기준을 판단할 때 사용합니다.
-development/agent-assets/design-principles.md	에이전트 자산을 추가, 분리, 중복 제거, 단순화할 때 적용하는 공통 판단 순서
-development/agent-assets/instruction-design.md	에이전트 instruction이 언제 적용되고 무엇을 하며 어디까지 판단·행동할 수 있는지, 무엇으로 검증하고 언제 멈출지를 설계하는 공통 원칙
+development/agent-assets/design-principles.md	Agent Asset 추가·분리·단순화 시 원본 권한, 실제 필요, 책임과 context 비용을 판단할 때 사용합니다.
+development/agent-assets/instruction-design.md	Agent instruction의 적용 조건·행동·권한·검증·중단을 명확히 표현하고 구체성을 선택할 때 사용합니다.
 development/agent-assets/naming.md	flat namespace에서 관리 편의와 이름 충돌 방지를 위한 최소 naming convention
 development/agent-assets/skills/	
-development/agent-assets/skills/skill-authoring-conventions.md	Agent Skill을 작성·리팩터링할 때 공통 표준·작성 프레임워크·target contract 이후에도 적용되는 mols의 package, description, context와 metadata 관행을 확인할 때 사용합니다.
+development/agent-assets/skills/skill-authoring-conventions.md	Agent Skill 작성·리팩터링에서 표준 외에 적용하는 mols의 패키지, description, context, naming과 metadata 관행을 확인할 때 사용합니다.
 development/agent-assets/skills/specification.md	Agent Skills 작업에서 공통 표준, 작성 프레임워크, 대상별 확장과 creator guidance의 현재 공식 원본을 concern별로 찾는 registry입니다.
 development/ci.md	저장소의 change lifecycle, branch validation, main admission, blocking·deferred evidence, projection 검증과 local·agent·API write path의 경계를 설계·운영할 때 사용하는 정책입니다.
 development/development-environment.md	이 저장소의 개발환경 구축·격리·도구 관리 정책, 버전 수명 주기 거버넌스 및 부트스트랩 승인·운영 절차를 확인할 때 사용합니다.

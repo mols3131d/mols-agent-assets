@@ -1,81 +1,41 @@
 ---
 title: Agent Asset Design Principles
-description: 에이전트 자산을 추가, 분리, 중복 제거, 단순화할 때 적용하는 공통 판단 순서
+description: Agent Asset 추가·분리·단순화 시 원본 권한, 실제 필요, 책임과 context 비용을 판단할 때 사용합니다.
 ---
 
 # Agent Asset Design Principles
 
-목표는 규칙을 늘리는 것이 아니라 **행동 신뢰성과 authority를 보존하면서 불필요한 local context와 설계 복잡성을 만들지 않는 것**입니다.
+**적용되는 계약을 우선하고 현재 필요한 행동을 최소한의 책임 구조로 유지합니다.** 파일 수·길이보다 행동 신뢰성, 정본 일관성, 이해·검증·변경 비용을 기준으로 판단합니다.
 
-## Decision Order
+## 판단 순서
 
-1. **Standard First / Local Delta Only** — 적용 가능한 표준, source framework, target/runtime contract 또는 확립된 project authority가 이미 행동을 결정하면 local source에 다시 소유하지 않습니다. Local source는 deviation, extension, ambiguity resolution만 소유합니다.
-1. **YAGNI** — 현재 요구, 관찰된 failure, accepted policy 또는 보존해야 할 credible invariant가 없는 구조·호환성·metadata·instruction을 만들지 않습니다. 가상의 미래 요구나 막연한 model failure는 충분한 근거가 아닙니다.
-1. **SRP** — activation, authority, permission, lifecycle, validation 또는 변경 이유가 실질적으로 다르면 책임 분리를 검토합니다. 파일 크기나 문서 길이만으로 나누지 않습니다.
-1. **DRY** — 같은 semantic concern의 authoritative owner를 둘 이상 만들지 않습니다. 서로 다른 concern은 서로 다른 authority를 가질 수 있으며, 필요한 재사용은 복제가 아니라 link, reference 또는 composition으로 연결합니다.
-1. **KISS** — 필요한 책임, 정보, 경계와 검증을 이해·변경·운영하기 쉬운 형태로 유지하고 현재 목적에 기여하지 않는 accidental complexity만 제거합니다. 파일·단계·option·구조 요소 수나 문서 길이를 단순함의 목표나 척도로 삼지 않습니다.
-1. **Progressive Disclosure** — discovery → core → conditional detail 순으로 필요한 context만 노출합니다. 항상 또는 자주 로드되는 내용일수록 실제 failure를 막거나 invariant를 보존하거나 중요한 ambiguity를 줄이는 정보에 집중합니다.
+1. **Standard First / Local Delta Only** — 적용되는 표준, source framework, target/runtime과 프로젝트 권한이 이미 결정한 행동은 복제하지 않습니다. Local content는 의도적 차이(deviation), 없는 기능의 확장(extension), 모호성 해소(ambiguity resolution)만 소유합니다.
+1. **YAGNI** — 현재 요구, 관찰된 실패, 승인된 정책 또는 보존할 근거 있는 불변조건이 없는 구조·호환성·metadata·instruction은 만들지 않습니다. 가상의 미래 요구나 막연한 모델 불안정성은 근거가 아닙니다.
+1. **SRP** — activation, authority, permission, lifecycle, validation 또는 변경 이유가 실질적으로 다를 때 책임을 나눕니다. 길이만으로 나누거나 항상 함께 적용·변경되는 책임을 쪼개지 않습니다.
+1. **DRY** — 같은 의미의 정본은 하나만 둡니다. 다른 책임자는 link·reference·composition으로 연결하되 runtime 독립성을 해치는 숨은 의존성을 만들지 않습니다.
+1. **KISS** — 이해·운영·검증에 기여하지 않는 복잡성만 제거합니다. 단순화를 위해 필요한 경계·검증·안전 장치를 없애거나 서로 다른 책임을 합치지 않습니다.
+1. **Progressive Disclosure** — discovery → core → conditional detail로 필요한 맥락만 노출합니다. 세부 정보를 분리해도 언제 읽어야 하는지와 중요한 예외는 가까운 진입점에서 찾을 수 있어야 합니다.
 
-앞 단계에서 제거할 수 있는 문제를 뒤 단계의 abstraction이나 더 많은 instruction으로 해결하지 않습니다.
+앞 단계에서 해결할 수 있는 문제를 뒤 단계의 추상화나 instruction 추가로 보완하지 않습니다.
 
-## Local Delta
+## 원본과 실행 수단
 
-재사용 자산에는 작성 저장소의 경로·명령·권한·평가 환경을 필수 조건으로 넣지 않습니다. 프로젝트 전용 동작은 해당 프로젝트가 소유합니다.
+재사용 자산에 작성 저장소의 경로·명령·권한·평가 환경을 필수 조건으로 넣지 않습니다. 프로젝트 전용 동작은 그 프로젝트가 소유합니다. 변경이 위의 local delta 세 유형에 해당하지 않으면 별도 지침을 추가하지 않고 현재 정본이나 공식 자료로 연결합니다. 빠르게 바뀌는 외부 계약도 복제하지 않습니다.
 
-Local Agent Asset content를 추가하기 전에 다음 중 하나인지 확인합니다.
+규칙을 실제로 강제·검증하는 native 또는 deterministic 수단이 있고, 필요한 이식성과 정본 단일성을 해치지 않는다면 prose instruction보다 우선합니다. 반대로 모델의 의미 판단·예외 처리가 필요한 행동은 읽을 수 있는 instruction에 둡니다. 특정 target/version의 중요한 차이나 안전 경계를 일반화해서 없애지 않습니다.
 
-- **Deviation** — upstream/default와 의도적으로 다르게 행동해야 합니다.
-- **Extension** — upstream에 없는 repository-specific behavior나 boundary가 필요합니다.
-- **Ambiguity resolution** — upstream만으로 이 repository에서 필요한 결정을 안정적으로 복원할 수 없습니다.
+## 맥락과 유지보수
 
-셋 중 어느 것도 아니면 작성하지 않는 것이 기본입니다. Upstream detail이 판단에 필요하면 authoritative source를 링크하거나 작업 시점에 확인하고, fast-changing semantics를 local prose로 복제하지 않습니다.
+자동 또는 자주 로드하는 맥락은 **없으면 반복 오류가 생기는 지식, 보존할 불변조건, 현재 결정을 바꾸는 근거·선택 조건**에 집중합니다. 그 역할이 없다면 제거하거나 정본으로 연결하거나 조건부 로딩으로 내립니다. 비가역적 위험과 중요한 금지·중단 조건은 간결함을 이유로 숨기지 않습니다.
 
-Local Delta가 필요해도 prose instruction이 항상 올바른 mechanism은 아닙니다. 해당 concern을 더 직접적으로 소유·검증하는 established native 또는 deterministic mechanism이 있고, 그것을 사용해도 competing authority나 필요한 portability가 생기지 않으면 그 owner를 우선합니다. 특정 target의 편의만으로 별도 canonical source를 만들지 않습니다. Semantic judgment와 예외 판단처럼 모델이 해석해야 하는 behavior는 readable instruction에 남깁니다.
-
-## Context Test
-
-Context는 무료가 아닙니다. 특히 자동 또는 빈번하게 로드되는 내용은 다른 task context와 모델의 attention을 함께 소비합니다.
-
-각 내용을 유지할 때 다음 중 무엇을 제공하는지 설명할 수 있어야 합니다.
-
-- 없으면 반복적으로 틀릴 가능성이 높은 non-obvious local knowledge 또는 behavior
-- 반드시 보존해야 하는 invariant, boundary 또는 required default
-- 현재 판단을 materially 바꾸는 evidence, ambiguity resolution 또는 load condition
-
-그 역할이 없다면 삭제하거나 authoritative source로 연결하거나 필요할 때만 로드되는 surface로 내리는 것을 우선합니다. 반대로 짧게 만들기 위해 critical gotcha나 required boundary를 숨기지 않습니다.
-
-## Guardrails
-
-- Standard First를 이유로 실제 target/version 차이나 중요한 local exception을 숨기지 않습니다.
-- YAGNI를 이유로 이미 존재하는 비가역적 위험이나 required guard를 방치하지 않습니다.
-- SRP를 이유로 항상 함께 변하고 함께 로드되어야 하는 coherent responsibility를 의미 없이 잘게 나누지 않습니다.
-- DRY 때문에 runtime 독립성을 깨거나 hidden dependency를 만들지 않습니다.
-- KISS를 이유로 서로 다른 책임을 합치거나 필요한 구조, validation, safety guard 또는 중요한 boundary를 제거하지 않습니다.
-- Progressive Disclosure로 detail을 분리해도 load condition과 critical gotcha는 발견 가능한 owner에 남깁니다.
-- Deterministic mechanism을 선호한다는 이유로 사람이 이해해야 하는 durable rationale이나 모델이 판단해야 하는 semantic boundary를 opaque automation에 숨기지 않습니다.
-- Source만으로 복구하기 어려운 durable rationale과 invariant는 보존하고, 작업 로그와 재생성 가능한 상태는 Git history에 맡깁니다.
-
-## Human Comprehension
-
-AI가 자산을 빠르게 만들수록 maintainer가 **무엇이 authoritative하고 왜 존재하는지 이해하는 속도**가 병목이 될 수 있습니다. 이를 더 많은 설명으로 해결하지 않습니다. 불필요한 owner, 책임 경계와 탐색 경로를 만들지 않고, 필요한 owner·boundary·rationale은 빠르게 찾을 수 있게 유지합니다.
-
-## Review
-
-- 이것이 local deviation, extension 또는 ambiguity resolution인가?
-- 실제 요구, observed failure, accepted policy 또는 credible invariant가 있는가?
-- 더 직접적인 mechanism이 있는데 prose로 다시 구현하거나 competing authority를 만들고 있지 않은가?
-- 하나의 concern을 여러 owner가 소유하거나 서로 다른 concern이 한 owner에 섞였는가?
-- 정책 변경 시 concern별 authoritative location이 명확한가?
-- 필요한 책임과 경계를 유지하면서 이해·변경·검증 비용을 낮출 수 있는 accidental complexity가 있는가?
-- 자주 로드되는 각 context가 실제 행동이나 판단을 materially 개선하는가?
-- detail을 아직 읽지 않은 agent도 언제 추가 context가 필요한지 알 수 있는가?
+사람이 정본·책임·변경 이유를 이해할 수 있도록 원본만으로 복구하기 어려운 durable rationale과 불변조건은 남깁니다. 재생성 가능한 상태와 일반 작업 기록은 Git history에 맡깁니다.
 
 ## Boundary
 
-- 선택된 behavior를 instruction으로 표현하는 방법 → [Instruction Design](instruction-design.md)
-- Skill-specific package, discovery와 body convention → [Skill Authoring Conventions](skills/skill-authoring-conventions.md)
-- 반복되는 문제에 대한 reusable solution shape → [Patterns](../../../catalog/patterns/README.md)
-- source framework와 target/runtime의 구체적인 representation·precedence·loading semantics → 해당 authoritative contract
+- 행동을 instruction으로 표현하는 방법 → [Instruction Design](instruction-design.md)
+- Skill-specific 작성 관행 → [Skill Authoring Conventions](skills/skill-authoring-conventions.md)
+- 반복적인 해결 방식 → [Patterns](../../../catalog/patterns/README.md)
+- source framework·target의 형식, precedence, loading 계약 → 해당 공식 원본
 
 ## Sources
 
