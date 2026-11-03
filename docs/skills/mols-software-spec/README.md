@@ -10,7 +10,7 @@ description: 재사용 Software Spec/Test-driven Skill의 산출물·워크플�
 
 **작업 관리와 소프트웨어 명세·테스트 기반 개발을 두 개의 독립 선택 가능한 Skill로 분리**했다. 이 패키지는 한 소프트웨어 변경의 기대 동작, 검증 가능성, 구현 정합성 및 Review 복귀를 담당한다. 작업 분해·우선순위·백로그·여러 작업의 상태 관리와 인계 자체는 기존 task provider와 별도 Work Management owner에 둔다.
 
-`assets/artifacts.json`은 **산출물 종류**, `assets/workflows/*.json`은 **순서·선행 단계와 복귀 후보**, `references/`는 사람·모델이 이해할 의미, `scripts/flow.py`는 구조·전이 판단의 결정적 subset을 소유한다. 동일한 내용을 별도 정본으로 재정의하지 않는다. 제품 코드·테스트는 프로젝트의 원래 위치에 남고 별도의 진행 상태 DB나 tracker는 만들지 않는다.
+`assets/artifacts.json`과 `assets/templates/`는 **산출물 종류와 최소 문서 구조**, `assets/workflows/*.json`은 **순서·선행 단계와 복귀 후보**, `references/`는 사람·모델이 이해할 의미, `scripts/flow.py`는 구조·전이 판단의 결정적 subset을 소유한다. 동일한 내용을 별도 정본으로 재정의하지 않는다. 제품 코드·테스트는 프로젝트의 원래 위치에 남고 별도의 진행 상태 DB나 tracker는 만들지 않는다.
 
 ## Default and Flexibility
 
