@@ -59,6 +59,10 @@ depends_on: [backend/db-schema]
 - 완료한 change 기록의 보관·정리는 **프로젝트가 정한다**. `changes/archive/`를 기본 강제하지 않는다. Git 이력은 활용하되 Git이 없는 환경에서 없는 기록을 있다고 주장하지 않는다.
 - Task 파일과 Change/Domain Spec은 같은 객체가 아니다. 필요하면 사람이 읽을 수 있는 링크로 연결하되, 1:1 매핑·교차 브랜치 자동 상태 변경·별도 추적 테이블은 만들지 않는다.
 
+## First-use Bootstrap
+
+초기 설정은 [Project Bootstrap](../../../src/rulesync/.rulesync/skills/mols-project-workflow/references/bootstrap.md)가 소유한다. **사용자가 Task root·Spec root 및 각 Git ref를 선택**한다. 기존 프로젝트에 이미 정본이 있으면 재사용하고, 없으면 작업 유형에 필요한 첫 Markdown만 작성한다. 같은 브랜치와 전용 Task 브랜치를 모두 지원한다. 선택되지 않은 경로를 자동 생성하거나 빈 작업·샘플 Spec으로 구조를 채우지 않는다. 결과는 각 원본 ref에서 확인하며, 향후 재개용 위치 메모는 사용자가 선택한 기존 프로젝트 문서에만 선택적으로 기록한다.
+
 ## Baseline Workflow — Tuned from Mols Loops
 
 모든 실제 개발 실행에 적용할 **기준 흐름은 하나**다. 범용 `mols-loops`의 Prepare → RPI(Research / Plan / Work / Review) → Finalize를 개인 프로젝트의 Task·Spec·Code 관점으로 줄인다. **별도 Skill 의존성이나 중첩 루프 조율은 만들지 않는다.**
