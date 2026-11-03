@@ -1,5 +1,5 @@
 ---
-name: mols-software-spec
+name: mols-spec-stdd
 description: >-
   Drive a software change through behavior specifications, test decisions,
   implementation evidence, and review-directed rework using configurable

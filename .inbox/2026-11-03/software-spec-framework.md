@@ -12,13 +12,13 @@ description: PR #283의 Spec/Test-driven Skill 설계·구현 근거와 범위, 
 
 ## Implemented Design
 
-- 단일 Skill의 작성 원본: `src/rulesync/.rulesync/skills/mols-software-spec/`.
+- 단일 Skill의 작성 원본: `src/rulesync/.rulesync/skills/mols-spec-stdd/`.
 - **Artifact Registry** `assets/artifacts.json`: 문서 5종과 코드 산출물 2종을 정의. Review는 활동이므로 artifact가 아니다.
 - **Workflow** `assets/workflows/default.json`(8단계), `focused.json`(명세·구현·리뷰). 단계 순서와 `after` 의존성만 소유한다.
 - **Skill과 references:** 활성화·명세·테스트 실행·Review 재확인 절차를 정의한다. 프로젝트의 기존 스펙 정본과 도구를 우선한다.
 - **Bundled script:** `flow.py validate`, `flow.py route --review report.json`의 읽기 전용 결정적 subset. pass는 candidate로만 반환하며 실제 테스트/CI 실행과 구분한다.
 - **Tests:** 기본·간소화 워크플로 검증, 잘못된 순서/참조 거부, 단일·여러 finding 복귀, PASS/BLOCKED 근거 경계 등을 다룬다.
-- **Eval fixtures:** `evals/skills/mols-software-spec/cases.json`에서 선택·비선택 및 Review/기존 스펙 정본/ChatGPT 실행 제약 행동 사례를 정의한다. 실제 모델 실행 결과는 아직 없다.
+- **Eval fixtures:** `evals/skills/mols-spec-stdd/cases.json`에서 선택·비선택 및 Review/기존 스펙 정본/ChatGPT 실행 제약 행동 사례를 정의한다. 실제 모델 실행 결과는 아직 없다.
 
 초기 Draft는 스크립트 전체가 CLI 없는 ChatGPT Chat에서 실행될 것이라고 가정하지 않는다. 실제 GitHub 연결에서 원본 Skill 리소스를 읽고, 승인된 파일을 변경하며, 필요할 때 수동 전이 판정을 구현하는 경로와 **완전한 원본 스크립트 실행**을 구분한다.
 

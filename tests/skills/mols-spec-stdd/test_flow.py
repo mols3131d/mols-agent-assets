@@ -10,7 +10,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[3]
-PACKAGE = ROOT / "src" / "rulesync" / ".rulesync" / "skills" / "mols-software-spec"
+PACKAGE = ROOT / "src" / "rulesync" / ".rulesync" / "skills" / "mols-spec-stdd"
 SCRIPT = PACKAGE / "scripts" / "flow.py"
 WORKFLOWS = PACKAGE / "assets" / "workflows"
 
