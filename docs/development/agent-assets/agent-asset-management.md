@@ -35,9 +35,9 @@ Agent Asset 작업은 **작성 원본의 관리**, **배포 가능 상태**, **�
 - 개별 자산의 의도·제약·설계 결정·복구 지식은 해당 자산 문서에 둔다.
 - 지속적으로 공유할 유지보수 책임이 있을 때만 family 문서를 만들고, `README.md`에서 구성 자산과 책임을 안내한다. Family는 별도 runtime taxonomy·registry가 아니다.
 - 문서는 대응하는 자산·family와 함께 옮겨도 이해·수정할 수 있어야 한다. 숨은 저장소 의존성이나 실행 원본의 중복을 피한다.
-- 개별 자산의 README 필요성은 [README Authoring](../../../documentation/readme-authoring.md), 문서 정본과 중복은 [Documentation Principles](../../../documentation/principles.md)를 따른다.
+- 개별 자산의 README 필요성은 [README Authoring](../../documentation/readme-authoring.md), 문서 정본과 중복은 [Documentation Principles](../../documentation/principles.md)를 따른다.
 
-이 저장소에서는 `docs/<asset-type>/<owner>/`에 유지보수 문서를 둔다. `<owner>`는 자산 또는 family이며, `development/`·`documentation/`·`references/`·`tools/`는 자산 유형이 아닌 일반 문서 영역이다. 상위 `docs/INDEX.tsv`에는 자산 유형 디렉터리만 노출하고, 자산별 문서는 README·검색으로 탐색한다. `docs/<asset-type>/` 아래에 자동 `INDEX.tsv`를 별도 생성하지 않는다. 일반 인덱스 선택 기준은 [Document Indexing](../../../documentation/indexing.md)을 따른다.
+이 저장소에서는 `docs/<asset-type>/<owner>/`에 유지보수 문서를 둔다. `<owner>`는 자산 또는 family이며, `development/`·`documentation/`·`references/`·`tools/`는 자산 유형이 아닌 일반 문서 영역이다. 상위 `docs/INDEX.tsv`에는 자산 유형 디렉터리만 노출하고, 자산별 문서는 README·검색으로 탐색한다. `docs/<asset-type>/` 아래에 자동 `INDEX.tsv`를 별도 생성하지 않는다. 일반 인덱스 선택 기준은 [Document Indexing](../../documentation/indexing.md)을 따른다.
 
 ## 완료·차단·인계
 

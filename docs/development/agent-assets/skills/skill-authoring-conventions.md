@@ -5,7 +5,7 @@ description: Agent Skill을 작성·리팩터링할 때 공통 표준·작성 �
 
 # Skill Authoring Conventions
 
-공통 Agent Asset 판단은 [Agent Asset Design Principles](../common/design-principles.md), 작성 원본과 결정별 권한은 [작성 원본과 권한](../../../development/source-authority.md)이 소유합니다. 정확한 Skill field, path, discovery 동작과 대상별 동작은 [Agent Skills Specification](specification.md)에서 현재 공식 source로 route합니다.
+공통 Agent Asset 판단은 [Agent Asset Design Principles](../design-principles.md), 작성 원본과 결정별 권한은 [작성 원본과 권한](../../../development/source-authority.md)이 소유합니다. 정확한 Skill field, path, discovery 동작과 대상별 동작은 [Agent Skills Specification](specification.md)에서 현재 공식 source로 route합니다.
 
 이 문서는 그 이후에도 반복해서 필요한 **Skill에만 해당하는 mols의 추가 관행**만 소유합니다.
 
@@ -56,13 +56,13 @@ Single-file Skill에서는 여러 top-level `#` heading을 **독립적인 Markdo
 
 ## Progressive Context
 
-Skill의 조건부 보조 resource에는 [Agent Asset Design Principles](../common/design-principles.md)의 Progressive Disclosure를 적용합니다. Resource를 분리했다면 핵심 본문의 가장 가까운 decision point에서 **무엇을 언제 읽는지** 발견할 수 있게 합니다.
+Skill의 조건부 보조 resource에는 [Agent Asset Design Principles](../design-principles.md)의 Progressive Disclosure를 적용합니다. Resource를 분리했다면 핵심 본문의 가장 가까운 decision point에서 **무엇을 언제 읽는지** 발견할 수 있게 합니다.
 
 더 일반적인 routing shape는 [Progressive Context Routing](../../../../catalog/patterns/context-engineering/progressive-context-routing.md)이 소유합니다.
 
 ## Context-Only Naming
 
-일반적인 Agent Asset naming은 [Agent Asset Naming Convention](../common/naming.md)이 소유합니다.
+일반적인 Agent Asset naming은 [Agent Asset Naming Convention](../naming.md)이 소유합니다.
 
 주책임이 workflow execution이 아니라 domain-specific context discovery/loading이면 Skill family extension으로 `<domain>-context`를 사용할 수 있습니다.
 
@@ -86,13 +86,13 @@ Skill의 조건부 보조 resource에는 [Agent Asset Design Principles](../comm
 
 ## Boundary
 
-- 공통 Agent Asset 설계 → [Agent Asset Design Principles](../common/design-principles.md)
-- Behavioral instruction 설계 → [Instruction Design](../common/instruction-design.md)
+- 공통 Agent Asset 설계 → [Agent Asset Design Principles](../design-principles.md)
+- Behavioral instruction 설계 → [Instruction Design](../instruction-design.md)
 - Standard와 target/source registry → [Agent Skills Specification](specification.md)
-- General Agent Asset naming → [Agent Asset Naming Convention](../common/naming.md)
+- General Agent Asset naming → [Agent Asset Naming Convention](../naming.md)
 - Progressive context routing → [Progressive Context Routing](../../../../catalog/patterns/context-engineering/progressive-context-routing.md)
 - Argument와 argument-gated disclosure → [Argument-Driven Assets](../../../../catalog/patterns/context-engineering/argument-driven-assets.md)
-- Maintainer documentation → [Agent Asset Management](../common/agent-asset-management.md#유지보수-문서)
+- Maintainer documentation → [Agent Asset Management](../agent-asset-management.md#유지보수-문서)
 - 작성 원본과 권한 → [작성 원본과 권한](../../../development/source-authority.md)
 - Repository-managed asset validation → [Validation](../../../development/validation.md)
 - Deterministic test 설계와 PR Gate → [Testing](../../../development/testing.md)

@@ -10,18 +10,13 @@ description: Agent Asset의 설계·워크플로·라이프사이클·유지보�
 
 ## Surfaces
 
-| Path | Responsibility |
-| --- | --- |
-| [`common/`](common/) | 자산 유형 공통의 설계·instruction·naming, 작업 흐름·라이프사이클과 유지보수 문서 배치 |
-| [`skills/`](skills/) | Skill-specific specification routing과 mols authoring convention |
-
-유지보수 문서의 배치·책임은 [Agent Asset Management](common/agent-asset-management.md#유지보수-문서)을 따릅니다. 이 README는 child inventory를 복제하지 않습니다.
+공통 설계·instruction·naming과 관리 워크플로는 이 디렉터리에 둡니다. Skill-specific specification·작성 규약은 [`skills/`](skills/)가 소유합니다. 유지보수 문서의 배치·책임은 [Agent Asset Management](agent-asset-management.md#유지보수-문서)을 따릅니다.
 
 ## Ownership
 
-- Asset type에 종속되지 않는 설계, 작업 선택, 라이프사이클과 유지보수 문서의 durable knowledge는 `common/`이 소유합니다.
+- Asset type에 종속되지 않는 설계, 작업 선택, 라이프사이클과 유지보수 문서의 durable knowledge는 이 디렉터리가 소유합니다.
 - Skill에만 적용되는 durable design meaning은 `skills/`가 소유합니다.
-- 같은 의미를 `common/`과 `skills/`가 함께 소유하지 않습니다. 다른 surface에서 필요하면 authoritative owner를 link합니다.
+- 같은 의미를 이 디렉터리와 `skills/`가 함께 소유하지 않습니다. 다른 surface에서 필요하면 authoritative owner를 link합니다.
 - Agent Asset을 자주 설계할 때 쓰인다는 이유만으로 recurring solution을 이 surface가 소유하지 않습니다. 여러 repository나 harness에서 선택·조합·변형할 수 있는 해결 방식이면 [Patterns](../../../catalog/patterns/README.md)가 소유합니다.
 
 ## Boundary

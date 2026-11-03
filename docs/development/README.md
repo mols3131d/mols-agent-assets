@@ -23,7 +23,7 @@ description: 저장소 개발 작업의 local policy, Agent Asset 설계 지식�
 ## Design and Tooling References
 
 - [Agent Asset Design](agent-assets/README.md) — 공통 설계·워크플로·라이프사이클·유지보수 문서 배치와 Skill-specific 작성 규약
-- [Agent Asset Management](agent-assets/common/agent-asset-management.md) — 작업 절차·상태·유지보수 문서 배치와 완료·인계 기준
+- [Agent Asset Management](agent-assets/agent-asset-management.md) — 작업 절차·상태·유지보수 문서 배치와 완료·인계 기준
 - [Tooling References](tooling/README.md) — 외부 도구·명세의 공식 source routing과 integration knowledge
 
 ## Related Owners

@@ -22,7 +22,7 @@ targets:
 ## Route
 
 1. 현재 ref·대상·요청 결과에서 **신설·이식 / 개선·튜닝 / 리뷰·검증·평가 / 제공·설치 / 은퇴·삭제 / 문서·인계** 중 필요한 상황을 정한다. 여러 상황이 함께 있으면 선택한 절차만 조합한다.
-2. `docs/development/agent-assets/common/agent-asset-management.md`에서 필요한 작업 절차와 상태·완료·유지보수 문서 기준을 선택한다. 저장소 원본·권한·검증·문서 정책은 `AGENTS.md`와 연결된 로컬 정본이 소유한다.
+2. `docs/development/agent-assets/agent-asset-management.md`에서 필요한 작업 절차와 상태·완료·유지보수 문서 기준을 선택한다. 저장소 원본·권한·검증·문서 정책은 `AGENTS.md`와 연결된 로컬 정본이 소유한다.
 3. 선택한 절차가 연결하는 기존 전문 Skill, 실제 source, 하네스 및 정책을 **필요할 때만** 읽는다. 저장소에서 사용하는 Skill의 native discovery를 우선하며 불가능할 때 `.agents/route/ROUTE.md`의 lock-backed route를 따른다. `src/` 소스와 외부 제공용 `route/`를 설치·사용 상태로 오인하지 않는다.
 4. 적용되는 `AGENTS.md`·Rule과 개별 전문 Skill의 방법론을 유지한다. `mols-agent-asset`은 자산 설계·개선·검증·평가, `mols-documentation`은 문서 내용, `mols-loops`는 필요한 경우에만 반복 제어를 맡는다. 찾지 못한 필수 자산을 불러온 것처럼 주장하지 않는다.
 

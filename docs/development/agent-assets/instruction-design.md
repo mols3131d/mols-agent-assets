@@ -60,7 +60,7 @@ Instruction은 **의도한 범위보다 넓게 적용되지 않도록 둡니다.
 - 권한이나 side effect가 중요한 행동은 무엇을 계속 수행할 수 있는지와 어디서 승인·handoff·중단이 필요한지 명시합니다.
 - 일반적인 precedence가 보장되지 않으면 충돌하는 instruction을 제거하거나 scope를 분리합니다.
 - 충돌을 제거할 권한이 없고 행동이 실질적으로 달라질 수 있으면 임의로 하나를 승자로 만들지 않습니다. 충돌을 드러내고 필요한 handoff 또는 중단을 명시합니다.
-- Source와 projection의 authority는 [작성 원본과 권한](../../../development/source-authority.md)을 따릅니다.
+- Source와 projection의 authority는 [작성 원본과 권한](../source-authority.md)을 따릅니다.
 
 ## Context, Rationale and Examples
 
