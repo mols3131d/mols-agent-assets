@@ -27,6 +27,7 @@ Review에서 목표·근거·스펙·테스트·코드 중 결함 원인을 특�
 - Artifact 종류/ID 또는 파일명 변경 → 영향받는 Workflow와 기존 소비자·문서 산출물의 이관을 확인한다.
 - Workflow 순서/의존 관계 변경 → 결함의 복귀 경로, 재확인 대상, 실제 유지되는 산출물의 범위를 검토한다.
 - Script 변경 → [deterministic tests](../../../tests/skills/mols-software-spec/test_flow.py)로 기본·focused 구성, 스키마 실패, spec/test stage 복귀, multi-finding, blocked/candidate complete를 확인한다.
+- [Behavior eval cases](../../../evals/skills/mols-software-spec/cases.json)는 spec-driven 요청의 활성화, 작업 관리·일상 코딩·단독 테스트 리뷰의 비활성화, Review 복귀 및 ChatGPT 실행 제약을 확인하기 위한 대표 사례다. **Fixture를 추가한 사실은 실제 모델 평가 통과를 뜻하지 않는다.**
 - 모델이 실제로 Skill을 선택하고 올바른 소스·근거를 확인하는지는 별도 **runtime behavior evaluation**으로 다룬다. 정적 구조 테스트와 로컬 Python 실행은 ChatGPT Chat 지원의 증거가 아니다.
 - 스크립트와 Skill 경로를 현재 프로젝트에 복제하는 설치·추적 체계를 만들지 않는다. 현재 재사용 작성 원본과 관리 문서는 이 저장소가 소유하나, 외부 프로젝트의 실행 규칙은 그 환경이 소유한다.
 
