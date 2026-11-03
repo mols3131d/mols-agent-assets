@@ -1,156 +1,65 @@
 ---
 title: Rulesync
-description: Rulesync 자산의 authoring workspace·target·source/derived boundary를 판단하거나 fetch·import·generate 같은 current CLI·schema·target 문서를 찾을 때 사용합니다.
+description: Rulesync의 repository-local·재사용 workspace, 작성 원본과 생성 결과, target 범위 및 공식 CLI·schema 문서의 참조 경로를 확인할 때 사용합니다.
 ---
 
 # Rulesync
 
-이 문서는 **이 저장소의 Rulesync integration boundary와 official source routing**을 함께 소유합니다. Schema, file format, feature, target namespace, target adapter와 CLI semantics는 current upstream Rulesync가 authoritative합니다.
+Rulesync는 공통 작성 원본을 target별 Agent Asset 형식으로 투영하고 외부 Rulesync dependency를 설치하는 도구입니다. 이 문서는 **저장소 통합 구조와 공식 문서의 탐색 경로**를 다룹니다. Schema·CLI 옵션·adapter의 실제 동작은 [Rulesync 공식 문서](https://rulesync.dyoshikawa.com/)가 소유하고, 이 저장소의 버전·설치 승인·인증 예외는 [프로젝트 Rulesync 운영 안내](../../tools/rulesync.md)가 소유합니다.
 
-## Repository Integration
+## Workspace와 작성 원본
 
-### Workspaces
-
-| Workspace | 책임 |
-| --- | --- |
-| root `.rulesync/` + `rulesync.jsonc` | 실제 필요가 있을 때만 사용하는 repository-local Rulesync assets/configuration |
-| `src/rulesync/.rulesync/` + `src/rulesync/rulesync.jsonc` | 재사용 Rulesync asset library의 canonical authoring source |
-
-두 workspace는 독립적입니다. Repository-specific asset을 reusable library에 넣지 않고, library를 root에 mirror하거나 자동 활성화하지 않습니다.
-
-### Repository-local installation
-
-Root [`rulesync.jsonc`](../../../rulesync.jsonc)의 dependency는 GitHub shorthand와 `github` transport를 사용합니다. `mise run setup`은 dependency를 설치하지 않으며, 별도 승인 후 공식 `rulesync install --frozen`을 실행합니다. Git clone이나 LF 보정 wrapper를 사용하지 않으므로 `core.autocrlf`와 상속한 `GIT_CONFIG_*` 인증 설정을 변경하지 않습니다. 프로젝트의 설정·버전 예외는 [Rulesync](../../tools/rulesync.md), PC별 PATH 경계는 [mise](../../tools/mise.md#shared-and-local-environment)를 따릅니다.
-
-GitHub transport는 Git credential helper 대신 `GITHUB_TOKEN` 또는 `GH_TOKEN`을 사용합니다. 공개 저장소도 지원 파일이 많으면 무인증 API rate limit에 도달할 수 있으므로 설치 프로세스에만 유효한 토큰을 전달합니다. 예를 들어 PowerShell에서는 다음처럼 기존 환경을 보존한 채 GitHub CLI의 인증을 사용할 수 있습니다. 토큰 값은 로그나 committed config에 남기지 않습니다.
-
-```powershell
-$previousToken = $env:GITHUB_TOKEN
-try {
-    $env:GITHUB_TOKEN = gh auth token
-    if ($LASTEXITCODE -ne 0) { throw "GitHub CLI authentication is required" }
-    mise exec -- rulesync install --frozen
-} finally {
-    $env:GITHUB_TOKEN = $previousToken
-}
-```
-
-[`rulesync.lock`](../../../rulesync.lock)은 공식 CLI가 소유합니다. Config와 lock의 source 표기를 일치시키고, transport나 lock schema를 이전할 때 `install --update`로 dependency revision을 갱신하지 않습니다. Plain `rulesync install`은 기존 locked ref에서 legacy entry를 다시 읽어 `skillSelection`·`skillsPath`와 integrity를 기록합니다. Windows Git transport에서 생성한 hash가 경로 구분자를 포함했다면 GitHub transport의 POSIX 경로 hash와 다를 수 있으므로, 이를 수용하기 전에 동일 revision의 전체 파일 목록과 바이트가 같은지 확인합니다. 이후 `install --frozen`으로 새 설치와 재실행의 성공 및 lock 불변을 검증합니다.
-
-Git에서 제외된 `rulesync.local.jsonc`는 PR로 변경하지 않습니다. 각 checkout에서 이전 transport·URL만 중복한 `sources` override를 검토하고 불필요한 항목만 제거합니다. 다른 로컬 설정이나 유효한 PATH·인증 정보는 보존합니다.
-
-### Canonical and Derived
-
-```text
-src/rulesync/.rulesync/
-  author / edit / review / evaluate
-            ↓ Rulesync
-runtime usage surface
-  consume / run
-```
-
-- `src/rulesync/.rulesync/`가 Rulesync-managed reusable asset의 authority입니다.
-- Repository verification은 `tests/`, `evals/`가 소유합니다.
-- Generated vendor projection과 Rulesync lock state는 reusable source가 아닙니다.
-- `route/`는 library metadata에서 파생되는 cross-runtime discovery surface이며 canonical body를 대체하지 않습니다. 세부 contract는 [`route/README.md`](../../../route/README.md)가 소유합니다.
-
-### External Sources, Fetch, Import, and Convert
-
-Rulesync가 외부 자산을 다루는 경로는 **원본 형식과 목적**에 따라 구분합니다.
-
-| 목적 | Rulesync 경로 | Authority |
+| 구분 | 작성·설정 위치 | 역할 |
 | --- | --- | --- |
-| 외부 Rulesync-compatible Rule·Skill을 dependency로 사용 | declarative `sources` / `add` / `install` | upstream source |
-| remote repository의 target-native 자산을 Rulesync 작성 원본으로 흡수 | `fetch <source> --target <target>` | 검토 후 채택한 `.rulesync/` source |
-| 이미 작업 공간에 있는 target-native 자산을 Rulesync 작성 원본으로 흡수 | `import --targets <target>` | 검토 후 채택한 `.rulesync/` source |
-| Canonical source 없이 target 형식끼리 일회성 변환 | `convert --from <target> --to <target>` | 변환의 실제 source |
+| 저장소 자체 사용 | [`.rulesync/`](../../../.rulesync/), [`rulesync.jsonc`](../../../rulesync.jsonc) | 이 저장소 전용 자산 및 외부 dependency의 소비 설정 |
+| 재사용 자산 | [`src/rulesync/.rulesync/`](../../../src/rulesync/.rulesync/), [`src/rulesync/rulesync.jsonc`](../../../src/rulesync/rulesync.jsonc) | 여러 프로젝트에 제공할 Rulesync 작성 원본과 별도 projection 설정 |
 
-Declarative source는 외부 Skill dependency의 유일한 설치 경로가 아닙니다. Rulesync를 거치는 편이 불필요하게 복잡하거나 원본 package/resource를 충실히 보존하기 어렵다면 [skills CLI](skills-cli.md) 같은 Skill-native installer로 route합니다. 구체적인 선택 기준은 [작성 원본과 권한](../../development/source-authority.md)이 소유합니다.
+두 workspace는 독립적입니다. `src/`에 관리되는 자산이 이 저장소에 자동 설치·활성화되는 것은 아니며, root에 재사용 원본의 복제본을 만들지도 않습니다. 재사용 vendor-native 원본은 `src/<vendor>/`에서 별도로 관리합니다. 원본 형식과 위치를 고르는 정책은 [작성 원본과 권한](../source-authority.md)을 따릅니다.
 
-`fetch --target`과 `import`는 source 위치가 다릅니다. `fetch --target`은 remote repository의 파일을 지정한 target 형식으로 해석해 Rulesync source로 가져오고, `import`는 현재 작업 공간에 이미 존재하는 target configuration을 읽습니다. External revision이 중요하면 fetch 시 ref를 고정하고 provenance를 보존합니다.
+- **작성 원본:** 각 workspace의 `.rulesync/`. 사람이 수정·리뷰하는 대상입니다.
+- **파생 결과:** Rulesync가 생성한 vendor별 파일. 원본을 대신하거나 독립적인 작성 원본이 되지 않습니다.
+- **의존성 상태:** root [`rulesync.lock`](../../../rulesync.lock). 외부 revision의 잠금 기준이지 실제 설치·적용 여부의 증거는 아닙니다.
+- **탐색 결과:** [`route/`](../../../route/). 자산의 본문을 대체하지 않으며 생성·관리 계약은 [Route 안내](../../../route/README.md)를 따릅니다.
 
-Fetch/import가 성공했다는 사실만으로 원본과 완전한 semantic parity를 보장하지 않습니다. Target/feature별 지원 범위와 supporting resource 보존 여부를 확인하고 결과를 검토합니다. 표현할 수 없는 동작을 local shadow schema나 임의 wrapper로 보완해 Rulesync-compatible인 것처럼 만들지 않습니다.
+## 작업에 맞는 경로
 
-Rulesync의 `fetch`는 현재 upstream에서 development 상태로 명시되어 있으므로 사용 시 현재 release의 contract를 다시 확인합니다. 외부 자산을 dependency로 사용할지 작성 원본으로 흡수할지에 대한 정책은 [작성 원본과 권한](../../development/source-authority.md)이 소유합니다.
-
-### Target and Schema
-
-`src/rulesync/rulesync.jsonc`는 이 library가 적극적으로 유지하는 **vendor support ceiling**을 선언합니다. 현재 target 이름과 feature 목록은 config가 authority이며 이 문서에 복제하지 않습니다.
-
-실제 target applicability는 가능한 한 **개별 asset이 소유**합니다.
-
-- Rule, Skill, Subagent, Command는 `targets`를 명시하고 그 asset이 실제로 의미 있게 projection될 수 있는 target만 선언합니다.
-- upstream Rulesync나 target runtime이 해당 asset type 또는 필요한 semantics를 지원하지 않으면 그 target을 선언하지 않습니다.
-- 재사용 Command는 `src/rulesync/.rulesync/commands/*.md`에서 작성합니다. 신규 Command의 target을 정할 때 native 지원 범위, Skill 변환·이름 충돌, 기능 폐지 여부를 확인합니다.
-- 이 repository의 reusable asset에서는 생략 또는 `targets: ["*"]`에 의존하지 않습니다. Broad portability도 현재 유지 대상들을 명시적으로 열거합니다.
-- workspace target에 포함되어 있다는 이유만으로 모든 asset이 그 target을 지원한다고 간주하지 않습니다.
-- `agentsskills`는 vendor support ceiling에 포함하지 않습니다. Root self-consumer나 ChatGPT compatibility처럼 **실제 내부 consumer가 필요한 Skill에만** internal projection target으로 사용할 수 있습니다. 이는 Agent Skills 생태계 전체를 지원한다는 약속이 아닙니다.
-
-Per-asset targeting은 다른 configuration layer를 대체하지 않습니다. Rulesync의 per-target feature configuration, target-specific metadata section, local config, CLI override와 upstream adapter semantics는 각각 필요한 책임을 계속 소유합니다. 현재 projection 대상이 아니라는 이유만으로 유효한 target-specific metadata를 삭제하지 않습니다. 더 구체적인 설정이 필요한 경우 해당 공식 Rulesync contract를 사용하고 local shadow schema를 만들지 않습니다.
-
-Repository-local superset schema나 manual projection semantics는 만들지 않습니다. Vendor-native authored source의 선택과 배치는 [작성 원본과 권한](../../development/source-authority.md)을 따릅니다.
-
-### Deterministic validation
-
-Reusable Agent Asset validation은 `scripts/agent_assets/rulesync_validate.py`가 Rulesync CLI를 orchestration하는 방식으로 수행합니다. Validator는 Rulesync schema나 target adapter를 복제하지 않고 configuration, configured projection, asset-declared target projection을 모두 read-only로 실행하며 Rulesync warning도 failure로 승격합니다.
-
-이 검증은 개별 asset이 선언한 `targets`를 존중합니다. 선언하지 않은 target이나 별도의 open-standard compatibility를 검증했다고 확대 해석하지 않습니다.
-
-## Local Entry Points
-
-| 확인할 것 | Source |
+| 하려는 일 | 확인할 곳 |
 | --- | --- |
-| reusable Rulesync workspace와 canonical assets | [`src/rulesync/`](../../../src/rulesync/) |
-| library configuration | [`src/rulesync/rulesync.jsonc`](../../../src/rulesync/rulesync.jsonc) |
-| Agent Asset Rulesync validator | [`scripts/agent_assets/rulesync_validate.py`](../../../scripts/agent_assets/rulesync_validate.py) |
-| direct doctor·preview task | [`mise.toml`](../../../mise.toml) (native Rulesync CLI with `dir = "src/rulesync"`) |
-| repository command entrypoints | [`mise.toml`](../../../mise.toml) |
+| 이 저장소에서 외부 Rulesync dependency 사용·재설치 | root `rulesync.jsonc`와 `rulesync.lock`, [Declarative Sources](https://github.com/dyoshikawa/rulesync/blob/main/docs/guide/declarative-sources.md) |
+| 재사용 Rule·Skill·Subagent·Command 작성 또는 수정 | `src/rulesync/.rulesync/`와 [File Formats](https://github.com/dyoshikawa/rulesync/blob/main/docs/reference/file-formats.md) |
+| 원격 target-native 자산을 Rulesync 작성 원본으로 가져오기 | `fetch` |
+| 현재 workspace에 존재하는 target-native 자산 가져오기 | `import` |
+| 작성 원본을 채택하지 않는 일회성 target 간 변환 | `convert` |
+| Rulesync 대신 외부 Skill installer로 dependency 사용 | [skills CLI 통합 안내](skills-cli.md) |
 
-현재 값이나 command를 이 문서에 복제하지 않습니다. 작업 시 위 source를 읽습니다.
+`fetch`·`import`·`convert`의 옵션과 지원 범위는 [CLI Commands](https://github.com/dyoshikawa/rulesync/blob/main/docs/reference/cli-commands.md)에서 확인합니다. 가져온 결과는 자동으로 canonical이 되지 않습니다. 필요한 동작, supporting resources, license·provenance, 대상별 지원을 검토한 뒤 채택합니다. 설치할지 작성 원본으로 흡수할지는 [작성 원본과 권한](../source-authority.md)의 결정입니다.
 
-## Frequent Official References
+### Root dependency 설치의 경계
 
-| 판단 | 공식 source |
+Root dependency는 `rulesync.jsonc`에 선언되며 GitHub transport를 사용합니다. Core `mise run setup`에서 설치하지 않습니다. 별도 승인과 설치 대상 확인 후 `rulesync install --frozen`을 사용하고, 필요한 GitHub token은 **설치 프로세스에만** 전달합니다. `GITHUB_TOKEN`·`GH_TOKEN`이나 개인별 `rulesync.local.jsonc`를 저장소에 기록하지 않습니다. 상세한 재현·승인·인증 지침은 [프로젝트 운영 안내](../../tools/rulesync.md)를 따릅니다.
+
+`rulesync.lock`의 revision과 설치 상태, Rulesync 자체 CLI 버전은 서로 다른 상태입니다. Lock·transport·schema의 수정만을 이유로 외부 asset revision을 갱신하지 않습니다.
+
+## Target과 검증
+
+재사용 library의 [`rulesync.jsonc`](../../../src/rulesync/rulesync.jsonc)가 repository에서 유지할 target·feature의 **상한**을 선언합니다. 그러나 실제 적용 대상은 개별 Rule·Skill·Subagent·Command가 선언하는 `targets`를 기준으로 확인합니다.
+
+- 이 저장소의 재사용 자산은 의미 있게 지원하는 target을 명시적으로 나열합니다. Workspace 설정이나 wildcard만으로 개별 자산의 호환성을 가정하지 않습니다.
+- 개별 target의 원본 표현력, metadata, feature mode와 생성 경로는 Rulesync 및 해당 runtime의 현재 공식 계약을 따릅니다. 지원하지 않는 동작을 임의의 로컬 schema로 보충하지 않습니다.
+- `agentsskills`는 필요한 내부 소비자가 있는 Skill에서만 쓰는 projection target이며, 재사용 library의 vendor 지원 범위에 넣지 않습니다. 전체 Agent Skills 생태계의 지원 선언으로 해석하지 않습니다.
+
+재사용 자산의 결정론적 검증은 [`scripts/agent_assets/rulesync_validate.py`](../../../scripts/agent_assets/rulesync_validate.py)가 수행합니다. 이 스크립트는 `src/rulesync`에서 Rulesync `doctor --strict`와 `generate --dry-run`을 실행하고 warning도 실패로 취급합니다. 이 확인은 **설정과 선언된 projection의 구조적 검증**이며 runtime 동작·의미적 동등성·지원하지 않는 target까지 검증했다는 뜻이 아닙니다. 실행 진입점은 [`mise.toml`](../../../mise.toml)을 확인합니다.
+
+## 공식 문서 찾기
+
+| 확인 사항 | 공식 자료 |
 | --- | --- |
-| Rulesync 문서 탐색 시작 | [Documentation](https://rulesync.dyoshikawa.com/) · [Repository](https://github.com/dyoshikawa/rulesync) |
-| `rulesync.jsonc`, target/feature와 configuration field | [Configuration](https://github.com/dyoshikawa/rulesync/blob/main/docs/guide/configuration.md) · [Latest config schema](https://github.com/dyoshikawa/rulesync/releases/latest/download/config-schema.json) |
-| Rules, Skills, Subagents 등 source/target file shape | [File Formats](https://github.com/dyoshikawa/rulesync/blob/main/docs/reference/file-formats.md) |
-| `doctor`, `generate`, `fetch`, `import`, `convert`, `install`, `docs` 등 command와 option | [CLI Commands](https://github.com/dyoshikawa/rulesync/blob/main/docs/reference/cli-commands.md) |
-| target 이름과 feature support | [Supported Tools](https://github.com/dyoshikawa/rulesync/blob/main/docs/reference/supported-tools.md) |
-| 특정 target adapter의 상세 동작 | [Tool Documentation](https://github.com/dyoshikawa/rulesync/tree/main/docs/tools) |
-| 예상과 다른 동작·자주 묻는 문제 | [FAQ](https://github.com/dyoshikawa/rulesync/blob/main/docs/faq.md) |
-| 최근 변경과 compatibility 확인 | [Releases](https://github.com/dyoshikawa/rulesync/releases) |
+| Configuration·schema | [Configuration](https://github.com/dyoshikawa/rulesync/blob/main/docs/guide/configuration.md), [config schema](https://github.com/dyoshikawa/rulesync/releases/latest/download/config-schema.json) |
+| Command·option·lock 처리 | [CLI Commands](https://github.com/dyoshikawa/rulesync/blob/main/docs/reference/cli-commands.md) |
+| Target별 feature·mode·file shape | [Supported Tools](https://github.com/dyoshikawa/rulesync/blob/main/docs/reference/supported-tools.md), [File Formats](https://github.com/dyoshikawa/rulesync/blob/main/docs/reference/file-formats.md) |
+| Target adapter의 예외 | [Tool Documentation](https://github.com/dyoshikawa/rulesync/tree/main/docs/tools) |
+| 변경·호환성 확인 | [Releases](https://github.com/dyoshikawa/rulesync/releases) |
 
-## Situational References
+프로젝트에 설치된 버전의 상세 계약을 확인하려면 `rulesync docs`, `rulesync docs <document>`, `rulesync docs --search <term>`을 사용할 수 있습니다. 최신 동작은 공식 문서, 과거 동작은 해당 버전의 문서와 릴리스에서 확인합니다.
 
-- 외부 Rulesync-compatible Rule·Skill을 dependency로 선언하고 설치한다 → [Declarative Sources](https://github.com/dyoshikawa/rulesync/blob/main/docs/guide/declarative-sources.md)
-- Rulesync 경유가 비효율적인 외부 Skill dependency를 설치한다 → [skills CLI](skills-cli.md)
-- remote repository의 target-native 자산을 Rulesync source로 가져온다 → [CLI Commands: Fetch](https://github.com/dyoshikawa/rulesync/blob/main/docs/reference/cli-commands.md#fetch-command)
-- 이미 존재하는 target-native configuration을 `.rulesync/`로 가져오거나 target 간 직접 변환한다 → [CLI Commands](https://github.com/dyoshikawa/rulesync/blob/main/docs/reference/cli-commands.md)
-- 실제 write 없이 generation 결과를 확인한다 → [Dry Run](https://github.com/dyoshikawa/rulesync/blob/main/docs/guide/dry-run.md)
-- input/output root 구성을 바꾼다 → [Separate Input Root](https://github.com/dyoshikawa/rulesync/blob/main/docs/guide/separate-input-root.md)
-- global configuration을 사용한다 → [Global Mode](https://github.com/dyoshikawa/rulesync/blob/main/docs/guide/global-mode.md)
-- simulated feature의 의미를 판단한다 → [Simulated Features](https://github.com/dyoshikawa/rulesync/blob/main/docs/guide/simulated-features.md)
-- Agent가 Rulesync 자체 사용법을 로드해야 한다 → [Official Rulesync Skill](https://github.com/dyoshikawa/rulesync/blob/main/skills/rulesync/SKILL.md)
-
-## Lookup
-
-Rulesync-specific detail을 판단할 때 기억이나 이 문서보다 current official source를 우선합니다. 특히 target adapter, metadata field, generated path, feature support와 CLI option은 작업 시점에 다시 확인합니다.
-
-CLI에서 bundled documentation을 직접 조회할 수도 있습니다.
-
-```bash
-rulesync docs
-rulesync docs <document>
-rulesync docs --search <term>
-```
-
-프로젝트에서는 mise로 준비한 CLI를 사용합니다. 최신 upstream 문서는 공식 사이트에서 조회하고, historical compatibility를 조사할 때는 해당 release/tag의 문서를 확인합니다.
-
-## Boundary
-
-- authored source placement와 target authority → [작성 원본과 권한](../../development/source-authority.md)
-- runtime semantics → target contract
-- Skill authoring → [Skill Authoring Conventions](../agent-assets/skills/skill-authoring-conventions.md)
-- filesystem naming → [Naming](../agent-assets/common/naming.md)
-- verification → [Testing](../../development/testing.md)
+문서 작성 규칙이나 검증 전반은 각각 [Skill 작성 규약](../agent-assets/skills/skill-authoring-conventions.md), [Testing](../testing.md)을 따릅니다.
