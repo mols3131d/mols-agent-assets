@@ -100,6 +100,39 @@
         "Separates failing tests caused by missing implementation from invalid expectations or infrastructure errors.",
         "Does not declare overall completion until the specified code implementation and evidence-based Review are finished."
       ]
+    },
+    {
+      "id": "select-hierarchical-domain-change",
+      "mode": "activation",
+      "prompt": "스펙 루트 아래 changes/에 결제 환불 검증 기능 변경을 만들고, payments/refunds/validation처럼 중첩된 도메인 specs/ 정본에 완료된 요구사항만 흡수하는 흐름을 설계하고 진행해줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-spec-stdd"
+        ],
+        "primary_skill": "mols-spec-stdd"
+      }
+    },
+    {
+      "id": "separate-change-from-canonical-domain",
+      "mode": "skill",
+      "prompt": "refund-validation 변경에서 payments/refunds/validation과 accounts/permissions 두 도메인의 요구사항을 바꿨어. 검증이 끝난 변경 내용을 어디에 보존하고, 현재 도메인 스펙은 어떻게 갱신해?",
+      "assertions": [
+        "Separates the active changes/<change-id>/specs/<domain-path>/spec.md deltas from specs/<domain-path>/spec.md canonical specifications.",
+        "Preserves arbitrarily nested domain paths and merges only affected requirement blocks while retaining unrelated current requirements.",
+        "Keeps completed change context under changes/archive/ and does not treat archived deltas as a second live source of truth.",
+        "Does not equate task tracker state or implementation source files with long-term domain specifications."
+      ]
+    },
+    {
+      "id": "reject-stale-or-unverified-promotion",
+      "mode": "skill",
+      "prompt": "변경 설계 때 만든 delta의 base가 지금 정본과 달라졌고 테스트 결과도 확인되지 않았어. 그냥 도메인 specs/에 덮어쓰고 change를 archive해도 될까?",
+      "assertions": [
+        "Rejects blind promotion when the canonical domain spec changed after the delta baseline and requires review/rebase.",
+        "Requires actually supported Review PASS and relevant test or acceptance evidence before completion; references alone are not claimed to verify execution.",
+        "Uses preview and explicit authorized apply or provider optimistic concurrency when script execution is unavailable.",
+        "Does not overwrite the current spec or archive a change while blocked."
+      ]
     }
   ]
 }
