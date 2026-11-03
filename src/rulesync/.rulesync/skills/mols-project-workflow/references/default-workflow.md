@@ -28,7 +28,7 @@ flowchart TD
 
 1. 목표·수락 조건·이번에 실제 수행할 범위를 정한다. 기존 프로젝트 지침·사용자 선택·도구 권한이 우선한다.
 2. 요청을 **Task-only / Spec-only / Combined / Small edit**로 판별한다. Task-only면 필요 없는 Spec 파일을 읽지 않고, Spec-only면 task를 새로 만들지 않는다.
-3. 실제 repository/workspace, **Task root/ref, Spec root/ref, Code ref** 중 이번 작업에 필요한 것만 확인한다. 사용자 지정 경로와 branch를 기본값으로 덮어쓰지 않는다. 경로가 불명확하면 쓰기 전에 확인한다.
+3. 실제 repository/workspace, **Task root/ref, Spec root/ref, Code ref** 중 이번 작업에 필요한 것만 확인한다. **처음 설정하는 프로젝트라면 [Project Bootstrap](bootstrap.md)을 적용**해 사용자 선택 경로, 첫 파일, 브랜치를 결정한다. 경로가 불명확하면 쓰기 전에 확인하고 기본값으로 덮어쓰지 않는다.
 4. 관련 Work Item이 있다면 `doing`의 재개 가능성을 먼저 살피고, `todo`는 의존 작업이 실제로 완료된 경우만 ready로 본다. blocked/unknown을 우선순위로 우회하지 않는다.
 5. 실행 가능한 도구, 읽기·쓰기 권한, 필요한 파일의 최신 상태를 확인한다. 실행 권한이나 검증 근거가 없으면 가능한 부분과 한계를 구별한다.
 
