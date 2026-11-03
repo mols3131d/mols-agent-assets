@@ -25,7 +25,7 @@ Rulesync는 선택한 작성 원본에서 벤더별 Agent Asset을 생성하고 
 
 ## 상세 경계와 공식 문서
 
-[Rulesync 통합 reference](../development/tooling/rulesync.md)는 workspace·target·source/derived 경계와 공식 문서 탐색을 맡습니다. 이 문서는 프로젝트의 설정·버전 선택과 운영 예외만 설명합니다.
+[Rulesync 참조 안내](../development/tooling/rulesync.md)는 저장소에서 사용하는 공식 Skill과 upstream 문서로 안내합니다. 이 문서는 프로젝트의 설정·버전 선택과 운영 예외만 설명합니다.
 
 - [Official documentation](https://rulesync.dyoshikawa.com/)
 - [Releases](https://github.com/dyoshikawa/rulesync/releases)
