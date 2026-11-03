@@ -40,7 +40,7 @@ description: 이 저장소의 Agent Asset 신설·개선·리뷰·평가·제공
 
 ## 은퇴·삭제
 
-작성 원본 또는 agent-facing capability를 삭제할 때는 재사용 Skill `mols-agent-asset-delete`의 영향 추적·처리 결정·제거·잔여 검증 절차를 사용한다. 이 저장소에서는 실제 소비자, dependent asset, route, lock, 예제, 평가 fixture, 문서와 이전 경로를 관련 owner에 따라 확인한다. 단순 설치 해제나 rename에는 삭제 절차를 확대 적용하지 않는다. 사용 중인 소비자와의 연결을 끊는 변경은 명시적 범위·권한을 확인하고 수행한다. 불필요한 archive나 흔적 보존을 기본으로 만들지 않는다. 필요한 마이그레이션과 문서 영향 확인을 완료하지 못하면 [Lifecycle](agent-asset-lifecycle.md)에 따라 인계한다.
+작성 원본 또는 agent-facing capability를 삭제할 때는 재사용 Skill [`mols-agent-asset-delete`](../../src/rulesync/.rulesync/skills/mols-agent-asset-delete/SKILL.md)의 영향 추적·처리 결정·제거·잔여 검증 절차를 활용한다. 해당 Skill을 실행 환경에서 사용할 수 없다면 확인한 source와 이 문서의 저장소 전용 절차로 진행하고 대체 수행 범위를 구분한다. 이 저장소에서는 실제 소비자, dependent asset, route, lock, 예제, 평가 fixture, 문서와 이전 경로를 관련 owner에 따라 확인한다. 단순 설치 해제나 rename에는 삭제 절차를 확대 적용하지 않는다. 사용 중인 소비자와의 연결을 끊는 변경은 명시적 범위·권한을 확인하고 수행한다. 불필요한 archive나 흔적 보존을 기본으로 만들지 않는다. 필요한 마이그레이션과 문서 영향 확인을 완료하지 못하면 [Lifecycle](agent-asset-lifecycle.md)에 따라 인계한다.
 
 ## 문서 작업
 
