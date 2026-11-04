@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+
+description: mols-stdd local trigger and behavior model evaluation
+
+prompts:
+  - file://skill-chat.json
+
+providers:
+  - id: "{{ env.PROMPTFOO_RUNTIME_PROVIDER }}"
+    label: mols-stdd-trigger
+    config:
+      temperature: 0
+  - id: "{{ env.PROMPTFOO_RUNTIME_PROVIDER }}"
+    label: mols-stdd-behavior
+    config:
+      temperature: 0
+
+tests:
+  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_native_tests
+    config:
+      skill: mols-stdd
+      suite: trigger
+      semantic: false
+  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_native_tests
+    config:
+      skill: mols-stdd
+      suite: behavior
+      semantic: true
+      rubric_threshold: 0.8
+
+sharing: false
+writeLatestResults: false
+commandLineOptions:
+  cache: false
+  write: false
+  noShare: true
+  maxConcurrency: 1
