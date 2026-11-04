@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "name": "focused",
+  "steps": [
+    {
+      "id": "specification",
+      "artifacts": [
+        "specification"
+      ],
+      "after": []
+    },
+    {
+      "id": "code-implementation",
+      "artifacts": [
+        "code-implementation"
+      ],
+      "after": [
+        "specification"
+      ]
+    },
+    {
+      "id": "review",
+      "artifacts": [],
+      "after": [
+        "specification",
+        "code-implementation"
+      ]
+    }
+  ]
+}

@@ -8,8 +8,6 @@ description: 저장소 개발 작업의 local policy, Agent Asset 설계 지식�
 
 ## Local Policies
 
-- [Agent Asset Workflows](agent-asset-workflows.md) — Agent Asset 신설·개선·리뷰·평가·제공·삭제·문서 작업의 상황별 절차
-- [Agent Asset Lifecycle](agent-asset-lifecycle.md) — 자산의 관리·사용 상태와 문서·검증·인계 종료 기준
 - [Development Principles](principles.md) — 여러 유효한 구현 사이에서 효과성, 운영 편의성, 단순성, 추상화와 변경 범위를 판단하는 공통 원칙
 - [Development Environment](development-environment.md) — 개발환경 구축·복구·업데이트 운영 정책의 정본과 사용자 설치 허가 경계
 - [VCS / Git](vcs-git.md) — branch policy와 naming, commit convention과 enforcement boundary
@@ -24,7 +22,8 @@ description: 저장소 개발 작업의 local policy, Agent Asset 설계 지식�
 
 ## Design and Tooling References
 
-- [Agent Asset Design](agent-assets/README.md) — 공통 설계 원칙, instruction 설계, naming과 Skill-specific specification·authoring convention
+- [Agent Assets](agent-assets/README.md) — 공통 설계·워크플로·라이프사이클·유지보수 문서 배치와 Skill-specific 작성 규약
+- [Agent Asset Management](agent-assets/agent-asset-management.md) — 작업 절차·상태·유지보수 문서 배치와 완료·인계 기준
 - [Tooling References](tooling/README.md) — 외부 도구·명세의 공식 source routing과 integration knowledge
 
 ## Related Owners
@@ -33,7 +32,7 @@ description: 저장소 개발 작업의 local policy, Agent Asset 설계 지식�
 - Documentation rules and conventions → [`docs/documentation/`](../documentation/)
 - 프로젝트 도구의 기본 설정·버전 선택·예외 → [Tools](../tools/README.md)
 - Reusable solution patterns → [Patterns](../../catalog/patterns/README.md)
-- Rulesync source/workspace boundary → [Rulesync](tooling/rulesync.md)
+- Rulesync source/workspace boundary → [Source Authority](source-authority.md) · [프로젝트 Rulesync 운영 안내](../tools/rulesync.md)
 - Skill authoring convention → [Skill Authoring Conventions](agent-assets/skills/skill-authoring-conventions.md)
 
 이 README는 development entrypoint이며 linked policy의 본문을 복제하지 않습니다.
