@@ -7,7 +7,7 @@
 1. 프로젝트 지침과 실제 파일·Git ref를 확인한다. 기존 Work·Spec 정본이 있으면 중복 구조를 만들지 않는다.
 2. 사용자가 work root, 필요한 spec root와 각 repository/ref를 정한다. 같은 디렉터리·ref여도 되고 별개여도 된다. 코드 ref는 구현할 때 확인한다. Git이 없으면 workspace와 경로를 사용한다.
 3. 이미 선택된 위치는 다시 묻지 않는다. 결정되지 않았고 기존 소유자도 없으면 후보를 제시하고 **쓰기 전에 선택받는다**. `.work/`, `tasks/`, `spec/` 또는 특정 branch를 기본값으로 강제하지 않는다.
-4. 지정 ref를 읽고 현재 상태·권한을 확인한다. 새 branch가 필요하면 이름과 출발 ref를 확인한다. 다른 계정·branch를 대체 수단으로 쓰지 않는다.
+4. 지정 ref를 읽고 현재 상태·권한을 확인한다. tag·commit처럼 직접 쓸 수 없는 ref에 기록하지 않는다. 새 branch가 필요하면 이름과 출발 ref를 확인하고 승인된 범위에서 만든다. 다른 계정·branch를 대체 수단으로 쓰지 않는다.
 
 ## Single Change Layout
 
@@ -45,7 +45,7 @@ feature/login:docs/behavior/specs/auth/login/spec.md   # 검증 후
 
 ## First Record
 
-1. 선택한 root/ref에서 기존 `changes/**/work.md`를 확인한다. 아무 Markdown이나 Change로 간주하지 않는다.
+1. 선택한 root/ref에서 기존 `changes/**/work.md`를 확인한다. 아무 Markdown이나 Change로 간주하지 않는다. Change ID·도메인 경로가 절대 경로·`..`·심볼릭 링크를 통해 선택한 root 밖을 가리키지 않는지 확인한다.
 2. 실제 목표가 있을 때 `changes/<id>/work.md`를 작성한다. 최소한 H1과 `status: todo`를 사용하고 완료 조건·다음 행동은 실질적일 때 추가한다. `depends_on`은 실제로 존재하는 선행 Change에만 쓴다.
 3. 행동 요구사항이 바뀔 때만 동일 ID에 명세 delta를 추가한다. 기존 정본을 먼저 읽어 기준을 확인하고 완료 전에는 정본으로 흡수하지 않는다.
 4. 작성 결과를 **선택한 각 ref에서 재조회**하고 생성 파일·현재 상태·다음 행동을 보고한다.

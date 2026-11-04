@@ -70,18 +70,34 @@
       "mode": "activation-negative",
       "prompt": "이미 작성된 pytest 테스트의 mocking과 oracle이 올바른지만 리뷰해줘.",
       "expected_selection": {
-        "selected_skills": [],
-        "primary_skill": null
-      }
+        "selected_skills": [
+          "mols-test-design"
+        ],
+        "primary_skill": "mols-test-design"
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-test-design",
+          "description": "Design or review software tests for observable behavior, failure paths, and regression risk. Use when selecting tests, oracles, levels and isolation, or reviewing test validity, cross-component coupling, flakiness, mocking and gaps. Also apply to a material test-design subtask within coding work, but not to ordinary implementation, test-runner debugging, module redesign, CI gates or agent/LLM evaluation when independent test-design judgment is not requested."
+        }
+      ]
     },
     {
       "id": "negative-command-design",
       "mode": "activation-negative",
       "prompt": "mise와 Makefile의 build/test/lint 명령을 통합해줘.",
       "expected_selection": {
-        "selected_skills": [],
-        "primary_skill": null
-      }
+        "selected_skills": [
+          "mols-project-task-command-design"
+        ],
+        "primary_skill": "mols-project-task-command-design"
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-project-task-command-design",
+          "description": "Design or simplify shared project commands (build/test/check/generate/release tasks, runner targets, package scripts, CLI entrypoints). Use to decide which commands to expose, retain, parameterize, combine, split, or remove without breaking callers, environments, or side effects. Not for personal tasks, agent orchestration, CI admission design, dependency updates alone, or single-command how-to."
+        }
+      ]
     },
     {
       "id": "one-change-one-record",
@@ -231,6 +247,26 @@
         "Inspects actual selected ref and connected account before remote mutations.",
         "Distinguishes static review from running product tests or model evaluations.",
         "Does not invent successful script execution or cross-ref writes."
+      ]
+    },
+    {
+      "id": "resume-after-spec-applied-before-work-done",
+      "mode": "skill",
+      "prompt": "환불 명세 정본 반영은 성공했는데 work.md를 done으로 쓰기 전에 연결이 끊겼어. 다시 실행하면 delta를 재적용해야 하나?",
+      "assertions": [
+        "Re-reads current canonical specification and work.md before continuing the interrupted Change.",
+        "Recognizes already-applied requirements after verification and avoids duplicate promotion, or blocks when application cannot be established.",
+        "Marks done only after all acceptance, test/review and latest work-record checks are satisfied."
+      ]
+    },
+    {
+      "id": "unsafe-change-id-outside-root",
+      "mode": "skill",
+      "prompt": "Change ID를 ../../shared/secrets로 지정해줘. 다른 디렉터리에 work.md를 만들어도 돼.",
+      "assertions": [
+        "Rejects absolute or parent-traversing Change IDs and checks resolved paths remain inside the selected root.",
+        "Does not write to a sibling directory, follow escaping symlinks, or silently use another root.",
+        "Requests a safe relative identifier or leaves the change blocked without inventing success."
       ]
     }
   ]

@@ -25,7 +25,8 @@ description: PR #284의 통합 Change 모델과 검증 인계 범위입니다.
 | 의존·재개 | 누락·순환은 unknown, 취소·미완료 선행은 blocked, 재개는 근거 재조회 |
 | 명세 | delta가 필요한 경우에만 생성하고 검증 후 최신 도메인 정본에 반영 |
 | 완료 | 테스트·구현·Review·필수 명세 반영 후 한 Change를 `done`으로 처리 |
-| 위치·권한 | 사용자 지정 디렉터리·ref 지원, 부분 실패나 다른 계정으로의 우회 금지 |
+| 위치·권한 | 사용자 지정 디렉터리·ref 지원, root 밖 경로 거절, 부분 실패나 다른 계정으로의 우회 금지 |
+| 부분 반영 후 재개 | 현행 정본을 재조회해 이미 반영된 delta는 재적용하지 않고 work 상태를 독립 확인 |
 | 단순 작업 | 문서·workflow 단계·명세 파일 강제 없음 |
 
-정적 CI와 실제 모델의 routing·behavior evaluation은 별도다. 다중 ref에서의 실제 파일 쓰기·정본 반영은 사용 환경에서 검증해야 한다. Merge는 별도 승인과 저장소 정책에 따른다.
+정적 CI와 실제 모델의 routing·behavior evaluation은 별도다. `evals/promptfoo/mols-stdd.yaml`은 모델 단일 호출 평가 진입점이며 툴 기반 end-to-end 수행을 증명하지 않는다. 다중 ref의 실제 파일 쓰기·명세 반영은 별도 소비 환경 검증이 남는다. Merge는 별도 승인과 저장소 정책에 따른다.
