@@ -246,8 +246,8 @@ def archive(root: Path, change: str, review: Path, day: str, apply: bool) -> dic
     details: dict[str, Any] = {
         "status": "ready_to_archive" if not apply else "archived",
         "change": change,
-        "updated_specs": [str(path.relative_to(root)) for path in updates],
-        "archive": str(destination.relative_to(root)),
+        "updated_specs": [path.relative_to(root).as_posix() for path in updates],
+        "archive": destination.relative_to(root).as_posix(),
         "warning": "Review references are not independently validated by this script",
     }
     if not apply:

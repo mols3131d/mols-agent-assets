@@ -113,12 +113,16 @@ The system SHALL accept only configured currencies.
     result = json.loads(preview.stdout)
     assert result["status"] == "ready_to_archive"
     assert result["updated_specs"] == [f"specs/{DOMAIN}/spec.md"]
+    assert result["archive"] == "changes/archive/2026-11-03-refund-validation"
     assert current.read_text(encoding="utf-8") == OLD
     assert change.is_dir()
 
     apply = invoke(store, *args, "--apply")
     assert apply.returncode == 0, apply.stderr
-    assert json.loads(apply.stdout)["status"] == "archived"
+    applied = json.loads(apply.stdout)
+    assert applied["status"] == "archived"
+    assert applied["updated_specs"] == result["updated_specs"]
+    assert applied["archive"] == result["archive"]
     merged = current.read_text(encoding="utf-8")
     assert "negative and over-limit amounts" in merged
     assert "Validate currency" in merged
