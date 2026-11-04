@@ -1,12 +1,12 @@
 ---
 name: mols-stdd
 description: >-
-  Manage personal project tasks and spec/test-driven software changes in a
-  lightweight workflow. Use to bootstrap user-chosen task/spec directories
-  and Git refs, select and resume dependent work, evolve domain specs, and
-  guide implementation and review. Do not use for routine one-off code edits
-  without work-management or specification needs, enterprise scheduling,
-  standalone test review, or build-task execution.
+  Drive personal-project changes as one work item encompassing progress,
+  dependencies, resumption, behavior specifications, tests, implementation,
+  review, and completion. Use for project bootstrap, work backlogs,
+  multi-step change coordination, and spec/test-driven development with
+  nested domain specs. Not for trivial one-off edits, standalone test-design
+  critiques, enterprise scheduling, or build-command configuration.
 targets:
   - claudecode
   - codexcli
@@ -17,56 +17,56 @@ targets:
   - agentsskills
 ---
 
-# Personal Spec/Test-driven Development
+# Mols STDD
 
-사용자가 선택한 파일·Git 환경에서 **작업 관리(Task) / 명세 기반 개발(Spec) / 통합 개발(Combined)**을 수행한다. 개인 프로젝트에 필요한 기능만 적용하고 단일·단기 수정에 문서·루프를 강제하지 않는다. 기존 프로젝트의 지침과 실제 테스트·Git 권한이 우선한다.
+개인 프로젝트의 **Change 하나**에서 작업 선택·진행·명세·테스트·구현·Review·완료를 연결한다. 작업과 명세를 별도 모드나 이중 상태로 관리하지 않는다. 작업 규모에 따라 필요한 근거와 파일만 작성한다. 기존 프로젝트 지침, 실제 코드·테스트, 명세 정본과 Git 권한을 우선한다.
 
-## Select the Work
+## One Change, One State
 
-- **Task-only:** 작업 발견·분해·우선순위·선행 관계·중단·재개·상태 갱신. 스펙 문서를 만들지 않는다.
-- **Spec-only:** 요구사항 변경, 테스트·구현·Review, 도메인 정본 갱신. Task 파일을 만들지 않는다.
-- **Combined:** 진행할 작업을 선택하고 그 작업에 실제 스펙 변경이 필요할 때만 Spec 절차를 수행한다. 서로 다른 상태를 복제하지 않고 링크로 연결한다.
-- **Small edit:** 작업 관리나 명세가 필요 없는 간단한 수정에는 이 Skill의 기록·절차를 활성화하지 않는다.
+사용자 지정 root에서 상대 경로 `<change-id>` 하나가 변경을 식별한다. 계층형 ID를 허용한다.
 
-**여러 단계의 개발 변경 또는 반복 검토가 필요한 작업**에는 [Default Workflow](references/default-workflow.md)를 적용한다. 단순 조회·상태 갱신·작은 변경은 해당 절차의 필요한 판단만 사용한다. 이 Skill은 범용 `mols-loops`의 설치나 별도 런타임을 요구하지 않는다.
+```text
+<work-root>/changes/<change-id>/work.md                 # 변경 상태·완료 조건·다음 행동
+<spec-root>/changes/<change-id>/specs/<domain>/spec.md   # 필요한 경우의 명세 delta
+<spec-root>/specs/<domain>/spec.md                       # 검증 후 유지하는 도메인 정본
+```
 
-## Bootstrap — First Use
+Work와 Spec root는 같아도, 별도 디렉터리·Git ref여도 된다. **같은 Change ID**를 사용하고 별도 Task ID·연결 테이블·중복 상태를 만들지 않는다. 기존 프로젝트가 명세 정본을 관리한다면 두 번째 정본을 만들지 않고 기존 구조를 따른다. 코드·테스트는 프로젝트가 정한 원래 위치에 둔다.
 
-프로젝트에 처음 도입하거나 Task/Spec 저장 위치를 설정해 달라는 요청에는 [Project Bootstrap](references/bootstrap.md)을 **먼저 읽고 적용**한다.
+`work.md`는 **유일한 진행 상태 정본**이다. 사람이 읽을 수 있는 제목·목표·완료 조건·다음 행동을 필요한 만큼 적는다.
 
-1. 기존 프로젝트의 실제 Task/Spec 정본과 Git 상태를 확인한다. 사용할 기능이 Task-only인지 Spec-only인지 Combined인지 결정한다.
-2. 사용자에게 **필요한 디렉터리와 선택적 Git ref**를 고르게 한다. 이미 명확히 선택했으면 다시 묻지 않는다. 지정되지 않은 경로나 브랜치 이름을 기본값으로 확정하지 않는다.
-3. 선택된 `repo/ref/root`별로 최소한의 최초 파일만 생성한다. Task는 **작업당 Markdown 하나**, Spec은 **실제로 필요한 `changes/<change>/specs/<domain>/spec.md`**부터 시작한다. 아직 검증되지 않은 Domain Spec은 미리 만들지 않는다.
-4. 지정 ref에서 생성 결과를 다시 확인하고 위치·생성 파일·다음 행동을 보고한다. 별도 index/manifest·고정 루트·샘플 작업·빈 디렉터리는 강제하지 않는다.
+```markdown
+---
+status: doing
+depends_on: [backend/db-schema]
+---
+# 로그인 API 구현
 
-저장 위치가 결정되지 않았으면 **후보 구조를 예시로 제시하고 기록은 보류**한다. 최초 작업·변경이 없는 빈 프로젝트는 필요할 경우 선택한 위치만 합의하고, 사용자가 영속적인 빈 부트스트랩을 명시적으로 원할 때만 README를 둘 수 있다.
+정상·실패 응답을 구현하고 검증한다.
 
-## Locations and Ref Safety
+## 완료 조건
+- 성공·실패 응답이 검증된다.
 
-Task와 Spec 저장 위치는 **사용자가 지정**한다. 작업 디렉터리, Spec root, 코드 ref는 같아도 달라도 된다. 저장소·워크스페이스와 각각의 대상 경로·Git ref를 확인하고 해당 경로만 수정한다. 불명확한 위치나 없는 branch를 추측해 만들거나, 접근할 수 없는 지정 ref 대신 기본 branch에 쓰지 않는다. 별도 설정 파일·고정 `.work/`·`spec/` 경로를 만들지 않는다.
+## 다음 행동
+- 인증 실패 테스트 결과를 확인한다.
+```
 
-허용된 로컬 파일 도구 또는 연결된 Git 도구만 사용한다. 수정 전 실제 계정·권한·최신 버전을 확인하며, commit·branch·PR은 사용자와 프로젝트의 운영 방식에 따른다. Git은 lock이나 서로 다른 ref에 대한 원자적 완료를 보장하지 않는다.
+`status: todo | doing | done | cancelled`만 저장한다. 선택적 `depends_on`은 같은 work root/ref의 Change ID(확장자 제외)를 참조한다. 선행 변경이 모두 `done`이고 외부 차단이 없는 `todo`는 ready, 미완료·취소된 선행 변경은 blocked, 누락·순환·조회 실패는 unknown으로 **계산**한다. 이 파생 상태는 저장하지 않는다. `doing`을 재개할 때는 기록뿐 아니라 실제 코드·검증 결과를 재확인한다. 이름을 바꾸면 의존 참조도 갱신한다.
 
-## Task Contract
+## Requirement and Evidence
 
-Task root 아래의 `<relative-path>.md` 하나가 하나의 작업 정본이다. **파일명/경로가 ID**, H1은 사람이 이해하는 제목이다. 최소 메타데이터는 `status: todo | doing | done | cancelled`; 필요할 때만 `depends_on: [<relative-path-without-extension>]`과 우선순위를 사용한다.
+행동 계약이 바뀌면 같은 Change ID 아래 해당 도메인의 delta를 기록한다. 새 요구사항·수정·삭제, 수락 조건과 기존 정본의 기준 버전·내용을 구분한다. 한 Change가 여러 하위 도메인을 바꿀 수 있다. **명세 delta는 독립 작업이 아니라 Change의 검증 근거**다. 명세가 불필요한 변경에는 빈 Spec을 만들지 않는다.
 
-- `todo`의 모든 선행 항목이 `done`이고 알려진 외부 차단이 없으면 **ready**. 선행 미완료·취소·외부 차단은 **blocked**, 누락·순환·조회 불가는 **unknown**. 이 판단은 파일에 저장하지 않는다.
-- `doing`은 재개 대상이다. 원본 파일과 실제 산출물을 다시 확인하고, **현재 사실·남은 것·다음 행동**을 필요할 때만 짧게 갱신한다.
-- 파일 이동·개명 시 의존 참조를 갱신한다. blocker와 unknown을 우선순위로 무시하지 않는다. 실제 완료 근거 없이 `done`을 기록하지 않는다.
+요구사항, 적절한 테스트, 구현, Review를 대조한다. Test-first의 정상적인 red와 실제 결함을 구분하고, 결함 발견 시 영향받은 명세·테스트·코드만 재검토한다. Proposal, Research, Plan, Test Design 문서는 유용할 때만 남긴다.
 
-작업 제목·목적·완료 조건은 독자가 에디터나 Git diff에서 이해할 수 있게 표현한다. 별도 DB·인덱스·대시보드는 만들지 않는다.
+명세 반영 전 현재 도메인 정본과 기준 버전을 재확인하고 검증된 요구사항만 병합한다. stale baseline·충돌·권한 부족·미검증이면 덮어쓰지 않고 무관한 요구사항을 보존한다. 완료한 Change 기록의 보관·삭제는 프로젝트가 정한다.
 
-## Spec Contract
+**`done`은 필요한 테스트·구현·Review 및 명세 반영이 모두 확인된 후에만 기록한다.** 명세가 없는 Change는 없는 delta의 검증을 요구하지 않는다. 여러 ref의 쓰기는 원자적이지 않으므로 일부만 성공했다면 완료를 보류하고 남은 작업을 같은 `work.md`에 남긴다.
 
-사용자 지정 `spec-root`에서 `changes/<change-name>/specs/<domain-path>/spec.md`는 진행 중 **요구사항 delta**, `specs/<domain-path>/spec.md`는 반영된 **장기 도메인 정본**이다. 도메인 경로는 필요한 만큼 중첩할 수 있다. 기존 프로젝트의 정본 구조가 따로 있으면 중복 저장소를 무단 생성하지 않는다.
+## Bootstrap and Execution
 
-- 의미 있는 동작 변경에는 기대 동작·수락 조건을 명시하고, 테스트·구현 결과와 대조해 Review한다. 추가 proposal/research/plan/test-design 파일은 필요한 경우만 만든다.
-- Review finding은 영향을 받은 명세·테스트·코드로 되돌린다. 무관한 개발 단계를 반복하지 않는다.
-- 요구사항 delta에는 추가·수정·삭제 대상과 수락 기준을 구분하고, 현재 정본의 기준 버전 또는 내용을 추적할 근거를 남긴다. 새 요구사항은 최초 정본이 없어도 명시적으로 검증한다.
-- 정본 반영 전 실제 검증 근거·현재 정본·delta의 기준 내용을 확인한다. stale 변경, 충돌, 권한 부족, 불완전한 검증이 있으면 무단 반영하지 않는다. 영향받지 않은 요구사항은 보존하고 삭제·교체는 영향 범위를 확인한다.
-- 완료한 change 파일의 보관·삭제는 프로젝트가 결정한다. Task `done`은 Spec 반영의 근거가 아니며 Spec 반영이 다른 Task를 자동 완료시키지도 않는다.
+처음 도입하거나 저장 위치를 정할 때만 [Bootstrap](references/bootstrap.md)을 읽는다. 진행·재개·다단계 변경은 [Development Workflow](references/default-workflow.md)를 적용한다. 단순 조회와 기록 가치가 없는 작은 수정은 별도 Change 파일·전체 루프를 강제하지 않는다. 이는 독립된 모드가 아니라 **필요한 작업량만 실행하는 동일 절차**다.
 
-## Completion
+쓰기 전 실제 workspace/repository, 경로·ref, 연결 계정·권한, 최신 파일을 확인한다. 사용자 선택이나 기존 정본 없이 기본 루트·브랜치를 정하지 않는다. 지정 ref 접근 실패 시 다른 계정이나 기본 브랜치로 우회하지 않는다. `mols-loops`가 별도로 선택되면 외부 Run 제어는 그 Skill이 맡고 여기서는 Change의 도메인 절차만 제공한다.
 
-결과는 수행한 파일 작업과 실제 검증, 누락·차단 사항, 다음 행동으로 구분하여 보고한다. 실행하지 않은 도구나 확인하지 않은 ref를 성공으로 주장하지 않는다. 이 Skill의 실행 흐름은 `mols-loops`에서 영감을 얻은 **도메인별 로컬 적용**이며, 외부 Skill에 숨은 필수 의존성을 두지 않는다.
+실제 수행·검증과 미실행·실패·차단을 구분해 보고한다. 별도 DB, manifest, workflow engine, 외부 Skill 설치, 자동 cross-ref 트랜잭션을 요구하지 않는다.

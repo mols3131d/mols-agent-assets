@@ -1,27 +1,23 @@
 ---
-description: 개인 개발용 통합 Project Workflow Skill의 설계 이유와 기본 워크플로 유지보수 기준입니다.
+description: mols-stdd의 Change 중심 설계와 실행·검증 경계를 유지보수할 때 참고합니다.
 ---
 
 # Mols STDD — Maintainer Notes
 
-실행 계약은 [SKILL.md](../../../src/rulesync/.rulesync/skills/mols-stdd/SKILL.md)와 [Default Workflow](../../../src/rulesync/.rulesync/skills/mols-stdd/references/default-workflow.md)가 소유한다. 이 문서는 실행 지침을 복제하지 않고 변경 이유와 검증 기준만 기록한다.
+실행 정본은 [SKILL.md](../../../src/rulesync/.rulesync/skills/mols-stdd/SKILL.md), [Bootstrap](../../../src/rulesync/.rulesync/skills/mols-stdd/references/bootstrap.md), [Workflow](../../../src/rulesync/.rulesync/skills/mols-stdd/references/default-workflow.md)가 소유한다.
 
-## Decision
+## Design Decision
 
-`mols-loops`는 범용 다단계 Run/Loop 조율자다. 이 프레임워크에서는 **Prepare → Research/Plan/Work/Review → Finalize**만 개인 개발의 공통 실행 흐름으로 차용한다. 별도 루프 상태 DB·카운터·workflow JSON·외부 Skill 설치는 필요하지 않다.
+Task와 Spec을 독립 객체·모드로 구분하면 같은 개발 변경의 상태와 종료 판단이 분리된다. 따라서 **Change ID 하나, 진행 상태 하나, 완료 gate 하나**로 통합했다. `work.md`는 작업 의존·상태·재개를 소유하고, 필요할 때 같은 ID 아래 명세 delta를 작성한다. 검증된 요구사항의 정본 반영은 해당 Change 완료 조건에 포함한다.
 
-가벼운 Task-only 요청에서 Spec과 RPI 전체 절차를 로드할 이유가 없으므로, 진입점은 작업 모드·정본·안전 조건만 소유하고 다단계 개발에서만 Default Workflow를 읽는다. 범용 `mols-loops`가 같은 런타임에서 독립적으로 활성화되면 바깥 Run 조율을 중복하지 않는다.
+work/spec root와 Git ref 분리는 사용자 환경의 **저장 위치 선택**이지 서로 다른 객체·라이프사이클이 아니다. ref 간 원자적 쓰기가 없으므로 종료 시 실제 반영 상태를 검증한다.
 
-## Bootstrap Decision
+## Deliberate Omissions
 
-실제 최초 설정 절차는 [Project Bootstrap](../../../src/rulesync/.rulesync/skills/mols-stdd/references/bootstrap.md)가 소유한다. 설정 manifest·전용 CLI 대신 **사용자 지정 Task/Spec 디렉터리와 각 Git ref**, 필요한 첫 Markdown만 쓰도록 설계했다. 기존 프로젝트 지침이 위치를 소유하면 그 선택을 재사용한다. 빈 저장소에 가짜 작업을 만들지 않고, 경로가 미정이면 부트스트랩을 완료했다고 주장하지 않는다.
+별도 Task ID·상태 동기화·manifest·index·dashboard·작업 scheduler·Git lock은 없다. 행동 변경이 없으면 빈 Spec을 만들지 않고, 간단한 수정에는 Change 기록을 강제하지 않는다. `mols-loops`의 Prepare → RPI → Finalize만 로컬 판단 흐름으로 가져오고 오케스트레이터·외부 Skill 설치 의존성은 추가하지 않는다.
 
-## Maintenance and Evaluation
+구 `mols-spec-stdd`의 JSON workflow, Python scripts, 형식용 템플릿과 테스트는 호환 이관하지 않았다. 명세·Review·baseline 안전성은 새 계약에 반영했다.
 
-- **Activation:** 단순 코드 수정은 불필요한 task/spec 생성을 일으키지 않아야 한다. Task-only/Spec-only/Combined 요청은 서로 필요한 파일만 선택해야 한다.
-- **Work management:** 사용자 지정 task root·branch, 읽기 쉬운 Markdown, ready/blocked/unknown, 중단·재개를 확인한다.
-- **Spec:** 계층형 delta→domain spec 반영, 검증 없는 promotion 및 stale baseline 거절을 확인한다.
-- **Workflow:** Review finding이 올바른 근거 지점으로 돌아가는지, 불필요한 전 단계 재시작이나 문서 강제가 없는지 확인한다.
-- **Tool boundary:** Git CLI 없는 GitHub 연결, 접근 불가 ref, task/spec/code 간 다른 ref, 쓰기 실패를 검증한다.
+## Validation
 
-**마이그레이션 결정:** 구 `mols-spec-stdd`의 workflow JSON, Python helper, 형식용 템플릿과 테스트는 통합 자산으로 이관하지 않는다. 재사용할 명세·Review의 의미만 이 Skill의 실행 계약과 평가 사례로 옮겼다. 새로운 패키지의 실제 모델 실행·타깃 런타임 평가는 별도 수행하며 정적 검증 통과로 대체하지 않는다.
+[평가 사례](../../../evals/skills/mols-stdd/cases.json)는 한 Change의 상태·명세 연결, 선행 의존·재개, 복수 도메인, 별도 Git ref, stale 정본, 불완전한 검증과 Skill 선택 경계를 대상으로 한다. **평가 자료를 작성한 것과 실제 모델 행동을 검증한 것은 다르다.** CI 구조 검사와 소비 프로젝트의 실행 검증도 구분한다.
