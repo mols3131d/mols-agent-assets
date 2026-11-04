@@ -6,7 +6,7 @@ description: 개인 소규모 개발을 위한 작업 관리·Spec/Test-driven �
 
 ## Goal
 
-`mols-project-workflow`는 개인 토이 프로젝트에서 **할 일을 선택하고, 개발하고, 다음 세션에 이어가는** 단일 Skill이다. 기존 `mols-spec-stdd`는 설계 참고 자료이며 **레거시 호환 대상이 아니다**. 새로운 구조에 불필요한 registry·workflow engine·CLI·형식·이름은 이어받지 않는다.
+`mols-stdd`는 개인 토이 프로젝트에서 **할 일을 선택하고, 개발하고, 다음 세션에 이어가는** 단일 Skill이다. 기존 `mols-spec-stdd`는 설계 참고 자료이며 **레거시 호환 대상이 아니다**. 새로운 구조에 불필요한 registry·workflow engine·CLI·형식·이름은 이어받지 않는다.
 
 사용 의도에 따라 **Task / Spec / Combined** 중 필요한 기능만 수행한다. 단일 수정·일상 코딩에는 기록과 단계 생성을 요구하지 않는다. Task만 할 때 Spec 자원을 읽지 않고, Spec만 할 때 백로그를 만들지 않는다. 프레임워크는 저장소의 상위 지침이나 프로젝트 테스트·코드 개발 절차를 대체하지 않는다.
 
@@ -61,7 +61,7 @@ depends_on: [backend/db-schema]
 
 ## First-use Bootstrap
 
-초기 설정은 [Project Bootstrap](../../../src/rulesync/.rulesync/skills/mols-project-workflow/references/bootstrap.md)가 소유한다. **사용자가 Task root·Spec root 및 각 Git ref를 선택**한다. 기존 프로젝트에 이미 정본이 있으면 재사용하고, 없으면 작업 유형에 필요한 첫 Markdown만 작성한다. 같은 브랜치와 전용 Task 브랜치를 모두 지원한다. 선택되지 않은 경로를 자동 생성하거나 빈 작업·샘플 Spec으로 구조를 채우지 않는다. 결과는 각 원본 ref에서 확인하며, 향후 재개용 위치 메모는 사용자가 선택한 기존 프로젝트 문서에만 선택적으로 기록한다.
+초기 설정은 [Project Bootstrap](../../../src/rulesync/.rulesync/skills/mols-stdd/references/bootstrap.md)가 소유한다. **사용자가 Task root·Spec root 및 각 Git ref를 선택**한다. 기존 프로젝트에 이미 정본이 있으면 재사용하고, 없으면 작업 유형에 필요한 첫 Markdown만 작성한다. 같은 브랜치와 전용 Task 브랜치를 모두 지원한다. 선택되지 않은 경로를 자동 생성하거나 빈 작업·샘플 Spec으로 구조를 채우지 않는다. 결과는 각 원본 ref에서 확인하며, 향후 재개용 위치 메모는 사용자가 선택한 기존 프로젝트 문서에만 선택적으로 기록한다.
 
 ## Baseline Workflow — Tuned from Mols Loops
 
@@ -73,11 +73,11 @@ depends_on: [backend/db-schema]
 
 Small edit과 작업 목록 조회는 전체 루프나 별도 문서 작성을 요구하지 않는다. 긴 작업에서도 루프 수를 채우기 위해 반복하지 않으며 진전이 없으면 인계한다. 범용 `mols-loops`가 함께 선택되면 외부 Run 조율은 그 Skill이 담당하고 이 기본 흐름은 도메인 Work 절차를 제공한다.
 
-실제 작성 원본은 [Default Workflow](../../../src/rulesync/.rulesync/skills/mols-project-workflow/references/default-workflow.md)이며, 통합 [SKILL.md](../../../src/rulesync/.rulesync/skills/mols-project-workflow/SKILL.md)에서 다단계 변경 시에만 읽는다.
+실제 작성 원본은 [Default Workflow](../../../src/rulesync/.rulesync/skills/mols-stdd/references/default-workflow.md)이며, 통합 [SKILL.md](../../../src/rulesync/.rulesync/skills/mols-stdd/SKILL.md)에서 다단계 변경 시에만 읽는다.
 
 ## Minimal Package
 
-재사용 Rulesync source: `src/rulesync/.rulesync/skills/mols-project-workflow/`.
+재사용 Rulesync source: `src/rulesync/.rulesync/skills/mols-stdd/`.
 
 - **하나의 발견 가능한 `SKILL.md`**와 다단계 개발에만 로드하는 `references/default-workflow.md`를 둔다. 후속 Spec 상세 자료는 실제 context 절감 가치가 있을 때만 추가한다.
 - **드랍:** 구 Skill 호환 layer·alias·migration, `artifacts.json`, 범용 8단계 workflow JSON/검사기(`flow.py`), 필수 proposal/research/plan/test-design 템플릿, Beads/Dolt/DB/MCP, scheduler·claim·lock, 별도 dashboard/index.
@@ -96,4 +96,4 @@ Small edit과 작업 목록 조회는 전체 루프나 별도 문서 작성을 �
 | Invalid state | 누락·순환 의존, 취소 선행 작업, stale spec, 잘못된 완료 근거를 성공으로 판정하지 않음 |
 | Human readability | 파일명·제목·짧은 본문·diff만으로 작업의 목적과 현재 상황을 파악 가능 |
 
-실제 런타임에서 관찰하지 않은 동작은 **미검증**으로 기록한다. 현재 `SKILL.md`와 기본 워크플로 원본은 PR에 초안으로 작성되었으나, 실제 기능 검증·기존 Spec 패키지 정리·route 반영은 미완료다. 이 문서는 실행 정본이 아닌 설계 근거다.
+실제 런타임에서 관찰하지 않은 동작은 **미검증**으로 기록한다. 현재 `SKILL.md`와 기본 워크플로 원본은 PR에 초안으로 작성되었으나, 실제 기능 검증·기존 Spec 패키지를 새 이름으로 교체한다. 이 문서는 실행 정본이 아닌 설계 근거다.

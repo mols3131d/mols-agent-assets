@@ -1,0 +1,199 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "select-feature-behavior-contract",
+      "mode": "activation",
+      "prompt": "외부 API 응답 계약이 바뀌어. 요구사항 명세를 정하고 테스트 설계·테스트 구현·제품 코드의 정합성까지 확인하면서 작업해줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-stdd"
+        ],
+        "primary_skill": "mols-stdd"
+      }
+    },
+    {
+      "id": "select-spec-regression-return",
+      "mode": "activation",
+      "prompt": "구현과 테스트는 진행했는데 Review에서 명세의 동시성 조건 누락이 발견됐어. 올바른 개발 단계로 돌아가 영향받는 테스트와 코드를 확인해줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-stdd"
+        ],
+        "primary_skill": "mols-stdd"
+      }
+    },
+    {
+      "id": "select-test-first-feature",
+      "mode": "activation",
+      "prompt": "결제 승인 로직을 spec/test-driven 방식으로 개발해. 검증 조건을 정하고 테스트를 먼저 구현한 뒤 코드를 구현해.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-stdd"
+        ],
+        "primary_skill": "mols-stdd"
+      }
+    },
+    {
+      "id": "select-task-backlog-priority",
+      "mode": "activation",
+      "prompt": "이번 스프린트의 이슈 15개를 분해하고 의존성·우선순위에 따라 다음 작업을 정해줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-stdd"
+        ],
+        "primary_skill": "mols-stdd"
+      }
+    },
+    {
+      "id": "ignore-standalone-test-oracle-review",
+      "mode": "activation-negative",
+      "prompt": "이미 작성된 pytest 단위 테스트의 oracle이 올바른지, mocking과 경계 조건이 충분한지만 리뷰해줘. 스펙과 구현 워크플로는 바꾸지 마.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "ignore-simple-code-edit",
+      "mode": "activation-negative",
+      "prompt": "이 Python 함수의 지역변수 이름만 정리하고 동작은 유지해줘. 스펙은 새로 만들 필요 없어.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "review-spec-defect-not-restart-all",
+      "mode": "skill",
+      "prompt": "명세가 동시 쓰기 보장을 누락한 상태에서 테스트와 코드를 작성했어. Review에서 결함이 발견되면 어떻게 복구해? 필요한 단계와 산출물만 다시 확인해줘.",
+      "assertions": [
+        "Identifies specification as the likely return stage and examines dependent test design, tests, and code for impact.",
+        "Does not restart all stages or rewrite unaffected artifacts without evidence.",
+        "Treats Review findings and recheck candidates as guidance, not proof that files were modified or tests executed."
+      ]
+    },
+    {
+      "id": "respect-existing-spec-owner",
+      "mode": "skill",
+      "prompt": "우리 프로젝트는 이미 OpenSpec으로 스펙을 관리해. 별도 spec/changes/ 디렉터리를 추가하지 말고 기존 계약으로 기능 개발을 진행할 수 있니?",
+      "assertions": [
+        "Respects the existing canonical spec storage and contract rather than creating a second source of truth.",
+        "Separates the framework's workflow reasoning from the project's vendor-specific commands and rules.",
+        "Does not claim OpenSpec CLI or bundled scripts were executed unless the relevant runtime actually supports and ran them."
+      ]
+    },
+    {
+      "id": "no-script-chat-runtime",
+      "mode": "skill",
+      "prompt": "ChatGPT Chat에서 GitHub 연결만 사용 중이고 로컬 쉘은 없어. 스펙 수정 후 Review 상태와 코드 구현 결과를 확인하고 완료 여부를 알려줘.",
+      "assertions": [
+        "Inspects the available GitHub content and actual permissions before any remote mutation.",
+        "Distinguishes manual or adapted review reasoning from actual execution of the bundled Python validator and the product tests.",
+        "Reports incomplete verification or blocked work without inventing a successful test run or changing account identity."
+      ]
+    },
+    {
+      "id": "red-test-not-production-failure",
+      "mode": "skill",
+      "prompt": "테스트를 먼저 구현했더니 제품 코드가 없어 red 상태야. 바로 Review를 실패 처리해야 해?",
+      "assertions": [
+        "Recognizes the expected red test state before product code implementation as a normal test-first intermediate stage.",
+        "Separates failing tests caused by missing implementation from invalid expectations or infrastructure errors.",
+        "Does not declare overall completion until the specified code implementation and evidence-based Review are finished."
+      ]
+    },
+    {
+      "id": "select-hierarchical-domain-change",
+      "mode": "activation",
+      "prompt": "스펙 루트 아래 changes/에 결제 환불 검증 기능 변경을 만들고, payments/refunds/validation처럼 중첩된 도메인 specs/ 정본에 완료된 요구사항만 흡수하는 흐름을 설계하고 진행해줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-stdd"
+        ],
+        "primary_skill": "mols-stdd"
+      }
+    },
+    {
+      "id": "separate-change-from-canonical-domain",
+      "mode": "skill",
+      "prompt": "refund-validation 변경에서 payments/refunds/validation과 accounts/permissions 두 도메인의 요구사항을 바꿨어. 검증이 끝난 변경 내용을 어디에 보존하고, 현재 도메인 스펙은 어떻게 갱신해?",
+      "assertions": [
+        "Separates the active changes/<change-id>/specs/<domain-path>/spec.md deltas from specs/<domain-path>/spec.md canonical specifications.",
+        "Preserves arbitrarily nested domain paths and merges only affected requirement blocks while retaining unrelated current requirements.",
+        "Treats completed change retention/deletion as a project decision; does not require changes/archive/.",
+        "Does not equate task tracker state or implementation source files with long-term domain specifications."
+      ]
+    },
+    {
+      "id": "reject-stale-or-unverified-promotion",
+      "mode": "skill",
+      "prompt": "변경 설계 때 만든 delta의 base가 지금 정본과 달라졌고 테스트 결과도 확인되지 않았어. 그냥 도메인 specs/에 덮어쓰고 change를 archive해도 될까?",
+      "assertions": [
+        "Rejects blind promotion when the canonical domain spec changed after the delta baseline and requires review/rebase.",
+        "Requires actually supported Review PASS and relevant test or acceptance evidence before completion; references alone are not claimed to verify execution.",
+        "Checks current ref, current canonical version, and authorized write success without inventing script execution.",
+        "Does not overwrite the current spec or archive a change while blocked."
+      ]
+    },
+    {
+      "id": "bootstrap-user-selected-directory-ref",
+      "mode": "skill",
+      "prompt": "Task는 backlog/ 브랜치 personal-tasks, Spec은 docs/behavior/ 브랜치 feature/auth에 저장해서 시작해줘. 처음 파일은 auth/login.md 작업 하나야.",
+      "assertions": [
+        "Uses the selected task and spec paths and refs independently.",
+        "Does not generate a spec delta without a real requirement change.",
+        "Re-reads created content on exact ref and never falls back to main for an inaccessible ref."
+      ]
+    },
+    {
+      "id": "task-dependency-unknown-cycle",
+      "mode": "skill",
+      "prompt": "task root notes/work/에서 A는 B, B는 A에 의존하고 C는 없는 D에, E는 취소된 F에 의존해. ready 작업 골라줘.",
+      "assertions": [
+        "Treats dependency cycles and missing referenced tasks as unknown, and cancelled prerequisites as blocked.",
+        "Does not persist derived readiness or mark unsupported tasks ready.",
+        "Uses human-readable task-relative path identifiers."
+      ]
+    },
+    {
+      "id": "resume-task-and-independent-completion",
+      "mode": "skill",
+      "prompt": "어제 doing이었던 API 구현을 재개해. 스펙은 반영됐지만 코드 테스트는 아직 못 돌렸어. Task도 완료로 표시해줘.",
+      "assertions": [
+        "Re-checks task, code and validation evidence in the selected ref before resuming.",
+        "Does not mark task done solely because a domain spec was promoted.",
+        "Records remaining verification and next action where authorized."
+      ]
+    },
+    {
+      "id": "bootstrap-no-location-no-work",
+      "mode": "skill",
+      "prompt": "새 토이프로젝트에 작업관리 도입해줘. 디렉터리나 브랜치는 아직 안 정했고 진행할 일도 없어.",
+      "assertions": [
+        "Searches for an existing canonical location before asking for a directory.",
+        "Does not invent a default directory, branch, empty folders, dummy tasks or spec files.",
+        "Allows a zero-file setup when no actual first work exists."
+      ]
+    },
+    {
+      "id": "combined-task-spec-link",
+      "mode": "skill",
+      "prompt": "Task 파일 backend/login.md는 doing이고 인증 요구사항 변경이 생겼어. Task와 changes/login/specs/auth/login/spec.md를 함께 진행해줘.",
+      "assertions": [
+        "Keeps task state and spec delta independently authoritative and links rather than duplicates state.",
+        "Checks acceptance, tests, code and review evidence as appropriate.",
+        "Does not auto-complete either object because the other completed."
+      ]
+    },
+    {
+      "id": "ignore-build-commands",
+      "mode": "activation-negative",
+      "prompt": "mise와 Makefile의 build/test/lint 명령을 정리하고 빌드 엔트리포인트를 통합해줘.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    }
+  ]
+}

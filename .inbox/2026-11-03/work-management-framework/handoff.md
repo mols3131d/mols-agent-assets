@@ -6,11 +6,11 @@ description: 개인용 통합 Project Workflow Skill을 신규 구현하고 구 
 
 ## Outcome
 
-PR #284에서 **`mols-project-workflow` Skill 하나로 작업 관리 + Spec/Test-driven 개발**을 제공한다. 개인 토이 프로젝트를 대상으로 하며 **레거시 호환성·기존 데이터 자동 이관·병행 지원은 범위 밖**이다.
+PR #284에서 **`mols-stdd` Skill 하나로 작업 관리 + Spec/Test-driven 개발**을 제공한다. 개인 토이 프로젝트를 대상으로 하며 **레거시 호환성·기존 데이터 자동 이관·병행 지원은 범위 밖**이다.
 
 사용자 지정 Task/Spec 디렉터리와 Git ref, 사람 중심 Markdown, 가벼운 ready 판단·세션 재개, 변경 delta → 계층형 도메인 스펙 반영과 검증 안전성을 구현한다. 구 `mols-spec-stdd`는 **필요한 동작의 참고 원본**이지 그대로 복사할 패키지가 아니다. 상세 설계는 [Design](design.md)이 소유한다.
 
-**현재 상태:** Draft / 기본 `SKILL.md`와 `mols-loops` 기반의 로컬 Default Workflow 초안이 작성됨. PR 브랜치는 여전히 `main`과 분기되어 기존 Spec source가 포함되지 않았다. 실제 기능 검증·기존 자산 제거·머지는 미완료다.
+**현재 상태:** Draft / 기본 `SKILL.md`와 `mols-loops` 기반의 로컬 Default Workflow 초안이 작성됨. PR 브랜치는 여전히 `main`과 분기되어 기존 Spec 패키지를 대체할 범위가 확인되었다. 실제 기능 검증·기존 자산 제거·머지는 미완료다.
 
 ## Execution Order
 
@@ -26,14 +26,14 @@ PR #284에서 **`mols-project-workflow` Skill 하나로 작업 관리 + Spec/Tes
 
 ## Bootstrap — Newly Added
 
-- **작성 원본:** `src/rulesync/.rulesync/skills/mols-project-workflow/references/bootstrap.md`, `SKILL.md`에서 신규 프로젝트의 최초 설정에 한해 로드.
+- **작성 원본:** `src/rulesync/.rulesync/skills/mols-stdd/references/bootstrap.md`, `SKILL.md`에서 신규 프로젝트의 최초 설정에 한해 로드.
 - **절차:** 기존 정본 탐색 → Task/Spec 사용 여부 결정 → 사용자 지정 `repository/ref/root` 선택 → 필요한 첫 파일만 생성 → ref별 재조회와 위치·다음 작업 보고.
 - **디렉터리:** Task는 선택한 root 아래 작업별 Markdown, Spec은 선택한 root 아래 `changes/` 및 `specs/`. 두 영역은 같은 브랜치 또는 서로 다른 브랜치에서 관리 가능.
 - **검증 대상:** 위치 미지정, 기존 owner가 있는 프로젝트, 단일 Task 첫 파일, Spec-only 시작, 별도 Task ref, 권한·참조 누락, 빈 저장소. 검증은 아직 미실행.
 
 ## Default Workflow — Newly Created
 
-- **작성 원본:** `src/rulesync/.rulesync/skills/mols-project-workflow/SKILL.md`와 [Default Workflow](../../../src/rulesync/.rulesync/skills/mols-project-workflow/references/default-workflow.md). 별도 JSON workflow engine이 아니다.
+- **작성 원본:** `src/rulesync/.rulesync/skills/mols-stdd/SKILL.md`와 [Default Workflow](../../../src/rulesync/.rulesync/skills/mols-stdd/references/default-workflow.md). 별도 JSON workflow engine이 아니다.
 - **진입 조건:** 다단계 개발·반복 검토에서만 상세 흐름을 읽는다. Task-only 목록 조회나 작은 단일 수정에는 별도 루프·계획 문서·Spec 파일을 강제하지 않는다.
 - **기준 흐름:** Prepare(목표·저장 위치·권한·ready 확인) → Research/Plan/Work/Review(필요한 단계만 복귀) → Finalize(Spec/Task 독립 완료 판정·인계).
 - **`mols-loops` 관계:** 범용 Skill은 수정하지 않고 개인용 프레임워크에 필요한 단계 원칙만 적용했다. 둘 다 선택되면 외부 조율을 중복 수행하지 않는다.

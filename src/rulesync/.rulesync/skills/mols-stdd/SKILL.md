@@ -1,13 +1,12 @@
 ---
-name: mols-project-workflow
+name: mols-stdd
 description: >-
-  Manage work and drive spec/test-based software changes in personal or
-  small-scale projects. Use to bootstrap user-chosen task/spec directories,
-  select dependent tasks, resume progress, evolve domain specs, or run an
-  integrated spec/test development workflow.
-  Keep task and spec stores in user-selected directories and Git refs.
-  Do not use for ordinary one-off code edits without a work-management
-  or specification need, enterprise scheduling, or build-task execution.
+  Manage personal project tasks and spec/test-driven software changes in a
+  lightweight workflow. Use to bootstrap user-chosen task/spec directories
+  and Git refs, select and resume dependent work, evolve domain specs, and
+  guide implementation and review. Do not use for routine one-off code edits
+  without work-management or specification needs, enterprise scheduling,
+  standalone test review, or build-task execution.
 targets:
   - claudecode
   - codexcli
@@ -18,7 +17,7 @@ targets:
   - agentsskills
 ---
 
-# Personal Project Workflow
+# Personal Spec/Test-driven Development
 
 사용자가 선택한 파일·Git 환경에서 **작업 관리(Task) / 명세 기반 개발(Spec) / 통합 개발(Combined)**을 수행한다. 개인 프로젝트에 필요한 기능만 적용하고 단일·단기 수정에 문서·루프를 강제하지 않는다. 기존 프로젝트의 지침과 실제 테스트·Git 권한이 우선한다.
 
@@ -64,7 +63,8 @@ Task root 아래의 `<relative-path>.md` 하나가 하나의 작업 정본이다
 
 - 의미 있는 동작 변경에는 기대 동작·수락 조건을 명시하고, 테스트·구현 결과와 대조해 Review한다. 추가 proposal/research/plan/test-design 파일은 필요한 경우만 만든다.
 - Review finding은 영향을 받은 명세·테스트·코드로 되돌린다. 무관한 개발 단계를 반복하지 않는다.
-- 정본 반영 전 실제 검증 근거·현재 정본·delta의 기준 내용을 확인한다. stale 변경, 충돌, 권한 부족, 불완전한 검증이 있으면 무단 반영하지 않는다. 영향받지 않은 요구사항은 보존한다.
+- 요구사항 delta에는 추가·수정·삭제 대상과 수락 기준을 구분하고, 현재 정본의 기준 버전 또는 내용을 추적할 근거를 남긴다. 새 요구사항은 최초 정본이 없어도 명시적으로 검증한다.
+- 정본 반영 전 실제 검증 근거·현재 정본·delta의 기준 내용을 확인한다. stale 변경, 충돌, 권한 부족, 불완전한 검증이 있으면 무단 반영하지 않는다. 영향받지 않은 요구사항은 보존하고 삭제·교체는 영향 범위를 확인한다.
 - 완료한 change 파일의 보관·삭제는 프로젝트가 결정한다. Task `done`은 Spec 반영의 근거가 아니며 Spec 반영이 다른 Task를 자동 완료시키지도 않는다.
 
 ## Completion

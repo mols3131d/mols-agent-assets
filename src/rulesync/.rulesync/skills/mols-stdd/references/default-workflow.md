@@ -1,6 +1,6 @@
 # Default Development Workflow
 
-`mols-project-workflow`의 **개인 개발용 기본 실행 흐름**이다. [mols-loops](https://github.com/mols3131d/mols-agent-assets/tree/main/src/rulesync/.rulesync/skills/mols-loops)의 **Prepare → RPI → Finalize**를 작업 관리와 Spec/Test-driven 개발에 맞게 간소화했다. 독립적인 로컬 계약이므로 `mols-loops` 설치·실행, 루프 카운터, 별도 workflow JSON을 요구하지 않는다.
+`mols-stdd`의 **개인 개발용 기본 실행 흐름**이다. [mols-loops](https://github.com/mols3131d/mols-agent-assets/tree/main/src/rulesync/.rulesync/skills/mols-loops)의 **Prepare → RPI → Finalize**를 작업 관리와 Spec/Test-driven 개발에 맞게 간소화했다. 독립적인 로컬 계약이므로 `mols-loops` 설치·실행, 루프 카운터, 별도 workflow JSON을 요구하지 않는다.
 
 작업 선택·상태 조회만 하는 요청과 한 번의 작은 수정에는 전체 흐름을 **강제하지 않는다**. 필요하면 한 번의 확인·수정·검증으로 끝낸다. 복잡하거나 불확실한 변경에서만 RPI 재검토 루프가 실질적 가치를 낸다.
 
