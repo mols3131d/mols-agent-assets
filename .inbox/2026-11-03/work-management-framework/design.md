@@ -82,7 +82,7 @@ Small edit과 작업 목록 조회는 전체 루프나 별도 문서 작성을 �
 - **하나의 발견 가능한 `SKILL.md`**와 다단계 개발에만 로드하는 `references/default-workflow.md`를 둔다. 후속 Spec 상세 자료는 실제 context 절감 가치가 있을 때만 추가한다.
 - **드랍:** 구 Skill 호환 layer·alias·migration, `artifacts.json`, 범용 8단계 workflow JSON/검사기(`flow.py`), 필수 proposal/research/plan/test-design 템플릿, Beads/Dolt/DB/MCP, scheduler·claim·lock, 별도 dashboard/index.
 - 기존 `store.py`는 **자동 이관하지 않는다**. 명세 흡수에서 실제 반복 오류나 여러 파일 동시 수정 위험이 확인될 때만 작고 테스트 가능한 보조 도구를 채택한다. 어떤 환경에서도 실제 읽기·검증·쓰기 성공 여부를 구분한다.
-- 새 Skill이 목표 동작을 검증받으면 **같은 PR에서** 구 `mols-spec-stdd` source·유지보수 문서·tests·eval·route 참조를 정리한다. 구 Skill을 병행 제공하거나 호환용 stub·deprecated alias·변환 도구를 남기지 않는다.
+- 같은 PR에서 구 `mols-spec-stdd` source·유지보수 문서·tests를 제거하고 새 Skill의 eval·route를 재작성했다. 구 Skill을 병행 제공하거나 호환용 stub·deprecated alias·변환 도구를 남기지 않는다.
 
 ## Validation Focus
 
@@ -96,4 +96,4 @@ Small edit과 작업 목록 조회는 전체 루프나 별도 문서 작성을 �
 | Invalid state | 누락·순환 의존, 취소 선행 작업, stale spec, 잘못된 완료 근거를 성공으로 판정하지 않음 |
 | Human readability | 파일명·제목·짧은 본문·diff만으로 작업의 목적과 현재 상황을 파악 가능 |
 
-실제 런타임에서 관찰하지 않은 동작은 **미검증**으로 기록한다. 현재 `SKILL.md`와 기본 워크플로 원본은 PR에 초안으로 작성되었으나, 실제 기능 검증·기존 Spec 패키지를 새 이름으로 교체한다. 이 문서는 실행 정본이 아닌 설계 근거다.
+실제 런타임에서 관찰하지 않은 동작은 **미검증**으로 기록한다. `mols-stdd` 원본·라우트·유지보수 문서·평가 사례는 PR #284에서 통합되었고 구 패키지는 제거했다. 정적 검증 통과는 모델 행동·다중 ref 실사용의 증거가 아니다. 이 문서는 실행 정본이 아닌 설계 근거다.
