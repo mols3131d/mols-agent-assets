@@ -61,6 +61,7 @@ def test_select_for_validation_limits_unknown_impact_to_local_projections():
 
     assert [projection.name for projection in selected] == [
         "docs-indexes",
+        "catalog-indexes",
         "distribution-routes",
     ]
 

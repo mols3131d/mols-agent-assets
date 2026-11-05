@@ -1,0 +1,40 @@
+path	description
+patterns/	Agentic development에서 context engineering, documentation, workflow, software engineering 중 참고할 reusable pattern 영역을 선택할 때 사용하는 entrypoint입니다.
+patterns/context-engineering/	Agent Asset, instruction, routing, discovery, scoped context와 context harness 설계 패턴을 찾을 때 사용하는 directory entrypoint입니다.
+patterns/context-engineering/argument-driven-assets.md	같은 Agent Asset core를 runtime·target·사용 목적별로 복제하지 않고 argument로 behavior와 conditional context를 선택하게 설계할 때 참고하는 pattern으로, argument contract와 progressive disclosure의 경계를 다룹니다.
+patterns/context-engineering/asset-configuration-surface.md	reusable Agent Asset core를 복제하지 않고 project·repository·scope별 customization delta를 분리해 관리할 때 참고하는 pattern으로, configuration surface의 scope와 merge·precedence 경계를 다룹니다.
+patterns/context-engineering/chatbot-asset-directory.md	coding agent와 다른 chatbot 전용 guidance·Skill·work profile·compatibility asset을 repository에서 분리해 관리할 때 참고하는 pattern으로, chatbot-only asset surface의 ownership과 discovery boundary를 다룹니다.
+patterns/context-engineering/chatbot-repository-entrypoint.md	Repository-native context discovery가 부족한 chat runtime에서 stable entrypoint와 runtime bootstrap을 연결할 때 참고하는 reusable compatibility pattern입니다.
+patterns/context-engineering/context-surface-granularity.md	instruction·Skill·Rule·router·index·configuration 같은 context surface를 얼마나 분리할지 판단할 때 참고하는 pattern으로, 분리의 이점과 관리·discovery·routing·resolution 비용 사이의 granularity를 다룹니다.
+patterns/context-engineering/directory-context-capsule.md	특정 directory에서만 필요한 agent guidance와 context를 가까운 entrypoint에 묶어 scope-local하게 발견·로드하도록 설계할 때 참고하는 pattern으로, directory context boundary와 local routing 책임을 다룹니다.
+patterns/context-engineering/external-skill-dependency-routing.md	외부 Agent Skill dependency를 사용할 때 Rulesync declarative sources와 skills CLI 중 어떤 경로가 source semantics·lock·update·runtime delivery를 더 충실하게 보존하는지 판단할 때 참고하는 pattern입니다.
+patterns/context-engineering/gppc-guidance-stack.md	Goal과 Principles를 본질, Patterns와 Contracts를 실존으로 구분해 안정적인 방향과 적응 가능한 실행 지침을 구조화할 때 참고하는 pattern입니다.
+patterns/context-engineering/layered-context-instructions.md	repository·subtree·path·task intent에 따라 instruction과 context를 서로 다른 scope mechanism에 배치할 때 참고하는 pattern으로, 자동 주입과 context 절약을 위한 structural scope와 semantic routing의 책임을 구분합니다.
+patterns/context-engineering/progressive-context-routing.md	큰 context surface에서 후보를 얕게 발견한 뒤 candidate-local context를 단계적으로 로드하며 applicability와 다음 route를 좁힐 때 참고하는 pattern으로, progressive disclosure와 routing gate를 다룹니다.
+patterns/context-engineering/routing-index-assets.md	문서·Agent Asset·코드 같은 큰 정보 표면에 별도 index/router를 두어 후보를 찾고 현재 task에 맞는 다음 context를 선택하게 할 때 참고하는 pattern으로, index와 routing의 역할·signal·authority boundary를 다룹니다.
+patterns/context-engineering/semantic-asset-roles.md	Agent Asset의 Skill·Rule·prompt 같은 representation과 Knowledge·Workflow·Control·Evaluation 같은 semantic responsibility를 분리해 보고, 재사용 가능한 책임 단위의 composition과 경계를 설계할 때 참고하는 pattern입니다.
+patterns/context-engineering/skill-source-workspace.md	Skill runtime source와 maintainer docs·tests·eval context를 한 source workspace에서 함께 보존·이동해야 할 때 참고하는 pattern으로, runtime surface와 maintainer-only surface의 경계를 다룹니다.
+patterns/context-engineering/subagent-orientation.md	Subagent를 엄격한 유형으로 분류하지 않고 responsibility orientation과 execution context라는 두 설계 축으로 판단할 때 사용하는 reusable pattern입니다.
+patterns/context-engineering/template-schema-driven-assets.md	Template, schema 또는 metadata를 structural owner로 사용해 생성·검증 가능한 자산 구조를 설계할 때 참고하는 reusable pattern입니다.
+patterns/documentation/	개발·기술 문서, baseline, directory guide와 durable documentation 구조 패턴을 찾을 때 사용하는 directory entrypoint입니다.
+patterns/documentation/baseline-document.md	자산의 원래 의도와 protected invariant를 구현 상태와 분리해 보존·복구할 때 참고하는 reusable baseline pattern입니다.
+patterns/documentation/nonstandard-directory-guide.md	이름만으로 목적을 알기 어려운 repository-local directory나 asset surface에 작은 guide가 필요한지 판단할 때 참고하는 pattern으로, 사람이 알아야 할 목적·scope·authority·navigation과 agent-only guidance의 경계를 다룹니다.
+patterns/software-engineering/	Repository/code 구조, architecture, implementation, testing, reliability 등 reusable software-engineering pattern을 찾을 때 사용하는 directory entrypoint입니다.
+patterns/software-engineering/executable-output-checks.md	Agent나 automation의 작업 결과에서 기계적으로 관찰 가능한 부실을 실행 가능한 check로 드러내고, 적절한 실행 방식과 피드백 강도를 선택할 때 참고하는 패턴입니다.
+patterns/software-engineering/filesystem-legible-structure.md	repository의 file·directory 이름, 배치, 계층을 바꿔 탐색성을 높일지 판단할 때 참고하며, filesystem legibility와 구조·convention·operability의 우선순위 경계를 다루는 패턴입니다.
+patterns/software-engineering/filesystem-sort-aware-naming.md	파일 이름의 prefix·subject·postfix를 정렬 키로 구성해 기본 filesystem 정렬에서도 관련 파일이 가까이 모이게 할 때 참고하는 naming pattern입니다.
+patterns/software-engineering/hyphen-structure-underscore-spacing.md	파일 이름에서 하이픈은 구조 경계로, 언더바는 한 구조 단위 안의 띄어쓰기로 사용해 의미 단위를 구분할 때 참고하는 naming pattern입니다.
+patterns/software-engineering/multi-agent-development-architecture.md	여러 코딩 에이전트가 동일한 소프트웨어를 병렬 개발할 때 변경 단위, 공유 계약·불변식, 조합·검증 경계를 어떻게 설계할지 비교하는 아키텍처 패턴입니다.
+patterns/software-engineering/source-mirrored-test-structure.md	source와 test의 대응 관계를 navigation cue로 활용하고, test surface가 커질 때 sibling files나 bundle 같은 구조를 선택할 때 참고하는 패턴입니다.
+patterns/workflow/	Agentic work의 실행 흐름, working artifact, handoff와 lifecycle surface 패턴을 찾을 때 사용하는 directory entrypoint입니다.
+patterns/workflow/artifact-inbox-work-unit-containers.md	Artifact Inbox의 아티팩트를 날짜 대신 브랜치·Issue·Pull Request 등 지속적인 작업 단위로 묶을지 판단하고 경로를 설계할 때 참고하는 확장 패턴입니다.
+patterns/workflow/artifact-inbox.md	report·research·review·handoff·draft 같은 working/non-canonical artifact를 canonical source와 분리해 보관할 때 참고하는 pattern으로, inbox의 scope와 승격·유지·삭제 lifecycle 경계를 다룹니다.
+patterns/workflow/chatbot-driven-development.md	챗봇 중심 개발에서 모호한 목표를 사람과 구체화하거나 에이전트에 판단을 위임하고, 스펙·테스트·CI 근거로 결과를 수렴시키는 협업 방식을 설계할 때 참고하는 패턴입니다.
+patterns/workflow/durable-progress-handoff.md	긴 작업이 session·agent·human 경계를 넘어갈 때 재탐색 비용을 줄이도록 resume-critical state를 durable artifact에 남기고 다시 이어가는 방식을 소개하는 패턴입니다.
+plugins.json	
+skills.json	
+templates/	일반 리뷰와 다관점 리뷰의 범용 Markdown 양식과 개별 작성 스펙을 선택할 때 사용합니다.
+templates/review-multi-perspective.md	
+templates/review-multi-perspective.spec.md	다관점 리뷰의 관점별 근거, 후보 채택·제외·미해결 판단과 통합 Finding을 Markdown으로 기록할 때 사용합니다.
+templates/review.md	
+templates/review.spec.md	일반 리뷰를 3:4 세로 화면에 맞게 작성할 때 항목별 근거·영향·조치와 검증 결과의 작성 계약을 확인합니다.

@@ -8,12 +8,12 @@ from collections.abc import Callable, Iterable
 from pathlib import Path
 
 from scripts import generated_artifacts_sync as sync
-from scripts import docs_indexes_generate
+from scripts import catalog_indexes_generate, docs_indexes_generate
 from scripts.agent_assets import routes_distribution_generate as distribution_routes
 from scripts.agent_assets import routes_repository_generate as repository_routes
 
 ROOT = sync.ROOT
-LOCAL_PROJECTION_NAMES = frozenset({"docs-indexes", "distribution-routes"})
+LOCAL_PROJECTION_NAMES = frozenset({"docs-indexes", "catalog-indexes", "distribution-routes"})
 Checker = Callable[[], list[str]]
 
 
@@ -78,6 +78,14 @@ def check_docs_indexes() -> list[str]:
     )
 
 
+def check_catalog_indexes() -> list[str]:
+    return compare_outputs(
+        catalog_indexes_generate.expected_catalog_indexes(),
+        sync._is_catalog_index_output,
+        show_first_difference=True,
+    )
+
+
 def check_distribution_routes() -> list[str]:
     return compare_outputs(
         distribution_routes.generate(),
@@ -94,6 +102,7 @@ def check_repository_routes() -> list[str]:
 
 CHECKERS: dict[str, Checker] = {
     "docs-indexes": check_docs_indexes,
+    "catalog-indexes": check_catalog_indexes,
     "distribution-routes": check_distribution_routes,
     "repository-routes": check_repository_routes,
 }
