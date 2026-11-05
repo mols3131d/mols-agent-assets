@@ -4,6 +4,8 @@
 
 여기서 **작성 원본(canonical source)**은 재사용 콘텐츠 자체의 소유권을 뜻하며, 해당 콘텐츠가 이 저장소의 작업 지침·개발 정책으로 자동 적용된다는 뜻이 아닙니다. Catalog 등재 또한 이 저장소에서 설치·사용 중이라는 증거가 아닙니다.
 
+`INDEX.tsv`는 Markdown의 description과 파일 경로에서 생성되는 탐색 목록입니다. 카탈로그의 의미와 사용 경계는 이 README와 각 원본이 소유합니다.
+
 ## Areas
 
 - `skills.json` — 자주 재사용하는 외부 Agent Skill source와 사용할 수 있는 installer 목록
