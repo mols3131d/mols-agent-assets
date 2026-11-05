@@ -18,3 +18,4 @@ description: README의 Index와 자동 생성 INDEX.tsv 중 어떤 인덱싱 방
 - `INDEX.tsv`는 도구로 다시 만들 수 있는 목록입니다.
 - 둘을 함께 사용하더라도 같은 정보를 반복하지 않습니다.
 - Index는 원본 문서나 정본을 대신하지 않습니다.
+- 이 저장소의 `docs/INDEX.tsv`와 `catalog/INDEX.tsv`는 루트의 자동 생성 탐색 목록입니다. `catalog/`에서는 Markdown·디렉터리뿐 아니라 JSON discovery 파일도 경로로 노출하며, JSON의 의미와 사용법은 `catalog/README.md`가 설명합니다.
