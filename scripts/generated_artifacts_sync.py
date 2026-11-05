@@ -8,6 +8,7 @@ from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 
 from scripts.agent_assets import routes_distribution_generate as generate_distribution_routes
+from scripts.catalog_indexes_generate import generate_catalog_indexes
 from scripts.agent_assets import routes_repository_generate as generate_repository_routes
 from scripts.docs_indexes_generate import generate_docs_indexes
 
@@ -70,6 +71,30 @@ def _is_docs_index_output(path: str) -> bool:
     )
 
 
+def _is_catalog_index_source(path: str) -> bool:
+    if path in {"scripts/catalog_indexes_generate.py", "scripts/docs_indexes_generate.py"}:
+        return True
+    if path.startswith(_DOCS_INDEX_TOOL_PREFIX) and path.endswith(".py"):
+        return True
+    if not path.startswith("catalog/") or not path.endswith((".md", ".json")):
+        return False
+
+    name = PurePosixPath(path).name
+    if name == "README.md":
+        return True
+    if name == "AGENTS.md" or name.startswith("."):
+        return False
+    if name.startswith("INDEX") or name.startswith("__index__"):
+        return False
+    if name.startswith("__") and name.endswith("__.md"):
+        return False
+    return True
+
+
+def _is_catalog_index_output(path: str) -> bool:
+    return path == "catalog/INDEX.tsv"
+
+
 def _is_distribution_route_source(path: str) -> bool:
     if path == "scripts/agent_assets/routes_distribution_generate.py":
         return True
@@ -99,6 +124,10 @@ def _generate_docs_indexes() -> None:
     generate_docs_indexes()
 
 
+def _generate_catalog_index() -> None:
+    generate_catalog_indexes()
+
+
 def _generate_distribution_routes() -> None:
     generate_distribution_routes.main()
 
@@ -114,6 +143,12 @@ PROJECTIONS = (
         source_matches=_is_docs_index_source,
         output_matches=_is_docs_index_output,
         generate=_generate_docs_indexes,
+    ),
+    Projection(
+        name="catalog-indexes",
+        source_matches=_is_catalog_index_source,
+        output_matches=_is_catalog_index_output,
+        generate=_generate_catalog_index,
     ),
     Projection(
         name="distribution-routes",
