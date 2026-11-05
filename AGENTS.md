@@ -10,6 +10,12 @@
 - `.inbox/`의 조사·계획·검토·인계 자료는 참고 근거이며 정본 정책이나 현재 작업 지침이 아닙니다. 명시적으로 채택해 해당 owner 문서에 반영하기 전에는 지침으로 적용하지 않습니다.
 - `catalog/`는 외부 프로젝트 등을 위한 재사용 자산·패턴 탐색 공간입니다. Skill·Plugin 목록의 등재는 설치·사용을 뜻하지 않습니다. 이곳이 소유하는 패턴·템플릿의 작성 원본도 이 저장소의 mandatory policy를 대신하지 않습니다.
 
+## 문서·카탈로그 탐색
+
+- `docs/`와 `catalog/`에서 자료를 찾을 때 각각 [`docs/INDEX.tsv`](docs/INDEX.tsv), [`catalog/INDEX.tsv`](catalog/INDEX.tsv)의 `path`와 `description`으로 후보를 좁히고 필요한 원본만 읽습니다. 설명이 부족하거나 목록에 없는 자료는 해당 `README.md`와 경로 탐색으로 보완합니다.
+- `INDEX.tsv`는 탐색용 생성 결과이지 지침이나 작성 원본이 아닙니다. 특히 `catalog/`의 등재를 이 저장소에서의 설치·사용·정책 채택으로 해석하지 않습니다.
+- 인덱스를 직접 수정하지 않고 원본 변경 후 `mise run generated sync`로 갱신하며 `mise run generated validate`로 drift를 검사합니다.
+
 ## Agent Asset 작업 워크플로
 
 - 이 저장소가 관리하는 Skill·Rule·Subagent 등 Agent Asset을 신설·개선·리뷰·평가·제공·삭제할 때는 [저장소 전용 워크플로 라우터](.rulesync/skills/repository-agent-asset-workflow/SKILL.md)에서 필요한 절차를 선택합니다. Skill을 발견·로드할 수 없다면 [Agent Asset Management](docs/development/agent-assets/agent-asset-management.md)를 직접 확인합니다. 이 연결은 기존 경로 규칙·전문 Skill·권한을 대체하지 않습니다.
