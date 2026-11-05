@@ -43,6 +43,25 @@ def test_docs_index_source_matching(path, expected):
 @pytest.mark.parametrize(
     ("path", "expected"),
     [
+        ("catalog/patterns/README.md", True),
+        ("catalog/patterns/example.md", True),
+        ("catalog/skills.json", True),
+        ("catalog/plugins.json", True),
+        ("catalog/INDEX.tsv", False),
+        ("catalog/AGENTS.md", False),
+        ("catalog/patterns/__system__.md", False),
+        ("scripts/catalog_indexes_generate.py", True),
+        ("scripts/docs_indexes_generate.py", True),
+        ("docs/guide.md", False),
+    ],
+)
+def test_catalog_index_source_matching(path, expected):
+    assert sync._is_catalog_index_source(path) is expected
+
+
+@pytest.mark.parametrize(
+    ("path", "expected"),
+    [
         ("src/rulesync/.rulesync/skills/example/SKILL.md", True),
         ("src/rulesync/.rulesync/skills/example/references/guide.md", False),
         ("src/rulesync/.rulesync/subagents/review.md", True),
@@ -74,6 +93,9 @@ def test_repository_route_source_matching(path, expected):
     ("path", "expected"),
     [
         ("docs/guide.md", ["docs-indexes"]),
+        ("catalog/skills.json", ["catalog-indexes"]),
+        ("catalog/patterns/README.md", ["catalog-indexes"]),
+        ("scripts/docs_indexes_generate.py", ["docs-indexes", "catalog-indexes"]),
         (
             "src/rulesync/.rulesync/skills/example/SKILL.md",
             ["distribution-routes"],
@@ -93,6 +115,7 @@ def test_source_path_selects_only_its_projection_owner(path, expected):
     ("path", "expected"),
     [
         ("docs/INDEX.tsv", ["docs-indexes"]),
+        ("catalog/INDEX.tsv", ["catalog-indexes"]),
         ("route/routes.jsonl", ["distribution-routes"]),
         ("route/skills.jsonl", ["distribution-routes"]),
         ("route/subagents.jsonl", ["distribution-routes"]),

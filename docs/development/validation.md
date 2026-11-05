@@ -11,7 +11,7 @@ Validation은 이 repository가 유지하는 **네 가지 구조·파생 계약*
 | Target | Check |
 | --- | --- |
 | Documentation frontmatter | 적용 대상 문서의 YAML frontmatter와 필수 metadata |
-| Documentation `INDEX.tsv` | 작성 원본에서 계산한 index와 committed output의 drift |
+| `docs/`·`catalog/` `INDEX.tsv` | 작성 원본에서 계산한 index와 committed output의 drift |
 | Agent Asset routing | source에서 생성한 route와 committed output의 drift |
 | Rulesync-managed assets | Rulesync CLI를 통한 read-only structural validation |
 
