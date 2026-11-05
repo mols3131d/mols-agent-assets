@@ -32,7 +32,7 @@ description: 저장소 개발 작업의 local policy, Agent Asset 설계 지식�
 - Documentation rules and conventions → [`docs/documentation/`](../documentation/)
 - 프로젝트 도구의 기본 설정·버전 선택·예외 → [Tools](../tools/README.md)
 - Reusable solution patterns → [Patterns](../../catalog/patterns/README.md)
-- Rulesync source/workspace boundary → [Rulesync](tooling/rulesync.md)
+- Rulesync source/workspace boundary → [Source Authority](source-authority.md) · [프로젝트 Rulesync 운영 안내](../tools/rulesync.md)
 - Skill authoring convention → [Skill Authoring Conventions](agent-assets/skills/skill-authoring-conventions.md)
 
 이 README는 development entrypoint이며 linked policy의 본문을 복제하지 않습니다.

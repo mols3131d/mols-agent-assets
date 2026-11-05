@@ -17,7 +17,7 @@ Validation은 이 repository가 유지하는 **네 가지 구조·파생 계약*
 
 각 검증은 계약을 소유하는 기존 도구와 source를 재사용합니다. Schema나 projection semantics를 별도 validator에서 다시 구현하지 않습니다.
 
-문서 frontmatter의 적용 범위는 [Frontmatter](../documentation/frontmatter.md), index 정책은 [Document Indexing](../documentation/indexing.md), Rulesync contract는 [Rulesync](../development/tooling/rulesync.md)가 소유합니다.
+문서 frontmatter의 적용 범위는 [Frontmatter](../documentation/frontmatter.md), index 정책은 [Document Indexing](../documentation/indexing.md), Rulesync의 저장소 고유 운영·target 정책은 [프로젝트 Rulesync 운영 안내](../tools/rulesync.md)가 소유합니다.
 
 ## Projection Validation
 
@@ -30,5 +30,7 @@ Generator 자체의 parsing, ordering, failure behavior 같은 executable semant
 ## Rulesync
 
 `mise run rulesync-validate`는 Rulesync-managed assets의 structural validation entrypoint입니다. 통과 결과를 semantic quality, routing quality나 runtime behavior까지 확대 해석하지 않습니다.
+
+[`scripts/agent_assets/rulesync_validate.py`](../../scripts/agent_assets/rulesync_validate.py)는 공식 CLI의 strict doctor와 configured projection dry-run을 read-only로 실행하며 warning도 failure로 처리합니다. 개별 자산의 `targets`를 존중하되 현재 configured projection 밖의 target까지 검증했다고 해석하지 않습니다.
 
 Validation target을 PR Gate, manual 또는 다른 execution surface에 배치하는 admission 결정은 [Continuous Integration](ci.md)을 따릅니다.

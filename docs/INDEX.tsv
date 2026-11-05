@@ -22,8 +22,8 @@ development/tooling/front-matter-cms.md	Front Matter CMS 설정, 공식 옵션, 
 development/tooling/github-sensitive-data-removal-runbook.md	GitHub repository에 노출된 회전·폐기 불가능한 민감정보를 Git history rewrite, GitHub 저장면 정리, fork/clone 대응과 Support purge까지 최대한 제거할 때 사용하는 재사용 런북입니다.
 development/tooling/mise.md	새 위치로 옮긴 mise의 프로젝트 설정·잠금·setup/update 운영 안내와 공식 문서를 찾을 때 사용합니다.
 development/tooling/promptfoo.md	Promptfoo config·assertion·provider·model grading·debugging의 current official source와 이 저장소의 eval policy·config·runner entrypoint를 찾을 때 사용합니다.
-development/tooling/rulesync.md	Rulesync 자산의 authoring workspace·target·source/derived boundary를 판단하거나 fetch·import·generate 같은 current CLI·schema·target 문서를 찾을 때 사용합니다.
-development/tooling/skills-cli.md	외부 Agent Skill dependency를 lock·sync·install·update할 때 skills CLI, source-native installer와 Rulesync 사이의 책임 경계를 확인할 때 사용합니다.
+development/tooling/rulesync.md	Rulesync 명령·설정·target 지원을 자체 설명 대신 저장소에서 사용하는 공식 Skill과 upstream 문서에서 확인할 때 사용합니다.
+development/tooling/skills-cli.md	외부 Skill을 dependency로 사용할 때 upstream skills CLI, root skills-lock.json, 저장소 native installer adapter의 책임과 설치 부작용을 구분할 때 사용합니다.
 development/validation.md	문서 frontmatter·INDEX.tsv, Agent Asset routing, Rulesync 관리 자산의 repository validation 범위와 실행 경계를 확인할 때 사용하는 정책입니다.
 development/vcs-git.md	저장소 고유 branch 정책, 병렬 작업 격리, branch naming, Git history 안전성과 commit convention을 확인할 때 사용합니다.
 documentation/	저장소 전반의 문서 원칙과 README 작성, 문서 인덱싱, frontmatter 정책을 찾을 때 사용합니다.

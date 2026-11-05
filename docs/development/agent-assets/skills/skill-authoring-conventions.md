@@ -47,6 +47,6 @@ Description 최적화와 trigger eval은 [Specification](specification.md)의 cr
 
 - Instruction 행동 표현 → [Instruction Design](../instruction-design.md)
 - Skill 표준·target/source 공식 문서 → [Specification](specification.md)
-- Rulesync 작성 원본·workspace → [Rulesync](../../tooling/rulesync.md)
+- Rulesync 작성 원본·workspace → [Source Authority](../../source-authority.md) · [프로젝트 Rulesync 운영 안내](../../../tools/rulesync.md)
 - 유지보수 문서 → [Agent Asset Management](../agent-asset-management.md#유지보수-문서)
 - 테스트와 PR Gate → [Testing](../../testing.md)
