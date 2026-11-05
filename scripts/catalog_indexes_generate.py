@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Generate the catalog's root index from reusable content and metadata."""
 
 from __future__ import annotations
@@ -41,6 +40,3 @@ def generate_catalog_indexes(catalog_root: Path = CATALOG_ROOT) -> None:
     elif path.exists():
         path.unlink()
 
-
-if __name__ == "__main__":
-    generate_catalog_indexes()
