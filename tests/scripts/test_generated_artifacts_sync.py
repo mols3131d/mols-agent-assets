@@ -43,17 +43,6 @@ def test_docs_index_source_matching(path, expected):
 @pytest.mark.parametrize(
     ("path", "expected"),
     [
-        ("src/rulesync/.rulesync/skills/example/SKILL.md", True),
-        ("src/rulesync/.rulesync/skills/example/references/guide.md", False),
-        ("src/rulesync/.rulesync/subagents/review.md", True),
-        ("src/rulesync/.rulesync/subagents/references/guide.md", False),
-        ("scripts/agent_assets/routes_distribution_generate.py", True),
-        ("rulesync.lock", False),
-    ],
-)
-@pytest.mark.parametrize(
-    ("path", "expected"),
-    [
         ("catalog/patterns/README.md", True),
         ("catalog/patterns/example.md", True),
         ("catalog/skills.json", True),
@@ -70,6 +59,17 @@ def test_catalog_index_source_matching(path, expected):
     assert sync._is_catalog_index_source(path) is expected
 
 
+@pytest.mark.parametrize(
+    ("path", "expected"),
+    [
+        ("src/rulesync/.rulesync/skills/example/SKILL.md", True),
+        ("src/rulesync/.rulesync/skills/example/references/guide.md", False),
+        ("src/rulesync/.rulesync/subagents/review.md", True),
+        ("src/rulesync/.rulesync/subagents/references/guide.md", False),
+        ("scripts/agent_assets/routes_distribution_generate.py", True),
+        ("rulesync.lock", False),
+    ],
+)
 def test_distribution_route_source_matching(path, expected):
     assert sync._is_distribution_route_source(path) is expected
 
