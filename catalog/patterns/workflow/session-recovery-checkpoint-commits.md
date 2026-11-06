@@ -50,12 +50,12 @@ Recovery:
 
 ## Resumption
 
-1. **대상 확인:** 어떤 작업·repository·branch/PR을 이어받는지 식별하고 현재 HEAD, 원격 ref, working tree와 untracked 변경을 확인합니다. 다른 작업을 덮어쓰며 정리하지 않습니다.
+1. **대상 확인:** 이어받을 작업·repository·branch/PR을 식별하고 현재 HEAD, working tree와 untracked 변경을 확인합니다. 원격 작업을 이어받는다면 필요에 따라 원격 ref의 최신 상태도 조회합니다. 다른 작업을 덮어쓰며 정리하지 않습니다.
 2. **체크포인트 검색:** 해당 작업의 커밋을 찾아 본문과 스냅샷을 읽습니다. HEAD가 반드시 그 작업의 마지막 체크포인트인 것은 아닙니다.
 3. **최신성 검증:** 체크포인트 이후의 커밋, ref 이동, 재작성, 파일 변경, 외부 계약 변경을 대조합니다. 그 이후 상태가 다르면 `Next`를 그대로 실행하지 않습니다.
 4. **재검증 후 진행:** 이전 검사 결과가 여전히 유효한지 판단하고 필요한 최소 검증을 수행한 뒤 다음 행동을 선택합니다. 내용이 충돌하면 현재 근거에 맞춰 계획을 수정합니다.
 
-Git CLI를 사용하는 경우 다음과 같이 조사할 수 있습니다. 특정 작업의 브랜치를 올바르게 선택했다는 전제의 **조회 예시**입니다.
+Git CLI를 사용하는 경우 다음과 같이 조사할 수 있습니다. **이미 올바른 작업 브랜치를 선택한 상황에서의 로컬 조회 예시**이며, 이 명령만으로 원격의 최신 상태를 확인한 것은 아닙니다.
 
 ```sh
 git status --short --branch
@@ -95,5 +95,6 @@ git diff HEAD
 - [Git — git-notes](https://git-scm.com/docs/git-notes), [git-reflog](https://git-scm.com/docs/git-reflog) — 별도 notes ref와 도달성·이력 복구 한계
 - [GitHub — Pull request merges](https://docs.github.com/en/pull-requests/reference/pull-request-merges) — Squash Merge의 중간 커밋 처리
 - [GitHub — Removing sensitive data](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository) — 게시된 민감정보의 복구 및 제거 어려움
+- [Google — Small CLs](https://google.github.io/eng-practices/review/developer/small-cls.html) — 하나의 독립된 변경과 관련 테스트를 검토·통합하기 쉽게 유지하는 원칙
 - [Anthropic — Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents) — 장기 실행 에이전트에서 진행 기록과 Git history를 함께 사용하는 사례
 - [OpenAI — Harness engineering](https://openai.com/index/harness-engineering/) — 작업 계획·진행·결정을 repository-local 지식으로 보존하는 사례
