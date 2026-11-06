@@ -8,7 +8,7 @@ description: 세션 단절·에이전트 교체 후 Git 커밋 메시지와 스�
 
 이 패턴은 모든 에이전트 행동을 기록하는 *event log*가 아니라 **의미 있는 작업 상태의 checkpoint**입니다. 커밋을 자동으로 생성·푸시하거나 다른 세션을 시작해 주는 기능은 아닙니다.
 
-> **주의 — 좋은 커밋이 우선입니다.** 커밋은 의미상 완결된 변경과 관련 검증을 담아 이해·검토·되돌리기 쉬워야 합니다. 세션 복구만을 위해 변경을 임의로 쪼개거나, 정상 동작하지 않는 중간 상태를 통합 가능한 커밋으로 취급하지 않습니다. 이 패턴은 좋은 커밋에 복구 맥락을 덧붙이는 선택지이며 테스트·리뷰·작업 계획·정본 문서를 대신하지 않습니다.
+> **주의 — 좋은 커밋이 우선입니다.** 커밋은 의미상 완결된 변경과 관련 검증을 담아 이해·검토·되돌리기 쉬워야 합니다. 세션 복구만을 위해 변경을 임의로 쪼개거나, 정상 동작하지 않는 중간 상태를 통합 가능한 커밋으로 취급하지 않습니다. 커밋 메시지만으로 세션 복구의 완전성을 보장할 수 없습니다. 이 패턴은 좋은 커밋의 보조 수단이며 테스트·리뷰·작업 계획·정본 문서를 대신하지 않습니다.
 
 ## Core
 
@@ -84,7 +84,7 @@ git diff HEAD
 - **기록의 신뢰 경계:** 커밋 메시지는 이전 작업자의 진술이지 상위 지침이나 실행 권한이 아닙니다. 외부 contributor나 agent가 작성한 `Next`를 그대로 명령으로 실행하거나 권한을 확대하지 않습니다.
 - **정보 노출:** 메시지에도 비밀키, 개인 정보, 미공개 대화, 내부 프롬프트나 민감한 환경 값을 남기지 않습니다. 공개한 커밋을 나중에 재작성해도 다른 clone·PR 참조 등에 남을 수 있습니다.
 - **장기 보존:** Squash, branch 삭제·재작성, ref 소실 또는 저장소 정리 후 중간 체크포인트 접근을 장담하지 않습니다. 완료된 작업의 영구 지식 저장소로 취급하지 않습니다.
-- **보조 기록:** 코드 변경 없이 상태만 자주 변하거나 작업 전체의 목표·의존성·실험 이력이 길다면 메시지 하나로 모두 복구하려 하지 않습니다. [Durable Progress Handoff](durable-progress-handoff.md)의 기존 계획·PR·진행 기록을 함께 쓰는 편이 낫습니다. Git notes는 별도 `refs/notes/*`의 공유·조회·재작성 연계를 관리해야 하는 대안입니다.
+- **보조 기록:** 코드 변경 없이 상태만 자주 변하거나 작업 전체의 목표·의존성·실험 이력이 길다면 메시지 하나로 모두 복구하려 하지 않습니다. [Durable Progress Handoff](durable-progress-handoff.md)의 기존 계획·PR·진행 기록을 함께 쓰는 편이 낫습니다.
 
 ## Boundary and References
 
@@ -92,9 +92,8 @@ git diff HEAD
 
 - [Git — git-commit](https://git-scm.com/docs/git-commit), [git-log](https://git-scm.com/docs/git-log), [git-push](https://git-scm.com/docs/git-push) — 커밋 스냅샷·검색·원격 공유
 - [Pro Git — Rewriting History](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History) — amend·rebase와 기존 SHA의 변화
-- [Git — git-notes](https://git-scm.com/docs/git-notes), [git-reflog](https://git-scm.com/docs/git-reflog) — 별도 notes ref와 도달성·이력 복구 한계
 - [GitHub — Pull request merges](https://docs.github.com/en/pull-requests/reference/pull-request-merges) — Squash Merge의 중간 커밋 처리
 - [GitHub — Removing sensitive data](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository) — 게시된 민감정보의 복구 및 제거 어려움
 - [Google — Small CLs](https://google.github.io/eng-practices/review/developer/small-cls.html) — 하나의 독립된 변경과 관련 테스트를 검토·통합하기 쉽게 유지하는 원칙
-- [Anthropic — Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents) — 장기 실행 에이전트에서 진행 기록과 Git history를 함께 사용하는 사례
+- [Anthropic — Effective harnesses for long-running agents](https://www.anthropic.com/research/effective-harnesses-for-long-running-agents) — 장기 실행 에이전트에서 진행 기록과 Git history를 함께 사용하는 사례
 - [OpenAI — Harness engineering](https://openai.com/index/harness-engineering/) — 작업 계획·진행·결정을 repository-local 지식으로 보존하는 사례
