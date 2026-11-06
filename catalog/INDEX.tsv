@@ -31,6 +31,7 @@ patterns/workflow/artifact-inbox-work-unit-containers.md	Artifact Inbox의 아�
 patterns/workflow/artifact-inbox.md	report·research·review·handoff·draft 같은 working/non-canonical artifact를 canonical source와 분리해 보관할 때 참고하는 pattern으로, inbox의 scope와 승격·유지·삭제 lifecycle 경계를 다룹니다.
 patterns/workflow/chatbot-driven-development.md	챗봇 중심 개발에서 모호한 목표를 사람과 구체화하거나 에이전트에 판단을 위임하고, 스펙·테스트·CI 근거로 결과를 수렴시키는 협업 방식을 설계할 때 참고하는 패턴입니다.
 patterns/workflow/durable-progress-handoff.md	긴 작업이 session·agent·human 경계를 넘어갈 때 재탐색 비용을 줄이도록 resume-critical state를 durable artifact에 남기고 다시 이어가는 방식을 소개하는 패턴입니다.
+patterns/workflow/session-recovery-checkpoint-commits.md	세션 단절·에이전트 교체 후 Git 커밋 메시지와 스냅샷에서 작업 상태·검증·다음 시작점을 복구하려는 경우 참고하는 체크포인트 패턴입니다.
 plugins.json	
 skills.json	
 templates/	일반 리뷰와 다관점 리뷰의 범용 Markdown 양식과 개별 작성 스펙을 선택할 때 사용합니다.
