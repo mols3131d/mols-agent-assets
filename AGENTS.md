@@ -15,6 +15,7 @@
 - `docs/`와 `catalog/`에서 자료를 찾을 때 각각 [`docs/INDEX.tsv`](docs/INDEX.tsv), [`catalog/INDEX.tsv`](catalog/INDEX.tsv)의 `path`와 `description`으로 후보를 좁히고 필요한 원본만 읽습니다. 설명이 부족하거나 목록에 없는 자료는 해당 `README.md`와 경로 탐색으로 보완합니다.
 - `INDEX.tsv`는 탐색용 생성 결과이지 지침이나 작성 원본이 아닙니다. 특히 `catalog/`의 등재를 이 저장소에서의 설치·사용·정책 채택으로 해석하지 않습니다.
 - 인덱스를 직접 수정하지 않고 원본 변경 후 `mise run generated sync`로 갱신하며 `mise run generated validate`로 drift를 검사합니다.
+- `catalog/patterns/`의 패턴 문서를 신설·개편·리뷰할 때는 [저장소 전용 패턴 작성 워크플로](.rulesync/skills/repository-pattern-workflow/SKILL.md)를 선택합니다. 패턴의 의미·작성 원칙은 [Patterns](catalog/patterns/README.md)가 소유합니다.
 
 ## Agent Asset 작업 워크플로
 
