@@ -26,7 +26,7 @@
 
 **확인된 갭:** 기본 `promptfoo_run.py`는 외부 provider 사용 opt-in, 선택 case 상한, model/grader 비용 상한을 강제하지 않는다. `PROMPTFOO_DISABLE_REMOTE_GENERATION`, telemetry/sharing 설정과 `--no-write`는 target·grader API 호출의 차단 수단이 아니다. `--no-cache`는 오히려 캐시 재사용 없이 실제 요청을 반복할 수 있다.
 
-**정본:** [Testing](../../docs/development/testing.md) (deterministic), [Evaluation](../../docs/development/evaluation.md) (behavior claim), [CI](../../docs/development/ci.md) (blocking/deferred), [Promptfoo 실행 안내](../../evals/README.md)와 [도구 문서](../../docs/tools/promptfoo.md). 저장소 작업은 루트 `AGENTS.md`·`CHATBOT.md`, GitHub/VCS 정책을 먼저 적용한다.
+**정본:** [Testing](../../docs/development/testing.md) (deterministic), [Evaluation](../../docs/development/evaluation.md) (behavior claim), [CI](../../docs/development/ci.md) (blocking/deferred), [Promptfoo 실행 안내](../../evals/README.md)와 [도구 문서](../../docs/tools/promptfoo.md). 저장소 작업은 루트 `AGENTS.md`·`CHATBOT.md`, GitHub/VCS 정책을 먼저 적용한다. Agent Asset eval fixture·config·grader를 변경할 때는 [저장소 전용 Agent Asset 워크플로](../../.rulesync/skills/repository-agent-asset-workflow/SKILL.md)에서 적용 절차를 선택하고, [Agent Asset Management](../../docs/development/agent-assets/agent-asset-management.md)에 따라 문서 영향과 유지보수 책임을 검토한다.
 
 ## 선택 전략 — 목적과 호출 경계를 구분
 
