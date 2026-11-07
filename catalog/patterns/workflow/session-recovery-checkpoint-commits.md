@@ -19,41 +19,51 @@ description: 세션 단절·에이전트 교체 후 Git 커밋 메시지와 스�
 - **컨텍스트 최적화:** 다음 사람이 **적은 토큰 비용**으로 읽고 **적은 추론 비용**으로 맥락을 재구성할 수 있도록 중복된 변경 목록과 형식적 상태 보고를 피합니다. PR·명세 등의 내용을 복제하지 않고 참조하되, 필요한 판단 근거를 과도하게 압축하지 않습니다.
 - **상태와 근거의 경계:** 커밋 메시지는 작성 당시의 기록입니다. 검사 결과를 적을 때는 실제 확인한 범위만 설명하고, 재개할 때는 현재 Git 상태·계약·검증 근거를 다시 확인합니다.
 
-## Commit Message Template and Example
+## Conventional Commit Format and Examples
 
-별도의 `Recovery:` 블록이나 필드 목록을 만들 필요는 없습니다. 기존 커밋 규약을 유지하면서 **변경 이유와 중요한 맥락을 평범한 본문에 담는 것**이 기본 형태입니다.
+[Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/)의 구조를 그대로 사용합니다. 이 패턴만을 위한 추가 형식은 필요하지 않습니다.
 
-### Reusable Template
-
-```text
-<type>(<scope>): <변경 요지>
-
-<변경 이유와 핵심 판단>
-
-<필요할 때만: 남은 제약, 검증 한계 또는 후속 작업>
-```
-
-제목의 `scope`와 본문은 프로젝트 규약에 따라 생략할 수 있습니다. 마지막 문단도 **실제로 다음 판단에 필요한 사실이 있을 때만** 추가합니다. 테스트 결과·작업 진행 상태·참조 링크를 의무적으로 채우지 않고, 코드나 PR에서 쉽게 찾을 수 있는 정보는 반복하지 않습니다.
-
-### Filled Example
+### Template
 
 ```text
-feat(auth): separate token expiration validation
+<type>[optional scope][!]: <description>
 
-토큰 만료 판단을 미들웨어의 I/O에서 분리해
-인증 정책을 독립적으로 테스트할 수 있게 한다.
+[optional body]
 
-토큰 단위 테스트는 통과했지만 미들웨어 연동은 아직
-검증하지 않았다. 입력 스키마 확정 후 연동한다.
+[optional footer(s)]
 ```
 
-후속 작업과 미검증 상태를 별도 인계 항목이 아니라 **변경의 맥락과 한계**로 설명한 예시입니다. 기존 메시지만으로 충분한 커밋이라면 마지막 문단도 쓰지 않습니다.
+- **제목:** 변경의 성격과 요지를 짧게 전달합니다. `scope`는 선택 사항이며 `!`는 호환성이 깨지는 변경을 나타낼 때 사용합니다. 실제 `type`과 제목 표현은 적용 프로젝트의 규약을 따릅니다.
+- **본문:** 이유가 자명하지 않을 때만 변경 동기, 중요한 결정이나 제약을 설명합니다. Git diff로 확인되는 구현 목록, 작업 일지 또는 회복용 상태 필드를 반복하지 않습니다.
+- **Footer:** 관련 이슈나 호환성 변경을 기록할 때만 사용합니다. 호환성이 깨지는 변경은 규격에 맞게 `!` 또는 `BREAKING CHANGE:`로 표시합니다.
+
+제목만으로 충분하다면 본문과 Footer를 모두 생략합니다. 다음 실행에 중요한 미검증 범위나 후속 조건이 있다면, 별도 `Recovery` 영역 대신 본문의 자연스러운 설명에 포함할 수 있습니다.
+
+### Examples
+
+간단한 변경에는 제목 하나로 충분합니다.
+
+```text
+fix(auth): reject expired access tokens
+```
+
+설계 판단을 보존할 필요가 있는 변경은 본문을 사용합니다.
+
+```text
+refactor(auth): extract token expiry validation
+
+Keep expiry rules separate from HTTP middleware so unit tests
+can exercise the policy without request setup. Preserve existing
+middleware behavior; the new auth flow is outside this change.
+```
+
+두 메시지 모두 일반적인 커밋 설명입니다. 두 번째 메시지는 **왜 분리했는지와 변경 범위가 어디까지인지** 남기므로, 세션이 끊겨도 다음 작업자가 판단을 다시 만들 필요가 줄어듭니다.
 
 ## Capture
 
 1. 현재 repository, branch/ref, worktree와 변경 소유권을 확인합니다. 다른 작업자의 수정과 미추적 파일을 자기 작업으로 가정하지 않습니다.
 2. **우선 좋은 커밋인지 판단합니다.** 한 가지 의미 있는 변경으로 이해·검토할 수 있고 관련 검증과 함께 보존할 가치가 있을 때 이번 작업의 변경만 stage합니다. 세션 복구 자체가 커밋을 추가할 이유는 아닙니다.
-3. 커밋될 변경과 검증 결과를 대조하고, 본문에 변경 이유와 필요한 결정·제약을 자연스럽게 설명합니다. 후속 작업이나 검증 한계는 다음 판단에 중요할 때만 덧붙이며 미실행 테스트를 통과로 적지 않습니다.
+3. 커밋될 변경과 검증 결과를 대조합니다. 제목만으로 의도가 충분하지 않다면 본문에 이유와 중요한 결정·제약을 설명합니다. 후속 작업이나 검증 한계는 다음 판단에 중요할 때만 덧붙이며 미실행 테스트를 통과로 적지 않습니다.
 4. 다른 machine·session·agent가 원격에서 이어야 한다면 허용된 원격 ref에 게시하고, 게시한 SHA가 조회되는지 확인합니다. 로컬 커밋만으로는 다른 환경에서 복구할 수 없습니다.
 
 커밋 메시지에 **자기 자신의 SHA를 미리 써 넣으려 하지 않습니다.** SHA는 커밋 후 생성되는 식별자이고, 메시지를 수정하면 다른 커밋이 됩니다. 필요한 곳에서 생성된 SHA를 별도로 참조할 수 있습니다.
@@ -100,6 +110,7 @@ git diff HEAD
 
 이 패턴은 **Git commit message를 코드 스냅샷에 인접한 세션 복구 표면으로 활용하는 방법**만 다룹니다. 일반적인 인계 정보와 artifact 선택은 [Durable Progress Handoff](durable-progress-handoff.md), 여러 agent의 코드 경계·통합은 [Software Architecture for Multi-Agent Development](../software-engineering/multi-agent-development-architecture.md), 실제 커밋 규약과 권한은 적용 대상 repository가 소유합니다.
 
+- [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) — type, optional scope·body·footer와 breaking change의 표준 형식
 - [Git — git-commit](https://git-scm.com/docs/git-commit), [git-log](https://git-scm.com/docs/git-log), [git-push](https://git-scm.com/docs/git-push) — 커밋 스냅샷·검색·원격 공유
 - [Pro Git — Rewriting History](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History) — amend·rebase와 기존 SHA의 변화
 - [GitHub — Pull request merges](https://docs.github.com/en/pull-requests/reference/pull-request-merges) — Squash Merge의 중간 커밋 처리
