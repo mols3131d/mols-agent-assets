@@ -34,7 +34,7 @@ targets:
 ## 리뷰와 마무리
 
 7. [Patterns의 Review](../../../catalog/patterns/README.md#review)를 기준으로 독립성, category 적합성, 중복·소유권, 강제 규칙처럼 읽힐 위험, 선택의 유연성, 근거와 reference의 유효성을 검토한다. 패턴을 처음 접하는 독자와 실제 적용하려는 독자의 관점에서 불명확한 부분을 수정한다. 반복 개선이 필요한 경우 `mols-loops`를 조합하되 이 절차의 책임을 대체하지 않는다.
-8. 해당 문서의 frontmatter·내부 링크·Markdown 형식과 `catalog/INDEX.tsv`의 파생 상태를 확인한다. 인덱스는 직접 수정하지 않고 저장소 생성·검증 명령을 사용한다. 수행한 검사와 미검증 항목을 구분하며, 문서 영향과 추가 반영이 필요한 정본을 확인하고 변경을 전용 branch·PR로 인계한다.
+8. 해당 문서의 frontmatter·내부 링크·Markdown 형식을 검토한다. 패턴 원본을 변경했다면 `mise run generated sync`로 `catalog/INDEX.tsv`를 재생성하고 `mise run generated validate`로 drift를 확인한다. 인덱스를 직접 수정하지 않는다. 수행한 검사와 미검증 항목을 구분하고, 필요한 정본 반영 후 전용 branch·PR로 인계한다.
 
 ## 경계
 
