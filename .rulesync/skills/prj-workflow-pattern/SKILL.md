@@ -12,8 +12,9 @@ targets:
   - antigravity-ide
   - antigravity-cli
   - agentsskills
-metadata:
-  dependencies: "mols-documentation, mols-text-optimizer"
+compatibility: >-
+  For mols-agent-assets; uses mols-documentation for document quality and may
+  use mols-text-optimizer only for generic wording-only fallback.
 ---
 
 # Project Pattern Workflow
@@ -32,4 +33,4 @@ metadata:
 | 사용 중단·은퇴 | [Retire](workflows/retire.md) |
 | 원본 삭제 | [Delete](workflows/delete.md) |
 
-패턴의 의미·작성 기준은 [Patterns](../../../catalog/patterns/README.md)가 소유한다. `metadata.dependencies`는 참고용이며 자동 설치·로드를 뜻하지 않는다. 필요한 전문 Skill은 해당 워크플로에서 선택한다. 이 Skill은 기존 정책·권한을 재정의하지 않는다.
+패턴의 의미·작성 기준은 [Patterns](../../../catalog/patterns/README.md)가 소유한다. `compatibility`는 관련 Skill을 설명하지만 자동 설치·로드를 뜻하지 않는다. 실제 선택 여부는 해당 워크플로에서 판단한다. 이 Skill은 기존 정책·권한을 재정의하지 않는다.
