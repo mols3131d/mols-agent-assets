@@ -80,12 +80,12 @@ verified. Confirm the request schema before integration tests.
 3. **최신성 검증:** 해당 커밋 이후의 변경, ref 이동·재작성과 외부 계약 변화를 대조합니다. 메시지에 적힌 후속 계획은 현재 작업 상태와 맞는지 확인한 뒤 참고합니다.
 4. **재검증 후 진행:** 이전 검사 결과가 여전히 유효한지 판단하고 필요한 최소 검증을 수행한 뒤 다음 행동을 선택합니다. 내용이 충돌하면 현재 근거에 맞춰 계획을 수정합니다.
 
-Git CLI를 사용하는 경우 다음과 같이 조사할 수 있습니다. **이미 올바른 작업 브랜치를 선택한 상황에서의 로컬 조회 예시**이며, 이 명령만으로 원격의 최신 상태를 확인한 것은 아닙니다.
+Git CLI를 사용하는 경우 다음과 같이 조사할 수 있습니다. **이미 올바른 작업 브랜치를 선택한 상황에서의 로컬 조회 예시**입니다. `<checkpoint-sha>`는 탐색한 작업의 실제 커밋 SHA로 바꾸며, 이 명령만으로 원격의 최신 상태를 확인한 것은 아닙니다.
 
 ```sh
 git status --short --branch
 git log -8 --format='%h %s'
-git show --format=fuller --stat HEAD
+git show --format=fuller --stat <checkpoint-sha>
 git diff HEAD
 ```
 
