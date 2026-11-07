@@ -30,14 +30,17 @@ description: 세션 단절·에이전트 교체 후 Git 커밋 메시지와 스�
 
 [optional body]
 
+[optional continuation context: validation, pending work, next step]
+
 [optional footer(s)]
 ```
 
 - **제목:** 변경의 성격과 요지를 짧게 전달합니다. `scope`는 선택 사항이며 `!`는 호환성이 깨지는 변경을 나타낼 때 사용합니다. 실제 `type`과 제목 표현은 적용 프로젝트의 규약을 따릅니다.
-- **본문:** 이유가 자명하지 않을 때만 변경 동기, 중요한 결정이나 제약을 설명합니다. Git diff로 확인되는 구현 목록, 작업 일지 또는 회복용 상태 필드를 반복하지 않습니다.
+- **본문:** 이유가 자명하지 않을 때만 변경 동기, 중요한 결정이나 제약을 설명합니다. Git diff로 확인되는 구현 목록이나 작업 일지를 반복하지 않습니다.
+- **Continuation context:** 필요할 때만 검증 상태, 아직 남은 작업, 다음 확인 지점 등을 짧게 남깁니다. Conventional Commits의 별도 필드가 아니라 **본문의 선택적 문단**입니다.
 - **Footer:** 관련 이슈나 호환성 변경을 기록할 때만 사용합니다. 호환성이 깨지는 변경은 규격에 맞게 `!` 또는 `BREAKING CHANGE:`로 표시합니다.
 
-제목만으로 충분하다면 본문과 Footer를 모두 생략합니다. 다음 실행에 중요한 미검증 범위나 후속 조건이 있다면, 별도 `Recovery` 영역 대신 본문의 자연스러운 설명에 포함할 수 있습니다.
+제목만으로 충분하다면 나머지 항목을 모두 생략합니다. 후속 맥락이 필요하더라도 `Recovery:` 같은 고정 표식이나 상태 필드를 추가하지 않고, 다음 판단에 중요한 사실만 자연스럽게 기록합니다.
 
 ### Examples
 
@@ -54,10 +57,13 @@ refactor(auth): extract token expiry validation
 
 Keep expiry rules separate from HTTP middleware so unit tests
 can exercise the policy without request setup. Preserve existing
-middleware behavior; the new auth flow is outside this change.
+middleware behavior.
+
+Token unit tests pass, but middleware integration is not yet
+verified. Confirm the request schema before integration tests.
 ```
 
-두 메시지 모두 일반적인 커밋 설명입니다. 두 번째 메시지는 **왜 분리했는지와 변경 범위가 어디까지인지** 남기므로, 세션이 끊겨도 다음 작업자가 판단을 다시 만들 필요가 줄어듭니다.
+두 번째 메시지는 변경 이유에 더해 **검증 범위와 다음 확인 지점**을 선택적으로 남깁니다. 이런 맥락이 필요 없는 커밋은 일반적인 제목·본문만으로 충분합니다.
 
 ## Capture
 
