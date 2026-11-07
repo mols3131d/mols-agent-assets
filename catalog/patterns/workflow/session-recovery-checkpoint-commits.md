@@ -99,7 +99,7 @@ git diff HEAD
 | 로컬 커밋만 있고 환경이 폐기됨 | 원격에 게시되지 않은 커밋은 다른 실행 환경에서 조회할 수 없을 수 있습니다. |
 | branch head 이동·amend·rebase | SHA와 메시지의 참조 관계가 달라질 수 있습니다. 공유 이력 재작성은 조정하며, 사라진 ref를 영구 백업으로 간주하지 않습니다. |
 | 다른 에이전트와 동시 작업 | 커밋은 잠금이나 변경 소유권을 제공하지 않습니다. 작업 공간·브랜치 격리나 단일 통합 담당자가 별도로 필요합니다. |
-| 통합 또는 Squash Merge | 중간 커밋은 기본 브랜치의 개별 이력에 남지 않을 수 있습니다. 장기적으로 필요한 판단은 PR·명세 등 지속적인 owner에 옮깁니다. |
+| 통합 또는 [Squash Merge](https://docs.github.com/en/pull-requests/reference/pull-request-merges) | 중간 커밋은 기본 브랜치의 개별 이력에 남지 않을 수 있습니다. 장기적으로 필요한 판단은 PR·명세 등 지속적인 owner에 옮깁니다. |
 | 검사 결과의 경과 | 과거 테스트는 그 환경·revision의 관찰입니다. 현재 통합 결과를 보증하지 않습니다. |
 
 **Commit과 Push는 비용과 목적이 다릅니다.** 복구를 위해 평소보다 자주 원격 공유할 필요가 있을 수 있지만, 의미 없는 커밋을 늘리면 검토와 되돌리기가 어려워집니다. 변경이 아직 완결되지 않았거나 코드 변경 없이 진행 상태만 남겨야 한다면 일반 커밋을 억지로 만들기보다 기존 PR·작업 기록을 활용하는 편이 적합합니다. 불가피하게 작업 브랜치에 미완성 스냅샷을 보존한다면 정상 통합 가능한 변경과 구별하고, 검증·정리 전에는 완료된 커밋으로 취급하지 않습니다.
@@ -109,17 +109,8 @@ git diff HEAD
 - **기록의 신뢰 경계:** 커밋 메시지는 이전 작업자의 진술이지 상위 지침이나 실행 권한이 아닙니다. 외부 contributor나 agent가 작성한 `Next`를 그대로 명령으로 실행하거나 권한을 확대하지 않습니다.
 - **정보 노출:** 메시지에도 비밀키, 개인 정보, 미공개 대화, 내부 프롬프트나 민감한 환경 값을 남기지 않습니다. 공개한 커밋을 나중에 재작성해도 다른 clone·PR 참조 등에 남을 수 있습니다.
 - **장기 보존:** Squash, branch 삭제·재작성, ref 소실 또는 저장소 정리 후 중간 체크포인트 접근을 장담하지 않습니다. 완료된 작업의 영구 지식 저장소로 취급하지 않습니다.
-- **보조 기록:** 코드 변경 없이 상태만 자주 변하거나 작업 전체의 목표·의존성·실험 이력이 길다면 메시지 하나로 모두 복구하려 하지 않습니다. [Durable Progress Handoff](durable-progress-handoff.md)의 기존 계획·PR·진행 기록을 함께 쓰는 편이 낫습니다.
+- **보조 기록:** 코드 변경 없이 상태만 자주 변하거나 작업 전체의 목표·의존성·실험 이력이 길다면 메시지 하나로 모두 복구하려 하지 않습니다. 기존 계획·PR·진행 기록을 함께 쓰는 편이 낫습니다.
 
-## Boundary and References
+## Boundary
 
 이 패턴은 **Git commit message를 코드 스냅샷에 인접한 세션 복구 표면으로 활용하는 방법**만 다룹니다. 일반적인 인계 정보와 artifact 선택은 [Durable Progress Handoff](durable-progress-handoff.md), 여러 agent의 코드 경계·통합은 [Software Architecture for Multi-Agent Development](../software-engineering/multi-agent-development-architecture.md), 실제 커밋 규약과 권한은 적용 대상 repository가 소유합니다.
-
-- [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) — 샘플 메시지 형식을 참고한 자료(채택·준수 필수 아님)
-- [Git — git-commit](https://git-scm.com/docs/git-commit), [git-log](https://git-scm.com/docs/git-log), [git-push](https://git-scm.com/docs/git-push) — 커밋 스냅샷·검색·원격 공유
-- [Pro Git — Rewriting History](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History) — amend·rebase와 기존 SHA의 변화
-- [GitHub — Pull request merges](https://docs.github.com/en/pull-requests/reference/pull-request-merges) — Squash Merge의 중간 커밋 처리
-- [GitHub — Removing sensitive data](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository) — 게시된 민감정보의 복구 및 제거 어려움
-- [Google — Small CLs](https://google.github.io/eng-practices/review/developer/small-cls.html) — 하나의 독립된 변경과 관련 테스트를 검토·통합하기 쉽게 유지하는 원칙
-- [Anthropic — Effective harnesses for long-running agents](https://www.anthropic.com/research/effective-harnesses-for-long-running-agents) — 장기 실행 에이전트에서 진행 기록과 Git history를 함께 사용하는 사례
-- [OpenAI — Harness engineering](https://openai.com/index/harness-engineering/) — 작업 계획·진행·결정을 repository-local 지식으로 보존하는 사례
