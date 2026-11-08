@@ -4,8 +4,7 @@
 
 ```mermaid
 flowchart TD
-    A["Prepare: Change·경로·권한 확인"] -->|"티켓 발행만"| K["todo 기록 후 종료"]
-    A -->|"수행 요청"| B["Research: 필요한 근거"]
+    A["Prepare: 선택한 Change·경로·권한 확인"] --> B["Research: 필요한 근거"]
     B --> C["Plan: 완료 조건·변경 범위"]
     C --> D["Work: 변경 기록·명세·테스트·코드"]
     D --> E{"Review: 충족?"}
@@ -23,7 +22,7 @@ flowchart TD
 
 ## Prepare
 
-목표·수락 조건과 해당 Change의 `work.md`를 찾는다. 첫 도입이면 [Bootstrap](bootstrap.md)을 읽는다. 기록할 가치가 있는 새 변경에만 Change를 만든다. 티켓 발행만 요청받았다면 발행 결과를 확인하고 실행 단계에는 진입하지 않는다. work/spec/code의 root/ref와 각 정본을 확인하고, 이미 진행 중인 `doing` 기록을 우선 재검토한다. 선행 Change가 미완료·취소·누락·순환이면 ready로 간주하지 않는다. 선택·위임은 [Dispatch](dispatch.md)를 따르며 기존 `doing`의 실행 중복 여부도 확인한다. 실제 계정·권한·현재 파일을 확인한다.
+선택된 Change의 목표·수락 조건과 `work.md`를 확인한다. 새 Change가 필요하면 [Bootstrap](bootstrap.md)의 발행 절차를 먼저 따른다. work/spec/code의 root/ref와 각 정본을 확인하고, 이미 `doing`인 작업은 실제 진행·종료 상태를 재검토한다. 선행 Change가 미완료·취소·누락·순환이면 ready로 간주하지 않는다. Agent 할당·위임·결과 인계가 필요한 경우에만 [Dispatch](dispatch.md)를 읽는다. 실제 계정·권한·현재 파일을 확인한다.
 
 ## RPI
 
