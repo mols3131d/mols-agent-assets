@@ -1,13 +1,12 @@
 # Change Dispatch
 
-Change의 **작업 선택·할당·실행·결과 회수**가 필요할 때만 사용한다. 티켓 발행은 [Bootstrap](bootstrap.md), Change 내부 수행과 완료 판정은 [Workflow](default-workflow.md)가 소유한다. 실제 Agent 실행·Claim·작업 공간 격리는 런타임의 네이티브 기능을 이용한다.
+Agent **할당·위임·재할당·Worker 결과 회수**가 필요할 때만 사용한다. 단순 백로그·Ready 조회/선택은 `SKILL.md`, 새 티켓 발행은 [Bootstrap](bootstrap.md), Change 직접 수행과 완료 판정은 [Workflow](default-workflow.md)가 소유한다. 실제 Agent 실행·Claim·작업 공간 격리는 런타임의 네이티브 기능을 이용한다.
 
 ## Select
 
-1. 요청을 구분한다: **발행만**, **할당만**, **직접 수행**, **위임 실행**, **기존 작업 재개**. 발행·할당만 요청받았다면 실행하지 않는다. 자동 실행·서비스 시작·새 외부 작업 생성을 묵시적으로 허용하지 않는다.
-2. 선택된 work root/repository/ref에서 기존 Change의 목표·완료 조건·상태·`depends_on`을 확인한다. 지정된 Change가 있으면 그것을 우선한다. 위치·ref·티켓을 임의로 만들어내지 않는다.
-3. 실행 후보는 `todo`이고 선행 Change가 모두 실제 `done`이며 외부 차단이 확인되지 않은 작업이다. 의존 참조 누락·순환·조회 실패는 `unknown`으로 보고 실행하지 않는다. 복수 후보 중에서는 사용자 목표와 완료 조건·위험에 근거해 선택하고 우선순위 필드를 강제하지 않는다.
-4. `doing`은 먼저 실제 실행 주체·workspace·검증 결과를 대조한다. 실행 중이거나 종료 여부를 모르면 같은 Change를 다른 Worker에게 넘기지 않는다. 기록만 보고 Worker가 종료됐다고 추정하지 않는다.
+1. **할당만** 요청받았다면 실행하지 않는다. 자동 실행·서비스 시작·새 외부 작업 생성을 묵시적으로 허용하지 않는다.
+2. 사용자 지정 Change를 우선하고, 미지정이면 `SKILL.md`의 Ready 판정 결과에서 후보를 선택한다. 실제 work root/repository/ref와 의존·차단 상태를 다시 확인한다. 위치·ref·티켓을 임의 생성하지 않는다.
+3. 기존 `doing`의 실행 주체·workspace·검증 결과를 대조한다. 실행 중이거나 종료 여부를 모르면 같은 Change를 다른 Worker에게 넘기지 않는다. 기록만으로 종료를 추정하지 않는다.
 
 ## Assign and Execute
 
