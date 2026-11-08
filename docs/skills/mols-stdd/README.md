@@ -20,6 +20,12 @@ work/spec root와 Git ref 분리는 사용자 환경의 **저장 위치 선택**
 
 동시 실행은 런타임의 실제 작업 격리와 원자적 Claim 또는 단일 조정자의 직렬 할당이 필요하다. 환경이 지원하지 않는 병렬 선점은 강행하지 않고 가능한 범위만 수행하거나 인계한다.
 
+## Progressive Disclosure
+
+`SKILL.md`는 단일 Change 상태·Ready 판정·권한 및 완료의 공통 불변조건을 보유한다. Bootstrap은 **최초 설정과 이후 신규 Change 발행**, Workflow는 **선택된 Change의 직접 수행·재개·완료**, Dispatch는 **할당·위임·Worker 결과 회수**에만 조건부로 적용한다. 단순 백로그·Ready 조회는 reference를 선로드하지 않는다.
+
+Change 데이터도 백로그의 ID·상태·의존 관계부터 확인하고 선택된 `work.md`를 심화한 뒤 관련 명세·코드·테스트를 필요할 때만 읽는다. 이 구분은 별도 index나 scheduler를 요구하지 않으며, 상세 절차는 실행 원본에서만 관리한다.
+
 ## Deliberate Omissions
 
 별도 Task ID·상태 동기화·manifest·index·dashboard·작업 scheduler·Git lock·필수 `assignee` 필드는 없다. 행동 변경이 없으면 빈 Spec을 만들지 않고, 간단한 수정에는 Change 기록을 강제하지 않는다. `mols-loops`의 Prepare → RPI → Finalize만 로컬 판단 흐름으로 가져오고 오케스트레이터·외부 Skill 설치 의존성은 추가하지 않는다.
