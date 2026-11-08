@@ -70,3 +70,4 @@ jobs:
           git commit -m 'chore(generated): sync indexes and routes'
           gh auth setup-git
           git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo "::notice::Generated files were pushed using GITHUB_TOKEN. If a PR is already open, verify that its latest head has a fresh required PR Gate check before merge."
