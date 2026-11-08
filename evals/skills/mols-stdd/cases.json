@@ -257,6 +257,9 @@
         "Re-reads current canonical specification and work.md before continuing the interrupted Change.",
         "Recognizes already-applied requirements after verification and avoids duplicate promotion, or blocks when application cannot be established.",
         "Marks done only after all acceptance, test/review and latest work-record checks are satisfied."
+      ],
+      "expected_loaded_references": [
+        "references/default-workflow.md"
       ]
     },
     {
@@ -359,6 +362,9 @@
         "Issues todo Change records with meaningful goals and completion conditions, without agent execution or code edits.",
         "Checks for existing IDs and overlapping objectives rather than duplicating changes.",
         "Does not create a GitHub Issue unless that external artifact is separately requested."
+      ],
+      "expected_loaded_references": [
+        "references/bootstrap.md"
       ]
     },
     {
@@ -369,7 +375,8 @@
         "Treats missing/cyclic/unreadable dependencies as unknown, not ready.",
         "Selects only eligible todo Changes using the actual selected root/ref and checks previous doing work.",
         "Does not require a queue engine or mandatory priority field."
-      ]
+      ],
+      "expected_loaded_references": []
     },
     {
       "id": "assign-without-running",
@@ -379,6 +386,9 @@
         "Treats assignment as distinct from starting execution, and leaves status todo until actual work begins.",
         "Persists optional assignee only when needed and when another assignment owner is absent.",
         "Does not equate assignee with an atomic Claim, authority, or a lock."
+      ],
+      "expected_loaded_references": [
+        "references/dispatch.md"
       ]
     },
     {
@@ -409,6 +419,9 @@
         "Checks previous actor and actual execution state before a new dispatch.",
         "Does not launch a second worker while previous execution may still be live.",
         "Records verified progress and the next safe action in the single Change owner."
+      ],
+      "expected_loaded_references": [
+        "references/dispatch.md"
       ]
     },
     {
@@ -419,6 +432,10 @@
         "Treats worker success as a claim and verifies artifacts, revisions, tests and Review.",
         "Does not mark done before the single completion gate and required spec promotion.",
         "Distinguishes worker handoff from Change completion."
+      ],
+      "expected_loaded_references": [
+        "references/default-workflow.md",
+        "references/dispatch.md"
       ]
     },
     {
@@ -449,6 +466,57 @@
         "Allows a planned agent role to be recorded as an intended assignee without claiming the runtime actor exists.",
         "Does not start a worker or advance status to doing unless actual authorized execution begins.",
         "Avoids duplicate assignment state when a separate canonical owner already exists."
+      ]
+    },
+    {
+      "id": "reference-first-project-bootstrap",
+      "mode": "skill",
+      "prompt": "새 개인 프로젝트에 STDD를 도입하고 work/spec 저장 위치부터 결정해줘. 아직 실제 기능 구현은 하지 않아.",
+      "assertions": [
+        "Checks existing canonical Work and Spec owners before choosing new storage locations.",
+        "Does not invent default roots, create example Changes or begin implementation without a real change.",
+        "Keeps bootstrap separate from worker dispatch."
+      ],
+      "expected_loaded_references": [
+        "references/bootstrap.md"
+      ]
+    },
+    {
+      "id": "reference-backlog-summary-only",
+      "mode": "skill",
+      "prompt": "선택해둔 work root의 Change 목록과 상태만 간단하게 보여줘. 티켓 발행이나 실행은 하지 않을 거야.",
+      "assertions": [
+        "Inspects only the selected work root and enough status and dependency information for the requested backlog summary.",
+        "Does not pre-load unrelated specifications, code, or worker orchestration guidance.",
+        "Avoids inventing unseen Changes or claiming full coverage when access is partial."
+      ],
+      "expected_loaded_references": []
+    },
+    {
+      "id": "reference-direct-change-execution",
+      "mode": "skill",
+      "prompt": "이미 발행한 backend/login Change를 직접 구현해. 다른 작업 에이전트에게 위임하지 않아.",
+      "assertions": [
+        "Uses the selected Change's acceptance, code and test evidence to guide direct execution.",
+        "Does not invoke worker dispatch or claim parallel ownership for direct execution.",
+        "Verifies actual implementation and required spec promotion before marking done."
+      ],
+      "expected_loaded_references": [
+        "references/default-workflow.md"
+      ]
+    },
+    {
+      "id": "reference-delegated-change-execution",
+      "mode": "skill",
+      "prompt": "준비된 auth/login Change를 서브에이전트에게 위임해 구현한 다음, 결과를 검증하고 완료할지 판단해줘.",
+      "assertions": [
+        "Verifies actual delegation capability, authorization and worker isolation before execution.",
+        "Uses the Change execution and completion contract to reconcile the worker's evidence.",
+        "Does not treat a successful worker response as passing the completion gate."
+      ],
+      "expected_loaded_references": [
+        "references/default-workflow.md",
+        "references/dispatch.md"
       ]
     }
   ]
