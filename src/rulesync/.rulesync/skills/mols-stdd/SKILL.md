@@ -1,12 +1,13 @@
 ---
 name: mols-stdd
 description: >-
-  Drive personal-project changes as one work item encompassing progress,
-  dependencies, resumption, behavior specifications, tests, implementation,
-  review, and completion. Use for project bootstrap, work backlogs,
-  multi-step change coordination, and spec/test-driven development with
-  nested domain specs. Not for trivial one-off edits, standalone test-design
-  critiques, enterprise scheduling, or build-command configuration.
+  Manage personal-project Changes as ticket-like work items: issue and select
+  ready work, assign or delegate agent execution, resume and verify results,
+  and connect dependencies, specifications, tests, review, and completion.
+  Use for project bootstrap, work backlogs, agent task assignment, and
+  spec/test-driven multi-step changes with nested domain specs. Not for
+  trivial one-off edits, standalone test critiques, enterprise scheduling,
+  automatic task-queue engines, or build-command configuration.
 targets:
   - claudecode
   - codexcli
@@ -19,7 +20,7 @@ targets:
 
 # Mols STDD
 
-개인 프로젝트의 **Change 하나**에서 작업 선택·진행·명세·테스트·구현·Review·완료를 연결한다. 작업과 명세를 별도 모드나 이중 상태로 관리하지 않는다. 작업 규모에 따라 필요한 근거와 파일만 작성한다. 기존 프로젝트 지침, 실제 코드·테스트, 명세 정본과 Git 권한을 우선한다.
+개인 프로젝트의 **Change 하나**에서 티켓 발행·작업 선택·할당·진행·명세·테스트·구현·Review·완료를 연결한다. 작업과 명세를 별도 모드나 이중 상태로 관리하지 않는다. 작업 규모에 따라 필요한 근거와 파일만 작성한다. 기존 프로젝트 지침, 실제 코드·테스트, 명세 정본과 Git 권한을 우선한다.
 
 ## One Change, One State
 
@@ -53,7 +54,13 @@ depends_on: [backend/db-schema]
 - 인증 실패 테스트 결과를 확인한다.
 ```
 
-`status: todo | doing | done | cancelled`만 저장한다. 선택적 `depends_on`은 같은 work root/ref의 Change ID(확장자 제외)를 참조한다. 선행 변경이 모두 `done`이고 외부 차단이 없는 `todo`는 ready, 미완료·취소된 선행 변경은 blocked, 누락·순환·조회 실패는 unknown으로 **계산**한다. 이 파생 상태는 저장하지 않는다. `doing`을 재개할 때는 기록뿐 아니라 실제 코드·검증 결과를 재확인한다. 이름을 바꾸면 의존 참조도 갱신한다.
+`status: todo | doing | done | cancelled`만 저장한다. 선택적 `depends_on`은 같은 work root/ref의 Change ID(확장자 제외)를 참조한다. 선행 변경이 모두 `done`이고 외부 차단이 없는 `todo`는 ready, 미완료·취소된 선행 변경은 blocked, 누락·순환·조회 실패는 unknown으로 **계산**한다. 이 파생 상태는 저장하지 않는다. `doing`을 재개할 때는 기록뿐 아니라 실제 코드·검증 결과와 이전 실행의 종료 여부를 재확인한다. 이름을 바꾸면 의존 참조도 갱신한다.
+
+## Ticket and Agent Dispatch
+
+티켓은 기존 Change이며, 발행은 `todo` 기록이지 GitHub Issue 생성이나 작업 실행이 아니다. 실행 요청이 없다면 명세·코드 작업이나 Agent 호출을 시작하지 않는다. 실행할 Change는 실제 `doing`의 미종료 실행과 선행 의존·차단 여부를 확인해 선택한다. 파생 `ready`는 **실행 후보**이지 선점·권한·실행 시작의 증거가 아니다.
+
+할당 대상은 실제로 사용 가능한 실행 주체여야 한다. 세션 간 지정 보존이 필요하고 다른 할당 정본이 없다면 선택적 `assignee`를 기록할 수 있지만 상태·실행 승인·독점 Claim을 대신하지 않는다. 작업 선택·할당·실행 위임·인계에는 [Dispatch](references/dispatch.md)를 조건부로 읽고 런타임의 네이티브 위임·격리·Claim 능력과 실제 권한을 확인한다. 단일 에이전트는 직접 수행할 수 있다.
 
 ## Requirement and Evidence
 
@@ -67,7 +74,7 @@ Delta 작성 시 수정 대상 요구사항의 변경 전 내용이나 정본 re
 
 ## Bootstrap and Execution
 
-처음 도입하거나 저장 위치를 정할 때만 [Bootstrap](references/bootstrap.md)을 읽는다. 진행·재개·다단계 변경은 [Development Workflow](references/default-workflow.md)를 적용한다. 단순 조회와 기록 가치가 없는 작은 수정은 별도 Change 파일·전체 루프를 강제하지 않는다. 이는 독립된 모드가 아니라 **필요한 작업량만 실행하는 동일 절차**다.
+처음 도입하거나 저장 위치를 정할 때만 [Bootstrap](references/bootstrap.md)을 읽는다. 진행·재개·다단계 변경은 [Development Workflow](references/default-workflow.md)를 적용한다. 작업 선택·할당·위임·인계를 요청받은 경우에만 [Dispatch](references/dispatch.md)를 추가로 읽는다. 단순 조회와 기록 가치가 없는 작은 수정은 별도 Change 파일·전체 루프를 강제하지 않는다. 이는 독립된 모드가 아니라 **필요한 작업량만 실행하는 동일 절차**다.
 
 쓰기 전 실제 workspace/repository, 경로·ref, 연결 계정·권한, 최신 파일을 확인한다. 사용자 선택이나 기존 정본 없이 기본 루트·브랜치를 정하지 않는다. 지정 ref 접근 실패 시 다른 계정이나 기본 브랜치로 우회하지 않는다. `mols-loops`가 별도로 선택되면 외부 Run 제어는 그 Skill이 맡고 여기서는 Change의 도메인 절차만 제공한다.
 
