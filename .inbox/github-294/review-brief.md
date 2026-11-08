@@ -21,6 +21,12 @@
 
 ## 설계상 핵심 위험 및 결정
 
+### P0 운영 결정 (2026-11-09)
+
+추가 App/PAT/새 workflow 없이 **원본 브랜치에 먼저 push → 생성 파일 bot commit 완료 확인 → PR 새로 생성**하는 순서를 기본으로 한다. `pull_request: opened`는 정상적으로 required `PR Gate`를 실행할 수 있다. 열린 PR에 후속 source push가 들어오는 경우는 여전히 기본 토큰의 자동 재트리거 한계가 있으므로, [handoff.md](handoff.md)의 사람 계정 후속 push로 최신 후보를 재검증한다. 이는 **운영상 부분 해결**이며 완전 무인 해결은 아니다.
+
+워크플로에는 생성 파일 커밋 직후 이 제한을 알리는 notice를 추가했다. Notice를 실제 검사 실행·승인으로 오해하지 않는다. 사람의 workflow 독립 리뷰 및 E2E 테스트 전에는 Draft를 유지한다.
+
 ### High — 생성 후 required PR Gate 공백
 
 기본 `GITHUB_TOKEN`으로 `git push`한 커밋은 새 `push` workflow run을 일반적으로 유발하지 않는다. 따라서 기존 PR의 원본 변경으로 생성 파일을 갱신한 **봇 커밋의 head SHA에 필요한 `PR Gate`가 없을 수 있다**. 이전 SHA의 성공은 최신 SHA에 대한 합격 근거가 아니다. 또한 기존 `PR Gate`는 `pull_request` 전용이므로 현재 구성의 `workflow_dispatch`를 눌러 대체할 수 없다.
