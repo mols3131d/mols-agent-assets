@@ -4,6 +4,8 @@ description: "PR #295의 mols-stdd 점진적 공개 구조를 개선할 후속 �
 
 # mols-stdd 점진적 공개 최적화 제안
 
+> **적용 현황 (2026-11-09):** W1–W5의 로딩 계약·평가 경로·유지보수 문서는 PR #295 작업 브랜치에 반영됐다. GitHub Branch Check의 소스 검증·결정적 테스트·로컬 생성물 검증은 통과했다. **Rulesync CLI, Promptfoo 실제 모델 평가와 네이티브 IDE/CLI Agent의 reference 로딩 검증은 미완료**다. 아래는 채택 판단을 위한 원래 제안이며 현재 실행 계약은 `SKILL.md`와 관련 reference가 소유한다.
+
 ## 제안과 범위
 
 **제안:** 기존 `mols-stdd`의 Change 모델과 세 reference를 유지하고, 사용자 intent에 따라 필요한 instruction과 작업 맥락만 단계적으로 읽도록 라우팅을 교정한다. 새 Skill·Task 객체·설정 파일·스케줄러를 만들지 않는다.
