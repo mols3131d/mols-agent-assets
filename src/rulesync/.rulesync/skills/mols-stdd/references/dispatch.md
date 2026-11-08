@@ -2,7 +2,7 @@
 
 Agent **할당·위임·재할당·Worker 결과 회수**가 필요할 때만 사용한다. 단순 백로그·Ready 조회/선택은 `SKILL.md`, 새 티켓 발행은 [Bootstrap](bootstrap.md), Change 직접 수행과 완료 판정은 [Workflow](default-workflow.md)가 소유한다. 실제 Agent 실행·Claim·작업 공간 격리는 런타임의 네이티브 기능을 이용한다.
 
-## Select
+## Resolve Assignment Target
 
 1. **할당만** 요청받았다면 실행하지 않는다. 자동 실행·서비스 시작·새 외부 작업 생성을 묵시적으로 허용하지 않는다.
 2. 사용자 지정 Change를 우선하고, 미지정이면 `SKILL.md`의 Ready 판정 결과에서 후보를 선택한다. 실제 work root/repository/ref와 의존·차단 상태를 다시 확인한다. 위치·ref·티켓을 임의 생성하지 않는다.
