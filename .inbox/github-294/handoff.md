@@ -16,6 +16,24 @@
 4. PR에 별도의 사용자 변경이나 동시 작업이 있으면 보호한다. 강제 push, 임의 reset/rebase, main 직접 수정 없이 이번 작업을 격리한다.
 5. 가장 먼저 **기본 토큰 커밋 후 required check 공백을 수용할지** 결정한다. 완전 무인 PR 검증이 요구된다면 현재 구현을 그대로 merge하지 않는다.
 
+## Actions-only 권장 실행 순서 (P0 운영 결론)
+
+이 저장소에서는 **작업 브랜치에 원본을 먼저 push하고 생성 파일 커밋이 끝난 뒤 PR을 생성**하는 순서가 가장 단순하다. 별도 App·PAT·Secret 없이 첫 PR의 latest head를 정상적인 `pull_request: opened` 이벤트로 검증할 수 있다.
+
+1. 사용자의 기존 `mols3131d` 계정에서 전용 브랜치에 원본 파일을 commit/push한다. `main`에 직접 쓰지 않는다.
+2. `Sync Generated Artifacts`의 실행 완료 및 성공, 브랜치 head의 generated-only commit 유무를 확인한다. 실패하거나 실행 중이면 PR을 만들지 않는다. `paths`가 선택되지 않은 변경은 생성 작업을 실행하지 않을 수 있으므로 필요한 경우 `generated validate`로 drift를 확인한다.
+3. 최신 브랜치 head가 생성 결과를 포함한 것을 확인한 뒤 PR을 **처음 생성**한다. 그러면 기존 `PR Gate`는 그 head와 base를 대상으로 실행된다.
+4. 열린 PR에서 나중에 원본을 수정한 경우에는 동기화 Actions가 `GITHUB_TOKEN`으로 커밋하더라도 `PR Gate`가 자동 갱신되지 않을 수 있다. 자동 커밋 후 **사람 계정의 정상 push로 `pull_request: synchronize`를 유발**하고 최신 head/merge candidate의 required check를 직접 확인한다. 단순 과거 run 재실행이나 `workflow_dispatch`는 이 해결책을 대체하지 않는다.
+5. 이 수동 단계가 반복적인 운영 부담이 된다는 증거가 쌓일 때만, 별도 기술 검토 및 사람 승인 아래 다른 인증/워크플로 방식을 검토한다. 현재 PR은 완전 무인 PR 검증을 약속하지 않는다.
+
+`generated-sync.yml`은 봇 커밋 직후 후속 체크 공백에 대한 Actions notice를 출력한다. Notice는 경고이자 운영 안내일 뿐 검증 실행이나 합격 근거가 아니다.
+
+### 실행 제한
+
+- 신규 write-capable workflow는 **사람이 변경된 실행 권한과 스크립트를 독립 검토하고 명시적으로 승인하기 전까지** 원본 push로 활성화해서는 안 된다. 이 PR 자체의 `Branch Check`/`PR Gate` 통과는 독립 승인이나 E2E 검증이 아니다.
+- 현재 draft PR #294는 이미 열린 PR이므로 위의 'PR 생성 전 동기화' 순서를 소급 적용했다고 주장하지 않는다.
+- E2E 테스트는 사람 승인 후 별도 전용 테스트 브랜치와 독립적인 확인 경로에서 수행한다. 테스트 완료 전에는 미검증 상태를 유지한다.
+
 ## 구현 계약과 실제 사용
 
 - Trigger: 작업 브랜치의 `push` 중 현재 workflow의 source path filter에 맞는 변경이 있을 때. `main`은 제외한다.
