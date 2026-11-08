@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+
+description: mols-stdd conditional reference selection using local Ollama
+
+prompts:
+  - "{{task}}"
+
+providers:
+  - id: file://../../scripts/agent_assets/skills_promptfoo.py:call_api
+    label: mols-stdd-behavior
+    config:
+      skill: mols-stdd
+      suite: behavior
+      mode: ollama
+      reference_paths:
+        - references/bootstrap.md
+        - references/default-workflow.md
+        - references/dispatch.md
+
+tests:
+  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_tests
+    config:
+      skill: mols-stdd
+      suite: behavior
+      provider_label: mols-stdd-behavior
+      semantic: false
+      case_ids:
+        - resume-after-spec-applied-before-work-done
+        - ticket-only-no-execution
+        - ready-selection-with-unknown
+        - assign-without-running
+        - existing-doing-worker-unknown
+        - worker-report-is-not-done
+        - reference-first-project-bootstrap
+        - reference-backlog-summary-only
+        - reference-direct-change-execution
+        - reference-delegated-change-execution
+
+sharing: false
+writeLatestResults: false
+commandLineOptions:
+  cache: false
+  write: false
+  noShare: true
+  maxConcurrency: 1
