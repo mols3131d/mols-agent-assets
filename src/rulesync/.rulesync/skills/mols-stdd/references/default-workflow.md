@@ -4,7 +4,8 @@
 
 ```mermaid
 flowchart TD
-    A["Prepare: Change·경로·권한 확인"] --> B["Research: 필요한 근거"]
+    A["Prepare: Change·경로·권한 확인"] -->|"티켓 발행만"| K["todo 기록 후 종료"]
+    A -->|"수행 요청"| B["Research: 필요한 근거"]
     B --> C["Plan: 완료 조건·변경 범위"]
     C --> D["Work: 변경 기록·명세·테스트·코드"]
     D --> E{"Review: 충족?"}
