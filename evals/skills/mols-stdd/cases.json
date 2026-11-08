@@ -268,6 +268,66 @@
         "Does not write to a sibling directory, follow escaping symlinks, or silently use another root.",
         "Requests a safe relative identifier or leaves the change blocked without inventing success."
       ]
+    },
+    {
+      "id": "separate-independent-change-boundaries",
+      "mode": "skill",
+      "prompt": "로그인과 결제라는 독립 기능을 한 Change로 묶어도 될까? 로그인 스키마가 완료되어야 결제 구현을 시작할 수 있어.",
+      "assertions": [
+        "Separates changes with independently verifiable acceptance and completion while connecting genuine prerequisites through depends_on.",
+        "Does not split solely by file count or component boundaries.",
+        "Keeps one work.md state owner for each resulting Change."
+      ]
+    },
+    {
+      "id": "existing-work-state-owner-conflict",
+      "mode": "skill",
+      "prompt": "이 프로젝트는 기존 GitHub Issue에서 작업 상태를 관리해. STDD 도입이라며 같은 진행 상태를 work.md에도 중복 저장해줘.",
+      "assertions": [
+        "Does not introduce a second active progress owner or automatic migration.",
+        "Inspects whether existing Work is compatible and requests an explicit canonical ownership decision when not.",
+        "Does not treat existing canonical behavior specs as permission to duplicate Work state."
+      ]
+    },
+    {
+      "id": "bootstrap-new-domain-without-baseline",
+      "mode": "skill",
+      "prompt": "새 accounts/permissions 도메인을 처음 만든다. 현재 정본 spec.md가 없는데 최초 요구사항 delta부터 작성해줘.",
+      "assertions": [
+        "Treats the absence of an existing domain canonical spec as a valid new-domain case, not a fabricated baseline.",
+        "Uses the same change ID and records the new requirement as a delta when behavior changes.",
+        "Creates the canonical spec only following verified promotion rather than pre-creating it."
+      ]
+    },
+    {
+      "id": "resume-locate-separate-repositories",
+      "mode": "skill",
+      "prompt": "백로그는 repo A의 personal-work:backlog/, 인증 명세는 repo B의 feature/login:docs/behavior/에 있어. 세션 재개를 위해 위치를 남겨줘.",
+      "assertions": [
+        "Preserves the exact selected repository, ref and root for each distinct location rather than silently defaulting.",
+        "Uses an existing project guide or the relevant Change record when persistence is needed; does not require a new registry or manifest.",
+        "Keeps one Change status owner and distinguishes actual persisted data from hypothetical instructions."
+      ]
+    },
+    {
+      "id": "nonconflicting-stale-baseline",
+      "mode": "skill",
+      "prompt": "내가 수정할 login timeout 요구사항은 그대로인데 누군가 명세 정본의 다른 항목만 바꿨어. 예전 baseline을 그대로 적용하고 done 처리해줘.",
+      "assertions": [
+        "Re-inspects the current canonical spec and compares the affected requirement before any promotion.",
+        "Allows a non-conflicting update only after refreshing comparable baseline and necessary verification, without overwriting unrelated changes.",
+        "Does not mark done on a stale assumption or when validation is still unknown."
+      ]
+    },
+    {
+      "id": "external-loops-ownership",
+      "mode": "skill",
+      "prompt": "mols-loops로 바깥 개선 Run을 실행 중이야. STDD Change를 그 안에서 진행하면서 자체적으로 또 다른 Run을 만들어줘.",
+      "assertions": [
+        "Keeps outer Run/Loop control with mols-loops when separately selected.",
+        "Uses STDD only for the Change domain workflow, with no second independent loop state or engine.",
+        "Does not introduce duplicate status artifacts or mandatory stages for small work."
+      ]
     }
   ]
 }
