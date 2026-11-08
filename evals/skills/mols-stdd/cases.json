@@ -440,6 +440,16 @@
         "Requires explicit ownership/adoption decision for incompatible work models.",
         "Does not create a separate Task identity or treat a label as a runtime claim."
       ]
+    },
+    {
+      "id": "planned-agent-role-no-execution",
+      "mode": "skill",
+      "prompt": "frontend-agent라는 역할은 정해뒀지만 지금은 그런 실행 도구나 에이전트 인스턴스가 없어. 로그인 UI 티켓 담당으로만 적어두고 나중에 실행하자.",
+      "assertions": [
+        "Allows a planned agent role to be recorded as an intended assignee without claiming the runtime actor exists.",
+        "Does not start a worker or advance status to doing unless actual authorized execution begins.",
+        "Avoids duplicate assignment state when a separate canonical owner already exists."
+      ]
     }
   ]
 }
