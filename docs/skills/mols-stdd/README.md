@@ -4,7 +4,7 @@ description: mols-stdd의 Change 중심 설계와 실행·검증 경계를 유�
 
 # Mols STDD — Maintainer Notes
 
-실행 정본은 [SKILL.md](../../../src/rulesync/.rulesync/skills/mols-stdd/SKILL.md), [Bootstrap](../../../src/rulesync/.rulesync/skills/mols-stdd/references/bootstrap.md), [Workflow](../../../src/rulesync/.rulesync/skills/mols-stdd/references/default-workflow.md)가 소유한다.
+실행 정본은 [SKILL.md](../../../src/rulesync/.rulesync/skills/mols-stdd/SKILL.md), [Bootstrap](../../../src/rulesync/.rulesync/skills/mols-stdd/references/bootstrap.md), [Workflow](../../../src/rulesync/.rulesync/skills/mols-stdd/references/default-workflow.md), [Dispatch](../../../src/rulesync/.rulesync/skills/mols-stdd/references/dispatch.md)가 소유한다.
 
 ## Design Decision
 
@@ -14,9 +14,15 @@ Task와 Spec을 독립 객체·모드로 구분하면 같은 개발 변경의 �
 
 work/spec root와 Git ref 분리는 사용자 환경의 **저장 위치 선택**이지 서로 다른 객체·라이프사이클이 아니다. ref 간 원자적 쓰기가 없으므로 종료 시 실제 반영 상태를 검증한다. 부분 실패 후에는 이미 적용된 명세를 재적용하지 않는 **멱등적 재개**와 최신 `work.md` 재확인이 필요하다. 최신 정본과 충돌하지 않는 변경도 기준·검증을 다시 확인해야 하며, 재개 위치는 별도 registry 없이 기존 프로젝트 문서나 Change 기록에서 찾을 수 있게 한다.
 
+## Ticket and Agent Delegation
+
+`Change`가 티켓이다. 발행은 `todo` 기록이며 실행은 별도 요청이다. `ready`는 선행 관계로 계산하고 선점·작업 승인으로 해석하지 않는다. Dispatch는 네이티브 실행 능력과 권한을 조건부로 이용하며, Worker의 응답은 독립 검증 근거가 아니다. 지속적인 할당 기록이 필요할 때만 `assignee`를 선택적으로 사용하며 lock이나 Claim으로 취급하지 않는다.
+
+동시 실행은 런타임의 실제 작업 격리와 원자적 Claim 또는 단일 조정자의 직렬 할당이 필요하다. 환경이 지원하지 않는 병렬 선점은 강행하지 않고 가능한 범위만 수행하거나 인계한다.
+
 ## Deliberate Omissions
 
-별도 Task ID·상태 동기화·manifest·index·dashboard·작업 scheduler·Git lock은 없다. 행동 변경이 없으면 빈 Spec을 만들지 않고, 간단한 수정에는 Change 기록을 강제하지 않는다. `mols-loops`의 Prepare → RPI → Finalize만 로컬 판단 흐름으로 가져오고 오케스트레이터·외부 Skill 설치 의존성은 추가하지 않는다.
+별도 Task ID·상태 동기화·manifest·index·dashboard·작업 scheduler·Git lock·필수 `assignee` 필드는 없다. 행동 변경이 없으면 빈 Spec을 만들지 않고, 간단한 수정에는 Change 기록을 강제하지 않는다. `mols-loops`의 Prepare → RPI → Finalize만 로컬 판단 흐름으로 가져오고 오케스트레이터·외부 Skill 설치 의존성은 추가하지 않는다.
 
 구 `mols-spec-stdd`의 JSON workflow, Python scripts, 형식용 템플릿과 테스트는 호환 이관하지 않았다. 명세·Review·baseline 안전성은 새 계약에 반영했다.
 
