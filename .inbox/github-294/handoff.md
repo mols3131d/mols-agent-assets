@@ -1,0 +1,70 @@
+# PR #294 — 재개·검증·운영 인계
+
+## 지금 어디까지 진행됐나
+
+- 대상: [PR #294](https://github.com/mols3131d/mols-agent-assets/pull/294), Draft, base=`main`, head branch=`mols/chore/generated-sync-on-push`.
+- 도입물: `.github/workflows/generated-sync.yml` 한 개. 기존 generator/validator/PR Gate는 유지한다. 인계 문서인 이 파일과 [review-brief.md](review-brief.md)는 noncanonical 작업 기록이다.
+- 선택: **GitHub Actions + 기본 `GITHUB_TOKEN`**. GitHub App, PAT, repository secret, Issue 생성은 요구하지 않는다.
+- 상태 기준: 이 인계 작성 전 `f7272a81601d28a5743771c557ac9a3680cddd75`에서 `Branch Check`와 `PR Gate` 성공을 관찰했다. 인계 커밋으로 head SHA가 이동하므로 체크 상태는 **다시 확인해야 한다**.
+- 아직 수행하지 않은 일: 생성 결과가 실제로 다른 source push로 end-to-end 테스트, 사람이 workflow를 독립 리뷰해 승인, Draft 해제, merge, 운영 활성화 확인. 위 항목을 완료 상태로 간주하지 않는다.
+
+## 재개하는 사람이 먼저 확인할 것
+
+1. 같은 GitHub 주 계정과 저장소 `mols3131d/mols-agent-assets`가 맞는지 확인한다. 다른 연결 계정은 사용하지 않는다.
+2. PR의 최신 base/head SHA, 파일 목록, 새 커밋·리뷰·체크·충돌을 새로 읽는다. 이 문서의 특정 SHA를 최신으로 가정하지 않는다.
+3. `AGENTS.md`, [GitHub 정책](../../docs/development/github.md), [VCS 정책](../../docs/development/vcs-git.md), [CI 정책](../../docs/development/ci.md), [review-brief.md](review-brief.md)를 확인한다.
+4. PR에 별도의 사용자 변경이나 동시 작업이 있으면 보호한다. 강제 push, 임의 reset/rebase, main 직접 수정 없이 이번 작업을 격리한다.
+5. 가장 먼저 **기본 토큰 커밋 후 required check 공백을 수용할지** 결정한다. 완전 무인 PR 검증이 요구된다면 현재 구현을 그대로 merge하지 않는다.
+
+## 구현 계약과 실제 사용
+
+- Trigger: 작업 브랜치의 `push` 중 현재 workflow의 source path filter에 맞는 변경이 있을 때. `main`은 제외한다.
+- Run: 잠긴 `uv` 의존성으로 `python -m scripts.generated_artifacts sync` → `validate --all`.
+- Write: `docs/**/INDEX.tsv`, `catalog/INDEX.tsv`, `route/*.jsonl`, `.agents/route/*.jsonl`에 한정해 stage; `git diff --cached --quiet`가 변경 없다고 판단하면 commit/push 생략.
+- Commit: `github-actions[bot]` 명의, `chore(generated): sync indexes and routes`; 기본 `GITHUB_TOKEN`에서 `contents: write` 사용. `main`이나 다른 브랜치로 쓰지 않는다.
+- 기존 `PR Gate`는 별도 read-only validation이며 generator를 자동 반영하지 않는다.
+
+## 완료 판정용 시나리오
+
+| 시나리오 | 실행 방법 | 기대 증거 |
+| --- | --- | --- |
+| No-op | 원본과 생성 결과가 이미 일치하는 작업 브랜치에서 원본 파일 push 또는 병합 후 workflow 수동 실행 | `sync`·`validate` 성공, 자동 커밋 없음 |
+| 원본 변경 | PR head를 기반으로 별도 임시 작업 브랜치 준비 후 기존 문서/Skill의 승인된 작은 source 변경을 push | workflow 실행, 예상 `INDEX.tsv`/`route/*.jsonl`만 변경된 bot commit |
+| 생성 검증 | `uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts validate --all` | 변경 결과의 정합성 성공 |
+| PR 재검증 | 자동 커밋 직후 최신 PR head의 Checks 조회 | 필수 `PR Gate`가 생성됐는지 직접 확인. 기본 토큰 한계로 **생성되지 않을 가능성을 예상**하고 성공이라고 쓰지 않음 |
+| 변경 영향 제외 | 생성 출력만 다른 커밋으로 push된 경우 | `paths` 필터로 동기화 workflow가 재실행되지 않음 |
+| 오류/경합 | 실패 로그 또는 branch 이동 상황 조사 | 데이터 손실·강제 push·무조건 성공 처리 없이 명확히 실패하고 원인 확인 가능 |
+
+실제 검증 시 작업 브랜치와 임시 브랜치를 혼동하지 않고, 자동 생성 결과 외의 원본 수정은 작업 범위에 맞게 별도 PR로 유지한다. 테스트를 위해 `main`에 실험용 커밋을 하지 않는다.
+
+## 자동 커밋 이후 PR Gate가 없는 경우
+
+기본 `GITHUB_TOKEN` push가 후속 `push`/`pull_request` workflow를 자동 시작하지 않는 것이 핵심 제약이다. 따라서 **과거 체크 재실행만으로 다른 SHA의 required check가 충족된다고 추정하지 않는다**.
+
+- 우선 PR의 최신 head 및 merge commit 대상 required check를 확인한다. `PR Gate`가 최신 후보를 검증했는지 GitHub가 표시하는 정보를 근거로 판단한다.
+- 현재 구조를 수용한 경우 사람이 기존 계정으로 새 정상 push를 수행해 `pull_request` synchronize와 `PR Gate` 재검증을 유도한다. 예: 전용 테스트 브랜치에서 리뷰 가능한 실제 소규모 후속 커밋. 불가피할 때만 `git commit --allow-empty -m "chore(ci): revalidate generated artifacts"` 후 push를 사용한다. 이는 **수동 우회**이지 완전 자동화의 증거가 아니다.
+- 빠짐없이 무인 실행되어야 한다면 인증 전환 또는 CI orchestration을 별도 설계·검토한다. Ruleset 우회, required check 면제, 성공 상태를 임의로 만드는 방법은 허용하지 않는다.
+
+## 실패 시 복구
+
+- `sync`/검증 실패: 실패한 Actions run의 step 로그 확인 → 해당 source/lock/네트워크 의존성 확인 → 전용 브랜치에서 원인을 수정하고 정상 push. 검증을 끄지 않는다.
+- `403 Resource not accessible by integration`: 해당 workflow에 부여된 `contents: write`와 저장소/조직 정책을 확인한다. 토큰이나 저장소 권한을 무조건 확대하지 않는다.
+- `non-fast-forward`: runner checkout 이후 브랜치가 이동했는지 비교하고 최신 ref에서 다시 실행/동기화한다. 강제 push하지 않는다.
+- `nothing to commit`: 정상 no-op이면 커밋 없이 종료되는 것이 맞다. 기대했던 생성 결과가 빠졌다면 `paths`와 source-to-projection mapping을 점검한다.
+- PR 체크 미보고: 위 'PR Gate가 없는 경우' 절차로 원인을 분류하고 최신 SHA 체크를 얻기 전 병합하지 않는다.
+
+## 리뷰·병합 인계 기준
+
+1. [review-brief.md](review-brief.md)의 High 항목 두 개(쓰기 권한, PR Gate 공백)를 사람 검토자가 이해·판단한다. 필요하면 Draft를 유지하고 설계를 변경한다.
+2. PR 최신 diff 범위, 검증 결과, 해당 commit의 `revision.base`/`revision.head`를 PR 설명과 일치시킨다.
+3. Required `PR Gate`가 최신 대상에서 성공하고 별도 승인 조건을 만족하면 사람의 명시적 승인 아래 **squash merge**한다. 인계자가 merge를 자동 수행하지 않는다.
+4. 병합 후 임시 브랜치로 실제 no-op/source-change smoke test를 실행한다. 성공·실패 각각의 run 링크/commit SHA를 PR comment 또는 후속 PR에 기록한다.
+5. 운영 단계에서 비슷한 문제가 반복되면 생성기/동기화 로직은 `scripts/generated_artifacts.py`, CI 의미는 `docs/development/ci.md`와 기존 PR Gate를 정본으로 유지한다. 이 인계 문서를 새 정책 정본처럼 취급하지 않는다.
+
+## 근거 링크
+
+- [GitHub: workflow를 다른 workflow에서 시작하는 경우](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow)
+- [GitHub: required checks의 최신 commit 기준](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks)
+- [Workflow 구현](../../.github/workflows/generated-sync.yml)
+- [Generator entrypoint](../../scripts/generated_artifacts.py)
+- [PR Gate](../../.github/workflows/pr-gate.yml)
