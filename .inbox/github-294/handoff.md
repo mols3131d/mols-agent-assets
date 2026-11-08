@@ -5,8 +5,19 @@
 - 대상: [PR #294](https://github.com/mols3131d/mols-agent-assets/pull/294), Draft, base=`main`, head branch=`mols/chore/generated-sync-on-push`.
 - 도입물: `.github/workflows/generated-sync.yml` 한 개. 기존 generator/validator/PR Gate는 유지한다. 인계 문서인 이 파일과 [review-brief.md](review-brief.md)는 noncanonical 작업 기록이다.
 - 선택: **GitHub Actions + 기본 `GITHUB_TOKEN`**. GitHub App, PAT, repository secret, Issue 생성은 요구하지 않는다.
-- 상태 기준: 이 인계 작성 전 `f7272a81601d28a5743771c557ac9a3680cddd75`에서 `Branch Check`와 `PR Gate` 성공을 관찰했다. 인계 커밋으로 head SHA가 이동하므로 체크 상태는 **다시 확인해야 한다**.
+- 검증 근거: 코드·문서 수정 후 PR head `ae51d7ac2a860a59bad0e7594c32fe3502fc3442`에서 **Branch Check와 PR Gate 성공**을 확인했다. 이후 본 인계 파일을 수정하면 새 head의 체크를 **반드시 다시 확인**해야 한다. 이 성공은 신규 write workflow의 E2E 성공을 의미하지 않는다.
 - 아직 수행하지 않은 일: 생성 결과가 실제로 다른 source push로 end-to-end 테스트, 사람이 workflow를 독립 리뷰해 승인, Draft 해제, merge, 운영 활성화 확인. 위 항목을 완료 상태로 간주하지 않는다.
+
+## 2026-11-09 수행 루프 결과
+
+**상태: HANDOFF (운영 설계·워크플로 보완 완료 / E2E·사람 승인 미완료).**
+
+- Research: GitHub 공식 문서에서 `GITHUB_TOKEN` push의 후속 workflow 억제와 `workflow_dispatch` 검사에 의한 required check 충족 불가를 확인. 기존 Ruleset의 required check는 `PR Gate`.
+- Plan: App/PAT/추가 workflow 없이 **봇 커밋 완료 후 PR 최초 생성**을 기본 운영 경로로 선택. 열린 PR에는 검증 재트리거를 위한 사용자의 후속 이벤트가 필요하다는 한계 인정.
+- Work: `generated-sync.yml`에 봇 커밋 후 Actions notice 추가, [리뷰 브리프](review-brief.md)와 본 인계의 운영 절차, PR 본문을 동기화.
+- Review: `main` 직접 write 없음, generated-only staging, `uv --locked` 생성·검증, `contents: write`, no-force push 등 **11개 정적 불변식** 확인. 변경 직후의 `Branch Check`와 `PR Gate` 통과 관찰.
+- 미완료: 사람의 **독립적 write-capable workflow 리뷰/승인**, 원본 push로 실제 신규 workflow 실행, no-op/변경 발생 시 봇 커밋, 최신 required PR Gate 이벤트 통합 확인. 이는 **미검증**으로 유지한다.
+- 최종 경계: PR은 Draft이고 병합하지 않았다. 본 루프는 사람 승인 전에 write-capable Actions를 의도적으로 실행하지 않았다.
 
 ## 재개하는 사람이 먼저 확인할 것
 
