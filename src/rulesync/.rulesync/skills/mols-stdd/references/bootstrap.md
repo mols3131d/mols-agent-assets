@@ -1,4 +1,4 @@
-# Change Bootstrap
+# Change Bootstrap and Issuance
 
 프로젝트 최초 도입뿐 아니라 **기존 프로젝트에 새 Change를 발행할 때도** 사용하는 절차다. 이미 정해진 work/spec root와 정본은 다시 선택하지 않으며, 설치 명령이나 고정 저장 위치가 필요하지 않다.
 
