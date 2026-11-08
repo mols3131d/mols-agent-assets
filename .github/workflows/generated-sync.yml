@@ -52,7 +52,7 @@ jobs:
         id: changes
         shell: bash
         run: |
-          git add -A -- docs catalog route .agents/route
+          git add -A -- ':(glob)docs/**/INDEX.tsv' ':(glob)catalog/INDEX.tsv' ':(glob)route/*.jsonl' ':(glob).agents/route/*.jsonl'
           if git diff --cached --quiet; then
             echo 'changed=false' >> "$GITHUB_OUTPUT"
           else
