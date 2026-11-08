@@ -386,6 +386,9 @@ def generate_native_tests(config: dict | None = None) -> list[dict]:
     config = config or {}
     if config.get("reference_paths"):
         raise ValueError("native provider evaluation cannot select Skill references")
+    omit_reference_checks = config.get("omit_reference_checks", False)
+    if not isinstance(omit_reference_checks, bool):
+        raise ValueError("omit_reference_checks must be a boolean")
 
     tests = generate_tests(config)
     skill_name = _skill_name(config)
@@ -395,9 +398,16 @@ def generate_native_tests(config: dict | None = None) -> list[dict]:
 
     for test in tests:
         if "expected_loaded_references" in test["vars"]:
-            raise ValueError(
-                "reference-loading evaluations require the Python provider"
-            )
+            if not omit_reference_checks:
+                raise ValueError(
+                    "reference-loading evaluations require the Python provider"
+                )
+            test["vars"].pop("expected_loaded_references")
+            test["assert"] = [
+                check
+                for check in test["assert"]
+                if check["metric"] != "reference-loading"
+            ]
         if suite == TRIGGER_SUITE:
             candidates = _routing_candidates(
                 test["vars"].get("routing_candidates"), skill_name
