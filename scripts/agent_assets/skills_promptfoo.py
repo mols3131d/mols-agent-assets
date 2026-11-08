@@ -563,7 +563,12 @@ def assert_reference_loading(output: str, context: dict) -> dict:
     loaded = metadata.get("loaded_references")
     if not isinstance(loaded, list):
         return {"pass": False, "score": 0, "reason": "loaded_references trace missing"}
-    if loaded != expected:
+    # Reference selection is a set contract, not an execution-order contract.
+    if (
+        len(loaded) != len(expected)
+        or any(not isinstance(path, str) for path in loaded)
+        or set(loaded) != set(expected)
+    ):
         return {
             "pass": False,
             "score": 0,
