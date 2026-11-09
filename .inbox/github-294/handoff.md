@@ -1,5 +1,32 @@
 # PR #294 — 재개·검증·운영 인계
 
+## 2026-11-10 코딩 에이전트 작업 지시
+
+**목표:** [리뷰 보고서](review-report.md)의 F2를 최소 수정으로 해결하고 F1의 제한적 자동화 결정을 유지하면서, 검증 근거와 남은 승인 경계를 정리한다. 구현 범위는 기존 PR #294에 한정하며 Draft·사람 승인 요건을 해제하지 않는다.
+
+**작업 대상:** `mols3131d/mols-agent-assets` / PR #294 / branch `mols/chore/generated-sync-on-push`. GitHub 연결은 `main-dev`(`mols3131d`)만 사용한다. 이 문서 작성 당시 정적 리뷰 기준 head는 `0e9905b3f3ceb4ce8a4b76453471ee4d358294ff`이며 **현재 head로 가정하지 않는다**.
+
+### 필수 작업 순서
+
+1. PR의 최신 base/head, diff, Checks, 사람의 후속 변경·리뷰를 새로 조회한다. 루트 `CHATBOT.md`·`AGENTS.md` 및 적용 지침, [GitHub 정책](../../docs/development/github.md)·[CI 정책](../../docs/development/ci.md)·[리뷰 보고서](review-report.md)를 확인하고 기존 작업을 보존한다.
+2. **F2 / 코드 수정:** `.github/workflows/generated-sync.yml`의 `jobs.sync.if`를 브랜치 전용 + `main` 제외로 제한한다. 예: `startsWith(github.ref, 'refs/heads/') && github.ref != 'refs/heads/main'`. Push ref도 `HEAD:refs/heads/${GITHUB_REF_NAME}`처럼 명시해 태그 dispatch가 브랜치 대상으로 오인되지 않게 한다.
+3. **F1 / 운영 결정 유지:** 기본 `GITHUB_TOKEN`의 bot commit 후 PR Gate 재실행을 자동으로 약속하지 않는다. 현재 P0는 최초 PR을 열기 전 생성 commit 완료, 열린 PR의 후속 갱신은 사람이 승인한 정상 push/PR 이벤트로 최신 required check를 검증하는 **제한적 자동화**다. 완전 무인 요구가 새로 확인되면 임의 구현하지 말고 결정·권한을 인계한다.
+4. **회귀 검증:** workflow 문법과 job 조건의 branch/main/tag 분기, generated-only stage, no-op commit 생략, `git push` 대상, `contents: write` 범위, `uv --locked` 사용을 확인한다. 저장소의 결정적 검증 및 `generated validate`를 실행할 수 있다면 실행하고, 수행하지 못한 검사는 Not Verified로 기록한다. 변경 후 최신 HEAD의 `Branch Check`·`PR Gate` 결과를 확인한다.
+5. **승인 뒤 E2E:** 신규 write-capable Actions의 독립적 사람 검토와 명시적 승인 **전에는** 안전한 테스트 명목으로도 write workflow를 실행하지 않는다. 승인 후 본 문서의 '완료 판정용 시나리오'를 별도 전용 브랜치에서 테스트해 no-op, source→generated-only bot commit, 최신 PR Gate의 실제 상태를 run URL·commit SHA로 남긴다. 테스트 실패 시 증거를 기록하고 복구한다.
+6. 검증 결과·미완료 항목·최신 revision 정보를 PR 설명 또는 적절한 PR 기록에 반영하고, 본 인계 내용을 필요 최소한으로 갱신한다. 기존 `Branch Check`, `PR Gate`, generator, Ruleset을 변경하거나 별도 자동화·App/PAT/Secret을 추가하지 않는다.
+
+### 완료 판정
+
+- [ ] F2: `main`과 `refs/tags/*`에서 sync job이 실행되지 않으며 일반 작업 브랜치에서만 실행된다. 브랜치 대상 push가 명시된다.
+- [ ] generated-only stage 및 무변경 no-op 동작이 유지되고, 실패·경합 시 강제 push 없이 원인 파악이 가능하다.
+- [ ] 수정 이후 최신 PR head·merge candidate의 필수 `PR Gate` 성공을 GitHub 실제 Checks로 확인한다. 과거 SHA의 pass로 대체하지 않는다.
+- [ ] F1의 수동 재검증 제약을 사람이 수용했는지, 아니면 설계 변경이 필요한지 구분해 기록한다.
+- [ ] 사람의 독립 검토·승인과 write E2E 결과를 각각 Pass / Not Verified로 구분한다. 미완료라면 Draft와 인계를 유지한다.
+
+**중단 조건:** 연결 계정이 다르거나, 예상 밖 source 변경·보호 규칙 충돌·write workflow 승인 부재가 발견되면 해당 외부 쓰기/실행을 중단한다. 대체 계정, 강제 push, `main` 직접 수정, Ruleset 우회, 자동 merge를 하지 않는다. 이 작업 지시는 코딩 에이전트의 구현 인계이며 병합·운영 활성화 승인이 아니다.
+
+---
+
 ## 지금 어디까지 진행됐나
 
 - 대상: [PR #294](https://github.com/mols3131d/mols-agent-assets/pull/294), Draft, base=`main`, head branch=`mols/chore/generated-sync-on-push`.
