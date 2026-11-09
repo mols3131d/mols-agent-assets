@@ -21,13 +21,12 @@
 - 처리: 코드 수정 없이도 운영 제약을 명시적으로 수용할 수 있으나, 수용 주체가 이를 결정해야 한다. 완전 무인 동기화·검증이 필수라면 현 설계로 완료 처리하지 말고 별도 설계 변경을 요청한다.
 - 근거: [GitHub — Triggering a workflow](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow), [Required status checks](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks).
 
-### F2 — Medium: 수동 dispatch에서 태그 ref를 브랜치로 오인할 수 있음 (수정 대상)
+### F2 — Medium: 수동 dispatch에서 태그 ref를 브랜치로 오인할 수 있음 (수정 완료)
 
 - 위치: `generated-sync.yml` 19, 30, 72행.
-- 원인: `workflow_dispatch`는 브랜치뿐 아니라 태그를 대상으로 실행할 수 있다. 현재 job 조건 `github.ref != 'refs/heads/main'`은 `refs/tags/*`도 허용한다. `git push origin "HEAD:${GITHUB_REF_NAME}"`는 브랜치 전용 대상임을 명시하지 않는다.
-- 영향: 태그 기반 수동 실행에서 쓰기 단계가 실행되거나 의도하지 않은 ref 대상으로 push를 시도할 수 있다. 이 PR의 '작업 브랜치만 갱신' 계약과 맞지 않는다.
-- 수정 권고: job 실행 조건에 `startsWith(github.ref, 'refs/heads/')`를 추가하고, push 대상은 `HEAD:refs/heads/${GITHUB_REF_NAME}`처럼 브랜치 ref를 명시한다. 기존 main 제외 조건을 함께 유지한다.
-- 확인: 브랜치(main 제외)만 실행, main·태그는 skip. 변경이 없으면 commit/push 생략. 가능한 로컬 정적 검사와 승인된 후속 E2E로 각각 검증한다.
+- 원인: `workflow_dispatch`는 브랜치뿐 아니라 태그를 대상으로 실행할 수 있다. 수정 전 job 조건 `github.ref != 'refs/heads/main'`은 `refs/tags/*`도 허용했으며, `git push origin "HEAD:${GITHUB_REF_NAME}"`는 브랜치 전용 대상임을 명시하지 않았다.
+- 수정 내용: job 실행 조건에 `startsWith(github.ref, 'refs/heads/')`를 추가하여 `startsWith(github.ref, 'refs/heads/') && github.ref != 'refs/heads/main'`으로 변경하고, push 대상은 `HEAD:refs/heads/${GITHUB_REF_NAME}`으로 브랜치 ref를 명시했다.
+- 확인: 브랜치(main 제외)만 실행, main·태그는 skip. 변경이 없으면 commit/push 생략. 로컬 정적·결정적 검증(mise check, mise test, generated_artifacts validate --all) 통과.
 - 근거: [GitHub — workflow_dispatch 이벤트](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_dispatch), [GitHub — Contexts](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts).
 
 ### G1 — 필수 승인 게이트: 쓰기 가능한 Actions 통제 표면

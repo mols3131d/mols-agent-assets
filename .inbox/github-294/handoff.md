@@ -17,10 +17,10 @@
 
 ### 완료 판정
 
-- [ ] F2: `main`과 `refs/tags/*`에서 sync job이 실행되지 않으며 일반 작업 브랜치에서만 실행된다. 브랜치 대상 push가 명시된다.
-- [ ] generated-only stage 및 무변경 no-op 동작이 유지되고, 실패·경합 시 강제 push 없이 원인 파악이 가능하다.
+- [x] F2: `main`과 `refs/tags/*`에서 sync job이 실행되지 않으며 일반 작업 브랜치에서만 실행된다. 브랜치 대상 push가 명시된다.
+- [x] generated-only stage 및 무변경 no-op 동작이 유지되고, 실패·경합 시 강제 push 없이 원인 파악이 가능하다.
 - [ ] 수정 이후 최신 PR head·merge candidate의 필수 `PR Gate` 성공을 GitHub 실제 Checks로 확인한다. 과거 SHA의 pass로 대체하지 않는다.
-- [ ] F1의 수동 재검증 제약을 사람이 수용했는지, 아니면 설계 변경이 필요한지 구분해 기록한다.
+- [x] F1의 수동 재검증 제약을 사람이 수용했는지, 아니면 설계 변경이 필요한지 구분해 기록한다. (P0 제한적 자동화 운영 결정 유지)
 - [ ] 사람의 독립 검토·승인과 write E2E 결과를 각각 Pass / Not Verified로 구분한다. 미완료라면 Draft와 인계를 유지한다.
 
 **중단 조건:** 연결 계정이 다르거나, 예상 밖 source 변경·보호 규칙 충돌·write workflow 승인 부재가 발견되면 해당 외부 쓰기/실행을 중단한다. 대체 계정, 강제 push, `main` 직접 수정, Ruleset 우회, 자동 merge를 하지 않는다. 이 작업 지시는 코딩 에이전트의 구현 인계이며 병합·운영 활성화 승인이 아니다.
