@@ -583,6 +583,26 @@
       "expected_loaded_references": [
         "references/default-workflow.md"
       ]
+    },
+    {
+      "id": "activate-stdd-template-customization",
+      "mode": "activation",
+      "prompt": "개인 프로젝트 STDD의 work.md·spec.md 기본 템플릿을 유지하고 프로젝트별 오버라이드를 설정해줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-stdd"
+        ],
+        "primary_skill": "mols-stdd"
+      }
+    },
+    {
+      "id": "negative-generic-markdown-template",
+      "mode": "activation-negative",
+      "prompt": "일반 마크다운 회의록 템플릿 양식을 만들어줘. STDD나 개발 작업 티켓과 무관해.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
     }
   ]
 }
