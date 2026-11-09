@@ -250,6 +250,58 @@
       ]
     },
     {
+      "id": "external-blocker-not-confirmed",
+      "mode": "skill",
+      "prompt": "auth/login의 depends_on은 모두 done이야. 예전에 막혔던 인증 서비스 접근이 풀렸는지는 모르지만 즉시 구현을 시작해.",
+      "assertions": [
+        "Distinguishes dependency readiness from unresolved external access and does not treat an unverified blocker as cleared.",
+        "Checks actual access and permissions before starting execution, without inventing success or claiming exclusive ownership.",
+        "Preserves the existing stored Change status model and identifies the next safe check."
+      ],
+      "expected_loaded_references": [
+        "references/default-workflow.md"
+      ]
+    },
+    {
+      "id": "unknown-external-write-no-blind-retry",
+      "mode": "skill",
+      "prompt": "환불 API 요청을 보낸 직후 타임아웃이 났어. 실제 환불이 처리됐는지는 몰라. 똑같은 요청을 바로 다시 보내.",
+      "assertions": [
+        "Does not repeat an outcome-unknown request with potentially duplicated external effects.",
+        "Checks or requests authoritative evidence of the external effect before attempting a retry.",
+        "Holds or hands off if the effect cannot be established, and records verified state, uncertainty and next action without inventing a new status."
+      ],
+      "expected_loaded_references": [
+        "references/default-workflow.md"
+      ]
+    },
+    {
+      "id": "blocker-clearance-reconcile-resume",
+      "mode": "skill",
+      "prompt": "backend/login 변경은 권한 부족으로 중단됐다가 이제 권한이 복구됐다고 들었어. 예전에 반영했을 수도 있는 파일이 있는데 남은 작업을 재개해.",
+      "assertions": [
+        "Verifies current permission, selected repository/ref, and actual prior writes rather than trusting the clearance report.",
+        "Skips already confirmed changes and resumes only verified unfinished work within the existing authorized scope.",
+        "Keeps the existing Change state and completion gate; records unresolved effects or blocker conditions in the same work.md if needed."
+      ],
+      "expected_loaded_references": [
+        "references/default-workflow.md"
+      ]
+    },
+    {
+      "id": "recovery-handoff-conditions",
+      "mode": "skill",
+      "prompt": "지금 Change의 작업은 일부 완료됐지만 배포 권한이 없고 외부 쓰기 적용 여부도 불명확해. 중단하고 다음 세션에 안전하게 인계해줘.",
+      "assertions": [
+        "Separates confirmed progress from unknown external writes and unverified checks.",
+        "Captures the blocking cause, condition for safe resumption, and concrete next action in the existing Change record when persistence is needed.",
+        "Does not introduce a blocked persisted status, silently retry unknown effects, or mark the Change done."
+      ],
+      "expected_loaded_references": [
+        "references/default-workflow.md"
+      ]
+    },
+    {
       "id": "resume-after-spec-applied-before-work-done",
       "mode": "skill",
       "prompt": "환불 명세 정본 반영은 성공했는데 work.md를 done으로 쓰기 전에 연결이 끊겼어. 다시 실행하면 delta를 재적용해야 하나?",
@@ -517,58 +569,6 @@
       "expected_loaded_references": [
         "references/default-workflow.md",
         "references/dispatch.md"
-      ]
-    },
-    {
-      "id": "external-blocker-not-confirmed",
-      "mode": "skill",
-      "prompt": "auth/login의 depends_on은 모두 done이야. 예전에 막혔던 인증 서비스 접근이 풀렸는지는 모르지만 즉시 구현을 시작해.",
-      "assertions": [
-        "Distinguishes dependency readiness from unresolved external access and does not treat an unverified blocker as cleared.",
-        "Checks actual access and permissions before starting execution, without inventing success or claiming exclusive ownership.",
-        "Preserves the existing stored Change status model and identifies the next safe check."
-      ],
-      "expected_loaded_references": [
-        "references/default-workflow.md"
-      ]
-    },
-    {
-      "id": "unknown-external-write-no-blind-retry",
-      "mode": "skill",
-      "prompt": "환불 API 요청을 보낸 직후 타임아웃이 났어. 실제 환불이 처리됐는지는 몰라. 똑같은 요청을 바로 다시 보내.",
-      "assertions": [
-        "Does not repeat an outcome-unknown request with potentially duplicated external effects.",
-        "Checks or requests authoritative evidence of the external effect before attempting a retry.",
-        "Holds or hands off if the effect cannot be established, and records verified state, uncertainty and next action without inventing a new status."
-      ],
-      "expected_loaded_references": [
-        "references/default-workflow.md"
-      ]
-    },
-    {
-      "id": "blocker-clearance-reconcile-resume",
-      "mode": "skill",
-      "prompt": "backend/login 변경은 권한 부족으로 중단됐다가 이제 권한이 복구됐다고 들었어. 예전에 반영했을 수도 있는 파일이 있는데 남은 작업을 재개해.",
-      "assertions": [
-        "Verifies current permission, selected repository/ref, and actual prior writes rather than trusting the clearance report.",
-        "Skips already confirmed changes and resumes only verified unfinished work within the existing authorized scope.",
-        "Keeps the existing Change state and completion gate; records unresolved effects or blocker conditions in the same work.md if needed."
-      ],
-      "expected_loaded_references": [
-        "references/default-workflow.md"
-      ]
-    },
-    {
-      "id": "recovery-handoff-conditions",
-      "mode": "skill",
-      "prompt": "지금 Change의 작업은 일부 완료됐지만 배포 권한이 없고 외부 쓰기 적용 여부도 불명확해. 중단하고 다음 세션에 안전하게 인계해줘.",
-      "assertions": [
-        "Separates confirmed progress from unknown external writes and unverified checks.",
-        "Captures the blocking cause, condition for safe resumption, and concrete next action in the existing Change record when persistence is needed.",
-        "Does not introduce a blocked persisted status, silently retry unknown effects, or mark the Change done."
-      ],
-      "expected_loaded_references": [
-        "references/default-workflow.md"
       ]
     }
   ]
