@@ -43,21 +43,21 @@
 
 `paths`는 현재 알려진 원본 경로를 대상으로 한다. 신규 source 위치를 도입하면 workflow 필터도 갱신해야 한다. 새 source가 누락되더라도 PR Gate의 생성 드리프트 검증은 유지한다. Push 이후 작업 브랜치가 다른 커밋으로 전진하면 봇 push가 non-fast-forward로 실패할 수 있다. 자동 강제 push나 덮어쓰기로 복구하지 않는다.
 
-### Medium — 수동 실행 조건
+### Resolved (F2) — 수동 실행 및 브랜치 ref 한정
 
-`workflow_dispatch` 버튼은 workflow가 기본 브랜치에 존재해야 UI에 노출된다. 이 PR 병합 전에는 정상적인 수동 실행을 보장하지 않으며, 병합 후에도 `main`에서는 job 조건 때문에 실행되지 않도록 설계됐다.
+`workflow_dispatch`가 태그 ref를 허용하던 결함(F2)은 job 조건 `startsWith(github.ref, 'refs/heads/') && github.ref != 'refs/heads/main'`과 push ref `HEAD:refs/heads/${GITHUB_REF_NAME}`을 명시하여 정적 수정 완료됐다. `main` 및 `refs/tags/*`에서는 실행이 차단되며 오직 작업 브랜치에서만 동기화가 동작한다.
 
 ## 확인된 근거와 미검증 범위
 
 - **확인됨:** `main` 보호 Ruleset에 `PR Gate` required check와 squash-merge 제약이 존재함; 기존 `Branch Check`와 `PR Gate`는 read-only.
-- **확인됨:** PR head `f7272a81601d28a5743771c557ac9a3680cddd75` 시점 `Branch Check` 및 `PR Gate`가 성공. 이는 **그 revision의 정적/저장소 검증**이며 신규 workflow의 생성·커밋 수행 검증은 아님.
-- **미검증:** 원본 push → generator 실행 → 차이 발생 시 봇 커밋, 무변경 no-op, `GITHUB_TOKEN` 실제 write 권한, 봇 커밋 직후 required check 상태.
-- **미검증:** 오류/경합 시 실패 처리와 `workflow_dispatch` 수동 운영.
+- **확인됨:** F2 수정 커밋 후 최신 PR head `728399d299e209c019a13c7b2f807827070ec2a1` 시점 `Branch Check` 및 `PR Gate`가 성공. 이는 **해당 revision의 정적/저장소 검증 통과** 근거이며, 신규 write workflow 자체의 실제 E2E 동작 성공은 아님.
+- **미검증 (사람 승인 대기):** 원본 push → generator 실행 → 차이 발생 시 봇 커밋, 무변경 no-op, `GITHUB_TOKEN` 실제 write 권한, 봇 커밋 직후 required check 상태의 실제 E2E. 사람의 사전 명시적 승인이 있을 때까지 의도적으로 미실행 상태로 인계한다.
+- **미검증:** 실제 원격 환경에서의 충돌/경합 시 실패 처리와 `workflow_dispatch` 수동 운영.
 
 ## 독립 리뷰 체크
 
 1. 해당 PR의 최신 diff와 `revision.base`/`revision.head`를 확인한다. 이후 추가된 인계 파일은 작업 근거이지 새로운 실행 권한은 아니다.
-2. `contents: write`가 필요한 단계, `main` 차단, generated-only staging, no-diff 분기를 확인한다.
-3. source 필터가 generator dependency와 맞는지, 출력 파일만 변경될 때 재실행하지 않는지 확인한다.
-4. Required `PR Gate`가 봇 커밋 이후 다시 실행되지 않는 제한을 수용할지 결정한다. 수용하지 않으면 Draft를 유지하고 설계를 수정한다.
-5. [handoff.md](handoff.md)의 재현 시나리오와 복구 기준으로 post-merge 검증 계획을 확정한다.
+1. `contents: write`가 필요한 단계, `main` 차단, generated-only staging, no-diff 분기를 확인한다.
+1. source 필터가 generator dependency와 맞는지, 출력 파일만 변경될 때 재실행하지 않는지 확인한다.
+1. Required `PR Gate`가 봇 커밋 이후 다시 실행되지 않는 제한을 수용할지 결정한다. 수용하지 않으면 Draft를 유지하고 설계를 수정한다.
+1. [handoff.md](handoff.md)의 재현 시나리오와 복구 기준으로 post-merge 검증 계획을 확정한다.

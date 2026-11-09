@@ -4,10 +4,10 @@
 
 ## 결론
 
-**수정 후 재검토 권고 / Draft 유지.** 구현은 기존 generator를 재사용하고 쓰기 워크플로를 PR Gate와 분리하지만, 브랜치 전용 실행 조건의 누락 1건과 자동 커밋 후 필수 체크 공백 1건이 남아 있다. 사람의 독립 승인 및 신규 워크플로 E2E는 아직 확보되지 않았다.
+**F2 정적 수정 완료 / F1 운영 제약 유지 / 사람 승인 대기(Draft 유지).** 구현은 기존 generator를 재사용하고 쓰기 워크플로를 PR Gate와 분리한다. 브랜치 전용 실행 조건의 누락(F2)은 정적 수정을 완료하여 해결되었으며, 기본 토큰 자동 커밋 후 필수 체크 공백(F1)은 P0 제한적 자동화 운영 제약으로 명시 유지한다. 신규 write-capable 워크플로의 사람 독립 승인 및 실제 E2E는 사람의 사전 명시적 승인 전이므로 미검증(Not Verified) 상태로 인계한다.
 
 - 대상: [PR #294](https://github.com/mols3131d/mols-agent-assets/pull/294) (`mols3131d/mols-agent-assets`).
-- 검토 기준: base `fa5be3bd63e9c29c30017b9e8c833018c092b9a7`, head `0e9905b3f3ceb4ce8a4b76453471ee4d358294ff`. 후속 커밋이 생기면 최신 diff·check를 다시 확인한다.
+- 검토 기준: base `fa5be3bd63e9c29c30017b9e8c833018c092b9a7`, head `728399d299e209c019a13c7b2f807827070ec2a1`. 후속 커밋이 생기면 최신 diff·check를 다시 확인한다.
 - 검토 표면: [generated-sync.yml](../../.github/workflows/generated-sync.yml), [generator](../../scripts/generated_artifacts.py), [PR Gate](../../.github/workflows/pr-gate.yml), [CI 정책](../../docs/development/ci.md), [GitHub 정책](../../docs/development/github.md), Ruleset `protect-main`.
 
 ## Findings
@@ -39,12 +39,12 @@
 
 | 검증 항목 | 기준 스냅샷 결과 | 한계 |
 | --- | --- | --- |
-| [Branch Check](https://github.com/mols3131d/mols-agent-assets/actions/runs/42529764845/job/128881154510) | Pass — head `0e9905b3` | 정적·deterministic 검증에 한정 |
-| [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/42529769819/job/128881169458) | Pass — head `0e9905b3` | 새 write workflow의 생성·push 동작을 증명하지 않음 |
-| 생성 경로·generated-only stage·no-op 분기 | 정적 코드 대조 | 실제 bot commit 없음 |
-| 원본 변경 → 생성 파일 bot commit → 최신 PR Gate | Not Verified | 별도 실행·체크 관찰 필요 |
-| 태그 dispatch 차단·경합·복구 | Not Verified | 수정·승인 후 검증 필요 |
-| 사람의 독립 승인 | Not Verified | 병합 전 필수 |
+| [Branch Check](https://github.com/mols3131d/mols-agent-assets/actions/runs/42669009025/job/129340230134) | Pass — head `728399d2` | 정적·deterministic 검증에 한정 |
+| [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/42669018443/job/129340261955) | Pass — head `728399d2` | 신규 write workflow 자체의 실행을 증명하지 않음 |
+| 생성 경로·generated-only stage·no-op 분기 | Pass — 정적 코드 대조 및 검증 | 실제 bot commit 아님 |
+| 태그 dispatch 차단·브랜치 한정(F2) | Pass — 코드 수정 및 정적 검증 완료 | 별도 테스트 브랜치 E2E 전 정적 검증 상태 |
+| 원본 변경 → 생성 파일 bot commit → 최신 PR Gate | Not Verified | 사람의 사전 명시적 승인 후 실행 계획으로 인계 |
+| 사람의 독립 승인 | Not Verified | 병합 및 write E2E 전 필수 확인 요건 |
 
 ## 유지할 설계와 범위
 
