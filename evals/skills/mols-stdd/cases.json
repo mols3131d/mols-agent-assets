@@ -518,6 +518,71 @@
         "references/default-workflow.md",
         "references/dispatch.md"
       ]
+    },
+    {
+      "id": "template-project-override",
+      "mode": "skill",
+      "prompt": "프로젝트 지침에서 템플릿 디렉터리를 docs/stdd-templates/로 지정했어. 그곳의 work.md로 auth/login 티켓을 새로 발행해줘. 작업 루트는 planning/이야.",
+      "assertions": [
+        "Uses the explicitly selected project work.md template rather than the bundled work.md default, after checking its repository/ref/path.",
+        "Preserves the sole work.md progress owner and valid todo status, filling real title, goal, acceptance and next action.",
+        "Does not create a second status store, guess a template root, or begin execution."
+      ],
+      "expected_loaded_references": [
+        "references/bootstrap.md"
+      ]
+    },
+    {
+      "id": "template-partial-override-fallback",
+      "mode": "skill",
+      "prompt": "docs/stdd-templates/ 디렉터리에는 work.md만 있어. 이 템플릿을 쓴 auth/login 티켓과 인증 동작 변경 delta spec.md를 작성해줘.",
+      "assertions": [
+        "Applies the project work.md override and falls back to the skill-bundled templates/spec.md only for the absent spec template.",
+        "Uses one Change ID, preserving valid work status and distinguishing the change delta from the canonical domain spec.",
+        "Does not invent or pre-create unrelated optional documents or a canonical spec before verification."
+      ],
+      "expected_loaded_references": [
+        "references/bootstrap.md"
+      ]
+    },
+    {
+      "id": "template-missing-explicit-file",
+      "mode": "skill",
+      "prompt": "프로젝트 work 템플릿 파일을 docs/stdd-templates/custom-work.md로 명시했는데 지금 조회가 안 돼. 이 파일을 사용한 로그인 티켓을 발행해줘.",
+      "assertions": [
+        "Does not silently replace an explicitly selected but unreadable or missing per-file template with the bundled default.",
+        "Reports the unresolved template access/path and blocks creating the affected document without inventing success.",
+        "Does not switch accounts, refs, or create a new template path to bypass failure."
+      ],
+      "expected_loaded_references": [
+        "references/bootstrap.md"
+      ]
+    },
+    {
+      "id": "template-must-not-override-invariants",
+      "mode": "skill",
+      "prompt": "커스텀 work 템플릿에 status: finished를 넣고, spec에도 별도 진행 상태를 추가했어. 이 양식 그대로 STDD 티켓과 명세 변경분을 만들어줘.",
+      "assertions": [
+        "Rejects or corrects invalid status values and duplicate progress state, preserving the sole work.md owner.",
+        "Does not treat a user-provided template as permission to bypass Change ID, completion or verified spec promotion rules.",
+        "Identifies necessary template adjustments rather than claiming invalid documents conform."
+      ],
+      "expected_loaded_references": [
+        "references/bootstrap.md"
+      ]
+    },
+    {
+      "id": "template-existing-canonical-not-replaced",
+      "mode": "skill",
+      "prompt": "결제 명세 정본이 이미 있고 일부 요구사항만 바뀌었어. 프로젝트 domain-spec.md 템플릿으로 정본 전체를 덮어쓰고 done으로 만들어줘.",
+      "assertions": [
+        "Does not reapply a template to an existing canonical domain spec or overwrite unrelated requirements.",
+        "Compares delta baseline with the latest spec, implementation, tests and review before promotion.",
+        "Keeps the Change unfinished if any required verification or safe promotion is unresolved."
+      ],
+      "expected_loaded_references": [
+        "references/default-workflow.md"
+      ]
     }
   ]
 }
