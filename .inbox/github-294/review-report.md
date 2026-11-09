@@ -1,58 +1,71 @@
-# PR #294 — 생성 파일 자동 동기화 정적 리뷰 보고서
+# PR #294 — 독립 리뷰 보고서
 
-> 2026-11-10 검토 스냅샷. 이 문서는 PR 작업을 위한 비정본 검토 근거이며, GitHub Actions·CI 정책·Ruleset을 대체하지 않는다.
+> 검토일: 2026-11-10. **검토 기준:** base `fa5be3bd63e9c29c30017b9e8c833018c092b9a7`, head `49b594ca8a5962cd2db01ba9c9bed3781be6a895`. 이후 문서 커밋은 이 코드 리뷰의 대상이 아니며, 최신 상태는 다시 확인해야 한다. 이 문서는 `.inbox/`의 비정본 작업 근거다.
 
-## 결론
+## 판정
 
-**F2 정적 수정 완료 / F1 운영 제약 유지 / 사람 승인 대기(Draft 유지).** 구현은 기존 generator를 재사용하고 쓰기 워크플로를 PR Gate와 분리한다. 브랜치 전용 실행 조건의 누락(F2)은 정적 수정을 완료하여 해결되었으며, 기본 토큰 자동 커밋 후 필수 체크 공백(F1)은 P0 제한적 자동화 운영 제약으로 명시 유지한다. 신규 write-capable 워크플로의 사람 독립 승인 및 실제 E2E는 사람의 사전 명시적 승인 전이므로 미검증(Not Verified) 상태로 인계한다.
+**조건부 보류 — Draft 유지.** 기존 generator를 재사용해 작업 브랜치의 파생 파일만 커밋하는 구현에는 새로운 확정 코드 결함이 발견되지 않았다. 그러나 기본 `GITHUB_TOKEN`으로 생성 파일을 push한 뒤 최신 PR 후보의 required `PR Gate`가 갱신되는지 불명확하며, 신규 write workflow의 실제 E2E와 사람의 독립 승인이 없다. 현재 CI 통과를 write 경로의 성공으로 해석하지 않는다.
 
-- 대상: [PR #294](https://github.com/mols3131d/mols-agent-assets/pull/294) (`mols3131d/mols-agent-assets`).
-- 검토 기준: base `fa5be3bd63e9c29c30017b9e8c833018c092b9a7`, head `728399d299e209c019a13c7b2f807827070ec2a1`. 후속 커밋이 생기면 최신 diff·check를 다시 확인한다.
-- 검토 표면: [generated-sync.yml](../../.github/workflows/generated-sync.yml), [generator](../../scripts/generated_artifacts.py), [PR Gate](../../.github/workflows/pr-gate.yml), [CI 정책](../../docs/development/ci.md), [GitHub 정책](../../docs/development/github.md), Ruleset `protect-main`.
+- 대상: [PR #294](https://github.com/mols3131d/mols-agent-assets/pull/294), `mols3131d/mols-agent-assets`; head branch `mols/chore/generated-sync-on-push`.
+- 변경: [generated-sync.yml](../../.github/workflows/generated-sync.yml) 1개와 `.inbox/github-294/` 문서 4개. 기존 generator, validator, Branch Check, PR Gate와 Ruleset은 변경하지 않았다.
+- 강제 조건: Ruleset `protect-main`의 `PR Gate` required check 및 squash merge. 이와 별개로 [GitHub 정책](../../docs/development/github.md)은 쓰기 가능한 통제 표면의 독립 근거와 사람의 명시적 승인을 요구한다.
 
-## Findings
+## Findings 및 처분
 
-### F1 — High: 자동 커밋 직후 최신 PR Gate 근거 공백 (기존에 알려진 제한)
+### F1 — High · 미해결 운영 제약: 봇 커밋 이후 최신 PR Gate 확인
 
-- 위치: `generated-sync.yml` 62–73행; 관련 운영 결정은 [review-brief.md](review-brief.md)에 기록되어 있다.
-- 원인: 워크플로가 기본 `GITHUB_TOKEN`으로 생성 파일을 push해도 일반적인 후속 `push` workflow run은 발생하지 않는다. 이미 열린 PR에서 해당 bot commit 직후 `PR Gate`가 최신 후보를 다시 검증했다고 간주할 수 없다.
-- 영향: source push를 받은 검사 결과가 이후 bot commit의 최종 merge candidate를 검증하지 못할 수 있다. 해당 커밋의 required check를 실제 조회해야 한다.
-- 구분: 구현이 이 제약을 숨기지는 않는다. 현재 P0 설계는 **최초 PR 생성 전에 bot commit 완료**를 기본 경로로 하고, 기존 PR의 후속 변경은 사람의 승인된 정상 push로 재검증하는 제한적 자동화를 택했다.
-- 처리: 코드 수정 없이도 운영 제약을 명시적으로 수용할 수 있으나, 수용 주체가 이를 결정해야 한다. 완전 무인 동기화·검증이 필수라면 현 설계로 완료 처리하지 말고 별도 설계 변경을 요청한다.
-- 근거: [GitHub — Triggering a workflow](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow), [Required status checks](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks).
+- **근거:** `generated-sync.yml` 62–73행은 `github.token`을 이용해 생성 결과를 원본 작업 브랜치로 push한다. 기존 [pr-gate.yml](../../.github/workflows/pr-gate.yml)은 `pull_request` 이벤트에서만 실행한다.
+- **영향:** 원본 push에 대한 검사 성공이 그 이후 발생한 봇 커밋의 최종 PR 후보까지 검증했다고 보장할 수 없다. `GITHUB_TOKEN`에 의한 일반 `push`는 후속 workflow 실행을 트리거하지 않는다.
+- **2026-06 변경사항의 정확한 범위:** GitHub는 `GITHUB_TOKEN`으로 **PR을 생성하거나 갱신**하여 발생하는 `pull_request: opened/synchronize/reopened` 이벤트에서 *승인 대기* workflow run을 허용한다. 하지만 현재 YAML의 동작은 **브랜치에 `git push`**하는 것이다. 이 예외가 본 경로에서 최신 required check를 만들어 준다고 추론하지 않는다. 실제 PR의 run/approval 상태를 관찰해야 한다.
+- **처분:** 코드 결함으로 자동 판정하거나 새 인증 방식을 강제하지 않는다. 현재 P0는 **원본 push → 생성 봇 커밋 완료 → 최초 PR 생성**을 기본 운영 순서로 유지한다. 이미 열린 PR에서 봇 커밋이 발생하면 최신 head/merge candidate의 검사 상태를 확인하고, 필요 시 동일 사용자의 승인된 후속 이벤트로 재검증한다. 완전 무인 운영이 필수면 별도 설계 결정이 필요하다.
+- **근거:** [GitHub: Triggering a workflow](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow), [2026-06-11 GitHub Changelog](https://github.blog/changelog/2026-06-11-bot-created-pull-requests-can-run-workflows-if-approved/), [Required checks](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks).
 
-### F2 — Medium: 수동 dispatch에서 태그 ref를 브랜치로 오인할 수 있음 (수정 완료)
+### F2 — Medium · 코드 수정 완료: 수동 실행 시 태그 ref 허용
 
-- 위치: `generated-sync.yml` 19, 30, 72행.
-- 원인: `workflow_dispatch`는 브랜치뿐 아니라 태그를 대상으로 실행할 수 있다. 수정 전 job 조건 `github.ref != 'refs/heads/main'`은 `refs/tags/*`도 허용했으며, `git push origin "HEAD:${GITHUB_REF_NAME}"`는 브랜치 전용 대상임을 명시하지 않았다.
-- 수정 내용: job 실행 조건에 `startsWith(github.ref, 'refs/heads/')`를 추가하여 `startsWith(github.ref, 'refs/heads/') && github.ref != 'refs/heads/main'`으로 변경하고, push 대상은 `HEAD:refs/heads/${GITHUB_REF_NAME}`으로 브랜치 ref를 명시했다.
-- 확인: 브랜치(main 제외)만 실행, main·태그는 skip. 변경이 없으면 commit/push 생략. 로컬 정적·결정적 검증(mise check, mise test, generated_artifacts validate --all) 통과.
-- 근거: [GitHub — workflow_dispatch 이벤트](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_dispatch), [GitHub — Contexts](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts).
+- 이전 조건은 `refs/tags/*`에서 job을 차단하지 못했다.
+- 현 구현은 `startsWith(github.ref, 'refs/heads/') && github.ref != 'refs/heads/main'`으로 브랜치에 한정하고, `HEAD:refs/heads/${GITHUB_REF_NAME}`으로 push ref를 지정한다.
+- **처분:** 정적 수정 확인. 태그/main 차단, 실제 수동 실행은 E2E 검증과 구분한다. 이미 해결된 문제를 신규 수정 과제로 재발행하지 않는다.
 
-### G1 — 필수 승인 게이트: 쓰기 가능한 Actions 통제 표면
+### G1 — High · 승인 게이트: 권한 있는 Actions
 
-- `permissions: contents: write`를 사용하는 신규 workflow이므로 [GitHub 정책](../../docs/development/github.md)에 따라 사람의 독립 검토와 명시적 승인이 필요하다.
-- 기존 `Branch Check`·`PR Gate` 통과나 AI 정적 리뷰를 사람 승인 또는 write-path E2E 성공으로 대체하지 않는다.
-- `main` 직접 수정, Ruleset bypass, 강제 push, 추가 계정·PAT·Secret 도입은 현 범위에 포함하지 않는다.
+- 신규 workflow는 `permissions: contents: write`를 갖는다. 분리된 write workflow, `persist-credentials: false`, no-force push, 단계별 `GH_TOKEN` 제공은 합리적인 제한이다.
+- 다만 통제 표면의 독립 검토와 사람 승인은 **미확인**이다. 자동 검사·AI 리뷰·이 문서는 승인 근거가 아니다.
+- **처분:** 사람의 명시적 승인 이전에는 새 write workflow를 테스트 명목으로도 실행하지 않는다.
 
-## 검증 근거
+### G2 — High · 검증 게이트: 신규 write 경로 E2E
 
-| 검증 항목 | 기준 스냅샷 결과 | 한계 |
+- 실제 원본 변경 → generator → generated-only bot commit, no-op에서 무커밋, 오류/경합 및 최신 PR 후보 검증의 원격 실행 근거가 없다.
+- **처분:** 승인 뒤 격리된 브랜치에서 검증한다. `workflow_dispatch`는 이 workflow가 기본 브랜치에 없을 때 수동 실행 엔트리로 기대하지 말고, 병합 전에는 일반 작업 브랜치 `push` 경로로 검증한다.
+- 검증 실패는 정상적으로 실패로 기록하고, 필수 check를 면제하거나 성공 상태를 꾸미지 않는다.
+
+## 구현 검토 결과
+
+| 항목 | 확인한 사실 | 평가 |
 | --- | --- | --- |
-| [Branch Check](https://github.com/mols3131d/mols-agent-assets/actions/runs/42669009025/job/129340230134) | Pass — head `728399d2` | 정적·deterministic 검증에 한정 |
-| [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/42669018443/job/129340261955) | Pass — head `728399d2` | 신규 write workflow 자체의 실행을 증명하지 않음 |
-| 생성 경로·generated-only stage·no-op 분기 | Pass — 정적 코드 대조 및 검증 | 실제 bot commit 아님 |
-| 태그 dispatch 차단·브랜치 한정(F2) | Pass — 코드 수정 및 정적 검증 완료 | 별도 테스트 브랜치 E2E 전 정적 검증 상태 |
-| 원본 변경 → 생성 파일 bot commit → 최신 PR Gate | Not Verified | 사람의 사전 명시적 승인 후 실행 계획으로 인계 |
-| 사람의 독립 승인 | Not Verified | 병합 및 write E2E 전 필수 확인 요건 |
+| 범위 | `main` 제외, branch ref 조건, source path filter | 정적 Pass |
+| 생성 | 기존 `scripts.generated_artifacts sync` / `validate --all`, `uv --locked` | 정적 Pass |
+| 쓰기 | `docs/**/INDEX.tsv`, `catalog/INDEX.tsv`, `route/*.jsonl`, `.agents/route/*.jsonl`만 stage | 정적 Pass |
+| 무변경 | `git diff --cached --quiet`이면 커밋 생략 | 정적 Pass |
+| 안전성 | 강제 push·추가 PAT/App/secret·`main` 직접 push 없음 | 정적 Pass |
+| 범위 확대 | 현 generator source-to-projection mapping과 필터에서 확정 누락 발견되지 않음 | 정적 검토, 미래 경로 추가 시 재검토 |
+| 경합 | branch tip이 전진하면 non-fast-forward 실패 가능 | 복구 절차 필요, 데이터 덮어쓰기 없음 |
 
-## 유지할 설계와 범위
+## 증거 및 미검증
 
-- 기존 `scripts.generated_artifacts sync`와 `validate --all`을 재사용하며 생성기의 의미를 YAML에 복제하지 않는다.
-- `Branch Check`·`PR Gate`는 읽기 전용 검증, `generated-sync.yml`만 유지보수 write를 담당한다.
-- 생성 결과만 stage하고 diff가 없는 경우 커밋하지 않는다. 별도 자동화, App/PAT/Secret, Ruleset 변경, 자동 병합을 추가하지 않는다.
-- source path filter와 실제 source-to-projection mapping의 대응은 구현 후 다시 확인하되, 새로운 범위 확대는 별도 근거가 있을 때만 진행한다.
+| 구분 | 결과 | 근거·한계 |
+| --- | --- | --- |
+| Branch Check | **Pass** | [run 42673980412](https://github.com/mols3131d/mols-agent-assets/actions/runs/42673980412), 기준 head `49b594ca` |
+| PR Gate | **Pass** | [run 42673991539](https://github.com/mols3131d/mols-agent-assets/actions/runs/42673991539), 기준 head `49b594ca` |
+| 기존 코드 검증 기록 | 이전 스냅샷에서 `mise check`, `mise test`(434 passed), generated validation 보고 | 해당 커밋의 기록이며 이번 리뷰에서 재실행하지 않음 |
+| Write workflow no-op/커밋/notice | **Not Verified** | 해당 head의 실행 목록에 신규 workflow 결과 없음 |
+| 봇 커밋 후 최신 required check | **Not Verified** | 후속 PR 이벤트/approval/run 실제 관찰 필요 |
+| 사람 독립 승인 | **Not Verified** | 이 보고서와 GitHub Checks는 승인 아님 |
 
-## 코딩 에이전트 인계
+## 다음 결정
 
-실행 순서, 완료 조건, 안전 경계는 [handoff.md](handoff.md)의 **2026-11-10 코딩 에이전트 작업 지시**를 따른다. 다른 검토자가 판단할 수 있도록 코드 수정과 검증 결과(HEAD, check/run URL, 미검증 항목)를 PR에 남긴다. 이 보고서의 판정은 해당 head 스냅샷에만 유효하다.
+1. **사람 검토·승인:** YAML의 실행 권한·토큰·쓰기 대상·호출하는 generator를 독립적으로 검토하고 테스트 승인 여부를 명시한다.
+2. **격리 E2E:** [handoff.md](handoff.md)의 테스트 순서에 따라 no-op, 생성 변경, 오류/경합과 최신 PR 검증 근거를 수집한다.
+3. **운영 선택:** 열린 PR에 대한 추가 수동 검증을 수용할지 결정한다. 수용하면 이 제약과 복구 절차를 인계한다. 자동 갱신까지 필수라면 별도 설계를 진행한다.
+4. **병합 판정:** 최신 head와 base의 required check 및 사람 승인 조건을 다시 확인한 뒤에만 Draft 해제·squash merge를 검토한다.
+
+**범위:** 본 보고서는 read-only 코드·설정·CI 상태 검토 결과다. 새 Actions 실행, 실행 권한 승인, 자동화 활성화, 병합은 수행하지 않았다.
