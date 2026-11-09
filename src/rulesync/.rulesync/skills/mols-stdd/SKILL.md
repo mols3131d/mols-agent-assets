@@ -4,8 +4,8 @@ description: >-
   Manage personal-project Changes as ticket-like work items: issue and select
   ready work, assign or delegate agent execution, resume and verify results,
   and connect dependencies, specifications, tests, review, and completion.
-  Use for project bootstrap, work backlogs, agent task assignment, and
-  spec/test-driven multi-step changes with nested domain specs. Not for
+  Use for project bootstrap, Change/spec template overrides, work backlogs,
+  agent task assignment, and spec/test-driven changes with nested domain specs. Not for
   trivial one-off edits, standalone test critiques, enterprise scheduling,
   automatic task-queue engines, or build-command configuration.
 targets:
