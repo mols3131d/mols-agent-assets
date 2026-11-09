@@ -58,9 +58,15 @@ Delta 작성 시 수정 대상 요구사항의 변경 전 내용이나 정본 re
 
 **`done`은 필요한 테스트·구현·Review 및 명세 반영이 모두 확인된 후에만 기록한다.** 완료 기록을 쓰기 직전에도 `work.md`의 최신 내용을 재확인하고 충돌을 덮어쓰지 않는다. 명세가 없는 Change는 없는 delta의 검증을 요구하지 않는다. 여러 ref의 쓰기는 원자적이지 않으므로 일부만 성공했다면 완료를 보류하고 검증된 결과·불확실한 부분·다음 행동을 같은 `work.md`에 남긴다. 재개에 필요한 별도 repository/ref/root도 발견할 수 있어야 하되 별도 설정 파일을 강제하지 않는다.
 
+## Templates and Overrides
+
+새 문서 작성 시 스킬에 포함된 `templates/`의 기본 양식을 사용할 수 있다. 프로젝트 지침이나 사용자가 지정한 **개별 파일 오버라이드 → 프로젝트 템플릿 디렉터리의 같은 이름 파일 → 스킬 기본 템플릿** 순서로 선택한다. 지정하지 않은 템플릿 경로·저장소·ref를 추측하지 않는다. 프로젝트 디렉터리에 해당 종류의 파일이 없으면 기본값을 사용하지만, 명시적으로 지정한 파일이 없거나 읽을 수 없으면 그 문서의 생성을 보류한다.
+
+파일 종류는 `work.md`(티켓), `spec.md`(Change delta), `domain-spec.md`(신규 도메인 정본), `proposal.md`, `research.md`, `plan.md`, `test-design.md`다. **템플릿은 신규 파일의 초안일 뿐** 기존 파일을 덮어쓰거나 상태·완료·명세 반영 규칙을 변경하지 않는다. 템플릿에 없는 항목도 실제 계약상 필요하면 보완하고, 사용하지 않는 예시·자리표시자는 제거한다. 새 문서 생성 시에만 [Bootstrap](references/bootstrap.md)의 템플릿 적용 절차를 확인한다.
+
 ## Bootstrap and Execution
 
-처음 도입·저장 위치 결정 또는 **새 Change 발행** 시 [Bootstrap](references/bootstrap.md)을 읽는다. 기존 백로그·`ready` 상태의 조회와 다음 Change **선택만** 요청받았다면 위의 공통 규칙으로 처리한다. 선택된 Change를 직접 수행하거나 재개할 때는 [Development Workflow](references/default-workflow.md)를, Agent 할당·위임·재할당·실행 결과 인계가 필요할 때만 [Dispatch](references/dispatch.md)를 읽는다. 위임된 수행·완료 판정에는 Workflow도 적용한다. 단순 조회나 기록 가치가 없는 작은 수정에는 Change 파일·전체 루프를 강제하지 않는다.
+처음 도입·저장 위치 결정·**새 Change 발행** 또는 **새 문서의 템플릿 선택** 시 [Bootstrap](references/bootstrap.md)을 읽는다. 기존 백로그·`ready` 상태의 조회와 다음 Change **선택만** 요청받았다면 위의 공통 규칙으로 처리한다. 선택된 Change를 직접 수행하거나 재개할 때는 [Development Workflow](references/default-workflow.md)를, Agent 할당·위임·재할당·실행 결과 인계가 필요할 때만 [Dispatch](references/dispatch.md)를 읽는다. 위임된 수행·완료 판정에는 Workflow도 적용한다. 단순 조회나 기록 가치가 없는 작은 수정에는 Change 파일·전체 루프를 강제하지 않는다.
 
 쓰기 전 실제 workspace/repository, 경로·ref, 연결 계정·권한, 최신 파일을 확인한다. 사용자 선택이나 기존 정본 없이 기본 루트·브랜치를 정하지 않는다. 지정 ref 접근 실패 시 다른 계정이나 기본 브랜치로 우회하지 않는다. `mols-loops`가 별도로 선택되면 외부 Run 제어는 그 Skill이 맡고 여기서는 Change의 도메인 절차만 제공한다.
 
