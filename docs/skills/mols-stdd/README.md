@@ -20,6 +20,12 @@ work/spec root와 Git ref 분리는 사용자 환경의 **저장 위치 선택**
 
 동시 실행은 런타임의 실제 작업 격리와 원자적 Claim 또는 단일 조정자의 직렬 할당이 필요하다. 환경이 지원하지 않는 병렬 선점은 강행하지 않고 가능한 범위만 수행하거나 인계한다.
 
+## Templates and Project Overrides
+
+스킬 패키지의 [`templates/`](../../../src/rulesync/.rulesync/skills/mols-stdd/templates/)는 Work, Change 명세 delta, 새 도메인 정본과 선택적 Proposal·Research·Plan·Test Design의 **초안**을 제공한다. 사용자·프로젝트 지침으로 지정한 파일 또는 디렉터리가 같은 종류의 패키지 템플릿보다 우선한다. 디렉터리는 부분 오버라이드를 허용하고, 지정하지 않은 종류는 패키지 기본값으로 돌아간다. 명시한 개별 파일의 조회 실패는 사용자 의도를 보존하기 위해 생성 차단으로 처리한다.
+
+템플릿 디렉터리 위치나 설정 파일을 강제하지 않는다. 새 문서 작성에서만 [Bootstrap](../../../src/rulesync/.rulesync/skills/mols-stdd/references/bootstrap.md)의 선택 규칙을 읽고, 기존 파일 수정·재개에 템플릿을 적용하지 않는다. 특히 기본 도메인 정본은 검증 후 새 정본을 생성할 때만 사용하며, 기존 정본의 병합·baseline·완료 계약은 변하지 않는다.
+
 ## Progressive Disclosure
 
 `SKILL.md`는 단일 Change 상태·Ready 판정·권한 및 완료의 공통 불변조건을 보유한다. Bootstrap은 **최초 설정과 이후 신규 Change 발행**, Workflow는 **선택된 Change의 직접 수행·재개·완료**, Dispatch는 **할당·위임·Worker 결과 회수**에만 조건부로 적용한다. 단순 백로그·Ready 조회는 reference를 선로드하지 않는다.
@@ -30,10 +36,10 @@ Change 데이터도 백로그의 ID·상태·의존 관계부터 확인하고 �
 
 별도 Task ID·상태 동기화·manifest·index·dashboard·작업 scheduler·Git lock·필수 `assignee` 필드는 없다. 행동 변경이 없으면 빈 Spec을 만들지 않고, 간단한 수정에는 Change 기록을 강제하지 않는다. `mols-loops`의 Prepare → RPI → Finalize만 로컬 판단 흐름으로 가져오고 오케스트레이터·외부 Skill 설치 의존성은 추가하지 않는다.
 
-구 `mols-spec-stdd`의 JSON workflow, Python scripts, 형식용 템플릿과 테스트는 호환 이관하지 않았다. 명세·Review·baseline 안전성은 새 계약에 반영했다.
+구 `mols-spec-stdd`의 JSON workflow, Python scripts, 템플릿·테스트를 호환 이관하지 않았다. 대신 필요한 문서 유형만 선택적으로 사용하는 경량 템플릿을 새로 제공하며, 명세·Review·baseline 안전성은 기존 계약을 유지한다.
 
 ## Validation
 
-[평가 사례](../../../evals/skills/mols-stdd/cases.json)는 Change 상태·의존·재개·완료와 조건부 reference 선택을 다룬다. [Native Trigger/Behavior](../../../evals/promptfoo/mols-stdd.yaml)는 `SKILL.md`만 사용해 Skill 선택과 응답 행동을 평가하며 reference 로딩 검사는 의도적으로 제외한다. [Reference Selection](../../../evals/promptfoo/mols-stdd-references.yaml)은 기존 Python provider로 선택한 reference 경로를 관찰하고 기대 집합과 비교한다. 두 실행은 각각 `mise run eval -c evals/promptfoo/mols-stdd.yaml`, `mise run eval -c evals/promptfoo/mols-stdd-references.yaml`이다.
+[평가 사례](../../../evals/skills/mols-stdd/cases.json)는 Change 상태·의존·재개·완료, 템플릿 오버라이드와 조건부 reference 선택을 다룬다. [Native Trigger/Behavior](../../../evals/promptfoo/mols-stdd.yaml)는 `SKILL.md`만 사용해 Skill 선택과 응답 행동을 평가하며 reference 로딩 검사는 의도적으로 제외한다. [Reference Selection](../../../evals/promptfoo/mols-stdd-references.yaml)은 기존 Python provider로 선택한 reference 경로를 관찰하고 기대 집합과 비교한다. 두 실행은 각각 `mise run eval -c evals/promptfoo/mols-stdd.yaml`, `mise run eval -c evals/promptfoo/mols-stdd-references.yaml`이다.
 
 Reference 평가에는 로컬 Ollama 모델이 필요하며 선택된 reference로 행동 응답을 구성하는 호출도 포함된다. 평가 실행 전 provider·grader·비용·외부 전송 여부를 확인한다(`evals/README.md`). **평가 harness의 `loaded_references` 기록은 실제 IDE/CLI Agent의 파일 조회·도구 실행을 증명하지 않는다.** 구조·fixture 검사와 실제 모델 평가도 구분한다.
