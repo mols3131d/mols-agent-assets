@@ -177,6 +177,7 @@ GitHub Agentic Workflows는 자연어 Markdown으로 작성하더라도 일반 �
 
 - [About issues](https://docs.github.com/en/issues/tracking-your-work-with-issues/learning-about-issues/about-issues)
 - [About pull requests](https://docs.github.com/en/pull-requests/get-started/about-pull-requests)
+- [About tasklists](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/about-tasklists) — Markdown 체크박스와 PR 진행률 집계
 - [Giving reviews](https://docs.github.com/en/pull-requests/concepts/giving-reviews)
 - [Merge and close pull requests](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests)
 - [Available rules for rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets)
