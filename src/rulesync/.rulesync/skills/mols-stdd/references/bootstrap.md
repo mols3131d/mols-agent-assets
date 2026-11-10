@@ -43,11 +43,28 @@ feature/login:docs/behavior/specs/auth/login/spec.md   # 검증 후
 
 각 ref의 파일 존재·읽기·쓰기 결과를 따로 확인한다. 명세 delta에 작업 상태를 복제하거나 서로 다른 ref의 자동 완료를 가정하지 않는다.
 
+## Template Selection
+
+**새 문서를 실제로 작성할 때만** 파일 종류에 맞는 템플릿을 읽는다. 프로젝트 지침·사용자가 지정한 개별 파일이 우선이며, 없으면 지정된 프로젝트 템플릿 디렉터리의 같은 이름 파일을 확인한다. 해당 종류가 없을 때만 스킬 패키지의 `templates/`로 fallback한다. 위치를 지정하지 않았다면 프로젝트 디렉터리나 설정 파일을 임의로 만들거나 자동 탐색하지 않는다.
+
+| 출력 문서 | 기본 템플릿 |
+| --- | --- |
+| `changes/<id>/work.md` | [`templates/work.md`](../templates/work.md) |
+| `changes/<id>/specs/<domain>/spec.md` | [`templates/spec.md`](../templates/spec.md) |
+| 새 `specs/<domain>/spec.md` | [`templates/domain-spec.md`](../templates/domain-spec.md) |
+| 선택적 Proposal / Research / Plan / Test Design | [`proposal.md`](../templates/proposal.md) / [`research.md`](../templates/research.md) / [`plan.md`](../templates/plan.md) / [`test-design.md`](../templates/test-design.md) |
+
+오버라이드 예시: 프로젝트가 `docs/stdd-templates/`를 **선택**하고 그 안에 `work.md`만 두면 티켓에는 그 파일을, 명세 delta에는 스킬의 `templates/spec.md`를 쓴다. 파일 종류별로 개별 경로도 지정할 수 있다. 명시 지정한 파일이 없거나 읽기 불가능하면 조용히 기본값으로 바꾸지 않고 생성 작업을 보류한다. 디렉터리 자체에 접근할 수 없는 경우도 누락된 종류로 추측하지 않는다.
+
+템플릿 읽기 전 실제 repository/ref·경로·권한을 확인하고, root 밖으로 이탈하는 경로나 신뢰할 수 없는 심볼릭 링크를 따르지 않는다. 템플릿은 문서 구조의 **출발점**이며 별도 렌더러·설정 스키마가 아니다. 자리표시자를 실제 목표·요구사항·근거로 채우고 불필요한 예시·섹션은 제거한다. 커스텀 템플릿도 Change ID 일치, 유일한 상태 정본, `status` 허용값, 검증된 정본 반영과 완료 gate를 바꿀 수 없다.
+
+기존 파일 수정·재개에는 템플릿을 재적용하지 않는다. 특히 `domain-spec.md`는 새 정본을 **검증 후 처음 생성하는 경우에만** 사용할 수 있으며, 이미 존재하는 도메인 정본은 비교·병합 절차를 따른다. 선택적 문서도 실제 필요할 때만 만든다.
+
 ## First Record
 
 1. 선택한 root/ref에서 기존 `changes/**/work.md`와 목표가 겹치는 Change를 확인한다. 동일 ID나 동일 목적의 티켓을 중복 발행하지 않고 기존 기록의 재사용·수정·재개를 검토한다. 아무 Markdown이나 Change로 간주하지 않는다. Change ID·도메인 경로가 절대 경로·`..`·심볼릭 링크를 통해 선택한 root 밖을 가리키지 않는지 확인한다.
-2. 실제 목표가 있을 때 `changes/<id>/work.md`를 발행한다. 최소한 H1과 `status: todo`를 사용하고 목표·완료 조건·다음 행동을 구체화한다. `depends_on`은 실제로 존재하는 선행 Change에만 쓴다. 발행만 요청받았다면 `doing`으로 전환하거나 구현·Agent 실행을 시작하지 않는다.
-3. 행동 요구사항을 실제로 변경할 때만 동일 ID에 명세 delta를 추가한다. 발행만 요청받았으면 추측한 delta를 미리 만들지 않는다. 기존 정본이 있으면 먼저 읽어 기준을 확인하고, 신규 도메인이라면 정본 부재를 신규 요구사항의 근거로 구분한다. 검증 전에는 정본으로 흡수하지 않는다.
+2. 실제 목표가 있을 때 템플릿 선택 절차를 적용해 `changes/<id>/work.md`를 발행한다. 최소한 H1과 `status: todo`를 사용하고 목표·완료 조건·다음 행동을 구체화한다. `depends_on`은 실제로 존재하는 선행 Change에만 쓴다. 발행만 요청받았다면 `doing`으로 전환하거나 구현·Agent 실행을 시작하지 않는다.
+3. 행동 요구사항을 실제로 변경할 때만 같은 템플릿 선택 절차로 동일 ID에 명세 delta를 추가한다. 발행만 요청받았으면 추측한 delta를 미리 만들지 않는다. 기존 정본이 있으면 먼저 읽어 기준을 확인하고, 신규 도메인이라면 정본 부재를 신규 요구사항의 근거로 구분한다. 검증 전에는 정본으로 흡수하지 않는다.
 4. 작성 결과를 **선택한 각 ref에서 재조회**하고 생성 파일·현재 상태·다음 행동을 보고한다.
 
 첫 변경이 없으면 경로/ref를 결정한 뒤 파일은 만들지 않는다. 가짜 Change·빈 폴더·샘플 명세를 자동 생성하지 않는다. 사용자가 영속적인 빈 설정을 명시적으로 요청한 경우에만 선택한 위치에 짧은 README를 둘 수 있다.

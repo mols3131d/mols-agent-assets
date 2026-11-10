@@ -12,6 +12,8 @@ description: OpenAI ChatGPT의 Chat 모드에서 사용하는 전용 Agent Asset
 
 - [ChatGPT Chat Agent Asset](skills/mols-chatgpt-chat-asset/SKILL.md) — Chat 전용 자산의 생성·튜닝·관리, 소비 표면·도구·권한·검증 판단. [Maintainer guide](../../docs/skills/mols-chatgpt-chat-asset/README.md).
 
+- [Chatbot Continuity](skills/mols-chatbot-continuity/SKILL.md) — ChatGPT Chat의 반복·예약·이벤트 기반 작업을 실행 간 재개하도록 설계하고 구성하는 Skill.
+
 - [OpenSpec CLI Compatibility](skills/mols-openspec-cli-compat/SKILL.md) — OpenSpec의 공식 워크플로를 Chat 도구로 최대한 수행하고 CLI 의존 단계의 실행 충실도·검증·인계 경계를 판단하는 Skill.
 
 실행 지침은 각 Skill의 `SKILL.md`가 소유하며, 유지보수 맥락은 각 자산의 maintainer guide가 담당합니다.
