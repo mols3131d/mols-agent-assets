@@ -118,6 +118,8 @@ Pull Request는 head branch의 변경을 base branch에 **반영하도록 제안
 - `main` 대상 변경은 [VCS / Git](vcs-git.md)의 정책에 따라 준비하고 PR로 제안합니다.
 - PR 생성, agent 작업 완료나 draft 해제만으로 검토가 승인되거나 merge 가능한 상태가 되지는 않습니다.
 - PR 요약과 agent 설명은 diff와 검증 결과를 이해하는 보조 정보입니다. 실제 제안된 변경은 head/base diff로 판단합니다.
+- PR 본문 `Changes`에서 실제 완료 여부를 추적할 작업 단위는 Markdown 체크박스(`- [ ]` / `- [x]`)로 작성하고 진행에 따라 갱신합니다. GitHub의 PR 목록 진행률 집계를 활용하되, 설명만 필요한 변경이나 가상의 완료 항목은 체크박스로 만들지 않습니다.
+- 체크 표시는 해당 작업의 완료만 뜻합니다. `Validation`의 Pass/Fail/Not Verified, GitHub checks, PR Review, Merge 준비 여부는 각각의 근거와 네이티브 상태로 별도 판단합니다.
 - 대화, reviews, checks, agent session과 security result가 한 PR에 함께 보여도 각각의 책임과 근거 수준은 구분합니다.
 
 ## PR Reviews
