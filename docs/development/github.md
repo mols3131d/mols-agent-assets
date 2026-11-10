@@ -118,7 +118,7 @@ Pull Request는 head branch의 변경을 base branch에 **반영하도록 제안
 - `main` 대상 변경은 [VCS / Git](vcs-git.md)의 정책에 따라 준비하고 PR로 제안합니다.
 - PR 생성, agent 작업 완료나 draft 해제만으로 검토가 승인되거나 merge 가능한 상태가 되지는 않습니다.
 - PR 요약과 agent 설명은 diff와 검증 결과를 이해하는 보조 정보입니다. 실제 제안된 변경은 head/base diff로 판단합니다.
-- PR 본문 `Changes`에서 실제 완료 여부를 추적할 작업 단위는 Markdown 체크박스(`- [ ]` / `- [x]`)로 작성하고 진행에 따라 갱신합니다. GitHub의 PR 목록 진행률 집계를 활용하되, 설명만 필요한 변경이나 가상의 완료 항목은 체크박스로 만들지 않습니다.
+- PR 본문 `Changes`에서 완료를 추적할 실제 작업은 Markdown 체크박스(`- [ ]` / `- [x]`)로 작성하고 진행에 따라 갱신합니다. GitHub가 제공하는 완료 항목 수 집계를 활용하되, PR 목록 등 표시 위치는 UI 버전에 따라 다를 수 있습니다. 설명용 변경이나 가상 작업은 체크박스로 만들지 않습니다.
 - 체크 표시는 해당 작업의 완료만 뜻합니다. `Validation`의 Pass/Fail/Not Verified, GitHub checks, PR Review, Merge 준비 여부는 각각의 근거와 네이티브 상태로 별도 판단합니다.
 - 대화, reviews, checks, agent session과 security result가 한 PR에 함께 보여도 각각의 책임과 근거 수준은 구분합니다.
 
@@ -177,7 +177,8 @@ GitHub Agentic Workflows는 자연어 Markdown으로 작성하더라도 일반 �
 
 - [About issues](https://docs.github.com/en/issues/tracking-your-work-with-issues/learning-about-issues/about-issues)
 - [About pull requests](https://docs.github.com/en/pull-requests/get-started/about-pull-requests)
-- [About tasklists](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/about-tasklists) — Markdown 체크박스와 PR 진행률 집계
+- [About tasklists](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/about-tasklists) — Markdown 체크박스 문법과 사용 범위
+- [GitHub Markdown checklist guide](https://github.blog/developer-skills/github/video-how-to-create-checklists-in-markdown-for-easier-task-tracking/) — PR 목록 진행률 표시 사례
 - [Giving reviews](https://docs.github.com/en/pull-requests/concepts/giving-reviews)
 - [Merge and close pull requests](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests)
 - [Available rules for rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets)
