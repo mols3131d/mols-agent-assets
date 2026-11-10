@@ -35,6 +35,11 @@ tests:
         - reference-backlog-summary-only
         - reference-direct-change-execution
         - reference-delegated-change-execution
+        - template-project-override
+        - template-partial-override-fallback
+        - template-missing-explicit-file
+        - template-must-not-override-invariants
+        - template-existing-canonical-not-replaced
 
 sharing: false
 writeLatestResults: false
