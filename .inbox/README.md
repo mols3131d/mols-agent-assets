@@ -16,16 +16,22 @@
 
 아카이브 경로는 `.inbox/archive/YYYY-MM-DD/<artifact-or-directory>`입니다. 날짜는 아카이브한 날을 뜻합니다.
 
+## 파일명
+
+작업 문서는 작성·검토 순서를 알 수 있도록 번호와 유형을 파일명 앞에 표시합니다. 예를 들어 `00-[research]-generated-sync.md` 다음에 `01-[review]-generated-sync-[independent].md`를 둘 수 있습니다. 대괄호는 실제 파일명의 일부이며, 끝의 대괄호 정보는 문서를 구별할 때만 붙입니다.
+
+에이전트의 구체적인 작성·명명·갱신 규칙은 [AGENTS.md](AGENTS.md)에 있습니다. 기존 파일은 새 규칙을 도입한다는 이유만으로 일괄 이름을 바꾸지 않습니다.
+
 ## 번들
 
 아티팩트는 **단일 문서** 또는 **디렉터리 번들**로 둘 수 있습니다. 디렉터리 번들에는 문서 하나만 있어도 되며, 그 안의 문서도 단일 문서 번들로 사용할 수 있습니다. **번들 내부의 추가 하위 디렉터리는 허용하지 않습니다.**
 
 ```text
 .inbox/github-244/
-├── research.md
+├── 00-[research]-scope.md
 └── review/
-    ├── findings.md
-    └── evidence.md
+    ├── 00-[review]-findings.md
+    └── 01-[report]-evidence-[independent].md
 ```
 
 정본 승격과 보존은 [Working Knowledge](../docs/documentation/README.md#working-knowledge)를 따릅니다.
