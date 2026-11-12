@@ -51,7 +51,7 @@ def test_scoped_indexes_route_from_root_to_relevant_directory(tmp_path):
     assert sync_indexes(config, check=True) == []
 
 
-def test_small_directory_uses_no_index_but_is_discoverable(tmp_path):
+def test_small_directory_gets_local_index(tmp_path):
     root = tmp_path / "catalog"
     _write(
         root / "patterns" / "README.md",
@@ -65,7 +65,9 @@ def test_small_directory_uses_no_index_but_is_discoverable(tmp_path):
     assert _rows(root / "INDEX.tsv") == [
         {"path": "patterns/", "description": "Patterns."}
     ]
-    assert not (root / "patterns" / "INDEX.tsv").exists()
+    assert _rows(root / "patterns" / "INDEX.tsv") == [
+        {"path": "example.md", "description": "Example."}
+    ]
 
 
 def test_generic_options_handle_json_and_limited_materialization(tmp_path):
@@ -106,7 +108,7 @@ def test_check_reports_missing_outdated_and_stale_without_mutation(tmp_path):
     stale = root / "branch" / "stale" / "INDEX.tsv"
     _write(stale, "old\n")
 
-    assert sync_indexes(config, check=True) == [
+    assert sync_indexes(IndexConfig(root, prune=True), check=True) == [
         "outdated: docs/INDEX.tsv",
         "missing: docs/branch/INDEX.tsv",
         "stale: docs/branch/stale/INDEX.tsv",
@@ -114,8 +116,8 @@ def test_check_reports_missing_outdated_and_stale_without_mutation(tmp_path):
     assert root_index.read_text(encoding="utf-8") == "wrong\n"
     assert not nested.exists()
     assert stale.exists()
-    assert sync_indexes(config) == []
-    assert sync_indexes(config, check=True) == []
+    assert sync_indexes(IndexConfig(root, prune=True)) == []
+    assert sync_indexes(IndexConfig(root, prune=True), check=True) == []
     assert not stale.exists()
 
 
@@ -140,6 +142,7 @@ def test_excludes_hidden_system_index_and_non_content_paths(tmp_path):
         {"index_depth": -2},
         {"min_entries": 0},
         {"extensions": ()},
+        {"directory_entry_files": ()},
     ],
 )
 def test_rejects_invalid_controls(tmp_path, kwargs):
@@ -157,3 +160,112 @@ def test_cli_supports_reuse_for_another_directory(tmp_path):
     assert not (root / "INDEX.tsv").exists()
     assert main(args) == 0
     assert main([*args, "--check"]) == 0
+
+
+def test_old_doc_boundary_applies_even_with_recursive_depth(tmp_path):
+    root = tmp_path / "docs"
+    _write(root / "skills" / "example" / "guide.md", "# Guide\n")
+    _write(root / "development" / "nested" / "guide.md", "# Policy\n")
+    config = IndexConfig(
+        root, index_depth=0, depth=-1,
+        traverse_roots=("development", "documentation", "references", "tools"),
+    )
+    sync_indexes(config)
+    paths = [row["path"] for row in _rows(root / "INDEX.tsv")]
+    assert "skills/" in paths
+    assert "skills/example/" not in paths
+    assert "skills/example/guide.md" not in paths
+    assert "development/nested/guide.md" in paths
+    assert not (root / "skills" / "INDEX.tsv").exists()
+
+
+def test_directory_entry_files_override_and_priority(tmp_path):
+    root = tmp_path / "docs"
+    _write(
+        root / "manual" / "README.md",
+        "---\ndescription: Readme.\n---\n",
+    )
+    _write(
+        root / "manual" / "index.md",
+        "---\ndescription: Preferred index.\n---\n",
+    )
+    _write(root / "manual" / "guide.md", "# Guide\n")
+    config = IndexConfig(
+        root, directory_entry_files=("index.md", "README.md")
+    )
+    sync_indexes(config)
+    assert _rows(root / "INDEX.tsv") == [
+        {"path": "manual/", "description": "Preferred index."}
+    ]
+    assert _rows(root / "manual" / "INDEX.tsv") == [
+        {"path": "guide.md", "description": ""}
+    ]
+
+
+def test_single_and_two_file_directories_keep_descriptions(tmp_path):
+    root = tmp_path / "catalog"
+    _write(root / "patterns" / "one.md", "---\ndescription: One.\n---\n")
+    _write(root / "patterns" / "nested" / "a.md", "---\ndescription: A.\n---\n")
+    _write(root / "patterns" / "nested" / "b.md", "---\ndescription: B.\n---\n")
+    config = IndexConfig(root)
+    sync_indexes(config)
+    assert _rows(root / "patterns" / "INDEX.tsv") == [
+        {"path": "nested/", "description": ""},
+        {"path": "one.md", "description": "One."},
+    ]
+    assert _rows(root / "patterns" / "nested" / "INDEX.tsv") == [
+        {"path": "a.md", "description": "A."},
+        {"path": "b.md", "description": "B."},
+    ]
+
+
+def test_custom_root_preserves_unowned_index_unless_prune_enabled(tmp_path):
+    root = tmp_path / "notes"
+    _write(root / "guide.md", "# Guide\n")
+    manual = root / "external" / "INDEX.tsv"
+    _write(manual, "owned by something else\n")
+    config = IndexConfig(root)
+    sync_indexes(config)
+    assert manual.read_text(encoding="utf-8") == "owned by something else\n"
+    assert sync_indexes(config, check=True) == []
+    assert sync_indexes(IndexConfig(root, prune=True), check=True) == [
+        "stale: notes/external/INDEX.tsv"
+    ]
+    sync_indexes(IndexConfig(root, prune=True))
+    assert not manual.exists()
+
+
+def test_preset_prunes_stale_but_does_not_expose_generated_only_directory(
+    tmp_path,
+):
+    root = tmp_path / "docs"
+    _write(root / "visible" / "guide.md", "# Guide\n")
+    stale = root / "old" / "INDEX.tsv"
+    _write(stale, "path\tdescription\nobsolete.md\tobsolete\n")
+    config = IndexConfig(root, prune=True)
+    sync_indexes(config)
+    assert not stale.exists()
+    assert _rows(root / "INDEX.tsv") == [
+        {"path": "visible/", "description": ""}
+    ]
+
+
+def test_depth_limit_and_materialization_depth_are_independent(tmp_path):
+    root = tmp_path / "docs"
+    _write(root / "parent" / "child" / "guide.md", "# Guide\n")
+    config = IndexConfig(root, index_depth=1, depth=1)
+    sync_indexes(config)
+    assert [r["path"] for r in _rows(root / "INDEX.tsv")] == [
+        "parent/", "parent/child/"
+    ]
+    assert [r["path"] for r in _rows(root / "parent" / "INDEX.tsv")] == [
+        "child/", "child/guide.md"
+    ]
+    assert not (root / "parent" / "child" / "INDEX.tsv").exists()
+
+
+def test_invalid_directory_entry_files_rejected(tmp_path):
+    root = tmp_path / "docs"
+    root.mkdir()
+    with pytest.raises(ValueError, match="directory entry file"):
+        expected_indexes(IndexConfig(root, directory_entry_files=()))
