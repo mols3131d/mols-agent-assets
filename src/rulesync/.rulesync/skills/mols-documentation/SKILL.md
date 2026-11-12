@@ -2,7 +2,8 @@
 name: mols-documentation
 description: >-
   README, 가이드, 정책, 계획, 보고서, 설명 문서 등 사람이 읽고 유지보수하는 문서를
-  새로 작성하거나 구조, 내용, 가독성을 개선할 때 사용한다. 문서의 목적, 독자,
+  새로 작성하거나 구조, 내용, 가독성을 개선하고, 재사용 문서 템플릿을
+  설계·개선할 때 사용한다. 문서의 목적, 독자,
   정보 구조, 탐색성, 신뢰성, ownership 또는 유지보수성이 주된 문제일 때 선택한다.
   단순 Markdown formatting이나 lint, engineering dashboard, source-code comment나
   docstring, 이메일·메시지·소셜 문구 또는 문체만 윤문하는 작업에는 사용하지 않는다.
@@ -43,6 +44,7 @@ agentsskills:
 | --- | --- |
 | Markdown heading, list, table, code, link, metadata, callout, footnote와 Markdown 기반 visual 선택 | [Markdown](references/markdown.md) |
 | README, 디렉터리·문서 묶음의 진입점, 온보딩 첫 문서 등 entrypoint 문서 작성·개선 | [Entrypoint](references/entrypoint.md) |
+| 재사용 가능한 문서 템플릿 자체의 설계·생성·개선·검토 | [Template Design](references/template-design.md) |
 
 Reference를 읽지 않아도 독자, 목적, 정보 구조, 신뢰성, ownership과 내용 판단은 이 본문을 따른다.
 
