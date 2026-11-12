@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import argparse
+import csv
+import io
 import sys
 from collections import deque
 from dataclasses import dataclass, replace
@@ -122,7 +124,7 @@ def _desired_index(directory: Path, config: IndexConfig) -> str | None:
     )
     if content == HEADER:
         return None
-    entries = len(content.splitlines()) - 1
+    entries = sum(1 for _ in csv.reader(io.StringIO(content), delimiter="\t")) - 1
     if directory != config.root and entries < config.min_entries:
         return None
     return content

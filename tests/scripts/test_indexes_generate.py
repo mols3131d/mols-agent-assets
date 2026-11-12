@@ -331,3 +331,17 @@ def test_empty_preset_index_is_removed_after_last_source_deletion(tmp_path):
     ]
     sync_indexes(config)
     assert not (root / "INDEX.tsv").exists()
+
+
+def test_min_entries_counts_tsv_records_not_multiline_description_lines(tmp_path):
+    root = tmp_path / "docs"
+    _write(
+        root / "policy" / "guide.md",
+        "---\ndescription: |-\n  First line\n  Second line\n---\n",
+    )
+    config = IndexConfig(root, min_entries=2)
+    sync_indexes(config)
+    assert [row["path"] for row in _rows(root / "INDEX.tsv")] == [
+        "policy/"
+    ]
+    assert not (root / "policy" / "INDEX.tsv").exists()
