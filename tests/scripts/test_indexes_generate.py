@@ -269,3 +269,14 @@ def test_invalid_directory_entry_files_rejected(tmp_path):
     root.mkdir()
     with pytest.raises(ValueError, match="directory entry file"):
         expected_indexes(IndexConfig(root, directory_entry_files=()))
+
+
+def test_extension_option_matches_library_suffix_semantics(tmp_path):
+    root = tmp_path / "custom"
+    _write(root / "thing.skill.md", "# Skill\n")
+    _write(root / "other.md", "# Other\n")
+    config = IndexConfig(root, extensions=("skill.md",))
+    sync_indexes(config)
+    assert _rows(root / "INDEX.tsv") == [
+        {"path": "thing.skill.md", "description": ""}
+    ]
