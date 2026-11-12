@@ -10,28 +10,28 @@
 
 ## 파일명
 
-새 작업 문서에는 **순서 번호, 대괄호 유형 접두사, 주제 slug**를 사용한다. 별도 파일로 확장할 내용이 있을 때만 **대괄호 확장 접미사**를 붙인다.
+새 작업 문서는 **순서 번호와 slug가 필수**이고, 유형 접두사와 확장 접미사는 필요할 때만 붙인다. 아래 대괄호는 선택 항목을 나타내는 문법이며 **실제 파일명에는 포함하지 않는다.**
 
 ```text
-<NN>-[<type>]-<slug>[-[<extension>]]*.md
+<NN>[-<type>]-<slug>[-<extension>].md
 ```
 
 - `NN`: 같은 디렉터리에서 독립 문서에 `00`부터 순차 부여한다. 기존 독립 문서의 최대 번호 다음을 사용하고 충돌을 확인한다. **확장 문서는 원본 문서의 번호를 유지한다.** 나중에 수정·삭제해도 기존 번호를 다시 매기지 않는다.
-- `[<type>]`: **대괄호를 실제 파일명에 포함**하는 문서 유형 접두사다. `[research]`, `[plan]`, `[review]`, `[report]`, `[handoff]`, `[draft]` 등 문서 역할을 설명하는 소문자 값을 사용한다. 유형 목록은 고정 enum이 아니다.
+- `<type>`: 선택적인 유형 접두사다. `research`, `plan`, `review`, `report`, `handoff`, `draft` 등 문서 역할을 설명하는 소문자 값을 사용한다. 유형 목록은 고정 enum이 아니다.
 - `<slug>`: 내용을 구별하는 짧고 안정적인 kebab-case 주제다. 이미 디렉터리가 식별하는 PR 번호나 브랜치명을 불필요하게 반복하지 않는다.
-- `-[<extension>]`: 기존 문서와 같은 주제를 더 깊게 다루는 **확장 문서의 내용**을 표시한다. `[sources]`, `[findings]`, `[evidence]`처럼 확장 범위를 식별한다. 원본의 `NN-[type]-slug`를 그대로 두고 뒤에 붙이며, 필요하지 않으면 생략한다. **날짜·작성자·검토 상태·버전 같은 메타데이터에는 사용하지 않는다.** 독립된 문서는 접미사를 억지로 붙이지 않고 별도의 번호와 slug로 작성한다.
+- `<extension>`: 선택적인 확장 접미사다. 원본 문서의 특정 내용을 별도 문서로 확장할 때 `sources`, `findings`, `evidence`처럼 그 내용을 표시한다. 원본의 번호·선택된 유형·slug를 유지하고 뒤에 붙인다. **날짜·작성자·검토 상태·버전 같은 메타데이터에는 사용하지 않는다.** 독립된 문서는 별도 번호와 slug로 작성한다.
 - `README.md`와 `AGENTS.md`는 진입점 파일이므로 번호를 붙이지 않는다. 기존 번호 없는 작업 파일은 일괄 개명하지 않으며, 명시적인 이관 시 참조 링크·문서 내용·보존 정책을 함께 검토한다.
 
 ```text
 .inbox/github-294/
-├── 00-[research]-generated-sync.md
-├── 00-[research]-generated-sync-[sources].md
-├── 01-[review]-generated-sync.md
-├── 01-[review]-generated-sync-[findings].md
-└── 02-[handoff]-generated-sync.md
+├── 00-research-generated-sync.md
+├── 00-research-generated-sync-sources.md
+├── 01-review-generated-sync.md
+├── 01-review-generated-sync-findings.md
+└── 02-generated-sync-handoff.md
 ```
 
-위 예시는 **명명 형식만** 설명하며 PR #294의 실제 파일명이나 현 상태를 나타내지 않는다.
+위 예시는 **명명 형식만** 설명한다. `02-generated-sync-handoff.md`는 유형 접두사를 생략한 예시다. PR #294의 실제 파일명이나 현 상태를 나타내지 않는다.
 
 ## 갱신과 정리
 
