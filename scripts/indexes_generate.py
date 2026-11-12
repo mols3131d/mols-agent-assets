@@ -48,7 +48,10 @@ def _is_content_file(path: Path, config: IndexConfig) -> bool:
     name = path.name
     return (
         path.is_file()
-        and path.suffix in config.extensions
+        and any(
+            path.name.endswith(ext if ext.startswith(".") else f".{ext}")
+            for ext in config.extensions
+        )
         and name != "AGENTS.md"
         and not name.startswith((".", "INDEX", "__"))
     )
