@@ -18,7 +18,7 @@
 
 ## 파일명
 
-작업 문서는 작성·검토 순서를 알 수 있도록 번호와 유형을 파일명 앞에 표시합니다. 예를 들어 `00-[research]-generated-sync.md` 다음에 `01-[review]-generated-sync-[independent].md`를 둘 수 있습니다. 대괄호는 실제 파일명의 일부이며, 끝의 대괄호 정보는 문서를 구별할 때만 붙입니다.
+작업 문서는 순서 번호와 유형을 파일명 앞에 표시합니다. 예를 들어 `00-[research]-generated-sync.md`에서 자료를 별도 문서로 확장하면 `00-[research]-generated-sync-[sources].md`처럼 같은 이름 뒤에 확장 내용을 붙입니다. 접미사는 날짜·상태 표시가 아니라 **원본 문서의 세부 내용을 구분하는 용도**입니다. 대괄호는 실제 파일명의 일부입니다.
 
 에이전트의 구체적인 작성·명명·갱신 규칙은 [AGENTS.md](AGENTS.md)에 있습니다. 기존 파일은 새 규칙을 도입한다는 이유만으로 일괄 이름을 바꾸지 않습니다.
 
@@ -31,7 +31,8 @@
 ├── 00-[research]-scope.md
 └── review/
     ├── 00-[review]-findings.md
-    └── 01-[report]-evidence-[independent].md
+    ├── 00-[review]-findings-[evidence].md
+    └── 01-[report]-summary.md
 ```
 
 정본 승격과 보존은 [Working Knowledge](../docs/documentation/README.md#working-knowledge)를 따릅니다.
