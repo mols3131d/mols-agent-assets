@@ -28,10 +28,10 @@
 ├── 00-research-generated-sync-sources.md
 ├── 01-review-generated-sync.md
 ├── 01-review-generated-sync-findings.md
-└── 02-generated-sync-handoff.md
+└── 02-follow-up.md
 ```
 
-위 예시는 **명명 형식만** 설명한다. `02-generated-sync-handoff.md`는 유형 접두사를 생략한 예시다. PR #294의 실제 파일명이나 현 상태를 나타내지 않는다.
+위 예시는 **명명 형식만** 설명한다. `02-follow-up.md`는 유형 접두사를 생략한 예시다. PR #294의 실제 파일명이나 현 상태를 나타내지 않는다.
 
 ## 갱신과 정리
 
