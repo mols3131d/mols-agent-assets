@@ -8,7 +8,7 @@ from collections.abc import Callable, Iterable
 from pathlib import Path
 
 from scripts import generated_artifacts_sync as sync
-from scripts import catalog_indexes_generate, docs_indexes_generate
+from scripts import indexes_generate
 from scripts.agent_assets import routes_distribution_generate as distribution_routes
 from scripts.agent_assets import routes_repository_generate as repository_routes
 
@@ -72,7 +72,7 @@ def compare_outputs(
 
 def check_docs_indexes() -> list[str]:
     return compare_outputs(
-        docs_indexes_generate.expected_docs_indexes(),
+        indexes_generate.expected_indexes(indexes_generate.PRESETS["docs"]),
         sync._is_docs_index_output,
         show_first_difference=True,
     )
@@ -80,7 +80,7 @@ def check_docs_indexes() -> list[str]:
 
 def check_catalog_indexes() -> list[str]:
     return compare_outputs(
-        catalog_indexes_generate.expected_catalog_indexes(),
+        indexes_generate.expected_indexes(indexes_generate.PRESETS["catalog"]),
         sync._is_catalog_index_output,
         show_first_difference=True,
     )
