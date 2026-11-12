@@ -8,13 +8,12 @@ from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 
 from scripts.agent_assets import routes_distribution_generate as generate_distribution_routes
-from scripts.catalog_indexes_generate import generate_catalog_indexes
+from scripts import indexes_generate
 from scripts.agent_assets import routes_repository_generate as generate_repository_routes
-from scripts.docs_indexes_generate import generate_docs_indexes
 
 ROOT = Path(__file__).resolve().parents[1]
 
-_DOCS_INDEX_TOOL_SOURCES = {"scripts/docs_indexes_generate.py"}
+_DOCS_INDEX_TOOL_SOURCES = {"scripts/indexes_generate.py"}
 _DOCS_INDEX_TOOL_PREFIX = (
     "src/rulesync/.rulesync/skills/mols-markdown-maintenance/scripts/"
 )
@@ -72,7 +71,7 @@ def _is_docs_index_output(path: str) -> bool:
 
 
 def _is_catalog_index_source(path: str) -> bool:
-    if path in {"scripts/catalog_indexes_generate.py", "scripts/docs_indexes_generate.py"}:
+    if path == "scripts/indexes_generate.py":
         return True
     if path.startswith(_DOCS_INDEX_TOOL_PREFIX) and path.endswith(".py"):
         return True
@@ -92,7 +91,9 @@ def _is_catalog_index_source(path: str) -> bool:
 
 
 def _is_catalog_index_output(path: str) -> bool:
-    return path == "catalog/INDEX.tsv"
+    return path == "catalog/INDEX.tsv" or (
+        path.startswith("catalog/") and path.endswith("/INDEX.tsv")
+    )
 
 
 def _is_distribution_route_source(path: str) -> bool:
@@ -121,11 +122,11 @@ def _is_repository_route_output(path: str) -> bool:
 
 
 def _generate_docs_indexes() -> None:
-    generate_docs_indexes()
+    indexes_generate.sync_indexes(indexes_generate.PRESETS["docs"])
 
 
 def _generate_catalog_index() -> None:
-    generate_catalog_indexes()
+    indexes_generate.sync_indexes(indexes_generate.PRESETS["catalog"])
 
 
 def _generate_distribution_routes() -> None:
