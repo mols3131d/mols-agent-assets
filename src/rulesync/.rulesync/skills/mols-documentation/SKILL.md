@@ -43,7 +43,7 @@ agentsskills:
 | --- | --- |
 | Markdown heading, list, table, code, link, metadata, callout, footnote와 Markdown 기반 visual 선택 | [Markdown](references/markdown.md) |
 | README, 디렉터리·문서 묶음의 진입점, 온보딩 첫 문서 등 entrypoint 문서 작성·개선 | [Entrypoint](references/entrypoint.md) |
-| 재사용 가능한 문서 템플릿 자체의 설계·생성·개선·검토 | [Template Design](references/template-design.md) |
+| 재사용 가능한 문서 템플릿의 목적·원칙·패턴을 판단할 때 | [Template Design](references/template-design.md) |
 
 Reference를 읽지 않아도 독자, 목적, 정보 구조, 신뢰성, ownership과 내용 판단은 이 본문을 따른다.
 
