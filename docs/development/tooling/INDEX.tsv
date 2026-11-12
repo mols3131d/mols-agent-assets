@@ -1,0 +1,7 @@
+path	description
+front-matter-cms.md	Front Matter CMS 설정, 공식 옵션, frontmatter.json 변경 근거를 확인할 때 사용합니다.
+github-sensitive-data-removal-runbook.md	GitHub repository에 노출된 회전·폐기 불가능한 민감정보를 Git history rewrite, GitHub 저장면 정리, fork/clone 대응과 Support purge까지 최대한 제거할 때 사용하는 재사용 런북입니다.
+mise.md	새 위치로 옮긴 mise의 프로젝트 설정·잠금·setup/update 운영 안내와 공식 문서를 찾을 때 사용합니다.
+promptfoo.md	Promptfoo config·assertion·provider·model grading·debugging의 current official source와 이 저장소의 eval policy·config·runner entrypoint를 찾을 때 사용합니다.
+rulesync.md	Rulesync 명령·설정·target 지원을 자체 설명 대신 저장소에서 사용하는 공식 Skill과 upstream 문서에서 확인할 때 사용합니다.
+skills-cli.md	외부 Skill을 dependency로 사용할 때 upstream skills CLI, root skills-lock.json, 저장소 native installer adapter의 책임과 설치 부작용을 구분할 때 사용합니다.
