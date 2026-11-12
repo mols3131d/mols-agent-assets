@@ -35,7 +35,24 @@
     └── 01-summary.md
 ```
 
-정본 승격과 보존은 [Working Knowledge](../docs/documentation/README.md#working-knowledge)를 따릅니다.
+## 라이프사이클
+
+인박스의 조사·검토·계획·인계 문서는 작업을 이어 가기 위한 임시 근거입니다. 작업 중에는 갱신·검토·인계를 반복할 수 있으며, 남은 과제가 있으면 계속 작업 중으로 취급합니다. 장기적으로 유효한 결론은 [Working Knowledge](../docs/documentation/README.md#working-knowledge)에 따라 책임 있는 정본에 반영합니다. **정본 반영이나 PR 종료만으로 작업 완료를 단정하지 않습니다.**
+
+```mermaid
+stateDiagram-v2
+    [*] --> Active: 생성
+    Active --> Active: 검토·갱신·인계
+    Active --> Finished: 실제 작업 완료 확인
+    Finished --> Active: 미완료 과제 발견
+    Finished --> Finished: 7일 보호 또는 보존 필요
+    Finished --> Deleted: 7일 경과·근거 재확인 가능
+    Finished --> Archived: 7일 경과·아카이브 예외 충족
+    Deleted --> [*]
+    Archived --> [*]
+```
+
+`Finished`는 작업의 실제 종료를 확인한 상태이며 GitHub PR의 `Closed`나 `Merged` 상태와 같지 않습니다. 정리는 **작업 종료 확인과 7일 보호 기간 경과**를 모두 충족한 뒤 판단합니다. 보존 사유가 여전히 있으면 삭제나 아카이브를 서두르지 않고 재평가합니다.
 
 ## 정리와 보존
 
