@@ -53,7 +53,8 @@ def _is_content_file(path: Path, config: IndexConfig) -> bool:
             for ext in config.extensions
         )
         and name != "AGENTS.md"
-        and not name.startswith((".", "INDEX"))
+        and not name.startswith("INDEX")
+        and not (name.startswith(".") and name.endswith(".md"))
         and not (name.startswith("__") and name.endswith("__.md"))
     )
 
