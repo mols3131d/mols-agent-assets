@@ -280,3 +280,27 @@ def test_extension_option_matches_library_suffix_semantics(tmp_path):
     assert _rows(root / "INDEX.tsv") == [
         {"path": "thing.skill.md", "description": ""}
     ]
+
+
+def test_non_system_double_underscore_and_hidden_json_are_preserved(tmp_path):
+    root = tmp_path / "catalog"
+    _write(root / "__history.md", "---\ndescription: Historical.\n---\n")
+    _write(root / "__system__.md", "# System\n")
+    _write(root / ".hidden.json", "[]\n")
+    config = IndexConfig(root, extensions=(".md", ".json"))
+    sync_indexes(config)
+    assert _rows(root / "INDEX.tsv") == [
+        {"path": ".hidden.json", "description": ""},
+        {"path": "__history.md", "description": "Historical."},
+    ]
+
+
+def test_index_only_directories_are_not_routed(tmp_path):
+    root = tmp_path / "docs"
+    _write(root / "index-only" / "INDEX.md", "# Index\n")
+    _write(root / "system-only" / "__index__.md", "# System\n")
+    _write(root / "reference" / "guide.md", "# Guide\n")
+    sync_indexes(IndexConfig(root))
+    assert _rows(root / "INDEX.tsv") == [
+        {"path": "reference/", "description": ""}
+    ]

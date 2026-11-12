@@ -53,7 +53,8 @@ def _is_content_file(path: Path, config: IndexConfig) -> bool:
             for ext in config.extensions
         )
         and name != "AGENTS.md"
-        and not name.startswith((".", "INDEX", "__"))
+        and not name.startswith((".", "INDEX"))
+        and not (name.startswith("__") and name.endswith("__.md"))
     )
 
 
@@ -81,7 +82,7 @@ def _targets(config: IndexConfig) -> list[Path]:
         if config.index_depth != -1 and level >= config.index_depth:
             continue
         for child in sorted(directory.iterdir()):
-            if not child.is_dir() or child.name.startswith("."):
+            if not child.is_dir():
                 continue
             if level == 0 and config.traverse_roots is not None:
                 if child.name not in config.traverse_roots:
@@ -112,7 +113,7 @@ def _desired_index(directory: Path, config: IndexConfig) -> str | None:
         file_extensions=list(config.extensions),
         exclude=["AGENTS.md", *config.directory_entry_files],
         exclude_globs=[
-            ".*", "__*__.md", *blocked_root_subtrees, *empty_directories
+            ".*.md", "__*__.md", *blocked_root_subtrees, *empty_directories
         ],
         include_without_frontmatter=True,
         include_directories=True,
