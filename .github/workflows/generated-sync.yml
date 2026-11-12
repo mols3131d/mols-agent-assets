@@ -1,0 +1,73 @@
+name: Sync Generated Artifacts
+
+on:
+  push:
+    branches-ignore:
+      - main
+    paths:
+      - 'docs/**'
+      - '!docs/**/INDEX.tsv'
+      - 'catalog/**'
+      - '!catalog/INDEX.tsv'
+      - 'src/rulesync/.rulesync/skills/**'
+      - 'src/rulesync/.rulesync/subagents/**'
+      - 'scripts/**'
+      - 'rulesync.lock'
+      - 'rulesync.jsonc'
+      - 'skills-lock.json'
+      - '.agents/route/families.json'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    if: startsWith(github.ref, 'refs/heads/') && github.ref != 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: '0.13.6'
+          enable-cache: true
+
+      - name: Regenerate committed projections
+        run: uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts sync
+
+      - name: Validate generated projections
+        run: uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts validate --all
+
+      - name: Stage generated outputs and detect changes
+        id: changes
+        shell: bash
+        run: |
+          git add -A -- ':(glob)docs/**/INDEX.tsv' ':(glob)catalog/INDEX.tsv' ':(glob)route/*.jsonl' ':(glob).agents/route/*.jsonl'
+          if git diff --cached --quiet; then
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+          else
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit generated files to source branch
+        if: steps.changes.outputs.changed == 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m 'chore(generated): sync indexes and routes'
+          gh auth setup-git
+          git push origin "HEAD:refs/heads/${GITHUB_REF_NAME}"
+          echo "::notice::Generated files were pushed using GITHUB_TOKEN. If a PR is already open, verify that its latest head has a fresh required PR Gate check before merge."
