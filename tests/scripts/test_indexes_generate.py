@@ -304,3 +304,30 @@ def test_index_only_directories_are_not_routed(tmp_path):
     assert _rows(root / "INDEX.tsv") == [
         {"path": "reference/", "description": ""}
     ]
+
+
+def test_nested_hidden_json_remains_discoverable(tmp_path):
+    root = tmp_path / "catalog"
+    _write(root / "patterns" / ".special.json", "[]\n")
+    config = IndexConfig(root, extensions=(".md", ".json"))
+    sync_indexes(config)
+    assert _rows(root / "INDEX.tsv") == [
+        {"path": "patterns/", "description": ""}
+    ]
+    assert _rows(root / "patterns" / "INDEX.tsv") == [
+        {"path": ".special.json", "description": ""}
+    ]
+
+
+def test_empty_preset_index_is_removed_after_last_source_deletion(tmp_path):
+    root = tmp_path / "catalog"
+    source = root / "pattern.md"
+    _write(source, "---\ndescription: First.\n---\n")
+    config = IndexConfig(root, prune=True)
+    sync_indexes(config)
+    source.unlink()
+    assert sync_indexes(config, check=True) == [
+        "stale: catalog/INDEX.tsv"
+    ]
+    sync_indexes(config)
+    assert not (root / "INDEX.tsv").exists()
