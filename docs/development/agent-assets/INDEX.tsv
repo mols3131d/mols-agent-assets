@@ -1,0 +1,6 @@
+path	description
+agent-asset-management.md	Agent Asset 신설·개선·검증·제공·폐기 절차, 관리·사용 상태, 유지보수 문서 배치와 완료 기준을 판단할 때 사용합니다.
+design-principles.md	Agent Asset 추가·분리·단순화 시 원본 권한, 실제 필요, 책임과 context 비용을 판단할 때 사용합니다.
+instruction-design.md	Agent instruction의 적용 조건·행동·권한·검증·중단을 명확히 표현하고 구체성을 선택할 때 사용합니다.
+naming.md	flat namespace에서 관리 편의와 이름 충돌 방지를 위한 최소 naming convention
+skills/	

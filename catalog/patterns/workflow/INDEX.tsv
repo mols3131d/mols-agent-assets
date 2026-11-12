@@ -1,0 +1,6 @@
+path	description
+artifact-inbox-work-unit-containers.md	Artifact Inbox의 아티팩트를 날짜 대신 브랜치·Issue·Pull Request 등 지속적인 작업 단위로 묶을지 판단하고 경로를 설계할 때 참고하는 확장 패턴입니다.
+artifact-inbox.md	report·research·review·handoff·draft 같은 working/non-canonical artifact를 canonical source와 분리해 보관할 때 참고하는 pattern으로, inbox의 scope와 승격·유지·삭제 lifecycle 경계를 다룹니다.
+chatbot-driven-development.md	챗봇 중심 개발에서 모호한 목표를 사람과 구체화하거나 에이전트에 판단을 위임하고, 스펙·테스트·CI 근거로 결과를 수렴시키는 협업 방식을 설계할 때 참고하는 패턴입니다.
+durable-progress-handoff.md	긴 작업이 session·agent·human 경계를 넘어갈 때 재탐색 비용을 줄이도록 resume-critical state를 durable artifact에 남기고 다시 이어가는 방식을 소개하는 패턴입니다.
+session-recovery-checkpoint-commits.md	에이전트 세션 단절·교체 후 Git 커밋의 변경 단위와 메시지·스냅샷을 활용해 검증 상태 및 후속 작업을 복구하려는 경우 참고하는 패턴입니다.
