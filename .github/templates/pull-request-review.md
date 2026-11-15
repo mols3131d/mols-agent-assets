@@ -1,17 +1,14 @@
 ## Summary
 
-<!--
-전체 판단과 가장 중요한 근거를 먼저 쓴다.
-필요하면 다음 조치를 덧붙이되 GitHub review decision은 본문에 반복하지 않는다.
--->
+<!-- 검토 결론과 결정적 근거부터 적습니다. GitHub Review decision은 반복하지 않습니다.
+검토 결과와 판단의 한계를 요약합니다. Finding의 유무는 Findings에서 명시합니다. -->
 
 {{ summary }}
 
 {% if scope %}
 ## Scope
 
-<!-- 전체 diff가 아닌 일부만 검토했거나 특별한 기준을 적용했을 때만 범위와 한계를 적는다. -->
-
+<!-- 일부 범위만 검토했거나 검토 기준이 달랐을 때만 작성합니다. -->
 {% for item in scope %}
 - {{ item }}
 {% endfor %}
@@ -19,18 +16,12 @@
 
 ## Findings
 
-<!--
-확인된 문제만 finding으로 기록한다. 단순 선호나 근거 없는 가능성은 제외한다.
-Finding의 review body / inline placement와 중복 경계는 `docs/development/github.md`를 따른다.
-본문 finding이 없고 qualifying inline finding만 있으면 `See inline review comments for findings.`를 사용한다.
-둘 다 없을 때만 `No findings identified in the reviewed scope.`를 사용한다.
-Required Change는 문제를 해소하기 위해 필요한 결과나 제약을 적고, 특정 구현이 필수가 아니면 해결 방법을 과도하게 지정하지 않는다.
-`finding.importance`는 `🔴 Critical` / `🟠 High` / `🟡 Medium` / `🔵 Low` 중 하나를 그대로 사용한다. 의미와 정렬 기준은 `docs/development/github.md`를 따른다.
--->
-
+<!-- Summary·Findings는 필수입니다. 문제가 없다면 확인된 범위에서
+발견된 문제가 없음을 명시합니다. 기본은 굵은 finding 제목을 사용하고,
+긴 Finding에만 H3를 선택합니다. Inline finding은 중복하지 않습니다. -->
 {% if findings %}
 {% for finding in findings %}
-### {{ finding.importance }} · F{{ loop.index }} — {{ finding.title }}
+**{{ finding.importance }} · F{{ loop.index }} — {{ finding.title }}**
 
 **Impact:** {{ finding.impact }}
 
@@ -69,16 +60,21 @@ See inline review comments for findings.
 No findings identified in the reviewed scope.
 {% endif %}
 
+{% if validation %}
 ## Validation
 
-<!--
-직접 확인한 check와 근거만 기록한다.
-`check.status`는 `✅ Pass` / `❌ Fail` / `⚪ Not Verified` 중 하나를 그대로 사용하고 의미와 정렬 기준은 `docs/development/github.md`를 따른다.
--->
-
+<!-- 검증의 충족 여부를 체크박스로 표시합니다.
+check.passed는 검증 기준이 확인되어 충족되었을 때만 true입니다.
+실패·미검증은 [ ]로 두고 evidence에 구체적인 사유를 남깁니다.
+Pass·Fail·Not Verified 상태 아이콘은 중복 기재하지 않습니다. -->
 {% for check in validation %}
-- {{ check.status }} — `{{ check.name }}`: {{ check.evidence }}
+{% if check.passed %}
+- [x] `{{ check.name }}`: {{ check.evidence }}
+{% else %}
+- [ ] `{{ check.name }}`: {{ check.evidence }}
+{% endif %}
 {% endfor %}
+{% endif %}
 
 {% if remaining_risks %}
 ## Remaining Risks
@@ -88,7 +84,9 @@ No findings identified in the reviewed scope.
 {% endfor %}
 {% endif %}
 
-<!-- Agent가 최종 PR Review text를 실질적으로 작성하거나 재작성했다면 `author`는 필수입니다. -->
+<!-- Agent가 작성한 최종 Review에는 author가 필요합니다.
+해당 diff를 검토한 경우 base/head revision도 기록합니다.
+본문 끝에 하나의 fenced yaml 메타데이터 블록만 남깁니다. -->
 {% if author or revision %}
 ```yaml
 {% if author %}
