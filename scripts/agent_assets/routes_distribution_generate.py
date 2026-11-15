@@ -44,7 +44,7 @@ SKILL_INSTRUCTION = (
 )
 BRIEF_SKILL_INSTRUCTION = (
     "Select by name and short description. If no credible candidate matches or "
-    "the needed trigger or exclusion is unclear, inspect route/skills.jsonl before "
+    "the needed trigger or exclusion is unclear, load _meta.fallback before "
     "ruling out candidates. Load selected canonical sources before use; hints "
     "are not the full applicability contract."
 )
@@ -134,7 +134,13 @@ def render_skill_brief_route(full_route: str) -> str:
     return "".join(
         json.dumps(row, ensure_ascii=False, separators=(",", ":")) + "\n"
         for row in [
-            {"_meta": {"kind": "skills", "instructions": BRIEF_SKILL_INSTRUCTION}},
+            {
+                "_meta": {
+                    "kind": "skills",
+                    "instructions": BRIEF_SKILL_INSTRUCTION,
+                    "fallback": f"{RAW_ROOT}/route/skills.jsonl",
+                }
+            },
             *entries,
         ]
     )
