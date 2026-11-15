@@ -14,7 +14,9 @@ from scripts.agent_assets import (
 )
 
 ROOT = sync.ROOT
-LOCAL_PROJECTION_NAMES = frozenset({"docs-indexes", "catalog-indexes", "distribution-routes"})
+LOCAL_PROJECTION_NAMES = frozenset(
+    {"docs-indexes", "catalog-indexes", "distribution-routes"}
+)
 Checker = Callable[[], list[str]]
 
 
@@ -22,8 +24,12 @@ def _first_line_difference(current: str, expected: str) -> tuple[int, str, str] 
     current_lines = current.splitlines()
     expected_lines = expected.splitlines()
     for index in range(max(len(current_lines), len(expected_lines))):
-        current_line = current_lines[index] if index < len(current_lines) else "<missing>"
-        expected_line = expected_lines[index] if index < len(expected_lines) else "<missing>"
+        current_line = (
+            current_lines[index] if index < len(current_lines) else "<missing>"
+        )
+        expected_line = (
+            expected_lines[index] if index < len(expected_lines) else "<missing>"
+        )
         if current_line != expected_line:
             return index + 1, current_line, expected_line
     return None
@@ -147,7 +153,9 @@ def select_for_validation(
     projections: tuple[sync.Projection, ...] = sync.PROJECTIONS,
 ) -> tuple[sync.Projection, ...]:
     """Select affected projections, falling back to all when impact is unknown."""
-    selected = projections if paths is None else sync.select_projections(paths, projections)
+    selected = (
+        projections if paths is None else sync.select_projections(paths, projections)
+    )
     if local_only:
         selected = tuple(
             projection
@@ -188,8 +196,9 @@ def validate(
             print(f"PASS {projection.name}")
 
     if drift_found:
-        print("Regenerate committed projections with: mise run generated sync", file=sys.stderr)
+        print(
+            "Regenerate committed projections with: mise run generated sync",
+            file=sys.stderr,
+        )
 
     return 1 if failed else 0
-
-

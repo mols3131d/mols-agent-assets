@@ -39,6 +39,8 @@ description: README의 Index와 자동 생성 INDEX.tsv를 선택하고, 범위�
 
 기본 정책은 **직속 항목만 노출**하고, 후보가 있는 디렉터리에는 하위 인덱스를 생성합니다. 파일 수 기준은 필요할 때 `--min-entries`로 높일 수 있습니다. 커스텀 대상도 같은 기본값을 사용하되 필요한 옵션을 넘깁니다.
 
+`docs` preset의 `--traverse-roots`는 현재 하위 인덱스를 생성하는 영역(`development`, `documentation`, `tools`)과 참고 자료 영역으로 예약된 `references`로 제한합니다. `skills/`·`subagents/` 등 자산별 유지보수 문서 영역은 루트 [`docs/INDEX.tsv`](../INDEX.tsv)에서 존재와 역할만 드러내고 각 하위 README·경로 탐색으로 이어집니다. 새 최상위 문서 영역에 하위 인덱스를 허용하려면 [`indexes_generate.py`](../../scripts/indexes_generate.py)의 `PRESETS["docs"].traverse_roots`도 함께 등록해야 합니다.
+
 저장소 `docs`·`catalog` preset은 관리 범위 내 오래된 생성 인덱스를 정리합니다. `--root`로 임의의 디렉터리를 사용할 때는 다른 작업에서 관리하는 하위 `INDEX.tsv`를 보존하며 `--prune`을 명시한 경우에만 정리합니다.
 
 생성 결과는 직접 편집하지 않고 `mise run generated sync`로 갱신하며, `mise run generated validate`로 drift를 확인합니다.

@@ -3,4 +3,4 @@ agent-asset-management.md	Agent Asset 신설·개선·검증·제공·폐기 절
 design-principles.md	Agent Asset 추가·분리·단순화 시 원본 권한, 실제 필요, 책임과 context 비용을 판단할 때 사용합니다.
 instruction-design.md	Agent instruction의 적용 조건·행동·권한·검증·중단을 명확히 표현하고 구체성을 선택할 때 사용합니다.
 naming.md	flat namespace에서 관리 편의와 이름 충돌 방지를 위한 최소 naming convention
-skills/	
+skills/	Skill 작성에 공통 적용하는 패키지·형식·메타데이터 규약과 공식 명세 registry를 찾을 때 사용합니다.

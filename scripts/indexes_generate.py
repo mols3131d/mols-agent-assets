@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import glob
 import io
 import sys
 from collections import deque
@@ -44,37 +45,50 @@ PRESETS = {
 }
 
 
-def _is_content_file(path: Path, config: IndexConfig) -> bool:
-    name = path.name
-    return (
-        path.is_file()
-        and any(
-            path.name.endswith(ext if ext.startswith(".") else f".{ext}")
-            for ext in config.extensions
-        )
-        and name != "AGENTS.md"
-        and not name.startswith("INDEX")
-        and not (name.startswith(".") and name.endswith(".md"))
-        and not (name.startswith("__") and name.endswith("__.md"))
-    )
+def _normalize_extensions(extensions: tuple[str, ...]) -> tuple[str, ...]:
+    normalized = []
+    for ext in extensions:
+        cleaned = ext.strip()
+        if cleaned.startswith("."):
+            cleaned = cleaned[1:]
+        if not cleaned:
+            raise ValueError("extensions must not contain empty values")
+        normalized.append(f".{cleaned}")
+    if not normalized:
+        raise ValueError("at least one extension is required")
+    return tuple(normalized)
 
 
-def _has_content(directory: Path, config: IndexConfig) -> bool:
-    return any(_is_content_file(path, config) for path in directory.rglob("*"))
-
-
-def _targets(config: IndexConfig) -> list[Path]:
+def _validated_config(config: IndexConfig) -> IndexConfig:
     if not config.root.is_dir():
         raise NotADirectoryError(config.root)
     if config.index_depth < -1 or config.depth < -1 or config.min_entries < 1:
         raise ValueError(
             "index_depth and depth must be >= -1; min_entries must be >= 1"
         )
-    if not config.extensions:
-        raise ValueError("at least one extension is required")
+    extensions = _normalize_extensions(config.extensions)
     if not config.directory_entry_files:
         raise ValueError("at least one directory entry file is required")
+    return replace(config, extensions=extensions)
 
+
+def _is_content_file(path: Path, extensions: tuple[str, ...]) -> bool:
+    name = path.name
+    return (
+        path.is_file()
+        and name.endswith(extensions)
+        and name != "AGENTS.md"
+        and not name.startswith(("INDEX", "__index__"))
+        and not (name.startswith(".") and name.endswith(".md"))
+        and not (name.startswith("__") and name.endswith("__.md"))
+    )
+
+
+def _has_content(directory: Path, extensions: tuple[str, ...]) -> bool:
+    return any(_is_content_file(path, extensions) for path in directory.rglob("*"))
+
+
+def _targets(config: IndexConfig) -> list[Path]:
     targets = []
     queue = deque([(config.root, 0)])
     while queue:
@@ -83,28 +97,56 @@ def _targets(config: IndexConfig) -> list[Path]:
         if config.index_depth != -1 and level >= config.index_depth:
             continue
         for child in sorted(directory.iterdir(), key=lambda child: child.name):
-            if not child.is_dir():
+            if not child.is_dir() or child.is_symlink():
                 continue
             if level == 0 and config.traverse_roots is not None:
                 if child.name not in config.traverse_roots:
                     continue
-            if _has_content(child, config):
+            if _has_content(child, config.extensions):
                 queue.append((child, level + 1))
     return targets
 
 
-def _desired_index(directory: Path, config: IndexConfig) -> str | None:
-    empty_directories = [
-        path.relative_to(directory).as_posix()
-        for path in directory.rglob("*")
-        if path.is_dir() and not _has_content(path, config)
+def _empty_directory_globs(directory: Path, extensions: tuple[str, ...]) -> list[str]:
+    content_ancestors: set[Path] = set()
+    subdirs: list[Path] = []
+    symlink_dirs: list[Path] = []
+    for path in directory.rglob("*"):
+        if path.is_dir():
+            if path.is_symlink():
+                symlink_dirs.append(path)
+            else:
+                subdirs.append(path)
+        elif _is_content_file(path, extensions):
+            parent = path.parent
+            while (
+                parent != directory
+                and parent != parent.parent
+                and parent not in content_ancestors
+            ):
+                content_ancestors.add(parent)
+                parent = parent.parent
+    globs = [
+        f"/{glob.escape(path.relative_to(directory).as_posix())}"
+        for path in subdirs
+        if path not in content_ancestors
     ]
+    for path in symlink_dirs:
+        escaped = glob.escape(path.relative_to(directory).as_posix())
+        globs.extend((f"/{escaped}", f"/{escaped}/**"))
+    return globs
+
+
+def _desired_index(directory: Path, config: IndexConfig) -> str | None:
+    empty_directories = _empty_directory_globs(directory, config.extensions)
     blocked_root_subtrees = []
     if directory == config.root and config.traverse_roots is not None:
         blocked_root_subtrees = [
-            f"{child.name}/**"
+            f"{glob.escape(child.name)}/**"
             for child in config.root.iterdir()
-            if child.is_dir() and child.name not in config.traverse_roots
+            if child.is_dir()
+            and not child.is_symlink()
+            and child.name not in config.traverse_roots
         ]
     content = generate_index(
         directory,
@@ -126,40 +168,57 @@ def _desired_index(directory: Path, config: IndexConfig) -> str | None:
     return content
 
 
+def _display_index_path(root: Path, path: Path) -> str:
+    root_label = root.resolve().name if root.name in {"", ".", ".."} else root.name
+    relative = path.relative_to(root).as_posix()
+    return f"{root_label}/{relative}" if root_label else relative
+
+
 def expected_indexes(config: IndexConfig) -> dict[Path, str]:
     """Calculate index projections without modifying any files."""
+    validated = _validated_config(config)
     return {
         directory / INDEX_NAME: content
-        for directory in _targets(config)
-        if (content := _desired_index(directory, config)) is not None
+        for directory in _targets(validated)
+        if (content := _desired_index(directory, validated)) is not None
     }
 
 
 def sync_indexes(config: IndexConfig, *, check: bool = False) -> list[str]:
     """Write projections, or report missing/outdated/stale indexes read-only."""
-    expected = expected_indexes(config)
-    existing = set(config.root.rglob(INDEX_NAME)) if config.prune else set()
+    validated = _validated_config(config)
+    expected = expected_indexes(validated)
+    existing = set(validated.root.rglob(INDEX_NAME)) if validated.prune else set()
     existing.update(path for path in expected if path.exists())
     drift = []
     # Windows Path 대소문자 무시로 순서가 달라지지 않도록 상대 경로 tuple로 정렬
     for path in sorted(
         existing | expected.keys(),
-        key=lambda path: path.relative_to(config.root).parts,
+        key=lambda path: path.relative_to(validated.root).parts,
     ):
-        relative = path.relative_to(config.root.parent).as_posix()
+        relative = _display_index_path(validated.root, path)
         desired = expected.get(path)
-        actual = path.read_text(encoding="utf-8") if path.exists() else None
         if desired is None:
             if check:
                 drift.append(f"stale: {relative}")
             else:
                 path.unlink()
-        elif actual != desired:
+            continue
+        if not path.exists():
             if check:
-                status = "missing" if actual is None else "outdated"
-                drift.append(f"{status}: {relative}")
+                drift.append(f"missing: {relative}")
             else:
-                path.write_text(desired, encoding="utf-8")
+                path.write_text(desired, encoding="utf-8", newline="\n")
+            continue
+        try:
+            actual = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            actual = None
+        if actual != desired:
+            if check:
+                drift.append(f"outdated: {relative}")
+            else:
+                path.write_text(desired, encoding="utf-8", newline="\n")
     return drift
 
 

@@ -27,10 +27,19 @@ def _is_excluded(
 ) -> bool:
     if path.name in set(exclude or []):
         return True
-    return any(
-        fnmatch.fnmatch(path.name, pattern) or fnmatch.fnmatch(relative_path, pattern)
-        for pattern in exclude_globs or []
-    )
+    for pattern in exclude_globs or []:
+        if pattern.startswith("/"):
+            # 선행 `/`는 basename이 아닌 인덱스 루트 기준 상대 경로만 고정 매칭
+            if fnmatch.fnmatch(relative_path, pattern[1:]):
+                return True
+        elif "/" in pattern:
+            if fnmatch.fnmatch(relative_path, pattern):
+                return True
+        elif fnmatch.fnmatch(path.name, pattern) or fnmatch.fnmatch(
+            relative_path, pattern
+        ):
+            return True
+    return False
 
 
 def _normalize_extensions(extensions: list[str] | None) -> tuple[str, ...]:
@@ -128,7 +137,11 @@ def _collect_entries(
             found_paths.add(path)
 
     entries = []
-    for path in sorted(found_paths):
+    # Windows Path 대소문자 무시로 순서가 달라지지 않도록 상대 경로 tuple로 정렬
+    for path in sorted(
+        found_paths,
+        key=lambda item: item.relative_to(directory).parts,
+    ):
         relative_path = path.relative_to(directory).as_posix()
         if path.is_dir():
             frontmatter = _frontmatter_from_entrypoint(path, entry_files)
@@ -162,9 +175,7 @@ def _collect_entries(
                 f"{relative_path}: required frontmatter fields missing: "
                 + ", ".join(missing)
             )
-        entries.append(
-            {**frontmatter, "path": relative_path, "file": relative_path}
-        )
+        entries.append({**frontmatter, "path": relative_path, "file": relative_path})
 
     for field in unique_fields or []:
         seen: dict[str, str] = {}
@@ -388,7 +399,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--fields",
         nargs="+",
-        help="Custom fields/headers for delimited output (e.g. --fields path description)",
+        help=(
+            "Custom fields/headers for delimited output "
+            "(e.g. --fields path description)"
+        ),
     )
     parser.add_argument(
         "--globs",
@@ -399,7 +413,10 @@ def main(argv: list[str] | None = None) -> int:
         "--files",
         action=argparse.BooleanOptionalAction,
         default=True,
-        help="Include files (default: enabled; use --no-files for directory-only indexes)",
+        help=(
+            "Include files (default: enabled; "
+            "use --no-files for directory-only indexes)"
+        ),
     )
     parser.add_argument(
         "--file-extensions",
@@ -417,7 +434,9 @@ def main(argv: list[str] | None = None) -> int:
         "--directory-entry-files",
         nargs="+",
         default=[],
-        help="Ordered entrypoint filenames whose frontmatter supplies directory metadata",
+        help=(
+            "Ordered entrypoint filenames whose frontmatter supplies directory metadata"
+        ),
     )
     parser.add_argument(
         "--max-depth",

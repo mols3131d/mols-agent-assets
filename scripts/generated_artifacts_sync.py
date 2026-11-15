@@ -59,7 +59,7 @@ def _is_docs_index_source(path: str) -> bool:
         return True
     if name == "AGENTS.md" or name.startswith("."):
         return False
-    if name.upper().startswith("INDEX") or name.startswith("__index__"):
+    if name.startswith("INDEX") or name.startswith("__index__"):
         return False
     if name.startswith("__") and name.endswith("__.md"):
         return False
@@ -83,7 +83,7 @@ def _is_catalog_index_source(path: str) -> bool:
     name = PurePosixPath(path).name
     if name == "README.md":
         return True
-    if name == "AGENTS.md" or name.startswith("."):
+    if name == "AGENTS.md" or (name.startswith(".") and name.endswith(".md")):
         return False
     if name.startswith("INDEX") or name.startswith("__index__"):
         return False
@@ -101,9 +101,7 @@ def _is_catalog_index_output(path: str) -> bool:
 def _is_distribution_route_source(path: str) -> bool:
     if path == "scripts/agent_assets/routes_distribution_generate.py":
         return True
-    if path.startswith("src/rulesync/.rulesync/skills/") and path.endswith(
-        "/SKILL.md"
-    ):
+    if path.startswith("src/rulesync/.rulesync/skills/") and path.endswith("/SKILL.md"):
         return True
     if not path.startswith(_SUBAGENT_SOURCE_PREFIX) or not path.endswith(".md"):
         return False
@@ -254,9 +252,7 @@ def _stage_projection_outputs(
         "--",
         root=root,
     )
-    outputs = sorted(
-        path for path in candidates if projection.output_matches(path)
-    )
+    outputs = sorted(path for path in candidates if projection.output_matches(path))
     if not outputs:
         return
 
@@ -278,8 +274,7 @@ def sync_staged(
     conflicts = conflicting_paths(dirty_worktree_paths(root), affected)
     if conflicts:
         details = "\n".join(
-            f"- {name}: {', '.join(paths)}"
-            for name, paths in conflicts.items()
+            f"- {name}: {', '.join(paths)}" for name, paths in conflicts.items()
         )
         raise GeneratedArtifactSyncError(
             "관련 source 또는 generated output에 unstaged/untracked 변경이 있어 "
@@ -302,5 +297,3 @@ def sync_all(
     for projection in projections:
         projection.generate()
     return tuple(projection.name for projection in projections)
-
-
