@@ -190,6 +190,9 @@ GitHub Agentic Workflows는 자연어 Markdown으로 작성하더라도 일반 �
 - [About issues](https://docs.github.com/en/issues/tracking-your-work-with-issues/learning-about-issues/about-issues)
 - [About pull requests](https://docs.github.com/en/pull-requests/get-started/about-pull-requests)
 - [About tasklists](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/about-tasklists) — Markdown 체크박스 문법과 사용 범위
+- [GitHub Markdown tables](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/organizing-information-with-tables) — 비교표 렌더링
+- [GitHub Mermaid diagrams](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams) — Mermaid 지원 범위
+- [GitHub collapsed sections](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/organizing-information-with-collapsed-sections) — 상세 내용의 접기
 - [GitHub Markdown checklist guide](https://github.blog/developer-skills/github/video-how-to-create-checklists-in-markdown-for-easier-task-tracking/) — PR 목록 진행률 표시 사례
 - [Giving reviews](https://docs.github.com/en/pull-requests/concepts/giving-reviews)
 - [Merge and close pull requests](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests)
