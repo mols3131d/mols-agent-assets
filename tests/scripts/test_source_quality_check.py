@@ -74,6 +74,17 @@ def test_quality_selection_failure_is_not_silently_ignored(
     assert "ERROR source selection" in capsys.readouterr().err
 
 
+def test_format_failure_prints_read_only_diff(tmp_path: Path) -> None:
+    commands: list[list[str]] = []
+
+    def fake_runner(command: list[str], root: Path) -> int:
+        commands.append(command)
+        return 1 if command[:3] == ["ruff", "format", "--check"] else 0
+
+    assert quality.verify(("sample.py",), tmp_path, fake_runner) == 1
+    assert commands[-1] == ["ruff", "format", "--diff", "./sample.py"]
+
+
 def test_no_supported_sources_runs_no_tools(capsys) -> None:
     assert quality.verify(("sample.txt",)) == 0
     assert "No supported source files affected" in capsys.readouterr().out

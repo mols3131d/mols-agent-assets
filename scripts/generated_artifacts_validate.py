@@ -217,5 +217,3 @@ def validate(
         )
 
     return 1 if failed else 0
-
-

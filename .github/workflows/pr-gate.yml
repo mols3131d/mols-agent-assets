@@ -60,6 +60,18 @@ jobs:
           base_sha="$(git rev-parse HEAD^1)"
           uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts validate --changed-from "$base_sha"
 
+      - name: Validate changed Lefthook configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          base_sha="$(git rev-parse HEAD^1)"
+          if git diff --quiet "$base_sha" HEAD -- lefthook.yml mise.toml .github/workflows/pr-gate.yml; then
+            echo "Lefthook inputs unchanged; skipping."
+          else
+            mise install lefthook
+            mise exec -- lefthook validate
+          fi
+
       - name: Validate project requirements with mise Doctor
         run: mise doctor project
 
