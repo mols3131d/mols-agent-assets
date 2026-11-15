@@ -115,7 +115,9 @@ def render_skill_brief_route(full_route: str) -> str:
     entries = [
         {
             "name": row["name"],
-            "description": re.split(r"(?<=[.!?])\s+", row["description"].strip(), maxsplit=1)[0],
+            "description": re.split(
+                r"(?<=[.!?])\s+", row["description"].strip(), maxsplit=1
+            )[0],
             "source": row["source"],
         }
         for row in rows[1:]
