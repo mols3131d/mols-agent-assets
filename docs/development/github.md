@@ -41,13 +41,14 @@ Issue, Pull Request, PR Review와 comment에 공통으로 적용되는 작성 �
 - 결론과 판단에 필요한 최종 결과와 근거를 먼저 둡니다. 작업 과정이나 시행착오는 판단에 필요할 때만 남깁니다.
 - GitHub UI, CI 또는 canonical artifact가 이미 소유하는 정보는 필요 없이 복제하지 않습니다. 요구사항이나 결정의 source가 따로 있으면 다시 쓰기보다 연결합니다.
 - 모르는 값은 추측하거나 임의의 긍정 상태로 채우지 않습니다.
-- 같은 종류의 항목은 기본적으로 주의가 필요한 것을 먼저 둡니다. Finding과 risk는 `🔴 Critical → 🟠 High → 🟡 Medium → 🔵 Low`, validation은 `❌ Fail → ⚪ Not Verified → ✅ Pass` 순서를 우선하되 인과관계, 실행 순서나 수정 순서가 판단에 중요하면 그 순서를 유지합니다.
+- 같은 종류의 항목은 기본적으로 주의가 필요한 것을 먼저 둡니다. Finding과 risk는 `🔴 Critical → 🟠 High → 🟡 Medium → 🔵 Low` 순서를 우선합니다. Validation 체크리스트는 미충족 항목을 먼저 배치하되 실행 순서나 중요도가 더 크면 그 순서를 따릅니다.
 
-Validation 상태는 다음 의미로 사용합니다.
+Validation 체크리스트의 체크 여부는 검증 결과를 의미합니다.
 
-- `✅ Pass` — 명시한 check가 통과했습니다. Semantic review나 제한된 inspection 결과를 deterministic test, runtime verification 또는 전체 변경의 검증으로 확대 해석하지 않습니다.
-- `❌ Fail` — 명시한 check가 실패했습니다.
-- `⚪ Not Verified` — 중요하지만 아직 확인하지 않은 영역입니다. 미수행 검증을 긍정 상태로 바꾸지 않습니다.
+- `[x]` — 명시한 검증 기준을 실제로 확인했고 충족했습니다.
+- `[ ]` — 실패했거나 아직 검증하지 않아 기준이 충족되지 않았습니다. 항목에 실패·미검증 이유와 근거를 짧게 남깁니다.
+
+검증을 실행했다는 사실만으로 체크하지 않습니다. Semantic review나 제한된 확인을 전체 검증의 통과로 확대하지 않으며, 상태 아이콘을 체크박스와 중복 기재하지 않습니다.
 
 PR Review finding과 Pull Request risk의 importance는 같은 상대적 중요도 축을 사용하지만 finding과 risk 자체는 서로 다른 개념입니다.
 
@@ -92,10 +93,10 @@ GitHub object 제목을 최상위 제목(H1)으로 취급합니다. 본문 템�
 | PR Review | `Summary`, `Findings` | Scope, Validation, Remaining Risks 등 |
 | PR conversation/inline comment | 핵심 메시지(`message`) | Next Actions, Evidence, status 등 |
 
-`Findings`에 문제가 없으면 검토한 범위에서 발견되지 않았음을 명시합니다. PR의 `Validation`은 수행 여부와 검증 결과를 구분합니다. 적용할 검증 자체가 없다면 그 범위와 이유를 적고 가짜 Pass 또는 Not Verified 항목을 만들지 않습니다. Comment처럼 짧은 surface에는 정보 없는 H2 제목을 강제하지 않습니다.
+`Findings`에 문제가 없으면 검토한 범위에서 발견되지 않았음을 명시합니다. PR의 `Validation`은 검증 기준의 충족 여부를 체크박스로 나타냅니다. 적용할 검증 자체가 없다면 그 범위와 이유를 적고 가짜 Pass 또는 Not Verified 항목을 만들지 않습니다. Comment처럼 짧은 surface에는 정보 없는 H2 제목을 강제하지 않습니다.
 
 - **최소 본문:** Surface별 필수 섹션을 채우되 중복 설명을 피합니다. `Risks`, `Review Focus`, `Boundaries` 등은 독립적으로 필요한 때에만 추가합니다. 중요한 검증 실패·미검증·위험은 선택 섹션을 생략한다는 이유로 숨기지 않습니다.
-- **체크박스:** 독립적인 완료 조건·작업 단위를 추적할 때 우선 사용합니다. PR `Changes`의 구현 작업, Issue `Acceptance Criteria`, 실제 후속 작업이 있는 Comment `Next Actions`가 대표 사례입니다. PR `Validation`에서는 검증 **수행 여부**를 추적할 때 사용합니다. 내용 설명·비교·상태값만 있는 목록에는 강제하지 않습니다.
+- **체크박스:** 독립적인 완료 조건·작업 단위를 추적할 때 우선 사용합니다. PR `Changes`의 구현 작업, Issue `Acceptance Criteria`, 실제 후속 작업이 있는 Comment `Next Actions`가 대표 사례입니다. PR·Review `Validation`에서는 **검증 기준 충족 여부**를 나타내며, 아이콘으로 상태를 중복 표시하지 않습니다. 내용 설명·비교 목록에는 강제하지 않습니다.
 - **표:** 비교 대상마다 동일한 항목이 반복될 때 사용합니다. 긴 서술이나 순차 절차를 억지로 표에 넣지 않습니다.
 - **진행 표시:** GitHub tasklist가 제공하는 진행 표시를 우선합니다. 별도의 수치가 꼭 필요하다면 관찰된 `완료/전체`를 사용하고 갱신 책임을 분명히 합니다. 자동 갱신되지 않는 장식용 진행바를 기본 템플릿에 넣거나 작업 체크박스와 중복 표시하지 않습니다. GitHub UI의 표시 위치·형태는 바뀔 수 있습니다.
 - **Mermaid:** 흐름·의존성·상태 관계가 텍스트보다 명확해질 때만 fenced `mermaid` 다이어그램을 추가합니다. 간단한 절차에는 목록을 우선하고, 다이어그램만으로 핵심 결과·위험을 전달하지 않습니다.
@@ -140,7 +141,7 @@ Pull Request는 head branch의 변경을 base branch에 **반영하도록 제안
 - PR 생성, agent 작업 완료나 draft 해제만으로 검토가 승인되거나 merge 가능한 상태가 되지는 않습니다.
 - PR 요약과 agent 설명은 diff와 검증 결과를 이해하는 보조 정보입니다. 실제 제안된 변경은 head/base diff로 판단합니다.
 - PR의 `Changes`에 독립적으로 완료 여부를 추적할 작업이 있으면 Markdown 체크박스(`- [ ]` / `- [x]`)를 **기본 표현**으로 사용하고 진행에 따라 갱신합니다. 설명용 변경이나 가상 작업에는 일반 목록이나 prose를 사용합니다. GitHub의 진행 표시 위치·형태는 UI 버전에 따라 다를 수 있습니다.
-- PR `Validation`에 개별 검증 작업이 있으면 수행 여부를 체크박스로 추적합니다. `- [x]`는 검증 **실행·확인 완료**이며 통과를 의미하지 않습니다. 실행한 검증이 실패했어도 `- [x] ❌ Fail`이고, 아직 확인하지 못한 항목은 `- [ ] ⚪ Not Verified`입니다. 결과의 `✅ Pass / ❌ Fail / ⚪ Not Verified`, GitHub checks, PR Review, Merge 준비 여부는 체크박스와 별도로 판단합니다. 검증 실행 여부를 추적할 필요가 없는 설명에는 체크박스를 억지로 넣지 않습니다.
+- PR `Validation`은 항목별 **충족 여부**를 체크박스로 작성합니다. 검증이 통과한 항목만 `- [x]`로 표시하고, 실행했지만 실패했거나 아직 확인하지 못한 항목은 `- [ ]`로 유지하면서 실패·미검증 사유를 적습니다. 별도 상태 아이콘을 추가하지 않습니다. GitHub checks, PR Review, Merge 준비 여부는 이 체크리스트와 독립적으로 판단합니다. 검증 대상이 없는 경우에는 그 이유를 간결하게 설명합니다.
 - 대화, reviews, checks, agent session과 security result가 한 PR에 함께 보여도 각각의 책임과 근거 수준은 구분합니다.
 
 ## PR Reviews
