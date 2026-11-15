@@ -7,9 +7,11 @@ from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 
-from scripts.agent_assets import routes_distribution_generate as generate_distribution_routes
 from scripts import indexes_generate
-from scripts.agent_assets import routes_repository_generate as generate_repository_routes
+from scripts.agent_assets import (
+    routes_distribution_generate as generate_distribution_routes,
+    routes_repository_generate as generate_repository_routes,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 
