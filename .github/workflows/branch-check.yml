@@ -45,8 +45,12 @@ jobs:
         run: |
           set -euo pipefail
           before="${{ github.event.before }}"
-          if [[ "$before" =~ ^0+$ ]]; then
-            before="$(git rev-parse HEAD^)"
+          if [[ "$before" =~ ^0+$ ]] || ! git cat-file -e "$before^{commit}" 2>/dev/null; then
+            if ! before="$(git merge-base HEAD origin/main)"; then
+              echo "No common base with main; checking all tracked sources."
+              mise run quality-check --all
+              exit 0
+            fi
           fi
           mise run quality-check --changed-from "$before"
 

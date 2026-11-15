@@ -44,7 +44,13 @@ def changed_paths(base: str, root: Path = ROOT) -> tuple[str, ...]:
     """Inspect the complete committed range; never silently skip a missing base."""
     return _check_source_paths(
         _git_paths(
-            root, "diff", "--name-only", "--no-renames", "--diff-filter=ACMR", base, "HEAD"
+            root,
+            "diff",
+            "--name-only",
+            "--no-renames",
+            "--diff-filter=ACMR",
+            base,
+            "HEAD",
         ),
         root,
     )
@@ -63,8 +69,8 @@ def staged_paths(root: Path = ROOT) -> tuple[str, ...]:
     )
     if conflicts:
         raise ValueError(
-            "Staged source also has unstaged changes; stage or separate before checking: "
-            + ", ".join(conflicts)
+            "Staged source also has unstaged changes; "
+            f"stage or separate before checking: {', '.join(conflicts)}"
         )
     return _check_source_paths(staged, root)
 

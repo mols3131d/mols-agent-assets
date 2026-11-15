@@ -95,6 +95,7 @@ def test_no_supported_sources_runs_no_tools(capsys) -> None:
     assert quality.verify(("sample.txt",)) == 0
     assert "No supported source files affected" in capsys.readouterr().out
 
+
 def test_staged_source_with_unstaged_changes_fails_before_lint(tmp_path: Path) -> None:
     git(tmp_path, "init", "-q")
     git(tmp_path, "config", "user.name", "Test")
