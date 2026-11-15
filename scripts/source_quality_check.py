@@ -107,6 +107,9 @@ def verify(
         if result != 0:
             failed = True
             print(f"FAIL {name} (exit {result})", file=sys.stderr)
+            if name == "Ruff format":
+                print("DIFF Ruff format", flush=True)
+                runner(["ruff", "format", "--diff", *command[3:]], root)
     return 1 if failed else 0
 
 
