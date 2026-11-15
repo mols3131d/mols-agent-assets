@@ -65,6 +65,8 @@ No findings identified in the reviewed scope.
 
 <!-- 실제 실행·확인한 검사와 중요한 미검증만 표시합니다.
 check.status: ✅ Pass / ❌ Fail / ⚪ Not Verified.
+검증 수행을 추적하는 경우에만 체크박스를 사용합니다.
+[x]는 실행·확인 완료를 뜻하며 Pass를 의미하지 않습니다.
 중요도·정렬은 docs/development/github.md를 따릅니다. -->
 {% for check in validation %}
 - {{ check.status }} — `{{ check.name }}`: {{ check.evidence }}
