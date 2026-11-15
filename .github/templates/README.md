@@ -29,6 +29,6 @@ GitHub object의 작성 의미, validation·importance·workflow status와 prove
 
 - 최종 GitHub text에는 [GitHub 정책](../../docs/development/github.md)의 surface별 필수 섹션을 남기고 선택 섹션만 필요에 따라 추가합니다. 미치환 notation, 작성 지침 comment나 빈 선택 섹션은 제거합니다.
 - GitHub object title을 H1로 취급하고 템플릿은 H2까지만 정의합니다. H3 이하는 섹션이 길어 구분이 필요할 때 작성자가 선택합니다.
-- 체크박스는 실제 추적 작업에, 표는 비교에, 진행 표시는 확인된 집계에, Mermaid는 복잡한 관계에만 선택적으로 사용합니다. 공통 기준은 [GitHub 정책](../../docs/development/github.md)을 따릅니다.
+- PR `Changes`, Issue `Acceptance Criteria`, Comment `Next Actions`에서 독립적인 완료 항목을 추적하면 체크박스를 우선합니다. PR `Validation`에서 검증 실행을 추적할 때도 체크박스를 사용하며, 체크 여부와 Pass/Fail 상태를 혼동하지 않습니다. 표는 비교에, 진행 표시는 확인된 집계에, Mermaid는 복잡한 관계에만 선택적으로 사용합니다. 공통 기준은 [GitHub 정책](../../docs/development/github.md)을 따릅니다.
 - 장식용 emoji를 heading에 사용하지 않습니다. 상태·중요도는 GitHub 정책을 따릅니다.
 - 이 표기는 GitHub가 렌더링하는 작성 보조용이지 실행되는 Jinja2가 아닙니다. 본문 metadata가 필요하면 본문 끝의 단일 fenced `yaml`을 사용하고 GitHub의 native frontmatter로 오인하지 않습니다.
