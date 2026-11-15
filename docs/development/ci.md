@@ -78,6 +78,8 @@ Local hook, branch CI와 PR CI가 같은 계약을 확인한다면 별도의 의
 
 ### Read-only Integration Evidence
 
+이 저장소는 **변경·추가된 소스 파일**의 Ruff·rumdl·Biome lint와 format 정규화 결과를 PR 병합의 명시적 표현 계약으로 채택합니다. 기존 파일 전체를 소급 포맷하지 않으며, 선택된 파일의 위반만 차단합니다. 기존 스타일 선호 전체를 병합 차단으로 확대하지 않습니다.
+
 검증 workflow는 repository maintenance automation이 아닙니다. Runner의 ephemeral working tree에서 formatter check, generator나 projection 작업을 실행할 수 있지만 검증 결과를 commit·push하거나 base branch에 write-back하지 않습니다.
 
 ### Fail-safe and Diagnosable
