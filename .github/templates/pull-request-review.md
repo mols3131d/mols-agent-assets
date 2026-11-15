@@ -1,7 +1,7 @@
 ## Summary
 
 <!-- 검토 결론과 결정적 근거부터 적습니다. GitHub Review decision은 반복하지 않습니다.
-Finding이 없으면 검토 범위에서 확인된 문제가 없었다는 사실을 Summary에 명시합니다. -->
+검토 결과와 판단의 한계를 요약합니다. Finding의 유무는 Findings에서 명시합니다. -->
 
 {{ summary }}
 
@@ -14,12 +14,11 @@ Finding이 없으면 검토 범위에서 확인된 문제가 없었다는 사실
 {% endfor %}
 {% endif %}
 
-{% if findings or has_inline_findings %}
 ## Findings
 
-<!-- 확인된 문제만 기록합니다. 기본은 굵은 finding 제목을 사용하고,
-Finding이 길어 구분이 어려울 때에만 H3 제목으로 바꿀 수 있습니다.
-Inline finding을 본문에 중복하지 않습니다. -->
+<!-- Summary·Findings는 필수입니다. 문제가 없다면 확인된 범위에서
+발견된 문제가 없음을 명시합니다. 기본은 굵은 finding 제목을 사용하고,
+긴 Finding에만 H3를 선택합니다. Inline finding은 중복하지 않습니다. -->
 {% if findings %}
 {% for finding in findings %}
 **{{ finding.importance }} · F{{ loop.index }} — {{ finding.title }}**
@@ -55,9 +54,10 @@ Inline finding을 본문에 중복하지 않습니다. -->
 {% endif %}
 
 {% endfor %}
-{% else %}
+{% elif has_inline_findings %}
 See inline review comments for findings.
-{% endif %}
+{% else %}
+No findings identified in the reviewed scope.
 {% endif %}
 
 {% if validation %}
