@@ -63,6 +63,7 @@ def test_render_skill_brief_route_preserves_names_sources_and_full_fallback(tmp_
         "_meta": {
             "kind": "skills",
             "instructions": generate_distribution_routes.BRIEF_SKILL_INSTRUCTION,
+            "fallback": f"{generate_distribution_routes.RAW_ROOT}/route/skills.jsonl",
         }
     }
     assert [
@@ -77,7 +78,7 @@ def test_render_skill_brief_route_preserves_names_sources_and_full_fallback(tmp_
     assert full_rows[1]["description"] == (
         "Explore repo context. Do not install by default."
     )
-    assert "route/skills.jsonl" in brief_rows[0]["_meta"]["instructions"]
+    assert brief_rows[0]["_meta"]["fallback"].endswith("/route/skills.jsonl")
 
 
 
@@ -99,7 +100,7 @@ def test_brief_route_instructions_allow_no_match_and_uncertain_trigger_fallback(
     guidance = generate_distribution_routes.BRIEF_SKILL_INSTRUCTION
     assert "no credible candidate" in guidance
     assert "trigger or exclusion is unclear" in guidance
-    assert "route/skills.jsonl" in guidance
+    assert "_meta.fallback" in guidance
 
 
 
