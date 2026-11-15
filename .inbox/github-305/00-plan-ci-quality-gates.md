@@ -10,7 +10,7 @@
 
 기준: `main` @ `c39d094f72cfb331217bc70abb303c738493dd4c`, 브랜치 `mols/chore/ci-lefthook-quality-gates`. 구현 시작 시 최신 ref와 이미 반영된 변경을 확인하되, 이 PR의 base를 승인 없이 변경하지 않는다.
 
-## 현행 경계와 근거
+## 구현 이전 기준선과 근거
 
 | 실행면 | 현행 검증 | 한계 및 유지 사항 |
 | --- | --- | --- |
@@ -21,7 +21,7 @@
 | [Projection selector](../../scripts/generated_artifacts_sync.py) · [validator](../../scripts/generated_artifacts_validate.py) | Git 변경 경로를 네 projection에 매핑, git diff 실패 시 전체 검사 | 공통 제어 코드 변경은 매핑되지 않을 수 있음. `--local-only`는 네트워크 의존 repository route 검사를 제외 |
 | [Ruleset](https://github.com/mols3131d/mols-agent-assets/rules/21094860) | required `PR Gate`, squash-only, 리뷰 대화 해결 | 승인 리뷰 0개, strict-base 비활성. 운영 정책 검토 사항이며 이번 PR에서 설정 자동 변경 금지 |
 
-기준 실행: [Branch Check](https://github.com/mols3131d/mols-agent-assets/actions/runs/43710194442), [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/43710198355) 성공. 단일 실행에서 약 12초/29초가 관측되었을 뿐, 새 검사나 비용 개선의 증거는 아니다.
+구현 이전 기준 실행: [Branch Check](https://github.com/mols3131d/mols-agent-assets/actions/runs/43710194442), [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/43710198355) 성공. 단일 실행에서 약 12초/29초가 관측되었을 뿐, 새 검사나 비용 개선의 증거는 아니다.
 
 ### Authoring 경로별 동작
 
@@ -46,7 +46,7 @@ GitHub 공식 근거: [GITHUB_TOKEN의 workflow trigger 예외](https://docs.git
 | LLM 동작/semantic | 변경 위험에 필요한 경우 별도 판단 | 기존 deterministic fixture만 PR 기본 대상, 모델 호출은 필요한 경우에만 한정 |
 | commit-msg 규칙 | 추가 검토 | 현재 로컬 Hook만 검사. Plugin/API commit과 squash PR 제목의 적용 필요성을 먼저 확인하고 무조건 gate에 추가하지 않음 |
 
-## 구현 순서와 계약
+## 구현 설계 및 적용 순서
 
 1. **기준선·검증 계약:** `mise.toml`, `.rumdl.toml`, `biome.json`, `pyproject.toml`과 기존 소스에서 read-only formatter/linter 결과를 확보한다. `ruff check`/`ruff format --check`, `rumdl check`/`rumdl fmt --check`, `biome format`(read-only) 및 필요시 `biome lint`/범위가 더 넓은 `biome check`를 구분한다. 실제 잠긴 버전의 지원 옵션을 확인한다. **기존 `biome format --write`와 신규 `biome check`를 동등하게 취급하지 않는다.** 적용 범위/강제 여부를 검증 규약별로 정하고 기존 전체 파일을 일괄 수정하지 않는다.
 1. **Projection 선택기 보강:** `scripts/generated_artifacts_sync.py`의 공유 매핑을 재사용하면서 `scripts/generated_artifacts.py`, `scripts/generated_artifacts_validate.py` 등 공통 생성·판별 코드의 변경이 필요한 검사 대상으로 확산되게 한다. 경로 자체가 무관한 변경과 영향 판별 실패를 구별한다. `git diff` 실패의 현행 전체 fallback은 보존한다. source 삭제, output 삭제/변경, 공통 코드 변경과 영향이 없는 변경을 `tests/scripts/`에서 테스트한다.
@@ -70,10 +70,21 @@ GitHub 공식 근거: [GITHUB_TOKEN의 workflow trigger 예외](https://docs.git
 - **Projection:** `scripts/generated_artifacts_validate.py`에서 공통 변경 시 전체 projection 검증으로 확대하고, 해당 선택 규칙의 pytest를 추가했다. 로컬 pre-commit의 generation/stage 범위는 유지했다.
 - **공통 검사:** `scripts/source_quality_check.py`가 staged·변경 커밋 범위·전체 tracked 파일을 선택한다. Ruff/rumdl/Biome lint와 format을 각각 읽기 전용으로 검사하며 위반은 0이 아닌 상태로 전파한다. `mise run quality-check` 및 Lefthook이 동일 구현을 사용한다.
 - **서버:** Branch Check는 push의 head와 변경 범위, PR Gate는 merge candidate의 변경 범위를 검사한다. PR Gate는 Biome 설정과 변경된 Lefthook 구성을 검증하며, 기존 테스트·Rulesync·lock 단계 및 `contents: read` 권한을 보존한다.
-- **성공:** [Branch Check](https://github.com/mols3131d/mols-agent-assets/actions/runs/43719868355)와 [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/43719872708) 성공. 최종 검증에서는 pytest **448개 통과**, frontmatter, projection 4종, Rulesync 및 Lefthook 설정 검증이 성공했다.
+- **성공:** 개선 전 기능 구현은 [Branch Check](https://github.com/mols3131d/mols-agent-assets/actions/runs/43719868355)와 [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/43719872708)로 검증했다. 이번 셀프 리뷰 수정은 [Branch Check](https://github.com/mols3131d/mols-agent-assets/actions/runs/43722514733) 및 [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/43722518956)에서 확인했고, pytest **451개**, frontmatter, projection 4종, Rulesync, Biome·Lefthook 설정 검증이 통과했다.
 - **실패 감지 증거:** [PR Gate 실패 사례](https://github.com/mols3131d/mols-agent-assets/actions/runs/43718613641)에서 실제 Ruff·rumdl 위반으로 검사 단계가 실패했으며, 해당 파일 수정 후 통과했다. 검증 실패를 무시하거나 autofix로 덮지 않는다.
 - **비용 비교:** 종전 별도 커밋의 대표 실행에서 Branch Check 12초·PR Gate 29초, 확장 검사 이후 성공 실행에서 31초·54초를 관측했다. 설치·검사 범위가 늘어난 비용이며 **속도 개선 근거가 아니다**. 변경 파일 범위 검사를 적용하고 기존 branch/PR의 독립 테스트를 유지하는 결정을 우선했다. 단일 표본 비교는 장기 성능 추세가 아니다.
 - **남은 경계:** 실제 로컬 Lefthook 설치·실발화·부분 스테이징 E2E 및 통제 표면의 독립 검토·사람 승인. Draft 상태를 유지하고 Merge하지 않는다.
+
+## 셀프 리뷰 개선 결과
+
+1. **Staged 내용과 worktree 내용의 불일치 (수정):** 이전 품질 검사는 경로만 index에서 선택해 부분 스테이징의 잘못된 통과 가능성이 있었다. 이제 검사 대상의 unstaged 변경이 겹치면 실패한다. 선택된 소스가 삭제됐거나 심볼릭 링크이면 검사를 생략하지 않고 실패한다. 실제 Git index를 사용하는 회귀 테스트 3개를 추가했다.
+1. **새 브랜치·force-push의 비교 기준 (수정):** Branch Check에서 `github.event.before`가 0이거나 없는 커밋이면 `origin/main`과의 merge-base를 사용한다. 공통 조상이 없으면 전체 tracked 소스를 검사해 조용히 넘어가지 않는다.
+1. **표현 규약과 CI 계약 (정합성 수정):** [CI 정본](../../docs/development/ci.md)에 *추가·수정된 파일*의 lint/format을 명시적 병합 계약으로 기록했다. 저장소 전체의 기존 스타일을 일괄 정리하지 않는다.
+1. **중복 제거 (유보):** Branch의 head와 PR의 merge 후보는 증명 대상이 달라 pytest 이중 실행을 유지한다. 검사 추가로 총 시간이 증가했으므로 순수 성능 최적화로 간주하지 않는다.
+
+**검증:** [Branch Check](https://github.com/mols3131d/mols-agent-assets/actions/runs/43722514733)와 [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/43722518956) 모두 성공. PR Gate에서 deterministic pytest 451개 통과.
+
+**잔여 경계:** 실제 개발자 장비의 `lefthook install`/Hook 실행과 부분 스테이징 E2E는 검증하지 않았다. Hook 설치는 opt-in이며, 통제 표면의 독립 검토와 사람의 Merge 승인 역시 남아 있다.
 
 ## 인계
 
