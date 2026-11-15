@@ -57,7 +57,7 @@ GitHub 공식 근거: [GITHUB_TOKEN의 workflow trigger 예외](https://docs.git
 
 ## 완료 조건
 
-- [ ] 로컬 Git·GitHub Plugin/API·웹 UI가 만든 커밋에 대해 어떤 Hook·branch·PR 검증이 **실제 실행되는지** 구분해 확인한다. `GITHUB_TOKEN` 이벤트 예외와 승인 대기 상황을 오류 없이 다룬다.
+- [ ] GitHub Plugin/API의 대표적인 Hookless commit → branch/PR run 증거를 확보한다. 로컬 Git·웹 UI·클라우드 자동화는 트리거 계약과 실제 검증된 범위를 구분한다. `GITHUB_TOKEN`의 미트리거·승인 대기 예외를 누락하지 않는다.
 - [ ] Ruff·rumdl·Biome 검사 경로·도구 설치·적용 파일·차단 여부·실패 종료 코드가 구체적으로 검증된다. 기존 순수 스타일을 근거 없이 merge-blocking으로 바꾸지 않는다.
 - [ ] 생성물 검사에서 공통 코드 변경·source/output 삭제·영향 판별 실패가 누락되지 않고, 무관한 변경은 불필요한 원격 설치를 일으키지 않는다.
 - [ ] Hook은 일반 파일을 포맷·stage하지 않으며 부분 스테이징에서 false pass 여부와 한계를 명시한다.
