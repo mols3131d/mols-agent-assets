@@ -12,7 +12,8 @@ status는 판단에 필요할 때만 사용하고, 없는 상태를 만들지 �
 {% if next_actions %}
 ## Next Actions
 
-<!-- 기본은 일반 목록. 독립적인 완료 추적이 필요하고 갱신할 때만 체크박스로 교체합니다. -->
+<!-- 개별 실행·완료를 추적하는 Next Action은 체크박스(- [ ] / - [x])를 기본으로 사용합니다.
+단순한 제안·안내라면 일반 목록을 유지합니다. -->
 {% for action in next_actions %}
 - {{ action }}
 {% endfor %}
