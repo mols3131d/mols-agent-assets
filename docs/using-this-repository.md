@@ -42,11 +42,11 @@ rulesync generate
 
 이후 같은 잠금 버전으로 설치하려면 소비자 프로젝트의 `rulesync.jsonc`와 `rulesync.lock`을 관리하고 `rulesync install --frozen` 다음 `rulesync generate`를 실행합니다. 원본 업데이트는 `rulesync install --update`로 잠금을 갱신한 뒤 변경을 확인합니다. 명령과 설치 옵션은 [Rulesync 공식 문서](https://rulesync.dyoshikawa.com/)를 기준으로 합니다.
 
-### Import Subagents and Runtime-Specific Assets
+### Import Subagents, Commands, and Hooks
 
-[Rulesync Subagent 원본](../src/rulesync/.rulesync/subagents/)이나 [ChatGPT Chat 전용 자산](../src/openai-chatgpt-chat/README.md)은 각 런타임에서 지원하는 형식·설치 경로·권한을 확인하고 가져옵니다. 원본 파일이 존재한다는 사실만으로 해당 런타임에서 자동 설치되거나 실행되는 것은 아닙니다.
+[Rulesync Subagent 원본](../src/rulesync/.rulesync/subagents/)과 [ChatGPT Chat 전용 자산](../src/openai-chatgpt-chat/README.md)은 각 런타임의 지원 형식·설치 경로·권한을 확인하고 가져옵니다. Commands와 Hooks도 Rulesync의 공식 source 형식으로 관리할 수 있지만, 현재 이 라이브러리에는 실제 Command·Hook 원본이 없습니다. Feature 활성화나 route 등재만으로 설치 또는 실행되지 않습니다.
 
-수정해서 사용한다면 필요한 파일과 지원 리소스를 함께 가져오고, 이후의 프로젝트별 변경은 소비자 프로젝트가 소유합니다.
+Commands는 대상에 따라 Skill로 변환되거나 project 범위에서 지원되지 않습니다. Hooks는 자동 실행과 기존 handler 교체 위험이 있으므로, 소비 환경의 설정을 확인하고 preview한 뒤 명시적으로 적용합니다. 수정해서 사용한다면 지원 리소스를 함께 가져오고, 프로젝트별 변경은 소비자 프로젝트가 소유합니다.
 
 ## Use Patterns, Templates, and External Assets
 
