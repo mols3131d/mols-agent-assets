@@ -63,13 +63,16 @@ No findings identified in the reviewed scope.
 {% if validation %}
 ## Validation
 
-<!-- 실제 실행·확인한 검사와 중요한 미검증만 표시합니다.
-check.status: ✅ Pass / ❌ Fail / ⚪ Not Verified.
-검증 수행을 추적하는 경우에만 체크박스를 사용합니다.
-[x]는 실행·확인 완료를 뜻하며 Pass를 의미하지 않습니다.
-중요도·정렬은 docs/development/github.md를 따릅니다. -->
+<!-- 검증의 충족 여부를 체크박스로 표시합니다.
+check.passed는 검증 기준이 확인되어 충족되었을 때만 true입니다.
+실패·미검증은 [ ]로 두고 evidence에 구체적인 사유를 남깁니다.
+Pass·Fail·Not Verified 상태 아이콘은 중복 기재하지 않습니다. -->
 {% for check in validation %}
-- {{ check.status }} — `{{ check.name }}`: {{ check.evidence }}
+{% if check.passed %}
+- [x] `{{ check.name }}`: {{ check.evidence }}
+{% else %}
+- [ ] `{{ check.name }}`: {{ check.evidence }}
+{% endif %}
 {% endfor %}
 {% endif %}
 
