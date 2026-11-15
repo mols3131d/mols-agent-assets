@@ -6,7 +6,7 @@
 
 - **원칙:** Hook의 통과 여부를 서버 검증의 근거로 쓰지 않는다. Hook과 CI의 중복 제거는 허용하지만 당연히 최적이라고 가정하지 않는다.
 - **비목표:** Hook 자동 설치, 일반 소스 자동 포맷·stage, CI commit/push, 유료 LLM 평가 상시화, 새 CI provider·거대 검사 라우터·OS matrix, Ruleset 무단 변경.
-- **작업 상태:** 설계·인계 준비 단계. 구현, 변경된 검증 명령 실행, 개선 후 비용 측정은 아직 수행되지 않았다.
+- **작업 상태:** 코드 구현 및 서버 검증 완료. 로컬 Hook 실발화, 독립적 통제 표면 리뷰 및 인간의 Merge 승인은 미완료.
 
 기준: `main` @ `c39d094f72cfb331217bc70abb303c738493dd4c`, 브랜치 `mols/chore/ci-lefthook-quality-gates`. 구현 시작 시 최신 ref와 이미 반영된 변경을 확인하되, 이 PR의 base를 승인 없이 변경하지 않는다.
 
@@ -57,14 +57,24 @@ GitHub 공식 근거: [GITHUB_TOKEN의 workflow trigger 예외](https://docs.git
 
 ## 완료 조건
 
-- [ ] GitHub Plugin/API의 대표적인 Hookless commit → branch/PR run 증거를 확보한다. 로컬 Git·웹 UI·클라우드 자동화는 트리거 계약과 실제 검증된 범위를 구분한다. `GITHUB_TOKEN`의 미트리거·승인 대기 예외를 누락하지 않는다.
-- [ ] Ruff·rumdl·Biome 검사 경로·도구 설치·적용 파일·차단 여부·실패 종료 코드가 구체적으로 검증된다. 기존 순수 스타일을 근거 없이 merge-blocking으로 바꾸지 않는다.
-- [ ] 생성물 검사에서 공통 코드 변경·source/output 삭제·영향 판별 실패가 누락되지 않고, 무관한 변경은 불필요한 원격 설치를 일으키지 않는다.
+- [x] GitHub Plugin/API의 대표적인 Hookless commit → branch/PR run 증거를 확보한다. 로컬 Git·웹 UI·클라우드 자동화는 트리거 계약과 실제 검증된 범위를 구분한다. `GITHUB_TOKEN`의 미트리거·승인 대기 예외를 누락하지 않는다.
+- [x] Ruff·rumdl·Biome 검사 경로·도구 설치·적용 파일·차단 여부·실패 종료 코드가 구체적으로 검증된다. 기존 순수 스타일을 근거 없이 merge-blocking으로 바꾸지 않는다.
+- [x] 생성물 검사에서 공통 코드 변경·source/output 삭제·영향 판별 실패가 누락되지 않고, 무관한 변경은 불필요한 원격 설치를 일으키지 않는다.
 - [ ] Hook은 일반 파일을 포맷·stage하지 않으며 부분 스테이징에서 false pass 여부와 한계를 명시한다.
-- [ ] required `PR Gate`는 merge 후보·read-only 권한·lock 검증·기존 deterministic tests를 유지한다. 신규 검사 실패를 실제 Actions 또는 동등한 신뢰할 수 있는 독립 실행으로 확인한다.
-- [ ] 유지/제거한 중복 검사는 measured cost와 evidence boundary로 정당화한다. 런타임·model 호출·새 provider는 불필요하게 추가하지 않는다.
+- [x] required `PR Gate`는 merge 후보·read-only 권한·lock 검증·기존 deterministic tests를 유지한다. 신규 검사 실패를 실제 Actions 또는 동등한 신뢰할 수 있는 독립 실행으로 확인한다.
+- [x] 유지/제거한 중복 검사는 measured cost와 evidence boundary로 정당화한다. 런타임·model 호출·새 provider는 불필요하게 추가하지 않는다.
 - [ ] 관련 정본·구성·테스트의 변경 범위가 일관되며, 통제 표면 수정분은 수정된 검증에 의존하지 않는 리뷰와 사람의 명시적 승인 이후에만 merge한다.
+
+## 구현 결과와 검증 근거
+
+- **Projection:** `scripts/generated_artifacts_validate.py`에서 공통 변경 시 전체 projection 검증으로 확대하고, 해당 선택 규칙의 pytest를 추가했다. 로컬 pre-commit의 generation/stage 범위는 유지했다.
+- **공통 검사:** `scripts/source_quality_check.py`가 staged·변경 커밋 범위·전체 tracked 파일을 선택한다. Ruff/rumdl/Biome lint와 format을 각각 읽기 전용으로 검사하며 위반은 0이 아닌 상태로 전파한다. `mise run quality-check` 및 Lefthook이 동일 구현을 사용한다.
+- **서버:** Branch Check는 push의 head와 변경 범위, PR Gate는 merge candidate의 변경 범위를 검사한다. PR Gate는 Biome 설정과 변경된 Lefthook 구성을 검증하며, 기존 테스트·Rulesync·lock 단계 및 `contents: read` 권한을 보존한다.
+- **성공:** [Branch Check](https://github.com/mols3131d/mols-agent-assets/actions/runs/43719868355)와 [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/43719872708) 성공. 최종 검증에서는 pytest **448개 통과**, frontmatter, projection 4종, Rulesync 및 Lefthook 설정 검증이 성공했다.
+- **실패 감지 증거:** [PR Gate 실패 사례](https://github.com/mols3131d/mols-agent-assets/actions/runs/43718613641)에서 실제 Ruff·rumdl 위반으로 검사 단계가 실패했으며, 해당 파일 수정 후 통과했다. 검증 실패를 무시하거나 autofix로 덮지 않는다.
+- **비용 비교:** 종전 별도 커밋의 대표 실행에서 Branch Check 12초·PR Gate 29초, 확장 검사 이후 성공 실행에서 31초·54초를 관측했다. 설치·검사 범위가 늘어난 비용이며 **속도 개선 근거가 아니다**. 변경 파일 범위 검사를 적용하고 기존 branch/PR의 독립 테스트를 유지하는 결정을 우선했다. 단일 표본 비교는 장기 성능 추세가 아니다.
+- **남은 경계:** 실제 로컬 Lefthook 설치·실발화·부분 스테이징 E2E 및 통제 표면의 독립 검토·사람 승인. Draft 상태를 유지하고 Merge하지 않는다.
 
 ## 인계
 
-이 파일은 비정본 작업 계획이다. 실제 구현 전 [GitHub 정책](../../docs/development/github.md)과 해당 경로 `AGENTS.md`를 확인한다. 필요하면 `mols-ci-design` 및 `mols-loops`의 원본을 적용한다. PR의 체크박스는 **구현을 끝낸 항목만** 완료 처리한다. 실행하지 않은 테스트와 측정하지 않은 비용은 통과·개선으로 보고하지 않는다.
+이 파일은 비정본 작업 인계 및 검증 기록이다. 최종 검토·추가 구현 전에 [GitHub 정책](../../docs/development/github.md)과 해당 경로 `AGENTS.md`를 확인한다. 필요하면 `mols-ci-design` 및 `mols-loops`의 원본을 적용한다. PR의 체크박스는 **구현을 끝낸 항목만** 완료 처리한다. 실행하지 않은 테스트와 측정하지 않은 비용은 통과·개선으로 보고하지 않는다.
