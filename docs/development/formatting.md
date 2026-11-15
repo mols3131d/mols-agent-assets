@@ -32,4 +32,4 @@ CI가 committed representation contract를 확인하기 위해 formatter의 chec
 
 Formatting check를 merge-blocking evidence로 둘지, 어떤 단계에서 실행할지는 [Continuous Integration](ci.md)이 소유합니다. Formatter가 실제 파일을 정규화하는 write path와 tool ownership은 이 문서가 계속 소유합니다.
 
-Lefthook은 일반 source를 자동 포맷하거나 stage하지 않습니다. `--staged`는 staged **경로**에 대해 작업 디렉터리의 파일을 검사하므로 standalone 실행만으로 인덱스의 바이트를 증명하지 않습니다. 실제 commit 전 Lefthook의 unstaged 변경 분리 동작을 따르며, partial staging과 원격 commit의 최종 판정은 committed merge candidate를 검사하는 PR Gate가 소유합니다.
+Lefthook은 일반 source를 자동 포맷하거나 stage하지 않습니다. `--staged`는 staged 파일명에 대해 worktree 내용을 검사하되, 같은 파일에 unstaged 변경이 있거나 선택한 파일을 안전하게 읽을 수 없으면 실패합니다. Hook은 index blob을 별도로 린트하지 않습니다. 원격 커밋과 merge 후보는 PR Gate에서 독립 검증합니다.

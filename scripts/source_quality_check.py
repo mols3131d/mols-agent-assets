@@ -11,6 +11,7 @@ from pathlib import Path
 from scripts.changed_files_format import BIOME_SUFFIXES, select_paths
 
 ROOT = Path(__file__).resolve().parents[1]
+QUALITY_SUFFIXES = BIOME_SUFFIXES | {".py", ".md"}
 CommandRunner = Callable[[list[str], Path], int]
 
 
@@ -26,31 +27,50 @@ def _git_paths(root: Path, *args: str) -> tuple[str, ...]:
         for name in result.stdout.split(b"\0")
         if name
     }
-    return tuple(
-        sorted(
-            path
-            for path in paths
-            if (root / path).is_file() and not (root / path).is_symlink()
-        )
-    )
+    return tuple(sorted(paths))
+
+
+def _check_source_paths(paths: tuple[str, ...], root: Path) -> tuple[str, ...]:
+    for path in paths:
+        if Path(path).suffix.lower() not in QUALITY_SUFFIXES:
+            continue
+        source = root / path
+        if source.is_symlink() or not source.is_file():
+            raise ValueError(f"Cannot inspect selected source: {path}")
+    return paths
 
 
 def changed_paths(base: str, root: Path = ROOT) -> tuple[str, ...]:
     """Inspect the complete committed range; never silently skip a missing base."""
-    return _git_paths(
-        root, "diff", "--name-only", "--no-renames", "--diff-filter=ACMR", base, "HEAD"
+    return _check_source_paths(
+        _git_paths(
+            root, "diff", "--name-only", "--no-renames", "--diff-filter=ACMR", base, "HEAD"
+        ),
+        root,
     )
 
 
 def staged_paths(root: Path = ROOT) -> tuple[str, ...]:
-    """Inspect staged names; Lefthook manages unstaged worktree content separately."""
-    return _git_paths(
+    """Only inspect staged content when the corresponding worktree file is identical."""
+    staged = _git_paths(
         root, "diff", "--cached", "--name-only", "--no-renames", "--diff-filter=ACMR"
     )
+    unstaged = set(_git_paths(root, "diff", "--name-only", "--no-renames"))
+    conflicts = sorted(
+        path
+        for path in staged
+        if path in unstaged and Path(path).suffix.lower() in QUALITY_SUFFIXES
+    )
+    if conflicts:
+        raise ValueError(
+            "Staged source also has unstaged changes; stage or separate before checking: "
+            + ", ".join(conflicts)
+        )
+    return _check_source_paths(staged, root)
 
 
 def all_paths(root: Path = ROOT) -> tuple[str, ...]:
-    return _git_paths(root, "ls-files")
+    return _check_source_paths(_git_paths(root, "ls-files"), root)
 
 
 def checks_for_paths(paths: Iterable[str]) -> list[tuple[str, list[str]]]:
@@ -131,7 +151,7 @@ def main(argv: list[str] | None = None, root: Path = ROOT) -> int:
             paths = all_paths(root)
         else:
             paths = changed_paths(args.changed_from, root)
-    except (OSError, subprocess.CalledProcessError) as exc:
+    except (OSError, ValueError, subprocess.CalledProcessError) as exc:
         print(f"ERROR source selection: {exc}", file=sys.stderr)
         return 2
 

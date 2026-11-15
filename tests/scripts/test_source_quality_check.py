@@ -94,3 +94,40 @@ def test_format_failure_prints_read_only_diff(tmp_path: Path) -> None:
 def test_no_supported_sources_runs_no_tools(capsys) -> None:
     assert quality.verify(("sample.txt",)) == 0
     assert "No supported source files affected" in capsys.readouterr().out
+
+def test_staged_source_with_unstaged_changes_fails_before_lint(tmp_path: Path) -> None:
+    git(tmp_path, "init", "-q")
+    git(tmp_path, "config", "user.name", "Test")
+    git(tmp_path, "config", "user.email", "test@example.com")
+    source = tmp_path / "example.py"
+    source.write_text("print('original')\n", encoding="utf-8")
+    git(tmp_path, "add", "example.py")
+    git(tmp_path, "commit", "-qm", "initial")
+
+    source.write_text("bad =\n", encoding="utf-8")
+    git(tmp_path, "add", "example.py")
+    source.write_text("good = 1\n", encoding="utf-8")
+
+    assert quality.main(["--staged"], tmp_path) == 2
+    git(tmp_path, "add", "example.py")
+    assert quality.staged_paths(tmp_path) == ("example.py",)
+
+
+def test_missing_staged_source_is_an_error_not_a_silent_skip(tmp_path: Path) -> None:
+    git(tmp_path, "init", "-q")
+    source = tmp_path / "new.py"
+    source.write_text("print(1)\n", encoding="utf-8")
+    git(tmp_path, "add", "new.py")
+    source.unlink()
+    assert quality.main(["--staged"], tmp_path) == 2
+
+
+def test_selected_symlink_source_is_not_silently_skipped(tmp_path: Path) -> None:
+    (tmp_path / "actual.py").write_text("print(1)\n", encoding="utf-8")
+    (tmp_path / "link.py").symlink_to("actual.py")
+    try:
+        quality._check_source_paths(("link.py",), tmp_path)
+    except ValueError as exc:
+        assert "link.py" in str(exc)
+    else:
+        raise AssertionError("expected a symlink selection failure")
