@@ -43,9 +43,10 @@ SKILL_INSTRUCTION = (
     "authoritative."
 )
 BRIEF_SKILL_INSTRUCTION = (
-    "Select by name and short description; load only relevant canonical sources. "
-    "If the choice is ambiguous, consult route/skills.jsonl for complete descriptions first. "
-    "A short description is a routing hint, not the full applicability contract."
+    "Select by name and short description. If no credible candidate matches or "
+    "the needed trigger or exclusion is unclear, inspect route/skills.jsonl before "
+    "ruling out candidates. Load selected canonical sources before use; hints "
+    "are not the full applicability contract."
 )
 SUBAGENT_INSTRUCTION = (
     "When this Subagent route is loaded for a task, select only task-relevant Subagents by "
@@ -109,15 +110,23 @@ def render_skill_route(
     )
 
 
+def brief_skill_description(description: str) -> str:
+    """Keep the opening hint and explicit additive or mandatory triggers."""
+    sentences = re.split(r"(?<=[.!?])\s+", description.strip(), maxsplit=2)
+    if len(sentences) > 1 and re.match(
+        r"^(?:Also use|Always load)\b", sentences[1], flags=re.IGNORECASE
+    ):
+        return " ".join(sentences[:2])
+    return sentences[0]
+
+
 def render_skill_brief_route(full_route: str) -> str:
-    """First-sentence discovery hints; the full route remains available on demand."""
+    """Compact discovery hints; the full route remains available on demand."""
     rows = [json.loads(line) for line in full_route.splitlines()]
     entries = [
         {
             "name": row["name"],
-            "description": re.split(
-                r"(?<=[.!?])\s+", row["description"].strip(), maxsplit=1
-            )[0],
+            "description": brief_skill_description(row["description"]),
             "source": row["source"],
         }
         for row in rows[1:]
