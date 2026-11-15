@@ -40,6 +40,9 @@ jobs:
       - name: Install validation tools
         run: mise install node rumdl "npm:@biomejs/biome" "npm:rulesync"
 
+      - name: Validate Biome configuration
+        run: mise exec -- biome check biome.json .vscode/tasks.json
+
       - name: Validate changed source quality
         shell: bash
         run: |

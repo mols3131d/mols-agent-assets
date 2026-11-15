@@ -77,8 +77,8 @@ def checks_for_paths(paths: Iterable[str]) -> list[tuple[str, list[str]]]:
     if biome:
         checks.extend(
             [
-                ("Biome lint", ["biome", "lint", *biome]),
-                ("Biome format", ["biome", "format", *biome]),
+                ("Biome lint", ["biome", "lint", "--no-errors-on-unmatched", *biome]),
+                ("Biome format", ["biome", "format", "--no-errors-on-unmatched", *biome]),
             ]
         )
     return checks
