@@ -29,7 +29,7 @@ Transport나 lock schema를 이전할 때 config와 lock의 source 표기를 맞
 
 - Library [`src/rulesync/rulesync.jsonc`](../../src/rulesync/rulesync.jsonc)는 유지하는 vendor support ceiling입니다. 실제 지원 여부는 개별 자산이 소유하며 workspace target만으로 모든 자산의 지원을 추정하지 않습니다.
 - 재사용 Rule·Skill·Subagent·Command는 실제로 의미 있게 projection할 수 있는 `targets`를 명시합니다. 생략이나 `targets: ["*"]`에 의존하지 않으며 source framework·runtime이 필요한 자산 유형과 의미를 지원하는 target만 선언합니다. Hook은 Rulesync의 native hook source와 target별 adapter를 따릅니다.
-- Library는 Subagent의 기존 지원을 유지하고 Hook·Command feature를 확장합니다. Root self-consumer도 지원 feature를 선언하지만 외부 Subagent를 자동 설치하지는 않습니다. 작성된 Hook·Command가 없으면 활성화만으로 실행 동작이 생기지 않습니다.
+- Library는 Subagent의 기존 지원을 유지하고 Hook·Command feature를 확장합니다. Root self-consumer 설정은 별도로 관리하며, 실제 소비할 원본이 없는 기능은 미리 활성화하지 않습니다.
 - Project-scope에서는 Codex CLI의 global-only Commands와 미지원인 Copilot CLI Commands를 활성화하지 않습니다. Antigravity Commands는 Skills로 projection되므로 동명 Skill과 충돌 여부를 확인합니다.
 - Hook 생성은 기존 handler를 교체할 수 있습니다. `preserveUnownedHooks`는 일부 target에만 적용되며, 생성된 `.rulesync-hooks-lock.json`이 기존 Rulesync 소유 handler의 이력을 보존합니다. 실제 Hook을 배포할 때는 해당 lock도 유지하고 preview diff와 실행 부작용을 확인합니다.
 - Antigravity IDE·CLI는 프로젝트 `.agents/` 경로를 공유하고 Hook 파일을 전체 교체합니다. 상충하는 target별 Hook 구성을 같은 출력 루트에 생성하지 않습니다.
