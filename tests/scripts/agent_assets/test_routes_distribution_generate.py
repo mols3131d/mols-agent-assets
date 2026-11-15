@@ -41,6 +41,66 @@ def test_render_skill_route_uses_meta_sorted_entries_and_canonical_sources(tmp_p
     ]
 
 
+def test_render_skill_brief_route_preserves_names_sources_and_full_fallback(tmp_path):
+    write_asset(
+        tmp_path / "beta" / "SKILL.md",
+        "beta",
+        "Design boundaries. Only use when delegation is required.",
+    )
+    write_asset(
+        tmp_path / "alpha" / "SKILL.md",
+        "alpha",
+        "Explore repo context. Do not install by default.",
+    )
+    full = generate_distribution_routes.render_skill_route(
+        tmp_path, "https://example.test/{directory}/SKILL.md"
+    )
+    brief = generate_distribution_routes.render_skill_brief_route(full)
+    full_rows = [json.loads(line) for line in full.splitlines()]
+    brief_rows = [json.loads(line) for line in brief.splitlines()]
+
+    assert brief_rows[0] == {
+        "_meta": {
+            "kind": "skills",
+            "instructions": generate_distribution_routes.BRIEF_SKILL_INSTRUCTION,
+        }
+    }
+    assert [
+        (row["name"], row["source"]) for row in brief_rows[1:]
+    ] == [
+        (row["name"], row["source"]) for row in full_rows[1:]
+    ]
+    assert [row["description"] for row in brief_rows[1:]] == [
+        "Explore repo context.",
+        "Design boundaries.",
+    ]
+    assert full_rows[1]["description"] == (
+        "Explore repo context. Do not install by default."
+    )
+    assert "route/skills.jsonl" in brief_rows[0]["_meta"]["instructions"]
+
+
+def test_distribution_skill_brief_matches_full_real_route():
+    outputs = generate_distribution_routes.generate()
+    full = [
+        json.loads(line)
+        for line in outputs[generate_distribution_routes.DISTRIBUTION_SKILL_ROUTE].splitlines()
+    ]
+    brief = [
+        json.loads(line)
+        for line in outputs[
+            generate_distribution_routes.DISTRIBUTION_SKILL_BRIEF_ROUTE
+        ].splitlines()
+    ]
+    assert [(r["name"], r["source"]) for r in brief[1:]] == [
+        (r["name"], r["source"]) for r in full[1:]
+    ]
+    assert len(brief) == len(full)
+    assert len(outputs[generate_distribution_routes.DISTRIBUTION_SKILL_BRIEF_ROUTE]) < len(
+        outputs[generate_distribution_routes.DISTRIBUTION_SKILL_ROUTE]
+    )
+
+
 def test_render_subagent_route_uses_meta_sorted_entries_and_canonical_sources(tmp_path):
     write_asset(tmp_path / "review-z.md", "review-z", "Review Z")
     write_asset(tmp_path / "review-a.md", "review-a", "Review A")
@@ -127,6 +187,7 @@ def test_generate_returns_all_distribution_routes():
     assert set(generate_distribution_routes.generate()) == {
         generate_distribution_routes.DISTRIBUTION_ROUTES_PATH,
         generate_distribution_routes.DISTRIBUTION_SKILL_ROUTE,
+        generate_distribution_routes.DISTRIBUTION_SKILL_BRIEF_ROUTE,
         generate_distribution_routes.DISTRIBUTION_SUBAGENT_ROUTE,
     }
 
@@ -148,8 +209,10 @@ def test_generate_omits_empty_asset_kind_route(tmp_path, monkeypatch):
     assert set(outputs) == {
         generate_distribution_routes.DISTRIBUTION_ROUTES_PATH,
         generate_distribution_routes.DISTRIBUTION_SKILL_ROUTE,
+        generate_distribution_routes.DISTRIBUTION_SKILL_BRIEF_ROUTE,
     }
     assert [row["name"] for row in route_rows[1:]] == ["skills"]
+    assert route_rows[1]["source"].endswith("/route/skills-brief.jsonl")
 
 
 def test_generate_keeps_only_route_index_when_no_asset_kind_exists(tmp_path, monkeypatch):
