@@ -14,6 +14,15 @@ from scripts.agent_assets import routes_repository_generate as repository_routes
 
 ROOT = sync.ROOT
 LOCAL_PROJECTION_NAMES = frozenset({"docs-indexes", "catalog-indexes", "distribution-routes"})
+# Selection logic changes affect every committed projection, but should not force
+# pre-commit generation or network access in the local authoring path.
+_COMMON_VALIDATION_SOURCES = frozenset(
+    {
+        "scripts/generated_artifacts.py",
+        "scripts/generated_artifacts_sync.py",
+        "scripts/generated_artifacts_validate.py",
+    }
+)
 Checker = Callable[[], list[str]]
 
 
@@ -146,7 +155,11 @@ def select_for_validation(
     projections: tuple[sync.Projection, ...] = sync.PROJECTIONS,
 ) -> tuple[sync.Projection, ...]:
     """Select affected projections, falling back to all when impact is unknown."""
-    selected = projections if paths is None else sync.select_projections(paths, projections)
+    affected = None if paths is None else set(paths)
+    if affected is None or affected & _COMMON_VALIDATION_SOURCES:
+        selected = projections
+    else:
+        selected = sync.select_projections(affected, projections)
     if local_only:
         selected = tuple(
             projection
