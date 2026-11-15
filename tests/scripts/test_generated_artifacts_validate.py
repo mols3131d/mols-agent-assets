@@ -4,8 +4,7 @@ import subprocess
 
 import pytest
 
-from scripts import generated_artifacts_sync as sync
-from scripts import generated_artifacts_validate as validate
+from scripts import generated_artifacts_sync as sync, generated_artifacts_validate as validate
 
 
 def test_compare_outputs_reports_missing_outdated_and_stale(tmp_path):

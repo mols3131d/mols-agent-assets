@@ -16,7 +16,7 @@ Lefthook은 로컬 Git hook의 명령 실행을 관리합니다. hook 구성은 
 - commit-msg는 저장소 commit message validator, pre-push는 deterministic tests를 실행합니다. 구체적인 명령은 설정 파일을 따릅니다.
 - **hook 설치는 선택 사항**입니다. core bootstrap은 `lefthook install`을 실행하지 않습니다. 설치 전에 공유 `core.hooksPath`와 기존 hook을 확인하고 별도 승인을 받습니다.
 
-`mise run quality-check --staged`로 동일 검사 명령을 수동 실행할 수 있습니다. 검사는 staged 경로를 사용하며 개별 파일의 staged blob 자체를 읽는 별도 검사로 오해하지 않습니다. 
+`mise run quality-check --staged`로 동일 검사 명령을 수동 실행할 수 있습니다. 검사는 staged 경로를 사용하며 개별 파일의 staged blob 자체를 읽는 별도 검사로 오해하지 않습니다.
 
 hook이 설치됐거나 통과했다는 사실로 remote write와 PR의 검증을 대신하지 않습니다. [CI](../development/ci.md)의 admission 경계와 [VCS / Git](../development/vcs-git.md)의 사용자 작업 보호를 유지합니다.
 
