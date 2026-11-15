@@ -80,6 +80,29 @@ def test_render_skill_brief_route_preserves_names_sources_and_full_fallback(tmp_
     assert "route/skills.jsonl" in brief_rows[0]["_meta"]["instructions"]
 
 
+
+def test_brief_skill_description_retains_additive_and_mandatory_triggers():
+    brief = generate_distribution_routes.brief_skill_description
+    assert brief("Design agents. Also use for hooks. Avoid unrelated code.") == (
+        "Design agents. Also use for hooks."
+    )
+    assert brief("Coding scope. Always load for debugging. No other tasks.") == (
+        "Coding scope. Always load for debugging."
+    )
+    assert brief("Review changes. Do not install on sight.") == "Review changes."
+    assert brief("Single sentence without a terminal delimiter") == (
+        "Single sentence without a terminal delimiter"
+    )
+
+
+def test_brief_route_instructions_allow_no_match_and_uncertain_trigger_fallback():
+    guidance = generate_distribution_routes.BRIEF_SKILL_INSTRUCTION
+    assert "no credible candidate" in guidance
+    assert "trigger or exclusion is unclear" in guidance
+    assert "route/skills.jsonl" in guidance
+
+
+
 def test_distribution_skill_brief_matches_full_real_route():
     outputs = generate_distribution_routes.generate()
     full = [
