@@ -40,9 +40,7 @@ PRESETS = {
         traverse_roots=("development", "documentation", "references", "tools"),
         prune=True,
     ),
-    "catalog": IndexConfig(
-        ROOT / "catalog", extensions=(".md", ".json"), prune=True
-    ),
+    "catalog": IndexConfig(ROOT / "catalog", extensions=(".md", ".json"), prune=True),
 }
 
 
@@ -84,7 +82,7 @@ def _targets(config: IndexConfig) -> list[Path]:
         targets.append(directory)
         if config.index_depth != -1 and level >= config.index_depth:
             continue
-        for child in sorted(directory.iterdir()):
+        for child in sorted(directory.iterdir(), key=lambda child: child.name):
             if not child.is_dir():
                 continue
             if level == 0 and config.traverse_roots is not None:
@@ -115,9 +113,7 @@ def _desired_index(directory: Path, config: IndexConfig) -> str | None:
         max_depth=None if config.depth == -1 else config.depth,
         file_extensions=list(config.extensions),
         exclude=["AGENTS.md", *config.directory_entry_files],
-        exclude_globs=[
-            ".*.md", "__*__.md", *blocked_root_subtrees, *empty_directories
-        ],
+        exclude_globs=[".*.md", "__*__.md", *blocked_root_subtrees, *empty_directories],
         include_without_frontmatter=True,
         include_directories=True,
         directory_entry_files=list(config.directory_entry_files),
@@ -145,7 +141,11 @@ def sync_indexes(config: IndexConfig, *, check: bool = False) -> list[str]:
     existing = set(config.root.rglob(INDEX_NAME)) if config.prune else set()
     existing.update(path for path in expected if path.exists())
     drift = []
-    for path in sorted(existing | expected.keys()):
+    # Windows Path 대소문자 무시로 순서가 달라지지 않도록 상대 경로 tuple로 정렬
+    for path in sorted(
+        existing | expected.keys(),
+        key=lambda path: path.relative_to(config.root).parts,
+    ):
         relative = path.relative_to(config.root.parent).as_posix()
         desired = expected.get(path)
         actual = path.read_text(encoding="utf-8") if path.exists() else None
@@ -170,13 +170,16 @@ def main(argv: list[str] | None = None) -> int:
     target.add_argument("--root", type=Path, help="Custom content root")
     parser.add_argument("--extensions", nargs="+", help="Indexed file extensions")
     parser.add_argument(
-        "--directory-entry-files", nargs="+",
+        "--directory-entry-files",
+        nargs="+",
         help="Ordered filenames supplying directory frontmatter",
     )
     parser.add_argument(
         "--index-depth", type=int, help="Maximum INDEX.tsv materialization depth"
     )
-    parser.add_argument("--depth", type=int, help="Subtree depth included by each index")
+    parser.add_argument(
+        "--depth", type=int, help="Subtree depth included by each index"
+    )
     parser.add_argument(
         "--min-entries", type=int, help="Minimum entries for non-root indexes"
     )
@@ -186,7 +189,8 @@ def main(argv: list[str] | None = None) -> int:
         help="Root child directories eligible for nested indexes",
     )
     parser.add_argument(
-        "--prune", action="store_true",
+        "--prune",
+        action="store_true",
         help="Also remove INDEX.tsv files not in the expected output (custom roots)",
     )
     parser.add_argument(

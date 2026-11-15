@@ -44,9 +44,11 @@ def test_scoped_indexes_route_from_root_to_relevant_directory(tmp_path):
         {"path": "guide.md", "description": "Guide."},
         {"path": "skills/", "description": ""},
     ]
-    assert [
-        item["path"] for item in _rows(root / "development" / "INDEX.tsv")
-    ] == ["one.md", "three.md", "two.md"]
+    assert [item["path"] for item in _rows(root / "development" / "INDEX.tsv")] == [
+        "one.md",
+        "three.md",
+        "two.md",
+    ]
     assert not (root / "skills" / "INDEX.tsv").exists()
     assert sync_indexes(config, check=True) == []
 
@@ -130,9 +132,7 @@ def test_excludes_hidden_system_index_and_non_content_paths(tmp_path):
     _write(root / "images" / "image.png", "binary\n")
     _write(root / "nested" / "visible.md", "# Visible\n")
     sync_indexes(IndexConfig(root))
-    assert [row["path"] for row in _rows(root / "INDEX.tsv")] == [
-        "nested/"
-    ]
+    assert [row["path"] for row in _rows(root / "INDEX.tsv")] == ["nested/"]
 
 
 @pytest.mark.parametrize(
@@ -167,7 +167,9 @@ def test_old_doc_boundary_applies_even_with_recursive_depth(tmp_path):
     _write(root / "skills" / "example" / "guide.md", "# Guide\n")
     _write(root / "development" / "nested" / "guide.md", "# Policy\n")
     config = IndexConfig(
-        root, index_depth=0, depth=-1,
+        root,
+        index_depth=0,
+        depth=-1,
         traverse_roots=("development", "documentation", "references", "tools"),
     )
     sync_indexes(config)
@@ -190,9 +192,7 @@ def test_directory_entry_files_override_and_priority(tmp_path):
         "---\ndescription: Preferred index.\n---\n",
     )
     _write(root / "manual" / "guide.md", "# Guide\n")
-    config = IndexConfig(
-        root, directory_entry_files=("index.md", "README.md")
-    )
+    config = IndexConfig(root, directory_entry_files=("index.md", "README.md"))
     sync_indexes(config)
     assert _rows(root / "INDEX.tsv") == [
         {"path": "manual/", "description": "Preferred index."}
@@ -245,9 +245,7 @@ def test_preset_prunes_stale_but_does_not_expose_generated_only_directory(
     config = IndexConfig(root, prune=True)
     sync_indexes(config)
     assert not stale.exists()
-    assert _rows(root / "INDEX.tsv") == [
-        {"path": "visible/", "description": ""}
-    ]
+    assert _rows(root / "INDEX.tsv") == [{"path": "visible/", "description": ""}]
 
 
 def test_depth_limit_and_materialization_depth_are_independent(tmp_path):
@@ -256,10 +254,12 @@ def test_depth_limit_and_materialization_depth_are_independent(tmp_path):
     config = IndexConfig(root, index_depth=1, depth=1)
     sync_indexes(config)
     assert [r["path"] for r in _rows(root / "INDEX.tsv")] == [
-        "parent/", "parent/child/"
+        "parent/",
+        "parent/child/",
     ]
     assert [r["path"] for r in _rows(root / "parent" / "INDEX.tsv")] == [
-        "child/", "child/guide.md"
+        "child/",
+        "child/guide.md",
     ]
     assert not (root / "parent" / "child" / "INDEX.tsv").exists()
 
@@ -277,9 +277,7 @@ def test_extension_option_matches_library_suffix_semantics(tmp_path):
     _write(root / "other.md", "# Other\n")
     config = IndexConfig(root, extensions=("skill.md",))
     sync_indexes(config)
-    assert _rows(root / "INDEX.tsv") == [
-        {"path": "thing.skill.md", "description": ""}
-    ]
+    assert _rows(root / "INDEX.tsv") == [{"path": "thing.skill.md", "description": ""}]
 
 
 def test_non_system_double_underscore_and_hidden_json_are_preserved(tmp_path):
@@ -301,9 +299,7 @@ def test_index_only_directories_are_not_routed(tmp_path):
     _write(root / "system-only" / "__index__.md", "# System\n")
     _write(root / "reference" / "guide.md", "# Guide\n")
     sync_indexes(IndexConfig(root))
-    assert _rows(root / "INDEX.tsv") == [
-        {"path": "reference/", "description": ""}
-    ]
+    assert _rows(root / "INDEX.tsv") == [{"path": "reference/", "description": ""}]
 
 
 def test_nested_hidden_json_remains_discoverable(tmp_path):
@@ -311,9 +307,7 @@ def test_nested_hidden_json_remains_discoverable(tmp_path):
     _write(root / "patterns" / ".special.json", "[]\n")
     config = IndexConfig(root, extensions=(".md", ".json"))
     sync_indexes(config)
-    assert _rows(root / "INDEX.tsv") == [
-        {"path": "patterns/", "description": ""}
-    ]
+    assert _rows(root / "INDEX.tsv") == [{"path": "patterns/", "description": ""}]
     assert _rows(root / "patterns" / "INDEX.tsv") == [
         {"path": ".special.json", "description": ""}
     ]
@@ -326,9 +320,7 @@ def test_empty_preset_index_is_removed_after_last_source_deletion(tmp_path):
     config = IndexConfig(root, prune=True)
     sync_indexes(config)
     source.unlink()
-    assert sync_indexes(config, check=True) == [
-        "stale: catalog/INDEX.tsv"
-    ]
+    assert sync_indexes(config, check=True) == ["stale: catalog/INDEX.tsv"]
     sync_indexes(config)
     assert not (root / "INDEX.tsv").exists()
 
@@ -341,7 +333,5 @@ def test_min_entries_counts_tsv_records_not_multiline_description_lines(tmp_path
     )
     config = IndexConfig(root, min_entries=2)
     sync_indexes(config)
-    assert [row["path"] for row in _rows(root / "INDEX.tsv")] == [
-        "policy/"
-    ]
+    assert [row["path"] for row in _rows(root / "INDEX.tsv")] == ["policy/"]
     assert not (root / "policy" / "INDEX.tsv").exists()
