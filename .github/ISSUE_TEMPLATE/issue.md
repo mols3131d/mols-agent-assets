@@ -13,7 +13,7 @@ about: "문제, 제안 또는 작업 목표를 공유합니다."
 
 <!-- Summary·Desired Outcome은 필수입니다.
 아래 H2 섹션은 필요할 때만 추가합니다. 빈 섹션이나 예시는 남기지 않습니다.
-Acceptance Criteria: 추적할 수 있는 완료 조건 (- [ ] / - [x])
+Acceptance Criteria: 완료 여부를 판정할 독립 조건이 있다면 체크박스(- [ ] / - [x])를 기본으로 사용하고 진행에 따라 갱신
 Reproduction: 문제 재현과 관찰 결과·기대 결과
 Boundaries: 중요한 제약·제외 범위
 Context: 판단에 필요한 배경
