@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import shutil
 import subprocess
 import sys
 from collections.abc import Callable, Iterable
@@ -48,7 +49,7 @@ def changed_paths(base: str, root: Path = ROOT) -> tuple[str, ...]:
             "diff",
             "--name-only",
             "--no-renames",
-            "--diff-filter=ACMR",
+            "--diff-filter=ACMRT",
             base,
             "HEAD",
         ),
@@ -59,7 +60,7 @@ def changed_paths(base: str, root: Path = ROOT) -> tuple[str, ...]:
 def staged_paths(root: Path = ROOT) -> tuple[str, ...]:
     """Only inspect staged content when the corresponding worktree file is identical."""
     staged = _git_paths(
-        root, "diff", "--cached", "--name-only", "--no-renames", "--diff-filter=ACMR"
+        root, "diff", "--cached", "--name-only", "--no-renames", "--diff-filter=ACMRT"
     )
     unstaged = set(_git_paths(root, "diff", "--name-only", "--no-renames"))
     conflicts = sorted(
@@ -114,7 +115,10 @@ def checks_for_paths(paths: Iterable[str]) -> list[tuple[str, list[str]]]:
 
 
 def _run(command: list[str], root: Path) -> int:
-    return subprocess.run(command, cwd=root, check=False).returncode
+    executable = shutil.which(command[0])
+    if executable is None:
+        raise FileNotFoundError(f"Required source quality tool not found: {command[0]}")
+    return subprocess.run([executable, *command[1:]], cwd=root, check=False).returncode
 
 
 def verify(

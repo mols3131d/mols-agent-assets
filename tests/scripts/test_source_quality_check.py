@@ -1,7 +1,12 @@
 from __future__ import annotations
 
 import subprocess
+from contextlib import redirect_stderr
+from io import StringIO
 from pathlib import Path
+from tempfile import TemporaryDirectory
+from unittest import TestCase
+from unittest.mock import patch
 
 from scripts import source_quality_check as quality
 
@@ -132,3 +137,77 @@ def test_selected_symlink_source_is_not_silently_skipped(tmp_path: Path) -> None
         assert "link.py" in str(exc)
     else:
         raise AssertionError("expected a symlink selection failure")
+
+
+class SourceQualityRegressionTests(TestCase):
+    def test_run_uses_resolved_windows_wrapper_and_preserves_arguments(self) -> None:
+        root = Path("repository")
+        executable = str(Path.cwd() / "managed tools" / "biome.cmd")
+        command = ["biome", "lint", "./source file.ts"]
+        with (
+            patch("shutil.which", return_value=executable) as which,
+            patch.object(
+                quality.subprocess,
+                "run",
+                return_value=subprocess.CompletedProcess(command, 1),
+            ) as run,
+        ):
+            self.assertEqual(quality._run(command, root), 1)
+
+        which.assert_called_once_with("biome")
+        run.assert_called_once_with(
+            [executable, "lint", "./source file.ts"], cwd=root, check=False
+        )
+
+    def test_missing_tool_reports_execution_error_without_running(self) -> None:
+        errors = StringIO()
+        with (
+            patch("shutil.which", return_value=None),
+            patch.object(
+                quality.subprocess,
+                "run",
+                return_value=subprocess.CompletedProcess([], 0),
+            ) as run,
+            redirect_stderr(errors),
+        ):
+            self.assertEqual(quality.verify(("sample.ts",)), 2)
+
+        run.assert_not_called()
+        self.assertIn("ERROR Biome lint", errors.getvalue())
+        self.assertIn("biome", errors.getvalue())
+
+    def test_type_changes_reach_source_selection_and_symlink_guard(self) -> None:
+        def git_type_change(command: list[str], **kwargs):
+            # Model Git's T status without creating a symlink or fixture repository.
+            committed_or_staged = "HEAD" in command or "--cached" in command
+            filters = [arg for arg in command if arg.startswith("--diff-filter=")]
+            includes_type_change = not filters or "T" in filters[0].split("=")[1]
+            selected = committed_or_staged and includes_type_change
+            stdout = b"source.py\0" if selected else b""
+            return subprocess.CompletedProcess(command, 0, stdout=stdout)
+
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "source.py").write_text("bad =\n", encoding="utf-8")
+            for staged in (False, True):
+                for symlink in (False, True):
+                    with (
+                        self.subTest(staged=staged, symlink=symlink),
+                        patch.object(
+                            quality.subprocess, "run", side_effect=git_type_change
+                        ),
+                        patch.object(Path, "is_symlink", return_value=symlink),
+                    ):
+                        if symlink:
+                            with self.assertRaisesRegex(ValueError, "source.py"):
+                                if staged:
+                                    quality.staged_paths(root)
+                                else:
+                                    quality.changed_paths("base", root)
+                        else:
+                            selected = (
+                                quality.staged_paths(root)
+                                if staged
+                                else quality.changed_paths("base", root)
+                            )
+                            self.assertEqual(selected, ("source.py",))

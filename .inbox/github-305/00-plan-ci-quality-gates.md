@@ -6,7 +6,7 @@
 
 - **원칙:** Hook의 통과 여부를 서버 검증의 근거로 쓰지 않는다. Hook과 CI의 중복 제거는 허용하지만 당연히 최적이라고 가정하지 않는다.
 - **비목표:** Hook 자동 설치, 일반 소스 자동 포맷·stage, CI commit/push, 유료 LLM 평가 상시화, 새 CI provider·거대 검사 라우터·OS matrix, Ruleset 무단 변경.
-- **작업 상태:** 코드 구현 및 서버 검증 완료. 로컬 Hook 실발화, 독립적 통제 표면 리뷰 및 인간의 Merge 승인은 미완료.
+- **작업 상태:** 초기 구현과 `8c3d1a0`까지의 서버 검증 후 리뷰 지적 2건을 수정했다. 정식 setup이 READY로 완료됐고 프로젝트 환경의 전체 pytest 454개·subtest 4개와 변경 Python의 Ruff 검사가 통과했다. 정상 hook을 통한 커밋·push와 후속 head의 서버 검증은 아래 기록 및 PR의 최신 run으로 확인한다. 실제 Windows 래퍼·Git 유형 변경·부분 스테이징 E2E와 사람의 Merge 승인은 별도 경계로 남긴다.
 
 기준: `main` @ `c39d094f72cfb331217bc70abb303c738493dd4c`, 브랜치 `mols/chore/ci-lefthook-quality-gates`. 구현 시작 시 최신 ref와 이미 반영된 변경을 확인하되, 이 PR의 base를 승인 없이 변경하지 않는다.
 
@@ -85,6 +85,42 @@ GitHub 공식 근거: [GITHUB_TOKEN의 workflow trigger 예외](https://docs.git
 **검증:** [Branch Check](https://github.com/mols3131d/mols-agent-assets/actions/runs/43722514733)와 [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/43722518956) 모두 성공. PR Gate에서 deterministic pytest 451개 통과.
 
 **잔여 경계:** 실제 개발자 장비의 `lefthook install`/Hook 실행과 부분 스테이징 E2E는 검증하지 않았다. Hook 설치는 opt-in이며, 통제 표면의 독립 검토와 사람의 Merge 승인 역시 남아 있다.
+
+## 리뷰 후 개선 루프 및 후속 인계
+
+검토 기준은 base `c39d094f72cfb331217bc70abb303c738493dd4c`, head `8c3d1a0d7546f42ed874f5e5bba27f2ffbee8bed`다. 전용 작업 브랜치를 해당 head로 fast-forward한 뒤 수정 → 회귀 검증 → 직접 재검토 1회를 수행했다. 수정된 workflow의 성공을 독립 검토나 사람의 승인으로 간주하지 않는다.
+
+### 수정한 지적
+
+- **Windows npm 실행 경로:** [source quality checker](../../scripts/source_quality_check.py)의 `_run()`이 명령 이름을 그대로 전달하면 Windows에서 npm `.cmd` 래퍼 대신 다른 `.exe`를 찾거나 실행에 실패할 수 있었다. 기존 formatter의 경로 해석 패턴을 따라 `shutil.which()`로 먼저 해석한 경로를 전달하고, 도구가 없으면 명시적인 오류를 반환하도록 했다. 인수와 도구 종료 코드의 전달은 유지했다.
+- **Git 유형 변경 누락:** staged·committed 선택기의 `--diff-filter=ACMR`이 `T`를 제외해 일반 파일 ↔ symlink 변경이 안전 검사에 도달하지 않았다. 두 경로 모두 `ACMRT`로 바꿔 유형 변경을 포함하고, 선택된 symlink는 기존 guard에서 거부한다. 삭제 제외와 staged/unstaged 충돌 검사는 유지했다.
+- [기존 품질 검사 테스트](../../tests/scripts/test_source_quality_check.py)에 표준 라이브러리 `unittest` 3개를 추가했다. 해석된 Windows 래퍼 경로·공백 인수·실패 종료 코드 전달, 도구 누락의 오류 보고, staged/committed × 일반 파일/symlink의 유형 변경 선택을 검증한다. [Formatting 정본](../../docs/development/formatting.md)에 변경된 검사 계약을 반영했으며 workflow·도구 버전·lock은 바꾸지 않았다.
+
+### 검증 증거와 한계
+
+- ✅ Pass — `python -m unittest tests.scripts.test_source_quality_check.SourceQualityRegressionTests -v`: 수정 전 테스트 3개에서 실패 사례 6개를 확인했고, 수정 후 3개 모두 통과했다. 유형 변경 테스트는 4개 subcase를 포함한다. 실행 Python은 기존 uv 관리 CPython 3.13.11이며 site-packages나 외부 도구를 테스트 의존성으로 사용하지 않았다.
+- ✅ Pass — 기존 `test_chosen_tools_do_not_mutate_files_or_confuse_format_and_lint()` assertion을 직접 실행해 도구 선택·읽기 전용 인수가 유지됨을 확인했다. 변경 Python 2개 파일의 AST parsing과 88열 점검, `git diff --check`도 통과했다.
+- ✅ Pass — 게시 준비에서 설치된 pinned rumdl 0.3.2의 `rumdl check --no-cache .inbox/github-305/00-plan-ci-quality-gates.md docs/development/formatting.md`와 `rumdl fmt --check --no-cache .inbox/github-305/00-plan-ci-quality-gates.md docs/development/formatting.md`가 통과했다. 전체 소스 검사나 실제 Hook E2E 결과로 확대하지 않는다.
+- ✅ Pass — 사용자 재시도 요청 후 `mise run setup --dry-run`, `mise run setup`이 성공했다. Setup은 exact CLI 7종의 설치 경로·버전과 `uv sync --locked --all-groups`, `uv sync --check`를 확인해 **READY**를 반환했다. 프로젝트 `.venv`에서 PyYAML 6.0.3·Ruff 0.15.15·pytest 9.0.3의 존재를 확인했고 manifest·lock 변경은 없다. `update`, 외부 Agent Asset·HOME Skills·Git hook 설치는 실행하지 않았다.
+- ✅ Pass — `mise exec -- uv run --locked --no-sync --no-default-groups --group dev pytest -q tests/scripts/test_source_quality_check.py tests/scripts/test_generated_artifacts_validate.py tests/scripts/test_changed_files_format.py`: **25 passed, 4 subtests passed**.
+- ✅ Pass — `mise exec -- uv run --locked --no-sync --no-default-groups --group dev pytest -q tests`: **454 passed, 4 subtests passed**.
+- ✅ Pass — `mise exec -- uv run --locked --no-sync --no-default-groups --group dev ruff check scripts/source_quality_check.py tests/scripts/test_source_quality_check.py` 및 `mise exec -- uv run --locked --no-sync --no-default-groups --group dev ruff format --check scripts/source_quality_check.py tests/scripts/test_source_quality_check.py`: lint 통과, Python 2개 파일의 format 일치.
+- ⚪ Not Verified — 실제 Windows npm 래퍼 실행·실제 Git 유형 변경 fixture·Hook 전체의 부분 스테이징 E2E. 래퍼와 유형 변경의 동적 재현은 앞선 리뷰에서 권한 제한으로 거부됐다. 새 회귀 테스트는 외부 실행과 Git 상태·symlink 여부를 모킹하므로 실제 런타임 동작의 증거로 확대하지 않는다.
+- 이전 head의 [Branch Check](https://github.com/mols3131d/mols-agent-assets/actions/runs/43722810166)·[PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/43722814677) 성공과 pytest 451개 결과는 후속 수정의 검증 결과가 아니다. Push 후 새 head의 run과 검사 결과는 PR 본문에서 확인한다.
+
+### 환경 준비 누락과 차단 해소
+
+PyYAML은 이미 `test`, Ruff는 `dev` 그룹에 선언돼 있고 `dev`가 `test`를 포함한다. 의존성 선언 누락이 아니라 현재 작업 트리의 개발환경을 준비하지 않은 것이 이전 hook 실패의 원인이었다. 별도 임시 환경의 초기 리뷰 테스트를 현재 작업 트리의 환경 준비 완료로 간주하지 않는다.
+
+- 최초 정상 `git commit`은 기존 pre-commit hook의 `ModuleNotFoundError: No module named 'yaml'`, `Required source quality tool not found: ruff`로 실패해 커밋이 생성되지 않았다. 자동 의존성 동기화를 막았어도 uv가 빈 `.venv`를 생성했고, 기존 Lefthook 2.1.10은 shared hook sync를 수행했다고 출력했다. Hook 우회·signing 비활성화·API 대체 커밋은 하지 않았다.
+- 앞선 실행에서는 `mise exec -- uv run --locked --no-sync --no-default-groups --group dev pytest --version`, 뒤이은 `mise run setup --dry-run` 포함 사전 점검, `gh pr edit 305 --repo mols3131d/mols-agent-assets --body ...` 상태 보고가 실행 권한으로 거부됐다. 당시에는 재시도·우회하지 않고 중단해 상태를 보존했다.
+- 이후 사용자의 명시적인 "다시 시도해봐" 요청으로 재시도했고 정식 setup과 위 전체 테스트가 성공했다. 환경 준비의 기존 blocker는 해소됐으며 정상 hook 경로로 커밋·push를 이어간다. 새 head와 CI 증거는 PR 본문과 Git 이력이 소유한다.
+
+### 남은 인계
+
+- 정상 hook 경로로 커밋하고 기존 PR 브랜치에 fast-forward push한 뒤 새 head의 Branch Check·PR Gate를 확인한다. 후속 결과는 PR 본문에 반영하며, 서버 증거와 로컬 E2E 미검증은 분리해서 기록한다.
+- 실제 Windows npm 래퍼와 Git 유형 변경 fixture·로컬 Hook E2E는 허가된 환경에서 별도로 검증한다. Hook 설치·환경 설치·Ruleset 변경·merge 권한을 이번 인계나 push 요청에서 추론하지 않는다.
+- Draft를 유지한다. 코드 리뷰와 후속 직접 재검토는 수행했지만 GitHub 승인 리뷰나 사람의 명시적 merge 승인을 대신하지 않는다.
 
 ## 인계
 
