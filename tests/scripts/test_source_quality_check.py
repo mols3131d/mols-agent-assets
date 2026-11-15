@@ -48,8 +48,14 @@ def test_chosen_tools_do_not_mutate_files_or_confuse_format_and_lint() -> None:
         ("Ruff format", ["ruff", "format", "--check", "./src/main.py"]),
         ("rumdl lint", ["rumdl", "check", "./docs/guide.md"]),
         ("rumdl format", ["rumdl", "fmt", "--check", "./docs/guide.md"]),
-        ("Biome lint", ["biome", "lint", "--no-errors-on-unmatched", "./settings.jsonc"]),
-        ("Biome format", ["biome", "format", "--no-errors-on-unmatched", "./settings.jsonc"]),
+        (
+            "Biome lint",
+            ["biome", "lint", "--no-errors-on-unmatched", "./settings.jsonc"],
+        ),
+        (
+            "Biome format",
+            ["biome", "format", "--no-errors-on-unmatched", "./settings.jsonc"],
+        ),
     ]
 
 
