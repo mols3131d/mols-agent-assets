@@ -6,7 +6,7 @@
 
 - **원칙:** Hook의 통과 여부를 서버 검증의 근거로 쓰지 않는다. Hook과 CI의 중복 제거는 허용하지만 당연히 최적이라고 가정하지 않는다.
 - **비목표:** Hook 자동 설치, 일반 소스 자동 포맷·stage, CI commit/push, 유료 LLM 평가 상시화, 새 CI provider·거대 검사 라우터·OS matrix, Ruleset 무단 변경.
-- **작업 상태:** 초기 구현과 `8c3d1a0`까지의 서버 검증 후 리뷰 지적 2건을 수정했다. 정식 setup이 READY로 완료됐고 프로젝트 환경의 전체 pytest 454개·subtest 4개와 변경 Python의 Ruff 검사가 통과했다. 정상 hook을 통한 커밋·push와 후속 head의 서버 검증은 아래 기록 및 PR의 최신 run으로 확인한다. 실제 Windows 래퍼·Git 유형 변경·부분 스테이징 E2E와 사람의 Merge 승인은 별도 경계로 남긴다.
+- **작업 상태:** 리뷰 지적 2건을 수정하고 정식 setup READY, 프로젝트 환경의 전체 pytest 454개·subtest 4개, 변경 Python의 Ruff 검증을 완료했다. 개선 커밋 `52ce92a9`는 정상 hook을 통과해 기존 PR 브랜치에 push됐고 Branch Check·PR Gate가 성공했다. 후속 인계 문서 변경의 최종 head·run은 PR 본문에서 확인한다. 실제 Windows 래퍼·Git 유형 변경·부분 스테이징 E2E와 사람의 Merge 승인은 별도 경계로 남긴다.
 
 기준: `main` @ `c39d094f72cfb331217bc70abb303c738493dd4c`, 브랜치 `mols/chore/ci-lefthook-quality-gates`. 구현 시작 시 최신 ref와 이미 반영된 변경을 확인하되, 이 PR의 base를 승인 없이 변경하지 않는다.
 
@@ -106,7 +106,8 @@ GitHub 공식 근거: [GITHUB_TOKEN의 workflow trigger 예외](https://docs.git
 - ✅ Pass — `mise exec -- uv run --locked --no-sync --no-default-groups --group dev pytest -q tests`: **454 passed, 4 subtests passed**.
 - ✅ Pass — `mise exec -- uv run --locked --no-sync --no-default-groups --group dev ruff check scripts/source_quality_check.py tests/scripts/test_source_quality_check.py` 및 `mise exec -- uv run --locked --no-sync --no-default-groups --group dev ruff format --check scripts/source_quality_check.py tests/scripts/test_source_quality_check.py`: lint 통과, Python 2개 파일의 format 일치.
 - ⚪ Not Verified — 실제 Windows npm 래퍼 실행·실제 Git 유형 변경 fixture·Hook 전체의 부분 스테이징 E2E. 래퍼와 유형 변경의 동적 재현은 앞선 리뷰에서 권한 제한으로 거부됐다. 새 회귀 테스트는 외부 실행과 Git 상태·symlink 여부를 모킹하므로 실제 런타임 동작의 증거로 확대하지 않는다.
-- 이전 head의 [Branch Check](https://github.com/mols3131d/mols-agent-assets/actions/runs/43722810166)·[PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/43722814677) 성공과 pytest 451개 결과는 후속 수정의 검증 결과가 아니다. Push 후 새 head의 run과 검사 결과는 PR 본문에서 확인한다.
+- ✅ Pass — 개선 커밋 `52ce92a9b8a7f7afa0bea1700582a48cad94e715`의 정상 pre-commit(`generated-artifacts`, Ruff·rumdl source quality), commit-msg(`conventional`), pre-push(`repository-tests`: **454 passed, 4 subtests passed**)가 pinned Lefthook 2.2.2에서 성공했고 기존 PR 브랜치에 fast-forward push했다. `gh pr checks 305 --repo mols3131d/mols-agent-assets --watch --interval 10`으로 [Branch Check](https://github.com/mols3131d/mols-agent-assets/actions/runs/43745717947) **32초**, [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/43745724017) **52초** 성공을 확인했다.
+- 이전 head `8c3d1a0`의 [Branch Check](https://github.com/mols3131d/mols-agent-assets/actions/runs/43722810166)·[PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/43722814677)와 pytest 451개 결과는 위 후속 수정의 근거와 구분한다. 인계 문서 갱신 이후의 최신 head·run은 PR 본문이 소유한다.
 
 ### 환경 준비 누락과 차단 해소
 
@@ -114,11 +115,11 @@ PyYAML은 이미 `test`, Ruff는 `dev` 그룹에 선언돼 있고 `dev`가 `test
 
 - 최초 정상 `git commit`은 기존 pre-commit hook의 `ModuleNotFoundError: No module named 'yaml'`, `Required source quality tool not found: ruff`로 실패해 커밋이 생성되지 않았다. 자동 의존성 동기화를 막았어도 uv가 빈 `.venv`를 생성했고, 기존 Lefthook 2.1.10은 shared hook sync를 수행했다고 출력했다. Hook 우회·signing 비활성화·API 대체 커밋은 하지 않았다.
 - 앞선 실행에서는 `mise exec -- uv run --locked --no-sync --no-default-groups --group dev pytest --version`, 뒤이은 `mise run setup --dry-run` 포함 사전 점검, `gh pr edit 305 --repo mols3131d/mols-agent-assets --body ...` 상태 보고가 실행 권한으로 거부됐다. 당시에는 재시도·우회하지 않고 중단해 상태를 보존했다.
-- 이후 사용자의 명시적인 "다시 시도해봐" 요청으로 재시도했고 정식 setup과 위 전체 테스트가 성공했다. 환경 준비의 기존 blocker는 해소됐으며 정상 hook 경로로 커밋·push를 이어간다. 새 head와 CI 증거는 PR 본문과 Git 이력이 소유한다.
+- 이후 사용자의 명시적인 "다시 시도해봐" 요청으로 재시도했고 정식 setup과 위 전체 테스트가 성공했다. 정상 hook 경로로 개선 커밋·push 및 새 CI 확인까지 완료해 환경·게시 blocker를 해소했다. Hook 우회·amend·force-push·merge는 하지 않았다. 최종 head와 CI 증거는 PR 본문과 Git 이력이 소유한다.
 
 ### 남은 인계
 
-- 정상 hook 경로로 커밋하고 기존 PR 브랜치에 fast-forward push한 뒤 새 head의 Branch Check·PR Gate를 확인한다. 후속 결과는 PR 본문에 반영하며, 서버 증거와 로컬 E2E 미검증은 분리해서 기록한다.
+- 환경 준비·개선 커밋·push·서버 검증의 인계는 완료했다. 후속 작업에서는 PR의 최신 head·run을 확인하고 서버 증거와 로컬 E2E 미검증을 구분한다.
 - 실제 Windows npm 래퍼와 Git 유형 변경 fixture·로컬 Hook E2E는 허가된 환경에서 별도로 검증한다. Hook 설치·환경 설치·Ruleset 변경·merge 권한을 이번 인계나 push 요청에서 추론하지 않는다.
 - Draft를 유지한다. 코드 리뷰와 후속 직접 재검토는 수행했지만 GitHub 승인 리뷰나 사람의 명시적 merge 승인을 대신하지 않는다.
 
