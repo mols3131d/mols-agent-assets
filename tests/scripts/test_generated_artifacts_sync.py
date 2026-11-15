@@ -22,6 +22,8 @@ def _run_git(root, *args):
     [
         ("docs/guide.md", True),
         ("docs/documentation/indexing.md", True),
+        ("docs/.internal/guide.md", True),
+        ("docs/.internal/.private.md", False),
         ("docs/references/README.md", True),
         ("docs/references/index.md", True),
         ("docs/AGENTS.md", False),

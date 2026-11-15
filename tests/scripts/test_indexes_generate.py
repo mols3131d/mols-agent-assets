@@ -344,19 +344,27 @@ def test_min_entries_counts_tsv_records_not_multiline_description_lines(tmp_path
     assert not (root / "policy" / "INDEX.tsv").exists()
 
 
-def test_presets_match_repository_boundaries():
-    assert PRESETS["docs"].root.name == "docs"
-    assert PRESETS["docs"].traverse_roots == (
-        "development",
-        "documentation",
-        "references",
-        "tools",
-    )
-    assert PRESETS["docs"].prune is True
-    assert PRESETS["catalog"].root.name == "catalog"
-    assert PRESETS["catalog"].extensions == (".md", ".json")
-    assert PRESETS["catalog"].traverse_roots is None
-    assert PRESETS["catalog"].prune is True
+def test_cli_rejects_unknown_target_preset():
+    with pytest.raises(SystemExit) as exc_info:
+        main(["--target", "unknown"])
+    assert exc_info.value.code == 2
+
+
+def test_cli_root_prune_removes_stale_indexes_only_when_enabled(tmp_path, capsys):
+    root = tmp_path / "notes"
+    _write(root / "guide.md", "---\ndescription: Guide.\n---\n")
+    stale = root / "external" / "INDEX.tsv"
+    _write(stale, "stale\n")
+
+    assert main(["--root", str(root)]) == 0
+    assert stale.exists()
+
+    assert main(["--root", str(root), "--prune", "--check"]) == 1
+    assert "stale: notes/external/INDEX.tsv" in capsys.readouterr().err
+    assert stale.exists()
+
+    assert main(["--root", str(root), "--prune"]) == 0
+    assert not stale.exists()
 
 
 def test_cli_supports_presets_overrides_check_and_validation_errors(
@@ -526,6 +534,18 @@ def test_extensions_normalization_and_validation(tmp_path):
             expected_indexes(IndexConfig(root, extensions=invalid))
 
 
+def test_non_utf8_expected_index_is_reported_outdated_and_repaired(tmp_path):
+    root = tmp_path / "docs"
+    _write(root / "guide.md", "---\ndescription: Guide.\n---\n")
+    target = root / "INDEX.tsv"
+    target.write_bytes(b"\xff\xfe\x00")
+
+    config = IndexConfig(root)
+    assert sync_indexes(config, check=True) == ["outdated: docs/INDEX.tsv"]
+    assert sync_indexes(config) == []
+    assert _rows(target) == [{"path": "guide.md", "description": "Guide."}]
+
+
 def test_non_utf8_stale_index_is_unlinked_without_decoding(tmp_path):
     root = tmp_path / "docs"
     _write(root / "guide.md", "---\ndescription: Guide.\n---\n")
@@ -546,8 +566,8 @@ def test_symlink_directory_is_ignored_during_index_traversal(monkeypatch, tmp_pa
     root = tmp_path / "docs"
     _write(root / "real" / "guide.md", "---\ndescription: Real.\n---\n")
     linked = root / "linked"
-    linked.mkdir()
     _write(linked / "loop.md", "---\ndescription: Linked.\n---\n")
+    _write(linked / "nested" / "deep.md", "---\ndescription: Deep.\n---\n")
 
     original_is_symlink = Path.is_symlink
     monkeypatch.setattr(
@@ -556,9 +576,52 @@ def test_symlink_directory_is_ignored_during_index_traversal(monkeypatch, tmp_pa
         lambda self: True if self == linked else original_is_symlink(self),
     )
 
-    expected = expected_indexes(IndexConfig(root))
-    assert set(expected) == {root / "INDEX.tsv", root / "real" / "INDEX.tsv"}
-    assert "linked/" not in expected[root / "INDEX.tsv"]
+    shallow = expected_indexes(IndexConfig(root, depth=0))
+    assert set(shallow) == {root / "INDEX.tsv", root / "real" / "INDEX.tsv"}
+    assert "linked/" not in shallow[root / "INDEX.tsv"]
+
+    deep = expected_indexes(IndexConfig(root, depth=-1))
+    assert set(deep) == {root / "INDEX.tsv", root / "real" / "INDEX.tsv"}
+    assert deep[root / "INDEX.tsv"] == (
+        "path\tdescription\nreal/\t\nreal/guide.md\tReal.\n"
+    )
+
+
+def test_directory_entry_file_is_excluded_from_own_index(tmp_path):
+    root = tmp_path / "docs"
+    _write(root / "README.md", "---\ndescription: Root readme.\n---\n")
+    _write(root / "sub" / "README.md", "---\ndescription: Sub readme.\n---\n")
+    _write(root / "sub" / "guide.md", "---\ndescription: Guide.\n---\n")
+
+    sync_indexes(IndexConfig(root))
+
+    assert _rows(root / "INDEX.tsv") == [{"path": "sub/", "description": "Sub readme."}]
+    assert _rows(root / "sub" / "INDEX.tsv") == [
+        {"path": "guide.md", "description": "Guide."}
+    ]
+
+
+def test_dot_prefixed_directories_stay_consistent_across_depths(tmp_path):
+    root = tmp_path / "docs"
+    _write(
+        root / ".internal" / "README.md",
+        "---\ndescription: Internal.\n---\n",
+    )
+    _write(root / ".internal" / "guide.md", "---\ndescription: Guide.\n---\n")
+    _write(root / ".internal" / ".private.md", "# Private\n")
+
+    shallow = expected_indexes(IndexConfig(root, depth=0))
+    assert set(shallow) == {root / "INDEX.tsv", root / ".internal" / "INDEX.tsv"}
+    assert shallow[root / "INDEX.tsv"] == "path\tdescription\n.internal/\tInternal.\n"
+    assert shallow[root / ".internal" / "INDEX.tsv"] == (
+        "path\tdescription\nguide.md\tGuide.\n"
+    )
+
+    deep = expected_indexes(IndexConfig(root, depth=-1))
+    assert set(deep) == {root / "INDEX.tsv", root / ".internal" / "INDEX.tsv"}
+    assert deep[root / "INDEX.tsv"] == (
+        "path\tdescription\n.internal/\tInternal.\n.internal/guide.md\tGuide.\n"
+    )
 
 
 def test_dotdot_root_path_formats_drift_labels_safely(tmp_path):

@@ -319,3 +319,69 @@ def test_generate_index_exclude_globs_respect_relative_path_scope(tmp_path):
         "other/guide/",
         "other/guide/draft.md",
     ]
+
+
+def test_generate_index_exclude_globs_preserve_segment_boundaries_and_case(tmp_path):
+    _write(tmp_path / "top.md", "---\ndescription: Top.\n---\n")
+    _write(tmp_path / "nested" / "keep.md", "---\ndescription: Nested keep.\n---\n")
+    _write(tmp_path / "testing.md", "---\ndescription: Basename test.\n---\n")
+    _write(tmp_path / "testing" / "guide.md", "---\ndescription: Dir test.\n---\n")
+    _write(tmp_path / "__dir" / "foo__.md", "---\ndescription: Dir under.\n---\n")
+    _write(tmp_path / ".internal" / "guide.md", "---\ndescription: Internal.\n---\n")
+    _write(tmp_path / ".internal" / ".hidden.md", "# Hidden\n")
+    _write(tmp_path / "a" / "direct.md", "---\ndescription: Direct.\n---\n")
+    _write(tmp_path / "a" / "sub" / "deep.md", "---\ndescription: Deep.\n---\n")
+    _write(tmp_path / "a" / "x" / "y" / "target.md", "---\ndescription: Target.\n---\n")
+    _write(tmp_path / "Assets" / "guide.md", "---\ndescription: Uppercase dir.\n---\n")
+    _write(
+        tmp_path / "nested" / "Draft.md",
+        "---\ndescription: Mixed case basename.\n---\n",
+    )
+
+    result = generate_index(
+        tmp_path,
+        format="tsv",
+        fields=["path", "description"],
+        include_directories=True,
+        exclude_globs=[
+            "/*.md",
+            "test*.md",
+            "__*__.md",
+            ".*.md",
+            "a/*.md",
+            "a/**/target.md",
+            "/assets/**",
+            "draft.md",
+        ],
+    )
+
+    rows = list(csv.DictReader(io.StringIO(result), delimiter="\t"))
+    assert [row["path"] for row in rows] == [
+        ".internal/",
+        ".internal/guide.md",
+        "Assets/",
+        "Assets/guide.md",
+        "__dir/",
+        "__dir/foo__.md",
+        "a/",
+        "a/sub/",
+        "a/sub/deep.md",
+        "a/x/",
+        "a/x/y/",
+        "nested/",
+        "nested/Draft.md",
+        "nested/keep.md",
+        "testing/",
+        "testing/guide.md",
+    ]
+
+
+def test_generate_index_cli_help_documents_exclude_glob_scoping(capsys):
+    with pytest.raises(SystemExit) as exc_info:
+        main(["--help"])
+
+    assert exc_info.value.code == 0
+    help_text = " ".join(capsys.readouterr().out.split())
+    assert "case-sensitive" in help_text
+    assert "basename" in help_text
+    assert "leading '/'" in help_text
