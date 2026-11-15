@@ -7,10 +7,15 @@ import sys
 from collections.abc import Callable, Iterable
 from pathlib import Path
 
-from scripts import catalog_indexes_generate, docs_indexes_generate
-from scripts import generated_artifacts_sync as sync
-from scripts.agent_assets import routes_distribution_generate as distribution_routes
-from scripts.agent_assets import routes_repository_generate as repository_routes
+from scripts import (
+    catalog_indexes_generate,
+    docs_indexes_generate,
+    generated_artifacts_sync as sync,
+)
+from scripts.agent_assets import (
+    routes_distribution_generate as distribution_routes,
+    routes_repository_generate as repository_routes,
+)
 
 ROOT = sync.ROOT
 LOCAL_PROJECTION_NAMES = frozenset(
