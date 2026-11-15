@@ -71,7 +71,7 @@ Issue, Pull Request, PR Review와 PR comment에서는 GitHub UI, API, Plugin 등
 - `author` — agent가 최종 GitHub text의 내용이나 구조를 실질적으로 작성하거나 재작성했다면 반드시 기록합니다. GitHub object가 사람의 account나 credential로 생성되어도 같습니다. 사람이 완성한 text를 agent가 그대로 게시하거나, 사람이 이미 정한 title·state·label 같은 값을 그대로 설정하는 기계적 mutation만 수행한 경우는 agent 주도 작성으로 보지 않습니다. 각 항목은 `<user-id>:<provider>-<service>` 형식을 사용합니다.
 - `revision` — Pull Request description이나 PR Review가 의존하는 exact diff pair입니다. `base`와 `head`를 함께 full commit SHA로 기록합니다. PR description을 새 pair 기준으로 갱신하면 함께 갱신하고, 이미 제출된 review의 pair는 이후 head가 바뀌어도 변경하지 않습니다.
 
-`author`는 Issue, Pull Request, PR Review, PR conversation comment와 PR inline review comment에 적용하며 위 조건에서 필수입니다. `revision`은 Pull Request와 PR Review에만 사용합니다. Metadata는 **본문 끝의 단일 fenced `yaml` block**으로 표현하고, 해당 surface에 필요한 field만 남깁니다. YAML frontmatter나 GitHub object metadata로 해석하지 않으며 별도의 Metadata heading을 만들지 않습니다. Native template에는 실제 값이 없는 metadata를 미리 삽입하지 않습니다.
+`author`는 Issue, Pull Request, PR Review, PR conversation comment와 PR inline review comment에 적용하며 위 조건에서 필수입니다. `revision`은 Pull Request와 PR Review에만 사용합니다. GitHub Issue·PR·Review·Comment의 **최종 본문**에서는 YAML frontmatter 대신 **본문 끝의 단일 fenced `yaml` block**으로 위 provenance를 기록합니다. GitHub의 일반 본문 metadata 필드나 자동 처리되는 설정이 아니라 사람이 읽는 표기입니다. 별도의 Metadata heading이나 빈 블록은 만들지 않습니다. Issue Markdown 템플릿의 파일 맨 앞 YAML frontmatter(`name`, `about` 등)는 **템플릿 선택기 설정**으로 유지하며, 생성된 Issue 본문 metadata로 오인하지 않습니다. Native template에는 실제 값이 없는 provenance를 미리 삽입하지 않습니다.
 
 ```yaml
 author:
@@ -80,6 +80,18 @@ revision:
   base: <full-base-commit-sha>
   head: <full-head-commit-sha>
 ```
+
+## GitHub 본문 구조와 표현
+
+GitHub object 제목을 최상위 제목(H1)으로 취급합니다. 본문의 템플릿은 **H2까지만 기본 구조로 제공**하고, 긴 H2 섹션 안에서 실제 탐색성이 높아질 때만 작성자가 H3 이하를 추가합니다. 형식상의 일관성을 위해 빈 제목·선택 섹션·`N/A`·예시 placeholder를 남기지 않습니다.
+
+- **최소 본문:** 핵심 결과·제안·검토 결론을 먼저 제시하고, 그 자체로 충분하면 추가 섹션을 생략합니다. `Changes`, `Validation`, `Risks`, `Review Focus`, `Boundaries` 등의 이름을 모든 GitHub object에 강제하지 않습니다. 중요한 검증 실패·미검증·위험은 선택 섹션을 생략한다는 이유로 숨기지 않습니다.
+- **체크박스:** 개별 완료 여부를 갱신할 실제 작업이나 acceptance criteria에 사용합니다. 단순 설명·검증 상태를 완료 항목으로 세지 않습니다. 추적할 작업이 없다면 체크박스를 두지 않습니다.
+- **표:** 비교 대상마다 동일한 항목이 반복될 때 사용합니다. 긴 서술이나 순차 절차를 억지로 표에 넣지 않습니다.
+- **진행 표시:** GitHub tasklist가 제공하는 진행 표시를 우선합니다. 별도의 수치가 꼭 필요하다면 관찰된 `완료/전체`를 사용하고 갱신 책임을 분명히 합니다. 자동 갱신되지 않는 장식용 진행바를 기본 템플릿에 넣거나 작업 체크박스와 중복 표시하지 않습니다. GitHub UI의 표시 위치·형태는 바뀔 수 있습니다.
+- **Mermaid:** 흐름·의존성·상태 관계가 텍스트보다 명확해질 때만 fenced `mermaid` 다이어그램을 추가합니다. 간단한 절차에는 목록을 우선하고, 다이어그램만으로 핵심 결과·위험을 전달하지 않습니다.
+
+내용이 길지만 결론과 분리 가능한 검증 로그·상세 설명은 GitHub의 접을 수 있는 `details`를 사용할 수 있습니다. PR/Issue·Review/Comment의 본문 템플릿은 **자동 채우는 양식인지 작성 보조용인지** 구분하며, GitHub의 native Issue 템플릿 frontmatter와 본문 fenced YAML은 역할이 다릅니다.
 
 ## Issues
 
@@ -118,7 +130,7 @@ Pull Request는 head branch의 변경을 base branch에 **반영하도록 제안
 - `main` 대상 변경은 [VCS / Git](vcs-git.md)의 정책에 따라 준비하고 PR로 제안합니다.
 - PR 생성, agent 작업 완료나 draft 해제만으로 검토가 승인되거나 merge 가능한 상태가 되지는 않습니다.
 - PR 요약과 agent 설명은 diff와 검증 결과를 이해하는 보조 정보입니다. 실제 제안된 변경은 head/base diff로 판단합니다.
-- PR 본문 `Changes`에서 완료를 추적할 실제 작업은 Markdown 체크박스(`- [ ]` / `- [x]`)로 작성하고 진행에 따라 갱신합니다. GitHub가 제공하는 완료 항목 수 집계를 활용하되, PR 목록 등 표시 위치는 UI 버전에 따라 다를 수 있습니다. 설명용 변경이나 가상 작업은 체크박스로 만들지 않습니다.
+- PR에서 `Changes`로 실제 작업을 추적하는 경우 Markdown 체크박스(`- [ ]` / `- [x]`)를 사용하고 진행에 따라 갱신합니다. 설명용 변경이나 가상 작업은 체크박스로 만들지 않습니다. GitHub의 진행 표시 위치·형태는 UI 버전에 따라 다를 수 있습니다.
 - 체크 표시는 해당 작업의 완료만 뜻합니다. `Validation`의 Pass/Fail/Not Verified, GitHub checks, PR Review, Merge 준비 여부는 각각의 근거와 네이티브 상태로 별도 판단합니다.
 - 대화, reviews, checks, agent session과 security result가 한 PR에 함께 보여도 각각의 책임과 근거 수준은 구분합니다.
 
