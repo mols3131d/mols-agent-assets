@@ -21,6 +21,7 @@ def _run_git(root, *args):
     ("path", "expected"),
     [
         ("docs/guide.md", True),
+        ("docs/documentation/indexing.md", True),
         ("docs/references/README.md", True),
         ("docs/references/index.md", True),
         ("docs/AGENTS.md", False),
@@ -45,6 +46,8 @@ def test_docs_index_source_matching(path, expected):
     [
         ("catalog/patterns/README.md", True),
         ("catalog/patterns/example.md", True),
+        ("catalog/patterns/.special.json", True),
+        ("catalog/patterns/.private.md", False),
         ("catalog/skills.json", True),
         ("catalog/plugins.json", True),
         ("catalog/INDEX.tsv", False),
@@ -107,7 +110,9 @@ def test_repository_route_source_matching(path, expected):
     ],
 )
 def test_source_path_selects_only_its_projection_owner(path, expected):
-    assert [projection.name for projection in sync.select_projections({path})] == expected
+    assert [
+        projection.name for projection in sync.select_projections({path})
+    ] == expected
 
 
 @pytest.mark.parametrize(
@@ -123,14 +128,18 @@ def test_source_path_selects_only_its_projection_owner(path, expected):
     ],
 )
 def test_generated_output_selects_its_projection_owner(path, expected):
-    assert [projection.name for projection in sync.select_projections({path})] == expected
+    assert [
+        projection.name for projection in sync.select_projections({path})
+    ] == expected
 
 
 def test_sync_staged_is_noop_when_no_projection_is_affected(monkeypatch, tmp_path):
     monkeypatch.setattr(sync, "staged_paths", lambda root: {"README.md"})
 
     def fail_if_called(root):
-        raise AssertionError("dirty state should not be inspected for an irrelevant commit")
+        raise AssertionError(
+            "dirty state should not be inspected for an irrelevant commit"
+        )
 
     monkeypatch.setattr(sync, "dirty_worktree_paths", fail_if_called)
 

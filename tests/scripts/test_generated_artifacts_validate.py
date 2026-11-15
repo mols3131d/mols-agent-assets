@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import subprocess
 
-from scripts import generated_artifacts_sync as sync
-from scripts import generated_artifacts_validate as validate
+from scripts import (
+    generated_artifacts_sync as sync,
+    generated_artifacts_validate as validate,
+)
 
 
 def test_compare_outputs_reports_missing_outdated_and_stale(tmp_path):
@@ -95,3 +97,87 @@ def test_validate_reports_drift_and_recovery(capsys):
 def test_validate_noop_when_no_projection_is_affected(capsys):
     assert validate.validate(()) == 0
     assert capsys.readouterr().out == "No generated projections affected.\n"
+
+
+def test_compare_outputs_reports_first_line_difference_when_enabled(tmp_path):
+    target = tmp_path / "docs" / "INDEX.tsv"
+    target.parent.mkdir(parents=True)
+    target.write_text("path\tdescription\na.md\tOld.\n", encoding="utf-8")
+
+    drift = validate.compare_outputs(
+        {target: "path\tdescription\na.md\tNew.\n"},
+        lambda path: path == "docs/INDEX.tsv",
+        tmp_path,
+        show_first_difference=True,
+    )
+
+    assert drift == [
+        "outdated: docs/INDEX.tsv",
+        "line 2 current: a.md\tOld.",
+        "line 2 expected: a.md\tNew.",
+    ]
+
+
+def test_check_docs_and_catalog_indexes_delegate_with_presets_and_diff(
+    monkeypatch,
+    tmp_path,
+):
+    from scripts.indexes_generate import IndexConfig
+
+    docs_dir = tmp_path / "docs"
+    docs_dir.mkdir()
+    (docs_dir / "guide.md").write_text(
+        "---\ndescription: New.\n---\n", encoding="utf-8"
+    )
+    (docs_dir / "INDEX.tsv").write_text(
+        "path\tdescription\nguide.md\tOld.\n",
+        encoding="utf-8",
+    )
+
+    catalog_dir = tmp_path / "catalog"
+    catalog_dir.mkdir()
+    (catalog_dir / "skills.json").write_text("[]\n", encoding="utf-8")
+    stale_catalog = catalog_dir / "obsolete" / "INDEX.tsv"
+    stale_catalog.parent.mkdir()
+    stale_catalog.write_text("stale\n", encoding="utf-8")
+
+    presets = {
+        "docs": IndexConfig(docs_dir, prune=True),
+        "catalog": IndexConfig(
+            catalog_dir,
+            extensions=(".md", ".json"),
+            prune=True,
+        ),
+    }
+    monkeypatch.setattr(validate.indexes_generate, "PRESETS", presets)
+
+    real_compare = validate.compare_outputs
+    diff_flags: list[bool] = []
+
+    def compare_with_tmp_root(
+        expected,
+        output_matches,
+        root=tmp_path,
+        *,
+        show_first_difference=False,
+    ):
+        diff_flags.append(show_first_difference)
+        return real_compare(
+            expected,
+            output_matches,
+            tmp_path,
+            show_first_difference=show_first_difference,
+        )
+
+    monkeypatch.setattr(validate, "compare_outputs", compare_with_tmp_root)
+
+    assert validate.check_docs_indexes() == [
+        "outdated: docs/INDEX.tsv",
+        "line 2 current: guide.md\tOld.",
+        "line 2 expected: guide.md\tNew.",
+    ]
+    assert validate.check_catalog_indexes() == [
+        "missing: catalog/INDEX.tsv",
+        "stale: catalog/obsolete/INDEX.tsv",
+    ]
+    assert diff_flags == [True, True]

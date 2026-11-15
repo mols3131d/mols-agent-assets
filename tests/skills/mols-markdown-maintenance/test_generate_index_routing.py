@@ -4,7 +4,6 @@ import csv
 import io
 
 import pytest
-
 from generate_index import generate_index, main
 
 
@@ -256,3 +255,67 @@ def test_generate_index_cli_supports_directory_entrypoint_projection(tmp_path):
     assert output.read_text(encoding="utf-8") == (
         "path\tdescription\nalpha/\tAlpha.\nbeta/\t\n"
     )
+
+
+def test_generate_index_sorts_mixed_case_and_underscore_paths_by_components(tmp_path):
+    _write(tmp_path / "Z_Guide.md", "---\ndescription: Z.\n---\n")
+    _write(tmp_path / "_meta.md", "---\ndescription: Underscore.\n---\n")
+    _write(tmp_path / "a_guide.md", "---\ndescription: Lower.\n---\n")
+    _write(tmp_path / "Beta" / "doc.md", "---\ndescription: Beta.\n---\n")
+    _write(tmp_path / "_nested" / "doc.md", "---\ndescription: Nested.\n---\n")
+    _write(tmp_path / "alpha" / "doc.md", "---\ndescription: Alpha.\n---\n")
+
+    result = generate_index(
+        tmp_path,
+        format="tsv",
+        fields=["path", "description"],
+        max_depth=0,
+        include_directories=True,
+    )
+
+    rows = list(csv.DictReader(io.StringIO(result), delimiter="\t"))
+    assert [row["path"] for row in rows] == [
+        "Beta/",
+        "Z_Guide.md",
+        "_meta.md",
+        "_nested/",
+        "a_guide.md",
+        "alpha/",
+    ]
+
+
+def test_generate_index_exclude_globs_respect_relative_path_scope(tmp_path):
+    _write(tmp_path / "assets" / "ignored.md", "---\ndescription: Ignored.\n---\n")
+    _write(
+        tmp_path / "nested" / "assets" / "spec.md",
+        "---\ndescription: Kept.\n---\n",
+    )
+    _write(tmp_path / "guide" / "draft.md", "---\ndescription: Draft.\n---\n")
+    _write(
+        tmp_path / "other" / "guide" / "draft.md",
+        "---\ndescription: Other.\n---\n",
+    )
+    _write(tmp_path / "hidden" / ".private.md", "# Private\n")
+    _write(tmp_path / "hidden" / "public.md", "---\ndescription: Public.\n---\n")
+
+    result = generate_index(
+        tmp_path,
+        format="tsv",
+        fields=["path", "description"],
+        include_directories=True,
+        include_without_frontmatter=True,
+        exclude_globs=["/assets", "/assets/**", "guide/draft.md", ".*.md"],
+    )
+
+    rows = list(csv.DictReader(io.StringIO(result), delimiter="\t"))
+    assert [row["path"] for row in rows] == [
+        "guide/",
+        "hidden/",
+        "hidden/public.md",
+        "nested/",
+        "nested/assets/",
+        "nested/assets/spec.md",
+        "other/",
+        "other/guide/",
+        "other/guide/draft.md",
+    ]

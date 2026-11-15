@@ -1,10 +1,17 @@
 from __future__ import annotations
 
 import csv
+from pathlib import Path
 
 import pytest
 
-from scripts.indexes_generate import IndexConfig, expected_indexes, main, sync_indexes
+from scripts.indexes_generate import (
+    PRESETS,
+    IndexConfig,
+    expected_indexes,
+    main,
+    sync_indexes,
+)
 
 
 def _write(path, contents):
@@ -335,3 +342,235 @@ def test_min_entries_counts_tsv_records_not_multiline_description_lines(tmp_path
     sync_indexes(config)
     assert [row["path"] for row in _rows(root / "INDEX.tsv")] == ["policy/"]
     assert not (root / "policy" / "INDEX.tsv").exists()
+
+
+def test_presets_match_repository_boundaries():
+    assert PRESETS["docs"].root.name == "docs"
+    assert PRESETS["docs"].traverse_roots == (
+        "development",
+        "documentation",
+        "references",
+        "tools",
+    )
+    assert PRESETS["docs"].prune is True
+    assert PRESETS["catalog"].root.name == "catalog"
+    assert PRESETS["catalog"].extensions == (".md", ".json")
+    assert PRESETS["catalog"].traverse_roots is None
+    assert PRESETS["catalog"].prune is True
+
+
+def test_cli_supports_presets_overrides_check_and_validation_errors(
+    monkeypatch,
+    tmp_path,
+    capsys,
+):
+    docs_dir = tmp_path / "docs"
+    _write(docs_dir / "allowed" / "guide.md", "---\ndescription: Allowed.\n---\n")
+    _write(docs_dir / "blocked" / "note.md", "---\ndescription: Blocked.\n---\n")
+    _write(docs_dir / "allowed" / "alt.txt", "---\ndescription: Text.\n---\n")
+    _write(docs_dir / "allowed" / "entry.md", "---\ndescription: Entry.\n---\n")
+    stale = docs_dir / "stale" / "INDEX.tsv"
+    _write(stale, "stale\n")
+
+    preset_config = IndexConfig(docs_dir, prune=True)
+    monkeypatch.setitem(PRESETS, "docs", preset_config)
+
+    assert main(["--target", "docs", "--check"]) == 1
+    err = capsys.readouterr().err
+    assert "missing: docs/INDEX.tsv" in err
+    assert "stale: docs/stale/INDEX.tsv" in err
+
+    override_args = [
+        "--target",
+        "docs",
+        "--extensions",
+        ".md",
+        ".txt",
+        "--directory-entry-files",
+        "entry.md",
+        "--index-depth",
+        "1",
+        "--depth",
+        "0",
+        "--min-entries",
+        "1",
+        "--traverse-roots",
+        "allowed",
+        "--prune",
+    ]
+    assert main(override_args) == 0
+    assert main([*override_args, "--check"]) == 0
+    assert _rows(docs_dir / "INDEX.tsv") == [
+        {"path": "allowed/", "description": "Entry."},
+        {"path": "blocked/", "description": ""},
+    ]
+    assert _rows(docs_dir / "allowed" / "INDEX.tsv") == [
+        {"path": "alt.txt", "description": "Text."},
+        {"path": "guide.md", "description": "Allowed."},
+    ]
+    assert not stale.exists()
+
+    for bad_args in (
+        ["--root", str(tmp_path / "missing")],
+        ["--root", str(docs_dir), "--depth", "-2"],
+        ["--root", str(docs_dir), "--min-entries", "0"],
+        ["--root", str(docs_dir), "--extensions", ""],
+    ):
+        with pytest.raises(SystemExit) as exc_info:
+            main(bad_args)
+        assert exc_info.value.code == 2
+
+
+def test_metacharacter_empty_and_blocked_dirs_do_not_hide_matching_siblings(
+    tmp_path,
+):
+    root = tmp_path / "docs"
+    _write(root / "[a-z]" / ".hidden.md", "# Empty\n")
+    _write(root / "[b-c]" / "secret.md", "# Blocked\n")
+    _write(root / "a" / "guide.md", "---\ndescription: Letter A.\n---\n")
+    _write(root / "b" / "guide.md", "---\ndescription: Letter B.\n---\n")
+
+    config = IndexConfig(root, depth=-1, traverse_roots=("a", "b"))
+    sync_indexes(config)
+
+    paths = [row["path"] for row in _rows(root / "INDEX.tsv")]
+    assert paths == ["[b-c]/", "a/", "a/guide.md", "b/", "b/guide.md"]
+    assert not (root / "[a-z]" / "INDEX.tsv").exists()
+
+
+def test_empty_root_directory_does_not_suppress_same_named_nested_directory(tmp_path):
+    root = tmp_path / "docs"
+    _write(root / "assets" / ".hidden.md", "# Ignored\n")
+    _write(
+        root / "guide" / "assets" / "spec.md",
+        "---\ndescription: Spec.\n---\n",
+    )
+
+    sync_indexes(IndexConfig(root, depth=-1))
+
+    assert [row["path"] for row in _rows(root / "INDEX.tsv")] == [
+        "guide/",
+        "guide/assets/",
+        "guide/assets/spec.md",
+    ]
+
+
+def test_double_underscore_index_prefixes_are_treated_as_non_content(tmp_path):
+    root = tmp_path / "catalog"
+    _write(root / "only-md" / "__index__v2.md", "# Internal\n")
+    _write(root / "only-json" / "__index__.json", "{}\n")
+    _write(root / "visible" / "item.json", "{}\n")
+
+    sync_indexes(IndexConfig(root, extensions=(".md", ".json")))
+
+    assert _rows(root / "INDEX.tsv") == [{"path": "visible/", "description": ""}]
+    assert not (root / "only-md" / "INDEX.tsv").exists()
+    assert not (root / "only-json" / "INDEX.tsv").exists()
+
+
+def test_index_md_is_indexed_when_not_configured_as_directory_entry_file(tmp_path):
+    root = tmp_path / "docs"
+    _write(root / "section" / "index.md", "---\ndescription: Index doc.\n---\n")
+
+    sync_indexes(IndexConfig(root))
+
+    assert _rows(root / "INDEX.tsv") == [{"path": "section/", "description": ""}]
+    assert _rows(root / "section" / "INDEX.tsv") == [
+        {"path": "index.md", "description": "Index doc."}
+    ]
+
+
+def test_hidden_markdown_files_are_excluded_recursively(tmp_path):
+    root = tmp_path / "docs"
+    _write(root / "hidden-only" / ".private.md", "# Hidden\n")
+    _write(root / "mixed" / ".private.md", "# Hidden\n")
+    _write(root / "mixed" / "public.md", "---\ndescription: Public.\n---\n")
+
+    sync_indexes(IndexConfig(root, depth=-1))
+
+    assert _rows(root / "INDEX.tsv") == [
+        {"path": "mixed/", "description": ""},
+        {"path": "mixed/public.md", "description": "Public."},
+    ]
+
+
+def test_prune_removes_stale_indexes_beyond_index_depth(tmp_path):
+    root = tmp_path / "docs"
+    _write(root / "nested" / "deep" / "guide.md", "---\ndescription: Deep.\n---\n")
+    stale = root / "nested" / "deep" / "INDEX.tsv"
+    _write(stale, "stale\n")
+
+    config = IndexConfig(root, index_depth=0, prune=True)
+    assert sync_indexes(config, check=True) == [
+        "missing: docs/INDEX.tsv",
+        "stale: docs/nested/deep/INDEX.tsv",
+    ]
+    sync_indexes(config)
+    assert (root / "INDEX.tsv").exists()
+    assert not stale.exists()
+
+
+def test_extensions_normalization_and_validation(tmp_path):
+    root = tmp_path / "custom"
+    _write(root / "note.txt", "# Note\n")
+    _write(root / "spec.md", "---\ndescription: Spec.\n---\n")
+
+    sync_indexes(IndexConfig(root, extensions=(" .md ", " txt")))
+    assert [row["path"] for row in _rows(root / "INDEX.tsv")] == [
+        "note.txt",
+        "spec.md",
+    ]
+
+    for invalid in ((), ("",), ("   ",), (".",)):
+        with pytest.raises(ValueError, match="extension"):
+            expected_indexes(IndexConfig(root, extensions=invalid))
+
+
+def test_non_utf8_stale_index_is_unlinked_without_decoding(tmp_path):
+    root = tmp_path / "docs"
+    _write(root / "guide.md", "---\ndescription: Guide.\n---\n")
+    stale = root / "obsolete" / "INDEX.tsv"
+    stale.parent.mkdir(parents=True)
+    stale.write_bytes(b"\xff\xfe\x00")
+
+    config = IndexConfig(root, prune=True)
+    assert sync_indexes(config, check=True) == [
+        "missing: docs/INDEX.tsv",
+        "stale: docs/obsolete/INDEX.tsv",
+    ]
+    sync_indexes(config)
+    assert not stale.exists()
+
+
+def test_symlink_directory_is_ignored_during_index_traversal(monkeypatch, tmp_path):
+    root = tmp_path / "docs"
+    _write(root / "real" / "guide.md", "---\ndescription: Real.\n---\n")
+    linked = root / "linked"
+    linked.mkdir()
+    _write(linked / "loop.md", "---\ndescription: Linked.\n---\n")
+
+    original_is_symlink = Path.is_symlink
+    monkeypatch.setattr(
+        Path,
+        "is_symlink",
+        lambda self: True if self == linked else original_is_symlink(self),
+    )
+
+    expected = expected_indexes(IndexConfig(root))
+    assert set(expected) == {root / "INDEX.tsv", root / "real" / "INDEX.tsv"}
+    assert "linked/" not in expected[root / "INDEX.tsv"]
+
+
+def test_dotdot_root_path_formats_drift_labels_safely(tmp_path):
+    root = tmp_path / "notes"
+    _write(root / "sub" / "guide.md", "---\ndescription: Sub.\n---\n")
+    stale = root / "external" / "INDEX.tsv"
+    _write(stale, "stale\n")
+
+    dotdot_root = root / "sub" / ".."
+    config = IndexConfig(dotdot_root, prune=True)
+    assert sync_indexes(config, check=True) == [
+        "missing: notes/INDEX.tsv",
+        "stale: notes/external/INDEX.tsv",
+        "missing: notes/sub/INDEX.tsv",
+    ]
