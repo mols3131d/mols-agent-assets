@@ -1,15 +1,14 @@
 {
   "$schema": "https://github.com/dyoshikawa/rulesync/releases/latest/download/config-schema.json",
   "targets": {
-    "claudecode": ["rules", "skills", "subagents", "commands", "hooks"],
-    "codexcli": ["skills", "subagents", "hooks"],
-    "copilot": ["rules", "skills", "subagents", "commands", "hooks"],
-    "copilotcli": ["rules", "skills", "subagents", "hooks"],
-    "antigravity-ide": ["rules", "skills", "subagents", "commands", "hooks"],
-    "antigravity-cli": ["rules", "skills", "subagents", "commands", "hooks"]
+    "claudecode": ["rules", "skills"],
+    "codexcli": ["skills"],
+    "copilot": ["rules", "skills"],
+    "copilotcli": ["rules", "skills"],
+    "antigravity-ide": ["rules", "skills"],
+    "antigravity-cli": ["rules", "skills"]
   },
   "outputRoots": ["."],
-  "preserveUnownedHooks": true,
   "sources": [
     {
       "source": "mols3131d/mols-agent-assets",
