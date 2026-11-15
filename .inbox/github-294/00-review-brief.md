@@ -23,7 +23,7 @@
 
 ### P0 운영 결정 (2026-11-09)
 
-추가 App/PAT/새 workflow 없이 **원본 브랜치에 먼저 push → 생성 파일 bot commit 완료 확인 → PR 새로 생성**하는 순서를 기본으로 한다. `pull_request: opened`는 정상적으로 required `PR Gate`를 실행할 수 있다. 열린 PR에 후속 source push가 들어오는 경우는 여전히 기본 토큰의 자동 재트리거 한계가 있으므로, [handoff.md](handoff.md)의 사람 계정 후속 push로 최신 후보를 재검증한다. 이는 **운영상 부분 해결**이며 완전 무인 해결은 아니다.
+추가 App/PAT/새 workflow 없이 **원본 브랜치에 먼저 push → 생성 파일 bot commit 완료 확인 → PR 새로 생성**하는 순서를 기본으로 한다. `pull_request: opened`는 정상적으로 required `PR Gate`를 실행할 수 있다. 열린 PR에 후속 source push가 들어오는 경우는 여전히 기본 토큰의 자동 재트리거 한계가 있으므로, [01-handoff.md](01-handoff.md)의 사람 계정 후속 push로 최신 후보를 재검증한다. 이는 **운영상 부분 해결**이며 완전 무인 해결은 아니다.
 
 워크플로에는 생성 파일 커밋 직후 이 제한을 알리는 notice를 추가했다. Notice를 실제 검사 실행·승인으로 오해하지 않는다. 사람의 workflow 독립 리뷰 및 E2E 테스트 전에는 Draft를 유지한다.
 
@@ -60,4 +60,4 @@
 1. `contents: write`가 필요한 단계, `main` 차단, generated-only staging, no-diff 분기를 확인한다.
 1. source 필터가 generator dependency와 맞는지, 출력 파일만 변경될 때 재실행하지 않는지 확인한다.
 1. Required `PR Gate`가 봇 커밋 이후 다시 실행되지 않는 제한을 수용할지 결정한다. 수용하지 않으면 Draft를 유지하고 설계를 수정한다.
-1. [handoff.md](handoff.md)의 재현 시나리오와 복구 기준으로 post-merge 검증 계획을 확정한다.
+1. [01-handoff.md](01-handoff.md)의 재현 시나리오와 복구 기준으로 post-merge 검증 계획을 확정한다.

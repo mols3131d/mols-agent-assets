@@ -4,7 +4,7 @@
 
 - 대상: [PR #294](https://github.com/mols3131d/mols-agent-assets/pull/294), `mols3131d/mols-agent-assets`.
 - 2026-11-09 기준 검토. 이 문서는 **제안/인계용 비정본**이다. 구현을 승인하거나 완료한 기록이 아니다.
-- 정본: [CI 정책](../../docs/development/ci.md), [GitHub 정책](../../docs/development/github.md), [PR #294 리뷰](review-brief.md), [운영 인계](handoff.md).
+- 정본: [CI 정책](../../docs/development/ci.md), [GitHub 정책](../../docs/development/github.md), [PR #294 리뷰](00-review-brief.md), [운영 인계](01-handoff.md).
 - 기존 자동화: `.github/workflows/branch-check.yml`(push 검사), `.github/workflows/pr-gate.yml`(main 대상 PR required check), `lefthook.yml`(로컬 생성·커밋 검증), `mise.toml`(명령 진입점), PR #294의 `generated-sync.yml`(생성·커밋 제안).
 
 ## 지금 남길 일: 1개
@@ -47,7 +47,7 @@
 ## 다음 작업자 인계
 
 1. 같은 계정 `mols3131d`에서 PR #294의 실제 최신 head/base, required checks, 다른 수정 여부를 조회한다.
-2. [기존 인계](handoff.md)의 no-op/source-change/E2E 시나리오를 **별도 안전한 작업 브랜치**에서 수행하고 로그·커밋 SHA를 남긴다. Actions workflow는 권한 있는 실행 표면이므로 사람의 독립 검토·승인 없이 merge하지 않는다.
+2. [기존 인계](01-handoff.md)의 no-op/source-change/E2E 시나리오를 **별도 안전한 작업 브랜치**에서 수행하고 로그·커밋 SHA를 남긴다. Actions workflow는 권한 있는 실행 표면이므로 사람의 독립 검토·승인 없이 merge하지 않는다.
 3. GitHub 기본 토큰이 후속 검증을 생략하는지 **실제 repo 결과**로 확인한다. 재검증이 필요한 경우 사람의 승인된 push로 후속 검증을 실행한다. 최신 required Gate 확인 전 병합 금지.
 4. 안정화 이후 별도 후보를 구현하지 않는다. 반복된 시간 지연, 외부 fetch 장애, 손실 사고 등 **관찰된 불편**이 생긴 항목만 좁은 별도 PR로 재검토한다.
 

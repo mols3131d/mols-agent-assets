@@ -89,4 +89,4 @@
 4. R3의 본문 메타데이터를 최종 작업 head 기준으로 갱신한다.
 5. 사람 승인 및 최신 required checks 확인 후에만 Draft 해제·squash merge를 검토한다.
 
-세부 실행은 [심층 리뷰 인계](review-handoff-2026-11-12.md)에 둔다. [2026-11-10 독립 리뷰](review-report-independent-2026-11-10.md)는 이전 revision에 대한 스냅샷으로 유지한다. 이 보고서가 커밋된 뒤 생성되는 새 head의 검증은 별개다.
+세부 실행은 [심층 리뷰 인계](06-review-handoff-2026-11-12.md)에 둔다. [2026-11-10 독립 리뷰](04-review-report-independent-2026-11-10.md)는 이전 revision에 대한 스냅샷으로 유지한다. 이 보고서가 커밋된 뒤 생성되는 새 head의 검증은 별개다.

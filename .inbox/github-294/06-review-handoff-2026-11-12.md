@@ -1,6 +1,6 @@
 # PR #294 — 심층 리뷰 후속 작업 인계 (2026-11-12)
 
-> **상태: HANDOFF / Draft 유지.** [심층 리뷰](review-report-deep-2026-11-12.md)의 R1·R2와 승인·E2E 게이트를 해소한다. 이 문서는 실행 권한이나 사람의 승인이 아니다.
+> **상태: HANDOFF / Draft 유지.** [심층 리뷰](05-review-report-deep-2026-11-12.md)의 R1·R2와 승인·E2E 게이트를 해소한다. 이 문서는 실행 권한이나 사람의 승인이 아니다.
 
 ## 작업 기준
 
@@ -8,7 +8,7 @@
 - 작업 브랜치: `mols/chore/generated-sync-on-push`; **리뷰 시작 시점**의 base `fa5be3bd63e9c29c30017b9e8c833018c092b9a7`, head `e533656aea161764c5d7f1aceb5fd1390cd09e21`. 이후 문서 커밋으로 head는 달라진다.
 - 실행 계정: `mols3131d`의 승인된 GitHub 연결 `main`. 승인 없이 다른 연결·계정·명의를 사용하지 않는다.
 - 본 작업은 이미 존재하는 [generated-sync.yml](../../.github/workflows/generated-sync.yml)의 안전한 사용 가능성을 확인하는 범위다. 기존 generator·`PR Gate`·`Branch Check`·Ruleset·`main`은 임의 변경하지 않는다.
-- [GitHub 정책](../../docs/development/github.md), [CI 정책](../../docs/development/ci.md), [기존 인계](handoff.md), 최신 PR 상태가 충돌하면 정책과 실제 상태를 우선하고 차이를 기록한다.
+- [GitHub 정책](../../docs/development/github.md), [CI 정책](../../docs/development/ci.md), [기존 인계](01-handoff.md), 최신 PR 상태가 충돌하면 정책과 실제 상태를 우선하고 차이를 기록한다.
 
 ## 우선순위별 작업
 

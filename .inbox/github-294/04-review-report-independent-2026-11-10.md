@@ -5,7 +5,7 @@
 - 대상: [PR #294](https://github.com/mols3131d/mols-agent-assets/pull/294) · `mols3131d/mols-agent-assets`
 - 리뷰 스냅샷: base `fa5be3bd63e9c29c30017b9e8c833018c092b9a7`, head `5a0c39101a3aa25ea4e302633302b9cc3501f47f`
 - 변경: [`generated-sync.yml`](../../.github/workflows/generated-sync.yml) 1개와 `.inbox/github-294/` 문서 4개. 기존 generator, `Branch Check`, `PR Gate`, Ruleset 변경 없음
-- 이전 [리뷰 보고서](review-report.md)는 이전 revision의 근거로 보존한다. 본 문서는 위 SHA의 **독립적인 읽기 전용 검토 스냅샷**이며, 보고서 추가 후의 새 head를 검증한 것은 아니다
+- 이전 [리뷰 보고서](03-review-report.md)는 이전 revision의 근거로 보존한다. 본 문서는 위 SHA의 **독립적인 읽기 전용 검토 스냅샷**이며, 보고서 추가 후의 새 head를 검증한 것은 아니다
 
 ## Findings 및 판단
 
@@ -67,7 +67,7 @@ PR 브랜치에서 확인한 Actions 실행 기록 35건 중 신규 `Sync Genera
 ## 후속 작업 및 종료 조건
 
 1. 사람이 쓰기 권한, 실행 트리거, stage 대상, generator 호출을 독립 검토하고 테스트 실행을 명시적으로 승인한다.
-2. 승인된 격리 브랜치에서 [handoff.md](handoff.md)의 no-op, generated-only bot commit, 실패·복구 사례를 실행하고 SHA·run URL을 기록한다. 미수행 검증은 Not Verified로 보존한다.
+2. 승인된 격리 브랜치에서 [01-handoff.md](01-handoff.md)의 no-op, generated-only bot commit, 실패·복구 사례를 실행하고 SHA·run URL을 기록한다. 미수행 검증은 Not Verified로 보존한다.
 3. 기존 PR에 봇 커밋이 생긴 뒤 최신 PR 후보의 필수 check가 실제로 유효한지 확인한다. 수동 재검증 비용을 수용할지 결정한다.
 4. 최신 base/head와 required checks, 사람 승인 후에만 Draft 해제 및 squash merge를 검토한다. 인증 확장·Ruleset 완화·검증 우회는 별도 승인 없이 수행하지 않는다.
 
