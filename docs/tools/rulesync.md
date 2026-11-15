@@ -31,7 +31,8 @@ Transport나 lock schema를 이전할 때 config와 lock의 source 표기를 맞
 - 재사용 Rule·Skill·Subagent·Command는 실제로 의미 있게 projection할 수 있는 `targets`를 명시합니다. 생략이나 `targets: ["*"]`에 의존하지 않으며 source framework·runtime이 필요한 자산 유형과 의미를 지원하는 target만 선언합니다. Hook은 Rulesync의 native hook source와 target별 adapter를 따릅니다.
 - Library는 Subagent의 기존 지원을 유지하고 Hook·Command feature를 확장합니다. Root self-consumer도 지원 feature를 선언하지만 외부 Subagent를 자동 설치하지는 않습니다. 작성된 Hook·Command가 없으면 활성화만으로 실행 동작이 생기지 않습니다.
 - Project-scope에서는 Codex CLI의 global-only Commands와 미지원인 Copilot CLI Commands를 활성화하지 않습니다. Antigravity Commands는 Skills로 projection되므로 동명 Skill과 충돌 여부를 확인합니다.
-- Hook 생성은 기존 설정에 영향을 줄 수 있습니다. `preserveUnownedHooks`는 Claude Code·Codex CLI의 미소유 handler 보존에 사용하며 나머지 대상에 동일한 보호를 가정하지 않습니다. 실제 Hook을 추가하거나 생성할 때는 대상의 기존 handler와 preview diff, 실행 부작용을 확인하고 명시적으로 생성합니다.
+- Hook 생성은 기존 handler를 교체할 수 있습니다. `preserveUnownedHooks`는 일부 target에만 적용되며, 생성된 `.rulesync-hooks-lock.json`이 기존 Rulesync 소유 handler의 이력을 보존합니다. 실제 Hook을 배포할 때는 해당 lock도 유지하고 preview diff와 실행 부작용을 확인합니다.
+- Antigravity IDE·CLI는 프로젝트 `.agents/` 경로를 공유하고 Hook 파일을 전체 교체합니다. 상충하는 target별 Hook 구성을 같은 출력 루트에 생성하지 않습니다.
 - `agentsskills`는 vendor support ceiling에 포함하지 않습니다. Root self-consumer·ChatGPT compatibility처럼 실제 내부 consumer가 필요한 Skill에만 internal projection target으로 사용하며, Agent Skills 생태계 전체의 지원을 뜻하지 않습니다.
 
 ## 권장 버전 정책
