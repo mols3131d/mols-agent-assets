@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from collections.abc import Callable, Iterable
 from pathlib import Path
 
@@ -15,6 +16,7 @@ CANONICAL_SUBAGENTS = CANONICAL_ASSET_ROOT / "subagents"
 DISTRIBUTION_ROUTE_DIR = ROOT / "route"
 DISTRIBUTION_ROUTES_PATH = DISTRIBUTION_ROUTE_DIR / "routes.jsonl"
 DISTRIBUTION_SKILL_ROUTE = DISTRIBUTION_ROUTE_DIR / "skills.jsonl"
+DISTRIBUTION_SKILL_BRIEF_ROUTE = DISTRIBUTION_ROUTE_DIR / "skills-brief.jsonl"
 DISTRIBUTION_SUBAGENT_ROUTE = DISTRIBUTION_ROUTE_DIR / "subagents.jsonl"
 REPOSITORY_LOCAL_ROUTE_DIR = ROOT / ".agents/route"
 RAW_ROOT = (
@@ -39,6 +41,11 @@ SKILL_INSTRUCTION = (
     "continue without loading one. Re-evaluate selection when the task materially changes. "
     "This file is derived discovery metadata; the referenced canonical Skill remains "
     "authoritative."
+)
+BRIEF_SKILL_INSTRUCTION = (
+    "Select by name and short description; load only relevant canonical sources. "
+    "If the choice is ambiguous, consult route/skills.jsonl for complete descriptions first. "
+    "A short description is a routing hint, not the full applicability contract."
 )
 SUBAGENT_INSTRUCTION = (
     "When this Subagent route is loaded for a task, select only task-relevant Subagents by "
@@ -102,6 +109,26 @@ def render_skill_route(
     )
 
 
+def render_skill_brief_route(full_route: str) -> str:
+    """First-sentence discovery hints; the full route remains available on demand."""
+    rows = [json.loads(line) for line in full_route.splitlines()]
+    entries = [
+        {
+            "name": row["name"],
+            "description": re.split(r"(?<=[.!?])\s+", row["description"].strip(), maxsplit=1)[0],
+            "source": row["source"],
+        }
+        for row in rows[1:]
+    ]
+    return "".join(
+        json.dumps(row, ensure_ascii=False, separators=(",", ":")) + "\n"
+        for row in [
+            {"_meta": {"kind": "skills", "instructions": BRIEF_SKILL_INSTRUCTION}},
+            *entries,
+        ]
+    )
+
+
 def render_subagent_route(
     directory: Path | None = None,
     source_template: str = SUBAGENT_SOURCE_TEMPLATE,
@@ -135,10 +162,12 @@ def generate() -> dict[Path, str]:
             {
                 "name": "skills",
                 "description": "작업 수행 방법을 선택·보강하는 reusable Skill",
-                "source": f"{RAW_ROOT}/route/skills.jsonl",
+                "source": f"{RAW_ROOT}/route/skills-brief.jsonl",
             }
         )
-        asset_outputs[DISTRIBUTION_SKILL_ROUTE] = render_skill_route()
+        full_route = render_skill_route()
+        asset_outputs[DISTRIBUTION_SKILL_ROUTE] = full_route
+        asset_outputs[DISTRIBUTION_SKILL_BRIEF_ROUTE] = render_skill_brief_route(full_route)
 
     if next(CANONICAL_SUBAGENTS.glob("*.md"), None) is not None:
         route_rows.append(
