@@ -57,7 +57,7 @@
 - [ ] 독립적 human review가 privileged workflow·App scope·artifact trust boundary를 검사했다.
 - [ ] default-branch **disabled writer bootstrap**을 어떤 PR/commit으로 도입했는지 추적 가능하다. 해당 merge는 사람의 별도 명시적 승인으로 수행했다.
 - [ ] GitHub App 소유자/설치 scope/contents permission이 정확히 한 저장소로 제한되어 있다. 사용자 승인 없이 설치·수정하지 않았다.
-- [ ] repository variable `GENERATED_SYNC_APP_CLIENT_ID`와 secret `GENERATED_SYNC_APP_PRIVATE_KEY`의 **존재·참조 성공 여부**만 확인하고 실제 값을 로그·이슈·PR·Git에 남기지 않았다.
+- [ ] `main` 제한 Environment `generated-writeback`의 Variable `GENERATED_SYNC_APP_CLIENT_ID`와 Secret `GENERATED_SYNC_APP_PRIVATE_KEY`의 **존재·참조 성공 여부**만 확인했다. Source-branch Producer/PR Gate에서 Secret을 읽을 수 없는지 검증했으며, 실제 값을 로그·이슈·PR·Git에 남기지 않았다. 환경 기능이 불가하면 대안을 사람에게 별도 승인받는다.
 - [ ] 승인된 isolated E2E에서 E01/E02/E03/E04/E05/E07/E09가 통과했다. 못 한 항목은 설명과 함께 Not Verified다.
 - [ ] `PR Gate`와 `Branch Check`의 read-only admission/diagnostic 정책이 그대로 유지됐다.
 - [ ] 장애·roll-back 경로(토큰 비활성/설치 중단/producer read-only 계속 유지)가 승인된 통제 범위에서 검증됐다.
