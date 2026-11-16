@@ -1,5 +1,10 @@
 name: Trusted Generated Writer
 
+# 활성화 제어용 Repository Variables:
+#   - GENERATED_SYNC_WRITER_ENABLED: 'true'일 때만 활성화 (미설정 시 fail-closed)
+#   - GENERATED_SYNC_WRITER_ALLOWED_BRANCHES: 쉼표/공백 구분 브랜치 allowlist 또는 '*'
+# App 인증 정보는 main 브랜치로 제한된 Environment('generated-writeback')에 둔다.
+
 on:
   workflow_run:
     workflows:
@@ -9,7 +14,7 @@ on:
 
 concurrency:
   group: >-
-    generated-writer-${{ github.event.workflow_run.head_repository.id }}-${{ github.event.workflow_run.head_branch }}
+    generated-writer-${{ github.event.workflow_run.head_repository.id || github.repository_id }}-${{ github.event.workflow_run.head_branch || github.event.workflow_run.id }}
   cancel-in-progress: false
 
 permissions: {}
@@ -23,6 +28,8 @@ jobs:
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.event == 'push' &&
       github.event.workflow_run.head_repository.id == github.event.repository.id &&
+      github.event.workflow_run.head_branch != '' &&
+      github.event.workflow_run.head_branch != null &&
       github.event.workflow_run.head_branch != github.event.repository.default_branch
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -62,6 +69,7 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ github.token }}
           path: ${{ runner.temp }}/preflight-artifact
+          skip-decompress: true
 
       - name: Validate artifact and stage candidate diff
         id: prepare
@@ -76,6 +84,7 @@ jobs:
           uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts_writer
           prepare-write
           --artifact-dir "${RUNNER_TEMP}/preflight-artifact"
+          --extract-dir "${RUNNER_TEMP}/preflight-extracted"
           --target-dir "${RUNNER_TEMP}/preflight-repo"
 
   write:
@@ -133,6 +142,7 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ github.token }}
           path: ${{ runner.temp }}/write-artifact
+          skip-decompress: true
 
       - name: Re-validate artifact and stage candidate diff
         id: prepare
@@ -147,6 +157,7 @@ jobs:
           uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts_writer
           prepare-write
           --artifact-dir "${RUNNER_TEMP}/write-artifact"
+          --extract-dir "${RUNNER_TEMP}/write-extracted"
           --target-dir "${RUNNER_TEMP}/write-repo"
           --state-file "${RUNNER_TEMP}/write-state.json"
 

@@ -15,6 +15,8 @@ import tempfile
 import urllib.error
 import urllib.parse
 import urllib.request
+import zipfile
+import zlib
 from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
@@ -31,6 +33,7 @@ COMMIT_MESSAGE = "chore(generated): sync indexes and routes"
 
 MAX_METADATA_BYTES = 1 * 1024 * 1024
 MAX_FILE_COUNT = 500
+MAX_SCAN_ENTRIES = MAX_FILE_COUNT + 64
 MAX_FILE_BYTES = 5 * 1024 * 1024
 MAX_TOTAL_PAYLOAD_BYTES = 20 * 1024 * 1024
 MAX_ARTIFACT_ARCHIVE_BYTES = 25 * 1024 * 1024
@@ -96,12 +99,14 @@ class Decision:
 
 
 def is_safe_relative_posix_path(path: str) -> bool:
-    """경로 순회나 제어 문자가 없는 순수 POSIX 상대 경로인지 검사한다."""
+    """경로 순회, surrogate, 제어 문자가 없는 순수 POSIX 상대 경로인지 검사한다."""
     if not path or "\\" in path or path.startswith("/") or path.endswith("/"):
         return False
     if "//" in path:
         return False
-    if any(ord(ch) < 32 or ord(ch) == 127 for ch in path):
+    if any(
+        ord(ch) < 32 or ord(ch) == 127 or 0xD800 <= ord(ch) <= 0xDFFF for ch in path
+    ):
         return False
     parts = path.split("/")
     if any(part in {"", ".", "..", ".git"} for part in parts):
@@ -136,7 +141,7 @@ def is_allowed_generated_output(path: str) -> bool:
 
 def validate_source_branch(branch: str, default_branch: str = "main") -> str:
     """원본 브랜치 이름이 안전한 non-default 브랜치인지 검증한다."""
-    if not branch or branch in {default_branch, "main", "HEAD"}:
+    if not branch or branch in {default_branch, "main", "HEAD", "@"}:
         raise WriterSecurityError(f"허용되지 않는 대상 브랜치입니다: {branch!r}")
     if branch.startswith(("refs/", "-", "/")) or branch.endswith(("/", ".", ".lock")):
         raise WriterSecurityError(f"안전하지 않은 브랜치 이름 형식입니다: {branch!r}")
@@ -213,10 +218,12 @@ def verify_workflow_run_event(
             f"실행할 수 있습니다: {github_ref}"
         )
 
-    expected_repo_id = _require_int(
-        int(github_repository_id) if github_repository_id.isdigit() else None,
-        "GITHUB_REPOSITORY_ID",
+    parsed_repo_id = (
+        int(github_repository_id)
+        if github_repository_id.isascii() and github_repository_id.isdigit()
+        else None
     )
+    expected_repo_id = _require_int(parsed_repo_id, "GITHUB_REPOSITORY_ID")
     event_repo_id = _require_int(repo.get("id"), "repository.id")
     event_repo_name = _require_nonempty_str(
         repo.get("full_name"), "repository.full_name"
@@ -271,7 +278,12 @@ def verify_workflow_run_event(
         raise WriterSecurityError(f"유효하지 않은 head_sha입니다: {head_sha!r}")
 
     run_id = _require_int(run.get("id"), "workflow_run.id")
-    run_attempt = _require_int(run.get("run_attempt") or 1, "workflow_run.run_attempt")
+    raw_attempt = run.get("run_attempt")
+    run_attempt = (
+        1
+        if raw_attempt is None
+        else _require_int(raw_attempt, "workflow_run.run_attempt")
+    )
 
     provenance = Provenance(
         repository_id=expected_repo_id,
@@ -293,7 +305,7 @@ def make_github_api_requester(
     token: str,
     api_url: str = DEFAULT_API_URL,
 ) -> Callable[[str], tuple[int, dict[str, Any]]]:
-    """Read-only GitHub REST API JSON 호출기를 만든다."""
+    """GitHub REST API JSON 호출기를 만든다."""
     base = api_url.rstrip("/")
 
     def request(path: str) -> tuple[int, dict[str, Any]]:
@@ -317,6 +329,14 @@ def make_github_api_requester(
             except json.JSONDecodeError:
                 parsed = {"message": body}
             return exc.code, parsed
+        except (
+            urllib.error.URLError,
+            TimeoutError,
+            OSError,
+            UnicodeDecodeError,
+            json.JSONDecodeError,
+        ) as exc:
+            raise WriterSecurityError(f"GitHub API 요청 실패 ({path}): {exc}") from exc
 
     return request
 
@@ -397,56 +417,237 @@ def get_bot_identity(
     return login, f"{bot_id}+{login}@users.noreply.github.com"
 
 
-def _scan_artifact_tree(root: Path) -> set[str]:
-    """Symlink와 비정규 파일을 거부하며 artifact 내부 파일 목록을 수집한다."""
+def _write_regular_file_nofollow(dest: Path, data: bytes) -> None:
+    """Symlink 추적을 차단한 채 일반 파일을 원자적으로 기록한다."""
+    try:
+        st = os.lstat(dest)
+    except FileNotFoundError:
+        pass
+    else:
+        if stat.S_ISLNK(st.st_mode) or not stat.S_ISREG(st.st_mode):
+            raise WriterSecurityError(f"대상 경로가 일반 파일이 아닙니다: {dest}")
+
+    flags = (
+        os.O_WRONLY
+        | os.O_CREAT
+        | os.O_TRUNC
+        | getattr(os, "O_NOFOLLOW", 0)
+        | getattr(os, "O_BINARY", 0)
+    )
+    try:
+        fd = os.open(dest, flags, 0o644)
+    except OSError as exc:
+        raise WriterSecurityError(f"대상 파일 열기 실패 ({dest}): {exc}") from exc
+    try:
+        view = memoryview(data)
+        written = 0
+        while written < len(view):
+            written += os.write(fd, view[written:])
+    finally:
+        os.close(fd)
+
+
+def extract_artifact_zip(zip_path: Path, extract_dir: Path) -> Path:
+    """zip archive의 크기·개수·symlink 상한을 검증한 뒤 안전하게 압축 해제한다."""
+    try:
+        zip_stat = os.lstat(zip_path)
+    except OSError as exc:
+        raise WriterSecurityError(f"Artifact zip을 읽을 수 없습니다: {exc}") from exc
+    if stat.S_ISLNK(zip_stat.st_mode) or not stat.S_ISREG(zip_stat.st_mode):
+        raise WriterSecurityError(f"Artifact zip이 일반 파일이 아닙니다: {zip_path}")
+    if zip_stat.st_size <= 0 or zip_stat.st_size > MAX_ARTIFACT_ARCHIVE_BYTES:
+        raise WriterSecurityError(
+            f"Artifact zip 크기가 허용 범위를 벗어났습니다: {zip_stat.st_size}"
+        )
+
+    if extract_dir.is_symlink():
+        raise WriterSecurityError(f"추출 디렉터리가 symlink입니다: {extract_dir}")
+    if extract_dir.exists():
+        shutil.rmtree(extract_dir)
+    extract_dir.mkdir(parents=True)
+
+    try:
+        with zipfile.ZipFile(zip_path, "r") as zfile:
+            infos = zfile.infolist()
+            if len(infos) > MAX_SCAN_ENTRIES:
+                raise WriterSecurityError(
+                    f"Artifact zip 항목 수가 허용 제한을 초과했습니다: {len(infos)}"
+                )
+
+            seen_files: set[str] = set()
+            total_payload_bytes = 0
+
+            for info in infos:
+                if info.flag_bits & 0x1:
+                    raise WriterSecurityError("암호화된 zip 항목은 허용되지 않습니다.")
+
+                unix_mode = (info.external_attr >> 16) & 0o170000
+                if stat.S_ISLNK(unix_mode):
+                    raise WriterSecurityError(
+                        f"Artifact zip 내 symlink는 허용되지 않습니다: {info.filename}"
+                    )
+                if unix_mode not in {0, stat.S_IFREG, stat.S_IFDIR}:
+                    raise WriterSecurityError(
+                        "Artifact zip 내 비정규 항목은 허용되지 않습니다: "
+                        f"{info.filename}"
+                    )
+
+                raw_name = info.filename
+                if info.is_dir() or raw_name.endswith("/"):
+                    dir_rel = raw_name.rstrip("/")
+                    if dir_rel and not is_safe_relative_posix_path(dir_rel):
+                        raise WriterSecurityError(
+                            f"안전하지 않은 zip 디렉터리 경로입니다: {raw_name!r}"
+                        )
+                    continue
+
+                if not is_safe_relative_posix_path(raw_name):
+                    raise WriterSecurityError(
+                        f"안전하지 않은 zip 파일 경로입니다: {raw_name!r}"
+                    )
+                if raw_name in seen_files:
+                    raise WriterSecurityError(
+                        f"Artifact zip에 중복 파일이 있습니다: {raw_name}"
+                    )
+                seen_files.add(raw_name)
+
+                top_name = raw_name.split("/", 1)[0]
+                if raw_name == "files" or top_name not in {"metadata.json", "files"}:
+                    raise WriterSecurityError(
+                        f"허용되지 않은 최상위 zip 항목입니다: {raw_name}"
+                    )
+
+                entry_cap = (
+                    MAX_METADATA_BYTES
+                    if raw_name == "metadata.json"
+                    else MAX_FILE_BYTES
+                )
+                if info.file_size < 0 or info.file_size > entry_cap:
+                    raise WriterSecurityError(
+                        f"Artifact zip 항목 크기 초과: {raw_name}={info.file_size}"
+                    )
+
+                with zfile.open(info, "r") as member:
+                    data = member.read(entry_cap + 1)
+                if len(data) > entry_cap:
+                    raise WriterSecurityError(
+                        "Artifact zip 실제 압축 해제 크기가 제한을 초과했습니다: "
+                        f"{raw_name}"
+                    )
+                if raw_name != "metadata.json":
+                    total_payload_bytes += len(data)
+                    if total_payload_bytes > MAX_TOTAL_PAYLOAD_BYTES:
+                        raise WriterSecurityError(
+                            "Artifact zip 총 압축 해제 크기가 제한을 초과했습니다."
+                        )
+
+                dest = extract_dir / raw_name
+                _ensure_no_symlink_components(extract_dir, raw_name)
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                _write_regular_file_nofollow(dest, data)
+    except (zipfile.BadZipFile, NotImplementedError, EOFError, zlib.error) as exc:
+        raise WriterSecurityError(f"손상된 artifact zip입니다: {exc}") from exc
+
+    return extract_dir
+
+
+def resolve_artifact_directory(
+    artifact_path: Path,
+    extract_dir: Path | None = None,
+) -> Path:
+    """`.zip` 파일, `skip-decompress` 디렉터리 또는 이미 추출된 디렉터리를 해석한다."""
+    if artifact_path.is_symlink():
+        raise WriterSecurityError(f"Artifact 경로가 symlink입니다: {artifact_path}")
+    if artifact_path.is_file():
+        if artifact_path.suffix != ".zip":
+            raise WriterSecurityError(
+                f"지원하지 않는 artifact 파일 형식입니다: {artifact_path}"
+            )
+        target_extract = (
+            extract_dir
+            if extract_dir is not None
+            else artifact_path.parent / f"{artifact_path.stem}-extracted"
+        )
+        return extract_artifact_zip(artifact_path, target_extract)
+
+    if not artifact_path.is_dir():
+        raise WriterSecurityError(f"Artifact 경로를 찾을 수 없습니다: {artifact_path}")
+
+    zip_name = f"{EXPECTED_ARTIFACT_NAME}.zip"
+    children = list(artifact_path.iterdir())
+    if len(children) == 1 and children[0].name == zip_name:
+        if children[0].is_symlink() or not children[0].is_file():
+            raise WriterSecurityError(
+                f"유효하지 않은 artifact zip입니다: {children[0]}"
+            )
+        target_extract = (
+            extract_dir if extract_dir is not None else artifact_path / "_extracted"
+        )
+        return extract_artifact_zip(children[0], target_extract)
+
+    return artifact_path
+
+
+def _scan_artifact_tree(root: Path) -> tuple[set[str], set[str]]:
+    """Symlink·비정규 파일·빈 비허용 디렉터리를 거부하며 artifact 목록을 수집한다."""
     if root.is_symlink() or not root.is_dir():
         raise WriterSecurityError(f"유효하지 않은 artifact 루트 디렉터리입니다: {root}")
 
     found_files: set[str] = set()
+    found_dirs: set[str] = set()
+    seen_entries = 0
 
     def walk(directory: Path) -> None:
+        nonlocal seen_entries
         entries = sorted(directory.iterdir(), key=lambda p: p.name)
         for entry in entries:
+            seen_entries += 1
+            if seen_entries > MAX_SCAN_ENTRIES:
+                raise WriterSecurityError(
+                    "Artifact 항목 수가 허용 제한을 초과했습니다."
+                )
             mode = os.lstat(entry).st_mode
             if stat.S_ISLNK(mode):
                 raise WriterSecurityError(
                     f"Artifact 내 symlink는 허용되지 않습니다: {entry}"
-                )
-            if stat.S_ISDIR(mode):
-                walk(entry)
-                continue
-            if not stat.S_ISREG(mode):
-                raise WriterSecurityError(
-                    f"Artifact 내 비정규 파일은 허용되지 않습니다: {entry}"
                 )
             rel = entry.relative_to(root).as_posix()
             if not is_safe_relative_posix_path(rel):
                 raise WriterSecurityError(
                     f"안전하지 않은 artifact 상대 경로입니다: {rel!r}"
                 )
+            if stat.S_ISDIR(mode):
+                found_dirs.add(rel)
+                walk(entry)
+                continue
+            if not stat.S_ISREG(mode):
+                raise WriterSecurityError(
+                    f"Artifact 내 비정규 파일은 허용되지 않습니다: {entry}"
+                )
             found_files.add(rel)
 
     walk(root)
-    return found_files
+    return found_files, found_dirs
 
 
 def validate_artifact_payload(
     artifact_dir: Path, provenance: Provenance
 ) -> ValidatedPayload:
     """다운로드된 Producer artifact의 무결성·provenance·허용 경로를 검증한다."""
-    all_entries = _scan_artifact_tree(artifact_dir)
-    if "metadata.json" not in all_entries:
+    all_files, all_dirs = _scan_artifact_tree(artifact_dir)
+    if "metadata.json" not in all_files:
         raise WriterSecurityError("Artifact에 metadata.json이 없습니다.")
 
-    top_levels = {entry.split("/", 1)[0] for entry in all_entries}
+    top_levels = {entry.split("/", 1)[0] for entry in (all_files | all_dirs)}
     unexpected_top = top_levels - {"metadata.json", "files"}
-    if unexpected_top:
+    if unexpected_top or "files" in all_files:
+        bad_top = sorted(unexpected_top or {"files"})
         raise WriterSecurityError(
-            f"허용되지 않은 최상위 artifact 항목입니다: {sorted(unexpected_top)}"
+            f"허용되지 않은 최상위 artifact 항목입니다: {bad_top}"
         )
 
     metadata_path = artifact_dir / "metadata.json"
-    if metadata_path.stat().st_size > MAX_METADATA_BYTES:
+    if os.lstat(metadata_path).st_size > MAX_METADATA_BYTES:
         raise WriterSecurityError("metadata.json 크기가 제한을 초과했습니다.")
 
     try:
@@ -474,16 +675,21 @@ def validate_artifact_payload(
             f"metadata.json 키 집합이 일치하지 않습니다: {sorted(metadata.keys())}"
         )
 
-    if isinstance(metadata["schema_version"], bool) or metadata["schema_version"] != 1:
-        raise WriterSecurityError(
-            f"지원하지 않는 schema_version입니다: {metadata['schema_version']!r}"
-        )
-    if (
-        metadata["repository_id"] != provenance.repository_id
-        or metadata["repository_full_name"] != provenance.repository_full_name
+    for int_key, expected_val in (
+        ("schema_version", 1),
+        ("repository_id", provenance.repository_id),
+        ("producer_run_id", provenance.run_id),
+        ("producer_run_attempt", provenance.run_attempt),
     ):
+        val = metadata[int_key]
+        if isinstance(val, bool) or not isinstance(val, int) or val != expected_val:
+            raise WriterSecurityError(
+                f"metadata.{int_key} 값이 올바르지 않습니다: {val!r}"
+            )
+
+    if metadata["repository_full_name"] != provenance.repository_full_name:
         raise WriterSecurityError(
-            "metadata 저장소 정보가 workflow_run과 일치하지 않습니다."
+            "metadata 저장소 이름이 workflow_run과 일치하지 않습니다."
         )
     if (
         metadata["branch"] != provenance.branch
@@ -491,13 +697,6 @@ def validate_artifact_payload(
     ):
         raise WriterSecurityError(
             "metadata 브랜치/커밋 SHA가 workflow_run과 일치하지 않습니다."
-        )
-    if (
-        metadata["producer_run_id"] != provenance.run_id
-        or metadata["producer_run_attempt"] != provenance.run_attempt
-    ):
-        raise WriterSecurityError(
-            "metadata Producer run 정보가 workflow_run과 일치하지 않습니다."
         )
 
     changed = metadata["changed"]
@@ -513,16 +712,11 @@ def validate_artifact_payload(
 
     actual_payload_files = {
         entry.removeprefix("files/")
-        for entry in all_entries
+        for entry in all_files
         if entry.startswith("files/")
     }
     if not changed:
-        if (
-            raw_files
-            or raw_deleted
-            or actual_payload_files
-            or (artifact_dir / "files").exists()
-        ):
+        if raw_files or raw_deleted or actual_payload_files or "files" in all_dirs:
             raise WriterSecurityError(
                 "changed=false인데 파일 목록이나 files 디렉터리가 존재합니다."
             )
@@ -592,6 +786,9 @@ def validate_artifact_payload(
 
     for entry in parsed_files:
         file_path = artifact_dir / "files" / entry.path
+        actual_stat = os.lstat(file_path)
+        if actual_stat.st_size != entry.size:
+            raise WriterSecurityError(f"파일 크기 불일치: {entry.path}")
         raw_bytes = file_path.read_bytes()
         if len(raw_bytes) != entry.size:
             raise WriterSecurityError(f"파일 크기 불일치: {entry.path}")
@@ -619,16 +816,33 @@ def _run_git(
     check: bool = True,
 ) -> subprocess.CompletedProcess[bytes]:
     env = os.environ.copy()
+    env["GIT_CONFIG_NOSYSTEM"] = "1"
+    env["GIT_CONFIG_GLOBAL"] = os.devnull
     if env_overrides:
         env.update(env_overrides)
-    return subprocess.run(
-        ["git", "-c", f"core.hooksPath={os.devnull}", *args],
-        cwd=repo_dir,
-        env=env,
-        check=check,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
+    try:
+        return subprocess.run(
+            [
+                "git",
+                "-c",
+                f"core.hooksPath={os.devnull}",
+                "-c",
+                "credential.helper=",
+                "-c",
+                "core.fsmonitor=false",
+                "-c",
+                "core.autocrlf=false",
+                *args,
+            ],
+            cwd=repo_dir,
+            env=env,
+            check=check,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+    except subprocess.CalledProcessError as exc:
+        err = exc.stderr.decode("utf-8", errors="replace").strip()
+        raise WriterSecurityError(f"Git 명령 실행 실패 ({args[0]}): {err}") from exc
 
 
 def _git_askpass_env(token: str, temp_dir: Path) -> dict[str, str]:
@@ -669,6 +883,8 @@ def checkout_source_commit(
     read_token: str = "",
 ) -> None:
     """신뢰된 기본 브랜치 코드와 분리된 디렉터리에 대상 커밋을 clean checkout한다."""
+    if target_dir.is_symlink():
+        raise WriterSecurityError(f"대상 체크아웃 경로가 symlink입니다: {target_dir}")
     if target_dir.exists():
         shutil.rmtree(target_dir)
     target_dir.mkdir(parents=True)
@@ -702,13 +918,39 @@ def checkout_source_commit(
         )
 
 
-def _ensure_no_symlink_components(root: Path, rel_path: str) -> None:
+def _ensure_no_symlink_components(
+    root: Path, rel_path: str, *, expect_file: bool = True
+) -> None:
+    """경로의 모든 구성 요소에서 dangling symlink와 타입 충돌을 차단한다."""
+    root_resolved = root.resolve()
+    parts = PurePosixPath(rel_path).parts
     current = root
-    for part in PurePosixPath(rel_path).parts:
+    for idx, part in enumerate(parts):
         current = current / part
-        if current.exists() and current.is_symlink():
-            rel = current.relative_to(root).as_posix()
-            raise WriterSecurityError(f"대상 저장소 경로에 symlink가 있습니다: {rel}")
+        is_last = idx == len(parts) - 1
+        try:
+            st = os.lstat(current)
+        except FileNotFoundError:
+            continue
+        if stat.S_ISLNK(st.st_mode):
+            raise WriterSecurityError(
+                f"대상 저장소 경로에 symlink가 있습니다: {rel_path}"
+            )
+        if not is_last:
+            if not stat.S_ISDIR(st.st_mode):
+                rel_dir = current.relative_to(root).as_posix()
+                raise WriterSecurityError(f"상위 경로가 디렉터리가 아닙니다: {rel_dir}")
+        elif expect_file and not stat.S_ISREG(st.st_mode):
+            raise WriterSecurityError(
+                f"대상 파일 경로가 일반 파일이 아닙니다: {rel_path}"
+            )
+
+    if (
+        not (root / PurePosixPath(rel_path))
+        .parent.resolve()
+        .is_relative_to(root_resolved)
+    ):
+        raise WriterSecurityError(f"대상 경로가 저장소 루트를 벗어납니다: {rel_path}")
 
 
 def _git_z_paths(repo_dir: Path, *args: str) -> list[str]:
@@ -731,15 +973,28 @@ def apply_payload(target_dir: Path, payload: ValidatedPayload) -> list[str]:
 
     declared_paths = {entry.path for entry in payload.files} | set(payload.deleted)
 
+    for entry_line in _git_z_paths(target_dir, "ls-files", "-s", "-z", "--"):
+        meta_part, _, path_part = entry_line.partition("\t")
+        mode = meta_part.split(" ", 1)[0]
+        if path_part in declared_paths and mode not in {"100644", "100755"}:
+            raise WriterSecurityError(
+                f"허용되지 않은 Git index mode입니다: {mode} ({path_part})"
+            )
+
     for entry in payload.files:
-        _ensure_no_symlink_components(target_dir, entry.path)
+        _ensure_no_symlink_components(target_dir, entry.path, expect_file=True)
         dest = target_dir / entry.path
-        dest.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            dest.parent.mkdir(parents=True, exist_ok=True)
+        except OSError as exc:
+            raise WriterSecurityError(
+                f"대상 상위 디렉터리를 생성할 수 없습니다 ({entry.path}): {exc}"
+            ) from exc
         src = payload.artifact_dir / "files" / entry.path
-        shutil.copyfile(src, dest)
+        _write_regular_file_nofollow(dest, src.read_bytes())
 
     for rel_path in payload.deleted:
-        _ensure_no_symlink_components(target_dir, rel_path)
+        _ensure_no_symlink_components(target_dir, rel_path, expect_file=True)
         dest = target_dir / rel_path
         tracked = _run_git(
             target_dir, "ls-files", "--error-unmatch", "--", rel_path, check=False
@@ -748,20 +1003,35 @@ def apply_payload(target_dir: Path, payload: ValidatedPayload) -> list[str]:
             raise WriterSecurityError(
                 f"대상 커밋에 없는 파일의 삭제 요청은 거부됩니다: {rel_path}"
             )
-        dest.unlink()
+        try:
+            dest.unlink()
+        except OSError as exc:
+            raise WriterSecurityError(
+                f"대상 파일을 삭제할 수 없습니다 ({rel_path}): {exc}"
+            ) from exc
 
     _run_git(target_dir, "add", "-A", "--")
 
-    staged = _git_z_paths(
+    status_tokens = _git_z_paths(
         target_dir,
         "diff",
         "--cached",
-        "--name-only",
+        "--name-status",
         "--no-renames",
-        "--diff-filter=ACMRD",
         "-z",
         "--",
     )
+    if len(status_tokens) % 2 != 0:
+        raise WriterSecurityError("staged git diff 출력 형식이 올바르지 않습니다.")
+    staged: list[str] = []
+    for idx in range(0, len(status_tokens), 2):
+        status = status_tokens[idx]
+        path = status_tokens[idx + 1]
+        if status not in {"A", "M", "D"}:
+            raise WriterSecurityError(
+                f"허용되지 않은 staged diff 상태입니다: {status} ({path})"
+            )
+        staged.append(path)
     unexpected_staged = [
         path
         for path in staged
@@ -778,10 +1048,20 @@ def apply_payload(target_dir: Path, payload: ValidatedPayload) -> list[str]:
     untracked = _git_z_paths(
         target_dir, "ls-files", "--others", "--exclude-standard", "-z", "--"
     )
-    if unstaged or untracked:
+    ignored = _git_z_paths(
+        target_dir,
+        "ls-files",
+        "--ignored",
+        "--exclude-standard",
+        "--others",
+        "-z",
+        "--",
+    )
+    ignored_declared = [path for path in ignored if path in declared_paths]
+    if unstaged or untracked or ignored_declared:
         raise WriterSecurityError(
-            "Stage 후 잔여 변경이 남아 있습니다: "
-            f"unstaged={unstaged}, untracked={untracked}"
+            "Stage 후 잔여 또는 무시된 변경이 남아 있습니다: "
+            f"unstaged={unstaged}, untracked={untracked}, ignored={ignored_declared}"
         )
 
     return sorted(staged)
@@ -799,10 +1079,20 @@ def commit_and_push(
     github_token: str = "",
 ) -> Decision:
     """허용된 staged 변경을 App bot 신원으로 커밋하고 fast-forward push한다."""
+    validate_source_branch(branch)
     if not app_token:
         raise WriterSecurityError("GitHub App installation token이 비어 있습니다.")
     if github_token and app_token == github_token:
         raise WriterSecurityError("App token은 기본 GITHUB_TOKEN과 같을 수 없습니다.")
+
+    actual_head = (
+        _run_git(target_dir, "rev-parse", "HEAD").stdout.decode("utf-8").strip()
+    )
+    if actual_head != expected_head_sha:
+        raise WriterSecurityError(
+            "대상 checkout HEAD가 기대 SHA와 다릅니다: "
+            f"{actual_head} != {expected_head_sha}"
+        )
 
     staged = _git_z_paths(
         target_dir, "diff", "--cached", "--name-only", "--no-renames", "-z", "--"
@@ -863,15 +1153,23 @@ def _write_github_outputs(output_path: str | None, values: dict[str, str]) -> No
             handle.write(f"{key}={value}\n")
 
 
-def _load_event(path: str) -> dict[str, Any]:
-    return json.loads(Path(path).read_text(encoding="utf-8"))
+def _load_json_dict(path: Path, label: str) -> dict[str, Any]:
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise WriterSecurityError(f"{label} 파일을 읽을 수 없습니다: {exc}") from exc
+    if not isinstance(data, dict):
+        raise WriterSecurityError(f"{label} 최상위는 JSON object여야 합니다.")
+    return data
 
 
 def _verify_from_env(
     requester_factory: Callable[[str, str], Any] | None = None,
 ) -> tuple[Decision, Provenance | None, Any]:
-    event_path = os.environ["GITHUB_EVENT_PATH"]
-    event = _load_event(event_path)
+    event_path = os.environ.get("GITHUB_EVENT_PATH", "")
+    if not event_path:
+        raise WriterSecurityError("GITHUB_EVENT_PATH가 설정되지 않았습니다.")
+    event = _load_json_dict(Path(event_path), "GITHUB_EVENT_PATH")
     repo = os.environ.get("GITHUB_REPOSITORY", "")
     repo_id = os.environ.get("GITHUB_REPOSITORY_ID", "")
     ref = os.environ.get("GITHUB_REF", "")
@@ -918,6 +1216,7 @@ def main(argv: list[str] | None = None) -> int:
         "prepare-write", help="Verify artifact and stage onto isolated checkout"
     )
     prepare.add_argument("--artifact-dir", type=Path, required=True)
+    prepare.add_argument("--extract-dir", type=Path)
     prepare.add_argument("--target-dir", type=Path, required=True)
     prepare.add_argument("--state-file", type=Path)
 
@@ -953,7 +1252,10 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"prepare-write: skip reason={decision.reason}")
                 return 0
 
-            payload = validate_artifact_payload(args.artifact_dir, provenance)
+            resolved_dir = resolve_artifact_directory(
+                args.artifact_dir, args.extract_dir
+            )
+            payload = validate_artifact_payload(resolved_dir, provenance)
             if not payload.changed:
                 _write_github_outputs(
                     output_path, {"should_write": "false", "skip_reason": "no_op"}
@@ -1004,7 +1306,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"commit-and-push: skip reason={decision.reason}")
             return 0
 
-        state = json.loads(args.state_file.read_text(encoding="utf-8"))
+        state = _load_json_dict(args.state_file, "state-file")
         if (
             state.get("repository_full_name") != provenance.repository_full_name
             or state.get("branch") != provenance.branch
@@ -1012,6 +1314,27 @@ def main(argv: list[str] | None = None) -> int:
         ):
             raise WriterSecurityError(
                 "prepared state와 workflow_run provenance가 일치하지 않습니다."
+            )
+
+        expected_staged = state.get("staged_paths")
+        actual_staged = sorted(
+            _git_z_paths(
+                args.target_dir,
+                "diff",
+                "--cached",
+                "--name-only",
+                "--no-renames",
+                "-z",
+                "--",
+            )
+        )
+        if (
+            not isinstance(expected_staged, list)
+            or not all(isinstance(item, str) for item in expected_staged)
+            or sorted(expected_staged) != actual_staged
+        ):
+            raise WriterSecurityError(
+                "prepared state의 staged_paths와 실제 staged 변경이 일치하지 않습니다."
             )
 
         app_token = os.environ.get("APP_TOKEN", "")
