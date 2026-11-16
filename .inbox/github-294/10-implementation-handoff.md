@@ -47,7 +47,7 @@
 
 - [ ] writer가 default branch에 존재해야 하는 `workflow_run` 제약을 반영해 **별도 bootstrap PR**을 필요 시 설계한다. default branch로 disabled/fail-closed trusted writer만 올리는 단계도 보안 control-surface 변경이다.
 - [ ] bootstrap PR 자체의 리뷰·merge는 사람이 **명시적으로 승인해야만** 진행한다. 독립적 E2E 검증이 어려우면 승인된 테스트 저장소에서 동일 구조를 우선 검증한다.
-- [ ] 사람이 `mols3131d` 소유 GitHub App을 한 repo에 제한 설치하고 `GENERATED_SYNC_APP_CLIENT_ID` repository variable, `GENERATED_SYNC_APP_PRIVATE_KEY` repository Actions secret을 설정한다. **로컬 에이전트가 개인키를 읽거나 Git·Chat·CI artifact에 기록하지 않는다**.
+- [ ] 사람이 `mols3131d` 소유 GitHub App을 한 repo에 제한 설치하고 `main` 제한 Environment `generated-writeback`의 Variable `GENERATED_SYNC_APP_CLIENT_ID`와 Secret `GENERATED_SYNC_APP_PRIVATE_KEY`를 설정한다. GitHub 요금제에서 Environment 접근 제한을 사용할 수 없는 경우 Repository Secret으로 임의 대체하지 않고 사람의 대안 승인을 받는다. **로컬 에이전트가 개인키를 읽거나 Git·Chat·CI artifact에 기록하지 않는다**. [소유자 절차](13-owner-setup-runbook.md)를 따른다.
 - [ ] 실제 writer enable/rollback 스위치가 fail-closed로 작동하는지 확인한다. 변경은 담당자의 승인 후 수행한다.
 
 ### P4 — 검증 수렴과 PR 인계
