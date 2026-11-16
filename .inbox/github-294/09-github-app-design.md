@@ -68,7 +68,7 @@ flowchart TD
 | Trusted Writer | default branch의 **trusted workflow/script** | 읽기용 `GITHUB_TOKEN`, 마지막 단계에서 별도 App token | 허용된 generated-only branch push |
 | PR Gate | PR test merge candidate | 기본 `GITHUB_TOKEN`, `contents:read` | 없음 |
 
-App 등록·설치는 `mols3131d` 소유 저장소 하나로 한정하고 기본 권한은 `Contents: Read and write`, 필수 `Metadata: Read` 이외에는 요청하지 않는다. GitHub App Client ID는 `GENERATED_SYNC_APP_CLIENT_ID` repository variable, PEM은 `GENERATED_SYNC_APP_PRIVATE_KEY` Actions secret으로 **사람이 직접** 등록한다. Secret의 실제 값은 repository, PR, artifact, log, 채팅에 남기지 않는다. App 이름/slug는 등록 결과를 확인하기 전 하드코딩하지 않는다. App에 Ruleset bypass를 부여하지 않는다.
+App 등록·설치는 `mols3131d` 소유 저장소 하나로 한정하고 기본 권한은 `Contents: Read and write`, 필수 `Metadata: Read` 이외에는 요청하지 않는다. **가능하면 GitHub Actions Environment `generated-writeback`에 `main`만 허용하는 branch restriction을 설정**하고, Client ID는 같은 Environment Variable `GENERATED_SYNC_APP_CLIENT_ID`, PEM은 Environment Secret `GENERATED_SYNC_APP_PRIVATE_KEY`로 **사람이 직접** 등록한다. Writer job만 해당 Environment를 참조한다. Environment의 branch 제한은 Writer가 push할 대상 브랜치의 별도 검증을 대체하지 않는다. 일반 Repository Secret은 다른 branch workflow에서도 접근할 수 있으므로 기본안으로 채택하지 않는다. 공개 저장소는 Environment 기능이 지원되지만 비공개 저장소는 GitHub 요금제 조건을 확인해야 한다. 지원되지 않으면 중단하고 사람의 대안 심사를 받는다. Secret의 실제 값은 repository, PR, artifact, log, 채팅에 남기지 않는다. App 이름/slug는 등록 결과를 확인하기 전 하드코딩하지 않는다. App에 Ruleset bypass를 부여하지 않는다. 상세한 실행 순서는 [사람의 설치·승인 절차](13-owner-setup-runbook.md)를 따른다.
 
 ## 단계적 활성화
 
