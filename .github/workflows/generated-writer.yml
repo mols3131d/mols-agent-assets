@@ -1,0 +1,176 @@
+name: Trusted Generated Writer
+
+on:
+  workflow_run:
+    workflows:
+      - Sync Generated Artifacts
+    types:
+      - completed
+
+concurrency:
+  group: >-
+    generated-writer-${{ github.event.workflow_run.head_repository.id }}-${{ github.event.workflow_run.head_branch }}
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  preflight:
+    name: Preflight Verification
+    if: >-
+      vars.GENERATED_SYNC_WRITER_ENABLED == 'true' &&
+      github.ref == format('refs/heads/{0}', github.event.repository.default_branch) &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_repository.id == github.event.repository.id &&
+      github.event.workflow_run.head_branch != github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: read
+    outputs:
+      should_write: ${{ steps.prepare.outputs.should_write }}
+      skip_reason: ${{ steps.prepare.outputs.skip_reason || steps.verify_run.outputs.skip_reason }}
+    steps:
+      - name: Checkout trusted default branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: '0.13.6'
+          enable-cache: false
+
+      - name: Verify workflow_run provenance and live HEAD
+        id: verify_run
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY_ID: ${{ github.repository_id }}
+          GENERATED_SYNC_WRITER_ENABLED: ${{ vars.GENERATED_SYNC_WRITER_ENABLED }}
+          GENERATED_SYNC_WRITER_ALLOWED_BRANCHES: ${{ vars.GENERATED_SYNC_WRITER_ALLOWED_BRANCHES }}
+        run: uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts_writer verify-run
+
+      - name: Download producer payload artifact
+        if: steps.verify_run.outputs.should_continue == 'true'
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: generated-sync-payload
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/preflight-artifact
+
+      - name: Validate artifact and stage candidate diff
+        id: prepare
+        if: steps.verify_run.outputs.should_continue == 'true'
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY_ID: ${{ github.repository_id }}
+          GENERATED_SYNC_WRITER_ENABLED: ${{ vars.GENERATED_SYNC_WRITER_ENABLED }}
+          GENERATED_SYNC_WRITER_ALLOWED_BRANCHES: ${{ vars.GENERATED_SYNC_WRITER_ALLOWED_BRANCHES }}
+        run: >-
+          uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts_writer
+          prepare-write
+          --artifact-dir "${RUNNER_TEMP}/preflight-artifact"
+          --target-dir "${RUNNER_TEMP}/preflight-repo"
+
+  write:
+    name: Write Generated Commit
+    needs: preflight
+    if: >-
+      needs.preflight.outputs.should_write == 'true' &&
+      vars.GENERATED_SYNC_WRITER_ENABLED == 'true' &&
+      github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    environment: generated-writeback
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Verify App credentials configured
+        shell: bash
+        env:
+          APP_CLIENT_ID: ${{ vars.GENERATED_SYNC_APP_CLIENT_ID }}
+          APP_PRIVATE_KEY: ${{ secrets.GENERATED_SYNC_APP_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${APP_CLIENT_ID}" || -z "${APP_PRIVATE_KEY}" ]]; then
+            echo "::error::GENERATED_SYNC_APP_CLIENT_ID or GENERATED_SYNC_APP_PRIVATE_KEY is missing in environment generated-writeback."
+            exit 1
+          fi
+
+      - name: Checkout trusted default branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: '0.13.6'
+          enable-cache: false
+
+      - name: Re-verify workflow_run provenance and live HEAD
+        id: verify_run
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY_ID: ${{ github.repository_id }}
+          GENERATED_SYNC_WRITER_ENABLED: ${{ vars.GENERATED_SYNC_WRITER_ENABLED }}
+          GENERATED_SYNC_WRITER_ALLOWED_BRANCHES: ${{ vars.GENERATED_SYNC_WRITER_ALLOWED_BRANCHES }}
+        run: uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts_writer verify-run
+
+      - name: Download producer payload artifact
+        if: steps.verify_run.outputs.should_continue == 'true'
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: generated-sync-payload
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/write-artifact
+
+      - name: Re-validate artifact and stage candidate diff
+        id: prepare
+        if: steps.verify_run.outputs.should_continue == 'true'
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY_ID: ${{ github.repository_id }}
+          GENERATED_SYNC_WRITER_ENABLED: ${{ vars.GENERATED_SYNC_WRITER_ENABLED }}
+          GENERATED_SYNC_WRITER_ALLOWED_BRANCHES: ${{ vars.GENERATED_SYNC_WRITER_ALLOWED_BRANCHES }}
+        run: >-
+          uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts_writer
+          prepare-write
+          --artifact-dir "${RUNNER_TEMP}/write-artifact"
+          --target-dir "${RUNNER_TEMP}/write-repo"
+          --state-file "${RUNNER_TEMP}/write-state.json"
+
+      - name: Mint scoped GitHub App token
+        id: app_token
+        if: steps.prepare.outputs.should_write == 'true'
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ vars.GENERATED_SYNC_APP_CLIENT_ID }}
+          private-key: ${{ secrets.GENERATED_SYNC_APP_PRIVATE_KEY }}
+          permission-contents: write
+
+      - name: Commit and fast-forward push generated outputs
+        if: steps.prepare.outputs.should_write == 'true'
+        shell: bash
+        env:
+          APP_TOKEN: ${{ steps.app_token.outputs.token }}
+          APP_SLUG: ${{ steps.app_token.outputs.app-slug }}
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY_ID: ${{ github.repository_id }}
+          GENERATED_SYNC_WRITER_ENABLED: ${{ vars.GENERATED_SYNC_WRITER_ENABLED }}
+          GENERATED_SYNC_WRITER_ALLOWED_BRANCHES: ${{ vars.GENERATED_SYNC_WRITER_ALLOWED_BRANCHES }}
+        run: >-
+          uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts_writer
+          commit-and-push
+          --target-dir "${RUNNER_TEMP}/write-repo"
+          --state-file "${RUNNER_TEMP}/write-state.json"
