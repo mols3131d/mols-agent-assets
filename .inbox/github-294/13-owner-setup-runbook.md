@@ -40,7 +40,7 @@ H1의 설계 검토가 끝나고 등록이 승인되면 아래를 실행한다.
 ## H3. 격리 쓰기 E2E를 명시적으로 승인
 
 - [ ] **독립 테스트 브랜치 + 열린 테스트 PR**을 준비했다. 기존 PR #294 브랜치나 `main`을 write-back 실험 대상으로 사용하지 않는다.
-- [ ] bootstrap Writer는 기본값 **disabled**이며, 테스트에서는 사람이 지정한 branch만 대상이 되도록 정확한 ref allowlist를 확인했다. App 설치/Secret 등록만으로 모든 branch의 Writer가 실행되게 두지 않는다.
+- [ ] bootstrap Writer는 기본값 **disabled**이며, 테스트에서는 Repository Variables `GENERATED_SYNC_WRITER_ENABLED=true`와 `GENERATED_SYNC_WRITER_ALLOWED_BRANCHES=<테스트 브랜치명>`(환경 변수가 아닌 저장소 변수)으로 정확한 ref allowlist만 허용했다. App 설치/Secret 등록만으로 모든 branch의 Writer가 실행되게 두지 않는다.
 - [ ] 테스트 범위(생성 파일·source 경로·봇 push 권한·테스트 후 복구 절차)를 확인하고 **실제 쓰기 E2E 실행을 명시적으로 승인**했다.
 - [ ] 승인된 범위에서 enable 또는 test mode를 활성화한 후 [검증 행렬](11-verification-plan.md)의 `E01`~`E09` 핵심 항목을 확인했다. 필요한 경우 로컬 에이전트는 분석을 보조하지만, 기존 권한을 넘어 계정/설정을 바꾸지 않는다.
 - [ ] **source SHA → App generated commit SHA → PR `synchronize` → 실제 required `PR Gate` 성공**이 일치하는 run URL·SHA·changed files를 확인했다. Source 커밋의 이전 성공이나 Writer job의 성공만으로는 불충분하다.

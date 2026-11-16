@@ -47,7 +47,7 @@ flowchart TD
 - `workflow_run` (해당 Producer workflow의 `completed`)로 **기본 브랜치에 등록된 고정 workflow**를 실행한다. 권한 있는 writer script/action은 default branch에서만 로드한다. `workflow_run`의 `GITHUB_REF`/`GITHUB_SHA`는 source branch가 아닌 **default branch**라는 점에 주의한다.
 - `GITHUB_TOKEN`은 provenance 확인, run artifact 읽기, trusted script checkout 등 **read-only** (`actions: read`, 필요한 경우 `contents: read`) 용도로 한정한다. App 개인키는 producer와 일반 PR Gate job에 전달하지 않는다.
 - 확인해야 할 최소 조건: trigger workflow name/ID 및 성공 상태, 원본 이벤트 `push`, repository owner·ID 일치, fork가 아닌 현재 저장소, 실제 branch ref이며 `main` 아님, `workflow_run.head_sha`와 origin metadata 일치, artifact가 해당 run의 유일한 기대 산출물, source ref 최신 HEAD가 검증된 SHA와 일치.
-- Artifact의 path traversal, symlink, 예상 밖 파일·확장자, 허용되지 않은 수정/삭제 및 과도한 크기를 거부한다. 허용되는 *최종 staged diff*는 `docs/**/INDEX.tsv`, `catalog/INDEX.tsv`, `route/*.jsonl`, `.agents/route/*.jsonl`로만 제한한다. 경로 패턴만 믿지 말고 예상 output inventory와 git status를 함께 검증한다.
+- Artifact의 path traversal, symlink, 예상 밖 파일·확장자, 허용되지 않은 수정/삭제 및 과도한 크기를 거부한다. 허용되는 *최종 staged diff*는 `docs/**/INDEX.tsv`, `catalog/**/INDEX.tsv`, `route/*.jsonl`, `.agents/route/*.jsonl`로만 제한한다. 경로 패턴만 믿지 말고 예상 output inventory와 git status를 함께 검증한다.
 - **절대로** PR branch에서 checkout된 script, artifact의 실행 파일/command, 악의적 cache를 privileged 환경에서 실행하지 않는다. 필요한 검증용 parser/script도 기본 브랜치의 신뢰된 코드만 사용한다. `pull_request_target`로 단순 전환하지 않는다.
 - 브랜치 HEAD가 이동했으면 해당 artifact를 **폐기**한다. 최신 source push가 새 Producer를 만들지 않았거나 cancellation 때문에 누락되었다면 별도 승인된 복구 이벤트로 재처리한다. non-fast-forward는 force push하거나 덮어쓰지 않는다.
 - no-op이면 commit/push 없음. 실제 변경 시에만 생성 출력 파일을 커밋한다. GitHub App installation token은 **push 직전에** `actions/create-github-app-token`으로 발급, 대상 설치는 이 저장소 단독, `permission-contents: write`로 제한한다. write job의 `GITHUB_TOKEN`에 `contents: write`를 부여하지 않는다.

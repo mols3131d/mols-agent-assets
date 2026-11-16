@@ -67,4 +67,5 @@ jobs:
           path: ${{ runner.temp }}/generated-sync-payload
           include-hidden-files: true
           if-no-files-found: error
+          overwrite: true
           retention-days: 5
