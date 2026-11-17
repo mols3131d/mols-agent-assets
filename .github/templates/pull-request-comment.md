@@ -1,9 +1,7 @@
-<!--
-첫 문장에서 comment의 목적과 현재 결론을 바로 전달한다.
-`status`는 workflow 상태를 명확히 전달할 때만 사용하며 `🔴 Blocked` / `🟡 Waiting` / `🟢 Unblocked` 중 하나를 그대로 사용한다.
-상태의 의미는 `docs/development/github.md`를 따른다.
-Next Actions는 실제 후속 행동이 있을 때만 남기고, Evidence는 판단 근거가 필요할 때만 보충한다.
--->
+<!-- 결론과 현재 상태를 첫 문장에서 전달합니다.
+status는 판단에 필요할 때만 사용하고, 없는 상태를 만들지 않습니다.
+실제 후속 행동과 근거가 없으면 선택 섹션을 생략합니다.
+새 H3 제목은 긴 섹션의 탐색성을 개선할 때만 추가합니다. -->
 
 {% if status %}
 **{{ status }}**
@@ -14,6 +12,8 @@ Next Actions는 실제 후속 행동이 있을 때만 남기고, Evidence는 판
 {% if next_actions %}
 ## Next Actions
 
+<!-- Next Actions는 실제로 완료를 추적할 후속 작업만 넣습니다.
+단순한 제안이나 안내는 본문 메시지에 적습니다. -->
 {% for action in next_actions %}
 - [ ] {{ action }}
 {% endfor %}
@@ -27,7 +27,7 @@ Next Actions는 실제 후속 행동이 있을 때만 남기고, Evidence는 판
 {% endfor %}
 {% endif %}
 
-<!-- Agent가 최종 PR conversation text를 실질적으로 작성하거나 재작성했다면 `author`는 필수입니다. -->
+<!-- Agent가 작성한 최종 Comment에는 author를 본문 끝의 fenced yaml로 기록합니다. -->
 {% if author %}
 ```yaml
 author:

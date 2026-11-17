@@ -1,0 +1,5 @@
+path	description
+context-engineering/	Agent Asset, instruction, routing, discovery, scoped context와 context harness 설계 패턴을 찾을 때 사용하는 directory entrypoint입니다.
+documentation/	개발·기술 문서, baseline, directory guide와 durable documentation 구조 패턴을 찾을 때 사용하는 directory entrypoint입니다.
+software-engineering/	Repository/code 구조, architecture, implementation, testing, reliability 등 reusable software-engineering pattern을 찾을 때 사용하는 directory entrypoint입니다.
+workflow/	Agentic work의 실행 흐름, working artifact, handoff와 lifecycle surface 패턴을 찾을 때 사용하는 directory entrypoint입니다.

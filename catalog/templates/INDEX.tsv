@@ -1,0 +1,5 @@
+path	description
+review-multi-perspective.md	
+review-multi-perspective.spec.md	다관점 리뷰의 관점별 근거, 후보 채택·제외·미해결 판단과 통합 Finding을 Markdown으로 기록할 때 사용합니다.
+review.md	
+review.spec.md	일반 리뷰를 3:4 세로 화면에 맞게 작성할 때 항목별 근거·영향·조치와 검증 결과의 작성 계약을 확인합니다.

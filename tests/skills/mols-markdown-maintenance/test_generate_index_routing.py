@@ -4,7 +4,6 @@ import csv
 import io
 
 import pytest
-
 from generate_index import generate_index, main
 
 
@@ -256,3 +255,133 @@ def test_generate_index_cli_supports_directory_entrypoint_projection(tmp_path):
     assert output.read_text(encoding="utf-8") == (
         "path\tdescription\nalpha/\tAlpha.\nbeta/\t\n"
     )
+
+
+def test_generate_index_sorts_mixed_case_and_underscore_paths_by_components(tmp_path):
+    _write(tmp_path / "Z_Guide.md", "---\ndescription: Z.\n---\n")
+    _write(tmp_path / "_meta.md", "---\ndescription: Underscore.\n---\n")
+    _write(tmp_path / "a_guide.md", "---\ndescription: Lower.\n---\n")
+    _write(tmp_path / "Beta" / "doc.md", "---\ndescription: Beta.\n---\n")
+    _write(tmp_path / "_nested" / "doc.md", "---\ndescription: Nested.\n---\n")
+    _write(tmp_path / "alpha" / "doc.md", "---\ndescription: Alpha.\n---\n")
+
+    result = generate_index(
+        tmp_path,
+        format="tsv",
+        fields=["path", "description"],
+        max_depth=0,
+        include_directories=True,
+    )
+
+    rows = list(csv.DictReader(io.StringIO(result), delimiter="\t"))
+    assert [row["path"] for row in rows] == [
+        "Beta/",
+        "Z_Guide.md",
+        "_meta.md",
+        "_nested/",
+        "a_guide.md",
+        "alpha/",
+    ]
+
+
+def test_generate_index_exclude_globs_respect_relative_path_scope(tmp_path):
+    _write(tmp_path / "assets" / "ignored.md", "---\ndescription: Ignored.\n---\n")
+    _write(
+        tmp_path / "nested" / "assets" / "spec.md",
+        "---\ndescription: Kept.\n---\n",
+    )
+    _write(tmp_path / "guide" / "draft.md", "---\ndescription: Draft.\n---\n")
+    _write(
+        tmp_path / "other" / "guide" / "draft.md",
+        "---\ndescription: Other.\n---\n",
+    )
+    _write(tmp_path / "hidden" / ".private.md", "# Private\n")
+    _write(tmp_path / "hidden" / "public.md", "---\ndescription: Public.\n---\n")
+
+    result = generate_index(
+        tmp_path,
+        format="tsv",
+        fields=["path", "description"],
+        include_directories=True,
+        include_without_frontmatter=True,
+        exclude_globs=["/assets", "/assets/**", "guide/draft.md", ".*.md"],
+    )
+
+    rows = list(csv.DictReader(io.StringIO(result), delimiter="\t"))
+    assert [row["path"] for row in rows] == [
+        "guide/",
+        "hidden/",
+        "hidden/public.md",
+        "nested/",
+        "nested/assets/",
+        "nested/assets/spec.md",
+        "other/",
+        "other/guide/",
+        "other/guide/draft.md",
+    ]
+
+
+def test_generate_index_exclude_globs_preserve_segment_boundaries_and_case(tmp_path):
+    _write(tmp_path / "top.md", "---\ndescription: Top.\n---\n")
+    _write(tmp_path / "nested" / "keep.md", "---\ndescription: Nested keep.\n---\n")
+    _write(tmp_path / "testing.md", "---\ndescription: Basename test.\n---\n")
+    _write(tmp_path / "testing" / "guide.md", "---\ndescription: Dir test.\n---\n")
+    _write(tmp_path / "__dir" / "foo__.md", "---\ndescription: Dir under.\n---\n")
+    _write(tmp_path / ".internal" / "guide.md", "---\ndescription: Internal.\n---\n")
+    _write(tmp_path / ".internal" / ".hidden.md", "# Hidden\n")
+    _write(tmp_path / "a" / "direct.md", "---\ndescription: Direct.\n---\n")
+    _write(tmp_path / "a" / "sub" / "deep.md", "---\ndescription: Deep.\n---\n")
+    _write(tmp_path / "a" / "x" / "y" / "target.md", "---\ndescription: Target.\n---\n")
+    _write(tmp_path / "Assets" / "guide.md", "---\ndescription: Uppercase dir.\n---\n")
+    _write(
+        tmp_path / "nested" / "Draft.md",
+        "---\ndescription: Mixed case basename.\n---\n",
+    )
+
+    result = generate_index(
+        tmp_path,
+        format="tsv",
+        fields=["path", "description"],
+        include_directories=True,
+        exclude_globs=[
+            "/*.md",
+            "test*.md",
+            "__*__.md",
+            ".*.md",
+            "a/*.md",
+            "a/**/target.md",
+            "/assets/**",
+            "draft.md",
+        ],
+    )
+
+    rows = list(csv.DictReader(io.StringIO(result), delimiter="\t"))
+    assert [row["path"] for row in rows] == [
+        ".internal/",
+        ".internal/guide.md",
+        "Assets/",
+        "Assets/guide.md",
+        "__dir/",
+        "__dir/foo__.md",
+        "a/",
+        "a/sub/",
+        "a/sub/deep.md",
+        "a/x/",
+        "a/x/y/",
+        "nested/",
+        "nested/Draft.md",
+        "nested/keep.md",
+        "testing/",
+        "testing/guide.md",
+    ]
+
+
+def test_generate_index_cli_help_documents_exclude_glob_scoping(capsys):
+    with pytest.raises(SystemExit) as exc_info:
+        main(["--help"])
+
+    assert exc_info.value.code == 0
+    help_text = " ".join(capsys.readouterr().out.split())
+    assert "case-sensitive" in help_text
+    assert "basename" in help_text
+    assert "leading '/'" in help_text
