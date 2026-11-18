@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import re
 from collections.abc import Callable, Iterable
+from io import StringIO
 from pathlib import Path
 
 import yaml
@@ -28,11 +29,13 @@ SKILL_SOURCE_TEMPLATE = (
 SUBAGENT_SOURCE_TEMPLATE = (
     f"{RAW_ROOT}/src/rulesync/.rulesync/subagents/{{filename}}"
 )
+FULL_SKILL_ROUTE_URL = f"{RAW_ROOT}/route/skills.jsonl"
 ROUTE_INSTRUCTION = (
-    "Select only task-relevant Agent Asset routes by name and description, then load every "
-    "selected source before continuing discovery. Follow each selected route's own "
-    "instructions. If no route matches, continue without loading one. Re-evaluate route "
-    "selection when the task materially changes."
+    "Select only task-relevant Agent Asset routes by name and description. Load each "
+    "selected entry's source before continuing discovery. If the source cannot be read "
+    "or parsed, load the entry's fallback when provided. Follow each loaded route's "
+    "instructions. If no route matches, continue without loading one. Re-evaluate "
+    "route selection when the task materially changes."
 )
 SKILL_INSTRUCTION = (
     "When this Skill route is loaded for a task, select only task-relevant Skills by name "
@@ -112,17 +115,21 @@ def render_skill_route(
 
 def brief_skill_description(description: str) -> str:
     """Keep the opening hint and explicit additive or mandatory triggers."""
-    sentences = re.split(r"(?<=[.!?])\s+", description.strip(), maxsplit=2)
-    if len(sentences) > 1 and re.match(
-        r"^(?:Also use|Always load)\b", sentences[1], flags=re.IGNORECASE
-    ):
-        return " ".join(sentences[:2])
-    return sentences[0]
+    first, *remaining = re.split(r"(?<=[.!?])\s+", description.strip())
+    triggers = (
+        sentence
+        for sentence in remaining
+        if re.match(
+            r"^(?:Also (?:use|apply)|Always load)\b", sentence, flags=re.IGNORECASE
+        )
+    )
+    return " ".join((first, *triggers))
 
 
 def render_skill_brief_route(full_route: str) -> str:
     """Compact discovery hints; the full route remains available on demand."""
-    rows = [json.loads(line) for line in full_route.splitlines()]
+    # JSONL records end at LF, not at Unicode separators inside strings.
+    rows = [json.loads(line) for line in StringIO(full_route)]
     entries = [
         {
             "name": row["name"],
@@ -138,7 +145,7 @@ def render_skill_brief_route(full_route: str) -> str:
                 "_meta": {
                     "kind": "skills",
                     "instructions": BRIEF_SKILL_INSTRUCTION,
-                    "fallback": f"{RAW_ROOT}/route/skills.jsonl",
+                    "fallback": FULL_SKILL_ROUTE_URL,
                 }
             },
             *entries,
@@ -180,6 +187,7 @@ def generate() -> dict[Path, str]:
                 "name": "skills",
                 "description": "작업 수행 방법을 선택·보강하는 reusable Skill",
                 "source": f"{RAW_ROOT}/route/skills-brief.jsonl",
+                "fallback": FULL_SKILL_ROUTE_URL,
             }
         )
         full_route = render_skill_route()

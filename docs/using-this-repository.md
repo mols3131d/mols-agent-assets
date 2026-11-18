@@ -15,7 +15,7 @@ description: 외부 프로젝트에서 src/, catalog/, route/의 에이전트 �
 | 외부 Skill·Plugin의 출처, 재사용 패턴·템플릿 | [`catalog/`](../catalog/README.md) | 외부 자산 목록은 탐색 정보이고, 패턴·템플릿은 이곳의 작성 원본 |
 | 에이전트가 제공 Skill·Subagent를 작업에 맞게 탐색 | [`route/ROUTE.md`](../route/ROUTE.md) | 탐색용 메타데이터이며 자산 원본이나 설치 상태가 아님 |
 
-사람이 직접 고를 때는 `src/`와 `catalog/`에서 시작합니다. 에이전트에 탐색 경로를 제공하려면 [`route/ROUTE.md`](../route/ROUTE.md)를 알려주고 그 파일이 안내하는 후속 목록과 원본을 차례로 읽도록 합니다. `route/`는 [Skill](../route/skills.jsonl)·[Subagent](../route/subagents.jsonl)를 탐색하며, `src/`의 모든 자산이나 `catalog/`의 외부 항목까지 나열하지는 않습니다.
+사람이 직접 고를 때는 `src/`와 `catalog/`에서 시작합니다. 아직 원본을 모르는 자산을 에이전트가 찾아야 한다면 [`route/ROUTE.md`](../route/ROUTE.md)를 안내합니다. [탐색 목록](../route/README.md)은 제공 Skill과 Subagent를 다루며, `src/`의 모든 자산이나 `catalog/`의 외부 항목까지 나열하지는 않습니다.
 
 ## Use Agent Assets
 

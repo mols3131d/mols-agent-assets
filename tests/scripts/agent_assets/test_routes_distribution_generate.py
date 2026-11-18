@@ -1,6 +1,9 @@
 import json
+from io import StringIO
 
-from scripts.agent_assets import routes_distribution_generate as generate_distribution_routes
+from scripts.agent_assets import (
+    routes_distribution_generate as generate_distribution_routes,
+)
 
 
 def write_asset(path, name, description):
@@ -19,7 +22,7 @@ def test_render_skill_route_uses_meta_sorted_entries_and_canonical_sources(tmp_p
         tmp_path,
         "https://example.test/{directory}/SKILL.md",
     )
-    rows = [json.loads(line) for line in content.splitlines()]
+    rows = list(map(json.loads, StringIO(content)))
 
     assert rows[0] == {
         "_meta": {
@@ -56,8 +59,8 @@ def test_render_skill_brief_route_preserves_names_sources_and_full_fallback(tmp_
         tmp_path, "https://example.test/{directory}/SKILL.md"
     )
     brief = generate_distribution_routes.render_skill_brief_route(full)
-    full_rows = [json.loads(line) for line in full.splitlines()]
-    brief_rows = [json.loads(line) for line in brief.splitlines()]
+    full_rows = list(map(json.loads, StringIO(full)))
+    brief_rows = list(map(json.loads, StringIO(brief)))
 
     assert brief_rows[0] == {
         "_meta": {
@@ -87,6 +90,10 @@ def test_brief_skill_description_retains_additive_and_mandatory_triggers():
     assert brief("Design agents. Also use for hooks. Avoid unrelated code.") == (
         "Design agents. Also use for hooks."
     )
+    assert brief(
+        "Design tests. Use when choosing oracles. "
+        "Also apply to test subtasks, but not routine edits. Avoid unrelated work."
+    ) == "Design tests. Also apply to test subtasks, but not routine edits."
     assert brief("Coding scope. Always load for debugging. No other tasks.") == (
         "Coding scope. Always load for debugging."
     )
@@ -94,6 +101,20 @@ def test_brief_skill_description_retains_additive_and_mandatory_triggers():
     assert brief("Single sentence without a terminal delimiter") == (
         "Single sentence without a terminal delimiter"
     )
+
+
+def test_render_skill_brief_route_keeps_unicode_separator_inside_jsonl_record(tmp_path):
+    write_asset(
+        tmp_path / "alpha" / "SKILL.md",
+        "alpha",
+        r'"Design tests\u2028for regressions. Leave existing checks unchanged."',
+    )
+
+    full = generate_distribution_routes.render_skill_route(tmp_path)
+    brief = generate_distribution_routes.render_skill_brief_route(full)
+    _, row = map(json.loads, StringIO(brief))
+
+    assert row["description"] == "Design tests\u2028for regressions."
 
 
 def test_brief_route_instructions_allow_no_match_and_uncertain_trigger_fallback():
@@ -106,23 +127,15 @@ def test_brief_route_instructions_allow_no_match_and_uncertain_trigger_fallback(
 
 def test_distribution_skill_brief_matches_full_real_route():
     outputs = generate_distribution_routes.generate()
-    full = [
-        json.loads(line)
-        for line in outputs[generate_distribution_routes.DISTRIBUTION_SKILL_ROUTE].splitlines()
-    ]
-    brief = [
-        json.loads(line)
-        for line in outputs[
-            generate_distribution_routes.DISTRIBUTION_SKILL_BRIEF_ROUTE
-        ].splitlines()
-    ]
+    full_text = outputs[generate_distribution_routes.DISTRIBUTION_SKILL_ROUTE]
+    brief_text = outputs[generate_distribution_routes.DISTRIBUTION_SKILL_BRIEF_ROUTE]
+    full = list(map(json.loads, StringIO(full_text)))
+    brief = list(map(json.loads, StringIO(brief_text)))
+
     assert [(r["name"], r["source"]) for r in brief[1:]] == [
         (r["name"], r["source"]) for r in full[1:]
     ]
-    assert len(brief) == len(full)
-    assert len(outputs[generate_distribution_routes.DISTRIBUTION_SKILL_BRIEF_ROUTE]) < len(
-        outputs[generate_distribution_routes.DISTRIBUTION_SKILL_ROUTE]
-    )
+    assert len(brief_text) < len(full_text)
 
 
 def test_render_subagent_route_uses_meta_sorted_entries_and_canonical_sources(tmp_path):
@@ -205,6 +218,23 @@ def test_route_entrypoint_targets_distribution_route_index():
     ).read_text(encoding="utf-8")
     expected_url = f"{generate_distribution_routes.RAW_ROOT}/route/routes.jsonl"
     assert expected_url in entrypoint
+
+
+def test_route_index_exposes_full_skill_fallback_without_reading_brief_route():
+    outputs = generate_distribution_routes.generate()
+    served_routes = {
+        f"{generate_distribution_routes.RAW_ROOT}/route/{path.name}": text
+        for path, text in outputs.items()
+        if path != generate_distribution_routes.DISTRIBUTION_SKILL_BRIEF_ROUTE
+    }
+    route_index = outputs[generate_distribution_routes.DISTRIBUTION_ROUTES_PATH]
+    route_rows = map(json.loads, StringIO(route_index))
+    skills = next(row for row in route_rows if row.get("name") == "skills")
+
+    assert skills["source"] not in served_routes
+    assert served_routes[skills["fallback"]] == outputs[
+        generate_distribution_routes.DISTRIBUTION_SKILL_ROUTE
+    ]
 
 
 def test_generate_returns_all_distribution_routes():
