@@ -13,7 +13,6 @@ targets:
   - copilotcli
   - antigravity-ide
   - antigravity-cli
-  - agentsskills
 ---
 
 # LLMOps Design Context
@@ -40,7 +39,7 @@ Missing evidence is an unknown, not a reason to invent permissions or policy.
 ## Design Boundaries
 
 - **Deterministic facts and controls:** Parsing, calculations, validation,
-  schema checks, authorization, state transitions, and data mutation belong to
+  schema checks, authorization, state guards, and data mutation belong to
   their reliable existing owners, not to model judgment.
 - **Bounded LLM judgment:** Use models for evidence-based interpretation,
   investigation, prioritization, or dynamic tool choice only when their
