@@ -14,7 +14,7 @@ ChatGPT **Chat** 환경은 사용 가능한 도구와 소비 가능한 자산 �
 - `mols-chatbot-bootstrap` — 챗봇이 저장소의 정본과 필요한 실행 의미에 도달하도록 첫 진입점을 구축·복구하는 낮은 빈도의 하네스 작업.
 - `mols-agent-asset-find` — 기존 Agent Asset 탐색·선택·로딩·설치·동기화.
 - `mols-chatgpt-chat-asset` — Chat에 최적화된 새 자산 생성, 기존 자산의 target-specific 조정, **제작 대상의 소비 표면 결정**·패키징·유지보수.
-- 특정 작업 Skill(예: OpenSpec CLI 호환) — 그 작업의 실제 domain 실행 의미.
+- 특정 작업 Skill — 해당 작업의 실제 domain 실행 의미.
 
 작성 원본은 `src/openai-chatgpt-chat/skills/mols-chatgpt-chat-asset/SKILL.md` 한 곳이다. 이 경로는 **저장소에서 관리하는 vendor-native 원본**이며 자동 설치 경로가 아니다. 필요에 따라 이 스킬 자체도 Chat에 배포해 사용 가능하지만, 이 저장소의 작업에서 읽을 수 있다는 사실만으로 설치되었다고 주장하지 않는다.
 
