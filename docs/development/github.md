@@ -89,7 +89,7 @@ GitHub object 제목을 최상위 제목(H1)으로 취급합니다. 본문은 H2
 | Surface | 필수 본문 | 선택 섹션 |
 | --- | --- | --- |
 | Issue | `Summary`, `Desired Outcome` | Acceptance Criteria, Reproduction, Boundaries 등 |
-| Pull Request | `Summary`, `Goal`, `Tasks`, `Checklist`, `Boundaries` | `Checklist > Documentation`(H3), Risks, Review Focus 등 |
+| Pull Request | `Description`, `Goal`, `Tasks`, `Checklist`, `Boundaries` | `Checklist > Documentation`(H3), Risks, Review Focus 등 |
 | PR Review | `Summary`, `Findings` | Scope, Validation, Remaining Risks 등 |
 | PR conversation/inline comment | 핵심 메시지(`message`) | Next Actions, Evidence, status 등 |
 
@@ -141,7 +141,7 @@ Pull Request는 head branch의 변경을 base branch에 **반영하도록 제안
 - PR 생성, agent 작업 완료나 draft 해제만으로 검토가 승인되거나 merge 가능한 상태가 되지는 않습니다.
 - PR 요약과 agent 설명은 diff와 검증 결과를 이해하는 보조 정보입니다. 실제 제안된 변경은 head/base diff로 판단합니다.
 - PR의 `Tasks`에 독립적으로 완료 여부를 추적할 작업이 있으면 Markdown 체크박스(`- [ ]` / `- [x]`)를 **기본 표현**으로 사용하고 진행에 따라 갱신합니다. 설명용 변경이나 가상 작업에는 일반 목록이나 prose를 사용합니다. GitHub의 진행 표시 위치·형태는 UI 버전에 따라 다를 수 있습니다.
-- PR `Checklist > Verification`은 항목별 **충족 여부**를 체크박스로 작성합니다. 검증이 통과한 항목만 `- [x]`로 표시하고, 실행했지만 실패했거나 아직 확인하지 못한 항목은 `- [ ]`로 유지하면서 실패·미검증 사유를 적습니다. 별도 상태 아이콘을 추가하지 않습니다. GitHub checks, PR Review, Merge 준비 여부는 이 체크리스트와 독립적으로 판단합니다. 검증 대상이 없는 경우에는 그 이유를 간결하게 설명합니다.
+- PR `Checklist > Verification`은 항목별 **충족 여부**를 체크박스로 작성합니다. 검증이 통과한 항목만 `- [x]`로 표시하고, 실행했지만 실패했거나 아직 확인하지 못한 항목은 `- [ ]`로 유지하면서 실패·미검증 사유를 적습니다. 검증 방법·환경·결과·근거·제약은 필요한 경우 해당 항목 아래의 일반 불릿으로 보충하고, CI 로그를 복제하기보다 결과에 연결합니다. 별도 상태 아이콘을 추가하지 않습니다. GitHub checks, PR Review, Merge 준비 여부는 이 체크리스트와 독립적으로 판단합니다. 검증 대상이 없는 경우에는 그 이유를 간결하게 설명합니다.
 - 대화, reviews, checks, agent session과 security result가 한 PR에 함께 보여도 각각의 책임과 근거 수준은 구분합니다.
 
 ## PR Reviews
