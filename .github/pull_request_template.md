@@ -66,7 +66,44 @@ the full reviewed commit SHA.
 
 <!-- Record material exclusions, unverified work, unresolved risks, constraints, permissions, side effects, or follow-up work; use N/A when none apply. -->
 
-<!-- Optional: add useful H2 sections such as Risks, Review Focus, Compatibility, Migration, Security, Handoff, or References. Omit empty sections. Add descriptive H3 subsections only when they improve readability. -->
+<!-- Optional: add useful H2 sections such as Risks, Review Focus, Compatibility, Migration, Security, or Handoff. Omit empty sections. -->
+
+## References
+
+<!-- Optional: omit this entire H2 when there are no references.
+Keep only relevant H3 groups, in the order below. List each referenced item
+and its relationship as a plain bullet (`- `); add an indented child bullet
+only when the extra explanation is useful. Child bullets are always optional.
+Use closing keywords only for issues this PR actually resolves on merge.
+Remove unused headings, examples, and comments before submitting. -->
+
+### Resolves
+
+<!--
+- Closes #...
+  - Optional explanation of what this PR resolves
+-->
+
+### Dependencies
+
+<!--
+- Depends on #...
+  - Optional explanation of the prerequisite
+-->
+
+### Resources
+
+<!--
+- Spec: URL
+  - Optional explanation of the resource
+-->
+
+### Related
+
+<!--
+- Refs #...
+  - Optional explanation of the relationship
+-->
 
 <!-- If an agent materially writes the PR body, append author and base/head revision
 in one fenced yaml block as required by docs/development/github.md. -->
