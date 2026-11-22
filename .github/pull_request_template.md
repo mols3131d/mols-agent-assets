@@ -19,7 +19,7 @@ Remove unused optional sections, empty headings, placeholders, and authoring com
 ## Checklist
 
 <!-- Keep the fixed checks below. Check only a criterion that was actually satisfied. Keep failed, pending, or unverified checks unchecked and explain why. For an inapplicable check, replace its entire checkbox item with a plain Markdown bullet in the form `- N/A: <reason>` (for example, `- N/A: no runtime behavior to verify`); do not use any checkbox syntax for N/A because it affects GitHub task progress. Add relevant checks as needed without copying CI logs.
-Use plain bullets for explanations, rationale, exceptions or evidence; nest them under the relevant check where useful. Only checkboxes track completion. -->
+Use plain bullets or paragraphs for free-form observations, rationale, exceptions and evidence, either immediately below Checklist (before its H3 groups) or under the relevant check. Explain material judgments and unmet checks with a reason, supporting evidence or a next action; omit routine commentary. Only checkboxes track completion. -->
 
 ### Self-review
 
