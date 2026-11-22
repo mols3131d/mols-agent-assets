@@ -1,12 +1,12 @@
 <!--
-Keep Summary, Goal, Tasks, Checklist, and Boundaries as the five required H2 sections, in order.
+Keep Description, Goal, Tasks, Checklist, and Boundaries as the five required H2 sections, in order.
 Split a long H2 into descriptive H3 subsections when distinct topics or workstreams make it easier to scan; otherwise omit H3. Keep the two fixed Checklist H3 groups. Keep the optional Documentation H3 only when relevant.
 Remove unused optional sections, empty headings, placeholders, and authoring comments before submitting.
 -->
 
-## Summary
+## Description
 
-<!-- Summarize the outcome; link a related Issue or task when one exists. -->
+<!-- Describe what changed and the resulting outcome; leave the problem and success criteria to Goal. Link related work when useful. -->
 
 ## Goal
 
@@ -18,7 +18,8 @@ Remove unused optional sections, empty headings, placeholders, and authoring com
 
 ## Checklist
 
-<!-- Keep the fixed checks below. Check only a criterion that was actually satisfied. Keep failed, pending, or unverified checks unchecked and explain why. For an inapplicable check, replace its entire checkbox item with a plain Markdown bullet in the form `- N/A: <reason>` (for example, `- N/A: no runtime behavior to verify`); do not use any checkbox syntax for N/A because it affects GitHub task progress. Add relevant checks as needed without copying CI logs. -->
+<!-- Keep the fixed checks below. Check only a criterion that was actually satisfied. Keep failed, pending, or unverified checks unchecked and explain why. For an inapplicable check, replace its entire checkbox item with a plain Markdown bullet in the form `- N/A: <reason>` (for example, `- N/A: no runtime behavior to verify`); do not use any checkbox syntax for N/A because it affects GitHub task progress. Add relevant checks as needed without copying CI logs.
+Use plain bullets for explanations, rationale, exceptions or evidence; nest them under the relevant check where useful. Only checkboxes track completion. -->
 
 ### Self-review
 
@@ -39,6 +40,8 @@ the full reviewed commit SHA.
 - [ ] No blocking findings from self-review remain.
 
 ### Verification
+
+<!-- State how applicable criteria were verified. When useful, add indented plain bullets under a check for method, environment, result, evidence or limitations. Link existing CI results instead of copying logs; do not claim a check passed without verification. -->
 
 - [ ] Task-specific acceptance criteria and runtime/manual behavior verified where applicable.
 
