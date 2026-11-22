@@ -1,33 +1,69 @@
-## Summary
-
-<!-- 변경 이유, 목표와 merge 후 달라지는 결과를 적습니다. -->
-
-## Changes
-
-<!-- 독립적인 완료 항목이 있다면 기본적으로 체크박스(- [ ] / - [x])로 작성하고
-진행에 맞춰 갱신합니다. 단순 변경 설명·특성 비교는 일반 목록이나 prose로 작성합니다.
-예: - [x] 완료한 변경 / - [ ] 남은 변경 (최종 본문에는 실제 항목만 남깁니다). -->
-
-## Validation
-
-<!-- 검증 항목은 체크박스로 충족 여부를 나타냅니다.
-- [x] 단위 테스트 — 실행·통과한 결과와 근거
-- [ ] 린트 — 실패: 오류와 후속 조치
-- [ ] 통합 테스트 — 미검증: 아직 확인하지 못한 이유
-[x]는 검증 기준 충족, [ ]는 실패·미검증 등 미충족 상태입니다.
-체크박스가 이미 나타내는 Pass·Fail·Not Verified 상태 아이콘은 덧붙이지 않습니다.
-미충족 항목에는 실패·미검증의 구체적인 사유를 적습니다.
-실제 항목만 남기고, 검증할 대상이 없으면 범위와 이유를 설명합니다. -->
-
-<!-- Summary·Changes·Validation은 필수입니다.
-그 외 H2 섹션은 필요할 때만 추가하고, 빈 섹션·예시·N/A는 남기지 않습니다.
-Risks: 잔여 위험 / Review Focus: 주요 검토 쟁점 / Boundaries: 중요한 범위·제약
-References: 판단에 필요한 링크·경로
-
-GitHub PR 제목을 H1로 보고 템플릿은 H2까지만 제공합니다.
-H3 이하는 섹션이 길어져 실제 가독성을 높일 때에만 작성자가 추가합니다.
-체크박스·표·진행 표시·Mermaid는 docs/development/github.md의 기준에 따라 선택합니다.
+<!--
+Keep Summary, Goal, Tasks, Checklist, and Boundaries as the five required H2 sections, in order.
+Split a long H2 into descriptive H3 subsections when distinct topics or workstreams make it easier to scan; otherwise omit H3. Keep the two fixed Checklist H3 groups. Keep the optional Documentation H3 only when relevant.
+Remove unused optional sections, empty headings, placeholders, and authoring comments before submitting.
 -->
 
-<!-- Agent가 본문을 실질적으로 작성하면 본문 끝에 author와 base/head revision을
-하나의 fenced yaml 블록으로 기재합니다. docs/development/github.md를 따릅니다. -->
+## Summary
+
+<!-- Summarize the outcome; link a related Issue or task when one exists. -->
+
+## Goal
+
+<!-- State the problem, intended outcome, and success criteria. Avoid repeating the Tasks list. -->
+
+## Tasks
+
+<!-- Track concrete deliverables using - [ ] and - [x]. Check only completed work. Group longer task lists under descriptive H3 headings when helpful; do not duplicate the changed-files list or commit history. -->
+
+## Checklist
+
+<!-- Keep the fixed checks below. Check only a criterion that was actually satisfied. Keep failed, pending, or unverified checks unchecked and explain why. For an inapplicable check, replace its entire checkbox item with a plain Markdown bullet in the form `- N/A: <reason>` (for example, `- N/A: no runtime behavior to verify`); do not use any checkbox syntax for N/A because it affects GitHub task progress. Add relevant checks as needed without copying CI logs. -->
+
+### Self-review
+
+- Reviewed HEAD: Pending
+
+<!--
+Review the full current PR diff on first review, when the previous reviewed SHA is unavailable,
+or when the base changes. Otherwise, review changes since the recorded SHA and their
+impact on the full PR diff, Goal, and Boundaries. After review, replace Pending with
+the full reviewed commit SHA.
+-->
+
+> [!WARNING]
+> Self-review is valid only for the recorded `Reviewed HEAD`. After every push, you must uncheck the Self-review items, review the changes, and update the checks and `Reviewed HEAD`.
+
+- [ ] Confirmed the Goal and Boundaries against the current PR diff.
+- [ ] Reviewed new changes since the last reviewed HEAD (or the full diff on initial review) for unintended changes and regressions.
+- [ ] No blocking findings from self-review remain.
+
+### Verification
+
+- [ ] Task-specific acceptance criteria and runtime/manual behavior verified where applicable.
+
+### Documentation
+
+<!--
+선택 항목: 문서가 변경되거나 실질적인 영향을 받을 때만 이 H3 전체를 남깁니다.
+목적: 사람과 AI 에이전트가 필요한 정보를 효율적으로 찾고 이해하며,
+정확한 판단과 행동으로 이어지도록 합니다. 불필요한 맥락·탐색·추론·
+검증·재작업 비용을 줄이되 문서 길이나 토큰 수 자체의 최소화를 목표로 하지 않습니다.
+실제로 확인한 항목만 체크하고 미충족 항목에는 사유를 남깁니다.
+-->
+
+- [ ] **목적과 독자:** 문서의 역할과 대상 독자가 명확하며, 필요한 이해·판단·행동을 지원한다.
+- [ ] **정확성과 완전성:** 사실·계약·제약·근거를 보존하고 변경된 정본과 일치시켰다.
+- [ ] **맥락·토큰 비용:** 중복·장황함을 제거하고 필요한 정보만 선택적으로 읽을 수 있도록 구성했다.
+- [ ] **탐색 비용:** 정보의 위치·책임·연결 관계가 명확하여 필요한 정본에 쉽게 도달할 수 있다.
+- [ ] **추론 비용:** 전제·조건·관계·판단 기준을 명확히 하여 불필요한 추론과 재확인을 줄였다.
+- [ ] **가독성과 유지보수성:** 핵심 정보가 우선 제시되고 구조·표현이 명료하며, 향후 변경에도 불필요한 중복 관리가 발생하지 않는다.
+
+## Boundaries
+
+<!-- Record material exclusions, unverified work, unresolved risks, constraints, permissions, side effects, or follow-up work; use N/A when none apply. -->
+
+<!-- Optional: add useful H2 sections such as Risks, Review Focus, Compatibility, Migration, Security, Handoff, or References. Omit empty sections. Add descriptive H3 subsections only when they improve readability. -->
+
+<!-- If an agent materially writes the PR body, append author and base/head revision
+in one fenced yaml block as required by docs/development/github.md. -->
