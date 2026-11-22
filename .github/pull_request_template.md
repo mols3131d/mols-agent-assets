@@ -64,3 +64,6 @@ the full reviewed commit SHA.
 <!-- Record material exclusions, unverified work, unresolved risks, constraints, permissions, side effects, or follow-up work; use N/A when none apply. -->
 
 <!-- Optional: add useful H2 sections such as Risks, Review Focus, Compatibility, Migration, Security, Handoff, or References. Omit empty sections. Add descriptive H3 subsections only when they improve readability. -->
+
+<!-- If an agent materially writes the PR body, append author and base/head revision
+in one fenced yaml block as required by docs/development/github.md. -->
