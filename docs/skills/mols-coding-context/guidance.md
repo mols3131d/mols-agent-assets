@@ -15,10 +15,14 @@ description: 범용 코딩 판단 컨텍스트의 설계 의도와 지침 채택
 
 언어별 지침은 해당 언어의 실제 의미나 런타임에 의존할 때만 [Python add-on](../mols-coding-context-python/guidance.md)과 같은 독립적인 add-on으로 유지한다.
 
+pstack에서 얻은 설계 관점은 독립적인 판단 기준으로 재구성한다. 개별 principle의 강제 절차·횟수·도구 요구나 plugin 구조는 가져오지 않는다.
+
 ## Regression evidence
 
-[기존 설계 및 마이그레이션](https://github.com/mols3131d/mols-agent-assets/pull/222)의 취지를 유지한다. 변경 전후에 일반 코딩 작업의 선택, 단순 사실 조회·문서 작업의 비선택, Python 의미에 따른 add-on 동반 선택, 불필요한 작업 증가, 호환성·실패 의미 보존과 근거 없는 최적화·리뷰 finding을 비교한다. 실제 실행 없이 동등한 런타임 행동이나 품질 향상을 주장하지 않는다.
+[기존 설계 및 마이그레이션](https://github.com/mols3131d/mols-agent-assets/pull/222)의 취지를 유지한다. 변경 전후에 일반 코딩 작업의 선택, 단순 사실 조회·문서 작업의 비선택, Python 의미에 따른 add-on 동반 선택, 불필요한 작업 증가, 호환성·실패 의미 보존과 근거 없는 최적화·리뷰 finding을 비교한다. 상태 표현과 ownership, 반복 실패 시 가설 재검토, 계약 중심 테스트, 측정의 타당성도 비교하되 불필요한 modeling·재설계·검증이 증가하는지 함께 본다. 실제 실행 없이 동등한 런타임 행동이나 품질 향상을 주장하지 않는다.
 
 ## References
+
+- [pstack (Lauren Tan)](https://github.com/cursor/plugins/tree/9e278fe4d4ecd8bfe98b1b79bf4be662efb338cc/pstack) — domain modeling, premise checking, shared state, contract-oriented testing, failure boundaries, reader load, measurement. [MIT license](https://github.com/cursor/plugins/blob/9e278fe4d4ecd8bfe98b1b79bf4be662efb338cc/pstack/LICENSE).
 
 - [OpenAI: Rethinking skills and prompts for GPT-6 Astra](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra) — 모델 발전에 따른 절차적 지시와 컨텍스트 과잉 재검토.
