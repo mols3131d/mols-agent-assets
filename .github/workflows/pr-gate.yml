@@ -30,6 +30,26 @@ jobs:
           version: "0.13.6"
           enable-cache: true
 
+      - name: Set up mise
+        uses: jdx/mise-action@v3
+        with:
+          version: "2026.10.25"
+          install: false
+          cache: true
+
+      - name: Install validation tools
+        run: mise install node rumdl "npm:@biomejs/biome" "npm:rulesync"
+
+      - name: Validate Biome configuration
+        run: mise exec -- biome check biome.json .vscode/tasks.json
+
+      - name: Validate changed source quality
+        shell: bash
+        run: |
+          set -euo pipefail
+          base_sha="$(git rev-parse HEAD^1)"
+          mise run quality-check --changed-from "$base_sha"
+
       - name: Validate source contracts
         run: uv run --locked --no-default-groups --group test python scripts/docs_frontmatter_validate.py
 
@@ -43,15 +63,18 @@ jobs:
           base_sha="$(git rev-parse HEAD^1)"
           uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts validate --changed-from "$base_sha"
 
-      - name: Set up mise
-        uses: jdx/mise-action@v3
-        with:
-          version: "2026.10.25"
-          install: false
-          cache: true
-
-      - name: Install Rulesync validation tools
-        run: mise install node "npm:rulesync"
+      - name: Validate changed Lefthook configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          base_sha="$(git rev-parse HEAD^1)"
+          if git diff --quiet "$base_sha" HEAD -- lefthook.yml .lefthook mise.toml .github/workflows/pr-gate.yml; then
+            echo "Lefthook inputs unchanged; skipping."
+          else
+            mise install lefthook
+            mise exec -- lefthook validate
+            sh -n .lefthook/pre-commit/source-quality.sh
+          fi
 
       - name: Validate project requirements with mise Doctor
         run: mise doctor project
