@@ -150,3 +150,11 @@ def test_invalid_environment_reports_error_before_filesystem_or_cli(
     assert "invalid-secret-like-value" not in error
     assert "Traceback" not in error
     assert not state.exists()
+
+
+@pytest.mark.parametrize("args", [[], ["eval"]])
+def test_bare_eval_does_not_start_promptfoo(args, monkeypatch, capsys) -> None:
+    monkeypatch.setattr(runner, "resolve_npx", lambda env: pytest.fail("CLI started"))
+
+    assert runner.main(args) == 0
+    assert "mise run eval -c" in capsys.readouterr().out

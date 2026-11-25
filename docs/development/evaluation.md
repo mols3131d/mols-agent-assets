@@ -113,7 +113,7 @@ Promptfoo는 현재 behavioral eval 실행 backend이며 기본 실행 위치는
 
 Eval config, fixture, adapter, assertion, runner의 구조적 correctness는 root deterministic test suite가 검증합니다. Promptfoo integration smoke와 실제 model/runtime eval은 repository-owned local entrypoint로 실행하고 결과를 behavioral evidence로 해석합니다. PR Gate에서 어떤 eval evidence를 blocking 또는 deferred로 둘지는 [Continuous Integration](ci.md)이 소유합니다.
 
-Fixture-mode smoke는 provider/generator/assertion plumbing을 Promptfoo 자체를 통해 확인하는 local integration check이며 runtime behavior evidence가 아닙니다. 실제 model/runtime eval과 semantic grading은 기본적으로 비차단 evidence이지만, 중요한 admission risk를 deterministic evidence로 대체할 수 없으면 CI 정책에 따라 bounded blocking evidence로 승격할 수 있습니다.
+Fixture-mode smoke는 provider/generator/assertion plumbing을 Promptfoo 자체를 통해 확인하는 local integration check이며 runtime behavior evidence가 아닙니다. 실제 model/runtime eval과 semantic grading은 사용자 요청에 따른 수동 evidence입니다. CI, hook, bootstrap 및 일반 check가 모델을 호출하지 않습니다. 중요한 admission risk를 deterministic evidence로 대체할 수 없으면 수동 평가 근거를 요구할 수 있지만 자동 평가를 시작하지 않습니다.
 
 단일 모델 호출은 Promptfoo native provider를 사용하며 특정 제공자로 고정하지 않습니다. 로컬 Ollama는 API key 없이 사용할 수 있는 기본값이고, 다른 제공자는 [평가 실행 설정](../../evals/README.md#promptfoo-provider-선택)에 따라 명시적으로 선택합니다. 공통 Python generator는 fixture를 Promptfoo 테스트로 변환하며, 조건부 Reference 선택과 fixture-mode smoke는 custom Python provider를 유지합니다. 이 경로는 실제 IDE/CLI agent 동작을 재현하지 않습니다.
 

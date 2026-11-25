@@ -169,7 +169,7 @@ representation / source validation
 | generator·sync·validator 동작 regression | deterministic test | blocking PR |
 | committed projection drift | official generation + diff/status | branch feedback + blocking PR |
 | Rulesync-managed source의 structural incompatibility | repository-owned structural validation | 해당 변경이 `main`을 invalid하게 만들면 blocking |
-| model routing·runtime behavior regression | semantic/runtime eval | 기본은 deferred, admission risk일 때만 blocking |
+| model routing·runtime behavior regression | 사용자가 요청한 semantic/runtime eval | 자동 실행하지 않으며 필요 시 수동 evidence를 요구 |
 | explicit contract가 아닌 pure style preference | local formatting/maintenance | non-blocking |
 
 ### Projection Gate

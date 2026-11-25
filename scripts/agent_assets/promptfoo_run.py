@@ -77,8 +77,9 @@ def resolve_npx(env: dict[str, str]) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     args = list(sys.argv[1:] if argv is None else argv)
-    if not args:
-        args = ["--help"]
+    if not args or args == ["eval"]:
+        print("Usage: mise run eval -c evals/promptfoo/<config>.yaml [options]")
+        return 0
 
     try:
         env = build_env()

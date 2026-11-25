@@ -16,7 +16,7 @@ Eval을 언제 추가하고 어떤 evidence로 해석할지는 [`docs/developmen
 
 기본 Trigger/Behavior 평가 중 `mols-loops`와 `mols-dev-env-bootstrap-design`은 선택 가능한 Promptfoo native provider를 사용합니다. 공통 Python generator는 canonical fixture로부터 case별 system prompt와 assertion을 구성하지만 모델 HTTP 호출은 하지 않습니다. Reference를 조건부로 선택하는 `mols-test-design`과 fixture-mode smoke는 기존 Python provider를 사용합니다. `mols-stdd`는 native Trigger/Behavior를 유지하면서 별도의 `mols-stdd-references.yaml`에서 로컬 Ollama 기반 reference 선택을 검사합니다. Native suite는 reference 관련 assertion을 명시적으로 제외하므로 그 결과를 로딩 검증으로 해석하지 않습니다. 모든 경로는 실제 IDE/CLI agent의 tool·routing 실행을 재현하지 않습니다.
 
-Promptfoo CLI는 개발자가 평가를 명시적으로 요청할 때만 실행합니다. CI, bootstrap, check, hook 또는 자동 작업에서 모델·grader 평가를 실행하지 않습니다. 모델 호출 위치는 사용자가 선택한 provider가 결정합니다. Repository correctness는 root `tests/`가 검증하며, Promptfoo의 공통 실행 진입점은 `mise run eval`입니다. 평가 설정 파일과 CLI 옵션은 인수로 전달합니다. 예시:
+Promptfoo CLI는 개발자가 평가를 명시적으로 요청할 때만 실행합니다. CI, bootstrap, check, hook 또는 자동 작업에서 모델·grader 평가를 실행하지 않습니다. 모델 호출 위치는 사용자가 선택한 provider가 결정합니다. Repository correctness는 root `tests/`가 검증하며, Promptfoo의 공통 실행 진입점은 `mise run eval`입니다. 평가 설정 파일과 CLI 옵션은 인수로 전달합니다. 인수 없이 `mise run eval`을 실행하면 사용법만 표시합니다. 예시:
 
 ```bash
 mise run eval -c evals/promptfoo/mols-loops-smoke.yaml
