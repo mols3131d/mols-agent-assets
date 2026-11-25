@@ -50,6 +50,11 @@ run = [
 description = "Format modified and untracked repository files"
 run = "uv run --locked --no-default-groups --group dev python scripts/changed_files_format.py"
 
+[tasks.quality-check]
+description = "Run read-only source lint and formatting checks by Git change scope"
+raw_args = true
+run = "uv run --locked --no-default-groups --group dev python -m scripts.source_quality_check"
+
 [tasks.check]
 description = "Validate the repository toolchain and lock state"
 run = [

@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import subprocess
 
+import pytest
+
 from scripts import (
     generated_artifacts_sync as sync,
     generated_artifacts_validate as validate,
@@ -56,6 +58,29 @@ def test_select_for_validation_uses_projection_registry():
     selected = validate.select_for_validation({"skills-lock.json"})
 
     assert [projection.name for projection in selected] == ["repository-routes"]
+
+
+@pytest.mark.parametrize(
+    "path",
+    [
+        "scripts/generated_artifacts.py",
+        "scripts/generated_artifacts_sync.py",
+        "scripts/generated_artifacts_validate.py",
+    ],
+)
+def test_common_validation_source_selects_all_projections(path):
+    assert validate.select_for_validation({path}) == sync.PROJECTIONS
+
+
+def test_common_source_respects_local_only_without_network():
+    selected = validate.select_for_validation(
+        {"scripts/generated_artifacts_sync.py"}, local_only=True
+    )
+    assert [projection.name for projection in selected] == [
+        "docs-indexes",
+        "catalog-indexes",
+        "distribution-routes",
+    ]
 
 
 def test_select_for_validation_limits_unknown_impact_to_local_projections():
