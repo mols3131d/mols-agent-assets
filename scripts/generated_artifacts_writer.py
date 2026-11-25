@@ -335,19 +335,28 @@ def get_branch_head_sha(
     repo: str,
     branch: str,
 ) -> str | None:
-    """원격 브랜치의 현재 HEAD commit SHA를 조회한다."""
+    """보호되지 않은 원격 브랜치의 현재 HEAD commit SHA를 조회한다."""
     quoted = urllib.parse.quote(branch, safe="")
-    status, data = requester(f"repos/{repo}/git/ref/heads/{quoted}")
+    status, data = requester(f"repos/{repo}/branches/{quoted}")
     if status == 404:
         return None
     if status != 200:
         raise WriterSecurityError(
             f"브랜치 HEAD 조회 실패 (HTTP {status}): branch={branch}"
         )
-    obj = data.get("object")
-    if not isinstance(obj, dict) or obj.get("type") != "commit":
-        raise WriterSecurityError(f"브랜치 ref가 commit을 가리키지 않습니다: {data!r}")
-    sha = obj.get("sha")
+    if not isinstance(data, dict) or data.get("name") != branch:
+        raise WriterSecurityError(
+            f"브랜치 조회 결과가 요청과 일치하지 않습니다: {branch}"
+        )
+    protected = data.get("protected")
+    if not isinstance(protected, bool):
+        raise WriterSecurityError(f"브랜치 보호 상태를 확인할 수 없습니다: {branch}")
+    if protected:
+        raise WriterSecurityError(
+            f"보호된 브랜치에는 생성물을 쓸 수 없습니다: {branch}"
+        )
+    commit = data.get("commit")
+    sha = commit.get("sha") if isinstance(commit, dict) else None
     if not isinstance(sha, str) or not HEX_SHA_RE.fullmatch(sha):
         raise WriterSecurityError(f"유효하지 않은 원격 HEAD SHA입니다: {sha!r}")
     return sha

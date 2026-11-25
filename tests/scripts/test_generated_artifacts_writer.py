@@ -36,6 +36,12 @@ def _artifact_response(**overrides: object) -> dict[str, object]:
     }
 
 
+def _branch_response(
+    sha: str = SAMPLE_SHA, *, branch: str = "feat/example", protected: bool = False
+) -> dict[str, object]:
+    return {"name": branch, "protected": protected, "commit": {"sha": sha}}
+
+
 def _git(
     cwd: Path, *args: str, env: dict[str, str] | None = None
 ) -> subprocess.CompletedProcess[str]:
@@ -400,18 +406,14 @@ def test_github_api_lookup_errors_fail_closed() -> None:
     assert writer.get_branch_head_sha(lambda _: (404, {}), "o/r", "feat/x") is None
     with pytest.raises(writer.WriterSecurityError):
         writer.get_branch_head_sha(lambda _: (500, {}), "o/r", "feat/x")
-    with pytest.raises(writer.WriterSecurityError):
-        writer.get_branch_head_sha(
-            lambda _: (200, {"object": {"type": "tag", "sha": SAMPLE_SHA}}),
-            "o/r",
-            "feat/x",
-        )
-    with pytest.raises(writer.WriterSecurityError):
-        writer.get_branch_head_sha(
-            lambda _: (200, {"object": {"type": "commit", "sha": "bad"}}),
-            "o/r",
-            "feat/x",
-        )
+    for body in (
+        _branch_response(branch="feat/renamed"),
+        _branch_response(sha="bad", branch="feat/x"),
+        {**_branch_response(branch="feat/x"), "commit": None},
+        {**_branch_response(branch="feat/x"), "protected": "false"},
+    ):
+        with pytest.raises(writer.WriterSecurityError):
+            writer.get_branch_head_sha(lambda _, b=body: (200, b), "o/r", "feat/x")
 
     with pytest.raises(writer.WriterSecurityError):
         writer.get_bot_identity(lambda _: (200, {}), "bad slug!")
@@ -827,8 +829,8 @@ def test_apply_payload_and_commit_and_push_end_to_end_with_local_bare_repo(
     def fake_api(path: str) -> tuple[int, dict[str, object]]:
         if path == "users/test-app%5Bbot%5D":
             return 200, {"id": 999001, "login": "test-app[bot]", "type": "Bot"}
-        if path == "repos/mols3131d/mols-agent-assets/git/ref/heads/feat%2Fexample":
-            return 200, {"object": {"type": "commit", "sha": head_sha}}
+        if path == "repos/mols3131d/mols-agent-assets/branches/feat%2Fexample":
+            return 200, _branch_response(head_sha)
         raise AssertionError(f"unexpected API call: {path}")
 
     decision = writer.commit_and_push(
@@ -926,7 +928,7 @@ def test_commit_and_push_discards_stale_head_and_rejects_non_fast_forward(
         requester=lambda path: (
             (200, {"id": 999001, "login": "test-app[bot]", "type": "Bot"})
             if "users/" in path
-            else (200, {"object": {"type": "commit", "sha": sha2}})
+            else (200, _branch_response(sha2))
         ),
     )
     assert stale_decision == writer.Decision(False, "stale_head")
@@ -938,9 +940,7 @@ def test_commit_and_push_discards_stale_head_and_rejects_non_fast_forward(
         if "users/" in path:
             return 200, {"id": 999001, "login": "test-app[bot]", "type": "Bot"}
         calls["ref"] += 1
-        return 200, {
-            "object": {"type": "commit", "sha": sha1 if calls["ref"] == 1 else sha2}
-        }
+        return 200, _branch_response(sha1 if calls["ref"] == 1 else sha2)
 
     second_stale = writer.commit_and_push(
         target_dir,
@@ -968,7 +968,7 @@ def test_commit_and_push_discards_stale_head_and_rejects_non_fast_forward(
             requester=lambda path: (
                 (200, {"id": 999001, "login": "test-app[bot]", "type": "Bot"})
                 if "users/" in path
-                else (200, {"object": {"type": "commit", "sha": sha1}})
+                else (200, _branch_response(sha1))
             ),
         )
     assert (
@@ -977,6 +977,31 @@ def test_commit_and_push_discards_stale_head_and_rejects_non_fast_forward(
         ).stdout.split()[0]
         == sha2
     )
+
+    protected_target = tmp_path / "protected-before-push"
+    writer.checkout_source_commit(bare.as_uri(), protected_target, sha2)
+    writer.apply_payload(protected_target, payload)
+    branch_lookups = 0
+
+    def protection_changed(path: str) -> tuple[int, dict[str, object]]:
+        nonlocal branch_lookups
+        if "users/" in path:
+            return 200, {"id": 999001, "login": "test-app[bot]", "type": "Bot"}
+        branch_lookups += 1
+        return 200, _branch_response(sha2, protected=branch_lookups == 2)
+
+    with pytest.raises(writer.WriterSecurityError, match="보호된 브랜치"):
+        writer.commit_and_push(
+            protected_target,
+            branch="feat/example",
+            expected_head_sha=sha2,
+            repo_full_name="mols3131d/mols-agent-assets",
+            app_token="app-token",
+            app_slug="test-app",
+            requester=protection_changed,
+        )
+    assert branch_lookups == 2
+    assert _git(bare, "rev-parse", "refs/heads/feat/example").stdout.strip() == sha2
 
     # The API may still report the source SHA when Git sees the ref rewound or deleted.
     for actual_head in (sha1, None):
@@ -1001,7 +1026,7 @@ def test_commit_and_push_discards_stale_head_and_rejects_non_fast_forward(
                 requester=lambda path: (
                     (200, {"id": 999001, "login": "test-app[bot]", "type": "Bot"})
                     if "users/" in path
-                    else (200, {"object": {"type": "commit", "sha": sha2}})
+                    else (200, _branch_response(sha2))
                 ),
             )
         remote = _git(
@@ -1099,8 +1124,8 @@ def test_writer_cli_skips_when_disabled_noop_or_stale_head(
         def call(path: str) -> tuple[int, dict[str, object]]:
             if path.endswith("/artifacts"):
                 return 200, _artifact_response()
-            if "git/ref/heads/" in path:
-                return 200, {"object": {"type": "commit", "sha": SAMPLE_SHA}}
+            if "/branches/" in path:
+                return 200, _branch_response()
             raise AssertionError(path)
 
         return call
@@ -1113,6 +1138,17 @@ def test_writer_cli_skips_when_disabled_noop_or_stale_head(
     assert writer.main(["verify-run"]) == 1
     monkeypatch.delenv("EXPECTED_ARTIFACT_ID")
 
+    def protected_ref(path: str) -> tuple[int, dict[str, object]]:
+        assert path.endswith("/branches/feat%2Fexample")
+        return 200, _branch_response(protected=True)
+
+    monkeypatch.setattr(writer, "make_github_api_requester", lambda *_: protected_ref)
+    protected_output = tmp_path / "protected_out.txt"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(protected_output))
+    assert writer.main(["verify-run"]) == 1
+    assert not protected_output.exists()
+
+    monkeypatch.setattr(writer, "make_github_api_requester", ok_requester)
     noop_zip_holder = tmp_path / "noop_holder"
     _write_payload_zip(noop_zip_holder / f"{writer.ARTIFACT_NAME}.zip", changed=False)
     out_noop = tmp_path / "noop_out.txt"
@@ -1137,7 +1173,7 @@ def test_writer_cli_skips_when_disabled_noop_or_stale_head(
 
     # stale_head (원격 브랜치 404 또는 HEAD 이동) CLI 검증 (T08)
     def deleted_ref(path: str) -> tuple[int, dict[str, object]]:
-        assert "/git/ref/heads/" in path
+        assert "/branches/" in path
         return 404, {}
 
     monkeypatch.setattr(writer, "make_github_api_requester", lambda *_: deleted_ref)
@@ -1188,8 +1224,8 @@ def test_writer_cli_prepare_write_and_commit_and_push_end_to_end(
         def call(path: str) -> tuple[int, dict[str, object]]:
             if path.endswith("/artifacts"):
                 return 200, _artifact_response()
-            if "git/ref/heads/" in path:
-                return 200, {"object": {"type": "commit", "sha": head_sha}}
+            if "/branches/" in path:
+                return 200, _branch_response(head_sha, branch="feat/e2e-cli")
             if path == "users/mols-sync%5Bbot%5D":
                 return 200, {"id": 888111, "login": "mols-sync[bot]", "type": "Bot"}
             raise AssertionError(f"unexpected path: {path}")
