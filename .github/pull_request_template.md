@@ -1,49 +1,60 @@
 <!--
-Keep Description, Goal, Tasks, Checklist, and Boundaries as the five required H2 sections, in order.
-Split a long H2 into descriptive H3 subsections when distinct topics or workstreams make it easier to scan; otherwise omit H3. Keep the two fixed Checklist H3 groups. Keep the optional Documentation H3 only when relevant.
-Remove unused optional sections, empty headings, placeholders, and authoring comments before submitting.
+Description, Goal, Tasks, Checklist, Boundaries를 필수 H2로 순서대로 유지합니다.
+긴 H2는 주제나 작업 단위를 구분하면 읽기 쉬울 때만 H3로 나눕니다.
+Checklist의 고정 H3 두 개는 유지하고, 선택 항목인 Documentation은 관련이 있을 때만 남깁니다.
+제출 전 사용하지 않는 선택 섹션, 빈 제목, placeholder, 작성용 주석을 제거합니다.
 -->
 
 ## Description
 
-<!-- Describe what changed and the resulting outcome; leave the problem and success criteria to Goal. Link related work when useful. -->
+<!-- 변경 내용과 결과를 설명합니다. 문제와 성공 기준은 Goal에 두고, 필요하면 관련 작업을 연결합니다. -->
 
 ## Goal
 
-<!-- State the problem, intended outcome, and success criteria. Avoid repeating the Tasks list. -->
+<!-- 문제, 목표 결과, 성공 기준을 명시합니다. Tasks 목록을 반복하지 않습니다. -->
 
 ## Tasks
 
-<!-- Track concrete deliverables using - [ ] and - [x]. Check only completed work. Group longer task lists under descriptive H3 headings when helpful; do not duplicate the changed-files list or commit history. -->
+<!-- 구체적인 결과물을 - [ ]와 - [x]로 추적합니다. 완료한 작업만 체크합니다. 긴 목록은 필요한 경우 H3로 구분하되 변경 파일 목록이나 커밋 이력을 반복하지 않습니다. -->
 
 ## Checklist
 
-<!-- Keep the fixed checks below. Check only a criterion that was actually satisfied. Keep failed, pending, or unverified checks unchecked and explain why. For an inapplicable check, replace its entire checkbox item with a plain Markdown bullet in the form `- N/A: <reason>` (for example, `- N/A: no runtime behavior to verify`); do not use any checkbox syntax for N/A because it affects GitHub task progress. Add relevant checks as needed without copying CI logs.
-Use plain bullets or paragraphs for free-form observations, rationale, exceptions and evidence, either immediately below Checklist (before its H3 groups) or under the relevant check. Explain material judgments and unmet checks with a reason, supporting evidence or a next action; omit routine commentary. Only checkboxes track completion. -->
+<!--
+아래 고정 검증 항목을 유지하고 실제로 충족한 기준만 체크합니다.
+실패·대기·미검증 항목은 체크하지 않고 사유를 설명합니다.
+적용할 수 없는 항목은 체크박스 전체를 일반 불릿인 `- N/A: <reason>` 형식으로 대체합니다
+(예: `- N/A: 검증할 런타임 동작 없음`). GitHub 작업 진행률에 영향을 주므로 N/A에는 체크박스를 사용하지 않습니다.
+필요한 검증 항목을 추가하되 CI 로그를 복제하지 않습니다.
+관찰, 판단 근거, 예외와 증거는 첫 H3 앞이나 해당 항목 아래에 일반 불릿 또는 문단으로 자유롭게 작성합니다.
+중요한 판단과 미충족 항목에는 사유, 근거 또는 다음 조치를 남기고 일상적인 설명은 생략합니다.
+완료 여부는 체크박스로만 추적합니다.
+-->
 
 ### Self-review
 
 - Reviewed HEAD: Pending
 
 <!--
-Review the full current PR diff on first review, when the previous reviewed SHA is unavailable,
-or when the base changes. Otherwise, review changes since the recorded SHA and their
-impact on the full PR diff, Goal, and Boundaries. After review, replace Pending with
-the full reviewed commit SHA.
+첫 리뷰, 이전 리뷰 SHA를 알 수 없는 경우 또는 base 변경 시에는 현재 PR의 전체 diff를 검토합니다.
+그 외에는 기록된 SHA 이후 변경과 전체 PR diff, Goal, Boundaries에 미치는 영향을 검토합니다.
+리뷰 후 Pending을 검토한 전체 커밋 SHA로 대체합니다.
 -->
 
 > [!WARNING]
-> Self-review is valid only for the recorded `Reviewed HEAD`. After every push, you must uncheck the Self-review items, review the changes, and update the checks and `Reviewed HEAD`.
+> Self-review는 기록된 `Reviewed HEAD`에서만 유효합니다. 매 push 후 Self-review 항목의 체크를 해제하고 변경을 검토한 뒤 체크 상태와 `Reviewed HEAD`를 갱신해야 합니다.
 
-- [ ] Confirmed the Goal and Boundaries against the current PR diff.
-- [ ] Reviewed new changes since the last reviewed HEAD (or the full diff on initial review) for unintended changes and regressions.
-- [ ] No blocking findings from self-review remain.
+- [ ] 현재 PR diff를 기준으로 Goal과 Boundaries를 확인했다.
+- [ ] 마지막 리뷰 HEAD 이후 변경(첫 리뷰는 전체 diff)을 검토하여 의도하지 않은 변경과 회귀 여부를 확인했다.
+- [ ] Self-review에서 발견한 차단 이슈가 남아 있지 않다.
 
 ### Verification
 
-<!-- State how applicable criteria were verified. When useful, add indented plain bullets under a check for method, environment, result, evidence or limitations. Link existing CI results instead of copying logs; do not claim a check passed without verification. -->
+<!--
+적용 가능한 기준을 어떻게 검증했는지 명시합니다. 필요하면 항목 아래의 들여쓴 일반 불릿으로 방법, 환경, 결과, 근거, 제약을 설명합니다.
+CI 로그를 복제하지 않고 기존 결과를 연결하며, 검증하지 않은 항목을 통과로 표시하지 않습니다.
+-->
 
-- [ ] Task-specific acceptance criteria and runtime/manual behavior verified where applicable.
+- [ ] 작업별 인수 기준과 해당되는 런타임·수동 검증을 확인했다.
 
 ### Documentation
 
@@ -55,55 +66,56 @@ the full reviewed commit SHA.
 실제로 확인한 항목만 체크하고 미충족 항목에는 사유를 남깁니다.
 -->
 
-- [ ] **목적과 독자:** 문서의 역할과 대상 독자가 명확하며, 필요한 이해·판단·행동을 지원한다.
-- [ ] **정확성과 완전성:** 사실·계약·제약·근거를 보존하고 변경된 정본과 일치시켰다.
-- [ ] **맥락·토큰 비용:** 중복·장황함을 제거하고 필요한 정보만 선택적으로 읽을 수 있도록 구성했다.
-- [ ] **탐색 비용:** 정보의 위치·책임·연결 관계가 명확하여 필요한 정본에 쉽게 도달할 수 있다.
-- [ ] **추론 비용:** 전제·조건·관계·판단 기준을 명확히 하여 불필요한 추론과 재확인을 줄였다.
-- [ ] **가독성과 유지보수성:** 핵심 정보가 우선 제시되고 구조·표현이 명료하며, 향후 변경에도 불필요한 중복 관리가 발생하지 않는다.
+- [ ] **Purpose and Audience:** 문서의 역할과 대상 독자가 명확하며, 필요한 이해·판단·행동을 지원한다.
+- [ ] **Accuracy and Completeness:** 사실·계약·제약·근거를 보존하고 변경된 정본과 일치시켰다.
+- [ ] **Context and Token Cost:** 중복·장황함을 제거하고 필요한 정보만 선택적으로 읽을 수 있도록 구성했다.
+- [ ] **Discovery Cost:** 정보의 위치·책임·연결 관계가 명확하여 필요한 정본에 쉽게 도달할 수 있다.
+- [ ] **Reasoning Cost:** 전제·조건·관계·판단 기준을 명확히 하여 불필요한 추론과 재확인을 줄였다.
+- [ ] **Readability and Maintainability:** 핵심 정보가 우선 제시되고 구조·표현이 명료하며, 향후 변경에도 불필요한 중복 관리가 발생하지 않는다.
 
 ## Boundaries
 
-<!-- Record material exclusions, unverified work, unresolved risks, constraints, permissions, side effects, or follow-up work; use N/A when none apply. -->
+<!-- 중요한 제외 범위, 미검증 작업, 미해결 위험, 제약, 권한, 부작용 또는 후속 작업을 기록합니다. 해당 사항이 없으면 N/A로 표시합니다. -->
 
-<!-- Optional: add useful H2 sections such as Risks, Review Focus, Compatibility, Migration, Security, or Handoff. Omit empty sections. -->
+<!-- 선택 항목: 필요한 H2(Risks, Review Focus, Compatibility, Migration, Security, Handoff 등)를 추가합니다. 빈 섹션은 생략합니다. -->
 
 ## References
 
-<!-- Optional: omit this entire H2 when there are no references.
-Keep only relevant H3 groups, in the order below. List each referenced item
-and its relationship as a plain bullet (`- `); add an indented child bullet
-only when the extra explanation is useful. Child bullets are always optional.
-Use closing keywords only for issues this PR actually resolves on merge.
-Remove unused headings, examples, and comments before submitting. -->
+<!--
+선택 항목: 참조가 없으면 이 H2 전체를 생략합니다.
+관련 있는 H3만 아래 순서대로 남깁니다.
+각 참조 대상과 관계를 일반 불릿(`- `)으로 작성하고, 추가 설명이 유용할 때만 들여쓴 하위 불릿을 사용합니다.
+하위 불릿은 항상 선택 사항입니다.
+PR이 merge될 때 실제로 해결하는 이슈에만 closing keyword를 사용합니다.
+제출 전 사용하지 않는 제목, 예시, 주석을 제거합니다.
+-->
 
 ### Resolves
 
 <!--
 - Closes #...
-  - Optional explanation of what this PR resolves
+  - 이 PR이 해결하는 내용 (선택)
 -->
 
 ### Dependencies
 
 <!--
 - Depends on #...
-  - Optional explanation of the prerequisite
+  - 선행 조건 설명 (선택)
 -->
 
 ### Resources
 
 <!--
 - Spec: URL
-  - Optional explanation of the resource
+  - 자료 설명 (선택)
 -->
 
 ### Related
 
 <!--
 - Refs #...
-  - Optional explanation of the relationship
+  - 관련성 설명 (선택)
 -->
 
-<!-- If an agent materially writes the PR body, append author and base/head revision
-in one fenced yaml block as required by docs/development/github.md. -->
+<!-- 에이전트가 PR 본문을 실질적으로 작성한 경우 docs/development/github.md에 따라 author와 base/head revision을 하나의 fenced yaml 블록에 기록합니다. -->
