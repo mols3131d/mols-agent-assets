@@ -19,7 +19,7 @@ description: mols-coding-context의 설계 의도, 지침 채택·제거 기준�
 - **압축:** 판단 조건과 예외를 보존하고, 표준 전문용어로 중복·열거를 줄인다. 단어 수나 토큰 수를 줄이기 위해 추론 부담을 늘리지 않는다.
 - **책임:** 저장소 정책, 권한, 검증 보고, 구현·리뷰·테스트 절차와 최적화 도구는 각각의 정본이 소유한다. Core에 체크리스트, 도구 호출, 산출물, 추가 자료 로딩을 강제하지 않는다. 언어별 판단은 [Python add-on](../mols-coding-context-python/guidance.md)과 같은 별도 자산에서 해당 언어의 delta만 유지한다.
 
-pstack은 판단 기준의 참고 출처로만 사용했다. 추가 흡수는 하지 않으며, 향후 지침 변경은 위 기준과 실제 실패 근거에 따라 판단한다.
+pstack은 판단 기준의 참고 출처로만 사용한다. 리뷰·분석·제안의 비판적 수용을 보강하되, 모든 finding에 실행 증거를 요구하거나 다중 모델·재현 절차를 강제하지 않는다.
 
 ## Evaluation
 
@@ -28,8 +28,8 @@ pstack은 판단 기준의 참고 출처로만 사용했다. 추가 흡수는 �
 | 대상 | 확인할 행동 |
 | --- | --- |
 | 선택·로딩 | 일반 코딩의 최초 선택, 같은 컨텍스트에서 재사용, 비코딩 작업의 비선택, 언어별 add-on의 조건부 선택 |
-| 판단 품질 | 호환성·실패 의미 보존, 적절한 상태 모델링·ownership, 안전한 부작용 처리, 근거 있는 최적화·리뷰·검증 |
-| 회귀·비용 | 과잉 추상화·재설계·검증, 반복 실패 시 전제 검증 누락, 불필요한 도구 호출과 재로딩 |
+| 판단 품질 | 호환성·실패 의미 보존, 적절한 상태 모델링·ownership, 안전한 부작용 처리, 근거 있는 최적화·리뷰·검증, 주장과 해결책의 독립 판단 |
+| 회귀·비용 | 과잉 추상화·재설계·검증, 근거 없는 주장 수용·방어 코드 추가, 정당한 방어 누락, 반복 실패 시 전제 검증 누락, 불필요한 도구 호출과 재로딩 |
 
 동일한 모델·런타임·하네스와 비교 가능한 조건에서 Core 적용 여부 또는 변경 전후를 비교한다. 판단 품질과 함께 입력·추론 토큰, 소요 시간, 추가 작업을 측정 가능한 범위에서 확인한다. 파일 길이와 정적 검사만으로 행동 동등성이나 비용 절감을 단정하지 않는다.
 
@@ -37,4 +37,6 @@ pstack은 판단 기준의 참고 출처로만 사용했다. 추가 흡수는 �
 
 - [기존 설계 및 마이그레이션](https://github.com/mols3131d/mols-agent-assets/pull/222)
 - [pstack (Lauren Tan)](https://github.com/cursor/plugins/tree/9e278fe4d4ecd8bfe98b1b79bf4be662efb338cc/pstack) — domain modeling, premise checking, shared state, contract-oriented testing, failure boundaries, reader load, measurement. [MIT license](https://github.com/cursor/plugins/blob/9e278fe4d4ecd8bfe98b1b79bf4be662efb338cc/pstack/LICENSE).
+  - 피드백의 증거와 도달 가능성 판단: [interrogate](https://github.com/cursor/plugins/tree/9e278fe4d4ecd8bfe98b1b79bf4be662efb338cc/pstack/skills/interrogate), [blast-radius](https://github.com/cursor/plugins/tree/9e278fe4d4ecd8bfe98b1b79bf4be662efb338cc/pstack/skills/blast-radius), [triage-issue-reports](https://github.com/cursor/plugins/tree/9e278fe4d4ecd8bfe98b1b79bf4be662efb338cc/pstack/automations/benny/skills/triage-issue-reports).
+  - 추측성 보호 장치 억제: [principle-subtract-before-you-add](https://github.com/cursor/plugins/tree/9e278fe4d4ecd8bfe98b1b79bf4be662efb338cc/pstack/skills/principle-subtract-before-you-add).
 - [OpenAI: Rethinking skills and prompts for GPT-6 Astra](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra) — 모델 발전에 따른 절차형 지침과 컨텍스트 과잉 재검토.
