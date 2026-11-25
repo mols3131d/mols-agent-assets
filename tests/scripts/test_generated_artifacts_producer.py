@@ -205,6 +205,13 @@ def test_collect_rejects_ignored_new_output_from_canonical_generator(
     with pytest.raises(producer.ProducerError, match="docs/development/INDEX.tsv"):
         producer.collect_generated_changes(repo)
 
+    (repo / ".gitignore").write_text("/.venv/\n", encoding="utf-8")
+    _git(repo, "add", ".gitignore")
+    _git(repo, "commit", "-qm", "allow committing generated index")
+    changed, deleted = producer.collect_generated_changes(repo)
+    assert "docs/development/INDEX.tsv" in changed
+    assert deleted == []
+
 
 def test_real_generators_and_package_cover_t02_t03_t04_t05_and_t11(
     tmp_path: Path,
@@ -612,6 +619,10 @@ def test_generated_sync_workflow_is_read_only_and_covers_projection_inputs() -> 
     patterns = on_section["push"]["paths"]
     for input_path in (
         ".github/workflows/generated-sync.yml",
+        ".gitignore",
+        "route/.gitignore",
+        ".agents/.gitignore",
+        ".agents/route/.gitignore",
         "pyproject.toml",
         "uv.lock",
         "scripts/generated_artifacts.py",
