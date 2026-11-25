@@ -11,70 +11,20 @@ import shutil
 import stat
 import subprocess
 import sys
-from pathlib import Path, PurePosixPath
+from pathlib import Path
 from typing import Any
 
-from scripts import generated_artifacts_sync as sync
+from scripts import (
+    generated_artifacts_sync as sync,
+    generated_artifacts_writeback as writeback,
+)
 
 ROOT = sync.ROOT
-SCHEMA_VERSION = 1
-HEX_SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 REPO_NAME_RE = re.compile(r"^[^/\s]+/[^/\s]+$")
-PROTECTED_CORE_OUTPUTS = frozenset(
-    {
-        "docs/INDEX.tsv",
-        "catalog/INDEX.tsv",
-        "route/routes.jsonl",
-        ".agents/route/routes.jsonl",
-        ".agents/route/all.jsonl",
-        ".agents/route/uncategorized.jsonl",
-    }
-)
 
 
 class ProducerError(RuntimeError):
     """Producer payload 생성 또는 경계 검증에 실패할 때 발생한다."""
-
-
-def is_safe_relative_posix_path(path: str) -> bool:
-    """경로 순회, surrogate, 제어 문자가 없는 순수 POSIX 상대 경로인지 검사한다."""
-    if not path or "\\" in path or path.startswith("/") or path.endswith("/"):
-        return False
-    if "//" in path:
-        return False
-    if any(
-        ord(ch) < 32 or ord(ch) == 127 or 0xD800 <= ord(ch) <= 0xDFFF for ch in path
-    ):
-        return False
-    parts = path.split("/")
-    if any(part in {"", ".", "..", ".git"} for part in parts):
-        return False
-    return PurePosixPath(path).as_posix() == path
-
-
-def is_allowed_generated_output(path: str) -> bool:
-    """저장소 `PROJECTIONS`가 소유하는 생성 출력 경로인지 확인한다."""
-    if not is_safe_relative_posix_path(path):
-        return False
-    if not any(projection.output_matches(path) for projection in sync.PROJECTIONS):
-        return False
-
-    posix = PurePosixPath(path)
-    if path.startswith(("docs/", "catalog/")):
-        return posix.name == "INDEX.tsv"
-    if path.startswith("route/"):
-        return (
-            posix.parent == PurePosixPath("route")
-            and posix.suffix == ".jsonl"
-            and bool(posix.stem)
-        )
-    if path.startswith(".agents/route/"):
-        return (
-            posix.parent == PurePosixPath(".agents/route")
-            and posix.suffix == ".jsonl"
-            and bool(posix.stem)
-        )
-    return False
 
 
 def _run_git(root: Path, *args: str) -> bytes:
@@ -107,6 +57,26 @@ def _run_git(root: Path, *args: str) -> bytes:
     return result.stdout
 
 
+def _require_regular_generated_output(root: Path, path: str) -> None:
+    target = root / path
+    relative = target.relative_to(root)
+    try:
+        for parent in reversed(relative.parents[:-1]):
+            directory = (root / parent).lstat()
+            if (
+                not stat.S_ISDIR(directory.st_mode)
+                or getattr(directory, "st_reparse_tag", 0)
+                == stat.IO_REPARSE_TAG_MOUNT_POINT
+            ):
+                raise ProducerError(
+                    f"생성 출력의 상위 경로가 일반 디렉터리가 아닙니다: {parent}"
+                )
+        if not stat.S_ISREG(target.lstat().st_mode):
+            raise ProducerError(f"생성 출력이 일반 파일이 아닙니다: {path}")
+    except OSError as exc:
+        raise ProducerError(f"생성 출력 파일을 읽을 수 없습니다: {path}") from exc
+
+
 def collect_generated_changes(root: Path = ROOT) -> tuple[list[str], list[str]]:
     """HEAD 대비 작업 트리의 생성 출력 변경·추가·삭제 목록을 수집한다."""
     raw_diff = _run_git(
@@ -127,7 +97,7 @@ def collect_generated_changes(root: Path = ROOT) -> tuple[list[str], list[str]]:
         path = tokens[idx + 1]
         if status == "D":
             deleted_set.add(path)
-        elif status in {"M", "A", "T"}:
+        elif status in {"M", "A"}:
             changed_set.add(path)
         else:
             raise ProducerError(f"지원하지 않는 git diff 상태입니다: {status} ({path})")
@@ -140,22 +110,16 @@ def collect_generated_changes(root: Path = ROOT) -> tuple[list[str], list[str]]:
             changed_set.add(item.decode("utf-8", errors="surrogateescape"))
 
     for path in sorted(changed_set | deleted_set):
-        if not is_allowed_generated_output(path):
+        if not writeback.is_allowed_generated_output(path):
             raise ProducerError(f"허용된 생성 출력 외 파일이 변경되었습니다: {path}")
 
     final_deleted = sorted(deleted_set - changed_set)
     for path in final_deleted:
-        if path in PROTECTED_CORE_OUTPUTS:
+        if path in writeback.PROTECTED_CORE_OUTPUTS:
             raise ProducerError(f"핵심 생성 출력 파일이 삭제되었습니다: {path}")
 
     for path in sorted(changed_set):
-        target = root / path
-        try:
-            mode = os.lstat(target).st_mode
-        except OSError as exc:
-            raise ProducerError(f"생성 출력 파일을 읽을 수 없습니다: {path}") from exc
-        if stat.S_ISLNK(mode) or not stat.S_ISREG(mode):
-            raise ProducerError(f"생성 출력이 일반 파일이 아닙니다: {path}")
+        _require_regular_generated_output(root, path)
 
     return sorted(changed_set), final_deleted
 
@@ -188,7 +152,7 @@ def package_payload(
         )
     if not branch or branch == "main" or branch.startswith("refs/"):
         raise ProducerError(f"유효하지 않은 source branch입니다: {branch!r}")
-    if not HEX_SHA_RE.fullmatch(head_sha):
+    if not writeback.HEX_SHA_RE.fullmatch(head_sha):
         raise ProducerError(f"유효하지 않은 head_sha입니다: {head_sha!r}")
 
     actual_head = _run_git(root, "rev-parse", "HEAD").decode("utf-8").strip()
@@ -198,18 +162,37 @@ def package_payload(
         )
 
     changed_paths, deleted_paths = collect_generated_changes(root)
-    if output_dir.is_symlink():
-        raise ProducerError(f"출력 디렉터리가 symlink입니다: {output_dir}")
+    if len(changed_paths) + len(deleted_paths) > writeback.MAX_FILE_COUNT:
+        raise ProducerError("변경된 생성 출력 수가 artifact 제한을 초과했습니다.")
+    if output_dir.is_symlink() or output_dir.is_junction():
+        raise ProducerError(f"출력 디렉터리가 링크입니다: {output_dir}")
+    resolved_output = output_dir.resolve()
+    resolved_root = root.resolve()
+    if resolved_output.is_relative_to(resolved_root) or resolved_root.is_relative_to(
+        resolved_output
+    ):
+        raise ProducerError("Artifact와 원본 작업 트리는 별도 디렉터리여야 합니다.")
     if output_dir.exists():
         shutil.rmtree(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     file_entries: list[dict[str, Any]] = []
+    total_bytes = 0
     if changed_paths:
         files_root = output_dir / "files"
         for rel_path in changed_paths:
             src = root / rel_path
-            raw_bytes = src.read_bytes()
+            with src.open("rb") as handle:
+                raw_bytes = handle.read(writeback.MAX_FILE_BYTES + 1)
+            if len(raw_bytes) > writeback.MAX_FILE_BYTES:
+                raise ProducerError(
+                    f"생성 출력 크기가 artifact 제한을 초과했습니다: {rel_path}"
+                )
+            total_bytes += len(raw_bytes)
+            if total_bytes > writeback.MAX_TOTAL_PAYLOAD_BYTES:
+                raise ProducerError(
+                    "생성 출력의 총 크기가 artifact 제한을 초과했습니다."
+                )
             dest = files_root / rel_path
             dest.parent.mkdir(parents=True, exist_ok=True)
             dest.write_bytes(raw_bytes)
@@ -223,7 +206,7 @@ def package_payload(
 
     changed = bool(file_entries or deleted_paths)
     metadata: dict[str, Any] = {
-        "schema_version": SCHEMA_VERSION,
+        "schema_version": writeback.SCHEMA_VERSION,
         "repository_id": repo_id,
         "repository_full_name": repository_full_name,
         "branch": branch,
@@ -234,11 +217,12 @@ def package_payload(
         "files": file_entries,
         "deleted": deleted_paths,
     }
-    (output_dir / "metadata.json").write_text(
-        json.dumps(metadata, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-        newline="\n",
+    encoded = (json.dumps(metadata, ensure_ascii=False, indent=2) + "\n").encode(
+        "utf-8"
     )
+    if len(encoded) > writeback.MAX_METADATA_BYTES:
+        raise ProducerError("metadata.json 크기가 artifact 제한을 초과했습니다.")
+    (output_dir / "metadata.json").write_bytes(encoded)
     return metadata
 
 
@@ -252,85 +236,51 @@ def _parse_ascii_positive_int(raw: str, name: str) -> int:
 
 
 def _resolve_env_provenance() -> dict[str, Any]:
+    if os.environ.get("GITHUB_EVENT_NAME") != "push":
+        raise ProducerError("브랜치 push 이벤트만 처리합니다.")
     event_path = os.environ.get("GITHUB_EVENT_PATH")
-    event: dict[str, Any] = {}
-    if event_path:
-        path_obj = Path(event_path)
-        if not path_obj.is_file():
-            raise ProducerError(
-                f"GITHUB_EVENT_PATH 파일을 찾을 수 없습니다: {event_path}"
-            )
-        try:
-            loaded = json.loads(path_obj.read_text(encoding="utf-8"))
-        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
-            raise ProducerError(f"GITHUB_EVENT_PATH 파싱 실패: {exc}") from exc
-        if not isinstance(loaded, dict):
-            raise ProducerError("GITHUB_EVENT_PATH 최상위는 JSON object여야 합니다.")
-        event = loaded
-
-    if event.get("deleted") is True:
-        raise ProducerError("삭제된 ref push 이벤트는 처리하지 않습니다.")
+    if not event_path:
+        raise ProducerError("GITHUB_EVENT_PATH가 필요합니다.")
+    try:
+        event = json.loads(Path(event_path).read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise ProducerError(f"GITHUB_EVENT_PATH 파싱 실패: {exc}") from exc
+    if not isinstance(event, dict) or event.get("deleted") is not False:
+        raise ProducerError("삭제되지 않은 브랜치 push 이벤트가 필요합니다.")
+    event_repo = event.get("repository")
+    if not isinstance(event_repo, dict):
+        raise ProducerError("push 이벤트에 repository 정보가 필요합니다.")
 
     repo_full_name = os.environ.get("GITHUB_REPOSITORY", "")
-    event_repo = (
-        event.get("repository") if isinstance(event.get("repository"), dict) else {}
+    repo_id = _parse_ascii_positive_int(
+        os.environ.get("GITHUB_REPOSITORY_ID", ""), "GITHUB_REPOSITORY_ID"
     )
-    if (
-        event_repo.get("full_name")
-        and repo_full_name
-        and event_repo["full_name"] != repo_full_name
-    ):
-        raise ProducerError(
-            "GITHUB_REPOSITORY와 이벤트 repository.full_name이 다릅니다."
-        )
-
-    raw_repo_id = os.environ.get("GITHUB_REPOSITORY_ID", "")
-    if raw_repo_id:
-        repo_id = _parse_ascii_positive_int(raw_repo_id, "GITHUB_REPOSITORY_ID")
-        event_repo_id = event_repo.get("id")
-        if event_repo_id is not None and (
-            isinstance(event_repo_id, bool) or event_repo_id != repo_id
-        ):
-            raise ProducerError(
-                "GITHUB_REPOSITORY_ID와 이벤트 repository.id가 다릅니다."
-            )
-    else:
-        repo_id = _require_positive_int(event_repo.get("id"), "repository.id")
+    event_repo_id = _require_positive_int(event_repo.get("id"), "repository.id")
+    if event_repo_id != repo_id or event_repo.get("full_name") != repo_full_name:
+        raise ProducerError("GitHub 환경과 push 이벤트의 repository가 다릅니다.")
 
     github_ref = os.environ.get("GITHUB_REF", "")
     if not github_ref.startswith("refs/heads/"):
         raise ProducerError(f"브랜치 push ref가 아닙니다: {github_ref!r}")
-    if event.get("ref") and event["ref"] != github_ref:
-        raise ProducerError("GITHUB_REF와 이벤트 ref가 일치하지 않습니다.")
-    branch = github_ref.removeprefix("refs/heads/")
-
     head_sha = os.environ.get("GITHUB_SHA", "")
-    if event.get("after") and head_sha and event["after"] != head_sha:
-        raise ProducerError("GITHUB_SHA와 이벤트 after SHA가 일치하지 않습니다.")
+    if event.get("ref") != github_ref or event.get("after") != head_sha:
+        raise ProducerError("GitHub 환경과 push 이벤트의 ref 또는 SHA가 다릅니다.")
 
     run_id = _parse_ascii_positive_int(
         os.environ.get("GITHUB_RUN_ID", ""), "GITHUB_RUN_ID"
     )
     run_attempt = _parse_ascii_positive_int(
-        os.environ.get("GITHUB_RUN_ATTEMPT", "1"), "GITHUB_RUN_ATTEMPT"
+        os.environ.get("GITHUB_RUN_ATTEMPT", ""), "GITHUB_RUN_ATTEMPT"
     )
 
     return {
         "repository_id": repo_id,
-        "repository_full_name": repo_full_name or str(event_repo.get("full_name", "")),
-        "branch": branch,
+        "repository_full_name": repo_full_name,
+        "branch": github_ref.removeprefix("refs/heads/"),
         "head_sha": head_sha,
         "producer_run_id": run_id,
         "producer_run_attempt": run_attempt,
     }
-
-
-def _write_github_output(changed: bool) -> None:
-    output_path = os.environ.get("GITHUB_OUTPUT")
-    if not output_path:
-        return
-    with Path(output_path).open("a", encoding="utf-8") as handle:
-        handle.write(f"changed={'true' if changed else 'false'}\n")
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -350,7 +300,6 @@ def main(argv: list[str] | None = None) -> int:
             output_dir=args.output_dir,
             **provenance,
         )
-        _write_github_output(bool(metadata["changed"]))
         print(
             f"producer: changed={metadata['changed']} "
             f"files={len(metadata['files'])} deleted={len(metadata['deleted'])}"

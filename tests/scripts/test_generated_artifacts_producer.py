@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 import hashlib
-import importlib
 import json
 import os
 import stat
 import subprocess
+from dataclasses import replace
 from pathlib import Path, PurePosixPath
 
 import pytest
@@ -14,6 +14,8 @@ import yaml
 from scripts import (
     generated_artifacts_producer as producer,
     generated_artifacts_sync as sync,
+    generated_artifacts_writeback as writeback,
+    indexes_generate,
 )
 from scripts.agent_assets import (
     routes_distribution_generate as dist_routes,
@@ -52,28 +54,9 @@ def _init_repo(repo: Path) -> str:
 
 
 def _run_real_index_generators(repo: Path) -> None:
-    """현재 브랜치(pre-#302 또는 post-#302 main)의 실제 index 생성기를 실행한다."""
-    try:
-        indexes_mod = importlib.import_module("scripts.indexes_generate")
-    except ModuleNotFoundError:
-        docs_mod = importlib.import_module("scripts.docs_indexes_generate")
-        catalog_mod = importlib.import_module("scripts.catalog_indexes_generate")
-        docs_mod.generate_docs_indexes(repo / "docs", check=False)
-        catalog_mod.generate_catalog_indexes(repo / "catalog")
-    else:
-        indexes_mod.sync_indexes(
-            indexes_mod.IndexConfig(
-                repo / "docs",
-                traverse_roots=("development", "documentation", "references", "tools"),
-                prune=True,
-            )
-        )
-        indexes_mod.sync_indexes(
-            indexes_mod.IndexConfig(
-                repo / "catalog",
-                extensions=(".md", ".json"),
-                prune=True,
-            )
+    for name in ("docs", "catalog"):
+        indexes_generate.sync_indexes(
+            replace(indexes_generate.PRESETS[name], root=repo / name)
         )
 
 
@@ -111,7 +94,7 @@ def _matches_workflow_path_patterns(path: str, patterns: list[str]) -> bool:
     ],
 )
 def test_producer_allowed_generated_output_allowlist(path: str, expected: bool) -> None:
-    assert producer.is_allowed_generated_output(path) is expected
+    assert writeback.is_allowed_generated_output(path) is expected
 
 
 def test_package_payload_noop_and_cleanup_when_changed_becomes_false(
@@ -422,16 +405,16 @@ def test_package_payload_rejects_bad_changes_symlinks_and_bad_args(
 
     # 생성 출력 symlink 거부
     (repo / "docs" / "INDEX.tsv").write_text("changed\n", encoding="utf-8")
-    real_lstat = os.lstat
+    real_lstat = Path.lstat
     target = repo / "docs" / "INDEX.tsv"
 
     class _FakeSymlinkStat:
         st_mode = stat.S_IFLNK | 0o777
 
     monkeypatch.setattr(
-        producer.os,
+        Path,
         "lstat",
-        lambda p: _FakeSymlinkStat() if Path(p) == target else real_lstat(p),
+        lambda path: _FakeSymlinkStat() if path == target else real_lstat(path),
     )
     with pytest.raises(producer.ProducerError, match="일반 파일이 아닙니다"):
         producer.collect_generated_changes(repo)
@@ -447,20 +430,16 @@ def test_producer_cli_and_env_provenance_validation(
     )
 
     event_file = tmp_path / "event.json"
-    event_file.write_text(
-        json.dumps(
-            {
-                "deleted": False,
-                "ref": "refs/heads/feat/demo",
-                "after": head_sha,
-                "repository": {"id": 555, "full_name": "mols3131d/mols-agent-assets"},
-            }
-        ),
-        encoding="utf-8",
-    )
-    github_output = tmp_path / "github_output.txt"
+    event = {
+        "deleted": False,
+        "ref": "refs/heads/feat/demo",
+        "after": head_sha,
+        "repository": {"id": 555, "full_name": "mols3131d/mols-agent-assets"},
+    }
+    event_file.write_text(json.dumps(event), encoding="utf-8")
     out_dir = tmp_path / "artifact"
 
+    monkeypatch.setenv("GITHUB_EVENT_NAME", "push")
     monkeypatch.setenv("GITHUB_EVENT_PATH", str(event_file))
     monkeypatch.setenv("GITHUB_REPOSITORY", "mols3131d/mols-agent-assets")
     monkeypatch.setenv("GITHUB_REPOSITORY_ID", "555")
@@ -468,11 +447,12 @@ def test_producer_cli_and_env_provenance_validation(
     monkeypatch.setenv("GITHUB_SHA", head_sha)
     monkeypatch.setenv("GITHUB_RUN_ID", "901")
     monkeypatch.setenv("GITHUB_RUN_ATTEMPT", "1")
-    monkeypatch.setenv("GITHUB_OUTPUT", str(github_output))
 
     rc = producer.main(["package", "--root", str(repo), "--output-dir", str(out_dir)])
     assert rc == 0
-    assert github_output.read_text(encoding="utf-8").strip() == "changed=true"
+    assert json.loads((out_dir / "metadata.json").read_text(encoding="utf-8"))[
+        "changed"
+    ]
     assert (out_dir / "files" / ".agents" / "route" / "all.jsonl").is_file()
 
     # 잘못된 GITHUB_REPOSITORY_ID가 조용히 fallback되지 않고 실패해야 한다
@@ -494,11 +474,68 @@ def test_producer_cli_and_env_provenance_validation(
         producer.main(["package", "--root", str(repo), "--output-dir", str(out_dir)])
         == 1
     )
+
+    for event_update in (
+        {"repository": {"id": 555.0, "full_name": "mols3131d/mols-agent-assets"}},
+        {"ref": None},
+        {"after": None},
+    ):
+        event_file.write_text(json.dumps(event | event_update), encoding="utf-8")
+        assert (
+            producer.main(
+                ["package", "--root", str(repo), "--output-dir", str(out_dir)]
+            )
+            == 1
+        )
     event_file.write_text("{bad json", encoding="utf-8")
     assert (
         producer.main(["package", "--root", str(repo), "--output-dir", str(out_dir)])
         == 1
     )
+
+
+def test_package_rejects_source_tree_output_and_oversized_file(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    repo = tmp_path / "repo"
+    head_sha = _init_repo(repo)
+    source = repo / "docs" / "INDEX.tsv"
+    source.write_bytes(b"updated")
+
+    options = {
+        "root": repo,
+        "repository_id": 123,
+        "repository_full_name": "mols3131d/mols-agent-assets",
+        "branch": "feat/demo",
+        "head_sha": head_sha,
+        "producer_run_id": 1,
+    }
+    with pytest.raises(producer.ProducerError, match="별도 디렉터리"):
+        producer.package_payload(output_dir=tmp_path, **options)
+    assert source.read_bytes() == b"updated"
+
+    monkeypatch.setattr(writeback, "MAX_FILE_BYTES", 3)
+    with pytest.raises(producer.ProducerError, match="크기가 artifact 제한"):
+        producer.package_payload(output_dir=tmp_path / "payload", **options)
+
+
+def test_collect_rejects_linked_generated_parent(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    repo = tmp_path / "repo"
+    _init_repo(repo)
+    (repo / "docs" / "INDEX.tsv").write_bytes(b"updated")
+    real_lstat = Path.lstat
+    linked_dir = repo / "docs"
+
+    def lstat(path: Path):
+        if path == linked_dir:
+            return os.stat_result((stat.S_IFLNK, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+        return real_lstat(path)
+
+    monkeypatch.setattr(Path, "lstat", lstat)
+    with pytest.raises(producer.ProducerError, match="상위 경로가 일반 디렉터리"):
+        producer.collect_generated_changes(repo)
 
 
 def test_generated_sync_workflow_is_read_only_and_covers_projection_inputs() -> None:
@@ -523,11 +560,11 @@ def test_generated_sync_workflow_is_read_only_and_covers_projection_inputs() -> 
         uses = step.get("uses")
         if uses:
             sha = uses.split("@", 1)[1].split()[0]
-            assert producer.HEX_SHA_RE.fullmatch(sha), uses
+            assert writeback.HEX_SHA_RE.fullmatch(sha), uses
             if uses.startswith("actions/checkout@"):
                 assert step["with"]["persist-credentials"] is False
             if uses.startswith("actions/upload-artifact@"):
-                assert step["with"]["name"] == "generated-sync-payload"
+                assert step["with"]["name"] == writeback.ARTIFACT_NAME
                 assert step["with"]["include-hidden-files"] is True
                 assert step["with"]["if-no-files-found"] == "error"
                 assert step["with"]["overwrite"] is True
@@ -544,7 +581,13 @@ def test_generated_sync_workflow_is_read_only_and_covers_projection_inputs() -> 
     )
 
     patterns = on_section["push"]["paths"]
-    assert _matches_workflow_path_patterns("scripts/generated_artifacts.py", patterns)
+    for input_path in (
+        ".github/workflows/generated-sync.yml",
+        "pyproject.toml",
+        "uv.lock",
+        "scripts/generated_artifacts.py",
+    ):
+        assert _matches_workflow_path_patterns(input_path, patterns), input_path
     maintenance_script = (
         "src/rulesync/.rulesync/skills/"
         "mols-markdown-maintenance/scripts/generate_index.py"

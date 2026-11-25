@@ -57,7 +57,7 @@
 ## 독립 리뷰 체크
 
 1. 해당 PR의 최신 diff와 `revision.base`/`revision.head`를 확인한다. 이후 추가된 인계 파일은 작업 근거이지 새로운 실행 권한은 아니다.
-1. `contents: write`가 필요한 단계, `main` 차단, generated-only staging, no-diff 분기를 확인한다.
-1. source 필터가 generator dependency와 맞는지, 출력 파일만 변경될 때 재실행하지 않는지 확인한다.
-1. Required `PR Gate`가 봇 커밋 이후 다시 실행되지 않는 제한을 수용할지 결정한다. 수용하지 않으면 Draft를 유지하고 설계를 수정한다.
-1. [01-handoff.md](01-handoff.md)의 재현 시나리오와 복구 기준으로 post-merge 검증 계획을 확정한다.
+2. `contents: write`가 필요한 단계, `main` 차단, generated-only staging, no-diff 분기를 확인한다.
+3. source 필터가 generator dependency와 맞는지, 출력 파일만 변경될 때 재실행하지 않는지 확인한다.
+4. Required `PR Gate`가 봇 커밋 이후 다시 실행되지 않는 제한을 수용할지 결정한다. 수용하지 않으면 Draft를 유지하고 설계를 수정한다.
+5. [01-handoff.md](01-handoff.md)의 재현 시나리오와 복구 기준으로 post-merge 검증 계획을 확정한다.

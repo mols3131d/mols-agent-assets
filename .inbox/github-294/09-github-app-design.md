@@ -9,6 +9,7 @@
 이전 [목표·상태 기록](07-status-and-goals-2026-11-16.md)과 [기존 인계](01-handoff.md)의 **“GitHub App·추가 Secret 금지”는 사용자와의 후속 설계 합의로 변경**되었다. 개인 PAT는 여전히 도입하지 않는다. 본 문서의 설계 선택은 별도 GitHub App 설치·사용과 write workflow의 *인간 승인* 자체를 대신하지 않는다.
 
 불변 조건:
+
 - `main` 직접 push, Ruleset bypass, 자동 merge, 가짜 성공 status/check 생성, force push 금지.
 - `PR Gate`는 읽기 전용 merge admission이며 마지막 커밋의 실제 검사 결과만 사용한다.
 - 생성 파일은 작성 원본이 아니라 projection이다. 기존 generator·validator를 교체하거나 생성 알고리즘을 workflow에 중복 구현하지 않는다.

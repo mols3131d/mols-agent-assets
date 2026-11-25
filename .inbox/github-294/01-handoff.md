@@ -30,8 +30,8 @@
 ### 다음 작업
 
 1. 저장소의 실제 required check와 GitHub 이벤트·SHA 계약을 확인하고, 기본 토큰만으로 최신 PR 필수 체크를 충족할 수 있는 최소 설계와 보안 경계를 조사한다. 기존 PR Gate 수정이나 추가 workflow가 필요한지는 결과로 판단하며, 불가능하거나 기존 권한 경계를 넘으면 근거와 대안을 보고한다.
-1. 설계를 구현하기 전에 필요한 변경 범위와 검증 방법을 확정하고, 기존 source·generated-only·no-op 불변식을 유지한다.
-1. 사람의 독립 검토와 명시적 테스트 승인 후에만 격리 E2E를 수행한다. 결과가 확인되기 전까지 목표 달성 또는 머지 준비 완료로 표시하지 않는다.
+2. 설계를 구현하기 전에 필요한 변경 범위와 검증 방법을 확정하고, 기존 source·generated-only·no-op 불변식을 유지한다.
+3. 사람의 독립 검토와 명시적 테스트 승인 후에만 격리 E2E를 수행한다. 결과가 확인되기 전까지 목표 달성 또는 머지 준비 완료로 표시하지 않는다.
 
 ---
 
@@ -49,9 +49,9 @@
 ## 시작 전 확인
 
 1. `CHATBOT.md`, `AGENTS.md`, [GitHub 정책](../../docs/development/github.md), [CI 정책](../../docs/development/ci.md), [VCS 정책](../../docs/development/vcs-git.md), [리뷰 보고서](03-review-report.md)를 확인한다. 정확한 head ref의 applicable Skill/Rule을 선택한다.
-1. PR의 **현재** base/head SHA, Draft 상태, diff, 사람의 변경·리뷰, branch/check 상태와 `protect-main`의 required check를 새로 읽는다. 과거 SHA를 최신이라고 가정하지 않는다.
-1. 이미 다른 에이전트나 사용자가 수정한 부분은 보존한다. 예상 밖의 branch 이동/동시 작업이 있으면 충돌 대상을 격리하고 history를 강제로 재작성하지 않는다.
-1. 사람이 새 write-capable workflow를 **독립 검토하고 명시적으로 테스트를 승인했는지** 확인한다. 승인 전에는 아래 E2E를 실행하지 않는다. 이 보고서 작성과 기존 CI 성공은 승인이 아니다.
+2. PR의 **현재** base/head SHA, Draft 상태, diff, 사람의 변경·리뷰, branch/check 상태와 `protect-main`의 required check를 새로 읽는다. 과거 SHA를 최신이라고 가정하지 않는다.
+3. 이미 다른 에이전트나 사용자가 수정한 부분은 보존한다. 예상 밖의 branch 이동/동시 작업이 있으면 충돌 대상을 격리하고 history를 강제로 재작성하지 않는다.
+4. 사람이 새 write-capable workflow를 **독립 검토하고 명시적으로 테스트를 승인했는지** 확인한다. 승인 전에는 아래 E2E를 실행하지 않는다. 이 보고서 작성과 기존 CI 성공은 승인이 아니다.
 
 ## 우선순위별 인계
 
@@ -66,11 +66,11 @@
 ### 승인 이후 E2E 실행 순서
 
 1. **격리 브랜치 준비:** `main`이나 기존 PR 브랜치에 실험 커밋을 넣지 않는다. 같은 계정의 승인된 전용 테스트 브랜치에서 확인한다. 임의의 다른 계정·토큰을 사용하지 않는다.
-1. **No-op:** 인덱스/라우팅 결과가 달라지지 않는 승인된 source 수정을 작업 브랜치에 push한다. `Sync Generated Artifacts` run 성공, `changed=false`, 추가 bot commit 없음, SHA와 run URL을 확보한다. Workflow가 기본 브랜치에 없는 병합 전 단계에서는 `workflow_dispatch`를 유효한 수동 실행 경로로 가정하지 않는다.
-1. **Generated delta:** `docs/` 또는 명확한 source의 작은 수정으로 `INDEX.tsv` 또는 route 출력이 실제 변하게 한다. 워크플로 성공과 **generated-only** 커밋, 원본 브랜치에 대한 fast-forward push, `validate --all` 성공 및 변경 파일 목록을 확인한다.
-1. **PR 재검증:** 승인된 테스트 브랜치로 PR을 열거나 기존의 안전한 PR에서 bot commit 이후 `pull_request`/check 동작을 관찰한다. `GITHUB_TOKEN`의 일반 `push` 후속 workflow 억제와, 토큰으로 **PR 자체를 생성·갱신할 때 승인 대기 CI가 생기는 2026-06 예외**를 혼동하지 않는다. 예상이 아니라 **실제 최신 SHA**의 `PR Gate` 상태, 승인 배너 유무, run URL로 판단한다.
-1. **실패·경합:** 재현을 위해 무리하게 브랜치를 덮어쓰지 않는다. 관찰 가능한 `non-fast-forward`, 권한 부족, generator 실패 사례를 확인하고 실제 발생하지 않은 테스트는 **Not Verified**로 남긴다.
-1. **결과 정리:** 테스트 커밋·branch/run ID와 이상 여부를 짧게 기록한다. 테스트 잔여 브랜치의 정리는 별도 권한·소유권이 확인된 경우에만 수행한다.
+2. **No-op:** 인덱스/라우팅 결과가 달라지지 않는 승인된 source 수정을 작업 브랜치에 push한다. `Sync Generated Artifacts` run 성공, `changed=false`, 추가 bot commit 없음, SHA와 run URL을 확보한다. Workflow가 기본 브랜치에 없는 병합 전 단계에서는 `workflow_dispatch`를 유효한 수동 실행 경로로 가정하지 않는다.
+3. **Generated delta:** `docs/` 또는 명확한 source의 작은 수정으로 `INDEX.tsv` 또는 route 출력이 실제 변하게 한다. 워크플로 성공과 **generated-only** 커밋, 원본 브랜치에 대한 fast-forward push, `validate --all` 성공 및 변경 파일 목록을 확인한다.
+4. **PR 재검증:** 승인된 테스트 브랜치로 PR을 열거나 기존의 안전한 PR에서 bot commit 이후 `pull_request`/check 동작을 관찰한다. `GITHUB_TOKEN`의 일반 `push` 후속 workflow 억제와, 토큰으로 **PR 자체를 생성·갱신할 때 승인 대기 CI가 생기는 2026-06 예외**를 혼동하지 않는다. 예상이 아니라 **실제 최신 SHA**의 `PR Gate` 상태, 승인 배너 유무, run URL로 판단한다.
+5. **실패·경합:** 재현을 위해 무리하게 브랜치를 덮어쓰지 않는다. 관찰 가능한 `non-fast-forward`, 권한 부족, generator 실패 사례를 확인하고 실제 발생하지 않은 테스트는 **Not Verified**로 남긴다.
+6. **결과 정리:** 테스트 커밋·branch/run ID와 이상 여부를 짧게 기록한다. 테스트 잔여 브랜치의 정리는 별도 권한·소유권이 확인된 경우에만 수행한다.
 
 ### 최신 PR Gate가 없을 때
 

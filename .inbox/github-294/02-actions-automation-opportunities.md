@@ -13,7 +13,7 @@
 
 **실제 문제:** PR #294의 `generated-sync.yml`은 원본 push에 반응해 `generated sync` 후 `github-actions[bot]`이 기본 `GITHUB_TOKEN`으로 커밋한다. 그러나 그 커밋은 정상적인 `push`/`pull_request` CI를 자동 트리거하지 않는다. 생성 전 체크가 최신 head의 `PR Gate`를 대체하지 못하면 병합 가능 상태가 중단된다.
 
-**권장 — 작은 운영 경계로 시작**
+#### 권장 — 작은 운영 경계로 시작
 
 1. **지금 구현 범위는 생성·커밋까지만** 유지한다. 새로운 App/PAT/secret/서버, Ruleset 수정, 자동 merge는 도입하지 않는다.
 2. #294를 병합하려면 먼저 원본 변경이 실제 생성 파일 차이를 만드는 브랜치에서 E2E 검증한다. 최신 PR head/merge candidate의 `PR Gate`와 `Branch Check`가 어떻게 표시되는지 관찰한다.

@@ -12,7 +12,7 @@
 ## H1. 코드·권한 검토 및 bootstrap 승인
 
 - [ ] 소유 계정/저장소를 확인하고, [다음 단계 인계](12-next-steps-handoff.md) 및 [상세 설계](09-github-app-design.md)를 읽었다.
-- [ ] 기존 `generated-sync.yml`의 기본 토큰 직접 push가 안전하게 제거될 계획인지 확인했다. **현재 이 워크플로는 source path push에서 원격 write를 시도할 수 있다.** 로컬 에이전트의 첫 원격 구현 커밋이 이를 실행하지 않는지 승인 전 확인한다.
+- [ ] #294의 `generated-sync.yml`이 동일 저장소의 non-main push에서 `contents: read`로 checkout하고, 인증 정보를 저장하지 않으며 생성 결과를 artifact로 전달하는지 확인했다.
 - [ ] bootstrap PR에서 **기본 브랜치에 도입할 Trusted Writer가 비활성/fail-closed**인지, PR 브랜치 script·Artifact를 높은 권한으로 실행하지 않는지 독립 검토했다.
 - [ ] Writer가 App 토큰을 얻기 전 repo/ref/run SHA·artifact 경로·허용 generated-only diff를 검사하는지, 브랜치 HEAD 이동 시 force push 없이 중단하는지 확인했다.
 - [ ] 실제 repository Rulesets와 required `PR Gate`의 체크 이름·source·보호 규칙, App bot의 branch push 제한을 GitHub 설정에서 확인했다. 조회 불가하면 승인하지 않는다.
@@ -39,7 +39,7 @@ H1의 설계 검토가 끝나고 등록이 승인되면 아래를 실행한다.
 
 ## H3. 격리 쓰기 E2E를 명시적으로 승인
 
-- [ ] **독립 테스트 브랜치 + 열린 테스트 PR**을 준비했다. 기존 PR #294 브랜치나 `main`을 write-back 실험 대상으로 사용하지 않는다.
+- [ ] #294 후보의 Producer workflow와 스크립트가 포함된 **독립 테스트 브랜치 + 열린 테스트 PR**을 준비했다. 기존 PR #294 브랜치와 `main`은 실험 대상에서 제외한다.
 - [ ] bootstrap Writer는 기본값 **disabled**이며, 테스트에서는 Repository Variables `GENERATED_SYNC_WRITER_ENABLED=true`와 `GENERATED_SYNC_WRITER_ALLOWED_BRANCHES=<테스트 브랜치명>`(환경 변수가 아닌 저장소 변수)으로 정확한 ref allowlist만 허용했다. App 설치/Secret 등록만으로 모든 branch의 Writer가 실행되게 두지 않는다.
 - [ ] 테스트 범위(생성 파일·source 경로·봇 push 권한·테스트 후 복구 절차)를 확인하고 **실제 쓰기 E2E 실행을 명시적으로 승인**했다.
 - [ ] 승인된 범위에서 enable 또는 test mode를 활성화한 후 [검증 행렬](11-verification-plan.md)의 `E01`~`E09` 핵심 항목을 확인했다. 필요한 경우 로컬 에이전트는 분석을 보조하지만, 기존 권한을 넘어 계정/설정을 바꾸지 않는다.
@@ -63,6 +63,7 @@ H1의 설계 검토가 끝나고 등록이 승인되면 아래를 실행한다.
 | --- | --- |
 | App 설치·토큰 발급 실패 | App 소유 계정·설치 저장소·Contents 권한·Client ID·환경 Secret 존재를 확인; PAT/타 계정으로 우회하지 않음 |
 | Workflow가 실행되지 않음 | bootstrap이 `main`에 있는지, Producer event/path filter와 Writer `workflow_run` 이름·상태를 조회 |
+| 중간 push로 artifact의 원본 SHA와 브랜치 tip이 달라짐 | 최신 브랜치에서 Producer 실행 여부와 `PR Gate`의 projection drift를 확인한다. path filter에 해당하는 후속 push가 없으면 `mise run generated sync`와 `mise run generated validate`로 복구 결과를 검토한 뒤 정상 브랜치 커밋으로 반영한다. |
 | 생성 봇 커밋 후 PR Gate 없음 | 해당 최신 head/merge SHA의 실제 required check 확인; 누락 시 병합 금지 |
 | 뜻밖의 branch write/Secret 노출 위험 | Writer enable을 끄고 App 설치/키를 격리·교체, 증거 보존, 독립 검토 후 재개 |
 | Private 저장소에서 Environment 기능 없음 | 사전 승인된 다른 비밀관리 방식이나 플랜 변경을 검토; 자동으로 Repository Secret 사용 금지 |

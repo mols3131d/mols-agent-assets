@@ -10,6 +10,9 @@ on:
       - 'src/rulesync/.rulesync/skills/**'
       - 'src/rulesync/.rulesync/subagents/**'
       - 'scripts/**'
+      - '.github/workflows/generated-sync.yml'
+      - 'pyproject.toml'
+      - 'uv.lock'
       - 'rulesync.lock'
       - 'rulesync.jsonc'
       - 'skills-lock.json'
@@ -51,7 +54,6 @@ jobs:
         run: uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts validate --all
 
       - name: Package read-only sync payload
-        id: package
         shell: bash
         env:
           GITHUB_REPOSITORY_ID: ${{ github.repository_id }}
