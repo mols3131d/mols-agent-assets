@@ -1,4 +1,4 @@
-name: Sync Generated Artifacts
+name: Regenerate Projections
 
 on:
   push:
@@ -11,17 +11,13 @@ on:
       - 'src/rulesync/.rulesync/subagents/**'
       - 'scripts/**'
       - '.github/workflows/generated-sync.yml'
-      - '.gitignore'
-      - 'route/.gitignore'
-      - '.agents/.gitignore'
-      - '.agents/route/.gitignore'
       - 'pyproject.toml'
       - 'uv.lock'
       - 'rulesync.lock'
       - 'rulesync.jsonc'
       - 'skills-lock.json'
       - '.agents/route/families.json'
-      - '.agents/route/*.jsonl'
+      - '.agents/route/**/*.jsonl'
       - 'route/*.jsonl'
 
 concurrency:
@@ -33,10 +29,8 @@ permissions:
 
 jobs:
   sync:
-    if: >-
-      startsWith(github.ref, 'refs/heads/') &&
-      github.ref != 'refs/heads/main' &&
-      github.event.deleted != true
+    name: Generate and validate projections
+    if: github.event.deleted != true
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -51,27 +45,8 @@ jobs:
           version: '0.13.6'
           enable-cache: true
 
-      - name: Regenerate committed projections
+      - name: Regenerate projections in the runner
         run: uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts sync
 
-      - name: Validate generated projections
+      - name: Validate regenerated files
         run: uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts validate --all
-
-      - name: Package read-only sync payload
-        shell: bash
-        env:
-          GITHUB_REPOSITORY_ID: ${{ github.repository_id }}
-        run: >-
-          uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts_producer
-          package
-          --output-dir "${RUNNER_TEMP}/generated-sync-payload"
-
-      - name: Upload generated sync payload artifact
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: generated-sync-payload
-          path: ${{ runner.temp }}/generated-sync-payload
-          include-hidden-files: true
-          if-no-files-found: error
-          overwrite: true
-          retention-days: 5
