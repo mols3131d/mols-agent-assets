@@ -1,13 +1,10 @@
 ---
 name: mols-coding-context
 description: >-
-  Core engineering judgment for code-facing implementation, debugging, testing,
-  refactoring, review, API or data-model changes, dependency decisions, performance,
-  and maintainability work, including routine changes. Select when solving the task
-  materially depends on reasoning about code or executable behavior. Language-specific
-  add-ons may supplement it. Adds judgment, not workflow. Do not select for factual
-  programming lookup, repository administration without code-facing work, or prose-only
-  work.
+  Engineering judgment for tasks materially involving code or executable contracts,
+  including routine coding, design, debugging, testing, refactoring, review, and
+  code reasoning. Adds judgment, not workflow. Excludes factual lookup, repository
+  administration without code-facing work, and prose-only work.
 targets:
   - claudecode
   - codexcli
@@ -19,60 +16,15 @@ targets:
 
 # Mols Coding Context
 
-Code-facing task의 **language-independent core engineering judgment**를 제공한다. Language add-on은 이 core를 대체하지 않고 필요한 언어별 delta만 추가한다.
+언어 독립적인 engineering judgment를 보강하는 context다. 사용자 요구, 실제 repository·caller·runtime contract와 권한이 아래 기본 판단보다 우선한다. 현재 문제에 material한 항목만 적용한다. 별도 workflow, checklist, 도구 호출, 산출물 또는 language add-on 로딩을 강제하지 않는다.
 
-## Contract
+- **Trade-offs.** 유효한 대안은 effectiveness → operability → simplicity → elegance 순으로 판단한다. 동등하면 기존 mechanism과 convention을 따른다. 기존 설계나 사용자 제안도 실질적으로 더 나은 대안이 있으면 근거와 trade-off를 들어 재검토한다. 불확실성이 크면 reversible choice를 선호한다.
+- **Smallest coherent change.** 줄 수보다 개념·owner·contract surface를 최소화한다. 삭제·직접화·기존 mechanism 재사용을 우선하되 국소 우회로 원인을 숨기지 않는다. 새 abstraction, config, dependency, automation은 실제 필요와 순비용 감소로 정당화한다. KISS, YAGNI, DRY, SRP를 외형이나 pattern count로 적용하지 않는다. 큰 mechanical refactor가 검토·검증·복구를 어렵게 하면 기능 변경과 분리한다.
+- **Observable contracts.** 변경이 영향을 주는 caller, return, ordering, failure, state, side effect, serialization, registration, configuration과 material performance를 고려한다. Readability나 robustness를 명목으로 동작을 조용히 바꾸거나 요청 밖의 문제까지 정리하지 않는다. 의도적인 contract 변경은 명시한다.
+- **Failure and trust boundaries.** `failed`, `absent`, `unknown`, `empty`가 caller decision을 바꾸면 구분한다. 계약 없는 success-like fallback으로 실패를 숨기지 않고 진단·복구에 필요한 맥락을 보존한다. External·model·tool input의 material한 shape와 의미를 경계에서 확인하고, text를 executable code·command·privileged action으로 승격할 때 trust와 capability를 구분한다.
+- **Operational complexity.** Retry, timeout, idempotency, concurrency, cache, validation, observability는 실제 failure model이나 constraint를 해결할 때만 추가한다. Side effect의 retry는 idempotency 또는 reconciliation을 고려한다. 실제 invariant나 reuse 없이 control/data flow와 state ownership을 generic layer로 숨기지 않는다.
+- **Performance.** 실제 bottleneck과 representative workload에 근거한다. 복잡한 최적화보다 불필요한 work, indirection, allocation, I/O와 data movement 제거를 우선한다. 같은 조건에서 비교하지 않은 성능 향상을 측정했다고 주장하지 않는다.
+- **Review signal.** 근거 있는 material defect와 regression을 우선하고, 변경이 유발한 문제와 기존 문제, 불확실한 위험, stylistic preference, optional improvement를 구분한다. 검토의 엄격함을 보이기 위해 finding을 만들거나 충분한 개선에 완벽을 요구하지 않는다.
+- **Evidence and acceptance.** 변경된 계약과 material failure path에 비례하는 검증을 판단한다. 하위 수준의 성공을 end-to-end acceptance로 확대하거나 미실행 검증을 성공으로 표현하지 않는다. Version-sensitive behavior는 현재 authoritative source와 runtime evidence를 우선한다. 결정적 invariant는 기존 도구가 소유할 수 있으면 중복 instruction 대신 그 도구에 맡긴다. 실질적 요구와 regression risk가 해결되면 불필요한 polish를 만들지 않는다.
 
-- 사용자 요구, repository contract, observable compatibility, safety/security와 target runtime contract가 일반 선호보다 우선한다.
-- 현재 task와 change surface에 material한 판단만 적용한다. Skill이 선택됐다는 이유로 주변 code를 정리하거나 모든 항목을 checklist처럼 수행하지 않는다.
-- 기존 boundary, caller, data flow, state ownership, failure behavior와 relevant evidence를 변경에 필요한 만큼 이해한다.
-- 유효한 접근이 여러 개면 **effectiveness → operability → simplicity → elegance**를 기본 tie-breaker로 사용하고, material한 불확실성이 있으면 reversible choice를 선호한다.
-
-## Shape the Change
-
-- **Smallest coherent change**를 선호한다. 줄 수보다 변경되는 개념, owner와 contract surface를 최소화한다.
-- 삭제·직접화·기존 mechanism 재사용으로 해결되는 문제를 새 abstraction, helper layer, configuration 또는 framework로 먼저 풀지 않는다.
-- KISS, YAGNI, DRY, SRP를 pattern count나 stylistic purity로 적용하지 않는다. Abstraction은 stable concept, invariant 또는 ownership을 실제로 모을 때만 추가한다.
-- Speculative extension point, cache, concurrency, dependency와 future-proofing은 현재 consumer, failure model 또는 evidence가 있을 때만 추가한다.
-- 새 dependency는 제거하는 implementation, maintenance, operational, security 또는 correctness burden이 도입 비용보다 클 때 사용한다.
-- Functional change와 큰 mechanical refactor를 함께 하면 review, rollback, diagnosis 또는 verification이 materially 어려워지는 경우 분리한다. Local problem을 evidence 없이 architecture problem으로 확대하지 않는다.
-
-## Preserve Contracts and Failure Meaning
-
-- Candidate change가 건드릴 수 있는 return, ordering, exception, state, side effect, serialization, registration, config lookup와 material performance 같은 observable contract를 확인한다.
-- Readability, cleanup 또는 robustness 명목으로 behavior를 조용히 바꾸지 않는다.
-- `failed`, `absent`, `unknown`, `empty`가 caller decision을 바꾸면 의미를 보존한다.
-- Failure를 `None`, empty collection, false-like value 또는 success-shaped fallback으로 숨기지 않는다. Caller contract가 실제로 그 의미를 받아들일 때만 fallback을 사용한다.
-- Diagnose, recover 또는 verify하는 데 필요한 failure context를 보존한다.
-
-## Boundaries and Operational Machinery
-
-- External, model, tool, network, storage와 config input은 downstream decision에 material한 shape와 semantics를 필요한 boundary에서 확인한다.
-- Retry, timeout, idempotency, concurrency, caching과 observability는 실제 failure, latency, load 또는 ownership requirement가 있을 때만 도입한다. Side effect가 있으면 retry 전에 idempotency 또는 reconciliation semantics를 확인한다.
-- “robustness”를 이유로 guard, fallback, retry, cache, configuration과 abstraction을 한꺼번에 추가하지 않는다. 각 mechanism은 해결하는 concrete failure 또는 constraint가 있어야 한다.
-- Generated, user, model, tool 또는 external text를 executable command, code 또는 privileged action으로 승격하는 경계는 trust와 capability를 명시적으로 다룬다.
-- Control flow, data flow와 state ownership을 가능한 한 직접 드러내고, shared invariant나 실제 reuse가 없는 generic layer로 숨기지 않는다.
-
-## Evidence-Driven Optimization
-
-Performance, resource use 또는 material maintenance cost의 최적화가 실제 scope이거나 evidence가 bottleneck을 가리킬 때만 적용한다.
-
-1. **Target** — 개선하려는 metric, constraint 또는 cost와 대표 workload를 정한다. 측정 가능한 문제라면 practical한 baseline을 먼저 확보한다.
-2. **Locate** — 추측이나 folklore보다 profile, benchmark, trace, complexity/data-flow evidence로 dominant cost를 찾는다.
-3. **Reduce first** — cache, concurrency, dependency 또는 architecture를 추가하기 전에 불필요한 work, indirection, allocation, data movement와 repeated I/O를 제거할 수 있는지 본다.
-4. **Change narrowly** — 가장 작은 owner에서 최적화하고 observable behavior와 failure semantics를 보존한다. 의도적인 trade-off가 contract를 바꾸면 숨기지 않는다.
-5. **Compare and stop** — 같은 representative condition에서 before/after를 비교한다. 목표가 충족됐거나 추가 복잡성보다 gain이 작거나 evidence가 더 이상 material bottleneck을 지지하지 않으면 멈춘다.
-
-Benchmark, profile 또는 representative runtime evidence를 실행하지 않았다면 성능 개선을 측정했다고 주장하지 않는다.
-
-## Verification and Stop
-
-- Changed behavior와 material failure path를 **cheapest useful level**에서 검증하되, acceptance가 end-to-end behavior라면 lower-level test만으로 완료를 선언하지 않는다.
-- 실행하지 않은 test, benchmark, runtime observation이나 compatibility를 검증했다고 주장하지 않는다.
-- Stable deterministic invariant가 실제로 필요하면 가능한 한 이미 사용하는 formatter, linter, type checker, schema, test 또는 CI 같은 direct mechanism이 소유하게 한다. 새 tooling은 그 자체가 필요할 때만 추가한다.
-- Version-sensitive behavior는 memory보다 current authoritative source와 target runtime evidence를 우선한다.
-- Acceptance와 material regression path가 충분히 확인되고 evidence-backed blocker가 없으면 멈춘다. Hypothetical polish나 unrelated cleanup을 새 scope로 만들지 않는다.
-
-## Boundary
-
-이 Skill은 language-independent coding judgment의 core다. 특정 language의 exact semantics, repository-specific policy, task-specific workflow, specialized diagnosis, optimization tooling 또는 deterministic tooling contract를 복제하지 않는다.
+언어별 semantics, 저장소 정책, 구현·리뷰·테스트 절차, 최적화 도구는 각 책임의 owner에게 맡긴다. 언어별 add-on은 해당 semantics가 material할 때 독립적으로 선택되어 core에 delta만 더한다.
