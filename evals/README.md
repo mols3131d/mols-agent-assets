@@ -14,7 +14,7 @@ Asset별 차이는 fixture와 tool config가 소유합니다. 같은 평가 cont
 
 Eval을 언제 추가하고 어떤 evidence로 해석할지는 [`docs/development/evaluation.md`](../docs/development/evaluation.md)가 소유합니다. 이 README는 `evals/`의 fixture placement와 local boundary만 소유합니다.
 
-기본 Trigger/Behavior 평가 중 `mols-loops`와 `mols-dev-env-bootstrap-design`은 선택 가능한 Promptfoo native provider를 사용합니다. 공통 Python generator는 canonical fixture로부터 case별 system prompt와 assertion을 구성하지만 모델 HTTP 호출은 하지 않습니다. Reference를 조건부로 선택해야 하는 `mols-test-design`과 fixture-mode smoke는 기존 Python provider를 사용합니다. 모든 경로는 실제 IDE/CLI agent의 tool·routing 실행을 재현하지 않습니다.
+기본 Trigger/Behavior 평가 중 `mols-loops`와 `mols-dev-env-bootstrap-design`은 선택 가능한 Promptfoo native provider를 사용합니다. 공통 Python generator는 canonical fixture로부터 case별 system prompt와 assertion을 구성하지만 모델 HTTP 호출은 하지 않습니다. Reference를 조건부로 선택하는 `mols-test-design`과 fixture-mode smoke는 기존 Python provider를 사용합니다. `mols-stdd`는 native Trigger/Behavior를 유지하면서 별도의 `mols-stdd-references.yaml`에서 로컬 Ollama 기반 reference 선택을 검사합니다. Native suite는 reference 관련 assertion을 명시적으로 제외하므로 그 결과를 로딩 검증으로 해석하지 않습니다. 모든 경로는 실제 IDE/CLI agent의 tool·routing 실행을 재현하지 않습니다.
 
 Promptfoo CLI는 기본적으로 개발자의 로컬 환경에서 실행하며, 모델 호출 위치는 선택한 provider가 결정합니다. Repository correctness는 root `tests/`가 검증하며, Promptfoo의 공통 실행 진입점은 `mise run eval`입니다. 평가 설정 파일과 CLI 옵션은 인수로 전달합니다. 예시:
 
@@ -24,6 +24,7 @@ mise run eval -c evals/promptfoo/mols-loops.yaml
 mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design.yaml
 mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design-grader.yaml
 mise run eval --no-cache --no-write -c evals/promptfoo/mols-test-design.yaml
+mise run eval -c evals/promptfoo/mols-stdd-references.yaml
 ```
 
 ## Promptfoo Provider Selection
@@ -56,7 +57,7 @@ Model·provider·grader 선택과 timeout의 빈 값·공백은 미지정으로 
 
 Runtime만 원격으로 바꾸면 기본 grader는 계속 Ollama이므로 behavior 평가에는 로컬 grader 모델도 필요합니다. 모든 모델 호출을 다른 제공자로 실행하려면 runtime과 grader를 각각 선택합니다. 기존 로컬 경로는 전체 ID를 미지정하고 `PROMPTFOO_RUNTIME_MODEL`, `OLLAMA_BASE_URL`을 설정하면 유지되며, 사용할 모델이 이미 준비되어 있어야 합니다.
 
-`mise run eval -c evals/promptfoo/mols-loops-smoke.yaml`은 모델 없이 fixture 연결만 확인합니다. 조건부 Reference를 읽는 `mols-test-design`은 기존 custom Ollama 경로여서 `PROMPTFOO_RUNTIME_PROVIDER`의 적용 대상이 아닙니다.
+`mise run eval -c evals/promptfoo/mols-loops-smoke.yaml`은 모델 없이 fixture 연결만 확인합니다. 조건부 Reference를 읽는 `mols-test-design`과 `mols-stdd-references.yaml`은 기존 custom Ollama 경로여서 `PROMPTFOO_RUNTIME_PROVIDER`의 적용 대상이 아닙니다. `mols-stdd.yaml`의 native Trigger/Behavior에는 기존 provider 설정이 적용됩니다.
 
 **원격 provider 또는 grader를 선택하면 Skill·평가 prompt 또는 응답·rubric이 외부로 전송될 수 있으며 비용이 발생합니다.** Telemetry·sharing·remote generation 비활성화는 이 전송을 막는 통제가 아닙니다. 데이터 전송과 비용 허가를 먼저 확인하며 모델 다운로드나 유료 API 실행은 자동 수행하지 않습니다.
 

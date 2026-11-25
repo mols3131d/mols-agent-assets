@@ -21,13 +21,16 @@ def _run_git(root, *args):
     ("path", "expected"),
     [
         ("docs/guide.md", True),
+        ("docs/documentation/indexing.md", True),
+        ("docs/.internal/guide.md", True),
+        ("docs/.internal/.private.md", False),
         ("docs/references/README.md", True),
         ("docs/references/index.md", True),
         ("docs/AGENTS.md", False),
         ("docs/references/.private.md", False),
         ("docs/references/__system__.md", False),
         ("docs/references/INDEX.md", False),
-        ("scripts/docs_indexes_generate.py", True),
+        ("scripts/indexes_generate.py", True),
         (
             "src/rulesync/.rulesync/skills/mols-markdown-maintenance/"
             "scripts/generate_index.py",
@@ -45,13 +48,14 @@ def test_docs_index_source_matching(path, expected):
     [
         ("catalog/patterns/README.md", True),
         ("catalog/patterns/example.md", True),
+        ("catalog/patterns/.special.json", True),
+        ("catalog/patterns/.private.md", False),
         ("catalog/skills.json", True),
         ("catalog/plugins.json", True),
         ("catalog/INDEX.tsv", False),
         ("catalog/AGENTS.md", False),
         ("catalog/patterns/__system__.md", False),
-        ("scripts/catalog_indexes_generate.py", True),
-        ("scripts/docs_indexes_generate.py", True),
+        ("scripts/indexes_generate.py", True),
         ("docs/guide.md", False),
     ],
 )
@@ -95,7 +99,7 @@ def test_repository_route_source_matching(path, expected):
         ("docs/guide.md", ["docs-indexes"]),
         ("catalog/skills.json", ["catalog-indexes"]),
         ("catalog/patterns/README.md", ["catalog-indexes"]),
-        ("scripts/docs_indexes_generate.py", ["docs-indexes", "catalog-indexes"]),
+        ("scripts/indexes_generate.py", ["docs-indexes", "catalog-indexes"]),
         (
             "src/rulesync/.rulesync/skills/example/SKILL.md",
             ["distribution-routes"],
@@ -108,7 +112,9 @@ def test_repository_route_source_matching(path, expected):
     ],
 )
 def test_source_path_selects_only_its_projection_owner(path, expected):
-    assert [projection.name for projection in sync.select_projections({path})] == expected
+    assert [
+        projection.name for projection in sync.select_projections({path})
+    ] == expected
 
 
 @pytest.mark.parametrize(
@@ -116,6 +122,7 @@ def test_source_path_selects_only_its_projection_owner(path, expected):
     [
         ("docs/INDEX.tsv", ["docs-indexes"]),
         ("catalog/INDEX.tsv", ["catalog-indexes"]),
+        ("catalog/patterns/INDEX.tsv", ["catalog-indexes"]),
         ("route/routes.jsonl", ["distribution-routes"]),
         ("route/skills.jsonl", ["distribution-routes"]),
         ("route/subagents.jsonl", ["distribution-routes"]),
@@ -123,14 +130,18 @@ def test_source_path_selects_only_its_projection_owner(path, expected):
     ],
 )
 def test_generated_output_selects_its_projection_owner(path, expected):
-    assert [projection.name for projection in sync.select_projections({path})] == expected
+    assert [
+        projection.name for projection in sync.select_projections({path})
+    ] == expected
 
 
 def test_sync_staged_is_noop_when_no_projection_is_affected(monkeypatch, tmp_path):
     monkeypatch.setattr(sync, "staged_paths", lambda root: {"README.md"})
 
     def fail_if_called(root):
-        raise AssertionError("dirty state should not be inspected for an irrelevant commit")
+        raise AssertionError(
+            "dirty state should not be inspected for an irrelevant commit"
+        )
 
     monkeypatch.setattr(sync, "dirty_worktree_paths", fail_if_called)
 

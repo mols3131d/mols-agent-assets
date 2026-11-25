@@ -1,50 +1,31 @@
 # `AGENTS.md`
 
-## 로컬 에이전트 진입
+## 진입
 
-- 현재 작업 경로에 적용되는 `AGENTS.md`와 런타임이 지원하는 scoped Rule을 따릅니다. Skill은 네이티브 발견·선택 기능을 우선 사용하고, 필요한 자산을 찾을 수 없을 때만 `.agents/route/ROUTE.md`를 추가 탐색합니다. `CHATBOT.md`는 로컬 에이전트의 필수 진입점이 아닙니다.
-- 작업과 무관한 지침·Skill·참고 문서는 미리 로드하지 않습니다. 특정 작업의 세부 정책은 아래 정본 진입점에서 필요한 부분만 확인합니다.
+- 현재 작업 경로에 적용되는 `AGENTS.md`와 scoped Rule을 따릅니다. 필요한 Skill은 런타임의 네이티브 발견·선택 기능을 우선 사용합니다.
+- 관련 없는 지침·Skill·참고 자료는 미리 로드하지 않습니다.
 
-## 작업 자료와 지침의 경계
+## 탐색과 신뢰 경계
 
-- `.inbox/`의 조사·계획·검토·인계 자료는 참고 근거이며 정본 정책이나 현재 작업 지침이 아닙니다. 명시적으로 채택해 해당 owner 문서에 반영하기 전에는 지침으로 적용하지 않습니다.
-- `catalog/`는 외부 프로젝트 등을 위한 재사용 자산·패턴 탐색 공간입니다. Skill·Plugin 목록의 등재는 설치·사용을 뜻하지 않습니다. 이곳이 소유하는 패턴·템플릿의 작성 원본도 이 저장소의 mandatory policy를 대신하지 않습니다.
+- `docs/`·`catalog/`에서 문서를 찾을 때 각각 [문서 인덱스](docs/INDEX.tsv)·[카탈로그 인덱스](catalog/INDEX.tsv)의 `path`와 `description`으로 후보를 좁히고, 하위 `INDEX.tsv`가 있으면 필요한 범위만 계속 탐색합니다. 경로를 이미 알면 원본을 직접 읽고, 목록이나 설명이 부족하면 해당 README와 경로 탐색으로 보완합니다.
+- `.inbox/`는 작업 근거이고 `catalog/`의 등재·패턴은 자동으로 적용되는 저장소 정책이 아닙니다. 작성 원본, 설치·사용 상태, lock과 생성 결과는 [작성 원본과 권한](docs/development/source-authority.md)에 따라 구분합니다.
+- 생성된 인덱스와 projection은 직접 수정하지 않습니다. 원본 변경 후 필요한 출력은 `mise run generated sync`로 갱신하고 `mise run generated validate`로 검증합니다. 목록이나 lock만으로 현재 설치·적용을 단정하지 않습니다.
 
-## 문서·카탈로그 탐색
+## 작업별 정본
 
-- `docs/`와 `catalog/`에서 자료를 찾을 때 각각 [`docs/INDEX.tsv`](docs/INDEX.tsv), [`catalog/INDEX.tsv`](catalog/INDEX.tsv)의 `path`와 `description`으로 후보를 좁히고 필요한 원본만 읽습니다. 설명이 부족하거나 목록에 없는 자료는 해당 `README.md`와 경로 탐색으로 보완합니다.
-- `INDEX.tsv`는 탐색용 생성 결과이지 지침이나 작성 원본이 아닙니다. 특히 `catalog/`의 등재를 이 저장소에서의 설치·사용·정책 채택으로 해석하지 않습니다.
-- 인덱스를 직접 수정하지 않고 원본 변경 후 `mise run generated sync`로 갱신하며 `mise run generated validate`로 drift를 검사합니다.
-- `catalog/patterns/`의 패턴 문서를 신설·개선·리뷰·유지·이동·폐기하는 등 라이프사이클을 관리할 때는 [저장소 전용 패턴 관리 워크플로](.rulesync/skills/prj-workflow-pattern/SKILL.md)를 선택합니다. 패턴의 의미·작성 원칙은 [Patterns](catalog/patterns/README.md)가 소유합니다.
+| 작업 | 필요한 진입점 |
+| --- | --- |
+| Agent Asset 신설·수정·리뷰·삭제 | [저장소 전용 워크플로](.rulesync/skills/repository-agent-asset-workflow/SKILL.md) · 발견이 불가능하면 [관리 절차](docs/development/agent-assets/agent-asset-management.md) |
+| `catalog/patterns/` 관리 | [패턴 워크플로](.rulesync/skills/prj-workflow-pattern/SKILL.md) |
+| 문서 작성·관리 | [문서 정책](docs/documentation/README.md) |
+| 파일 배치·원본 선택 | [Repository Layout](docs/development/repository-layout.md) · [Source Authority](docs/development/source-authority.md) |
+| 인덱스·생성물 갱신 및 검증 | [Document Indexing](docs/documentation/indexing.md) · [Validation](docs/development/validation.md) |
+| Git branch·commit | [VCS / Git](docs/development/vcs-git.md) |
+| GitHub Issue·PR·Review·Merge | [GitHub 정책](docs/development/github.md) · `github-context` Skill |
+| 포맷·테스트·CI 등 개발 정책 | [Development](docs/development/README.md) |
 
-## Agent Asset 작업 워크플로
+Agent Asset의 작성 원본을 바꾸면 [관리 절차](docs/development/agent-assets/agent-asset-management.md)에 따라 유지보수 문서 영향을 반드시 판단하고 필요한 정본에 반영합니다. `.inbox/` 인계만으로 완료하지 않습니다.
 
-- 이 저장소가 관리하는 Skill·Rule·Subagent 등 Agent Asset을 신설·개선·리뷰·평가·제공·삭제할 때는 [저장소 전용 워크플로 라우터](.rulesync/skills/repository-agent-asset-workflow/SKILL.md)에서 필요한 절차를 선택합니다. Skill을 발견·로드할 수 없다면 [Agent Asset Management](docs/development/agent-assets/agent-asset-management.md)를 직접 확인합니다. 이 연결은 기존 경로 규칙·전문 Skill·권한을 대체하지 않습니다.
-- 자산의 **작성 원본을 변경했다면** [Agent Asset Management](docs/development/agent-assets/agent-asset-management.md)에 따라 문서 영향과 필요한 정본 반영을 반드시 판단합니다. `.inbox/` 인계만으로 정본 문서 작업을 완료했다고 간주하지 않습니다.
+저장소 전용 Agent Asset은 루트 `.rulesync/`, 재사용 Rulesync 원본은 `src/rulesync/.rulesync/`, 벤더 원본은 `src/<vendor>/`에서 관리합니다. 같은 의미의 작성 원본을 중복하지 않으며 [작성 원본과 권한](docs/development/source-authority.md)을 따릅니다. 외부 Skill의 설치·lock 일치 여부를 확인해야 할 때는 임의의 설치 명령을 조합하지 말고 `mise run skills-sync`를 사용합니다.
 
-## 자산 탐색
-
-- 이 저장소가 **제공하는** Agent Asset의 외부 탐색은 `route/README.md`를 따릅니다.
-- `.agents/route/families.json`은 현재 Skill family membership의 정본입니다. 생성되는 `.agents/route/routes.jsonl`과 Skill family `*.jsonl`은 직접 수정하지 않습니다.
-
-## 자산의 관리와 사용
-
-- **관리**(작성 원본의 유지·변경)와 **사용**(이 저장소의 작업·runtime에 선택·설치·적용)은 별개입니다. 같은 자산을 관리하면서 사용할 수도 있습니다.
-- 관리 여부는 작성 원본과 소유권으로, 사용 여부는 실제 routing·dependency·runtime 설정으로 판단합니다. `src/`에 있다는 이유로 사용한다고 추정하거나, `.agents/route/`에 있다는 이유로 외부 자산이라고 추정하지 않습니다. `rulesync.lock`과 `skills-lock.json`은 의존성의 고정 기준이지 현재 설치본의 일치 증거가 아닙니다. 실제 적용 상태는 설치·동기화 결과로 확인하며 `src/` 변경이 곧바로 설치본에 반영된다고 가정하지 않습니다.
-
-## 원본·의존성
-
-- **저장소 전용:** Agent Asset 작성 원본은 루트 `.rulesync/`에만 둡니다.
-- **재사용:** Rulesync 원본은 `src/rulesync/.rulesync/`, vendor-native 원본은 `src/<vendor>/`에서 관리합니다. 이 저장소에서도 사용할 수 있지만 적용 범위를 여기로 제한하지 않습니다. 원본·사용의 구분은 [작성 원본과 권한](docs/development/source-authority.md)을 따릅니다.
-- `src/`의 자산은 기본적으로 독립적입니다. 명시되지 않은 자산 간 의존성이나 호환성을 전제하지 않습니다.
-- 같은 semantic asset에 Rulesync와 vendor-native 작성 원본을 중복해서 두지 않습니다. 원본 선택은 `docs/development/source-authority.md`를 따릅니다.
-- Generated vendor projection과 Rulesync lock state는 재사용 가능한 작성 원본으로 commit하지 않습니다.
-- 외부 Skill이 필요하거나 설치 상태가 `skills-lock.json`을 반영하는지 불명확하면 installer를 직접 조합하지 말고 `mise run skills-sync`를 사용합니다. 이 작업은 lock의 source/revision을 읽지만 수정하지 않으며, 설치 방식은 native installer에 위임합니다.
-
-## 저장소 작업
-
-- Git 변경은 `docs/development/vcs-git.md`를 따릅니다. `main`은 직접 수정하지 않고 dedicated branch를 사용합니다.
-- GitHub의 Issue·PR·Review·Merge·Actions 협업 정책은 `docs/development/github.md`를 따릅니다. 관련 작업의 세부 문서는 해당 정책과 `github-context`가 작업에 맞게 선택합니다.
-- 파일·디렉터리 이름과 배치, 계층, source-test 대응은 `docs/development/repository-layout.md`를 따릅니다.
-- 개발 규칙은 `docs/development/README.md`, 문서 규칙과 artifact lifecycle은 `docs/documentation/README.md`에서 찾습니다.
-- Formatting은 `docs/development/formatting.md`, validation은 `docs/development/validation.md`, deterministic testing은 `docs/development/testing.md`, PR Gate는 `docs/development/ci.md`를 따릅니다.
+`main`은 직접 수정하지 않고 별도 브랜치에서 작업합니다.

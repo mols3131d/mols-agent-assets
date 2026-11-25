@@ -27,7 +27,8 @@ GitHub object의 작성 의미, validation·importance·workflow status와 prove
 | `{% if condition %} ... {% endif %}` | 조건이 맞을 때만 유지 |
 | `{% for item in items %} ... {% endfor %}` | 실제 항목 수만큼 반복 |
 
-- 최종 GitHub text에는 미치환 notation, 작성 지침 comment와 빈 optional section을 남기지 않습니다.
-- GitHub object title이 최상위 제목이므로 주요 본문 section은 `##`부터 시작합니다.
-- 일반 heading에 장식용 emoji를 사용하지 않습니다. Semantic marker와 상태·중요도는 GitHub 정책을 따릅니다.
-- 작성 주체와 revision이 필요한 경우 [GitHub 정책](../../docs/development/github.md)의 본문 끝 fenced YAML 표현을 사용합니다.
+- 최종 GitHub text에는 [GitHub 정책](../../docs/development/github.md)의 surface별 필수 섹션을 남기고 선택 섹션만 필요에 따라 추가합니다. 미치환 notation, 괄호형 작성 안내(`(*안내*)`)나 빈 선택 섹션은 제거합니다.
+- GitHub object title을 H1로 취급하고 템플릿은 H2까지만 정의합니다. H3 이하는 섹션이 길어 구분이 필요할 때 작성자가 선택합니다.
+- PR `Changes`, Issue `Acceptance Criteria`, Comment `Next Actions`에서 독립적인 완료 항목을 추적하면 체크박스를 우선합니다. PR·Review의 `Validation`에서는 검증 기준이 충족되면 `[x]`, 실패하거나 미검증이면 `[ ]`를 사용합니다. 별도 상태 아이콘은 붙이지 않고, 미충족 이유를 텍스트로 기록합니다. 표는 비교에, 진행 표시는 확인된 집계에, Mermaid는 복잡한 관계에만 선택적으로 사용합니다. 공통 기준은 [GitHub 정책](../../docs/development/github.md)을 따릅니다.
+- 장식용 emoji를 heading에 사용하지 않습니다. 상태·중요도는 GitHub 정책을 따릅니다.
+- 이 표기는 GitHub가 렌더링하는 작성 보조용이지 실행되는 Jinja2가 아닙니다. 본문 metadata가 필요하면 본문 끝의 단일 fenced `yaml`을 사용하고 GitHub의 native frontmatter로 오인하지 않습니다.

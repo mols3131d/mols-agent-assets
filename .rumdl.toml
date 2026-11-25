@@ -30,7 +30,7 @@ extend-enable = [
 style = "atx"
 
 [MD029]
-style = "one"
+style = "ordered"
 
 [MD033]
 disallowed-elements = ["gfm"]

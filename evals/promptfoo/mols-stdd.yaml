@@ -27,6 +27,7 @@ tests:
       suite: behavior
       semantic: true
       rubric_threshold: 0.8
+      omit_reference_checks: true
 
 sharing: false
 writeLatestResults: false

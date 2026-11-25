@@ -288,3 +288,22 @@ def test_test_design_eval_config_projects_all_cases_and_reference_checks() -> No
                     check["value"].endswith(":assert_reference_loading")
                     for check in item["assert"]
                 )
+
+def test_reference_expectations_ignore_order_but_reject_duplicates() -> None:
+    expected = ["references/a.md", "references/b.md"]
+    variables = {"vars": {"expected_loaded_references": json.dumps(expected)}}
+    reversed_order = {
+        **variables,
+        "metadata": {"loaded_references": ["references/b.md", "references/a.md"]},
+    }
+    duplicate = {
+        **variables,
+        "metadata": {"loaded_references": ["references/a.md", "references/a.md"]},
+    }
+    invalid = {
+        **variables,
+        "metadata": {"loaded_references": ["references/a.md", {}]},
+    }
+    assert evaluator.assert_reference_loading("response", reversed_order)["pass"]
+    assert not evaluator.assert_reference_loading("response", duplicate)["pass"]
+    assert not evaluator.assert_reference_loading("response", invalid)["pass"]
