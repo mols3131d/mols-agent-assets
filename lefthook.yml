@@ -4,8 +4,9 @@ pre-commit:
   commands:
     generated-artifacts:
       run: mise exec -- uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts sync --staged
-    source-quality:
-      run: mise exec -- uv run --locked --no-default-groups --group dev python -m scripts.source_quality_check --staged
+  scripts:
+    source-quality.sh:
+      runner: sh
 
 commit-msg:
   commands:

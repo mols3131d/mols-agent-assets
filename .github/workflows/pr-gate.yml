@@ -68,11 +68,12 @@ jobs:
         run: |
           set -euo pipefail
           base_sha="$(git rev-parse HEAD^1)"
-          if git diff --quiet "$base_sha" HEAD -- lefthook.yml mise.toml .github/workflows/pr-gate.yml; then
+          if git diff --quiet "$base_sha" HEAD -- lefthook.yml .lefthook mise.toml .github/workflows/pr-gate.yml; then
             echo "Lefthook inputs unchanged; skipping."
           else
             mise install lefthook
             mise exec -- lefthook validate
+            sh -n .lefthook/pre-commit/source-quality.sh
           fi
 
       - name: Validate project requirements with mise Doctor
