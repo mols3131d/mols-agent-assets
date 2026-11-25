@@ -17,7 +17,7 @@
 | 3 | [#294](https://github.com/mols3131d/mols-agent-assets/pull/294) — read-only Producer | `b204bd23da0cea91d10f8d6aa9c3c524f059dc9a` | Draft, 기존 CI 및 sync 성공 |
 | 4 | [#310](https://github.com/mols3131d/mols-agent-assets/pull/310) — 통합 수용·운영 검증 | 이 문서가 속한 브랜치 | Draft, 계획·인계만 포함 |
 
-기존 성공은 당시 HEAD에 대한 결과다. 최신 main 통합, 독립 보안 검토 및 실제 원격 write-back은 아직 검증되지 않았다.
+표에는 작업 시작 시점의 상태를 기록했다. 이후의 최신 HEAD, CI 결과, 독립 리뷰와 승인 상태는 각 PR의 Checklist에서 확인한다.
 
 ## 실행 순서와 완료 조건
 
@@ -52,10 +52,10 @@
 
 ### 4. #310 — 통합 수용 및 운영 검증
 
-- [ ] 앞선 세 PR의 최신 SHA, 검증·독립 리뷰와 승인 근거를 확인한다.
+- [ ] #305와 #308의 반영 근거, #294 후보의 최신 SHA·검증·독립 리뷰와 후보를 격리 테스트에 사용할 승인을 확인한다. #294의 merge 승인은 원격 E2E 후 별도로 확인한다.
 - [ ] 소유자가 승인한 단일 저장소 App 설치, Environment 및 branch allowlist를 설정한다. 설정 작업은 소유자 또는 명시적으로 승인된 주체가 수행한다.
 - [ ] 승인된 격리 PR에서 원본 변경 → producer artifact → trusted writer App commit → PR synchronize → 최신 required PR Gate 성공을 실증한다.
-- [ ] 잘못된 provenance, stale HEAD, 권한 부족, no-op·재진입 등 실패/skip 경로와 비활성화·권한 회수·rollback 절차를 검증한다.
+- [ ] [검증 행렬](https://github.com/mols3131d/mols-agent-assets/blob/mols/chore/generated-sync-on-push/.inbox/github-294/11-verification-plan.md)의 결정적 테스트와 원격 E2E 조건을 각각 확인한다. 비활성화·권한 회수·rollback은 소유자가 승인한 범위에서 검증한다.
 - [ ] [기존 통합 계획](00-plan-generated-writeback.md)의 수용 항목을 실제 증거로 판정하고 운영 확대 여부를 소유자에게 보고한다.
 
 통합 순서 근거: [#310 코멘트](https://github.com/mols3131d/mols-agent-assets/pull/310#issuecomment-7154635229). 종료 조건: 정상 경로와 실패 경계의 실제 E2E가 확인되고 운영 승인이 이루어진다. #310 자체는 구현 PR이 아니므로 필요한 결정은 각 구현 PR과 정본에 남기고 중복 계획 PR의 close 여부를 판단한다.

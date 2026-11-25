@@ -47,7 +47,7 @@ GitHub Contents API·Plugin·agent·로컬 Git 등으로 **원본만 변경한 �
 
 - #310에는 통합 수용 기준과 작업 인계를 둔다. Producer·Writer 개선은 각각의 구현 PR에서 진행한다.
 - 동일 파일의 구현·수정 owner는 기존 #294/#308이다. 이 통합 브랜치에서 그 코드에 병렬 수정을 가하지 않는다.
-- #294/#308의 메인 브랜치 기준은 현재와 다르므로 최신성 검증 없이는 기존 테스트 성공을 새 HEAD에 일반화하지 않는다.
+- 선행 PR 반영으로 `main`이 바뀌면 후속 PR의 기준선을 갱신한다. CI와 독립 리뷰는 각 PR에 기록된 base와 head에서 확인한다.
 - 주 위험: 높은 권한의 `workflow_run`이 변조 artifact를 신뢰하는 문제, 정상 `PR Gate` 재실행 누락, 비밀키 노출, 비승인 branch 자동 write 및 비용 증가. 기본 비활성·allowlist·권한 격리·실제 E2E를 완료 게이트로 삼는다.
 
 ## Current evidence
