@@ -17,6 +17,6 @@ targets:
 - Scope exception handlers to the intended failure source; the same exception type can arise from unrelated calls.
 - Resolve static typing issues without unnecessary runtime changes. Do not hide unresolved type uncertainty with casts, `Any`, or suppressions. Preserve runtime-consumed annotations.
 - Diagnose import failures using package layout, entrypoint, and invocation before changing `sys.path`, `PYTHONPATH`, or cwd.
-- Respect asyncio event-loop ownership, task lifetime, blocking behavior, and failure propagation. Preserve cancellation unless intentional handling is consistent with the owning scope; do not bypass the owner with `asyncio.run()` or a new loop.
-- Assess thread safety and parallelism against the target interpreter/build and documented guarantees, not the GIL or assumed built-in atomicity.
+- Account for blocking work, task lifetime, failure propagation, and asyncio event-loop ownership. Preserve cancellation unless intentional handling is consistent with the owning scope; do not bypass the owner with `asyncio.run()` or a new loop.
+- Assess thread safety and parallelism against the target interpreter/build and documented guarantees, not assumptions about the GIL or built-in atomicity.
 - Judge subprocess argument interpretation by the platform and executable; `shell=False` does not rule out shell interpretation for Windows batch files.
