@@ -11,6 +11,7 @@ ARTIFACT_NAME = "generated-sync-payload"
 SCHEMA_VERSION = 1
 MAX_METADATA_BYTES = 1024 * 1024
 MAX_FILE_COUNT = 500
+MAX_OUTPUT_PATH_DEPTH = 16
 MAX_FILE_BYTES = 5 * 1024 * 1024
 MAX_TOTAL_PAYLOAD_BYTES = 20 * 1024 * 1024
 HEX_SHA_RE = re.compile(r"^[0-9a-f]{40}$")
@@ -40,9 +41,11 @@ def is_safe_relative_posix_path(path: str) -> bool:
 
 def is_allowed_generated_output(path: str) -> bool:
     """Restrict writeback to generated indexes and direct route JSONL files."""
-    if not is_safe_relative_posix_path(path) or not any(
-        projection.output_matches(path) for projection in sync.PROJECTIONS
+    if path.count("/") >= MAX_OUTPUT_PATH_DEPTH or not is_safe_relative_posix_path(
+        path
     ):
+        return False
+    if not any(projection.output_matches(path) for projection in sync.PROJECTIONS):
         return False
 
     output = PurePosixPath(path)
