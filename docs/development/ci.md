@@ -133,6 +133,8 @@ remote branch update
 
 Branch validation은 required merge admission 자체가 아닙니다. Open PR이 있는 branch update는 PR validation과 실행을 공유하거나 중복 비용을 줄일 수 있지만, 최종 merge candidate 검증을 생략해서는 안 됩니다.
 
+Branch Check의 source quality 검사는 `main`과 공유하는 최신 조상부터 브랜치 HEAD까지 비교합니다. 브랜치가 `main`을 통합해도 공유 조상부터 물려받은 파일은 검사 범위에 추가되지 않습니다.
+
 ### PR Admission Gate
 
 `main` admission의 authoritative server-side boundary는 required `PR Gate`입니다. Open Pull Request의 head가 바뀌면 base와 결합된 merge candidate를 다시 검증합니다.

@@ -1,0 +1,11 @@
+path	description
+biome.md	Biome의 기본 권장 규칙, 저장소 포맷 예외와 CLI·schema 버전 호환성을 확인할 때 사용합니다.
+front-matter-cms.md	Front Matter CMS의 기본 설정 우선 원칙, 문서 metadata 편집과 비활성화한 CMS 기능의 예외를 확인할 때 사용합니다.
+lefthook.md	Lefthook의 Git hook 설정, 별도 설치와 공유 hooksPath 보호, 자동 포맷·stage 예외를 확인할 때 사용합니다.
+mise.md	mise의 프로젝트 설정 예외, CLI 잠금과 setup/update 실행, 최초 준비·복구·선택적 연동을 확인할 때 사용합니다.
+node.md	Node.js·npm의 LTS 버전 선택, mise 관리 npm CLI와 평가 실행의 호환성·잠금 예외를 확인할 때 사용합니다.
+promptfoo.md	Promptfoo의 평가 재현용 버전 고정, 저장소 runner의 기본 환경과 데이터·모델·비용 예외를 확인할 때 사용합니다.
+rulesync.md	이 프로젝트의 Rulesync 설정·버전 선택, 자산 revision과 projection·설치의 예외를 확인할 때 사용합니다.
+rumdl.md	rumdl의 Markdown 설정 정본, 기본값과 다른 문서 표현 규칙 및 버전 갱신 시 확인할 예외를 찾을 때 사용합니다.
+skills-cli.md	skills CLI의 최신 안정 버전 선택과 외부 Skill revision 고정, native installer·HOME 설치 예외를 확인할 때 사용합니다.
+uv.md	uv·Python의 관리 경계, 버전 선택과 프로젝트 가상환경, Python 개발 도구의 설정·갱신 예외를 확인할 때 사용합니다.

@@ -16,56 +16,77 @@ QUALITY_SUFFIXES = BIOME_SUFFIXES | {".py", ".md"}
 CommandRunner = Callable[[list[str], Path], int]
 
 
-def _git_paths(root: Path, *args: str) -> tuple[str, ...]:
+def _git_records(root: Path, *args: str) -> tuple[str, ...]:
     result = subprocess.run(
         ["git", *args, "-z", "--"],
         cwd=root,
         capture_output=True,
         check=True,
     )
-    paths = {
-        name.decode("utf-8", errors="surrogateescape")
-        for name in result.stdout.split(b"\0")
-        if name
-    }
-    return tuple(sorted(paths))
+    return tuple(
+        record.decode("utf-8", errors="surrogateescape")
+        for record in result.stdout.split(b"\0")
+        if record
+    )
 
 
-def _check_source_paths(paths: tuple[str, ...], root: Path) -> tuple[str, ...]:
-    for path in paths:
+def _diff_entries(root: Path, *args: str) -> tuple[tuple[str, str], ...]:
+    records = iter(
+        _git_records(root, "diff", "--raw", "--no-renames", "--diff-filter=ACMT", *args)
+    )
+    # With -z and rename detection disabled, the path follows its raw diff header.
+    return tuple(
+        (path, header.split()[1]) for header, path in zip(records, records, strict=True)
+    )
+
+
+def _check_source_paths(
+    entries: Iterable[tuple[str, str]], root: Path
+) -> tuple[str, ...]:
+    paths = []
+    for path, mode in entries:
         if Path(path).suffix.lower() not in QUALITY_SUFFIXES:
             continue
         source = root / path
-        if source.is_symlink() or not source.is_file():
+        if (
+            mode not in {"100644", "100755"}
+            or source.is_symlink()
+            or not source.is_file()
+        ):
             raise ValueError(f"Cannot inspect selected source: {path}")
-    return paths
+        paths.append(path)
+    return tuple(sorted(paths))
 
 
 def changed_paths(base: str, root: Path = ROOT) -> tuple[str, ...]:
     """Inspect the complete committed range; never silently skip a missing base."""
-    return _check_source_paths(
-        _git_paths(
-            root,
-            "diff",
-            "--name-only",
-            "--no-renames",
-            "--diff-filter=ACMRT",
-            base,
-            "HEAD",
-        ),
-        root,
+    return _check_source_paths(_diff_entries(root, base, "HEAD"), root)
+
+
+def _merge_parents(root: Path) -> list[str]:
+    result = subprocess.run(
+        ["git", "rev-parse", "--git-path", "MERGE_HEAD"],
+        cwd=root,
+        capture_output=True,
+        check=True,
     )
+    path = root / result.stdout.decode("utf-8", errors="surrogateescape").rstrip("\r\n")
+    try:
+        return path.read_text(encoding="ascii").splitlines()
+    except FileNotFoundError:
+        return []
 
 
 def staged_paths(root: Path = ROOT) -> tuple[str, ...]:
     """Only inspect staged content when the corresponding worktree file is identical."""
-    staged = _git_paths(
-        root, "diff", "--cached", "--name-only", "--no-renames", "--diff-filter=ACMRT"
-    )
-    unstaged = set(_git_paths(root, "diff", "--name-only", "--no-renames"))
+    staged = _diff_entries(root, "--cached")
+    for parent in _merge_parents(root):
+        parent_changes = set(_diff_entries(root, "--cached", parent))
+        staged = tuple(entry for entry in staged if entry in parent_changes)
+    unstaged = set(_git_records(root, "diff", "--name-only", "--no-renames"))
     conflicts = sorted(
         path
-        for path in staged
+        for path, _ in staged
         if path in unstaged and Path(path).suffix.lower() in QUALITY_SUFFIXES
     )
     if conflicts:
@@ -77,7 +98,11 @@ def staged_paths(root: Path = ROOT) -> tuple[str, ...]:
 
 
 def all_paths(root: Path = ROOT) -> tuple[str, ...]:
-    return _check_source_paths(_git_paths(root, "ls-files"), root)
+    entries = []
+    for record in _git_records(root, "ls-files", "--format=%(objectmode) %(path)"):
+        mode, path = record.split(" ", 1)
+        entries.append((path, mode))
+    return _check_source_paths(entries, root)
 
 
 def checks_for_paths(paths: Iterable[str]) -> list[tuple[str, list[str]]]:
@@ -91,7 +116,7 @@ def checks_for_paths(paths: Iterable[str]) -> list[tuple[str, list[str]]]:
         checks.extend(
             [
                 ("Ruff lint", ["ruff", "check", *python]),
-                ("Ruff format", ["ruff", "format", "--check", *python]),
+                ("Ruff format", ["ruff", "format", "--diff", *python]),
             ]
         )
     if markdown:
@@ -115,10 +140,23 @@ def checks_for_paths(paths: Iterable[str]) -> list[tuple[str, list[str]]]:
 
 
 def _run(command: list[str], root: Path) -> int:
-    executable = shutil.which(command[0])
+    tool, *args = command
+    executable = shutil.which(tool)
     if executable is None:
-        raise FileNotFoundError(f"Required source quality tool not found: {command[0]}")
-    return subprocess.run([executable, *command[1:]], cwd=root, check=False).returncode
+        raise FileNotFoundError(f"Required source quality tool not found: {tool}")
+    if tool == "biome" and Path(executable).suffix.lower() in {".bat", ".cmd"}:
+        # npm batch wrappers allow cmd.exe to expand characters in source filenames.
+        package_bin = (
+            Path(executable).parent.parent / "@biomejs" / "biome" / "bin" / "biome"
+        )
+        node = shutil.which("node.exe")
+        if node is None or not package_bin.is_file():
+            raise FileNotFoundError(
+                "Required Node.js or npm Biome entry point not found"
+            )
+        executable = node
+        args.insert(0, str(package_bin))
+    return subprocess.run([executable, *args], cwd=root, check=False).returncode
 
 
 def verify(
@@ -140,9 +178,6 @@ def verify(
         if result != 0:
             failed = True
             print(f"FAIL {name} (exit {result})", file=sys.stderr)
-            if name == "Ruff format":
-                print("DIFF Ruff format", flush=True)
-                runner(["ruff", "format", "--diff", *command[3:]], root)
     return 1 if failed else 0
 
 

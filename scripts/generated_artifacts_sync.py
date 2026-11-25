@@ -7,14 +7,15 @@ from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 
-from scripts.agent_assets import routes_distribution_generate as generate_distribution_routes
-from scripts.catalog_indexes_generate import generate_catalog_indexes
-from scripts.agent_assets import routes_repository_generate as generate_repository_routes
-from scripts.docs_indexes_generate import generate_docs_indexes
+from scripts import indexes_generate
+from scripts.agent_assets import (
+    routes_distribution_generate as generate_distribution_routes,
+    routes_repository_generate as generate_repository_routes,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 
-_DOCS_INDEX_TOOL_SOURCES = {"scripts/docs_indexes_generate.py"}
+_DOCS_INDEX_TOOL_SOURCES = {"scripts/indexes_generate.py"}
 _DOCS_INDEX_TOOL_PREFIX = (
     "src/rulesync/.rulesync/skills/mols-markdown-maintenance/scripts/"
 )
@@ -58,7 +59,7 @@ def _is_docs_index_source(path: str) -> bool:
         return True
     if name == "AGENTS.md" or name.startswith("."):
         return False
-    if name.upper().startswith("INDEX") or name.startswith("__index__"):
+    if name.startswith("INDEX") or name.startswith("__index__"):
         return False
     if name.startswith("__") and name.endswith("__.md"):
         return False
@@ -72,7 +73,7 @@ def _is_docs_index_output(path: str) -> bool:
 
 
 def _is_catalog_index_source(path: str) -> bool:
-    if path in {"scripts/catalog_indexes_generate.py", "scripts/docs_indexes_generate.py"}:
+    if path == "scripts/indexes_generate.py":
         return True
     if path.startswith(_DOCS_INDEX_TOOL_PREFIX) and path.endswith(".py"):
         return True
@@ -82,7 +83,7 @@ def _is_catalog_index_source(path: str) -> bool:
     name = PurePosixPath(path).name
     if name == "README.md":
         return True
-    if name == "AGENTS.md" or name.startswith("."):
+    if name == "AGENTS.md" or (name.startswith(".") and name.endswith(".md")):
         return False
     if name.startswith("INDEX") or name.startswith("__index__"):
         return False
@@ -92,15 +93,15 @@ def _is_catalog_index_source(path: str) -> bool:
 
 
 def _is_catalog_index_output(path: str) -> bool:
-    return path == "catalog/INDEX.tsv"
+    return path == "catalog/INDEX.tsv" or (
+        path.startswith("catalog/") and path.endswith("/INDEX.tsv")
+    )
 
 
 def _is_distribution_route_source(path: str) -> bool:
     if path == "scripts/agent_assets/routes_distribution_generate.py":
         return True
-    if path.startswith("src/rulesync/.rulesync/skills/") and path.endswith(
-        "/SKILL.md"
-    ):
+    if path.startswith("src/rulesync/.rulesync/skills/") and path.endswith("/SKILL.md"):
         return True
     if not path.startswith(_SUBAGENT_SOURCE_PREFIX) or not path.endswith(".md"):
         return False
@@ -121,11 +122,11 @@ def _is_repository_route_output(path: str) -> bool:
 
 
 def _generate_docs_indexes() -> None:
-    generate_docs_indexes()
+    indexes_generate.sync_indexes(indexes_generate.PRESETS["docs"])
 
 
 def _generate_catalog_index() -> None:
-    generate_catalog_indexes()
+    indexes_generate.sync_indexes(indexes_generate.PRESETS["catalog"])
 
 
 def _generate_distribution_routes() -> None:
@@ -251,9 +252,7 @@ def _stage_projection_outputs(
         "--",
         root=root,
     )
-    outputs = sorted(
-        path for path in candidates if projection.output_matches(path)
-    )
+    outputs = sorted(path for path in candidates if projection.output_matches(path))
     if not outputs:
         return
 
@@ -275,8 +274,7 @@ def sync_staged(
     conflicts = conflicting_paths(dirty_worktree_paths(root), affected)
     if conflicts:
         details = "\n".join(
-            f"- {name}: {', '.join(paths)}"
-            for name, paths in conflicts.items()
+            f"- {name}: {', '.join(paths)}" for name, paths in conflicts.items()
         )
         raise GeneratedArtifactSyncError(
             "관련 source 또는 generated output에 unstaged/untracked 변경이 있어 "
@@ -299,5 +297,3 @@ def sync_all(
     for projection in projections:
         projection.generate()
     return tuple(projection.name for projection in projections)
-
-

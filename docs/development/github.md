@@ -41,13 +41,14 @@ Issue, Pull Request, PR Review와 comment에 공통으로 적용되는 작성 �
 - 결론과 판단에 필요한 최종 결과와 근거를 먼저 둡니다. 작업 과정이나 시행착오는 판단에 필요할 때만 남깁니다.
 - GitHub UI, CI 또는 canonical artifact가 이미 소유하는 정보는 필요 없이 복제하지 않습니다. 요구사항이나 결정의 source가 따로 있으면 다시 쓰기보다 연결합니다.
 - 모르는 값은 추측하거나 임의의 긍정 상태로 채우지 않습니다.
-- 같은 종류의 항목은 기본적으로 주의가 필요한 것을 먼저 둡니다. Finding과 risk는 `🔴 Critical → 🟠 High → 🟡 Medium → 🔵 Low`, validation은 `❌ Fail → ⚪ Not Verified → ✅ Pass` 순서를 우선하되 인과관계, 실행 순서나 수정 순서가 판단에 중요하면 그 순서를 유지합니다.
+- 같은 종류의 항목은 기본적으로 주의가 필요한 것을 먼저 둡니다. Finding과 risk는 `🔴 Critical → 🟠 High → 🟡 Medium → 🔵 Low` 순서를 우선합니다. Validation 체크리스트는 미충족 항목을 먼저 배치하되 실행 순서나 중요도가 더 크면 그 순서를 따릅니다.
 
-Validation 상태는 다음 의미로 사용합니다.
+Validation 체크리스트의 체크 여부는 검증 결과를 의미합니다.
 
-- `✅ Pass` — 명시한 check가 통과했습니다. Semantic review나 제한된 inspection 결과를 deterministic test, runtime verification 또는 전체 변경의 검증으로 확대 해석하지 않습니다.
-- `❌ Fail` — 명시한 check가 실패했습니다.
-- `⚪ Not Verified` — 중요하지만 아직 확인하지 않은 영역입니다. 미수행 검증을 긍정 상태로 바꾸지 않습니다.
+- `[x]` — 명시한 검증 기준을 실제로 확인했고 충족했습니다.
+- `[ ]` — 실패했거나 아직 검증하지 않아 기준이 충족되지 않았습니다. 항목에 실패·미검증 이유와 근거를 짧게 남깁니다.
+
+검증을 실행했다는 사실만으로 체크하지 않습니다. Semantic review나 제한된 확인을 전체 검증의 통과로 확대하지 않으며, 상태 아이콘을 체크박스와 중복 기재하지 않습니다.
 
 PR Review finding과 Pull Request risk의 importance는 같은 상대적 중요도 축을 사용하지만 finding과 risk 자체는 서로 다른 개념입니다.
 
@@ -71,7 +72,7 @@ Issue, Pull Request, PR Review와 PR comment에서는 GitHub UI, API, Plugin 등
 - `author` — agent가 최종 GitHub text의 내용이나 구조를 실질적으로 작성하거나 재작성했다면 반드시 기록합니다. GitHub object가 사람의 account나 credential로 생성되어도 같습니다. 사람이 완성한 text를 agent가 그대로 게시하거나, 사람이 이미 정한 title·state·label 같은 값을 그대로 설정하는 기계적 mutation만 수행한 경우는 agent 주도 작성으로 보지 않습니다. 각 항목은 `<user-id>:<provider>-<service>` 형식을 사용합니다.
 - `revision` — Pull Request description이나 PR Review가 의존하는 exact diff pair입니다. `base`와 `head`를 함께 full commit SHA로 기록합니다. PR description을 새 pair 기준으로 갱신하면 함께 갱신하고, 이미 제출된 review의 pair는 이후 head가 바뀌어도 변경하지 않습니다.
 
-`author`는 Issue, Pull Request, PR Review, PR conversation comment와 PR inline review comment에 적용하며 위 조건에서 필수입니다. `revision`은 Pull Request와 PR Review에만 사용합니다. Metadata는 **본문 끝의 단일 fenced `yaml` block**으로 표현하고, 해당 surface에 필요한 field만 남깁니다. YAML frontmatter나 GitHub object metadata로 해석하지 않으며 별도의 Metadata heading을 만들지 않습니다. Native template에는 실제 값이 없는 metadata를 미리 삽입하지 않습니다.
+`author`는 Issue, Pull Request, PR Review, PR conversation comment와 PR inline review comment에 적용하며 위 조건에서 필수입니다. `revision`은 Pull Request와 PR Review에만 사용합니다. GitHub Issue·PR·Review·Comment의 **최종 본문**에서는 YAML frontmatter 대신 **본문 끝의 단일 fenced `yaml` block**으로 위 provenance를 기록합니다. GitHub의 일반 본문 metadata 필드나 자동 처리되는 설정이 아니라 사람이 읽는 표기입니다. 별도의 Metadata heading이나 빈 블록은 만들지 않습니다. Issue Markdown 템플릿의 파일 맨 앞 YAML frontmatter(`name`, `about` 등)는 **템플릿 선택기 설정**으로 유지하며, 생성된 Issue 본문 metadata로 오인하지 않습니다. Native template에는 실제 값이 없는 provenance를 미리 삽입하지 않습니다.
 
 ```yaml
 author:
@@ -80,6 +81,28 @@ revision:
   base: <full-base-commit-sha>
   head: <full-head-commit-sha>
 ```
+
+## GitHub 본문 구조와 표현
+
+GitHub object 제목을 최상위 제목(H1)으로 취급합니다. 본문은 H2를 기본 구조로 제공합니다. Pull Request의 `Checklist`에는 고정 H3(`Self-review`, `Verification`)와 문서 변경·영향이 있을 때만 남기는 선택 H3(`Documentation`)를 둡니다. 그 외 H3 이하는 실제 가독성이 높아질 때만 추가합니다. Surface별 필수 섹션은 유지하고 나머지는 필요할 때만 추가합니다. 빈 선택 섹션·불필요한 `N/A`·예시 placeholder를 남기지 않습니다. 필수 Checklist에서 적용할 수 없는 항목은 템플릿의 `- N/A: <reason>` 형식을 따릅니다.
+
+| Surface | 필수 본문 | 선택 섹션 |
+| --- | --- | --- |
+| Issue | `Summary`, `Desired Outcome` | Acceptance Criteria, Reproduction, Boundaries 등 |
+| Pull Request | `Description`, `Goal`, `Tasks`, `Checklist`, `Boundaries` | `Checklist > Documentation`(H3), Risks, Review Focus 등 |
+| PR Review | `Summary`, `Findings` | Scope, Validation, Remaining Risks 등 |
+| PR conversation/inline comment | 핵심 메시지(`message`) | Next Actions, Evidence, status 등 |
+
+`Findings`에 문제가 없으면 검토한 범위에서 발견되지 않았음을 명시합니다. PR의 `Checklist > Verification`은 검증 기준의 충족 여부를 체크박스로 나타냅니다. 적용할 검증 자체가 없다면 그 범위와 이유를 적고 가짜 Pass 또는 Not Verified 항목을 만들지 않습니다. Comment처럼 짧은 surface에는 정보 없는 H2 제목을 강제하지 않습니다.
+
+- **최소 본문:** Surface별 필수 섹션을 채우되 중복 설명을 피합니다. `Risks`, `Review Focus`, `Compatibility` 등은 독립적으로 필요한 때에만 추가합니다. 중요한 검증 실패·미검증·위험은 선택 섹션을 생략한다는 이유로 숨기지 않습니다.
+- **체크박스:** 독립적인 완료 조건·작업 단위를 추적할 때 우선 사용합니다. PR `Tasks`의 구현 작업, Issue `Acceptance Criteria`, 실제 후속 작업이 있는 Comment `Next Actions`가 대표 사례입니다. PR `Checklist > Verification` 및 Review `Validation`에서는 **검증 기준 충족 여부**를 나타내며, 아이콘으로 상태를 중복 표시하지 않습니다. 내용 설명·비교 목록에는 강제하지 않습니다.
+- **PR Checklist 서술:** `Checklist`에서 체크리스트 전반의 관찰·판단 근거는 첫 H3 앞에, 개별 항목의 검증 결과·예외·근거는 해당 항목 아래에 일반 불릿이나 문단으로 자유롭게 작성합니다. 중요한 판단과 미충족 항목은 사유·근거 또는 후속 조치를 밝히고, 단순 완료 항목의 형식적인 설명은 생략합니다. 서술형 목록은 GitHub 작업 진행률에 포함하지 않습니다.
+- **표:** 비교 대상마다 동일한 항목이 반복될 때 사용합니다. 긴 서술이나 순차 절차를 억지로 표에 넣지 않습니다.
+- **진행 표시:** GitHub tasklist가 제공하는 진행 표시를 우선합니다. 별도의 수치가 꼭 필요하다면 관찰된 `완료/전체`를 사용하고 갱신 책임을 분명히 합니다. 자동 갱신되지 않는 장식용 진행바를 기본 템플릿에 넣거나 작업 체크박스와 중복 표시하지 않습니다. GitHub UI의 표시 위치·형태는 바뀔 수 있습니다.
+- **Mermaid:** 흐름·의존성·상태 관계가 텍스트보다 명확해질 때만 fenced `mermaid` 다이어그램을 추가합니다. 간단한 절차에는 목록을 우선하고, 다이어그램만으로 핵심 결과·위험을 전달하지 않습니다.
+
+내용이 길지만 결론과 분리 가능한 검증 로그·상세 설명은 GitHub의 접을 수 있는 `details`를 사용할 수 있습니다. PR/Issue·Review/Comment의 본문 템플릿은 **자동 채우는 양식인지 작성 보조용인지** 구분하며, GitHub의 native Issue 템플릿 frontmatter와 본문 fenced YAML은 역할이 다릅니다.
 
 ## Issues
 
@@ -118,8 +141,8 @@ Pull Request는 head branch의 변경을 base branch에 **반영하도록 제안
 - `main` 대상 변경은 [VCS / Git](vcs-git.md)의 정책에 따라 준비하고 PR로 제안합니다.
 - PR 생성, agent 작업 완료나 draft 해제만으로 검토가 승인되거나 merge 가능한 상태가 되지는 않습니다.
 - PR 요약과 agent 설명은 diff와 검증 결과를 이해하는 보조 정보입니다. 실제 제안된 변경은 head/base diff로 판단합니다.
-- PR 본문 `Changes`에서 완료를 추적할 실제 작업은 Markdown 체크박스(`- [ ]` / `- [x]`)로 작성하고 진행에 따라 갱신합니다. GitHub가 제공하는 완료 항목 수 집계를 활용하되, PR 목록 등 표시 위치는 UI 버전에 따라 다를 수 있습니다. 설명용 변경이나 가상 작업은 체크박스로 만들지 않습니다.
-- 체크 표시는 해당 작업의 완료만 뜻합니다. `Validation`의 Pass/Fail/Not Verified, GitHub checks, PR Review, Merge 준비 여부는 각각의 근거와 네이티브 상태로 별도 판단합니다.
+- PR의 `Tasks`에 독립적으로 완료 여부를 추적할 작업이 있으면 Markdown 체크박스(`- [ ]` / `- [x]`)를 **기본 표현**으로 사용하고 진행에 따라 갱신합니다. 설명용 변경이나 가상 작업에는 일반 목록이나 prose를 사용합니다. GitHub의 진행 표시 위치·형태는 UI 버전에 따라 다를 수 있습니다.
+- PR `Checklist > Verification`은 항목별 **충족 여부**를 체크박스로 작성합니다. 검증이 통과한 항목만 `- [x]`로 표시하고, 실행했지만 실패했거나 아직 확인하지 못한 항목은 `- [ ]`로 유지하면서 실패·미검증 사유를 적습니다. 검증 방법·환경·결과·근거·제약은 필요한 경우 해당 항목 아래의 일반 불릿으로 보충하고, CI 로그를 복제하기보다 결과에 연결합니다. 별도 상태 아이콘을 추가하지 않습니다. GitHub checks, PR Review, Merge 준비 여부는 이 체크리스트와 독립적으로 판단합니다. 검증 대상이 없는 경우에는 그 이유를 간결하게 설명합니다.
 - 대화, reviews, checks, agent session과 security result가 한 PR에 함께 보여도 각각의 책임과 근거 수준은 구분합니다.
 
 ## PR Reviews
@@ -178,6 +201,9 @@ GitHub Agentic Workflows는 자연어 Markdown으로 작성하더라도 일반 �
 - [About issues](https://docs.github.com/en/issues/tracking-your-work-with-issues/learning-about-issues/about-issues)
 - [About pull requests](https://docs.github.com/en/pull-requests/get-started/about-pull-requests)
 - [About tasklists](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/about-tasklists) — Markdown 체크박스 문법과 사용 범위
+- [GitHub Markdown tables](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/organizing-information-with-tables) — 비교표 렌더링
+- [GitHub Mermaid diagrams](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams) — Mermaid 지원 범위
+- [GitHub collapsed sections](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/organizing-information-with-collapsed-sections) — 상세 내용의 접기
 - [GitHub Markdown checklist guide](https://github.blog/developer-skills/github/video-how-to-create-checklists-in-markdown-for-easier-task-tracking/) — PR 목록 진행률 표시 사례
 - [Giving reviews](https://docs.github.com/en/pull-requests/concepts/giving-reviews)
 - [Merge and close pull requests](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests)

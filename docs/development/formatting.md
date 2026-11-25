@@ -26,7 +26,7 @@ Formatting은 **파일의 표현을 repository convention에 맞게 정규화하
 
 ## CI Boundary
 
-CI는 `scripts/source_quality_check.py`의 공통 읽기 전용 검사에서 Ruff lint/format, rumdl lint/format, Biome lint/format을 파일 유형별로 실행합니다. `--changed-from`은 현재 `HEAD`와 base 사이의 **추가·수정·유형 변경된 파일**을 검사하며, 삭제는 건너뜁니다. `--staged`도 유형 변경을 포함하며, 선택된 symlink는 오류로 처리합니다. Git 비교가 실패하면 검사를 생략하지 않고 실패합니다. `--all`은 현재 tracked 파일을 검사하는 명시적 전체 검증입니다.
+CI는 `scripts/source_quality_check.py`의 공통 읽기 전용 검사에서 Ruff lint/format, rumdl lint/format, Biome lint/format을 파일 유형별로 실행합니다. `--changed-from`은 현재 `HEAD`와 base 사이의 **추가·수정·유형 변경된 파일**을 검사하며, 삭제는 건너뜁니다. `--staged`도 유형 변경을 포함합니다. Git 파일 모드와 작업 트리의 파일 유형을 함께 확인해 Windows에서 일반 파일로 체크아웃된 symlink도 오류로 처리합니다. Git 비교가 실패하면 검사를 생략하지 않고 실패합니다. `--all`은 현재 tracked 파일을 검사하는 명시적 전체 검증입니다.
 
 검사 도구는 mise·uv가 구성한 PATH에서 실행 경로를 먼저 해석합니다. Windows의 npm `.cmd` 래퍼도 해당 경로로 실행하며, 도구를 찾지 못하면 오류로 종료합니다.
 

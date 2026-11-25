@@ -44,15 +44,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          before="${{ github.event.before }}"
-          if [[ "$before" =~ ^0+$ ]] || ! git cat-file -e "$before^{commit}" 2>/dev/null; then
-            if ! before="$(git merge-base HEAD origin/main)"; then
-              echo "No common base with main; checking all tracked sources."
-              mise run quality-check --all
-              exit 0
-            fi
+          if base_sha="$(git merge-base HEAD origin/main)"; then
+            mise run quality-check --changed-from "$base_sha"
+          else
+            echo "No common base with main; checking all tracked sources."
+            mise run quality-check --all
           fi
-          mise run quality-check --changed-from "$before"
 
       - name: Validate source contracts
         run: uv run --locked --no-default-groups --group test python scripts/docs_frontmatter_validate.py

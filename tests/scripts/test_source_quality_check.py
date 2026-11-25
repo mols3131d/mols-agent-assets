@@ -4,9 +4,10 @@ import subprocess
 from contextlib import redirect_stderr
 from io import StringIO
 from pathlib import Path
-from tempfile import TemporaryDirectory
 from unittest import TestCase
 from unittest.mock import patch
+
+import pytest
 
 from scripts import source_quality_check as quality
 
@@ -50,7 +51,7 @@ def test_chosen_tools_do_not_mutate_files_or_confuse_format_and_lint() -> None:
     )
     assert checks == [
         ("Ruff lint", ["ruff", "check", "./src/main.py"]),
-        ("Ruff format", ["ruff", "format", "--check", "./src/main.py"]),
+        ("Ruff format", ["ruff", "format", "--diff", "./src/main.py"]),
         ("rumdl lint", ["rumdl", "check", "./docs/guide.md"]),
         ("rumdl format", ["rumdl", "fmt", "--check", "./docs/guide.md"]),
         (
@@ -85,17 +86,6 @@ def test_quality_selection_failure_is_not_silently_ignored(
     assert "ERROR source selection" in capsys.readouterr().err
 
 
-def test_format_failure_prints_read_only_diff(tmp_path: Path) -> None:
-    commands: list[list[str]] = []
-
-    def fake_runner(command: list[str], root: Path) -> int:
-        commands.append(command)
-        return 1 if command[:3] == ["ruff", "format", "--check"] else 0
-
-    assert quality.verify(("sample.py",), tmp_path, fake_runner) == 1
-    assert commands[-1] == ["ruff", "format", "--diff", "./sample.py"]
-
-
 def test_no_supported_sources_runs_no_tools(capsys) -> None:
     assert quality.verify(("sample.txt",)) == 0
     assert "No supported source files affected" in capsys.readouterr().out
@@ -119,6 +109,26 @@ def test_staged_source_with_unstaged_changes_fails_before_lint(tmp_path: Path) -
     assert quality.staged_paths(tmp_path) == ("example.py",)
 
 
+def test_staged_merge_checks_content_changed_from_both_parents(tmp_path: Path) -> None:
+    git(tmp_path, "init", "-q", "--initial-branch=topic")
+    git(tmp_path, "config", "user.name", "Test")
+    git(tmp_path, "config", "user.email", "test@example.com")
+    git(tmp_path, "commit", "-qm", "initial", "--allow-empty")
+    git(tmp_path, "switch", "-qc", "upstream")
+    upstream_source = tmp_path / "inherited.py"
+    upstream_source.write_text("bad =\n", encoding="utf-8")
+    git(tmp_path, "add", "inherited.py")
+    git(tmp_path, "commit", "-qm", "upstream")
+    git(tmp_path, "switch", "-q", "topic")
+    git(tmp_path, "merge", "-q", "--no-ff", "--no-commit", "upstream")
+
+    assert quality.staged_paths(tmp_path) == ()
+
+    upstream_source.write_text("fixed = 1\n", encoding="utf-8")
+    git(tmp_path, "add", "inherited.py")
+    assert quality.staged_paths(tmp_path) == ("inherited.py",)
+
+
 def test_missing_staged_source_is_an_error_not_a_silent_skip(tmp_path: Path) -> None:
     git(tmp_path, "init", "-q")
     source = tmp_path / "new.py"
@@ -130,35 +140,67 @@ def test_missing_staged_source_is_an_error_not_a_silent_skip(tmp_path: Path) -> 
 
 def test_selected_symlink_source_is_not_silently_skipped(tmp_path: Path) -> None:
     (tmp_path / "actual.py").write_text("print(1)\n", encoding="utf-8")
-    (tmp_path / "link.py").symlink_to("actual.py")
     try:
-        quality._check_source_paths(("link.py",), tmp_path)
-    except ValueError as exc:
-        assert "link.py" in str(exc)
-    else:
-        raise AssertionError("expected a symlink selection failure")
+        (tmp_path / "link.py").symlink_to("actual.py")
+    except OSError as exc:
+        pytest.skip(f"Filesystem symlinks unavailable: {exc}")
+    with pytest.raises(ValueError, match="link.py"):
+        quality._check_source_paths((("link.py", "100644"),), tmp_path)
+
+
+def test_type_change_rejects_git_symlink_checked_out_as_regular_file(tmp_path: Path):
+    git(tmp_path, "init", "-q")
+    git(tmp_path, "config", "user.name", "Test")
+    git(tmp_path, "config", "user.email", "test@example.com")
+    git(tmp_path, "config", "core.symlinks", "false")
+    path = tmp_path / "source.py"
+    path.write_text("target.py\n", encoding="utf-8")
+    git(tmp_path, "add", "source.py")
+    git(tmp_path, "commit", "-qm", "initial")
+
+    oid = subprocess.check_output(
+        ["git", "rev-parse", "HEAD:source.py"], cwd=tmp_path, text=True
+    ).strip()
+    git(tmp_path, "update-index", "--cacheinfo", f"120000,{oid},source.py")
+
+    assert path.is_file() and not path.is_symlink()
+    with pytest.raises(ValueError, match="source.py"):
+        quality.staged_paths(tmp_path)
+    with pytest.raises(ValueError, match="source.py"):
+        quality.all_paths(tmp_path)
+    git(tmp_path, "commit", "-qm", "make symlink")
+    with pytest.raises(ValueError, match="source.py"):
+        quality.changed_paths("HEAD^", tmp_path)
+
+    git(tmp_path, "update-index", "--cacheinfo", f"100644,{oid},source.py")
+    assert quality.staged_paths(tmp_path) == ("source.py",)
+
+
+def test_run_uses_biome_package_without_windows_wrapper(tmp_path: Path) -> None:
+    modules = tmp_path / "managed tools" / "node_modules"
+    wrapper = modules / ".bin" / "biome.cmd"
+    entry = modules / "@biomejs" / "biome" / "bin" / "biome"
+    entry.parent.mkdir(parents=True)
+    entry.touch()
+    node = str(tmp_path / "node.exe")
+    command = ["biome", "lint", "./source %NAME% file.ts"]
+    tools = {"biome": str(wrapper), "node.exe": node}
+    with (
+        patch("shutil.which", side_effect=tools.get),
+        patch.object(
+            quality.subprocess,
+            "run",
+            return_value=subprocess.CompletedProcess([], 1),
+        ) as run,
+    ):
+        assert quality._run(command, tmp_path) == 1
+
+    run.assert_called_once_with(
+        [node, str(entry), *command[1:]], cwd=tmp_path, check=False
+    )
 
 
 class SourceQualityRegressionTests(TestCase):
-    def test_run_uses_resolved_windows_wrapper_and_preserves_arguments(self) -> None:
-        root = Path("repository")
-        executable = str(Path.cwd() / "managed tools" / "biome.cmd")
-        command = ["biome", "lint", "./source file.ts"]
-        with (
-            patch("shutil.which", return_value=executable) as which,
-            patch.object(
-                quality.subprocess,
-                "run",
-                return_value=subprocess.CompletedProcess(command, 1),
-            ) as run,
-        ):
-            self.assertEqual(quality._run(command, root), 1)
-
-        which.assert_called_once_with("biome")
-        run.assert_called_once_with(
-            [executable, "lint", "./source file.ts"], cwd=root, check=False
-        )
-
     def test_missing_tool_reports_execution_error_without_running(self) -> None:
         errors = StringIO()
         with (
@@ -175,39 +217,3 @@ class SourceQualityRegressionTests(TestCase):
         run.assert_not_called()
         self.assertIn("ERROR Biome lint", errors.getvalue())
         self.assertIn("biome", errors.getvalue())
-
-    def test_type_changes_reach_source_selection_and_symlink_guard(self) -> None:
-        def git_type_change(command: list[str], **kwargs):
-            # Model Git's T status without creating a symlink or fixture repository.
-            committed_or_staged = "HEAD" in command or "--cached" in command
-            filters = [arg for arg in command if arg.startswith("--diff-filter=")]
-            includes_type_change = not filters or "T" in filters[0].split("=")[1]
-            selected = committed_or_staged and includes_type_change
-            stdout = b"source.py\0" if selected else b""
-            return subprocess.CompletedProcess(command, 0, stdout=stdout)
-
-        with TemporaryDirectory() as directory:
-            root = Path(directory)
-            (root / "source.py").write_text("bad =\n", encoding="utf-8")
-            for staged in (False, True):
-                for symlink in (False, True):
-                    with (
-                        self.subTest(staged=staged, symlink=symlink),
-                        patch.object(
-                            quality.subprocess, "run", side_effect=git_type_change
-                        ),
-                        patch.object(Path, "is_symlink", return_value=symlink),
-                    ):
-                        if symlink:
-                            with self.assertRaisesRegex(ValueError, "source.py"):
-                                if staged:
-                                    quality.staged_paths(root)
-                                else:
-                                    quality.changed_paths("base", root)
-                        else:
-                            selected = (
-                                quality.staged_paths(root)
-                                if staged
-                                else quality.changed_paths("base", root)
-                            )
-                            self.assertEqual(selected, ("source.py",))

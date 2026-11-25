@@ -19,6 +19,36 @@ GROUP_SORTS = ("alpha", "input")
 DEFAULT_FILE_GLOBS = ("*.md", "**/*.md")
 
 
+def _normalize_pattern_parts(pattern: str) -> tuple[str, ...]:
+    parts: list[str] = []
+    for part in pattern.split("/"):
+        if part == "**" and parts and parts[-1] == "**":
+            continue
+        parts.append(part)
+    return tuple(parts)
+
+
+def _segments_match(
+    path_parts: tuple[str, ...],
+    pattern_parts: tuple[str, ...],
+) -> bool:
+    if not pattern_parts:
+        return not path_parts
+    head, tail = pattern_parts[0], pattern_parts[1:]
+    if head == "**":
+        # 끝의 `dir/**`는 `dir` 자체가 아니라 하위 경로(1개 이상 세그먼트)만 제외
+        min_consume = 1 if not tail else 0
+        return any(
+            _segments_match(path_parts[offset:], tail)
+            for offset in range(min_consume, len(path_parts) + 1)
+        )
+    if not path_parts:
+        return False
+    return fnmatch.fnmatchcase(path_parts[0], head) and _segments_match(
+        path_parts[1:], tail
+    )
+
+
 def _is_excluded(
     path: Path,
     relative_path: str,
@@ -27,10 +57,18 @@ def _is_excluded(
 ) -> bool:
     if path.name in set(exclude or []):
         return True
-    return any(
-        fnmatch.fnmatch(path.name, pattern) or fnmatch.fnmatch(relative_path, pattern)
-        for pattern in exclude_globs or []
-    )
+    path_parts = tuple(relative_path.split("/"))
+    for pattern in exclude_globs or []:
+        if "/" in pattern:
+            # `/` 포함(선행 `/` 포함) 패턴은 세그먼트 경계 기준 상대 경로로만 매칭
+            rel_pattern = pattern[1:] if pattern.startswith("/") else pattern
+            if not rel_pattern:
+                continue
+            if _segments_match(path_parts, _normalize_pattern_parts(rel_pattern)):
+                return True
+        elif fnmatch.fnmatchcase(path.name, pattern):
+            return True
+    return False
 
 
 def _normalize_extensions(extensions: list[str] | None) -> tuple[str, ...]:
@@ -128,7 +166,11 @@ def _collect_entries(
             found_paths.add(path)
 
     entries = []
-    for path in sorted(found_paths):
+    # Windows Path 대소문자 무시로 순서가 달라지지 않도록 상대 경로 tuple로 정렬
+    for path in sorted(
+        found_paths,
+        key=lambda item: item.relative_to(directory).parts,
+    ):
         relative_path = path.relative_to(directory).as_posix()
         if path.is_dir():
             frontmatter = _frontmatter_from_entrypoint(path, entry_files)
@@ -162,9 +204,7 @@ def _collect_entries(
                 f"{relative_path}: required frontmatter fields missing: "
                 + ", ".join(missing)
             )
-        entries.append(
-            {**frontmatter, "path": relative_path, "file": relative_path}
-        )
+        entries.append({**frontmatter, "path": relative_path, "file": relative_path})
 
     for field in unique_fields or []:
         seen: dict[str, str] = {}
@@ -388,7 +428,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--fields",
         nargs="+",
-        help="Custom fields/headers for delimited output (e.g. --fields path description)",
+        help=(
+            "Custom fields/headers for delimited output "
+            "(e.g. --fields path description)"
+        ),
     )
     parser.add_argument(
         "--globs",
@@ -399,7 +442,10 @@ def main(argv: list[str] | None = None) -> int:
         "--files",
         action=argparse.BooleanOptionalAction,
         default=True,
-        help="Include files (default: enabled; use --no-files for directory-only indexes)",
+        help=(
+            "Include files (default: enabled; "
+            "use --no-files for directory-only indexes)"
+        ),
     )
     parser.add_argument(
         "--file-extensions",
@@ -417,7 +463,9 @@ def main(argv: list[str] | None = None) -> int:
         "--directory-entry-files",
         nargs="+",
         default=[],
-        help="Ordered entrypoint filenames whose frontmatter supplies directory metadata",
+        help=(
+            "Ordered entrypoint filenames whose frontmatter supplies directory metadata"
+        ),
     )
     parser.add_argument(
         "--max-depth",
@@ -454,7 +502,11 @@ def main(argv: list[str] | None = None) -> int:
         "--exclude-glob",
         nargs="+",
         default=[],
-        help="Exclude entries when basename or relative path matches a glob",
+        help=(
+            "Exclude entries by case-sensitive glob: patterns without '/' match "
+            "basename; patterns with '/' (including leading '/') match "
+            "directory-relative path segments (supports '**')"
+        ),
     )
     parser.add_argument(
         "--include-without-frontmatter",

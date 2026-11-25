@@ -49,11 +49,11 @@ GitHub 공식 근거: [GITHUB_TOKEN의 workflow trigger 예외](https://docs.git
 ## 구현 설계 및 적용 순서
 
 1. **기준선·검증 계약:** `mise.toml`, `.rumdl.toml`, `biome.json`, `pyproject.toml`과 기존 소스에서 read-only formatter/linter 결과를 확보한다. `ruff check`/`ruff format --check`, `rumdl check`/`rumdl fmt --check`, `biome format`(read-only) 및 필요시 `biome lint`/범위가 더 넓은 `biome check`를 구분한다. 실제 잠긴 버전의 지원 옵션을 확인한다. **기존 `biome format --write`와 신규 `biome check`를 동등하게 취급하지 않는다.** 적용 범위/강제 여부를 검증 규약별로 정하고 기존 전체 파일을 일괄 수정하지 않는다.
-1. **Projection 선택기 보강:** `scripts/generated_artifacts_sync.py`의 공유 매핑을 재사용하면서 `scripts/generated_artifacts.py`, `scripts/generated_artifacts_validate.py` 등 공통 생성·판별 코드의 변경이 필요한 검사 대상으로 확산되게 한다. 경로 자체가 무관한 변경과 영향 판별 실패를 구별한다. `git diff` 실패의 현행 전체 fallback은 보존한다. source 삭제, output 삭제/변경, 공통 코드 변경과 영향이 없는 변경을 `tests/scripts/`에서 테스트한다.
-1. **로컬 Hook:** 기존 projection sync/stage를 유지하고, 필요한 staged 파일 정적 검사를 빠르게 추가한다. 읽기 전용 원칙을 지키며 `stage_fixed`와 일반 파일 `git add`는 금지한다. **staged 파일 목록 ≠ index blob 내용**임을 전제로 부분 스테이징, unstaged 수정, 공백/비ASCII 경로, 삭제·이름 변경, 순서·실패 전파의 현재 동작을 확인한다. 인덱스 스냅샷 검사가 과도하면 Hook의 검증 한계를 명시하고 PR Gate의 committed tree 검증을 필수로 남긴다.
-1. **서버 CI:** `Branch Check`와 `PR Gate`에서 필요한 정적 검사를 수행하도록 구성한다. Branch는 현재 uv만 있고, PR은 mise는 있으나 Ruff·rumdl·Biome이 준비된 상태가 **아니므로**, 필요한 `uv --group dev`와 pinned mise 도구의 설치 범위를 먼저 설계한다. 각 단계는 최소 권한(`contents: read`), `uv --locked`, read-only 검사를 유지한다. PR Gate의 merge ref/첫 부모 변경 범위와 required check 이름을 보존한다.
-1. **중복 비용 판단:** Branch는 head, PR은 merge candidate를 실행하므로 둘을 단순히 "같은 SHA의 중복 테스트"로 간주하지 않는다. 실측 setup 시간·검사 시간·오류 조기 발견·merge 후보 독립성을 비교한다. branch pytest, Rulesync 설치, lint 반복 등은 **실제 이익이 있고 admission 기준이 유지될 때만** 줄인다. 조건부 path filter·추가 workflow·cache/matrix는 필요성이 확인되지 않으면 도입하지 않는다.
-1. **정합성:** 정본 의미가 바뀐 문서만 [CI](../../docs/development/ci.md)·[Formatting](../../docs/development/formatting.md)·[Validation](../../docs/development/validation.md)·[Lefthook](../../docs/tools/lefthook.md) 등에 반영한다. 워크플로처럼 통제 표면을 변경한 PR은 별도의 독립 검토 근거와 사람의 명시적 merge 승인을 받는다. Ruleset의 사람 승인/최신-base 설정 변경은 이 PR 범위 밖이다.
+2. **Projection 선택기 보강:** `scripts/generated_artifacts_sync.py`의 공유 매핑을 재사용하면서 `scripts/generated_artifacts.py`, `scripts/generated_artifacts_validate.py` 등 공통 생성·판별 코드의 변경이 필요한 검사 대상으로 확산되게 한다. 경로 자체가 무관한 변경과 영향 판별 실패를 구별한다. `git diff` 실패의 현행 전체 fallback은 보존한다. source 삭제, output 삭제/변경, 공통 코드 변경과 영향이 없는 변경을 `tests/scripts/`에서 테스트한다.
+3. **로컬 Hook:** 기존 projection sync/stage를 유지하고, 필요한 staged 파일 정적 검사를 빠르게 추가한다. 읽기 전용 원칙을 지키며 `stage_fixed`와 일반 파일 `git add`는 금지한다. **staged 파일 목록 ≠ index blob 내용**임을 전제로 부분 스테이징, unstaged 수정, 공백/비ASCII 경로, 삭제·이름 변경, 순서·실패 전파의 현재 동작을 확인한다. 인덱스 스냅샷 검사가 과도하면 Hook의 검증 한계를 명시하고 PR Gate의 committed tree 검증을 필수로 남긴다.
+4. **서버 CI:** `Branch Check`와 `PR Gate`에서 필요한 정적 검사를 수행하도록 구성한다. Branch는 현재 uv만 있고, PR은 mise는 있으나 Ruff·rumdl·Biome이 준비된 상태가 **아니므로**, 필요한 `uv --group dev`와 pinned mise 도구의 설치 범위를 먼저 설계한다. 각 단계는 최소 권한(`contents: read`), `uv --locked`, read-only 검사를 유지한다. PR Gate의 merge ref/첫 부모 변경 범위와 required check 이름을 보존한다.
+5. **중복 비용 판단:** Branch는 head, PR은 merge candidate를 실행하므로 둘을 단순히 "같은 SHA의 중복 테스트"로 간주하지 않는다. 실측 setup 시간·검사 시간·오류 조기 발견·merge 후보 독립성을 비교한다. branch pytest, Rulesync 설치, lint 반복 등은 **실제 이익이 있고 admission 기준이 유지될 때만** 줄인다. 조건부 path filter·추가 workflow·cache/matrix는 필요성이 확인되지 않으면 도입하지 않는다.
+6. **정합성:** 정본 의미가 바뀐 문서만 [CI](../../docs/development/ci.md)·[Formatting](../../docs/development/formatting.md)·[Validation](../../docs/development/validation.md)·[Lefthook](../../docs/tools/lefthook.md) 등에 반영한다. 워크플로처럼 통제 표면을 변경한 PR은 별도의 독립 검토 근거와 사람의 명시적 merge 승인을 받는다. Ruleset의 사람 승인/최신-base 설정 변경은 이 PR 범위 밖이다.
 
 ## 완료 조건
 
@@ -78,9 +78,9 @@ GitHub 공식 근거: [GITHUB_TOKEN의 workflow trigger 예외](https://docs.git
 ## 셀프 리뷰 개선 결과
 
 1. **Staged 내용과 worktree 내용의 불일치 (수정):** 이전 품질 검사는 경로만 index에서 선택해 부분 스테이징의 잘못된 통과 가능성이 있었다. 이제 검사 대상의 unstaged 변경이 겹치면 실패한다. 선택된 소스가 삭제됐거나 심볼릭 링크이면 검사를 생략하지 않고 실패한다. 실제 Git index를 사용하는 회귀 테스트 3개를 추가했다.
-1. **새 브랜치·force-push의 비교 기준 (수정):** Branch Check에서 `github.event.before`가 0이거나 없는 커밋이면 `origin/main`과의 merge-base를 사용한다. 공통 조상이 없으면 전체 tracked 소스를 검사해 조용히 넘어가지 않는다.
-1. **표현 규약과 CI 계약 (정합성 수정):** [CI 정본](../../docs/development/ci.md)에 *추가·수정된 파일*의 lint/format을 명시적 병합 계약으로 기록했다. 저장소 전체의 기존 스타일을 일괄 정리하지 않는다.
-1. **중복 제거 (유보):** Branch의 head와 PR의 merge 후보는 증명 대상이 달라 pytest 이중 실행을 유지한다. 검사 추가로 총 시간이 증가했으므로 순수 성능 최적화로 간주하지 않는다.
+2. **새 브랜치·force-push의 비교 기준 (수정):** Branch Check에서 `github.event.before`가 0이거나 없는 커밋이면 `origin/main`과의 merge-base를 사용한다. 공통 조상이 없으면 전체 tracked 소스를 검사해 조용히 넘어가지 않는다.
+3. **표현 규약과 CI 계약 (정합성 수정):** [CI 정본](../../docs/development/ci.md)에 *추가·수정된 파일*의 lint/format을 명시적 병합 계약으로 기록했다. 저장소 전체의 기존 스타일을 일괄 정리하지 않는다.
+4. **중복 제거 (유보):** Branch의 head와 PR의 merge 후보는 증명 대상이 달라 pytest 이중 실행을 유지한다. 검사 추가로 총 시간이 증가했으므로 순수 성능 최적화로 간주하지 않는다.
 
 **검증:** [Branch Check](https://github.com/mols3131d/mols-agent-assets/actions/runs/43722514733)와 [PR Gate](https://github.com/mols3131d/mols-agent-assets/actions/runs/43722518956) 모두 성공. PR Gate에서 deterministic pytest 451개 통과.
 
