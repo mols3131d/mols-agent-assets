@@ -4,7 +4,7 @@
 
 ## 다음에 누가 무엇을 하는가
 
-1. **로컬 에이전트:** [12 — 실행 순서와 인계 계약](12-next-steps-handoff.md)에서 시작한다. 설치 없는 코드·테스트·보안 검토 패키지부터 준비하며, 기존 쓰기 워크플로를 원격에서 실행할 수 있는 source push는 사람 승인 전 금지한다.
+1. **로컬 에이전트:** [12 — 실행 순서와 인계 계약](12-next-steps-handoff.md)에서 시작한다. #294의 읽기 전용 Producer와 #308의 기본 비활성 Writer를 검증하고, 사람 승인 전에는 원격 쓰기를 활성화하지 않는다.
 2. **사람:** 준비된 코드를 검토한 뒤 [13 — GitHub App 설정·승인 체크리스트](13-owner-setup-runbook.md)에 따라 bootstrap 승인, App 설치, `main` 제한 Environment Secret, 격리 E2E와 최종 merge를 단계적으로 결정한다.
 3. **로컬 에이전트:** 승인된 환경에서 E2E 증거를 수집하고 PR #294의 오래된 설명을 실제 구현에 맞춰 갱신한다. 실제 필수 체크와 사람 승인 전까지 Draft를 유지한다.
 
@@ -15,7 +15,7 @@
 - [11 — 검증 행렬](11-verification-plan.md): ChatGPT API 연속 수정, no-op, stale SHA, App commit 및 required check 증거.
 - [08 — 기술 적합성 조사](08-generated-sync-architecture-research.md): 기본 `GITHUB_TOKEN` 방식의 한계와 원래 위험 평가.
 
-이전 [01 인계](01-handoff.md)·[07 목표 기록](07-status-and-goals-2026-11-16.md)의 “GitHub App·Secret 금지”, 수동 후속 push 방식은 **후속 설계 선택 이전의 기록**이다. 최신 작업 기준으로 사용하지 않는다.
+초기 리뷰와 [01 인계](01-handoff.md)·[07 목표 기록](07-status-and-goals-2026-11-16.md)에 나오는 기본 `GITHUB_TOKEN` 직접 push, “GitHub App·Secret 금지”와 수동 후속 push 방식은 **후속 설계 선택 이전의 기록**이다. 현재 권한·실행 절차는 [12 인계 계약](12-next-steps-handoff.md)과 [13 설정 런북](13-owner-setup-runbook.md)을 따른다.
 
 ## 변경할 수 없는 경계
 

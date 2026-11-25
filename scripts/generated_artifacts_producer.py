@@ -105,6 +105,24 @@ def collect_generated_changes(root: Path = ROOT) -> tuple[list[str], list[str]]:
         if item:
             changed_set.add(item.decode("utf-8", errors="surrogateescape"))
 
+    ignored_outputs = _run_git(
+        root,
+        "ls-files",
+        "--others",
+        "--ignored",
+        "--exclude-standard",
+        "-z",
+        "--",
+        ":(glob,top)docs/**/INDEX.tsv",
+        ":(glob,top)catalog/**/INDEX.tsv",
+        ":(glob,top)route/*.jsonl",
+        ":(glob,top).agents/route/*.jsonl",
+    )
+    for item in ignored_outputs.split(b"\0"):
+        path = item.decode("utf-8", errors="surrogateescape")
+        if any(projection.output_matches(path) for projection in sync.PROJECTIONS):
+            raise ProducerError(f"Git이 새 생성 출력을 무시하고 있습니다: {path}")
+
     for path in sorted(changed_set | deleted_set):
         if not writeback.is_allowed_generated_output(path):
             raise ProducerError(f"허용된 생성 출력 외 파일이 변경되었습니다: {path}")

@@ -177,6 +177,35 @@ def test_package_payload_collects_non_ascii_and_deletions_without_files_dir(
     assert hashlib.sha256(raw).hexdigest() == meta["files"][0]["sha256"]
 
 
+def test_collect_rejects_ignored_new_output_from_canonical_generator(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "repo"
+    _init_repo(repo)
+    (repo / ".gitignore").write_text(
+        "/docs/development/INDEX.tsv\n/.venv/\n", encoding="utf-8"
+    )
+    development = repo / "docs" / "development"
+    development.mkdir()
+    (development / "guide.md").write_text(
+        "---\ndescription: Guide\n---\n\n# Guide\n", encoding="utf-8"
+    )
+    _git(repo, "add", ".gitignore", "docs/development/guide.md")
+    _git(repo, "commit", "-qm", "add documentation source")
+
+    unrelated = repo / ".venv" / "docs" / "INDEX.tsv"
+    unrelated.parent.mkdir(parents=True)
+    unrelated.write_text("ignored tool state\n", encoding="utf-8")
+    assert producer.collect_generated_changes(repo) == ([], [])
+
+    config = replace(indexes_generate.PRESETS["docs"], root=repo / "docs")
+    indexes_generate.sync_indexes(config)
+    assert (development / "INDEX.tsv").is_file()
+
+    with pytest.raises(producer.ProducerError, match="docs/development/INDEX.tsv"):
+        producer.collect_generated_changes(repo)
+
+
 def test_real_generators_and_package_cover_t02_t03_t04_t05_and_t11(
     tmp_path: Path,
 ) -> None:

@@ -39,10 +39,12 @@ H1의 설계 검토가 끝나고 등록이 승인되면 아래를 실행한다.
 
 ## H3. 격리 쓰기 E2E를 명시적으로 승인
 
+H1과 H2를 마치고 Writer가 비활성인지 확인한 뒤 아래 순서로 진행한다.
+
 - [ ] #294 후보의 Producer workflow와 스크립트가 포함된 **독립 테스트 브랜치 + 열린 테스트 PR**을 준비했다. 기존 PR #294 브랜치와 `main`은 실험 대상에서 제외한다.
-- [ ] bootstrap Writer는 기본값 **disabled**이며, 테스트에서는 Repository Variables `GENERATED_SYNC_WRITER_ENABLED=true`와 `GENERATED_SYNC_WRITER_ALLOWED_BRANCHES=<테스트 브랜치명>`(환경 변수가 아닌 저장소 변수)으로 정확한 ref allowlist만 허용했다. App 설치/Secret 등록만으로 모든 branch의 Writer가 실행되게 두지 않는다.
-- [ ] 테스트 범위(생성 파일·source 경로·봇 push 권한·테스트 후 복구 절차)를 확인하고 **실제 쓰기 E2E 실행을 명시적으로 승인**했다.
-- [ ] 승인된 범위에서 enable 또는 test mode를 활성화한 후 [검증 행렬](11-verification-plan.md)의 `E01`~`E09` 핵심 항목을 확인했다. 필요한 경우 로컬 에이전트는 분석을 보조하지만, 기존 권한을 넘어 계정/설정을 바꾸지 않는다.
+- [ ] 소유자가 테스트 브랜치·생성 파일·source 경로·봇 push 권한·복구 절차를 확인하고 **실제 쓰기 E2E 실행을 명시적으로 승인**했다. 승인과 허용 범위를 기록했다.
+- [ ] Writer가 비활성인 상태에서 저장소 변수 `GENERATED_SYNC_WRITER_ALLOWED_BRANCHES`를 승인된 테스트 브랜치 하나로 설정하고 값이 일치하는지 확인했다. 승인과 allowlist 확인이 끝날 때까지 `GENERATED_SYNC_WRITER_ENABLED`는 비활성으로 유지한다.
+- [ ] 위 조건을 모두 확인한 뒤 소유자가 저장소 변수 `GENERATED_SYNC_WRITER_ENABLED=true`를 설정했다. 활성화 후 [검증 행렬](11-verification-plan.md)의 `E01`~`E10` 중 해당 항목을 확인했다.
 - [ ] **source SHA → App generated commit SHA → PR `synchronize` → 실제 required `PR Gate` 성공**이 일치하는 run URL·SHA·changed files를 확인했다. Source 커밋의 이전 성공이나 Writer job의 성공만으로는 불충분하다.
 - [ ] ChatGPT GitHub Plugin/Contents API의 **연속 수정**, no-op, stale SHA, bot loop, Secret 접근 금지, 생성 파일만 커밋을 테스트했다.
 - [ ] 테스트 완료 후 scoped enable 값을 되돌리거나 운영 허용 범위를 별도로 승인했다. 필요하면 App 설치 비활성/키 폐기·교체 등 롤백을 준비했다.
@@ -51,7 +53,7 @@ H1의 설계 검토가 끝나고 등록이 승인되면 아래를 실행한다.
 
 ## H4. 최종 리뷰 및 운영 승인
 
-- [ ] 로컬 에이전트가 최신 PR body의 낡은 “App/Secret 불필요” 안내를 실제 설계·구현·현재 head/base에 맞춰 갱신했다.
+- [ ] 최신 PR 본문에 실제 Producer/Writer 동작과 현재 head/base, 미실행 검증 및 승인 상태가 기록됐다.
 - [ ] 독립 보안 검토와 실제 required `PR Gate`가 최종 후보를 통과했다. 필요한 Ruleset review/Code Owner 요건도 만족했다.
 - [ ] Writer는 source branch의 임의 코드를 실행하지 않고, 실제 GitHub App installation token만 후속 `PR Gate` 자동 재실행을 유발하는 데 사용한다.
 - [ ] App 설치/환경 Secret에 대한 키 회전·접근 최소화·중지 방법과 실패 run 진단 방법이 기록됐다.
@@ -63,6 +65,7 @@ H1의 설계 검토가 끝나고 등록이 승인되면 아래를 실행한다.
 | --- | --- |
 | App 설치·토큰 발급 실패 | App 소유 계정·설치 저장소·Contents 권한·Client ID·환경 Secret 존재를 확인; PAT/타 계정으로 우회하지 않음 |
 | Workflow가 실행되지 않음 | bootstrap이 `main`에 있는지, Producer event/path filter와 Writer `workflow_run` 이름·상태를 조회 |
+| Git이 새 생성 출력을 무시함 | `git check-ignore -v -- <경로>`로 적용된 규칙을 찾아 수정하고 공식 동기화로 다시 확인한다. |
 | 중간 push로 artifact의 원본 SHA와 브랜치 tip이 달라짐 | 최신 브랜치에서 Producer 실행 여부와 `PR Gate`의 projection drift를 확인한다. path filter에 해당하는 후속 push가 없으면 `mise run generated sync`와 `mise run generated validate`로 복구 결과를 검토한 뒤 정상 브랜치 커밋으로 반영한다. |
 | 생성 봇 커밋 후 PR Gate 없음 | 해당 최신 head/merge SHA의 실제 required check 확인; 누락 시 병합 금지 |
 | 뜻밖의 branch write/Secret 노출 위험 | Writer enable을 끄고 App 설치/키를 격리·교체, 증거 보존, 독립 검토 후 재개 |
