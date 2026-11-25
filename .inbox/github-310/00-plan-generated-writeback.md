@@ -1,6 +1,6 @@
 # Generated Artifacts — 자동 복구 통합 준비
 
-> 상태: **Draft / 구현·운영 활성화 전**. 이 파일은 비정본 인계 자료다. 목표는 [Producer PR #294](https://github.com/mols3131d/mols-agent-assets/pull/294)와 [Trusted Writer PR #308](https://github.com/mols3131d/mols-agent-assets/pull/308)을 중복 구현하지 않고, 둘의 의존성과 운영 완료 기준을 하나의 통합 작업으로 검증하는 것이다.
+> 상태: **Draft / 원격 쓰기 검증 대기**. [Producer PR #294](https://github.com/mols3131d/mols-agent-assets/pull/294)와 [Trusted Writer PR #308](https://github.com/mols3131d/mols-agent-assets/pull/308)의 통합 수용 기준을 정의하는 비정본 자료다. 각 PR의 Checklist에서 최신 코드, CI, 독립 리뷰 및 승인 근거를 확인한다.
 
 ## Goal
 
@@ -8,11 +8,11 @@ GitHub Contents API·Plugin·agent·로컬 Git 등으로 **원본만 변경한 �
 
 ## Context / Authority
 
-- 실제 기본 브랜치 `main`, 기준 commit `df82086d0fac43f96dea17ff92a64466605e9402`. 이 통합 브랜치는 준비 작업만 소유한다.
+- 기준 브랜치는 `main`이다. 각 검증의 base와 head는 해당 PR에 기록한다.
 - 정본: `docs/development/ci.md` (읽기 전용 admission), `docs/development/github.md` (사람 승인·권한·squash merge), `docs/development/source-authority.md` (생성물은 파생 결과), `scripts/generated_artifacts_sync.py` (`PROJECTIONS`와 영향 범위).
 - 실제 Ruleset `protect-main`: 필수 **`PR Gate`**, squash merge, 선형 이력, review thread resolution. GitHub-hosted 설정은 코드나 문서만으로 변경되지 않는다.
 - 기존 구현: **#294**는 읽기 전용 `Sync Generated Artifacts` Producer, **#308**은 `main` 소유 `workflow_run` Trusted Writer. 두 PR은 현재 Draft이며 Writer 기본 비활성이다.
-- [GitHub 공식 GITHUB_TOKEN 동작](https://docs.github.com/en/actions/concepts/security/github_token): 기본 토큰의 push로는 통상의 후속 workflow가 실행되지 않는다. 이 저장소에서는 템플릿 레포의 `workflow_dispatch` 성공만으로 required `PR Gate` 충족을 대체할 수 없다.
+- 기본 `GITHUB_TOKEN`으로 만든 push는 일반적인 후속 workflow 실행을 일으키지 않는다. 일부 PR 이벤트는 실행에 승인이 필요하다. 이 계획은 App 커밋에 대한 실제 `pull_request` 이벤트와 `PR Gate` 성공을 요구한다. [GitHub 토큰 동작](https://docs.github.com/en/actions/concepts/security/github_token)
 - 관련 기존 상세 근거: #294 브랜치 `.inbox/github-294/09-github-app-design.md`, `11-verification-plan.md`, `13-owner-setup-runbook.md`. 이 문서는 해당 상세 설계/런북을 복제하지 않고 **통합 완료 기준**만 소유한다.
 
 ## In Scope
@@ -37,15 +37,15 @@ GitHub Contents API·Plugin·agent·로컬 Git 등으로 **원본만 변경한 �
 ## Work sequence
 
 1. **Reconcile:** `main` 최신 baseline과 #294/#308 diff·문서·테스트를 비교한다. 충돌·stale assumption 및 #305 CI 개선과의 영향도 식별한다.
-2. **Review bootstrap:** #308의 `main` 신뢰 writer, 비활성 기본값, artifact ZIP/JSON/symlink 검증, token scope, GitHub App 관련 사람 검토를 끝낸다. 설정과 merge는 별도 승인을 받는다.
-3. **Verify producer:** #294가 필요한 source/output 변동만 다루고, no-op 및 error path에서 값비싼 작업·artifact/token 사용을 줄이는지 확인한다. 영향이 불명확하면 fail-safe로 범위를 확장한다.
+2. **Review bootstrap:** #305를 승인·반영한 뒤 #308의 검증 기준선을 갱신한다. 독립 리뷰와 사람 승인 후 기본 비활성인 Writer를 먼저 반영한다.
+3. **Verify producer:** #294의 읽기 전용 CI와 Producer–Writer 로컬 호환성은 선행 PR 검토와 병행한다. 선행 PR 반영 뒤 최신 `main`과 다시 검증한다. 영향이 불명확하면 fail-safe로 범위를 확장한다.
 4. **Approve & isolate:** 소유자 `mols3131d`의 권한으로 App/Environment/Repository Variables를 수동 설정하고, 특정 테스트 branch만 허용하도록 제한한다. **이 단계는 별도 사람 승인 전 실행 금지**.
 5. **E2E:** 별도 테스트 branch와 열린 PR에서 #294 검증 행렬 E01~E10 중 필수 경로를 실제로 실행한다. Source SHA/봇 SHA/검사 SHA, run URL, 실패·skip 기록을 남긴다.
-6. **Decide:** 미충족 조건이 남으면 Draft 유지. 완료 근거와 사람 승인 후 각 owner PR의 squash merge·운영 활성화를 순차 판단한다.
+6. **Decide:** 원격 E2E 결과와 사람의 승인으로 #294의 squash merge 및 운영 활성화를 각각 판단한다. 구현 PR과 검증 기록을 확정한 뒤 #310의 종료 여부를 판단한다.
 
 ## Boundaries and risks
 
-- **현재 작업은 계획 PR만 만든다.** Producer·Writer의 동작 변경, App 등록, secret 설정, 쓰기 워크플로 활성화, merge 또는 실험용 branch에 대한 자동 write E2E는 포함하지 않는다.
+- #310에는 통합 수용 기준과 작업 인계를 둔다. Producer·Writer 개선은 각각의 구현 PR에서 진행한다.
 - 동일 파일의 구현·수정 owner는 기존 #294/#308이다. 이 통합 브랜치에서 그 코드에 병렬 수정을 가하지 않는다.
 - #294/#308의 메인 브랜치 기준은 현재와 다르므로 최신성 검증 없이는 기존 테스트 성공을 새 HEAD에 일반화하지 않는다.
 - 주 위험: 높은 권한의 `workflow_run`이 변조 artifact를 신뢰하는 문제, 정상 `PR Gate` 재실행 누락, 비밀키 노출, 비승인 branch 자동 write 및 비용 증가. 기본 비활성·allowlist·권한 격리·실제 E2E를 완료 게이트로 삼는다.
@@ -54,4 +54,4 @@ GitHub Contents API·Plugin·agent·로컬 Git 등으로 **원본만 변경한 �
 
 - [x] 최신 `main`의 `PR Gate`, `Branch Check`, required Ruleset과 생성물 ownership 확인.
 - [x] 기존 #294/#308의 Producer/Writer 설계와 미완료 E2E·사람 설정 의존성 확인.
-- [ ] Producer + Writer의 실제 연결/최신 `main` 호환성·자동 push E2E — 아직 수행하지 않음.
+- [ ] App 토큰을 사용하는 격리 원격 E2E와 최신 봇 커밋의 required `PR Gate` 검증. Writer 반영과 소유자 설정·승인이 필요하다.
