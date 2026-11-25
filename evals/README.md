@@ -16,7 +16,7 @@ Eval을 언제 추가하고 어떤 evidence로 해석할지는 [`docs/developmen
 
 기본 Trigger/Behavior 평가 중 `mols-loops`와 `mols-dev-env-bootstrap-design`은 선택 가능한 Promptfoo native provider를 사용합니다. 공통 Python generator는 canonical fixture로부터 case별 system prompt와 assertion을 구성하지만 모델 HTTP 호출은 하지 않습니다. Reference를 조건부로 선택하는 `mols-test-design`과 fixture-mode smoke는 기존 Python provider를 사용합니다. `mols-stdd`는 native Trigger/Behavior를 유지하면서 별도의 `mols-stdd-references.yaml`에서 로컬 Ollama 기반 reference 선택을 검사합니다. Native suite는 reference 관련 assertion을 명시적으로 제외하므로 그 결과를 로딩 검증으로 해석하지 않습니다. 모든 경로는 실제 IDE/CLI agent의 tool·routing 실행을 재현하지 않습니다.
 
-Promptfoo CLI는 기본적으로 개발자의 로컬 환경에서 실행하며, 모델 호출 위치는 선택한 provider가 결정합니다. Repository correctness는 root `tests/`가 검증하며, Promptfoo의 공통 실행 진입점은 `mise run eval`입니다. 평가 설정 파일과 CLI 옵션은 인수로 전달합니다. 예시:
+Promptfoo CLI는 개발자가 평가를 명시적으로 요청할 때만 실행합니다. CI, bootstrap, check, hook 또는 자동 작업에서 모델·grader 평가를 실행하지 않습니다. 모델 호출 위치는 사용자가 선택한 provider가 결정합니다. Repository correctness는 root `tests/`가 검증하며, Promptfoo의 공통 실행 진입점은 `mise run eval`입니다. 평가 설정 파일과 CLI 옵션은 인수로 전달합니다. 예시:
 
 ```bash
 mise run eval -c evals/promptfoo/mols-loops-smoke.yaml
@@ -79,7 +79,7 @@ providers:
 
 위는 전체 suite가 아니라 provider 항목 예시입니다. 전체 config에서 기존 Trigger/Behavior label과 generator 연결을 보존하고 Trigger 전용 설정을 Behavior에 일괄 적용하지 않습니다. Bootstrap 평가는 해당 Skill의 label을 사용합니다. Ollama의 JSON mode는 `passthrough.format: json` 등 해당 provider의 옵션을 사용하며 다른 제공자에 그대로 복사하지 않습니다. `PROMPTFOO_RUNTIME_THINK`는 custom Python Ollama provider 전용이므로 native 경로에 자동 적용되지 않습니다.
 
-Promptfoo 0.122.0에서 여러 `--config` 파일의 provider 항목은 ID나 label 기준으로 덮어쓰지 않고 합쳐질 수 있습니다. Provider 설정 변경을 단순 overlay로 간주하지 않습니다. CLI·native provider 호환성 확인과 실제 모델의 응답 품질 평가는 별도이며, 한 제공자의 성공을 다른 제공자의 검증으로 확대하지 않습니다.
+이전 Promptfoo 0.122.0에서 여러 `--config` 파일의 provider 항목은 ID나 label 기준으로 덮어쓰지 않고 합쳐질 수 있습니다. 현재 pin에서도 동작을 별도로 검증하기 전까지 provider 설정 변경을 단순 overlay로 간주하지 않습니다. CLI·native provider 호환성 확인과 실제 모델의 응답 품질 평가는 별도이며, 한 제공자의 성공을 다른 제공자의 검증으로 확대하지 않습니다.
 
 `mise.toml`은 파일이 존재할 때만 `.env`를 읽습니다. 파일이 없으면 runner의 기존 기본값이 유지됩니다. mise가 읽은 `.env` 값은 부모 셸의 동일한 환경변수보다 우선할 수 있으므로, 일회성 변경은 `.env`를 편집하거나 mise가 시작한 자식 프로세스에서 설정합니다. 로컬 평가의 공식 경로는 `mise run eval -c ...`이며, 평가별 mise task·npm script를 거치지 않고 CLI 옵션을 공통 Promptfoo runner에 전달합니다.
 

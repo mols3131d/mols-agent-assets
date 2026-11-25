@@ -9,7 +9,7 @@ Promptfoo는 Agent Asset의 model/runtime 평가에 사용합니다. 실행 진�
 
 ## 실행
 
-`mise run eval -c evals/promptfoo/<config>.yaml`로 설정을 선택하고 `--filter-metadata suite=trigger` 등 Promptfoo CLI 옵션을 전달합니다. `mols-test-design.yaml`로 스킬을 평가할 때 기존 캐시·결과 저장 방지 조건을 유지하려면 `--no-cache --no-write`를 지정합니다. 실제 모델·grader 평가는 네트워크·외부 전송·비용이 발생할 수 있으므로 세션 진단에 포함하지 않습니다.
+`mise run eval -c evals/promptfoo/<config>.yaml`로 설정을 선택하고 `--filter-metadata suite=trigger` 등 Promptfoo CLI 옵션을 전달합니다. `mols-test-design.yaml`로 스킬을 평가할 때 기존 캐시·결과 저장 방지 조건을 유지하려면 `--no-cache --no-write`를 지정합니다. 실제 모델·grader 평가는 사용자 요청이 있을 때만 실행합니다. 네트워크·외부 전송·비용이 발생할 수 있으므로 CI, bootstrap, hook, check 및 세션 진단에 포함하지 않습니다.
 
 ## 기본 설정과 예외
 

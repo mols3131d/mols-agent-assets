@@ -13,7 +13,7 @@ else:
     import promptfoo_env
 
 ROOT = Path(__file__).resolve().parents[2]
-PROMPTFOO_VERSION = "0.122.0"
+PROMPTFOO_VERSION = "0.126.0"
 MIN_NODE_VERSION = (22, 22, 0)
 
 
