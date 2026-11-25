@@ -13,6 +13,7 @@ Python 지식이나 best practice를 포괄하지 않고, 실제 code behavior�
 ## Principles
 
 - **Agent failure first** — Python에서 중요하다는 이유보다 agent가 반복적으로 만드는 material error를 우선한다.
-- **Python delta only** — generic engineering judgment나 deterministic tooling이 더 잘 소유하는 문제를 중복하지 않는다.
+- **Python delta only** — Python 고유의 semantics와 실행 계약에서 필요한 판단만 보강하고, Core의 일반적인 engineering judgment를 복제하지 않는다.
+- **Deterministic tooling owns deterministic work** — formatter, linter, type checker, schema validator 등 결정적 도구로 충분히 판정·해소할 수 있는 문제는 이 Skill의 책임에서 제외한다. 소비 환경에 해당 도구가 없다는 이유로 규칙 목록이나 수정 절차를 Skill에 복제하지 않는다. 도구의 판정만으로 결정할 수 없는 실제 실행 의미와 계약에 대한 판단만 남긴다. 도구 설정·설치·실행 절차는 소유하지 않는다.
 - **Semantics over heuristics** — Pythonic 외형, token, annotation, 통념보다 실제 Python semantics와 runtime behavior를 우선한다.
-- **Context earns its cost** — 반복적인 material failure를 줄이는 guidance만 유지하고 syntax, library, smell taxonomy를 축적하지 않는다.
+- **Context earns its cost** — 실제 판단 오류를 줄일 근거가 있는 guidance만 유지한다. 모델이 이미 충분히 아는 문법·일반 Python 지식과 라이브러리 사용법, smell taxonomy를 축적하지 않는다.
