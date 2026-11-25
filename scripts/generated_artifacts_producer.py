@@ -62,12 +62,8 @@ def _require_regular_generated_output(root: Path, path: str) -> None:
     relative = target.relative_to(root)
     try:
         for parent in reversed(relative.parents[:-1]):
-            directory = (root / parent).lstat()
-            if (
-                not stat.S_ISDIR(directory.st_mode)
-                or getattr(directory, "st_reparse_tag", 0)
-                == stat.IO_REPARSE_TAG_MOUNT_POINT
-            ):
+            directory = root / parent
+            if not stat.S_ISDIR(directory.lstat().st_mode) or directory.is_junction():
                 raise ProducerError(
                     f"생성 출력의 상위 경로가 일반 디렉터리가 아닙니다: {parent}"
                 )
