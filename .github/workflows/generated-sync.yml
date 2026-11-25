@@ -11,6 +11,7 @@ on:
       - 'src/rulesync/.rulesync/subagents/**'
       - 'scripts/**'
       - '.github/workflows/generated-sync.yml'
+      - '.python-version'
       - 'pyproject.toml'
       - 'uv.lock'
       - 'rulesync.lock'
