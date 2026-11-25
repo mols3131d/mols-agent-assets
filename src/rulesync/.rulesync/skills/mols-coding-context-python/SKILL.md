@@ -16,9 +16,6 @@ targets:
   - antigravity-ide
   - antigravity-cli
 ---
-
-# Mols Coding Context Python
-
 - 처리할 exception과 failure contract를 식별하고 `try` scope를 실제 failure source 주변으로 좁힌다. Broad catch로 unrelated failure를 정상 fallback으로 바꾸지 않는다.
 - Type annotation은 runtime validation이 아니다. Annotation만을 이유로 runtime check, coercion, default를 추가하지 않고 material한 boundary semantics만 확인한다.
 - Import/package 문제를 `sys.path` 수정, `PYTHONPATH` 주입 또는 working-directory 변경으로 먼저 우회하지 않는다. Package layout, entrypoint와 실행 방식을 확인하고 ambient cwd에 우연히 의존하는 import를 만들지 않는다.
