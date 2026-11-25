@@ -616,6 +616,59 @@ def test_extract_artifact_zip_prevents_zip_bombs_symlinks_and_traversal(
     _write_payload_zip(bomb_zip, files={"docs/INDEX.tsv": b"0123456789abcdef"})
     with pytest.raises(writer.WriterSecurityError, match="총 압축 해제 크기"):
         writer.extract_artifact_zip(bomb_zip, tmp_path / "out_bomb")
+    assert not (tmp_path / "out_bomb").exists()
+
+
+def test_extract_accepts_maximum_output_files_across_directories(
+    tmp_path: Path,
+) -> None:
+    files = {
+        f"docs/group-{index}/pages/INDEX.tsv": b"path\tdescription\n"
+        for index in range(writer.MAX_FILE_COUNT - 1)
+    }
+    deepest_allowed = "/".join(
+        ["docs", *(["deep"] * (writer.MAX_OUTPUT_PATH_DEPTH - 2)), "INDEX.tsv"]
+    )
+    files[deepest_allowed] = b"path\tdescription\n"
+    zip_path = tmp_path / "max-files.zip"
+    _write_payload_zip(zip_path, files=files)
+    with zipfile.ZipFile(zip_path, "a") as archive:
+        dirs = {f"files/{path.rsplit('/', 1)[0]}/" for path in files}
+        for directory in sorted(dirs):
+            archive.writestr(directory, b"")
+
+    extracted = writer.extract_artifact_zip(zip_path, tmp_path / "extracted")
+    payload = writer.validate_artifact_payload(extracted, _provenance())
+    assert {file.path for file in payload.files} == files.keys()
+
+
+def test_extract_checks_path_depth_before_creating_files(tmp_path: Path) -> None:
+    deep_path = "/".join(
+        ["docs", *(["x"] * (writer.MAX_OUTPUT_PATH_DEPTH - 1)), "INDEX.tsv"]
+    )
+    assert not writer.is_allowed_generated_output(deep_path)
+    files = {"docs/INDEX.tsv": b"header\n", deep_path: b"header\n"}
+    zip_path = tmp_path / "deep.zip"
+    _write_payload_zip(zip_path, files=files)
+
+    extract_dir = tmp_path / "extracted"
+    with pytest.raises(
+        writer.WriterSecurityError, match="허용되지 않은 zip 생성 파일 경로"
+    ):
+        writer.extract_artifact_zip(zip_path, extract_dir)
+    assert not extract_dir.exists()
+
+
+def test_extract_rejects_unsupported_compression_before_writing(tmp_path: Path) -> None:
+    zip_path = tmp_path / "unsupported.zip"
+    with zipfile.ZipFile(zip_path, "w") as archive:
+        archive.writestr("metadata.json", "{}")
+        archive.writestr("files/docs/INDEX.tsv", b"header\n", zipfile.ZIP_BZIP2)
+
+    extract_dir = tmp_path / "extracted"
+    with pytest.raises(writer.WriterSecurityError, match="지원하지 않는 zip 압축"):
+        writer.extract_artifact_zip(zip_path, extract_dir)
+    assert not extract_dir.exists()
 
 
 def test_apply_payload_rejects_dangling_and_live_symlinks_and_dirty_repo(

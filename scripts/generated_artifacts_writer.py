@@ -28,6 +28,7 @@ from scripts.generated_artifacts_writeback import (
     MAX_FILE_BYTES,
     MAX_FILE_COUNT,
     MAX_METADATA_BYTES,
+    MAX_OUTPUT_PATH_DEPTH,
     MAX_TOTAL_PAYLOAD_BYTES,
     PROTECTED_CORE_OUTPUTS,
     SCHEMA_VERSION,
@@ -42,7 +43,8 @@ DEFAULT_API_URL = "https://api.github.com"
 DEFAULT_SERVER_URL = "https://github.com"
 COMMIT_MESSAGE = "chore(generated): sync indexes and routes"
 
-MAX_SCAN_ENTRIES = MAX_FILE_COUNT + 64
+# Each output can contribute one archive entry per component, plus files/ and metadata.
+MAX_SCAN_ENTRIES = MAX_FILE_COUNT * MAX_OUTPUT_PATH_DEPTH + 2
 MAX_ARTIFACT_ARCHIVE_BYTES = 25 * 1024 * 1024
 
 APP_SLUG_RE = re.compile(r"^[a-zA-Z0-9][a-zA-Z0-9-]*$")
@@ -414,12 +416,6 @@ def extract_artifact_zip(zip_path: Path, extract_dir: Path) -> Path:
             f"Artifact zip 크기가 허용 범위를 벗어났습니다: {zip_stat.st_size}"
         )
 
-    if extract_dir.is_symlink():
-        raise WriterSecurityError(f"추출 디렉터리가 symlink입니다: {extract_dir}")
-    if extract_dir.exists():
-        shutil.rmtree(extract_dir)
-    extract_dir.mkdir(parents=True)
-
     try:
         with zipfile.ZipFile(zip_path, "r") as zfile:
             infos = zfile.infolist()
@@ -429,11 +425,15 @@ def extract_artifact_zip(zip_path: Path, extract_dir: Path) -> Path:
                 )
 
             seen_files: set[str] = set()
+            members: list[zipfile.ZipInfo] = []
+            output_count = 0
             total_payload_bytes = 0
 
             for info in infos:
                 if info.flag_bits & 0x1:
                     raise WriterSecurityError("암호화된 zip 항목은 허용되지 않습니다.")
+                if info.compress_type not in {zipfile.ZIP_STORED, zipfile.ZIP_DEFLATED}:
+                    raise WriterSecurityError("지원하지 않는 zip 압축 방식입니다.")
 
                 unix_mode = (info.external_attr >> 16) & 0o170000
                 if stat.S_ISLNK(unix_mode):
@@ -451,11 +451,15 @@ def extract_artifact_zip(zip_path: Path, extract_dir: Path) -> Path:
                     raise WriterSecurityError(
                         f"Zip 항목 이름이 정규화되었습니다: {raw_name!r}"
                     )
-                if info.is_dir() or raw_name.endswith("/"):
-                    dir_rel = raw_name.rstrip("/")
-                    if dir_rel and not is_safe_relative_posix_path(dir_rel):
+                if info.is_dir():
+                    dir_rel = raw_name.removesuffix("/")
+                    if not is_safe_relative_posix_path(dir_rel):
                         raise WriterSecurityError(
                             f"안전하지 않은 zip 디렉터리 경로입니다: {raw_name!r}"
+                        )
+                    if dir_rel.count("/") >= MAX_OUTPUT_PATH_DEPTH:
+                        raise WriterSecurityError(
+                            "Artifact zip 디렉터리 깊이 제한 초과"
                         )
                     continue
 
@@ -469,36 +473,51 @@ def extract_artifact_zip(zip_path: Path, extract_dir: Path) -> Path:
                     )
                 seen_files.add(raw_name)
 
-                top_name = raw_name.split("/", 1)[0]
-                if raw_name == "files" or top_name not in {"metadata.json", "files"}:
+                if raw_name == "metadata.json":
+                    entry_cap = MAX_METADATA_BYTES
+                elif raw_name.startswith("files/"):
+                    if not is_allowed_generated_output(raw_name.removeprefix("files/")):
+                        raise WriterSecurityError(
+                            f"허용되지 않은 zip 생성 파일 경로입니다: {raw_name!r}"
+                        )
+                    output_count += 1
+                    if output_count > MAX_FILE_COUNT:
+                        raise WriterSecurityError("Artifact zip 생성 파일 수 제한 초과")
+                    entry_cap = MAX_FILE_BYTES
+                else:
                     raise WriterSecurityError(
                         f"허용되지 않은 최상위 zip 항목입니다: {raw_name}"
                     )
 
-                entry_cap = (
-                    MAX_METADATA_BYTES
-                    if raw_name == "metadata.json"
-                    else MAX_FILE_BYTES
-                )
                 if info.file_size < 0 or info.file_size > entry_cap:
                     raise WriterSecurityError(
                         f"Artifact zip 항목 크기 초과: {raw_name}={info.file_size}"
                     )
 
-                with zfile.open(info, "r") as member:
-                    data = member.read(entry_cap + 1)
-                if len(data) > entry_cap:
-                    raise WriterSecurityError(
-                        "Artifact zip 실제 압축 해제 크기가 제한을 초과했습니다: "
-                        f"{raw_name}"
-                    )
                 if raw_name != "metadata.json":
-                    total_payload_bytes += len(data)
+                    total_payload_bytes += info.file_size
                     if total_payload_bytes > MAX_TOTAL_PAYLOAD_BYTES:
                         raise WriterSecurityError(
                             "Artifact zip 총 압축 해제 크기가 제한을 초과했습니다."
                         )
+                members.append(info)
 
+            if extract_dir.is_symlink():
+                raise WriterSecurityError(
+                    f"추출 디렉터리가 symlink입니다: {extract_dir}"
+                )
+            if extract_dir.exists():
+                shutil.rmtree(extract_dir)
+            extract_dir.mkdir(parents=True)
+
+            for info in members:
+                raw_name = info.filename
+                with zfile.open(info, "r") as member:
+                    data = member.read(info.file_size + 1)
+                if len(data) != info.file_size:
+                    raise WriterSecurityError(
+                        f"Artifact zip 실제 압축 해제 크기가 다릅니다: {raw_name}"
+                    )
                 dest = extract_dir / raw_name
                 _ensure_no_symlink_components(extract_dir, raw_name)
                 dest.parent.mkdir(parents=True, exist_ok=True)
@@ -563,8 +582,7 @@ def _scan_artifact_tree(root: Path) -> tuple[set[str], set[str]]:
 
     def walk(directory: Path) -> None:
         nonlocal seen_entries
-        entries = sorted(directory.iterdir(), key=lambda p: p.name)
-        for entry in entries:
+        for entry in directory.iterdir():
             seen_entries += 1
             if seen_entries > MAX_SCAN_ENTRIES:
                 raise WriterSecurityError(
@@ -580,6 +598,8 @@ def _scan_artifact_tree(root: Path) -> tuple[set[str], set[str]]:
                 raise WriterSecurityError(
                     f"안전하지 않은 artifact 상대 경로입니다: {rel!r}"
                 )
+            if rel.count("/") > MAX_OUTPUT_PATH_DEPTH:
+                raise WriterSecurityError("Artifact 디렉터리 깊이 제한 초과")
             if stat.S_ISDIR(mode):
                 found_dirs.add(rel)
                 walk(entry)
