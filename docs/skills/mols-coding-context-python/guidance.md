@@ -10,6 +10,10 @@ Python으로 코딩하는 agent가 Python semantics와 runtime 특성에서 반�
 
 Python 지식이나 best practice를 포괄하지 않고, 실제 code behavior와 caller-visible contract를 왜곡하는 agent anti-pattern을 교정하는 context를 유지한다.
 
+## Activation
+
+Python의 의미 또는 실행 계약이 중요한 코딩 작업에 처음 진입할 때 Core와 함께 선택·로드한다. 이미 컨텍스트에 존재하는 자산은 다시 로드하지 않으며, 유지되는 동안 재사용한다. 작업 도중 Python 판단이 처음 필요해지면 그 시점에 선택한다. 이는 선택 의도이며 런타임이 강제하는 호출 횟수 제한은 아니다.
+
 ## Principles
 
 - **Agent failure first** — Python에서 중요하다는 이유보다 agent가 반복적으로 만드는 material error를 우선한다.
