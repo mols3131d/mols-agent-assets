@@ -1,10 +1,11 @@
 ---
 name: mols-coding-context
 description: >-
-  Engineering judgment for tasks materially involving code or executable contracts,
-  including routine coding, design, debugging, testing, refactoring, review, and
-  code reasoning. Adds judgment, not workflow. Excludes factual lookup, repository
-  administration without code-facing work, and prose-only work.
+  Baseline engineering judgment for any task requiring reasoning about code or
+  executable behavior, including routine implementation, design, debugging,
+  testing, refactoring, and review. Load once at task entry unless already in
+  context; reuse while available. Not a workflow. Excludes factual lookup,
+  non-code repository administration, and prose-only work.
 targets:
   - claudecode
   - codexcli
