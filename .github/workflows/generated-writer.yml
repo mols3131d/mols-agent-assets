@@ -2,7 +2,7 @@ name: Trusted Generated Writer
 
 # 활성화 제어용 Repository Variables:
 #   - GENERATED_SYNC_WRITER_ENABLED: 'true'일 때만 활성화 (미설정 시 fail-closed)
-#   - GENERATED_SYNC_WRITER_ALLOWED_BRANCHES: 쉼표/공백 구분 브랜치 allowlist 또는 '*'
+#   - GENERATED_SYNC_WRITER_ALLOWED_BRANCHES: 쉼표/공백으로 구분한 정확한 브랜치 이름
 # App 인증 정보는 main 브랜치로 제한된 Environment('generated-writeback')에 둔다.
 
 on:
@@ -13,8 +13,9 @@ on:
       - completed
 
 concurrency:
+  # A late completion for an older SHA must leave the newer SHA's pending run queued.
   group: >-
-    generated-writer-${{ github.event.workflow_run.head_repository.id || github.repository_id }}-${{ github.event.workflow_run.head_branch || github.event.workflow_run.id }}
+    generated-writer-${{ github.event.workflow_run.head_repository.id || github.repository_id }}-${{ github.event.workflow_run.head_branch || github.event.workflow_run.id }}-${{ github.event.workflow_run.head_sha || github.event.workflow_run.id }}
   cancel-in-progress: false
 
 permissions: {}
@@ -38,7 +39,7 @@ jobs:
       contents: read
     outputs:
       should_write: ${{ steps.prepare.outputs.should_write }}
-      skip_reason: ${{ steps.prepare.outputs.skip_reason || steps.verify_run.outputs.skip_reason }}
+      artifact_id: ${{ steps.verify_run.outputs.artifact_id }}
     steps:
       - name: Checkout trusted default branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -65,7 +66,7 @@ jobs:
         if: steps.verify_run.outputs.should_continue == 'true'
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
-          name: generated-sync-payload
+          artifact-ids: ${{ steps.verify_run.outputs.artifact_id }}
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ github.token }}
           path: ${{ runner.temp }}/preflight-artifact
@@ -101,18 +102,6 @@ jobs:
       actions: read
       contents: read
     steps:
-      - name: Verify App credentials configured
-        shell: bash
-        env:
-          APP_CLIENT_ID: ${{ vars.GENERATED_SYNC_APP_CLIENT_ID }}
-          APP_PRIVATE_KEY: ${{ secrets.GENERATED_SYNC_APP_PRIVATE_KEY }}
-        run: |
-          set -euo pipefail
-          if [[ -z "${APP_CLIENT_ID}" || -z "${APP_PRIVATE_KEY}" ]]; then
-            echo "::error::GENERATED_SYNC_APP_CLIENT_ID or GENERATED_SYNC_APP_PRIVATE_KEY is missing in environment generated-writeback."
-            exit 1
-          fi
-
       - name: Checkout trusted default branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -132,13 +121,14 @@ jobs:
           GITHUB_REPOSITORY_ID: ${{ github.repository_id }}
           GENERATED_SYNC_WRITER_ENABLED: ${{ vars.GENERATED_SYNC_WRITER_ENABLED }}
           GENERATED_SYNC_WRITER_ALLOWED_BRANCHES: ${{ vars.GENERATED_SYNC_WRITER_ALLOWED_BRANCHES }}
+          EXPECTED_ARTIFACT_ID: ${{ needs.preflight.outputs.artifact_id }}
         run: uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts_writer verify-run
 
       - name: Download producer payload artifact
         if: steps.verify_run.outputs.should_continue == 'true'
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
-          name: generated-sync-payload
+          artifact-ids: ${{ steps.verify_run.outputs.artifact_id }}
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ github.token }}
           path: ${{ runner.temp }}/write-artifact

@@ -17,6 +17,23 @@ ROOT = Path(__file__).resolve().parents[2]
 WORKFLOW_PATH = ROOT / ".github" / "workflows" / "generated-writer.yml"
 SAMPLE_SHA = "a" * 40
 NEWER_SHA = "b" * 40
+ARTIFACT_ID = 123
+
+
+def _artifact_response(**overrides: object) -> dict[str, object]:
+    return {
+        "total_count": 1,
+        "artifacts": [
+            {
+                "id": ARTIFACT_ID,
+                "name": writer.ARTIFACT_NAME,
+                "expired": False,
+                "size_in_bytes": 128,
+                "digest": f"sha256:{'a' * 64}",
+                **overrides,
+            }
+        ],
+    }
 
 
 def _git(
@@ -262,15 +279,16 @@ def test_verify_workflow_run_event_is_fail_closed_when_disabled_or_unlisted() ->
     assert decision == writer.Decision(False, "disabled")
     assert provenance is None
 
-    decision2, _ = writer.verify_workflow_run_event(
-        event,
-        github_repository="mols3131d/mols-agent-assets",
-        github_repository_id="1167541883",
-        github_ref="refs/heads/main",
-        enabled="true",
-        allowed_branches="",
-    )
-    assert decision2 == writer.Decision(False, "branch_not_allowed")
+    for allowlist in ("", "*", "feat/*"):
+        decision2, _ = writer.verify_workflow_run_event(
+            event,
+            github_repository="mols3131d/mols-agent-assets",
+            github_repository_id="1167541883",
+            github_ref="refs/heads/main",
+            enabled="true",
+            allowed_branches=allowlist,
+        )
+        assert decision2 == writer.Decision(False, "branch_not_allowed")
 
     decision3, _ = writer.verify_workflow_run_event(
         event,
@@ -355,68 +373,20 @@ def test_verify_workflow_run_event_rejects_non_default_execution_ref() -> None:
 
 
 def test_verify_single_artifact_enforces_exact_single_expected_artifact() -> None:
-    ok_payload = {
-        "total_count": 1,
-        "artifacts": [
-            {
-                "name": writer.EXPECTED_ARTIFACT_NAME,
-                "expired": False,
-                "size_in_bytes": 128,
-            }
-        ],
-    }
     assert (
-        writer.verify_single_artifact(lambda _: (200, ok_payload), "o/r", 1)["name"]
-        == writer.EXPECTED_ARTIFACT_NAME
+        writer.verify_single_artifact(lambda _: (200, _artifact_response()), "o/r", 1)
+        == ARTIFACT_ID
     )
 
     bad_cases = [
         {"total_count": 0, "artifacts": []},
-        {
-            "total_count": 2,
-            "artifacts": [
-                {
-                    "name": writer.EXPECTED_ARTIFACT_NAME,
-                    "expired": False,
-                    "size_in_bytes": 128,
-                },
-                {"name": "extra", "expired": False, "size_in_bytes": 128},
-            ],
-        },
-        {
-            "total_count": 1,
-            "artifacts": [{"name": "wrong", "expired": False, "size_in_bytes": 128}],
-        },
-        {
-            "total_count": 1,
-            "artifacts": [
-                {
-                    "name": writer.EXPECTED_ARTIFACT_NAME,
-                    "expired": True,
-                    "size_in_bytes": 128,
-                }
-            ],
-        },
-        {
-            "total_count": 1,
-            "artifacts": [
-                {
-                    "name": writer.EXPECTED_ARTIFACT_NAME,
-                    "expired": False,
-                    "size_in_bytes": 0,
-                }
-            ],
-        },
-        {
-            "total_count": 1,
-            "artifacts": [
-                {
-                    "name": writer.EXPECTED_ARTIFACT_NAME,
-                    "expired": False,
-                    "size_in_bytes": writer.MAX_ARTIFACT_ARCHIVE_BYTES + 1,
-                }
-            ],
-        },
+        {**_artifact_response(), "total_count": 2},
+        _artifact_response(name="wrong"),
+        _artifact_response(expired=True),
+        _artifact_response(size_in_bytes=0),
+        _artifact_response(size_in_bytes=writer.MAX_ARTIFACT_ARCHIVE_BYTES + 1),
+        _artifact_response(digest=None),
+        _artifact_response(id=True),
     ]
     for case in bad_cases:
         with pytest.raises(writer.WriterSecurityError):
@@ -606,7 +576,7 @@ def test_extract_artifact_zip_prevents_zip_bombs_symlinks_and_traversal(
 ) -> None:
     # 정상 skip-decompress zip 해석
     artifact_holder = tmp_path / "holder"
-    zip_file = artifact_holder / f"{writer.EXPECTED_ARTIFACT_NAME}.zip"
+    zip_file = artifact_holder / f"{writer.ARTIFACT_NAME}.zip"
     _write_payload_zip(
         zip_file,
         files={
@@ -841,6 +811,25 @@ def test_apply_payload_and_commit_and_push_end_to_end_with_local_bare_repo(
     ]
 
 
+def test_apply_payload_rejects_git_attribute_blob_transformation(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _git(repo, "init", "-q")
+    _git(repo, "config", "user.name", "Test")
+    _git(repo, "config", "user.email", "test@example.com")
+    (repo / ".gitattributes").write_text("docs/INDEX.tsv ident\n", encoding="utf-8")
+    _git(repo, "add", ".gitattributes")
+    _git(repo, "commit", "-qm", "set attributes")
+    artifact_dir = tmp_path / "artifact"
+    _write_payload(artifact_dir, files={"docs/INDEX.tsv": b"$Id: changed bytes $\n"})
+    payload = writer.validate_artifact_payload(artifact_dir, _provenance())
+
+    with pytest.raises(writer.WriterSecurityError, match="Staged blobs differ"):
+        writer.apply_payload(repo, payload)
+
+
 def test_commit_and_push_discards_stale_head_and_rejects_non_fast_forward(
     tmp_path: Path,
 ) -> None:
@@ -936,6 +925,37 @@ def test_commit_and_push_discards_stale_head_and_rejects_non_fast_forward(
         == sha2
     )
 
+    # The API may still report the source SHA when Git sees the ref rewound or deleted.
+    for actual_head in (sha1, None):
+        _git(bare, "update-ref", "refs/heads/feat/example", sha2)
+        target = tmp_path / ("rewound" if actual_head else "deleted")
+        writer.checkout_source_commit(bare.as_uri(), target, sha2)
+        _git(target, "fetch", "--unshallow", "origin", "refs/heads/feat/example")
+        writer.apply_payload(target, payload)
+        if actual_head is None:
+            _git(bare, "update-ref", "-d", "refs/heads/feat/example")
+        else:
+            _git(bare, "update-ref", "refs/heads/feat/example", actual_head)
+
+        with pytest.raises(writer.WriterSecurityError, match="remote branch changed"):
+            writer.commit_and_push(
+                target,
+                branch="feat/example",
+                expected_head_sha=sha2,
+                repo_full_name="mols3131d/mols-agent-assets",
+                app_token="app-token",
+                app_slug="test-app",
+                requester=lambda path: (
+                    (200, {"id": 999001, "login": "test-app[bot]", "type": "Bot"})
+                    if "users/" in path
+                    else (200, {"object": {"type": "commit", "sha": sha2}})
+                ),
+            )
+        remote = _git(
+            bare, "for-each-ref", "--format=%(objectname)", "refs/heads/feat/example"
+        )
+        assert remote.stdout.strip() == (actual_head or "")
+
 
 def test_commit_and_push_rejects_empty_or_github_token_fallback(tmp_path: Path) -> None:
     with pytest.raises(writer.WriterSecurityError):
@@ -1015,7 +1035,7 @@ def test_writer_cli_skips_when_disabled_noop_or_stale_head(
     monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
     monkeypatch.setenv("GITHUB_OUTPUT", str(out_file))
     monkeypatch.setenv("GENERATED_SYNC_WRITER_ENABLED", "false")
-    monkeypatch.setenv("GENERATED_SYNC_WRITER_ALLOWED_BRANCHES", "*")
+    monkeypatch.setenv("GENERATED_SYNC_WRITER_ALLOWED_BRANCHES", "feat/example")
 
     assert writer.main(["verify-run"]) == 0
     assert "should_continue=false" in out_file.read_text(encoding="utf-8")
@@ -1025,16 +1045,7 @@ def test_writer_cli_skips_when_disabled_noop_or_stale_head(
     def ok_requester(_token: str, _api_url: str):
         def call(path: str) -> tuple[int, dict[str, object]]:
             if path.endswith("/artifacts"):
-                return 200, {
-                    "total_count": 1,
-                    "artifacts": [
-                        {
-                            "name": writer.EXPECTED_ARTIFACT_NAME,
-                            "expired": False,
-                            "size_in_bytes": 128,
-                        }
-                    ],
-                }
+                return 200, _artifact_response()
             if "git/ref/heads/" in path:
                 return 200, {"object": {"type": "commit", "sha": SAMPLE_SHA}}
             raise AssertionError(path)
@@ -1043,11 +1054,14 @@ def test_writer_cli_skips_when_disabled_noop_or_stale_head(
 
     monkeypatch.setattr(writer, "make_github_api_requester", ok_requester)
     monkeypatch.setenv("GENERATED_SYNC_WRITER_ENABLED", "true")
+    assert writer.main(["verify-run"]) == 0
+    assert f"artifact_id={ARTIFACT_ID}" in out_file.read_text(encoding="utf-8")
+    monkeypatch.setenv("EXPECTED_ARTIFACT_ID", str(ARTIFACT_ID + 1))
+    assert writer.main(["verify-run"]) == 1
+    monkeypatch.delenv("EXPECTED_ARTIFACT_ID")
 
     noop_zip_holder = tmp_path / "noop_holder"
-    _write_payload_zip(
-        noop_zip_holder / f"{writer.EXPECTED_ARTIFACT_NAME}.zip", changed=False
-    )
+    _write_payload_zip(noop_zip_holder / f"{writer.ARTIFACT_NAME}.zip", changed=False)
     out_noop = tmp_path / "noop_out.txt"
     monkeypatch.setenv("GITHUB_OUTPUT", str(out_noop))
     assert (
@@ -1069,29 +1083,11 @@ def test_writer_cli_skips_when_disabled_noop_or_stale_head(
     assert "skip_reason=no_op" in noop_txt
 
     # stale_head (원격 브랜치 404 또는 HEAD 이동) CLI 검증 (T08)
-    monkeypatch.setattr(
-        writer,
-        "make_github_api_requester",
-        lambda _t, _u: (
-            lambda p: (
-                (
-                    200,
-                    {
-                        "total_count": 1,
-                        "artifacts": [
-                            {
-                                "name": writer.EXPECTED_ARTIFACT_NAME,
-                                "expired": False,
-                                "size_in_bytes": 128,
-                            }
-                        ],
-                    },
-                )
-                if p.endswith("/artifacts")
-                else (404, {})
-            )
-        ),
-    )
+    def deleted_ref(path: str) -> tuple[int, dict[str, object]]:
+        assert "/git/ref/heads/" in path
+        return 404, {}
+
+    monkeypatch.setattr(writer, "make_github_api_requester", lambda *_: deleted_ref)
     out_stale = tmp_path / "stale_out.txt"
     monkeypatch.setenv("GITHUB_OUTPUT", str(out_stale))
     assert writer.main(["verify-run"]) == 0
@@ -1120,7 +1116,7 @@ def test_writer_cli_prepare_write_and_commit_and_push_end_to_end(
 
     artifact_dir = tmp_path / "artifact"
     _write_payload_zip(
-        artifact_dir / f"{writer.EXPECTED_ARTIFACT_NAME}.zip",
+        artifact_dir / f"{writer.ARTIFACT_NAME}.zip",
         files={"docs/INDEX.tsv": b"path\tdescription\ndocs/a.md\ta\n"},
         branch="feat/e2e-cli",
         head_sha=head_sha,
@@ -1138,16 +1134,7 @@ def test_writer_cli_prepare_write_and_commit_and_push_end_to_end(
     def fake_requester(_token: str, _api_url: str):
         def call(path: str) -> tuple[int, dict[str, object]]:
             if path.endswith("/artifacts"):
-                return 200, {
-                    "total_count": 1,
-                    "artifacts": [
-                        {
-                            "name": writer.EXPECTED_ARTIFACT_NAME,
-                            "expired": False,
-                            "size_in_bytes": 256,
-                        }
-                    ],
-                }
+                return 200, _artifact_response()
             if "git/ref/heads/" in path:
                 return 200, {"object": {"type": "commit", "sha": head_sha}}
             if path == "users/mols-sync%5Bbot%5D":
@@ -1232,6 +1219,7 @@ def test_generated_writer_workflow_static_security_invariants() -> None:
     assert on_section["workflow_run"]["workflows"] == [writer.EXPECTED_PRODUCER_NAME]
     assert workflow["concurrency"]["cancel-in-progress"] is False
     assert "workflow_run.id" in workflow["concurrency"]["group"]
+    assert "workflow_run.head_sha" in workflow["concurrency"]["group"]
 
     jobs = workflow["jobs"]
     assert set(jobs.keys()) == {"preflight", "write"}
@@ -1254,6 +1242,11 @@ def test_generated_writer_workflow_static_security_invariants() -> None:
                     assert step["with"]["enable-cache"] is False
                 if uses.startswith("actions/download-artifact@"):
                     assert step["with"]["skip-decompress"] is True
+                    assert (
+                        step["with"]["artifact-ids"]
+                        == "${{ steps.verify_run.outputs.artifact_id }}"
+                    )
+                    assert "name" not in step["with"]
             run_cmd = step.get("run", "")
             assert "${{" not in run_cmd, step.get("name")
 
@@ -1269,10 +1262,19 @@ def test_generated_writer_workflow_static_security_invariants() -> None:
     assert "needs.preflight.outputs.should_write == 'true'" in write_job["if"]
     assert "GENERATED_SYNC_WRITER_ENABLED == 'true'" in write_job["if"]
     assert "default_branch" in write_job["if"]
-    assert any(
-        step.get("name") == "Verify App credentials configured"
-        for step in write_job["steps"]
+    verify_run = next(
+        step for step in write_job["steps"] if step.get("id") == "verify_run"
     )
+    assert (
+        verify_run["env"]["EXPECTED_ARTIFACT_ID"]
+        == "${{ needs.preflight.outputs.artifact_id }}"
+    )
+    secret_steps = [
+        step.get("id")
+        for step in write_job["steps"]
+        if "secrets." in yaml.safe_dump(step)
+    ]
+    assert secret_steps == ["app_token"]
 
     jobs_text = raw_text.split("jobs:", 1)[1]
     app_action = (

@@ -22,35 +22,30 @@ from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 from typing import Any
 
-from scripts import generated_artifacts_sync as sync
+from scripts.generated_artifacts_writeback import (
+    ARTIFACT_NAME,
+    HEX_SHA_RE,
+    MAX_FILE_BYTES,
+    MAX_FILE_COUNT,
+    MAX_METADATA_BYTES,
+    MAX_TOTAL_PAYLOAD_BYTES,
+    PROTECTED_CORE_OUTPUTS,
+    SCHEMA_VERSION,
+    SHA256_RE,
+    is_allowed_generated_output,
+    is_safe_relative_posix_path,
+)
 
 EXPECTED_PRODUCER_NAME = "Sync Generated Artifacts"
 EXPECTED_PRODUCER_PATH = ".github/workflows/generated-sync.yml"
-EXPECTED_ARTIFACT_NAME = "generated-sync-payload"
 DEFAULT_API_URL = "https://api.github.com"
 DEFAULT_SERVER_URL = "https://github.com"
 COMMIT_MESSAGE = "chore(generated): sync indexes and routes"
 
-MAX_METADATA_BYTES = 1 * 1024 * 1024
-MAX_FILE_COUNT = 500
 MAX_SCAN_ENTRIES = MAX_FILE_COUNT + 64
-MAX_FILE_BYTES = 5 * 1024 * 1024
-MAX_TOTAL_PAYLOAD_BYTES = 20 * 1024 * 1024
 MAX_ARTIFACT_ARCHIVE_BYTES = 25 * 1024 * 1024
 
-HEX_SHA_RE = re.compile(r"^[0-9a-f]{40}$")
-SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 APP_SLUG_RE = re.compile(r"^[a-zA-Z0-9][a-zA-Z0-9-]*$")
-PROTECTED_CORE_OUTPUTS = frozenset(
-    {
-        "docs/INDEX.tsv",
-        "catalog/INDEX.tsv",
-        "route/routes.jsonl",
-        ".agents/route/routes.jsonl",
-        ".agents/route/all.jsonl",
-        ".agents/route/uncategorized.jsonl",
-    }
-)
 FORBIDDEN_BRANCH_TOKENS = ("..", "@{", "//", "~", "^", ":", "?", "*", "[", "\\")
 
 
@@ -98,47 +93,6 @@ class Decision:
     reason: str
 
 
-def is_safe_relative_posix_path(path: str) -> bool:
-    """경로 순회, surrogate, 제어 문자가 없는 순수 POSIX 상대 경로인지 검사한다."""
-    if not path or "\\" in path or path.startswith("/") or path.endswith("/"):
-        return False
-    if "//" in path:
-        return False
-    if any(
-        ord(ch) < 32 or ord(ch) == 127 or 0xD800 <= ord(ch) <= 0xDFFF for ch in path
-    ):
-        return False
-    parts = path.split("/")
-    if any(part in {"", ".", "..", ".git"} for part in parts):
-        return False
-    return PurePosixPath(path).as_posix() == path
-
-
-def is_allowed_generated_output(path: str) -> bool:
-    """기본 브랜치 `PROJECTIONS`가 소유한 생성 출력 경로인지 확인한다."""
-    if not is_safe_relative_posix_path(path):
-        return False
-    if not any(projection.output_matches(path) for projection in sync.PROJECTIONS):
-        return False
-
-    posix = PurePosixPath(path)
-    if path.startswith(("docs/", "catalog/")):
-        return posix.name == "INDEX.tsv"
-    if path.startswith("route/"):
-        return (
-            posix.parent == PurePosixPath("route")
-            and posix.suffix == ".jsonl"
-            and bool(posix.stem)
-        )
-    if path.startswith(".agents/route/"):
-        return (
-            posix.parent == PurePosixPath(".agents/route")
-            and posix.suffix == ".jsonl"
-            and bool(posix.stem)
-        )
-    return False
-
-
 def validate_source_branch(branch: str, default_branch: str = "main") -> str:
     """원본 브랜치 이름이 안전한 non-default 브랜치인지 검증한다."""
     if not branch or branch in {default_branch, "main", "HEAD", "@"}:
@@ -164,14 +118,7 @@ def validate_source_branch(branch: str, default_branch: str = "main") -> str:
 
 def is_branch_allowed(branch: str, allowed_spec: str) -> bool:
     """승인된 브랜치 allowlist에 포함되는지 fail-closed로 판정한다."""
-    tokens = [
-        item.strip() for item in re.split(r"[\s,]+", allowed_spec) if item.strip()
-    ]
-    if not tokens:
-        return False
-    if "*" in tokens:
-        return True
-    return branch in tokens
+    return branch in re.split(r"[\s,]+", allowed_spec)
 
 
 def _require_int(value: Any, name: str) -> int:
@@ -345,8 +292,8 @@ def verify_single_artifact(
     requester: Callable[[str], tuple[int, dict[str, Any]]],
     repo: str,
     run_id: int,
-) -> dict[str, Any]:
-    """Producer run에 기대된 단일 artifact만 존재하는지 확인한다."""
+) -> int:
+    """Return the immutable ID of the single eligible artifact from this run."""
     status, data = requester(f"repos/{repo}/actions/runs/{run_id}/artifacts")
     if status != 200:
         raise WriterSecurityError(
@@ -359,10 +306,10 @@ def verify_single_artifact(
             f"Producer artifact는 정확히 1개여야 합니다: total_count={total_count!r}"
         )
     artifact = artifacts[0]
-    if not isinstance(artifact, dict) or artifact.get("name") != EXPECTED_ARTIFACT_NAME:
+    if not isinstance(artifact, dict) or artifact.get("name") != ARTIFACT_NAME:
         raise WriterSecurityError(f"예상하지 않은 artifact 이름입니다: {artifact!r}")
-    if artifact.get("expired") is True:
-        raise WriterSecurityError("만료된 artifact는 사용할 수 없습니다.")
+    if artifact.get("expired") is not False:
+        raise WriterSecurityError("Artifact의 만료 상태를 확인할 수 없습니다.")
     size = artifact.get("size_in_bytes")
     if (
         isinstance(size, bool)
@@ -371,7 +318,14 @@ def verify_single_artifact(
         or size > MAX_ARTIFACT_ARCHIVE_BYTES
     ):
         raise WriterSecurityError(f"허용 범위를 벗어난 artifact 크기입니다: {size!r}")
-    return artifact
+    digest = artifact.get("digest")
+    if (
+        not isinstance(digest, str)
+        or not digest.startswith("sha256:")
+        or not SHA256_RE.fullmatch(digest[7:])
+    ):
+        raise WriterSecurityError("Artifact SHA-256 digest를 확인할 수 없습니다.")
+    return _require_int(artifact.get("id"), "artifact.id")
 
 
 def get_branch_head_sha(
@@ -492,7 +446,11 @@ def extract_artifact_zip(zip_path: Path, extract_dir: Path) -> Path:
                         f"{info.filename}"
                     )
 
-                raw_name = info.filename
+                raw_name = info.orig_filename
+                if raw_name != info.filename:
+                    raise WriterSecurityError(
+                        f"Zip 항목 이름이 정규화되었습니다: {raw_name!r}"
+                    )
                 if info.is_dir() or raw_name.endswith("/"):
                     dir_rel = raw_name.rstrip("/")
                     if dir_rel and not is_safe_relative_posix_path(dir_rel):
@@ -545,7 +503,13 @@ def extract_artifact_zip(zip_path: Path, extract_dir: Path) -> Path:
                 _ensure_no_symlink_components(extract_dir, raw_name)
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 _write_regular_file_nofollow(dest, data)
-    except (zipfile.BadZipFile, NotImplementedError, EOFError, zlib.error) as exc:
+    except (
+        zipfile.BadZipFile,
+        NotImplementedError,
+        EOFError,
+        OSError,
+        zlib.error,
+    ) as exc:
         raise WriterSecurityError(f"손상된 artifact zip입니다: {exc}") from exc
 
     return extract_dir
@@ -573,7 +537,7 @@ def resolve_artifact_directory(
     if not artifact_path.is_dir():
         raise WriterSecurityError(f"Artifact 경로를 찾을 수 없습니다: {artifact_path}")
 
-    zip_name = f"{EXPECTED_ARTIFACT_NAME}.zip"
+    zip_name = f"{ARTIFACT_NAME}.zip"
     children = list(artifact_path.iterdir())
     if len(children) == 1 and children[0].name == zip_name:
         if children[0].is_symlink() or not children[0].is_file():
@@ -676,7 +640,7 @@ def validate_artifact_payload(
         )
 
     for int_key, expected_val in (
-        ("schema_version", 1),
+        ("schema_version", SCHEMA_VERSION),
         ("repository_id", provenance.repository_id),
         ("producer_run_id", provenance.run_id),
         ("producer_run_attempt", provenance.run_attempt),
@@ -814,8 +778,14 @@ def _run_git(
     *args: str,
     env_overrides: dict[str, str] | None = None,
     check: bool = True,
+    hooks_path: Path | None = None,
+    input_data: bytes | None = None,
 ) -> subprocess.CompletedProcess[bytes]:
-    env = os.environ.copy()
+    env = {
+        key: value
+        for key, value in os.environ.items()
+        if not key.startswith("GIT_") and key not in {"APP_TOKEN", "GITHUB_TOKEN"}
+    }
     env["GIT_CONFIG_NOSYSTEM"] = "1"
     env["GIT_CONFIG_GLOBAL"] = os.devnull
     if env_overrides:
@@ -824,8 +794,9 @@ def _run_git(
         return subprocess.run(
             [
                 "git",
+                "--literal-pathspecs",
                 "-c",
-                f"core.hooksPath={os.devnull}",
+                f"core.hooksPath={hooks_path.as_posix() if hooks_path else os.devnull}",
                 "-c",
                 "credential.helper=",
                 "-c",
@@ -837,6 +808,7 @@ def _run_git(
             cwd=repo_dir,
             env=env,
             check=check,
+            input=input_data,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
@@ -889,7 +861,7 @@ def checkout_source_commit(
         shutil.rmtree(target_dir)
     target_dir.mkdir(parents=True)
 
-    _run_git(target_dir, "init", "-q")
+    _run_git(target_dir, "init", "-q", "--template=")
     _run_git(target_dir, "remote", "add", "origin", remote_url)
 
     with tempfile.TemporaryDirectory() as tmp:
@@ -962,6 +934,15 @@ def _git_z_paths(repo_dir: Path, *args: str) -> list[str]:
     ]
 
 
+def _index_entries(repo_dir: Path) -> dict[str, tuple[str, str]]:
+    entries = {}
+    for line in _git_z_paths(repo_dir, "ls-files", "--stage", "-z"):
+        entry, path = line.split("\t", 1)
+        mode, blob_sha, _ = entry.split()
+        entries[path] = (mode, blob_sha)
+    return entries
+
+
 def apply_payload(target_dir: Path, payload: ValidatedPayload) -> list[str]:
     """검증된 payload를 clean 대상 checkout에 적용하고 staged diff를 검증한다."""
     if not payload.changed:
@@ -973,12 +954,10 @@ def apply_payload(target_dir: Path, payload: ValidatedPayload) -> list[str]:
 
     declared_paths = {entry.path for entry in payload.files} | set(payload.deleted)
 
-    for entry_line in _git_z_paths(target_dir, "ls-files", "-s", "-z", "--"):
-        meta_part, _, path_part = entry_line.partition("\t")
-        mode = meta_part.split(" ", 1)[0]
-        if path_part in declared_paths and mode not in {"100644", "100755"}:
+    for path, (mode, _) in _index_entries(target_dir).items():
+        if path in declared_paths and mode not in {"100644", "100755"}:
             raise WriterSecurityError(
-                f"허용되지 않은 Git index mode입니다: {mode} ({path_part})"
+                f"허용되지 않은 Git index mode입니다: {mode} ({path})"
             )
 
     for entry in payload.files:
@@ -1064,6 +1043,25 @@ def apply_payload(target_dir: Path, payload: ValidatedPayload) -> list[str]:
             f"unstaged={unstaged}, untracked={untracked}, ignored={ignored_declared}"
         )
 
+    if payload.files:
+        paths = [entry.path for entry in payload.files]
+        hashes = (
+            _run_git(
+                target_dir,
+                "hash-object",
+                "--no-filters",
+                "--stdin-paths",
+                input_data=("\n".join(paths) + "\n").encode("utf-8"),
+            )
+            .stdout.decode("ascii")
+            .splitlines()
+        )
+        index = _index_entries(target_dir)
+        if hashes != [index.get(path, ("", ""))[1] for path in paths]:
+            raise WriterSecurityError(
+                "Staged blobs differ from the verified payload files."
+            )
+
     return sorted(staged)
 
 
@@ -1129,14 +1127,38 @@ def commit_and_push(
         return Decision(False, "stale_head")
 
     with tempfile.TemporaryDirectory() as tmp:
-        env_overrides = _git_askpass_env(app_token, Path(tmp))
+        temp_dir = Path(tmp)
+        # Receive-pack checks Git's advertised old SHA when it updates the ref.
+        # Reject deletions and rewinds even if Git would otherwise accept the push.
+        hook = temp_dir / "pre-push"
+        hook.write_text(
+            "#!/bin/sh\n"
+            "if IFS=' ' read -r local_ref local_oid remote_ref remote_oid extra &&\n"
+            '   [ "$remote_ref" = "$GENERATED_SYNC_EXPECTED_REF" ] &&\n'
+            '   [ "$remote_oid" = "$GENERATED_SYNC_EXPECTED_HEAD" ] &&\n'
+            '   [ -z "$extra" ] && ! IFS= read -r unexpected; then\n'
+            "    exit 0\n"
+            "fi\n"
+            "printf '%s\\n' 'The remote branch changed or no longer exists.' >&2\n"
+            "exit 1\n",
+            encoding="utf-8",
+            newline="\n",
+        )
+        hook.chmod(0o700)
+        target_ref = f"refs/heads/{branch}"
+        env_overrides = _git_askpass_env(app_token, temp_dir)
+        env_overrides.update(
+            GENERATED_SYNC_EXPECTED_REF=target_ref,
+            GENERATED_SYNC_EXPECTED_HEAD=expected_head_sha,
+        )
         result = _run_git(
             target_dir,
             "push",
             "origin",
-            f"HEAD:refs/heads/{branch}",
+            f"HEAD:{target_ref}",
             env_overrides=env_overrides,
             check=False,
+            hooks_path=temp_dir,
         )
         if result.returncode != 0:
             err = result.stderr.decode("utf-8", errors="replace").strip()
@@ -1163,9 +1185,9 @@ def _load_json_dict(path: Path, label: str) -> dict[str, Any]:
     return data
 
 
-def _verify_from_env(
-    requester_factory: Callable[[str, str], Any] | None = None,
-) -> tuple[Decision, Provenance | None, Any]:
+def _verify_from_env() -> tuple[
+    Decision, Provenance | None, Callable[[str], tuple[int, dict[str, Any]]] | None
+]:
     event_path = os.environ.get("GITHUB_EVENT_PATH", "")
     if not event_path:
         raise WriterSecurityError("GITHUB_EVENT_PATH가 설정되지 않았습니다.")
@@ -1189,13 +1211,7 @@ def _verify_from_env(
     if not decision.proceed or provenance is None:
         return decision, provenance, None
 
-    factory = (
-        make_github_api_requester if requester_factory is None else requester_factory
-    )
-    requester = factory(github_token, api_url)
-    verify_single_artifact(
-        requester, provenance.repository_full_name, provenance.run_id
-    )
+    requester = make_github_api_requester(github_token, api_url)
     live_head = get_branch_head_sha(
         requester, provenance.repository_full_name, provenance.branch
     )
@@ -1231,12 +1247,28 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         if args.command == "verify-run":
-            decision, _, _ = _verify_from_env()
+            decision, provenance, requester = _verify_from_env()
+            artifact_id = ""
+            if decision.proceed and provenance is not None and requester is not None:
+                artifact_id = str(
+                    verify_single_artifact(
+                        requester, provenance.repository_full_name, provenance.run_id
+                    )
+                )
+                expected_artifact_id = os.environ.get("EXPECTED_ARTIFACT_ID")
+                if (
+                    expected_artifact_id is not None
+                    and artifact_id != expected_artifact_id
+                ):
+                    raise WriterSecurityError(
+                        "Producer artifact가 preflight 후 변경되었습니다."
+                    )
             _write_github_outputs(
                 output_path,
                 {
                     "should_continue": "true" if decision.proceed else "false",
                     "skip_reason": decision.reason,
+                    "artifact_id": artifact_id,
                 },
             )
             print(f"verify-run: proceed={decision.proceed} reason={decision.reason}")
