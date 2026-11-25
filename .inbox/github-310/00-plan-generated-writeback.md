@@ -24,7 +24,7 @@ GitHub Contents API·Plugin·agent·로컬 Git 등으로 **원본만 변경한 �
 
 ## Required acceptance (미충족이면 구현 완료·운영 준비 완료로 간주 금지)
 
-- [ ] **Architecture:** #308 Writer가 신뢰된 `main` 코드에서만 실행되고 먼저 비활성 상태로 squash merge되었다. #294 Producer는 외부 PR 코드에서 credential·secret·쓰기 권한 없이 실행한다.
+- [ ] **Architecture:** #308 Writer는 신뢰된 `main` 코드에서 실행되며 기본 비활성 상태로 먼저 squash merge한다. #294 Producer는 동일 저장소의 비기본 브랜치 push에서 실행한다. Checkout에는 `contents: read`인 `GITHUB_TOKEN`을 사용하고 Git 설정에 남기지 않는다. Writer의 쓰기 작업만 승인된 Environment에서 App 인증 정보에 접근한다.
 - [ ] **Write scope:** repo/ref/branch allowlist·입력 run SHA·현재 branch tip·artifact provenance를 확인한 뒤 `PROJECTIONS`가 허용하는 generated output만 커밋한다. 임의 파일, symlink, path traversal, 과대/변조 artifact를 거부한다.
 - [ ] **Safe push:** non-fast-forward·동시 수정 충돌·삭제·stale HEAD를 덮어쓰지 않는다. `main` 직접 push·Ruleset bypass·자동 merge는 하지 않는다.
 - [ ] **Idempotency:** no-op에서는 추가 commit/token 발급 없이 종료하고, 봇 output-only push가 무한 자동 생성 루프를 만들지 않는다. Source-only·output-only 입력이 모두 계획대로 처리된다.
@@ -40,7 +40,7 @@ GitHub Contents API·Plugin·agent·로컬 Git 등으로 **원본만 변경한 �
 2. **Review bootstrap:** #305를 승인·반영한 뒤 #308의 검증 기준선을 갱신한다. 독립 리뷰와 사람 승인 후 기본 비활성인 Writer를 먼저 반영한다.
 3. **Verify producer:** #294의 읽기 전용 CI와 Producer–Writer 로컬 호환성은 선행 PR 검토와 병행한다. 선행 PR 반영 뒤 최신 `main`과 다시 검증한다. 영향이 불명확하면 fail-safe로 범위를 확장한다.
 4. **Approve & isolate:** 소유자 `mols3131d`의 권한으로 App/Environment/Repository Variables를 수동 설정하고, 특정 테스트 branch만 허용하도록 제한한다. **이 단계는 별도 사람 승인 전 실행 금지**.
-5. **E2E:** 별도 테스트 branch와 열린 PR에서 #294 검증 행렬 E01~E10 중 필수 경로를 실제로 실행한다. Source SHA/봇 SHA/검사 SHA, run URL, 실패·skip 기록을 남긴다.
+5. **E2E:** 승인된 격리 브랜치에 #294 후보의 Producer workflow를 포함하고 열린 테스트 PR에서 검증 행렬 E01~E10의 필수 경로를 실행한다. Source SHA, 봇 SHA, 검사 SHA, run URL과 실패·skip 결과를 기록한다.
 6. **Decide:** 원격 E2E 결과와 사람의 승인으로 #294의 squash merge 및 운영 활성화를 각각 판단한다. 구현 PR과 검증 기록을 확정한 뒤 #310의 종료 여부를 판단한다.
 
 ## Boundaries and risks
