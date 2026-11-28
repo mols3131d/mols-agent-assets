@@ -46,46 +46,8 @@ jobs:
           version: '0.13.6'
           enable-cache: true
 
-      - name: Set up mise
-        uses: jdx/mise-action@v3
-        with:
-          version: '2026.10.25'
-          install: false
-          cache: true
-
-      - name: Reconcile locked Skill selection
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: |
-          mise install node "npm:rulesync"
-          mise exec -- rulesync install
-          mise exec -- rulesync install --frozen
-
       - name: Regenerate projections in the runner
         run: uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts sync
 
       - name: Validate regenerated files
         run: uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts validate --all
-
-      - name: Report generated changes for branch synchronization
-        shell: bash
-        run: |
-          python - <<'PY'
-          import json
-          import subprocess
-          from pathlib import Path
-          changed = subprocess.check_output(["git", "diff", "--name-only", "-z"]).decode().split("\0")
-          untracked = subprocess.check_output(["git", "ls-files", "--others", "--exclude-standard", "-z"]).decode().split("\0")
-          for path in sorted(set(changed + untracked)):
-              if not (path == "rulesync.lock" or
-                      path.endswith(".jsonl") and path.startswith(("route/", ".agents/route/")) or
-                      path.endswith("/INDEX.tsv") and path.startswith(("docs/", "catalog/"))):
-                  continue
-              file = Path(path)
-              if not file.is_file():
-                  print("SYNC_FILE " + json.dumps({"path": path, "part": 0, "content": None}))
-                  continue
-              content = file.read_text(encoding="utf-8")
-              for part, start in enumerate(range(0, max(1, len(content)), 1500)):
-                  print("SYNC_FILE " + json.dumps({"path": path, "part": part, "content": content[start:start + 1500]}, ensure_ascii=True))
-          PY

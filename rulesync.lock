@@ -4,16 +4,10 @@
     "mols3131d/mols-agent-assets": {
       "requestedRef": "main",
       "resolvedRef": "05fd51354fe53eaef51e9b7166bd0c2d39ae78a4",
-      "resolvedAt": "2026-10-24T15:14:56.267Z",
+      "resolvedAt": "2026-11-28T08:25:28.318Z",
       "skills": {
-        "artifact-consistency-inspector": {
-          "integrity": "sha256-6cb2ff6eafb3ea0d0d7974bdb8068d0f8098d9a40321ab808509b6bf8cd2d43b"
-        },
         "github-context": {
           "integrity": "sha256-ba5201fd19cc7939ddbdd4300ea01f227670a64f1863e26ee6805429f4635191"
-        },
-        "mols-agent-asset-find": {
-          "integrity": "sha256-0894496b554b42aae1e0284e5a47b1fa8a3d5b6bfa3026cd412c45daf0381420"
         },
         "mols-agent-asset": {
           "integrity": "sha256-ba10320d7fadba56e9619c4336d3d6adb57c52fcd2f2a45b8347ffe5d8b84d59"
@@ -23,9 +17,6 @@
         },
         "mols-documentation": {
           "integrity": "sha256-1f7ec4eb7ee2c3597e0fda64c6a224e58e0cf1bb3c4be33c53e5a5cae3dff8dc"
-        },
-        "mols-loops": {
-          "integrity": "sha256-f3f3de0ae4d899fe029748440d537b2a0624074e238a575dce7565916efa5c9f"
         },
         "mols-markdown-maintenance": {
           "integrity": "sha256-360d1b22d74b8027004d60b266c8a4adf040c8adbad11526fac61fb14ccbcb43"
@@ -38,13 +29,10 @@
         }
       },
       "skillSelection": [
-        "artifact-consistency-inspector",
         "github-context",
         "mols-agent-asset",
-        "mols-agent-asset-find",
         "mols-chatbot-bootstrap",
         "mols-documentation",
-        "mols-loops",
         "mols-markdown-maintenance",
         "mols-mermaid-chart",
         "mols-mermaid-diagram"
@@ -54,7 +42,7 @@
     "dyoshikawa/rulesync": {
       "requestedRef": "main",
       "resolvedRef": "02654ba214449ca3306dfa56d493ff4aa131d7f3",
-      "resolvedAt": "2026-10-24T15:14:56.484Z",
+      "resolvedAt": "2026-11-28T08:25:28.327Z",
       "skills": {
         "rulesync": {
           "integrity": "sha256-658851f4f3b4c432820cc1ed54bd294a699f171ee28d1da9a3c89e5a3b26a96f"
