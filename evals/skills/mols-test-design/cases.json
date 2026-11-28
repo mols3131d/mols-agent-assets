@@ -6,13 +6,13 @@
       "mode": "activation",
       "prompt": "A Python service changed its public result schema. Decide which observable contracts and regression cases need tests before writing code.",
       "expected_selection": {
-        "selected_skills": ["mols-test-design", "mols-coding-context"],
+        "selected_skills": ["mols-test-design", "mols-implementation-guidance"],
         "primary_skill": "mols-test-design"
       },
       "routing_candidates": [
         {
-          "name": "mols-coding-context",
-          "description": "Baseline engineering judgment for any task requiring reasoning about code or executable behavior, including routine implementation, design, debugging, testing, refactoring, and review. Load once at task entry unless already in context; reuse while available. Not a workflow. Excludes factual lookup, non-code repository administration, and prose-only work."
+          "name": "mols-implementation-guidance",
+          "description": "Engineering guidance for implementing, debugging, refactoring, testing, and reviewing software, including routine changes and concrete implementation design. Use when decisions materially affect executable behavior or implementation quality. Load once when applicable; reuse while available. Not a workflow. Excludes purely conceptual discussion, factual lookup, non-code administration, and prose-only work."
         }
       ]
     },
@@ -66,13 +66,13 @@
       "mode": "activation-negative",
       "prompt": "pytest가 ModuleNotFoundError를 내. import path를 고쳐줘.",
       "expected_selection": {
-        "selected_skills": ["mols-coding-context"],
-        "primary_skill": "mols-coding-context"
+        "selected_skills": ["mols-implementation-guidance"],
+        "primary_skill": "mols-implementation-guidance"
       },
       "routing_candidates": [
         {
-          "name": "mols-coding-context",
-          "description": "Baseline engineering judgment for any task requiring reasoning about code or executable behavior, including routine implementation, design, debugging, testing, refactoring, and review. Load once at task entry unless already in context; reuse while available. Not a workflow. Excludes factual lookup, non-code repository administration, and prose-only work."
+          "name": "mols-implementation-guidance",
+          "description": "Engineering guidance for implementing, debugging, refactoring, testing, and reviewing software, including routine changes and concrete implementation design. Use when decisions materially affect executable behavior or implementation quality. Load once when applicable; reuse while available. Not a workflow. Excludes purely conceptual discussion, factual lookup, non-code administration, and prose-only work."
         }
       ]
     },
@@ -81,13 +81,13 @@
       "mode": "activation-negative",
       "prompt": "Given this fixed test case and assertion, translate it into a Jest test file without changing the test strategy.",
       "expected_selection": {
-        "selected_skills": ["mols-coding-context"],
-        "primary_skill": "mols-coding-context"
+        "selected_skills": ["mols-implementation-guidance"],
+        "primary_skill": "mols-implementation-guidance"
       },
       "routing_candidates": [
         {
-          "name": "mols-coding-context",
-          "description": "Baseline engineering judgment for any task requiring reasoning about code or executable behavior, including routine implementation, design, debugging, testing, refactoring, and review. Load once at task entry unless already in context; reuse while available. Not a workflow. Excludes factual lookup, non-code repository administration, and prose-only work."
+          "name": "mols-implementation-guidance",
+          "description": "Engineering guidance for implementing, debugging, refactoring, testing, and reviewing software, including routine changes and concrete implementation design. Use when decisions materially affect executable behavior or implementation quality. Load once when applicable; reuse while available. Not a workflow. Excludes purely conceptual discussion, factual lookup, non-code administration, and prose-only work."
         }
       ]
     },
@@ -255,13 +255,13 @@
       "mode": "activation",
       "prompt": "서로 병렬 개발하는 consumer와 provider가 JSON API 변경에도 호환되는지 확인하면서 각자 테스트를 실행할 수 있게 검증 전략을 세워줘.",
       "expected_selection": {
-        "selected_skills": ["mols-test-design", "mols-coding-context"],
+        "selected_skills": ["mols-test-design", "mols-implementation-guidance"],
         "primary_skill": "mols-test-design"
       },
       "routing_candidates": [
         {
-          "name": "mols-coding-context",
-          "description": "Baseline engineering judgment for any task requiring reasoning about code or executable behavior, including routine implementation, design, debugging, testing, refactoring, and review. Load once at task entry unless already in context; reuse while available. Not a workflow. Excludes factual lookup, non-code repository administration, and prose-only work."
+          "name": "mols-implementation-guidance",
+          "description": "Engineering guidance for implementing, debugging, refactoring, testing, and reviewing software, including routine changes and concrete implementation design. Use when decisions materially affect executable behavior or implementation quality. Load once when applicable; reuse while available. Not a workflow. Excludes purely conceptual discussion, factual lookup, non-code administration, and prose-only work."
         }
       ]
     },
@@ -368,13 +368,13 @@
       "mode": "activation",
       "prompt": "Please implement the new API endpoint, and also decide the contract-level regression cases and expected failure outcomes needed to guard the versioned response.",
       "expected_selection": {
-        "selected_skills": ["mols-coding-context", "mols-test-design"],
-        "primary_skill": "mols-coding-context"
+        "selected_skills": ["mols-implementation-guidance", "mols-test-design"],
+        "primary_skill": "mols-implementation-guidance"
       },
       "routing_candidates": [
         {
-          "name": "mols-coding-context",
-          "description": "Baseline engineering judgment for any task requiring reasoning about code or executable behavior, including routine implementation, design, debugging, testing, refactoring, and review. Load once at task entry unless already in context; reuse while available. Not a workflow. Excludes factual lookup, non-code repository administration, and prose-only work."
+          "name": "mols-implementation-guidance",
+          "description": "Engineering guidance for implementing, debugging, refactoring, testing, and reviewing software, including routine changes and concrete implementation design. Use when decisions materially affect executable behavior or implementation quality. Load once when applicable; reuse while available. Not a workflow. Excludes purely conceptual discussion, factual lookup, non-code administration, and prose-only work."
         }
       ]
     },
@@ -392,13 +392,13 @@
       "mode": "activation-negative",
       "prompt": "Implement this utility method using the provided interface. Follow the repository's normal verification practices; I am not requesting a separate testing strategy or oracle review.",
       "expected_selection": {
-        "selected_skills": ["mols-coding-context"],
-        "primary_skill": "mols-coding-context"
+        "selected_skills": ["mols-implementation-guidance"],
+        "primary_skill": "mols-implementation-guidance"
       },
       "routing_candidates": [
         {
-          "name": "mols-coding-context",
-          "description": "Baseline engineering judgment for any task requiring reasoning about code or executable behavior, including routine implementation, design, debugging, testing, refactoring, and review. Load once at task entry unless already in context; reuse while available. Not a workflow. Excludes factual lookup, non-code repository administration, and prose-only work."
+          "name": "mols-implementation-guidance",
+          "description": "Engineering guidance for implementing, debugging, refactoring, testing, and reviewing software, including routine changes and concrete implementation design. Use when decisions materially affect executable behavior or implementation quality. Load once when applicable; reuse while available. Not a workflow. Excludes purely conceptual discussion, factual lookup, non-code administration, and prose-only work."
         }
       ]
     },

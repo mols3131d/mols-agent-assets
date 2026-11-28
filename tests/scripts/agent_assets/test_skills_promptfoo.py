@@ -198,27 +198,6 @@ def test_trigger_grader_checks_exact_selected_set_and_primary() -> None:
     assert evaluator.assert_trigger("not-json", {"vars": {}})["pass"] is False
 
 
-def test_trigger_grader_can_check_only_selected_skills() -> None:
-    context = {"vars": {"expected_selection": {"selected_skills": ["core", "python"]}}}
-    for primary in ("core", "python"):
-        output = json.dumps(
-            {"selected_skills": ["core", "python"], "primary_skill": primary}
-        )
-        assert evaluator.assert_trigger(output, context)["pass"] is True
-
-    for selected in (["core"], ["python"], ["core", "python", "other"]):
-        output = json.dumps(
-            {"selected_skills": selected, "primary_skill": selected[0]}
-        )
-        assert evaluator.assert_trigger(output, context)["pass"] is False
-
-    output = json.dumps({"selected_skills": ["core", "python"]})
-    assert evaluator.assert_trigger(output, context)["pass"] is False
-
-    fixture = evaluator._fixture_output(context, evaluator.TRIGGER_SUITE)
-    assert evaluator.assert_trigger(fixture["output"], context)["pass"] is True
-
-
 def test_fixture_provider_is_skill_agnostic() -> None:
     expected = {"selected_skills": [], "primary_skill": None}
     trigger = evaluator.call_api(
@@ -381,7 +360,7 @@ def test_promptfoo_configs_use_generic_skill_evaluator() -> None:
     for name in (
         "mols-loops.yaml",
         "mols-dev-env-bootstrap-design.yaml",
-        "mols-coding-context.yaml",
+        "mols-implementation-guidance.yaml",
     ):
         config = yaml.safe_load((CONFIG_DIR / name).read_text(encoding="utf-8"))
         assert config["prompts"] == ["file://skill-chat.json"]
@@ -399,18 +378,17 @@ def test_promptfoo_configs_use_generic_skill_evaluator() -> None:
         assert config["commandLineOptions"]["noShare"] is True
 
 
-def test_coding_context_config_generates_routing_only_cases() -> None:
+def test_implementation_guidance_config_generates_routing_only_cases() -> None:
     config = yaml.safe_load(
-        (CONFIG_DIR / "mols-coding-context.yaml").read_text(encoding="utf-8")
+        (CONFIG_DIR / "mols-implementation-guidance.yaml").read_text(encoding="utf-8")
     )
     assert len(config["tests"]) == 1
     generated = config["tests"][0]["config"]
     assert generated["suite"] == "trigger"
     assert generated["semantic"] is False
-    cases = evaluator._load_cases("mols-coding-context")
+    cases = evaluator._load_cases("mols-implementation-guidance")
     tests = evaluator.generate_native_tests(generated)
     assert {test["vars"]["case_id"] for test in tests} == set(cases)
-    assert all("primary_skill" not in t["vars"]["expected_selection"] for t in tests)
 
 
 def test_native_generator_keeps_trigger_and_behavior_context_separate() -> None:

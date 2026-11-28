@@ -14,14 +14,14 @@ Asset별 차이는 fixture와 tool config가 소유합니다. 같은 평가 cont
 
 Eval을 언제 추가하고 어떤 evidence로 해석할지는 [`docs/development/evaluation.md`](../docs/development/evaluation.md)가 소유합니다. 이 README는 `evals/`의 fixture placement와 local boundary만 소유합니다.
 
-기본 Trigger/Behavior 평가 중 `mols-loops`와 `mols-dev-env-bootstrap-design`은 선택 가능한 Promptfoo native provider를 사용합니다. `mols-coding-context`는 Python add-on을 포함한 routing-only native 평가입니다. 공통 Python generator는 canonical fixture로부터 case별 system prompt와 assertion을 구성하지만 모델 HTTP 호출은 하지 않습니다. Reference를 조건부로 선택하는 `mols-test-design`과 fixture-mode smoke는 기존 Python provider를 사용합니다. `mols-stdd`는 native Trigger/Behavior를 유지하면서 별도의 `mols-stdd-references.yaml`에서 로컬 Ollama 기반 reference 선택을 검사합니다. Native suite는 reference 관련 assertion을 명시적으로 제외하므로 그 결과를 로딩 검증으로 해석하지 않습니다. 모든 경로는 실제 IDE/CLI agent의 tool·routing 실행을 재현하지 않습니다.
+기본 Trigger/Behavior 평가 중 `mols-loops`와 `mols-dev-env-bootstrap-design`은 선택 가능한 Promptfoo native provider를 사용합니다. `mols-implementation-guidance`는 Skill의 선택·비선택만 검사하는 routing-only native 평가입니다. 공통 Python generator는 canonical fixture로부터 case별 system prompt와 assertion을 구성하지만 모델 HTTP 호출은 하지 않습니다. Reference를 조건부로 선택하는 `mols-test-design`과 fixture-mode smoke는 기존 Python provider를 사용합니다. `mols-stdd`는 native Trigger/Behavior를 유지하면서 별도의 `mols-stdd-references.yaml`에서 로컬 Ollama 기반 reference 선택을 검사합니다. Native suite는 reference 관련 assertion을 명시적으로 제외하므로 그 결과를 로딩 검증으로 해석하지 않습니다. 모든 경로는 실제 IDE/CLI agent의 tool·routing 실행을 재현하지 않습니다.
 
 Promptfoo CLI는 기본적으로 개발자의 로컬 환경에서 실행하며, 모델 호출 위치는 선택한 provider가 결정합니다. Repository correctness는 root `tests/`가 검증하며, Promptfoo의 공통 실행 진입점은 `mise run eval`입니다. 평가 설정 파일과 CLI 옵션은 인수로 전달합니다. 예시:
 
 ```bash
 mise run eval -c evals/promptfoo/mols-loops-smoke.yaml
 mise run eval -c evals/promptfoo/mols-loops.yaml
-mise run eval -c evals/promptfoo/mols-coding-context.yaml
+mise run eval -c evals/promptfoo/mols-implementation-guidance.yaml
 mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design.yaml
 mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design-grader.yaml
 mise run eval --no-cache --no-write -c evals/promptfoo/mols-test-design.yaml
@@ -64,7 +64,7 @@ Runtime만 원격으로 바꾸면 기본 grader는 계속 Ollama이므로 behavi
 
 ### Provider-Specific Options
 
-공통 config는 `temperature: 0`만 지정하고 Trigger의 JSON 응답은 system의 schema 지시와 strict assertion으로 판정합니다. 선택 집합만 계약인 경우 fixture의 `expected_selection.primary_skill`을 생략할 수 있습니다. 명시된 경우 기존과 같이 일치 여부를 검사하며, 모델 응답 schema는 그대로 유지합니다. 제공자마다 다른 JSON 강제 옵션을 공통으로 주입하지 않으며, JSON을 따르지 않은 출력은 실패입니다. Grader 선택과 별개로 runtime의 모델·sampling·structured-output 설정도 평가 조건에 기록합니다.
+공통 config는 `temperature: 0`만 지정하고 Trigger의 JSON 응답은 system의 schema 지시와 strict assertion으로 판정합니다. 제공자마다 다른 JSON 강제 옵션을 공통으로 주입하지 않으며, JSON을 따르지 않은 출력은 실패입니다. Grader 선택과 별개로 runtime의 모델·sampling·structured-output 설정도 평가 조건에 기록합니다.
 
 Endpoint·인증은 선택한 [native provider 문서](https://www.promptfoo.dev/docs/providers/)의 환경변수 또는 `config`를 사용합니다. 추가 generation 옵션이 필요하면 [Promptfoo native 설정](https://www.promptfoo.dev/docs/configuration/reference/)에서 해당 provider의 `config`를 지정합니다. 예를 들어 OpenAI Trigger의 JSON mode는 다음 형태입니다.
 

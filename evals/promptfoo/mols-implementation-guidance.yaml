@@ -1,22 +1,22 @@
 # yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
 
-description: mols-coding-context and Python add-on routing eval
+description: mols-implementation-guidance routing eval
 
 prompts:
   - file://skill-chat.json
 
 providers:
   - id: "{{ env.PROMPTFOO_RUNTIME_PROVIDER }}"
-    label: mols-coding-context-trigger
+    label: mols-implementation-guidance-trigger
     config:
       temperature: 0
 
 tests:
   - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_native_tests
     config:
-      skill: mols-coding-context
+      skill: mols-implementation-guidance
       suite: trigger
-      provider_label: mols-coding-context-trigger
+      provider_label: mols-implementation-guidance-trigger
       semantic: false
 
 sharing: false

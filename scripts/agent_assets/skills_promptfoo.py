@@ -105,26 +105,20 @@ def _case_suite(mode: str) -> str:
     return TRIGGER_SUITE if mode in TRIGGER_MODES else BEHAVIOR_SUITE
 
 
-def _selection_error(
-    value: object, label: str, *, primary_optional: bool = False
-) -> str | None:
+def _selection_error(value: object, label: str) -> str | None:
     if not isinstance(value, dict):
         return f"{label} must be a JSON object"
-    if set(value) != TRIGGER_RESPONSE_KEYS and not (
-        primary_optional and set(value) == {"selected_skills"}
-    ):
+    if set(value) != TRIGGER_RESPONSE_KEYS:
         return f"{label} must contain exactly selected_skills and primary_skill"
 
     selected = value["selected_skills"]
+    primary = value["primary_skill"]
     if not isinstance(selected, list) or not all(
         isinstance(item, str) and item for item in selected
     ):
         return f"{label} selected_skills must be a list of non-empty strings"
     if len(selected) != len(set(selected)):
         return f"{label} selected_skills must not contain duplicates"
-    if "primary_skill" not in value:
-        return None
-    primary = value["primary_skill"]
     if primary is not None and (not isinstance(primary, str) or not primary):
         return f"{label} primary_skill must be a non-empty string or null"
     if selected and primary is None:
@@ -142,7 +136,7 @@ def _coerce_selection(value: object, label: str) -> dict:
             value = json.loads(value)
         except json.JSONDecodeError as error:
             raise ValueError(f"{label} is not valid JSON") from error
-    error = _selection_error(value, label, primary_optional=True)
+    error = _selection_error(value, label)
     if error is not None:
         raise ValueError(error)
     return value
@@ -520,10 +514,7 @@ def assert_trigger(output: str, context: dict) -> dict:
     expected_selected = set(expected["selected_skills"])
     if (
         selected != expected_selected
-        or (
-            "primary_skill" in expected
-            and payload["primary_skill"] != expected["primary_skill"]
-        )
+        or payload["primary_skill"] != expected["primary_skill"]
     ):
         return {
             "pass": False,
@@ -597,9 +588,6 @@ def _fixture_output(context: dict, suite: str) -> dict:
                 "error": f"fixture trigger case requires valid selection: {error}",
                 "output": "",
             }
-        if "primary_skill" not in expected:
-            selected = expected["selected_skills"]
-            expected = {**expected, "primary_skill": selected[0] if selected else None}
         return {"output": json.dumps(expected, ensure_ascii=False)}
     if suite == BEHAVIOR_SUITE:
         return {
