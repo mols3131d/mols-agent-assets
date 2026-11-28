@@ -20,7 +20,4 @@ description: mols-coding-context-python의 설계 의도, Core와의 책임 경�
 
 ## Evaluation
 
-[Core의 평가 기준](../mols-coding-context/guidance.md#evaluation)을 적용하되, Core 단독과 기존·변경 add-on 동반 조건을 비교하여 확장의 순효과를 확인한다.
-
-- Python 판단이 필요한 작업에서 최초 동반 선택과 재사용이 이루어지고, 단순 언급이나 언어와 무관한 작업에서는 선택되지 않는지 확인한다.
-- Python 고유의 실행 의미에 따른 계약 위반이 줄어드는지, 타입 오류를 해결하려고 불필요한 런타임 변경·방어 로직을 추가하거나 실행 환경을 우회하는 등의 새로운 회귀가 생기지 않는지 비교한다.
+[Core의 routing Eval](../mols-coding-context/guidance.md#evaluation)에서 함께 평가한다. Python 의미 또는 실행 계약이 중요한 작업에서 Core와 동반 선택되고, 단순 언급이나 언어와 무관한 작업에서는 선택되지 않는지 확인한다. Python 단독 선택은 허용하지 않는다. 본문의 효과와 로딩·재사용은 routing 결과로 단정하지 않는다.

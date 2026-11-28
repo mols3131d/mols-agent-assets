@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+
+description: mols-coding-context and Python add-on routing eval
+
+prompts:
+  - file://skill-chat.json
+
+providers:
+  - id: "{{ env.PROMPTFOO_RUNTIME_PROVIDER }}"
+    label: mols-coding-context-trigger
+    config:
+      temperature: 0
+
+tests:
+  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_native_tests
+    config:
+      skill: mols-coding-context
+      suite: trigger
+      provider_label: mols-coding-context-trigger
+      semantic: false
+
+sharing: false
+writeLatestResults: false
+commandLineOptions:
+  cache: false
+  write: false
+  noShare: true
+  maxConcurrency: 1

@@ -26,17 +26,15 @@ Core는 판단을 보강하되 워크플로우를 제공하지 않는다. 리뷰
 
 ## Evaluation
 
-[저장소 평가 정책](../../development/evaluation.md)에 따른 비교 관점이다. 구체적인 평가 계약과 fixture는 [evals/](../../../evals/README.md)가 소유한다.
+[저장소 평가 정책](../../development/evaluation.md)에 따라 이 Skill의 자동 Eval은 description 기반 routing에 한정한다. [공통 fixture](../../../evals/skills/mols-coding-context/cases.json)는 Core와 Python add-on의 선택 집합을 함께 검증한다. 일상 코딩의 선택, 비코딩의 비선택, Python 고유 판단이 필요한 작업의 동반 선택, 부수적 Python 언급의 비선택을 확인한다.
 
-| 평가 관점 | 확인할 행동과 회귀 |
-| --- | --- |
-| 선택·로딩 | 일상 코딩의 최초 선택 및 재사용, 비코딩의 비선택, 언어별 add-on의 조건부 동반 선택 |
-| 설계·변경 | 계약·실패 의미 보존, 적절한 상태 모델링과 ownership, 안전한 부작용 처리 ↔ 과잉 추상화·재설계 |
-| 주장·해결책 | 근거 있는 결함의 수용과 독립적인 해결책 판단 ↔ 근거 없는 가설의 요구사항화, 추측성 방어 추가, 필요한 보호 장치 누락 |
-| 검증·최적화 | 반복 실패 시 전제 검증, 계약 중심 테스트, 타당한 측정 ↔ 과잉 검증·근거 없는 finding과 성능 주장 |
-| 비용 | 입력·추론 토큰, 소요 시간, 도구 호출·재로딩·추가 작업을 측정 가능한 범위에서 비교 |
+```bash
+mise run eval -c evals/promptfoo/mols-coding-context.yaml
+```
 
-같은 모델·런타임·하네스와 작업 조건에서 Core 미적용, 기존 Core, 변경 Core를 필요에 따라 비교한다. 조건이 다르면 그 차이를 결과 해석에 반영한다. 선택·로딩은 실제 대상 런타임에서 확인하고, 판단 품질은 관찰 가능한 결과와 근거로 평가한다. 파일 길이와 정적 검사만으로 행동 동등성이나 비용 절감을 단정하지 않는다.
+기존 evaluator의 primary_skill 필드에는 Core를 기본 컨텍스트로 지정한다. Python add-on은 이를 보강하며, 이 값은 실제 로딩 순서나 실행 소유권을 뜻하지 않는다. Python 후보 description은 변경 시 fixture에서 갱신한다.
+
+Routing Eval은 실제 런타임의 로딩 횟수·재사용, 판단 품질, 결과물 개선 또는 비용 절감을 검증하지 않는다. 본문 변경은 정적 리뷰와 실제 사용에서 관찰한 오류·결과를 근거로 판단하며, 응답 기반 Behavior Eval이나 별도 평가 프레임워크를 추가하지 않는다.
 
 ## References
 

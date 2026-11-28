@@ -357,7 +357,11 @@ def test_promptfoo_configs_use_generic_skill_evaluator() -> None:
     for generated in smoke["tests"]:
         assert generated["path"].endswith("skills_promptfoo.py:generate_tests")
 
-    for name in ("mols-loops.yaml", "mols-dev-env-bootstrap-design.yaml"):
+    for name in (
+        "mols-loops.yaml",
+        "mols-dev-env-bootstrap-design.yaml",
+        "mols-coding-context.yaml",
+    ):
         config = yaml.safe_load((CONFIG_DIR / name).read_text(encoding="utf-8"))
         assert config["prompts"] == ["file://skill-chat.json"]
         for provider in config["providers"]:
@@ -372,6 +376,23 @@ def test_promptfoo_configs_use_generic_skill_evaluator() -> None:
         assert config["commandLineOptions"]["cache"] is False
         assert config["commandLineOptions"]["write"] is False
         assert config["commandLineOptions"]["noShare"] is True
+
+
+def test_coding_context_config_generates_routing_only_cases() -> None:
+    config = yaml.safe_load(
+        (CONFIG_DIR / "mols-coding-context.yaml").read_text(encoding="utf-8")
+    )
+    assert len(config["tests"]) == 1
+    generated = config["tests"][0]["config"]
+    assert generated["suite"] == "trigger"
+    assert generated["semantic"] is False
+    cases = evaluator._load_cases("mols-coding-context")
+    tests = evaluator.generate_native_tests(generated)
+    assert {test["vars"]["case_id"] for test in tests} == set(cases)
+    for test in tests:
+        assert test["providers"] == [config["providers"][0]["label"]]
+        assert [check["type"] for check in test["assert"]] == ["python"]
+        assert "skill-catalog" in test["vars"]["system"]
 
 
 def test_native_generator_keeps_trigger_and_behavior_context_separate() -> None:

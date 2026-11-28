@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "routine-coding",
+      "mode": "activation",
+      "prompt": "Implement a small Rust utility function using the existing public interface.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-coding-context"
+        ],
+        "primary_skill": "mols-coding-context"
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-coding-context-python",
+          "description": "Python-specific judgment for coding tasks materially dependent on Python semantics or runtime behavior. Extends mols-coding-context; use only alongside it. Load once at task entry unless already in context; reuse while available. Excludes incidental Python, non-code administration, factual lookup, and prose-only work."
+        }
+      ]
+    },
+    {
+      "id": "code-review",
+      "mode": "activation",
+      "prompt": "Review this Go patch for regressions in its error handling and return contract.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-coding-context"
+        ],
+        "primary_skill": "mols-coding-context"
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-coding-context-python",
+          "description": "Python-specific judgment for coding tasks materially dependent on Python semantics or runtime behavior. Extends mols-coding-context; use only alongside it. Load once at task entry unless already in context; reuse while available. Excludes incidental Python, non-code administration, factual lookup, and prose-only work."
+        }
+      ]
+    },
+    {
+      "id": "python-implementation",
+      "mode": "activation",
+      "prompt": "Python 서비스의 JSON 응답 스키마를 변경하고 기존 호출자의 동작을 유지하도록 구현해줘.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-coding-context",
+          "mols-coding-context-python"
+        ],
+        "primary_skill": "mols-coding-context"
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-coding-context-python",
+          "description": "Python-specific judgment for coding tasks materially dependent on Python semantics or runtime behavior. Extends mols-coding-context; use only alongside it. Load once at task entry unless already in context; reuse while available. Excludes incidental Python, non-code administration, factual lookup, and prose-only work."
+        }
+      ]
+    },
+    {
+      "id": "python-runtime-review",
+      "mode": "activation",
+      "prompt": "Review this Python asyncio patch: an existing event loop owns task lifetime and cancellation.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-coding-context",
+          "mols-coding-context-python"
+        ],
+        "primary_skill": "mols-coding-context"
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-coding-context-python",
+          "description": "Python-specific judgment for coding tasks materially dependent on Python semantics or runtime behavior. Extends mols-coding-context; use only alongside it. Load once at task entry unless already in context; reuse while available. Excludes incidental Python, non-code administration, factual lookup, and prose-only work."
+        }
+      ]
+    },
+    {
+      "id": "incidental-python",
+      "mode": "activation",
+      "prompt": "Refactor this Rust CLI. The README mentions a Python client, but the client code and its behavior are unchanged.",
+      "expected_selection": {
+        "selected_skills": [
+          "mols-coding-context"
+        ],
+        "primary_skill": "mols-coding-context"
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-coding-context-python",
+          "description": "Python-specific judgment for coding tasks materially dependent on Python semantics or runtime behavior. Extends mols-coding-context; use only alongside it. Load once at task entry unless already in context; reuse while available. Excludes incidental Python, non-code administration, factual lookup, and prose-only work."
+        }
+      ]
+    },
+    {
+      "id": "repository-administration",
+      "mode": "activation-negative",
+      "prompt": "Rename this pull request and add the documentation label; no code changes are needed.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-coding-context-python",
+          "description": "Python-specific judgment for coding tasks materially dependent on Python semantics or runtime behavior. Extends mols-coding-context; use only alongside it. Load once at task entry unless already in context; reuse while available. Excludes incidental Python, non-code administration, factual lookup, and prose-only work."
+        }
+      ]
+    },
+    {
+      "id": "factual-lookup",
+      "mode": "activation-negative",
+      "prompt": "Python의 최신 안정 버전이 무엇인지 알려줘.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-coding-context-python",
+          "description": "Python-specific judgment for coding tasks materially dependent on Python semantics or runtime behavior. Extends mols-coding-context; use only alongside it. Load once at task entry unless already in context; reuse while available. Excludes incidental Python, non-code administration, factual lookup, and prose-only work."
+        }
+      ]
+    },
+    {
+      "id": "prose-only",
+      "mode": "activation-negative",
+      "prompt": "Python을 언급하는 블로그 소개 문단의 맞춤법과 문장 표현만 다듬어줘.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      },
+      "routing_candidates": [
+        {
+          "name": "mols-coding-context-python",
+          "description": "Python-specific judgment for coding tasks materially dependent on Python semantics or runtime behavior. Extends mols-coding-context; use only alongside it. Load once at task entry unless already in context; reuse while available. Excludes incidental Python, non-code administration, factual lookup, and prose-only work."
+        }
+      ]
+    }
+  ]
+}
