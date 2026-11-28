@@ -6,10 +6,9 @@ description: >-
   use for bounded review, validation, or evaluation of prompts, tools,
   guardrails, references, configs, scripts, hooks, and eval fixtures when they
   affect agent behavior. Covers deterministic and semantic validation plus
-  routing and behavior evaluation. Use mols-agent-asset-find for discovery,
-  selection, loading, installation, synchronization, or invocation. Do not use
-  for ordinary product code, human-facing prose, prompt authoring, hook setup,
-  or MCP setup.
+  routing and behavior evaluation. Do not use for discovery, selection,
+  loading, installation, synchronization, invocation, ordinary product code,
+  human-facing prose, prompt authoring, hook setup, or MCP setup.
 targets:
   - claudecode
   - codexcli
@@ -97,7 +96,7 @@ Runtime을 실행하지 않았다면 실제 performance를 검증했다고 주�
 
 ## Boundary
 
-- Agent Asset의 discovery, 설치, 동기화, invocation은 `mols-agent-asset-find`의 책임이다.
+- Agent Asset의 discovery, 설치, 동기화, invocation은 이 Skill의 범위 밖이며 해당 runtime의 native mechanism을 따른다.
 - Prompt, Hook, MCP의 authoring용 type reference는 추가하지 않는다. 이들의 bounded 리뷰·검증·평가는 common reference와 authoritative contract로 처리할 수 있다.
 - 제품 코드 자체의 correctness review는 대상이 아니다. Agent tool, hook, validator, fixture처럼 agent behavior를 구성하는 코드만 그 역할의 계약 범위에서 다룬다.
 - local schema, project profile, host validator, packaging framework, universal taxonomy를 필요 없이 새로 만들지 않는다.

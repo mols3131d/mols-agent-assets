@@ -83,8 +83,8 @@ Directory path나 file list만 보여서는 semantic routing이 불가능한 경
 Skills are under src/.../skills/
 
 # routable
-mols-loops — adaptive loop orchestration에 사용 — <route>
-searcher — current external research에 사용 — <route>
+github-context — concrete GitHub repository work에 사용 — <route>
+mols-test-design — software test design에 사용 — <route>
 ```
 
 Representation은 고정 schema가 아닙니다. 기존 repository mechanism이 같은 역할을 이미 수행한다면 그것을 재사용합니다.

@@ -100,7 +100,7 @@ def test_runner_passes_native_provider_environment_to_promptfoo(
         return runner.subprocess.CompletedProcess(command, 0)
 
     monkeypatch.setattr(runner.subprocess, "run", run)
-    args = ["eval", "-c", "evals/promptfoo/mols-loops.yaml"]
+    args = ["eval", "-c", "evals/promptfoo/mols-test-design.yaml"]
 
     assert runner.main(args) == 0
     command, check, env = observed[0]

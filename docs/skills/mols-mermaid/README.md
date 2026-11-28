@@ -19,4 +19,4 @@ Mermaid 기반 시각화를 다루는 Skill family입니다. **관계·절차·�
 - 관계, procedure, branching, message order, lifecycle, architecture, schema, unweighted hierarchy가 핵심이면 `mols-mermaid-diagram`을 사용합니다.
 - magnitude, trend, proportion, quantified flow, weighted hierarchy, numeric profile이 핵심이면 `mols-mermaid-chart`를 사용합니다.
 - 하나의 요청에 두 질문이 모두 있으면 하나의 Skill로 억지 통합하지 않고 필요한 표현을 분리합니다.
-- Markdown 문서 전체의 표현과 dashboard composition은 `mols-markdown` family가 소유합니다.
+- Markdown 문서 전체의 표현은 `mols-markdown` family가 소유합니다.

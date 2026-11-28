@@ -117,7 +117,6 @@ CI 실패가 생성기 실행이나 환경 문제를 드러냈지만 해당 조�
 - [Artifact Inbox](artifact-inbox.md) — 조사·스펙·리뷰 등 임시 작업 결과를 놓을 수 있는 surface를 소개합니다.
 - [Progressive Context Routing](../context-engineering/progressive-context-routing.md) — 필요한 지침과 근거만 단계적으로 불러오는 방법을 다룹니다.
 - [Chatbot Repository Entrypoint](../context-engineering/chatbot-repository-entrypoint.md) — native discovery가 부족한 챗봇의 repository 첫 진입을 보완합니다.
-- [mols-loops](../../../src/rulesync/.rulesync/skills/mols-loops/SKILL.md) — Research·Plan·Work·Review를 반복적으로 조합하는 **선택 가능한** 기존 오케스트레이터 예시입니다.
 
 질문 방식은 [Grill Me](https://github.com/mattpocock/skills/blob/main/docs/productivity/grill-me.md), 스펙과 작업의 정합성은 [Spec Kit](https://github.com/github/spec-kit/blob/main/docs/quickstart.md)와 [OpenSpec](https://openspec.dev/docs/quickstart)를 참고할 수 있습니다. 이들을 설치하거나 동일한 단계·파일 구조를 채택해야 하는 것은 아닙니다.
 
