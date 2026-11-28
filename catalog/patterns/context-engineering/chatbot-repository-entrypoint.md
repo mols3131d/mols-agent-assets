@@ -133,5 +133,5 @@ Runtime-side surface를 현재 권한으로 수정하거나 검증할 수 없다
 핵심은 세 가지입니다.
 
 1. 실제 runtime에서 누락된 repository discovery가 있는지 먼저 확인합니다.
-1. 필요한 경우 stable repository entrypoint와 guaranteed runtime-side bootstrap으로 first-hop만 복구합니다.
-1. 기존 guidance와 Agent Asset은 자기 의미의 canonical owner로 남기고 compatibility surface는 그 owner로 route합니다.
+2. 필요한 경우 stable repository entrypoint와 guaranteed runtime-side bootstrap으로 first-hop만 복구합니다.
+3. 기존 guidance와 Agent Asset은 자기 의미의 canonical owner로 남기고 compatibility surface는 그 owner로 route합니다.
