@@ -1,5 +1,5 @@
 ---
-description: mols-coding-context의 설계 의도, 지침 채택·제거 기준과 행동 회귀 평가를 검토할 때 사용합니다.
+description: mols-coding-context의 설계 의도, 지침 채택·제거 기준과 routing 평가를 검토할 때 사용합니다.
 ---
 
 # Coding Context

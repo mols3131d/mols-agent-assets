@@ -1,5 +1,5 @@
 ---
-description: mols-coding-context-python의 설계 의도, Core와의 책임 경계, 지침 채택 및 행동 회귀 평가를 검토할 때 사용합니다.
+description: mols-coding-context-python의 설계 의도, Core와의 책임 경계, 지침 채택 및 routing 평가를 검토할 때 사용합니다.
 ---
 
 # Python Coding Context
