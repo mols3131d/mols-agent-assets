@@ -8,10 +8,6 @@ from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 
 from scripts import indexes_generate
-from scripts.agent_assets import (
-    routes_distribution_generate as generate_distribution_routes,
-    routes_repository_generate as generate_repository_routes,
-)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -19,14 +15,6 @@ _DOCS_INDEX_TOOL_SOURCES = {"scripts/indexes_generate.py"}
 _DOCS_INDEX_TOOL_PREFIX = (
     "src/rulesync/.rulesync/skills/mols-markdown-maintenance/scripts/"
 )
-_REPOSITORY_ROUTE_SOURCES = {
-    "rulesync.lock",
-    "rulesync.jsonc",
-    "skills-lock.json",
-    ".agents/route/families.json",
-    "scripts/agent_assets/routes_repository_generate.py",
-}
-_SUBAGENT_SOURCE_PREFIX = "src/rulesync/.rulesync/subagents/"
 
 
 class GeneratedArtifactSyncError(RuntimeError):
@@ -98,44 +86,12 @@ def _is_catalog_index_output(path: str) -> bool:
     )
 
 
-def _is_distribution_route_source(path: str) -> bool:
-    if path == "scripts/agent_assets/routes_distribution_generate.py":
-        return True
-    if path.startswith("src/rulesync/.rulesync/skills/") and path.endswith("/SKILL.md"):
-        return True
-    if not path.startswith(_SUBAGENT_SOURCE_PREFIX) or not path.endswith(".md"):
-        return False
-    return "/" not in path.removeprefix(_SUBAGENT_SOURCE_PREFIX)
-
-
-def _is_distribution_route_output(path: str) -> bool:
-    candidate = PurePosixPath(path)
-    return candidate.parent == PurePosixPath("route") and candidate.suffix == ".jsonl"
-
-
-def _is_repository_route_source(path: str) -> bool:
-    return path in _REPOSITORY_ROUTE_SOURCES
-
-
-def _is_repository_route_output(path: str) -> bool:
-    return path.startswith(".agents/route/") and path.endswith(".jsonl")
-
-
 def _generate_docs_indexes() -> None:
     indexes_generate.sync_indexes(indexes_generate.PRESETS["docs"])
 
 
 def _generate_catalog_index() -> None:
     indexes_generate.sync_indexes(indexes_generate.PRESETS["catalog"])
-
-
-def _generate_distribution_routes() -> None:
-    generate_distribution_routes.main()
-
-
-def _generate_repository_route() -> None:
-    outputs = generate_repository_routes.generate()
-    generate_repository_routes.write_outputs(outputs)
 
 
 PROJECTIONS = (
@@ -150,18 +106,6 @@ PROJECTIONS = (
         source_matches=_is_catalog_index_source,
         output_matches=_is_catalog_index_output,
         generate=_generate_catalog_index,
-    ),
-    Projection(
-        name="distribution-routes",
-        source_matches=_is_distribution_route_source,
-        output_matches=_is_distribution_route_output,
-        generate=_generate_distribution_routes,
-    ),
-    Projection(
-        name="repository-routes",
-        source_matches=_is_repository_route_source,
-        output_matches=_is_repository_route_output,
-        generate=_generate_repository_route,
     ),
 )
 
