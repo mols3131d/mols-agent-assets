@@ -32,7 +32,7 @@ Core는 판단을 보강하되 워크플로우를 제공하지 않는다. 리뷰
 mise run eval -c evals/promptfoo/mols-coding-context.yaml
 ```
 
-기존 evaluator의 primary_skill 필드에는 Core를 기본 컨텍스트로 지정한다. Python add-on은 이를 보강하며, 이 값은 실제 로딩 순서나 실행 소유권을 뜻하지 않는다. Python 후보 description은 변경 시 fixture에서 갱신한다.
+선택 집합만 채점한다. 응답 schema의 `primary_skill` 필드는 유지하지만 실제 실행 소유권을 정의하지 않는 Context Skill에서는 특정 primary를 기대 조건으로 두지 않는다. Python 후보 description은 변경 시 fixture에서 갱신한다.
 
 Routing Eval은 실제 런타임의 로딩 횟수·재사용, 판단 품질, 결과물 개선 또는 비용 절감을 검증하지 않는다. 본문 변경은 정적 리뷰와 실제 사용에서 관찰한 오류·결과를 근거로 판단하며, 응답 기반 Behavior Eval이나 별도 평가 프레임워크를 추가하지 않는다.
 

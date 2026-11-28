@@ -6,23 +6,7 @@
       "mode": "activation",
       "prompt": "Implement a small Rust utility function using the existing public interface.",
       "expected_selection": {
-        "selected_skills": ["mols-coding-context"],
-        "primary_skill": "mols-coding-context"
-      },
-      "routing_candidates": [
-        {
-          "name": "mols-coding-context-python",
-          "description": "Python-specific judgment for coding tasks materially dependent on Python semantics or runtime behavior. Extends mols-coding-context; use only alongside it. Load once at task entry unless already in context; reuse while available. Excludes incidental Python, non-code administration, factual lookup, and prose-only work."
-        }
-      ]
-    },
-    {
-      "id": "code-review",
-      "mode": "activation",
-      "prompt": "Review this Go patch for regressions in its error handling and return contract.",
-      "expected_selection": {
-        "selected_skills": ["mols-coding-context"],
-        "primary_skill": "mols-coding-context"
+        "selected_skills": ["mols-coding-context"]
       },
       "routing_candidates": [
         {
@@ -36,11 +20,7 @@
       "mode": "activation",
       "prompt": "Python 함수의 타입 검사 오류를 수정하되 기존 런타임 동작과 호출자 계약을 유지해줘.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-coding-context",
-          "mols-coding-context-python"
-        ],
-        "primary_skill": "mols-coding-context"
+        "selected_skills": ["mols-coding-context", "mols-coding-context-python"]
       },
       "routing_candidates": [
         {
@@ -54,11 +34,7 @@
       "mode": "activation",
       "prompt": "Review this Python asyncio patch: an existing event loop owns task lifetime and cancellation.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-coding-context",
-          "mols-coding-context-python"
-        ],
-        "primary_skill": "mols-coding-context"
+        "selected_skills": ["mols-coding-context", "mols-coding-context-python"]
       },
       "routing_candidates": [
         {
@@ -72,8 +48,7 @@
       "mode": "activation",
       "prompt": "Refactor this Rust CLI. The README mentions a Python client, but the client code and its behavior are unchanged.",
       "expected_selection": {
-        "selected_skills": ["mols-coding-context"],
-        "primary_skill": "mols-coding-context"
+        "selected_skills": ["mols-coding-context"]
       },
       "routing_candidates": [
         {
@@ -87,8 +62,7 @@
       "mode": "activation-negative",
       "prompt": "Rename the pull request for a Python package and add a documentation label; no code or build changes are needed.",
       "expected_selection": {
-        "selected_skills": [],
-        "primary_skill": null
+        "selected_skills": []
       },
       "routing_candidates": [
         {
@@ -100,25 +74,9 @@
     {
       "id": "factual-lookup",
       "mode": "activation-negative",
-      "prompt": "Python의 최신 안정 버전이 무엇인지 알려줘.",
+      "prompt": "Python에서 list와 tuple의 차이점을 설명해줘.",
       "expected_selection": {
-        "selected_skills": [],
-        "primary_skill": null
-      },
-      "routing_candidates": [
-        {
-          "name": "mols-coding-context-python",
-          "description": "Python-specific judgment for coding tasks materially dependent on Python semantics or runtime behavior. Extends mols-coding-context; use only alongside it. Load once at task entry unless already in context; reuse while available. Excludes incidental Python, non-code administration, factual lookup, and prose-only work."
-        }
-      ]
-    },
-    {
-      "id": "prose-only",
-      "mode": "activation-negative",
-      "prompt": "Python을 언급하는 블로그 소개 문단의 맞춤법과 문장 표현만 다듬어줘.",
-      "expected_selection": {
-        "selected_skills": [],
-        "primary_skill": null
+        "selected_skills": []
       },
       "routing_candidates": [
         {

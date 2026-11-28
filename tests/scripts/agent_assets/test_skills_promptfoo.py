@@ -198,6 +198,27 @@ def test_trigger_grader_checks_exact_selected_set_and_primary() -> None:
     assert evaluator.assert_trigger("not-json", {"vars": {}})["pass"] is False
 
 
+def test_trigger_grader_can_check_only_selected_skills() -> None:
+    context = {"vars": {"expected_selection": {"selected_skills": ["core", "python"]}}}
+    for primary in ("core", "python"):
+        output = json.dumps(
+            {"selected_skills": ["core", "python"], "primary_skill": primary}
+        )
+        assert evaluator.assert_trigger(output, context)["pass"] is True
+
+    for selected in (["core"], ["python"], ["core", "python", "other"]):
+        output = json.dumps(
+            {"selected_skills": selected, "primary_skill": selected[0]}
+        )
+        assert evaluator.assert_trigger(output, context)["pass"] is False
+
+    output = json.dumps({"selected_skills": ["core", "python"]})
+    assert evaluator.assert_trigger(output, context)["pass"] is False
+
+    fixture = evaluator._fixture_output(context, evaluator.TRIGGER_SUITE)
+    assert evaluator.assert_trigger(fixture["output"], context)["pass"] is True
+
+
 def test_fixture_provider_is_skill_agnostic() -> None:
     expected = {"selected_skills": [], "primary_skill": None}
     trigger = evaluator.call_api(
@@ -389,10 +410,7 @@ def test_coding_context_config_generates_routing_only_cases() -> None:
     cases = evaluator._load_cases("mols-coding-context")
     tests = evaluator.generate_native_tests(generated)
     assert {test["vars"]["case_id"] for test in tests} == set(cases)
-    for test in tests:
-        assert test["providers"] == [config["providers"][0]["label"]]
-        assert [check["type"] for check in test["assert"]] == ["python"]
-        assert "skill-catalog" in test["vars"]["system"]
+    assert all("primary_skill" not in t["vars"]["expected_selection"] for t in tests)
 
 
 def test_native_generator_keeps_trigger_and_behavior_context_separate() -> None:

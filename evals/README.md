@@ -64,7 +64,7 @@ Runtime만 원격으로 바꾸면 기본 grader는 계속 Ollama이므로 behavi
 
 ### Provider-Specific Options
 
-공통 config는 `temperature: 0`만 지정하고 Trigger의 JSON 응답은 system의 schema 지시와 기존 strict assertion으로 판정합니다. 제공자마다 다른 JSON 강제 옵션을 공통으로 주입하지 않으며, JSON을 따르지 않은 출력은 실패입니다. Grader 선택과 별개로 runtime의 모델·sampling·structured-output 설정도 평가 조건에 기록합니다.
+공통 config는 `temperature: 0`만 지정하고 Trigger의 JSON 응답은 system의 schema 지시와 strict assertion으로 판정합니다. 선택 집합만 계약인 경우 fixture의 `expected_selection.primary_skill`을 생략할 수 있습니다. 명시된 경우 기존과 같이 일치 여부를 검사하며, 모델 응답 schema는 그대로 유지합니다. 제공자마다 다른 JSON 강제 옵션을 공통으로 주입하지 않으며, JSON을 따르지 않은 출력은 실패입니다. Grader 선택과 별개로 runtime의 모델·sampling·structured-output 설정도 평가 조건에 기록합니다.
 
 Endpoint·인증은 선택한 [native provider 문서](https://www.promptfoo.dev/docs/providers/)의 환경변수 또는 `config`를 사용합니다. 추가 generation 옵션이 필요하면 [Promptfoo native 설정](https://www.promptfoo.dev/docs/configuration/reference/)에서 해당 provider의 `config`를 지정합니다. 예를 들어 OpenAI Trigger의 JSON mode는 다음 형태입니다.
 
