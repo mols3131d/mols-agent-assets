@@ -17,26 +17,26 @@
     },
     "mols3131d/mols-agent-assets": {
       "requestedRef": "main",
-      "resolvedRef": "05fd51354fe53eaef51e9b7166bd0c2d39ae78a4",
-      "resolvedAt": "2026-11-28T13:40:53.343Z",
+      "resolvedRef": "b327bbd44bf8d3fe71bb37647f58ed1c5fbe9155",
+      "resolvedAt": "2026-11-28T13:56:22.730Z",
       "skills": {
         "github-context": {
           "integrity": "sha256-ba5201fd19cc7939ddbdd4300ea01f227670a64f1863e26ee6805429f4635191"
         },
         "mols-agent-asset": {
-          "integrity": "sha256-ba10320d7fadba56e9619c4336d3d6adb57c52fcd2f2a45b8347ffe5d8b84d59"
+          "integrity": "sha256-13524ee15b7b51495c1ece7f9afe264bc9d77f2f0d90af505bcdb11b26291586"
         },
         "mols-documentation": {
-          "integrity": "sha256-1f7ec4eb7ee2c3597e0fda64c6a224e58e0cf1bb3c4be33c53e5a5cae3dff8dc"
+          "integrity": "sha256-2c768ddbd4e2a50be5f23d95eaab077cde3dcb94c5f6e3047289495c228f64ff"
         },
         "mols-markdown-maintenance": {
-          "integrity": "sha256-360d1b22d74b8027004d60b266c8a4adf040c8adbad11526fac61fb14ccbcb43"
+          "integrity": "sha256-0a5a0d5d710da5e388b43dd7f5ee78a01ee8715ec70781fd10a5bdb30aa1cc42"
         },
         "mols-mermaid-chart": {
-          "integrity": "sha256-b12a3c7ac7cab501778842571ee739672014fd4913b2e01953a218967c06a204"
+          "integrity": "sha256-70bcfddb9d171bb376442ec8703408023e4b9d4d6caf851553a5090928a8cb51"
         },
         "mols-mermaid-diagram": {
-          "integrity": "sha256-da671d353ab39b2bbd5ec6675e7c0bf67e2937c5bf1f71a028b4b74923edf76e"
+          "integrity": "sha256-e6d42f6dfcab26af62b7c2e694e78ab265d5212db5bab58f14233089305cb2fe"
         }
       },
       "skillSelection": [
