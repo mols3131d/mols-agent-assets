@@ -40,6 +40,6 @@ Change 데이터도 백로그의 ID·상태·의존 관계부터 확인하고 �
 
 ## Validation
 
-[평가 사례](../../../evals/skills/mols-stdd/cases.json)는 Change 상태·의존·재개·완료, 템플릿 오버라이드와 조건부 reference 선택을 다룬다. [Native Trigger/Behavior](../../../evals/promptfoo/mols-stdd.yaml)는 `SKILL.md`만 사용해 Skill 선택과 응답 행동을 평가하며 reference 로딩 검사는 의도적으로 제외한다. [Reference Selection](../../../evals/promptfoo/mols-stdd-references.yaml)은 기존 Python provider로 선택한 reference 경로를 관찰하고 기대 집합과 비교한다. 두 실행은 각각 `mise run eval -c evals/promptfoo/mols-stdd.yaml`, `mise run eval -c evals/promptfoo/mols-stdd-references.yaml`이다.
+[평가 사례](../../../evals/skills/mols-stdd/cases.json)는 Change 상태·의존·재개·완료, 템플릿 오버라이드와 조건부 reference 선택을 다룬다. [Native Trigger/Behavior](../../../evals/promptfoo/mols-stdd.yaml)는 `SKILL.md`만 사용해 Skill 선택과 응답 행동을 평가하며 reference 로딩 검사는 의도적으로 제외한다. [Reference Selection](../../../evals/promptfoo/mols-stdd-references.yaml)은 기존 Python provider로 선택한 reference 경로를 관찰하고 기대 집합과 비교한다. 두 suite는 공통 `mise run eval`에서 config, provider와 model을 명시해 실행한다. [평가 실행 설정](../../../evals/README.md#promptfoo-provider-selection)
 
 Reference 평가에는 로컬 Ollama 모델이 필요하며 선택된 reference로 행동 응답을 구성하는 호출도 포함된다. 평가 실행 전 provider·grader·비용·외부 전송 여부를 확인한다(`evals/README.md`). **평가 harness의 `loaded_references` 기록은 실제 IDE/CLI Agent의 파일 조회·도구 실행을 증명하지 않는다.** 구조·fixture 검사와 실제 모델 평가도 구분한다.

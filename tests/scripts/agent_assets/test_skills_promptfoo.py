@@ -231,6 +231,7 @@ def test_trigger_provider_uses_only_skill_discovery_metadata(
     tmp_path: Path,
     monkeypatch,
 ) -> None:
+    monkeypatch.setenv("PROMPTFOO_RUNTIME_MODEL", "test-model")
     _write_generic_skill(tmp_path)
     monkeypatch.setattr(evaluator, "ROOT", tmp_path)
     captured: list[dict] = []
@@ -289,6 +290,7 @@ def test_ollama_request_respects_local_runtime_configuration(monkeypatch) -> Non
 
 
 def test_custom_provider_uses_native_timeout_before_legacy(monkeypatch) -> None:
+    monkeypatch.setenv("PROMPTFOO_RUNTIME_MODEL", "test-model")
     monkeypatch.setenv("REQUEST_TIMEOUT_MS", "250")
     monkeypatch.setenv("PROMPTFOO_RUNTIME_TIMEOUT_SECONDS", "invalid")
     observed = {}
@@ -305,6 +307,7 @@ def test_custom_provider_uses_native_timeout_before_legacy(monkeypatch) -> None:
 
 
 def test_custom_provider_rejects_bad_timeout_before_http(monkeypatch) -> None:
+    monkeypatch.setenv("PROMPTFOO_RUNTIME_MODEL", "test-model")
     monkeypatch.setenv("REQUEST_TIMEOUT_MS", "-1")
     monkeypatch.setattr(
         evaluator.request, "urlopen", lambda *args, **kwargs: pytest.fail("HTTP called")
@@ -320,6 +323,7 @@ def test_behavior_provider_uses_full_selected_skill(
     tmp_path: Path,
     monkeypatch,
 ) -> None:
+    monkeypatch.setenv("PROMPTFOO_RUNTIME_MODEL", "test-model")
     _write_generic_skill(tmp_path)
     monkeypatch.setattr(evaluator, "ROOT", tmp_path)
     captured: list[dict] = []
@@ -361,8 +365,8 @@ def test_promptfoo_configs_use_generic_skill_evaluator() -> None:
         config = yaml.safe_load((CONFIG_DIR / name).read_text(encoding="utf-8"))
         assert config["prompts"] == ["file://skill-chat.json"]
         for provider in config["providers"]:
-            assert provider["id"] == "{{ env.PROMPTFOO_RUNTIME_PROVIDER }}"
-            assert "format" not in provider["config"]
+            assert provider["id"] == "repository-selected-runtime"
+            assert "config" not in provider
         for generated in config["tests"]:
             assert generated["path"].endswith(
                 "skills_promptfoo.py:generate_native_tests"
@@ -409,22 +413,34 @@ def test_native_generator_rejects_reference_loading() -> None:
             }
         )
 
-def test_native_generator_explicitly_omits_reference_checks_without_faking_trace() -> None:
+
+def test_native_generator_explicitly_omits_reference_checks_without_faking_trace() -> (
+    None
+):
     sample = evaluator._load_cases("mols-test-design")
     case_id = next(
-        name for name, case in sample.items()
+        name
+        for name, case in sample.items()
         if case.get("expected_loaded_references") is not None
     )
     with pytest.raises(ValueError, match="reference-loading evaluations require"):
         evaluator.generate_native_tests(
-            {"skill": "mols-test-design", "suite": "behavior",
-             "case_ids": [case_id], "semantic": False}
+            {
+                "skill": "mols-test-design",
+                "suite": "behavior",
+                "case_ids": [case_id],
+                "semantic": False,
+            }
         )
 
     native = evaluator.generate_native_tests(
-        {"skill": "mols-test-design", "suite": "behavior",
-         "case_ids": [case_id], "semantic": False,
-         "omit_reference_checks": True}
+        {
+            "skill": "mols-test-design",
+            "suite": "behavior",
+            "case_ids": [case_id],
+            "semantic": False,
+            "omit_reference_checks": True,
+        }
     )[0]
     assert "expected_loaded_references" not in native["vars"]
     assert not any(check["metric"] == "reference-loading" for check in native["assert"])
@@ -432,6 +448,9 @@ def test_native_generator_explicitly_omits_reference_checks_without_faking_trace
 
     with pytest.raises(ValueError, match="omit_reference_checks must be a boolean"):
         evaluator.generate_native_tests(
-            {"skill": "mols-test-design", "suite": "behavior",
-             "omit_reference_checks": "true"}
+            {
+                "skill": "mols-test-design",
+                "suite": "behavior",
+                "omit_reference_checks": "true",
+            }
         )

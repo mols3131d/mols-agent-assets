@@ -47,12 +47,20 @@ def test_request_timeout_rejects_invalid_legacy_value(value):
         config.request_timeout_ms({"PROMPTFOO_RUNTIME_TIMEOUT_SECONDS": value})
 
 
-@pytest.mark.parametrize("value", ["", " ", "\t"])
-def test_blank_selection_uses_default(value):
-    assert config.setting({"MODEL": value}, "MODEL", "default") == "default"
+@pytest.mark.parametrize("value", ["", "0", "abc", "2147483648"])
+def test_invalid_codex_timeout_is_rejected(value):
+    with pytest.raises(ValueError, match="PROMPTFOO_CODEX_TIMEOUT_MS"):
+        config.codex_timeout_ms({"PROMPTFOO_CODEX_TIMEOUT_MS": value})
 
 
-def test_nonempty_selection_is_trimmed_without_mutating_input():
-    env = {"MODEL": " custom-model "}
-    assert config.setting(env, "MODEL", "default") == "custom-model"
-    assert env == {"MODEL": " custom-model "}
+def test_codex_timeout_does_not_use_ollama_timeout():
+    assert config.codex_timeout_ms({"REQUEST_TIMEOUT_MS": "5"}) == 120000
+
+
+@pytest.mark.parametrize(
+    "value",
+    ["", "file:///tmp/model", "http://user:key@localhost", "http://localhost:abc"],
+)
+def test_invalid_ollama_endpoint_is_rejected(value):
+    with pytest.raises(ValueError, match="OLLAMA_BASE_URL"):
+        config.ollama_base_url({"OLLAMA_BASE_URL": value})

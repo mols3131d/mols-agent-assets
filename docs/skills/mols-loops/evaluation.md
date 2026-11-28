@@ -77,7 +77,7 @@ Core runtime selection은 다음 축에서 대표 case를 고릅니다.
 Behavior output에는 두 종류의 assertion을 적용합니다.
 
 1. **Output contract** — 빈 응답 같은 plumbing failure를 deterministic하게 차단합니다.
-1. **Behavior contract** — fixture의 repository-owned assertions를 `llm-rubric`으로 평가합니다.
+2. **Behavior contract** — fixture의 repository-owned assertions를 `llm-rubric`으로 평가합니다.
 
 Rubric은 다음을 지킵니다.
 
@@ -114,10 +114,8 @@ Promptfoo의 test-level provider filter가 서로 다른 provider의 cartesian p
 ## Entrypoints
 
 ```bash
-mise run eval -c evals/promptfoo/mols-loops-smoke.yaml
-mise run eval -c evals/promptfoo/mols-loops.yaml
-mise run eval -c evals/promptfoo/mols-loops.yaml --filter-metadata suite=trigger
-mise run eval -c evals/promptfoo/mols-loops.yaml --filter-metadata suite=behavior
+mise run eval -c evals/promptfoo/mols-loops-smoke.yaml --fixture
+mise run eval -c evals/promptfoo/mols-loops.yaml --provider ollama --model qwen3.5:4b --grader none
 ```
 
 - `mols-loops-smoke.yaml` — fixture/provider/assertion plumbing만 확인
@@ -125,7 +123,7 @@ mise run eval -c evals/promptfoo/mols-loops.yaml --filter-metadata suite=behavio
 - `--filter-metadata suite=trigger` — metadata filter로 Trigger만 실행
 - `--filter-metadata suite=behavior` — metadata filter로 Behavior만 실행
 
-Native runtime은 전체 ID인 `PROMPTFOO_RUNTIME_PROVIDER`, model grader는 독립적인 `PROMPTFOO_GRADER_PROVIDER`로 선택합니다. Runtime ID를 생략하면 기존 `PROMPTFOO_RUNTIME_MODEL`의 Ollama 경로를 사용합니다. Provider별 설정과 외부 전송 경계는 [평가 실행 설정](../../../evals/README.md#promptfoo-provider-선택)을 따릅니다. 서로 다른 model/runtime을 비교할 때는 다른 조건도 결과를 왜곡하지 않도록 맞추고 사용한 조건을 함께 기록합니다.
+Native runtime은 `--provider`와 `--model`로 선택합니다. Semantic rubric을 쓰려면 `--grader`와 `--grader-model`을 지정합니다. 서로 다른 runtime을 비교할 때는 나머지 실행 조건을 맞추고 선택한 모델·grader를 기록합니다. [평가 실행 설정](../../../evals/README.md#promptfoo-provider-selection)
 
 ## Trial and Stability
 
@@ -140,17 +138,17 @@ Default suite는 비용과 signal을 균형 있게 유지하고, 더 넓은 case
 새 case는 실제 behavior 또는 failure mode를 보호할 때만 추가합니다.
 
 1. 먼저 Trigger인지 Behavior인지 결정합니다.
-1. 기존 case가 같은 failure를 이미 보호하는지 확인합니다.
-1. prompt는 정상적인 Agent가 해결 가능한 scenario로 작성합니다.
-1. assertion은 observable behavior와 금지 behavior를 적고, 특정 문구나 구현 세부에 과적합하지 않습니다.
-1. Trigger case는 positive와 negative/near-miss 균형을 확인합니다.
-1. Specificity·composition failure는 competing metadata, expected selected set과 primary owner를 명시해 실제 routing decision을 검증합니다.
-1. Behavior case는 outcome을 우선하고, trajectory 자체가 contract일 때만 중간 gate를 assertion으로 둡니다.
-1. Ownership case는 Loops outer control, RPI Main-Loop prerequisite/stage transition, task-specific internal procedure·ordering·dependency가 서로 침범하지 않는지 검증합니다.
-1. Context/composition case는 현재 decision에 필요한 최소 context만 load하는지, material change에서 applicability를 재평가하는지, loaded context와 composed workflow가 outer Loops authority를 탈취하지 않는지 검증합니다.
-1. Multi-perspective case는 distinct question·evidence surface와 reconciliation을 검사하고 reviewer 수, persona 이름, exact lens roster나 다수결을 정답으로 고정하지 않습니다.
-1. Lifecycle case는 Prepare와 Finalize를 RPI stage나 counted Loop로 오인하지 않는지, Main RPI exit가 Finalize Gate를 통과하는지, Finalize가 hidden Main Loop를 열지 않는지 검사합니다.
-1. 반복된 runtime failure가 안정적인 contract로 확인된 경우 regression defense로 승격합니다.
+2. 기존 case가 같은 failure를 이미 보호하는지 확인합니다.
+3. prompt는 정상적인 Agent가 해결 가능한 scenario로 작성합니다.
+4. assertion은 observable behavior와 금지 behavior를 적고, 특정 문구나 구현 세부에 과적합하지 않습니다.
+5. Trigger case는 positive와 negative/near-miss 균형을 확인합니다.
+6. Specificity·composition failure는 competing metadata, expected selected set과 primary owner를 명시해 실제 routing decision을 검증합니다.
+7. Behavior case는 outcome을 우선하고, trajectory 자체가 contract일 때만 중간 gate를 assertion으로 둡니다.
+8. Ownership case는 Loops outer control, RPI Main-Loop prerequisite/stage transition, task-specific internal procedure·ordering·dependency가 서로 침범하지 않는지 검증합니다.
+9. Context/composition case는 현재 decision에 필요한 최소 context만 load하는지, material change에서 applicability를 재평가하는지, loaded context와 composed workflow가 outer Loops authority를 탈취하지 않는지 검증합니다.
+10. Multi-perspective case는 distinct question·evidence surface와 reconciliation을 검사하고 reviewer 수, persona 이름, exact lens roster나 다수결을 정답으로 고정하지 않습니다.
+11. Lifecycle case는 Prepare와 Finalize를 RPI stage나 counted Loop로 오인하지 않는지, Main RPI exit가 Finalize Gate를 통과하는지, Finalize가 hidden Main Loop를 열지 않는지 검사합니다.
+12. 반복된 runtime failure가 안정적인 contract로 확인된 경우 regression defense로 승격합니다.
 
 Fixture를 target runtime에 노출하지 않습니다. Target provider는 prompt와 실제 Skill contract만 보고, assertion은 grading 단계에서만 사용합니다.
 

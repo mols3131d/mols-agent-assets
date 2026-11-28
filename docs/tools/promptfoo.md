@@ -9,19 +9,14 @@ Promptfoo는 Agent Asset의 model/runtime 평가에 사용합니다. 실행 진�
 
 ## 실행
 
-`mise run eval -c evals/promptfoo/<config>.yaml`로 설정을 선택하고 `--filter-metadata suite=trigger` 등 Promptfoo CLI 옵션을 전달합니다. `mols-test-design.yaml`로 스킬을 평가할 때 기존 캐시·결과 저장 방지 조건을 유지하려면 `--no-cache --no-write`를 지정합니다. 실제 모델·grader 평가는 사용자 요청이 있을 때만 실행합니다. 네트워크·외부 전송·비용이 발생할 수 있으므로 CI, bootstrap, hook, check 및 세션 진단에 포함하지 않습니다.
+`mise run eval`은 저장소 평가 설정 하나와 명시적인 model·provider·grader 선택을 받습니다. 실행 예제, 인증, suite별 지원 범위는 평가 문서에 있습니다. 모델·grader 실행은 사용자 요청에 따르며 CI, bootstrap, hook, check 및 세션 진단은 deterministic 검증을 실행합니다. [평가 실행 설정](../../evals/README.md#promptfoo-provider-selection)
 
-## 기본 설정과 예외
+## 버전과 실행 환경
 
-[공통 원칙](README.md#공통-원칙)에 따라 최신 안정 릴리스를 검토하되 **비교 가능한 평가 조건**을 우선합니다. runner가 선택한 CLI 버전과 최소 Node 요구조건을 따르며, 같은 평가 중에 `latest`로 교체하지 않습니다. Promptfoo는 mise 관리 CLI 7종과 별도의 runner pin입니다.
-
-- runner는 telemetry·update check·remote generation·sharing을 끄는 값을 기본으로 제공합니다. `setdefault` 기반이므로 이미 지정한 환경값을 강제로 덮어쓰는 보안 통제가 아닙니다. 민감한 평가에서는 실제 환경과 provider를 확인합니다.
-- 상태·log·cache는 기본적으로 프로젝트 `.tmp/promptfoo` 아래에 둡니다. 다른 경로를 명시했다면 그 설정이 적용됩니다.
-- 기본 단일-call 평가는 선택한 Promptfoo native provider가 HTTP 통신을 소유하며, Python generator는 fixture 변환을 담당합니다. 조건부 Reference 선택과 fixture-mode smoke는 기존 Python provider를 유지합니다.
-- Python adapter는 실행 중인 Python을 사용합니다. Native runtime은 전체 provider ID로 선택하며, 미지정 시 기존 Ollama model 설정을 사용합니다. Grader는 독립적으로 선택합니다. 기본값은 별도 `.env` 없이 제공하며, 요청 timeout은 native `REQUEST_TIMEOUT_MS`를 우선하고 기존 초 단위 설정은 호환용으로 유지합니다. [평가 실행 설정](../../evals/README.md#promptfoo-provider-선택)을 따르며, 외부 API·모델 다운로드·hosted 기능의 사용 권한이나 비용 승인을 자동으로 부여하지 않습니다.
-- 캐시와 결과 저장 여부는 공통 `eval` task에 전달한 Promptfoo 옵션을 따릅니다. `--no-cache`와 `--no-write`는 전역 기본값이 아니므로 필요한 평가에서 명시합니다.
-
-CLI·provider·model을 갱신하면 config·assertion 호환성과 결과 변화를 구분해 확인합니다. deterministic test와 model 평가의 증거 수준은 [Evaluation](../development/evaluation.md)이 소유합니다.
+- Runner는 Promptfoo `0.126.0`과 Node `22.22.0` 이상을 요구합니다. 저장소 mise는 Node `26.13.0`을 고정합니다. Codex를 선택한 경우에만 native SDK와 연결된 CLI `0.169.1`을 같은 npm 실행 환경에서 해석합니다.
+- Runner는 telemetry, update check, remote generation 및 sharing을 끕니다. Promptfoo 상태 디렉터리는 프로젝트 `.tmp/promptfoo`에 두고, 생성 설정과 Codex 작업 디렉터리는 임시 경로에 둡니다. Suite 설정은 캐시·기본 결과 저장을 끕니다.
+- Python fixture generator와 assertion은 runner의 Python을 사용합니다. Ollama 요청 제한과 Codex 실행의 case 제한은 별도로 설정합니다. 원격 provider의 데이터 전송·비용은 평가 선택에 따릅니다.
+- CLI·provider·model 변경은 config·assertion 호환성, fixture smoke, 실제 모델 결과를 각각 확인합니다. [Evaluation](../development/evaluation.md)
 
 ## 권장 버전 정책
 

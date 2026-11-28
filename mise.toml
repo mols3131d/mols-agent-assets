@@ -75,9 +75,9 @@ run = [
 description = "Run repository tests"
 run = "uv run --locked --no-default-groups --group test pytest"
 
-# Task names do not grow with evaluation fixtures; Promptfoo owns -c and filter flags.
+# One runner owns suite and provider selection before forwarding evaluation options.
 [tasks.eval]
-description = "Run a selected Promptfoo configuration with native CLI arguments"
+description = "Run an explicitly selected Promptfoo evaluation"
 raw_args = true
 run = "uv run --locked --no-default-groups --group test python scripts/agent_assets/promptfoo_run.py eval"
 

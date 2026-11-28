@@ -51,27 +51,24 @@ def test_stdd_reference_suite_covers_exactly_annotated_cases() -> None:
         assert set(selected).issubset(REFERENCE_PATHS)
         assert selected == cases[case_id]["expected_loaded_references"]
         assert any(
-            assertion["metric"] == "reference-loading"
-            for assertion in result["assert"]
+            assertion["metric"] == "reference-loading" for assertion in result["assert"]
         )
         assert not any(
-            assertion["metric"] == "behavior-contract"
-            for assertion in result["assert"]
+            assertion["metric"] == "behavior-contract" for assertion in result["assert"]
         )
 
 
 def test_stdd_native_suite_retains_behavior_without_reference_claims() -> None:
-    config = yaml.safe_load(
-        (CONFIG_DIR / "mols-stdd.yaml").read_text(encoding="utf-8")
-    )
+    config = yaml.safe_load((CONFIG_DIR / "mols-stdd.yaml").read_text(encoding="utf-8"))
     behavior = next(
-        suite for suite in config["tests"]
-        if suite["config"]["suite"] == "behavior"
+        suite for suite in config["tests"] if suite["config"]["suite"] == "behavior"
     )
     assert behavior["config"]["omit_reference_checks"] is True
     assert behavior["config"]["semantic"] is True
 
-    generated = evaluator.generate_native_tests(behavior["config"])
+    generated = evaluator.generate_native_tests(
+        {**behavior["config"], "grader": {"id": "ollama:chat:test-grader"}}
+    )
     expected = [
         case["id"]
         for case in evaluator._load_cases("mols-stdd").values()
@@ -81,10 +78,8 @@ def test_stdd_native_suite_retains_behavior_without_reference_claims() -> None:
     for item in generated:
         assert "expected_loaded_references" not in item["vars"]
         assert not any(
-            assertion["metric"] == "reference-loading"
-            for assertion in item["assert"]
+            assertion["metric"] == "reference-loading" for assertion in item["assert"]
         )
         assert any(
-            assertion["metric"] == "behavior-contract"
-            for assertion in item["assert"]
+            assertion["metric"] == "behavior-contract" for assertion in item["assert"]
         )
