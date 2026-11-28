@@ -244,9 +244,7 @@ def test_trigger_provider_preserves_competing_metadata_and_primary_selection(
 def test_runtime_promptfoo_config_selects_valid_cases_and_semantics() -> None:
     fixture = evaluator._load_cases("mols-dev-env-bootstrap-design")
     config = yaml.safe_load(
-        (CONFIG_DIR / "mols-dev-env-bootstrap-design.yaml").read_text(
-            encoding="utf-8"
-        )
+        (CONFIG_DIR / "mols-dev-env-bootstrap-design.yaml").read_text(encoding="utf-8")
     )
     generated_by_suite = {
         entry["config"]["suite"]: entry["config"] for entry in config["tests"]
