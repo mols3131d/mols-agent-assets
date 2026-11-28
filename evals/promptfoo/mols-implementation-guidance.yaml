@@ -6,10 +6,8 @@ prompts:
   - file://skill-chat.json
 
 providers:
-  - id: "{{ env.PROMPTFOO_RUNTIME_PROVIDER }}"
+  - id: repository-selected-runtime
     label: mols-implementation-guidance-trigger
-    config:
-      temperature: 0
 
 tests:
   - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_native_tests

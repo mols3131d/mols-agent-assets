@@ -30,12 +30,10 @@ description: mols-test-design만의 선택 경계, 오라클 품질, 독립적 �
 기존 45개 case를 Trigger/Behavior로 실행하는 Promptfoo 설정은 `mise run eval`에 파일 경로와 필터를 전달한다. 이 평가에서는 기존의 결과 무기록·캐시 미사용 옵션을 명시적으로 유지한다.
 
 ```bash
-mise run eval --no-cache --no-write -c evals/promptfoo/mols-test-design.yaml
-mise run eval --no-cache --no-write -c evals/promptfoo/mols-test-design.yaml --filter-metadata suite=trigger
-mise run eval --no-cache --no-write -c evals/promptfoo/mols-test-design.yaml --filter-metadata suite=behavior
+mise run eval -c evals/promptfoo/mols-test-design.yaml --provider ollama --model qwen3.5:4b --grader none
 ```
 
-이 entrypoint에는 Ollama model/runtime과 Promptfoo가 필요하다.
+`--filter-metadata suite=trigger` 또는 `suite=behavior`로 실행 범위를 좁힐 수 있다. Behavior의 semantic rubric을 사용하려면 독립적으로 grader를 지정한다. [평가 실행 설정](../../../evals/README.md#promptfoo-provider-selection)
 
 Behavior 평가에서는 허용된 `references/oracle-validation.md`의 필요 여부를 **별도 모델 요청**으로 먼저 판단하고 선택된 파일만 읽어 본 응답에 제공한다. 실제 선택된 경로를 provider metadata의 `loaded_references`로 남기며, 지정된 양성·음성 사례에서는 이를 검증한다. **참조하지 않은 경우에도 선택 요청 자체의 비용은 발생**한다.
 

@@ -231,6 +231,7 @@ def test_trigger_provider_uses_only_skill_discovery_metadata(
     tmp_path: Path,
     monkeypatch,
 ) -> None:
+    monkeypatch.setenv("PROMPTFOO_RUNTIME_MODEL", "test-model")
     _write_generic_skill(tmp_path)
     monkeypatch.setattr(evaluator, "ROOT", tmp_path)
     captured: list[dict] = []
@@ -289,6 +290,7 @@ def test_ollama_request_respects_local_runtime_configuration(monkeypatch) -> Non
 
 
 def test_custom_provider_uses_native_timeout_before_legacy(monkeypatch) -> None:
+    monkeypatch.setenv("PROMPTFOO_RUNTIME_MODEL", "test-model")
     monkeypatch.setenv("REQUEST_TIMEOUT_MS", "250")
     monkeypatch.setenv("PROMPTFOO_RUNTIME_TIMEOUT_SECONDS", "invalid")
     observed = {}
@@ -305,6 +307,7 @@ def test_custom_provider_uses_native_timeout_before_legacy(monkeypatch) -> None:
 
 
 def test_custom_provider_rejects_bad_timeout_before_http(monkeypatch) -> None:
+    monkeypatch.setenv("PROMPTFOO_RUNTIME_MODEL", "test-model")
     monkeypatch.setenv("REQUEST_TIMEOUT_MS", "-1")
     monkeypatch.setattr(
         evaluator.request, "urlopen", lambda *args, **kwargs: pytest.fail("HTTP called")
@@ -320,6 +323,7 @@ def test_behavior_provider_uses_full_selected_skill(
     tmp_path: Path,
     monkeypatch,
 ) -> None:
+    monkeypatch.setenv("PROMPTFOO_RUNTIME_MODEL", "test-model")
     _write_generic_skill(tmp_path)
     monkeypatch.setattr(evaluator, "ROOT", tmp_path)
     captured: list[dict] = []
@@ -364,8 +368,8 @@ def test_promptfoo_configs_use_generic_skill_evaluator() -> None:
         config = yaml.safe_load((CONFIG_DIR / name).read_text(encoding="utf-8"))
         assert config["prompts"] == ["file://skill-chat.json"]
         for provider in config["providers"]:
-            assert provider["id"] == "{{ env.PROMPTFOO_RUNTIME_PROVIDER }}"
-            assert "format" not in provider["config"]
+            assert provider["id"] == "repository-selected-runtime"
+            assert "config" not in provider
         for generated in config["tests"]:
             assert generated["path"].endswith(
                 "skills_promptfoo.py:generate_native_tests"

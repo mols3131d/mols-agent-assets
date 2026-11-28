@@ -6,6 +6,9 @@ from pathlib import Path
 import pytest
 
 from scripts.agent_assets import skills_promptfoo as evaluator
+from scripts.agent_assets.promptfoo_env import CODEX_PROVIDER_PATH
+
+GRADER = {"id": "ollama:chat:fixture-grader"}
 
 
 def _fixtures(root: Path) -> tuple[Path, dict]:
@@ -49,7 +52,9 @@ def test_grader_reuses_source_contract_without_leaking_labels(tmp_path, monkeypa
     _fixtures(tmp_path)
     monkeypatch.setattr(evaluator, "ROOT", tmp_path)
 
-    tests = evaluator.generate_grader_tests({"skill": "example-skill"})
+    tests = evaluator.generate_grader_tests(
+        {"skill": "example-skill", "grader": GRADER}
+    )
 
     assert tests[0]["vars"]["task"] == tests[1]["vars"]["task"]
     assert tests[0]["providers"] == ["example-skill-grader"]
@@ -77,11 +82,13 @@ def test_grader_rejects_broken_samples(tmp_path, monkeypatch, changes):
     monkeypatch.setattr(evaluator, "ROOT", tmp_path)
 
     with pytest.raises(ValueError):
-        evaluator.generate_grader_tests({"skill": "example-skill"})
+        evaluator.generate_grader_tests({"skill": "example-skill", "grader": GRADER})
 
 
 @pytest.mark.parametrize("content", ["", "not-json", '{"response":'])
 def test_invalid_model_json_preserves_content_and_finish_metadata(monkeypatch, content):
+    monkeypatch.setenv("PROMPTFOO_RUNTIME_MODEL", "test-model")
+
     class Response:
         def __enter__(self):
             return self
@@ -110,6 +117,8 @@ def test_invalid_model_json_preserves_content_and_finish_metadata(monkeypatch, c
 
 
 def test_transport_failure_stays_an_error(monkeypatch):
+    monkeypatch.setenv("PROMPTFOO_RUNTIME_MODEL", "test-model")
+
     def fail(*args, **kwargs):
         raise OSError("connection refused")
 
@@ -125,6 +134,7 @@ def test_transport_failure_stays_an_error(monkeypatch):
     "value, expected", [(None, None), ("false", False), ("true", True)]
 )
 def test_runtime_thinking_override_is_explicit(monkeypatch, value, expected):
+    monkeypatch.setenv("PROMPTFOO_RUNTIME_MODEL", "test-model")
     captured = []
     if value is None:
         monkeypatch.delenv("PROMPTFOO_RUNTIME_THINK", raising=False)
@@ -155,6 +165,7 @@ def test_runtime_thinking_override_is_explicit(monkeypatch, value, expected):
 
 
 def test_invalid_thinking_override_does_not_call_provider(monkeypatch):
+    monkeypatch.setenv("PROMPTFOO_RUNTIME_MODEL", "test-model")
     monkeypatch.setenv("PROMPTFOO_RUNTIME_THINK", "auto")
     monkeypatch.setattr(
         evaluator.request, "urlopen", lambda *args, **kwargs: pytest.fail()
@@ -166,14 +177,37 @@ def test_invalid_thinking_override_does_not_call_provider(monkeypatch):
     )
 
 
-def test_non_ollama_grader_configuration_is_preserved(tmp_path, monkeypatch):
+def test_codex_grader_preserves_provider_config_and_uses_text_prompt(
+    tmp_path, monkeypatch
+):
     _fixtures(tmp_path)
     monkeypatch.setattr(evaluator, "ROOT", tmp_path)
-    monkeypatch.setenv("PROMPTFOO_GRADER_PROVIDER", "custom:existing-grader")
+    grader = {
+        "id": CODEX_PROVIDER_PATH,
+        "config": {"approval_policy": "never"},
+    }
 
     generated = evaluator.generate_tests(
-        {"skill": "example-skill", "suite": "behavior"}
+        {"skill": "example-skill", "suite": "behavior", "grader": grader}
     )
 
     semantic = [c for c in generated[0]["assert"] if c["type"] == "llm-rubric"]
-    assert all(c["provider"] == "custom:existing-grader" for c in semantic)
+    assert len(semantic) == 2
+    assert all(c["provider"] == grader for c in semantic)
+    assert all(c["rubricPrompt"] == evaluator.CODEX_RUBRIC_PROMPT for c in semantic)
+
+
+def test_generator_does_not_infer_grader_from_environment(tmp_path, monkeypatch):
+    _fixtures(tmp_path)
+    monkeypatch.setattr(evaluator, "ROOT", tmp_path)
+    monkeypatch.setenv("PROMPTFOO_GRADER_PROVIDER", "ollama:chat:ambient")
+
+    with pytest.raises(ValueError, match="explicitly selected grader"):
+        evaluator.generate_tests({"skill": "example-skill", "suite": "behavior"})
+
+
+def test_custom_ollama_requires_model_before_transport(monkeypatch):
+    monkeypatch.delenv("PROMPTFOO_RUNTIME_MODEL", raising=False)
+    monkeypatch.setattr(evaluator.request, "urlopen", lambda *a, **kw: pytest.fail())
+    result = evaluator._ollama_request("task", "system", {})
+    assert result["error"] == "Ollama requires an explicitly selected runtime model"

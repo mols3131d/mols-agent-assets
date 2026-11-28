@@ -81,7 +81,7 @@ Node 실패 시 npm 단계는 차단하되 독립적인 uv/Python 단계는 계�
 
 Tool 선택과 Python lock 상태가 필요한 경우 `mise ls --project --json` 및 `uv lock --check`를 직접 실행합니다. 두 명령의 성공만으로 설치된 모든 바이너리와 런타임 준비를 보장하지 않습니다. 신규 릴리스 후보는 `mise outdated --no-global --bump --json`으로 **명시적으로** 조회하며, 최신성 조회는 세션 시작이나 PR 검증의 필수 단계가 아닙니다. 조회 결과는 설치·버전 변경의 승인이 아닙니다.
 
-- `mise run eval -c evals/promptfoo/<config>.yaml [Promptfoo CLI flags]` passes the config and filter options to the pinned Promptfoo runner. Evaluations may invoke models or write results; never run them as an implicit environment health check.
+- `mise run eval` runs the pinned Promptfoo runner with explicit suite and model selections. Use the evaluation instructions for the model-free fixture path and supported filter and output flags. [Promptfoo provider selection](../../evals/README.md#promptfoo-provider-selection)
 - `mise run rulesync-doctor`, `mise run rulesync-preview`, and `mise run rulesync-validate` replace the former npm scripts. Rulesync CLI versions continue to be owned by mise's npm backend, independent of the removed root `package.json`.
 
 **mise `2026.9.6` 이상**에서는 `mise doctor project`가 `[doctor.checks]`로 선언한 Python lock과 루트 Rulesync 설정을 검사합니다. PR Gate는 `2026.10.25`를 사용하며, `mise run check`가 이를 재사용합니다. Doctor의 exit code가 상태 판정을 소유하고, 설치·업데이트·생성물 쓰기는 수행하지 않습니다. 구버전 mise에서는 `uv lock --check`와 `rulesync doctor --strict`를 직접 실행할 수 있습니다.

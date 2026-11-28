@@ -104,6 +104,7 @@ def test_trivial_case_skips_reference_body_but_reports_decision(
             "config": {
                 "skill": "example-skill",
                 "suite": "behavior",
+                "mode": "ollama",
                 "reference_paths": ["references/oracle-validation.md"],
             }
         },
@@ -162,6 +163,7 @@ def test_invalid_model_reference_selection_fails_closed(
             "config": {
                 "skill": "example-skill",
                 "suite": "behavior",
+                "mode": "ollama",
                 "reference_paths": ["references/oracle-validation.md"],
             }
         },
@@ -269,7 +271,9 @@ def test_test_design_eval_config_projects_all_cases_and_reference_checks() -> No
 
     for spec in config["tests"]:
         generator = spec["config"]
-        generated = evaluator.generate_tests(generator)
+        generated = evaluator.generate_tests(
+            {**generator, "grader": {"id": "ollama:chat:test-grader"}}
+        )
         expected_ids = [
             case_id
             for case_id, case in cases.items()
@@ -288,6 +292,7 @@ def test_test_design_eval_config_projects_all_cases_and_reference_checks() -> No
                     check["value"].endswith(":assert_reference_loading")
                     for check in item["assert"]
                 )
+
 
 def test_reference_expectations_ignore_order_but_reject_duplicates() -> None:
     expected = ["references/a.md", "references/b.md"]

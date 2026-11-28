@@ -14,75 +14,63 @@ Asset별 차이는 fixture와 tool config가 소유합니다. 같은 평가 cont
 
 Eval을 언제 추가하고 어떤 evidence로 해석할지는 [`docs/development/evaluation.md`](../docs/development/evaluation.md)가 소유합니다. 이 README는 `evals/`의 fixture placement와 local boundary만 소유합니다.
 
-`mols-dev-env-bootstrap-design`의 Trigger/Behavior 평가와 `mols-implementation-guidance`의 routing-only 평가는 선택 가능한 Promptfoo native provider를 사용합니다. 공통 Python generator는 canonical fixture로부터 case별 system prompt와 assertion을 구성하지만 모델 HTTP 호출은 하지 않습니다. Reference를 조건부로 선택하는 `mols-test-design`은 기존 Python provider를 사용합니다. 모든 경로는 실제 IDE/CLI agent의 tool·routing 실행을 재현하지 않습니다.
-
-Promptfoo CLI는 기본적으로 개발자의 로컬 환경에서 실행하며, 모델 호출 위치는 선택한 provider가 결정합니다. Repository correctness는 root `tests/`가 검증하며, Promptfoo의 공통 실행 진입점은 `mise run eval`입니다. 평가 설정 파일과 CLI 옵션은 인수로 전달합니다. 예시:
-
-```bash
-mise run eval -c evals/promptfoo/mols-implementation-guidance.yaml
-mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design.yaml
-mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design-grader.yaml
-mise run eval --no-cache --no-write -c evals/promptfoo/mols-test-design.yaml
-```
+Promptfoo CLI는 사용자가 평가를 명시적으로 요청할 때 실행합니다. CI, bootstrap, check와 hook은 모델과 grader를 호출하지 않습니다. 저장소 테스트는 root `tests/`에 두며 Promptfoo 평가의 공통 진입점은 `mise run eval`입니다.
 
 ## Promptfoo Provider Selection
 
-기본값으로 실행할 때는 `.env`가 필요하지 않습니다. 설정을 바꿀 때는 프로젝트 루트의 [`.env.example`](../.env.example)을 복사해 변수 값을 수정합니다. 예제의 로컬 Ollama 기본값은 주석 없이 활성화되어 있습니다. `.env`와 API credential은 Git에 포함하지 않습니다.
+`mise run eval`은 실행할 저장소 평가 설정 파일 하나를 요구합니다. 인수 없는 실행과 `--help`는 runner 사용법을 출력합니다. 모델 평가에는 `--provider`와 `--model`을 지정합니다. `--grader none`은 semantic rubric을 제외하며 Trigger, 출력 형식, Reference 선택 등 deterministic assertion은 그대로 적용합니다. Semantic grading을 사용하려면 `--grader ollama|codex`와 `--grader-model`을 따로 지정합니다.
 
-```powershell
-Copy-Item .env.example .env
+| 평가 설정 | Runtime | Grader |
+| --- | --- | --- |
+| `mols-dev-env-bootstrap-design.yaml` | Ollama native chat 또는 Codex native SDK | `none`, Ollama 또는 Codex |
+| `mols-implementation-guidance.yaml` | Ollama native chat 또는 Codex native SDK의 routing-only 평가 | `none` |
+| `mols-test-design.yaml` | Ollama 전용 Python provider | `none`, Ollama 또는 Codex |
+| `mols-dev-env-bootstrap-design-grader.yaml` | 저장된 응답을 재생하는 Echo | Ollama 또는 Codex 필수 |
+| `mols-dev-env-bootstrap-design-smoke.yaml --fixture` | 고정 fixture | 모델 옵션 없이 실행 |
+
+아래 모델 ID는 선택 형식을 보여 줍니다. 사용 가능한 Ollama 모델을 미리 준비하고 Codex 모델은 선택한 인증에서 사용할 수 있는 ID로 지정합니다.
+
+```bash
+mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design-smoke.yaml --fixture
+mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design.yaml \
+  --provider ollama --model qwen3.5:4b --grader none --filter-metadata suite=trigger
+mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design.yaml \
+  --provider codex --model gpt-5.2-codex --codex-auth chatgpt \
+  --grader ollama --grader-model qwen3.5:4b --filter-metadata suite=behavior
+mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design-grader.yaml \
+  --grader codex --grader-model gpt-5.2-codex --codex-auth api
+mise run eval -c evals/promptfoo/mols-test-design.yaml \
+  --provider ollama --model qwen3.5:4b --grader none
 ```
 
-Native 평가의 `PROMPTFOO_RUNTIME_PROVIDER`에는 `ollama:chat:qwen2.5`, `openai:chat:gpt-4o-mini`, `anthropic:messages:claude-sonnet-4-5`처럼 모델을 포함한 **전체 Promptfoo provider ID**를 지정합니다. Provider를 바꾸기 위해 fixture나 Python HTTP adapter를 수정하지 않습니다. 지원 ID와 필수 credential은 [공식 provider 문서](https://www.promptfoo.dev/docs/providers/)를 확인합니다. 모델 예시는 호환성·가용성·성능을 검증했다는 뜻이 아닙니다.
+`--filter-metadata`, `--filter-pattern`, `--filter-first-n`, `--repeat`, `--output` 등은 Promptfoo로 전달합니다. 입력을 교체하거나 선택 범위를 넓히는 다중 config, provider override, watch, resume, 공유와 확장 옵션은 runner에서 거부합니다. 캐시·공유·기본 결과 저장은 suite에서 끕니다. `--output .tmp/<name>.json`을 지정하면 결과 파일을 저장합니다.
 
-| 설정 | 적용 |
+### Authentication and environment
+
+Codex는 runtime 또는 grader로 선택할 때 `--codex-auth chatgpt|api`를 요구합니다. 같은 실행에서 두 역할 모두 Codex를 사용하면 인증 방식은 공유하고 모델은 독립적으로 선택합니다.
+
+- `chatgpt`는 저장소 밖의 평가 전용 Codex home에 이미 준비한 ChatGPT 로그인을 사용합니다. 절대 경로를 `PROMPTFOO_CODEX_CHATGPT_HOME`에 지정합니다. 평가 전용 home은 아래처럼 공식 CLI에서 준비하며 사용자 설정, Skill 또는 플러그인 설정 없이 유지합니다. Runner는 CLI의 로그인 상태를 확인하고 기존 ChatGPT 세션을 사용합니다.
+- `api`는 해당 실행에 제공한 `PROMPTFOO_CODEX_API_KEY`만 사용합니다. 세션은 새 임시 Codex home에서 시작하며 API 인증을 메모리로 제한합니다. 키를 인수, 생성 config 또는 Git에 기록하지 않습니다. 기존 `OPENAI_API_KEY`와 `CODEX_API_KEY`는 선택을 대신하지 않습니다.
+
+```bash
+CODEX_HOME="$PROMPTFOO_CODEX_CHATGPT_HOME" codex login
+```
+
+mise가 읽는 [`.env.example`](../.env.example)은 비밀값 없이 사용 가능한 환경 설정을 보여 줍니다. 인증은 별도로 준비하고 실행 시 전달합니다. 설정에 키나 모델이 있다는 사실만으로 평가를 시작하지 않습니다.
+
+| 변수 | 적용 |
 | --- | --- |
-| `PROMPTFOO_RUNTIME_PROVIDER` | native Skill 평가의 provider ID. 명시하면 `PROMPTFOO_RUNTIME_MODEL`보다 우선 |
-| `PROMPTFOO_RUNTIME_MODEL` | 전체 ID 미지정 시 `ollama:chat:<model>`을 구성하는 기존 설정. 기본 `qwen2.5`; custom Ollama 평가에서도 계속 사용 |
-| `PROMPTFOO_GRADER_PROVIDER` | 독립적인 semantic grader ID. 기본 `ollama:chat:qwen2.5`; runtime 변경에 따라 자동 변경하지 않음 |
-| `OLLAMA_BASE_URL` | Ollama를 선택한 runtime 또는 grader의 endpoint |
-| `REQUEST_TIMEOUT_MS` | Native·custom 경로에 공통으로 적용되는 요청별 timeout. 기본 `120000`; 양의 정수 밀리초 |
-| `PROMPTFOO_RUNTIME_TIMEOUT_SECONDS` | 기존 초 단위 호환 설정. `REQUEST_TIMEOUT_MS` 미지정 시에만 사용하며 유한한 `0.001`초 이상 값 |
+| `OLLAMA_BASE_URL` | Ollama runtime·grader가 사용할 HTTP(S) 서버. 기본 `http://127.0.0.1:11434` |
+| `OLLAMA_API_KEY` | 선택한 Ollama 서버에 필요한 경우 전달하는 bearer credential |
+| `REQUEST_TIMEOUT_MS` | Ollama native·custom HTTP 요청 제한. 기본 `120000` |
+| `PROMPTFOO_RUNTIME_TIMEOUT_SECONDS` | `REQUEST_TIMEOUT_MS` 미지정 시 적용하는 초 단위 Ollama 호환 설정 |
+| `PROMPTFOO_RUNTIME_THINK` | Python Ollama provider에만 전달하는 `true` 또는 `false` |
+| `PROMPTFOO_CODEX_TIMEOUT_MS` | Codex runtime·grader 호출별 제한 시간. 기본 `120000`. Ollama 요청에는 Ollama 제한 시간이 적용됩니다. |
 
-예를 들어 `.env`에서 다음과 같이 선택할 수 있습니다. 선택한 provider의 API key 또는 인증은 해당 제공자의 공식 방식으로 별도 설정합니다.
+### Inputs, outputs, and evidence
 
-```dotenv
-PROMPTFOO_RUNTIME_PROVIDER=openai:chat:gpt-4o-mini
-PROMPTFOO_GRADER_PROVIDER=openai:chat:gpt-4o-mini
-```
+Ollama native는 system/user 채팅 메시지와 `temperature: 0`을 사용합니다. Python Ollama provider는 Reference 선택과 응답의 구조화된 JSON을 읽고 선택한 경로를 provider metadata에 남깁니다. Codex SDK는 실행 지침과 사용자 과업을 한 agent prompt에 담아 전달하며, Trigger와 semantic grader에는 각각 별도 출력 schema를 지정합니다. Codex 응답은 SDK가 최종 메시지로 변환합니다.
 
-Model·provider·grader 선택과 timeout의 빈 값·공백은 미지정으로 처리합니다. Timeout은 **명시한 `REQUEST_TIMEOUT_MS` → 기존 초 단위 값 → 기본 120초** 순서로 하나만 해석합니다. 유효한 밀리초 값을 지정하면 사용하지 않는 초 단위 값이 잘못돼도 실행을 막지 않습니다. 선택된 timeout이 잘못되면 모델 호출 전에 nonzero와 변수명 기반 오류를 반환하고, custom provider는 같은 오류를 provider error로 보고합니다. Credential·endpoint 등 native 제공자 변수는 임의로 정규화하거나 이름을 바꾸지 않습니다. 요청별 timeout과 retry/backoff를 포함한 전체 실행 시간은 다릅니다.
+Codex는 비어 있는 임시 작업 디렉터리, 평가 전용 읽기 권한, 네트워크 및 웹 검색 끄기, 승인 없음, 별도 셸 환경으로 실행합니다. Fixture 기대값과 rubric은 runtime에 노출하지 않습니다. ChatGPT 로그인의 전용 Codex home에는 네이티브 CLI의 세션 기록이 남을 수 있습니다. 사용한 OS의 Codex sandbox 지원과 인증 상태는 실제 실행 환경에서 확인합니다.
 
-Runtime만 원격으로 바꾸면 기본 grader는 계속 Ollama이므로 behavior 평가에는 로컬 grader 모델도 필요합니다. 모든 모델 호출을 다른 제공자로 실행하려면 runtime과 grader를 각각 선택합니다. 기존 로컬 경로는 전체 ID를 미지정하고 `PROMPTFOO_RUNTIME_MODEL`, `OLLAMA_BASE_URL`을 설정하면 유지되며, 사용할 모델이 이미 준비되어 있어야 합니다.
-
-조건부 Reference를 읽는 `mols-test-design`은 기존 custom Ollama 경로여서 `PROMPTFOO_RUNTIME_PROVIDER`의 적용 대상이 아닙니다.
-
-**원격 provider 또는 grader를 선택하면 Skill·평가 prompt 또는 응답·rubric이 외부로 전송될 수 있으며 비용이 발생합니다.** Telemetry·sharing·remote generation 비활성화는 이 전송을 막는 통제가 아닙니다. 데이터 전송과 비용 허가를 먼저 확인하며 모델 다운로드나 유료 API 실행은 자동 수행하지 않습니다.
-
-### Provider-Specific Options
-
-공통 config는 `temperature: 0`만 지정하고 Trigger의 JSON 응답은 system의 schema 지시와 strict assertion으로 판정합니다. 제공자마다 다른 JSON 강제 옵션을 공통으로 주입하지 않으며, JSON을 따르지 않은 출력은 실패입니다. Grader 선택과 별개로 runtime의 모델·sampling·structured-output 설정도 평가 조건에 기록합니다.
-
-Endpoint·인증은 선택한 [native provider 문서](https://www.promptfoo.dev/docs/providers/)의 환경변수 또는 `config`를 사용합니다. 추가 generation 옵션이 필요하면 [Promptfoo native 설정](https://www.promptfoo.dev/docs/configuration/reference/)에서 해당 provider의 `config`를 지정합니다. 예를 들어 OpenAI Trigger의 JSON mode는 다음 형태입니다.
-
-```yaml
-providers:
-  - id: "{{ env.PROMPTFOO_RUNTIME_PROVIDER }}"
-    label: mols-dev-env-bootstrap-design-trigger
-    config:
-      temperature: 0
-      response_format:
-        type: json_object
-```
-
-위는 전체 suite가 아니라 provider 항목 예시입니다. 전체 config에서 기존 Trigger/Behavior label과 generator 연결을 보존하고 Trigger 전용 설정을 Behavior에 일괄 적용하지 않습니다. Ollama의 JSON mode는 `passthrough.format: json` 등 해당 provider의 옵션을 사용하며 다른 제공자에 그대로 복사하지 않습니다. `PROMPTFOO_RUNTIME_THINK`는 custom Python Ollama provider 전용이므로 native 경로에 자동 적용되지 않습니다.
-
-Promptfoo 0.122.0에서 여러 `--config` 파일의 provider 항목은 ID나 label 기준으로 덮어쓰지 않고 합쳐질 수 있습니다. Provider 설정 변경을 단순 overlay로 간주하지 않습니다. CLI·native provider 호환성 확인과 실제 모델의 응답 품질 평가는 별도이며, 한 제공자의 성공을 다른 제공자의 검증으로 확대하지 않습니다.
-
-`mise.toml`은 파일이 존재할 때만 `.env`를 읽습니다. 파일이 없으면 runner의 기존 기본값이 유지됩니다. mise가 읽은 `.env` 값은 부모 셸의 동일한 환경변수보다 우선할 수 있으므로, 일회성 변경은 `.env`를 편집하거나 mise가 시작한 자식 프로세스에서 설정합니다. 로컬 평가의 공식 경로는 `mise run eval -c ...`이며, 평가별 mise task·npm script를 거치지 않고 CLI 옵션을 공통 Promptfoo runner에 전달합니다.
-
-Python runner 또는 Promptfoo CLI를 직접 실행하면 mise의 `.env` 로딩을 보장하지 않으므로, 평가 조건을 재현하려면 필요한 환경변수를 명시적으로 전달합니다.
-
-Deterministic assertion이 가능한 behavioral contract는 model grader보다 우선하지만, **문장 동기화나 semantic prose consistency를 문자열 regression으로 고정하지 않습니다.** 그런 의미는 authoritative source와 해당 behavioral review/eval이 소유합니다.
-
-Fixture가 존재해도 compatible runner와 실제 model/runtime을 실행하지 않았다면 runtime behavior가 통과했다고 주장하지 않습니다.
+원격 runtime이나 grader를 선택하면 Skill, 과업, 응답 또는 rubric이 선택 서버로 전송될 수 있고 비용이 발생할 수 있습니다. Telemetry 및 공유 설정은 provider 요청을 통제하는 기능과 별개입니다. 모델 다운로드와 평가 호출은 사용자의 실행 요청에 따릅니다. Fixture smoke와 가짜 provider의 테스트는 배선과 평가 조건을 확인하며 실제 모델 품질·가용성, IDE/CLI의 Skill discovery 또는 도구 실행을 입증하지 않습니다. [Promptfoo Codex SDK](https://www.promptfoo.dev/docs/providers/openai-codex-sdk/), [Ollama provider](https://www.promptfoo.dev/docs/providers/ollama/)

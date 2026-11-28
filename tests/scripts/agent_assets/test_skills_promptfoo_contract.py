@@ -90,8 +90,7 @@ def test_generator_validates_semantic_and_threshold_types() -> None:
         )
 
 
-def test_semantic_behavior_projection_preserves_rubric_contract(monkeypatch) -> None:
-    monkeypatch.setenv("PROMPTFOO_GRADER_PROVIDER", "ollama:chat:test-grader")
+def test_semantic_behavior_projection_preserves_rubric_contract() -> None:
     cases = evaluator._load_cases("mols-dev-env-bootstrap-design")
     case_id = next(
         case_id
@@ -104,6 +103,10 @@ def test_semantic_behavior_projection_preserves_rubric_contract(monkeypatch) -> 
             "suite": "behavior",
             "case_ids": [case_id],
             "semantic": True,
+            "grader": {
+                "id": "ollama:chat:test-grader",
+                "config": {"temperature": 0},
+            },
             "rubric_threshold": 0.85,
         }
     )
