@@ -20,10 +20,10 @@ description: 외부 프로젝트에서 src/, catalog/의 에이전트 자산과 
 
 ### Read or Try a Skill
 
-예를 들어 코드 호출 흐름을 살펴보려면 [`code-flow-map` Skill](../src/rulesync/.rulesync/skills/code-flow-map/SKILL.md)을 읽습니다. URL을 읽을 수 있는 에이전트에는 아래 원본을 직접 제공할 수 있습니다.
+예를 들어 소프트웨어 테스트 설계를 검토하려면 [`mols-test-design` Skill](../src/rulesync/.rulesync/skills/mols-test-design/SKILL.md)을 읽습니다. URL을 읽을 수 있는 에이전트에는 아래 원본을 직접 제공할 수 있습니다.
 
 ```text
-https://raw.githubusercontent.com/mols3131d/mols-agent-assets/refs/heads/main/src/rulesync/.rulesync/skills/code-flow-map/SKILL.md
+https://raw.githubusercontent.com/mols3131d/mols-agent-assets/refs/heads/main/src/rulesync/.rulesync/skills/mols-test-design/SKILL.md
 ```
 
 이는 **문서를 읽히는 방법**이지 런타임에 Skill을 설치·등록하는 방법이 아닙니다. 해당 Skill이 참조하는 `references/`, `scripts/` 등 지원 파일이 있다면 같은 revision에서 함께 접근할 수 있어야 합니다.
@@ -35,7 +35,7 @@ https://raw.githubusercontent.com/mols3131d/mols-agent-assets/refs/heads/main/sr
 먼저 해당 프로젝트에 `rulesync.jsonc`가 없다면 `rulesync init`으로 초기화하고, 대상 런타임에 맞는 target을 설정합니다.
 
 ```bash
-rulesync add mols3131d/mols-agent-assets --ref main --path src/rulesync/.rulesync/skills --skills code-flow-map
+rulesync add mols3131d/mols-agent-assets --ref main --path src/rulesync/.rulesync/skills --skills mols-test-design
 rulesync generate
 ```
 

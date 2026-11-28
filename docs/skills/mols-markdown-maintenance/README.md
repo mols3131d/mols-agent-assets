@@ -19,3 +19,9 @@ description: mols-markdown-maintenance를 변경하거나 유지할 때 reposito
 ## Maintenance
 
 변경될 수 있는 rumdl rule/configuration reference를 이 문서에 복제하지 않습니다. 여기에는 소유권 경계와 local invariant만 유지하고, backend의 정확한 semantics가 중요할 때는 현재 upstream authority를 확인합니다.
+
+## Remake Recommendation
+
+repository-native 도구 우선 원칙을 유지하고 표준 Markdown 작업의 일반 CLI 안내와 중복되는 절차를 축소한다. 독립 Skill의 선택 가치와 bundled frontmatter/index utility의 실제 소비자를 확인해 필요한 local delta만 남긴다. 생성물 정본과 결정론적 검증을 모델 판단으로 대체하지 않는다.
+
+권고 상태이며 현재 실행 계약은 변경하지 않는다.

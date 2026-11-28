@@ -117,7 +117,7 @@
       "routing_candidates": [
         {
           "name": "mols-agent-asset",
-          "description": "Create, tune, modify, simplify, refactor, review, validate, or evaluate agent Skills, Rules or scoped instructions, and agent or subagent definitions. Also use for bounded review, validation, or evaluation of prompts, tools, guardrails, references, configs, scripts, hooks, and eval fixtures when they affect agent behavior. Covers deterministic and semantic validation plus routing and behavior evaluation. Use mols-agent-asset-find for discovery, selection, loading, installation, synchronization, or invocation. Do not use for ordinary product code, human-facing prose, prompt authoring, hook setup, or MCP setup."
+          "description": "Create, tune, modify, simplify, refactor, review, validate, or evaluate agent Skills, Rules or scoped instructions, and agent or subagent definitions. Also use for bounded review, validation, or evaluation of prompts, tools, guardrails, references, configs, scripts, hooks, and eval fixtures when they affect agent behavior. Covers deterministic and semantic validation plus routing and behavior evaluation. Do not use for discovery, selection, loading, installation, synchronization, invocation, ordinary product code, human-facing prose, prompt authoring, hook setup, or MCP setup."
         }
       ]
     },

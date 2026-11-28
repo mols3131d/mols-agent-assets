@@ -92,18 +92,12 @@
       }
     },
     {
-      "id": "install-routes-to-find",
+      "id": "installation-only-does-not-activate",
       "mode": "activation-negative",
       "prompt": "이 Skill을 내 ChatGPT에 설치해줘.",
-      "routing_candidates": [
-        {
-          "name": "mols-agent-asset-find",
-          "description": "Find, select, and when requested load, apply, install, register, update, sync, or migrate an Agent Asset into a target. Use when the caller needs an agent-facing capability found from catalogs, repositories, indexes, directories, URLs, or explicit assets, or when a known asset must be made usable. Covers Skills, Rules or instructions, prompts, agents or subagents, hooks, tool or MCP configuration, templates, and other agent-facing assets. Prefer direct or temporary use when persistence is not required; create durable target state only when the requested end state needs it. Do not use for authoring or materially changing asset behavior, or for formal validation and evaluation."
-        }
-      ],
       "expected_selection": {
-        "selected_skills": ["mols-agent-asset-find"],
-        "primary_skill": "mols-agent-asset-find"
+        "selected_skills": [],
+        "primary_skill": null
       }
     },
     {

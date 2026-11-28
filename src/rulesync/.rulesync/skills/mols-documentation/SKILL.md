@@ -30,7 +30,7 @@ agentsskills:
 - 문서마다 주된 책임을 분명히 하고 그 책임을 맡을 수 있는 가장 좁은 범위에 둔다. 파일이나 디렉터리가 있다는 이유만으로 문서를 만들지 않는다.
 - 하나의 범위에서 같은 의미를 설명하는 canonical owner는 하나로 유지한다. 다른 문서는 필요한 안내, 링크와 짧은 맥락만 제공하고 같은 규칙을 다시 정의하지 않는다.
 - 사실, 결정, 근거, 불확실성과 현재 상태를 구분한다. 오래된 상태나 추측을 현재의 사실이나 지침처럼 표현하지 않는다.
-- 기존 문서를 고칠 때는 사실, 결정, 절차·우선순위·연대처럼 의미를 갖는 순서, 관계, 식별자, citation, quotation, 필요한 불확실성과 프로젝트 고유의 voice를 보존한다. 기술 문서의 보존 제약이 주된 요구면 `technical-document-fidelity`를 함께 적용한다.
+- 기존 문서를 고칠 때는 사실, 결정, 절차·우선순위·연대처럼 의미를 갖는 순서, 관계, 식별자, citation, quotation, 필요한 불확실성과 프로젝트 고유의 voice를 보존한다.
 - 사용자와 프로젝트의 명시적 template, terminology, style, 형식과 문서 정책이 있으면 이 Skill의 기본값보다 우선한다.
 - 원문이나 근거에 없는 사실, 수치, 관계, 확정적 판단을 새로 만들지 않는다.
 - 사람이 읽는 agent-facing 문서에도 적용할 수 있지만 human-readable presentation과 문서 구조만 다룬다. 행동 계약, activation, authority와 runtime semantics는 해당 자산의 owner가 소유한다.
@@ -50,13 +50,13 @@ Reference를 읽지 않아도 독자, 목적, 정보 구조, 신뢰성, ownershi
 ## Workflow
 
 1. 독자, 문서의 목적, 독자가 읽은 뒤 알아야 하거나 판단하고 행동해야 하는 것을 식별한다.
-1. 기존 문서라면 보존해야 할 사실, 결정, 계약, 절차·우선순위·연대처럼 의미를 갖는 순서, 관계, 식별자, citation, quotation, 근거와 voice를 먼저 구분한다.
-1. 문서의 주된 책임과 canonical boundary를 정하고, 이미 더 적절한 owner가 있는 내용은 복제하지 않고 연결한다.
-1. 독자의 주요 질문과 사용 순서를 기준으로 section과 정보 순서를 설계한다.
-1. 가장 중요한 내용부터 직접적이고 구체적인 prose로 작성하고 필요한 근거, 예시와 세부 내용을 점진적으로 확장한다.
-1. 정보 구조에 맞는 표현을 선택하고, surface나 문서 유형에 특화된 규칙이 결과를 바꾸는 경우에만 해당 reference를 적용한다.
-1. 중복, boilerplate, 불필요한 section, navigation과 장식을 제거한다.
-1. 최종 결과가 찾기 쉽고 신뢰할 수 있으며 유지보수하기 쉬운지 검토한다. 문장도 의미와 조건·예외·근거를 보존하는 범위에서 줄이고, 안전한 절감이 없으면 그대로 둔다.
+2. 기존 문서라면 보존해야 할 사실, 결정, 계약, 절차·우선순위·연대처럼 의미를 갖는 순서, 관계, 식별자, citation, quotation, 근거와 voice를 먼저 구분한다.
+3. 문서의 주된 책임과 canonical boundary를 정하고, 이미 더 적절한 owner가 있는 내용은 복제하지 않고 연결한다.
+4. 독자의 주요 질문과 사용 순서를 기준으로 section과 정보 순서를 설계한다.
+5. 가장 중요한 내용부터 직접적이고 구체적인 prose로 작성하고 필요한 근거, 예시와 세부 내용을 점진적으로 확장한다.
+6. 정보 구조에 맞는 표현을 선택하고, surface나 문서 유형에 특화된 규칙이 결과를 바꾸는 경우에만 해당 reference를 적용한다.
+7. 중복, boilerplate, 불필요한 section, navigation과 장식을 제거한다.
+8. 최종 결과가 찾기 쉽고 신뢰할 수 있으며 유지보수하기 쉬운지 검토한다. 문장도 의미와 조건·예외·근거를 보존하는 범위에서 줄이고, 안전한 절감이 없으면 그대로 둔다.
 
 ## Information Architecture
 
@@ -104,7 +104,5 @@ Reference를 읽지 않아도 독자, 목적, 정보 구조, 신뢰성, ownershi
 ## Boundary
 
 - deterministic Markdown formatting, lint, frontmatter schema, link와 index mechanics → `mols-markdown-maintenance`
-- engineering progress와 evidence를 집계하는 Markdown dashboard → `mols-markdown-dashboard`
 - source file 내부의 comments, docstrings와 declaration documentation → `mols-clarify-code`
-- 기술 문서 변환에서 protected content 보존 제약 → `technical-document-fidelity`
 - 문서가 사용하는 domain-specific diagram, chart, template 또는 형식의 의미는 해당 전문 owner가 있으면 그 owner가 소유한다.

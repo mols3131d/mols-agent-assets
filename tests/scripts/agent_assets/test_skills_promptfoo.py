@@ -104,8 +104,8 @@ def test_generic_skill_generates_trigger_and_behavior_without_python_adapter(
     )
 
 
-@pytest.mark.parametrize("skill_name", ["mols-loops", "mols-dev-env-bootstrap-design"])
-def test_skill_fixture_projects_all_cases_through_generic_evaluator(skill_name) -> None:
+def test_skill_fixture_projects_all_cases_through_generic_evaluator() -> None:
+    skill_name = "mols-dev-env-bootstrap-design"
     fixture = json.loads(
         evaluator.fixture_path(skill_name).read_text(encoding="utf-8")
     )["cases"]
@@ -138,15 +138,15 @@ def test_generator_rejects_missing_skill_and_cross_suite_case() -> None:
     with pytest.raises(ValueError, match="belongs to behavior"):
         evaluator.generate_tests(
             {
-                "skill": "mols-loops",
+                "skill": "mols-dev-env-bootstrap-design",
                 "suite": "trigger",
-                "case_ids": ["scope-expansion-is-review-gated"],
+                "case_ids": ["portable-owner-and-update-handoff"],
                 "semantic": False,
             }
         )
 
 
-def test_trigger_contract_uses_selected_skill_name_not_mols_loops() -> None:
+def test_trigger_contract_uses_selected_skill_name_not_hardcoded() -> None:
     case = {
         "expected_selection": {
             "selected_skills": ["example-skill"],
@@ -171,13 +171,13 @@ def test_trigger_contract_uses_selected_skill_name_not_mols_loops() -> None:
 
 def test_trigger_grader_checks_exact_selected_set_and_primary() -> None:
     expected = {
-        "selected_skills": ["agent-skill-authoring", "mols-loops"],
+        "selected_skills": ["agent-skill-authoring", "example-workflow"],
         "primary_skill": "agent-skill-authoring",
     }
     passing = evaluator.assert_trigger(
         json.dumps(
             {
-                "selected_skills": ["mols-loops", "agent-skill-authoring"],
+                "selected_skills": ["example-workflow", "agent-skill-authoring"],
                 "primary_skill": "agent-skill-authoring",
             }
         ),
@@ -186,8 +186,8 @@ def test_trigger_grader_checks_exact_selected_set_and_primary() -> None:
     mismatch = evaluator.assert_trigger(
         json.dumps(
             {
-                "selected_skills": ["mols-loops", "agent-skill-authoring"],
-                "primary_skill": "mols-loops",
+                "selected_skills": ["example-workflow", "agent-skill-authoring"],
+                "primary_skill": "example-workflow",
             }
         ),
         {"vars": {"expected_selection": expected}},
@@ -348,17 +348,16 @@ def test_behavior_provider_uses_full_selected_skill(
 
 
 def test_promptfoo_configs_use_generic_skill_evaluator() -> None:
-    smoke = yaml.safe_load(
-        (CONFIG_DIR / "mols-loops-smoke.yaml").read_text(encoding="utf-8")
+    custom = yaml.safe_load(
+        (CONFIG_DIR / "mols-test-design.yaml").read_text(encoding="utf-8")
     )
-    for provider in smoke["providers"]:
+    for provider in custom["providers"]:
         assert provider["id"].endswith("skills_promptfoo.py:call_api")
-        assert provider["config"]["skill"] == "mols-loops"
-    for generated in smoke["tests"]:
+        assert provider["config"]["skill"] == "mols-test-design"
+    for generated in custom["tests"]:
         assert generated["path"].endswith("skills_promptfoo.py:generate_tests")
 
     for name in (
-        "mols-loops.yaml",
         "mols-dev-env-bootstrap-design.yaml",
         "mols-implementation-guidance.yaml",
     ):
@@ -394,26 +393,26 @@ def test_implementation_guidance_config_generates_routing_only_cases() -> None:
 def test_native_generator_keeps_trigger_and_behavior_context_separate() -> None:
     trigger = evaluator.generate_native_tests(
         {
-            "skill": "mols-loops",
+            "skill": "mols-dev-env-bootstrap-design",
             "suite": "trigger",
-            "case_ids": ["explicit-rpi-activates"],
+            "case_ids": ["first-setup-and-repair-design"],
         }
     )[0]
     behavior = evaluator.generate_native_tests(
         {
-            "skill": "mols-loops",
+            "skill": "mols-dev-env-bootstrap-design",
             "suite": "behavior",
-            "case_ids": ["rpi-composes-with-domain-skill"],
+            "case_ids": ["portable-owner-and-update-handoff"],
             "semantic": False,
         }
     )[0]
     assert "skill-catalog" in trigger["vars"]["system"]
     assert json.dumps(evaluator.TRIGGER_RESPONSE_SCHEMA) in trigger["vars"]["system"]
-    assert "# Mols Loops" not in trigger["vars"]["system"]
-    assert "# Mols Loops" in behavior["vars"]["system"]
+    assert "# 개발환경 부트스트랩 설계" not in trigger["vars"]["system"]
+    assert "# 개발환경 부트스트랩 설계" in behavior["vars"]["system"]
     assert "Respond directly" in behavior["vars"]["system"]
-    assert trigger["providers"] == ["mols-loops-trigger"]
-    assert behavior["providers"] == ["mols-loops-behavior"]
+    assert trigger["providers"] == ["mols-dev-env-bootstrap-design-trigger"]
+    assert behavior["providers"] == ["mols-dev-env-bootstrap-design-behavior"]
 
 
 def test_native_generator_rejects_reference_loading() -> None:

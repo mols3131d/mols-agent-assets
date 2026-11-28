@@ -60,7 +60,6 @@ Use the target repository's rumdl configuration when it represents accepted proj
 ## Boundary
 
 - Human-readable document composition and Markdown presentation belong to `mols-documentation`.
-- Engineering dashboard semantics belong to `mols-markdown-dashboard`.
 - Mermaid diagram/chart semantics belong to `mols-mermaid`.
 
 This Skill owns deterministic Markdown maintenance selection and the small local delta not already owned by the Markdown backend.
