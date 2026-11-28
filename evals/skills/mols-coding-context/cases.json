@@ -6,9 +6,7 @@
       "mode": "activation",
       "prompt": "Implement a small Rust utility function using the existing public interface.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-coding-context"
-        ],
+        "selected_skills": ["mols-coding-context"],
         "primary_skill": "mols-coding-context"
       },
       "routing_candidates": [
@@ -23,9 +21,7 @@
       "mode": "activation",
       "prompt": "Review this Go patch for regressions in its error handling and return contract.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-coding-context"
-        ],
+        "selected_skills": ["mols-coding-context"],
         "primary_skill": "mols-coding-context"
       },
       "routing_candidates": [
@@ -38,7 +34,7 @@
     {
       "id": "python-implementation",
       "mode": "activation",
-      "prompt": "Python 서비스의 JSON 응답 스키마를 변경하고 기존 호출자의 동작을 유지하도록 구현해줘.",
+      "prompt": "Python 함수의 타입 검사 오류를 수정하되 기존 런타임 동작과 호출자 계약을 유지해줘.",
       "expected_selection": {
         "selected_skills": [
           "mols-coding-context",
@@ -76,9 +72,7 @@
       "mode": "activation",
       "prompt": "Refactor this Rust CLI. The README mentions a Python client, but the client code and its behavior are unchanged.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-coding-context"
-        ],
+        "selected_skills": ["mols-coding-context"],
         "primary_skill": "mols-coding-context"
       },
       "routing_candidates": [
@@ -91,7 +85,7 @@
     {
       "id": "repository-administration",
       "mode": "activation-negative",
-      "prompt": "Rename this pull request and add the documentation label; no code changes are needed.",
+      "prompt": "Rename the pull request for a Python package and add a documentation label; no code or build changes are needed.",
       "expected_selection": {
         "selected_skills": [],
         "primary_skill": null
