@@ -65,7 +65,7 @@ mise가 읽는 [`.env.example`](../.env.example)은 비밀값 없이 사용 가�
 | `REQUEST_TIMEOUT_MS` | Ollama native·custom HTTP 요청 제한. 기본 `120000` |
 | `PROMPTFOO_RUNTIME_TIMEOUT_SECONDS` | `REQUEST_TIMEOUT_MS` 미지정 시 적용하는 초 단위 Ollama 호환 설정 |
 | `PROMPTFOO_RUNTIME_THINK` | Python Ollama provider에만 전달하는 `true` 또는 `false` |
-| `PROMPTFOO_CODEX_TIMEOUT_MS` | Codex를 사용하는 실행의 Promptfoo case 제한 시간. 기본 `120000` |
+| `PROMPTFOO_CODEX_TIMEOUT_MS` | Codex runtime·grader 호출별 제한 시간. 기본 `120000`. Ollama 요청에는 Ollama 제한 시간이 적용됩니다. |
 
 ### Inputs, outputs, and evidence
 

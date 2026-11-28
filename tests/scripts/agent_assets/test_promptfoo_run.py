@@ -1,10 +1,12 @@
 import json
+import shutil
 import subprocess
 from pathlib import Path
 
 import pytest
 
 from scripts.agent_assets import promptfoo_run as runner
+from scripts.agent_assets.promptfoo_env import CODEX_PROVIDER_PATH
 
 BOOTSTRAP = ["-c", str(runner.CONFIG_DIR / "mols-dev-env-bootstrap-design.yaml")]
 SMOKE = ["-c", str(runner.CONFIG_DIR / "mols-dev-env-bootstrap-design-smoke.yaml")]
@@ -164,10 +166,9 @@ def test_codex_api_isolation_and_independent_ollama_grader(tmp_path):
     )
     assert codex
     assert config["prompts"] == ["file://skill-agent.txt"]
-    assert {provider["id"] for provider in config["providers"]} == {
-        "openai:codex-sdk:codex-test"
-    }
-    trigger, behavior = [provider["config"] for provider in config["providers"]]
+    configs = [provider[CODEX_PROVIDER_PATH] for provider in config["providers"]]
+    assert {provider["id"] for provider in configs} == {"openai:codex-sdk:codex-test"}
+    trigger, behavior = [provider["config"] for provider in configs]
     assert trigger["output_schema"]["required"] == ["selected_skills", "primary_skill"]
     assert "output_schema" not in behavior
     assert "temperature" not in behavior
@@ -188,7 +189,8 @@ def test_codex_api_isolation_and_independent_ollama_grader(tmp_path):
     assert "OPENAI_API_KEY" not in env
     assert "OPENAI_BASE_URL" not in env
     assert "test-only-" not in json.dumps(config)
-    assert env["PROMPTFOO_EVAL_TIMEOUT_MS"] == "5000"
+    assert behavior["timeout_ms"] == trigger["timeout_ms"] == 5000
+    assert "PROMPTFOO_EVAL_TIMEOUT_MS" not in env
     assert env["REQUEST_TIMEOUT_MS"] == "9000"
     grader = config["tests"][1]["config"]["grader"]
     assert grader["id"] == "ollama:chat:different"
@@ -250,14 +252,118 @@ def test_codex_chatgpt_grader_has_isolated_home_and_no_ambient_keys(tmp_path):
     assert codex
     assert config["providers"][0]["id"] == "echo"
     grader = config["tests"][0]["config"]["grader"]
-    assert grader["id"] == "openai:codex-sdk:grader-test"
+    assert grader["id"] == CODEX_PROVIDER_PATH
     options = grader["config"]
+    assert options["model"] == "grader-test"
     assert options["cli_config"]["forced_login_method"] == "chatgpt"
     assert options["cli_env"]["CODEX_HOME"] == str(auth_profile)
     assert options["cli_env"]["HOME"] != str(auth_profile)
     assert options["output_schema"]["required"] == ["pass", "score", "reason"]
     assert (
         not {"CODEX_API_KEY", "OPENAI_API_KEY", "PROMPTFOO_CODEX_API_KEY"} & env.keys()
+    )
+
+
+def test_codex_grader_timeout_does_not_set_ollama_trigger_deadline(tmp_path):
+    config, env, _ = runner.configure(
+        runner.parser().parse_args(
+            BOOTSTRAP
+            + OLLAMA
+            + [
+                "--grader",
+                "codex",
+                "--grader-model",
+                "grader-test",
+                "--codex-auth",
+                "api",
+                "--filter-metadata",
+                "suite=trigger",
+            ]
+        ),
+        tmp_path,
+        {
+            "PROMPTFOO_CODEX_API_KEY": "test-only",
+            "PROMPTFOO_CODEX_TIMEOUT_MS": "1000",
+            "PROMPTFOO_EVAL_TIMEOUT_MS": "1000",
+            "REQUEST_TIMEOUT_MS": "10000",
+        },
+    )
+    assert all(entry["id"] == "ollama:chat:qwen:test" for entry in config["providers"])
+    trigger, behavior = (test["config"] for test in config["tests"])
+    assert trigger["semantic"] is False
+    assert "grader" not in trigger
+    assert behavior["grader"]["id"] == CODEX_PROVIDER_PATH
+    assert behavior["grader"]["config"]["timeout_ms"] == 1000
+    assert "PROMPTFOO_EVAL_TIMEOUT_MS" not in env
+    assert "timeoutMs" not in config.get("evaluateOptions", {})
+    assert env["REQUEST_TIMEOUT_MS"] == "10000"
+
+
+@pytest.mark.skipif(shutil.which("node") is None, reason="requires Node.js")
+def test_codex_provider_applies_timeout_and_preserves_other_call_results(tmp_path):
+    package = tmp_path / "node_modules" / "promptfoo"
+    package.mkdir(parents=True)
+    (package / "index.cjs").write_text(
+        """
+const assert = require("node:assert/strict");
+exports.loadApiProvider = async (id, { options: { config } }) => {
+  assert.equal(id, "openai:codex-sdk:fixture");
+  assert.deepEqual(config, { model: "fixture" });
+  return {
+    async callApi(prompt, context, { abortSignal }) {
+      assert.equal(context.fixture, true);
+      if (prompt === "early") return { output: "completed" };
+      if (prompt === "error") throw new Error("provider failed");
+      // Keep the loop running until the timer aborts the request.
+      const pending = setTimeout(() => {}, 10000);
+      try {
+        await new Promise((resolve, reject) => {
+          if (abortSignal.aborted) reject(abortSignal.reason);
+          abortSignal.addEventListener(
+            "abort", () => reject(abortSignal.reason), { once: true }
+          );
+        });
+      } finally {
+        clearTimeout(pending);
+      }
+    },
+    async cleanup() {},
+  };
+};
+""",
+        encoding="utf-8",
+    )
+    (package / "package.json").write_text('{"main":"index.cjs"}', encoding="utf-8")
+    script = tmp_path / "test.cjs"
+    script.write_text(
+        """
+const assert = require("node:assert/strict");
+const Provider = require(process.argv[2]);
+(async () => {
+  const provider = new Provider({ config: { model: "fixture", timeout_ms: 20 } });
+  const context = { fixture: true };
+  assert.deepEqual(await provider.callApi("early", context), { output: "completed" });
+  await assert.rejects(provider.callApi("error", context), /provider failed/);
+  assert.deepEqual(await provider.callApi("slow", context), {
+    error: "Codex call timed out after 20ms",
+  });
+  const caller = new AbortController();
+  caller.abort(new Error("caller canceled"));
+  await assert.rejects(
+    provider.callApi("slow", context, { abortSignal: caller.signal }), /caller canceled/
+  );
+  await provider.cleanup();
+})().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
+""",
+        encoding="utf-8",
+    )
+    subprocess.run(
+        ["node", str(script), CODEX_PROVIDER_PATH],
+        check=True,
+        timeout=15,
     )
 
 

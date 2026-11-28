@@ -2,8 +2,11 @@ from __future__ import annotations
 
 import math
 from collections.abc import Mapping
+from pathlib import Path
 from urllib.parse import urlsplit
 
+# Use a bare path so Python test config keeps the module reference as a string.
+CODEX_PROVIDER_PATH = Path(__file__).with_name("promptfoo_codex.cjs").as_posix()
 DEFAULT_REQUEST_TIMEOUT_MS = 120_000
 MAX_TIMEOUT_MS = 2_147_483_647
 

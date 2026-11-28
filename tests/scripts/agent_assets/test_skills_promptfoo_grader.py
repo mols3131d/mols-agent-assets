@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 
 from scripts.agent_assets import skills_promptfoo as evaluator
+from scripts.agent_assets.promptfoo_env import CODEX_PROVIDER_PATH
 
 GRADER = {"id": "ollama:chat:fixture-grader"}
 
@@ -182,7 +183,7 @@ def test_codex_grader_preserves_provider_config_and_uses_text_prompt(
     _fixtures(tmp_path)
     monkeypatch.setattr(evaluator, "ROOT", tmp_path)
     grader = {
-        "id": "openai:codex-sdk:test-grader",
+        "id": CODEX_PROVIDER_PATH,
         "config": {"approval_policy": "never"},
     }
 

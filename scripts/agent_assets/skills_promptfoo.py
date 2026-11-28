@@ -278,7 +278,10 @@ def generate_tests(config: dict | None = None) -> list[dict]:
     if semantic and not (
         isinstance(grader, dict)
         and isinstance(grader.get("id"), str)
-        and grader["id"].startswith(("ollama:chat:", "openai:codex-sdk:"))
+        and (
+            grader["id"].startswith("ollama:chat:")
+            or grader["id"] == promptfoo_env.CODEX_PROVIDER_PATH
+        )
     ):
         raise ValueError("semantic evaluation requires an explicitly selected grader")
     fixture = fixture_path(skill_name)
@@ -370,7 +373,7 @@ def generate_tests(config: dict | None = None) -> list[dict]:
                         "provider": grader,
                         **(
                             {"rubricPrompt": CODEX_RUBRIC_PROMPT}
-                            if grader["id"].startswith("openai:codex-sdk:")
+                            if grader["id"] == promptfoo_env.CODEX_PROVIDER_PATH
                             else {}
                         ),
                         "threshold": float(rubric_threshold),

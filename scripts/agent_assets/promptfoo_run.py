@@ -205,8 +205,8 @@ def codex_options(
                 "PROMPTFOO_CODEX_CHATGPT_HOME must be a dedicated login-only Codex home"
             )
 
-    env["PROMPTFOO_EVAL_TIMEOUT_MS"] = str(promptfoo_env.codex_timeout_ms(base))
     return {
+        "timeout_ms": promptfoo_env.codex_timeout_ms(base),
         "working_dir": str(working_dir),
         "skip_git_repo_check": True,
         "persist_threads": False,
@@ -257,9 +257,10 @@ def provider_options(
             "config": {"temperature": 0, "showThinking": False},
         }
     return {
-        "id": f"openai:codex-sdk:{model}",
+        "id": promptfoo_env.CODEX_PROVIDER_PATH,
         "config": {
             **codex,
+            "model": model,
             **({"output_schema": output_schema} if output_schema else {}),
         },
     }
@@ -327,13 +328,22 @@ def configure(
     if mode == "native":
         if provider == "codex":
             config["prompts"] = ["file://skill-agent.txt"]
+        providers = []
         for entry in config["providers"]:
             output_schema = (
                 skills_promptfoo.TRIGGER_RESPONSE_SCHEMA
                 if entry["label"].endswith("-trigger")
                 else None
             )
-            entry.update(provider_options(provider, model, codex, output_schema))
+            options = provider_options(provider, model, codex, output_schema)
+            options["label"] = entry["label"]
+            if provider == "codex":
+                # Promptfoo filters by ID or label before it loads the module.
+                adapter = options["id"]
+                options["id"] = f"openai:codex-sdk:{model}"
+                options = {adapter: options}
+            providers.append(options)
+        config["providers"] = providers
     if mode == "ollama":
         env["PROMPTFOO_RUNTIME_MODEL"] = model
         if "PROMPTFOO_RUNTIME_THINK" in base:
