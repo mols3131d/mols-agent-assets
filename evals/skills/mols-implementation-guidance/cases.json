@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "routine-coding",
+      "mode": "activation",
+      "prompt": "Implement a small Rust utility function using the existing public interface.",
+      "expected_selection": {
+        "selected_skills": ["mols-implementation-guidance"],
+        "primary_skill": "mols-implementation-guidance"
+      }
+    },
+    {
+      "id": "repository-administration",
+      "mode": "activation-negative",
+      "prompt": "Rename the pull request for a Python package and add a documentation label; no code or build changes are needed.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    },
+    {
+      "id": "factual-lookup",
+      "mode": "activation-negative",
+      "prompt": "Python에서 list와 tuple의 차이점을 설명해줘.",
+      "expected_selection": {
+        "selected_skills": [],
+        "primary_skill": null
+      }
+    }
+  ]
+}
