@@ -29,46 +29,39 @@ def test_sync_reports_conflict_without_staging(monkeypatch, capsys):
     assert "unstaged source" in capsys.readouterr().err
 
 
-@pytest.mark.parametrize(
-    ("args", "local_only"),
-    [
-        (["validate"], False),
-        (["validate", "--all"], False),
-        (["validate", "--local-only", "--all"], True),
-    ],
-)
-def test_validate_scope(monkeypatch, args, local_only):
+@pytest.mark.parametrize("args", [["validate"], ["validate", "--all"]])
+def test_validate_scope(monkeypatch, args):
     selected = []
 
-    def select(paths, *, local_only=False):
-        selected.append((paths, local_only))
+    def select(paths):
+        selected.append(paths)
         return ()
 
     monkeypatch.setattr(validation, "select_for_validation", select)
     monkeypatch.setattr(validation, "validate", lambda _: 0)
     assert cli.main(args) == 0
-    assert selected == [(None, local_only)]
+    assert selected == [None]
 
 
 def test_validate_changed_from_and_exit_code(monkeypatch):
     seen = []
 
-    def select(paths, *, local_only=False):
-        seen.append((paths, local_only))
+    def select(paths):
+        seen.append(paths)
         return ()
 
     monkeypatch.setattr(validation, "changed_paths", lambda rev: {"docs/a.md"})
     monkeypatch.setattr(validation, "select_for_validation", select)
     monkeypatch.setattr(validation, "validate", lambda _: 1)
     assert cli.main(["validate", "--changed-from", "HEAD~1"]) == 1
-    assert seen == [({"docs/a.md"}, False)]
+    assert seen == [{"docs/a.md"}]
 
 
 def test_validate_unknown_impact_falls_back_to_all(monkeypatch, capsys):
     selection = []
     monkeypatch.setattr(validation, "changed_paths", lambda rev: None)
 
-    def select(paths, *, local_only=False):
+    def select(paths):
         selection.append(paths)
         return ()
 

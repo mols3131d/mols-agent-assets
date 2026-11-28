@@ -3,6 +3,3 @@
 
 # Canonical Agent Asset workspace
 src/rulesync/** rulesync-source
-
-# Derived cross-runtime discovery metadata
-route/*.jsonl linguist-generated

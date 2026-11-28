@@ -7,19 +7,12 @@ on:
     paths:
       - 'docs/**'
       - 'catalog/**'
-      - 'src/rulesync/.rulesync/skills/**'
-      - 'src/rulesync/.rulesync/subagents/**'
       - 'scripts/**'
+      - 'src/rulesync/.rulesync/skills/mols-markdown-maintenance/scripts/**'
       - '.github/workflows/generated-sync.yml'
       - '.python-version'
       - 'pyproject.toml'
       - 'uv.lock'
-      - 'rulesync.lock'
-      - 'rulesync.jsonc'
-      - 'skills-lock.json'
-      - '.agents/route/families.json'
-      - '.agents/route/**/*.jsonl'
-      - 'route/*.jsonl'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

@@ -5,4 +5,4 @@ language.md	README·docs·comments·Git/GitHub communication과 Agent Asset에�
 skills/	개별 Skill과 Skill family의 설계 의도, 경계, 변경 기준과 회귀 검증을 다루는 유지보수 문서 진입점을 찾을 때 사용합니다.
 subagents/	개별 Subagent와 Subagent family의 설계 의도, 역할 경계, 유지보수 기준을 다루는 문서 진입점을 찾을 때 사용합니다.
 tools/	이 프로젝트에서 사용하는 도구의 기본 설정·버전 선택 원칙, 도구별 예외와 실제 설정 파일을 찾을 때 사용합니다.
-using-this-repository.md	외부 프로젝트에서 src/, catalog/, route/의 에이전트 자산과 재사용 지식을 찾아 참조·설치·채택하는 방법을 안내합니다.
+using-this-repository.md	외부 프로젝트에서 src/, catalog/의 에이전트 자산과 재사용 지식을 찾아 참조·설치·채택하는 방법을 안내합니다.

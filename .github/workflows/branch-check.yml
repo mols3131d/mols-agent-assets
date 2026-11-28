@@ -57,5 +57,5 @@ jobs:
       - name: Run deterministic tests
         run: uv run --locked --no-default-groups --group test pytest -q tests
 
-      - name: Validate local generated projections
-        run: uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts validate --local-only --all
+      - name: Validate generated projections
+        run: uv run --locked --no-default-groups --group test python -m scripts.generated_artifacts validate --all

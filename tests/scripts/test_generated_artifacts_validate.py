@@ -55,9 +55,10 @@ def test_changed_paths_does_not_filter_git_change_types(monkeypatch, tmp_path):
 
 
 def test_select_for_validation_uses_projection_registry():
-    selected = validate.select_for_validation({"skills-lock.json"})
+    selected = validate.select_for_validation({"docs/guide.md"})
 
-    assert [projection.name for projection in selected] == ["repository-routes"]
+    assert [projection.name for projection in selected] == ["docs-indexes"]
+    assert validate.select_for_validation({"skills-lock.json"}) == ()
 
 
 @pytest.mark.parametrize(
@@ -70,27 +71,6 @@ def test_select_for_validation_uses_projection_registry():
 )
 def test_common_validation_source_selects_all_projections(path):
     assert validate.select_for_validation({path}) == sync.PROJECTIONS
-
-
-def test_common_source_respects_local_only_without_network():
-    selected = validate.select_for_validation(
-        {"scripts/generated_artifacts_sync.py"}, local_only=True
-    )
-    assert [projection.name for projection in selected] == [
-        "docs-indexes",
-        "catalog-indexes",
-        "distribution-routes",
-    ]
-
-
-def test_select_for_validation_limits_unknown_impact_to_local_projections():
-    selected = validate.select_for_validation(None, local_only=True)
-
-    assert [projection.name for projection in selected] == [
-        "docs-indexes",
-        "catalog-indexes",
-        "distribution-routes",
-    ]
 
 
 def test_select_for_validation_falls_back_to_all_when_impact_is_unknown():
