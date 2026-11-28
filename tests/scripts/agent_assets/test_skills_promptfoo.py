@@ -357,7 +357,11 @@ def test_promptfoo_configs_use_generic_skill_evaluator() -> None:
     for generated in smoke["tests"]:
         assert generated["path"].endswith("skills_promptfoo.py:generate_tests")
 
-    for name in ("mols-loops.yaml", "mols-dev-env-bootstrap-design.yaml"):
+    for name in (
+        "mols-loops.yaml",
+        "mols-dev-env-bootstrap-design.yaml",
+        "mols-implementation-guidance.yaml",
+    ):
         config = yaml.safe_load((CONFIG_DIR / name).read_text(encoding="utf-8"))
         assert config["prompts"] == ["file://skill-chat.json"]
         for provider in config["providers"]:
@@ -372,6 +376,19 @@ def test_promptfoo_configs_use_generic_skill_evaluator() -> None:
         assert config["commandLineOptions"]["cache"] is False
         assert config["commandLineOptions"]["write"] is False
         assert config["commandLineOptions"]["noShare"] is True
+
+
+def test_implementation_guidance_config_generates_routing_only_cases() -> None:
+    config = yaml.safe_load(
+        (CONFIG_DIR / "mols-implementation-guidance.yaml").read_text(encoding="utf-8")
+    )
+    assert len(config["tests"]) == 1
+    generated = config["tests"][0]["config"]
+    assert generated["suite"] == "trigger"
+    assert generated["semantic"] is False
+    cases = evaluator._load_cases("mols-implementation-guidance")
+    tests = evaluator.generate_native_tests(generated)
+    assert {test["vars"]["case_id"] for test in tests} == set(cases)
 
 
 def test_native_generator_keeps_trigger_and_behavior_context_separate() -> None:
@@ -409,22 +426,34 @@ def test_native_generator_rejects_reference_loading() -> None:
             }
         )
 
-def test_native_generator_explicitly_omits_reference_checks_without_faking_trace() -> None:
+
+def test_native_generator_explicitly_omits_reference_checks_without_faking_trace() -> (
+    None
+):
     sample = evaluator._load_cases("mols-test-design")
     case_id = next(
-        name for name, case in sample.items()
+        name
+        for name, case in sample.items()
         if case.get("expected_loaded_references") is not None
     )
     with pytest.raises(ValueError, match="reference-loading evaluations require"):
         evaluator.generate_native_tests(
-            {"skill": "mols-test-design", "suite": "behavior",
-             "case_ids": [case_id], "semantic": False}
+            {
+                "skill": "mols-test-design",
+                "suite": "behavior",
+                "case_ids": [case_id],
+                "semantic": False,
+            }
         )
 
     native = evaluator.generate_native_tests(
-        {"skill": "mols-test-design", "suite": "behavior",
-         "case_ids": [case_id], "semantic": False,
-         "omit_reference_checks": True}
+        {
+            "skill": "mols-test-design",
+            "suite": "behavior",
+            "case_ids": [case_id],
+            "semantic": False,
+            "omit_reference_checks": True,
+        }
     )[0]
     assert "expected_loaded_references" not in native["vars"]
     assert not any(check["metric"] == "reference-loading" for check in native["assert"])
@@ -432,6 +461,9 @@ def test_native_generator_explicitly_omits_reference_checks_without_faking_trace
 
     with pytest.raises(ValueError, match="omit_reference_checks must be a boolean"):
         evaluator.generate_native_tests(
-            {"skill": "mols-test-design", "suite": "behavior",
-             "omit_reference_checks": "true"}
+            {
+                "skill": "mols-test-design",
+                "suite": "behavior",
+                "omit_reference_checks": "true",
+            }
         )
