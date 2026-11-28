@@ -6,16 +6,13 @@
       "mode": "activation",
       "prompt": "A Python service changed its public result schema. Decide which observable contracts and regression cases need tests before writing code.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-test-design",
-          "mols-coding-context"
-        ],
+        "selected_skills": ["mols-test-design", "mols-implementation-guidance"],
         "primary_skill": "mols-test-design"
       },
       "routing_candidates": [
         {
-          "name": "mols-coding-context",
-          "description": "Core engineering judgment for code-facing implementation, debugging, testing, refactoring, review, API or data-model changes, dependency decisions, performance, and maintainability work, including routine changes. Select when solving the task materially depends on reasoning about code or executable behavior. Language-specific add-ons may supplement it. Adds judgment, not workflow. Do not select for factual programming lookup, repository administration without code-facing work, or prose-only work."
+          "name": "mols-implementation-guidance",
+          "description": "Engineering guidance for implementing, debugging, refactoring, testing, and reviewing software, including routine changes and concrete implementation design. Use when decisions materially affect executable behavior or implementation quality. Load once when applicable; reuse while available. Not a workflow. Excludes purely conceptual discussion, factual lookup, non-code administration, and prose-only work."
         }
       ]
     },
@@ -24,9 +21,7 @@
       "mode": "activation",
       "prompt": "이 함수 테스트들이 모두 통과해도 실제 버그가 남습니다. 기대값과 테스트 오라클이 타당한지 검토해줘.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-test-design"
-        ],
+        "selected_skills": ["mols-test-design"],
         "primary_skill": "mols-test-design"
       }
     },
@@ -35,9 +30,7 @@
       "mode": "activation",
       "prompt": "우리 integration suite가 실행 순서마다 실패해. fixture와 상태 격리·테스트 구조를 어떻게 개선할지 설계해줘.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-test-design"
-        ],
+        "selected_skills": ["mols-test-design"],
         "primary_skill": "mols-test-design"
       }
     },
@@ -46,9 +39,7 @@
       "mode": "activation",
       "prompt": "새 결제 환불 기능의 경계값과 실패·중복 요청 시나리오를 어떤 수준에서 검증해야 충분한지 골라줘.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-test-design"
-        ],
+        "selected_skills": ["mols-test-design"],
         "primary_skill": "mols-test-design"
       }
     },
@@ -57,9 +48,7 @@
       "mode": "activation",
       "prompt": "이미 unit, integration, contract tests가 많아. 이 변경에서 새 테스트가 필요한지 중복과 실제 보호 범위를 판단해줘.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-test-design"
-        ],
+        "selected_skills": ["mols-test-design"],
         "primary_skill": "mols-test-design"
       }
     },
@@ -77,15 +66,13 @@
       "mode": "activation-negative",
       "prompt": "pytest가 ModuleNotFoundError를 내. import path를 고쳐줘.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-coding-context"
-        ],
-        "primary_skill": "mols-coding-context"
+        "selected_skills": ["mols-implementation-guidance"],
+        "primary_skill": "mols-implementation-guidance"
       },
       "routing_candidates": [
         {
-          "name": "mols-coding-context",
-          "description": "Core engineering judgment for code-facing implementation, debugging, testing, refactoring, review, API or data-model changes, dependency decisions, performance, and maintainability work, including routine changes. Select when solving the task materially depends on reasoning about code or executable behavior. Language-specific add-ons may supplement it. Adds judgment, not workflow. Do not select for factual programming lookup, repository administration without code-facing work, or prose-only work."
+          "name": "mols-implementation-guidance",
+          "description": "Engineering guidance for implementing, debugging, refactoring, testing, and reviewing software, including routine changes and concrete implementation design. Use when decisions materially affect executable behavior or implementation quality. Load once when applicable; reuse while available. Not a workflow. Excludes purely conceptual discussion, factual lookup, non-code administration, and prose-only work."
         }
       ]
     },
@@ -94,15 +81,13 @@
       "mode": "activation-negative",
       "prompt": "Given this fixed test case and assertion, translate it into a Jest test file without changing the test strategy.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-coding-context"
-        ],
-        "primary_skill": "mols-coding-context"
+        "selected_skills": ["mols-implementation-guidance"],
+        "primary_skill": "mols-implementation-guidance"
       },
       "routing_candidates": [
         {
-          "name": "mols-coding-context",
-          "description": "Core engineering judgment for code-facing implementation, debugging, testing, refactoring, review, API or data-model changes, dependency decisions, performance, and maintainability work, including routine changes. Select when solving the task materially depends on reasoning about code or executable behavior. Language-specific add-ons may supplement it. Adds judgment, not workflow. Do not select for factual programming lookup, repository administration without code-facing work, or prose-only work."
+          "name": "mols-implementation-guidance",
+          "description": "Engineering guidance for implementing, debugging, refactoring, testing, and reviewing software, including routine changes and concrete implementation design. Use when decisions materially affect executable behavior or implementation quality. Load once when applicable; reuse while available. Not a workflow. Excludes purely conceptual discussion, factual lookup, non-code administration, and prose-only work."
         }
       ]
     },
@@ -111,9 +96,7 @@
       "mode": "activation-negative",
       "prompt": "PR Gate의 병합 차단 조건, matrix와 캐시를 설계해서 GitHub Actions workflow를 작성해줘.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-ci-design"
-        ],
+        "selected_skills": ["mols-ci-design"],
         "primary_skill": "mols-ci-design"
       },
       "routing_candidates": [
@@ -128,15 +111,13 @@
       "mode": "activation-negative",
       "prompt": "mols-agent-asset Skill의 routing eval과 LLM 행동 평가를 설계해줘.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-agent-asset"
-        ],
+        "selected_skills": ["mols-agent-asset"],
         "primary_skill": "mols-agent-asset"
       },
       "routing_candidates": [
         {
           "name": "mols-agent-asset",
-          "description": "Create, tune, modify, simplify, refactor, review, validate, or evaluate agent Skills, Rules or scoped instructions, and agent or subagent definitions. Also use for bounded review, validation, or evaluation of prompts, tools, guardrails, references, configs, scripts, hooks, and eval fixtures when they affect agent behavior. Covers deterministic and semantic validation plus routing and behavior evaluation. Use mols-agent-asset-find for discovery, selection, loading, installation, synchronization, or invocation. Do not use for ordinary product code, human-facing prose, prompt authoring, hook setup, or MCP setup."
+          "description": "Create, tune, modify, simplify, refactor, review, validate, or evaluate agent Skills, Rules or scoped instructions, and agent or subagent definitions. Also use for bounded review, validation, or evaluation of prompts, tools, guardrails, references, configs, scripts, hooks, and eval fixtures when they affect agent behavior. Covers deterministic and semantic validation plus routing and behavior evaluation. Do not use for discovery, selection, loading, installation, synchronization, invocation, ordinary product code, human-facing prose, prompt authoring, hook setup, or MCP setup."
         }
       ]
     },
@@ -158,9 +139,7 @@
         "Selects an example or boundary that differentiates early rounding from final rounding.",
         "Does not silently bless the current implementation simply because it is observable."
       ],
-      "expected_loaded_references": [
-        "references/oracle-validation.md"
-      ]
+      "expected_loaded_references": ["references/oracle-validation.md"]
     },
     {
       "id": "test-passes-feature-missing",
@@ -258,9 +237,7 @@
       "mode": "activation",
       "prompt": "개발자 A가 모듈 A를 테스트하는데 B 팀의 비공개 helper를 import해서 assertion 하고 있어. B 내부 리팩터링에도 A 테스트를 독립적으로 유지하도록 테스트 경계를 검토해줘.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-test-design"
-        ],
+        "selected_skills": ["mols-test-design"],
         "primary_skill": "mols-test-design"
       }
     },
@@ -269,9 +246,7 @@
       "mode": "activation",
       "prompt": "독립적인 두 coding agent가 각각 테스트를 통과시키지만 통합할 때 공유 fixture와 전역 상태 때문에 서로의 suite가 깨져. 테스트 설계를 개선해줘.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-test-design"
-        ],
+        "selected_skills": ["mols-test-design"],
         "primary_skill": "mols-test-design"
       }
     },
@@ -280,16 +255,13 @@
       "mode": "activation",
       "prompt": "서로 병렬 개발하는 consumer와 provider가 JSON API 변경에도 호환되는지 확인하면서 각자 테스트를 실행할 수 있게 검증 전략을 세워줘.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-test-design",
-          "mols-coding-context"
-        ],
+        "selected_skills": ["mols-test-design", "mols-implementation-guidance"],
         "primary_skill": "mols-test-design"
       },
       "routing_candidates": [
         {
-          "name": "mols-coding-context",
-          "description": "Core engineering judgment for code-facing implementation, debugging, testing, refactoring, review, API or data-model changes, dependency decisions, performance, and maintainability work, including routine changes. Select when solving the task materially depends on reasoning about code or executable behavior. Language-specific add-ons may supplement it. Adds judgment, not workflow. Do not select for factual programming lookup, repository administration without code-facing work, or prose-only work."
+          "name": "mols-implementation-guidance",
+          "description": "Engineering guidance for implementing, debugging, refactoring, testing, and reviewing software, including routine changes and concrete implementation design. Use when decisions materially affect executable behavior or implementation quality. Load once when applicable; reuse while available. Not a workflow. Excludes purely conceptual discussion, factual lookup, non-code administration, and prose-only work."
         }
       ]
     },
@@ -396,16 +368,13 @@
       "mode": "activation",
       "prompt": "Please implement the new API endpoint, and also decide the contract-level regression cases and expected failure outcomes needed to guard the versioned response.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-coding-context",
-          "mols-test-design"
-        ],
-        "primary_skill": "mols-coding-context"
+        "selected_skills": ["mols-implementation-guidance", "mols-test-design"],
+        "primary_skill": "mols-implementation-guidance"
       },
       "routing_candidates": [
         {
-          "name": "mols-coding-context",
-          "description": "Core engineering judgment for code-facing implementation, debugging, testing, refactoring, review, API or data-model changes, dependency decisions, performance, and maintainability work, including routine changes. Select when solving the task materially depends on reasoning about code or executable behavior. Language-specific add-ons may supplement it. Adds judgment, not workflow. Do not select for factual programming lookup, repository administration without code-facing work, or prose-only work."
+          "name": "mols-implementation-guidance",
+          "description": "Engineering guidance for implementing, debugging, refactoring, testing, and reviewing software, including routine changes and concrete implementation design. Use when decisions materially affect executable behavior or implementation quality. Load once when applicable; reuse while available. Not a workflow. Excludes purely conceptual discussion, factual lookup, non-code administration, and prose-only work."
         }
       ]
     },
@@ -414,9 +383,7 @@
       "mode": "activation",
       "prompt": "An AI-generated test fails against a documented accepted response. Determine whether the production code, expectation or fixture is wrong and what evidence to gather.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-test-design"
-        ],
+        "selected_skills": ["mols-test-design"],
         "primary_skill": "mols-test-design"
       }
     },
@@ -425,15 +392,13 @@
       "mode": "activation-negative",
       "prompt": "Implement this utility method using the provided interface. Follow the repository's normal verification practices; I am not requesting a separate testing strategy or oracle review.",
       "expected_selection": {
-        "selected_skills": [
-          "mols-coding-context"
-        ],
-        "primary_skill": "mols-coding-context"
+        "selected_skills": ["mols-implementation-guidance"],
+        "primary_skill": "mols-implementation-guidance"
       },
       "routing_candidates": [
         {
-          "name": "mols-coding-context",
-          "description": "Core engineering judgment for code-facing implementation, debugging, testing, refactoring, review, API or data-model changes, dependency decisions, performance, and maintainability work, including routine changes. Select when solving the task materially depends on reasoning about code or executable behavior. Language-specific add-ons may supplement it. Adds judgment, not workflow. Do not select for factual programming lookup, repository administration without code-facing work, or prose-only work."
+          "name": "mols-implementation-guidance",
+          "description": "Engineering guidance for implementing, debugging, refactoring, testing, and reviewing software, including routine changes and concrete implementation design. Use when decisions materially affect executable behavior or implementation quality. Load once when applicable; reuse while available. Not a workflow. Excludes purely conceptual discussion, factual lookup, non-code administration, and prose-only work."
         }
       ]
     },
@@ -455,9 +420,7 @@
         "Uses the spec and accepted example rather than mutational score or current product behavior to correct or dispute the test.",
         "Does not automatically modify production code to comply with the wrong expectation."
       ],
-      "expected_loaded_references": [
-        "references/oracle-validation.md"
-      ]
+      "expected_loaded_references": ["references/oracle-validation.md"]
     },
     {
       "id": "unexpected-failure-product-test-or-environment",
@@ -468,9 +431,7 @@
         "Recommends obtaining contract, actual/expected observations and reproducible conditions before selecting a repair owner.",
         "Does not silently change production logic or claim that a retry proves correctness."
       ],
-      "expected_loaded_references": [
-        "references/oracle-validation.md"
-      ]
+      "expected_loaded_references": ["references/oracle-validation.md"]
     },
     {
       "id": "testability-observation-seam",
@@ -501,9 +462,7 @@
         "Separately identifies the missing consumer-facing entrypoint acceptance evidence.",
         "Avoids recommending more indiscriminate mutants as a substitute for fixing the oracle or missing acceptance check."
       ],
-      "expected_loaded_references": [
-        "references/oracle-validation.md"
-      ]
+      "expected_loaded_references": ["references/oracle-validation.md"]
     },
     {
       "id": "simple-test-no-reference-overhead",

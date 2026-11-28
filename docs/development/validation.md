@@ -1,10 +1,10 @@
 ---
-description: 문서 frontmatter·INDEX.tsv, Agent Asset routing, Rulesync 관리 자산의 repository validation 범위와 실행 경계를 확인할 때 사용하는 정책입니다.
+description: 문서 frontmatter·INDEX.tsv, Rulesync 관리 자산의 repository validation 범위와 실행 경계를 확인할 때 사용하는 정책입니다.
 ---
 
 # Validation
 
-Validation은 이 repository가 유지하는 **네 가지 구조·파생 계약**을 확인합니다. 파일 표현은 [Formatting](formatting.md), repository-owned executable behavior는 [Testing](testing.md), model/runtime behavior evidence는 [Evaluation](evaluation.md)이 소유합니다. 어떤 validation이 merge를 차단하고 언제 실행되는지는 [Continuous Integration](ci.md)이 소유합니다.
+Validation은 이 repository가 유지하는 **세 가지 구조·파생 계약**을 확인합니다. 파일 표현은 [Formatting](formatting.md), repository-owned executable behavior는 [Testing](testing.md), model/runtime behavior evidence는 [Evaluation](evaluation.md)이 소유합니다. 어떤 validation이 merge를 차단하고 언제 실행되는지는 [Continuous Integration](ci.md)이 소유합니다.
 
 ## Targets
 
@@ -12,7 +12,6 @@ Validation은 이 repository가 유지하는 **네 가지 구조·파생 계약*
 | --- | --- |
 | Documentation frontmatter | 적용 대상 문서의 YAML frontmatter와 필수 metadata |
 | `docs/`·`catalog/` `INDEX.tsv` | 작성 원본에서 계산한 index와 committed output의 drift |
-| Agent Asset routing | source에서 생성한 route와 committed output의 drift |
 | Rulesync-managed assets | Rulesync CLI를 통한 read-only structural validation |
 
 각 검증은 계약을 소유하는 기존 도구와 source를 재사용합니다. Schema나 projection semantics를 별도 validator에서 다시 구현하지 않습니다.
@@ -21,7 +20,7 @@ Validation은 이 repository가 유지하는 **네 가지 구조·파생 계약*
 
 ## Projection Validation
 
-Index와 route의 갱신은 canonical source와 공식 generator가 소유합니다. Local authoring에서는 필요하면 `mise run generated sync`로 committed projection을 동기화합니다.
+Index 갱신은 canonical source와 공식 generator가 소유합니다. Local authoring에서는 필요하면 `mise run generated sync`로 committed projection을 동기화합니다.
 
 Validation은 projection을 새로운 source처럼 수정하지 않습니다. CI에서는 runner의 ephemeral working tree에서 공식 generator를 실행한 뒤 committed output과 비교할 수 있으며, 차이가 있으면 drift로 판정합니다. 이 generation은 검증 수단이며 repository write-back을 뜻하지 않습니다.
 

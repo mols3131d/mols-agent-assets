@@ -66,49 +66,14 @@ def test_catalog_index_source_matching(path, expected):
 @pytest.mark.parametrize(
     ("path", "expected"),
     [
-        ("src/rulesync/.rulesync/skills/example/SKILL.md", True),
-        ("src/rulesync/.rulesync/skills/example/references/guide.md", False),
-        ("src/rulesync/.rulesync/subagents/review.md", True),
-        ("src/rulesync/.rulesync/subagents/references/guide.md", False),
-        ("scripts/agent_assets/routes_distribution_generate.py", True),
-        ("rulesync.lock", False),
-    ],
-)
-def test_distribution_route_source_matching(path, expected):
-    assert sync._is_distribution_route_source(path) is expected
-
-
-@pytest.mark.parametrize(
-    ("path", "expected"),
-    [
-        ("rulesync.lock", True),
-        ("rulesync.jsonc", True),
-        ("skills-lock.json", True),
-        (".agents/route/families.json", True),
-        ("scripts/agent_assets/routes_repository_generate.py", True),
-        ("src/rulesync/.rulesync/skills/example/SKILL.md", False),
-    ],
-)
-def test_repository_route_source_matching(path, expected):
-    assert sync._is_repository_route_source(path) is expected
-
-
-@pytest.mark.parametrize(
-    ("path", "expected"),
-    [
         ("docs/guide.md", ["docs-indexes"]),
         ("catalog/skills.json", ["catalog-indexes"]),
         ("catalog/patterns/README.md", ["catalog-indexes"]),
         ("scripts/indexes_generate.py", ["docs-indexes", "catalog-indexes"]),
-        (
-            "src/rulesync/.rulesync/skills/example/SKILL.md",
-            ["distribution-routes"],
-        ),
-        (
-            "src/rulesync/.rulesync/subagents/review.md",
-            ["distribution-routes"],
-        ),
-        ("skills-lock.json", ["repository-routes"]),
+        ("src/rulesync/.rulesync/skills/example/SKILL.md", []),
+        ("src/rulesync/.rulesync/subagents/review.md", []),
+        ("rulesync.lock", []),
+        ("skills-lock.json", []),
     ],
 )
 def test_source_path_selects_only_its_projection_owner(path, expected):
@@ -123,10 +88,6 @@ def test_source_path_selects_only_its_projection_owner(path, expected):
         ("docs/INDEX.tsv", ["docs-indexes"]),
         ("catalog/INDEX.tsv", ["catalog-indexes"]),
         ("catalog/patterns/INDEX.tsv", ["catalog-indexes"]),
-        ("route/routes.jsonl", ["distribution-routes"]),
-        ("route/skills.jsonl", ["distribution-routes"]),
-        ("route/subagents.jsonl", ["distribution-routes"]),
-        (".agents/route/routes.jsonl", ["repository-routes"]),
     ],
 )
 def test_generated_output_selects_its_projection_owner(path, expected):

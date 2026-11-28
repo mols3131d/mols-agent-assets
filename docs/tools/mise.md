@@ -86,7 +86,7 @@ Tool 선택과 Python lock 상태가 필요한 경우 `mise ls --project --json`
 
 **mise `2026.9.6` 이상**에서는 `mise doctor project`가 `[doctor.checks]`로 선언한 Python lock과 루트 Rulesync 설정을 검사합니다. PR Gate는 `2026.10.25`를 사용하며, `mise run check`가 이를 재사용합니다. Doctor의 exit code가 상태 판정을 소유하고, 설치·업데이트·생성물 쓰기는 수행하지 않습니다. 구버전 mise에서는 `uv lock --check`와 `rulesync doctor --strict`를 직접 실행할 수 있습니다.
 
-`mise run generated sync`와 `mise run generated validate`는 동일한 CLI의 별도 서브커맨드입니다. `sync --staged`만 영향받는 파일을 생성·stage하며, `validate --changed-from REV`, `validate --local-only --all`은 파일을 수정하지 않고 결과를 비교합니다.
+`mise run generated sync`와 `mise run generated validate`는 동일한 CLI의 별도 서브커맨드입니다. `sync --staged`만 영향받는 파일을 생성·stage하며, `validate --changed-from REV`, `validate --all`은 파일을 수정하지 않고 결과를 비교합니다.
 
 ### Optional Integrations
 

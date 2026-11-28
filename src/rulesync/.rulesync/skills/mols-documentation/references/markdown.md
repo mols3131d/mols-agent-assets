@@ -53,7 +53,6 @@ Markdown surface가 frontmatter나 description metadata를 사용하면 해당 s
 | 단일 부모 hierarchy | Tree structure |
 | 복잡한 관계, 흐름, 상태와 sequence | `mols-mermaid-diagram` |
 | 정량 비교, 추세, 분포와 비율 | `mols-mermaid-chart` |
-| 개발 현황, evidence, gap, risk와 next action의 통합 뷰 | `mols-markdown-dashboard` |
 
 짧은 prose나 list가 더 빠르게 이해되면 visual을 추가하지 않는다. 전문 Skill이 선택되면 그 Skill의 문법과 의미 규칙을 이 reference에 복제하지 않는다.
 

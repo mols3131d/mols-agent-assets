@@ -8,17 +8,10 @@ from collections.abc import Callable, Iterable
 from pathlib import Path
 
 from scripts import generated_artifacts_sync as sync, indexes_generate
-from scripts.agent_assets import (
-    routes_distribution_generate as distribution_routes,
-    routes_repository_generate as repository_routes,
-)
 
 ROOT = sync.ROOT
-LOCAL_PROJECTION_NAMES = frozenset(
-    {"docs-indexes", "catalog-indexes", "distribution-routes"}
-)
 # Selection logic changes affect every committed projection, but should not force
-# pre-commit generation or network access in the local authoring path.
+# pre-commit generation in the local authoring path.
 _COMMON_VALIDATION_SOURCES = frozenset(
     {
         "scripts/generated_artifacts.py",
@@ -102,25 +95,9 @@ def check_catalog_indexes() -> list[str]:
     )
 
 
-def check_distribution_routes() -> list[str]:
-    return compare_outputs(
-        distribution_routes.generate(),
-        sync._is_distribution_route_output,
-    )
-
-
-def check_repository_routes() -> list[str]:
-    return compare_outputs(
-        repository_routes.generate(),
-        sync._is_repository_route_output,
-    )
-
-
 CHECKERS: dict[str, Checker] = {
     "docs-indexes": check_docs_indexes,
     "catalog-indexes": check_catalog_indexes,
-    "distribution-routes": check_distribution_routes,
-    "repository-routes": check_repository_routes,
 }
 
 
@@ -158,22 +135,13 @@ def changed_paths(
 def select_for_validation(
     paths: Iterable[str] | None,
     *,
-    local_only: bool = False,
     projections: tuple[sync.Projection, ...] = sync.PROJECTIONS,
 ) -> tuple[sync.Projection, ...]:
     """Select affected projections, falling back to all when impact is unknown."""
     affected = None if paths is None else set(paths)
     if affected is None or affected & _COMMON_VALIDATION_SOURCES:
-        selected = projections
-    else:
-        selected = sync.select_projections(affected, projections)
-    if local_only:
-        selected = tuple(
-            projection
-            for projection in selected
-            if projection.name in LOCAL_PROJECTION_NAMES
-        )
-    return selected
+        return projections
+    return sync.select_projections(affected, projections)
 
 
 def validate(

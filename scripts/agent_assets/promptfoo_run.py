@@ -24,13 +24,11 @@ PROMPTFOO_VERSION = "0.126.0"
 CODEX_SDK_VERSION = "0.169.1"
 MIN_NODE_VERSION = (22, 22, 0)
 CONFIG_MODES = {
-    "mols-loops.yaml": "native",
     "mols-dev-env-bootstrap-design.yaml": "native",
-    "mols-stdd.yaml": "native",
+    "mols-implementation-guidance.yaml": "native",
     "mols-test-design.yaml": "ollama",
-    "mols-stdd-references.yaml": "ollama",
     "mols-dev-env-bootstrap-design-grader.yaml": "calibration",
-    "mols-loops-smoke.yaml": "fixture",
+    "mols-dev-env-bootstrap-design-smoke.yaml": "fixture",
 }
 # Forward only presentation, subset and result options. Promptfoo also has CLI
 # options that replace inputs or choose additional providers and callbacks.
@@ -278,9 +276,7 @@ def configure(
     auth = one_value(args, "codex_auth")
 
     if args.fixture != (mode == "fixture"):
-        raise ValueError(
-            "--fixture is required for mols-loops-smoke.yaml and is only for that suite"
-        )
+        raise ValueError("--fixture is required exactly for the fixture smoke suite")
     if mode in {"fixture", "calibration"}:
         if provider is not None or model is not None:
             raise ValueError("this suite supplies its own fixture/echo runtime")

@@ -6,8 +6,10 @@ from __future__ import annotations
 import argparse
 import sys
 
-from scripts import generated_artifacts_sync as sync
-from scripts import generated_artifacts_validate as validation
+from scripts import (
+    generated_artifacts_sync as sync,
+    generated_artifacts_validate as validation,
+)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -23,11 +25,6 @@ def main(argv: list[str] | None = None) -> int:
 
     validate_command = commands.add_parser(
         "validate", help="Check committed projections without writing"
-    )
-    validate_command.add_argument(
-        "--local-only",
-        action="store_true",
-        help="Limit checks to local indexes and distribution routes",
     )
     impact = validate_command.add_mutually_exclusive_group()
     impact.add_argument("--all", action="store_true", help="Check all projections")
@@ -55,9 +52,7 @@ def main(argv: list[str] | None = None) -> int:
                 "validating all projections.",
                 file=sys.stderr,
             )
-    projections = validation.select_for_validation(
-        paths, local_only=args.local_only
-    )
+    projections = validation.select_for_validation(paths)
     return validation.validate(projections)
 
 

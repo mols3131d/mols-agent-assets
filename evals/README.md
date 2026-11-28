@@ -22,24 +22,24 @@ Promptfoo CLI는 사용자가 평가를 명시적으로 요청할 때 실행합�
 
 | 평가 설정 | Runtime | Grader |
 | --- | --- | --- |
-| `mols-loops.yaml`, `mols-dev-env-bootstrap-design.yaml`, `mols-stdd.yaml` | Ollama native chat 또는 Codex native SDK | `none`, Ollama 또는 Codex |
+| `mols-dev-env-bootstrap-design.yaml` | Ollama native chat 또는 Codex native SDK | `none`, Ollama 또는 Codex |
+| `mols-implementation-guidance.yaml` | Ollama native chat 또는 Codex native SDK의 routing-only 평가 | `none` |
 | `mols-test-design.yaml` | Ollama 전용 Python provider | `none`, Ollama 또는 Codex |
-| `mols-stdd-references.yaml` | Ollama 전용 Python provider | `none` |
 | `mols-dev-env-bootstrap-design-grader.yaml` | 저장된 응답을 재생하는 Echo | Ollama 또는 Codex 필수 |
-| `mols-loops-smoke.yaml --fixture` | 고정 fixture | 모델 옵션 없이 실행 |
+| `mols-dev-env-bootstrap-design-smoke.yaml --fixture` | 고정 fixture | 모델 옵션 없이 실행 |
 
 아래 모델 ID는 선택 형식을 보여 줍니다. 사용 가능한 Ollama 모델을 미리 준비하고 Codex 모델은 선택한 인증에서 사용할 수 있는 ID로 지정합니다.
 
 ```bash
-mise run eval -c evals/promptfoo/mols-loops-smoke.yaml --fixture
-mise run eval -c evals/promptfoo/mols-loops.yaml \
+mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design-smoke.yaml --fixture
+mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design.yaml \
   --provider ollama --model qwen3.5:4b --grader none --filter-metadata suite=trigger
-mise run eval -c evals/promptfoo/mols-loops.yaml \
+mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design.yaml \
   --provider codex --model gpt-5.2-codex --codex-auth chatgpt \
   --grader ollama --grader-model qwen3.5:4b --filter-metadata suite=behavior
 mise run eval -c evals/promptfoo/mols-dev-env-bootstrap-design-grader.yaml \
   --grader codex --grader-model gpt-5.2-codex --codex-auth api
-mise run eval -c evals/promptfoo/mols-stdd-references.yaml \
+mise run eval -c evals/promptfoo/mols-test-design.yaml \
   --provider ollama --model qwen3.5:4b --grader none
 ```
 

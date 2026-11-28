@@ -6,9 +6,10 @@ import pytest
 
 from scripts.agent_assets import promptfoo_run as runner
 
-LOOPS = ["-c", str(runner.CONFIG_DIR / "mols-loops.yaml")]
-SMOKE = ["-c", str(runner.CONFIG_DIR / "mols-loops-smoke.yaml")]
-REFERENCE = ["-c", str(runner.CONFIG_DIR / "mols-stdd-references.yaml")]
+BOOTSTRAP = ["-c", str(runner.CONFIG_DIR / "mols-dev-env-bootstrap-design.yaml")]
+SMOKE = ["-c", str(runner.CONFIG_DIR / "mols-dev-env-bootstrap-design-smoke.yaml")]
+REFERENCE = ["-c", str(runner.CONFIG_DIR / "mols-test-design.yaml")]
+ROUTING = ["-c", str(runner.CONFIG_DIR / "mols-implementation-guidance.yaml")]
 CALIBRATION = [
     "-c",
     str(runner.CONFIG_DIR / "mols-dev-env-bootstrap-design-grader.yaml"),
@@ -31,21 +32,24 @@ def test_help_does_not_start_promptfoo(args, monkeypatch, capsys):
     [
         (["--filter-first-n", "1"], "select one repository evaluation"),
         (["--config= "], "one non-blank value"),
-        (LOOPS * 2 + OLLAMA + NO_GRADER, "one non-blank value"),
-        (LOOPS + ["--model", "ambient"] + NO_GRADER, "--provider and --model"),
-        (LOOPS + ["--provider", "ollama"] + NO_GRADER, "--model"),
-        (LOOPS + ["--provider", "ollama", "--model= "] + NO_GRADER, "non-blank"),
+        (BOOTSTRAP * 2 + OLLAMA + NO_GRADER, "one non-blank value"),
+        (BOOTSTRAP + ["--model", "ambient"] + NO_GRADER, "--provider and --model"),
+        (BOOTSTRAP + ["--provider", "ollama"] + NO_GRADER, "--model"),
+        (BOOTSTRAP + ["--provider", "ollama", "--model= "] + NO_GRADER, "non-blank"),
         (
-            LOOPS + ["--provider", "ollama", "--model=invalid model"] + NO_GRADER,
+            BOOTSTRAP + ["--provider", "ollama", "--model=invalid model"] + NO_GRADER,
             "valid ollama",
         ),
-        (LOOPS + OLLAMA, "select --grader"),
-        (LOOPS + OLLAMA + ["--grader", "ollama"], "--grader-model"),
-        (LOOPS + OLLAMA + NO_GRADER + ["--grader-model", "unused"], "--grader none"),
-        (LOOPS + CODEX + NO_GRADER, "--codex-auth"),
+        (BOOTSTRAP + OLLAMA, "select --grader"),
+        (BOOTSTRAP + OLLAMA + ["--grader", "ollama"], "--grader-model"),
+        (
+            BOOTSTRAP + OLLAMA + NO_GRADER + ["--grader-model", "unused"],
+            "--grader none",
+        ),
+        (BOOTSTRAP + CODEX + NO_GRADER, "--codex-auth"),
         (REFERENCE + CODEX + NO_GRADER, "requires --provider ollama"),
         (
-            REFERENCE + OLLAMA + ["--grader", "ollama", "--grader-model", "x"],
+            ROUTING + OLLAMA + ["--grader", "ollama", "--grader-model", "x"],
             "no semantic grading",
         ),
         (CALIBRATION + NO_GRADER, "calibration requires a grader model"),
@@ -88,7 +92,7 @@ def test_promptfoo_options_cannot_bypass_selections(override, monkeypatch):
 
 
 def test_config_cannot_be_replaced_by_other_files(tmp_path):
-    copy = tmp_path / "mols-loops.yaml"
+    copy = tmp_path / "mols-dev-env-bootstrap-design.yaml"
     copy.write_text("providers: [echo]", encoding="utf-8")
     with pytest.raises(ValueError, match="suite in evals/promptfoo"):
         runner.select_config(runner.parser().parse_args(["-c", str(copy)]))
@@ -96,7 +100,7 @@ def test_config_cannot_be_replaced_by_other_files(tmp_path):
 
 def test_native_ollama_config_and_no_grader(tmp_path):
     config, env, codex = runner.configure(
-        runner.parser().parse_args(LOOPS + OLLAMA + NO_GRADER),
+        runner.parser().parse_args(BOOTSTRAP + OLLAMA + NO_GRADER),
         tmp_path,
         {
             "PROMPTFOO_RUNTIME_PROVIDER": "unused",
@@ -137,7 +141,7 @@ def test_selected_custom_ollama_model_cannot_be_overridden(tmp_path):
 def test_codex_api_isolation_and_independent_ollama_grader(tmp_path):
     config, env, codex = runner.configure(
         runner.parser().parse_args(
-            LOOPS
+            BOOTSTRAP
             + CODEX
             + [
                 "--codex-auth",
@@ -213,7 +217,7 @@ def test_codex_fails_closed_without_selected_key_or_valid_timeout(
     with pytest.raises(ValueError, match=message):
         runner.configure(
             runner.parser().parse_args(
-                LOOPS + CODEX + NO_GRADER + ["--codex-auth", "api"]
+                BOOTSTRAP + CODEX + NO_GRADER + ["--codex-auth", "api"]
             ),
             tmp_path,
             base,
@@ -260,7 +264,7 @@ def test_codex_chatgpt_grader_has_isolated_home_and_no_ambient_keys(tmp_path):
 def test_invalid_environment_does_not_start_cli(monkeypatch, capsys):
     monkeypatch.setenv("REQUEST_TIMEOUT_MS", "invalid-secret-like-value")
     monkeypatch.setattr(runner, "resolve_npx", lambda env: pytest.fail("CLI started"))
-    assert runner.main(LOOPS + OLLAMA + NO_GRADER) == 2
+    assert runner.main(BOOTSTRAP + OLLAMA + NO_GRADER) == 2
     error = capsys.readouterr().err
     assert "REQUEST_TIMEOUT_MS must be a positive integer" in error
     assert "invalid-secret-like-value" not in error
@@ -373,3 +377,9 @@ def test_chatgpt_status_does_not_switch_auth_or_report_cli_output(
             )
         assert status not in str(error.value)
     assert not capsys.readouterr().err
+
+
+def test_runner_covers_the_active_config_directory():
+    assert {path.name for path in runner.CONFIG_DIR.glob("*.yaml")} == set(
+        runner.CONFIG_MODES
+    )

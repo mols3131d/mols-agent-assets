@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+
+description: mols-implementation-guidance routing eval
+
+prompts:
+  - file://skill-chat.json
+
+providers:
+  - id: repository-selected-runtime
+    label: mols-implementation-guidance-trigger
+
+tests:
+  - path: file://../../scripts/agent_assets/skills_promptfoo.py:generate_native_tests
+    config:
+      skill: mols-implementation-guidance
+      suite: trigger
+      provider_label: mols-implementation-guidance-trigger
+      semantic: false
+
+sharing: false
+writeLatestResults: false
+commandLineOptions:
+  cache: false
+  write: false
+  noShare: true
+  maxConcurrency: 1

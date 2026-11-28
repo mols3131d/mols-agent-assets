@@ -33,7 +33,7 @@ Transport나 lock schema를 이전할 때 config와 lock의 source 표기를 맞
 - Project-scope에서는 Codex CLI의 global-only Commands와 미지원인 Copilot CLI Commands를 활성화하지 않습니다. Antigravity Commands는 Skills로 projection되므로 동명 Skill과 충돌 여부를 확인합니다.
 - Hook 생성은 기존 handler를 교체할 수 있습니다. `preserveUnownedHooks`는 일부 target에만 적용되며, 생성된 `.rulesync-hooks-lock.json`이 기존 Rulesync 소유 handler의 이력을 보존합니다. 실제 Hook을 배포할 때는 해당 lock도 유지하고 preview diff와 실행 부작용을 확인합니다.
 - Antigravity IDE·CLI는 프로젝트 `.agents/` 경로를 공유하고 Hook 파일을 전체 교체합니다. 상충하는 target별 Hook 구성을 같은 출력 루트에 생성하지 않습니다.
-- `agentsskills`는 vendor support ceiling에 포함하지 않습니다. Root self-consumer·ChatGPT compatibility처럼 실제 내부 consumer가 필요한 Skill에만 internal projection target으로 사용하며, Agent Skills 생태계 전체의 지원을 뜻하지 않습니다.
+- `agentsskills`는 vendor support ceiling에 포함하지 않습니다. 실제 내부 consumer가 필요한 Skill에만 internal projection target으로 사용하며, Agent Skills 생태계 전체의 지원을 뜻하지 않습니다.
 
 ## 권장 버전 정책
 
