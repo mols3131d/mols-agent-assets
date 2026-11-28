@@ -1,8 +1,6 @@
 path	description
 argument-driven-assets.md	같은 Agent Asset core를 runtime·target·사용 목적별로 복제하지 않고 argument로 behavior와 conditional context를 선택하게 설계할 때 참고하는 pattern으로, argument contract와 progressive disclosure의 경계를 다룹니다.
 asset-configuration-surface.md	reusable Agent Asset core를 복제하지 않고 project·repository·scope별 customization delta를 분리해 관리할 때 참고하는 pattern으로, configuration surface의 scope와 merge·precedence 경계를 다룹니다.
-chatbot-asset-directory.md	coding agent와 다른 chatbot 전용 guidance·Skill·work profile·compatibility asset을 repository에서 분리해 관리할 때 참고하는 pattern으로, chatbot-only asset surface의 ownership과 discovery boundary를 다룹니다.
-chatbot-repository-entrypoint.md	Repository-native context discovery가 부족한 chat runtime에서 stable entrypoint와 runtime bootstrap을 연결할 때 참고하는 reusable compatibility pattern입니다.
 context-surface-granularity.md	instruction·Skill·Rule·router·index·configuration 같은 context surface를 얼마나 분리할지 판단할 때 참고하는 pattern으로, 분리의 이점과 관리·discovery·routing·resolution 비용 사이의 granularity를 다룹니다.
 directory-context-capsule.md	특정 directory에서만 필요한 agent guidance와 context를 가까운 entrypoint에 묶어 scope-local하게 발견·로드하도록 설계할 때 참고하는 pattern으로, directory context boundary와 local routing 책임을 다룹니다.
 external-skill-dependency-routing.md	외부 Agent Skill dependency를 사용할 때 Rulesync declarative sources와 skills CLI 중 어떤 경로가 source semantics·lock·update·runtime delivery를 더 충실하게 보존하는지 판단할 때 참고하는 pattern입니다.

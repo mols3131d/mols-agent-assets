@@ -11,9 +11,9 @@ from scripts import (
 
 
 def test_compare_outputs_reports_missing_outdated_and_stale(tmp_path):
-    current = tmp_path / "route" / "current.jsonl"
-    outdated = tmp_path / "route" / "outdated.jsonl"
-    stale = tmp_path / "route" / "stale.jsonl"
+    current = tmp_path / "docs" / "current.tsv"
+    outdated = tmp_path / "docs" / "outdated.tsv"
+    stale = tmp_path / "docs" / "stale.tsv"
     current.parent.mkdir()
     current.write_text("current\n", encoding="utf-8")
     outdated.write_text("old\n", encoding="utf-8")
@@ -22,17 +22,17 @@ def test_compare_outputs_reports_missing_outdated_and_stale(tmp_path):
     expected = {
         current: "current\n",
         outdated: "new\n",
-        tmp_path / "route" / "missing.jsonl": "missing\n",
+        tmp_path / "docs" / "missing.tsv": "missing\n",
     }
 
     assert validate.compare_outputs(
         expected,
-        lambda path: path.startswith("route/") and path.endswith(".jsonl"),
+        lambda path: path.startswith("docs/") and path.endswith(".tsv"),
         tmp_path,
     ) == [
-        "missing: route/missing.jsonl",
-        "outdated: route/outdated.jsonl",
-        "stale: route/stale.jsonl",
+        "missing: docs/missing.tsv",
+        "outdated: docs/outdated.tsv",
+        "stale: docs/stale.tsv",
     ]
 
 
@@ -55,9 +55,10 @@ def test_changed_paths_does_not_filter_git_change_types(monkeypatch, tmp_path):
 
 
 def test_select_for_validation_uses_projection_registry():
-    selected = validate.select_for_validation({"skills-lock.json"})
+    selected = validate.select_for_validation({"docs/guide.md"})
 
-    assert [projection.name for projection in selected] == ["repository-routes"]
+    assert [projection.name for projection in selected] == ["docs-indexes"]
+    assert validate.select_for_validation({"skills-lock.json"}) == ()
 
 
 @pytest.mark.parametrize(
@@ -70,27 +71,6 @@ def test_select_for_validation_uses_projection_registry():
 )
 def test_common_validation_source_selects_all_projections(path):
     assert validate.select_for_validation({path}) == sync.PROJECTIONS
-
-
-def test_common_source_respects_local_only_without_network():
-    selected = validate.select_for_validation(
-        {"scripts/generated_artifacts_sync.py"}, local_only=True
-    )
-    assert [projection.name for projection in selected] == [
-        "docs-indexes",
-        "catalog-indexes",
-        "distribution-routes",
-    ]
-
-
-def test_select_for_validation_limits_unknown_impact_to_local_projections():
-    selected = validate.select_for_validation(None, local_only=True)
-
-    assert [projection.name for projection in selected] == [
-        "docs-indexes",
-        "catalog-indexes",
-        "distribution-routes",
-    ]
 
 
 def test_select_for_validation_falls_back_to_all_when_impact_is_unknown():
