@@ -6,8 +6,10 @@ from __future__ import annotations
 import argparse
 import sys
 
-from scripts import generated_artifacts_sync as sync
-from scripts import generated_artifacts_validate as validation
+from scripts import (
+    generated_artifacts_sync as sync,
+    generated_artifacts_validate as validation,
+)
 
 
 def main(argv: list[str] | None = None) -> int:

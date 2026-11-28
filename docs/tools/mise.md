@@ -31,8 +31,8 @@ CLI 7종의 현재 버전은 [`mise.toml`](../../mise.toml)의 exact pin과 [`mi
 보안 수정이나 지원 수명 변경도 갱신 근거지만, 실행 시마다 자동 갱신하지 않습니다. 선택한 새 버전을 `mise.toml`에 먼저 반영해야 하며, [mise 선택지](README.md#mise-버전-선택지)의 prefix·alias를 추후 지원할 경우에만 `mise lock --bump`로 허용 범위 내 후보를 선택할 수 있습니다.
 
 1. [공통 갱신 기준](README.md#버전-갱신-방법)으로 후보·영향 범위를 검토하고 새 exact pin을 반영합니다.
-1. `mise lock`으로 기존 플랫폼의 URL·checksum을 갱신하고 `mise.lock` diff를 검토합니다. 새 지원 플랫폼이 필요하면 `mise lock --platform ...`을 사용합니다. npm backend가 dependency sidecar를 생성한 경우 해당 산출물도 함께 검토·관리합니다.
-1. 승인된 환경에서 `mise install --locked`와 프로젝트 검증 명령을 실행합니다. Node·npm CLI 경로, formatter 출력, Rulesync schema·projection을 확인하고 기존 버전 제거·전역 변경은 자동으로 수행하지 않습니다.
+2. `mise lock`으로 기존 플랫폼의 URL·checksum을 갱신하고 `mise.lock` diff를 검토합니다. 새 지원 플랫폼이 필요하면 `mise lock --platform ...`을 사용합니다. npm backend가 dependency sidecar를 생성한 경우 해당 산출물도 함께 검토·관리합니다.
+3. 승인된 환경에서 `mise install --locked`와 프로젝트 검증 명령을 실행합니다. Node·npm CLI 경로, formatter 출력, Rulesync schema·projection을 확인하고 기존 버전 제거·전역 변경은 자동으로 수행하지 않습니다.
 
 Bootstrap은 [현재 코드](../../scripts/development_bootstrap.py)상 exact pin을 요구합니다. `latest`, `lts`, `^X.Y` 같은 range로 `mise.toml`을 단독 변경하는 것은 이 실행기와 호환되지 않으므로, range 추적을 채택하려면 별도 설계·검증이 필요합니다.
 

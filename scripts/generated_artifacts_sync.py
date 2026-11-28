@@ -107,7 +107,6 @@ PROJECTIONS = (
         output_matches=_is_catalog_index_output,
         generate=_generate_catalog_index,
     ),
-
 )
 
 

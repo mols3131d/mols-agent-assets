@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import pytest
 
-from scripts import generated_artifacts as cli
-from scripts import generated_artifacts_sync as sync
-from scripts import generated_artifacts_validate as validation
+from scripts import (
+    generated_artifacts as cli,
+    generated_artifacts_sync as sync,
+    generated_artifacts_validate as validation,
+)
 
 
 def test_sync_generates_selected_outputs(monkeypatch, capsys):
